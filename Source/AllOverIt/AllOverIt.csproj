@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Version>0.0.0</Version>
+    <Authors>Malcolm Smith</Authors>
+    <Company>MJ Freelancing</Company>
+    <Copyright>2020</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Description>A general purpose library containing a variety of classes, utilities, and helpers to fill in regularly occuring software development gaps.</Description>
+    <PackageProjectUrl></PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/mjfreelancing/AllOverIt</RepositoryUrl>
+  </PropertyGroup>
+
+</Project>
