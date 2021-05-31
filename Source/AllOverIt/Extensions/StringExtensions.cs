@@ -5,6 +5,15 @@ namespace AllOverIt.Extensions
 {
     public static class StringExtensions
     {
+        public static bool ContainsChar(this string str, char value)
+        {
+#if NETSTANDARD2_0
+            return str.Contains($"{value}");
+#else
+            return str.Contains(value);
+#endif
+        }
+
         /// <summary>Converts a given string to another type.</summary>
         /// <typeparam name="TType">The type to convert to.</typeparam>
         /// <param name="value">The value to be converted.</param>

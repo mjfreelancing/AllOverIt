@@ -42,6 +42,12 @@ namespace AllOverIt.Tests.Helpers
                 _value = value;
             }
 
+            public DummySuperClass(int value, int field5)
+            {
+                _value = value;
+                Field5 = field5;
+            }
+
             public void Method3()
             {
             }

@@ -1,32 +1,32 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <Authors>Malcolm Smith</Authors>
-    <Company>MJ Freelancing</Company>
-    <Description>AllOverIt.Fixture.FakeItEasy extends AllOverIt.Fixture to allow FakeItEasy integration.</Description>
-    <Copyright>2019</Copyright>
-    <PackageTags>unittesting;fakes;faking;mocks;mocking;stubs;stubbing;TDD;BDD;fluent;NUnit;xUnit;netstandard;netcore</PackageTags>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/mjfreelancing/AllOverIt.Fixture</RepositoryUrl>
-    <Version>0.0.0</Version>
-    <RepositoryType>git</RepositoryType>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1</TargetFrameworks>
+        <LangVersion>latest</LangVersion>
+        <Version>1.0.0</Version>
+        <Authors>Malcolm Smith</Authors>
+        <Company></Company>
+        <Copyright>Copyright ©  2019</Copyright>
+        <Description>AllOverIt.Fixture.FakeItEasy extends AllOverIt.Fixture to allow FakeItEasy integration.</Description>
+        <PackageTags>unittesting;fakes;faking;mocks;mocking;stubs;stubbing;TDD;BDD;fluent;NUnit;xUnit;netstandard;netcore</PackageTags>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/mjfreelancing/AllOverIt.Fixture.FakeItEasy</RepositoryUrl>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>C:\Data\GitHub\mjfreelancing\AllOverIt.Fixture.FakeItEasy\AllOverIt.Fixture.FakeItEasy\AllOverIt.Fixture.FakeItEasy.xml</DocumentationFile>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <DocumentationFile>C:\Data\GitHub\mjfreelancing\AllOverIt.Fixture.FakeItEasy\AllOverIt.Fixture.FakeItEasy\AllOverIt.Fixture.FakeItEasy.xml</DocumentationFile>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="AutoFixture" Version="4.17.0" />
-    <PackageReference Include="AutoFixture.AutoFakeItEasy" Version="4.17.0" />
-    <PackageReference Include="FakeItEasy" Version="7.0.2" />
-    <PackageReference Include="FluentAssertions" Version="5.10.3" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="AutoFixture" Version="4.17.0" />
+        <PackageReference Include="AutoFixture.AutoFakeItEasy" Version="4.17.0" />
+        <PackageReference Include="FakeItEasy" Version="7.0.2" />
+        <PackageReference Include="FluentAssertions" Version="5.10.3" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\AllOverIt.Fixture\AllOverIt.Fixture.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\AllOverIt.Fixture\AllOverIt.Fixture.csproj" />
+    </ItemGroup>
 </Project>

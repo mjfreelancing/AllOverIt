@@ -356,15 +356,6 @@ namespace AllOverIt.Fixture.Tests
         public class Create_ : AoiFixtureBaseFixture
         {
             [Fact]
-            public void Should_Throw_When_Creating_Non_Concrete_Types()
-            {
-                Invoking(() => Create<IDummyInterface>())
-                  .Should()
-                  .Throw<InvalidOperationException>()
-                  .WithMessage("Cannot create an abstract or interface type");
-            }
-
-            [Fact]
             public void Should_Create_String()
             {
                 var value = Create<string>();
@@ -536,15 +527,6 @@ namespace AllOverIt.Fixture.Tests
             }
 
             [Fact]
-            public void Should_Throw_When_Creating_Non_Concrete_Types()
-            {
-                Invoking(() => CreateMany<IDummyInterface>())
-                  .Should()
-                  .Throw<InvalidOperationException>()
-                  .WithMessage("Cannot create an abstract or interface type");
-            }
-
-            [Fact]
             public void Should_Create_Many_Numerical()
             {
                 IReadOnlyList<int> values = CreateMany<int>();
@@ -640,15 +622,6 @@ namespace AllOverIt.Fixture.Tests
             }
 
             [Fact]
-            public void Should_Throw_When_Creating_Non_Concrete_Types()
-            {
-                Invoking(() => CreateManyDistinct<IDummyInterface>())
-                  .Should()
-                  .Throw<InvalidOperationException>()
-                  .WithMessage("Cannot create an abstract or interface type");
-            }
-
-            [Fact]
             public void Should_Create_Many_Distinct_Numerical()
             {
                 var values = CreateManyDistinct<int>();
@@ -723,15 +696,6 @@ namespace AllOverIt.Fixture.Tests
                 var values = CreateManyExcluding(count, allowDuplicates, excludedValues);
 
                 values.Should().HaveCount(count);
-            }
-
-            [Fact]
-            public void Should_Throw_When_Creating_Non_Concrete_Types()
-            {
-                Invoking(() => CreateManyExcluding<IDummyInterface>())
-                  .Should()
-                  .Throw<InvalidOperationException>()
-                  .WithMessage("Cannot create an abstract or interface type");
             }
         }
 

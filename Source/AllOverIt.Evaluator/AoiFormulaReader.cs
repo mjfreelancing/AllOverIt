@@ -1,5 +1,6 @@
 using AllOverIt.Evaluator.Exceptions;
 using AllOverIt.Evaluator.Operations;
+using AllOverIt.Extensions;
 using AllOverIt.Helpers;
 using System;
 using System.Globalization;
@@ -53,7 +54,8 @@ namespace AllOverIt.Evaluator
             {
                 var next = (char)peek;
 
-                var isExponent = "eE".Contains(next);
+                var isExponent = "eE".ContainsChar(next);
+
                 var allowMinus = previousTokenWasExponent && (next == '-');
 
                 if (IsNumericalCandidate(next) || isExponent || allowMinus)
@@ -150,7 +152,7 @@ namespace AllOverIt.Evaluator
                 if (operationFactory.IsCandidate(next))
                 {
                     // check for unary plus/minus
-                    if ("-+".Contains(next) && (operation.Length > 0))
+                    if ("-+".ContainsChar(next) && (operation.Length > 0))
                     {
                         // 3 * -7 would have read "*-"
                         break;

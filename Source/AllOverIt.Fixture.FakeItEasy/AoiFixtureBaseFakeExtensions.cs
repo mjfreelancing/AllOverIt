@@ -16,13 +16,13 @@ namespace AllOverIt.Fixture.FakeItEasy
         }
 
         public static Fake<TType> CreateFake<TType>(this AoiFixtureBase fixtureBase)
-          where TType : class
+            where TType : class
         {
             return CreateFake<TType>(fixtureBase, false);
         }
 
         public static Fake<TType> CreateFake<TType>(this AoiFixtureBase fixtureBase, bool freeze)
-          where TType : class
+            where TType : class
         {
             return freeze
               ? fixtureBase.Fixture.Freeze<Fake<TType>>()
@@ -30,19 +30,19 @@ namespace AllOverIt.Fixture.FakeItEasy
         }
 
         public static IReadOnlyList<Fake<TType>> CreateManyFakes<TType>(this AoiFixtureBase fixtureBase)
-          where TType : class
+            where TType : class
         {
             return CreateManyFakes<TType>(fixtureBase, 5);
         }
 
         public static IReadOnlyList<Fake<TType>> CreateManyFakes<TType>(this AoiFixtureBase fixtureBase, int count)
-          where TType : class
+            where TType : class
         {
             return fixtureBase.Fixture.CreateMany<Fake<TType>>(count).ToList();
         }
 
         public static TType CreateStub<TType>(this AoiFixtureBase fixtureBase)
-          where TType : class
+            where TType : class
         {
             return A.Fake<TType>();
         }
@@ -62,13 +62,13 @@ namespace AllOverIt.Fixture.FakeItEasy
         }
 
         public static IReadOnlyList<TType> CreateManyStubs<TType>(this AoiFixtureBase fixtureBase)
-          where TType : class
+            where TType : class
         {
             return CreateManyStubs<TType>(fixtureBase, 5);
         }
 
         public static IReadOnlyList<TType> CreateManyStubs<TType>(this AoiFixtureBase fixtureBase, int count)
-          where TType : class
+            where TType : class
         {
             var stubs = new List<TType>();
 
@@ -81,13 +81,13 @@ namespace AllOverIt.Fixture.FakeItEasy
         }
 
         public static IReadOnlyList<TType> CreateManyStubs<TType>(this AoiFixtureBase fixtureBase, Action<Fake<TType>, int> modifier)
-          where TType : class
+            where TType : class
         {
             return CreateManyStubs(fixtureBase, modifier, 5);
         }
 
         public static IReadOnlyList<TType> CreateManyStubs<TType>(this AoiFixtureBase fixtureBase, Action<Fake<TType>, int> modifier, int count)
-          where TType : class
+            where TType : class
         {
             if (modifier == null)
             {
