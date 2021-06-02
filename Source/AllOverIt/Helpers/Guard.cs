@@ -7,6 +7,8 @@ namespace AllOverIt.Helpers
 {
     public static class Guard
     {
+        #region expression extensions
+
         /// <summary>Checks that the evaluated expression is not null.</summary>
         /// <remarks>The expression argument cannot be null.</remarks>
         public static TType WhenNotNull<TType>(Expression<Func<TType>> expression, string errorMessage = default)
@@ -113,11 +115,13 @@ namespace AllOverIt.Helpers
             }
         }
 
+        #endregion
+
         #region object extensions
 
         // returns argument if not null, otherwise throws ArgumentNullException
         public static TType WhenNotNull<TType>(this TType argument, string name, string errorMessage = default)
-          where TType : class
+            where TType : class
         {
             return argument ?? ThrowArgumentNullException<TType>(name, errorMessage);
         }
@@ -127,14 +131,7 @@ namespace AllOverIt.Helpers
         {
             _ = argument ?? ThrowArgumentNullException<IEnumerable<TType>>(name, errorMessage);
 
-            // ReSharper disable once PossibleMultipleEnumeration
-            if (!argument!.Any())
-            {
-                throw new ArgumentException(errorMessage ?? "The argument cannot be empty", name);
-            }
-
-            // ReSharper disable once PossibleMultipleEnumeration
-            return argument;
+            return WhenNotEmpty(argument, name, errorMessage);
         }
 
         // returns argument if null or not empty, otherwise throws ArgumentException
@@ -155,12 +152,7 @@ namespace AllOverIt.Helpers
         {
             _ = argument ?? ThrowArgumentNullException(name, errorMessage);
 
-            if (!string.IsNullOrWhiteSpace(argument))
-            {
-                return argument;
-            }
-
-            throw new ArgumentException(errorMessage ?? "The argument cannot be empty", name);
+            return WhenNotEmpty(argument, name, errorMessage);
         }
 
         // returns argument if null or not empty, otherwise throws ArgumentNullException / ArgumentException
@@ -172,6 +164,46 @@ namespace AllOverIt.Helpers
             }
 
             throw new ArgumentException(errorMessage ?? "The argument cannot be empty", name);
+        }
+
+        #endregion
+
+        #region pre-condition assertion checks
+
+        public static void CheckNotNull<TType>(this TType @object, string name, string errorMessage = default)
+            where TType : class
+        {
+            _ = @object ?? ThrowInvalidOperationException<TType>(name, errorMessage ?? "Not expecting object to be null");
+        }
+
+        public static void CheckNotNullOrEmpty<TType>(this IEnumerable<TType> @object, string name, string errorMessage = default)
+            where TType : class
+        {
+            CheckNotNull(@object, name, errorMessage);
+            CheckNotEmpty(@object, name, errorMessage);
+        }
+
+        public static void CheckNotEmpty<TType>(this IEnumerable<TType> @object, string name, string errorMessage = default)
+            where TType : class
+        {
+            if (@object != null && !@object.Any())
+            {
+                ThrowInvalidOperationException<IEnumerable<TType>>(name, errorMessage ?? "Not expecting object to be empty");
+            }
+        }
+
+        public static void CheckNotNullOrEmpty(this string @object, string name, string errorMessage = default)
+        {
+            CheckNotNull(@object, name, errorMessage);
+            CheckNotEmpty(@object, name, errorMessage);
+        }
+
+        public static void CheckNotEmpty(this string @object, string name, string errorMessage = default)
+        {
+            if (@object != null && string.IsNullOrWhiteSpace(@object))
+            {
+                ThrowInvalidOperationException(name, errorMessage ?? "Not expecting object to be empty");
+            }
         }
 
         #endregion
@@ -189,6 +221,16 @@ namespace AllOverIt.Helpers
             }
 
             throw new ArgumentNullException(name, errorMessage);
+        }
+
+        private static void ThrowInvalidOperationException(string name, string errorMessage)
+        {
+            ThrowInvalidOperationException<string>(name, errorMessage);
+        }
+
+        private static TType ThrowInvalidOperationException<TType>(string name, string errorMessage)
+        {
+            throw new InvalidOperationException($"{errorMessage} ({name})");
         }
     }
 }

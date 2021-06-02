@@ -436,6 +436,16 @@ namespace AllOverIt.Fixture
             return GetExpectedArgumentExceptionMessage(name, "The argument cannot be empty");
         }
 
+        protected static string GetExpectedCheckNullExceptionMessage(string name, string errorMessage = default)
+        {
+            return $"{errorMessage ?? "Not expecting object to be null"} ({name})";
+        }
+
+        protected static string GetExpectedCheckCannotBeEmptyExceptionMessage(string name, string errorMessage = default)
+        {
+            return $"{errorMessage ?? "Not expecting object to be empty"} ({name})";
+        }
+
         private TType CreateType<TType>()
         {
             // Fixture.Create() doesn't randomize enum values - it uses a round-robin approach.
