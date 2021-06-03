@@ -2,6 +2,7 @@
 using AllOverIt.Evaluator.Stack;
 using AllOverIt.Extensions;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using FakeItEasy;
 using FluentAssertions;
@@ -55,7 +56,7 @@ namespace AllOverIt.Evaluator.Tests
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("tokenProcessors"));
+                    .WithNamedMessageWhenNull("tokenProcessors");
             }
 
             [Fact]
@@ -69,7 +70,7 @@ namespace AllOverIt.Evaluator.Tests
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("formulaProcessor"));
+                    .WithNamedMessageWhenNull("formulaProcessor");
             }
 
             [Fact]
@@ -83,7 +84,7 @@ namespace AllOverIt.Evaluator.Tests
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("formulaReader"));
+                    .WithNamedMessageWhenNull("formulaReader");
             }
 
             [Fact]
@@ -97,7 +98,7 @@ namespace AllOverIt.Evaluator.Tests
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("expressionFactory"));
+                    .WithNamedMessageWhenNull("expressionFactory");
             }
 
             [Fact]
@@ -111,7 +112,7 @@ namespace AllOverIt.Evaluator.Tests
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("operationFactory"));
+                    .WithNamedMessageWhenNull("operationFactory");
             }
 
             [Fact]
@@ -391,7 +392,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _processor.ProcessOperators(null, this.CreateStub<IAoiStack<Expression>>(), () => false))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("operators"));
+                    .WithNamedMessageWhenNull("operators");
             }
 
             [Fact]
@@ -400,7 +401,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _processor.ProcessOperators(this.CreateStub<IAoiStack<string>>(), null, () => false))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("expressions"));
+                    .WithNamedMessageWhenNull("expressions");
             }
 
             [Fact]
@@ -409,7 +410,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _processor.ProcessOperators(this.CreateStub<IAoiStack<string>>(), this.CreateStub<IAoiStack<Expression>>(), null))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("condition"));
+                    .WithNamedMessageWhenNull("condition");
             }
 
             [Fact]

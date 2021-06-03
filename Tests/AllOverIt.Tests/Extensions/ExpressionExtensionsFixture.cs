@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace AllOverIt.Tests.Extensions
                 Invoking(() => ExpressionExtensions.GetMemberExpressions(null))
                   .Should()
                   .Throw<ArgumentNullException>()
-                  .WithMessage(GetExpectedArgumentNullExceptionMessage("expression"));
+                  .WithNamedMessageWhenNull("expression");
             }
 
             [Fact]
@@ -71,7 +72,7 @@ namespace AllOverIt.Tests.Extensions
                 Invoking(() => ExpressionExtensions.UnwrapMemberExpression(null))
                   .Should()
                   .Throw<ArgumentNullException>()
-                  .WithMessage(GetExpectedArgumentNullExceptionMessage("expression"));
+                  .WithNamedMessageWhenNull("expression");
             }
 
             [Fact]
@@ -136,7 +137,7 @@ namespace AllOverIt.Tests.Extensions
                 Invoking(() => ExpressionExtensions.GetFieldOrProperty(null))
                   .Should()
                   .Throw<ArgumentNullException>()
-                  .WithMessage(GetExpectedArgumentNullExceptionMessage("expression"));
+                  .WithNamedMessageWhenNull("expression");
             }
 
             [Fact]

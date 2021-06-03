@@ -439,7 +439,12 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Not_Convert_Positive_Integral_To_Boolean()
             {
-                var value = CreateExcluding<short>(0);
+                var value = CreateExcluding<short>(0, 1);
+
+                if (value < 0)
+                {
+                    value = (short)(-value);
+                }
 
                 Invoking(() => ObjectExtensions.As<bool>(value))
                   .Should()
@@ -450,7 +455,12 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Not_Convert_Negative_Integral_To_Boolean()
             {
-                var value = -CreateExcluding<short>(0);
+                var value = -CreateExcluding<short>(0, 1);
+
+                if (value > 0)
+                {
+                    value = (short)(-value);
+                }
 
                 Invoking(() => ObjectExtensions.As<bool>(value))
                   .Should()

@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Events;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
 using Xunit;
@@ -16,7 +17,7 @@ namespace AllOverIt.Tests.Events
                 Invoking(() => new Subscription(null))
                   .Should()
                   .Throw<ArgumentNullException>()
-                  .WithMessage(GetExpectedArgumentNullExceptionMessage("handler"));
+                  .WithNamedMessageWhenNull("handler");
             }
         }
 

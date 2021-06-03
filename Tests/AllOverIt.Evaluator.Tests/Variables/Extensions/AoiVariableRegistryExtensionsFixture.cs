@@ -1,6 +1,7 @@
 using AllOverIt.Evaluator.Variables;
 using AllOverIt.Evaluator.Variables.Extensions;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using FakeItEasy;
 using FluentAssertions;
@@ -29,7 +30,7 @@ namespace AllOverIt.Evaluator.Tests.Variables.Extensions
                 Invoking(() => AoiVariableRegistryExtensions.Add(null, _variable))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("registry"));
+                    .WithNamedMessageWhenNull("registry");
             }
 
             [Fact]
@@ -38,7 +39,7 @@ namespace AllOverIt.Evaluator.Tests.Variables.Extensions
                 Invoking(() => _registryFake.FakedObject.Add((IAoiVariable)null))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("variable"));
+                    .WithNamedMessageWhenNull("variable");
             }
 
             [Fact]
@@ -60,7 +61,7 @@ namespace AllOverIt.Evaluator.Tests.Variables.Extensions
                 Invoking(() => AoiVariableRegistryExtensions.Add(null, new[] { _variable }))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("registry"));
+                    .WithNamedMessageWhenNull("registry");
             }
 
             [Fact]
@@ -69,7 +70,7 @@ namespace AllOverIt.Evaluator.Tests.Variables.Extensions
                 Invoking(() => _registryFake.FakedObject.Add((IAoiVariable[])null))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("variables"));
+                    .WithNamedMessageWhenNull("variables");
             }
 
             [Fact]
@@ -78,7 +79,7 @@ namespace AllOverIt.Evaluator.Tests.Variables.Extensions
                 Invoking(() => _registryFake.FakedObject.Add(Enumerable.Empty<IAoiVariable>().ToArray()))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("variables"));
+                    .WithNamedMessageWhenEmpty("variables");
             }
 
             [Fact]

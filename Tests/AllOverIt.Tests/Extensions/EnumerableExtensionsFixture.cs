@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
 using System.Collections;
@@ -23,7 +24,7 @@ namespace AllOverIt.Tests.Extensions
                     () => items.AsList())
                   .Should()
                   .Throw<ArgumentNullException>()
-                  .WithMessage(GetExpectedArgumentNullExceptionMessage("items"));
+                  .WithNamedMessageWhenNull("items");
             }
 
             [Fact]
@@ -67,7 +68,7 @@ namespace AllOverIt.Tests.Extensions
                     })
                   .Should()
                   .Throw<ArgumentNullException>()
-                  .WithMessage(GetExpectedArgumentNullExceptionMessage("items"));
+                  .WithNamedMessageWhenNull("items");
             }
 
             [Fact]
@@ -131,7 +132,7 @@ namespace AllOverIt.Tests.Extensions
                     })
                   .Should()
                   .Throw<ArgumentNullException>()
-                  .WithMessage(GetExpectedArgumentNullExceptionMessage("items"));
+                  .WithNamedMessageWhenNull("items");
             }
 
             [Fact]
@@ -235,7 +236,7 @@ namespace AllOverIt.Tests.Extensions
                         })
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("items"));
+                    .WithNamedMessageWhenNull("items");
             }
 
             [Fact]

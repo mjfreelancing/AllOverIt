@@ -2,6 +2,7 @@ using AllOverIt.Evaluator.Exceptions;
 using AllOverIt.Evaluator.Operators;
 using AllOverIt.Evaluator.Tests.Operators.Dummies;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using FluentAssertions;
 using System;
@@ -35,7 +36,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
                 Invoking(() => AoiOperatorBase.Create(null, _creator))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("expressions"));
+                    .WithNamedMessageWhenNull("expressions");
             }
 
             [Fact]
@@ -44,7 +45,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
                 Invoking(() => AoiOperatorBase.Create(new Expression[] { }, _creator))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("expressions"));
+                    .WithNamedMessageWhenEmpty("expressions");
             }
 
             [Fact]
@@ -53,7 +54,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
                 Invoking(() => AoiOperatorBase.Create(new[] { _expression1 }, (Func<Expression[], OperatorBaseDummy1>)null))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("creator"));
+                    .WithNamedMessageWhenNull("creator");
             }
 
             [Fact]

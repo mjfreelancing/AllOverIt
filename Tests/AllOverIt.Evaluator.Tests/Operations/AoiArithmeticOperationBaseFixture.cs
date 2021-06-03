@@ -1,6 +1,7 @@
 ﻿using AllOverIt.Evaluator.Operators;
 using AllOverIt.Evaluator.Tests.Operations.Dummies;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using FakeItEasy;
 using FluentAssertions;
@@ -21,10 +22,10 @@ namespace AllOverIt.Evaluator.Tests.Operations
             public void Should_Throw_When_Creator_Null()
             {
                 Invoking(
-                    () => _operation = new AoiArithmeticOperationDummy(Create<int>(), null))
+                        () => _operation = new AoiArithmeticOperationDummy(Create<int>(), null))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("creator"));
+                    .WithNamedMessageWhenNull("creator");
             }
 
             [Fact]

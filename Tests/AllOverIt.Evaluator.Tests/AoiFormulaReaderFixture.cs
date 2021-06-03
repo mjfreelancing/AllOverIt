@@ -1,6 +1,7 @@
 using AllOverIt.Evaluator.Exceptions;
 using AllOverIt.Evaluator.Operations;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using FakeItEasy;
 using FluentAssertions;
 using System;
@@ -44,7 +45,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _formulaReader = new AoiFormulaReader(null))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("formula"));
+                    .WithNamedMessageWhenNull("formula");
             }
 
             [Fact]
@@ -53,7 +54,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _formulaReader = new AoiFormulaReader(string.Empty))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("formula"));
+                    .WithNamedMessageWhenEmpty("formula");
             }
 
             [Fact]
@@ -62,7 +63,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _formulaReader = new AoiFormulaReader("  "))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("formula"));
+                    .WithNamedMessageWhenEmpty("formula");
             }
 
             [Fact]
@@ -71,7 +72,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _formulaReader = new AoiFormulaReader(null, Create<string>()))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("readerFactory"));
+                    .WithNamedMessageWhenNull("readerFactory");
             }
         }
 
@@ -293,7 +294,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _formulaReader.ReadNamedOperand(null))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("operationFactory"));
+                    .WithNamedMessageWhenNull("operationFactory");
             }
 
             [Fact]
@@ -398,7 +399,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _formulaReader.ReadOperator(null))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("operationFactory"));
+                    .WithNamedMessageWhenNull("operationFactory");
             }
 
             [Fact]

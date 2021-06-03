@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Tasks;
 using FluentAssertions;
 using System;
@@ -26,7 +27,7 @@ namespace AllOverIt.Tests.Tasks
 
                 actual.Should()
                   .Throw<ArgumentNullException>()
-                  .WithMessage(GetExpectedArgumentNullExceptionMessage("function"));
+                  .WithNamedMessageWhenNull("function");
             }
 
             [Fact]
@@ -70,7 +71,7 @@ namespace AllOverIt.Tests.Tasks
 
                 actual.Should()
                   .Throw<ArgumentNullException>()
-                  .WithMessage(GetExpectedArgumentNullExceptionMessage("function"));
+                  .WithNamedMessageWhenNull("function");
             }
 
             [Fact]

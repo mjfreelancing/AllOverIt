@@ -1,6 +1,7 @@
 using AllOverIt.Evaluator.Tests.Variables.Dummies;
 using AllOverIt.Evaluator.Variables;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _variable = new VariableBaseDummy(null))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("name"));
+                    .WithNamedMessageWhenNull("name");
             }
 
             [Fact]
@@ -41,7 +42,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _variable = new VariableBaseDummy(string.Empty))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("name"));
+                    .WithNamedMessageWhenEmpty("name");
             }
 
             [Fact]
@@ -50,7 +51,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _variable = new VariableBaseDummy("  "))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("name"));
+                    .WithNamedMessageWhenEmpty("name");
             }
 
             [Fact]
@@ -111,7 +112,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => { _ = _variable.ReferencedVariables; })
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("variableRegistry"));
+                    .WithNamedMessageWhenNull("variableRegistry");
             }
 
             [Fact]

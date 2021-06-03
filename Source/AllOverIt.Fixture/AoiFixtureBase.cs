@@ -12,7 +12,7 @@ namespace AllOverIt.Fixture
     /// </summary>
     public abstract class AoiFixtureBase
     {
-        private readonly Random _random = new Random();
+        private readonly Random _random = new();
 
         /// <summary> Provides access to the AutoFixture.Fixture being used.</summary>
         protected internal IFixture Fixture { get; } = new AutoFixture.Fixture();
@@ -421,31 +421,6 @@ namespace AllOverIt.Fixture
             }
         }
 
-        protected static string GetExpectedArgumentNullExceptionMessage(string name, string errorMessage = default)
-        {
-            return $"{errorMessage ?? "Value cannot be null."} (Parameter '{name}')";
-        }
-
-        protected static string GetExpectedArgumentExceptionMessage(string name, string errorMessage = default)
-        {
-            return $"{errorMessage} (Parameter '{name}')";
-        }
-
-        protected static string GetExpectedArgumentCannotBeEmptyExceptionMessage(string name)
-        {
-            return GetExpectedArgumentExceptionMessage(name, "The argument cannot be empty");
-        }
-
-        protected static string GetExpectedCheckNullExceptionMessage(string name, string errorMessage = default)
-        {
-            return $"{errorMessage ?? "Not expecting object to be null"} ({name})";
-        }
-
-        protected static string GetExpectedCheckCannotBeEmptyExceptionMessage(string name, string errorMessage = default)
-        {
-            return $"{errorMessage ?? "Not expecting object to be empty"} ({name})";
-        }
-
         private TType CreateType<TType>()
         {
             // Fixture.Create() doesn't randomize enum values - it uses a round-robin approach.
@@ -478,7 +453,8 @@ namespace AllOverIt.Fixture
               {
                   var index = _random.Next(1000) % enumCount;
                   return (TType)enumValues.GetValue(index);
-              }).ToList();
+              })
+              .ToList();
         }
     }
 }

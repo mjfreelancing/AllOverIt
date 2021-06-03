@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
 using Xunit;
@@ -15,7 +16,7 @@ namespace AllOverIt.Evaluator.Tests
             Invoking(() => _context = new AoiFormulaTokenProcessorContext(null, (p1, p2) => true))
                 .Should()
                 .Throw<ArgumentNullException>()
-                .WithMessage(GetExpectedArgumentNullExceptionMessage("predicate"));
+                .WithNamedMessageWhenNull("predicate");
         }
 
         [Fact]
@@ -24,7 +25,7 @@ namespace AllOverIt.Evaluator.Tests
             Invoking(() => _context = new AoiFormulaTokenProcessorContext((p1, p2) => true, null))
                 .Should()
                 .Throw<ArgumentNullException>()
-                .WithMessage(GetExpectedArgumentNullExceptionMessage("processor"));
+                .WithNamedMessageWhenNull("processor");
         }
 
         [Fact]

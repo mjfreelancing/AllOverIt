@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Expressions;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
 using System.Linq.Expressions;
@@ -103,7 +104,7 @@ namespace AllOverIt.Tests.Expressions
                     () => PredicateBuilder.Or<DummySubject>(null, model => Create<bool>()))
                   .Should()
                   .Throw<ArgumentNullException>()
-                  .WithMessage(GetExpectedArgumentNullExceptionMessage("expression1"));
+                  .WithNamedMessageWhenNull("expression1");
             }
 
             [Fact]
@@ -113,7 +114,7 @@ namespace AllOverIt.Tests.Expressions
                     () => PredicateBuilder.Or<DummySubject>(model => Create<bool>(), null))
                   .Should()
                   .Throw<ArgumentNullException>()
-                  .WithMessage(GetExpectedArgumentNullExceptionMessage("expression2"));
+                  .WithNamedMessageWhenNull("expression2");
             }
 
             [Theory]
@@ -175,7 +176,7 @@ namespace AllOverIt.Tests.Expressions
                     () => PredicateBuilder.And<DummySubject>(null, model => Create<bool>()))
                   .Should()
                   .Throw<ArgumentNullException>()
-                  .WithMessage(GetExpectedArgumentNullExceptionMessage("expression1"));
+                  .WithNamedMessageWhenNull("expression1");
             }
 
             [Fact]
@@ -185,7 +186,7 @@ namespace AllOverIt.Tests.Expressions
                     () => PredicateBuilder.And<DummySubject>(model => Create<bool>(), null))
                   .Should()
                   .Throw<ArgumentNullException>()
-                  .WithMessage(GetExpectedArgumentNullExceptionMessage("expression2"));
+                  .WithNamedMessageWhenNull("expression2");
             }
 
             [Theory]
@@ -246,7 +247,7 @@ namespace AllOverIt.Tests.Expressions
                 Invoking(() => PredicateBuilder.Not<DummySubject>(null))
                   .Should()
                   .Throw<ArgumentNullException>()
-                  .WithMessage(GetExpectedArgumentNullExceptionMessage("expression"));
+                  .WithNamedMessageWhenNull("expression");
             }
 
             [Theory]

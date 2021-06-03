@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Io;
 using FluentAssertions;
 using System;
@@ -16,7 +17,7 @@ namespace AllOverIt.Tests.Io
                 Invoking(() => FileUtils.PathIsSubFolder(null, Create<string>()))
                   .Should()
                   .Throw<ArgumentNullException>()
-                  .WithMessage(GetExpectedArgumentNullExceptionMessage("parentPath"));
+                  .WithNamedMessageWhenNull("parentPath");
             }
 
             [Fact]
@@ -25,7 +26,7 @@ namespace AllOverIt.Tests.Io
                 Invoking(() => FileUtils.PathIsSubFolder(string.Empty, Create<string>()))
                   .Should()
                   .Throw<ArgumentException>()
-                  .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("parentPath"));
+                  .WithNamedMessageWhenEmpty("parentPath");
             }
 
             [Fact]
@@ -34,7 +35,7 @@ namespace AllOverIt.Tests.Io
                 Invoking(() => FileUtils.PathIsSubFolder(" ", Create<string>()))
                   .Should()
                   .Throw<ArgumentException>()
-                  .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("parentPath"));
+                  .WithNamedMessageWhenEmpty("parentPath");
             }
 
             [Fact]
@@ -43,7 +44,7 @@ namespace AllOverIt.Tests.Io
                 Invoking(() => FileUtils.PathIsSubFolder(Create<string>(), null))
                   .Should()
                   .Throw<ArgumentNullException>()
-                  .WithMessage(GetExpectedArgumentNullExceptionMessage("childPath"));
+                  .WithNamedMessageWhenNull("childPath");
             }
 
             [Fact]
@@ -52,7 +53,7 @@ namespace AllOverIt.Tests.Io
                 Invoking(() => FileUtils.PathIsSubFolder(Create<string>(), string.Empty))
                   .Should()
                   .Throw<ArgumentException>()
-                  .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("childPath"));
+                  .WithNamedMessageWhenEmpty("childPath");
             }
 
             [Fact]
@@ -61,7 +62,7 @@ namespace AllOverIt.Tests.Io
                 Invoking(() => FileUtils.PathIsSubFolder(Create<string>(), " "))
                   .Should()
                   .Throw<ArgumentException>()
-                  .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("childPath"));
+                  .WithNamedMessageWhenEmpty("childPath");
             }
 
             [Fact]
@@ -87,7 +88,7 @@ namespace AllOverIt.Tests.Io
                 Invoking(() => FileUtils.GetAbsolutePath(null, Create<string>()))
                   .Should()
                   .Throw<ArgumentNullException>()
-                  .WithMessage(GetExpectedArgumentNullExceptionMessage("sourcePath"));
+                  .WithNamedMessageWhenNull("sourcePath");
             }
 
             [Fact]
@@ -96,7 +97,7 @@ namespace AllOverIt.Tests.Io
                 Invoking(() => FileUtils.GetAbsolutePath(string.Empty, Create<string>()))
                   .Should()
                   .Throw<ArgumentException>()
-                  .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("sourcePath"));
+                  .WithNamedMessageWhenEmpty("sourcePath");
             }
 
             [Fact]
@@ -105,7 +106,7 @@ namespace AllOverIt.Tests.Io
                 Invoking(() => FileUtils.GetAbsolutePath(" ", Create<string>()))
                   .Should()
                   .Throw<ArgumentException>()
-                  .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("sourcePath"));
+                  .WithNamedMessageWhenEmpty("sourcePath");
             }
 
             [Fact]
@@ -114,7 +115,7 @@ namespace AllOverIt.Tests.Io
                 Invoking(() => FileUtils.GetAbsolutePath(Create<string>(), null))
                   .Should()
                   .Throw<ArgumentNullException>()
-                  .WithMessage(GetExpectedArgumentNullExceptionMessage("relativePathOffset"));
+                  .WithNamedMessageWhenNull("relativePathOffset");
             }
 
             [Fact]
@@ -154,7 +155,7 @@ namespace AllOverIt.Tests.Io
                 Invoking(() => FileUtils.GetAbsoluteFileName(null, Create<string>()))
                   .Should()
                   .Throw<ArgumentNullException>()
-                  .WithMessage(GetExpectedArgumentNullExceptionMessage("sourceFilename"));
+                  .WithNamedMessageWhenNull("sourceFilename");
             }
 
             [Fact]
@@ -163,7 +164,7 @@ namespace AllOverIt.Tests.Io
                 Invoking(() => FileUtils.GetAbsoluteFileName(string.Empty, Create<string>()))
                   .Should()
                   .Throw<ArgumentException>()
-                  .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("sourceFilename"));
+                  .WithNamedMessageWhenEmpty("sourceFilename");
             }
 
             [Fact]
@@ -172,7 +173,7 @@ namespace AllOverIt.Tests.Io
                 Invoking(() => FileUtils.GetAbsoluteFileName(" ", Create<string>()))
                   .Should()
                   .Throw<ArgumentException>()
-                  .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("sourceFilename"));
+                  .WithNamedMessageWhenEmpty("sourceFilename");
             }
 
             [Fact]
@@ -181,7 +182,7 @@ namespace AllOverIt.Tests.Io
                 Invoking(() => FileUtils.GetAbsoluteFileName(Create<string>(), null))
                   .Should()
                   .Throw<ArgumentNullException>()
-                  .WithMessage(GetExpectedArgumentNullExceptionMessage("relativePathOffset"));
+                  .WithNamedMessageWhenNull("relativePathOffset");
             }
 
             [Fact]
@@ -190,7 +191,7 @@ namespace AllOverIt.Tests.Io
                 Invoking(() => FileUtils.GetAbsoluteFileName(Create<string>(), string.Empty))
                   .Should()
                   .Throw<ArgumentException>()
-                  .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("relativePathOffset"));
+                  .WithNamedMessageWhenEmpty("relativePathOffset");
             }
 
             [Fact]
@@ -199,7 +200,7 @@ namespace AllOverIt.Tests.Io
                 Invoking(() => FileUtils.GetAbsoluteFileName(Create<string>(), " "))
                   .Should()
                   .Throw<ArgumentException>()
-                  .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("relativePathOffset"));
+                  .WithNamedMessageWhenEmpty("relativePathOffset");
             }
 
             [Theory]

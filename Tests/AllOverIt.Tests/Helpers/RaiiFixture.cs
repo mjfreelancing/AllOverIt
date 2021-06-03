@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Helpers;
 using FluentAssertions;
 using System;
@@ -21,7 +22,7 @@ namespace AllOverIt.Tests.Helpers
                         })
                         .Should()
                         .Throw<ArgumentNullException>()
-                        .WithMessage(GetExpectedArgumentNullExceptionMessage("initialize"));
+                        .WithNamedMessageWhenNull("initialize");
                 }
 
                 [Fact]
@@ -33,7 +34,7 @@ namespace AllOverIt.Tests.Helpers
                         })
                         .Should()
                         .Throw<ArgumentNullException>()
-                        .WithMessage(GetExpectedArgumentNullExceptionMessage("cleanup"));
+                        .WithNamedMessageWhenNull("cleanup");
                 }
 
                 [Fact]
@@ -118,7 +119,7 @@ namespace AllOverIt.Tests.Helpers
                         })
                         .Should()
                         .Throw<ArgumentNullException>()
-                        .WithMessage(GetExpectedArgumentNullExceptionMessage("initialize"));
+                        .WithNamedMessageWhenNull("initialize");
                 }
 
                 [Fact]
@@ -132,7 +133,7 @@ namespace AllOverIt.Tests.Helpers
                         })
                         .Should()
                         .Throw<ArgumentNullException>()
-                        .WithMessage(GetExpectedArgumentNullExceptionMessage("cleanup"));
+                        .WithNamedMessageWhenNull("cleanup");
                 }
 
                 [Fact]

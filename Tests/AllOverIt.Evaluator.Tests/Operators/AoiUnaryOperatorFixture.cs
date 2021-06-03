@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Evaluator.Tests.Operators.Dummies;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using FluentAssertions;
 using System;
@@ -33,7 +34,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
                 Invoking(() => _operator = new UnaryOperatorDummy(null, _operand))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("operatorType"));
+                    .WithNamedMessageWhenNull("operatorType");
             }
 
             [Fact]
@@ -42,7 +43,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
                 Invoking(() => _operator = new UnaryOperatorDummy(_operatorType, null))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("operand"));
+                    .WithNamedMessageWhenNull("operand");
             }
 
             [Fact]

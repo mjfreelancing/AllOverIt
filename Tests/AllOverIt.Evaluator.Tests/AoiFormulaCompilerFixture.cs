@@ -1,6 +1,7 @@
 ﻿using AllOverIt.Evaluator.Tests.Helpers;
 using AllOverIt.Evaluator.Variables;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using FakeItEasy;
 using FluentAssertions;
@@ -61,7 +62,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _formulaCompiler.Compile(null, _variableRegistry))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("formula"));
+                    .WithNamedMessageWhenNull("formula");
             }
 
             [Fact]
@@ -70,7 +71,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _formulaCompiler.Compile(string.Empty, _variableRegistry))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("formula"));
+                    .WithNamedMessageWhenEmpty("formula");
             }
 
             [Fact]
@@ -79,7 +80,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _formulaCompiler.Compile(" ", _variableRegistry))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("formula"));
+                    .WithNamedMessageWhenEmpty("formula");
             }
 
             [Fact]

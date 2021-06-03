@@ -1,6 +1,7 @@
 ﻿using AllOverIt.Evaluator.Variables;
 using AllOverIt.Extensions;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using FakeItEasy;
 using FluentAssertions;
@@ -45,7 +46,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _variableFactory.CreateMutableVariable(null, _value))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("name"));
+                    .WithNamedMessageWhenNull("name");
             }
 
             [Fact]
@@ -54,7 +55,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _variableFactory.CreateMutableVariable(string.Empty, _value))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("name"));
+                    .WithNamedMessageWhenEmpty("name");
             }
 
             [Fact]
@@ -63,7 +64,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _variableFactory.CreateMutableVariable(" ", _value))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("name"));
+                    .WithNamedMessageWhenEmpty("name");
             }
 
             [Fact]
@@ -96,7 +97,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _variableFactory.CreateConstantVariable(null, _value))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("name"));
+                    .WithNamedMessageWhenNull("name");
             }
 
             [Fact]
@@ -105,7 +106,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _variableFactory.CreateConstantVariable(string.Empty, _value))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("name"));
+                    .WithNamedMessageWhenEmpty("name");
             }
 
             [Fact]
@@ -114,7 +115,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _variableFactory.CreateConstantVariable(" ", _value))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("name"));
+                    .WithNamedMessageWhenEmpty("name");
             }
 
             [Fact]
@@ -147,7 +148,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _variableFactory.CreateDelegateVariable(null, () => _value))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("name"));
+                    .WithNamedMessageWhenNull("name");
             }
 
             [Fact]
@@ -156,7 +157,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _variableFactory.CreateDelegateVariable(string.Empty, () => _value))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("name"));
+                    .WithNamedMessageWhenEmpty("name");
             }
 
             [Fact]
@@ -165,7 +166,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _variableFactory.CreateDelegateVariable(" ", () => _value))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("name"));
+                    .WithNamedMessageWhenEmpty("name");
             }
 
             [Fact]
@@ -190,7 +191,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _variableFactory.CreateLazyVariable(null, () => _value, null, Create<bool>()))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("name"));
+                    .WithNamedMessageWhenNull("name");
             }
 
             [Fact]
@@ -199,7 +200,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _variableFactory.CreateLazyVariable(string.Empty, () => _value, null, Create<bool>()))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("name"));
+                    .WithNamedMessageWhenEmpty("name");
             }
 
             [Fact]
@@ -208,7 +209,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _variableFactory.CreateLazyVariable(" ", () => _value, null, Create<bool>()))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("name"));
+                    .WithNamedMessageWhenEmpty("name");
             }
 
             [Fact]
@@ -254,7 +255,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _variableFactory.CreateAggregateVariable(null, () => 0.0d))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("name"));
+                    .WithNamedMessageWhenNull("name");
             }
 
             [Fact]
@@ -263,7 +264,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _variableFactory.CreateAggregateVariable(string.Empty, () => 0.0d))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("name"));
+                    .WithNamedMessageWhenEmpty("name");
             }
 
             [Fact]
@@ -272,7 +273,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _variableFactory.CreateAggregateVariable("  ", () => 0.0d))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("name"));
+                    .WithNamedMessageWhenEmpty("name");
             }
 
             [Fact]
@@ -350,7 +351,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _variableFactory.CreateAggregateVariable(null, this.CreateStub<IAoiVariableRegistry>(), new[] { "" }))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("name"));
+                    .WithNamedMessageWhenNull("name");
             }
 
             [Fact]
@@ -359,7 +360,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _variableFactory.CreateAggregateVariable(string.Empty, this.CreateStub<IAoiVariableRegistry>(), new[] { "" }))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("name"));
+                    .WithNamedMessageWhenEmpty("name");
             }
 
             [Fact]
@@ -368,7 +369,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _variableFactory.CreateAggregateVariable("  ", this.CreateStub<IAoiVariableRegistry>(), new[] { "" }))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("name"));
+                    .WithNamedMessageWhenEmpty("name");
             }
 
             [Fact]
@@ -377,7 +378,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _variableFactory.CreateAggregateVariable(Create<string>(), null, new[] { "" }))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("variableRegistry"));
+                    .WithNamedMessageWhenNull("variableRegistry");
             }
 
             [Fact]

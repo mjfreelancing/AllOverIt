@@ -1,6 +1,7 @@
 using AllOverIt.Evaluator.Tests.Variables.Helpers;
 using AllOverIt.Evaluator.Variables;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using FluentAssertions;
 using System;
@@ -27,7 +28,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _variableLookup = new AoiVariableLookup(null))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("variableRegistry"));
+                    .WithNamedMessageWhenNull("variableRegistry");
             }
 
             [Fact]

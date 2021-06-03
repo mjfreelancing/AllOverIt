@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Evaluator.Variables;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _variable = new AoiLazyVariable(null, () => _value, null, Create<bool>()))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("name"));
+                    .WithNamedMessageWhenNull("name");
             }
 
             [Fact]
@@ -42,7 +43,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _variable = new AoiLazyVariable(string.Empty, () => _value, null, Create<bool>()))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("name"));
+                    .WithNamedMessageWhenEmpty("name");
             }
 
             [Fact]
@@ -51,7 +52,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _variable = new AoiLazyVariable(" ", () => _value, null, Create<bool>()))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("name"));
+                    .WithNamedMessageWhenEmpty("name");
             }
 
             [Fact]
@@ -60,7 +61,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _variable = new AoiLazyVariable(Create<string>(), null))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("valueResolver"));
+                    .WithNamedMessageWhenNull("valueResolver");
             }
 
             [Fact]
@@ -103,7 +104,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => { _ = _variable.ReferencedVariables; })
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("variableRegistry"));
+                    .WithNamedMessageWhenNull("variableRegistry");
             }
 
             [Fact]

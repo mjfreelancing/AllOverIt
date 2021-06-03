@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Evaluator.Stack;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
 using System.Collections;
@@ -36,7 +37,7 @@ namespace AllOverIt.Evaluator.Tests.Stack
                 Invoking(() => _stack = new AoiStack<string>(null))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("collection"));
+                    .WithNamedMessageWhenNull("collection");
             }
 
             [Fact]

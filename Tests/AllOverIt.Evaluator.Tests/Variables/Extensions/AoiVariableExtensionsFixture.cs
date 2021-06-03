@@ -3,6 +3,7 @@ using AllOverIt.Evaluator.Tests.Variables.Helpers;
 using AllOverIt.Evaluator.Variables;
 using AllOverIt.Evaluator.Variables.Extensions;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using FluentAssertions;
 using System;
@@ -20,7 +21,7 @@ namespace AllOverIt.Evaluator.Tests.Variables.Extensions
                 Invoking(() => AoiVariableExtensions.SetVariableRegistry(null, this.CreateStub<IAoiVariableRegistry>()))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("variable"));
+                    .WithNamedMessageWhenNull("variable");
             }
 
             [Fact]
@@ -29,7 +30,7 @@ namespace AllOverIt.Evaluator.Tests.Variables.Extensions
                 Invoking(() => this.CreateStub<IAoiVariable>().SetVariableRegistry(null))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("variableRegistry"));
+                    .WithNamedMessageWhenNull("variableRegistry");
             }
 
             [Fact]

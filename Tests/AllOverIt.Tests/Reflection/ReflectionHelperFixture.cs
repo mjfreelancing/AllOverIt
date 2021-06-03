@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Reflection;
 using FluentAssertions;
 using System;
@@ -308,7 +309,7 @@ namespace AllOverIt.Tests.Reflection
                   })
                   .Should()
                   .Throw<ArgumentNullException>()
-                  .WithMessage(GetExpectedArgumentNullExceptionMessage("memberInfo"));
+                  .WithNamedMessageWhenNull("memberInfo");
             }
 
             [Fact]
@@ -323,7 +324,7 @@ namespace AllOverIt.Tests.Reflection
                   })
                   .Should()
                   .Throw<ArgumentNullException>()
-                  .WithMessage(GetExpectedArgumentNullExceptionMessage("target"));
+                  .WithNamedMessageWhenNull("target");
             }
 
             [Fact]
@@ -376,7 +377,7 @@ namespace AllOverIt.Tests.Reflection
                   })
                   .Should()
                   .Throw<ArgumentNullException>()
-                  .WithMessage(GetExpectedArgumentNullExceptionMessage("memberInfo"));
+                  .WithNamedMessageWhenNull("memberInfo");
             }
 
             [Fact]
@@ -391,7 +392,7 @@ namespace AllOverIt.Tests.Reflection
                   })
                   .Should()
                   .Throw<ArgumentNullException>()
-                  .WithMessage(GetExpectedArgumentNullExceptionMessage("target"));
+                  .WithNamedMessageWhenNull("target");
             }
 
             [Fact]
@@ -442,7 +443,7 @@ namespace AllOverIt.Tests.Reflection
                   })
                   .Should()
                   .Throw<ArgumentNullException>()
-                  .WithMessage(GetExpectedArgumentNullExceptionMessage("memberInfo"));
+                  .WithNamedMessageWhenNull("memberInfo");
             }
 
             [Fact]

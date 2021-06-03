@@ -1,5 +1,6 @@
 using AllOverIt.Evaluator.Operators;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using FluentAssertions;
 using System;
@@ -33,7 +34,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
                 Invoking(() => _operator = new AoiPercentOperator(null, this.CreateStub<Expression>()))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("leftOperand"));
+                    .WithNamedMessageWhenNull("leftOperand");
             }
 
             [Fact]
@@ -42,7 +43,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
                 Invoking(() => _operator = new AoiPercentOperator(this.CreateStub<Expression>(), null))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("rightOperand"));
+                    .WithNamedMessageWhenNull("rightOperand");
             }
 
             [Fact]

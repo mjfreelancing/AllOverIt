@@ -2,6 +2,7 @@ using AllOverIt.Evaluator.Exceptions;
 using AllOverIt.Evaluator.Tests.Variables.Dummies;
 using AllOverIt.Evaluator.Variables;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using FakeItEasy;
 using FluentAssertions;
@@ -28,7 +29,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _registry = new AoiVariableRegistry(null))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("variableRegistry"));
+                    .WithNamedMessageWhenNull("variableRegistry");
             }
 
             [Fact]
@@ -55,7 +56,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _registry.AddVariable(null))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("variable"));
+                    .WithNamedMessageWhenNull("variable");
             }
 
             [Fact]
@@ -137,7 +138,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _registry.GetValue(null))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("name"));
+                    .WithNamedMessageWhenNull("name");
             }
 
             [Fact]
@@ -146,7 +147,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _registry.GetValue(string.Empty))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("name"));
+                    .WithNamedMessageWhenEmpty("name");
             }
 
             [Fact]
@@ -155,7 +156,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _registry.GetValue("  "))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("name"));
+                    .WithNamedMessageWhenEmpty("name");
             }
 
             [Fact]
@@ -216,7 +217,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _registry.SetValue(null, Create<double>()))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("name"));
+                    .WithNamedMessageWhenNull("name");
             }
 
             [Fact]
@@ -225,7 +226,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _registry.SetValue(string.Empty, Create<double>()))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("name"));
+                    .WithNamedMessageWhenEmpty("name");
             }
 
             [Fact]
@@ -234,7 +235,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _registry.SetValue("  ", Create<double>()))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("name"));
+                    .WithNamedMessageWhenEmpty("name");
             }
 
             [Fact]

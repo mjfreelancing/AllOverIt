@@ -5,6 +5,7 @@ using AllOverIt.Evaluator.Stack;
 using AllOverIt.Evaluator.Tests.Operations.Dummies;
 using AllOverIt.Evaluator.Variables;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using FakeItEasy;
 using FluentAssertions;
@@ -78,7 +79,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _formulaProcessor = new AoiFormulaProcessor(null, this.CreateStub<IAoiUserDefinedMethodFactory>()))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("operationFactory"));
+                    .WithNamedMessageWhenNull("operationFactory");
             }
 
             [Fact]
@@ -87,7 +88,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _formulaProcessor = new AoiFormulaProcessor(this.CreateStub<IAoiArithmeticOperationFactory>(), null))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("userDefinedMethodFactory"));
+                    .WithNamedMessageWhenNull("userDefinedMethodFactory");
             }
 
             [Fact]
@@ -101,7 +102,7 @@ namespace AllOverIt.Evaluator.Tests
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("operatorStack"));
+                    .WithNamedMessageWhenNull("operatorStack");
             }
 
             [Fact]
@@ -115,7 +116,7 @@ namespace AllOverIt.Evaluator.Tests
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("expressionStack"));
+                    .WithNamedMessageWhenNull("expressionStack");
             }
 
             [Fact]
@@ -129,7 +130,7 @@ namespace AllOverIt.Evaluator.Tests
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("formulaExpressionFactory"));
+                    .WithNamedMessageWhenNull("formulaExpressionFactory");
             }
 
             [Fact]
@@ -143,7 +144,7 @@ namespace AllOverIt.Evaluator.Tests
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("tokenProcessorFactory"));
+                    .WithNamedMessageWhenNull("tokenProcessorFactory");
             }
 
             [Fact]
@@ -215,7 +216,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _formulaProcessor.Process(null, _variableRegistryFake.FakedObject))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("formulaReader"));
+                    .WithNamedMessageWhenNull("formulaReader");
             }
 
             [Fact]
@@ -224,7 +225,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _formulaProcessor.Process(_formulaReaderFake.FakedObject, null))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("variableRegistry"));
+                    .WithNamedMessageWhenNull("variableRegistry");
             }
 
             [Fact]
@@ -370,7 +371,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _formulaProcessor.PushOperator(null))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("operatorToken"));
+                    .WithNamedMessageWhenNull("operatorToken");
             }
 
             [Fact]
@@ -379,7 +380,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _formulaProcessor.PushOperator(string.Empty))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("operatorToken"));
+                    .WithNamedMessageWhenEmpty("operatorToken");
             }
 
             [Fact]
@@ -388,7 +389,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _formulaProcessor.PushOperator("   "))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("operatorToken"));
+                    .WithNamedMessageWhenEmpty("operatorToken");
             }
 
             [Fact]
@@ -425,7 +426,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _formulaProcessor.PushExpression(null))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("expression"));
+                    .WithNamedMessageWhenNull("expression");
             }
 
             [Fact]
@@ -718,7 +719,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _formulaProcessor.ProcessOperator())
                     .Should()
                     .Throw<InvalidOperationException>()
-                    .WithMessage(GetExpectedCheckNullExceptionMessage("_formulaReader"));
+                    .WithNamedMessageWhenNull("_formulaReader");
             }
 
             [Fact]
@@ -1056,7 +1057,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _formulaProcessor.ProcessNumerical())
                     .Should()
                     .Throw<InvalidOperationException>()
-                    .WithMessage(GetExpectedCheckNullExceptionMessage("_formulaReader"));
+                    .WithNamedMessageWhenNull("_formulaReader");
             }
 
             [Fact]
@@ -1113,7 +1114,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _formulaProcessor.ProcessNamedOperand())
                     .Should()
                     .Throw<InvalidOperationException>()
-                    .WithMessage(GetExpectedCheckNullExceptionMessage("_formulaReader"));
+                    .WithNamedMessageWhenNull("_formulaReader");
             }
 
             [Fact]

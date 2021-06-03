@@ -1,5 +1,6 @@
 using AllOverIt.Evaluator.Operators;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
 using System.Linq.Expressions;
@@ -28,7 +29,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
                 Invoking(() => _operator = new AoiLogOperator(null))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("operand"));
+                    .WithNamedMessageWhenNull("operand");
             }
 
             [Fact]

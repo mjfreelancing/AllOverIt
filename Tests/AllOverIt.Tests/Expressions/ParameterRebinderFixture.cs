@@ -1,5 +1,6 @@
 using AllOverIt.Expressions;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using FluentAssertions;
 using System;
@@ -21,7 +22,7 @@ namespace AllOverIt.Tests.Expressions
                     () => ParameterRebinder.ReplaceParameters(null, this.CreateStub<Expression>()))
                   .Should()
                   .Throw<ArgumentNullException>()
-                  .WithMessage(GetExpectedArgumentNullExceptionMessage("parameterMap"));
+                  .WithNamedMessageWhenNull("parameterMap");
             }
 
             [Fact]
@@ -31,7 +32,7 @@ namespace AllOverIt.Tests.Expressions
                     () => ParameterRebinder.ReplaceParameters(new Dictionary<ParameterExpression, ParameterExpression>(), null))
                   .Should()
                   .Throw<ArgumentNullException>()
-                  .WithMessage(GetExpectedArgumentNullExceptionMessage("expression"));
+                  .WithNamedMessageWhenNull("expression");
             }
 
             [Fact]

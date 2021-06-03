@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Evaluator.Tests.Operators.Dummies;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using FluentAssertions;
 using System;
@@ -35,7 +36,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
                 Invoking(() => _operator = new BinaryOperatorDummy(null, _leftOperand, _rightOperand))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("operatorType"));
+                    .WithNamedMessageWhenNull("operatorType");
             }
 
             [Fact]
@@ -44,7 +45,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
                 Invoking(() => _operator = new BinaryOperatorDummy(_operatorType, null, _rightOperand))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("leftOperand"));
+                    .WithNamedMessageWhenNull("leftOperand");
             }
 
             [Fact]
@@ -53,7 +54,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
                 Invoking(() => _operator = new BinaryOperatorDummy(_operatorType, _leftOperand, null))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("rightOperand"));
+                    .WithNamedMessageWhenNull("rightOperand");
             }
 
             [Fact]

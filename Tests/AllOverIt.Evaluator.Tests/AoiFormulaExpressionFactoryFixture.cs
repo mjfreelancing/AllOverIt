@@ -3,6 +3,7 @@ using AllOverIt.Evaluator.Operations;
 using AllOverIt.Evaluator.Stack;
 using AllOverIt.Evaluator.Variables;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using FakeItEasy;
 using FluentAssertions;
@@ -60,7 +61,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _factory.CreateExpression(null, this.CreateStub<IAoiStack<Expression>>()))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("operation"));
+                    .WithNamedMessageWhenNull("operation");
             }
 
             [Fact]
@@ -69,7 +70,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _factory.CreateExpression(this.CreateStub<AoiArithmeticOperationBase>(), null))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("expressionStack"));
+                    .WithNamedMessageWhenNull("expressionStack");
             }
 
             [Fact]
@@ -146,7 +147,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _factory.CreateExpression(null, this.CreateStub<IAoiVariableRegistry>()))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("variableName"));
+                    .WithNamedMessageWhenNull("variableName");
             }
 
             [Fact]
@@ -155,7 +156,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _factory.CreateExpression(string.Empty, this.CreateStub<IAoiVariableRegistry>()))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("variableName"));
+                    .WithNamedMessageWhenEmpty("variableName");
             }
 
             [Fact]
@@ -164,7 +165,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _factory.CreateExpression(" ", this.CreateStub<IAoiVariableRegistry>()))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("variableName"));
+                    .WithNamedMessageWhenEmpty("variableName");
             }
 
             [Fact]
@@ -173,7 +174,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _factory.CreateExpression(Create<string>(), null))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("variableRegistry"));
+                    .WithNamedMessageWhenNull("variableRegistry");
             }
 
             [Fact]

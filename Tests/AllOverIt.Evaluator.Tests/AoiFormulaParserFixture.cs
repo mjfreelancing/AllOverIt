@@ -2,6 +2,7 @@ using AllOverIt.Evaluator.Operations;
 using AllOverIt.Evaluator.Tests.Helpers;
 using AllOverIt.Evaluator.Variables;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using FakeItEasy;
 using FluentAssertions;
@@ -45,7 +46,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _formulaParser = AoiFormulaParser.Create(null, _userMethodFactory, (a, u) => _formulaProcessor))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("arithmeticFactory"));
+                    .WithNamedMessageWhenNull("arithmeticFactory");
             }
 
             [Fact]
@@ -54,7 +55,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _formulaParser = AoiFormulaParser.Create(_arithmeticfactory, null, (a, u) => _formulaProcessor))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("userMethodFactory"));
+                    .WithNamedMessageWhenNull("userMethodFactory");
             }
 
             [Fact]
@@ -173,7 +174,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _formulaParser = new AoiFormulaParser(null))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("formulaProcessor"));
+                    .WithNamedMessageWhenNull("formulaProcessor");
             }
 
             [Fact]
@@ -182,7 +183,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _formulaParser = new AoiFormulaParser(this.CreateStub<IAoiFormulaProcessor>(), null))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("formulaReaderCreator"));
+                    .WithNamedMessageWhenNull("formulaReaderCreator");
             }
         }
 
@@ -194,7 +195,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _formulaParser.Parse(null, _variableRegistryFake.FakedObject))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("formula"));
+                    .WithNamedMessageWhenNull("formula");
             }
 
             [Fact]
@@ -203,7 +204,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _formulaParser.Parse(string.Empty, _variableRegistryFake.FakedObject))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("formula"));
+                    .WithNamedMessageWhenEmpty("formula");
             }
 
             [Fact]
@@ -212,7 +213,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _formulaParser.Parse(" ", _variableRegistryFake.FakedObject))
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithMessage(GetExpectedArgumentCannotBeEmptyExceptionMessage("formula"));
+                    .WithNamedMessageWhenEmpty("formula");
             }
 
             [Fact]
@@ -221,7 +222,7 @@ namespace AllOverIt.Evaluator.Tests
                 Invoking(() => _formulaParser.Parse(Create<string>(), null))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("variableRegistry"));
+                    .WithNamedMessageWhenNull("variableRegistry");
             }
 
             [Fact]

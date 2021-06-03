@@ -1,6 +1,7 @@
 ﻿using AllOverIt.Evaluator.Operations;
 using AllOverIt.Evaluator.Operators;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using FluentAssertions;
 using System;
@@ -22,7 +23,7 @@ namespace AllOverIt.Evaluator.Tests.Operations
                         () => _operation = new AoiArithmeticOperation(Create<int>(), Create<int>(), null))
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithMessage(GetExpectedArgumentNullExceptionMessage("creator"));
+                    .WithNamedMessageWhenNull("creator");
             }
 
             [Fact]
