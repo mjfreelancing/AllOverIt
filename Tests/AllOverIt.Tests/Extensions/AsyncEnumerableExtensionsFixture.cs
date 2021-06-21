@@ -10,7 +10,7 @@ namespace AllOverIt.Tests.Extensions
 {
     public class AsyncEnumerableExtensionsFixture : AoiFixtureBase
     {
-        public class ToListAsync : AsyncEnumerableExtensionsFixture
+        public class AsListAsync : AsyncEnumerableExtensionsFixture
         {
             [Fact]
             public async Task Should_Convert_To_List()
@@ -18,7 +18,7 @@ namespace AllOverIt.Tests.Extensions
                 var expected = CreateMany<string>();
                 
                 var actual = await GetStrings(expected)
-                    .ToListAsync()
+                    .AsListAsync()
                     .ConfigureAwait(false);
 
                 actual.Should().BeEquivalentTo(expected);
@@ -32,7 +32,7 @@ namespace AllOverIt.Tests.Extensions
 
                 await Awaiting(async () =>
                     {
-                        await GetStrings(CreateMany<string>()).ToListAsync(cancellationTokenSource.Token);
+                        await GetStrings(CreateMany<string>()).AsListAsync(cancellationTokenSource.Token);
                     })
                     .Should()
                     .ThrowAsync<TaskCanceledException>();

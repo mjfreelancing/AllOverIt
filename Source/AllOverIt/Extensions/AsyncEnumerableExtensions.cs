@@ -4,11 +4,13 @@ using System.Threading.Tasks;
 
 namespace AllOverIt.Extensions
 {
+    // This works because we are only targeting NetStandard 2 and above
 #if !NETSTANDARD2_0
 
     public static class AsyncEnumerableExtensions
     {
-        public static async Task<List<TType>> ToListAsync<TType>(this IAsyncEnumerable<TType> items,
+        // Not named 'ToListAAsync' because this easily conflicts with other implementations of the same name
+        public static async Task<List<TType>> AsListAsync<TType>(this IAsyncEnumerable<TType> items,
             CancellationToken cancellationToken = default)
         {
             var listItems = new List<TType>();
