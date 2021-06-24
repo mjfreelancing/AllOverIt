@@ -13,9 +13,9 @@ namespace AllOverIt.Evaluator.Operators
         public abstract Expression GetExpression();
 
         // Creates a concrete instance of an operator. 
-        // 'TOperator' is the resultant concrete operator type. It must inherit from IAoiOperator and the constructor must contain the required number of arguments.
+        // 'TOperator' is the resultant concrete operator type. It must inherit from IOperator and the constructor must contain the required number of arguments.
         // 'expressions' are the arguments to be passed to the constructor of the operator being created.
-        // Throws AoiOperatorException when the number of arguments passed in 'expressions' does not match the number of arguments expected by the operator's constructor.
+        // Throws OperatorException when the number of arguments passed in 'expressions' does not match the number of arguments expected by the operator's constructor.
         // Throws 'InvalidOperationException' when the operator contains more than one constructor.
         public static TOperator Create<TOperator>(Expression[] expressions, Func<Expression[], TOperator> creator)
           where TOperator : IOperator

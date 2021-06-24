@@ -27,7 +27,7 @@ namespace AllOverIt.Evaluator.Tests.Variables.Extensions
             [Fact]
             public void Should_Throw_When_Registry_Null()
             {
-                Invoking(() => AoiVariableRegistryExtensions.Add(null, _variable))
+                Invoking(() => VariableRegistryExtensions.Add(null, _variable))
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("registry");
@@ -58,7 +58,7 @@ namespace AllOverIt.Evaluator.Tests.Variables.Extensions
             [Fact]
             public void Should_Throw_When_Registry_Null()
             {
-                Invoking(() => AoiVariableRegistryExtensions.Add(null, new[] { _variable }))
+                Invoking(() => VariableRegistryExtensions.Add(null, new[] { _variable }))
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("registry");

@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace AllOverIt.Evaluator.Operations
 {
-    // Implements a factory used for registering and creating instances of an AoiArithmeticOperation that implements an associated operator.
+    // Implements a factory used for registering and creating instances of an ArithmeticOperation that implements an associated operator.
     // Refer to RegisterDefaultOperations() for the registered built-in operations.
     // 
     // This factory assumes a lower precedence value indicates a higher priority (refer to http://en.wikipedia.org/wiki/Order_of_operations).
@@ -16,7 +16,7 @@ namespace AllOverIt.Evaluator.Operations
     {
         internal IDictionary<string, Lazy<ArithmeticOperation>> Operations { get; }
 
-        /// <summary>Initializes a new <c>AoiArithmeticOperationFactory</c> instance.</summary>
+        /// <summary>Initializes a new <c>ArithmeticOperationFactory</c> instance.</summary>
         public ArithmeticOperationFactory()
           : this(new Dictionary<string, Lazy<ArithmeticOperation>>())
         {

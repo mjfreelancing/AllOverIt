@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace AllOverIt.Evaluator.Exceptions
 {
-    // An exception that can be thrown by a concrete IAoiOperator while compiling a formula expression.
+    // An exception that can be thrown by a concrete IOperator while compiling a formula expression.
     [Serializable]
     public class OperatorException : Exception
     {

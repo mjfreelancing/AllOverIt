@@ -2,7 +2,7 @@ using AllOverIt.Helpers;
 
 namespace AllOverIt.Evaluator.Variables.Extensions
 {
-    public static class AoiVariableRegistryExtensions
+    public static class VariableRegistryExtensions
     {
         // Adds a variable to a variable registry and returns the registry to provide a fluent syntax.
         public static IVariableRegistry Add(this IVariableRegistry registry, IVariable variable)

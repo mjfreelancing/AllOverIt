@@ -22,7 +22,7 @@ namespace AllOverIt.Evaluator.Tests
         {
             this.UseFakeItEasy();
 
-            _parserFake = this.CreateFake<IFormulaParser>(true);         // freeze it so it can be used when creating the SUT, via Create<AoiFormulaCompiler>()
+            _parserFake = this.CreateFake<IFormulaParser>(true);         // freeze it so it can be used when creating the SUT, via Create<FormulaCompiler>()
             _variableRegistry = this.CreateStub<IVariableRegistry>();
             _formula = Create<string>();
         }

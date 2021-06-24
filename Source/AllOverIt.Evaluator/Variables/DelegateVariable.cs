@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace AllOverIt.Evaluator.Variables
 {
-    // Implements a read-only delegate based variable. Unlike AoiConstantVariable this variable type may change value between consecutive
+    // Implements a read-only delegate based variable. Unlike ConstantVariable this variable type may change value between consecutive
     // reads depending on the delegate's implementation.
     public sealed class DelegateVariable : VariableBase
     {

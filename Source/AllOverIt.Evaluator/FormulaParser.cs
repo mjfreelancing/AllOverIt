@@ -20,7 +20,7 @@ namespace AllOverIt.Evaluator
         }
 
         // This factory method can be used to build a custom parser based on extended versions of the arithmetic operation and user-defined
-        // method factories. A 'null' formula processor will result in a AoiFormulaProcessor being used.
+        // method factories. A 'null' formula processor will result in a FormulaProcessor being used.
         public static IFormulaParser Create(IArithmeticOperationFactory arithmeticFactory, IUserDefinedMethodFactory userMethodFactory,
           Func<IArithmeticOperationFactory, IUserDefinedMethodFactory, IFormulaProcessor> processorCreator = null)
         {

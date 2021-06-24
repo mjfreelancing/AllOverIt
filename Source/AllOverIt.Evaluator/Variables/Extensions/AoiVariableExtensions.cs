@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace AllOverIt.Evaluator.Variables.Extensions
 {
-    public static class AoiVariableExtensions
+    public static class VariableExtensions
     {
-        // Associates a variable with the specified variable registry if it inherits from AoiVariableBase.
+        // Associates a variable with the specified variable registry if it inherits from VariableBase.
         public static void SetVariableRegistry(this IVariable variable, IVariableRegistry variableRegistry)
         {
             _ = variable.WhenNotNull(nameof(variable));

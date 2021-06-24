@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace AllOverIt.Evaluator.Exceptions
 {
-    // An exception that can be thrown by an AoiFormulaCompiler while compiling a formula expression.
+    // An exception that can be thrown by an FormulaCompiler while compiling a formula expression.
     [Serializable]
     public class FormulaException : Exception
     {

@@ -16,7 +16,7 @@ namespace AllOverIt.Evaluator.Tests.Helpers
         public static FormulaCompilerResult CreateFormulaCompilerResult(double value, IEnumerable<string> referencedVariableNames)
         {
 
-            return new FormulaCompilerResult(() => value, referencedVariableNames);
+            return new(() => value, referencedVariableNames);
         }
     }
 }

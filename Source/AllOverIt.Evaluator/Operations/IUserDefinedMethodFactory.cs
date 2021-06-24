@@ -4,7 +4,7 @@ namespace AllOverIt.Evaluator.Operations
     public interface IUserDefinedMethodFactory
     {
         // Registers a user defined method with the factory using an associated name.
-        // TOperationType is the concrete operation class type to be registered (must inherit from AoiArithmeticOperationBase and implement a default constructor.
+        // TOperationType is the concrete operation class type to be registered (must inherit from ArithmeticOperationBase and implement a default constructor.
         void RegisterMethod<TOperationType>(string methodName) where TOperationType : ArithmeticOperationBase, new();
 
         // Indicates if a user defined method is registered with the factory.

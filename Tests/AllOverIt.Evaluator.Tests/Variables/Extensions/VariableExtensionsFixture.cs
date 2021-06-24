@@ -18,7 +18,7 @@ namespace AllOverIt.Evaluator.Tests.Variables.Extensions
             [Fact]
             public void Should_Throw_When_Variable_Null()
             {
-                Invoking(() => AoiVariableExtensions.SetVariableRegistry(null, this.CreateStub<IVariableRegistry>()))
+                Invoking(() => VariableExtensions.SetVariableRegistry(null, this.CreateStub<IVariableRegistry>()))
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("variable");

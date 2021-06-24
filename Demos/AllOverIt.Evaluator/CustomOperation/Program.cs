@@ -29,8 +29,8 @@ namespace CustomOperation
             // will be equated to 10 + 1.2 - 6.2 = 5
             const string formula = "10 + min(1.2, 3.9) + 3.4 ? -6.2"; // the method names are parsed without case-sensitivity
 
-            // NOTE: This demo deliberately ensures unique AoiArithmeticOperationFactory instances are created for each approach because
-            //       AoiFormulaProcessor registers an internal operation to handle negative values. If the same instance was shared
+            // NOTE: This demo deliberately ensures unique ArithmeticOperationFactory instances are created for each approach because
+            //       FormulaProcessor registers an internal operation to handle negative values. If the same instance was shared
             //       between two processors an exception would be thrown due to a duplicate registration.
 
             var manualResult = EvaluateManually(formula);
@@ -89,7 +89,7 @@ namespace CustomOperation
 
             operationFactory.RegisterOperation(
               "?",                                  // the mathematical operator symbol
-              3,                                    // the precedence level (see AoiArithmeticOperationFactory for suggested levels to use)
+              3,                                    // the precedence level (see ArithmeticOperationFactory for suggested levels to use)
               2,                                    // the number of expected arguments
               CustomMinOperation.MakeOperator);     // the lazily invoked factory method
 
