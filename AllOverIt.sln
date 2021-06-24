@@ -38,21 +38,24 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.Fixture.FakeItEas
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllOverIt.Evaluator", "AllOverIt.Evaluator", "{E511BE3F-9514-4F49-86D7-1F168A5606A7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicEvaluation", "Demos\AllOverIt.Evaluator\BasicEvaluation\BasicEvaluation.csproj", "{5EC2D81B-5B2A-4872-BF22-EE86DF1A1A10}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicEvaluation", "Demos\AllOverIt.Evaluator\BasicEvaluation\BasicEvaluation.csproj", "{5EC2D81B-5B2A-4872-BF22-EE86DF1A1A10}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomOperation", "Demos\AllOverIt.Evaluator\CustomOperation\CustomOperation.csproj", "{509B48E3-EC0E-4ACF-B070-324C46989013}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomOperation", "Demos\AllOverIt.Evaluator\CustomOperation\CustomOperation.csproj", "{509B48E3-EC0E-4ACF-B070-324C46989013}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DelegateEvaluation", "Demos\AllOverIt.Evaluator\DelegateEvaluation\DelegateEvaluation.csproj", "{6EA9DB69-ECC0-49CC-AD4A-A35019653C8C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DelegateEvaluation", "Demos\AllOverIt.Evaluator\DelegateEvaluation\DelegateEvaluation.csproj", "{6EA9DB69-ECC0-49CC-AD4A-A35019653C8C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MixedEvaluation", "Demos\AllOverIt.Evaluator\MixedEvaluation\MixedEvaluation.csproj", "{AA8C4B77-EEA2-48A9-B47F-FD084C90F7D0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixedEvaluation", "Demos\AllOverIt.Evaluator\MixedEvaluation\MixedEvaluation.csproj", "{AA8C4B77-EEA2-48A9-B47F-FD084C90F7D0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParallelEvaluation", "Demos\AllOverIt.Evaluator\ParallelEvaluation\ParallelEvaluation.csproj", "{9A00711A-36BE-45AF-BE7F-375E2F8D232D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParallelEvaluation", "Demos\AllOverIt.Evaluator\ParallelEvaluation\ParallelEvaluation.csproj", "{9A00711A-36BE-45AF-BE7F-375E2F8D232D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VariableEvaluation", "Demos\AllOverIt.Evaluator\VariableEvaluation\VariableEvaluation.csproj", "{5A2999A6-DD3B-467D-AD9E-9E4019E58A4A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VariableEvaluation", "Demos\AllOverIt.Evaluator\VariableEvaluation\VariableEvaluation.csproj", "{5A2999A6-DD3B-467D-AD9E-9E4019E58A4A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VariableLookup", "Demos\AllOverIt.Evaluator\VariableLookup\VariableLookup.csproj", "{6BA56AF9-795F-4197-9D3B-5F84F203F5D9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VariableLookup", "Demos\AllOverIt.Evaluator\VariableLookup\VariableLookup.csproj", "{6BA56AF9-795F-4197-9D3B-5F84F203F5D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.Aws.Cdk.AppSync", "Source\AllOverIt.Aws.Cdk.AppSync\AllOverIt.Aws.Cdk.AppSync.csproj", "{076E55F4-0237-4FE2-9332-7355385E46EE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ForEachAsParallelAsync", "Demos\AllOverIt\ForEachAsParallelAsync\ForEachAsParallelAsync.csproj", "{0E469283-8886-448E-BB75-F23B45A67BAE}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllOverIt.Aws.Cdk.AppSync", "AllOverIt.Aws.Cdk.AppSync", "{6805597E-F10D-4625-B3DE-88B3A40F8CF1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphqlSchema", "Demos\AllOverIt.Aws.Cdk.AppSync\GraphqlSchema\GraphqlSchema.csproj", "{DA3D5D73-0058-484F-9D81-37F896D01FE3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -128,10 +131,14 @@ Global
 		{6BA56AF9-795F-4197-9D3B-5F84F203F5D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BA56AF9-795F-4197-9D3B-5F84F203F5D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BA56AF9-795F-4197-9D3B-5F84F203F5D9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0E469283-8886-448E-BB75-F23B45A67BAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0E469283-8886-448E-BB75-F23B45A67BAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0E469283-8886-448E-BB75-F23B45A67BAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0E469283-8886-448E-BB75-F23B45A67BAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{076E55F4-0237-4FE2-9332-7355385E46EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{076E55F4-0237-4FE2-9332-7355385E46EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{076E55F4-0237-4FE2-9332-7355385E46EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{076E55F4-0237-4FE2-9332-7355385E46EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA3D5D73-0058-484F-9D81-37F896D01FE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA3D5D73-0058-484F-9D81-37F896D01FE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA3D5D73-0058-484F-9D81-37F896D01FE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA3D5D73-0058-484F-9D81-37F896D01FE3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -156,7 +163,9 @@ Global
 		{9A00711A-36BE-45AF-BE7F-375E2F8D232D} = {E511BE3F-9514-4F49-86D7-1F168A5606A7}
 		{5A2999A6-DD3B-467D-AD9E-9E4019E58A4A} = {E511BE3F-9514-4F49-86D7-1F168A5606A7}
 		{6BA56AF9-795F-4197-9D3B-5F84F203F5D9} = {E511BE3F-9514-4F49-86D7-1F168A5606A7}
-		{0E469283-8886-448E-BB75-F23B45A67BAE} = {0DC79E13-DE7A-417D-8A7B-64ABA3F4E1C8}
+		{076E55F4-0237-4FE2-9332-7355385E46EE} = {FC8E8DB2-1299-44F4-A233-0EDCE225BB8C}
+		{6805597E-F10D-4625-B3DE-88B3A40F8CF1} = {D9F6B8A1-4B01-4708-8851-741FC19F2440}
+		{DA3D5D73-0058-484F-9D81-37F896D01FE3} = {6805597E-F10D-4625-B3DE-88B3A40F8CF1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19DD11B3-596E-4862-B5C4-1FFFFB173106}

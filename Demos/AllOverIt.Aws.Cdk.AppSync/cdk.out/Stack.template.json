@@ -1,0 +1,707 @@
+{
+  "Resources": {
+    "AppSyncGraphQl5C415C25": {
+      "Type": "AWS::AppSync::GraphQLApi",
+      "Properties": {
+        "AuthenticationType": "API_KEY",
+        "Name": "SolarDigest V1"
+      },
+      "Metadata": {
+        "aws:cdk:path": "Stack/AppSync/GraphQl/Resource"
+      }
+    },
+    "AppSyncGraphQlSchema52E5EE9E": {
+      "Type": "AWS::AppSync::GraphQLSchema",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "AppSyncGraphQl5C415C25",
+            "ApiId"
+          ]
+        },
+        "Definition": "schema {\n  query: Query\n}\ntype TimeWatts {\n  time: String!\n  watts: Float!\n  wattHour: Float!\n}\ntype PowerEdge {\n  node: TimeWatts!\n  cursor: String!\n}\ntype PageInfo {\n  previousPageCursor: String\n  nextPageCursor: String\n}\ntype PowerConnection {\n  edges: [PowerEdge!]\n  nodes: [TimeWatts!]\n  totalCount: Int!\n  pageInfo: PageInfo\n}\nenum MeterType {\n  PRODUCTION\n  CONSUMPTION\n  SELF_CONSUMPTION\n  FEED_IN\n  PURCHASED\n}\nenum SummaryType {\n  DAILY_AVERAGE\n}\ninput PowerFilterInput {\n  startDate: AWSDate!\n  endDate: AWSDate!\n  meterType: MeterType!\n  summaryType: SummaryType!\n}\ntype Site {\n  id: String!\n  startDate: AWSDate!\n  contactName: String!\n  contactEmail: String!\n  timeZoneId: String!\n  lastAggregationDate: String\n  lastSummaryDate: String\n  lastRefreshDateTime: String\n  power(limit: Int startCursor: String filter: PowerFilterInput!): PowerConnection!\n}\ntype Query {\n  site(id: String!): Site!\n  uploadUrl(input: UploadUrlInput!): String!\n  uploadMultiPartUrls(input: UploadMultiPartInput!): UploadMultiParts!\n  uploadMultiPartAbort(input: UploadMultiPartAbortInput!): String!\n  uploadMultiPartComplete(input: UploadMultiPartCompleteInput!): String!\n  downloadUrl(filename: String!): String!\n}\ninput UploadUrlInput {\n  filename: String!\n}\ntype UploadMultiPart {\n  partNumber: Int!\n  url: String!\n}\ntype UploadMultiParts {\n  uploadId: String!\n  parts: [UploadMultiPart!]\n}\ninput UploadMultiPartInput {\n  filename: String!\n  partCount: Int!\n}\ninput UploadMultiPartAbortInput {\n  filename: String!\n  uploadId: Int!\n}\ninput UploadMultiPartETagInput {\n  partNumber: Int!\n  eTag: String!\n}\ninput UploadMultiPartCompleteInput {\n  filename: String!\n  uploadId: Int!\n  eTags: [UploadMultiPartETagInput!]\n}\n"
+      },
+      "Metadata": {
+        "aws:cdk:path": "Stack/AppSync/GraphQl/Schema"
+      }
+    },
+    "AppSyncGraphQlDefaultApiKeyDF2E9713": {
+      "Type": "AWS::AppSync::ApiKey",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "AppSyncGraphQl5C415C25",
+            "ApiId"
+          ]
+        },
+        "Expires": 1655851760
+      },
+      "DependsOn": [
+        "AppSyncGraphQlSchema52E5EE9E"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "Stack/AppSync/GraphQl/DefaultApiKey"
+      }
+    },
+    "AppSyncGraphQlSitepowerResolverD36EF80E": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "AppSyncGraphQl5C415C25",
+            "ApiId"
+          ]
+        },
+        "FieldName": "power",
+        "TypeName": "Site",
+        "DataSourceName": "SolarDigestGetSitePowerSummaryDataSource",
+        "Kind": "UNIT",
+        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+      },
+      "DependsOn": [
+        "AppSyncGraphQlSchema52E5EE9E",
+        "SolarDigestGetSitePowerSummaryDataSourceAF112D68"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "Stack/AppSync/GraphQl/SitepowerResolver/Resource"
+      }
+    },
+    "AppSyncGraphQlQuerysiteResolver241C0D5F": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "AppSyncGraphQl5C415C25",
+            "ApiId"
+          ]
+        },
+        "FieldName": "site",
+        "TypeName": "Query",
+        "DataSourceName": "SolarDigestGetSiteDataSource",
+        "Kind": "UNIT",
+        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+      },
+      "DependsOn": [
+        "AppSyncGraphQlSchema52E5EE9E",
+        "SolarDigestGetSiteDataSource3ABDD0EB"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "Stack/AppSync/GraphQl/QuerysiteResolver/Resource"
+      }
+    },
+    "AppSyncGraphQlQueryuploadUrlResolver15FF29CE": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "AppSyncGraphQl5C415C25",
+            "ApiId"
+          ]
+        },
+        "FieldName": "uploadUrl",
+        "TypeName": "Query",
+        "DataSourceName": "SolarDigestGetUploadUrlDataSource",
+        "Kind": "UNIT",
+        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+      },
+      "DependsOn": [
+        "AppSyncGraphQlSchema52E5EE9E",
+        "SolarDigestGetUploadUrlDataSource059E3C24"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "Stack/AppSync/GraphQl/QueryuploadUrlResolver/Resource"
+      }
+    },
+    "AppSyncGraphQlQueryuploadMultiPartUrlsResolverC2FC63B5": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "AppSyncGraphQl5C415C25",
+            "ApiId"
+          ]
+        },
+        "FieldName": "uploadMultiPartUrls",
+        "TypeName": "Query",
+        "DataSourceName": "SolarDigestGetUploadMultiPartDataSource",
+        "Kind": "UNIT",
+        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+      },
+      "DependsOn": [
+        "AppSyncGraphQlSchema52E5EE9E",
+        "SolarDigestGetUploadMultiPartDataSource12AED7CE"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "Stack/AppSync/GraphQl/QueryuploadMultiPartUrlsResolver/Resource"
+      }
+    },
+    "AppSyncGraphQlQueryuploadMultiPartAbortResolver49A296C7": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "AppSyncGraphQl5C415C25",
+            "ApiId"
+          ]
+        },
+        "FieldName": "uploadMultiPartAbort",
+        "TypeName": "Query",
+        "DataSourceName": "SolarDigestGetUploadMultiPartAbortDataSource",
+        "Kind": "UNIT",
+        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+      },
+      "DependsOn": [
+        "AppSyncGraphQlSchema52E5EE9E",
+        "SolarDigestGetUploadMultiPartAbortDataSourceA3C14FB0"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "Stack/AppSync/GraphQl/QueryuploadMultiPartAbortResolver/Resource"
+      }
+    },
+    "AppSyncGraphQlQueryuploadMultiPartCompleteResolver7D52CD2E": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "AppSyncGraphQl5C415C25",
+            "ApiId"
+          ]
+        },
+        "FieldName": "uploadMultiPartComplete",
+        "TypeName": "Query",
+        "DataSourceName": "SolarDigestGetUploadMultiPartCompleteDataSource",
+        "Kind": "UNIT",
+        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+      },
+      "DependsOn": [
+        "AppSyncGraphQlSchema52E5EE9E",
+        "SolarDigestGetUploadMultiPartCompleteDataSource7D097AD5"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "Stack/AppSync/GraphQl/QueryuploadMultiPartCompleteResolver/Resource"
+      }
+    },
+    "AppSyncGraphQlQuerydownloadUrlResolverC94C10F1": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "AppSyncGraphQl5C415C25",
+            "ApiId"
+          ]
+        },
+        "FieldName": "downloadUrl",
+        "TypeName": "Query",
+        "DataSourceName": "SolarDigestGetDownloadUrlDataSource",
+        "Kind": "UNIT",
+        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+      },
+      "DependsOn": [
+        "AppSyncGraphQlSchema52E5EE9E",
+        "SolarDigestGetDownloadUrlDataSourceB834D073"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "Stack/AppSync/GraphQl/QuerydownloadUrlResolver/Resource"
+      }
+    },
+    "SolarDigestGetSiteDataSourceServiceRole2D396ACB": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "appsync.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Stack/SolarDigestGetSiteDataSource/ServiceRole/Resource"
+      }
+    },
+    "SolarDigestGetSiteDataSourceServiceRoleDefaultPolicyD06CD98E": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": "arn:aws:lambda:ap-southeast-2:574214337301:function:SolarDigest_GetSite"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "SolarDigestGetSiteDataSourceServiceRoleDefaultPolicyD06CD98E",
+        "Roles": [
+          {
+            "Ref": "SolarDigestGetSiteDataSourceServiceRole2D396ACB"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Stack/SolarDigestGetSiteDataSource/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "SolarDigestGetSiteDataSource3ABDD0EB": {
+      "Type": "AWS::AppSync::DataSource",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "AppSyncGraphQl5C415C25",
+            "ApiId"
+          ]
+        },
+        "Name": "SolarDigestGetSiteDataSource",
+        "Type": "AWS_LAMBDA",
+        "LambdaConfig": {
+          "LambdaFunctionArn": "arn:aws:lambda:ap-southeast-2:574214337301:function:SolarDigest_GetSite"
+        },
+        "ServiceRoleArn": {
+          "Fn::GetAtt": [
+            "SolarDigestGetSiteDataSourceServiceRole2D396ACB",
+            "Arn"
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Stack/SolarDigestGetSiteDataSource/Resource"
+      }
+    },
+    "SolarDigestGetSitePowerSummaryDataSourceServiceRoleB1081FEA": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "appsync.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Stack/SolarDigestGetSitePowerSummaryDataSource/ServiceRole/Resource"
+      }
+    },
+    "SolarDigestGetSitePowerSummaryDataSourceServiceRoleDefaultPolicyB610295F": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": "arn:aws:lambda:ap-southeast-2:574214337301:function:SolarDigest_GetSitePowerSummary"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "SolarDigestGetSitePowerSummaryDataSourceServiceRoleDefaultPolicyB610295F",
+        "Roles": [
+          {
+            "Ref": "SolarDigestGetSitePowerSummaryDataSourceServiceRoleB1081FEA"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Stack/SolarDigestGetSitePowerSummaryDataSource/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "SolarDigestGetSitePowerSummaryDataSourceAF112D68": {
+      "Type": "AWS::AppSync::DataSource",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "AppSyncGraphQl5C415C25",
+            "ApiId"
+          ]
+        },
+        "Name": "SolarDigestGetSitePowerSummaryDataSource",
+        "Type": "AWS_LAMBDA",
+        "LambdaConfig": {
+          "LambdaFunctionArn": "arn:aws:lambda:ap-southeast-2:574214337301:function:SolarDigest_GetSitePowerSummary"
+        },
+        "ServiceRoleArn": {
+          "Fn::GetAtt": [
+            "SolarDigestGetSitePowerSummaryDataSourceServiceRoleB1081FEA",
+            "Arn"
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Stack/SolarDigestGetSitePowerSummaryDataSource/Resource"
+      }
+    },
+    "SolarDigestGetUploadUrlDataSourceServiceRole3E605218": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "appsync.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Stack/SolarDigestGetUploadUrlDataSource/ServiceRole/Resource"
+      }
+    },
+    "SolarDigestGetUploadUrlDataSourceServiceRoleDefaultPolicyD508FD92": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": "arn:aws:lambda:ap-southeast-2:574214337301:function:SolarDigest_GetUploadUrl"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "SolarDigestGetUploadUrlDataSourceServiceRoleDefaultPolicyD508FD92",
+        "Roles": [
+          {
+            "Ref": "SolarDigestGetUploadUrlDataSourceServiceRole3E605218"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Stack/SolarDigestGetUploadUrlDataSource/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "SolarDigestGetUploadUrlDataSource059E3C24": {
+      "Type": "AWS::AppSync::DataSource",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "AppSyncGraphQl5C415C25",
+            "ApiId"
+          ]
+        },
+        "Name": "SolarDigestGetUploadUrlDataSource",
+        "Type": "AWS_LAMBDA",
+        "LambdaConfig": {
+          "LambdaFunctionArn": "arn:aws:lambda:ap-southeast-2:574214337301:function:SolarDigest_GetUploadUrl"
+        },
+        "ServiceRoleArn": {
+          "Fn::GetAtt": [
+            "SolarDigestGetUploadUrlDataSourceServiceRole3E605218",
+            "Arn"
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Stack/SolarDigestGetUploadUrlDataSource/Resource"
+      }
+    },
+    "SolarDigestGetUploadMultiPartDataSourceServiceRoleE40FE8FE": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "appsync.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Stack/SolarDigestGetUploadMultiPartDataSource/ServiceRole/Resource"
+      }
+    },
+    "SolarDigestGetUploadMultiPartDataSourceServiceRoleDefaultPolicyF3326D94": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": "arn:aws:lambda:ap-southeast-2:574214337301:function:SolarDigest_GetUploadMultiPart"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "SolarDigestGetUploadMultiPartDataSourceServiceRoleDefaultPolicyF3326D94",
+        "Roles": [
+          {
+            "Ref": "SolarDigestGetUploadMultiPartDataSourceServiceRoleE40FE8FE"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Stack/SolarDigestGetUploadMultiPartDataSource/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "SolarDigestGetUploadMultiPartDataSource12AED7CE": {
+      "Type": "AWS::AppSync::DataSource",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "AppSyncGraphQl5C415C25",
+            "ApiId"
+          ]
+        },
+        "Name": "SolarDigestGetUploadMultiPartDataSource",
+        "Type": "AWS_LAMBDA",
+        "LambdaConfig": {
+          "LambdaFunctionArn": "arn:aws:lambda:ap-southeast-2:574214337301:function:SolarDigest_GetUploadMultiPart"
+        },
+        "ServiceRoleArn": {
+          "Fn::GetAtt": [
+            "SolarDigestGetUploadMultiPartDataSourceServiceRoleE40FE8FE",
+            "Arn"
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Stack/SolarDigestGetUploadMultiPartDataSource/Resource"
+      }
+    },
+    "SolarDigestGetUploadMultiPartAbortDataSourceServiceRole4F989213": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "appsync.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Stack/SolarDigestGetUploadMultiPartAbortDataSource/ServiceRole/Resource"
+      }
+    },
+    "SolarDigestGetUploadMultiPartAbortDataSourceServiceRoleDefaultPolicy87279693": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": "arn:aws:lambda:ap-southeast-2:574214337301:function:SolarDigest_GetUploadMultiPartAbort"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "SolarDigestGetUploadMultiPartAbortDataSourceServiceRoleDefaultPolicy87279693",
+        "Roles": [
+          {
+            "Ref": "SolarDigestGetUploadMultiPartAbortDataSourceServiceRole4F989213"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Stack/SolarDigestGetUploadMultiPartAbortDataSource/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "SolarDigestGetUploadMultiPartAbortDataSourceA3C14FB0": {
+      "Type": "AWS::AppSync::DataSource",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "AppSyncGraphQl5C415C25",
+            "ApiId"
+          ]
+        },
+        "Name": "SolarDigestGetUploadMultiPartAbortDataSource",
+        "Type": "AWS_LAMBDA",
+        "LambdaConfig": {
+          "LambdaFunctionArn": "arn:aws:lambda:ap-southeast-2:574214337301:function:SolarDigest_GetUploadMultiPartAbort"
+        },
+        "ServiceRoleArn": {
+          "Fn::GetAtt": [
+            "SolarDigestGetUploadMultiPartAbortDataSourceServiceRole4F989213",
+            "Arn"
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Stack/SolarDigestGetUploadMultiPartAbortDataSource/Resource"
+      }
+    },
+    "SolarDigestGetUploadMultiPartCompleteDataSourceServiceRole03EA5F74": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "appsync.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Stack/SolarDigestGetUploadMultiPartCompleteDataSource/ServiceRole/Resource"
+      }
+    },
+    "SolarDigestGetUploadMultiPartCompleteDataSourceServiceRoleDefaultPolicyCFF684C9": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": "arn:aws:lambda:ap-southeast-2:574214337301:function:SolarDigest_GetUploadMultiPartComplete"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "SolarDigestGetUploadMultiPartCompleteDataSourceServiceRoleDefaultPolicyCFF684C9",
+        "Roles": [
+          {
+            "Ref": "SolarDigestGetUploadMultiPartCompleteDataSourceServiceRole03EA5F74"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Stack/SolarDigestGetUploadMultiPartCompleteDataSource/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "SolarDigestGetUploadMultiPartCompleteDataSource7D097AD5": {
+      "Type": "AWS::AppSync::DataSource",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "AppSyncGraphQl5C415C25",
+            "ApiId"
+          ]
+        },
+        "Name": "SolarDigestGetUploadMultiPartCompleteDataSource",
+        "Type": "AWS_LAMBDA",
+        "LambdaConfig": {
+          "LambdaFunctionArn": "arn:aws:lambda:ap-southeast-2:574214337301:function:SolarDigest_GetUploadMultiPartComplete"
+        },
+        "ServiceRoleArn": {
+          "Fn::GetAtt": [
+            "SolarDigestGetUploadMultiPartCompleteDataSourceServiceRole03EA5F74",
+            "Arn"
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Stack/SolarDigestGetUploadMultiPartCompleteDataSource/Resource"
+      }
+    },
+    "SolarDigestGetDownloadUrlDataSourceServiceRoleB886397C": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "appsync.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Stack/SolarDigestGetDownloadUrlDataSource/ServiceRole/Resource"
+      }
+    },
+    "SolarDigestGetDownloadUrlDataSourceServiceRoleDefaultPolicy2D3B6F0E": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": "arn:aws:lambda:ap-southeast-2:574214337301:function:SolarDigest_GetDownloadUrl"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "SolarDigestGetDownloadUrlDataSourceServiceRoleDefaultPolicy2D3B6F0E",
+        "Roles": [
+          {
+            "Ref": "SolarDigestGetDownloadUrlDataSourceServiceRoleB886397C"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Stack/SolarDigestGetDownloadUrlDataSource/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "SolarDigestGetDownloadUrlDataSourceB834D073": {
+      "Type": "AWS::AppSync::DataSource",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "AppSyncGraphQl5C415C25",
+            "ApiId"
+          ]
+        },
+        "Name": "SolarDigestGetDownloadUrlDataSource",
+        "Type": "AWS_LAMBDA",
+        "LambdaConfig": {
+          "LambdaFunctionArn": "arn:aws:lambda:ap-southeast-2:574214337301:function:SolarDigest_GetDownloadUrl"
+        },
+        "ServiceRoleArn": {
+          "Fn::GetAtt": [
+            "SolarDigestGetDownloadUrlDataSourceServiceRoleB886397C",
+            "Arn"
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Stack/SolarDigestGetDownloadUrlDataSource/Resource"
+      }
+    },
+    "CDKMetadata": {
+      "Type": "AWS::CDK::Metadata",
+      "Properties": {
+        "Analytics": "v2:deflate64:H4sIAAAAAAAAClVPTUsDMRD9Lb1nZxuk6EWwbq0HS9Fd8T6mI43NJjHJVpaQ/26SIiJzePM+eMNw4Msb4Is7/PaNOJzaKIwjiENAcWKd0T64SQTWfeievJmcoMRKNqK1ftYC4qNDe/xSaytLqrKX3X82iCONWISsP9HMSpc6k/vtrfsOx/cDbjDgUA8V848lpqoP20mLII2+R09M4gixN6qGKz4bJcVc6GVLKbGNCXsK7QqWcN3C/uG1y0+urW3eyPlcdXu+At7ybOdZfHopGzfpIEeC/oI/LV9atCgBAAA="
+      },
+      "Metadata": {
+        "aws:cdk:path": "Stack/CDKMetadata/Default"
+      }
+    }
+  }
+}

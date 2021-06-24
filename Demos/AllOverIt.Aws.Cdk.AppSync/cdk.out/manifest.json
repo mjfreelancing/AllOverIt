@@ -1,0 +1,988 @@
+{
+  "version": "12.0.0",
+  "artifacts": {
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    },
+    "Stack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://574214337301/ap-southeast-2",
+      "properties": {
+        "templateFile": "Stack.template.json",
+        "validateOnSynth": false
+      },
+      "metadata": {
+        "/Stack/AppSync/GraphQl/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AppSyncGraphQl5C415C25",
+            "trace": [
+              "new GraphqlApi (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\graphqlapi.js:120:20)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:58",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "Kernel._create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:34)",
+              "Kernel.create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7895:29)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/Stack/AppSync/GraphQl/Schema": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AppSyncGraphQlSchema52E5EE9E",
+            "trace": [
+              "Schema.bind (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema.js:53:27)",
+              "new GraphqlApi (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\graphqlapi.js:134:43)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:58",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "Kernel._create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:34)",
+              "Kernel.create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7895:29)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/Stack/AppSync/GraphQl/DefaultApiKey": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AppSyncGraphQlDefaultApiKeyDF2E9713",
+            "trace": [
+              "GraphqlApi.createAPIKey (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\graphqlapi.js:292:16)",
+              "new GraphqlApi (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\graphqlapi.js:139:40)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:58",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "Kernel._create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:34)",
+              "Kernel.create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7895:29)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/Stack/AppSync/GraphQl/SitepowerResolver/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AppSyncGraphQlSitepowerResolverD36EF80E",
+            "trace": [
+              "new Resolver (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\resolver.js:27:25)",
+              "GraphqlApi.createResolver (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\graphqlapi-base.js:123:16)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:134",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:107",
+              "Kernel._ensureSync (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8563:28)",
+              "Kernel.invoke (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:34)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.completeCallback (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9466:33)",
+              "KernelHost.callbackHandler (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9453:41)",
+              "GraphqlApi.value (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8323:49)",
+              "ObjectType.generateResolver (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema-intermediate.js:160:20)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema-intermediate.js:117:42",
+              "Array.forEach (<anonymous>)",
+              "ObjectType._bindToGraphqlApi (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema-intermediate.js:112:38)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema.js:57:87",
+              "Array.reduce (<anonymous>)",
+              "Object.produce (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema.js:57:51)",
+              "LazyString.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\lazy.js:225:103)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\resolvable.js:56:30)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:197:22)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:130:55)",
+              "Object.resolve [as mapToken] (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "TokenizedStringFragments.mapTokens (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\string-fragments.js:83:43)",
+              "RememberingTokenResolver.resolveString (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\resolvable.js:77:26)",
+              "RememberingTokenResolver.resolveString (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:200:27)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:97:54)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:145:51)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\resolvable.js:58:32)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:197:22)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:130:55)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:145:51)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\resolvable.js:58:32)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:197:22)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:130:55)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:145:51)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:145:51)",
+              "Object.findTokens (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:183:5)",
+              "findAllReferences (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\refs.js:97:38)",
+              "Object.resolveReferences (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\refs.js:20:19)",
+              "Object.prepareApp (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\prepare-app.js:30:12)",
+              "Object.synthesize (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\synthesis.js:21:19)",
+              "App.synth (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\stage.js:100:41)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:134",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:107",
+              "Kernel._ensureSync (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8563:28)",
+              "Kernel.invoke (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:34)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/Stack/AppSync/GraphQl/QuerysiteResolver/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AppSyncGraphQlQuerysiteResolver241C0D5F",
+            "trace": [
+              "new Resolver (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\resolver.js:27:25)",
+              "GraphqlApi.createResolver (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\graphqlapi-base.js:123:16)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:134",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:107",
+              "Kernel._ensureSync (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8563:28)",
+              "Kernel.invoke (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:34)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.completeCallback (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9466:33)",
+              "KernelHost.callbackHandler (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9453:41)",
+              "GraphqlApi.value (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8323:49)",
+              "ObjectType.generateResolver (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema-intermediate.js:160:20)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema-intermediate.js:117:42",
+              "Array.forEach (<anonymous>)",
+              "ObjectType._bindToGraphqlApi (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema-intermediate.js:112:38)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema.js:57:87",
+              "Array.reduce (<anonymous>)",
+              "Object.produce (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema.js:57:51)",
+              "LazyString.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\lazy.js:225:103)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\resolvable.js:56:30)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:197:22)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:130:55)",
+              "Object.resolve [as mapToken] (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "TokenizedStringFragments.mapTokens (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\string-fragments.js:83:43)",
+              "RememberingTokenResolver.resolveString (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\resolvable.js:77:26)",
+              "RememberingTokenResolver.resolveString (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:200:27)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:97:54)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:145:51)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\resolvable.js:58:32)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:197:22)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:130:55)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:145:51)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\resolvable.js:58:32)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:197:22)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:130:55)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:145:51)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:145:51)",
+              "Object.findTokens (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:183:5)",
+              "findAllReferences (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\refs.js:97:38)",
+              "Object.resolveReferences (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\refs.js:20:19)",
+              "Object.prepareApp (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\prepare-app.js:30:12)",
+              "Object.synthesize (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\synthesis.js:21:19)",
+              "App.synth (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\stage.js:100:41)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:134",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:107",
+              "Kernel._ensureSync (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8563:28)",
+              "Kernel.invoke (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:34)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/Stack/AppSync/GraphQl/QueryuploadUrlResolver/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AppSyncGraphQlQueryuploadUrlResolver15FF29CE",
+            "trace": [
+              "new Resolver (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\resolver.js:27:25)",
+              "GraphqlApi.createResolver (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\graphqlapi-base.js:123:16)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:134",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:107",
+              "Kernel._ensureSync (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8563:28)",
+              "Kernel.invoke (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:34)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.completeCallback (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9466:33)",
+              "KernelHost.callbackHandler (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9453:41)",
+              "GraphqlApi.value (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8323:49)",
+              "ObjectType.generateResolver (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema-intermediate.js:160:20)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema-intermediate.js:117:42",
+              "Array.forEach (<anonymous>)",
+              "ObjectType._bindToGraphqlApi (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema-intermediate.js:112:38)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema.js:57:87",
+              "Array.reduce (<anonymous>)",
+              "Object.produce (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema.js:57:51)",
+              "LazyString.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\lazy.js:225:103)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\resolvable.js:56:30)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:197:22)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:130:55)",
+              "Object.resolve [as mapToken] (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "TokenizedStringFragments.mapTokens (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\string-fragments.js:83:43)",
+              "RememberingTokenResolver.resolveString (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\resolvable.js:77:26)",
+              "RememberingTokenResolver.resolveString (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:200:27)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:97:54)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:145:51)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\resolvable.js:58:32)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:197:22)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:130:55)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:145:51)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\resolvable.js:58:32)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:197:22)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:130:55)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:145:51)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:145:51)",
+              "Object.findTokens (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:183:5)",
+              "findAllReferences (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\refs.js:97:38)",
+              "Object.resolveReferences (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\refs.js:20:19)",
+              "Object.prepareApp (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\prepare-app.js:30:12)",
+              "Object.synthesize (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\synthesis.js:21:19)",
+              "App.synth (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\stage.js:100:41)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:134",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:107",
+              "Kernel._ensureSync (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8563:28)",
+              "Kernel.invoke (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:34)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/Stack/AppSync/GraphQl/QueryuploadMultiPartUrlsResolver/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AppSyncGraphQlQueryuploadMultiPartUrlsResolverC2FC63B5",
+            "trace": [
+              "new Resolver (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\resolver.js:27:25)",
+              "GraphqlApi.createResolver (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\graphqlapi-base.js:123:16)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:134",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:107",
+              "Kernel._ensureSync (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8563:28)",
+              "Kernel.invoke (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:34)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.completeCallback (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9466:33)",
+              "KernelHost.callbackHandler (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9453:41)",
+              "GraphqlApi.value (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8323:49)",
+              "ObjectType.generateResolver (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema-intermediate.js:160:20)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema-intermediate.js:117:42",
+              "Array.forEach (<anonymous>)",
+              "ObjectType._bindToGraphqlApi (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema-intermediate.js:112:38)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema.js:57:87",
+              "Array.reduce (<anonymous>)",
+              "Object.produce (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema.js:57:51)",
+              "LazyString.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\lazy.js:225:103)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\resolvable.js:56:30)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:197:22)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:130:55)",
+              "Object.resolve [as mapToken] (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "TokenizedStringFragments.mapTokens (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\string-fragments.js:83:43)",
+              "RememberingTokenResolver.resolveString (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\resolvable.js:77:26)",
+              "RememberingTokenResolver.resolveString (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:200:27)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:97:54)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:145:51)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\resolvable.js:58:32)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:197:22)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:130:55)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:145:51)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\resolvable.js:58:32)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:197:22)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:130:55)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:145:51)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:145:51)",
+              "Object.findTokens (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:183:5)",
+              "findAllReferences (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\refs.js:97:38)",
+              "Object.resolveReferences (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\refs.js:20:19)",
+              "Object.prepareApp (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\prepare-app.js:30:12)",
+              "Object.synthesize (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\synthesis.js:21:19)",
+              "App.synth (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\stage.js:100:41)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:134",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:107",
+              "Kernel._ensureSync (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8563:28)",
+              "Kernel.invoke (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:34)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/Stack/AppSync/GraphQl/QueryuploadMultiPartAbortResolver/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AppSyncGraphQlQueryuploadMultiPartAbortResolver49A296C7",
+            "trace": [
+              "new Resolver (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\resolver.js:27:25)",
+              "GraphqlApi.createResolver (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\graphqlapi-base.js:123:16)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:134",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:107",
+              "Kernel._ensureSync (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8563:28)",
+              "Kernel.invoke (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:34)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.completeCallback (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9466:33)",
+              "KernelHost.callbackHandler (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9453:41)",
+              "GraphqlApi.value (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8323:49)",
+              "ObjectType.generateResolver (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema-intermediate.js:160:20)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema-intermediate.js:117:42",
+              "Array.forEach (<anonymous>)",
+              "ObjectType._bindToGraphqlApi (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema-intermediate.js:112:38)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema.js:57:87",
+              "Array.reduce (<anonymous>)",
+              "Object.produce (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema.js:57:51)",
+              "LazyString.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\lazy.js:225:103)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\resolvable.js:56:30)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:197:22)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:130:55)",
+              "Object.resolve [as mapToken] (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "TokenizedStringFragments.mapTokens (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\string-fragments.js:83:43)",
+              "RememberingTokenResolver.resolveString (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\resolvable.js:77:26)",
+              "RememberingTokenResolver.resolveString (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:200:27)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:97:54)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:145:51)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\resolvable.js:58:32)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:197:22)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:130:55)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:145:51)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\resolvable.js:58:32)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:197:22)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:130:55)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:145:51)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:145:51)",
+              "Object.findTokens (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:183:5)",
+              "findAllReferences (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\refs.js:97:38)",
+              "Object.resolveReferences (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\refs.js:20:19)",
+              "Object.prepareApp (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\prepare-app.js:30:12)",
+              "Object.synthesize (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\synthesis.js:21:19)",
+              "App.synth (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\stage.js:100:41)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:134",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:107",
+              "Kernel._ensureSync (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8563:28)",
+              "Kernel.invoke (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:34)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/Stack/AppSync/GraphQl/QueryuploadMultiPartCompleteResolver/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AppSyncGraphQlQueryuploadMultiPartCompleteResolver7D52CD2E",
+            "trace": [
+              "new Resolver (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\resolver.js:27:25)",
+              "GraphqlApi.createResolver (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\graphqlapi-base.js:123:16)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:134",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:107",
+              "Kernel._ensureSync (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8563:28)",
+              "Kernel.invoke (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:34)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.completeCallback (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9466:33)",
+              "KernelHost.callbackHandler (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9453:41)",
+              "GraphqlApi.value (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8323:49)",
+              "ObjectType.generateResolver (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema-intermediate.js:160:20)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema-intermediate.js:117:42",
+              "Array.forEach (<anonymous>)",
+              "ObjectType._bindToGraphqlApi (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema-intermediate.js:112:38)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema.js:57:87",
+              "Array.reduce (<anonymous>)",
+              "Object.produce (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema.js:57:51)",
+              "LazyString.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\lazy.js:225:103)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\resolvable.js:56:30)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:197:22)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:130:55)",
+              "Object.resolve [as mapToken] (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "TokenizedStringFragments.mapTokens (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\string-fragments.js:83:43)",
+              "RememberingTokenResolver.resolveString (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\resolvable.js:77:26)",
+              "RememberingTokenResolver.resolveString (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:200:27)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:97:54)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:145:51)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\resolvable.js:58:32)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:197:22)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:130:55)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:145:51)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\resolvable.js:58:32)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:197:22)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:130:55)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:145:51)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:145:51)",
+              "Object.findTokens (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:183:5)",
+              "findAllReferences (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\refs.js:97:38)",
+              "Object.resolveReferences (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\refs.js:20:19)",
+              "Object.prepareApp (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\prepare-app.js:30:12)",
+              "Object.synthesize (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\synthesis.js:21:19)",
+              "App.synth (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\stage.js:100:41)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:134",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:107",
+              "Kernel._ensureSync (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8563:28)",
+              "Kernel.invoke (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:34)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/Stack/AppSync/GraphQl/QuerydownloadUrlResolver/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AppSyncGraphQlQuerydownloadUrlResolverC94C10F1",
+            "trace": [
+              "new Resolver (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\resolver.js:27:25)",
+              "GraphqlApi.createResolver (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\graphqlapi-base.js:123:16)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:134",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:107",
+              "Kernel._ensureSync (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8563:28)",
+              "Kernel.invoke (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:34)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.completeCallback (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9466:33)",
+              "KernelHost.callbackHandler (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9453:41)",
+              "GraphqlApi.value (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8323:49)",
+              "ObjectType.generateResolver (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema-intermediate.js:160:20)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema-intermediate.js:117:42",
+              "Array.forEach (<anonymous>)",
+              "ObjectType._bindToGraphqlApi (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema-intermediate.js:112:38)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema.js:57:87",
+              "Array.reduce (<anonymous>)",
+              "Object.produce (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\schema.js:57:51)",
+              "LazyString.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\lazy.js:225:103)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\resolvable.js:56:30)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:197:22)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:130:55)",
+              "Object.resolve [as mapToken] (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "TokenizedStringFragments.mapTokens (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\string-fragments.js:83:43)",
+              "RememberingTokenResolver.resolveString (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\resolvable.js:77:26)",
+              "RememberingTokenResolver.resolveString (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:200:27)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:97:54)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:145:51)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\resolvable.js:58:32)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:197:22)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:130:55)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:145:51)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\resolvable.js:58:32)",
+              "RememberingTokenResolver.resolveToken (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:197:22)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:130:55)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:145:51)",
+              "Object.resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:57:48)",
+              "resolve (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:145:51)",
+              "Object.findTokens (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\resolve.js:183:5)",
+              "findAllReferences (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\refs.js:97:38)",
+              "Object.resolveReferences (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\refs.js:20:19)",
+              "Object.prepareApp (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\prepare-app.js:30:12)",
+              "Object.synthesize (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\synthesis.js:21:19)",
+              "App.synth (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\stage.js:100:41)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:134",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:107",
+              "Kernel._ensureSync (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8563:28)",
+              "Kernel.invoke (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:34)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/Stack/SolarDigestGetSiteDataSource/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SolarDigestGetSiteDataSourceServiceRole2D396ACB",
+            "trace": [
+              "new Role (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\role.js:72:22)",
+              "new BaseDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:29:53)",
+              "new BackedDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:82:9)",
+              "new LambdaDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:172:9)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:58",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "Kernel._create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:34)",
+              "Kernel.create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7895:29)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/Stack/SolarDigestGetSiteDataSource/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SolarDigestGetSiteDataSourceServiceRoleDefaultPolicyD06CD98E",
+            "trace": [
+              "new Policy (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\policy.js:56:26)",
+              "Role.addToPrincipalPolicy (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\role.js:205:34)",
+              "Function.addToPrincipal (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\grant.js:90:65)",
+              "Function.addToPrincipalOrResource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\grant.js:45:30)",
+              "Import.grantInvoke (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-lambda\\lib\\function-base.js:125:31)",
+              "new LambdaDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:178:30)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:58",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "Kernel._create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:34)",
+              "Kernel.create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7895:29)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/Stack/SolarDigestGetSiteDataSource/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SolarDigestGetSiteDataSource3ABDD0EB",
+            "trace": [
+              "new BaseDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:32:19)",
+              "new BackedDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:82:9)",
+              "new LambdaDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:172:9)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:58",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "Kernel._create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:34)",
+              "Kernel.create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7895:29)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/Stack/SolarDigestGetSitePowerSummaryDataSource/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SolarDigestGetSitePowerSummaryDataSourceServiceRoleB1081FEA",
+            "trace": [
+              "new Role (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\role.js:72:22)",
+              "new BaseDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:29:53)",
+              "new BackedDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:82:9)",
+              "new LambdaDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:172:9)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:58",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "Kernel._create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:34)",
+              "Kernel.create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7895:29)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/Stack/SolarDigestGetSitePowerSummaryDataSource/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SolarDigestGetSitePowerSummaryDataSourceServiceRoleDefaultPolicyB610295F",
+            "trace": [
+              "new Policy (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\policy.js:56:26)",
+              "Role.addToPrincipalPolicy (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\role.js:205:34)",
+              "Function.addToPrincipal (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\grant.js:90:65)",
+              "Function.addToPrincipalOrResource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\grant.js:45:30)",
+              "Import.grantInvoke (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-lambda\\lib\\function-base.js:125:31)",
+              "new LambdaDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:178:30)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:58",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "Kernel._create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:34)",
+              "Kernel.create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7895:29)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/Stack/SolarDigestGetSitePowerSummaryDataSource/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SolarDigestGetSitePowerSummaryDataSourceAF112D68",
+            "trace": [
+              "new BaseDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:32:19)",
+              "new BackedDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:82:9)",
+              "new LambdaDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:172:9)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:58",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "Kernel._create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:34)",
+              "Kernel.create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7895:29)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/Stack/SolarDigestGetUploadUrlDataSource/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SolarDigestGetUploadUrlDataSourceServiceRole3E605218",
+            "trace": [
+              "new Role (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\role.js:72:22)",
+              "new BaseDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:29:53)",
+              "new BackedDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:82:9)",
+              "new LambdaDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:172:9)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:58",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "Kernel._create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:34)",
+              "Kernel.create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7895:29)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/Stack/SolarDigestGetUploadUrlDataSource/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SolarDigestGetUploadUrlDataSourceServiceRoleDefaultPolicyD508FD92",
+            "trace": [
+              "new Policy (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\policy.js:56:26)",
+              "Role.addToPrincipalPolicy (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\role.js:205:34)",
+              "Function.addToPrincipal (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\grant.js:90:65)",
+              "Function.addToPrincipalOrResource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\grant.js:45:30)",
+              "Import.grantInvoke (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-lambda\\lib\\function-base.js:125:31)",
+              "new LambdaDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:178:30)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:58",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "Kernel._create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:34)",
+              "Kernel.create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7895:29)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/Stack/SolarDigestGetUploadUrlDataSource/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SolarDigestGetUploadUrlDataSource059E3C24",
+            "trace": [
+              "new BaseDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:32:19)",
+              "new BackedDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:82:9)",
+              "new LambdaDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:172:9)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:58",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "Kernel._create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:34)",
+              "Kernel.create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7895:29)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/Stack/SolarDigestGetUploadMultiPartDataSource/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SolarDigestGetUploadMultiPartDataSourceServiceRoleE40FE8FE",
+            "trace": [
+              "new Role (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\role.js:72:22)",
+              "new BaseDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:29:53)",
+              "new BackedDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:82:9)",
+              "new LambdaDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:172:9)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:58",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "Kernel._create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:34)",
+              "Kernel.create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7895:29)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/Stack/SolarDigestGetUploadMultiPartDataSource/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SolarDigestGetUploadMultiPartDataSourceServiceRoleDefaultPolicyF3326D94",
+            "trace": [
+              "new Policy (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\policy.js:56:26)",
+              "Role.addToPrincipalPolicy (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\role.js:205:34)",
+              "Function.addToPrincipal (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\grant.js:90:65)",
+              "Function.addToPrincipalOrResource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\grant.js:45:30)",
+              "Import.grantInvoke (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-lambda\\lib\\function-base.js:125:31)",
+              "new LambdaDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:178:30)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:58",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "Kernel._create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:34)",
+              "Kernel.create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7895:29)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/Stack/SolarDigestGetUploadMultiPartDataSource/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SolarDigestGetUploadMultiPartDataSource12AED7CE",
+            "trace": [
+              "new BaseDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:32:19)",
+              "new BackedDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:82:9)",
+              "new LambdaDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:172:9)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:58",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "Kernel._create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:34)",
+              "Kernel.create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7895:29)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/Stack/SolarDigestGetUploadMultiPartAbortDataSource/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SolarDigestGetUploadMultiPartAbortDataSourceServiceRole4F989213",
+            "trace": [
+              "new Role (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\role.js:72:22)",
+              "new BaseDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:29:53)",
+              "new BackedDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:82:9)",
+              "new LambdaDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:172:9)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:58",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "Kernel._create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:34)",
+              "Kernel.create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7895:29)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/Stack/SolarDigestGetUploadMultiPartAbortDataSource/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SolarDigestGetUploadMultiPartAbortDataSourceServiceRoleDefaultPolicy87279693",
+            "trace": [
+              "new Policy (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\policy.js:56:26)",
+              "Role.addToPrincipalPolicy (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\role.js:205:34)",
+              "Function.addToPrincipal (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\grant.js:90:65)",
+              "Function.addToPrincipalOrResource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\grant.js:45:30)",
+              "Import.grantInvoke (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-lambda\\lib\\function-base.js:125:31)",
+              "new LambdaDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:178:30)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:58",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "Kernel._create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:34)",
+              "Kernel.create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7895:29)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/Stack/SolarDigestGetUploadMultiPartAbortDataSource/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SolarDigestGetUploadMultiPartAbortDataSourceA3C14FB0",
+            "trace": [
+              "new BaseDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:32:19)",
+              "new BackedDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:82:9)",
+              "new LambdaDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:172:9)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:58",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "Kernel._create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:34)",
+              "Kernel.create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7895:29)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/Stack/SolarDigestGetUploadMultiPartCompleteDataSource/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SolarDigestGetUploadMultiPartCompleteDataSourceServiceRole03EA5F74",
+            "trace": [
+              "new Role (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\role.js:72:22)",
+              "new BaseDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:29:53)",
+              "new BackedDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:82:9)",
+              "new LambdaDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:172:9)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:58",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "Kernel._create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:34)",
+              "Kernel.create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7895:29)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/Stack/SolarDigestGetUploadMultiPartCompleteDataSource/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SolarDigestGetUploadMultiPartCompleteDataSourceServiceRoleDefaultPolicyCFF684C9",
+            "trace": [
+              "new Policy (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\policy.js:56:26)",
+              "Role.addToPrincipalPolicy (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\role.js:205:34)",
+              "Function.addToPrincipal (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\grant.js:90:65)",
+              "Function.addToPrincipalOrResource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\grant.js:45:30)",
+              "Import.grantInvoke (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-lambda\\lib\\function-base.js:125:31)",
+              "new LambdaDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:178:30)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:58",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "Kernel._create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:34)",
+              "Kernel.create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7895:29)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/Stack/SolarDigestGetUploadMultiPartCompleteDataSource/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SolarDigestGetUploadMultiPartCompleteDataSource7D097AD5",
+            "trace": [
+              "new BaseDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:32:19)",
+              "new BackedDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:82:9)",
+              "new LambdaDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:172:9)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:58",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "Kernel._create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:34)",
+              "Kernel.create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7895:29)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/Stack/SolarDigestGetDownloadUrlDataSource/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SolarDigestGetDownloadUrlDataSourceServiceRoleB886397C",
+            "trace": [
+              "new Role (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\role.js:72:22)",
+              "new BaseDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:29:53)",
+              "new BackedDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:82:9)",
+              "new LambdaDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:172:9)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:58",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "Kernel._create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:34)",
+              "Kernel.create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7895:29)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/Stack/SolarDigestGetDownloadUrlDataSource/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SolarDigestGetDownloadUrlDataSourceServiceRoleDefaultPolicy2D3B6F0E",
+            "trace": [
+              "new Policy (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\policy.js:56:26)",
+              "Role.addToPrincipalPolicy (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\role.js:205:34)",
+              "Function.addToPrincipal (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\grant.js:90:65)",
+              "Function.addToPrincipalOrResource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-iam\\lib\\grant.js:45:30)",
+              "Import.grantInvoke (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-lambda\\lib\\function-base.js:125:31)",
+              "new LambdaDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:178:30)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:58",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "Kernel._create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:34)",
+              "Kernel.create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7895:29)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/Stack/SolarDigestGetDownloadUrlDataSource/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SolarDigestGetDownloadUrlDataSourceB834D073",
+            "trace": [
+              "new BaseDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:32:19)",
+              "new BackedDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:82:9)",
+              "new LambdaDataSource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\aws-appsync\\lib\\data-source.js:172:9)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:58",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "Kernel._create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8154:34)",
+              "Kernel.create (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7895:29)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/Stack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata",
+            "trace": [
+              "new MetadataResource (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\metadata-resource.js:22:30)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\synthesis.js:128:9",
+              "visit (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\synthesis.js:185:9)",
+              "visit (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\synthesis.js:182:9)",
+              "injectMetadataResources (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\synthesis.js:117:5)",
+              "Object.synthesize (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\private\\synthesis.js:17:5)",
+              "App.synth (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\jsii-kernel-kOYZlK\\node_modules\\@aws-cdk\\core\\lib\\stage.js:100:41)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:134",
+              "Kernel._wrapSandboxCode (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8582:24)",
+              "C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:107",
+              "Kernel._ensureSync (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:8563:28)",
+              "Kernel.invoke (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:7970:34)",
+              "KernelHost.processRequest (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9479:36)",
+              "KernelHost.run (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9442:22)",
+              "Immediate._onImmediate (C:\\Users\\Malcolm\\AppData\\Local\\Temp\\g0mjmwle.uic\\lib\\program.js:9443:46)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ]
+      },
+      "displayName": "Stack"
+    }
+  }
+}
