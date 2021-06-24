@@ -8,7 +8,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Helpers
 {
-    public class RaiiFunctionalFixture : AoiFixtureBase
+    public class RaiiFunctionalFixture : FixtureBase
     {
         private class Logger
         {

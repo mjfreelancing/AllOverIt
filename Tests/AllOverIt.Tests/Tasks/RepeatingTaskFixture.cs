@@ -9,7 +9,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Tasks
 {
-    public class RepeatingTaskFixture : AoiFixtureBase
+    public class RepeatingTaskFixture : FixtureBase
     {
         public class Start_ActionAsync : RepeatingTaskFixture
         {

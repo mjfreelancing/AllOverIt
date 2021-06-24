@@ -6,7 +6,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Extensions
 {
-    public class ComparableExtensionsFixture : AoiFixtureBase
+    public class ComparableExtensionsFixture : FixtureBase
     {
         private class CompareDummy : IComparable<CompareDummy>
         {

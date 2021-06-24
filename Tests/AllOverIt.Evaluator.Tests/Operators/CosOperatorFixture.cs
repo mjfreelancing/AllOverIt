@@ -8,7 +8,7 @@ using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Operators
 {
-    public class CosOperatorFixture : AoiFixtureBase
+    public class CosOperatorFixture : FixtureBase
     {
         private readonly double _value;
         private readonly Expression _operand;

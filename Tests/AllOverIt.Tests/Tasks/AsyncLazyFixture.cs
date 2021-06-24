@@ -9,7 +9,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Tasks
 {
-    public class AsyncLazyFixture : AoiFixtureBase
+    public class AsyncLazyFixture : FixtureBase
     {
         public class Constructor_Type : AsyncLazyFixture
         {

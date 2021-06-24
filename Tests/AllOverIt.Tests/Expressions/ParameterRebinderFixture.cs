@@ -11,7 +11,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Expressions
 {
-    public class ParameterRebinderFixture : AoiFixtureBase
+    public class ParameterRebinderFixture : FixtureBase
     {
         public class ReplaceParameters : ParameterRebinderFixture
         {

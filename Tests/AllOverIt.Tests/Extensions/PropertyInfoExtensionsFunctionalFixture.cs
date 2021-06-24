@@ -6,7 +6,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Extensions
 {
-    public class PropertyInfoExtensionsFunctionalFixture : AoiFixtureBase
+    public class PropertyInfoExtensionsFunctionalFixture : FixtureBase
     {
         public enum Visibility
         {

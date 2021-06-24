@@ -5,7 +5,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Extensions
 {
-    public class DoubleExtensionsFixture : AoiFixtureBase
+    public class DoubleExtensionsFixture : FixtureBase
     {
         public class IsZero : DoubleExtensionsFixture
         {

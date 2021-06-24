@@ -9,7 +9,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Reflection
 {
-    public class ReflectionHelperFixture : AoiFixtureBase
+    public class ReflectionHelperFixture : FixtureBase
     {
         private class DummyBaseClass
         {

@@ -15,7 +15,7 @@ using Xunit;
 
 namespace AllOverIt.Evaluator.Tests
 {
-    public class FormulaExpressionFactoryFixture : AoiFixtureBase
+    public class FormulaExpressionFactoryFixture : FixtureBase
     {
         private readonly int _argumentCount;
         private readonly Fake<IArithmeticOperation> _operationFake;

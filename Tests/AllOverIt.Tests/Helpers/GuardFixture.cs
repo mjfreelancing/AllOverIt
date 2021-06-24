@@ -2,7 +2,7 @@
 
 namespace AllOverIt.Tests.Helpers
 {
-    public partial class GuardFixture : AoiFixtureBase
+    public partial class GuardFixture : FixtureBase
     {
         private class DummyClass
         {

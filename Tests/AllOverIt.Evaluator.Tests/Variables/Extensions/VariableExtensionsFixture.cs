@@ -11,7 +11,7 @@ using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Variables.Extensions
 {
-    public class VariableExtensionsFixture : AoiFixtureBase
+    public class VariableExtensionsFixture : FixtureBase
     {
         public class SetVariableRegistry : VariableExtensionsFixture
         {

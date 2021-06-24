@@ -8,7 +8,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Extensions
 {
-    public class AsyncEnumerableExtensionsFixture : AoiFixtureBase
+    public class AsyncEnumerableExtensionsFixture : FixtureBase
     {
         public class AsListAsync : AsyncEnumerableExtensionsFixture
         {

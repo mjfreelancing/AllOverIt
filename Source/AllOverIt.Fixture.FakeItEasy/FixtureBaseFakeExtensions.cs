@@ -7,21 +7,21 @@ using System.Linq;
 
 namespace AllOverIt.Fixture.FakeItEasy
 {
-    public static class AoiFixtureBaseFakeExtensions
+    public static class FixtureBaseFakeExtensions
     {
-        public static void UseFakeItEasy(this AoiFixtureBase fixtureBase, ICustomization customization = null)
+        public static void UseFakeItEasy(this FixtureBase fixtureBase, ICustomization customization = null)
         {
-            customization = customization ?? new AutoFakeItEasyCustomization { GenerateDelegates = true };
+            customization ??= new AutoFakeItEasyCustomization { GenerateDelegates = true };
             fixtureBase.Fixture.Customize(customization);
         }
 
-        public static Fake<TType> CreateFake<TType>(this AoiFixtureBase fixtureBase)
+        public static Fake<TType> CreateFake<TType>(this FixtureBase fixtureBase)
             where TType : class
         {
             return CreateFake<TType>(fixtureBase, false);
         }
 
-        public static Fake<TType> CreateFake<TType>(this AoiFixtureBase fixtureBase, bool freeze)
+        public static Fake<TType> CreateFake<TType>(this FixtureBase fixtureBase, bool freeze)
             where TType : class
         {
             return freeze
@@ -29,25 +29,25 @@ namespace AllOverIt.Fixture.FakeItEasy
               : fixtureBase.Fixture.Create<Fake<TType>>();
         }
 
-        public static IReadOnlyList<Fake<TType>> CreateManyFakes<TType>(this AoiFixtureBase fixtureBase)
+        public static IReadOnlyList<Fake<TType>> CreateManyFakes<TType>(this FixtureBase fixtureBase)
             where TType : class
         {
             return CreateManyFakes<TType>(fixtureBase, 5);
         }
 
-        public static IReadOnlyList<Fake<TType>> CreateManyFakes<TType>(this AoiFixtureBase fixtureBase, int count)
+        public static IReadOnlyList<Fake<TType>> CreateManyFakes<TType>(this FixtureBase fixtureBase, int count)
             where TType : class
         {
             return fixtureBase.Fixture.CreateMany<Fake<TType>>(count).ToList();
         }
 
-        public static TType CreateStub<TType>(this AoiFixtureBase fixtureBase)
+        public static TType CreateStub<TType>(this FixtureBase fixtureBase)
             where TType : class
         {
             return A.Fake<TType>();
         }
 
-        public static TType CreateStub<TType>(this AoiFixtureBase fixtureBase, Action<Fake<TType>> modifier)
+        public static TType CreateStub<TType>(this FixtureBase fixtureBase, Action<Fake<TType>> modifier)
           where TType : class
         {
             if (modifier == null)
@@ -61,13 +61,13 @@ namespace AllOverIt.Fixture.FakeItEasy
             return fake.FakedObject;
         }
 
-        public static IReadOnlyList<TType> CreateManyStubs<TType>(this AoiFixtureBase fixtureBase)
+        public static IReadOnlyList<TType> CreateManyStubs<TType>(this FixtureBase fixtureBase)
             where TType : class
         {
             return CreateManyStubs<TType>(fixtureBase, 5);
         }
 
-        public static IReadOnlyList<TType> CreateManyStubs<TType>(this AoiFixtureBase fixtureBase, int count)
+        public static IReadOnlyList<TType> CreateManyStubs<TType>(this FixtureBase fixtureBase, int count)
             where TType : class
         {
             var stubs = new List<TType>();
@@ -80,13 +80,13 @@ namespace AllOverIt.Fixture.FakeItEasy
             return stubs;
         }
 
-        public static IReadOnlyList<TType> CreateManyStubs<TType>(this AoiFixtureBase fixtureBase, Action<Fake<TType>, int> modifier)
+        public static IReadOnlyList<TType> CreateManyStubs<TType>(this FixtureBase fixtureBase, Action<Fake<TType>, int> modifier)
             where TType : class
         {
             return CreateManyStubs(fixtureBase, modifier, 5);
         }
 
-        public static IReadOnlyList<TType> CreateManyStubs<TType>(this AoiFixtureBase fixtureBase, Action<Fake<TType>, int> modifier, int count)
+        public static IReadOnlyList<TType> CreateManyStubs<TType>(this FixtureBase fixtureBase, Action<Fake<TType>, int> modifier, int count)
             where TType : class
         {
             if (modifier == null)

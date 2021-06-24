@@ -8,7 +8,7 @@ using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Variables
 {
-    public class MutableVariableFixture : AoiFixtureBase
+    public class MutableVariableFixture : FixtureBase
     {
         private readonly string _name;
         private readonly double _value;

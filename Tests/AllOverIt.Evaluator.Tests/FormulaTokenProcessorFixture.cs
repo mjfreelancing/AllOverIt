@@ -14,7 +14,7 @@ using Xunit;
 
 namespace AllOverIt.Evaluator.Tests
 {
-    public class FormulaTokenProcessorFixture : AoiFixtureBase
+    public class FormulaTokenProcessorFixture : FixtureBase
     {
         private FormulaTokenProcessor _processor;
         private readonly Fake<IList<FormulaTokenProcessorContext>> _tokenProcessorsFake;

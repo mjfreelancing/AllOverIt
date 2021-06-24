@@ -4,14 +4,14 @@ using Xunit;
 
 namespace AllOverIt.Fixture.Tests
 {
-    public class AoiFixtureBaseCustomizationFixture : AoiFixtureBase
+    public class FixtureBaseCustomizationFixture : FixtureBase
     {
-        static AoiFixtureBaseCustomizationFixture()
+        static FixtureBaseCustomizationFixture()
         {
             DummyCustomization.Fixture = null;
         }
 
-        public AoiFixtureBaseCustomizationFixture()
+        public FixtureBaseCustomizationFixture()
           : base(new DummyCustomization())
         {
         }

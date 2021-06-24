@@ -5,7 +5,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Helpers
 {
-    public class EnumHelperFixture : AoiFixtureBase
+    public class EnumHelperFixture : FixtureBase
     {
         public enum DummyEnum
         {

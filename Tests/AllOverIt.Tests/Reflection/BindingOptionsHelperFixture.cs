@@ -10,7 +10,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Reflection
 {
-    public class BindingOptionsHelperFixture : AoiFixtureBase
+    public class BindingOptionsHelperFixture : FixtureBase
     {
         public class BuildBindingPredicate : BindingOptionsHelperFixture
         {

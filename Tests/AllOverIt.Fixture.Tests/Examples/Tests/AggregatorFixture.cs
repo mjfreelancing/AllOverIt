@@ -9,7 +9,7 @@ using Xunit;
 
 namespace AllOverIt.Fixture.Tests.Examples.Tests
 {
-    public class AggregatorFixture : AoiFixtureBase
+    public class AggregatorFixture : FixtureBase
     {
         public AggregatorFixture()
           : base(new AutoFakeItEasyCustomization { GenerateDelegates = true })

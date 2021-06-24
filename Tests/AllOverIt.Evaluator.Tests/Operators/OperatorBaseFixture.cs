@@ -13,7 +13,7 @@ using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Operators
 {
-    public class OperatorBaseFixture : AoiFixtureBase
+    public class OperatorBaseFixture : FixtureBase
     {
         public class Create_Operator : OperatorBaseFixture
         {

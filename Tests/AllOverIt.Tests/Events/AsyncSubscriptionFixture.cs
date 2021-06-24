@@ -8,7 +8,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Events
 {
-    public class AsyncSubscriptionFixture : AoiFixtureBase
+    public class AsyncSubscriptionFixture : FixtureBase
     {
         public class Constructor : AsyncSubscriptionFixture
         {

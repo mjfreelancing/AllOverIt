@@ -9,7 +9,7 @@ using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Operators
 {
-    public class RoundOperatorFixture : AoiFixtureBase
+    public class RoundOperatorFixture : FixtureBase
     {
         private readonly double _value;
         private readonly int _decimals;

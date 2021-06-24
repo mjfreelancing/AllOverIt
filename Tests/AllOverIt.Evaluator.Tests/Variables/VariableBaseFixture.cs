@@ -10,7 +10,7 @@ using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Variables
 {
-    public class VariableBaseFixture : AoiFixtureBase
+    public class VariableBaseFixture : FixtureBase
     {
         private readonly string _name;
         private readonly double _value;

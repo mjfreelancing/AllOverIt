@@ -9,7 +9,7 @@ using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Operators
 {
-    public class SubtractOperatorFixture : AoiFixtureBase
+    public class SubtractOperatorFixture : FixtureBase
     {
         private readonly double _leftValue;
         private readonly double _rightValue;

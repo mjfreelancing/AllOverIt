@@ -8,7 +8,7 @@ using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Operations
 {
-    public abstract class OperationFixtureBase<TOperationType> : AoiFixtureBase
+    public abstract class OperationFixtureBase<TOperationType> : FixtureBase
         where TOperationType : ArithmeticOperationBase, new()
     {
         protected OperationFixtureBase()

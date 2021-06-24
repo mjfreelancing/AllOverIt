@@ -7,7 +7,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Helpers
 {
-    public class RaiiFixture : AoiFixtureBase
+    public class RaiiFixture : FixtureBase
     {
         public class Raii_NonType : RaiiFixture
         {

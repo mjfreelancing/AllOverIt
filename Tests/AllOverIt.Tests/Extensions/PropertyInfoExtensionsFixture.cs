@@ -6,7 +6,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Extensions
 {
-    public class PropertyInfoExtensionsFixture : AoiFixtureBase
+    public class PropertyInfoExtensionsFixture : FixtureBase
     {
         private abstract class DummyClassBase
         {

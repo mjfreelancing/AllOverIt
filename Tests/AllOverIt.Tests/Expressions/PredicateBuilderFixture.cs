@@ -8,7 +8,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Expressions
 {
-    public class PredicateBuilderFixture : AoiFixtureBase
+    public class PredicateBuilderFixture : FixtureBase
     {
         private class DummySubject
         {

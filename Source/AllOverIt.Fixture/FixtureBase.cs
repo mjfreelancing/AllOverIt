@@ -10,7 +10,7 @@ namespace AllOverIt.Fixture
     /// <summary>
     /// Acts as a base class for all fixtures, providing access to a variety of useful methods that help generate automated input values.
     /// </summary>
-    public abstract class AoiFixtureBase
+    public abstract class FixtureBase
     {
         private readonly Random _random = new();
 
@@ -20,7 +20,7 @@ namespace AllOverIt.Fixture
         /// <summary>
         /// Default constructor.
         /// </summary>
-        protected AoiFixtureBase()
+        protected FixtureBase()
         {
         }
 
@@ -28,7 +28,7 @@ namespace AllOverIt.Fixture
         /// Constructor that supports customization of AutoFixture's Fixture.
         /// </summary>
         /// <param name="customization">The customization instance.</param>
-        protected AoiFixtureBase(ICustomization customization)
+        protected FixtureBase(ICustomization customization)
         {
             Fixture.Customize(customization);
         }

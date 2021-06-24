@@ -11,7 +11,7 @@ using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Variables.Extensions
 {
-    public class VariableRegistryExtensionsFixture : AoiFixtureBase
+    public class VariableRegistryExtensionsFixture : FixtureBase
     {
         private readonly Fake<IVariableRegistry> _registryFake;
         private readonly IVariable _variable;

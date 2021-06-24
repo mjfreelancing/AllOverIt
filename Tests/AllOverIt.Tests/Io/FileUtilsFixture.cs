@@ -7,7 +7,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Io
 {
-    public class FileUtilsFixture : AoiFixtureBase
+    public class FileUtilsFixture : FixtureBase
     {
         public class PathIsSubFolder : FileUtilsFixture
         {

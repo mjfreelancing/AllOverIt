@@ -6,7 +6,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Tasks
 {
-    public class TaskHelperFixture : AoiFixtureBase
+    public class TaskHelperFixture : FixtureBase
     {
         public class WhenAll : TaskHelperFixture
         {

@@ -8,7 +8,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Events
 {
-    public class EventAggregatorFixture : AoiFixtureBase
+    public class EventAggregatorFixture : FixtureBase
     {
         private class EventDummy
         {

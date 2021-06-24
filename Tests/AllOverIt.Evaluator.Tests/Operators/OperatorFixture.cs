@@ -8,7 +8,7 @@ using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Operators
 {
-    public class OperatorFixture : AoiFixtureBase
+    public class OperatorFixture : FixtureBase
     {
         private readonly double _value;
         private OperatorDummy _operator;

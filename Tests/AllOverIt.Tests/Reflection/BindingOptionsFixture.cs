@@ -6,7 +6,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Reflection
 {
-    public class BindingOptionsFixture : AoiFixtureBase
+    public class BindingOptionsFixture : FixtureBase
     {
         public class Values : BindingOptionsFixture
         {

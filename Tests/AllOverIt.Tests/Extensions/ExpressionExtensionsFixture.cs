@@ -9,7 +9,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Extensions
 {
-    public class ExpressionExtensionsFixture : AoiFixtureBase
+    public class ExpressionExtensionsFixture : FixtureBase
     {
         private class DummyPropertyClass
         {

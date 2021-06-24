@@ -9,7 +9,7 @@ using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Variables
 {
-    public class VariableLookupFixture : AoiFixtureBase
+    public class VariableLookupFixture : FixtureBase
     {
         private VariableLookup _variableLookup;
         private readonly IVariableRegistry _registry;

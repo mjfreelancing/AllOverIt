@@ -6,7 +6,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Extensions
 {
-    public class DictionaryExtensionsFixture : AoiFixtureBase
+    public class DictionaryExtensionsFixture : FixtureBase
     {
         private readonly IDictionary<string, string> _dictionary;
         private readonly string _key;

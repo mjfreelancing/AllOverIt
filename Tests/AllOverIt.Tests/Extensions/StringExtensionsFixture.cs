@@ -10,7 +10,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Extensions
 {
-    public class StringExtensionsFixture : AoiFixtureBase
+    public class StringExtensionsFixture : FixtureBase
     {
         public enum DummyEnum : short
         {

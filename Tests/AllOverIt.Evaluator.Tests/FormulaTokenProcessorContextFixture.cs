@@ -6,7 +6,7 @@ using Xunit;
 
 namespace AllOverIt.Evaluator.Tests
 {
-    public class FormulaTokenProcessorContextFixture : AoiFixtureBase
+    public class FormulaTokenProcessorContextFixture : FixtureBase
     {
         private FormulaTokenProcessorContext _context;
 

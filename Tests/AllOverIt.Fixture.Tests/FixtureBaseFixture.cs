@@ -10,9 +10,9 @@ using Xunit;
 
 namespace AllOverIt.Fixture.Tests
 {
-    public class AoiFixtureBaseFixture : AoiFixtureBase
+    public class FixtureBaseFixture : FixtureBase
     {
-        public class Invoking_Action : AoiFixtureBaseFixture
+        public class Invoking_Action : FixtureBaseFixture
         {
             [Fact]
             public void Should_Throw_When_Action_Null()
@@ -35,7 +35,7 @@ namespace AllOverIt.Fixture.Tests
             }
         }
 
-        public class Invoking_Func : AoiFixtureBaseFixture
+        public class Invoking_Func : FixtureBaseFixture
         {
             [Fact]
             public void Should_Throw_When_Action_Null()
@@ -58,7 +58,7 @@ namespace AllOverIt.Fixture.Tests
             }
         }
 
-        public class Awaiting_Task : AoiFixtureBaseFixture
+        public class Awaiting_Task : FixtureBaseFixture
         {
             [Fact]
             public void Should_Throw_When_Action_Null()
@@ -81,7 +81,7 @@ namespace AllOverIt.Fixture.Tests
             }
         }
 
-        public class Awaiting_Task_Result : AoiFixtureBaseFixture
+        public class Awaiting_Task_Result : FixtureBaseFixture
         {
             [Fact]
             public void Should_Throw_When_Action_Null()
@@ -104,7 +104,7 @@ namespace AllOverIt.Fixture.Tests
             }
         }
 
-        public class Inject_ : AoiFixtureBaseFixture
+        public class Inject_ : FixtureBaseFixture
         {
             [Fact]
             public void Should_Inject_Constant()
@@ -146,7 +146,7 @@ namespace AllOverIt.Fixture.Tests
             }
         }
 
-        public class Register_No_Arg : AoiFixtureBaseFixture
+        public class Register_No_Arg : FixtureBaseFixture
         {
             [Fact]
             public void Should_Throw_If_Creator_Null()
@@ -187,7 +187,7 @@ namespace AllOverIt.Fixture.Tests
             }
         }
 
-        public class Register_One_Arg : AoiFixtureBaseFixture
+        public class Register_One_Arg : FixtureBaseFixture
         {
             [Fact]
             public void Should_Throw_If_Creator_Null()
@@ -228,7 +228,7 @@ namespace AllOverIt.Fixture.Tests
             }
         }
 
-        public class Register_Two_Args : AoiFixtureBaseFixture
+        public class Register_Two_Args : FixtureBaseFixture
         {
             [Fact]
             public void Should_Throw_If_Creator_Null()
@@ -269,7 +269,7 @@ namespace AllOverIt.Fixture.Tests
             }
         }
 
-        public class Register_Three_Args : AoiFixtureBaseFixture
+        public class Register_Three_Args : FixtureBaseFixture
         {
             [Fact]
             public void Should_Throw_If_Creator_Null()
@@ -311,7 +311,7 @@ namespace AllOverIt.Fixture.Tests
             }
         }
 
-        public class Register_Four_Args : AoiFixtureBaseFixture
+        public class Register_Four_Args : FixtureBaseFixture
         {
             [Fact]
             public void Should_Throw_If_Creator_Null()
@@ -353,7 +353,7 @@ namespace AllOverIt.Fixture.Tests
             }
         }
 
-        public class Create_ : AoiFixtureBaseFixture
+        public class Create_ : FixtureBaseFixture
         {
             [Fact]
             public void Should_Create_String()
@@ -394,7 +394,7 @@ namespace AllOverIt.Fixture.Tests
             }
         }
 
-        public class CreateExcluding_Int : AoiFixtureBaseFixture
+        public class CreateExcluding_Int : FixtureBaseFixture
         {
             [Fact]
             public void Should_Exclude_Value()
@@ -420,7 +420,7 @@ namespace AllOverIt.Fixture.Tests
             }
         }
 
-        public class CreateExcluding_Double : AoiFixtureBaseFixture
+        public class CreateExcluding_Double : FixtureBaseFixture
         {
             [Fact]
             public void Should_Exclude_Value()
@@ -446,7 +446,7 @@ namespace AllOverIt.Fixture.Tests
             }
         }
 
-        public class CreateExcluding_Enum : AoiFixtureBaseFixture
+        public class CreateExcluding_Enum : FixtureBaseFixture
         {
             [Fact]
             public void Should_Exclude_Value()
@@ -472,7 +472,7 @@ namespace AllOverIt.Fixture.Tests
             }
         }
 
-        public class CreateExcluding_Dummy : AoiFixtureBaseFixture
+        public class CreateExcluding_Dummy : FixtureBaseFixture
         {
             [Fact]
             public void Should_Exclude_Value()
@@ -498,7 +498,7 @@ namespace AllOverIt.Fixture.Tests
             }
         }
 
-        public class CreateMany_ : AoiFixtureBaseFixture
+        public class CreateMany_ : FixtureBaseFixture
         {
             [Fact]
             public void Should_Throw_When_Creating_Less_Than_One()
@@ -593,7 +593,7 @@ namespace AllOverIt.Fixture.Tests
             }
         }
 
-        public class CreateManyDistinct_ : AoiFixtureBaseFixture
+        public class CreateManyDistinct_ : FixtureBaseFixture
         {
             [Fact]
             public void Should_Throw_When_Creating_Less_Than_One()
@@ -654,7 +654,7 @@ namespace AllOverIt.Fixture.Tests
             }
         }
 
-        public class CreateManyExcluding_ : AoiFixtureBaseFixture
+        public class CreateManyExcluding_ : FixtureBaseFixture
         {
             [Fact]
             public void Should_Throw_When_Creating_Less_Than_One()
@@ -699,7 +699,7 @@ namespace AllOverIt.Fixture.Tests
             }
         }
 
-        public class GetWithinRange_Int : AoiFixtureBaseFixture
+        public class GetWithinRange_Int : FixtureBaseFixture
         {
             [Fact]
             public void Should_Throw_When_Min_Greater_Than_Max()
@@ -736,7 +736,7 @@ namespace AllOverIt.Fixture.Tests
             }
         }
 
-        public class GetWithinRange_Double : AoiFixtureBaseFixture
+        public class GetWithinRange_Double : FixtureBaseFixture
         {
             [Fact]
             public void Should_Throw_When_Min_Greater_Than_Max()
@@ -773,7 +773,7 @@ namespace AllOverIt.Fixture.Tests
             }
         }
 
-        public class GetManyWithinRange_Int : AoiFixtureBaseFixture
+        public class GetManyWithinRange_Int : FixtureBaseFixture
         {
             [Fact]
             public void Should_Throw_When_Min_Greater_Than_Max()
@@ -868,7 +868,7 @@ namespace AllOverIt.Fixture.Tests
             }
         }
 
-        public class GetManyWithinRange_Double : AoiFixtureBaseFixture
+        public class GetManyWithinRange_Double : FixtureBaseFixture
         {
             [Fact]
             public void Should_Throw_When_Min_Greater_Than_Max()
@@ -963,7 +963,7 @@ namespace AllOverIt.Fixture.Tests
             }
         }
 
-        public class AssertHandledAggregateException_ : AoiFixtureBaseFixture
+        public class AssertHandledAggregateException_ : FixtureBaseFixture
         {
             private readonly IList<Exception> _exceptions;
 

@@ -6,7 +6,7 @@ using System;
 
 namespace AllOverIt.Evaluator.Tests
 {
-    public class FormulaCompilerFixtureFunctionalBase : AoiFixtureBase
+    public class FormulaCompilerFixtureFunctionalBase : FixtureBase
     {
         protected readonly double _val1;
         protected readonly double _val2;

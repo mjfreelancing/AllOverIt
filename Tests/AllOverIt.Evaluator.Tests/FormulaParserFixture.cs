@@ -11,7 +11,7 @@ using Xunit;
 
 namespace AllOverIt.Evaluator.Tests
 {
-    public class FormulaParserFixture : AoiFixtureBase
+    public class FormulaParserFixture : FixtureBase
     {
         private readonly Fake<IFormulaReader> _formulaReaderFake;
         private readonly Fake<IVariableRegistry> _variableRegistryFake;

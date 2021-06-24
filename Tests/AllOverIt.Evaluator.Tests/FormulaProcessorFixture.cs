@@ -16,7 +16,7 @@ using Xunit;
 
 namespace AllOverIt.Evaluator.Tests
 {
-    public class FormulaProcessorFixture : AoiFixtureBase
+    public class FormulaProcessorFixture : FixtureBase
     {
         private readonly Expression _expression;
         private readonly Fake<IEvaluatorStack<string>> _operatorStackFake;

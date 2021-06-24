@@ -5,7 +5,7 @@ using Xunit;
 
 namespace AllOverIt.Fixture.Tests.Examples.Tests
 {
-    public class CalculatorFixture : AoiFixtureBase
+    public class CalculatorFixture : FixtureBase
     {
         private ICalculator Calculator { get; } = new Calculator();
 

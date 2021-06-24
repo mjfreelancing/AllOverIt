@@ -9,7 +9,7 @@ using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Operators
 {
-    public class UnaryOperatorFixture : AoiFixtureBase
+    public class UnaryOperatorFixture : FixtureBase
     {
         private readonly Expression _operand;
         private readonly Expression _resultExpression;

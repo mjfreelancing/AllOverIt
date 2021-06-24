@@ -12,7 +12,7 @@ using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Operations
 {
-    public class ArithmeticOperationBaseFixture : AoiFixtureBase
+    public class ArithmeticOperationBaseFixture : FixtureBase
     {
         private ArithmeticOperationDummy _operation;
 

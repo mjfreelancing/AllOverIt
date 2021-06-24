@@ -8,7 +8,7 @@ using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Operations
 {
-    public class UserDefinedMethodFactoryFixture : AoiFixtureBase
+    public class UserDefinedMethodFactoryFixture : FixtureBase
     {
         private UserDefinedMethodFactory _factory;
 

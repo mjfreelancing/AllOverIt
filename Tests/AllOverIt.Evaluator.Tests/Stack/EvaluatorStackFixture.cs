@@ -9,7 +9,7 @@ using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Stack
 {
-    public class EvaluatorStackFixture : AoiFixtureBase
+    public class EvaluatorStackFixture : FixtureBase
     {
         private EvaluatorStack<string> _stack;
 

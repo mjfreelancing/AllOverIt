@@ -8,7 +8,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Extensions
 {
-    public class TypeExtensionsFixture : AoiFixtureBase
+    public class TypeExtensionsFixture : FixtureBase
     {
         private class DummyBaseClass
         {

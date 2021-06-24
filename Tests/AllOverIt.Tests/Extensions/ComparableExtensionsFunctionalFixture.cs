@@ -8,7 +8,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Extensions
 {
-    public class ComparableExtensionsFunctionalFixture : AoiFixtureBase
+    public class ComparableExtensionsFunctionalFixture : FixtureBase
     {
         private class Person : IComparable<Person>
         {

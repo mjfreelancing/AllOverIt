@@ -13,7 +13,7 @@ using Xunit;
 
 namespace AllOverIt.Evaluator.Tests
 {
-    public class FormulaReaderFixture : AoiFixtureBase, IDisposable
+    public class FormulaReaderFixture : FixtureBase, IDisposable
     {
         private FormulaReader _formulaReader;
         private readonly Fake<TextReader> _textReaderFake;
