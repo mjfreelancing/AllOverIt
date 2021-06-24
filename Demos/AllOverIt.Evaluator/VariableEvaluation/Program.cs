@@ -9,11 +9,11 @@ namespace VariableEvaluation
     {
         static void Main(string[] args)
         {
-            var factory = new AoiVariableFactory();
+            var factory = new VariableFactory();
             var registry = factory.CreateVariableRegistry();
 
             // create a formula to calculate the slope between two points
-            var compiler = new AoiFormulaCompiler();
+            var compiler = new FormulaCompiler();
             var slope = compiler.Compile("(y2 - y1) / (x2 - x1)", registry).Resolver;
 
             var x1 = factory.CreateConstantVariable("x1");

@@ -6,17 +6,17 @@ namespace AllOverIt.Evaluator.Tests.Helpers
 {
     public sealed class EvaluatorHelpers
     {
-        public static AoiFormulaProcessorResult CreateFormulaProcessorResult(double value, IEnumerable<string> referencedVariableNames)
+        public static FormulaProcessorResult CreateFormulaProcessorResult(double value, IEnumerable<string> referencedVariableNames)
         {
             Expression<Func<double>> expression = () => value;
 
-            return new AoiFormulaProcessorResult(expression, referencedVariableNames);
+            return new FormulaProcessorResult(expression, referencedVariableNames);
         }
 
-        public static AoiFormulaCompilerResult CreateFormulaCompilerResult(double value, IEnumerable<string> referencedVariableNames)
+        public static FormulaCompilerResult CreateFormulaCompilerResult(double value, IEnumerable<string> referencedVariableNames)
         {
 
-            return new AoiFormulaCompilerResult(() => value, referencedVariableNames);
+            return new FormulaCompilerResult(() => value, referencedVariableNames);
         }
     }
 }

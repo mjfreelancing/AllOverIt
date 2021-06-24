@@ -8,23 +8,23 @@ namespace AllOverIt.Evaluator.Variables.Extensions
     public static class AoiVariableExtensions
     {
         // Associates a variable with the specified variable registry if it inherits from AoiVariableBase.
-        public static void SetVariableRegistry(this IAoiVariable variable, IAoiVariableRegistry variableRegistry)
+        public static void SetVariableRegistry(this IVariable variable, IVariableRegistry variableRegistry)
         {
             _ = variable.WhenNotNull(nameof(variable));
             _ = variableRegistry.WhenNotNull(nameof(variableRegistry));
 
-            if (variable is AoiVariableBase variableBase)
+            if (variable is VariableBase variableBase)
             {
                 variableBase.VariableRegistry = variableRegistry;
             }
         }
 
         // Gets a read-only list of all variables referenced by the variable (explicit and implicit).
-        public static IReadOnlyList<IAoiVariable> GetAllReferencedVariables(this IAoiVariable variable)
+        public static IReadOnlyList<IVariable> GetAllReferencedVariables(this IVariable variable)
         {
             _ = variable.WhenNotNull(nameof(variable));
 
-            var allVariables = new List<IAoiVariable>();
+            var allVariables = new List<IVariable>();
 
             GetAllReferencedVariables(variable.ReferencedVariables, allVariables);
 
@@ -33,7 +33,7 @@ namespace AllOverIt.Evaluator.Variables.Extensions
               .AsReadOnlyList();
         }
 
-        private static void GetAllReferencedVariables(IEnumerable<IAoiVariable> referencedVariables, List<IAoiVariable> allVariables)
+        private static void GetAllReferencedVariables(IEnumerable<IVariable> referencedVariables, List<IVariable> allVariables)
         {
             var variables = referencedVariables.AsReadOnlyList();
 

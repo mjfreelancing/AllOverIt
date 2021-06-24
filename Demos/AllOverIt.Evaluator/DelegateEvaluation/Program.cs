@@ -10,14 +10,14 @@ namespace DelegateEvaluation
         {
             var factorial = new Factorial();
 
-            var factory = new AoiVariableFactory();
+            var factory = new VariableFactory();
             var registry = factory.CreateVariableRegistry();
 
             // 'f' will be a variable that has its value determined by a delegate
             // this represents any situation where a value comes from an independant source (such as a database)
             registry.AddVariable(factory.CreateDelegateVariable("f", factorial.Calculate));
 
-            var compiler = new AoiFormulaCompiler();
+            var compiler = new FormulaCompiler();
             var compiled = compiler.Compile("5 * f", registry).Resolver;
 
             for (var i = 0u; i <= 10; ++i)

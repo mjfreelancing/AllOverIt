@@ -9,17 +9,17 @@ namespace MixedEvaluation
     {
         static void Main(string[] args)
         {
-            var compiler = new AoiFormulaCompiler();
-            var factory = new AoiVariableFactory();
+            var compiler = new FormulaCompiler();
+            var factory = new VariableFactory();
             var registry = factory.CreateVariableRegistry();
 
             // define variables to represent three points of a triangle
-            var x1 = new AoiMutableVariable("x1");
-            var y1 = new AoiMutableVariable("y1");
-            var x2 = new AoiMutableVariable("x2");
-            var y2 = new AoiMutableVariable("y2");
-            var x3 = new AoiMutableVariable("x3");
-            var y3 = new AoiMutableVariable("y3");
+            var x1 = new MutableVariable("x1");
+            var y1 = new MutableVariable("y1");
+            var x2 = new MutableVariable("x2");
+            var y2 = new MutableVariable("y2");
+            var x3 = new MutableVariable("x3");
+            var y3 = new MutableVariable("y3");
 
             // calculate distance between two points
             var distanceA = compiler.Compile("sqrt((x2-x1)^2+(y2-y1)^2)", registry).Resolver;
@@ -27,9 +27,9 @@ namespace MixedEvaluation
             var distanceC = compiler.Compile("sqrt((x3-x2)^2+(y3-y2)^2)", registry).Resolver;
 
             // define variables to calculate the length of each side
-            var a = new AoiDelegateVariable("a", distanceA);
-            var b = new AoiDelegateVariable("b", distanceB);
-            var c = new AoiDelegateVariable("c", distanceC);
+            var a = new DelegateVariable("a", distanceA);
+            var b = new DelegateVariable("b", distanceB);
+            var c = new DelegateVariable("c", distanceC);
 
             // and use this to find the area of the bound triangle using Heron's formula
             var herons = compiler.Compile("0.25 * sqrt((4*a^2*b^2)-(a^2+b^2-c^2)^2)", registry).Resolver;

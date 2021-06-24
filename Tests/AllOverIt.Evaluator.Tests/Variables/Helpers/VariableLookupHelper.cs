@@ -9,9 +9,9 @@ namespace AllOverIt.Evaluator.Tests.Variables.Helpers
 {
     internal static class VariableLookupHelper
     {
-        public static IAoiVariableRegistry GetKnownVariableRegistry()
+        public static IVariableRegistry GetKnownVariableRegistry()
         {
-            var factory = new AoiVariableFactory();
+            var factory = new VariableFactory();
             var registry = factory.CreateVariableRegistry();
 
             //                                 References                     Referencing
@@ -37,7 +37,7 @@ namespace AllOverIt.Evaluator.Tests.Variables.Helpers
             return registry;
         }
 
-        public static IDictionary<IAoiVariable, IList<IAoiVariable>> GetExpectedReferencedExplicit(IAoiVariableRegistry registry)
+        public static IDictionary<IVariable, IList<IVariable>> GetExpectedReferencedExplicit(IVariableRegistry registry)
         {
             var a = registry.Variables.Single(kv => kv.Key == "a").Value;
             var b = registry.Variables.Single(kv => kv.Key == "b").Value;
@@ -47,19 +47,19 @@ namespace AllOverIt.Evaluator.Tests.Variables.Helpers
             var f = registry.Variables.Single(kv => kv.Key == "f").Value;
             var g = registry.Variables.Single(kv => kv.Key == "g").Value;
 
-            return new Dictionary<IAoiVariable, IList<IAoiVariable>>
+            return new Dictionary<IVariable, IList<IVariable>>
             {
-                [a] = new List<IAoiVariable>(),
-                [b] = new List<IAoiVariable>(new[] { a }),
-                [c] = new List<IAoiVariable>(new[] { a, b }),
-                [d] = new List<IAoiVariable>(new[] { c }),
-                [e] = new List<IAoiVariable>(new[] { a, b, c }),
-                [f] = new List<IAoiVariable>(new[] { b }),
-                [g] = new List<IAoiVariable>(new[] { e })
+                [a] = new List<IVariable>(),
+                [b] = new List<IVariable>(new[] { a }),
+                [c] = new List<IVariable>(new[] { a, b }),
+                [d] = new List<IVariable>(new[] { c }),
+                [e] = new List<IVariable>(new[] { a, b, c }),
+                [f] = new List<IVariable>(new[] { b }),
+                [g] = new List<IVariable>(new[] { e })
             };
         }
 
-        public static IDictionary<IAoiVariable, IList<IAoiVariable>> GetExpectedReferencedAll(IAoiVariableRegistry registry)
+        public static IDictionary<IVariable, IList<IVariable>> GetExpectedReferencedAll(IVariableRegistry registry)
         {
             var a = registry.Variables.Single(kv => kv.Key == "a").Value;
             var b = registry.Variables.Single(kv => kv.Key == "b").Value;
@@ -69,19 +69,19 @@ namespace AllOverIt.Evaluator.Tests.Variables.Helpers
             var f = registry.Variables.Single(kv => kv.Key == "f").Value;
             var g = registry.Variables.Single(kv => kv.Key == "g").Value;
 
-            return new Dictionary<IAoiVariable, IList<IAoiVariable>>
+            return new Dictionary<IVariable, IList<IVariable>>
             {
-                [a] = new List<IAoiVariable>(),
-                [b] = new List<IAoiVariable>(new[] { a }),
-                [c] = new List<IAoiVariable>(new[] { a, b }),
-                [d] = new List<IAoiVariable>(new[] { a, b, c }),
-                [e] = new List<IAoiVariable>(new[] { a, b, c }),
-                [f] = new List<IAoiVariable>(new[] { a, b }),
-                [g] = new List<IAoiVariable>(new[] { a, b, c, e })
+                [a] = new List<IVariable>(),
+                [b] = new List<IVariable>(new[] { a }),
+                [c] = new List<IVariable>(new[] { a, b }),
+                [d] = new List<IVariable>(new[] { a, b, c }),
+                [e] = new List<IVariable>(new[] { a, b, c }),
+                [f] = new List<IVariable>(new[] { a, b }),
+                [g] = new List<IVariable>(new[] { a, b, c, e })
             };
         }
 
-        public static IDictionary<IAoiVariable, IList<IAoiVariable>> GetExpectedReferencingExplicit(IAoiVariableRegistry registry)
+        public static IDictionary<IVariable, IList<IVariable>> GetExpectedReferencingExplicit(IVariableRegistry registry)
         {
             var a = registry.Variables.Single(kv => kv.Key == "a").Value;
             var b = registry.Variables.Single(kv => kv.Key == "b").Value;
@@ -91,19 +91,19 @@ namespace AllOverIt.Evaluator.Tests.Variables.Helpers
             var f = registry.Variables.Single(kv => kv.Key == "f").Value;
             var g = registry.Variables.Single(kv => kv.Key == "g").Value;
 
-            return new Dictionary<IAoiVariable, IList<IAoiVariable>>
+            return new Dictionary<IVariable, IList<IVariable>>
             {
-                [a] = new List<IAoiVariable>(new[] { b, c, e }),
-                [b] = new List<IAoiVariable>(new[] { c, e, f }),
-                [c] = new List<IAoiVariable>(new[] { d, e }),
-                [d] = new List<IAoiVariable>(),
-                [e] = new List<IAoiVariable>(new[] { g }),
-                [f] = new List<IAoiVariable>(),
-                [g] = new List<IAoiVariable>()
+                [a] = new List<IVariable>(new[] { b, c, e }),
+                [b] = new List<IVariable>(new[] { c, e, f }),
+                [c] = new List<IVariable>(new[] { d, e }),
+                [d] = new List<IVariable>(),
+                [e] = new List<IVariable>(new[] { g }),
+                [f] = new List<IVariable>(),
+                [g] = new List<IVariable>()
             };
         }
 
-        public static IDictionary<IAoiVariable, IList<IAoiVariable>> GetExpectedReferencingAll(IAoiVariableRegistry registry)
+        public static IDictionary<IVariable, IList<IVariable>> GetExpectedReferencingAll(IVariableRegistry registry)
         {
             var a = registry.Variables.Single(kv => kv.Key == "a").Value;
             var b = registry.Variables.Single(kv => kv.Key == "b").Value;
@@ -113,20 +113,20 @@ namespace AllOverIt.Evaluator.Tests.Variables.Helpers
             var f = registry.Variables.Single(kv => kv.Key == "f").Value;
             var g = registry.Variables.Single(kv => kv.Key == "g").Value;
 
-            return new Dictionary<IAoiVariable, IList<IAoiVariable>>
+            return new Dictionary<IVariable, IList<IVariable>>
             {
-                [a] = new List<IAoiVariable>(new[] { b, c, d, e, f, g }),
-                [b] = new List<IAoiVariable>(new[] { c, d, e, f, g }),
-                [c] = new List<IAoiVariable>(new[] { d, e, g }),
-                [d] = new List<IAoiVariable>(),
-                [e] = new List<IAoiVariable>(new[] { g }),
-                [f] = new List<IAoiVariable>(),
-                [g] = new List<IAoiVariable>()
+                [a] = new List<IVariable>(new[] { b, c, d, e, f, g }),
+                [b] = new List<IVariable>(new[] { c, d, e, f, g }),
+                [c] = new List<IVariable>(new[] { d, e, g }),
+                [d] = new List<IVariable>(),
+                [e] = new List<IVariable>(new[] { g }),
+                [f] = new List<IVariable>(),
+                [g] = new List<IVariable>()
             };
         }
 
-        public static void AssertExpectedLookup(IDictionary<IAoiVariable, IList<IAoiVariable>> testCases,
-          Func<IAoiVariable, IEnumerable<IAoiVariable>> actualResults)
+        public static void AssertExpectedLookup(IDictionary<IVariable, IList<IVariable>> testCases,
+          Func<IVariable, IEnumerable<IVariable>> actualResults)
         {
             foreach (var variable in testCases.Keys)
             {

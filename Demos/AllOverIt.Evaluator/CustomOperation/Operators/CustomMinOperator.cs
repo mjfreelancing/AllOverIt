@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace CustomOperation.Operators
 {
-    public sealed class CustomMinOperator : AoiBinaryOperator
+    public sealed class CustomMinOperator : BinaryOperator
     {
         public CustomMinOperator(Expression value1, Expression value2)
             : base(CreateExpression, value1, value2)

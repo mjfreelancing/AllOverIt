@@ -6,7 +6,7 @@ namespace ParallelEvaluation
 {
     internal class RGBCalculator
     {
-        private IAoiVariableRegistry Variables { get; }
+        private IVariableRegistry Variables { get; }
         private readonly Func<double> _redFunc;
         private readonly Func<double> _greenFunc;
         private readonly Func<double> _blueFunc;
@@ -17,13 +17,13 @@ namespace ParallelEvaluation
 
         public RGBCalculator(string redFormula, string greenFormula, string blueFormula)
         {
-            var compiler = new AoiFormulaCompiler();
+            var compiler = new FormulaCompiler();
 
-            var variableFactory = new AoiVariableFactory();
+            var variableFactory = new VariableFactory();
             Variables = variableFactory.CreateVariableRegistry();
 
-            Variables.AddVariable(new AoiMutableVariable("x"));
-            Variables.AddVariable(new AoiMutableVariable("y"));
+            Variables.AddVariable(new MutableVariable("x"));
+            Variables.AddVariable(new MutableVariable("y"));
 
             _redFunc = compiler.Compile(redFormula, Variables).Resolver;
             _greenFunc = compiler.Compile(greenFormula, Variables).Resolver;

@@ -25,7 +25,7 @@ namespace BasicEvaluation
                 "10/0"
             };
 
-            var compiler = new AoiFormulaCompiler();
+            var compiler = new FormulaCompiler();
 
             foreach(var item in formulae)
             {

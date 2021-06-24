@@ -44,16 +44,16 @@ namespace CustomOperation
             var xValues = new List<int>();
             var yValues = new List<int>();
 
-            var parser = AoiFormulaParser.Create(
-              new AoiArithmeticOperationFactory(),
+            var parser = FormulaParser.Create(
+              new ArithmeticOperationFactory(),
               CreateUserDefinedMethodFactory<GreatestCommonDenominatorOperation>("GCD"));
 
-            var gcdCompiler = new AoiFormulaCompiler(parser);
+            var gcdCompiler = new FormulaCompiler(parser);
 
-            var xValue = new AoiMutableVariable("x");
-            var yValue = new AoiMutableVariable("y");
+            var xValue = new MutableVariable("x");
+            var yValue = new MutableVariable("y");
 
-            var gcdFactory = new AoiVariableFactory();
+            var gcdFactory = new VariableFactory();
             var gcdRegistry = gcdFactory.CreateVariableRegistry();
             gcdRegistry.AddVariables(xValue, yValue);
 
@@ -83,9 +83,9 @@ namespace CustomOperation
             }
         }
 
-        private static AoiArithmeticOperationFactory CreateArithmeticOperationFactory()
+        private static ArithmeticOperationFactory CreateArithmeticOperationFactory()
         {
-            var operationFactory = new AoiArithmeticOperationFactory();
+            var operationFactory = new ArithmeticOperationFactory();
 
             operationFactory.RegisterOperation(
               "?",                                  // the mathematical operator symbol
@@ -96,10 +96,10 @@ namespace CustomOperation
             return operationFactory;
         }
 
-        private static AoiUserDefinedMethodFactory CreateUserDefinedMethodFactory<TOperationType>(string name)
-          where TOperationType : AoiArithmeticOperationBase, new()
+        private static UserDefinedMethodFactory CreateUserDefinedMethodFactory<TOperationType>(string name)
+          where TOperationType : ArithmeticOperationBase, new()
         {
-            var userDefinedMethodFactory = new AoiUserDefinedMethodFactory();
+            var userDefinedMethodFactory = new UserDefinedMethodFactory();
             userDefinedMethodFactory.RegisterMethod<TOperationType>(name);
 
             return userDefinedMethodFactory;
@@ -107,11 +107,11 @@ namespace CustomOperation
 
         private static double EvaluateManually(string formula)
         {
-            var parser = AoiFormulaParser.Create(
+            var parser = FormulaParser.Create(
               CreateArithmeticOperationFactory(),
               CreateUserDefinedMethodFactory<CustomMinOperation>("MIN"));
 
-            var compiler = new AoiFormulaCompiler(parser);
+            var compiler = new FormulaCompiler(parser);
 
             return compiler.GetResult(formula);
         }

@@ -9,7 +9,7 @@ namespace VariableLookup
     {
         static void Main(string[] args)
         {
-            var factory = new AoiVariableFactory();
+            var factory = new VariableFactory();
             var registry = factory.CreateVariableRegistry();
 
             //                                 References                     Referencing
@@ -32,7 +32,7 @@ namespace VariableLookup
 
             registry.Add(a, b, c, d, e, f, g);
 
-            var lookup = new AoiVariableLookup(registry);   // can be created before populating variables if required
+            var lookup = new AllOverIt.Evaluator.Variables.VariableLookup(registry);   // can be created before populating variables if required
             ReportVariables(lookup, a);
             ReportVariables(lookup, b);
             ReportVariables(lookup, c);
@@ -46,12 +46,12 @@ namespace VariableLookup
             Console.ReadKey();
         }
 
-        private static void ReportVariables(IAoiVariableLookup lookup, IAoiVariable variable)
+        private static void ReportVariables(IVariableLookup lookup, IVariable variable)
         {
-            var explicitReferences = lookup.GetReferencedVariables(variable, AoiVariableLookupMode.Explicit);
-            var allReferences = lookup.GetReferencedVariables(variable, AoiVariableLookupMode.All);
-            var explicitReferencing = lookup.GetReferencingVariables(variable, AoiVariableLookupMode.Explicit);
-            var allReferencing = lookup.GetReferencingVariables(variable, AoiVariableLookupMode.All);
+            var explicitReferences = lookup.GetReferencedVariables(variable, VariableLookupMode.Explicit);
+            var allReferences = lookup.GetReferencedVariables(variable, VariableLookupMode.All);
+            var explicitReferencing = lookup.GetReferencingVariables(variable, VariableLookupMode.Explicit);
+            var allReferencing = lookup.GetReferencingVariables(variable, VariableLookupMode.All);
 
             Console.WriteLine($"Variable {variable.Name}");
 

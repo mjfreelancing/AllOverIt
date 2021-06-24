@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AllOverIt.Evaluator.Tests.Variables.Dummies
 {
-    internal class VariableBaseDummy : AoiVariableBase
+    internal class VariableBaseDummy : VariableBase
     {
         private double _value;
 

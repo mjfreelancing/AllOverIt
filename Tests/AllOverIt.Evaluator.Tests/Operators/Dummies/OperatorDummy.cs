@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace AllOverIt.Evaluator.Tests.Operators.Dummies
 {
-    internal class OperatorDummy : AoiOperator<Func<Expression>>
+    internal class OperatorDummy : Operator<Func<Expression>>
     {
         public OperatorDummy(Func<Expression> operatorType)
             : base(operatorType)

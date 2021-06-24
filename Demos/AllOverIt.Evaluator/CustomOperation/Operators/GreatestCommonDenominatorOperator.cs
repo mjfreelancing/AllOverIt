@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace CustomOperation.Operators
 {
-    public sealed class GreatestCommonDenominatorOperator : AoiBinaryOperator
+    public sealed class GreatestCommonDenominatorOperator : BinaryOperator
     {
         public GreatestCommonDenominatorOperator(Expression value1, Expression value2)
             : base(CreateExpression, value1, value2)
