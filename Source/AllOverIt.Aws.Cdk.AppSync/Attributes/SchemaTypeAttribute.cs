@@ -8,7 +8,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Attributes
         public GraphqlSchemaType GraphqlSchemaType { get; }
         public string Name { get; }
 
-        public SchemaTypeAttribute(GraphqlSchemaType graphqlSchemaType = GraphqlSchemaType.Type, string name = default)
+        public SchemaTypeAttribute(string name, GraphqlSchemaType graphqlSchemaType = GraphqlSchemaType.Type)
         {
             GraphqlSchemaType = graphqlSchemaType;
             Name = name;

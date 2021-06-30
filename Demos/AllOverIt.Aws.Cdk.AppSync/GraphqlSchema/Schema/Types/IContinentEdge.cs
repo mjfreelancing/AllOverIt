@@ -4,8 +4,8 @@ using AllOverIt.Aws.Cdk.AppSync.Schema.Types;
 
 namespace GraphqlSchema.Schema.Types
 {
-    [SchemaType(GraphqlSchemaType.Type, "PowerConnection")]
-    internal interface IPowerConnection : IConnection<IPowerEdge, ITimeWatts>
+    [SchemaType("ContinentEdge", GraphqlSchemaType.Type)]
+    internal interface IContinentEdge : IEdge<IContinent>
     {
     }
 }

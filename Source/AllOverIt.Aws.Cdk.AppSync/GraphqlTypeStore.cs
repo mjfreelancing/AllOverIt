@@ -3,6 +3,7 @@ using AllOverIt.Aws.Cdk.AppSync.Exceptions;
 using AllOverIt.Aws.Cdk.AppSync.Extensions;
 using AllOverIt.Aws.Cdk.AppSync.Factories;
 using AllOverIt.Aws.Cdk.AppSync.MappingTemplates;
+using AllOverIt.Aws.Cdk.AppSync.Schema.Types;
 using AllOverIt.Extensions;
 using AllOverIt.Helpers;
 using Amazon.CDK.AWS.AppSync;
@@ -25,14 +26,21 @@ namespace AllOverIt.Aws.Cdk.AppSync
 
         private readonly IDictionary<string, Func<bool, bool, bool, GraphqlType>> _fieldTypes = new Dictionary<string, Func<bool, bool, bool, GraphqlType>>
         {
+            {nameof(GraphqlTypeId), (isRequired, isList, isRequiredList) => GraphqlType.Id(CreateTypeOptions(isRequired, isList, isRequiredList))},
+            {nameof(AwsTypePhone), (isRequired, isList, isRequiredList) => GraphqlType.AwsPhone(CreateTypeOptions(isRequired, isList, isRequiredList))},
+            {nameof(AwsTypeEmail), (isRequired, isList, isRequiredList) => GraphqlType.AwsEmail(CreateTypeOptions(isRequired, isList, isRequiredList))},
+            {nameof(AwsTypeIpAddress), (isRequired, isList, isRequiredList) => GraphqlType.AwsIpAddress(CreateTypeOptions(isRequired, isList, isRequiredList))},
+            {nameof(AwsTypeJson), (isRequired, isList, isRequiredList) => GraphqlType.AwsJson(CreateTypeOptions(isRequired, isList, isRequiredList))},
+            {nameof(AwsTypeUrl), (isRequired, isList, isRequiredList) => GraphqlType.AwsUrl(CreateTypeOptions(isRequired, isList, isRequiredList))},
+            {nameof(AwsTypeTimestamp), (isRequired, isList, isRequiredList) => GraphqlType.AwsTimestamp(CreateTypeOptions(isRequired, isList, isRequiredList))},
+            {nameof(AwsTypeDate), (isRequired, isList, isRequiredList) => GraphqlType.AwsDate(CreateTypeOptions(isRequired, isList, isRequiredList))},
+            {nameof(AwsTypeTime), (isRequired, isList, isRequiredList) => GraphqlType.AwsTime(CreateTypeOptions(isRequired, isList, isRequiredList))},
+            {nameof(AwsTypeDateTime), (isRequired, isList, isRequiredList) => GraphqlType.AwsDateTime(CreateTypeOptions(isRequired, isList, isRequiredList))},
             {nameof(Int32), (isRequired, isList, isRequiredList) => GraphqlType.Int(CreateTypeOptions(isRequired, isList, isRequiredList))},
             {nameof(Double), (isRequired, isList, isRequiredList) => GraphqlType.Float(CreateTypeOptions(isRequired, isList, isRequiredList))},
             {nameof(Single), (isRequired, isList, isRequiredList) => GraphqlType.Float(CreateTypeOptions(isRequired, isList, isRequiredList))},
             {nameof(Boolean), (isRequired, isList, isRequiredList) => GraphqlType.Boolean(CreateTypeOptions(isRequired, isList, isRequiredList))},
-            {nameof(String), (isRequired, isList, isRequiredList) => GraphqlType.String(CreateTypeOptions(isRequired, isList, isRequiredList))},
-            {nameof(GraphqlType.AwsDate), (isRequired, isList, isRequiredList) => GraphqlType.AwsDate(CreateTypeOptions(isRequired, isList, isRequiredList))},
-            {nameof(GraphqlType.AwsTime), (isRequired, isList, isRequiredList) => GraphqlType.AwsTime(CreateTypeOptions(isRequired, isList, isRequiredList))},
-            {nameof(GraphqlType.AwsDateTime), (isRequired, isList, isRequiredList) => GraphqlType.AwsDateTime(CreateTypeOptions(isRequired, isList, isRequiredList))}
+            {nameof(String), (isRequired, isList, isRequiredList) => GraphqlType.String(CreateTypeOptions(isRequired, isList, isRequiredList))}
         };
 
         public GraphqlTypeStore(GraphqlApi graphqlApi, IMappingTemplates mappingTemplates, IDataSourceFactory dataSourceFactory,
@@ -178,7 +186,6 @@ namespace AllOverIt.Aws.Cdk.AppSync
                 );
 
                 return intermediateType;
-
             }
             finally
             {
@@ -208,13 +215,14 @@ namespace AllOverIt.Aws.Cdk.AppSync
                                               $"{nameof(SchemaTypeRequiredAttribute)} is used to declare a property required and its absence makes it optional.");
                 }
 
+                // todo: check if the type is an Aws Scalar type
+
                 if (schemaTypeDescriptor.SchemaType == GraphqlSchemaType.Input && propertyType != typeof(string) && (propertyType.IsInterface || propertyType.IsClass))
                 {
-                    //var propertyTypeDescriptor = propertyType.GetGraphqlTypeDescriptor();
                     var propertyTypeDescriptor = propertyInfo.GetGraphqlPropertyDescriptor();
 
-                    // make sure that property INPUT types are associated with a parent INPUT type
-                    if (propertyTypeDescriptor.SchemaType != GraphqlSchemaType.Input)
+                    // make sure that property INPUT types are associated with a parent INPUT type (or an Aws scalar)
+                    if (propertyTypeDescriptor.SchemaType != GraphqlSchemaType.Input && propertyTypeDescriptor.SchemaType != GraphqlSchemaType.Scalar)
                     {
                         throw new InvalidOperationException($"The property '{propertyInfo.Name}' is not an INPUT type ({propertyType.Name})");
                     }

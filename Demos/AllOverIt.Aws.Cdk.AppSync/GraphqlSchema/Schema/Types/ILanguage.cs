@@ -3,13 +3,13 @@ using AllOverIt.Aws.Cdk.AppSync.Attributes;
 
 namespace GraphqlSchema.Schema.Types
 {
-    [SchemaType(GraphqlSchemaType.Type, "UploadMultiPart")]
-    internal interface IUploadMultiPart
+    [SchemaType("Language", GraphqlSchemaType.Type)]
+    internal interface ILanguage
     {
         [SchemaTypeRequired]
-        public int PartNumber { get; }
+        public string Code { get; }
 
         [SchemaTypeRequired]
-        public string Url { get; }
+        public string Name { get; }
     }
 }

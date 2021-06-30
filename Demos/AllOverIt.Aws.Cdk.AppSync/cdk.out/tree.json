@@ -12,26 +12,34 @@
           "version": "1.108.1"
         }
       },
-      "Stack": {
-        "id": "Stack",
-        "path": "Stack",
+      "AppSyncDemoV1": {
+        "id": "AppSyncDemoV1",
+        "path": "AppSyncDemoV1",
         "children": {
+          "ExportGetCountriesImport": {
+            "id": "ExportGetCountriesImport",
+            "path": "AppSyncDemoV1/ExportGetCountriesImport",
+            "constructInfo": {
+              "fqn": "@aws-cdk/core.CfnOutput",
+              "version": "1.108.1"
+            }
+          },
           "AppSync": {
             "id": "AppSync",
-            "path": "Stack/AppSync",
+            "path": "AppSyncDemoV1/AppSync",
             "children": {
               "GraphQl": {
                 "id": "GraphQl",
-                "path": "Stack/AppSync/GraphQl",
+                "path": "AppSyncDemoV1/AppSync/GraphQl",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "Stack/AppSync/GraphQl/Resource",
+                    "path": "AppSyncDemoV1/AppSync/GraphQl/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::AppSync::GraphQLApi",
                       "aws:cdk:cloudformation:props": {
                         "authenticationType": "API_KEY",
-                        "name": "SolarDigest V1"
+                        "name": "AppSyncDemo V1"
                       }
                     },
                     "constructInfo": {
@@ -41,7 +49,7 @@
                   },
                   "Schema": {
                     "id": "Schema",
-                    "path": "Stack/AppSync/GraphQl/Schema",
+                    "path": "AppSyncDemoV1/AppSync/GraphQl/Schema",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::AppSync::GraphQLSchema",
                       "aws:cdk:cloudformation:props": {
@@ -51,7 +59,7 @@
                             "ApiId"
                           ]
                         },
-                        "definition": "schema {\n  query: Query\n}\ntype TimeWatts {\n  time: String!\n  watts: Float!\n  wattHour: Float!\n}\ntype PowerEdge {\n  node: TimeWatts!\n  cursor: String!\n}\ntype PageInfo {\n  previousPageCursor: String\n  nextPageCursor: String\n}\ntype PowerConnection {\n  edges: [PowerEdge!]\n  nodes: [TimeWatts!]\n  totalCount: Int!\n  pageInfo: PageInfo\n}\nenum MeterType {\n  PRODUCTION\n  CONSUMPTION\n  SELF_CONSUMPTION\n  FEED_IN\n  PURCHASED\n}\nenum SummaryType {\n  DAILY_AVERAGE\n}\ninput PowerFilterInput {\n  startDate: AWSDate!\n  endDate: AWSDate!\n  meterType: MeterType!\n  summaryType: SummaryType!\n}\ntype Site {\n  id: String!\n  startDate: AWSDate!\n  contactName: String!\n  contactEmail: String!\n  timeZoneId: String!\n  lastAggregationDate: String\n  lastSummaryDate: String\n  lastRefreshDateTime: String\n  power(limit: Int startCursor: String filter: PowerFilterInput!): PowerConnection!\n}\ntype Query {\n  site(id: String!): Site!\n  uploadUrl(input: UploadUrlInput!): String!\n  uploadMultiPartUrls(input: UploadMultiPartInput!): UploadMultiParts!\n  uploadMultiPartAbort(input: UploadMultiPartAbortInput!): String!\n  uploadMultiPartComplete(input: UploadMultiPartCompleteInput!): String!\n  downloadUrl(filename: String!): String!\n}\ninput UploadUrlInput {\n  filename: String!\n}\ntype UploadMultiPart {\n  partNumber: Int!\n  url: String!\n}\ntype UploadMultiParts {\n  uploadId: String!\n  parts: [UploadMultiPart!]\n}\ninput UploadMultiPartInput {\n  filename: String!\n  partCount: Int!\n}\ninput UploadMultiPartAbortInput {\n  filename: String!\n  uploadId: Int!\n}\ninput UploadMultiPartETagInput {\n  partNumber: Int!\n  eTag: String!\n}\ninput UploadMultiPartCompleteInput {\n  filename: String!\n  uploadId: Int!\n  eTags: [UploadMultiPartETagInput!]\n}\n"
+                        "definition": "schema {\n  query: Query\n  mutation: Mutation\n  subscription: Subscription\n}\ntype Language {\n  code: String!\n  name: String!\n}\ntype Country {\n  code: ID!\n  name: String!\n  currency: String!\n  languages: [Language!]!\n}\ntype Continent {\n  code: ID!\n  name: String!\n  countries: [Country!]!\n}\ninput StringQueryOperatorInput {\n  eq: String\n  ne: String\n  gt: String\n  gte: String\n  lt: String\n  lte: String\n  in: String\n  notIn: String\n  regex: String\n}\ninput ContinentFilterInput {\n  code: StringQueryOperatorInput\n}\ntype Query {\n  continents(filter: ContinentFilterInput!): [Continent!]!\n  allContinents: ContinentConnection!\n  countries(filter: CountryFilterInput!): [Country!]!\n  allCountries: CountryConnection!\n  language(code: String!): Language!\n  languages: [Language!]!\n  countryDate(countryId: ID! dateType: DateType!): AWSDate!\n  countryTime(countryId: ID! dateType: DateType!): AWSTime!\n  countryDateTime(countryId: ID! dateType: DateType!): AWSDateTime!\n  countryTimestamp(countryId: ID! dateType: DateType!): AWSTimestamp!\n  countryDates(countryId: ID! dateType: DateType!): [AWSDate!]!\n  countryTimes(countryId: ID! dateType: DateType!): [AWSTime!]!\n  countryDateTimes(countryId: ID! dateType: DateType!): [AWSDateTime!]!\n  countryTimestamps(countryId: ID! dateType: DateType!): [AWSTimestamp!]!\n  countryByDate(countryId: ID! dateType: DateType! date: AWSDate!): Country!\n  countryByTime(countryId: ID! dateType: DateType! time: AWSTime!): Country!\n  countryByDateTime(countryId: ID! dateType: DateType! dateTime: AWSDateTime!): Country!\n  countryByTimestamp(countryId: ID! dateType: DateType! timestamp: AWSTimestamp!): Country!\n  countriesByDates(countryId: ID! dateType: DateType! dates: [AWSDate!]!): [Country!]!\n  countriesByTimes(countryId: ID! dateType: DateType! times: [AWSTime!]!): [Country!]!\n  countriesByDateTimes(countryId: ID! dateType: DateType! dateTimes: [AWSDateTime]!): [Country!]!\n  countriesByTimestamps(countryId: ID! dateType: DateType! timestamps: [AWSTimestamp]!): [Country!]!\n}\ntype ContinentEdge {\n  node: Continent!\n  cursor: String!\n}\ntype PageInfo {\n  previousPageCursor: String\n  nextPageCursor: String\n}\ntype ContinentConnection {\n  edges: [ContinentEdge!]!\n  nodes: [Continent!]!\n  totalCount: Int!\n  pageInfo: PageInfo\n}\ninput CountryFilterInput {\n  code: StringQueryOperatorInput\n  currency: StringQueryOperatorInput\n  continent: StringQueryOperatorInput\n}\ntype CountryEdge {\n  node: Country!\n  cursor: String!\n}\ntype CountryConnection {\n  edges: [CountryEdge!]!\n  nodes: [Country!]!\n  totalCount: Int!\n  pageInfo: PageInfo\n}\nenum DateType {\n  DISCOVERED\n  SETTLED\n}\ninput LanguageInput {\n  code: String!\n  name: String!\n}\ninput CountryInput {\n  code: ID!\n  name: String!\n  currency: String!\n  languages: [LanguageInput!]!\n}\ntype Mutation {\n  addCountry(country: CountryInput!): Country!\n  updateCountry(country: CountryInput!): Country!\n}\ntype Subscription {\n  addedCountry(code: ID): Country!\n  @aws_subscribe(mutations: [\"addCountry\"])\n}\n"
                       }
                     },
                     "constructInfo": {
@@ -61,7 +69,7 @@
                   },
                   "DefaultApiKey": {
                     "id": "DefaultApiKey",
-                    "path": "Stack/AppSync/GraphQl/DefaultApiKey",
+                    "path": "AppSyncDemoV1/AppSync/GraphQl/DefaultApiKey",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::AppSync::ApiKey",
                       "aws:cdk:cloudformation:props": {
@@ -71,7 +79,7 @@
                             "ApiId"
                           ]
                         },
-                        "expires": 1655851760
+                        "expires": 1656586639
                       }
                     },
                     "constructInfo": {
@@ -79,13 +87,13 @@
                       "version": "1.108.1"
                     }
                   },
-                  "SitepowerResolver": {
-                    "id": "SitepowerResolver",
-                    "path": "Stack/AppSync/GraphQl/SitepowerResolver",
+                  "QuerycontinentsResolver": {
+                    "id": "QuerycontinentsResolver",
+                    "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycontinentsResolver",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "Stack/AppSync/GraphQl/SitepowerResolver/Resource",
+                        "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycontinentsResolver/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::AppSync::Resolver",
                           "aws:cdk:cloudformation:props": {
@@ -95,9 +103,9 @@
                                 "ApiId"
                               ]
                             },
-                            "fieldName": "power",
-                            "typeName": "Site",
-                            "dataSourceName": "SolarDigestGetSitePowerSummaryDataSource",
+                            "fieldName": "continents",
+                            "typeName": "Query",
+                            "dataSourceName": "AppSyncDemoContinentsDataSource",
                             "kind": "UNIT",
                             "requestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
                             "responseMappingTemplate": "$util.toJson($ctx.result.payload)"
@@ -114,13 +122,13 @@
                       "version": "1.108.1"
                     }
                   },
-                  "QuerysiteResolver": {
-                    "id": "QuerysiteResolver",
-                    "path": "Stack/AppSync/GraphQl/QuerysiteResolver",
+                  "QueryallContinentsResolver": {
+                    "id": "QueryallContinentsResolver",
+                    "path": "AppSyncDemoV1/AppSync/GraphQl/QueryallContinentsResolver",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "Stack/AppSync/GraphQl/QuerysiteResolver/Resource",
+                        "path": "AppSyncDemoV1/AppSync/GraphQl/QueryallContinentsResolver/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::AppSync::Resolver",
                           "aws:cdk:cloudformation:props": {
@@ -130,9 +138,9 @@
                                 "ApiId"
                               ]
                             },
-                            "fieldName": "site",
+                            "fieldName": "allContinents",
                             "typeName": "Query",
-                            "dataSourceName": "SolarDigestGetSiteDataSource",
+                            "dataSourceName": "AppSyncDemoGetAllContinentsDataSource",
                             "kind": "UNIT",
                             "requestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
                             "responseMappingTemplate": "$util.toJson($ctx.result.payload)"
@@ -149,13 +157,13 @@
                       "version": "1.108.1"
                     }
                   },
-                  "QueryuploadUrlResolver": {
-                    "id": "QueryuploadUrlResolver",
-                    "path": "Stack/AppSync/GraphQl/QueryuploadUrlResolver",
+                  "QuerycountriesResolver": {
+                    "id": "QuerycountriesResolver",
+                    "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountriesResolver",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "Stack/AppSync/GraphQl/QueryuploadUrlResolver/Resource",
+                        "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountriesResolver/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::AppSync::Resolver",
                           "aws:cdk:cloudformation:props": {
@@ -165,9 +173,9 @@
                                 "ApiId"
                               ]
                             },
-                            "fieldName": "uploadUrl",
+                            "fieldName": "countries",
                             "typeName": "Query",
-                            "dataSourceName": "SolarDigestGetUploadUrlDataSource",
+                            "dataSourceName": "AppSyncDemoGetCountriesImportDataSource",
                             "kind": "UNIT",
                             "requestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
                             "responseMappingTemplate": "$util.toJson($ctx.result.payload)"
@@ -184,13 +192,13 @@
                       "version": "1.108.1"
                     }
                   },
-                  "QueryuploadMultiPartUrlsResolver": {
-                    "id": "QueryuploadMultiPartUrlsResolver",
-                    "path": "Stack/AppSync/GraphQl/QueryuploadMultiPartUrlsResolver",
+                  "QueryallCountriesResolver": {
+                    "id": "QueryallCountriesResolver",
+                    "path": "AppSyncDemoV1/AppSync/GraphQl/QueryallCountriesResolver",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "Stack/AppSync/GraphQl/QueryuploadMultiPartUrlsResolver/Resource",
+                        "path": "AppSyncDemoV1/AppSync/GraphQl/QueryallCountriesResolver/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::AppSync::Resolver",
                           "aws:cdk:cloudformation:props": {
@@ -200,9 +208,9 @@
                                 "ApiId"
                               ]
                             },
-                            "fieldName": "uploadMultiPartUrls",
+                            "fieldName": "allCountries",
                             "typeName": "Query",
-                            "dataSourceName": "SolarDigestGetUploadMultiPartDataSource",
+                            "dataSourceName": "AppSyncDemoAllCountriesDataSource",
                             "kind": "UNIT",
                             "requestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
                             "responseMappingTemplate": "$util.toJson($ctx.result.payload)"
@@ -219,13 +227,13 @@
                       "version": "1.108.1"
                     }
                   },
-                  "QueryuploadMultiPartAbortResolver": {
-                    "id": "QueryuploadMultiPartAbortResolver",
-                    "path": "Stack/AppSync/GraphQl/QueryuploadMultiPartAbortResolver",
+                  "QuerylanguageResolver": {
+                    "id": "QuerylanguageResolver",
+                    "path": "AppSyncDemoV1/AppSync/GraphQl/QuerylanguageResolver",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "Stack/AppSync/GraphQl/QueryuploadMultiPartAbortResolver/Resource",
+                        "path": "AppSyncDemoV1/AppSync/GraphQl/QuerylanguageResolver/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::AppSync::Resolver",
                           "aws:cdk:cloudformation:props": {
@@ -235,9 +243,9 @@
                                 "ApiId"
                               ]
                             },
-                            "fieldName": "uploadMultiPartAbort",
+                            "fieldName": "language",
                             "typeName": "Query",
-                            "dataSourceName": "SolarDigestGetUploadMultiPartAbortDataSource",
+                            "dataSourceName": "AppSyncDemohttpswwwgooglecomDataSource",
                             "kind": "UNIT",
                             "requestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
                             "responseMappingTemplate": "$util.toJson($ctx.result.payload)"
@@ -254,13 +262,13 @@
                       "version": "1.108.1"
                     }
                   },
-                  "QueryuploadMultiPartCompleteResolver": {
-                    "id": "QueryuploadMultiPartCompleteResolver",
-                    "path": "Stack/AppSync/GraphQl/QueryuploadMultiPartCompleteResolver",
+                  "QuerylanguagesResolver": {
+                    "id": "QuerylanguagesResolver",
+                    "path": "AppSyncDemoV1/AppSync/GraphQl/QuerylanguagesResolver",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "Stack/AppSync/GraphQl/QueryuploadMultiPartCompleteResolver/Resource",
+                        "path": "AppSyncDemoV1/AppSync/GraphQl/QuerylanguagesResolver/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::AppSync::Resolver",
                           "aws:cdk:cloudformation:props": {
@@ -270,9 +278,9 @@
                                 "ApiId"
                               ]
                             },
-                            "fieldName": "uploadMultiPartComplete",
+                            "fieldName": "languages",
                             "typeName": "Query",
-                            "dataSourceName": "SolarDigestGetUploadMultiPartCompleteDataSource",
+                            "dataSourceName": "AppSyncDemoGetLanguagesDataSource",
                             "kind": "UNIT",
                             "requestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
                             "responseMappingTemplate": "$util.toJson($ctx.result.payload)"
@@ -289,13 +297,13 @@
                       "version": "1.108.1"
                     }
                   },
-                  "QuerydownloadUrlResolver": {
-                    "id": "QuerydownloadUrlResolver",
-                    "path": "Stack/AppSync/GraphQl/QuerydownloadUrlResolver",
+                  "QuerycountryDateResolver": {
+                    "id": "QuerycountryDateResolver",
+                    "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountryDateResolver",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "Stack/AppSync/GraphQl/QuerydownloadUrlResolver/Resource",
+                        "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountryDateResolver/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::AppSync::Resolver",
                           "aws:cdk:cloudformation:props": {
@@ -305,12 +313,639 @@
                                 "ApiId"
                               ]
                             },
-                            "fieldName": "downloadUrl",
+                            "fieldName": "countryDate",
                             "typeName": "Query",
-                            "dataSourceName": "SolarDigestGetDownloadUrlDataSource",
+                            "dataSourceName": "AppSyncDemoCountryDateDataSource",
                             "kind": "UNIT",
                             "requestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
                             "responseMappingTemplate": "$util.toJson($ctx.result.payload)"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-appsync.CfnResolver",
+                          "version": "1.108.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-appsync.Resolver",
+                      "version": "1.108.1"
+                    }
+                  },
+                  "QuerycountryTimeResolver": {
+                    "id": "QuerycountryTimeResolver",
+                    "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountryTimeResolver",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountryTimeResolver/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::AppSync::Resolver",
+                          "aws:cdk:cloudformation:props": {
+                            "apiId": {
+                              "Fn::GetAtt": [
+                                "AppSyncGraphQl5C415C25",
+                                "ApiId"
+                              ]
+                            },
+                            "fieldName": "countryTime",
+                            "typeName": "Query",
+                            "dataSourceName": "AppSyncDemoCountryTimeDataSource",
+                            "kind": "UNIT",
+                            "requestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
+                            "responseMappingTemplate": "$util.toJson($ctx.result.payload)"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-appsync.CfnResolver",
+                          "version": "1.108.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-appsync.Resolver",
+                      "version": "1.108.1"
+                    }
+                  },
+                  "QuerycountryDateTimeResolver": {
+                    "id": "QuerycountryDateTimeResolver",
+                    "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountryDateTimeResolver",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountryDateTimeResolver/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::AppSync::Resolver",
+                          "aws:cdk:cloudformation:props": {
+                            "apiId": {
+                              "Fn::GetAtt": [
+                                "AppSyncGraphQl5C415C25",
+                                "ApiId"
+                              ]
+                            },
+                            "fieldName": "countryDateTime",
+                            "typeName": "Query",
+                            "dataSourceName": "AppSyncDemoCountryDateTimeDataSource",
+                            "kind": "UNIT",
+                            "requestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
+                            "responseMappingTemplate": "$util.toJson($ctx.result.payload)"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-appsync.CfnResolver",
+                          "version": "1.108.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-appsync.Resolver",
+                      "version": "1.108.1"
+                    }
+                  },
+                  "QuerycountryTimestampResolver": {
+                    "id": "QuerycountryTimestampResolver",
+                    "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountryTimestampResolver",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountryTimestampResolver/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::AppSync::Resolver",
+                          "aws:cdk:cloudformation:props": {
+                            "apiId": {
+                              "Fn::GetAtt": [
+                                "AppSyncGraphQl5C415C25",
+                                "ApiId"
+                              ]
+                            },
+                            "fieldName": "countryTimestamp",
+                            "typeName": "Query",
+                            "dataSourceName": "AppSyncDemoCountryTimestampDataSource",
+                            "kind": "UNIT",
+                            "requestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
+                            "responseMappingTemplate": "$util.toJson($ctx.result.payload)"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-appsync.CfnResolver",
+                          "version": "1.108.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-appsync.Resolver",
+                      "version": "1.108.1"
+                    }
+                  },
+                  "QuerycountryDatesResolver": {
+                    "id": "QuerycountryDatesResolver",
+                    "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountryDatesResolver",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountryDatesResolver/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::AppSync::Resolver",
+                          "aws:cdk:cloudformation:props": {
+                            "apiId": {
+                              "Fn::GetAtt": [
+                                "AppSyncGraphQl5C415C25",
+                                "ApiId"
+                              ]
+                            },
+                            "fieldName": "countryDates",
+                            "typeName": "Query",
+                            "dataSourceName": "AppSyncDemoCountryDatesDataSource",
+                            "kind": "UNIT",
+                            "requestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
+                            "responseMappingTemplate": "$util.toJson($ctx.result.payload)"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-appsync.CfnResolver",
+                          "version": "1.108.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-appsync.Resolver",
+                      "version": "1.108.1"
+                    }
+                  },
+                  "QuerycountryTimesResolver": {
+                    "id": "QuerycountryTimesResolver",
+                    "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountryTimesResolver",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountryTimesResolver/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::AppSync::Resolver",
+                          "aws:cdk:cloudformation:props": {
+                            "apiId": {
+                              "Fn::GetAtt": [
+                                "AppSyncGraphQl5C415C25",
+                                "ApiId"
+                              ]
+                            },
+                            "fieldName": "countryTimes",
+                            "typeName": "Query",
+                            "dataSourceName": "AppSyncDemoCountryTimesDataSource",
+                            "kind": "UNIT",
+                            "requestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
+                            "responseMappingTemplate": "$util.toJson($ctx.result.payload)"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-appsync.CfnResolver",
+                          "version": "1.108.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-appsync.Resolver",
+                      "version": "1.108.1"
+                    }
+                  },
+                  "QuerycountryDateTimesResolver": {
+                    "id": "QuerycountryDateTimesResolver",
+                    "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountryDateTimesResolver",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountryDateTimesResolver/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::AppSync::Resolver",
+                          "aws:cdk:cloudformation:props": {
+                            "apiId": {
+                              "Fn::GetAtt": [
+                                "AppSyncGraphQl5C415C25",
+                                "ApiId"
+                              ]
+                            },
+                            "fieldName": "countryDateTimes",
+                            "typeName": "Query",
+                            "dataSourceName": "AppSyncDemoCountryDateTimesDataSource",
+                            "kind": "UNIT",
+                            "requestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
+                            "responseMappingTemplate": "$util.toJson($ctx.result.payload)"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-appsync.CfnResolver",
+                          "version": "1.108.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-appsync.Resolver",
+                      "version": "1.108.1"
+                    }
+                  },
+                  "QuerycountryTimestampsResolver": {
+                    "id": "QuerycountryTimestampsResolver",
+                    "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountryTimestampsResolver",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountryTimestampsResolver/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::AppSync::Resolver",
+                          "aws:cdk:cloudformation:props": {
+                            "apiId": {
+                              "Fn::GetAtt": [
+                                "AppSyncGraphQl5C415C25",
+                                "ApiId"
+                              ]
+                            },
+                            "fieldName": "countryTimestamps",
+                            "typeName": "Query",
+                            "dataSourceName": "AppSyncDemoCountryTimestampsDataSource",
+                            "kind": "UNIT",
+                            "requestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
+                            "responseMappingTemplate": "$util.toJson($ctx.result.payload)"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-appsync.CfnResolver",
+                          "version": "1.108.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-appsync.Resolver",
+                      "version": "1.108.1"
+                    }
+                  },
+                  "QuerycountryByDateResolver": {
+                    "id": "QuerycountryByDateResolver",
+                    "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountryByDateResolver",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountryByDateResolver/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::AppSync::Resolver",
+                          "aws:cdk:cloudformation:props": {
+                            "apiId": {
+                              "Fn::GetAtt": [
+                                "AppSyncGraphQl5C415C25",
+                                "ApiId"
+                              ]
+                            },
+                            "fieldName": "countryByDate",
+                            "typeName": "Query",
+                            "dataSourceName": "AppSyncDemoCountryByDateDataSource",
+                            "kind": "UNIT",
+                            "requestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
+                            "responseMappingTemplate": "$util.toJson($ctx.result.payload)"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-appsync.CfnResolver",
+                          "version": "1.108.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-appsync.Resolver",
+                      "version": "1.108.1"
+                    }
+                  },
+                  "QuerycountryByTimeResolver": {
+                    "id": "QuerycountryByTimeResolver",
+                    "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountryByTimeResolver",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountryByTimeResolver/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::AppSync::Resolver",
+                          "aws:cdk:cloudformation:props": {
+                            "apiId": {
+                              "Fn::GetAtt": [
+                                "AppSyncGraphQl5C415C25",
+                                "ApiId"
+                              ]
+                            },
+                            "fieldName": "countryByTime",
+                            "typeName": "Query",
+                            "dataSourceName": "AppSyncDemoCountryByTimeDataSource",
+                            "kind": "UNIT",
+                            "requestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
+                            "responseMappingTemplate": "$util.toJson($ctx.result.payload)"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-appsync.CfnResolver",
+                          "version": "1.108.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-appsync.Resolver",
+                      "version": "1.108.1"
+                    }
+                  },
+                  "QuerycountryByDateTimeResolver": {
+                    "id": "QuerycountryByDateTimeResolver",
+                    "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountryByDateTimeResolver",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountryByDateTimeResolver/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::AppSync::Resolver",
+                          "aws:cdk:cloudformation:props": {
+                            "apiId": {
+                              "Fn::GetAtt": [
+                                "AppSyncGraphQl5C415C25",
+                                "ApiId"
+                              ]
+                            },
+                            "fieldName": "countryByDateTime",
+                            "typeName": "Query",
+                            "dataSourceName": "AppSyncDemoCountryByDateTimeDataSource",
+                            "kind": "UNIT",
+                            "requestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
+                            "responseMappingTemplate": "$util.toJson($ctx.result.payload)"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-appsync.CfnResolver",
+                          "version": "1.108.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-appsync.Resolver",
+                      "version": "1.108.1"
+                    }
+                  },
+                  "QuerycountryByTimestampResolver": {
+                    "id": "QuerycountryByTimestampResolver",
+                    "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountryByTimestampResolver",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountryByTimestampResolver/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::AppSync::Resolver",
+                          "aws:cdk:cloudformation:props": {
+                            "apiId": {
+                              "Fn::GetAtt": [
+                                "AppSyncGraphQl5C415C25",
+                                "ApiId"
+                              ]
+                            },
+                            "fieldName": "countryByTimestamp",
+                            "typeName": "Query",
+                            "dataSourceName": "AppSyncDemoCountryByTimestampDataSource",
+                            "kind": "UNIT",
+                            "requestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
+                            "responseMappingTemplate": "$util.toJson($ctx.result.payload)"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-appsync.CfnResolver",
+                          "version": "1.108.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-appsync.Resolver",
+                      "version": "1.108.1"
+                    }
+                  },
+                  "QuerycountriesByDatesResolver": {
+                    "id": "QuerycountriesByDatesResolver",
+                    "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountriesByDatesResolver",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountriesByDatesResolver/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::AppSync::Resolver",
+                          "aws:cdk:cloudformation:props": {
+                            "apiId": {
+                              "Fn::GetAtt": [
+                                "AppSyncGraphQl5C415C25",
+                                "ApiId"
+                              ]
+                            },
+                            "fieldName": "countriesByDates",
+                            "typeName": "Query",
+                            "dataSourceName": "AppSyncDemoCountriesByDatesDataSource",
+                            "kind": "UNIT",
+                            "requestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
+                            "responseMappingTemplate": "$util.toJson($ctx.result.payload)"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-appsync.CfnResolver",
+                          "version": "1.108.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-appsync.Resolver",
+                      "version": "1.108.1"
+                    }
+                  },
+                  "QuerycountriesByTimesResolver": {
+                    "id": "QuerycountriesByTimesResolver",
+                    "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountriesByTimesResolver",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountriesByTimesResolver/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::AppSync::Resolver",
+                          "aws:cdk:cloudformation:props": {
+                            "apiId": {
+                              "Fn::GetAtt": [
+                                "AppSyncGraphQl5C415C25",
+                                "ApiId"
+                              ]
+                            },
+                            "fieldName": "countriesByTimes",
+                            "typeName": "Query",
+                            "dataSourceName": "AppSyncDemoCountriesByTimesDataSource",
+                            "kind": "UNIT",
+                            "requestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
+                            "responseMappingTemplate": "$util.toJson($ctx.result.payload)"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-appsync.CfnResolver",
+                          "version": "1.108.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-appsync.Resolver",
+                      "version": "1.108.1"
+                    }
+                  },
+                  "QuerycountriesByDateTimesResolver": {
+                    "id": "QuerycountriesByDateTimesResolver",
+                    "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountriesByDateTimesResolver",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountriesByDateTimesResolver/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::AppSync::Resolver",
+                          "aws:cdk:cloudformation:props": {
+                            "apiId": {
+                              "Fn::GetAtt": [
+                                "AppSyncGraphQl5C415C25",
+                                "ApiId"
+                              ]
+                            },
+                            "fieldName": "countriesByDateTimes",
+                            "typeName": "Query",
+                            "dataSourceName": "AppSyncDemoCountriesByDateTimesDataSource",
+                            "kind": "UNIT",
+                            "requestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
+                            "responseMappingTemplate": "$util.toJson($ctx.result.payload)"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-appsync.CfnResolver",
+                          "version": "1.108.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-appsync.Resolver",
+                      "version": "1.108.1"
+                    }
+                  },
+                  "QuerycountriesByTimestampsResolver": {
+                    "id": "QuerycountriesByTimestampsResolver",
+                    "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountriesByTimestampsResolver",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AppSyncDemoV1/AppSync/GraphQl/QuerycountriesByTimestampsResolver/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::AppSync::Resolver",
+                          "aws:cdk:cloudformation:props": {
+                            "apiId": {
+                              "Fn::GetAtt": [
+                                "AppSyncGraphQl5C415C25",
+                                "ApiId"
+                              ]
+                            },
+                            "fieldName": "countriesByTimestamps",
+                            "typeName": "Query",
+                            "dataSourceName": "AppSyncDemoCountriesByTimestampsDataSource",
+                            "kind": "UNIT",
+                            "requestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
+                            "responseMappingTemplate": "$util.toJson($ctx.result.payload)"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-appsync.CfnResolver",
+                          "version": "1.108.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-appsync.Resolver",
+                      "version": "1.108.1"
+                    }
+                  },
+                  "MutationaddCountryResolver": {
+                    "id": "MutationaddCountryResolver",
+                    "path": "AppSyncDemoV1/AppSync/GraphQl/MutationaddCountryResolver",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AppSyncDemoV1/AppSync/GraphQl/MutationaddCountryResolver/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::AppSync::Resolver",
+                          "aws:cdk:cloudformation:props": {
+                            "apiId": {
+                              "Fn::GetAtt": [
+                                "AppSyncGraphQl5C415C25",
+                                "ApiId"
+                              ]
+                            },
+                            "fieldName": "addCountry",
+                            "typeName": "Mutation",
+                            "dataSourceName": "AppSyncDemoAddCountryDataSource",
+                            "kind": "UNIT",
+                            "requestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
+                            "responseMappingTemplate": "$util.toJson($ctx.result.payload)"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-appsync.CfnResolver",
+                          "version": "1.108.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-appsync.Resolver",
+                      "version": "1.108.1"
+                    }
+                  },
+                  "MutationupdateCountryResolver": {
+                    "id": "MutationupdateCountryResolver",
+                    "path": "AppSyncDemoV1/AppSync/GraphQl/MutationupdateCountryResolver",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AppSyncDemoV1/AppSync/GraphQl/MutationupdateCountryResolver/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::AppSync::Resolver",
+                          "aws:cdk:cloudformation:props": {
+                            "apiId": {
+                              "Fn::GetAtt": [
+                                "AppSyncGraphQl5C415C25",
+                                "ApiId"
+                              ]
+                            },
+                            "fieldName": "updateCountry",
+                            "typeName": "Mutation",
+                            "dataSourceName": "AppSyncDemoUpdateCountryDataSource",
+                            "kind": "UNIT",
+                            "requestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
+                            "responseMappingTemplate": "$util.toJson($ctx.result.payload)"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-appsync.CfnResolver",
+                          "version": "1.108.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-appsync.Resolver",
+                      "version": "1.108.1"
+                    }
+                  },
+                  "SubscriptionaddedCountryResolver": {
+                    "id": "SubscriptionaddedCountryResolver",
+                    "path": "AppSyncDemoV1/AppSync/GraphQl/SubscriptionaddedCountryResolver",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AppSyncDemoV1/AppSync/GraphQl/SubscriptionaddedCountryResolver/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::AppSync::Resolver",
+                          "aws:cdk:cloudformation:props": {
+                            "apiId": {
+                              "Fn::GetAtt": [
+                                "AppSyncGraphQl5C415C25",
+                                "ApiId"
+                              ]
+                            },
+                            "fieldName": "addedCountry",
+                            "typeName": "Subscription",
+                            "kind": "UNIT"
                           }
                         },
                         "constructInfo": {
@@ -336,25 +971,314 @@
               "version": "1.108.1"
             }
           },
-          "SolarDigestGetSiteFunction": {
-            "id": "SolarDigestGetSiteFunction",
-            "path": "Stack/SolarDigestGetSiteFunction",
+          "AppSyncDemoContinentsDataSource": {
+            "id": "AppSyncDemoContinentsDataSource",
+            "path": "AppSyncDemoV1/AppSyncDemoContinentsDataSource",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "AppSyncDemoV1/AppSyncDemoContinentsDataSource/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::AppSync::DataSource",
+                  "aws:cdk:cloudformation:props": {
+                    "apiId": {
+                      "Fn::GetAtt": [
+                        "AppSyncGraphQl5C415C25",
+                        "ApiId"
+                      ]
+                    },
+                    "name": "AppSyncDemoContinentsDataSource",
+                    "type": "NONE"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-appsync.CfnDataSource",
+                  "version": "1.108.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-appsync.NoneDataSource",
+              "version": "1.108.1"
+            }
+          },
+          "AppSyncDemoGetAllContinentsDataSource": {
+            "id": "AppSyncDemoGetAllContinentsDataSource",
+            "path": "AppSyncDemoV1/AppSyncDemoGetAllContinentsDataSource",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "AppSyncDemoV1/AppSyncDemoGetAllContinentsDataSource/ServiceRole",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "AppSyncDemoV1/AppSyncDemoGetAllContinentsDataSource/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "appsync.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.CfnRole",
+                      "version": "1.108.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.Role",
+                  "version": "1.108.1"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "AppSyncDemoV1/AppSyncDemoGetAllContinentsDataSource/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::AppSync::DataSource",
+                  "aws:cdk:cloudformation:props": {
+                    "apiId": {
+                      "Fn::GetAtt": [
+                        "AppSyncGraphQl5C415C25",
+                        "ApiId"
+                      ]
+                    },
+                    "name": "AppSyncDemoGetAllContinentsDataSource",
+                    "type": "HTTP",
+                    "httpConfig": {
+                      "endpoint": "https://www.google.com"
+                    },
+                    "serviceRoleArn": {
+                      "Fn::GetAtt": [
+                        "AppSyncDemoGetAllContinentsDataSourceServiceRole6BE8A44D",
+                        "Arn"
+                      ]
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-appsync.CfnDataSource",
+                  "version": "1.108.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-appsync.HttpDataSource",
+              "version": "1.108.1"
+            }
+          },
+          "AppSyncDemoGetCountriesImportDataSource": {
+            "id": "AppSyncDemoGetCountriesImportDataSource",
+            "path": "AppSyncDemoV1/AppSyncDemoGetCountriesImportDataSource",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "AppSyncDemoV1/AppSyncDemoGetCountriesImportDataSource/ServiceRole",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "AppSyncDemoV1/AppSyncDemoGetCountriesImportDataSource/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "appsync.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.CfnRole",
+                      "version": "1.108.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.Role",
+                  "version": "1.108.1"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "AppSyncDemoV1/AppSyncDemoGetCountriesImportDataSource/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::AppSync::DataSource",
+                  "aws:cdk:cloudformation:props": {
+                    "apiId": {
+                      "Fn::GetAtt": [
+                        "AppSyncGraphQl5C415C25",
+                        "ApiId"
+                      ]
+                    },
+                    "name": "AppSyncDemoGetCountriesImportDataSource",
+                    "type": "HTTP",
+                    "httpConfig": {
+                      "endpoint": {
+                        "Fn::ImportValue": "GetCountriesImport"
+                      }
+                    },
+                    "serviceRoleArn": {
+                      "Fn::GetAtt": [
+                        "AppSyncDemoGetCountriesImportDataSourceServiceRole9BA0D801",
+                        "Arn"
+                      ]
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-appsync.CfnDataSource",
+                  "version": "1.108.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-appsync.HttpDataSource",
+              "version": "1.108.1"
+            }
+          },
+          "AppSyncDemoAllCountriesDataSource": {
+            "id": "AppSyncDemoAllCountriesDataSource",
+            "path": "AppSyncDemoV1/AppSyncDemoAllCountriesDataSource",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "AppSyncDemoV1/AppSyncDemoAllCountriesDataSource/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::AppSync::DataSource",
+                  "aws:cdk:cloudformation:props": {
+                    "apiId": {
+                      "Fn::GetAtt": [
+                        "AppSyncGraphQl5C415C25",
+                        "ApiId"
+                      ]
+                    },
+                    "name": "AppSyncDemoAllCountriesDataSource",
+                    "type": "NONE"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-appsync.CfnDataSource",
+                  "version": "1.108.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-appsync.NoneDataSource",
+              "version": "1.108.1"
+            }
+          },
+          "AppSyncDemohttpswwwgooglecomDataSource": {
+            "id": "AppSyncDemohttpswwwgooglecomDataSource",
+            "path": "AppSyncDemoV1/AppSyncDemohttpswwwgooglecomDataSource",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "AppSyncDemoV1/AppSyncDemohttpswwwgooglecomDataSource/ServiceRole",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "AppSyncDemoV1/AppSyncDemohttpswwwgooglecomDataSource/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "appsync.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.CfnRole",
+                      "version": "1.108.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.Role",
+                  "version": "1.108.1"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "AppSyncDemoV1/AppSyncDemohttpswwwgooglecomDataSource/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::AppSync::DataSource",
+                  "aws:cdk:cloudformation:props": {
+                    "apiId": {
+                      "Fn::GetAtt": [
+                        "AppSyncGraphQl5C415C25",
+                        "ApiId"
+                      ]
+                    },
+                    "name": "AppSyncDemohttpswwwgooglecomDataSource",
+                    "type": "HTTP",
+                    "httpConfig": {
+                      "endpoint": "https://www.google.com"
+                    },
+                    "serviceRoleArn": {
+                      "Fn::GetAtt": [
+                        "AppSyncDemohttpswwwgooglecomDataSourceServiceRoleE25459CD",
+                        "Arn"
+                      ]
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-appsync.CfnDataSource",
+                  "version": "1.108.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-appsync.HttpDataSource",
+              "version": "1.108.1"
+            }
+          },
+          "AppSyncDemoGetLanguagesFunction": {
+            "id": "AppSyncDemoGetLanguagesFunction",
+            "path": "AppSyncDemoV1/AppSyncDemoGetLanguagesFunction",
             "constructInfo": {
               "fqn": "@aws-cdk/aws-lambda.FunctionBase",
               "version": "1.108.1"
             }
           },
-          "SolarDigestGetSiteDataSource": {
-            "id": "SolarDigestGetSiteDataSource",
-            "path": "Stack/SolarDigestGetSiteDataSource",
+          "AppSyncDemoGetLanguagesDataSource": {
+            "id": "AppSyncDemoGetLanguagesDataSource",
+            "path": "AppSyncDemoV1/AppSyncDemoGetLanguagesDataSource",
             "children": {
               "ServiceRole": {
                 "id": "ServiceRole",
-                "path": "Stack/SolarDigestGetSiteDataSource/ServiceRole",
+                "path": "AppSyncDemoV1/AppSyncDemoGetLanguagesDataSource/ServiceRole",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "Stack/SolarDigestGetSiteDataSource/ServiceRole/Resource",
+                    "path": "AppSyncDemoV1/AppSyncDemoGetLanguagesDataSource/ServiceRole/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::IAM::Role",
                       "aws:cdk:cloudformation:props": {
@@ -379,11 +1303,11 @@
                   },
                   "DefaultPolicy": {
                     "id": "DefaultPolicy",
-                    "path": "Stack/SolarDigestGetSiteDataSource/ServiceRole/DefaultPolicy",
+                    "path": "AppSyncDemoV1/AppSyncDemoGetLanguagesDataSource/ServiceRole/DefaultPolicy",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "Stack/SolarDigestGetSiteDataSource/ServiceRole/DefaultPolicy/Resource",
+                        "path": "AppSyncDemoV1/AppSyncDemoGetLanguagesDataSource/ServiceRole/DefaultPolicy/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
                           "aws:cdk:cloudformation:props": {
@@ -392,15 +1316,15 @@
                                 {
                                   "Action": "lambda:InvokeFunction",
                                   "Effect": "Allow",
-                                  "Resource": "arn:aws:lambda:ap-southeast-2:574214337301:function:SolarDigest_GetSite"
+                                  "Resource": "arn:aws:lambda:ap-southeast-2:574214337301:function:AppSyncDemo_GetLanguages"
                                 }
                               ],
                               "Version": "2012-10-17"
                             },
-                            "policyName": "SolarDigestGetSiteDataSourceServiceRoleDefaultPolicyD06CD98E",
+                            "policyName": "AppSyncDemoGetLanguagesDataSourceServiceRoleDefaultPolicy4FA58152",
                             "roles": [
                               {
-                                "Ref": "SolarDigestGetSiteDataSourceServiceRole2D396ACB"
+                                "Ref": "AppSyncDemoGetLanguagesDataSourceServiceRole13CC40AD"
                               }
                             ]
                           }
@@ -424,7 +1348,7 @@
               },
               "Resource": {
                 "id": "Resource",
-                "path": "Stack/SolarDigestGetSiteDataSource/Resource",
+                "path": "AppSyncDemoV1/AppSyncDemoGetLanguagesDataSource/Resource",
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::AppSync::DataSource",
                   "aws:cdk:cloudformation:props": {
@@ -434,14 +1358,14 @@
                         "ApiId"
                       ]
                     },
-                    "name": "SolarDigestGetSiteDataSource",
+                    "name": "AppSyncDemoGetLanguagesDataSource",
                     "type": "AWS_LAMBDA",
                     "lambdaConfig": {
-                      "lambdaFunctionArn": "arn:aws:lambda:ap-southeast-2:574214337301:function:SolarDigest_GetSite"
+                      "lambdaFunctionArn": "arn:aws:lambda:ap-southeast-2:574214337301:function:AppSyncDemo_GetLanguages"
                     },
                     "serviceRoleArn": {
                       "Fn::GetAtt": [
-                        "SolarDigestGetSiteDataSourceServiceRole2D396ACB",
+                        "AppSyncDemoGetLanguagesDataSourceServiceRole13CC40AD",
                         "Arn"
                       ]
                     }
@@ -458,25 +1382,521 @@
               "version": "1.108.1"
             }
           },
-          "SolarDigestGetSitePowerSummaryFunction": {
-            "id": "SolarDigestGetSitePowerSummaryFunction",
-            "path": "Stack/SolarDigestGetSitePowerSummaryFunction",
+          "AppSyncDemoCountryDateDataSource": {
+            "id": "AppSyncDemoCountryDateDataSource",
+            "path": "AppSyncDemoV1/AppSyncDemoCountryDateDataSource",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "AppSyncDemoV1/AppSyncDemoCountryDateDataSource/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::AppSync::DataSource",
+                  "aws:cdk:cloudformation:props": {
+                    "apiId": {
+                      "Fn::GetAtt": [
+                        "AppSyncGraphQl5C415C25",
+                        "ApiId"
+                      ]
+                    },
+                    "name": "AppSyncDemoCountryDateDataSource",
+                    "type": "NONE"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-appsync.CfnDataSource",
+                  "version": "1.108.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-appsync.NoneDataSource",
+              "version": "1.108.1"
+            }
+          },
+          "AppSyncDemoCountryTimeDataSource": {
+            "id": "AppSyncDemoCountryTimeDataSource",
+            "path": "AppSyncDemoV1/AppSyncDemoCountryTimeDataSource",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "AppSyncDemoV1/AppSyncDemoCountryTimeDataSource/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::AppSync::DataSource",
+                  "aws:cdk:cloudformation:props": {
+                    "apiId": {
+                      "Fn::GetAtt": [
+                        "AppSyncGraphQl5C415C25",
+                        "ApiId"
+                      ]
+                    },
+                    "name": "AppSyncDemoCountryTimeDataSource",
+                    "type": "NONE"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-appsync.CfnDataSource",
+                  "version": "1.108.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-appsync.NoneDataSource",
+              "version": "1.108.1"
+            }
+          },
+          "AppSyncDemoCountryDateTimeDataSource": {
+            "id": "AppSyncDemoCountryDateTimeDataSource",
+            "path": "AppSyncDemoV1/AppSyncDemoCountryDateTimeDataSource",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "AppSyncDemoV1/AppSyncDemoCountryDateTimeDataSource/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::AppSync::DataSource",
+                  "aws:cdk:cloudformation:props": {
+                    "apiId": {
+                      "Fn::GetAtt": [
+                        "AppSyncGraphQl5C415C25",
+                        "ApiId"
+                      ]
+                    },
+                    "name": "AppSyncDemoCountryDateTimeDataSource",
+                    "type": "NONE"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-appsync.CfnDataSource",
+                  "version": "1.108.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-appsync.NoneDataSource",
+              "version": "1.108.1"
+            }
+          },
+          "AppSyncDemoCountryTimestampDataSource": {
+            "id": "AppSyncDemoCountryTimestampDataSource",
+            "path": "AppSyncDemoV1/AppSyncDemoCountryTimestampDataSource",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "AppSyncDemoV1/AppSyncDemoCountryTimestampDataSource/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::AppSync::DataSource",
+                  "aws:cdk:cloudformation:props": {
+                    "apiId": {
+                      "Fn::GetAtt": [
+                        "AppSyncGraphQl5C415C25",
+                        "ApiId"
+                      ]
+                    },
+                    "name": "AppSyncDemoCountryTimestampDataSource",
+                    "type": "NONE"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-appsync.CfnDataSource",
+                  "version": "1.108.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-appsync.NoneDataSource",
+              "version": "1.108.1"
+            }
+          },
+          "AppSyncDemoCountryDatesDataSource": {
+            "id": "AppSyncDemoCountryDatesDataSource",
+            "path": "AppSyncDemoV1/AppSyncDemoCountryDatesDataSource",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "AppSyncDemoV1/AppSyncDemoCountryDatesDataSource/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::AppSync::DataSource",
+                  "aws:cdk:cloudformation:props": {
+                    "apiId": {
+                      "Fn::GetAtt": [
+                        "AppSyncGraphQl5C415C25",
+                        "ApiId"
+                      ]
+                    },
+                    "name": "AppSyncDemoCountryDatesDataSource",
+                    "type": "NONE"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-appsync.CfnDataSource",
+                  "version": "1.108.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-appsync.NoneDataSource",
+              "version": "1.108.1"
+            }
+          },
+          "AppSyncDemoCountryTimesDataSource": {
+            "id": "AppSyncDemoCountryTimesDataSource",
+            "path": "AppSyncDemoV1/AppSyncDemoCountryTimesDataSource",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "AppSyncDemoV1/AppSyncDemoCountryTimesDataSource/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::AppSync::DataSource",
+                  "aws:cdk:cloudformation:props": {
+                    "apiId": {
+                      "Fn::GetAtt": [
+                        "AppSyncGraphQl5C415C25",
+                        "ApiId"
+                      ]
+                    },
+                    "name": "AppSyncDemoCountryTimesDataSource",
+                    "type": "NONE"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-appsync.CfnDataSource",
+                  "version": "1.108.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-appsync.NoneDataSource",
+              "version": "1.108.1"
+            }
+          },
+          "AppSyncDemoCountryDateTimesDataSource": {
+            "id": "AppSyncDemoCountryDateTimesDataSource",
+            "path": "AppSyncDemoV1/AppSyncDemoCountryDateTimesDataSource",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "AppSyncDemoV1/AppSyncDemoCountryDateTimesDataSource/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::AppSync::DataSource",
+                  "aws:cdk:cloudformation:props": {
+                    "apiId": {
+                      "Fn::GetAtt": [
+                        "AppSyncGraphQl5C415C25",
+                        "ApiId"
+                      ]
+                    },
+                    "name": "AppSyncDemoCountryDateTimesDataSource",
+                    "type": "NONE"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-appsync.CfnDataSource",
+                  "version": "1.108.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-appsync.NoneDataSource",
+              "version": "1.108.1"
+            }
+          },
+          "AppSyncDemoCountryTimestampsDataSource": {
+            "id": "AppSyncDemoCountryTimestampsDataSource",
+            "path": "AppSyncDemoV1/AppSyncDemoCountryTimestampsDataSource",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "AppSyncDemoV1/AppSyncDemoCountryTimestampsDataSource/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::AppSync::DataSource",
+                  "aws:cdk:cloudformation:props": {
+                    "apiId": {
+                      "Fn::GetAtt": [
+                        "AppSyncGraphQl5C415C25",
+                        "ApiId"
+                      ]
+                    },
+                    "name": "AppSyncDemoCountryTimestampsDataSource",
+                    "type": "NONE"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-appsync.CfnDataSource",
+                  "version": "1.108.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-appsync.NoneDataSource",
+              "version": "1.108.1"
+            }
+          },
+          "AppSyncDemoCountryByDateDataSource": {
+            "id": "AppSyncDemoCountryByDateDataSource",
+            "path": "AppSyncDemoV1/AppSyncDemoCountryByDateDataSource",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "AppSyncDemoV1/AppSyncDemoCountryByDateDataSource/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::AppSync::DataSource",
+                  "aws:cdk:cloudformation:props": {
+                    "apiId": {
+                      "Fn::GetAtt": [
+                        "AppSyncGraphQl5C415C25",
+                        "ApiId"
+                      ]
+                    },
+                    "name": "AppSyncDemoCountryByDateDataSource",
+                    "type": "NONE"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-appsync.CfnDataSource",
+                  "version": "1.108.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-appsync.NoneDataSource",
+              "version": "1.108.1"
+            }
+          },
+          "AppSyncDemoCountryByTimeDataSource": {
+            "id": "AppSyncDemoCountryByTimeDataSource",
+            "path": "AppSyncDemoV1/AppSyncDemoCountryByTimeDataSource",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "AppSyncDemoV1/AppSyncDemoCountryByTimeDataSource/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::AppSync::DataSource",
+                  "aws:cdk:cloudformation:props": {
+                    "apiId": {
+                      "Fn::GetAtt": [
+                        "AppSyncGraphQl5C415C25",
+                        "ApiId"
+                      ]
+                    },
+                    "name": "AppSyncDemoCountryByTimeDataSource",
+                    "type": "NONE"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-appsync.CfnDataSource",
+                  "version": "1.108.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-appsync.NoneDataSource",
+              "version": "1.108.1"
+            }
+          },
+          "AppSyncDemoCountryByDateTimeDataSource": {
+            "id": "AppSyncDemoCountryByDateTimeDataSource",
+            "path": "AppSyncDemoV1/AppSyncDemoCountryByDateTimeDataSource",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "AppSyncDemoV1/AppSyncDemoCountryByDateTimeDataSource/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::AppSync::DataSource",
+                  "aws:cdk:cloudformation:props": {
+                    "apiId": {
+                      "Fn::GetAtt": [
+                        "AppSyncGraphQl5C415C25",
+                        "ApiId"
+                      ]
+                    },
+                    "name": "AppSyncDemoCountryByDateTimeDataSource",
+                    "type": "NONE"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-appsync.CfnDataSource",
+                  "version": "1.108.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-appsync.NoneDataSource",
+              "version": "1.108.1"
+            }
+          },
+          "AppSyncDemoCountryByTimestampDataSource": {
+            "id": "AppSyncDemoCountryByTimestampDataSource",
+            "path": "AppSyncDemoV1/AppSyncDemoCountryByTimestampDataSource",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "AppSyncDemoV1/AppSyncDemoCountryByTimestampDataSource/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::AppSync::DataSource",
+                  "aws:cdk:cloudformation:props": {
+                    "apiId": {
+                      "Fn::GetAtt": [
+                        "AppSyncGraphQl5C415C25",
+                        "ApiId"
+                      ]
+                    },
+                    "name": "AppSyncDemoCountryByTimestampDataSource",
+                    "type": "NONE"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-appsync.CfnDataSource",
+                  "version": "1.108.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-appsync.NoneDataSource",
+              "version": "1.108.1"
+            }
+          },
+          "AppSyncDemoCountriesByDatesDataSource": {
+            "id": "AppSyncDemoCountriesByDatesDataSource",
+            "path": "AppSyncDemoV1/AppSyncDemoCountriesByDatesDataSource",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "AppSyncDemoV1/AppSyncDemoCountriesByDatesDataSource/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::AppSync::DataSource",
+                  "aws:cdk:cloudformation:props": {
+                    "apiId": {
+                      "Fn::GetAtt": [
+                        "AppSyncGraphQl5C415C25",
+                        "ApiId"
+                      ]
+                    },
+                    "name": "AppSyncDemoCountriesByDatesDataSource",
+                    "type": "NONE"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-appsync.CfnDataSource",
+                  "version": "1.108.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-appsync.NoneDataSource",
+              "version": "1.108.1"
+            }
+          },
+          "AppSyncDemoCountriesByTimesDataSource": {
+            "id": "AppSyncDemoCountriesByTimesDataSource",
+            "path": "AppSyncDemoV1/AppSyncDemoCountriesByTimesDataSource",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "AppSyncDemoV1/AppSyncDemoCountriesByTimesDataSource/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::AppSync::DataSource",
+                  "aws:cdk:cloudformation:props": {
+                    "apiId": {
+                      "Fn::GetAtt": [
+                        "AppSyncGraphQl5C415C25",
+                        "ApiId"
+                      ]
+                    },
+                    "name": "AppSyncDemoCountriesByTimesDataSource",
+                    "type": "NONE"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-appsync.CfnDataSource",
+                  "version": "1.108.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-appsync.NoneDataSource",
+              "version": "1.108.1"
+            }
+          },
+          "AppSyncDemoCountriesByDateTimesDataSource": {
+            "id": "AppSyncDemoCountriesByDateTimesDataSource",
+            "path": "AppSyncDemoV1/AppSyncDemoCountriesByDateTimesDataSource",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "AppSyncDemoV1/AppSyncDemoCountriesByDateTimesDataSource/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::AppSync::DataSource",
+                  "aws:cdk:cloudformation:props": {
+                    "apiId": {
+                      "Fn::GetAtt": [
+                        "AppSyncGraphQl5C415C25",
+                        "ApiId"
+                      ]
+                    },
+                    "name": "AppSyncDemoCountriesByDateTimesDataSource",
+                    "type": "NONE"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-appsync.CfnDataSource",
+                  "version": "1.108.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-appsync.NoneDataSource",
+              "version": "1.108.1"
+            }
+          },
+          "AppSyncDemoCountriesByTimestampsDataSource": {
+            "id": "AppSyncDemoCountriesByTimestampsDataSource",
+            "path": "AppSyncDemoV1/AppSyncDemoCountriesByTimestampsDataSource",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "AppSyncDemoV1/AppSyncDemoCountriesByTimestampsDataSource/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::AppSync::DataSource",
+                  "aws:cdk:cloudformation:props": {
+                    "apiId": {
+                      "Fn::GetAtt": [
+                        "AppSyncGraphQl5C415C25",
+                        "ApiId"
+                      ]
+                    },
+                    "name": "AppSyncDemoCountriesByTimestampsDataSource",
+                    "type": "NONE"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-appsync.CfnDataSource",
+                  "version": "1.108.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-appsync.NoneDataSource",
+              "version": "1.108.1"
+            }
+          },
+          "AppSyncDemoAddCountryFunction": {
+            "id": "AppSyncDemoAddCountryFunction",
+            "path": "AppSyncDemoV1/AppSyncDemoAddCountryFunction",
             "constructInfo": {
               "fqn": "@aws-cdk/aws-lambda.FunctionBase",
               "version": "1.108.1"
             }
           },
-          "SolarDigestGetSitePowerSummaryDataSource": {
-            "id": "SolarDigestGetSitePowerSummaryDataSource",
-            "path": "Stack/SolarDigestGetSitePowerSummaryDataSource",
+          "AppSyncDemoAddCountryDataSource": {
+            "id": "AppSyncDemoAddCountryDataSource",
+            "path": "AppSyncDemoV1/AppSyncDemoAddCountryDataSource",
             "children": {
               "ServiceRole": {
                 "id": "ServiceRole",
-                "path": "Stack/SolarDigestGetSitePowerSummaryDataSource/ServiceRole",
+                "path": "AppSyncDemoV1/AppSyncDemoAddCountryDataSource/ServiceRole",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "Stack/SolarDigestGetSitePowerSummaryDataSource/ServiceRole/Resource",
+                    "path": "AppSyncDemoV1/AppSyncDemoAddCountryDataSource/ServiceRole/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::IAM::Role",
                       "aws:cdk:cloudformation:props": {
@@ -501,11 +1921,11 @@
                   },
                   "DefaultPolicy": {
                     "id": "DefaultPolicy",
-                    "path": "Stack/SolarDigestGetSitePowerSummaryDataSource/ServiceRole/DefaultPolicy",
+                    "path": "AppSyncDemoV1/AppSyncDemoAddCountryDataSource/ServiceRole/DefaultPolicy",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "Stack/SolarDigestGetSitePowerSummaryDataSource/ServiceRole/DefaultPolicy/Resource",
+                        "path": "AppSyncDemoV1/AppSyncDemoAddCountryDataSource/ServiceRole/DefaultPolicy/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
                           "aws:cdk:cloudformation:props": {
@@ -514,15 +1934,15 @@
                                 {
                                   "Action": "lambda:InvokeFunction",
                                   "Effect": "Allow",
-                                  "Resource": "arn:aws:lambda:ap-southeast-2:574214337301:function:SolarDigest_GetSitePowerSummary"
+                                  "Resource": "arn:aws:lambda:ap-southeast-2:574214337301:function:AppSyncDemo_AddCountry"
                                 }
                               ],
                               "Version": "2012-10-17"
                             },
-                            "policyName": "SolarDigestGetSitePowerSummaryDataSourceServiceRoleDefaultPolicyB610295F",
+                            "policyName": "AppSyncDemoAddCountryDataSourceServiceRoleDefaultPolicy996A54D4",
                             "roles": [
                               {
-                                "Ref": "SolarDigestGetSitePowerSummaryDataSourceServiceRoleB1081FEA"
+                                "Ref": "AppSyncDemoAddCountryDataSourceServiceRole33E3B674"
                               }
                             ]
                           }
@@ -546,7 +1966,7 @@
               },
               "Resource": {
                 "id": "Resource",
-                "path": "Stack/SolarDigestGetSitePowerSummaryDataSource/Resource",
+                "path": "AppSyncDemoV1/AppSyncDemoAddCountryDataSource/Resource",
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::AppSync::DataSource",
                   "aws:cdk:cloudformation:props": {
@@ -556,14 +1976,14 @@
                         "ApiId"
                       ]
                     },
-                    "name": "SolarDigestGetSitePowerSummaryDataSource",
+                    "name": "AppSyncDemoAddCountryDataSource",
                     "type": "AWS_LAMBDA",
                     "lambdaConfig": {
-                      "lambdaFunctionArn": "arn:aws:lambda:ap-southeast-2:574214337301:function:SolarDigest_GetSitePowerSummary"
+                      "lambdaFunctionArn": "arn:aws:lambda:ap-southeast-2:574214337301:function:AppSyncDemo_AddCountry"
                     },
                     "serviceRoleArn": {
                       "Fn::GetAtt": [
-                        "SolarDigestGetSitePowerSummaryDataSourceServiceRoleB1081FEA",
+                        "AppSyncDemoAddCountryDataSourceServiceRole33E3B674",
                         "Arn"
                       ]
                     }
@@ -580,25 +2000,25 @@
               "version": "1.108.1"
             }
           },
-          "SolarDigestGetUploadUrlFunction": {
-            "id": "SolarDigestGetUploadUrlFunction",
-            "path": "Stack/SolarDigestGetUploadUrlFunction",
+          "AppSyncDemoUpdateCountryFunction": {
+            "id": "AppSyncDemoUpdateCountryFunction",
+            "path": "AppSyncDemoV1/AppSyncDemoUpdateCountryFunction",
             "constructInfo": {
               "fqn": "@aws-cdk/aws-lambda.FunctionBase",
               "version": "1.108.1"
             }
           },
-          "SolarDigestGetUploadUrlDataSource": {
-            "id": "SolarDigestGetUploadUrlDataSource",
-            "path": "Stack/SolarDigestGetUploadUrlDataSource",
+          "AppSyncDemoUpdateCountryDataSource": {
+            "id": "AppSyncDemoUpdateCountryDataSource",
+            "path": "AppSyncDemoV1/AppSyncDemoUpdateCountryDataSource",
             "children": {
               "ServiceRole": {
                 "id": "ServiceRole",
-                "path": "Stack/SolarDigestGetUploadUrlDataSource/ServiceRole",
+                "path": "AppSyncDemoV1/AppSyncDemoUpdateCountryDataSource/ServiceRole",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "Stack/SolarDigestGetUploadUrlDataSource/ServiceRole/Resource",
+                    "path": "AppSyncDemoV1/AppSyncDemoUpdateCountryDataSource/ServiceRole/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::IAM::Role",
                       "aws:cdk:cloudformation:props": {
@@ -623,11 +2043,11 @@
                   },
                   "DefaultPolicy": {
                     "id": "DefaultPolicy",
-                    "path": "Stack/SolarDigestGetUploadUrlDataSource/ServiceRole/DefaultPolicy",
+                    "path": "AppSyncDemoV1/AppSyncDemoUpdateCountryDataSource/ServiceRole/DefaultPolicy",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "Stack/SolarDigestGetUploadUrlDataSource/ServiceRole/DefaultPolicy/Resource",
+                        "path": "AppSyncDemoV1/AppSyncDemoUpdateCountryDataSource/ServiceRole/DefaultPolicy/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
                           "aws:cdk:cloudformation:props": {
@@ -636,15 +2056,15 @@
                                 {
                                   "Action": "lambda:InvokeFunction",
                                   "Effect": "Allow",
-                                  "Resource": "arn:aws:lambda:ap-southeast-2:574214337301:function:SolarDigest_GetUploadUrl"
+                                  "Resource": "arn:aws:lambda:ap-southeast-2:574214337301:function:AppSyncDemo_UpdateCountry"
                                 }
                               ],
                               "Version": "2012-10-17"
                             },
-                            "policyName": "SolarDigestGetUploadUrlDataSourceServiceRoleDefaultPolicyD508FD92",
+                            "policyName": "AppSyncDemoUpdateCountryDataSourceServiceRoleDefaultPolicyA6A82EAC",
                             "roles": [
                               {
-                                "Ref": "SolarDigestGetUploadUrlDataSourceServiceRole3E605218"
+                                "Ref": "AppSyncDemoUpdateCountryDataSourceServiceRole70E04E77"
                               }
                             ]
                           }
@@ -668,7 +2088,7 @@
               },
               "Resource": {
                 "id": "Resource",
-                "path": "Stack/SolarDigestGetUploadUrlDataSource/Resource",
+                "path": "AppSyncDemoV1/AppSyncDemoUpdateCountryDataSource/Resource",
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::AppSync::DataSource",
                   "aws:cdk:cloudformation:props": {
@@ -678,502 +2098,14 @@
                         "ApiId"
                       ]
                     },
-                    "name": "SolarDigestGetUploadUrlDataSource",
+                    "name": "AppSyncDemoUpdateCountryDataSource",
                     "type": "AWS_LAMBDA",
                     "lambdaConfig": {
-                      "lambdaFunctionArn": "arn:aws:lambda:ap-southeast-2:574214337301:function:SolarDigest_GetUploadUrl"
+                      "lambdaFunctionArn": "arn:aws:lambda:ap-southeast-2:574214337301:function:AppSyncDemo_UpdateCountry"
                     },
                     "serviceRoleArn": {
                       "Fn::GetAtt": [
-                        "SolarDigestGetUploadUrlDataSourceServiceRole3E605218",
-                        "Arn"
-                      ]
-                    }
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "@aws-cdk/aws-appsync.CfnDataSource",
-                  "version": "1.108.1"
-                }
-              }
-            },
-            "constructInfo": {
-              "fqn": "@aws-cdk/aws-appsync.LambdaDataSource",
-              "version": "1.108.1"
-            }
-          },
-          "SolarDigestGetUploadMultiPartFunction": {
-            "id": "SolarDigestGetUploadMultiPartFunction",
-            "path": "Stack/SolarDigestGetUploadMultiPartFunction",
-            "constructInfo": {
-              "fqn": "@aws-cdk/aws-lambda.FunctionBase",
-              "version": "1.108.1"
-            }
-          },
-          "SolarDigestGetUploadMultiPartDataSource": {
-            "id": "SolarDigestGetUploadMultiPartDataSource",
-            "path": "Stack/SolarDigestGetUploadMultiPartDataSource",
-            "children": {
-              "ServiceRole": {
-                "id": "ServiceRole",
-                "path": "Stack/SolarDigestGetUploadMultiPartDataSource/ServiceRole",
-                "children": {
-                  "Resource": {
-                    "id": "Resource",
-                    "path": "Stack/SolarDigestGetUploadMultiPartDataSource/ServiceRole/Resource",
-                    "attributes": {
-                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
-                      "aws:cdk:cloudformation:props": {
-                        "assumeRolePolicyDocument": {
-                          "Statement": [
-                            {
-                              "Action": "sts:AssumeRole",
-                              "Effect": "Allow",
-                              "Principal": {
-                                "Service": "appsync.amazonaws.com"
-                              }
-                            }
-                          ],
-                          "Version": "2012-10-17"
-                        }
-                      }
-                    },
-                    "constructInfo": {
-                      "fqn": "@aws-cdk/aws-iam.CfnRole",
-                      "version": "1.108.1"
-                    }
-                  },
-                  "DefaultPolicy": {
-                    "id": "DefaultPolicy",
-                    "path": "Stack/SolarDigestGetUploadMultiPartDataSource/ServiceRole/DefaultPolicy",
-                    "children": {
-                      "Resource": {
-                        "id": "Resource",
-                        "path": "Stack/SolarDigestGetUploadMultiPartDataSource/ServiceRole/DefaultPolicy/Resource",
-                        "attributes": {
-                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
-                          "aws:cdk:cloudformation:props": {
-                            "policyDocument": {
-                              "Statement": [
-                                {
-                                  "Action": "lambda:InvokeFunction",
-                                  "Effect": "Allow",
-                                  "Resource": "arn:aws:lambda:ap-southeast-2:574214337301:function:SolarDigest_GetUploadMultiPart"
-                                }
-                              ],
-                              "Version": "2012-10-17"
-                            },
-                            "policyName": "SolarDigestGetUploadMultiPartDataSourceServiceRoleDefaultPolicyF3326D94",
-                            "roles": [
-                              {
-                                "Ref": "SolarDigestGetUploadMultiPartDataSourceServiceRoleE40FE8FE"
-                              }
-                            ]
-                          }
-                        },
-                        "constructInfo": {
-                          "fqn": "@aws-cdk/aws-iam.CfnPolicy",
-                          "version": "1.108.1"
-                        }
-                      }
-                    },
-                    "constructInfo": {
-                      "fqn": "@aws-cdk/aws-iam.Policy",
-                      "version": "1.108.1"
-                    }
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "@aws-cdk/aws-iam.Role",
-                  "version": "1.108.1"
-                }
-              },
-              "Resource": {
-                "id": "Resource",
-                "path": "Stack/SolarDigestGetUploadMultiPartDataSource/Resource",
-                "attributes": {
-                  "aws:cdk:cloudformation:type": "AWS::AppSync::DataSource",
-                  "aws:cdk:cloudformation:props": {
-                    "apiId": {
-                      "Fn::GetAtt": [
-                        "AppSyncGraphQl5C415C25",
-                        "ApiId"
-                      ]
-                    },
-                    "name": "SolarDigestGetUploadMultiPartDataSource",
-                    "type": "AWS_LAMBDA",
-                    "lambdaConfig": {
-                      "lambdaFunctionArn": "arn:aws:lambda:ap-southeast-2:574214337301:function:SolarDigest_GetUploadMultiPart"
-                    },
-                    "serviceRoleArn": {
-                      "Fn::GetAtt": [
-                        "SolarDigestGetUploadMultiPartDataSourceServiceRoleE40FE8FE",
-                        "Arn"
-                      ]
-                    }
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "@aws-cdk/aws-appsync.CfnDataSource",
-                  "version": "1.108.1"
-                }
-              }
-            },
-            "constructInfo": {
-              "fqn": "@aws-cdk/aws-appsync.LambdaDataSource",
-              "version": "1.108.1"
-            }
-          },
-          "SolarDigestGetUploadMultiPartAbortFunction": {
-            "id": "SolarDigestGetUploadMultiPartAbortFunction",
-            "path": "Stack/SolarDigestGetUploadMultiPartAbortFunction",
-            "constructInfo": {
-              "fqn": "@aws-cdk/aws-lambda.FunctionBase",
-              "version": "1.108.1"
-            }
-          },
-          "SolarDigestGetUploadMultiPartAbortDataSource": {
-            "id": "SolarDigestGetUploadMultiPartAbortDataSource",
-            "path": "Stack/SolarDigestGetUploadMultiPartAbortDataSource",
-            "children": {
-              "ServiceRole": {
-                "id": "ServiceRole",
-                "path": "Stack/SolarDigestGetUploadMultiPartAbortDataSource/ServiceRole",
-                "children": {
-                  "Resource": {
-                    "id": "Resource",
-                    "path": "Stack/SolarDigestGetUploadMultiPartAbortDataSource/ServiceRole/Resource",
-                    "attributes": {
-                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
-                      "aws:cdk:cloudformation:props": {
-                        "assumeRolePolicyDocument": {
-                          "Statement": [
-                            {
-                              "Action": "sts:AssumeRole",
-                              "Effect": "Allow",
-                              "Principal": {
-                                "Service": "appsync.amazonaws.com"
-                              }
-                            }
-                          ],
-                          "Version": "2012-10-17"
-                        }
-                      }
-                    },
-                    "constructInfo": {
-                      "fqn": "@aws-cdk/aws-iam.CfnRole",
-                      "version": "1.108.1"
-                    }
-                  },
-                  "DefaultPolicy": {
-                    "id": "DefaultPolicy",
-                    "path": "Stack/SolarDigestGetUploadMultiPartAbortDataSource/ServiceRole/DefaultPolicy",
-                    "children": {
-                      "Resource": {
-                        "id": "Resource",
-                        "path": "Stack/SolarDigestGetUploadMultiPartAbortDataSource/ServiceRole/DefaultPolicy/Resource",
-                        "attributes": {
-                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
-                          "aws:cdk:cloudformation:props": {
-                            "policyDocument": {
-                              "Statement": [
-                                {
-                                  "Action": "lambda:InvokeFunction",
-                                  "Effect": "Allow",
-                                  "Resource": "arn:aws:lambda:ap-southeast-2:574214337301:function:SolarDigest_GetUploadMultiPartAbort"
-                                }
-                              ],
-                              "Version": "2012-10-17"
-                            },
-                            "policyName": "SolarDigestGetUploadMultiPartAbortDataSourceServiceRoleDefaultPolicy87279693",
-                            "roles": [
-                              {
-                                "Ref": "SolarDigestGetUploadMultiPartAbortDataSourceServiceRole4F989213"
-                              }
-                            ]
-                          }
-                        },
-                        "constructInfo": {
-                          "fqn": "@aws-cdk/aws-iam.CfnPolicy",
-                          "version": "1.108.1"
-                        }
-                      }
-                    },
-                    "constructInfo": {
-                      "fqn": "@aws-cdk/aws-iam.Policy",
-                      "version": "1.108.1"
-                    }
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "@aws-cdk/aws-iam.Role",
-                  "version": "1.108.1"
-                }
-              },
-              "Resource": {
-                "id": "Resource",
-                "path": "Stack/SolarDigestGetUploadMultiPartAbortDataSource/Resource",
-                "attributes": {
-                  "aws:cdk:cloudformation:type": "AWS::AppSync::DataSource",
-                  "aws:cdk:cloudformation:props": {
-                    "apiId": {
-                      "Fn::GetAtt": [
-                        "AppSyncGraphQl5C415C25",
-                        "ApiId"
-                      ]
-                    },
-                    "name": "SolarDigestGetUploadMultiPartAbortDataSource",
-                    "type": "AWS_LAMBDA",
-                    "lambdaConfig": {
-                      "lambdaFunctionArn": "arn:aws:lambda:ap-southeast-2:574214337301:function:SolarDigest_GetUploadMultiPartAbort"
-                    },
-                    "serviceRoleArn": {
-                      "Fn::GetAtt": [
-                        "SolarDigestGetUploadMultiPartAbortDataSourceServiceRole4F989213",
-                        "Arn"
-                      ]
-                    }
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "@aws-cdk/aws-appsync.CfnDataSource",
-                  "version": "1.108.1"
-                }
-              }
-            },
-            "constructInfo": {
-              "fqn": "@aws-cdk/aws-appsync.LambdaDataSource",
-              "version": "1.108.1"
-            }
-          },
-          "SolarDigestGetUploadMultiPartCompleteFunction": {
-            "id": "SolarDigestGetUploadMultiPartCompleteFunction",
-            "path": "Stack/SolarDigestGetUploadMultiPartCompleteFunction",
-            "constructInfo": {
-              "fqn": "@aws-cdk/aws-lambda.FunctionBase",
-              "version": "1.108.1"
-            }
-          },
-          "SolarDigestGetUploadMultiPartCompleteDataSource": {
-            "id": "SolarDigestGetUploadMultiPartCompleteDataSource",
-            "path": "Stack/SolarDigestGetUploadMultiPartCompleteDataSource",
-            "children": {
-              "ServiceRole": {
-                "id": "ServiceRole",
-                "path": "Stack/SolarDigestGetUploadMultiPartCompleteDataSource/ServiceRole",
-                "children": {
-                  "Resource": {
-                    "id": "Resource",
-                    "path": "Stack/SolarDigestGetUploadMultiPartCompleteDataSource/ServiceRole/Resource",
-                    "attributes": {
-                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
-                      "aws:cdk:cloudformation:props": {
-                        "assumeRolePolicyDocument": {
-                          "Statement": [
-                            {
-                              "Action": "sts:AssumeRole",
-                              "Effect": "Allow",
-                              "Principal": {
-                                "Service": "appsync.amazonaws.com"
-                              }
-                            }
-                          ],
-                          "Version": "2012-10-17"
-                        }
-                      }
-                    },
-                    "constructInfo": {
-                      "fqn": "@aws-cdk/aws-iam.CfnRole",
-                      "version": "1.108.1"
-                    }
-                  },
-                  "DefaultPolicy": {
-                    "id": "DefaultPolicy",
-                    "path": "Stack/SolarDigestGetUploadMultiPartCompleteDataSource/ServiceRole/DefaultPolicy",
-                    "children": {
-                      "Resource": {
-                        "id": "Resource",
-                        "path": "Stack/SolarDigestGetUploadMultiPartCompleteDataSource/ServiceRole/DefaultPolicy/Resource",
-                        "attributes": {
-                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
-                          "aws:cdk:cloudformation:props": {
-                            "policyDocument": {
-                              "Statement": [
-                                {
-                                  "Action": "lambda:InvokeFunction",
-                                  "Effect": "Allow",
-                                  "Resource": "arn:aws:lambda:ap-southeast-2:574214337301:function:SolarDigest_GetUploadMultiPartComplete"
-                                }
-                              ],
-                              "Version": "2012-10-17"
-                            },
-                            "policyName": "SolarDigestGetUploadMultiPartCompleteDataSourceServiceRoleDefaultPolicyCFF684C9",
-                            "roles": [
-                              {
-                                "Ref": "SolarDigestGetUploadMultiPartCompleteDataSourceServiceRole03EA5F74"
-                              }
-                            ]
-                          }
-                        },
-                        "constructInfo": {
-                          "fqn": "@aws-cdk/aws-iam.CfnPolicy",
-                          "version": "1.108.1"
-                        }
-                      }
-                    },
-                    "constructInfo": {
-                      "fqn": "@aws-cdk/aws-iam.Policy",
-                      "version": "1.108.1"
-                    }
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "@aws-cdk/aws-iam.Role",
-                  "version": "1.108.1"
-                }
-              },
-              "Resource": {
-                "id": "Resource",
-                "path": "Stack/SolarDigestGetUploadMultiPartCompleteDataSource/Resource",
-                "attributes": {
-                  "aws:cdk:cloudformation:type": "AWS::AppSync::DataSource",
-                  "aws:cdk:cloudformation:props": {
-                    "apiId": {
-                      "Fn::GetAtt": [
-                        "AppSyncGraphQl5C415C25",
-                        "ApiId"
-                      ]
-                    },
-                    "name": "SolarDigestGetUploadMultiPartCompleteDataSource",
-                    "type": "AWS_LAMBDA",
-                    "lambdaConfig": {
-                      "lambdaFunctionArn": "arn:aws:lambda:ap-southeast-2:574214337301:function:SolarDigest_GetUploadMultiPartComplete"
-                    },
-                    "serviceRoleArn": {
-                      "Fn::GetAtt": [
-                        "SolarDigestGetUploadMultiPartCompleteDataSourceServiceRole03EA5F74",
-                        "Arn"
-                      ]
-                    }
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "@aws-cdk/aws-appsync.CfnDataSource",
-                  "version": "1.108.1"
-                }
-              }
-            },
-            "constructInfo": {
-              "fqn": "@aws-cdk/aws-appsync.LambdaDataSource",
-              "version": "1.108.1"
-            }
-          },
-          "SolarDigestGetDownloadUrlFunction": {
-            "id": "SolarDigestGetDownloadUrlFunction",
-            "path": "Stack/SolarDigestGetDownloadUrlFunction",
-            "constructInfo": {
-              "fqn": "@aws-cdk/aws-lambda.FunctionBase",
-              "version": "1.108.1"
-            }
-          },
-          "SolarDigestGetDownloadUrlDataSource": {
-            "id": "SolarDigestGetDownloadUrlDataSource",
-            "path": "Stack/SolarDigestGetDownloadUrlDataSource",
-            "children": {
-              "ServiceRole": {
-                "id": "ServiceRole",
-                "path": "Stack/SolarDigestGetDownloadUrlDataSource/ServiceRole",
-                "children": {
-                  "Resource": {
-                    "id": "Resource",
-                    "path": "Stack/SolarDigestGetDownloadUrlDataSource/ServiceRole/Resource",
-                    "attributes": {
-                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
-                      "aws:cdk:cloudformation:props": {
-                        "assumeRolePolicyDocument": {
-                          "Statement": [
-                            {
-                              "Action": "sts:AssumeRole",
-                              "Effect": "Allow",
-                              "Principal": {
-                                "Service": "appsync.amazonaws.com"
-                              }
-                            }
-                          ],
-                          "Version": "2012-10-17"
-                        }
-                      }
-                    },
-                    "constructInfo": {
-                      "fqn": "@aws-cdk/aws-iam.CfnRole",
-                      "version": "1.108.1"
-                    }
-                  },
-                  "DefaultPolicy": {
-                    "id": "DefaultPolicy",
-                    "path": "Stack/SolarDigestGetDownloadUrlDataSource/ServiceRole/DefaultPolicy",
-                    "children": {
-                      "Resource": {
-                        "id": "Resource",
-                        "path": "Stack/SolarDigestGetDownloadUrlDataSource/ServiceRole/DefaultPolicy/Resource",
-                        "attributes": {
-                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
-                          "aws:cdk:cloudformation:props": {
-                            "policyDocument": {
-                              "Statement": [
-                                {
-                                  "Action": "lambda:InvokeFunction",
-                                  "Effect": "Allow",
-                                  "Resource": "arn:aws:lambda:ap-southeast-2:574214337301:function:SolarDigest_GetDownloadUrl"
-                                }
-                              ],
-                              "Version": "2012-10-17"
-                            },
-                            "policyName": "SolarDigestGetDownloadUrlDataSourceServiceRoleDefaultPolicy2D3B6F0E",
-                            "roles": [
-                              {
-                                "Ref": "SolarDigestGetDownloadUrlDataSourceServiceRoleB886397C"
-                              }
-                            ]
-                          }
-                        },
-                        "constructInfo": {
-                          "fqn": "@aws-cdk/aws-iam.CfnPolicy",
-                          "version": "1.108.1"
-                        }
-                      }
-                    },
-                    "constructInfo": {
-                      "fqn": "@aws-cdk/aws-iam.Policy",
-                      "version": "1.108.1"
-                    }
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "@aws-cdk/aws-iam.Role",
-                  "version": "1.108.1"
-                }
-              },
-              "Resource": {
-                "id": "Resource",
-                "path": "Stack/SolarDigestGetDownloadUrlDataSource/Resource",
-                "attributes": {
-                  "aws:cdk:cloudformation:type": "AWS::AppSync::DataSource",
-                  "aws:cdk:cloudformation:props": {
-                    "apiId": {
-                      "Fn::GetAtt": [
-                        "AppSyncGraphQl5C415C25",
-                        "ApiId"
-                      ]
-                    },
-                    "name": "SolarDigestGetDownloadUrlDataSource",
-                    "type": "AWS_LAMBDA",
-                    "lambdaConfig": {
-                      "lambdaFunctionArn": "arn:aws:lambda:ap-southeast-2:574214337301:function:SolarDigest_GetDownloadUrl"
-                    },
-                    "serviceRoleArn": {
-                      "Fn::GetAtt": [
-                        "SolarDigestGetDownloadUrlDataSourceServiceRoleB886397C",
+                        "AppSyncDemoUpdateCountryDataSourceServiceRole70E04E77",
                         "Arn"
                       ]
                     }
@@ -1192,11 +2124,11 @@
           },
           "CDKMetadata": {
             "id": "CDKMetadata",
-            "path": "Stack/CDKMetadata",
+            "path": "AppSyncDemoV1/CDKMetadata",
             "children": {
               "Default": {
                 "id": "Default",
-                "path": "Stack/CDKMetadata/Default",
+                "path": "AppSyncDemoV1/CDKMetadata/Default",
                 "constructInfo": {
                   "fqn": "@aws-cdk/core.CfnResource",
                   "version": "1.108.1"

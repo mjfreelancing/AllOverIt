@@ -12,13 +12,19 @@ namespace GraphqlSchema
         {
             var app = new App();
 
-            var stack = new Stack(app, "Stack", new StackProps
+            var stack = new Stack(app, $"{Constants.AppName}V{Constants.ServiceVersion}", new StackProps
             {
                 Env = new CDKEnvironment
                 {
                     Account = SystemEnvironment.GetEnvironmentVariable("CDK_DEFAULT_ACCOUNT"),
                     Region = SystemEnvironment.GetEnvironmentVariable("CDK_DEFAULT_REGION")
                 }
+            });
+
+            // required to test HttpDataSourceAttribute
+            stack.ExportValue(Token.AsString(Constants.HttpDataSource.GetLanguageUrlExplicit), new ExportValueOptions
+            {
+                Name = Constants.Import.GetCountriesUrlImportName
             });
 
             var appProps = new SolarDigestAppProps

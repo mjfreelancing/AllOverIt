@@ -12,9 +12,10 @@ namespace GraphqlSchema
         {
             var graphql = new SolarDigestGraphql(this, appProps, authMode, mappingTemplates);
 
-            graphql.AddSchemaQuery<ISolarDigestQueryDefinition>();
-            //.AddSchemaMutation<ISomeInterface>();
-            //.AddSchemaSubscription<ISomeInterface>();
+            graphql
+                .AddSchemaQuery<IAppSyncDemoQueryDefinition>()
+                .AddSchemaMutation<IAppSyncDemoMutationDefinition>()
+                .AddSchemaSubscription<IAppSyncDemoSubscriptionDefinition>();
         }
     }
 }

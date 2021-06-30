@@ -2,20 +2,27 @@
 {
     internal static class Constants
     {
-        internal const string AppName = "SolarDigest";
+        internal const string AppName = "AppSyncDemo";
         internal const int ServiceVersion = 1;
 
         internal static class Function
         {
-            internal const string GetSite = "GetSite";
-            internal const string AddSite = "AddSite";
-            internal const string UpdateSite = "UpdateSite";
-            internal const string GetSitePowerSummary = "GetSitePowerSummary";
-            internal const string GetUploadUrl = "GetUploadUrl";
-            internal const string GetUploadMultiPart = "GetUploadMultiPart";
-            internal const string GetUploadMultiPartAbort = "GetUploadMultiPartAbort";
-            internal const string GetUploadMultiPartComplete = "GetUploadMultiPartComplete";
-            internal const string GetDownloadUrl = "GetDownloadUrl";
+            internal const string GetLanguages = "GetLanguages";
+
+            internal const string AddCountry = "AddCountry";
+            internal const string UpdateCountry = "UpdateCountry";
+        }
+
+        internal static class HttpDataSource
+        {
+            // need a real URL for the deployment to succeed
+            internal const string GetLanguageUrlExplicit = "https://www.google.com";
+            internal const string GetAllContinentsUrlEnvironmentName = "GetAllContinents";
+        }
+
+        internal static class Import
+        {
+            internal const string GetCountriesUrlImportName = "GetCountriesImport";
         }
     }
 }

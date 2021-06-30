@@ -3,13 +3,13 @@ using AllOverIt.Aws.Cdk.AppSync.Attributes;
 
 namespace GraphqlSchema.Schema.Inputs
 {
-    [SchemaType(GraphqlSchemaType.Input, "UploadMultiPartInput")]
-    internal interface IUploadMultiPartInput
+    [SchemaType("LanguageInput", GraphqlSchemaType.Input)]
+    internal interface ILanguageInput
     {
         [SchemaTypeRequired]
-        public string Filename { get; set; }
+        public string Code { get; }
 
         [SchemaTypeRequired]
-        int PartCount { get; set; }
+        public string Name { get; }
     }
 }

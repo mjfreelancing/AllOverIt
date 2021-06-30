@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 
 namespace AllOverIt.Aws.Cdk.AppSync.Attributes
 {
@@ -7,5 +8,17 @@ namespace AllOverIt.Aws.Cdk.AppSync.Attributes
     {
         // used for lookup in the DataSourceFactory
         public abstract string LookupKey { get; }
+        public string Description { get; }
+
+        protected static string SanitiseLookupKey(string lookupKey)
+        {
+            // exclude everything exception alphanumeric and dashes
+            return Regex.Replace(lookupKey, @"[^\w-]", "", RegexOptions.None);
+        }
+
+        public DataSourceAttribute(string description)
+        {
+            Description = description;
+        }
     }
 }
