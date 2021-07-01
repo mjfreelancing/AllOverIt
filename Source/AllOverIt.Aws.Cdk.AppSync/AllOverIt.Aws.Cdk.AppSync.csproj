@@ -1,27 +1,27 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-      <LangVersion>latest</LangVersion>
-      <Version>0.1.1</Version>
-      <Authors>Malcolm Smith</Authors>
-      <Company></Company>
-      <Copyright>Copyright © 2021</Copyright>
-      <Description>A library to help build AWS Graphql schemas using a code-first approach.</Description>
-      <PackageTags>utilities</PackageTags>
-      <PackageLicenseExpression>MIT</PackageLicenseExpression>
-      <RepositoryType>git</RepositoryType>
-      <RepositoryUrl>https://github.com/mjfreelancing/AllOverIt</RepositoryUrl>
-      <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <Version>0.2.0</Version>
+        <Authors>Malcolm Smith</Authors>
+        <Company></Company>
+        <Copyright>Copyright © 2021</Copyright>
+        <Description>A library to help build AWS Graphql schemas using a code-first approach.</Description>
+        <PackageTags>utilities</PackageTags>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/mjfreelancing/AllOverIt</RepositoryUrl>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Amazon.CDK.AWS.AppSync" Version="1.108.1" />
-        <PackageReference Include="Amazon.CDK.AWS.CloudFormation" Version="1.108.1" />
+        <PackageReference Include="Amazon.CDK.AWS.AppSync" Version="1.110.1" />
+        <PackageReference Include="Amazon.CDK.AWS.CloudFormation" Version="1.110.1" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\AllOverIt\AllOverIt.csproj" />
+        <ProjectReference Include="..\AllOverIt\AllOverIt.csproj" />
     </ItemGroup>
 
 </Project>
