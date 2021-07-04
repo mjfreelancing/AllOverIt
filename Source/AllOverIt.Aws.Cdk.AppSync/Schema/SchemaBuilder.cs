@@ -54,6 +54,8 @@ namespace AllOverIt.Aws.Cdk.AppSync.Schema
 
             foreach (var methodInfo in methods)
             {
+                var dataSource = methodInfo.GetDataSource(_dataSourceFactory);
+
                 var isRequired = methodInfo.IsGqlTypeRequired();
                 var isList = methodInfo.ReturnType.IsArray;
                 var isRequiredList = isList && methodInfo.IsGqlArrayRequired();
@@ -67,10 +69,15 @@ namespace AllOverIt.Aws.Cdk.AppSync.Schema
                         isRequiredList,
                         objectType => _graphqlApi.AddType(objectType));
 
+                var mappingTemplateKey = methodInfo.GetFunctionName();
+
                 _graphqlApi.AddSubscription(methodInfo.Name.GetGraphqlName(),
                     new ResolvableField(
                         new ResolvableFieldOptions
                         {
+                            DataSource = dataSource,
+                            RequestMappingTemplate = MappingTemplate.FromString(_mappingTemplates.GetRequestMapping(mappingTemplateKey)),
+                            ResponseMappingTemplate = MappingTemplate.FromString(_mappingTemplates.GetResponseMapping(mappingTemplateKey)),
                             Directives = new[]
                             {
                                 Directive.Subscribe(GetSubscriptionMutations(methodInfo).ToArray())
@@ -98,7 +105,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Schema
 
             foreach (var methodInfo in methods)
             {
-                var dataSource = methodInfo.GetDataSource(_dataSourceFactory);           // optionally specified via a custom attribute
+                var dataSource = methodInfo.GetDataSource(_dataSourceFactory);
 
                 var isRequired = methodInfo.IsGqlTypeRequired();
                 var isList = methodInfo.ReturnType.IsArray;

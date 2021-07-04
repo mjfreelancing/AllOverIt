@@ -18,7 +18,7 @@ namespace GraphqlSchema.Schema
         [HttpDataSource(Constants.AppName, EndpointSource.EnvironmentVariable, Constants.HttpDataSource.GetAllContinentsUrlEnvironmentName)]
         IContinentConnection AllContinents();
 
-        // NOTE: This can only be deployed after an initial deployment that excludes this (as it requires the export to be available)
+        // NOTE: This can only be deployed after an initial deployment that excludes this (as it requires the export value to be available)
         [SchemaArrayRequired]
         [SchemaTypeRequired]
         [HttpDataSource(Constants.AppName, EndpointSource.ImportValue, Constants.Import.GetCountriesUrlImportName)]
@@ -35,7 +35,7 @@ namespace GraphqlSchema.Schema
         [SchemaArrayRequired]
         [SchemaTypeRequired]
         [LambdaDataSource(Constants.AppName, Constants.Function.GetLanguages)]
-        ILanguage[] Languages();
+        ILanguage[] Languages(ILanguageFilterInput filter);     // optional filter in this case, implies all languages will be returned if omitted
 
         #region Date, Time, DateTime, Timestamp responses
        

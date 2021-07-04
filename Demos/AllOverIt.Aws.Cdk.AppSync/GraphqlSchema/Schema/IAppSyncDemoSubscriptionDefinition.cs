@@ -7,8 +7,9 @@ namespace GraphqlSchema.Schema
 {
     internal interface IAppSyncDemoSubscriptionDefinition : ISubscriptionDefinition
     {
-        [SubscriptionMutation(nameof(IAppSyncDemoMutationDefinition.AddCountry))]
+        [SubscriptionMutation(nameof(IAppSyncDemoMutationDefinition.AddCountry))]   // mutation(s) triggering the subscription
+        [NoneDataSource(Constants.AppName, nameof(AddedCountry))]                   // the handling datasource
         [SchemaTypeRequired]
-        ICountry AddedCountry(GraphqlTypeId code);
+        ICountry AddedCountry(GraphqlTypeId code);                                  // optional, so all countries added will be reported
     }
 }
