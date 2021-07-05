@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3B60B280-0CE6-4330-8BED-9C289760D4A7}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		ChangeLog.txt = ChangeLog.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{D9F6B8A1-4B01-4708-8851-741FC19F2440}"
@@ -38,19 +39,20 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.Fixture.FakeItEas
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllOverIt.Evaluator", "AllOverIt.Evaluator", "{E511BE3F-9514-4F49-86D7-1F168A5606A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicEvaluation", "Demos\AllOverIt.Evaluator\BasicEvaluation\BasicEvaluation.csproj", "{5EC2D81B-5B2A-4872-BF22-EE86DF1A1A10}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicEvaluation", "Demos\AllOverIt.Evaluator\BasicEvaluation\BasicEvaluation.csproj", "{5EC2D81B-5B2A-4872-BF22-EE86DF1A1A10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomOperation", "Demos\AllOverIt.Evaluator\CustomOperation\CustomOperation.csproj", "{509B48E3-EC0E-4ACF-B070-324C46989013}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomOperation", "Demos\AllOverIt.Evaluator\CustomOperation\CustomOperation.csproj", "{509B48E3-EC0E-4ACF-B070-324C46989013}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DelegateEvaluation", "Demos\AllOverIt.Evaluator\DelegateEvaluation\DelegateEvaluation.csproj", "{6EA9DB69-ECC0-49CC-AD4A-A35019653C8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DelegateEvaluation", "Demos\AllOverIt.Evaluator\DelegateEvaluation\DelegateEvaluation.csproj", "{6EA9DB69-ECC0-49CC-AD4A-A35019653C8C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixedEvaluation", "Demos\AllOverIt.Evaluator\MixedEvaluation\MixedEvaluation.csproj", "{AA8C4B77-EEA2-48A9-B47F-FD084C90F7D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MixedEvaluation", "Demos\AllOverIt.Evaluator\MixedEvaluation\MixedEvaluation.csproj", "{AA8C4B77-EEA2-48A9-B47F-FD084C90F7D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParallelEvaluation", "Demos\AllOverIt.Evaluator\ParallelEvaluation\ParallelEvaluation.csproj", "{9A00711A-36BE-45AF-BE7F-375E2F8D232D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParallelEvaluation", "Demos\AllOverIt.Evaluator\ParallelEvaluation\ParallelEvaluation.csproj", "{9A00711A-36BE-45AF-BE7F-375E2F8D232D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VariableEvaluation", "Demos\AllOverIt.Evaluator\VariableEvaluation\VariableEvaluation.csproj", "{5A2999A6-DD3B-467D-AD9E-9E4019E58A4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VariableEvaluation", "Demos\AllOverIt.Evaluator\VariableEvaluation\VariableEvaluation.csproj", "{5A2999A6-DD3B-467D-AD9E-9E4019E58A4A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VariableLookup", "Demos\AllOverIt.Evaluator\VariableLookup\VariableLookup.csproj", "{6BA56AF9-795F-4197-9D3B-5F84F203F5D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VariableLookup", "Demos\AllOverIt.Evaluator\VariableLookup\VariableLookup.csproj", "{6BA56AF9-795F-4197-9D3B-5F84F203F5D9}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.Aws.Cdk.AppSync", "Source\AllOverIt.Aws.Cdk.AppSync\AllOverIt.Aws.Cdk.AppSync.csproj", "{076E55F4-0237-4FE2-9332-7355385E46EE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllOverIt.Aws.Cdk.AppSync", "AllOverIt.Aws.Cdk.AppSync", "{6805597E-F10D-4625-B3DE-88B3A40F8CF1}"
