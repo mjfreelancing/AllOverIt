@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 
 namespace AllOverIt.Helpers
 {
+    /// <summary>Converts an object to an IDictionary{string, string} using a dot notation for nested members.</summary>
     public sealed class ObjectPropertySerializationHelper
     {
         internal const BindingOptions DefaultBindingOptions = BindingOptions.DefaultScope | BindingOptions.Virtual | BindingOptions.NonVirtual | BindingOptions.Public;
 
-        internal static readonly List<Type> IgnoredTypes = new()
+        internal readonly List<Type> IgnoredTypes = new()
         {
             typeof(Task),
             typeof(Task<>)
@@ -29,10 +30,8 @@ namespace AllOverIt.Helpers
 
         public string EmptyValueOutput { get; set; } = "<empty>";
 
-        public ObjectPropertySerializationHelper(bool includeNulls = false, bool includeEmptyCollections = false, BindingOptions bindingOptions = DefaultBindingOptions)
+        public ObjectPropertySerializationHelper(BindingOptions bindingOptions = DefaultBindingOptions)
         {
-            IncludeNulls = includeNulls;
-            IncludeEmptyCollections = includeEmptyCollections;
             BindingOptions = bindingOptions;
         }
 
@@ -152,6 +151,7 @@ namespace AllOverIt.Helpers
             var properties = instance
                 .GetType()
                 .GetPropertyInfo(BindingOptions)
+                .Where(propInfo => !IgnoreType(propInfo.PropertyType))
                 .Where(prop => prop.CanRead);
 
             foreach (var propertyInfo in properties)
@@ -195,7 +195,7 @@ namespace AllOverIt.Helpers
 
                     if (references.Contains(value))
                     {
-                        throw new SelfReferenceException($"Self referencing loop detected at '{name}' of type '{type.GetFriendlyName()}'");
+                        throw new SelfReferenceException($"Self referencing detected at '{name}' of type '{type.GetFriendlyName()}'");
                     }
 
                     references.Add(value);
@@ -204,7 +204,7 @@ namespace AllOverIt.Helpers
             }
         }
 
-        private static bool IgnoreType(Type type)
+        private bool IgnoreType(Type type)
         {
             if (typeof(Delegate).IsAssignableFrom(type.BaseType))
             {
