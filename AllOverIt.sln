@@ -59,6 +59,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllOverIt.Aws.Cdk.AppSync",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphqlSchema", "Demos\AllOverIt.Aws.Cdk.AppSync\GraphqlSchema\GraphqlSchema.csproj", "{DA3D5D73-0058-484F-9D81-37F896D01FE3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SerializeObjectProperties", "Demos\AllOverIt\SerializeObjectProperties\SerializeObjectProperties.csproj", "{549B6B10-C55D-465F-96BC-D87B0BB72BE5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -141,6 +143,10 @@ Global
 		{DA3D5D73-0058-484F-9D81-37F896D01FE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA3D5D73-0058-484F-9D81-37F896D01FE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA3D5D73-0058-484F-9D81-37F896D01FE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{549B6B10-C55D-465F-96BC-D87B0BB72BE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{549B6B10-C55D-465F-96BC-D87B0BB72BE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{549B6B10-C55D-465F-96BC-D87B0BB72BE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{549B6B10-C55D-465F-96BC-D87B0BB72BE5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -168,6 +174,7 @@ Global
 		{076E55F4-0237-4FE2-9332-7355385E46EE} = {FC8E8DB2-1299-44F4-A233-0EDCE225BB8C}
 		{6805597E-F10D-4625-B3DE-88B3A40F8CF1} = {D9F6B8A1-4B01-4708-8851-741FC19F2440}
 		{DA3D5D73-0058-484F-9D81-37F896D01FE3} = {6805597E-F10D-4625-B3DE-88B3A40F8CF1}
+		{549B6B10-C55D-465F-96BC-D87B0BB72BE5} = {0DC79E13-DE7A-417D-8A7B-64ABA3F4E1C8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19DD11B3-596E-4862-B5C4-1FFFFB173106}
