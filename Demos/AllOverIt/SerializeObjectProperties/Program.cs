@@ -20,7 +20,10 @@ namespace SerializeObjectProperties
                 SerializeObject(serializer);
 
                 Console.WriteLine();
-                SerializeDictionary(serializer);
+                SerializeDictionary1(serializer);
+
+                Console.WriteLine();
+                SerializeDictionary2(serializer);
 
                 Console.WriteLine();
                 SerializeList(serializer);
@@ -37,9 +40,9 @@ namespace SerializeObjectProperties
 
         private static void SerializeObject(ObjectPropertySerializationHelper serializer)
         {
-            // setup a self-referencing dummy
             var dummy1 = new Dummy();
             var dummy2 = new Dummy { Prop11 = dummy1 };
+            // un-comment to test a self-referencing exception
             //dummy1.Prop11 = dummy2;
 
             var metadataChild = new
@@ -60,7 +63,7 @@ namespace SerializeObjectProperties
                         Prop9 = 2.3d,
                         Prop10 = true,
                         Prop11 = dummy1,
-                        Task = Task.FromResult(true)
+                        Task = Task.FromResult(true)            // will be excluded
                     }
                 },
                 Prop12 = new List<int> { -1, -2, -3 }
@@ -69,7 +72,7 @@ namespace SerializeObjectProperties
             var metadataRoot = new
             {
                 Prop13 = "Root",
-                Prop14 = metadataChild.ToPropertyDictionary(), // of type IDictionary<string, object>
+                Prop14 = metadataChild.ToPropertyDictionary(),  // of type IDictionary<string, object>
                 Prop15 = new Dictionary<int, string>
                 {
                     { 1, "one" }, { 2, "two" }, { 3, "three" }
@@ -98,18 +101,25 @@ namespace SerializeObjectProperties
                 Prop21 = (bool?)null,
                 Prop22 = new TypedDummy<int>
                 {
+                    Value1 = 23,
                     Dummy = 1
                 },
                 Prop23 = new TypedDummy<string>
                 {
+                    Value2 = 9,
                     Dummy = "one"
                 },
                 Prop24 = new TypedDummy<Task>
                 {
-                    Dummy = Task.CompletedTask
+                    Value1 = 3,
+                    Value2 = -3,
+                    Dummy = Task.CompletedTask                  // will be excluded
                 },
                 Prop25 = (Action<int, int, bool>)((_, _, _) => { }),
-                Prop26 = (Func<bool, bool>)(_ => true)
+                Prop26 = (Func<bool, bool>)(_ => true),
+                Prop27 = new Dictionary<string, Task>(),        // will be excluded
+                Prop28 = new Dictionary<int, string>(),
+                Prop29 = new Dictionary<Task, string>()         // will be excluded
             };
 
             Console.WriteLine("Object serialization values:");
@@ -123,7 +133,7 @@ namespace SerializeObjectProperties
             }
         }
 
-        private static void SerializeDictionary(ObjectPropertySerializationHelper serializer)
+        private static void SerializeDictionary1(ObjectPropertySerializationHelper serializer)
         {
             var dictionary = new Dictionary<string, int>
             {
@@ -133,8 +143,29 @@ namespace SerializeObjectProperties
                 { "four", 4 }
             };
 
-            Console.WriteLine("Dictionary serialization values:");
-            Console.WriteLine("================================");
+            Console.WriteLine("Dictionary #1 serialization values:");
+            Console.WriteLine("===================================");
+
+            var items2 = serializer.SerializeToDictionary(dictionary).Select(kvp => $"{kvp.Key} = {kvp.Value}");
+            foreach (var item in items2)
+            {
+                Console.WriteLine($"  {item}");
+            }
+        }
+
+        private static void SerializeDictionary2(ObjectPropertySerializationHelper serializer)
+        {
+            var dictionary = new Dictionary<TypedDummy<bool>, int>
+            {
+                // only the class name is serialized because it is a key within the dictionary
+                { new TypedDummy<bool>{Dummy = true}, 1 },
+                { new TypedDummy<bool>{Dummy = false}, 2 },
+                { new TypedDummy<bool>{Dummy = false}, 3 },
+                { new TypedDummy<bool>{Dummy = true}, 4 },
+            };
+
+            Console.WriteLine("Dictionary #2 serialization values:");
+            Console.WriteLine("===================================");
 
             var items2 = serializer.SerializeToDictionary(dictionary).Select(kvp => $"{kvp.Key} = {kvp.Value}");
             foreach (var item in items2)

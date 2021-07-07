@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Exceptions;
+using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Helpers;
 using AllOverIt.Reflection;
@@ -56,6 +57,11 @@ namespace AllOverIt.Tests.Helpers
             {
                 Prop13 = "13";
             }
+        }
+
+        private class Typed<TType>
+        {
+            public TType Prop { get; set; }
         }
 
         protected ObjectPropertySerializationHelperFixture()
@@ -330,24 +336,132 @@ namespace AllOverIt.Tests.Helpers
                         { "Prop12", "<empty>" }
                     });
             }
+
+            [Fact]
+            public void Should_Serialize_Dictionary()
+            {
+                var dictionary = Create<Dictionary<string, int>>();
+                var keys = dictionary.Keys.Select(item => item).ToList();
+                var values = dictionary.Values.Select(item => $"{item}").ToList();
+
+                var actual = _helper.SerializeToDictionary(dictionary);
+
+                actual
+                    .Should()
+                    .BeEquivalentTo(new Dictionary<string, string>
+                    {
+                        { keys[0], values[0] },
+                        { keys[1], values[1] },
+                        { keys[2], values[2] }
+                    });
+            }
+
+            [Fact]
+            public void Should_Serialize_Nested_Dictionary()
+            {
+                var dictionary = Create<Dictionary<string, Dictionary<bool, int>>>();
+                var keys = dictionary.Keys.Select(item => item).ToList();
+
+                var actual = _helper.SerializeToDictionary(dictionary);
+
+                actual
+                    .Should()
+                    .BeEquivalentTo(new Dictionary<string, string>
+                    {
+                        { $"{keys[0]}.{dictionary[keys[0]].Keys.ElementAt(0)}", $"{dictionary[keys[0]].Values.ElementAt(0)}" },
+                        { $"{keys[0]}.{dictionary[keys[0]].Keys.ElementAt(1)}", $"{dictionary[keys[0]].Values.ElementAt(1)}" },
+
+                        { $"{keys[1]}.{dictionary[keys[1]].Keys.ElementAt(0)}", $"{dictionary[keys[1]].Values.ElementAt(0)}" },
+                        { $"{keys[1]}.{dictionary[keys[1]].Keys.ElementAt(1)}", $"{dictionary[keys[1]].Values.ElementAt(1)}" },
+
+                        { $"{keys[2]}.{dictionary[keys[2]].Keys.ElementAt(0)}", $"{dictionary[keys[2]].Values.ElementAt(0)}" },
+                        { $"{keys[2]}.{dictionary[keys[2]].Keys.ElementAt(1)}", $"{dictionary[keys[2]].Values.ElementAt(1)}" }
+                    });
+            }
+
+            [Fact]
+            public void Should_Serialize_List()
+            {
+                var list = CreateMany<string>();
+
+                var actual = _helper.SerializeToDictionary(list);
+
+                actual
+                    .Should()
+                    .BeEquivalentTo(new Dictionary<string, string>
+                    {
+                        { "[0]", list[0] },
+                        { "[1]", list[1] },
+                        { "[2]", list[2] },
+                        { "[3]", list[3] },
+                        { "[4]", list[4] }
+                    });
+            }
+
+            [Fact]
+            public void Should_Serialize_Dictionary_With_Keys_Of_Type_Class_Using_Name_And_Index()
+            {
+                var dummy = new DummyType
+                {
+                    Prop6 = new Dictionary<DummyType, string>
+                    {
+                        { new DummyType(), "one" },
+                        { new DummyType(), "two" }
+                    }
+                };
+
+                var actual = _helper.SerializeToDictionary(dummy);
+
+                actual
+                    .Should()
+                    .BeEquivalentTo(new Dictionary<string, string>
+                    {
+                        { "Prop1", "0" },
+                        { $"Prop6.{nameof(DummyType)}`0", "one" },
+                        { $"Prop6.{nameof(DummyType)}`1", "two" }
+                    });
+            }
+
+            [Fact]
+            public void Should_Serialize_Dictionary_With_Keys_Of_Type_Generic_Using_Friendly_Name_And_Index()
+            {
+                var dummy = new Dictionary<Typed<DummyType>, bool>()
+                {
+                    // only the class name (and index) is serialized because it is a key
+                    {new Typed<DummyType>{Prop = new DummyType()}, true},
+                    {new Typed<DummyType>{Prop = new DummyType()}, false}
+                };
+
+                var actual = _helper.SerializeToDictionary(dummy);
+
+                actual
+                    .Should()
+                    .BeEquivalentTo(new Dictionary<string, string>
+                    {
+                        { $"{typeof(Typed<DummyType>).GetFriendlyName()}`0", "True" },
+                        { $"{typeof(Typed<DummyType>).GetFriendlyName()}`1", "False" }
+                    });
+            }
+
+            [Fact]
+            public void Should_Exclude_Delegates()
+            {
+                var dummy = new DummyType
+                {
+                    Prop9 = (_, _) => { },
+                    Prop10 = () => true
+                };
+
+                var actual = _helper.SerializeToDictionary(dummy);
+
+                actual
+                    .Should()
+                    .BeEquivalentTo(new Dictionary<string, string>
+                    {
+                        { "Prop1", "0" }
+                    });
+            }
         }
-
-
-        //private class DummyType
-        //{
-        //    public int Prop1 { get; set; }
-        //    public DummyType Prop2 { get; set; }
-        //    public Task Prop3 { get; set; }
-        //    public IEnumerable<string> Prop4 { get; set; }
-        //    public IDictionary<int, bool> Prop5 { get; set; }
-        //    public IDictionary<DummyType, string> Prop6 { get; set; }
-        //    public IDictionary<string, DummyType> Prop7 { get; set; }
-        //    public double? Prop8 { get; set; }
-        //    public Action<int, string> Prop9 { get; set; }
-        //    public Func<bool> Prop10 { get; set; }
-        //    public IDictionary<string, Task> Prop11 { get; set; }
-        //    public IDictionary<int, DummyType> Prop12 { get; set; }
-        //}
 
         public class ClearIgnoredTypes : ObjectPropertySerializationHelperFixture
         {
