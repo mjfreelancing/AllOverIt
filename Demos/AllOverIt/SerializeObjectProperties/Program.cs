@@ -12,16 +12,23 @@ namespace SerializeObjectProperties
     {
         static void Main(string[] args)
         {
-            var serializer = new ObjectPropertySerializationHelper { IncludeEmptyCollections = true, IncludeNulls = true };
-            serializer.BindingOptions = BindingOptions.Instance | BindingOptions.Public;
+            try
+            {
+                var serializer = new ObjectPropertySerializationHelper { IncludeEmptyCollections = true, IncludeNulls = true };
+                serializer.BindingOptions = BindingOptions.Default;
 
-            SerializeObject(serializer);
+                SerializeObject(serializer);
 
-            Console.WriteLine();
-            SerializeDictionary(serializer);
+                Console.WriteLine();
+                SerializeDictionary(serializer);
 
-            Console.WriteLine();
-            SerializeList(serializer);
+                Console.WriteLine();
+                SerializeList(serializer);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
 
             Console.WriteLine("");
             Console.WriteLine("All Over It.");
@@ -33,7 +40,7 @@ namespace SerializeObjectProperties
             // setup a self-referencing dummy
             var dummy1 = new Dummy();
             var dummy2 = new Dummy { Prop11 = dummy1 };
-            dummy1.Prop11 = dummy2;
+            //dummy1.Prop11 = dummy2;
 
             var metadataChild = new
             {

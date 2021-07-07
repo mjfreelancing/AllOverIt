@@ -1,52 +1,22 @@
-﻿using AllOverIt.Extensions;
+﻿using AllOverIt.Exceptions;
+using AllOverIt.Extensions;
 using AllOverIt.Reflection;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AllOverIt.Helpers
 {
     public sealed class ObjectPropertySerializationHelper
     {
+        internal const BindingOptions DefaultBindingOptions = BindingOptions.DefaultScope | BindingOptions.Virtual | BindingOptions.NonVirtual | BindingOptions.Public;
+
         internal static readonly List<Type> IgnoredTypes = new()
         {
-            //typeof(Task),
-            //typeof(Task<>)
-
-            //typeof(Action),
-            //typeof(Action<>),
-            //typeof(Action<,>),
-            //typeof(Action<,,>),
-            //typeof(Action<,,,>),
-            //typeof(Action<,,,,>),
-            //typeof(Action<,,,,,>),
-            //typeof(Action<,,,,,,>),
-            //typeof(Action<,,,,,,,>),
-            //typeof(Action<,,,,,,,,>),
-            //typeof(Action<,,,,,,,,,>),
-            //typeof(Action<,,,,,,,,,,>),
-            //typeof(Action<,,,,,,,,,,,>),
-            //typeof(Action<,,,,,,,,,,,,>),
-            //typeof(Action<,,,,,,,,,,,,,>),
-            //typeof(Action<,,,,,,,,,,,,,,>),
-            //typeof(Action<,,,,,,,,,,,,,,,>),
-            //typeof(Func<>),
-            //typeof(Func<,>),
-            //typeof(Func<,,>),
-            //typeof(Func<,,,>),
-            //typeof(Func<,,,,>),
-            //typeof(Func<,,,,,>),
-            //typeof(Func<,,,,,,>),
-            //typeof(Func<,,,,,,,>),
-            //typeof(Func<,,,,,,,,>),
-            //typeof(Func<,,,,,,,,,>),
-            //typeof(Func<,,,,,,,,,,>),
-            //typeof(Func<,,,,,,,,,,,>),
-            //typeof(Func<,,,,,,,,,,,,>),
-            //typeof(Func<,,,,,,,,,,,,,>),
-            //typeof(Func<,,,,,,,,,,,,,,>),
-            //typeof(Func<,,,,,,,,,,,,,,,>)
+            typeof(Task),
+            typeof(Task<>)
         };
 
         public bool IncludeNulls { get; set; }
@@ -59,7 +29,7 @@ namespace AllOverIt.Helpers
 
         public string EmptyValueOutput { get; set; } = "<empty>";
 
-        public ObjectPropertySerializationHelper(bool includeNulls = false, bool includeEmptyCollections = false, BindingOptions bindingOptions = BindingOptions.Default)
+        public ObjectPropertySerializationHelper(bool includeNulls = false, bool includeEmptyCollections = false, BindingOptions bindingOptions = DefaultBindingOptions)
         {
             IncludeNulls = includeNulls;
             IncludeEmptyCollections = includeEmptyCollections;
@@ -74,36 +44,41 @@ namespace AllOverIt.Helpers
 
             if (instance != null)
             {
-                Populate(null, instance, dictionary);
+                Populate(null, instance, dictionary, new List<object>());
             }
 
             return dictionary;
         }
 
-        public void IgnoreTypes(params Type[] types)
+        public void ClearIgnoredTypes()
+        {
+            IgnoredTypes.Clear();
+        }
+
+        public void AddIgnoredTypes(params Type[] types)
         {
             IgnoredTypes.AddRange(types);
         }
 
-        private void Populate(string prefix, object instance, IDictionary<string, string> values)
+        private void Populate(string prefix, object instance, IDictionary<string, string> values, IList<object> references)
         {
             switch (instance)
             {
                 case IDictionary dictionary:
-                    AppendDictionaryAsPropertyValues(prefix, dictionary, values);
+                    AppendDictionaryAsPropertyValues(prefix, dictionary, values, references);
                     break;
 
                 case IEnumerable enumerable:
-                    AppendEnumerableAsPropertyValues(prefix, enumerable, values);
+                    AppendEnumerableAsPropertyValues(prefix, enumerable, values, references);
                     break;
 
                 default:
-                    AppendObjectAsPropertyValues(prefix, instance, values);
+                    AppendObjectAsPropertyValues(prefix, instance, values, references);
                     break;
             }
         }
 
-        private void AppendDictionaryAsPropertyValues(string prefix, IDictionary dictionary, IDictionary<string, string> values)
+        private void AppendDictionaryAsPropertyValues(string prefix, IDictionary dictionary, IDictionary<string, string> values, IList<object> references)
         {
             var args = dictionary.GetType().GetGenericArguments();
             var keyType = args[0];
@@ -128,9 +103,13 @@ namespace AllOverIt.Helpers
                     ? string.Empty
                     : $"{prefix}.";
 
-                AppendNameValue(isClassType
+                AppendNameValue(
+                    isClassType
                         ? $"{namePrefix}{keyType.GetFriendlyName()}`{idx}"
-                        : $"{namePrefix}{keyEnumerator.Current}", valueEnumerator.Current, values
+                        : $"{namePrefix}{keyEnumerator.Current}",
+                    valueEnumerator.Current,
+                    values,
+                    references
                 );
 
                 ++idx;
@@ -141,10 +120,10 @@ namespace AllOverIt.Helpers
                 return;
             }
 
-            AppendNameValue(prefix, EmptyValueOutput, values);
+            AppendNameValue(prefix, EmptyValueOutput, values, references);
         }
 
-        private void AppendEnumerableAsPropertyValues(string prefix, IEnumerable enumerable, IDictionary<string, string> values)
+        private void AppendEnumerableAsPropertyValues(string prefix, IEnumerable enumerable, IDictionary<string, string> values, IList<object> references)
         {
             var args = enumerable.GetType().GetGenericArguments();
 
@@ -157,7 +136,7 @@ namespace AllOverIt.Helpers
 
             foreach (var value in enumerable)
             {
-                AppendNameValue($"{prefix}[{idx++}]", value, values);
+                AppendNameValue($"{prefix}[{idx++}]", value, values, references);
             }
 
             if (!IncludeEmptyCollections || idx != 0)
@@ -165,12 +144,17 @@ namespace AllOverIt.Helpers
                 return;
             }
 
-            AppendNameValue(prefix, EmptyValueOutput, values);
+            AppendNameValue(prefix, EmptyValueOutput, values, references);
         }
 
-        private void AppendObjectAsPropertyValues(string prefix, object instance, IDictionary<string, string> values)
+        private void AppendObjectAsPropertyValues(string prefix, object instance, IDictionary<string, string> values, IList<object> references)
         {
-            foreach (var propertyInfo in instance.GetType().GetPropertyInfo(BindingOptions).Where(prop => prop.CanRead))
+            var properties = instance
+                .GetType()
+                .GetPropertyInfo(BindingOptions)
+                .Where(prop => prop.CanRead);
+
+            foreach (var propertyInfo in properties)
             {
                 var value = propertyInfo.GetValue(instance);
 
@@ -183,12 +167,12 @@ namespace AllOverIt.Helpers
                         name = prefix + "." + name;
                     }
 
-                    AppendNameValue(name, value, values);
+                    AppendNameValue(name, value, values, references);
                 }
             }
         }
 
-        private void AppendNameValue(string name, object value, IDictionary<string, string> values)
+        private void AppendNameValue(string name, object value, IDictionary<string, string> values, IList<object> references)
         {
             if (value == null)
             {
@@ -209,7 +193,13 @@ namespace AllOverIt.Helpers
                         return;
                     }
 
-                    Populate(name, value, values);
+                    if (references.Contains(value))
+                    {
+                        throw new SelfReferenceException($"Self referencing loop detected at '{name}' of type '{type.GetFriendlyName()}'");
+                    }
+
+                    references.Add(value);
+                    Populate(name, value, values, references);
                 }
             }
         }
