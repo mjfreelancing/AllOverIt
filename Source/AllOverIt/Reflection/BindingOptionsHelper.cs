@@ -2,9 +2,6 @@
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-
-[assembly: InternalsVisibleTo("AllOverIt.Tests")]
 
 namespace AllOverIt.Reflection
 {

@@ -1,8 +1,10 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Helpers;
+using AllOverIt.Reflection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SerializeObjectProperties
 {
@@ -11,6 +13,7 @@ namespace SerializeObjectProperties
         static void Main(string[] args)
         {
             var serializer = new ObjectPropertySerializationHelper { IncludeEmptyCollections = true, IncludeNulls = true };
+            serializer.BindingOptions = BindingOptions.Instance | BindingOptions.Public;
 
             SerializeObject(serializer);
 
@@ -27,6 +30,11 @@ namespace SerializeObjectProperties
 
         private static void SerializeObject(ObjectPropertySerializationHelper serializer)
         {
+            // setup a self-referencing dummy
+            var dummy1 = new Dummy();
+            var dummy2 = new Dummy { Prop11 = dummy1 };
+            dummy1.Prop11 = dummy2;
+
             var metadataChild = new
             {
                 Prop1 = 1,
@@ -44,10 +52,8 @@ namespace SerializeObjectProperties
                         Prop8 = 11,
                         Prop9 = 2.3d,
                         Prop10 = true,
-                        Prop11 = new Dummy
-                        {
-                            //
-                        }
+                        Prop11 = dummy1,
+                        Task = Task.FromResult(true)
                     }
                 },
                 Prop12 = new List<int> { -1, -2, -3 }
@@ -82,7 +88,21 @@ namespace SerializeObjectProperties
                 {
                     (_, _) => 1
                 },
-                prop21 = (bool?)null
+                Prop21 = (bool?)null,
+                Prop22 = new TypedDummy<int>
+                {
+                    Dummy = 1
+                },
+                Prop23 = new TypedDummy<string>
+                {
+                    Dummy = "one"
+                },
+                Prop24 = new TypedDummy<Task>
+                {
+                    Dummy = Task.CompletedTask
+                },
+                Prop25 = (Action<int, int, bool>)((_, _, _) => { }),
+                Prop26 = (Func<bool, bool>)(_ => true)
             };
 
             Console.WriteLine("Object serialization values:");
@@ -94,7 +114,6 @@ namespace SerializeObjectProperties
             {
                 Console.WriteLine($"  {item}");
             }
-
         }
 
         private static void SerializeDictionary(ObjectPropertySerializationHelper serializer)

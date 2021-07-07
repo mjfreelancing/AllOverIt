@@ -1,4 +1,6 @@
-﻿namespace SerializeObjectProperties
+﻿using System.Threading.Tasks;
+
+namespace SerializeObjectProperties
 {
     internal class Dummy
     {
@@ -7,5 +9,6 @@
         public double Prop9 { get; set; }
         public bool Prop10 { get; set; }
         public Dummy Prop11 { get; set; }
+        public Task<bool> Task { get; set; }
     }
 }

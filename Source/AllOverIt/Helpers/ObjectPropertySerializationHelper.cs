@@ -4,48 +4,49 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Helpers
 {
     public sealed class ObjectPropertySerializationHelper
     {
-        internal readonly List<Type> IgnoredTypes = new()
+        internal static readonly List<Type> IgnoredTypes = new()
         {
-            typeof(Task),
-            typeof(Action),
-            typeof(Action<>),
-            typeof(Action<,>),
-            typeof(Action<,,>),
-            typeof(Action<,,,>),
-            typeof(Action<,,,,>),
-            typeof(Action<,,,,,>),
-            typeof(Action<,,,,,,>),
-            typeof(Action<,,,,,,,>),
-            typeof(Action<,,,,,,,,>),
-            typeof(Action<,,,,,,,,,>),
-            typeof(Action<,,,,,,,,,,>),
-            typeof(Action<,,,,,,,,,,,>),
-            typeof(Action<,,,,,,,,,,,,>),
-            typeof(Action<,,,,,,,,,,,,,>),
-            typeof(Action<,,,,,,,,,,,,,,>),
-            typeof(Action<,,,,,,,,,,,,,,,>),
-            typeof(Func<>),
-            typeof(Func<,>),
-            typeof(Func<,,>),
-            typeof(Func<,,,>),
-            typeof(Func<,,,,>),
-            typeof(Func<,,,,,>),
-            typeof(Func<,,,,,,>),
-            typeof(Func<,,,,,,,>),
-            typeof(Func<,,,,,,,,>),
-            typeof(Func<,,,,,,,,,>),
-            typeof(Func<,,,,,,,,,,>),
-            typeof(Func<,,,,,,,,,,,>),
-            typeof(Func<,,,,,,,,,,,,>),
-            typeof(Func<,,,,,,,,,,,,,>),
-            typeof(Func<,,,,,,,,,,,,,,>),
-            typeof(Func<,,,,,,,,,,,,,,,>)
+            //typeof(Task),
+            //typeof(Task<>)
+
+            //typeof(Action),
+            //typeof(Action<>),
+            //typeof(Action<,>),
+            //typeof(Action<,,>),
+            //typeof(Action<,,,>),
+            //typeof(Action<,,,,>),
+            //typeof(Action<,,,,,>),
+            //typeof(Action<,,,,,,>),
+            //typeof(Action<,,,,,,,>),
+            //typeof(Action<,,,,,,,,>),
+            //typeof(Action<,,,,,,,,,>),
+            //typeof(Action<,,,,,,,,,,>),
+            //typeof(Action<,,,,,,,,,,,>),
+            //typeof(Action<,,,,,,,,,,,,>),
+            //typeof(Action<,,,,,,,,,,,,,>),
+            //typeof(Action<,,,,,,,,,,,,,,>),
+            //typeof(Action<,,,,,,,,,,,,,,,>),
+            //typeof(Func<>),
+            //typeof(Func<,>),
+            //typeof(Func<,,>),
+            //typeof(Func<,,,>),
+            //typeof(Func<,,,,>),
+            //typeof(Func<,,,,,>),
+            //typeof(Func<,,,,,,>),
+            //typeof(Func<,,,,,,,>),
+            //typeof(Func<,,,,,,,,>),
+            //typeof(Func<,,,,,,,,,>),
+            //typeof(Func<,,,,,,,,,,>),
+            //typeof(Func<,,,,,,,,,,,>),
+            //typeof(Func<,,,,,,,,,,,,>),
+            //typeof(Func<,,,,,,,,,,,,,>),
+            //typeof(Func<,,,,,,,,,,,,,,>),
+            //typeof(Func<,,,,,,,,,,,,,,,>)
         };
 
         public bool IncludeNulls { get; set; }
@@ -113,8 +114,8 @@ namespace AllOverIt.Helpers
                 return;
             }
 
-            var flag = keyType.IsClass && keyType != typeof(string);
-            var num = 0;
+            var isClassType = keyType.IsClass && keyType != typeof(string);
+            var idx = 0;
 
             var keyEnumerator = dictionary.Keys.GetEnumerator();
             var valueEnumerator = dictionary.Values.GetEnumerator();
@@ -127,15 +128,15 @@ namespace AllOverIt.Helpers
                     ? string.Empty
                     : $"{prefix}.";
 
-                AppendNameValue(flag
-                        ? $"{namePrefix}{keyType.Name}`{num}"
+                AppendNameValue(isClassType
+                        ? $"{namePrefix}{keyType.GetFriendlyName()}`{idx}"
                         : $"{namePrefix}{keyEnumerator.Current}", valueEnumerator.Current, values
                 );
 
-                ++num;
+                ++idx;
             }
 
-            if (!IncludeEmptyCollections || num != 0)
+            if (!IncludeEmptyCollections || idx != 0)
             {
                 return;
             }
@@ -152,14 +153,14 @@ namespace AllOverIt.Helpers
                 return;
             }
 
-            var num = 0;
+            var idx = 0;
 
             foreach (var value in enumerable)
             {
-                AppendNameValue($"{prefix}[{num++}]", value, values);
+                AppendNameValue($"{prefix}[{idx++}]", value, values);
             }
 
-            if (!IncludeEmptyCollections || num != 0)
+            if (!IncludeEmptyCollections || idx != 0)
             {
                 return;
             }
@@ -171,18 +172,18 @@ namespace AllOverIt.Helpers
         {
             foreach (var propertyInfo in instance.GetType().GetPropertyInfo(BindingOptions).Where(prop => prop.CanRead))
             {
-                var obj = propertyInfo.GetValue(instance);
+                var value = propertyInfo.GetValue(instance);
 
-                if (IncludeNulls || obj != null)
+                if (IncludeNulls || value != null)
                 {
                     var name = propertyInfo.Name;
-                    
+
                     if (!prefix.IsNullOrEmpty())
                     {
                         name = prefix + "." + name;
                     }
 
-                    AppendNameValue(name, obj, values);
+                    AppendNameValue(name, value, values);
                 }
             }
         }
@@ -197,24 +198,29 @@ namespace AllOverIt.Helpers
             {
                 var type = value.GetType();
 
-                if (IgnoreType(type))
-                {
-                    return;
-                }
-
                 if (type.IsValueType || type == typeof(string))
                 {
                     values.Add(name, $"{value}");
                 }
                 else
                 {
+                    if (IgnoreType(type))
+                    {
+                        return;
+                    }
+
                     Populate(name, value, values);
                 }
             }
         }
 
-        private bool IgnoreType(Type type)
+        private static bool IgnoreType(Type type)
         {
+            if (typeof(Delegate).IsAssignableFrom(type.BaseType))
+            {
+                return true;
+            }
+
             if (IgnoredTypes.Contains(type))
             {
                 return true;
