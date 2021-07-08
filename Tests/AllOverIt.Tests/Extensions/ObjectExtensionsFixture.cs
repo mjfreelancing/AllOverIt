@@ -554,17 +554,7 @@ namespace AllOverIt.Tests.Extensions
                         { "That", "0" }
                     });
             }
-
-
-            // what about excluding type
-
-
-
-
-
         }
-
-        // -----------------
 
         public class GetPropertyValue_BindingFlags : ObjectExtensionsFixture
         {

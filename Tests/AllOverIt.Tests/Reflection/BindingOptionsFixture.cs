@@ -41,8 +41,8 @@ namespace AllOverIt.Tests.Reflection
             [Theory]
             [InlineData(BindingOptions.DefaultScope, (int)(BindingOptions.Static | BindingOptions.Instance))]
             [InlineData(BindingOptions.DefaultAccessor, (int)(BindingOptions.Abstract | BindingOptions.Virtual | BindingOptions.NonVirtual))]
-            [InlineData(BindingOptions.DefaultVisibility, (int)(BindingOptions.Public | BindingOptions.Protected))]
-            [InlineData(BindingOptions.AllVisibility, (int)(BindingOptions.DefaultVisibility | BindingOptions.Private | BindingOptions.Internal))]
+            [InlineData(BindingOptions.DefaultVisibility, (int)(BindingOptions.Public))]
+            [InlineData(BindingOptions.AllVisibility, (int)(BindingOptions.DefaultVisibility | BindingOptions.Private | BindingOptions.Protected | BindingOptions.Internal))]
             [InlineData(BindingOptions.Default, (int)(BindingOptions.DefaultScope | BindingOptions.DefaultAccessor | BindingOptions.DefaultVisibility))]
             [InlineData(BindingOptions.All, (int)(BindingOptions.AllScope | BindingOptions.AllAccessor | BindingOptions.AllVisibility))]
             public void Should_Have_Expected_Composite_Value(BindingOptions option, int expected)

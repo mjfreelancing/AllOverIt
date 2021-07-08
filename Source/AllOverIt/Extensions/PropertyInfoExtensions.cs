@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Linq;
+using System.Reflection;
 
 namespace AllOverIt.Extensions
 {
@@ -72,6 +73,16 @@ namespace AllOverIt.Extensions
         public static bool IsVirtual(this PropertyInfo propertyInfo)
         {
             return propertyInfo.GetMethod.IsVirtual;
+        }
+
+        /// <summary>
+        /// Determines if a property is an indexer.
+        /// </summary>
+        /// <param name="propertyInfo">The <see cref="PropertyInfo"/> for a property.</param>
+        /// <returns>True if the property is an indexer.</returns>
+        public static bool IsIndexer(this PropertyInfo propertyInfo)
+        {
+            return propertyInfo.GetIndexParameters().Any();
         }
     }
 }

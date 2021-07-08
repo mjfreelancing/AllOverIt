@@ -25,11 +25,11 @@ namespace AllOverIt.Extensions
             var type = instance.GetType();
             var propertyInfo = type.GetPropertyInfo(bindingOptions, false);
 
-            var propInfos = from prop in propertyInfo
-                            where prop.CanRead && !prop.GetIndexParameters().Any()
-                            let value = prop.GetValue(instance)
+            var propInfos = from propInfo in propertyInfo
+                            where propInfo.CanRead && !propInfo.IsIndexer()
+                            let value = propInfo.GetValue(instance)
                             where includeNulls || value != null
-                            select new KeyValuePair<string, object>(prop.Name, value);
+                            select new KeyValuePair<string, object>(propInfo.Name, value);
 
             return propInfos.ToDictionary(item => item.Key, item => item.Value);
         }
@@ -47,7 +47,7 @@ namespace AllOverIt.Extensions
         /// <para>If property types need to be excluded use the <see cref="ObjectPropertySerializationHelper"/> class.</para>
         /// </remarks>
         public static IDictionary<string, string> ToSerializedDictionary(this object instance, bool includeNulls = false, bool includeEmptyCollections = false,
-            BindingOptions bindingOptions = ObjectPropertySerializationHelper.DefaultBindingOptions)
+            BindingOptions bindingOptions = BindingOptions.Default)
         {
             var serializer = new ObjectPropertySerializationHelper(bindingOptions)
             {

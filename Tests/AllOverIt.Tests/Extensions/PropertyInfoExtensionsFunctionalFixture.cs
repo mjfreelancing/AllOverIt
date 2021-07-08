@@ -28,15 +28,15 @@ namespace AllOverIt.Tests.Extensions
         }
 
         [Fact]
-        public void Should_Get_Property_Value_from_Info()
+        public void Should_Get_Default_Property_Value_from_Info()
         {
             var subject = Create<Person>();
 
             var valueLookup = subject.ToPropertyDictionary(true);
 
-            // just to make sure the loop executes - the default binding used by ToPropertyDictionary() excludes private and internal
+            // just to make sure the loop executes - the default binding used by ToPropertyDictionary() excludes private, protected and internal
             // and the GetPropertyInfo() method below does the same.
-            valueLookup.Keys.Should().BeEquivalentTo("Id", "FirstName", "Surname", "Age", "FullName");
+            valueLookup.Keys.Should().BeEquivalentTo(nameof(Person.FirstName), nameof(Person.Surname), nameof(Person.Age), nameof(Person.FullName));
 
             foreach (var propertyName in valueLookup.Keys)
             {

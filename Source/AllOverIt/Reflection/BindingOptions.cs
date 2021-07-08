@@ -85,7 +85,7 @@ namespace AllOverIt.Reflection
         /// <summary>
         /// Filter reflection operations to <i>public</i> or <i>protected</i> access.
         /// </summary>
-        DefaultVisibility = Public | Protected,
+        DefaultVisibility = Public,
 
         /// <summary>
         /// Filter reflection operations to use <see cref="DefaultScope"/> scope, <see cref="DefaultAccessor"/> access,
@@ -110,7 +110,7 @@ namespace AllOverIt.Reflection
         /// <summary>
         /// Filter reflection operations to <i>public</i>, <i>protected</i>, <i>private</i>, or <i>internal</i> access.
         /// </summary>
-        AllVisibility = DefaultVisibility | Private | Internal,
+        AllVisibility = DefaultVisibility | Private | Protected | Internal,
 
         /// <summary>
         /// Filter reflection operations to use <see cref="AllScope"/> scope, <see cref="AllAccessor"/> access,

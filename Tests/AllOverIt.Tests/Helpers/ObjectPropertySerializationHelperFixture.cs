@@ -56,16 +56,6 @@ namespace AllOverIt.Tests.Helpers
         public class Defaults : ObjectPropertySerializationHelperFixture
         {
             [Fact]
-            public void Should_Have_Default_Bindings()
-            {
-                var expected = BindingOptions.DefaultScope | BindingOptions.Virtual | BindingOptions.NonVirtual | BindingOptions.Public;
-
-                ObjectPropertySerializationHelper.DefaultBindingOptions
-                    .Should()
-                    .BeEquivalentTo(expected);
-            }
-
-            [Fact]
             public void Should_Have_Known_Ignored_Types()
             {
                 object[] expected =

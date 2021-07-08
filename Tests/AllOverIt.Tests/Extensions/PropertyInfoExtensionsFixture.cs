@@ -215,6 +215,31 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
+        public class IsIndexer : PropertyInfoExtensionsFixture
+        {
+            private sealed class DummyWithIndexer
+            {
+                public string this[int key] => string.Empty;
+                public int That { get; set; }
+            }
+
+            [Fact]
+            public void Should_Determine_Is_Indexer()
+            {
+                var actual = GetPropertyInfo<DummyWithIndexer>("Item").IsIndexer();
+
+                actual.Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Determine_Is_Not_Indexer()
+            {
+                var actual = GetPropertyInfo<DummyWithIndexer>(nameof(DummyWithIndexer.That)).IsIndexer();
+
+                actual.Should().BeFalse();
+            }
+        }
+
         private static PropertyInfo GetPropertyInfo<TType>(string name)
         {
             // TypeInfoExtensions has its own set of tests so happy to use this to keep these tests simple

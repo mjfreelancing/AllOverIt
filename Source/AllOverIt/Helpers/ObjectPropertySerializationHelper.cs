@@ -12,8 +12,6 @@ namespace AllOverIt.Helpers
     /// <summary>Converts an object to an IDictionary{string, string} using a dot notation for nested members.</summary>
     public sealed class ObjectPropertySerializationHelper
     {
-        internal const BindingOptions DefaultBindingOptions = BindingOptions.DefaultScope | BindingOptions.Virtual | BindingOptions.NonVirtual | BindingOptions.Public;
-
         internal readonly List<Type> IgnoredTypes = new()
         {
             typeof(Task),
@@ -30,7 +28,7 @@ namespace AllOverIt.Helpers
 
         public string EmptyValueOutput { get; set; } = "<empty>";
 
-        public ObjectPropertySerializationHelper(BindingOptions bindingOptions = DefaultBindingOptions)
+        public ObjectPropertySerializationHelper(BindingOptions bindingOptions = BindingOptions.Default)
         {
             BindingOptions = bindingOptions;
         }
@@ -152,7 +150,7 @@ namespace AllOverIt.Helpers
                 .GetType()
                 .GetPropertyInfo(BindingOptions)
                 .Where(propInfo => propInfo.CanRead &&
-                                   !propInfo.GetIndexParameters().Any() &&
+                                   !propInfo.IsIndexer() &&
                                    !IgnoreType(propInfo.PropertyType)
                 );
 
