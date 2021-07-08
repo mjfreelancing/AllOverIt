@@ -514,6 +514,7 @@ namespace AllOverIt.Tests.Extensions
             [InlineData(typeof(object), "Object")]
             [InlineData(typeof(int), "Int32")]
             [InlineData(typeof(int?), "Int32?")]
+            [InlineData(typeof(Dictionary<int,string>.KeyCollection), "KeyCollection<Int32, String>")]     // has no backticks in the name
             [InlineData(typeof(DummyEnum), "DummyEnum")]
             [InlineData(typeof(DummyEnum?), "DummyEnum?")]
             [InlineData(typeof(IEnumerable<DummyEnum>), "IEnumerable<DummyEnum>")]

@@ -233,7 +233,13 @@ namespace AllOverIt.Extensions
             {
                 var typeName = type.Name;
 
-                typeName = typeName.Remove(typeName.IndexOf('`'));
+                // Some classes do not have the `, such as IDictionary<,>.KeyCollection
+                var backtickIndex = typeName.IndexOf('`');
+
+                if (backtickIndex != -1)
+                {
+                    typeName = typeName.Remove(backtickIndex);
+                }
 
                 var genericTypeNames = from genericArgument in type.GetGenericArguments()
                                        select GetFriendlyName(genericArgument);

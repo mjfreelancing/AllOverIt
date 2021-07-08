@@ -16,11 +16,11 @@ namespace AllOverIt.Tests.Helpers
 {
     public class ObjectPropertySerializationHelperFixture : FixtureBase
     {
-        private class PropertyNameOmmitter : ISpecimenBuilder
+        private class PropertyNameOmitter : ISpecimenBuilder
         {
             private readonly IEnumerable<string> names;
 
-            internal PropertyNameOmmitter(params string[] names)
+            internal PropertyNameOmitter(params string[] names)
             {
                 this.names = names;
             }
@@ -67,7 +67,7 @@ namespace AllOverIt.Tests.Helpers
         protected ObjectPropertySerializationHelperFixture()
         {
             // prevent self-references
-            Fixture.Customizations.Add(new PropertyNameOmmitter("Prop2", "Prop6", "Prop7", "Prop12"));
+            Fixture.Customizations.Add(new PropertyNameOmitter("Prop2", "Prop6", "Prop7", "Prop12"));
         }
 
         public class Defaults : ObjectPropertySerializationHelperFixture
