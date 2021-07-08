@@ -1,11 +1,11 @@
 08 Jul 2021
 ======================================================================================================================
-AllOverIt - v1.10.0
+AllOverIt - v1.11.0
  * BREAKING CHANGE - Changed BindingOptions.DefaultVisibility from 'Public | Protected' to 'Public'
  * ObjectExtensions.ToPropertyDictionary() updated to exclude indexer properties
  * Added PropertyInfoExtensions.IsIndexer()
- * Updated ObjectPropertySerializationHelper to exclude indexer properties (also restored the code for this class that
-   was somehow lost during a merge)
+ * Updated ObjectPropertySerializationHelper to exclude indexer properties
+   (also restored the code for this class that was somehow lost during a merge of v1.10.0)
  * Fixed issue where GetFriendlyName() failed when generic type did not have a backtick in the underlying type name
  * Rebuilt the following to ensure no issues with the breaking change
    - AllOverIt.Aws.Cdk.AppSync - as v0.3
@@ -21,7 +21,7 @@ AllOverIt.Aws.Cdk.AppSync - v0.2.2
 
 04 Jul 2021 - Current Status
 ======================================================================================================================
- * [1] AllOverIt                    - v1.9.0
+ * [1] AllOverIt                    - v1.10.0
  * [2] AllOverIt.Aws.Cdk.AppSync    - v0.2.1 (requires [1])
  * [3] AllOverIt.Evaluator          - v2.0.0 (requires [1])
  
