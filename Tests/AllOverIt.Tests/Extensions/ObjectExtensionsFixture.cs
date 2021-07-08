@@ -166,6 +166,33 @@ namespace AllOverIt.Tests.Extensions
 
                 actual.Should().BeEquivalentTo(expected);
             }
+
+            [Fact]
+            public void Should_Convert_Where_Property_Is_An_Indexer()
+            {
+                var source = new Dictionary<string, int>
+                {
+                    {"one", 1},
+                    {"two", 2}
+                };
+
+                var expected = new Dictionary<string, object>
+                {
+                    { "Comparer", source.Comparer }, { "Count", source.Count }, { "Keys", source.Keys }, { "Values", source.Values }
+                };
+
+                var actual = ObjectExtensions.ToPropertyDictionary(source);
+
+                actual
+                    .Should()
+                    .BeEquivalentTo(expected);
+            }
+        }
+
+        public class ToSerializedDictionary : ObjectExtensionsFixture
+        {
+
+
         }
 
         public class GetPropertyValue_BindingFlags : ObjectExtensionsFixture
