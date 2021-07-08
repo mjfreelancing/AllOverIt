@@ -44,6 +44,7 @@ namespace AllOverIt.Extensions
         /// <para>Collection type properties are named using a zero-based index notation.</para>
         /// <para>Dictionary type properties are named using the key values where possible. If the key is a class type then the class name is used along with
         /// a backtick and zero-based index suffix (to provide uniqueness).</para>
+        /// <para>If property types need to be excluded use the <see cref="ObjectPropertySerializationHelper"/> class.</para>
         /// </remarks>
         public static IDictionary<string, string> ToSerializedDictionary(this object instance, bool includeNulls = false, bool includeEmptyCollections = false,
             BindingOptions bindingOptions = ObjectPropertySerializationHelper.DefaultBindingOptions)

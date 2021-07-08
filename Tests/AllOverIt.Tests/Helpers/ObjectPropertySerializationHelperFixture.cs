@@ -3,12 +3,10 @@ using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Helpers;
 using AllOverIt.Reflection;
-using AutoFixture.Kernel;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -16,27 +14,6 @@ namespace AllOverIt.Tests.Helpers
 {
     public class ObjectPropertySerializationHelperFixture : FixtureBase
     {
-        private class PropertyNameOmitter : ISpecimenBuilder
-        {
-            private readonly IEnumerable<string> names;
-
-            internal PropertyNameOmitter(params string[] names)
-            {
-                this.names = names;
-            }
-
-            public object Create(object request, ISpecimenContext context)
-            {
-                var propInfo = request as PropertyInfo;
-                if (propInfo != null && names.Contains(propInfo.Name))
-                {
-                    return new OmitSpecimen();
-                }
-
-                return new NoSpecimen();
-            }
-        }
-
         private class DummyType
         {
             public int Prop1 { get; set; }
@@ -62,6 +39,12 @@ namespace AllOverIt.Tests.Helpers
         private class Typed<TType>
         {
             public TType Prop { get; set; }
+        }
+
+        private sealed class DummyWithIndexer
+        {
+            public string this[int key] => string.Empty;
+            public int That { get; set; }
         }
 
         protected ObjectPropertySerializationHelperFixture()
@@ -459,6 +442,21 @@ namespace AllOverIt.Tests.Helpers
                     .BeEquivalentTo(new Dictionary<string, string>
                     {
                         { "Prop1", "0" }
+                    });
+            }
+
+            [Fact]
+            public void Should_Serialize_Non_Enumerable_With_Indexer()
+            {
+                var dummy = new DummyWithIndexer();
+
+                var actual = _helper.SerializeToDictionary(dummy);
+
+                actual
+                    .Should()
+                    .BeEquivalentTo(new Dictionary<string, string>
+                    {
+                        { "That", "0" }
                     });
             }
         }

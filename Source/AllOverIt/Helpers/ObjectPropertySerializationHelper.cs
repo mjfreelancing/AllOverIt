@@ -151,8 +151,10 @@ namespace AllOverIt.Helpers
             var properties = instance
                 .GetType()
                 .GetPropertyInfo(BindingOptions)
-                .Where(propInfo => !IgnoreType(propInfo.PropertyType))
-                .Where(prop => prop.CanRead);
+                .Where(propInfo => propInfo.CanRead &&
+                                   !propInfo.GetIndexParameters().Any() &&
+                                   !IgnoreType(propInfo.PropertyType)
+                );
 
             foreach (var propertyInfo in properties)
             {
