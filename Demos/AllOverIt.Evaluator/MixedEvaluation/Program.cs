@@ -50,14 +50,14 @@ namespace MixedEvaluation
             Console.WriteLine($"(x1, y1) = ({x1.Value}, {y1.Value})");
             Console.WriteLine($"(x2, y2) = ({x2.Value}, {y2.Value})");
             Console.WriteLine($"(x3, y3) = ({x3.Value}, {y3.Value})");
-            Console.WriteLine("");
+            Console.WriteLine();
             Console.WriteLine($"Distance between ({x1.Value}, {y1.Value}) and ({x2.Value}, {y2.Value}) = {a.Value}");
             Console.WriteLine($"Distance between ({x1.Value}, {y1.Value}) and ({x3.Value}, {y3.Value}) = {b.Value}");
             Console.WriteLine($"Distance between ({x2.Value}, {y2.Value}) and ({x3.Value}, {y3.Value}) = {c.Value}");
-            Console.WriteLine("");
+            Console.WriteLine();
             Console.WriteLine($"Area = {herons.Invoke()}");
 
-            Console.WriteLine("");
+            Console.WriteLine();
             Console.WriteLine("All Over It.");
             Console.ReadKey();
         }

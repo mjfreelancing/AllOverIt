@@ -16,7 +16,7 @@ namespace CustomOperation
             EvaluateCustomMin();          // example 1: MIN()
             EvaluateUniqueAngles();       // example 2: GCD()
 
-            Console.WriteLine("");
+            Console.WriteLine();
             Console.WriteLine("All Over It.");
             Console.ReadKey();
         }

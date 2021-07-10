@@ -29,7 +29,7 @@ namespace RepeatingTaskDemo
 
             await repeatingTask;
 
-            Console.WriteLine("");
+            Console.WriteLine();
             Console.WriteLine("All Over It.");
             Console.ReadKey();
         }

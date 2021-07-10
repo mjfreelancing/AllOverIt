@@ -33,7 +33,7 @@ namespace FileSearchDemo
 
             stopWatch.Stop();
 
-            Console.WriteLine("");
+            Console.WriteLine();
             Console.WriteLine($"All Over It, {fileCount} files found after {stopWatch.ElapsedMilliseconds}ms.");
             Console.ReadKey();
         }

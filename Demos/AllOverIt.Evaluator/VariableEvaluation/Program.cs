@@ -53,7 +53,7 @@ namespace VariableEvaluation
                 }
             }
 
-            Console.WriteLine("");
+            Console.WriteLine();
             Console.WriteLine("All Over It.");
             Console.ReadKey();
         }

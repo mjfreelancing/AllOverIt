@@ -41,7 +41,7 @@ namespace VariableLookup
             ReportVariables(lookup, f);
             ReportVariables(lookup, g);
 
-            Console.WriteLine("");
+            Console.WriteLine();
             Console.WriteLine("All Over It.");
             Console.ReadKey();
         }
@@ -67,7 +67,7 @@ namespace VariableLookup
             var allReferencingNames = string.Join(", ", allReferencing.Select(referenced => referenced.Name).OrderBy(name => name));
             Console.WriteLine($"  All Referencing = {allReferencingNames}");
 
-            Console.WriteLine("");
+            Console.WriteLine();
         }
     }
 }

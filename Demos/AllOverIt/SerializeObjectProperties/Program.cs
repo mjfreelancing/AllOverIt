@@ -33,7 +33,7 @@ namespace SerializeObjectProperties
                 Console.WriteLine(exception.Message);
             }
 
-            Console.WriteLine("");
+            Console.WriteLine();
             Console.WriteLine("All Over It.");
             Console.ReadKey();
         }
