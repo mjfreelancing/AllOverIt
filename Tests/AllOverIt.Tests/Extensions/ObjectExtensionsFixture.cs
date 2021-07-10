@@ -4,6 +4,7 @@ using AllOverIt.Fixture;
 using AllOverIt.Reflection;
 using FluentAssertions;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -552,6 +553,32 @@ namespace AllOverIt.Tests.Extensions
                     .BeEquivalentTo(new Dictionary<string, string>
                     {
                         { "That", "0" }
+                    });
+            }
+
+            [Fact]
+            public void Should_Serialize_Untyped_Dictionary()
+            {
+                var table = new Hashtable
+                {
+                    { 1, 1 },
+                    //{ "null", null },               // WILL NOT serialize as expected
+                    { true, 1 },
+                    { 10, "ten" },
+                    //{ "list", new List<int>() }     // WILL NOT serialize as expected
+                };
+
+                var actual = table.ToSerializedDictionary();
+
+                actual
+                    .Should()
+                    .BeEquivalentTo(new Dictionary<string, string>
+                    {
+                        { "1", "1" },
+                        //{ "null", string.Empty },
+                        { "True", "1" },
+                        { "10", "ten" }
+                        //{ "list", "System.Collections.Generic.List`1[System.Int32]" }
                     });
             }
         }

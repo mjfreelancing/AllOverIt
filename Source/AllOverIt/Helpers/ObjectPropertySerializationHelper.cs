@@ -78,6 +78,14 @@ namespace AllOverIt.Helpers
         private void AppendDictionaryAsPropertyValues(string prefix, IDictionary dictionary, IDictionary<string, string> values, IList<object> references)
         {
             var args = dictionary.GetType().GetGenericArguments();
+
+            if (!args.Any())
+            {
+                // Assume IDictionary, such as from Environment.GetEnvironmentVariables(), contains values that can be converted to strings
+                dictionary = dictionary.Cast<DictionaryEntry>().ToDictionary(entry => $"{entry.Key}", entry => $"{entry.Value}");
+                args = dictionary.GetType().GetGenericArguments();
+            }
+
             var keyType = args[0];
             var valueType = args[1];
 
