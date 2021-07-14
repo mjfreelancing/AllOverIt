@@ -63,28 +63,28 @@ namespace AllOverIt.Fixture
         /// <summary>Provides the ability to invoke an async action so it can be chained with assertions provided by FluentAssertions.</summary>
         /// <param name="action">The async action to be invoked.</param>
         /// <returns>The same action passed to the method.</returns>
-        protected Func<Task> Awaiting(Func<Task> action)
+        protected async Task Awaiting(Func<Task> action)
         {
             if (action == null)
             {
                 throw new ArgumentNullException(nameof(action));
             }
 
-            return action;
+            await action.Invoke();
         }
 
         /// <summary>Provides the ability to invoke an async action that returns a result.</summary>
         /// <typeparam name="TResult">The result type returned by the Action.</typeparam>
         /// <param name="action">The async action to be invoked.</param>
         /// <returns>The result of the invoked async action.</returns>
-        protected Func<Task<TResult>> Awaiting<TResult>(Func<Task<TResult>> action)
+        protected async Task<TResult> Awaiting<TResult>(Func<Task<TResult>> action)
         {
             if (action == null)
             {
                 throw new ArgumentNullException(nameof(action));
             }
 
-            return action;
+            return await action.Invoke();
         }
 
         /// <summary>Injects a specific instance of a specified type that will be resolved as a shared (single) instance.</summary>

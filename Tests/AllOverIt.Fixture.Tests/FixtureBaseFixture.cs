@@ -63,7 +63,7 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Throw_When_Action_Null()
             {
-                Action action = () => Awaiting((Func<Task>)null);
+                Func<Task> action = async () => await Awaiting((Func<Task>)null);
 
                 action
                   .Should()
@@ -71,13 +71,20 @@ namespace AllOverIt.Fixture.Tests
             }
 
             [Fact]
-            public void Should_Return_Same_Action()
+            public async Task Should_Invoke_Task()
             {
-                Func<Task> toInvoke = () => Task.FromResult(true);
+                var expected = Create<string>();
+                string actual = default;
 
-                var invoked = Awaiting(toInvoke);
+                Func<Task> toInvoke = () =>
+                {
+                    actual = expected;
+                    return Task.CompletedTask;
+                };
 
-                invoked.Should().BeSameAs(toInvoke);
+                await Awaiting(toInvoke);
+
+                actual.Should().Be(expected);
             }
         }
 
@@ -86,7 +93,7 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Throw_When_Action_Null()
             {
-                Action action = () => Awaiting((Func<Task<bool>>)null);
+                Func<Task<bool>> action = async () => await Awaiting((Func<Task<bool>>)null);
 
                 action
                   .Should()
@@ -94,13 +101,14 @@ namespace AllOverIt.Fixture.Tests
             }
 
             [Fact]
-            public void Should_Return_Same_Action()
+            public async Task Should_Return_Awaited_Result()
             {
-                Func<Task<bool>> toInvoke = () => Task.FromResult(true);
+                var expected = Create<string>();
+                Func<Task<string>> toInvoke = () => Task.FromResult(expected);
 
-                var invoked = Awaiting(toInvoke);
+                var actual = await Awaiting(toInvoke);
 
-                invoked.Should().BeSameAs(toInvoke);
+                actual.Should().Be(expected);
             }
         }
 
