@@ -16,7 +16,7 @@ namespace AllOverIt.Tests.Tasks
             [Fact]
             public void Should_Throw_When_Null_Factory()
             {
-                var actual = Awaiting(async () =>
+                var actual = Invoking(async () =>
                 {
                     Func<int> factory = null;
 
@@ -60,7 +60,7 @@ namespace AllOverIt.Tests.Tasks
             [Fact]
             public void Should_Throw_When_Null_Factory()
             {
-                var actual = Awaiting(async () =>
+                var actual = Invoking(async () =>
                 {
                     Func<Task<int>> factory = null;
 

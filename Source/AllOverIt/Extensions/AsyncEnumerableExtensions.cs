@@ -17,10 +17,7 @@ namespace AllOverIt.Extensions
 
             await foreach (var item in items.WithCancellation(cancellationToken).ConfigureAwait(false))
             {
-                if (cancellationToken.IsCancellationRequested)
-                {
-                    throw new TaskCanceledException();
-                }
+                cancellationToken.ThrowIfCancellationRequested();
 
                 listItems.Add(item);
             }

@@ -42,7 +42,7 @@ namespace AllOverIt.Tests.Tasks
 
                 var task = RepeatingTask.Start(() => Task.CompletedTask, cancellationToken.Token, 10);
 
-                Awaiting(() => task)
+                Invoking(() => task)
                   .Should()
                   .Throw<TaskCanceledException>();
             }
@@ -195,14 +195,14 @@ namespace AllOverIt.Tests.Tasks
             }
 
             [Fact]
-            public void Should_Not_Invoke_Action_When_Cancelled()
+            public async Task Should_Not_Invoke_Action_When_Cancelled()
             {
                 var cancellationToken = new CancellationTokenSource();
                 cancellationToken.Cancel();
 
                 var task = RepeatingTask.Start(() => { }, cancellationToken.Token, 10);
 
-                Awaiting(() => task)
+                Invoking(() => task)
                   .Should()
                   .Throw<TaskCanceledException>();
             }
