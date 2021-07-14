@@ -2,7 +2,7 @@
 
 namespace AllOverIt.Aws.Cdk.AppSync.Schema.Types
 {
-    [SchemaType(nameof(AwsTypeIpAddress), GraphqlSchemaType.Scalar)]
+    [SchemaScalar(nameof(AwsTypeIpAddress))]
     public sealed class AwsTypeIpAddress
     {
     }

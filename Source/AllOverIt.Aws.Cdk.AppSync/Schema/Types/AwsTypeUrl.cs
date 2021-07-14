@@ -2,7 +2,7 @@
 
 namespace AllOverIt.Aws.Cdk.AppSync.Schema.Types
 {
-    [SchemaType(nameof(AwsTypeUrl), GraphqlSchemaType.Scalar)]
+    [SchemaScalar(nameof(AwsTypeUrl))]
     public sealed class AwsTypeUrl
     {
     }

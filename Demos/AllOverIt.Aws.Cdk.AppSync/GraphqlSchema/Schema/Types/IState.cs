@@ -1,9 +1,8 @@
-﻿using AllOverIt.Aws.Cdk.AppSync;
-using AllOverIt.Aws.Cdk.AppSync.Attributes;
+﻿using AllOverIt.Aws.Cdk.AppSync.Attributes;
 
 namespace GraphqlSchema.Schema.Types
 {
-    [SchemaType("State", GraphqlSchemaType.Type)]
+    [SchemaType("State")]
     internal interface IState
     {
         [SchemaTypeRequired]

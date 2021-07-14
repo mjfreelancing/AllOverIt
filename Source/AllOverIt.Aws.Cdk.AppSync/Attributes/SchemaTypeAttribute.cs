@@ -1,17 +1,10 @@
-﻿using System;
-
-namespace AllOverIt.Aws.Cdk.AppSync.Attributes
+﻿namespace AllOverIt.Aws.Cdk.AppSync.Attributes
 {
-    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class)]
-    public sealed class SchemaTypeAttribute : Attribute
+    public sealed class SchemaTypeAttribute : SchemaTypeBaseAttribute
     {
-        public GraphqlSchemaType GraphqlSchemaType { get; }
-        public string Name { get; }
-
-        public SchemaTypeAttribute(string name, GraphqlSchemaType graphqlSchemaType = GraphqlSchemaType.Type)
+        public SchemaTypeAttribute(string name)
+            : base(name, GraphqlSchemaType.Type)
         {
-            GraphqlSchemaType = graphqlSchemaType;
-            Name = name;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync.Attributes;
+using AllOverIt.Aws.Cdk.AppSync.Exceptions;
 using AllOverIt.Aws.Cdk.AppSync.Extensions;
 using AllOverIt.Aws.Cdk.AppSync.Factories;
 using AllOverIt.Aws.Cdk.AppSync.MappingTemplates;
@@ -106,6 +107,11 @@ namespace AllOverIt.Aws.Cdk.AppSync.Schema
             foreach (var methodInfo in methods)
             {
                 var dataSource = methodInfo.GetDataSource(_dataSourceFactory);
+
+                if (dataSource == null)
+                {
+                    throw new SchemaException($"{schemaType.Name} is missing a required datasource");
+                }
 
                 var isRequired = methodInfo.IsGqlTypeRequired();
                 var isList = methodInfo.ReturnType.IsArray;

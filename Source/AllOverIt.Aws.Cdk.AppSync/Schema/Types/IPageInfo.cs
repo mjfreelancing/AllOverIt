@@ -2,7 +2,7 @@
 
 namespace AllOverIt.Aws.Cdk.AppSync.Schema.Types
 {
-    [SchemaType("PageInfo", GraphqlSchemaType.Type)]
+    [SchemaType("PageInfo")]
     public interface IPageInfo
     {
         public string PreviousPageCursor { get; }

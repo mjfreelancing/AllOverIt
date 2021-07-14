@@ -215,8 +215,6 @@ namespace AllOverIt.Aws.Cdk.AppSync
                                               $"{nameof(SchemaTypeRequiredAttribute)} is used to declare a property required and its absence makes it optional.");
                 }
 
-                // todo: check if the type is an Aws Scalar type
-
                 if (schemaTypeDescriptor.SchemaType == GraphqlSchemaType.Input && propertyType != typeof(string) && (propertyType.IsInterface || propertyType.IsClass))
                 {
                     var propertyTypeDescriptor = propertyInfo.GetGraphqlPropertyDescriptor();

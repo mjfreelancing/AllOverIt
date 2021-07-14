@@ -2,7 +2,7 @@
 
 namespace AllOverIt.Aws.Cdk.AppSync.Schema.Types
 {
-    [SchemaType(nameof(AwsTypeEmail), GraphqlSchemaType.Scalar)]
+    [SchemaScalar(nameof(AwsTypeEmail))]
     public sealed class AwsTypeEmail
     {
     }

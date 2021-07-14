@@ -1,9 +1,8 @@
-﻿using AllOverIt.Aws.Cdk.AppSync;
-using AllOverIt.Aws.Cdk.AppSync.Attributes;
+﻿using AllOverIt.Aws.Cdk.AppSync.Attributes;
 
 namespace GraphqlSchema.Schema.Inputs
 {
-    [SchemaType("LanguageInput", GraphqlSchemaType.Input)]
+    [SchemaInput("LanguageInput")]
     internal interface ILanguageInput
     {
         [SchemaTypeRequired]

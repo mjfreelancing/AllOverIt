@@ -1,9 +1,8 @@
-﻿using AllOverIt.Aws.Cdk.AppSync;
-using AllOverIt.Aws.Cdk.AppSync.Attributes;
+﻿using AllOverIt.Aws.Cdk.AppSync.Attributes;
 
 namespace GraphqlSchema.Schema.Inputs
 {
-    [SchemaType("CountryFilterInput", GraphqlSchemaType.Input)]
+    [SchemaInput("CountryFilterInput")]
     internal interface ICountryFilterInput
     {
         public IStringQueryOperatorInput Code { get; }

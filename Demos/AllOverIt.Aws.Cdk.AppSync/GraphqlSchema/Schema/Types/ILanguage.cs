@@ -1,9 +1,8 @@
-﻿using AllOverIt.Aws.Cdk.AppSync;
-using AllOverIt.Aws.Cdk.AppSync.Attributes;
+﻿using AllOverIt.Aws.Cdk.AppSync.Attributes;
 
 namespace GraphqlSchema.Schema.Types
 {
-    [SchemaType("Language", GraphqlSchemaType.Type)]
+    [SchemaType("Language")]
     internal interface ILanguage
     {
         [SchemaTypeRequired]

@@ -2,7 +2,7 @@
 
 namespace AllOverIt.Aws.Cdk.AppSync.Schema.Types
 {
-    [SchemaType(nameof(AwsTypePhone), GraphqlSchemaType.Scalar)]
+    [SchemaScalar(nameof(AwsTypePhone))]
     public sealed class AwsTypePhone
     {
     }

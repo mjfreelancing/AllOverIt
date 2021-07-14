@@ -11,7 +11,7 @@ namespace GraphqlSchema.Schema
     {
         [SchemaArrayRequired]
         [SchemaTypeRequired]
-        [NoneDataSource(Constants.AppName, nameof(Continents))]
+        //[NoneDataSource(Constants.AppName, nameof(Continents))]
         IContinent[] Continents([SchemaTypeRequired] IContinentFilterInput filter);
 
         [SchemaTypeRequired]

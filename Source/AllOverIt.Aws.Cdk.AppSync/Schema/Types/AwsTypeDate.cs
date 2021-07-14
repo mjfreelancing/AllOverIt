@@ -2,7 +2,7 @@
 
 namespace AllOverIt.Aws.Cdk.AppSync.Schema.Types
 {
-    [SchemaType(nameof(AwsTypeDate), GraphqlSchemaType.Scalar)]
+    [SchemaScalar(nameof(AwsTypeDate))]
     public sealed class AwsTypeDate
     {
     }

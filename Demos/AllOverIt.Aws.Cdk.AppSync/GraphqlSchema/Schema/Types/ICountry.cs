@@ -1,10 +1,9 @@
-﻿using AllOverIt.Aws.Cdk.AppSync;
-using AllOverIt.Aws.Cdk.AppSync.Attributes;
+﻿using AllOverIt.Aws.Cdk.AppSync.Attributes;
 using AllOverIt.Aws.Cdk.AppSync.Schema.Types;
 
 namespace GraphqlSchema.Schema.Types
 {
-    [SchemaType("Country", GraphqlSchemaType.Type)]
+    [SchemaType("Country")]
     internal interface ICountry
     {
         [SchemaTypeRequired]
