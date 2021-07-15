@@ -195,7 +195,7 @@ namespace AllOverIt.Tests.Tasks
             }
 
             [Fact]
-            public async Task Should_Not_Invoke_Action_When_Cancelled()
+            public void Should_Not_Invoke_Action_When_Cancelled()
             {
                 var cancellationToken = new CancellationTokenSource();
                 cancellationToken.Cancel();
