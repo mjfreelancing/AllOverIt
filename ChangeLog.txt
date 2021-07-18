@@ -1,7 +1,7 @@
 ======================================================================================================================
   Current AllOverIt Inter-Dependencies
 
-  [1] AllOverIt                    (v1.14.0) - None
+  [1] AllOverIt                    (v1.15.0) - None
   [2] AllOverIt.Aws.Cdk.AppSync    (v0.4.1)  - requires [1] v1.14.0
   [3] AllOverIt.Evaluator          (v2.1.0)  - requires [1] v1.11.0
   [4] AllOverIt.GenericHost        (v1.1.0)  - requires [1] v1.14.0
@@ -14,6 +14,9 @@
 
 18 Jul 2021
 ======================================================================================================================
+AllOverIt - v1.15.0
+  * Added a utility that can execute a process and wait for it to exit (or timeout)
+
 AllOverIt.GenericHost - v1.1.0
   * Replaced hard codeed exit codes with default exit and unhandled error response code properties
   * Changed CreateConsoleHostBuilder() so the args are optional

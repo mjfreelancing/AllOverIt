@@ -63,9 +63,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SerializeObjectProperties",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllOverIt.GenericHost", "AllOverIt.GenericHost", "{CABC42F0-658F-42FF-8FD4-40B7EF8694E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HostedConsoleApp", "Demos\AllOverIt.GenericHost\HostedConsoleApp\HostedConsoleApp.csproj", "{37892CDC-598B-4900-90D2-B1D1F5901AE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HostedConsoleApp", "Demos\AllOverIt.GenericHost\HostedConsoleApp\HostedConsoleApp.csproj", "{37892CDC-598B-4900-90D2-B1D1F5901AE5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.GenericHost", "Source\AllOverIt.GenericHost\AllOverIt.GenericHost.csproj", "{63B7F68B-46C2-48A0-A4BC-ED38E1751403}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExecuteProcessAndWait", "Demos\AllOverIt\ExecuteProcessAndWait\ExecuteProcessAndWait.csproj", "{45DBD650-C7B9-4C7B-9E6B-0EB968F939E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -161,6 +163,10 @@ Global
 		{63B7F68B-46C2-48A0-A4BC-ED38E1751403}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63B7F68B-46C2-48A0-A4BC-ED38E1751403}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63B7F68B-46C2-48A0-A4BC-ED38E1751403}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45DBD650-C7B9-4C7B-9E6B-0EB968F939E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45DBD650-C7B9-4C7B-9E6B-0EB968F939E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45DBD650-C7B9-4C7B-9E6B-0EB968F939E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45DBD650-C7B9-4C7B-9E6B-0EB968F939E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -192,6 +198,7 @@ Global
 		{CABC42F0-658F-42FF-8FD4-40B7EF8694E3} = {D9F6B8A1-4B01-4708-8851-741FC19F2440}
 		{37892CDC-598B-4900-90D2-B1D1F5901AE5} = {CABC42F0-658F-42FF-8FD4-40B7EF8694E3}
 		{63B7F68B-46C2-48A0-A4BC-ED38E1751403} = {FC8E8DB2-1299-44F4-A233-0EDCE225BB8C}
+		{45DBD650-C7B9-4C7B-9E6B-0EB968F939E4} = {0DC79E13-DE7A-417D-8A7B-64ABA3F4E1C8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19DD11B3-596E-4862-B5C4-1FFFFB173106}
