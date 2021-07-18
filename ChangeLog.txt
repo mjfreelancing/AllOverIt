@@ -4,11 +4,19 @@
   [1] AllOverIt                    (v1.14.0) - None
   [2] AllOverIt.Aws.Cdk.AppSync    (v0.4.1)  - requires [1] v1.14.0
   [3] AllOverIt.Evaluator          (v2.1.0)  - requires [1] v1.11.0
-  [4] AllOverIt.GenericHost        (v1.0.0)  - requires [1] v1.12.0
+  [4] AllOverIt.GenericHost        (v1.1.0)  - requires [1] v1.14.0
   [5] AllOverIt.Fixture            (v1.4.0)  - None
   [6] AllOverIt.Fixture.FakeItEasy (v1.2.0)  - requires [5] v1.3.0
 
 ======================================================================================================================
+
+
+
+18 Jul 2021
+======================================================================================================================
+AllOverIt.GenericHost - v1.1.0
+  * Replaced hard codeed exit codes with default exit and unhandled error response code properties
+  * Changed CreateConsoleHostBuilder() so the args are optional
 
 
 

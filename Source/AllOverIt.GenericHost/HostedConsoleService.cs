@@ -15,8 +15,7 @@ namespace AllOverIt.GenericHost
 
         private int? _exitCode;
 
-        public HostedConsoleService(IConsoleApp consoleApp, IHostApplicationLifetime applicationLifetime,
-            ILogger<HostedConsoleService> logger)
+        public HostedConsoleService(IConsoleApp consoleApp, IHostApplicationLifetime applicationLifetime, ILogger<HostedConsoleService> logger)
         {
             _applicationLifetime = applicationLifetime.WhenNotNull(nameof(applicationLifetime));
             _consoleApp = consoleApp.WhenNotNull(nameof(consoleApp));
@@ -39,7 +38,7 @@ namespace AllOverIt.GenericHost
             _logger.LogDebug($"Exiting with return code: {_exitCode}");
 
             // Exit code may be null if the user cancelled via Ctrl+C/SIGTERM
-            Environment.ExitCode = _exitCode.GetValueOrDefault(-2);
+            Environment.ExitCode = _exitCode.GetValueOrDefault(_consoleApp.DefaultExitCode);
             return Task.CompletedTask;
         }
 
@@ -55,7 +54,7 @@ namespace AllOverIt.GenericHost
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Unhandled exception!");
-                    _exitCode = -1;
+                    _exitCode = _consoleApp.UnhandedErrorExitCode;
                 }
                 finally
                 {

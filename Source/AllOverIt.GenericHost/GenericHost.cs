@@ -7,7 +7,7 @@ namespace AllOverIt.GenericHost
 {
     public sealed class GenericHost
     {
-        public static IHostBuilder CreateConsoleHostBuilder(string[] args)
+        public static IHostBuilder CreateConsoleHostBuilder(string[] args = default)
         {
             // HostedConsoleService injects the implementation as an IConsoleApp
             return CreateHostBuilder<HostedConsoleService>(args)
