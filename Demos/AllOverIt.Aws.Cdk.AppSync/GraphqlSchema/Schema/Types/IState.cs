@@ -3,11 +3,8 @@
 namespace GraphqlSchema.Schema.Types
 {
     [SchemaType("State")]
-    internal interface IState
+    internal interface IState : ISchemaTypeBase
     {
-        [SchemaTypeRequired]
-        public string Code { get; }
-
         [SchemaTypeRequired]
         public string Name { get; }
     }

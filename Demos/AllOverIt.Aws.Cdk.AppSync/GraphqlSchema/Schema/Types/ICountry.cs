@@ -4,11 +4,8 @@ using AllOverIt.Aws.Cdk.AppSync.Schema.Types;
 namespace GraphqlSchema.Schema.Types
 {
     [SchemaType("Country")]
-    internal interface ICountry
+    internal interface ICountry : ISchemaTypeBase
     {
-        [SchemaTypeRequired]
-        public GraphqlTypeId Code { get; }
-
         [SchemaTypeRequired]
         public string Name { get; }
 

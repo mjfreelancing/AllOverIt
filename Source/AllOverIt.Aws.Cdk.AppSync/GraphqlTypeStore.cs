@@ -52,7 +52,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
             _resolverFactory = resolverFactory.WhenNotNull(nameof(resolverFactory));
         }
 
-        public GraphqlType GetGraphqlType(SystemType type, bool isRequired, bool isList, bool isRequiredList, 
+        public GraphqlType GetGraphqlType(SystemType type, bool isRequired, bool isList, bool isRequiredList,
             Action<IIntermediateType> typeCreated)
         {
             var fieldTypeCreator = GetTypeCreator(type, typeCreated);
@@ -168,7 +168,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
                 //new InterfaceType()
 
                 var intermediateType = typeDescriptor.SchemaType == GraphqlSchemaType.Input
-                    ? (IIntermediateType) new InputType(typeDescriptor.Name,
+                    ? (IIntermediateType)new InputType(typeDescriptor.Name,
                         new IntermediateTypeOptions
                         {
                             Definition = classDefinition
@@ -202,7 +202,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
             if (type.IsInterface)
             {
                 var inheritedProperties = type.GetInterfaces().SelectMany(item => item.GetProperties());
-                properties = properties.Concat(inheritedProperties).ToArray();
+                properties = inheritedProperties.Concat(properties).ToArray();
             }
 
             foreach (var propertyInfo in properties)
@@ -247,7 +247,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
             if (type.IsInterface)
             {
                 var inheritedMethods = type.GetInterfaces().SelectMany(item => item.GetMethods());
-                methods = methods.Concat(inheritedMethods);
+                methods = inheritedMethods.Concat(methods);
             }
 
             foreach (var methodInfo in methods.Where(item => !item.IsSpecialName))

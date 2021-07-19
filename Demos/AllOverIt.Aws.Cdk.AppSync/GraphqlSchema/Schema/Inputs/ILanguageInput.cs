@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync.Attributes;
+using AllOverIt.Aws.Cdk.AppSync.Schema.Types;
 
 namespace GraphqlSchema.Schema.Inputs
 {
@@ -6,7 +7,7 @@ namespace GraphqlSchema.Schema.Inputs
     internal interface ILanguageInput
     {
         [SchemaTypeRequired]
-        public string Code { get; }
+        public GraphqlTypeId Code { get; }
 
         [SchemaTypeRequired]
         public string Name { get; }

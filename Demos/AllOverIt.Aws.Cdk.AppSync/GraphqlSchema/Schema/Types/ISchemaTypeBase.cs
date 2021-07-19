@@ -1,11 +1,11 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync.Attributes;
+using AllOverIt.Aws.Cdk.AppSync.Schema.Types;
 
 namespace GraphqlSchema.Schema.Types
 {
-    [SchemaType("Language")]
-    internal interface ILanguage : ISchemaTypeBase
+    public interface ISchemaTypeBase
     {
         [SchemaTypeRequired]
-        public string Name { get; }
+        public GraphqlTypeId Code { get; }
     }
 }
