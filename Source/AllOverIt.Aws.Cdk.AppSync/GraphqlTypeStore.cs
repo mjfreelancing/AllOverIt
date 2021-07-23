@@ -278,10 +278,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
                 }
                 else
                 {
-                    //var mappingTemplateKey = methodInfo.GetFunctionName();
-
                     var mappingTemplateKey = parentName.IsNullOrEmpty() ? methodInfo.Name : $"{parentName}.{methodInfo.Name}";
-                    //_resolverFactory.ConstructResolverIfRequired(parentName, type, propertyInfo);
 
                     classDefinition.Add(
                         methodInfo.Name.GetGraphqlName(),

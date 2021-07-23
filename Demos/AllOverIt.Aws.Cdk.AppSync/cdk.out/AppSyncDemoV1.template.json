@@ -42,7 +42,7 @@
             "ApiId"
           ]
         },
-        "Expires": 1658540584
+        "Expires": 1658572193
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E"
@@ -64,8 +64,8 @@
         "TypeName": "IContinent",
         "DataSourceName": "AppSyncDemoGetCountriesImportDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "Query.Continents.Countries",
-        "ResponseMappingTemplate": "Query.Continents.Countries"
+        "RequestMappingTemplate": "{\r\n  \"version\" : \"2018-05-29\",\r\n  \"method\": \"GET\",\r\n  \"resourcePath\": \"/countries\",\r\n  \"params\": {\r\n    \"headers\": {\r\n      \"Content-Type\": \"application/json\",\r\n      \"X-Api-Key\": \"some-key-here\"\r\n    }\r\n  },\r\n  \"query\": {\r\n    \"param1\": \"$ctx.args.value1\",\r\n    \"param2\": \"value2\",\r\n    \"email\": \"$ctx.identity.claims['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress']\"\r\n  },\r\n}",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result.body)"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -86,14 +86,14 @@
         },
         "FieldName": "countryCodes",
         "TypeName": "Continent",
-        "DataSourceName": "AppSyncDemoGetCountryCodesUrlImportNameDataSource",
+        "DataSourceName": "AppSyncDemoGetCountriesImportDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "Query.Continents.CountryCodes",
-        "ResponseMappingTemplate": "Query.Continents.CountryCodes"
+        "RequestMappingTemplate": "{\r\n  \"version\" : \"2018-05-29\",\r\n  \"method\": \"GET\",\r\n  \"resourcePath\": \"/countries\",\r\n  \"params\": {\r\n    \"headers\": {\r\n      \"Content-Type\": \"application/json\",\r\n      \"X-Api-Key\": \"some-key-here\"\r\n    }\r\n  },\r\n  \"query\": {\r\n    \"param1\": \"$ctx.args.value1\",\r\n    \"param2\": \"value2\",\r\n    \"email\": \"$ctx.identity.claims['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress']\"\r\n  },\r\n}",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result.body)"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
-        "AppSyncDemoGetCountryCodesUrlImportNameDataSourceB4B9A6D3"
+        "AppSyncDemoGetCountriesImportDataSource1388E999"
       ],
       "Metadata": {
         "aws:cdk:path": "AppSyncDemoV1/AppSync/GraphQl/ContinentcountryCodesResolver/Resource"
@@ -112,8 +112,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoContinentsDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "Query.Continents",
-        "ResponseMappingTemplate": "Query.Continents"
+        "RequestMappingTemplate": "{\r\n  \"version\" : \"2018-05-09\",\r\n  \"payload\": \"true\"\r\n}",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result)"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -136,8 +136,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoGetAllContinentsDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "Query.AllContinents",
-        "ResponseMappingTemplate": "Query.AllContinents"
+        "RequestMappingTemplate": "{\r\n  \"version\" : \"2018-05-29\",\r\n  \"method\": \"GET\",\r\n  \"resourcePath\": \"/continents\",\r\n  \"params\": {\r\n    \"headers\": {\r\n      \"Content-Type\": \"application/json\",\r\n      \"X-Api-Key\": \"some-key-here\"\r\n    }\r\n  },\r\n  \"query\": {\r\n    \"param1\": \"$ctx.args.value1\",\r\n    \"param2\": \"value2\",\r\n    \"email\": \"$ctx.identity.claims['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress']\"\r\n  },\r\n}",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result.body)"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -160,8 +160,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoGetCountriesImportDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "Query.Countries",
-        "ResponseMappingTemplate": "Query.Countries"
+        "RequestMappingTemplate": "{\r\n  \"version\" : \"2018-05-29\",\r\n  \"method\": \"GET\",\r\n  \"resourcePath\": \"/countries\",\r\n  \"params\": {\r\n    \"headers\": {\r\n      \"Content-Type\": \"application/json\",\r\n      \"X-Api-Key\": \"some-key-here\"\r\n    }\r\n  },\r\n  \"query\": {\r\n    \"param1\": \"$ctx.args.value1\",\r\n    \"param2\": \"value2\",\r\n    \"email\": \"$ctx.identity.claims['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress']\"\r\n  },\r\n}",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result.body)"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -184,8 +184,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoAllCountriesDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "Query.AllCountries",
-        "ResponseMappingTemplate": "Query.AllCountries"
+        "RequestMappingTemplate": "{\r\n  \"version\" : \"2018-05-09\",\r\n  \"payload\": \"true\"\r\n}",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result)"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -208,8 +208,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemohttpswwwgooglecomDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "Query.Language",
-        "ResponseMappingTemplate": "Query.Language"
+        "RequestMappingTemplate": "{\r\n  \"version\" : \"2018-05-29\",\r\n  \"method\": \"GET\",\r\n  \"resourcePath\": \"/language\",\r\n  \"params\": {\r\n    \"headers\": {\r\n      \"Content-Type\": \"application/json\",\r\n      \"X-Api-Key\": \"some-key-here\"\r\n    }\r\n  },\r\n  \"query\": {\r\n    \"param1\": \"$ctx.args.value1\",\r\n    \"param2\": \"value2\",\r\n    \"email\": \"$ctx.identity.claims['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress']\"\r\n  },\r\n}",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result.body)"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -232,8 +232,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoGetLanguagesDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "Query.Languages",
-        "ResponseMappingTemplate": "Query.Languages"
+        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -256,8 +256,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountryDateDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "Query.CountryDate",
-        "ResponseMappingTemplate": "Query.CountryDate"
+        "RequestMappingTemplate": "{\r\n  \"version\" : \"2018-05-09\",\r\n  \"payload\": \"true\"\r\n}",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result)"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -280,8 +280,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountryTimeDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "Query.CountryTime",
-        "ResponseMappingTemplate": "Query.CountryTime"
+        "RequestMappingTemplate": "{\r\n  \"version\" : \"2018-05-09\",\r\n  \"payload\": \"true\"\r\n}",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result)"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -304,8 +304,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountryDateTimeDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "Query.CountryDateTime",
-        "ResponseMappingTemplate": "Query.CountryDateTime"
+        "RequestMappingTemplate": "{\r\n  \"version\" : \"2018-05-09\",\r\n  \"payload\": \"true\"\r\n}",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result)"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -328,8 +328,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountryTimestampDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "Query.CountryTimestamp",
-        "ResponseMappingTemplate": "Query.CountryTimestamp"
+        "RequestMappingTemplate": "{\r\n  \"version\" : \"2018-05-09\",\r\n  \"payload\": \"true\"\r\n}",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result)"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -352,8 +352,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountryDatesDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "Query.CountryDates",
-        "ResponseMappingTemplate": "Query.CountryDates"
+        "RequestMappingTemplate": "{\r\n  \"version\" : \"2018-05-09\",\r\n  \"payload\": \"true\"\r\n}",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result)"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -376,8 +376,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountryTimesDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "Query.CountryTimes",
-        "ResponseMappingTemplate": "Query.CountryTimes"
+        "RequestMappingTemplate": "{\r\n  \"version\" : \"2018-05-09\",\r\n  \"payload\": \"true\"\r\n}",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result)"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -400,8 +400,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountryDateTimesDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "Query.CountryDateTimes",
-        "ResponseMappingTemplate": "Query.CountryDateTimes"
+        "RequestMappingTemplate": "{\r\n  \"version\" : \"2018-05-09\",\r\n  \"payload\": \"true\"\r\n}",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result)"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -424,8 +424,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountryTimestampsDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "Query.CountryTimestamps",
-        "ResponseMappingTemplate": "Query.CountryTimestamps"
+        "RequestMappingTemplate": "{\r\n  \"version\" : \"2018-05-09\",\r\n  \"payload\": \"true\"\r\n}",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result)"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -448,8 +448,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountryByDateDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "Query.CountryByDate",
-        "ResponseMappingTemplate": "Query.CountryByDate"
+        "RequestMappingTemplate": "{\r\n  \"version\" : \"2018-05-09\",\r\n  \"payload\": \"true\"\r\n}",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result)"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -472,8 +472,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountryByTimeDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "Query.CountryByTime",
-        "ResponseMappingTemplate": "Query.CountryByTime"
+        "RequestMappingTemplate": "{\r\n  \"version\" : \"2018-05-09\",\r\n  \"payload\": \"true\"\r\n}",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result)"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -496,8 +496,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountryByDateTimeDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "Query.CountryByDateTime",
-        "ResponseMappingTemplate": "Query.CountryByDateTime"
+        "RequestMappingTemplate": "{\r\n  \"version\" : \"2018-05-09\",\r\n  \"payload\": \"true\"\r\n}",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result)"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -520,8 +520,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountryByTimestampDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "Query.CountryByTimestamp",
-        "ResponseMappingTemplate": "Query.CountryByTimestamp"
+        "RequestMappingTemplate": "{\r\n  \"version\" : \"2018-05-09\",\r\n  \"payload\": \"true\"\r\n}",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result)"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -544,8 +544,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountriesByDatesDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "Query.CountriesByDates",
-        "ResponseMappingTemplate": "Query.CountriesByDates"
+        "RequestMappingTemplate": "{\r\n  \"version\" : \"2018-05-09\",\r\n  \"payload\": \"true\"\r\n}",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result)"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -568,8 +568,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountriesByTimesDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "Query.CountriesByTimes",
-        "ResponseMappingTemplate": "Query.CountriesByTimes"
+        "RequestMappingTemplate": "{\r\n  \"version\" : \"2018-05-09\",\r\n  \"payload\": \"true\"\r\n}",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result)"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -592,8 +592,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountriesByDateTimesDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "Query.CountriesByDateTimes",
-        "ResponseMappingTemplate": "Query.CountriesByDateTimes"
+        "RequestMappingTemplate": "{\r\n  \"version\" : \"2018-05-09\",\r\n  \"payload\": \"true\"\r\n}",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result)"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -616,8 +616,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountriesByTimestampsDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "Query.CountriesByTimestamps",
-        "ResponseMappingTemplate": "Query.CountriesByTimestamps"
+        "RequestMappingTemplate": "{\r\n  \"version\" : \"2018-05-09\",\r\n  \"payload\": \"true\"\r\n}",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result)"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -762,53 +762,6 @@
         "aws:cdk:path": "AppSyncDemoV1/AppSyncDemoGetCountriesImportDataSource/Resource"
       }
     },
-    "AppSyncDemoGetCountryCodesUrlImportNameDataSourceServiceRole843C0105": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Statement": [
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "Service": "appsync.amazonaws.com"
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        }
-      },
-      "Metadata": {
-        "aws:cdk:path": "AppSyncDemoV1/AppSyncDemoGetCountryCodesUrlImportNameDataSource/ServiceRole/Resource"
-      }
-    },
-    "AppSyncDemoGetCountryCodesUrlImportNameDataSourceB4B9A6D3": {
-      "Type": "AWS::AppSync::DataSource",
-      "Properties": {
-        "ApiId": {
-          "Fn::GetAtt": [
-            "AppSyncGraphQl5C415C25",
-            "ApiId"
-          ]
-        },
-        "Name": "AppSyncDemoGetCountryCodesUrlImportNameDataSource",
-        "Type": "HTTP",
-        "HttpConfig": {
-          "Endpoint": {
-            "Fn::ImportValue": "GetCountryCodesUrlImportName"
-          }
-        },
-        "ServiceRoleArn": {
-          "Fn::GetAtt": [
-            "AppSyncDemoGetCountryCodesUrlImportNameDataSourceServiceRole843C0105",
-            "Arn"
-          ]
-        }
-      },
-      "Metadata": {
-        "aws:cdk:path": "AppSyncDemoV1/AppSyncDemoGetCountryCodesUrlImportNameDataSource/Resource"
-      }
-    },
     "AppSyncDemoGetAllContinentsDataSourceServiceRole6BE8A44D": {
       "Type": "AWS::IAM::Role",
       "Properties": {
@@ -943,7 +896,7 @@
             {
               "Action": "lambda:InvokeFunction",
               "Effect": "Allow",
-              "Resource": "arn:aws:lambda:ap-southeast-2:574214337301:function:AppSyncDemo_GetLanguages"
+              "Resource": "arn:aws:lambda:ap-southeast-2:550269505143:function:AppSyncDemo_GetLanguages"
             }
           ],
           "Version": "2012-10-17"
@@ -971,7 +924,7 @@
         "Name": "AppSyncDemoGetLanguagesDataSource",
         "Type": "AWS_LAMBDA",
         "LambdaConfig": {
-          "LambdaFunctionArn": "arn:aws:lambda:ap-southeast-2:574214337301:function:AppSyncDemo_GetLanguages"
+          "LambdaFunctionArn": "arn:aws:lambda:ap-southeast-2:550269505143:function:AppSyncDemo_GetLanguages"
         },
         "ServiceRoleArn": {
           "Fn::GetAtt": [
@@ -1268,7 +1221,7 @@
             {
               "Action": "lambda:InvokeFunction",
               "Effect": "Allow",
-              "Resource": "arn:aws:lambda:ap-southeast-2:574214337301:function:AppSyncDemo_AddCountry"
+              "Resource": "arn:aws:lambda:ap-southeast-2:550269505143:function:AppSyncDemo_AddCountry"
             }
           ],
           "Version": "2012-10-17"
@@ -1296,7 +1249,7 @@
         "Name": "AppSyncDemoAddCountryDataSource",
         "Type": "AWS_LAMBDA",
         "LambdaConfig": {
-          "LambdaFunctionArn": "arn:aws:lambda:ap-southeast-2:574214337301:function:AppSyncDemo_AddCountry"
+          "LambdaFunctionArn": "arn:aws:lambda:ap-southeast-2:550269505143:function:AppSyncDemo_AddCountry"
         },
         "ServiceRoleArn": {
           "Fn::GetAtt": [
@@ -1337,7 +1290,7 @@
             {
               "Action": "lambda:InvokeFunction",
               "Effect": "Allow",
-              "Resource": "arn:aws:lambda:ap-southeast-2:574214337301:function:AppSyncDemo_UpdateCountry"
+              "Resource": "arn:aws:lambda:ap-southeast-2:550269505143:function:AppSyncDemo_UpdateCountry"
             }
           ],
           "Version": "2012-10-17"
@@ -1365,7 +1318,7 @@
         "Name": "AppSyncDemoUpdateCountryDataSource",
         "Type": "AWS_LAMBDA",
         "LambdaConfig": {
-          "LambdaFunctionArn": "arn:aws:lambda:ap-southeast-2:574214337301:function:AppSyncDemo_UpdateCountry"
+          "LambdaFunctionArn": "arn:aws:lambda:ap-southeast-2:550269505143:function:AppSyncDemo_UpdateCountry"
         },
         "ServiceRoleArn": {
           "Fn::GetAtt": [
