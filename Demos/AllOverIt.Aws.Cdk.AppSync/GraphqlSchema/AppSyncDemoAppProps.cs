@@ -1,6 +1,6 @@
 ﻿namespace GraphqlSchema
 {
-    internal sealed class SolarDigestAppProps
+    internal sealed class AppSyncDemoAppProps
     {
         public string StackName { get; set; }
         public string AppName { get; set; }

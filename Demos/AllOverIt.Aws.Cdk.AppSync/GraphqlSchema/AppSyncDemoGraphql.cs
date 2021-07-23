@@ -5,9 +5,9 @@ using Amazon.CDK.AWS.AppSync;
 
 namespace GraphqlSchema
 {
-    internal sealed class SolarDigestGraphql : AppGraphqlBase
+    internal sealed class AppSyncDemoGraphql : AppGraphqlBase
     {
-        public SolarDigestGraphql(Construct scope, SolarDigestAppProps appProps, IAuthorizationMode authMode, IMappingTemplates mappingTemplates)
+        public AppSyncDemoGraphql(Construct scope, AppSyncDemoAppProps appProps, IAuthorizationMode authMode, IMappingTemplates mappingTemplates)
             : base(scope, "GraphQl", new GraphqlApiProps
             {
                 Name = $"{appProps.AppName} V{appProps.Version}",

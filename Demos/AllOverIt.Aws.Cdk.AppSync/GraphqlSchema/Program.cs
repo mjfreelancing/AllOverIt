@@ -1,5 +1,6 @@
 ﻿using Amazon.CDK;
 using Amazon.CDK.AWS.AppSync;
+using GraphqlSchema.Constructs;
 using System;
 using CDKEnvironment = Amazon.CDK.Environment;
 using SystemEnvironment = System.Environment;
@@ -27,7 +28,7 @@ namespace GraphqlSchema
                 Name = Constants.Import.GetCountriesUrlImportName
             });
 
-            var appProps = new SolarDigestAppProps
+            var appProps = new AppSyncDemoAppProps
             {
                 StackName = $"{Constants.AppName}Stack",
                 AppName = Constants.AppName,
@@ -43,9 +44,9 @@ namespace GraphqlSchema
                 }
             };
 
-            var mappingTemplates = new SolarDigestMappingTemplates();
+            var mappingTemplates = new AppSyncDemoMappingTemplates();
 
-            _ = new AppSync(stack, appProps, authMode, mappingTemplates);
+            _ = new AppSyncConstruct(stack, appProps, authMode, mappingTemplates);
 
             _ = app.Synth();
         }

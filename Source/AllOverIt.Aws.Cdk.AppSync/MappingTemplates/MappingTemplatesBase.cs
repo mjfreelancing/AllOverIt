@@ -8,41 +8,32 @@ namespace AllOverIt.Aws.Cdk.AppSync.MappingTemplates
         private readonly IDictionary<string, string> _functionRequestMappings = new Dictionary<string, string>();
         private readonly IDictionary<string, string> _functionResponseMappings = new Dictionary<string, string>();
 
-        public abstract string DefaultRequestMapping { get; }
-        public abstract string DefaultResponseMapping { get; }
-
-        public void RegisterRequestMapping(string functionName, string mapping)
+        public void RegisterMappings(string mappingKey, string requestMapping, string responseMapping)
         {
-            _functionRequestMappings.Add(functionName, mapping);
+            _functionRequestMappings.Add(mappingKey, requestMapping);
+            _functionResponseMappings.Add(mappingKey, responseMapping);
         }
 
-        public void RegisterResponseMapping(string functionName, string mapping)
+        public string GetRequestMapping(string mappingKey)
         {
-            _functionResponseMappings.Add(functionName, mapping);
-        }
+            var mapping = _functionRequestMappings.GetValueOrDefault(mappingKey);
 
-        public string GetRequestMapping(string functionName)
-        {
-            if (functionName.IsNullOrEmpty())
+            if (mapping == null)
             {
-                return DefaultRequestMapping;
+                throw new KeyNotFoundException($"Request mapping not found for the key '{mappingKey}'");
             }
 
-            var mapping = _functionRequestMappings.GetValueOrDefault(functionName);
-
-            return mapping ?? DefaultRequestMapping;
+            return mapping;
         }
 
-        public string GetResponseMapping(string functionName)
+        public string GetResponseMapping(string mappingKey)
         {
-            if (functionName.IsNullOrEmpty())
+            var mapping = _functionResponseMappings.GetValueOrDefault(mappingKey); if (mapping == null)
             {
-                return DefaultResponseMapping;
+                throw new KeyNotFoundException($"Response mapping not found for the key '{mappingKey}'");
             }
 
-            var mapping = _functionResponseMappings.GetValueOrDefault(functionName);
-
-            return mapping ?? DefaultResponseMapping;
+            return mapping;
         }
     }
 }

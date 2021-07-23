@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync.Extensions;
 using AllOverIt.Aws.Cdk.AppSync.MappingTemplates;
+using AllOverIt.Extensions;
 using AllOverIt.Helpers;
 using Amazon.CDK.AWS.AppSync;
 using System.Reflection;
@@ -20,15 +21,14 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
             _dataSourceFactory = dataSourceFactory.WhenNotNull(nameof(dataSourceFactory));
         }
 
-        public void ConstructResolverIfRequired(SystemType type, MemberInfo methodInfo)
+        public void ConstructResolverIfRequired(string parentName, SystemType type, MemberInfo methodInfo)
         {
             var dataSource = methodInfo.GetDataSource(_dataSourceFactory);           // optionally specified via a custom attribute
 
             if (dataSource != null)
             {
                 var propertyName = methodInfo.Name;
-
-                var mappingTemplateKey = methodInfo.GetFunctionName();
+                var mappingTemplateKey = parentName.IsNullOrEmpty() ? propertyName : $"{parentName}.{propertyName}";
 
                 _ = new Resolver(_graphQlApi, $"{type.Name}{propertyName}Resolver", new ResolverProps
                 {

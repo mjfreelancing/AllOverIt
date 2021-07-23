@@ -38,7 +38,7 @@ namespace GraphqlSchema.Schema
         ILanguage[] Languages(ILanguageFilterInput filter);     // optional filter in this case, implies all languages will be returned if omitted
 
         #region Date, Time, DateTime, Timestamp responses
-       
+
         [SchemaTypeRequired]
         [NoneDataSource(Constants.AppName, nameof(CountryDate))]
         AwsTypeDate CountryDate([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType);

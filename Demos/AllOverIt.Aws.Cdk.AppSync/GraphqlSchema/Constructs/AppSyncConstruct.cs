@@ -3,14 +3,14 @@ using Amazon.CDK;
 using Amazon.CDK.AWS.AppSync;
 using GraphqlSchema.Schema;
 
-namespace GraphqlSchema
+namespace GraphqlSchema.Constructs
 {
-    internal sealed class AppSync : Construct
+    internal sealed class AppSyncConstruct : Construct
     {
-        public AppSync(Construct scope, SolarDigestAppProps appProps, AuthorizationMode authMode, IMappingTemplates mappingTemplates)
+        public AppSyncConstruct(Construct scope, AppSyncDemoAppProps appProps, AuthorizationMode authMode, IMappingTemplates mappingTemplates)
             : base(scope, "AppSync")
         {
-            var graphql = new SolarDigestGraphql(this, appProps, authMode, mappingTemplates);
+            var graphql = new AppSyncDemoGraphql(this, appProps, authMode, mappingTemplates);
 
             graphql
                 .AddSchemaQuery<IAppSyncDemoQueryDefinition>()

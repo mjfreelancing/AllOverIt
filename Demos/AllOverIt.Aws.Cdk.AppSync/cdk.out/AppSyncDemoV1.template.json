@@ -27,7 +27,7 @@
             "ApiId"
           ]
         },
-        "Definition": "schema {\n  query: Query\n  mutation: Mutation\n  subscription: Subscription\n}\ntype Language {\n  code: ID!\n  name: String!\n}\ntype Country {\n  code: ID!\n  name: String!\n  currency: String!\n  languages: [Language!]!\n}\ntype Continent {\n  code: ID!\n  name: String!\n  countries: [Country!]!\n}\ninput StringQueryOperatorInput {\n  eq: String\n  ne: String\n  gt: String\n  gte: String\n  lt: String\n  lte: String\n  in: String\n  notIn: String\n  regex: String\n}\ninput ContinentFilterInput {\n  code: StringQueryOperatorInput\n}\ntype Query {\n  continents(filter: ContinentFilterInput!): [Continent!]!\n  allContinents: ContinentConnection!\n  countries(filter: CountryFilterInput!): [Country!]!\n  allCountries: CountryConnection!\n  language(code: String!): Language!\n  languages(filter: LanguageFilterInput): [Language!]!\n  countryDate(countryId: ID! dateType: DateType!): AWSDate!\n  countryTime(countryId: ID! dateType: DateType!): AWSTime!\n  countryDateTime(countryId: ID! dateType: DateType!): AWSDateTime!\n  countryTimestamp(countryId: ID! dateType: DateType!): AWSTimestamp!\n  countryDates(countryId: ID! dateType: DateType!): [AWSDate!]!\n  countryTimes(countryId: ID! dateType: DateType!): [AWSTime!]!\n  countryDateTimes(countryId: ID! dateType: DateType!): [AWSDateTime!]!\n  countryTimestamps(countryId: ID! dateType: DateType!): [AWSTimestamp!]!\n  countryByDate(countryId: ID! dateType: DateType! date: AWSDate!): Country!\n  countryByTime(countryId: ID! dateType: DateType! time: AWSTime!): Country!\n  countryByDateTime(countryId: ID! dateType: DateType! dateTime: AWSDateTime!): Country!\n  countryByTimestamp(countryId: ID! dateType: DateType! timestamp: AWSTimestamp!): Country!\n  countriesByDates(countryId: ID! dateType: DateType! dates: [AWSDate!]!): [Country!]!\n  countriesByTimes(countryId: ID! dateType: DateType! times: [AWSTime!]!): [Country!]!\n  countriesByDateTimes(countryId: ID! dateType: DateType! dateTimes: [AWSDateTime]!): [Country!]!\n  countriesByTimestamps(countryId: ID! dateType: DateType! timestamps: [AWSTimestamp]!): [Country!]!\n}\ntype ContinentEdge {\n  node: Continent!\n  cursor: String!\n}\ntype PageInfo {\n  previousPageCursor: String\n  nextPageCursor: String\n}\ntype ContinentConnection {\n  edges: [ContinentEdge!]!\n  nodes: [Continent!]!\n  totalCount: Int!\n  pageInfo: PageInfo\n}\ninput CountryFilterInput {\n  code: StringQueryOperatorInput\n  currency: StringQueryOperatorInput\n  continent: StringQueryOperatorInput\n}\ntype CountryEdge {\n  node: Country!\n  cursor: String!\n}\ntype CountryConnection {\n  edges: [CountryEdge!]!\n  nodes: [Country!]!\n  totalCount: Int!\n  pageInfo: PageInfo\n}\ninput LanguageFilterInput {\n  code: StringQueryOperatorInput\n}\nenum DateType {\n  DISCOVERED\n  SETTLED\n}\ninput LanguageInput {\n  code: ID!\n  name: String!\n}\ninput CountryInput {\n  code: ID!\n  name: String!\n  currency: String!\n  languages: [LanguageInput!]!\n}\ntype Mutation {\n  addCountry(country: CountryInput!): Country!\n  updateCountry(country: CountryInput!): Country!\n}\ntype Subscription {\n  addedCountry(code: ID): Country!\n  @aws_subscribe(mutations: [\"addCountry\"])\n}\n"
+        "Definition": "schema {\n  query: Query\n  mutation: Mutation\n  subscription: Subscription\n}\ntype Language {\n  code: ID!\n  name: String!\n}\ntype Country {\n  code: ID!\n  name: String!\n  currency: String!\n  languages: [Language!]!\n}\ntype Continent {\n  code: ID!\n  name: String!\n  countries: [Country!]!\n  countryCodes: [String!]!\n}\ninput StringQueryOperatorInput {\n  eq: String\n  ne: String\n  gt: String\n  gte: String\n  lt: String\n  lte: String\n  in: String\n  notIn: String\n  regex: String\n}\ninput ContinentFilterInput {\n  code: StringQueryOperatorInput\n}\ntype Query {\n  continents(filter: ContinentFilterInput!): [Continent!]!\n  allContinents: ContinentConnection!\n  countries(filter: CountryFilterInput!): [Country!]!\n  allCountries: CountryConnection!\n  language(code: String!): Language!\n  languages(filter: LanguageFilterInput): [Language!]!\n  countryDate(countryId: ID! dateType: DateType!): AWSDate!\n  countryTime(countryId: ID! dateType: DateType!): AWSTime!\n  countryDateTime(countryId: ID! dateType: DateType!): AWSDateTime!\n  countryTimestamp(countryId: ID! dateType: DateType!): AWSTimestamp!\n  countryDates(countryId: ID! dateType: DateType!): [AWSDate!]!\n  countryTimes(countryId: ID! dateType: DateType!): [AWSTime!]!\n  countryDateTimes(countryId: ID! dateType: DateType!): [AWSDateTime!]!\n  countryTimestamps(countryId: ID! dateType: DateType!): [AWSTimestamp!]!\n  countryByDate(countryId: ID! dateType: DateType! date: AWSDate!): Country!\n  countryByTime(countryId: ID! dateType: DateType! time: AWSTime!): Country!\n  countryByDateTime(countryId: ID! dateType: DateType! dateTime: AWSDateTime!): Country!\n  countryByTimestamp(countryId: ID! dateType: DateType! timestamp: AWSTimestamp!): Country!\n  countriesByDates(countryId: ID! dateType: DateType! dates: [AWSDate!]!): [Country!]!\n  countriesByTimes(countryId: ID! dateType: DateType! times: [AWSTime!]!): [Country!]!\n  countriesByDateTimes(countryId: ID! dateType: DateType! dateTimes: [AWSDateTime]!): [Country!]!\n  countriesByTimestamps(countryId: ID! dateType: DateType! timestamps: [AWSTimestamp]!): [Country!]!\n}\ntype ContinentEdge {\n  node: Continent!\n  cursor: String!\n}\ntype PageInfo {\n  previousPageCursor: String\n  nextPageCursor: String\n}\ntype ContinentConnection {\n  edges: [ContinentEdge!]!\n  nodes: [Continent!]!\n  totalCount: Int!\n  pageInfo: PageInfo\n}\ninput CountryFilterInput {\n  code: StringQueryOperatorInput\n  currency: StringQueryOperatorInput\n  continent: StringQueryOperatorInput\n}\ntype CountryEdge {\n  node: Country!\n  cursor: String!\n}\ntype CountryConnection {\n  edges: [CountryEdge!]!\n  nodes: [Country!]!\n  totalCount: Int!\n  pageInfo: PageInfo\n}\ninput LanguageFilterInput {\n  code: StringQueryOperatorInput\n}\nenum DateType {\n  DISCOVERED\n  SETTLED\n}\ninput LanguageInput {\n  code: ID!\n  name: String!\n}\ninput CountryInput {\n  code: ID!\n  name: String!\n  currency: String!\n  languages: [LanguageInput!]!\n}\ntype Mutation {\n  addCountry(country: CountryInput!): Country!\n  updateCountry(country: CountryInput!): Country!\n}\ntype Subscription {\n  addedCountry(code: ID): Country!\n  @aws_subscribe(mutations: [\"addCountry\"])\n}\n"
       },
       "Metadata": {
         "aws:cdk:path": "AppSyncDemoV1/AppSync/GraphQl/Schema"
@@ -42,13 +42,61 @@
             "ApiId"
           ]
         },
-        "Expires": 1658190353
+        "Expires": 1658540584
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E"
       ],
       "Metadata": {
         "aws:cdk:path": "AppSyncDemoV1/AppSync/GraphQl/DefaultApiKey"
+      }
+    },
+    "AppSyncGraphQlIContinentCountriesResolverB5DDD4D8": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "AppSyncGraphQl5C415C25",
+            "ApiId"
+          ]
+        },
+        "FieldName": "countries",
+        "TypeName": "IContinent",
+        "DataSourceName": "AppSyncDemoGetCountriesImportDataSource",
+        "Kind": "UNIT",
+        "RequestMappingTemplate": "Query.Continents.Countries",
+        "ResponseMappingTemplate": "Query.Continents.Countries"
+      },
+      "DependsOn": [
+        "AppSyncGraphQlSchema52E5EE9E",
+        "AppSyncDemoGetCountriesImportDataSource1388E999"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "AppSyncDemoV1/AppSync/GraphQl/IContinentCountriesResolver/Resource"
+      }
+    },
+    "AppSyncGraphQlContinentcountryCodesResolver1FE9B097": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "AppSyncGraphQl5C415C25",
+            "ApiId"
+          ]
+        },
+        "FieldName": "countryCodes",
+        "TypeName": "Continent",
+        "DataSourceName": "AppSyncDemoGetCountryCodesUrlImportNameDataSource",
+        "Kind": "UNIT",
+        "RequestMappingTemplate": "Query.Continents.CountryCodes",
+        "ResponseMappingTemplate": "Query.Continents.CountryCodes"
+      },
+      "DependsOn": [
+        "AppSyncGraphQlSchema52E5EE9E",
+        "AppSyncDemoGetCountryCodesUrlImportNameDataSourceB4B9A6D3"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "AppSyncDemoV1/AppSync/GraphQl/ContinentcountryCodesResolver/Resource"
       }
     },
     "AppSyncGraphQlQuerycontinentsResolver422C92C3": {
@@ -64,8 +112,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoContinentsDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
-        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+        "RequestMappingTemplate": "Query.Continents",
+        "ResponseMappingTemplate": "Query.Continents"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -88,8 +136,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoGetAllContinentsDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
-        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+        "RequestMappingTemplate": "Query.AllContinents",
+        "ResponseMappingTemplate": "Query.AllContinents"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -112,8 +160,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoGetCountriesImportDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
-        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+        "RequestMappingTemplate": "Query.Countries",
+        "ResponseMappingTemplate": "Query.Countries"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -136,8 +184,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoAllCountriesDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
-        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+        "RequestMappingTemplate": "Query.AllCountries",
+        "ResponseMappingTemplate": "Query.AllCountries"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -160,8 +208,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemohttpswwwgooglecomDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
-        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+        "RequestMappingTemplate": "Query.Language",
+        "ResponseMappingTemplate": "Query.Language"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -184,8 +232,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoGetLanguagesDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
-        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+        "RequestMappingTemplate": "Query.Languages",
+        "ResponseMappingTemplate": "Query.Languages"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -208,8 +256,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountryDateDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
-        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+        "RequestMappingTemplate": "Query.CountryDate",
+        "ResponseMappingTemplate": "Query.CountryDate"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -232,8 +280,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountryTimeDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
-        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+        "RequestMappingTemplate": "Query.CountryTime",
+        "ResponseMappingTemplate": "Query.CountryTime"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -256,8 +304,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountryDateTimeDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
-        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+        "RequestMappingTemplate": "Query.CountryDateTime",
+        "ResponseMappingTemplate": "Query.CountryDateTime"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -280,8 +328,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountryTimestampDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
-        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+        "RequestMappingTemplate": "Query.CountryTimestamp",
+        "ResponseMappingTemplate": "Query.CountryTimestamp"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -304,8 +352,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountryDatesDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
-        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+        "RequestMappingTemplate": "Query.CountryDates",
+        "ResponseMappingTemplate": "Query.CountryDates"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -328,8 +376,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountryTimesDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
-        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+        "RequestMappingTemplate": "Query.CountryTimes",
+        "ResponseMappingTemplate": "Query.CountryTimes"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -352,8 +400,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountryDateTimesDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
-        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+        "RequestMappingTemplate": "Query.CountryDateTimes",
+        "ResponseMappingTemplate": "Query.CountryDateTimes"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -376,8 +424,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountryTimestampsDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
-        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+        "RequestMappingTemplate": "Query.CountryTimestamps",
+        "ResponseMappingTemplate": "Query.CountryTimestamps"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -400,8 +448,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountryByDateDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
-        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+        "RequestMappingTemplate": "Query.CountryByDate",
+        "ResponseMappingTemplate": "Query.CountryByDate"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -424,8 +472,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountryByTimeDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
-        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+        "RequestMappingTemplate": "Query.CountryByTime",
+        "ResponseMappingTemplate": "Query.CountryByTime"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -448,8 +496,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountryByDateTimeDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
-        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+        "RequestMappingTemplate": "Query.CountryByDateTime",
+        "ResponseMappingTemplate": "Query.CountryByDateTime"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -472,8 +520,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountryByTimestampDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
-        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+        "RequestMappingTemplate": "Query.CountryByTimestamp",
+        "ResponseMappingTemplate": "Query.CountryByTimestamp"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -496,8 +544,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountriesByDatesDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
-        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+        "RequestMappingTemplate": "Query.CountriesByDates",
+        "ResponseMappingTemplate": "Query.CountriesByDates"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -520,8 +568,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountriesByTimesDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
-        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+        "RequestMappingTemplate": "Query.CountriesByTimes",
+        "ResponseMappingTemplate": "Query.CountriesByTimes"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -544,8 +592,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountriesByDateTimesDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
-        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+        "RequestMappingTemplate": "Query.CountriesByDateTimes",
+        "ResponseMappingTemplate": "Query.CountriesByDateTimes"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -568,8 +616,8 @@
         "TypeName": "Query",
         "DataSourceName": "AppSyncDemoCountriesByTimestampsDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
-        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+        "RequestMappingTemplate": "Query.CountriesByTimestamps",
+        "ResponseMappingTemplate": "Query.CountriesByTimestamps"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -592,8 +640,8 @@
         "TypeName": "Mutation",
         "DataSourceName": "AppSyncDemoAddCountryDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
-        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+        "RequestMappingTemplate": "Mutation.AddCountry",
+        "ResponseMappingTemplate": "Mutation.AddCountry"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -616,8 +664,8 @@
         "TypeName": "Mutation",
         "DataSourceName": "AppSyncDemoUpdateCountryDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
-        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+        "RequestMappingTemplate": "Mutation.UpdateCountry",
+        "ResponseMappingTemplate": "Mutation.UpdateCountry"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -640,8 +688,8 @@
         "TypeName": "Subscription",
         "DataSourceName": "AppSyncDemoAddedCountryDataSource",
         "Kind": "UNIT",
-        "RequestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
-        "ResponseMappingTemplate": "$util.toJson($ctx.result.payload)"
+        "RequestMappingTemplate": "Subscription.AddedCountry",
+        "ResponseMappingTemplate": "Subscription.AddedCountry"
       },
       "DependsOn": [
         "AppSyncGraphQlSchema52E5EE9E",
@@ -665,51 +713,6 @@
       },
       "Metadata": {
         "aws:cdk:path": "AppSyncDemoV1/AppSyncDemoContinentsDataSource/Resource"
-      }
-    },
-    "AppSyncDemoGetAllContinentsDataSourceServiceRole6BE8A44D": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Statement": [
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "Service": "appsync.amazonaws.com"
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        }
-      },
-      "Metadata": {
-        "aws:cdk:path": "AppSyncDemoV1/AppSyncDemoGetAllContinentsDataSource/ServiceRole/Resource"
-      }
-    },
-    "AppSyncDemoGetAllContinentsDataSource1FE170F5": {
-      "Type": "AWS::AppSync::DataSource",
-      "Properties": {
-        "ApiId": {
-          "Fn::GetAtt": [
-            "AppSyncGraphQl5C415C25",
-            "ApiId"
-          ]
-        },
-        "Name": "AppSyncDemoGetAllContinentsDataSource",
-        "Type": "HTTP",
-        "HttpConfig": {
-          "Endpoint": "https://www.google.com"
-        },
-        "ServiceRoleArn": {
-          "Fn::GetAtt": [
-            "AppSyncDemoGetAllContinentsDataSourceServiceRole6BE8A44D",
-            "Arn"
-          ]
-        }
-      },
-      "Metadata": {
-        "aws:cdk:path": "AppSyncDemoV1/AppSyncDemoGetAllContinentsDataSource/Resource"
       }
     },
     "AppSyncDemoGetCountriesImportDataSourceServiceRole9BA0D801": {
@@ -757,6 +760,98 @@
       },
       "Metadata": {
         "aws:cdk:path": "AppSyncDemoV1/AppSyncDemoGetCountriesImportDataSource/Resource"
+      }
+    },
+    "AppSyncDemoGetCountryCodesUrlImportNameDataSourceServiceRole843C0105": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "appsync.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "AppSyncDemoV1/AppSyncDemoGetCountryCodesUrlImportNameDataSource/ServiceRole/Resource"
+      }
+    },
+    "AppSyncDemoGetCountryCodesUrlImportNameDataSourceB4B9A6D3": {
+      "Type": "AWS::AppSync::DataSource",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "AppSyncGraphQl5C415C25",
+            "ApiId"
+          ]
+        },
+        "Name": "AppSyncDemoGetCountryCodesUrlImportNameDataSource",
+        "Type": "HTTP",
+        "HttpConfig": {
+          "Endpoint": {
+            "Fn::ImportValue": "GetCountryCodesUrlImportName"
+          }
+        },
+        "ServiceRoleArn": {
+          "Fn::GetAtt": [
+            "AppSyncDemoGetCountryCodesUrlImportNameDataSourceServiceRole843C0105",
+            "Arn"
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "AppSyncDemoV1/AppSyncDemoGetCountryCodesUrlImportNameDataSource/Resource"
+      }
+    },
+    "AppSyncDemoGetAllContinentsDataSourceServiceRole6BE8A44D": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "appsync.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "AppSyncDemoV1/AppSyncDemoGetAllContinentsDataSource/ServiceRole/Resource"
+      }
+    },
+    "AppSyncDemoGetAllContinentsDataSource1FE170F5": {
+      "Type": "AWS::AppSync::DataSource",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "AppSyncGraphQl5C415C25",
+            "ApiId"
+          ]
+        },
+        "Name": "AppSyncDemoGetAllContinentsDataSource",
+        "Type": "HTTP",
+        "HttpConfig": {
+          "Endpoint": "https://www.google.com"
+        },
+        "ServiceRoleArn": {
+          "Fn::GetAtt": [
+            "AppSyncDemoGetAllContinentsDataSourceServiceRole6BE8A44D",
+            "Arn"
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "AppSyncDemoV1/AppSyncDemoGetAllContinentsDataSource/Resource"
       }
     },
     "AppSyncDemoAllCountriesDataSourceF294CCAB": {
@@ -1302,7 +1397,7 @@
     "CDKMetadata": {
       "Type": "AWS::CDK::Metadata",
       "Properties": {
-        "Analytics": "v2:deflate64:H4sIAAAAAAAAClWQ3U7DMAyFn2X3qbsKEFdIjI4fialAi7g3mdHC2iQkzlAV9d1pMiGGfGF/xz625Aqq6hyWi2v89oXc7ssojSOIHaPci/pDPwW2gUVttGcXJCetJW+CkzSJ5IporR+1hHjv0O6++pVVaSrTy+Y/dXJHAyZh1h9pFGlXfyD3uzfXjdG0RsYun0mtE3pgtie4weF9i3/CJBQOEFvTZ2POz6ZXckx4rCbRZxfcBS1ZGX2DnqZJrA03xOUFLOGyhOb2tZ6fsbK2eCPn57GrwxlUZTW351h8eqUKFzSrgaA95h+derYPUAEAAA=="
+        "Analytics": "v2:deflate64:H4sIAAAAAAAAClWQ3U7DMAyFn2X3qbsKkLhBYnT8SEwFWsS9yYwW1iYhcYaqqO9Okwkx5Av7O/axJVdQVeewXFzjty/kdl9GaRxB7BjlXtQf+imwDSxqoz27IDlpLXkTnKRJJFdEa/2oJcR7h3b31a+sSlOZXjb/qZM7GjAJs/5Io0i7+gO53725boymNTJ2+UxqndADsz3BDQ7vW/wTJqFwgNiaPhtzfja9kmPCYzWJPrvgLmjJyugb9DRNYm24IS4vYAmXJTS3r/X8jJW1xRs5P49dHc6gKqu5Pcfi0ytVuKBZDQTtMf8ALP3QKlABAAA="
       },
       "Metadata": {
         "aws:cdk:path": "AppSyncDemoV1/CDKMetadata/Default"

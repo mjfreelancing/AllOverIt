@@ -15,17 +15,5 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
                 ? null
                 : dataSourceFactory.CreateDataSource(attribute);
         }
-
-        public static string GetFunctionName(this MemberInfo methodInfo)
-        {
-            var attribute = methodInfo.GetCustomAttribute<DataSourceAttribute>(true);
-
-            if (attribute is LambdaDataSourceAttribute lambdaDataSourceAttribute)
-            {
-                return lambdaDataSourceAttribute.FunctionName;
-            }
-
-            return null;
-        }
     }
 }
