@@ -29,7 +29,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
                     LambdaDataSourceAttribute lambdaDataSourceAttribute => CreateLambdaDataSource(lambdaDataSourceAttribute),
                     HttpDataSourceAttribute httpDataSourceAttribute => CreateHttpDataSource(httpDataSourceAttribute),
                     NoneDataSourceAttribute noneDataSourceAttribute => CreateNoneDataSource(noneDataSourceAttribute),
-                    _ => null
+                    _ => throw new InvalidOperationException($"Unhandled DataSource type '{attribute.GetType().Name}'")
                 };
 
                 _dataSourceCache.Add(attribute.LookupKey, dataSource);

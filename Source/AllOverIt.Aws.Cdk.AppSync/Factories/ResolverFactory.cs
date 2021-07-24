@@ -4,7 +4,6 @@ using AllOverIt.Extensions;
 using AllOverIt.Helpers;
 using Amazon.CDK.AWS.AppSync;
 using System.Reflection;
-using SystemType = System.Type;
 
 namespace AllOverIt.Aws.Cdk.AppSync.Factories
 {
@@ -21,7 +20,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
             _dataSourceFactory = dataSourceFactory.WhenNotNull(nameof(dataSourceFactory));
         }
 
-        public void ConstructResolverIfRequired(string parentName, SystemType type, MemberInfo methodInfo)
+        public void ConstructResolverIfRequired(string parentName, string schemaTypeName, MemberInfo methodInfo)
         {
             var dataSource = methodInfo.GetDataSource(_dataSourceFactory);           // optionally specified via a custom attribute
 
@@ -30,11 +29,11 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
                 var propertyName = methodInfo.Name;
                 var mappingTemplateKey = parentName.IsNullOrEmpty() ? propertyName : $"{parentName}.{propertyName}";
 
-                _ = new Resolver(_graphQlApi, $"{type.Name}{propertyName}Resolver", new ResolverProps
+                _ = new Resolver(_graphQlApi, $"{schemaTypeName}{propertyName}Resolver", new ResolverProps
                 {
                     Api = _graphQlApi,
                     DataSource = dataSource,
-                    TypeName = type.Name,
+                    TypeName = schemaTypeName,
                     FieldName = propertyName.GetGraphqlName(),
                     RequestMappingTemplate = MappingTemplate.FromString(_mappingTemplates.GetRequestMapping(mappingTemplateKey)),
                     ResponseMappingTemplate = MappingTemplate.FromString(_mappingTemplates.GetResponseMapping(mappingTemplateKey))

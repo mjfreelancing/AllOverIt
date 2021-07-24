@@ -59,7 +59,7 @@
                             "ApiId"
                           ]
                         },
-                        "definition": "schema {\n  query: Query\n  mutation: Mutation\n  subscription: Subscription\n}\ntype Language {\n  code: ID!\n  name: String!\n}\ntype Country {\n  code: ID!\n  name: String!\n  currency: String!\n  languages: [Language!]!\n}\ntype Continent {\n  code: ID!\n  name: String!\n  countries: [Country!]!\n  countryCodes: [String!]!\n}\ninput StringQueryOperatorInput {\n  eq: String\n  ne: String\n  gt: String\n  gte: String\n  lt: String\n  lte: String\n  in: String\n  notIn: String\n  regex: String\n}\ninput ContinentFilterInput {\n  code: StringQueryOperatorInput\n}\ntype Query {\n  continents(filter: ContinentFilterInput!): [Continent!]!\n  allContinents: ContinentConnection!\n  countries(filter: CountryFilterInput!): [Country!]!\n  allCountries: CountryConnection!\n  language(code: String!): Language!\n  languages(filter: LanguageFilterInput): [Language!]!\n  countryDate(countryId: ID! dateType: DateType!): AWSDate!\n  countryTime(countryId: ID! dateType: DateType!): AWSTime!\n  countryDateTime(countryId: ID! dateType: DateType!): AWSDateTime!\n  countryTimestamp(countryId: ID! dateType: DateType!): AWSTimestamp!\n  countryDates(countryId: ID! dateType: DateType!): [AWSDate!]!\n  countryTimes(countryId: ID! dateType: DateType!): [AWSTime!]!\n  countryDateTimes(countryId: ID! dateType: DateType!): [AWSDateTime!]!\n  countryTimestamps(countryId: ID! dateType: DateType!): [AWSTimestamp!]!\n  countryByDate(countryId: ID! dateType: DateType! date: AWSDate!): Country!\n  countryByTime(countryId: ID! dateType: DateType! time: AWSTime!): Country!\n  countryByDateTime(countryId: ID! dateType: DateType! dateTime: AWSDateTime!): Country!\n  countryByTimestamp(countryId: ID! dateType: DateType! timestamp: AWSTimestamp!): Country!\n  countriesByDates(countryId: ID! dateType: DateType! dates: [AWSDate!]!): [Country!]!\n  countriesByTimes(countryId: ID! dateType: DateType! times: [AWSTime!]!): [Country!]!\n  countriesByDateTimes(countryId: ID! dateType: DateType! dateTimes: [AWSDateTime]!): [Country!]!\n  countriesByTimestamps(countryId: ID! dateType: DateType! timestamps: [AWSTimestamp]!): [Country!]!\n}\ntype ContinentEdge {\n  node: Continent!\n  cursor: String!\n}\ntype PageInfo {\n  previousPageCursor: String\n  nextPageCursor: String\n}\ntype ContinentConnection {\n  edges: [ContinentEdge!]!\n  nodes: [Continent!]!\n  totalCount: Int!\n  pageInfo: PageInfo\n}\ninput CountryFilterInput {\n  code: StringQueryOperatorInput\n  currency: StringQueryOperatorInput\n  continent: StringQueryOperatorInput\n}\ntype CountryEdge {\n  node: Country!\n  cursor: String!\n}\ntype CountryConnection {\n  edges: [CountryEdge!]!\n  nodes: [Country!]!\n  totalCount: Int!\n  pageInfo: PageInfo\n}\ninput LanguageFilterInput {\n  code: StringQueryOperatorInput\n}\nenum DateType {\n  DISCOVERED\n  SETTLED\n}\ninput LanguageInput {\n  code: ID!\n  name: String!\n}\ninput CountryInput {\n  code: ID!\n  name: String!\n  currency: String!\n  languages: [LanguageInput!]!\n}\ntype Mutation {\n  addCountry(country: CountryInput!): Country!\n  updateCountry(country: CountryInput!): Country!\n}\ntype Subscription {\n  addedCountry(code: ID): Country!\n  @aws_subscribe(mutations: [\"addCountry\"])\n}\n"
+                        "definition": "schema {\n  query: Query\n  mutation: Mutation\n  subscription: Subscription\n}\ntype Language {\n  code: ID!\n  name: String!\n}\ntype Country {\n  code: ID!\n  name: String!\n  currency: String!\n  languages: [Language!]!\n}\ntype Continent {\n  code: ID!\n  countries: [Country!]!\n  countryCodes: [String!]!\n}\ninput StringQueryOperatorInput {\n  eq: String\n  ne: String\n  gt: String\n  gte: String\n  lt: String\n  lte: String\n  in: String\n  notIn: String\n  regex: String\n}\ninput ContinentFilterInput {\n  code: StringQueryOperatorInput\n}\ntype Query {\n  continents(filter: ContinentFilterInput!): [Continent!]!\n  allContinents: ContinentConnection!\n  countries(filter: CountryFilterInput!): [Country!]!\n  allCountries: CountryConnection!\n  language(code: String!): Language!\n  languages(filter: LanguageFilterInput): [Language!]!\n  countryDate(countryId: ID! dateType: DateType!): AWSDate!\n  countryTime(countryId: ID! dateType: DateType!): AWSTime!\n  countryDateTime(countryId: ID! dateType: DateType!): AWSDateTime!\n  countryTimestamp(countryId: ID! dateType: DateType!): AWSTimestamp!\n  countryDates(countryId: ID! dateType: DateType!): [AWSDate!]!\n  countryTimes(countryId: ID! dateType: DateType!): [AWSTime!]!\n  countryDateTimes(countryId: ID! dateType: DateType!): [AWSDateTime!]!\n  countryTimestamps(countryId: ID! dateType: DateType!): [AWSTimestamp!]!\n  countryByDate(countryId: ID! dateType: DateType! date: AWSDate!): Country!\n  countryByTime(countryId: ID! dateType: DateType! time: AWSTime!): Country!\n  countryByDateTime(countryId: ID! dateType: DateType! dateTime: AWSDateTime!): Country!\n  countryByTimestamp(countryId: ID! dateType: DateType! timestamp: AWSTimestamp!): Country!\n  countriesByDates(countryId: ID! dateType: DateType! dates: [AWSDate!]!): [Country!]!\n  countriesByTimes(countryId: ID! dateType: DateType! times: [AWSTime!]!): [Country!]!\n  countriesByDateTimes(countryId: ID! dateType: DateType! dateTimes: [AWSDateTime]!): [Country!]!\n  countriesByTimestamps(countryId: ID! dateType: DateType! timestamps: [AWSTimestamp]!): [Country!]!\n}\ntype ContinentEdge {\n  node: Continent!\n  cursor: String!\n}\ntype PageInfo {\n  previousPageCursor: String\n  nextPageCursor: String\n}\ntype ContinentConnection {\n  edges: [ContinentEdge!]!\n  nodes: [Continent!]!\n  totalCount: Int!\n  pageInfo: PageInfo\n}\ninput CountryFilterInput {\n  code: StringQueryOperatorInput\n  currency: StringQueryOperatorInput\n  continent: StringQueryOperatorInput\n}\ntype CountryEdge {\n  node: Country!\n  cursor: String!\n}\ntype CountryConnection {\n  edges: [CountryEdge!]!\n  nodes: [Country!]!\n  totalCount: Int!\n  pageInfo: PageInfo\n}\ninput LanguageFilterInput {\n  code: StringQueryOperatorInput\n}\nenum DateType {\n  DISCOVERED\n  SETTLED\n}\ninput LanguageInput {\n  code: ID!\n  name: String!\n}\ninput CountryInput {\n  code: ID!\n  name: String!\n  currency: String!\n  languages: [LanguageInput!]!\n}\ntype Mutation {\n  addCountry(country: CountryInput!): Country!\n  updateCountry(country: CountryInput!): Country!\n}\ntype Subscription {\n  addedCountry(code: ID): Country!\n  @aws_subscribe(mutations: [\"addCountry\"])\n}\n"
                       }
                     },
                     "constructInfo": {
@@ -79,7 +79,7 @@
                             "ApiId"
                           ]
                         },
-                        "expires": 1658572193
+                        "expires": 1658660008
                       }
                     },
                     "constructInfo": {
@@ -87,13 +87,13 @@
                       "version": "1.114.0"
                     }
                   },
-                  "IContinentCountriesResolver": {
-                    "id": "IContinentCountriesResolver",
-                    "path": "AppSyncDemoV1/AppSync/GraphQl/IContinentCountriesResolver",
+                  "ContinentCountriesResolver": {
+                    "id": "ContinentCountriesResolver",
+                    "path": "AppSyncDemoV1/AppSync/GraphQl/ContinentCountriesResolver",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "AppSyncDemoV1/AppSync/GraphQl/IContinentCountriesResolver/Resource",
+                        "path": "AppSyncDemoV1/AppSync/GraphQl/ContinentCountriesResolver/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::AppSync::Resolver",
                           "aws:cdk:cloudformation:props": {
@@ -104,7 +104,7 @@
                               ]
                             },
                             "fieldName": "countries",
-                            "typeName": "IContinent",
+                            "typeName": "Continent",
                             "dataSourceName": "AppSyncDemoGetCountriesImportDataSource",
                             "kind": "UNIT",
                             "requestMappingTemplate": "{\r\n  \"version\" : \"2018-05-29\",\r\n  \"method\": \"GET\",\r\n  \"resourcePath\": \"/countries\",\r\n  \"params\": {\r\n    \"headers\": {\r\n      \"Content-Type\": \"application/json\",\r\n      \"X-Api-Key\": \"some-key-here\"\r\n    }\r\n  },\r\n  \"query\": {\r\n    \"param1\": \"$ctx.args.value1\",\r\n    \"param2\": \"value2\",\r\n    \"email\": \"$ctx.identity.claims['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress']\"\r\n  },\r\n}",
@@ -947,8 +947,8 @@
                             "typeName": "Mutation",
                             "dataSourceName": "AppSyncDemoAddCountryDataSource",
                             "kind": "UNIT",
-                            "requestMappingTemplate": "Mutation.AddCountry",
-                            "responseMappingTemplate": "Mutation.AddCountry"
+                            "requestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
+                            "responseMappingTemplate": "$util.toJson($ctx.result.payload)"
                           }
                         },
                         "constructInfo": {
@@ -982,8 +982,8 @@
                             "typeName": "Mutation",
                             "dataSourceName": "AppSyncDemoUpdateCountryDataSource",
                             "kind": "UNIT",
-                            "requestMappingTemplate": "Mutation.UpdateCountry",
-                            "responseMappingTemplate": "Mutation.UpdateCountry"
+                            "requestMappingTemplate": "{\r\n  \"version\" : \"2017-02-28\",\r\n  \"operation\": \"Invoke\",\r\n  \"payload\": $util.toJson($ctx.args)\r\n}",
+                            "responseMappingTemplate": "$util.toJson($ctx.result.payload)"
                           }
                         },
                         "constructInfo": {
@@ -1017,8 +1017,8 @@
                             "typeName": "Subscription",
                             "dataSourceName": "AppSyncDemoAddedCountryDataSource",
                             "kind": "UNIT",
-                            "requestMappingTemplate": "Subscription.AddedCountry",
-                            "responseMappingTemplate": "Subscription.AddedCountry"
+                            "requestMappingTemplate": "{\r\n  \"version\" : \"2018-05-09\",\r\n  \"payload\": \"true\"\r\n}",
+                            "responseMappingTemplate": "$util.toJson($ctx.result)"
                           }
                         },
                         "constructInfo": {

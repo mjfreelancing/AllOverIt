@@ -189,8 +189,8 @@ namespace AllOverIt.Aws.Cdk.AppSync
             }
         }
 
-        private void ParseInterfaceTypeProperties(string parentName, IDictionary<string, IField> classDefinition,
-            GraphqlSchemaTypeDescriptor schemaTypeDescriptor, Action<IIntermediateType> typeCreated)
+        private void ParseInterfaceTypeProperties(string parentName, IDictionary<string, IField> classDefinition, GraphqlSchemaTypeDescriptor schemaTypeDescriptor,
+            Action<IIntermediateType> typeCreated)
         {
             var type = schemaTypeDescriptor.Type;
             var properties = type.GetProperties();
@@ -226,13 +226,15 @@ namespace AllOverIt.Aws.Cdk.AppSync
                 var isList = propertyType.IsArray;
                 var isRequiredList = isList && propertyInfo.IsGqlArrayRequired();
 
-                // create the field definition based on a property (the propertyInfo may contain custom properties)
+                // Create the field definition based on a property (the propertyInfo may contain custom attributes).
+                // GetTypeCreator() could end up calling CreateTypeInterface() - if not a scalar type - and then back into this method,
+                // hence we create the type, add it to the class definition, and then create a resolver if required
                 var fieldTypeCreator = GetTypeCreator(parentName, propertyType, propertyInfo, typeCreated);
 
                 classDefinition.Add(propertyInfo.Name.GetGraphqlName(), fieldTypeCreator.Invoke(isRequired, isList, isRequiredList));
 
                 // check if the field requires a resolver
-                _resolverFactory.ConstructResolverIfRequired(parentName, type, propertyInfo);
+                _resolverFactory.ConstructResolverIfRequired(parentName, schemaTypeDescriptor.Name, propertyInfo);
             }
         }
 
@@ -248,8 +250,6 @@ namespace AllOverIt.Aws.Cdk.AppSync
 
             foreach (var methodInfo in methods.Where(item => !item.IsSpecialName))
             {
-                var dataSource = methodInfo.GetDataSource(_dataSourceFactory);           // optionally specified via a custom attribute
-
                 var isRequired = methodInfo.IsGqlTypeRequired();
                 var isList = methodInfo.ReturnType.IsArray;
                 var isRequiredList = isList && methodInfo.IsGqlArrayRequired();
@@ -263,6 +263,8 @@ namespace AllOverIt.Aws.Cdk.AppSync
                         isList,
                         isRequiredList,
                         objectType => _graphqlApi.AddType(objectType));
+
+                var dataSource = methodInfo.GetDataSource(_dataSourceFactory);           // optionally specified via a custom attribute
 
                 if (dataSource == null)
                 {
