@@ -2,13 +2,21 @@
   Current AllOverIt Inter-Dependencies
 
   [1] AllOverIt                    (v1.15.0) - None
-  [2] AllOverIt.Aws.Cdk.AppSync    (v0.5.0)  - requires [1] v1.15.0
+  [2] AllOverIt.Aws.Cdk.AppSync    (v0.6.0)  - requires [1] v1.15.0
   [3] AllOverIt.Evaluator          (v2.1.0)  - requires [1] v1.11.0
   [4] AllOverIt.GenericHost        (v1.1.0)  - requires [1] v1.14.0
   [5] AllOverIt.Fixture            (v1.4.0)  - None
   [6] AllOverIt.Fixture.FakeItEasy (v1.2.0)  - requires [5] v1.3.0
 
 ======================================================================================================================
+
+
+
+25 Jul 2021
+======================================================================================================================
+AllOverIt.Aws.Cdk.AppSync - v0.6.0
+  * Reworked the datasources so they all can have custom request/response mappings.
+  * Updated to Amazon.CDK.AWS.AppSync and Amazon.CDK.AWS.CloudFormation v1.115.0
 
 
 
