@@ -1,7 +1,7 @@
 ======================================================================================================================
   Current AllOverIt Inter-Dependencies
 
-  [1] AllOverIt                    (v1.15.0) - None
+  [1] AllOverIt                    (v1.16.0) - None
   [2] AllOverIt.Aws.Cdk.AppSync    (v0.6.0)  - requires [1] v1.15.0
   [3] AllOverIt.Evaluator          (v2.1.0)  - requires [1] v1.11.0
   [4] AllOverIt.GenericHost        (v1.1.0)  - requires [1] v1.14.0
@@ -9,6 +9,16 @@
   [6] AllOverIt.Fixture.FakeItEasy (v1.2.0)  - requires [5] v1.3.0
 
 ======================================================================================================================
+
+
+
+28 Jul 2021
+======================================================================================================================
+AllOverIt - v1.16.0
+  * Added SelectAsList(), SelectAsReadOnlyCollection(), and SelectAsReadOnlyList() extension methods
+  * Guard.WhenNotEmpty() and Guard.WhenNotNullOrEmpty() now enforce a check that ensures the Enumerable is an array
+    or an ICollection<T>. There is an overload that allows this check to be disabled for backward compatibility.
+  * Added Formatter.FormatJsonString() utility method. Beautifies a JSON formatted string. No validation of content.
 
 
 
