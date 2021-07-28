@@ -129,21 +129,45 @@ namespace AllOverIt.Helpers
         // returns argument if not null or empty, otherwise throws ArgumentNullException / ArgumentException
         public static IEnumerable<TType> WhenNotNullOrEmpty<TType>(this IEnumerable<TType> argument, string name, string errorMessage = default)
         {
+            return WhenNotNullOrEmpty(argument, name, true, errorMessage);
+        }
+
+        public static IEnumerable<TType> WhenNotNullOrEmpty<TType>(this IEnumerable<TType> argument, string name, bool ensureIsCollection, string errorMessage = default)
+        {
             _ = argument ?? ThrowArgumentNullException<IEnumerable<TType>>(name, errorMessage);
 
-            return WhenNotEmpty(argument, name, errorMessage);
+            return WhenNotEmpty(argument, name, ensureIsCollection, errorMessage);
         }
 
         // returns argument if null or not empty, otherwise throws ArgumentException
         public static IEnumerable<TType> WhenNotEmpty<TType>(this IEnumerable<TType> argument, string name, string errorMessage = default)
         {
-            // ReSharper disable once PossibleMultipleEnumeration
-            if (argument != null && !argument.Any())
+            return WhenNotEmpty<TType>(argument, name, true, errorMessage);
+        }
+
+        public static IEnumerable<TType> WhenNotEmpty<TType>(this IEnumerable<TType> argument, string name, bool ensureIsCollection, string errorMessage = default)
+        {
+            if (argument != null)
             {
-                throw new ArgumentException(errorMessage ?? "The argument cannot be empty", name);
+                // ReSharper disable once PossibleMultipleEnumeration
+                if (!argument.Any())
+                // ReSharper disable once PossibleMultipleEnumeration
+                {
+                    throw new ArgumentException(errorMessage ?? "The argument cannot be empty", name);
+                }
+
+                if (ensureIsCollection)
+                {
+                    var isCollection = argument is ICollection<TType>;
+                    var isArray = argument.GetType().IsArray;
+
+                    if (!(isCollection || isArray))
+                    {
+                        throw new InvalidOperationException($"Expecting an array or ICollection<T> (Parameter '{name}')");
+                    }
+                }
             }
 
-            // ReSharper disable once PossibleMultipleEnumeration
             return argument;
         }
 
