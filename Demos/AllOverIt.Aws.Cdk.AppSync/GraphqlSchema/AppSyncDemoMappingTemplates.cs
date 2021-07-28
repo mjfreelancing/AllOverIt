@@ -1,5 +1,5 @@
-﻿using AllOverIt.Aws.Cdk.AppSync.Helpers;
-using AllOverIt.Aws.Cdk.AppSync.MappingTemplates;
+﻿using AllOverIt.Aws.Cdk.AppSync.MappingTemplates;
+using AllOverIt.Utils;
 
 namespace GraphqlSchema
 {
@@ -40,10 +40,11 @@ namespace GraphqlSchema
 
         private static string GetNoneRequestMapping()
         {
-            return StringHelpers.Prettify(
+            // Using FormatJsonString() to remove the extra padding
+            return Formatter.FormatJsonString(
                 @"
                     {
-                      ""version"" : ""2018-05-09"",
+                      ""version"": ""2018-05-09"",
                       ""payload"": ""true""
                     }"
             );
@@ -51,17 +52,16 @@ namespace GraphqlSchema
 
         private static string GetNoneResponsetMapping()
         {
-            return StringHelpers.Prettify(
-                "$util.toJson($ctx.result)"
-            );
+            return "$util.toJson($ctx.result)";
         }
 
         private static string GetFunctionRequestMapping()
         {
-            return StringHelpers.Prettify(
+            // Using FormatJsonString() to remove the extra padding
+            return Formatter.FormatJsonString(
                 @"
                     {
-                      ""version"" : ""2017-02-28"",
+                      ""version"": ""2017-02-28"",
                       ""operation"": ""Invoke"",
                       ""payload"": $util.toJson($ctx.args)
                     }"
@@ -70,17 +70,16 @@ namespace GraphqlSchema
 
         private static string GetFunctionResponsetMapping()
         {
-            return StringHelpers.Prettify(
-                "$util.toJson($ctx.result.payload)"
-            );
+            return "$util.toJson($ctx.result.payload)";
         }
 
         private static string GetHttpRequestMapping(string verb, string resourcePath)
         {
-            return StringHelpers.Prettify(
+            // Using FormatJsonString() to remove the extra padding
+            return Formatter.FormatJsonString(
                 $@"
                     {{
-                      ""version"" : ""2018-05-29"",
+                      ""version"": ""2018-05-29"",
                       ""method"": ""{verb}"",
                       ""resourcePath"": ""{resourcePath}"",
                       ""params"": {{
@@ -90,8 +89,8 @@ namespace GraphqlSchema
                         }}
                       }},
                       ""query"": {{
-                        ""param1"": ""$ctx.args.value1"",
-                        ""param2"": ""value2"",
+                        ""param1"": ""$ctx.source.id"",
+                        ""param2"": ""$ctx.args.id"",
                         ""email"": ""$ctx.identity.claims['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress']""
                       }},
                     }}"
@@ -100,9 +99,7 @@ namespace GraphqlSchema
 
         private static string GetHttpResponseMapping()
         {
-            return StringHelpers.Prettify(
-                "$util.toJson($ctx.result.body)"
-            );
+            return "$util.toJson($ctx.result.body)";
         }
     }
 }
