@@ -300,7 +300,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
         public class CreateAggregateVariable_Names : VariableFactoryFixture
         {
-            private int _count = 10;
+            private readonly int _count = 10;
             private readonly Fake<IVariableRegistry> _registryFake;
             private readonly IEnumerable<string> _names;
             private readonly IEnumerable<double> _values;
@@ -405,7 +405,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
             [Fact]
             public void Should_Aggregate_Named_Values()
             {
-                var names = _names.Skip(2).Take(3).Skip(2).Take(1);
+                var names = _names.Skip(2).Take(3).Skip(2).Take(1).ToList();
                 var values = _values.Skip(2).Take(3).Skip(2).Take(1);
 
                 var expected = values.Sum();

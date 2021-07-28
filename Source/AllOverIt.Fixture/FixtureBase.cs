@@ -36,7 +36,11 @@ namespace AllOverIt.Fixture
         /// <summary>Provides the ability to invoke an action so it can be chained with assertions provided by FluentAssertions.</summary>
         /// <param name="action">The action to be invoked.</param>
         /// <returns>The same action passed to the method.</returns>
+#pragma warning disable IDE0079 // Remove unnecessary suppression
+#pragma warning disable CA1822 // Mark members as static
         protected Action Invoking(Action action)
+#pragma warning restore CA1822 // Mark members as static
+#pragma warning restore IDE0079 // Remove unnecessary suppression
         {
             if (action == null)
             {
@@ -50,7 +54,11 @@ namespace AllOverIt.Fixture
         /// <typeparam name="TResult">The result type returned by the Func.</typeparam>
         /// <param name="action">The action to be invoked.</param>
         /// <returns>The result of the invoked action.</returns>
+#pragma warning disable IDE0079 // Remove unnecessary suppression
+#pragma warning disable CA1822 // Mark members as static
         protected Func<TResult> Invoking<TResult>(Func<TResult> action)
+#pragma warning restore CA1822 // Mark members as static
+#pragma warning restore IDE0079 // Remove unnecessary suppression
         {
             if (action == null)
             {
@@ -63,7 +71,11 @@ namespace AllOverIt.Fixture
         /// <summary>Provides the ability to invoke an async action so it can be chained with assertions provided by FluentAssertions.</summary>
         /// <param name="action">The async action to be invoked.</param>
         /// <returns>The same action passed to the method.</returns>
+#pragma warning disable IDE0079 // Remove unnecessary suppression
+#pragma warning disable CA1822 // Mark members as static
         protected async Task Awaiting(Func<Task> action)
+#pragma warning restore CA1822 // Mark members as static
+#pragma warning restore IDE0079 // Remove unnecessary suppression
         {
             if (action == null)
             {
@@ -77,7 +89,11 @@ namespace AllOverIt.Fixture
         /// <typeparam name="TResult">The result type returned by the Action.</typeparam>
         /// <param name="action">The async action to be invoked.</param>
         /// <returns>The result of the invoked async action.</returns>
+#pragma warning disable IDE0079 // Remove unnecessary suppression
+#pragma warning disable CA1822 // Mark members as static
         protected async Task<TResult> Awaiting<TResult>(Func<Task<TResult>> action)
+#pragma warning restore CA1822 // Mark members as static
+#pragma warning restore IDE0079 // Remove unnecessary suppression
         {
             if (action == null)
             {

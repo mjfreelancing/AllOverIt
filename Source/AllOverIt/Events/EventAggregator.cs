@@ -120,18 +120,17 @@ namespace AllOverIt.Events
 
         private Task PublishToAsyncSubscriptions<TMessage>(TMessage message)
         {
-            if (!_asyncSubscriptions.TryGetValue(typeof(TMessage), out var asyncSubscriptions))
+            if (!_asyncSubscriptions.TryGetValue(typeof(TMessage), out var asyncSubscriptions) ||
+                !asyncSubscriptions.Any())
             {
                 return Task.CompletedTask;
             }
 
             var tasks = asyncSubscriptions
-              .Select(subscription => subscription.HandleAsync(message))
-              .AsReadOnlyCollection();
+                .Select(subscription => subscription.HandleAsync(message))
+                .AsReadOnlyCollection();
 
-            return tasks.Count == 0
-              ? Task.CompletedTask
-              : Task.WhenAll(tasks);
+            return Task.WhenAll(tasks);
         }
     }
 }
