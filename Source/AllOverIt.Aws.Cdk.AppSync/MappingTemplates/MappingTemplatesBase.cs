@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Extensions;
-using AllOverIt.Utils;
 using System.Collections.Generic;
 
 namespace AllOverIt.Aws.Cdk.AppSync.MappingTemplates
@@ -11,8 +10,8 @@ namespace AllOverIt.Aws.Cdk.AppSync.MappingTemplates
 
         public void RegisterMappings(string mappingKey, string requestMapping, string responseMapping)
         {
-            _functionRequestMappings.Add(mappingKey, requestMapping.FormatJsonString());
-            _functionResponseMappings.Add(mappingKey, responseMapping.FormatJsonString());
+            _functionRequestMappings.Add(mappingKey, requestMapping);
+            _functionResponseMappings.Add(mappingKey, responseMapping);
         }
 
         public string GetRequestMapping(string mappingKey)
