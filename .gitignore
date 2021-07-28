@@ -350,3 +350,4 @@ MigrationBackup/
 .ionide/
 _build
 Tests/*/coverage
+Demos/AllOverIt.Aws.Cdk.AppSync/cdk.out
