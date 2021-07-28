@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AllOverIt.Helpers;
+using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace AllOverIt.Extensions
         /// otherwise a new list is created and populated before being returned.</returns>
         public static IList<TType> AsList<TType>(this IEnumerable<TType> items)
         {
-            _ = items ?? throw new ArgumentNullException(nameof(items));
+            _ = items.WhenNotNull(nameof(items));
 
             return items is IList<TType> list
               ? list
@@ -31,7 +32,7 @@ namespace AllOverIt.Extensions
         /// reference is returned, otherwise a new list is created and populated before being returned.</returns>
         public static IReadOnlyList<TType> AsReadOnlyList<TType>(this IEnumerable<TType> items)
         {
-            _ = items ?? throw new ArgumentNullException(nameof(items));
+            _ = items.WhenNotNull(nameof(items));
 
             return items is IReadOnlyList<TType> list
               ? list
@@ -45,11 +46,50 @@ namespace AllOverIt.Extensions
         /// reference is returned, otherwise a new list is created and populated before being returned.</returns>
         public static IReadOnlyCollection<TType> AsReadOnlyCollection<TType>(this IEnumerable<TType> items)
         {
-            _ = items ?? throw new ArgumentNullException(nameof(items));
+            _ = items.WhenNotNull(nameof(items));
 
             return items is IReadOnlyCollection<TType> list
               ? list
               : new ReadOnlyCollection<TType>(items.AsList());
+        }
+
+        /// <summary>Projects each element into another form and returns the result as an IList{TResult}.</summary>
+        /// <typeparam name="TSource">The source elements.</typeparam>
+        /// <typeparam name="TResult">The projected result type.</typeparam>
+        /// <param name="items">The source items to be projected and returned as an IList{TResult}.</param>
+        /// <param name="selector">The transform function applied to each element.</param>
+        /// <returns>The projected results as an IList{TResult}.</returns>
+        public static IList<TResult> SelectAsList<TSource, TResult>(this IEnumerable<TSource> items, Func<TSource, TResult> selector)
+        {
+            _ = items.WhenNotNullOrEmpty(nameof(items));
+
+            return items.Select(selector).ToList();
+        }
+
+        /// <summary>Projects each element into another form and returns the result as an IReadOnlyCollection{TResult}.</summary>
+        /// <typeparam name="TSource">The source elements.</typeparam>
+        /// <typeparam name="TResult">The projected result type.</typeparam>
+        /// <param name="items">The source items to be projected and returned as an IReadOnlyCollection{TResult}.</param>
+        /// <param name="selector">The transform function applied to each element.</param>
+        /// <returns>The projected results as an IReadOnlyCollection{TResult}.</returns>
+        public static IReadOnlyCollection<TResult> SelectAsReadOnlyCollection<TSource, TResult>(this IEnumerable<TSource> items, Func<TSource, TResult> selector)
+        {
+            _ = items.WhenNotNullOrEmpty(nameof(items));
+
+            return items.Select(selector).ToList();
+        }
+
+        /// <summary>Projects each element into another form and returns the result as an IReadOnlyList{TResult}.</summary>
+        /// <typeparam name="TSource">The source elements.</typeparam>
+        /// <typeparam name="TResult">The projected result type.</typeparam>
+        /// <param name="items">The source items to be projected and returned as an IReadOnlyList{TResult}.</param>
+        /// <param name="selector">The transform function applied to each element.</param>
+        /// <returns>The projected results as an IReadOnlyList{TResult}.</returns>
+        public static IReadOnlyList<TResult> SelectAsReadOnlyList<TSource, TResult>(this IEnumerable<TSource> items, Func<TSource, TResult> selector)
+        {
+            _ = items.WhenNotNullOrEmpty(nameof(items));
+
+            return items.Select(selector).ToList();
         }
 
         /// <summary>
@@ -71,7 +111,7 @@ namespace AllOverIt.Extensions
         /// <returns>One or more batches containing the source items partitioned into a maximum batch size.</returns>
         public static IEnumerable<IEnumerable<TSource>> Batch<TSource>(this IEnumerable<TSource> items, int batchSize)
         {
-            _ = items ?? throw new ArgumentNullException(nameof(items));
+            _ = items.WhenNotNull(nameof(items));
 
             var batch = new List<TSource>(batchSize);
 

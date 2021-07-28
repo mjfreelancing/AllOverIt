@@ -20,11 +20,20 @@ namespace AllOverIt.Tests.Extensions
             {
                 IEnumerable<object> items = null;
 
-                Invoking(
-                    () => items.AsList())
+                Invoking(() => items.AsList())
                   .Should()
                   .Throw<ArgumentNullException>()
                   .WithNamedMessageWhenNull("items");
+            }
+
+            [Fact]
+            public void Should_Not_Return_Same_List()
+            {
+                // just to check that ToList() does indeed return a copy, unlike AsList()
+                var expected = CreateMany<int>();
+                var actual = expected.ToList();
+
+                actual.Should().NotBeSameAs(expected);
             }
 
             [Fact]
@@ -32,6 +41,18 @@ namespace AllOverIt.Tests.Extensions
             {
                 var expected = CreateMany<int>();
 
+                // This test would fail if this call used ToList()
+                var actual = expected.AsList();
+
+                actual.Should().BeSameAs(expected);
+            }
+
+            [Fact]
+            public void Should_Return_Same_ReadOnlyCollection()
+            {
+                var expected = new ReadOnlyCollection<int>(CreateMany<int>().AsList());
+
+                // This test would fail if this call used ToList()
                 var actual = expected.AsList();
 
                 actual.Should().BeSameAs(expected);
@@ -173,6 +194,93 @@ namespace AllOverIt.Tests.Extensions
                 sameReference.Should().BeFalse();
                 actual.Should().BeOfType<ReadOnlyCollection<int>>();
                 actual.Should().HaveCount(values.Count);
+            }
+        }
+
+        public class SelectAsList : EnumerableExtensionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Null()
+            {
+                Invoking(
+                    () =>
+                    {
+                        IEnumerable<object> items = null;
+
+                        items.SelectAsList(item => item);
+                    })
+                  .Should()
+                  .Throw<ArgumentNullException>()
+                  .WithNamedMessageWhenNull("items");
+            }
+
+            [Fact]
+            public void Should_Return_Projected_List()
+            {
+                var source = CreateMany<int>();
+                var expected = source.Select(item => item * 2);
+
+                var actual = source.SelectAsList(item => item * 2);
+
+                actual.Should().BeEquivalentTo(expected);
+            }
+        }
+
+        public class SelectAsReadOnlyCollection : EnumerableExtensionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Null()
+            {
+                Invoking(
+                    () =>
+                    {
+                        IEnumerable<object> items = null;
+
+                        items.SelectAsReadOnlyCollection(item => item);
+                    })
+                  .Should()
+                  .Throw<ArgumentNullException>()
+                  .WithNamedMessageWhenNull("items");
+            }
+
+            [Fact]
+            public void Should_Return_Projected_List()
+            {
+                var source = CreateMany<int>();
+                var expected = source.Select(item => item * 2);
+
+                var actual = source.SelectAsReadOnlyCollection(item => item * 2);
+
+                actual.Should().BeEquivalentTo(expected);
+            }
+        }
+
+        public class SelectAsReadOnlyList : EnumerableExtensionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Null()
+            {
+                Invoking(
+                    () =>
+                    {
+                        IEnumerable<object> items = null;
+
+                        items.SelectAsReadOnlyList(item => item);
+                    })
+                  .Should()
+                  .Throw<ArgumentNullException>()
+                  .WithNamedMessageWhenNull("items");
+            }
+
+            [Fact]
+            public void Should_Return_Projected_List()
+            {
+                var source = CreateMany<int>();
+                var expected = source.Select(item => item * 2);
+
+                var actual = source.SelectAsReadOnlyList(item => item * 2);
+
+                actual.Should().BeEquivalentTo(expected);
             }
         }
 
