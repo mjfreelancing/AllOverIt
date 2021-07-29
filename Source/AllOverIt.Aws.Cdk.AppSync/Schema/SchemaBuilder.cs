@@ -109,13 +109,13 @@ namespace AllOverIt.Aws.Cdk.AppSync.Schema
                 methods = methods.Concat(inheritedMethods);
             }
 
-            foreach (var methodInfo in methods)
+            foreach (var methodInfo in methods.Where(item => !item.IsSpecialName))
             {
                 var dataSource = methodInfo.GetDataSource(_dataSourceFactory);
 
                 if (dataSource == null)
                 {
-                    throw new SchemaException($"{schemaType.Name} is missing a required datasource");
+                    throw new SchemaException($"{schemaType.Name} is missing a required datasource for '{methodInfo.Name}'");
                 }
 
                 var isRequired = methodInfo.IsGqlTypeRequired();
