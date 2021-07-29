@@ -6,6 +6,6 @@ namespace GraphqlSchema.Schema.Types
     internal interface IState : ISchemaTypeBase
     {
         [SchemaTypeRequired]
-        public string Name { get; }
+        public string Name();
     }
 }

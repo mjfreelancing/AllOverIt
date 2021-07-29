@@ -5,6 +5,6 @@ namespace GraphqlSchema.Schema.Inputs
     [SchemaInput("ContinentFilterInput")]
     internal interface IContinentFilterInput
     {
-        public IStringQueryOperatorInput Code { get; }
+        public IStringQueryOperatorInput Code();
     }
 }

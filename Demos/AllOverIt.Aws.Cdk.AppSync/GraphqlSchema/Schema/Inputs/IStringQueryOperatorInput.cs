@@ -5,14 +5,17 @@ namespace GraphqlSchema.Schema.Inputs
     [SchemaInput("StringQueryOperatorInput")]
     internal interface IStringQueryOperatorInput
     {
-        public string eq { get; }
-        public string ne { get; }
-        public string gt { get; }
-        public string gte { get; }
-        public string lt { get; }
-        public string lte { get; }
-        public string In { get; }
-        public string NotIn { get; }
-        public string Regex { get; }
+#pragma warning disable IDE1006 // Naming Styles
+        public string eq();
+        public string ne();
+        public string gt();
+        public string gte();
+        public string lt();
+        public string lte();
+#pragma warning restore IDE1006 // Naming Styles
+
+        public string In();
+        public string NotIn();
+        public string Regex();
     }
 }

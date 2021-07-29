@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync.Attributes;
-using AllOverIt.Aws.Cdk.AppSync.Schema.Types;
 
 namespace GraphqlSchema.Schema.Types
 {
@@ -7,17 +6,17 @@ namespace GraphqlSchema.Schema.Types
     internal interface ICountry : ISchemaTypeBase
     {
         [SchemaTypeRequired]
-        public string Name { get; }
+        public string Name();
 
         [SchemaTypeRequired]
-        public string Currency { get; }
+        public string Currency();
 
         // todo: solve non-support for circular references
         //[SchemaTypeRequired]
-        //public IContinent Continent { get; }
+        //public IContinent Continent ();
 
         [SchemaArrayRequired]
         [SchemaTypeRequired]
-        public ILanguage[] Languages { get; }
+        public ILanguage[] Languages();
     }
 }

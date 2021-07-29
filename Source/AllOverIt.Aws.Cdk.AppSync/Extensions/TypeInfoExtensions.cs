@@ -9,28 +9,14 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
 {
     internal static class TypeExtensions
     {
-        public static GraphqlSchemaTypeDescriptor GetGraphqlTypeDescriptor(this SystemType type, MemberInfo memberInfo)
+        public static GraphqlSchemaTypeDescriptor GetGraphqlTypeDescriptor(this SystemType type)
         {
             var elementType = type.IsArray
                 ? type.GetElementType()
                 : type;
 
-            return elementType.GetGraphqlTypeDescriptor();
-        }
-
-        public static GraphqlSchemaTypeDescriptor GetGraphqlTypeDescriptor(this SystemType type, ParameterInfo parameterInfo)
-        {
-            var elementType = type.IsArray
-                ? type.GetElementType()
-                : type;
-
-            return elementType.GetGraphqlTypeDescriptor();
-        }
-
-        private static GraphqlSchemaTypeDescriptor GetGraphqlTypeDescriptor(this SystemType type)
-        {
-            var typeInfo = type.GetTypeInfo();
-            var typeDescription = type.IsClass ? "class" : "interface";
+            var typeInfo = elementType.GetTypeInfo();
+            var typeDescription = elementType.IsClass ? "class" : "interface";
 
             // SchemaTypeAttribute indicates if this is an object, scalar, interface, input type (cannot be on an array)
             var schemaTypeAttributes = typeInfo
@@ -45,15 +31,16 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
                 }
 
                 var schemaTypeAttribute = schemaTypeAttributes.Single();
-                return new GraphqlSchemaTypeDescriptor(type, schemaTypeAttribute.GraphqlSchemaType, schemaTypeAttribute.Name ?? typeInfo.Name);
+                return new GraphqlSchemaTypeDescriptor(elementType, schemaTypeAttribute.GraphqlSchemaType, schemaTypeAttribute.Name ?? typeInfo.Name);
             }
 
-            if (type != typeof(string) && (type.IsClass || type.IsInterface))
+            // not expecting class types to be used, but check anyway
+            if (elementType != typeof(string) && (elementType.IsClass || elementType.IsInterface))
             {
                 throw new SchemaException($"A {typeDescription} based schema type must have a {nameof(SchemaTypeAttribute)} applied ({typeInfo.Name})");
             }
 
-            return new GraphqlSchemaTypeDescriptor(type, GraphqlSchemaType.Scalar, type!.Name);
+            return new GraphqlSchemaTypeDescriptor(elementType, GraphqlSchemaType.Scalar, elementType!.Name);
         }
     }
 }

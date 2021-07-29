@@ -7,20 +7,20 @@ namespace GraphqlSchema.Schema.Inputs
     internal interface ICountryInput
     {
         [SchemaTypeRequired]
-        public GraphqlTypeId Code { get; }
+        public GraphqlTypeId Code();
 
         [SchemaTypeRequired]
-        public string Name { get; }
+        public string Name();
 
         [SchemaTypeRequired]
-        public string Currency { get; }
+        public string Currency();
 
         // todo: solve non-support for circular references
         //[SchemaTypeRequired]
-        //public IContinentInput Continent { get; }
+        //public IContinentInput Continent();
 
         [SchemaArrayRequired]
         [SchemaTypeRequired]
-        public ILanguageInput[] Languages { get; }
+        public ILanguageInput[] Languages();
     }
 }

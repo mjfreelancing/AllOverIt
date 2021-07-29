@@ -9,7 +9,7 @@ using SystemEnvironment = System.Environment;
 
 namespace AllOverIt.Aws.Cdk.AppSync.Factories
 {
-    public sealed class DataSourceFactory : IDataSourceFactory
+    public sealed class DataSourceFactory
     {
         private readonly IDictionary<string, BaseDataSource> _dataSourceCache = new Dictionary<string, BaseDataSource>();
 

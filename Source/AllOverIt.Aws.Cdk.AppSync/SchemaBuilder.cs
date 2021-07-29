@@ -2,8 +2,7 @@
 using AllOverIt.Aws.Cdk.AppSync.Exceptions;
 using AllOverIt.Aws.Cdk.AppSync.Extensions;
 using AllOverIt.Aws.Cdk.AppSync.Factories;
-using AllOverIt.Aws.Cdk.AppSync.MappingTemplates;
-using AllOverIt.Extensions;
+using AllOverIt.Aws.Cdk.AppSync.Schema;
 using AllOverIt.Helpers;
 using Amazon.CDK.AWS.AppSync;
 using System;
@@ -11,20 +10,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace AllOverIt.Aws.Cdk.AppSync.Schema
+namespace AllOverIt.Aws.Cdk.AppSync
 {
-    public sealed class SchemaBuilder : ISchemaBuilder
+    public sealed class SchemaBuilder
     {
         private const string QueryPrefix = "Query";
         private const string MutationPrefix = "Mutation";
         private const string SubscriptionPrefix = "Subscription";
 
         private readonly GraphqlApi _graphqlApi;
-        private readonly IMappingTemplates _mappingTemplates;
-        private readonly IGraphqlTypeStore _typeStore;
-        private readonly IDataSourceFactory _dataSourceFactory;
+        private readonly MappingTemplatesBase _mappingTemplates;
+        private readonly GraphqlTypeStore _typeStore;
+        private readonly DataSourceFactory _dataSourceFactory;
 
-        public SchemaBuilder(GraphqlApi graphQlApi, IMappingTemplates mappingTemplates, IGraphqlTypeStore typeStore, IDataSourceFactory dataSourceFactory)
+        public SchemaBuilder(GraphqlApi graphQlApi, MappingTemplatesBase mappingTemplates, GraphqlTypeStore typeStore, DataSourceFactory dataSourceFactory)
         {
             _graphqlApi = graphQlApi.WhenNotNull(nameof(graphQlApi));
             _mappingTemplates = mappingTemplates.WhenNotNull(nameof(mappingTemplates));
@@ -32,34 +31,36 @@ namespace AllOverIt.Aws.Cdk.AppSync.Schema
             _dataSourceFactory = dataSourceFactory.WhenNotNull(nameof(dataSourceFactory));
         }
 
-        public ISchemaBuilder AddQuery<TType>()
+        public SchemaBuilder AddQuery<TType>()
             where TType : IQueryDefinition
         {
             CreateGraphqlSchemaType<TType>((fieldName, field) => _graphqlApi.AddQuery(fieldName, field));
             return this;
         }
 
-        public ISchemaBuilder AddMutation<TType>() where TType : IMutationDefinition
+        public SchemaBuilder AddMutation<TType>() where TType : IMutationDefinition
         {
             CreateGraphqlSchemaType<TType>((fieldName, field) => _graphqlApi.AddMutation(fieldName, field));
             return this;
         }
 
-        public ISchemaBuilder AddSubscription<TType>() where TType : ISubscriptionDefinition
+        public SchemaBuilder AddSubscription<TType>() where TType : ISubscriptionDefinition
         {
+            SchemaUtils.AssertContainsNoProperties<TType>();
+
             var schemaType = typeof(TType);
-
-            var methods = schemaType.GetMethodInfo();
-
-            if (schemaType.IsInterface)
-            {
-                var inheritedMethods = schemaType.GetInterfaces().SelectMany(item => item.GetMethods());
-                methods = methods.Concat(inheritedMethods);
-            }
+            var methods = SchemaUtils.GetTypeMethods<TType>();
 
             foreach (var methodInfo in methods)
             {
+                methodInfo.AssertReturnTypeIsNotNullable();
+
                 var dataSource = methodInfo.GetDataSource(_dataSourceFactory);
+
+                if (dataSource == null)
+                {
+                    throw new SchemaException($"{schemaType.Name} is missing a required datasource for '{methodInfo.Name}'");
+                }
 
                 var isRequired = methodInfo.IsGqlTypeRequired();
                 var isList = methodInfo.ReturnType.IsArray;
@@ -67,15 +68,14 @@ namespace AllOverIt.Aws.Cdk.AppSync.Schema
 
                 var returnObjectType = _typeStore
                     .GetGraphqlType(
-                        null,
+                        methodInfo.GetFieldName(SubscriptionPrefix),
                         methodInfo.ReturnType,
-                        methodInfo,
                         isRequired,
                         isList,
                         isRequiredList,
                         objectType => _graphqlApi.AddType(objectType));
 
-                var mappingTemplateKey = $"{SubscriptionPrefix}.{methodInfo.Name}"; // methodInfo.GetFunctionName();
+                var mappingTemplateKey = $"{SubscriptionPrefix}.{methodInfo.Name}";
 
                 _graphqlApi.AddSubscription(methodInfo.Name.GetGraphqlName(),
                     new ResolvableField(
@@ -99,18 +99,15 @@ namespace AllOverIt.Aws.Cdk.AppSync.Schema
 
         private void CreateGraphqlSchemaType<TType>(Action<string, ResolvableField> graphqlAction)
         {
+            SchemaUtils.AssertContainsNoProperties<TType>();
+
             var schemaType = typeof(TType);
+            var methods = SchemaUtils.GetTypeMethods<TType>();
 
-            var methods = schemaType.GetMethodInfo();
-
-            if (schemaType.IsInterface)
+            foreach (var methodInfo in methods)
             {
-                var inheritedMethods = schemaType.GetInterfaces().SelectMany(item => item.GetMethods());
-                methods = methods.Concat(inheritedMethods);
-            }
+                methodInfo.AssertReturnTypeIsNotNullable();
 
-            foreach (var methodInfo in methods.Where(item => !item.IsSpecialName))
-            {
                 var dataSource = methodInfo.GetDataSource(_dataSourceFactory);
 
                 if (dataSource == null)
@@ -118,8 +115,9 @@ namespace AllOverIt.Aws.Cdk.AppSync.Schema
                     throw new SchemaException($"{schemaType.Name} is missing a required datasource for '{methodInfo.Name}'");
                 }
 
+                var returnType = methodInfo.ReturnType;
                 var isRequired = methodInfo.IsGqlTypeRequired();
-                var isList = methodInfo.ReturnType.IsArray;
+                var isList = returnType.IsArray;
                 var isRequiredList = isList && methodInfo.IsGqlArrayRequired();
 
                 string rootName = null;
@@ -139,15 +137,14 @@ namespace AllOverIt.Aws.Cdk.AppSync.Schema
 
                 var returnObjectType = _typeStore
                     .GetGraphqlType(
-                        rootName,
-                        methodInfo.ReturnType,
-                        methodInfo,
+                        methodInfo.GetFieldName(rootName),
+                        returnType,
                         isRequired,
                         isList,
                         isRequiredList,
                         objectType => _graphqlApi.AddType(objectType));
 
-                var mappingTemplateKey = $"{rootName}.{methodInfo.Name}";   // methodInfo.GetFunctionName();
+                var mappingTemplateKey = $"{rootName}.{methodInfo.Name}";
 
                 graphqlAction.Invoke(methodInfo.Name.GetGraphqlName(),
                     new ResolvableField(

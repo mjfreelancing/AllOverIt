@@ -7,9 +7,9 @@ namespace GraphqlSchema.Schema.Inputs
     internal interface ILanguageInput
     {
         [SchemaTypeRequired]
-        public GraphqlTypeId Code { get; }
+        public GraphqlTypeId Code();
 
         [SchemaTypeRequired]
-        public string Name { get; }
+        public string Name();
     }
 }

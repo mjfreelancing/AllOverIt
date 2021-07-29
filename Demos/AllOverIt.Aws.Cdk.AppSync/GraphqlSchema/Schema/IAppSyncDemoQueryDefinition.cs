@@ -7,6 +7,8 @@ using GraphqlSchema.Schema.Types;
 
 namespace GraphqlSchema.Schema
 {
+    // All schema fields must be defined as methods. Properties cannot be used.
+    // Cannot use nullable return types are parameters. Use [SchemaTypeRequired] to indicate required, otherwise nullable is assumed.
     internal interface IAppSyncDemoQueryDefinition : IQueryDefinition
     {
         [SchemaArrayRequired]
@@ -30,7 +32,7 @@ namespace GraphqlSchema.Schema
 
         [SchemaTypeRequired]
         [HttpDataSource(Constants.AppName, Constants.HttpDataSource.GetLanguageUrlExplicit)]
-        ILanguage Language([SchemaTypeRequired] string code);
+        ILanguage Language([SchemaTypeRequired] string code/*, bool? chk*/);
 
         [SchemaArrayRequired]
         [SchemaTypeRequired]

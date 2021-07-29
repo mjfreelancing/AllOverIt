@@ -5,9 +5,9 @@ namespace AllOverIt.Aws.Cdk.AppSync.Schema.Types
     public interface IEdge<out TNode>
     {
         [SchemaTypeRequired]
-        public TNode Node { get; }
+        public TNode Node();
 
         [SchemaTypeRequired]
-        public string Cursor { get; }
+        public string Cursor();
     }
 }

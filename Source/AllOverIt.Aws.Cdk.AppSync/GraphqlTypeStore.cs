@@ -1,14 +1,12 @@
-﻿using AllOverIt.Aws.Cdk.AppSync.Attributes;
-using AllOverIt.Aws.Cdk.AppSync.Exceptions;
-using AllOverIt.Aws.Cdk.AppSync.Extensions;
+﻿using AllOverIt.Aws.Cdk.AppSync.Extensions;
 using AllOverIt.Aws.Cdk.AppSync.Factories;
-using AllOverIt.Aws.Cdk.AppSync.MappingTemplates;
 using AllOverIt.Aws.Cdk.AppSync.Schema.Types;
 using AllOverIt.Extensions;
 using AllOverIt.Helpers;
 using Amazon.CDK.AWS.AppSync;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 using EnumType = Amazon.CDK.AWS.AppSync.EnumType;
@@ -16,13 +14,12 @@ using SystemType = System.Type;
 
 namespace AllOverIt.Aws.Cdk.AppSync
 {
-    public sealed class GraphqlTypeStore : IGraphqlTypeStore
+    public sealed class GraphqlTypeStore
     {
         private readonly IList<SystemType> _circularReferences = new List<SystemType>();
         private readonly GraphqlApi _graphqlApi;
-        private readonly IMappingTemplates _mappingTemplates;
-        private readonly IDataSourceFactory _dataSourceFactory;
-        private readonly IResolverFactory _resolverFactory;
+        private readonly MappingTemplatesBase _mappingTemplates;
+        private readonly DataSourceFactory _dataSourceFactory;
 
         private readonly IDictionary<string, Func<bool, bool, bool, GraphqlType>> _fieldTypes = new Dictionary<string, Func<bool, bool, bool, GraphqlType>>
         {
@@ -43,69 +40,27 @@ namespace AllOverIt.Aws.Cdk.AppSync
             {nameof(String), (isRequired, isList, isRequiredList) => GraphqlType.String(CreateTypeOptions(isRequired, isList, isRequiredList))}
         };
 
-        public GraphqlTypeStore(GraphqlApi graphqlApi, IMappingTemplates mappingTemplates, IDataSourceFactory dataSourceFactory,
-            IResolverFactory resolverFactory)
+        public GraphqlTypeStore(GraphqlApi graphqlApi, MappingTemplatesBase mappingTemplates, DataSourceFactory dataSourceFactory)
         {
             _graphqlApi = graphqlApi.WhenNotNull(nameof(graphqlApi));
             _mappingTemplates = mappingTemplates.WhenNotNull(nameof(mappingTemplates));
             _dataSourceFactory = dataSourceFactory.WhenNotNull(nameof(dataSourceFactory));
-            _resolverFactory = resolverFactory.WhenNotNull(nameof(resolverFactory));
         }
 
-        public GraphqlType GetGraphqlType(string parentName, SystemType type, MemberInfo memberInfo, bool isRequired, bool isList,
-            bool isRequiredList, Action<IIntermediateType> typeCreated)
+        public GraphqlType GetGraphqlType(string fieldName, SystemType type, bool isRequired, bool isList, bool isRequiredList, Action<IIntermediateType> typeCreated)
         {
-            var fieldName = $"{parentName}.{memberInfo.Name}";
+            SchemaUtils.AssertNoProperties(type);
 
-            var fieldTypeCreator = GetTypeCreator(fieldName, type, memberInfo, typeCreated);
+            var typeDescriptor = type.GetGraphqlTypeDescriptor();
+            var typeName = typeDescriptor.Name;
+
+            var fieldTypeCreator = GetTypeCreator(fieldName, type, typeName, typeDescriptor, typeCreated);
 
             return fieldTypeCreator.Invoke(isRequired, isList, isRequiredList);
         }
 
-        public GraphqlType GetGraphqlType(SystemType type, ParameterInfo parameterInfo, bool isRequired, bool isList,
-            bool isRequiredList, Action<IIntermediateType> typeCreated)
-        {
-            var fieldTypeCreator = GetTypeCreator(type, parameterInfo, typeCreated);
-
-            return fieldTypeCreator.Invoke(isRequired, isList, isRequiredList);
-        }
-
-        // get the type creator based on a type and any class / interface level attributes
-        private Func<bool, bool, bool, GraphqlType> GetTypeCreator(string parentName, SystemType type, Action<IIntermediateType> typeCreated)
-        {
-            var isList = type.IsArray;
-
-            var elementType = isList
-                ? type.GetElementType()
-                : type;
-
-            var typeDescriptor = elementType!.GetGraphqlTypeDescriptor(type.GetTypeInfo());
-            var typeName = typeDescriptor.Name;
-
-            return GetTypeCreator(parentName, type, typeName, typeDescriptor, typeCreated);
-        }
-
-        // get the type creator based on method/property info (that may contain custom attributes) and, ultimately, the property type
-        private Func<bool, bool, bool, GraphqlType> GetTypeCreator(string parentName, SystemType type, MemberInfo memberInfo,
-            Action<IIntermediateType> typeCreated)
-        {
-            var typeDescriptor = type.GetGraphqlTypeDescriptor(memberInfo);
-            var typeName = typeDescriptor.Name;
-
-            return GetTypeCreator(parentName, type, typeName, typeDescriptor, typeCreated);
-        }
-
-        // get the type creator based on parameter info (that may contain custom attributes) and, ultimately, the property type
-        private Func<bool, bool, bool, GraphqlType> GetTypeCreator(SystemType type, ParameterInfo parameterInfo, Action<IIntermediateType> typeCreated)
-        {
-            var typeDescriptor = type.GetGraphqlTypeDescriptor(parameterInfo);
-            var typeName = typeDescriptor.Name;
-
-            return GetTypeCreator(null, type, typeName, typeDescriptor, typeCreated);
-        }
-
-        private Func<bool, bool, bool, GraphqlType> GetTypeCreator(string parentName, SystemType type, string lookupTypeName, GraphqlSchemaTypeDescriptor typeDescriptor,
-            Action<IIntermediateType> typeCreated)
+        private Func<bool, bool, bool, GraphqlType> GetTypeCreator(string parentName, SystemType type, string lookupTypeName,
+            GraphqlSchemaTypeDescriptor typeDescriptor, Action<IIntermediateType> typeCreated)
         {
             if (!_fieldTypes.TryGetValue(lookupTypeName, out var fieldTypeCreator))
             {
@@ -117,7 +72,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
 
                 var objectType = elementType!.IsEnum
                     ? CreateEnumType(elementType)
-                    : CreateInterfaceType(parentName, elementType, typeDescriptor, typeCreated);            // parse methods and properties
+                    : CreateInterfaceType(parentName, elementType, typeDescriptor);
 
                 // notify of type creation so it can, for example, be added to a schema
                 typeCreated.Invoke(objectType);
@@ -142,9 +97,10 @@ namespace AllOverIt.Aws.Cdk.AppSync
             return enumType;
         }
 
-        private IIntermediateType CreateInterfaceType(string parentName, SystemType type, GraphqlSchemaTypeDescriptor typeDescriptor,
-            Action<IIntermediateType> typeCreated)
+        private IIntermediateType CreateInterfaceType(string parentName, SystemType type, GraphqlSchemaTypeDescriptor typeDescriptor)
         {
+            SchemaUtils.AssertNoProperties(type);
+
             try
             {
                 if (_circularReferences.Contains(type))
@@ -157,7 +113,6 @@ namespace AllOverIt.Aws.Cdk.AppSync
 
                 var classDefinition = new Dictionary<string, IField>();
 
-                ParseInterfaceTypeProperties(parentName, classDefinition, typeDescriptor, typeCreated);
                 ParseInterfaceTypeMethods(parentName, classDefinition, type);
 
                 // todo: currently handles Input and Type - haven't yet looked at 'interface'
@@ -189,55 +144,6 @@ namespace AllOverIt.Aws.Cdk.AppSync
             }
         }
 
-        private void ParseInterfaceTypeProperties(string parentName, IDictionary<string, IField> classDefinition, GraphqlSchemaTypeDescriptor schemaTypeDescriptor,
-            Action<IIntermediateType> typeCreated)
-        {
-            var type = schemaTypeDescriptor.Type;
-            var properties = type.GetProperties();
-
-            if (type.IsInterface)
-            {
-                var inheritedProperties = type.GetInterfaces().SelectMany(item => item.GetProperties());
-                properties = inheritedProperties.Concat(properties).ToArray();
-            }
-
-            foreach (var propertyInfo in properties)
-            {
-                var propertyType = propertyInfo.PropertyType;
-
-                if (propertyType.IsGenericNullableType())
-                {
-                    throw new SchemaException($"Unexpected nullable property '{propertyInfo.Name}' on type '{type.FullName}'. The presence of " +
-                                              $"{nameof(SchemaTypeRequiredAttribute)} is used to declare a property required and its absence makes it optional.");
-                }
-
-                if (schemaTypeDescriptor.SchemaType == GraphqlSchemaType.Input && propertyType != typeof(string) && (propertyType.IsInterface || propertyType.IsClass))
-                {
-                    var propertyTypeDescriptor = propertyInfo.GetGraphqlPropertyDescriptor();
-
-                    // make sure that property INPUT types are associated with a parent INPUT type (or an Aws scalar)
-                    if (propertyTypeDescriptor.SchemaType != GraphqlSchemaType.Input && propertyTypeDescriptor.SchemaType != GraphqlSchemaType.Scalar)
-                    {
-                        throw new InvalidOperationException($"The property '{propertyInfo.Name}' is not an INPUT type ({propertyType.Name})");
-                    }
-                }
-
-                var isRequired = propertyInfo.IsGqlTypeRequired();
-                var isList = propertyType.IsArray;
-                var isRequiredList = isList && propertyInfo.IsGqlArrayRequired();
-
-                // Create the field definition based on a property (the propertyInfo may contain custom attributes).
-                // GetTypeCreator() could end up calling CreateTypeInterface() - if not a scalar type - and then back into this method,
-                // hence we create the type, add it to the class definition, and then create a resolver if required
-                var fieldTypeCreator = GetTypeCreator(parentName, propertyType, propertyInfo, typeCreated);
-
-                classDefinition.Add(propertyInfo.Name.GetGraphqlName(), fieldTypeCreator.Invoke(isRequired, isList, isRequiredList));
-
-                // check if the field requires a resolver
-                _resolverFactory.ConstructResolverIfRequired(parentName, schemaTypeDescriptor.Name, propertyInfo);
-            }
-        }
-
         private void ParseInterfaceTypeMethods(string parentName, IDictionary<string, IField> classDefinition, SystemType type)
         {
             var methods = type.GetMethodInfo();
@@ -248,23 +154,26 @@ namespace AllOverIt.Aws.Cdk.AppSync
                 methods = inheritedMethods.Concat(methods);
             }
 
-            foreach (var methodInfo in methods.Where(item => !item.IsSpecialName))
+            foreach (var methodInfo in methods)
             {
+                methodInfo.AssertReturnTypeIsNotNullable();
+
+                var returnType = methodInfo.ReturnType;
                 var isRequired = methodInfo.IsGqlTypeRequired();
-                var isList = methodInfo.ReturnType.IsArray;
+                var isList = returnType.IsArray;
                 var isRequiredList = isList && methodInfo.IsGqlArrayRequired();
 
                 var returnObjectType =
                     GetGraphqlType(
-                        parentName,
-                        methodInfo.ReturnType,
-                        methodInfo,
+                        methodInfo.GetFieldName(parentName),
+                        returnType,
                         isRequired,
                         isList,
                         isRequiredList,
                         objectType => _graphqlApi.AddType(objectType));
 
-                var dataSource = methodInfo.GetDataSource(_dataSourceFactory);           // optionally specified via a custom attribute
+                // optionally specified via a custom attribute
+                var dataSource = methodInfo.GetDataSource(_dataSourceFactory);
 
                 if (dataSource == null)
                 {

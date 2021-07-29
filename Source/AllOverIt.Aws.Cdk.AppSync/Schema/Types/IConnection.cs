@@ -6,16 +6,16 @@ namespace AllOverIt.Aws.Cdk.AppSync.Schema.Types
     {
         [SchemaArrayRequired]
         [SchemaTypeRequired]
-        public TEdge[] Edges { get; }
+        public TEdge[] Edges();
 
         [SchemaArrayRequired]
         [SchemaTypeRequired]
-        public TNode[] Nodes { get; }
+        public TNode[] Nodes();
 
         [SchemaTypeRequired]
-        public int TotalCount { get; }
+        public int TotalCount();
 
         // not required since TotalCount can be zero
-        public IPageInfo PageInfo { get; }
+        public IPageInfo PageInfo();
     }
 }

@@ -7,18 +7,18 @@ namespace GraphqlSchema.Schema.Types
     internal interface IContinent : ISchemaTypeBase
     {
         [SchemaTypeRequired]
-        public string Name { get; }
+        string Name();
 
         // sharing this http datasource
         [SchemaArrayRequired]
         [SchemaTypeRequired]
         [HttpDataSource(Constants.AppName, EndpointSource.ImportValue, Constants.Import.GetCountriesUrlImportName)]
-        public ICountry[] Countries { get; }
+        ICountry[] Countries();
 
         // sharing this http datasource
         [SchemaArrayRequired]
         [SchemaTypeRequired]
         [HttpDataSource(Constants.AppName, EndpointSource.ImportValue, Constants.Import.GetCountriesUrlImportName)]
-        public string[] CountryCodes();
+        string[] CountryCodes();
     }
 }

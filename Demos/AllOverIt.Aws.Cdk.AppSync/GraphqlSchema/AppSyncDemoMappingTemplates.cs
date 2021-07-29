@@ -1,4 +1,4 @@
-﻿using AllOverIt.Aws.Cdk.AppSync.MappingTemplates;
+﻿using AllOverIt.Aws.Cdk.AppSync;
 using AllOverIt.Utils;
 
 namespace GraphqlSchema
@@ -7,6 +7,7 @@ namespace GraphqlSchema
     {
         public AppSyncDemoMappingTemplates()
         {
+            RegisterMappings("Query.Version", GetNoneVersionRequestMapping(), GetNoneResponsetMapping());
             RegisterMappings("Query.Continents", GetNoneRequestMapping(), GetNoneResponsetMapping());
             RegisterMappings("Query.Continents.Countries", GetHttpRequestMapping("GET", "/countries"), GetHttpResponseMapping());
             RegisterMappings("Query.Continents.CountryCodes", GetHttpRequestMapping("GET", "/countries"), GetHttpResponseMapping());
@@ -46,6 +47,20 @@ namespace GraphqlSchema
                     {
                       ""version"": ""2018-05-09"",
                       ""payload"": ""true""
+                    }"
+            );
+        }
+
+        private static string GetNoneVersionRequestMapping()
+        {
+            // Using FormatJsonString() to remove the extra padding
+            return Formatter.FormatJsonString(
+                @"
+                    {
+                      ""version"": ""2018-05-09"",
+                      ""payload"": {
+                        ""version"": ""1.0""
+                      }
                     }"
             );
         }

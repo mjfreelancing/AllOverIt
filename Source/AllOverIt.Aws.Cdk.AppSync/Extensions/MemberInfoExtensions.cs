@@ -7,13 +7,18 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
 {
     internal static class MemberInfoExtensions
     {
-        public static BaseDataSource GetDataSource(this MemberInfo methodInfo, IDataSourceFactory dataSourceFactory)
+        public static BaseDataSource GetDataSource(this MemberInfo memberInfo, DataSourceFactory dataSourceFactory)
         {
-            var attribute = methodInfo.GetCustomAttribute<DataSourceAttribute>(true);
+            var attribute = memberInfo.GetCustomAttribute<DataSourceAttribute>(true);
 
             return attribute == null
                 ? null
                 : dataSourceFactory.CreateDataSource(attribute);
+        }
+
+        public static string GetFieldName(this MemberInfo memberInfo, string parentName)
+        {
+            return $"{parentName}.{memberInfo.Name}";
         }
     }
 }

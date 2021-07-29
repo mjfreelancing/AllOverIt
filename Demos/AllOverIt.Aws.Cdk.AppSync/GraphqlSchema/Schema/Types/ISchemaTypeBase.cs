@@ -6,6 +6,6 @@ namespace GraphqlSchema.Schema.Types
     public interface ISchemaTypeBase
     {
         [SchemaTypeRequired]
-        public GraphqlTypeId Code { get; }
+        public GraphqlTypeId Code();
     }
 }
