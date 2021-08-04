@@ -61,7 +61,7 @@ namespace AllOverIt.Extensions
         /// <returns>The projected results as an IList{TResult}.</returns>
         public static IList<TResult> SelectAsList<TSource, TResult>(this IEnumerable<TSource> items, Func<TSource, TResult> selector)
         {
-            _ = items.WhenNotNullOrEmpty(nameof(items));
+            _ = items.WhenNotNull(nameof(items));
 
             return items.Select(selector).ToList();
         }
@@ -74,7 +74,7 @@ namespace AllOverIt.Extensions
         /// <returns>The projected results as an IReadOnlyCollection{TResult}.</returns>
         public static IReadOnlyCollection<TResult> SelectAsReadOnlyCollection<TSource, TResult>(this IEnumerable<TSource> items, Func<TSource, TResult> selector)
         {
-            _ = items.WhenNotNullOrEmpty(nameof(items));
+            _ = items.WhenNotNull(nameof(items));
 
             return items.Select(selector).ToList();
         }
@@ -87,7 +87,7 @@ namespace AllOverIt.Extensions
         /// <returns>The projected results as an IReadOnlyList{TResult}.</returns>
         public static IReadOnlyList<TResult> SelectAsReadOnlyList<TSource, TResult>(this IEnumerable<TSource> items, Func<TSource, TResult> selector)
         {
-            _ = items.WhenNotNullOrEmpty(nameof(items));
+            _ = items.WhenNotNull(nameof(items));
 
             return items.Select(selector).ToList();
         }

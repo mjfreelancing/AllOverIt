@@ -27,6 +27,16 @@ namespace AllOverIt.Tests.Extensions
             }
 
             [Fact]
+            public void Should_Not_Throw_When_Empty()
+            {
+                var items = new List<int>();
+
+                Invoking(() => items.AsList())
+                  .Should()
+                  .NotThrow();
+            }
+
+            [Fact]
             public void Should_Not_Return_Same_List()
             {
                 // just to check that ToList() does indeed return a copy, unlike AsList()
@@ -90,6 +100,16 @@ namespace AllOverIt.Tests.Extensions
                   .Should()
                   .Throw<ArgumentNullException>()
                   .WithNamedMessageWhenNull("items");
+            }
+
+            [Fact]
+            public void Should_Not_Throw_When_Empty()
+            {
+                var items = new List<int>();
+
+                Invoking(() => items.AsReadOnlyList())
+                  .Should()
+                  .NotThrow();
             }
 
             [Fact]
@@ -157,6 +177,16 @@ namespace AllOverIt.Tests.Extensions
             }
 
             [Fact]
+            public void Should_Not_Throw_When_Empty()
+            {
+                var items = new List<int>();
+
+                Invoking(() => items.AsReadOnlyCollection())
+                  .Should()
+                  .NotThrow();
+            }
+
+            [Fact]
             public void Should_Return_Same_List()
             {
                 var expected = CreateMany<int>();
@@ -215,6 +245,16 @@ namespace AllOverIt.Tests.Extensions
             }
 
             [Fact]
+            public void Should_Not_Throw_When_Empty()
+            {
+                var items = new List<int>();
+
+                Invoking(() => items.SelectAsList(item => item))
+                  .Should()
+                  .NotThrow();
+            }
+
+            [Fact]
             public void Should_Return_Projected_List()
             {
                 var source = CreateMany<int>();
@@ -244,6 +284,16 @@ namespace AllOverIt.Tests.Extensions
             }
 
             [Fact]
+            public void Should_Not_Throw_When_Empty()
+            {
+                var items = new List<int>();
+
+                Invoking(() => items.SelectAsReadOnlyCollection(item => item))
+                  .Should()
+                  .NotThrow();
+            }
+
+            [Fact]
             public void Should_Return_Projected_List()
             {
                 var source = CreateMany<int>();
@@ -270,6 +320,16 @@ namespace AllOverIt.Tests.Extensions
                   .Should()
                   .Throw<ArgumentNullException>()
                   .WithNamedMessageWhenNull("items");
+            }
+
+            [Fact]
+            public void Should_Not_Throw_When_Empty()
+            {
+                var items = new List<int>();
+
+                Invoking(() => items.SelectAsReadOnlyList(item => item))
+                  .Should()
+                  .NotThrow();
             }
 
             [Fact]
