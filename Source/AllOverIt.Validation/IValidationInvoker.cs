@@ -1,11 +1,13 @@
-﻿namespace AllOverIt.Validation
+﻿using FluentValidation.Results;
+
+namespace AllOverIt.Validation
 {
     public interface IValidationInvoker
     {
-        void AssertValidation<TType>(TType instance)
-            where TType : class;
+        ValidationResult Validate<TType>(TType instance);
+        ValidationResult Validate<TType, TContext>(TType instance, TContext context);
 
-        void AssertValidation<TType, TContext>(TType instance, TContext context)
-            where TType : class;
+        void AssertValidation<TType>(TType instance);
+        void AssertValidation<TType, TContext>(TType instance, TContext context);
     }
 }

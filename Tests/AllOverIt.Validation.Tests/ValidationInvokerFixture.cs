@@ -1,13 +1,12 @@
 ﻿using AllOverIt.Fixture;
-using AllOverIt.Fixture.Extensions;
 using AllOverIt.Validation.Extensions;
 using FluentAssertions;
 using FluentValidation;
+using FluentValidation.Results;
 using System;
 using Xunit;
-using ValidationException = AllOverIt.Validation.Exceptions.ValidationException;
 
-namespace AllOverIt.Validation.Tests.Exceptions
+namespace AllOverIt.Validation.Tests
 {
     public class ValidationInvokerFixture : FixtureBase
     {
@@ -41,7 +40,13 @@ namespace AllOverIt.Validation.Tests.Exceptions
 
                             if (value != comparison)
                             {
-                                context.AddFailure($"'{context.PropertyName}' has a value of {value} when expecting {comparison}");
+                                var failure = new ValidationFailure(
+                                    context.PropertyName,
+                                    $"'{context.PropertyName}' has a value of {value} when expecting {comparison}.",
+                                    comparison
+                                );
+
+                                context.AddFailure(failure);
                             }
                         }
                     });
@@ -85,23 +90,83 @@ namespace AllOverIt.Validation.Tests.Exceptions
             }
         }
 
-        public class AssertValidation_Type : ValidationInvokerFixture
+        public class Validate_Type : ValidationInvokerFixture
         {
-            public AssertValidation_Type()
+            public Validate_Type()
             {
                 _validationInvoker.Register<DummyModel, DummyModelValidator>();
             }
 
             [Fact]
-            public void Should_Throw_When_Instance_Null()
+            public void Should_Throw_When_Invoke_Validator()
             {
-                Invoking(() =>
+                var model = new DummyModel();
+
+                var result = _validationInvoker.Validate(model);
+
+                result.IsValid.Should().BeFalse();
+
+                result.Errors.Should().BeEquivalentTo(new[]
                 {
-                    _validationInvoker.AssertValidation<DummyModel>(null);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("instance");
+                    new
+                    {
+                        PropertyName = nameof(DummyModel.ValueOne),
+                        ErrorCode = nameof(ValidationErrorCode.Required),
+                        AttemptedValue = (object)model.ValueOne,
+                        ErrorMessage = $"'{nameof(DummyModel.ValueOne)}' requires a valid value."
+                    },
+                    new
+                    {
+                        PropertyName = nameof(DummyModel.ValueTwo),
+                        ErrorCode = nameof(ValidationErrorCode.NotEmpty),
+                        AttemptedValue = (object)model.ValueTwo,
+                        ErrorMessage = $"'{nameof(DummyModel.ValueTwo)}' should not be empty."
+                    },
+                    new
+                    {
+                        PropertyName = nameof(DummyModel.ValueThree),
+                        ErrorCode = nameof(ValidationErrorCode.NotEmpty),
+                        AttemptedValue = (object)model.ValueThree,
+                        ErrorMessage = $"'{nameof(DummyModel.ValueThree)}' should not be empty."
+                    }
+                }, options => options.ExcludingMissingMembers());
+            }
+        }
+
+        public class Validate_Type_Context : ValidationInvokerFixture
+        {
+            public Validate_Type_Context()
+            {
+                _validationInvoker.Register<DummyModel, DummyModelValidator>();
+            }
+
+            [Fact]
+            public void Should_Throw_When_Invoke_Validator()
+            {
+                var model = Create<DummyModel>();
+                var comparisonContext = !model.ValueFour;
+
+                var result = _validationInvoker.Validate(model, comparisonContext);
+
+                result.IsValid.Should().BeFalse();
+
+                result.Errors.Should().BeEquivalentTo(new[]
+                {
+                    new
+                    {
+                        PropertyName = nameof(DummyModel.ValueFour),
+                        AttemptedValue = (object)comparisonContext,
+                        ErrorMessage = $"'ValueFour' has a value of {model.ValueFour} when expecting {comparisonContext}."
+                    }
+                }, options => options.ExcludingMissingMembers());
+            }
+        }
+
+        public class AssertValidation_Type : ValidationInvokerFixture
+        {
+            public AssertValidation_Type()
+            {
+                _validationInvoker.Register<DummyModel, DummyModelValidator>();
             }
 
             [Fact]
@@ -115,9 +180,10 @@ namespace AllOverIt.Validation.Tests.Exceptions
                 })
                 .Should()
                 .Throw<ValidationException>()
-                .WithMessage("'ValueOne' requires a valid value., " +
-                             "'ValueTwo' should not be empty., " +
-                             "'ValueThree' should not be empty.");
+                .WithMessage($"Validation failed: {Environment.NewLine}" +
+                             $" -- ValueOne: 'ValueOne' requires a valid value. Severity: Error{Environment.NewLine}" +
+                             $" -- ValueTwo: 'ValueTwo' should not be empty. Severity: Error{Environment.NewLine}" +
+                              " -- ValueThree: 'ValueThree' should not be empty. Severity: Error");
             }
 
             [Fact]
@@ -142,18 +208,6 @@ namespace AllOverIt.Validation.Tests.Exceptions
             }
 
             [Fact]
-            public void Should_Throw_When_Instance_Null()
-            {
-                Invoking(() =>
-                {
-                    _validationInvoker.AssertValidation<DummyModel, int>(null, Create<int>());
-                })
-               .Should()
-               .Throw<ArgumentNullException>()
-               .WithNamedMessageWhenNull("instance");
-            }
-
-            [Fact]
             public void Should_Throw_When_Invoke_Validator()
             {
                 var model = new DummyModel();
@@ -166,10 +220,11 @@ namespace AllOverIt.Validation.Tests.Exceptions
                 })
                .Should()
                .Throw<ValidationException>()
-               .WithMessage("'ValueOne' requires a valid value., " +
-                            "'ValueTwo' should not be empty., " +
-                            "'ValueThree' should not be empty., " +
-                           $"'ValueFour' has a value of {model.ValueFour} when expecting {context}");
+               .WithMessage($"Validation failed: {Environment.NewLine}" +
+                            $" -- ValueOne: 'ValueOne' requires a valid value. Severity: Error{Environment.NewLine}" +
+                            $" -- ValueTwo: 'ValueTwo' should not be empty. Severity: Error{Environment.NewLine}" +
+                            $" -- ValueThree: 'ValueThree' should not be empty. Severity: Error{Environment.NewLine}" +
+                            $" -- ValueFour: 'ValueFour' has a value of {model.ValueFour} when expecting {context}. Severity: Error");
             }
 
             [Fact]

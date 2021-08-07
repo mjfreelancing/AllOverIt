@@ -1,8 +1,9 @@
 ﻿using AllOverIt.Extensions;
-using AllOverIt.Helpers;
+using AllOverIt.Validation.Extensions;
+using FluentValidation;
+using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
-using ValidationException = AllOverIt.Validation.Exceptions.ValidationException;
 
 namespace AllOverIt.Validation
 {
@@ -11,43 +12,41 @@ namespace AllOverIt.Validation
         // can only re-use validators that don't store state (context)
         private readonly IDictionary<Type, Lazy<object>> _validatorCache = new Dictionary<Type, Lazy<object>>();
 
-        public IValidationRegistry Register<TType, TValidator>()
-            where TType : class
-            where TValidator : ValidatorBase<TType>, new()
+        public IValidationRegistry Register<TType, TValidator>() where TValidator : ValidatorBase<TType>, new()
         {
             _validatorCache.Add(typeof(TType), new Lazy<object>(() => new TValidator()));
 
             return this;
         }
 
-        public void AssertValidation<TType>(TType instance)
-            where TType : class
+        public ValidationResult Validate<TType>(TType instance)
         {
-            _ = instance.WhenNotNull(nameof(instance));
-
             var validator = GetValidator<TType>();
 
-            var validationResult = validator.Validate(instance);
-
-            if (!validationResult.IsValid)
-            {
-                throw new ValidationException(validationResult.Errors);
-            }
+            return validator.Validate(instance);
         }
 
-        public void AssertValidation<TType, TContext>(TType instance, TContext context)
-            where TType : class
+        public ValidationResult Validate<TType, TContext>(TType instance, TContext context)
         {
-            _ = instance.WhenNotNull(nameof(instance));
-
             var validator = GetValidator<TType>();
 
-            var validationResult = validator.Validate(instance, context);
+            return validator.Validate(instance, context);
+        }
 
-            if (!validationResult.IsValid)
-            {
-                throw new ValidationException(validationResult.Errors);
-            }
+        // Throws a ValidationException if any rules are violated.
+        public void AssertValidation<TType>(TType instance)
+        {
+            var validator = GetValidator<TType>();
+
+            validator.ValidateAndThrow(instance);
+        }
+
+        // Throws a ValidationException if any rules are violated.
+        public void AssertValidation<TType, TContext>(TType instance, TContext context)
+        {
+            var validator = GetValidator<TType>();
+
+            validator.ValidateAndThrow(instance, context);
         }
 
         private ValidatorBase<TType> GetValidator<TType>()
@@ -57,7 +56,7 @@ namespace AllOverIt.Validation
                 ThrowValidatorNotRegistered<TType>();
             }
 
-            return (ValidatorBase<TType>)resolver.Value;
+            return (ValidatorBase<TType>)resolver!.Value;
         }
 
         private static void ThrowValidatorNotRegistered<TType>()

@@ -2,8 +2,6 @@
 {
     public interface IValidationRegistry
     {
-        IValidationRegistry Register<TType, TValidator>()
-            where TType : class
-            where TValidator : ValidatorBase<TType>, new();
+        IValidationRegistry Register<TType, TValidator>() where TValidator : ValidatorBase<TType>, new();
     }
 }

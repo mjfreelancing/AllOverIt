@@ -63,7 +63,7 @@ namespace AllOverIt.Validation.Tests.Validators
                 result.IsValid.Should().BeFalse();
 
                 result.Errors.Should().BeEquivalentTo(new[]
-               {
+                {
                     new
                     {
                         PropertyName = nameof(DummyComparisonModel.Value3),
@@ -129,7 +129,7 @@ namespace AllOverIt.Validation.Tests.Validators
                 result.IsValid.Should().BeFalse();
 
                 result.Errors.Should().BeEquivalentTo(new[]
-               {
+                {
                     new
                     {
                         PropertyName = nameof(DummyComparisonModel.Value5),
