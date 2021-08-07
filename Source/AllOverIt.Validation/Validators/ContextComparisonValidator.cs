@@ -3,6 +3,7 @@ using AllOverIt.Validation.Extensions;
 using FluentValidation;
 using FluentValidation.Validators;
 using System;
+using System.Collections.Generic;
 
 namespace AllOverIt.Validation.Validators
 {
@@ -10,21 +11,17 @@ namespace AllOverIt.Validation.Validators
     public abstract class ContextComparisonValidator<TType, TProperty, TContext> : PropertyValidator<TType, TProperty>
         where TProperty : IComparable<TProperty>, IComparable
     {
-        private readonly Func<TContext, TProperty> _contextValueResolver;
+        private readonly Func<TContext, TProperty> _valueResolver;
 
-        public abstract ValidationErrorCode ErrorCode { get; }
-
-        public ContextComparisonValidator(Func<TContext, TProperty> contextValueResolver)
+        protected ContextComparisonValidator(Func<TContext, TProperty> valueResolver)
         {
-            _ = contextValueResolver.WhenNotNull(nameof(contextValueResolver));
-
-            _contextValueResolver = contextValueResolver;
+            _valueResolver = valueResolver.WhenNotNull(nameof(valueResolver));
         }
 
         public override bool IsValid(ValidationContext<TType> context, TProperty value)
         {
             var contextData = context.GetContextData<TType, TContext>();
-            var comparisonValue = _contextValueResolver.Invoke(contextData);
+            var comparisonValue = _valueResolver.Invoke(contextData);
 
             var isValid = IsValid(value, comparisonValue);
 

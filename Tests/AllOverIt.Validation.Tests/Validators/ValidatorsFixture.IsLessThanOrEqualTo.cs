@@ -1,5 +1,4 @@
-﻿using AllOverIt.Fixture;
-using AllOverIt.Validation.Extensions;
+﻿using AllOverIt.Validation.Extensions;
 using FluentAssertions;
 using FluentValidation;
 using System;
@@ -7,7 +6,7 @@ using Xunit;
 
 namespace AllOverIt.Validation.Tests.Validators
 {
-    public partial class ValidatorsFixture : FixtureBase
+    public partial class ValidatorsFixture
     {
         public class IsLessThanOrEqualTo : ValidatorsFixture
         {
@@ -89,14 +88,14 @@ namespace AllOverIt.Validation.Tests.Validators
                         PropertyName = nameof(DummyComparisonModel.Value3),
                         ErrorCode = nameof(ValidationErrorCode.OutOfRange),
                         AttemptedValue = (object)model.Value3,
-                        ErrorMessage = $"'{nameof(DummyComparisonModel.Value3)}' must be less than or equal to '0'."
+                        ErrorMessage = $"'{nameof(DummyComparisonModel.Value3)}' must be less than or equal to 0."
                     },
                     new
                     {
                         PropertyName = nameof(DummyComparisonModel.Value4),
                         ErrorCode = nameof(ValidationErrorCode.OutOfRange),
                         AttemptedValue = (object)model.Value4,
-                        ErrorMessage = $"'{nameof(DummyComparisonModel.Value4)}' must be less than or equal to '0'."
+                        ErrorMessage = $"'{nameof(DummyComparisonModel.Value4)}' must be less than or equal to 0."
                     }
                 }, options => options.ExcludingMissingMembers());
             }
@@ -179,14 +178,14 @@ namespace AllOverIt.Validation.Tests.Validators
                         PropertyName = nameof(DummyComparisonModel.Value5),
                         ErrorCode = nameof(ValidationErrorCode.OutOfRange),
                         AttemptedValue = (object)model.Value5,
-                        ErrorMessage = $"'{nameof(DummyComparisonModel.Value5)}' must be less than or equal to '{comparison.CompareTo}'."
+                        ErrorMessage = $"'{nameof(DummyComparisonModel.Value5)}' must be less than or equal to {comparison.CompareTo}."
                     },
                     new
                     {
                         PropertyName = nameof(DummyComparisonModel.Value6),
                         ErrorCode = nameof(ValidationErrorCode.OutOfRange),
                         AttemptedValue = (object)model.Value6,
-                        ErrorMessage = $"'{nameof(DummyComparisonModel.Value6)}' must be less than or equal to '{comparison.CompareTo}'."
+                        ErrorMessage = $"'{nameof(DummyComparisonModel.Value6)}' must be less than or equal to {comparison.CompareTo}."
                     }
                 }, options => options.ExcludingMissingMembers());
             }

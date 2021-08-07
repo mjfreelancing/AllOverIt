@@ -12,6 +12,7 @@ namespace AllOverIt.Validation.Extensions
         {
             return ruleBuilder
                 .GreaterThanOrEqualTo(comparison)
+                .WithMessage("'{PropertyName}' must be greater than or equal to {ComparisonValue}.")
                 .WithErrorCode(ValidationErrorCode.OutOfRange);
         }
 
@@ -21,6 +22,7 @@ namespace AllOverIt.Validation.Extensions
         {
             return ruleBuilder
                 .GreaterThanOrEqualTo(comparison)
+                .WithMessage("'{PropertyName}' must be greater than or equal to {ComparisonValue}.")
                 .WithErrorCode(ValidationErrorCode.OutOfRange);
         }
 

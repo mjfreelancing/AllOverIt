@@ -1,12 +1,11 @@
-﻿using AllOverIt.Fixture;
-using AllOverIt.Validation.Extensions;
+﻿using AllOverIt.Validation.Extensions;
 using FluentAssertions;
 using System;
 using Xunit;
 
 namespace AllOverIt.Validation.Tests.Validators
 {
-    public partial class ValidatorsFixture : FixtureBase
+    public partial class ValidatorsFixture
     {
         public class IsRequired : ValidatorsFixture
         {

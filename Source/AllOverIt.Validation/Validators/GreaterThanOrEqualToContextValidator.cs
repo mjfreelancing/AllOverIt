@@ -6,10 +6,9 @@ namespace AllOverIt.Validation.Validators
         where TProperty : IComparable<TProperty>, IComparable
     {
         public override string Name => "GreaterThanOrEqualToContextValidator";
-        public override ValidationErrorCode ErrorCode => ValidationErrorCode.OutOfRange;
 
-        public GreaterThanOrEqualToContextValidator(Func<TContext, TProperty> contextValueResolver)
-            : base(contextValueResolver)
+        public GreaterThanOrEqualToContextValidator(Func<TContext, TProperty> valueResolver)
+            : base(valueResolver)
         {
         }
 
@@ -20,7 +19,7 @@ namespace AllOverIt.Validation.Validators
 
         protected override string GetDefaultMessageTemplate(string errorCode)
         {
-            return "'{PropertyName}' must be greater than or equal to '{ComparisonValue}'.";
+            return "'{PropertyName}' must be greater than or equal to {ComparisonValue}.";
         }
     }
 }
