@@ -73,6 +73,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.Validation", "Sou
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.Validation.Tests", "Tests\AllOverIt.Validation.Tests\AllOverIt.Validation.Tests.csproj", "{69E6B98B-81CF-4029-8F06-7A633672B105}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllOverIt.Validation", "AllOverIt.Validation", "{736417D6-56B0-46F7-9717-5C8E7A2327EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicValidation", "Demos\AllOverIt.Validation\BasicValidation\BasicValidation.csproj", "{35D19783-B365-49C0-A556-97F3E8609B54}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -179,6 +183,10 @@ Global
 		{69E6B98B-81CF-4029-8F06-7A633672B105}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69E6B98B-81CF-4029-8F06-7A633672B105}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69E6B98B-81CF-4029-8F06-7A633672B105}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35D19783-B365-49C0-A556-97F3E8609B54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35D19783-B365-49C0-A556-97F3E8609B54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35D19783-B365-49C0-A556-97F3E8609B54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35D19783-B365-49C0-A556-97F3E8609B54}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -213,6 +221,8 @@ Global
 		{45DBD650-C7B9-4C7B-9E6B-0EB968F939E4} = {0DC79E13-DE7A-417D-8A7B-64ABA3F4E1C8}
 		{EED94EDD-8F7A-4002-B5C0-993125ED0130} = {FC8E8DB2-1299-44F4-A233-0EDCE225BB8C}
 		{69E6B98B-81CF-4029-8F06-7A633672B105} = {0C08FAE6-4CD9-4C7B-A849-EB0DB9BD1451}
+		{736417D6-56B0-46F7-9717-5C8E7A2327EA} = {D9F6B8A1-4B01-4708-8851-741FC19F2440}
+		{35D19783-B365-49C0-A556-97F3E8609B54} = {736417D6-56B0-46F7-9717-5C8E7A2327EA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19DD11B3-596E-4862-B5C4-1FFFFB173106}
