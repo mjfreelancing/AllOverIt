@@ -5,21 +5,20 @@ using System.Collections.Generic;
 namespace AllOverIt.Evaluator.Variables
 {
     // Implements a read-only variable that obtains its value via a deferred delegate. The value is evaluated when the variable is first accessed.
-    public sealed class LazyVariable
-      : VariableBase, ILazyVariable
+    public sealed record LazyVariable : VariableBase, ILazyVariable
     {
-        private Lazy<double> LazyFunc { get; set; }
-        private Func<double> ValueResolver { get; }
-        internal bool ThreadSafe { get; }
+        private readonly Func<double> _valueResolver;
+        private readonly bool _threadSafe;
+        private Lazy<double> _lazyFunc;
 
-        public override double Value => LazyFunc.Value;
+        public override double Value => _lazyFunc.Value;
 
         // 'referencedVariableNames' is an optional list of variable names that this variable depends on to calculate its value.
         public LazyVariable(string name, Func<double> valueResolver, IEnumerable<string> referencedVariableNames = null, bool threadSafe = false)
             : base(name, referencedVariableNames)
         {
-            ValueResolver = valueResolver.WhenNotNull(nameof(valueResolver));
-            ThreadSafe = threadSafe;
+            _valueResolver = valueResolver.WhenNotNull(nameof(valueResolver));
+            _threadSafe = threadSafe;
 
             Reset();
         }
@@ -27,7 +26,7 @@ namespace AllOverIt.Evaluator.Variables
         /// <summary>Resets the variable to force its value to be re-evaluated.</summary>
         public void Reset()
         {
-            LazyFunc = new Lazy<double>(ValueResolver, ThreadSafe);
+            _lazyFunc = new Lazy<double>(_valueResolver, _threadSafe);
         }
     }
 }

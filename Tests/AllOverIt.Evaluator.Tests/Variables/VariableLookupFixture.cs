@@ -38,7 +38,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 _variableLookup = new VariableLookup(variableRegistry);
 
-                _variableLookup.VariableRegistry.Should().BeSameAs(variableRegistry);
+                _variableLookup._variableRegistry.Should().BeSameAs(variableRegistry);
             }
         }
 

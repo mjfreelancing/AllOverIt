@@ -9,11 +9,11 @@ namespace AllOverIt.Evaluator.Variables
     // Provides the ability to lookup referenced and referencing variables from a variable registry.
     public sealed class VariableLookup : IVariableLookup
     {
-        internal IVariableRegistry VariableRegistry { get; }
+        internal readonly IVariableRegistry _variableRegistry;
 
         public VariableLookup(IVariableRegistry variableRegistry)
         {
-            VariableRegistry = variableRegistry.WhenNotNull(nameof(variableRegistry));
+            _variableRegistry = variableRegistry.WhenNotNull(nameof(variableRegistry));
         }
 
         public IEnumerable<IVariable> GetReferencedVariables(IVariable variable, VariableLookupMode lookupMode)
@@ -25,7 +25,7 @@ namespace AllOverIt.Evaluator.Variables
 
         public IEnumerable<IVariable> GetReferencingVariables(IVariable variable, VariableLookupMode lookupMode)
         {
-            return (from keyValue in VariableRegistry.Variables
+            return (from keyValue in _variableRegistry.Variables
                     let registryVariable = keyValue.Value
                     let referencedVariables = GetReferencedVariables(registryVariable, lookupMode)
                     from referenced in referencedVariables

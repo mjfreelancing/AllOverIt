@@ -6,7 +6,7 @@ namespace AllOverIt.Evaluator.Variables
 {
     // Implements a read-only delegate based variable. Unlike ConstantVariable this variable type may change value between consecutive
     // reads depending on the delegate's implementation.
-    public sealed class DelegateVariable : VariableBase
+    public sealed record DelegateVariable : VariableBase
     {
         private Func<double> ValueResolver { get; }
         public override double Value => ValueResolver.Invoke();
