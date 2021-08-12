@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Evaluator.Exceptions;
 using AllOverIt.Evaluator.Operators;
-using AllOverIt.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,44 +13,37 @@ namespace AllOverIt.Evaluator.Operations
     // This factory assumes a lower precedence value indicates a higher priority (refer to http://en.wikipedia.org/wiki/Order_of_operations).
     public sealed class ArithmeticOperationFactory : IArithmeticOperationFactory
     {
-        internal IDictionary<string, Lazy<ArithmeticOperation>> Operations { get; }
+        private readonly IDictionary<string, Lazy<ArithmeticOperation>> _operations = new Dictionary<string, Lazy<ArithmeticOperation>>();
 
-        /// <summary>Initializes a new <c>ArithmeticOperationFactory</c> instance.</summary>
         public ArithmeticOperationFactory()
-          : this(new Dictionary<string, Lazy<ArithmeticOperation>>())
         {
             RegisterDefaultOperations();
         }
 
-        internal ArithmeticOperationFactory(IDictionary<string, Lazy<ArithmeticOperation>> operations)
-        {
-            Operations = operations.WhenNotNull(nameof(operations));
-        }
-
         public bool IsCandidate(char symbol)
         {
-            return Operations.Keys.Any(k => k.Contains(symbol));
+            return _operations.Keys.Any(k => k.Contains(symbol));
         }
 
         public bool IsRegistered(string symbol)
         {
-            return Operations.ContainsKey(symbol);
+            return _operations.ContainsKey(symbol);
         }
 
         public void RegisterOperation(string symbol, int precedence, int argumentCount, Func<Expression[], IOperator> operatorCreator)
         {
-            if (Operations.ContainsKey(symbol))
+            if (_operations.ContainsKey(symbol))
             {
                 throw new OperationFactoryException($"Operation already registered for the '{symbol}' operator");
             }
 
-            Operations[symbol] = new Lazy<ArithmeticOperation>(() => new ArithmeticOperation(precedence, argumentCount, operatorCreator));
+            _operations[symbol] = new Lazy<ArithmeticOperation>(() => new ArithmeticOperation(precedence, argumentCount, operatorCreator));
         }
 
         // Creates the operation instances on demand. Only one instance per type is ever created.
         public ArithmeticOperation GetOperation(string symbol)
         {
-            if (Operations.TryGetValue(symbol, out var result))
+            if (_operations.TryGetValue(symbol, out var result))
             {
                 return result.Value;
             }

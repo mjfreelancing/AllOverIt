@@ -8,22 +8,16 @@ using System.IO;
 
 namespace AllOverIt.Evaluator
 {
-    internal sealed class FormulaReader : IFormulaReader
+    public sealed class FormulaReader : IDisposable
     {
-        internal static readonly char DecimalSeparator = Convert.ToChar(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+        private static readonly char DecimalSeparator = Convert.ToChar(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
         private TextReader _reader;
 
         public FormulaReader(string formula)
-            : this(f => new StringReader(f), formula)
         {
-        }
-
-        internal FormulaReader(Func<string, TextReader> readerFactory, string formula)
-        {
-            _ = readerFactory.WhenNotNull(nameof(readerFactory));
             _ = formula.WhenNotNullOrEmpty(nameof(formula));
 
-            _reader = readerFactory.Invoke(formula);
+            _reader = new StringReader(formula);
         }
 
         public int PeekNext()
@@ -31,9 +25,9 @@ namespace AllOverIt.Evaluator
             return _reader.Peek();
         }
 
-        public int ReadNext()
+        public void ConsumeNext()
         {
-            return _reader.Read();
+            _reader.Read();
         }
 
         // Supports exponent values
@@ -60,7 +54,7 @@ namespace AllOverIt.Evaluator
 
                 if (IsNumericalCandidate(next) || isExponent || allowMinus)
                 {
-                    ReadNext();
+                    ConsumeNext();
                     operand += next;
                     previousTokenWasExponent = isExponent;
                 }
@@ -110,9 +104,12 @@ namespace AllOverIt.Evaluator
             {
                 var next = (char)peek;
 
-                if ((next != '(') && (next != ')') && (next != ',') && !operationFactory.IsCandidate(next))
+                if (next != '(' &&
+                    next != ')' &&
+                    next != ',' &&
+                    !operationFactory.IsCandidate(next))
                 {
-                    ReadNext();
+                    ConsumeNext();
                     variableOrMethod += next;
                 }
                 else
@@ -158,7 +155,7 @@ namespace AllOverIt.Evaluator
                         break;
                     }
 
-                    ReadNext();
+                    ConsumeNext();
                     operation += next;
                 }
                 else
