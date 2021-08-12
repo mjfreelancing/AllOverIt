@@ -44,11 +44,7 @@ namespace CustomOperation
             var xValues = new List<int>();
             var yValues = new List<int>();
 
-            var parser = FormulaParser.Create(
-              new ArithmeticOperationFactory(),
-              CreateUserDefinedMethodFactory<GreatestCommonDenominatorOperation>("GCD"));
-
-            var gcdCompiler = new FormulaCompiler(parser);
+            var gcdCompiler = new FormulaCompiler(userMethodFactory: CreateUserDefinedMethodFactory<GreatestCommonDenominatorOperation>("GCD"));
 
             var xValue = new MutableVariable("x");
             var yValue = new MutableVariable("y");
@@ -107,11 +103,9 @@ namespace CustomOperation
 
         private static double EvaluateManually(string formula)
         {
-            var parser = FormulaParser.Create(
-              CreateArithmeticOperationFactory(),
-              CreateUserDefinedMethodFactory<CustomMinOperation>("MIN"));
-
-            var compiler = new FormulaCompiler(parser);
+            var compiler = new FormulaCompiler(
+                CreateArithmeticOperationFactory(),
+                CreateUserDefinedMethodFactory<CustomMinOperation>("MIN"));
 
             return compiler.GetResult(formula);
         }

@@ -1,3 +1,4 @@
+using AllOverIt.Extensions;
 using AllOverIt.Helpers;
 using System;
 using System.Collections.Generic;
@@ -11,12 +12,15 @@ namespace AllOverIt.Evaluator
         public Func<double> Resolver { get; }
 
         // An enumerable of all variable names explicitly referenced by the formula.
-        public IEnumerable<string> ReferencedVariableNames { get; }
+        public IReadOnlyCollection<string> ReferencedVariableNames { get; }
 
         public FormulaCompilerResult(Func<double> resolver, IEnumerable<string> referencedVariableNames)
         {
             Resolver = resolver.WhenNotNull(nameof(resolver));
-            ReferencedVariableNames = referencedVariableNames.WhenNotNull(nameof(referencedVariableNames));
+
+            ReferencedVariableNames = referencedVariableNames
+                .WhenNotNull(nameof(referencedVariableNames))
+                .AsReadOnlyCollection();
         }
     }
 }

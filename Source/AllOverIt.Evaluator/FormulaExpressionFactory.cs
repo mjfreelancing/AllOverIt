@@ -1,6 +1,5 @@
 using AllOverIt.Evaluator.Exceptions;
 using AllOverIt.Evaluator.Operations;
-using AllOverIt.Evaluator.Stack;
 using AllOverIt.Evaluator.Variables;
 using AllOverIt.Helpers;
 using System.Collections.Generic;
@@ -9,10 +8,10 @@ using System.Linq.Expressions;
 namespace AllOverIt.Evaluator
 {
     // Implements a factory that creates expressions required for compiling a formula.
-    public sealed class FormulaExpressionFactory : IFormulaExpressionFactory
+    public sealed class FormulaExpressionFactory
     {
         // 'expressionStack' contains the expressions required for processing the provided operation
-        public Expression CreateExpression(IArithmeticOperation operation, IEvaluatorStack<Expression> expressionStack)
+        public Expression CreateExpression(IArithmeticOperation operation, Stack<Expression> expressionStack)
         {
             _ = operation.WhenNotNull(nameof(operation));
             _ = expressionStack.WhenNotNull(nameof(expressionStack));
