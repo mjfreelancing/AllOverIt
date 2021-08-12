@@ -7,9 +7,9 @@ using System.Linq;
 namespace AllOverIt.Evaluator.Variables
 {
     // An abstract base class for a named variable.
-    public abstract class VariableBase : IVariable
+    public abstract record VariableBase : IVariable
     {
-        private readonly Lazy<IEnumerable<IVariable>> _referencedVariables;
+        private readonly Lazy<IReadOnlyCollection<IVariable>> _referencedVariables;
         internal IVariableRegistry VariableRegistry { get; set; }
 
         public string Name { get; }
@@ -30,16 +30,17 @@ namespace AllOverIt.Evaluator.Variables
               ? referencedVariableNames.AsReadOnlyList()
               : Enumerable.Empty<string>();
 
-            _referencedVariables = new Lazy<IEnumerable<IVariable>>(() => GetReferencedVariables(referencedNames));
+            _referencedVariables = new Lazy<IReadOnlyCollection<IVariable>>(() => GetReferencedVariables(referencedNames));
         }
 
-        private IEnumerable<IVariable> GetReferencedVariables(IEnumerable<string> referencedVariableNames)
+        private IReadOnlyCollection<IVariable> GetReferencedVariables(IEnumerable<string> referencedVariableNames)
         {
             _ = VariableRegistry.WhenNotNull(nameof(VariableRegistry));
 
             return (from keyValue in VariableRegistry.Variables
                     where referencedVariableNames.Contains(keyValue.Key)
-                    select keyValue.Value).AsReadOnlyList();
+                    select keyValue.Value)
+                .AsReadOnlyCollection();
         }
     }
 }

@@ -7,7 +7,7 @@ namespace AllOverIt.Evaluator.Variables
     //       (ii) potentially delegates (they could call out to another provider)
 
     // Implements a generic read/write variable that has no external dependencies or influence.
-    public sealed class MutableVariable : VariableBase, IMutableVariable
+    public sealed record MutableVariable : VariableBase, IMutableVariable
     {
         private double _value;
 
