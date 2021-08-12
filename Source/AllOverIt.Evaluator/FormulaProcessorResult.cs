@@ -13,12 +13,12 @@ namespace AllOverIt.Evaluator
         public Expression<Func<double>> FormulaExpression { get; }
 
         // Gets an enumerable of all variable names explicitly referenced by the formula.
-        public IEnumerable<string> ReferencedVariableNames { get; }
+        public IReadOnlyCollection<string> ReferencedVariableNames { get; }
 
         public FormulaProcessorResult(Expression<Func<double>> formulaExpression, IEnumerable<string> referencedVariableNames)
         {
             FormulaExpression = formulaExpression.WhenNotNull(nameof(formulaExpression));
-            ReferencedVariableNames = referencedVariableNames.WhenNotNull(nameof(referencedVariableNames)).AsReadOnlyList();
+            ReferencedVariableNames = referencedVariableNames.WhenNotNull(nameof(referencedVariableNames)).AsReadOnlyCollection();
         }
     }
 }
