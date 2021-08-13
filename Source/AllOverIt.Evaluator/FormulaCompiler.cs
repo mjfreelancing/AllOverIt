@@ -8,12 +8,7 @@ namespace AllOverIt.Evaluator
 {
     public sealed class FormulaCompiler : IFormulaCompiler
     {
-        // todo: consider making this available via a property (save user from having to create it) - need to consider cross over with the alternative ctor
-        // the default registry is used when compiled formulas are not dependent on variables
-        //private readonly Lazy<IVariableRegistry> _defaultRegistry = new(() => new VariableRegistry());
-
         private readonly FormulaProcessor _formulaProcessor;
-
 
         public FormulaCompiler(IArithmeticOperationFactory arithmeticFactory = null, IUserDefinedMethodFactory userMethodFactory = null)
         {
@@ -44,10 +39,7 @@ namespace AllOverIt.Evaluator
 
         private FormulaProcessorResult Parse(string formula, IVariableRegistry variableRegistry)
         {
-            //using (var formulaReader = new FormulaReader(formula))
-            //{
-                return _formulaProcessor.Process(/*formulaReader,*/ formula, variableRegistry);
-            //}
+            return _formulaProcessor.Process(formula, variableRegistry);
         }
     }
 }

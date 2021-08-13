@@ -4,7 +4,7 @@ using System;
 
 namespace ParallelEvaluation
 {
-    internal class RGBCalculator
+    internal sealed class RGBCalculator
     {
         private IVariableRegistry Variables { get; }
         private readonly Func<double> _redFunc;
