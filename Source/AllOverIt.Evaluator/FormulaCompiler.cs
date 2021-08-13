@@ -46,10 +46,10 @@ namespace AllOverIt.Evaluator
 
         private FormulaProcessorResult Parse(string formula, IVariableRegistry variableRegistry)
         {
-            using (var formulaReader = new FormulaReader(formula))
-            {
-                return _formulaProcessor.Process(formulaReader, variableRegistry);
-            }
+            //using (var formulaReader = new FormulaReader(formula))
+            //{
+                return _formulaProcessor.Process(/*formulaReader,*/ formula, variableRegistry);
+            //}
         }
     }
 }

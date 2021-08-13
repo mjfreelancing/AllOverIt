@@ -22,7 +22,7 @@ namespace AllOverIt.Evaluator.Operations
 
         public bool IsCandidate(char symbol)
         {
-            return _operations.Keys.Any(k => k.StartsWith($"{symbol}"));
+            return _operations.Keys.Any(key => key[0] == symbol);
         }
 
         public bool IsRegistered(string symbol)

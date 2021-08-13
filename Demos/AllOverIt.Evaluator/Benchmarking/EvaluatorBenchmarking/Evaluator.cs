@@ -14,7 +14,7 @@ namespace EvaluatorBenchmarking
     [MemoryDiagnoser]
     public class Evaluator
     {
-        private static readonly string[] _formulae = new[]
+        private static readonly string[] Formula = new[]
         {
             "11 + 77",
             "11 - 77",
@@ -31,8 +31,8 @@ namespace EvaluatorBenchmarking
             "10/0"
         };
 
-        private readonly IReadOnlyCollection<double> _lhs;
-        private readonly IReadOnlyCollection<double> _rhs;
+        private readonly IList<double> _lhs;
+        private readonly IList<double> _rhs;
         private readonly FormulaCompiler _compiler;
         private readonly VariableFactory _variableFactory;
 
@@ -40,8 +40,8 @@ namespace EvaluatorBenchmarking
         {
             var rnd = new Random((int) DateTime.Now.Ticks);
 
-            _lhs = Enumerable.Range(1, 100).SelectAsReadOnlyCollection(item => rnd.NextDouble());
-            _rhs = Enumerable.Range(1, 100).SelectAsReadOnlyCollection(item => rnd.NextDouble());
+            _lhs = Enumerable.Range(1, 100).SelectAsList(item => rnd.NextDouble());
+            _rhs = Enumerable.Range(1, 100).SelectAsList(item => rnd.NextDouble());
             _compiler = new FormulaCompiler();
             _variableFactory = new VariableFactory();
         }
@@ -49,7 +49,12 @@ namespace EvaluatorBenchmarking
         [Benchmark]
         public void Add100RandomPairsWithoutCompilation()
         {
-            _ = _lhs.Zip(_rhs).SelectAsReadOnlyCollection(values => _compiler.GetResult($"{values.First} + {values.Second}"));
+            for (var i = 0; i < 100; i++)
+            {
+                var lhs = _lhs[i];
+                var rhs = _rhs[i];
+                _compiler.GetResult($"{lhs} + {rhs}");
+            }
         }
 
         [Benchmark]
@@ -64,22 +69,19 @@ namespace EvaluatorBenchmarking
 
             registry.Add(x, y);
 
-            _ = _lhs.Zip(_rhs).SelectAsReadOnlyCollection(
-                values =>
-                {
-                    var (first, second) = values;
+            for (var i = 0; i < 100; i++)
+            {
+                x.SetValue(_lhs[i]);
+                y.SetValue(_rhs[i]);
 
-                    x.SetValue(first);
-                    y.SetValue((second));
-
-                    return formula.Invoke();
-                });
+                _ = formula.Invoke();
+            }
         }
 
         [Benchmark]
         public void MultipleFormulaeWithoutCompilation()
         {
-            foreach (var item in _formulae)
+            foreach (var item in Formula)
             {
                 _ = _compiler.GetResult(item);
             }
@@ -134,7 +136,7 @@ namespace EvaluatorBenchmarking
             var d3 = c.Value;
 
             // area
-            var area = herons.Invoke();
+            var _ = herons.Invoke();
         }
     }
 }
