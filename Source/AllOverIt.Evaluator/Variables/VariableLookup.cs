@@ -9,7 +9,7 @@ namespace AllOverIt.Evaluator.Variables
     // Provides the ability to lookup referenced and referencing variables from a variable registry.
     public sealed class VariableLookup : IVariableLookup
     {
-        internal readonly IVariableRegistry _variableRegistry;
+        private readonly IVariableRegistry _variableRegistry;
 
         public VariableLookup(IVariableRegistry variableRegistry)
         {

@@ -9,12 +9,31 @@ namespace AllOverIt.Evaluator.Tests
     public class FormulaCompilerFixtureFunctionalEvaluate : FormulaCompilerFixtureFunctionalBase
     {
         [Fact]
-        public void Should_Evaluate_Methods_With_Case_Insenstive_Comparison()
+        public void Should_Evaluate_Methods_With_Case_Insensitive_Comparison()
         {
             const string formula = "sqRT(9)+sqrt(4)+SQRT(16)";
 
             var actual = _formulaCompiler.GetResult(formula, _variableRegistry);
             actual.Should().Be(9);
+        }
+
+        [Fact]
+        public void Should_Evaluate_From_Internally_Provided_VariableRegistry()
+        {
+            var compiled = _formulaCompiler.Compile("x+y");
+
+            var x = Create<int>();
+            var y = Create<int>();
+
+            compiled.VariableRegistry.AddVariables(
+                new ConstantVariable("x", x),
+                new MutableVariable("y", y));
+
+            var expected = x + y;
+
+            var actual = compiled.Resolver.Invoke();
+
+            actual.Should().Be(expected);
         }
 
         [Fact]
