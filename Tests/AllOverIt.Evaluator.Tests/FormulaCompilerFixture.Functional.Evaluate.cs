@@ -13,14 +13,14 @@ namespace AllOverIt.Evaluator.Tests
         {
             const string formula = "sqRT(9)+sqrt(4)+SQRT(16)";
 
-            var actual = _formulaCompiler.GetResult(formula, _variableRegistry);
+            var actual = FormulaCompiler.GetResult(formula, VariableRegistry);
             actual.Should().Be(9);
         }
 
         [Fact]
         public void Should_Evaluate_From_Internally_Provided_VariableRegistry()
         {
-            var compiled = _formulaCompiler.Compile("x+y");
+            var compiled = FormulaCompiler.Compile("x+y");
 
             var x = Create<int>();
             var y = Create<int>();
@@ -44,17 +44,17 @@ namespace AllOverIt.Evaluator.Tests
             var z = Create<double>();
             var expected = 2 * x - c * (5 - Math.Pow(z, 2)) + 1.2E-3;
 
-            var compiled = _formulaCompiler.Compile("2*x-c*(5-z^2)+1.2E-3", _variableRegistry);
+            var compiled = FormulaCompiler.Compile("2*x-c*(5-z^2)+1.2E-3", VariableRegistry);
 
             // variables can be defined in the registry after the formula has been compiled
-            _variableRegistry.AddVariable(new ConstantVariable("c", c));
+            VariableRegistry.AddVariable(new ConstantVariable("c", c));
 
             // can also use a variable directly
             var variableZ = new MutableVariable("z");
-            _variableRegistry.AddVariable(variableZ);
+            VariableRegistry.AddVariable(variableZ);
 
             // can set values using the registry
-            _variableRegistry.SetValue("x", x); // overwrites the value assigned in the setup
+            VariableRegistry.SetValue("x", x); // overwrites the value assigned in the setup
 
             // or a variable directly
             variableZ.SetValue(z);
@@ -69,14 +69,14 @@ namespace AllOverIt.Evaluator.Tests
         public void Should_Evaluate_Formula_With_Method()
         {
             var c = Create<double>();
-            var x = _val1;
-            var y = _val2;
+            var x = Val1;
+            var y = Val2;
             var expected = 2 * x - c * (-3.5 - Math.Pow(y, 2)) + Math.Round(x + y - c, MidpointRounding.AwayFromZero) - -5E-3;
 
-            var compiled = _formulaCompiler.Compile("2*x-c*(-3.5-y^2)+ROUND(x+y-c, 3)--5E-3", _variableRegistry);
+            var compiled = FormulaCompiler.Compile("2*x-c*(-3.5-y^2)+ROUND(x+y-c, 3)--5E-3", VariableRegistry);
 
             // can provide the value at the time of adding the variable
-            _variableRegistry.AddVariable(new ConstantVariable("c", c));
+            VariableRegistry.AddVariable(new ConstantVariable("c", c));
 
             var actual = compiled.Resolver.Invoke();
 
@@ -89,23 +89,23 @@ namespace AllOverIt.Evaluator.Tests
             const string formulaA = "x*3.8-y";
             const string formulaB = "a-x*z^3";
 
-            var compiledA = _formulaCompiler.Compile(formulaA, _variableRegistry).Resolver;
-            var compiledB = _formulaCompiler.Compile(formulaB, _variableRegistry).Resolver;
+            var compiledA = FormulaCompiler.Compile(formulaA, VariableRegistry).Resolver;
+            var compiledB = FormulaCompiler.Compile(formulaB, VariableRegistry).Resolver;
 
             // think of these as system variables (x and y were added in the setup)
-            _variableRegistry.AddVariable(new MutableVariable("z"));
+            VariableRegistry.AddVariable(new MutableVariable("z"));
 
             // think of these as user variables
-            _variableRegistry.AddVariable(new DelegateVariable("a", compiledA)); // must be a FuncVariable so it is re-evaluated when B is evaluated
-            _variableRegistry.AddVariable(new DelegateVariable("b", compiledB)); // can be either a FuncVariable or a BasicVariable because nothing depends on it but
-                                                                                    // making it a FuncVariable means it can immediately be used as the input of another variable
+            VariableRegistry.AddVariable(new DelegateVariable("a", compiledA)); // must be a FuncVariable so it is re-evaluated when B is evaluated
+            VariableRegistry.AddVariable(new DelegateVariable("b", compiledB)); // can be either a FuncVariable or a BasicVariable because nothing depends on it but
+                                                                                // making it a FuncVariable means it can immediately be used as the input of another variable
 
             var z = Create<double>();
 
-            _variableRegistry.SetValue("z", z);
+            VariableRegistry.SetValue("z", z);
 
-            var x = _val1;
-            var y = _val2;
+            var x = Val1;
+            var y = Val2;
             var expected = (x * 3.8 - y) - x * Math.Pow(z, 3);
 
             var actual = compiledB.Invoke();
