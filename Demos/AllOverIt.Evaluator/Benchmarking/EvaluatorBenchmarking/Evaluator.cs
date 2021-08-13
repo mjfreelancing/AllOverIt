@@ -44,13 +44,13 @@ namespace EvaluatorBenchmarking
         }
 
         [Benchmark]
-        public void Add100RandomPairsWithoutCompilation()
+        public void AddTwoConstantsUsingGetResult()
         {
             _compiler.GetResult($"{_lhs} + {_rhs}");
         }
 
         [Benchmark]
-        public void Add100RandomPairsWithCompilation()
+        public void AddTwoVariablesUsingRegistry()
         {
             var registry = _variableFactory.CreateVariableRegistry();
 

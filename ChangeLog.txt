@@ -1,13 +1,22 @@
 
 v2.1.0
 ======================================================================================================================
-|                              Method |       Mean |     Error |    StdDev |    Gen 0 |    Gen 1 | Allocated |
-|------------------------------------ |-----------:|----------:|----------:|---------:|---------:|----------:|
-| Add100RandomPairsWithoutCompilation | 8,625.8 us | 154.07 us | 144.11 us | 234.3750 | 109.3750 |    961 KB |
-|    Add100RandomPairsWithCompilation |   293.8 us |   2.47 us |   2.06 us |   1.9531 |   0.9766 |     10 KB |
-|  MultipleFormulaeWithoutCompilation | 1,370.8 us |  23.89 us |  28.44 us |  29.2969 |  14.6484 |    122 KB |
-|     CalculateAreaUsingHeronsFormula | 1,331.7 us |  14.33 us |  12.70 us |  23.4375 |  11.7188 |     98 KB |
+|                            Method |        Mean |     Error |    StdDev |   Gen 0 |   Gen 1 | Allocated |
+|---------------------------------- |------------:|----------:|----------:|--------:|--------:|----------:|
+|     AddTwoConstantsUsingGetResult |    86.00 us |  1.601 us |  1.573 us |  2.3193 |  1.0986 |     10 KB |
+|      AddTwoVariablesUsingRegistry |   283.70 us |  3.651 us |  3.415 us |  1.9531 |  0.9766 |     10 KB |
+| MultipleFormulaWithoutCompilation | 1,352.60 us | 25.748 us | 26.442 us | 29.2969 | 14.6484 |    122 KB |
+|   CalculateAreaUsingHeronsFormula | 1,325.44 us | 16.209 us | 13.535 us | 23.4375 | 11.7188 |     98 KB |
 
+
+v3.0.0
+======================================================================================================================
+|                            Method |        Mean |     Error |    StdDev |   Gen 0 |  Gen 1 | Allocated |
+|---------------------------------- |------------:|----------:|----------:|--------:|-------:|----------:|
+|     AddTwoConstantsUsingGetResult |    83.77 us |  1.647 us |  2.415 us |  1.0986 | 0.2441 |      7 KB |
+|      AddTwoVariablesUsingRegistry |   282.26 us |  5.062 us |  4.971 us |  1.4648 |      - |      9 KB |
+| MultipleFormulaWithoutCompilation | 1,226.95 us | 24.163 us | 41.680 us | 18.5547 | 3.9063 |    116 KB |
+|   CalculateAreaUsingHeronsFormula | 1,332.27 us | 26.459 us | 31.498 us | 21.4844 | 3.9063 |     95 KB |
 
 
 
