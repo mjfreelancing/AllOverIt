@@ -129,12 +129,14 @@ namespace AllOverIt.Evaluator
 
             if (_lastPushIsOperator)
             {
-                if (!"-+".Contains(operatorToken))
+                var tokenSpan = operatorToken.AsSpan();
+
+                if (tokenSpan.Length != 1 || !IsUnaryPlusOrMinus(tokenSpan[0]))
                 {
                     throw new FormulaException("Invalid expression stack");
                 }
 
-                if (operatorToken == "-")
+                if (tokenSpan[0] == '-')
                 {
                     operatorToken = CustomTokens.UnaryMinus;
                 }
@@ -157,6 +159,7 @@ namespace AllOverIt.Evaluator
                 ProcessOperators(_operatorStack, _expressionStack, () =>
                 {
                     var next = _operatorStack.Peek();
+
                     return next != CustomTokens.OpenScope && 
                            currentOperation.Precedence >= _operationFactory.GetOperation(next).Precedence;
                 });
@@ -355,7 +358,7 @@ namespace AllOverIt.Evaluator
         private bool ProcessToken(char token, bool isUserMethod)
         {
             var processor = _tokenProcessors
-                .SkipWhile(p => !p.Predicate.Invoke(token, isUserMethod))
+                .SkipWhile(context => !context.Predicate.Invoke(token, isUserMethod))
                 .First();     // process the first match found
 
             // returns true to indicate processing should continue
@@ -400,7 +403,7 @@ namespace AllOverIt.Evaluator
                 throw new FormulaException("Unexpected non-numerical token");
             }
 
-            var operand = span.Slice(startIndex, _currentIndex - startIndex);
+            var operand = span[startIndex.._currentIndex];
 
             double value;
 
@@ -451,7 +454,7 @@ namespace AllOverIt.Evaluator
                 throw new FormulaException("Unexpected empty named operand");
             }
 
-            return span.Slice(startIndex, _currentIndex - startIndex).ToString();
+            return span[startIndex.._currentIndex].ToString();
         }
 
         private string ReadOperator()
@@ -473,7 +476,7 @@ namespace AllOverIt.Evaluator
                 if (_operationFactory.IsCandidate(next))
                 {
                     // check for unary plus/minus
-                    if ("-+".ContainsChar(next) && _currentIndex > startIndex)
+                    if (IsUnaryPlusOrMinus(next) && _currentIndex > startIndex)
                     {
                         // 3 * -7 would have read "*-"
                         break;
@@ -492,12 +495,17 @@ namespace AllOverIt.Evaluator
                 throw new FormulaException("Unexpected empty operation");
             }
 
-            return span.Slice(startIndex, _currentIndex - startIndex).ToString();
+            return span[startIndex.._currentIndex].ToString();
         }
 
         private static bool IsNumericalCandidate(char token)
         {
             return char.IsDigit(token) || (token == DecimalSeparator);
+        }
+
+        private static bool IsUnaryPlusOrMinus(char token)
+        {
+            return token is '-' or '+';
         }
     }
 }
