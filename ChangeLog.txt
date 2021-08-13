@@ -3,10 +3,10 @@ v2.1.0
 ======================================================================================================================
 |                              Method |       Mean |     Error |    StdDev |    Gen 0 |    Gen 1 | Allocated |
 |------------------------------------ |-----------:|----------:|----------:|---------:|---------:|----------:|
-| Add100RandomPairsWithoutCompilation | 9,084.6 us | 180.35 us | 168.70 us | 234.3750 | 117.1875 |    963 KB |
-|    Add100RandomPairsWithCompilation |   296.9 us |   3.44 us |   3.22 us |   2.9297 |   1.4648 |     12 KB |
-|  MultipleFormulaeWithoutCompilation | 1,356.5 us |  26.90 us |  30.98 us |  29.2969 |  14.6484 |    122 KB |
-|     CalculateAreaUsingHeronsFormula | 1,333.6 us |  15.17 us |  12.66 us |  23.4375 |  11.7188 |     98 KB |
+| Add100RandomPairsWithoutCompilation | 8,625.8 us | 154.07 us | 144.11 us | 234.3750 | 109.3750 |    961 KB |
+|    Add100RandomPairsWithCompilation |   293.8 us |   2.47 us |   2.06 us |   1.9531 |   0.9766 |     10 KB |
+|  MultipleFormulaeWithoutCompilation | 1,370.8 us |  23.89 us |  28.44 us |  29.2969 |  14.6484 |    122 KB |
+|     CalculateAreaUsingHeronsFormula | 1,331.7 us |  14.33 us |  12.70 us |  23.4375 |  11.7188 |     98 KB |
 
 
 
