@@ -22,8 +22,6 @@ namespace AllOverIt.Evaluator
                 userMethodFactory ?? new UserDefinedMethodFactory());
         }
 
-        // A new VariableRegistry will be created if variableRegistry is null, and it will be returned as part of the FormulaCompilerResult.
-        // The variable registry does not have to be populated at the time of compilation.
         public FormulaCompilerResult Compile(string formula, IVariableRegistry variableRegistry = null)
         {
             if (formula != null)

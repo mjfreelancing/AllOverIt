@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 namespace AllOverIt.Evaluator
 {
     // Contains the result of parsing and processing a formula.
-    public sealed class FormulaProcessorResult
+    public sealed record FormulaProcessorResult
     {
         // Gets the expression built from a processed formula. When this expression is compiled and invoked the value of the formula is returned.
         public Expression<Func<double>> FormulaExpression { get; }

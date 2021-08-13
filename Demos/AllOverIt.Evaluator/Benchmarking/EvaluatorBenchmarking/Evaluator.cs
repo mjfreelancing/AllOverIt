@@ -2,11 +2,8 @@
 using AllOverIt.Evaluator.Extensions;
 using AllOverIt.Evaluator.Variables;
 using AllOverIt.Evaluator.Variables.Extensions;
-using AllOverIt.Extensions;
 using BenchmarkDotNet.Attributes;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace EvaluatorBenchmarking
 {
@@ -31,8 +28,8 @@ namespace EvaluatorBenchmarking
             "10/0"
         };
 
-        private readonly IList<double> _lhs;
-        private readonly IList<double> _rhs;
+        private readonly double _lhs;
+        private readonly double _rhs;
         private readonly FormulaCompiler _compiler;
         private readonly VariableFactory _variableFactory;
 
@@ -40,8 +37,8 @@ namespace EvaluatorBenchmarking
         {
             var rnd = new Random((int) DateTime.Now.Ticks);
 
-            _lhs = Enumerable.Range(1, 100).SelectAsList(item => rnd.NextDouble());
-            _rhs = Enumerable.Range(1, 100).SelectAsList(item => rnd.NextDouble());
+            _lhs = rnd.NextDouble();
+            _rhs = rnd.NextDouble();
             _compiler = new FormulaCompiler();
             _variableFactory = new VariableFactory();
         }
@@ -49,12 +46,7 @@ namespace EvaluatorBenchmarking
         [Benchmark]
         public void Add100RandomPairsWithoutCompilation()
         {
-            for (var i = 0; i < 100; i++)
-            {
-                var lhs = _lhs[i];
-                var rhs = _rhs[i];
-                _compiler.GetResult($"{lhs} + {rhs}");
-            }
+            _compiler.GetResult($"{_lhs} + {_rhs}");
         }
 
         [Benchmark]
@@ -69,17 +61,14 @@ namespace EvaluatorBenchmarking
 
             registry.Add(x, y);
 
-            for (var i = 0; i < 100; i++)
-            {
-                x.SetValue(_lhs[i]);
-                y.SetValue(_rhs[i]);
+            x.SetValue(_lhs);
+            y.SetValue(_rhs);
 
-                _ = formula.Invoke();
-            }
+            _ = formula.Invoke();
         }
 
         [Benchmark]
-        public void MultipleFormulaeWithoutCompilation()
+        public void MultipleFormulaWithoutCompilation()
         {
             foreach (var item in Formula)
             {
