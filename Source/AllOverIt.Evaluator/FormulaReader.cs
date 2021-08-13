@@ -5,11 +5,13 @@ using AllOverIt.Helpers;
 using System;
 using System.Globalization;
 using System.IO;
+using System.Text;
 
 namespace AllOverIt.Evaluator
 {
     public sealed class FormulaReader : IDisposable
     {
+        private static readonly StringBuilder TokenBuilder = new();
         private static readonly char DecimalSeparator = Convert.ToChar(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
         private TextReader _reader;
 
@@ -34,7 +36,9 @@ namespace AllOverIt.Evaluator
         public double ReadNumerical()
         {
             var previousTokenWasExponent = false;
-            var operand = string.Empty;
+
+            // operand
+            TokenBuilder.Clear();
 
             var peek = PeekNext();
 
@@ -55,7 +59,7 @@ namespace AllOverIt.Evaluator
                 if (IsNumericalCandidate(next) || isExponent || allowMinus)
                 {
                     ConsumeNext();
-                    operand += next;
+                    TokenBuilder.Append(next);
                     previousTokenWasExponent = isExponent;
                 }
                 else
@@ -65,6 +69,8 @@ namespace AllOverIt.Evaluator
 
                 peek = PeekNext();
             }
+
+            var operand = $"{TokenBuilder}";
 
             if (string.IsNullOrWhiteSpace(operand))
             {
@@ -91,7 +97,7 @@ namespace AllOverIt.Evaluator
         {
             _ = operationFactory.WhenNotNull(nameof(operationFactory));
 
-            var variableOrMethod = string.Empty;
+            TokenBuilder.Clear();
 
             var peek = PeekNext();
 
@@ -110,7 +116,7 @@ namespace AllOverIt.Evaluator
                     !operationFactory.IsCandidate(next))
                 {
                     ConsumeNext();
-                    variableOrMethod += next;
+                    TokenBuilder.Append($"{next}");
                 }
                 else
                 {
@@ -119,6 +125,8 @@ namespace AllOverIt.Evaluator
 
                 peek = PeekNext();
             }
+
+            var variableOrMethod = $"{TokenBuilder}";
 
             if (string.IsNullOrWhiteSpace(variableOrMethod))
             {
@@ -132,7 +140,8 @@ namespace AllOverIt.Evaluator
         {
             _ = operationFactory.WhenNotNull(nameof(operationFactory));
 
-            var operation = string.Empty;
+            // operation
+            TokenBuilder.Clear();
 
             var peek = PeekNext();
 
@@ -149,14 +158,14 @@ namespace AllOverIt.Evaluator
                 if (operationFactory.IsCandidate(next))
                 {
                     // check for unary plus/minus
-                    if ("-+".ContainsChar(next) && (operation.Length > 0))
+                    if ("-+".ContainsChar(next) && TokenBuilder.Length > 0)
                     {
                         // 3 * -7 would have read "*-"
                         break;
                     }
 
                     ConsumeNext();
-                    operation += next;
+                    TokenBuilder.Append($"{next}");
                 }
                 else
                 {
@@ -165,6 +174,8 @@ namespace AllOverIt.Evaluator
 
                 peek = PeekNext();
             }
+
+            var operation = $"{TokenBuilder}";
 
             if (string.IsNullOrWhiteSpace(operation))
             {

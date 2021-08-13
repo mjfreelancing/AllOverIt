@@ -15,8 +15,8 @@ namespace AllOverIt.Evaluator
         // Tags used to internally identify custom operators within the stack. Can be anything other than the operators defined in ArithmeticOperationFactory
         private static class CustomTokens
         {
-            internal const string UserMethod = "$$";
-            internal const string UnaryMinus = "##";
+            internal const string UserMethod = "$1";
+            internal const string UnaryMinus = "$2";
             internal const string OpenScope = "(";
         }
 
@@ -155,7 +155,8 @@ namespace AllOverIt.Evaluator
                 ProcessOperators(_operatorStack, _expressionStack, () =>
                 {
                     var next = _operatorStack.Peek();
-                    return (next != CustomTokens.OpenScope) && (currentOperation.Precedence >= _operationFactory.GetOperation(next).Precedence);
+                    return next != CustomTokens.OpenScope && 
+                           currentOperation.Precedence >= _operationFactory.GetOperation(next).Precedence;
                 });
             }
 
