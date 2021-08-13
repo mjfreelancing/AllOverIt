@@ -2,9 +2,11 @@ using AllOverIt.Evaluator.Exceptions;
 using AllOverIt.Evaluator.Operations;
 using AllOverIt.Evaluator.Operators;
 using AllOverIt.Evaluator.Variables;
+using AllOverIt.Extensions;
 using AllOverIt.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -20,6 +22,7 @@ namespace AllOverIt.Evaluator
             internal const string OpenScope = "(";
         }
 
+        private static readonly char DecimalSeparator = Convert.ToChar(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
         private static readonly FormulaExpressionFactory FormulaExpressionFactory = new();
         private readonly Stack<string> _operatorStack = new();
         private readonly Stack<Expression> _expressionStack = new();
@@ -28,7 +31,8 @@ namespace AllOverIt.Evaluator
         private readonly IUserDefinedMethodFactory _userDefinedMethodFactory;
         private readonly IList<string> _referencedVariableNames = new List<string>();
         private IVariableRegistry _variableRegistry;
-        private FormulaReader _formulaReader;
+        private string _formula;
+        private int _currentIndex;
 
         // tracks whether the last processed token was an operator or an expression so unary plus and unary minus can be handled.
         private bool _lastPushIsOperator;
@@ -42,14 +46,15 @@ namespace AllOverIt.Evaluator
             _operationFactory.RegisterOperation(CustomTokens.UnaryMinus, 4, 1, e => new NegateOperator(e[0]));
         }
 
-        public FormulaProcessorResult Process(FormulaReader formulaReader, IVariableRegistry variableRegistry)
+        public FormulaProcessorResult Process(string formula, IVariableRegistry variableRegistry)
         {
-            _formulaReader = formulaReader.WhenNotNull(nameof(formulaReader));
+            _formula = formula.WhenNotNullOrEmpty(nameof(formula));
             _variableRegistry = variableRegistry.WhenNotNull(nameof(variableRegistry));
 
             _operatorStack.Clear();
             _expressionStack.Clear();
             _lastPushIsOperator = true;
+            _currentIndex = 0;
 
             RegisterTokenProcessors();
             ParseContent(false);
@@ -120,10 +125,7 @@ namespace AllOverIt.Evaluator
 
         private void ProcessOperator()
         {
-            // must be called indirectly via Process()
-            _formulaReader.CheckNotNull(nameof(_formulaReader));
-
-            var operatorToken = _formulaReader.ReadOperator(_operationFactory);
+            var operatorToken = ReadOperator();
 
             if (_lastPushIsOperator)
             {
@@ -165,11 +167,8 @@ namespace AllOverIt.Evaluator
 
         private void ProcessNumerical()
         {
-            // must be called indirectly via Process()
-            _formulaReader.CheckNotNull(nameof(_formulaReader));
-
             // starting at the current reader position, read a numerical result and return it as an expression
-            var value = _formulaReader.ReadNumerical();
+            var value = ReadNumerical();
             var numericalExpression = Expression.Constant(value);
 
             PushExpression(numericalExpression);
@@ -177,9 +176,6 @@ namespace AllOverIt.Evaluator
 
         private void ProcessNamedOperand()
         {
-            // must be called indirectly via Process()
-            _formulaReader.CheckNotNull(nameof(_formulaReader));
-
             var operandExpression = GetNamedOperandExpression();
 
             PushExpression(operandExpression);
@@ -187,16 +183,16 @@ namespace AllOverIt.Evaluator
 
         private void ParseContent(bool isUserMethod)
         {
-            var next = _formulaReader.PeekNext();
+            var span = _formula.AsSpan();
 
-            while (next > -1)
+            while (_currentIndex != span.Length)
             {
-                if (!ProcessToken((char)next, isUserMethod))
+                var next = span[_currentIndex];
+
+                if (!ProcessToken(next, isUserMethod))
                 {
                     return;
                 }
-
-                next = _formulaReader.PeekNext();
             }
         }
 
@@ -204,17 +200,20 @@ namespace AllOverIt.Evaluator
         // get the expression for a variable or method at the current position
         private Expression GetNamedOperandExpression()
         {
-            // continue to scan until we get a full word (which may include the full stop character)
-            var namedOperand = _formulaReader.ReadNamedOperand(_operationFactory);
+            var span = _formula.AsSpan();
 
-            // we need to peek ahead to see if the next character is a '('
-            if (_formulaReader.PeekNext() == '(')
+            // continue to scan until we get a full word (which may include the full stop character)
+            var namedOperand = ReadNamedOperand();
+
+            // In the case of a method, we need to peek ahead to see if the next character is a '('.
+            // We need to also make sure we are not at the end of a formula (the named operand will be a variable)
+            if (_currentIndex < span.Length && span[_currentIndex] == '(')
             {
                 // the current 'word' represents the name of a method
                 if (_userDefinedMethodFactory.IsRegistered(namedOperand))
                 {
                     // consume the opening (
-                    _formulaReader.ConsumeNext();
+                    _currentIndex++;
 
                     // the token processor consumes the trailing ')'
                     return ParseMethodToExpression(namedOperand);
@@ -263,12 +262,16 @@ namespace AllOverIt.Evaluator
 
         private void RegisterTokenProcessors()
         {
+            // args are (token, isUserDefined)
+
             // start of a new scope
             RegisterTokenProcessor(
               (token, _) => token == '(',
               (_, _) =>
               {
-                  _formulaReader.ConsumeNext();   // consume the '('
+                  // consume the '('
+                  _currentIndex++;
+                  
                   ProcessScopeStart();
                   return true;
               });
@@ -278,7 +281,9 @@ namespace AllOverIt.Evaluator
               (token, _) => token == ')',
               (_, isUserDefined) =>
               {
-                  _formulaReader.ConsumeNext();   // consume the ')'
+                  // consume the ')'
+                  _currentIndex++;
+                  
                   return ProcessScopeEnd(isUserDefined);
               });
 
@@ -287,7 +292,7 @@ namespace AllOverIt.Evaluator
               (token, isUserDefined) => isUserDefined && token == ',',
               (_, _) =>
               {
-                  _formulaReader.ConsumeNext();
+                  _currentIndex++;
                   ProcessMethodArgument();
                   return true;
               });
@@ -303,7 +308,7 @@ namespace AllOverIt.Evaluator
 
             // numerical constant
             RegisterTokenProcessor(
-              (token, _) => FormulaReader.IsNumericalCandidate(token),
+              (token, _) => IsNumericalCandidate(token),
               (_, _) =>
               {
                   ProcessNumerical();
@@ -355,6 +360,144 @@ namespace AllOverIt.Evaluator
 
             // returns true to indicate processing should continue
             return processor.Processor.Invoke(token, isUserMethod);
+        }
+
+        private double ReadNumerical()
+        {
+            var previousTokenWasExponent = false;
+
+            var span = _formula.AsSpan();
+
+            if (_currentIndex == span.Length)
+            {
+                throw new FormulaException("Nothing to read");
+            }
+
+            var startIndex = _currentIndex;
+
+            // begin by reading tokens that could make up a numerical value, including support for exponent values
+            while (_currentIndex != span.Length)
+            {
+                var next = span[_currentIndex];
+
+                var isExponent = "eE".ContainsChar(next);
+
+                var allowMinus = previousTokenWasExponent && (next == '-');
+
+                if (IsNumericalCandidate(next) || isExponent || allowMinus)
+                {
+                    _currentIndex++;
+                    previousTokenWasExponent = isExponent;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            if (startIndex == _currentIndex)
+            {
+                throw new FormulaException("Unexpected non-numerical token");
+            }
+
+            var operand = span.Slice(startIndex, _currentIndex - startIndex);
+
+            double value;
+
+            try
+            {
+                // will throw 'FormatException' if invalid - such as multiple decimal points
+                value = double.Parse(operand, NumberStyles.Float); // supports numbers such as 3.9E7
+            }
+
+            catch (FormatException exception)
+            {
+                throw new FormulaException($"Invalid numerical value: {operand.ToString()}", exception);
+            }
+
+            return value;
+        }
+
+        private string ReadNamedOperand()
+        {
+            var span = _formula.AsSpan();
+
+            if (_currentIndex == span.Length)
+            {
+                throw new FormulaException("Nothing to read");
+            }
+
+            var startIndex = _currentIndex;
+
+            while (_currentIndex != span.Length)
+            {
+                var next = span[_currentIndex];
+
+                if (next != '(' &&
+                    next != ')' &&
+                    next != ',' &&
+                    !_operationFactory.IsCandidate(next))
+                {
+                    _currentIndex++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            if (startIndex == _currentIndex)
+            {
+                throw new FormulaException("Unexpected empty named operand");
+            }
+
+            return span.Slice(startIndex, _currentIndex - startIndex).ToString();
+        }
+
+        private string ReadOperator()
+        {
+            var span = _formula.AsSpan();
+
+            if (_currentIndex == span.Length)
+            {
+                throw new FormulaException("Nothing to read");
+            }
+
+            var startIndex = _currentIndex;
+
+            while (_currentIndex != span.Length)
+            {
+                var next = span[_currentIndex];
+
+                // keep reading while ever the characters read are part of a registered operator
+                if (_operationFactory.IsCandidate(next))
+                {
+                    // check for unary plus/minus
+                    if ("-+".ContainsChar(next) && _currentIndex > startIndex)
+                    {
+                        // 3 * -7 would have read "*-"
+                        break;
+                    }
+
+                    _currentIndex++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            if (startIndex == _currentIndex)
+            {
+                throw new FormulaException("Unexpected empty operation");
+            }
+
+            return span.Slice(startIndex, _currentIndex - startIndex).ToString();
+        }
+
+        private static bool IsNumericalCandidate(char token)
+        {
+            return char.IsDigit(token) || (token == DecimalSeparator);
         }
     }
 }
