@@ -222,7 +222,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 {
                     Name = _name,
                     Value = _value,
-                    ThreadSafe = threadSafe,
+                    //ThreadSafe = threadSafe,
                     ReferencedVariables = default(IEnumerable<string>)
                 }, option => option.Excluding(prop => prop.ReferencedVariables));
             }

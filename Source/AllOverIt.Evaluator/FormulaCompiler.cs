@@ -10,7 +10,7 @@ namespace AllOverIt.Evaluator
     {
         // todo: consider making this available via a property (save user from having to create it) - need to consider cross over with the alternative ctor
         // the default registry is used when compiled formulas are not dependent on variables
-        private readonly Lazy<IVariableRegistry> _defaultRegistry = new(() => new VariableRegistry());
+        //private readonly Lazy<IVariableRegistry> _defaultRegistry = new(() => new VariableRegistry());
 
         private readonly FormulaProcessor _formulaProcessor;
 
@@ -22,6 +22,8 @@ namespace AllOverIt.Evaluator
                 userMethodFactory ?? new UserDefinedMethodFactory());
         }
 
+        // A new VariableRegistry will be created if variableRegistry is null, and it will be returned as part of the FormulaCompilerResult.
+        // The variable registry does not have to be populated at the time of compilation.
         public FormulaCompilerResult Compile(string formula, IVariableRegistry variableRegistry = null)
         {
             if (formula != null)
@@ -35,10 +37,11 @@ namespace AllOverIt.Evaluator
                 throw new FormatException("The formula is empty.");
             }
 
-            var processorResult = Parse(formula, variableRegistry ?? _defaultRegistry.Value);
+            variableRegistry ??= new VariableRegistry();
+            var processorResult = Parse(formula, variableRegistry);
             var compiledExpression = processorResult.FormulaExpression.Compile();
 
-            return new FormulaCompilerResult(compiledExpression, processorResult.ReferencedVariableNames);
+            return new FormulaCompilerResult(variableRegistry, compiledExpression, processorResult.ReferencedVariableNames);
         }
 
         private FormulaProcessorResult Parse(string formula, IVariableRegistry variableRegistry)

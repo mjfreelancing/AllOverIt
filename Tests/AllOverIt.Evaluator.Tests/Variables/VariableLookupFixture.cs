@@ -2,7 +2,6 @@ using AllOverIt.Evaluator.Tests.Variables.Helpers;
 using AllOverIt.Evaluator.Variables;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using AllOverIt.Fixture.FakeItEasy;
 using FluentAssertions;
 using System;
 using Xunit;
@@ -29,16 +28,6 @@ namespace AllOverIt.Evaluator.Tests.Variables
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("variableRegistry");
-            }
-
-            [Fact]
-            public void Should_Set_Variable_Registry()
-            {
-                var variableRegistry = this.CreateStub<IVariableRegistry>();
-
-                _variableLookup = new VariableLookup(variableRegistry);
-
-                _variableLookup._variableRegistry.Should().BeSameAs(variableRegistry);
             }
         }
 

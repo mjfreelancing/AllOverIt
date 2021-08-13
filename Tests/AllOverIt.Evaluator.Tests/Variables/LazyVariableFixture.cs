@@ -80,7 +80,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                     Name = _name,
                     Value = _value,
                     VariableRegistry = default(IVariableRegistry),
-                    ThreadSafe = _threadSafe,
+                    //ThreadSafe = _threadSafe,
                     ReferencedVariables = default(IEnumerable<string>)
                 }, option => option.Excluding(prop => prop.ReferencedVariables));
             }
