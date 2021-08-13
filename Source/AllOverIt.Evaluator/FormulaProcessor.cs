@@ -439,7 +439,7 @@ namespace AllOverIt.Evaluator
                 if (next != '(' &&
                     next != ')' &&
                     next != ',' &&
-                    !_operationFactory.IsCandidate(next))
+                    !_operationFactory.IsCandidate(next))   // only looking to see if 'next' is the start of a new operation
                 {
                     _currentIndex++;
                 }
@@ -472,16 +472,21 @@ namespace AllOverIt.Evaluator
             {
                 var next = span[_currentIndex];
 
-                // keep reading while ever the characters read are part of a registered operator
-                if (_operationFactory.IsCandidate(next))
+                // check for unary plus/minus
+                if (_currentIndex > startIndex && IsUnaryPlusOrMinus(next))
                 {
-                    // check for unary plus/minus
-                    if (IsUnaryPlusOrMinus(next) && _currentIndex > startIndex)
-                    {
-                        // 3 * -7 would have read "*-"
-                        break;
-                    }
+                    // 3 * -7 would have read "*-"
+                    break;
+                }
 
+                // keep reading while ever the characters read are part of a registered operator
+                // (almost always a single character, but supports multi-character)
+                var isCandidate = startIndex == _currentIndex
+                    ? _operationFactory.IsCandidate(span[_currentIndex])        // avoid creation of a string
+                    : _operationFactory.IsCandidate(span.Slice(startIndex, _currentIndex - startIndex + 1).ToString());
+
+                if (isCandidate)
+                {
                     _currentIndex++;
                 }
                 else

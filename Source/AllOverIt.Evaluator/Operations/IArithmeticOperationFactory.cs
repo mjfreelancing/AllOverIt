@@ -7,8 +7,9 @@ namespace AllOverIt.Evaluator.Operations
     // Represents an arithmetic operation factory.
     public interface IArithmeticOperationFactory
     {
-        // Indicates if the provided symbol represents any character of the registered operations.
+        // Indicates if the provided symbol represents the start of any of the registered operations.
         bool IsCandidate(char symbol);
+        bool IsCandidate(string token);
 
         // Indicates if the specified operation (operator symbol) is registered with the factory.
         bool IsRegistered(string symbol);

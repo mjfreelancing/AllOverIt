@@ -25,6 +25,11 @@ namespace AllOverIt.Evaluator.Operations
             return _operations.Keys.Any(key => key[0] == symbol);
         }
 
+        public bool IsCandidate(string token)
+        {
+            return _operations.Keys.Any(key => key.StartsWith(token));
+        }
+
         public bool IsRegistered(string symbol)
         {
             return _operations.ContainsKey(symbol);
