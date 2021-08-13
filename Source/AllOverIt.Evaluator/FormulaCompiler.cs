@@ -31,15 +31,10 @@ namespace AllOverIt.Evaluator
             }
 
             variableRegistry ??= new VariableRegistry();
-            var processorResult = Parse(formula, variableRegistry);
+            var processorResult = _formulaProcessor.Process(formula, variableRegistry);
             var compiledExpression = processorResult.FormulaExpression.Compile();
 
             return new FormulaCompilerResult(variableRegistry, compiledExpression, processorResult.ReferencedVariableNames);
-        }
-
-        private FormulaProcessorResult Parse(string formula, IVariableRegistry variableRegistry)
-        {
-            return _formulaProcessor.Process(formula, variableRegistry);
         }
     }
 }
