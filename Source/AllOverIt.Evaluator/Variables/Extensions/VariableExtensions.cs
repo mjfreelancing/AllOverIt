@@ -19,7 +19,7 @@ namespace AllOverIt.Evaluator.Variables.Extensions
             }
         }
 
-        // Gets a read-only list of all variables referenced by the variable (explicit and implicit).
+        /// <summary>Gets a read-only collection of all variables referenced by the variable (explicit and implicit).</summary>
         public static IEnumerable<IVariable> GetAllReferencedVariables(this IVariable variable)
         {
             _ = variable.WhenNotNull(nameof(variable));
@@ -35,7 +35,7 @@ namespace AllOverIt.Evaluator.Variables.Extensions
 
         private static void GetAllReferencedVariables(IEnumerable<IVariable> referencedVariables, List<IVariable> allVariables)
         {
-            var variables = referencedVariables.AsReadOnlyList();
+            var variables = referencedVariables.AsReadOnlyCollection();
 
             allVariables.AddRange(variables);
 

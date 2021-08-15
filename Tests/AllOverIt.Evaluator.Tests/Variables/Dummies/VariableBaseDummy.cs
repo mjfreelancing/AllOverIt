@@ -1,5 +1,4 @@
 using AllOverIt.Evaluator.Variables;
-using System.Collections.Generic;
 
 namespace AllOverIt.Evaluator.Tests.Variables.Dummies
 {
@@ -9,8 +8,8 @@ namespace AllOverIt.Evaluator.Tests.Variables.Dummies
 
         public override double Value => _value;
 
-        public VariableBaseDummy(string name, double value = default, IEnumerable<string> referencedVariableNames = null)
-          : base(name, referencedVariableNames)
+        public VariableBaseDummy(string name, double value = default)
+          : base(name)
         {
             SetValue(value);
         }

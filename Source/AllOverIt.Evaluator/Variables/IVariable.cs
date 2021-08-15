@@ -2,16 +2,16 @@ using System.Collections.Generic;
 
 namespace AllOverIt.Evaluator.Variables
 {
-    // Describes a named variable.
+    /// <summary>Describes a named variable.</summary>
     public interface IVariable
     {
-        // Gets the variable's name.
+        /// <summary>Gets the variable's name.</summary>
         string Name { get; }
 
-        // Gets a list of variables this variable references.
-        IEnumerable<IVariable> ReferencedVariables { get; }
-
-        // Gets the variable's value.
+        /// <summary>Gets the variable's value.</summary>
         double Value { get; }
+
+        /// <summary>Gets all variables this variable references. Only applicable to variables constructed from a FormulaCompilerResult.</summary>
+        IEnumerable<IVariable> ReferencedVariables { get; }
     }
 }

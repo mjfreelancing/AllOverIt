@@ -5,20 +5,10 @@ using System.Collections.Generic;
 
 namespace AllOverIt.Evaluator.Variables
 {
-    internal sealed class VariableRegistry : IVariableRegistry
+    public sealed class VariableRegistry : IVariableRegistry
     {
-        private readonly IDictionary<string, IVariable> _variableRegistry;
+        private readonly IDictionary<string, IVariable> _variableRegistry = new Dictionary<string, IVariable>();
         public IEnumerable<KeyValuePair<string, IVariable>> Variables => _variableRegistry;
-
-        public VariableRegistry()
-            : this(new Dictionary<string, IVariable>())
-        {
-        }
-
-        internal VariableRegistry(IDictionary<string, IVariable> variableRegistry)
-        {
-            _variableRegistry = variableRegistry.WhenNotNull(nameof(variableRegistry));
-        }
 
         public void AddVariable(IVariable variable)
         {

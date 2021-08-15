@@ -13,24 +13,24 @@ namespace AllOverIt.Evaluator.Variables
             return new VariableRegistry();
         }
 
-        public IMutableVariable CreateMutableVariable(string name, double value = default, IEnumerable<string> referencedVariableNames = null)
+        public IMutableVariable CreateMutableVariable(string name, double value = default)
         {
-            return new MutableVariable(name, value, referencedVariableNames);
+            return new MutableVariable(name, value);
         }
 
-        public IVariable CreateConstantVariable(string name, double value = default, IEnumerable<string> referencedVariableNames = null)
+        public IVariable CreateConstantVariable(string name, double value = default)
         {
-            return new ConstantVariable(name, value, referencedVariableNames);
+            return new ConstantVariable(name, value);
         }
 
-        public IVariable CreateDelegateVariable(string name, Func<double> func, IEnumerable<string> referencedVariableNames = null)
+        public IVariable CreateDelegateVariable(string name, Func<double> func)
         {
-            return new DelegateVariable(name, func, referencedVariableNames);
+            return new DelegateVariable(name, func);
         }
 
-        public ILazyVariable CreateLazyVariable(string name, Func<double> func, IEnumerable<string> referencedVariableNames = null, bool threadSafe = false)
+        public ILazyVariable CreateLazyVariable(string name, Func<double> func, bool threadSafe = false)
         {
-            return new LazyVariable(name, func, referencedVariableNames, threadSafe);
+            return new LazyVariable(name, func, threadSafe);
         }
 
         public IVariable CreateAggregateVariable(string name, params Func<double>[] funcs)

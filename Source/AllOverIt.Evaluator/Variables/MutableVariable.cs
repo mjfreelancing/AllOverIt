@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace AllOverIt.Evaluator.Variables
 {
     // TODO: Think about how to best make variables aware of change to avoid potential recalculation. Applies to:
@@ -13,9 +11,8 @@ namespace AllOverIt.Evaluator.Variables
 
         public override double Value => _value;
 
-        // 'referencedVariableNames' is an optional list of variable names that this variable depends on to calculate its value.
-        public MutableVariable(string name, double value = default, IEnumerable<string> referencedVariableNames = null)
-            : base(name, referencedVariableNames)
+        public MutableVariable(string name, double value = default)
+            : base(name)
         {
             SetValue(value);
         }

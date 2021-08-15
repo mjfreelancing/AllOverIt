@@ -26,10 +26,10 @@ namespace AllOverIt.Evaluator
         private static readonly FormulaExpressionFactory FormulaExpressionFactory = new();
         private readonly Stack<string> _operatorStack = new();
         private readonly Stack<Expression> _expressionStack = new();
+        private readonly HashSet<string> _referencedVariableNames = new();
         private readonly IList<FormulaTokenProcessorContext> _tokenProcessors = new List<FormulaTokenProcessorContext>();
         private readonly IArithmeticOperationFactory _operationFactory;
         private readonly IUserDefinedMethodFactory _userDefinedMethodFactory;
-        private readonly IList<string> _referencedVariableNames = new List<string>();
         private IVariableRegistry _variableRegistry;
         private string _formula;
         private int _currentIndex;
@@ -53,6 +53,7 @@ namespace AllOverIt.Evaluator
 
             _operatorStack.Clear();
             _expressionStack.Clear();
+            _referencedVariableNames.Clear();
             _lastPushIsOperator = true;
             _currentIndex = 0;
 

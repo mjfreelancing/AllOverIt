@@ -1,6 +1,6 @@
+using AllOverIt.Evaluator.Variables.Extensions;
 using AllOverIt.Helpers;
 using System;
-using System.Collections.Generic;
 
 namespace AllOverIt.Evaluator.Variables
 {
@@ -13,14 +13,19 @@ namespace AllOverIt.Evaluator.Variables
 
         public override double Value => _lazyFunc.Value;
 
-        // 'referencedVariableNames' is an optional list of variable names that this variable depends on to calculate its value.
-        public LazyVariable(string name, Func<double> valueResolver, IEnumerable<string> referencedVariableNames = null, bool threadSafe = false)
-            : base(name, referencedVariableNames)
+        public LazyVariable(string name, Func<double> valueResolver, bool threadSafe = false)
+            : base(name)
         {
             _valueResolver = valueResolver.WhenNotNull(nameof(valueResolver));
             _threadSafe = threadSafe;
 
             Reset();
+        }
+
+        public LazyVariable(string name, FormulaCompilerResult compilerResult, bool threadSafe = false)
+            : this(name, compilerResult.Resolver, threadSafe)
+        {
+            ReferencedVariables = compilerResult.GetReferencedVariables();
         }
 
         /// <summary>Resets the variable to force its value to be re-evaluated.</summary>

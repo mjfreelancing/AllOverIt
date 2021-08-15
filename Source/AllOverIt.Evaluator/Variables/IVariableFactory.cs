@@ -7,13 +7,13 @@ namespace AllOverIt.Evaluator.Variables
     {
         IVariableRegistry CreateVariableRegistry();
 
-        IMutableVariable CreateMutableVariable(string name, double value = default, IEnumerable<string> referencedVariableNames = null);
+        IMutableVariable CreateMutableVariable(string name, double value = default);
 
-        IVariable CreateConstantVariable(string name, double value = default, IEnumerable<string> referencedVariableNames = null);
+        IVariable CreateConstantVariable(string name, double value = default);
 
-        IVariable CreateDelegateVariable(string name, Func<double> func, IEnumerable<string> referencedVariableNames = null);
+        IVariable CreateDelegateVariable(string name, Func<double> func);
 
-        ILazyVariable CreateLazyVariable(string name, Func<double> func, IEnumerable<string> referencedVariableNames = null, bool threadSafe = false);
+        ILazyVariable CreateLazyVariable(string name, Func<double> func, bool threadSafe = false);
 
         IVariable CreateAggregateVariable(string name, params Func<double>[] funcs);
 

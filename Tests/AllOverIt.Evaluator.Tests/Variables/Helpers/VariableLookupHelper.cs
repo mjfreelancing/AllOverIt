@@ -11,29 +11,27 @@ namespace AllOverIt.Evaluator.Tests.Variables.Helpers
     {
         public static IVariableRegistry GetKnownVariableRegistry()
         {
-            var factory = new VariableFactory();
-            var registry = factory.CreateVariableRegistry();
+            var compiler = new FormulaCompiler();
+            var registry = new VariableRegistry();
 
-            //                                 References                     Referencing
-            //                            Explicit        All             Explicit        All
-            // a = 1                      -               -               b, c, e         b, c, d, e, f, g
-            // b = a + 2                  a               a               c, e, f         c, d, e, f, g
-            // c = a + b                  a, b            a, b            d, e            d, e, g
-            // d = c                      c               a, b, c         -               -
-            // e = a + b + c              a, b, c         a, b, c         g               g
-            // f = b                      b               a, b            -               -
-            // g = e                      e               a, b, c, e      -               -
+            //                                      References                     Referencing
+            //                   Value         Explicit        All             Explicit        All
+            // a = 1               1           -               -               b, c, e         b, c, d, e, f, g
+            // b = a + 2           3           a               a               c, e, f         c, d, e, f, g
+            // c = a + b           4           a, b            a, b            d, e            d, e, g
+            // d = c               4           c               a, b, c         -               -
+            // e = a + b + c       8           a, b, c         a, b, c         g               g
+            // f = b               3           b               a, b            -               -
+            // g = e               8           e               a, b, c, e      -               -
 
-            var a = factory.CreateConstantVariable("a");
-            var b = factory.CreateDelegateVariable("b", () => 0.0d, new[] { "a" });
-            var c = factory.CreateDelegateVariable("c", () => 0.0d, new[] { "a", "b" });
-            var d = factory.CreateLazyVariable("d", () => 0.0d, new[] { "c" });
-            var e = factory.CreateLazyVariable("e", () => 0.0d, new[] { "a", "b", "c" });
-            var f = factory.CreateDelegateVariable("f", () => 0.0d, new[] { "b" });
-            var g = factory.CreateDelegateVariable("g", () => 0.0d, new[] { "e" });
-
-            registry.Add(a, b, c, d, e, f, g);
-
+            registry.AddConstantVariable("a", 1);
+            registry.AddDelegateVariable("b", compiler.Compile("a + 2", registry));
+            registry.AddLazyVariable("c", compiler.Compile("a + b", registry));
+            registry.AddLazyVariable("d", compiler.Compile("c", registry));
+            registry.AddLazyVariable("e", compiler.Compile("a+b+c", registry));
+            registry.AddDelegateVariable("f", compiler.Compile("b", registry));
+            registry.AddDelegateVariable("g", compiler.Compile("e", registry));
+            
             return registry;
         }
 

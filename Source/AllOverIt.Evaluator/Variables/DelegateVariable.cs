@@ -1,6 +1,6 @@
+using AllOverIt.Evaluator.Variables.Extensions;
 using AllOverIt.Helpers;
 using System;
-using System.Collections.Generic;
 
 namespace AllOverIt.Evaluator.Variables
 {
@@ -8,14 +8,21 @@ namespace AllOverIt.Evaluator.Variables
     // reads depending on the delegate's implementation.
     public sealed record DelegateVariable : VariableBase
     {
-        private Func<double> ValueResolver { get; }
-        public override double Value => ValueResolver.Invoke();
+        private readonly Func<double> _valueResolver;
+
+        public override double Value => _valueResolver.Invoke();
 
         // 'referencedVariableNames' is an optional list of variable names that this variable depends on to calculate its value.
-        public DelegateVariable(string name, Func<double> valueResolver, IEnumerable<string> referencedVariableNames = null)
-            : base(name, referencedVariableNames)
+        public DelegateVariable(string name, Func<double> valueResolver)
+            : base(name)
         {
-            ValueResolver = valueResolver.WhenNotNull(nameof(valueResolver));
+            _valueResolver = valueResolver.WhenNotNull(nameof(valueResolver));
+        }
+
+        public DelegateVariable(string name, FormulaCompilerResult compilerResult)
+            : this(name, compilerResult.Resolver)
+        {
+            ReferencedVariables = compilerResult.GetReferencedVariables();
         }
     }
 }

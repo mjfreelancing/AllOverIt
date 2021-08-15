@@ -1,4 +1,5 @@
 using AllOverIt.Helpers;
+using System;
 
 namespace AllOverIt.Evaluator.Variables.Extensions
 {
@@ -28,5 +29,58 @@ namespace AllOverIt.Evaluator.Variables.Extensions
 
             return registry;
         }
+
+
+
+
+        public static IVariable AddConstantVariable(this IVariableRegistry variableRegistry, string name, double value = default)
+        {
+            var variable = new ConstantVariable(name, value);
+            variableRegistry.AddVariable(variable);
+
+            return variable;
+        }
+
+        public static IVariable AddMutableVariable(this IVariableRegistry variableRegistry, string name, double value = default)
+        {
+            var variable = new MutableVariable(name, value);
+            variableRegistry.AddVariable(variable);
+
+            return variable;
+        }
+
+        public static IVariable AddDelegateVariable(this IVariableRegistry variableRegistry, string name, Func<double> value = default)
+        {
+            var variable = new DelegateVariable(name, value);
+            variableRegistry.AddVariable(variable);
+
+            return variable;
+        }
+
+        public static IVariable AddDelegateVariable(this IVariableRegistry variableRegistry, string name, FormulaCompilerResult compilerResult)
+        {
+            var variable = new DelegateVariable(name, compilerResult);
+            variableRegistry.AddVariable(variable);
+
+            return variable;
+        }
+
+        public static IVariable AddLazyVariable(this IVariableRegistry variableRegistry, string name, Func<double> value = default)
+        {
+            var variable = new LazyVariable(name, value);
+            variableRegistry.AddVariable(variable);
+
+            return variable;
+        }
+
+        public static IVariable AddLazyVariable(this IVariableRegistry variableRegistry, string name, FormulaCompilerResult compilerResult)
+        {
+            var variable = new LazyVariable(name, compilerResult);
+            variableRegistry.AddVariable(variable);
+
+            return variable;
+        }
+
+
     }
 }
