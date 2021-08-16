@@ -7,17 +7,80 @@
         <member name="T:AllOverIt.Evaluator.Exceptions.FormulaException">
             <summary>An exception that can be thrown by the FormulaCompiler while compiling a formula expression.</summary>
         </member>
+        <member name="M:AllOverIt.Evaluator.Exceptions.FormulaException.#ctor">
+            <summary>Default constructor.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Exceptions.FormulaException.#ctor(System.String)">
+            <summary>Constructor.</summary>
+            <param name="message">The exception message.</param>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Exceptions.FormulaException.#ctor(System.String,System.Exception)">
+            <summary>Constructor.</summary>
+            <param name="message">The exception message.</param>
+            <param name="innerException">The inner exception.</param>
+        </member>
         <member name="T:AllOverIt.Evaluator.Exceptions.OperationFactoryException">
             <summary>An exception that can be thrown by the ArithmeticOperationFactory while compiling a formula expression.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Exceptions.OperationFactoryException.#ctor">
+            <summary>Default constructor.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Exceptions.OperationFactoryException.#ctor(System.String)">
+            <summary>Constructor.</summary>
+            <param name="message">The exception message.</param>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Exceptions.OperationFactoryException.#ctor(System.String,System.Exception)">
+            <summary>Constructor.</summary>
+            <param name="message">The exception message.</param>
+            <param name="innerException">The inner exception.</param>
         </member>
         <member name="T:AllOverIt.Evaluator.Exceptions.OperatorException">
             <summary>An exception that can be thrown by a concrete IOperator while compiling a formula expression.</summary>
         </member>
+        <member name="M:AllOverIt.Evaluator.Exceptions.OperatorException.#ctor">
+            <summary>Default constructor.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Exceptions.OperatorException.#ctor(System.String)">
+            <summary>Constructor.</summary>
+            <param name="message">The exception message.</param>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Exceptions.OperatorException.#ctor(System.String,System.Exception)">
+            <summary>Constructor.</summary>
+            <param name="message">The exception message.</param>
+            <param name="innerException">The inner exception.</param>
+        </member>
         <member name="T:AllOverIt.Evaluator.Exceptions.VariableException">
             <summary>An exception that can be thrown by a concrete IVariable.</summary>
         </member>
+        <member name="M:AllOverIt.Evaluator.Exceptions.VariableException.#ctor">
+            <summary>Default constructor.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Exceptions.VariableException.#ctor(System.String)">
+            <summary>Constructor.</summary>
+            <param name="message">The exception message.</param>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Exceptions.VariableException.#ctor(System.String,System.Exception)">
+            <summary>Constructor.</summary>
+            <param name="message">The exception message.</param>
+            <param name="innerException">The inner exception.</param>
+        </member>
         <member name="T:AllOverIt.Evaluator.Exceptions.VariableImmutableException">
             <summary>An exception that can be thrown to indicate a concrete IVariable instance is not mutable.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Exceptions.VariableImmutableException.#ctor">
+            <summary>Default constructor.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Exceptions.VariableImmutableException.#ctor(System.String)">
+            <summary>Constructor.</summary>
+            <param name="message">The exception message.</param>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Exceptions.VariableImmutableException.#ctor(System.String,System.Exception)">
+            <summary>Constructor.</summary>
+            <param name="message">The exception message.</param>
+            <param name="innerException">The inner exception.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Extensions.FormulaCompilerExtensions">
+            <summary>Provides extension methods for IFormulaCompiler.</summary>
         </member>
         <member name="M:AllOverIt.Evaluator.Extensions.FormulaCompilerExtensions.GetResult(AllOverIt.Evaluator.IFormulaCompiler,System.String,AllOverIt.Evaluator.Variables.IVariableRegistry)">
             <summary>Compiles a formula and returns the invoked result.</summary>

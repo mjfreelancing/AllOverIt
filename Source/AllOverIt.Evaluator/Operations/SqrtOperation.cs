@@ -11,7 +11,7 @@ namespace AllOverIt.Evaluator.Operations
         {
         }
 
-        internal static IOperator MakeOperator(Expression[] expressions)
+        private static IOperator MakeOperator(Expression[] expressions)
         {
             return OperatorBase.Create(expressions, e => new SqrtOperator(e[0]));
         }

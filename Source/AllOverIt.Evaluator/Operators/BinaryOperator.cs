@@ -7,20 +7,20 @@ namespace AllOverIt.Evaluator.Operators
     // An expression operator that operates on two operands.
     public abstract class BinaryOperator : Operator<Func<Expression, Expression, Expression>>
     {
-        internal Expression LeftOperand { get; }
-        internal Expression RightOperand { get; }
+        private readonly Expression _leftOperand;
+        private readonly Expression _rightOperand;
 
         protected BinaryOperator(Func<Expression, Expression, Expression> operatorType, Expression leftOperand, Expression rightOperand)
           : base(operatorType)
         {
-            LeftOperand = leftOperand.WhenNotNull(nameof(leftOperand));
-            RightOperand = rightOperand.WhenNotNull(nameof(rightOperand));
+            _leftOperand = leftOperand.WhenNotNull(nameof(leftOperand));
+            _rightOperand = rightOperand.WhenNotNull(nameof(rightOperand));
         }
 
         // Gets an Expression that is the result of invoking the operator.
         public override Expression GetExpression()
         {
-            return OperatorType.Invoke(LeftOperand, RightOperand);
+            return OperatorType.Invoke(_leftOperand, _rightOperand);
         }
     }
 }

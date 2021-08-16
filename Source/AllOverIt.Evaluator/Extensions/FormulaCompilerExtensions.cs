@@ -3,6 +3,7 @@ using AllOverIt.Helpers;
 
 namespace AllOverIt.Evaluator.Extensions
 {
+    /// <summary>Provides extension methods for IFormulaCompiler.</summary>
     public static class FormulaCompilerExtensions
     {
         /// <summary>Compiles a formula and returns the invoked result.</summary>

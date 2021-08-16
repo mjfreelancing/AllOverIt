@@ -1,28 +1,27 @@
 using System;
-using System.Runtime.Serialization;
 
 namespace AllOverIt.Evaluator.Exceptions
 {
     /// <summary>An exception that can be thrown by a concrete IVariable.</summary>
-    [Serializable]
     public class VariableException : Exception
     {
+        /// <summary>Default constructor.</summary>
         public VariableException()
         {
         }
 
+        /// <summary>Constructor.</summary>
+        /// <param name="message">The exception message.</param>
         public VariableException(string message)
             : base(message)
         {
         }
 
+        /// <summary>Constructor.</summary>
+        /// <param name="message">The exception message.</param>
+        /// <param name="innerException">The inner exception.</param>
         public VariableException(string message, Exception innerException)
             : base(message, innerException)
-        {
-        }
-
-        protected VariableException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
         {
         }
     }
