@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace AllOverIt.Evaluator.Exceptions
 {
-    // An exception that can be thrown to indicate a concrete IVariable instance is not mutable.
+    /// <summary>An exception that can be thrown to indicate a concrete IVariable instance is not mutable.</summary>
     [Serializable]
     public class VariableImmutableException : VariableException
     {

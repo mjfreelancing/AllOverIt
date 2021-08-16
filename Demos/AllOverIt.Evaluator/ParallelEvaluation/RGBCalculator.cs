@@ -7,7 +7,7 @@ namespace ParallelEvaluation
 {
     internal sealed class RGBCalculator
     {
-        private static readonly IVariableFactory VariableFactory = new VariableFactory();
+        private static readonly IVariableFactory VariableFactory = new VariableFactory();       // thread safe
         private readonly IVariableRegistry _variables;
         private readonly Func<double> _redFunc;
         private readonly Func<double> _greenFunc;
@@ -19,14 +19,12 @@ namespace ParallelEvaluation
 
         public RGBCalculator(string redFormula, string greenFormula, string blueFormula)
         {
-            // must have a compiler per thread (the internal processor maintains state)
-            var compiler = new FormulaCompiler();
-
-            // but the variable factory can be shared
             _variables = VariableFactory.CreateVariableRegistry();
 
             _variables.AddMutableVariable("x");
             _variables.AddMutableVariable("y");
+
+            var compiler = new FormulaCompiler();
 
             _redFunc = compiler.Compile(redFormula, _variables).Resolver;
             _greenFunc = compiler.Compile(greenFormula, _variables).Resolver;

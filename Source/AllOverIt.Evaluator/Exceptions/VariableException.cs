@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace AllOverIt.Evaluator.Exceptions
 {
-    // An exception that can be thrown by a concrete IVariable.
+    /// <summary>An exception that can be thrown by a concrete IVariable.</summary>
     [Serializable]
     public class VariableException : Exception
     {
