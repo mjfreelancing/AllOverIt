@@ -5,36 +5,31 @@ namespace AllOverIt.Evaluator.Operations
 {
     public sealed class UserDefinedMethodFactory : IUserDefinedMethodFactory
     {
-        private IDictionary<string, Lazy<ArithmeticOperationBase>> OperationRegistry { get; }
+        private readonly IDictionary<string, Lazy<ArithmeticOperationBase>> _operationRegistry = new Dictionary<string, Lazy<ArithmeticOperationBase>>();
+
+        public IEnumerable<string> RegisteredMethods => _operationRegistry.Keys;
 
         public UserDefinedMethodFactory()
-            : this(null)
         {
-        }
-
-        internal UserDefinedMethodFactory(IDictionary<string, Lazy<ArithmeticOperationBase>> operationRegistry)
-        {
-            OperationRegistry = operationRegistry ?? new Dictionary<string, Lazy<ArithmeticOperationBase>>();
-
             RegisterBuiltInMethods();
         }
 
         // The method name is considered case-insensitive.
         public void RegisterMethod<TOperationType>(string methodName) where TOperationType : ArithmeticOperationBase, new()
         {
-            OperationRegistry.Add(methodName.ToUpper(), MakeLazyOperation<TOperationType>());
+            _operationRegistry.Add(methodName.ToUpper(), MakeLazyOperation<TOperationType>());
         }
 
         // The method name is considered case-insensitive.
         public bool IsRegistered(string methodName)
         {
-            return OperationRegistry.ContainsKey(methodName.ToUpper());
+            return _operationRegistry.ContainsKey(methodName.ToUpper());
         }
 
         // The method name is considered case-insensitive. The object returned is expected to be thread-safe and should therefore not store state.
         public ArithmeticOperationBase GetMethod(string methodName)
         {
-            return OperationRegistry[methodName.ToUpper()].Value;
+            return _operationRegistry[methodName.ToUpper()].Value;
         }
 
         private void RegisterBuiltInMethods()
@@ -59,7 +54,7 @@ namespace AllOverIt.Evaluator.Operations
         private static Lazy<ArithmeticOperationBase> MakeLazyOperation<TOperationType>() where TOperationType : ArithmeticOperationBase, new()
         {
             // user defined methods are only ever created once, if ever.
-            return new(() => new TOperationType());
+            return new Lazy<ArithmeticOperationBase>(() => new TOperationType());
         }
     }
 }

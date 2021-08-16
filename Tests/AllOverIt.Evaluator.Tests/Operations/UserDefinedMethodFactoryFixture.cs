@@ -14,18 +14,6 @@ namespace AllOverIt.Evaluator.Tests.Operations
 
         public class Constructor : UserDefinedMethodFactoryFixture
         {
-            [Fact]
-            public void Should_Registry_Built_In_Methods()
-            {
-                var registry = new Dictionary<string, Lazy<ArithmeticOperationBase>>();
-                _factory = new UserDefinedMethodFactory(registry);
-
-                registry.Keys.Should().BeEquivalentTo(new[]
-                {
-                    "ROUND", "SQRT", "LOG", "LN", "EXP", "PERC", "SIN", "COS", "TAN", "SINH", "COSH", "TANH", "ASIN", "ACOS", "ATAN"
-                });
-            }
-
             [Theory]
             [InlineData("ROUND", typeof(RoundOperation))]
             [InlineData("SQRT", typeof(SqrtOperation))]
@@ -44,11 +32,11 @@ namespace AllOverIt.Evaluator.Tests.Operations
             [InlineData("ATAN", typeof(AtanOperation))]
             public void Should_Registry_Built_In_Method_Operations(string name, Type operationType)
             {
-                var registry = new Dictionary<string, Lazy<ArithmeticOperationBase>>();
-                _factory = new UserDefinedMethodFactory(registry);
+                //var registry = new Dictionary<string, Lazy<ArithmeticOperationBase>>();
+                _factory = new UserDefinedMethodFactory(/*registry*/);
 
                 // only here to make sure the test cases are updated if a new operation is added
-                registry.Keys.Should().HaveCount(15);
+                _factory.RegisteredMethods.Should().HaveCount(15);
 
                 var operation = _factory.GetMethod(name);
 
