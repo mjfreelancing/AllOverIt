@@ -42,8 +42,8 @@ namespace AllOverIt.Evaluator
             _operationFactory = operationFactory.WhenNotNull(nameof(operationFactory));
             _userDefinedMethodFactory = userDefinedMethodFactory.WhenNotNull(nameof(userDefinedMethodFactory));
 
-            // custom operator registration
-            _operationFactory.RegisterOperation(CustomTokens.UnaryMinus, 4, 1, e => new NegateOperator(e[0]));
+            // custom operator registration (using TryRegisterOperation as the factory can be shared across threads)
+            _operationFactory.TryRegisterOperation(CustomTokens.UnaryMinus, 4, 1, e => new NegateOperator(e[0]));
         }
 
         public FormulaProcessorResult Process(string formula, IVariableRegistry variableRegistry)
@@ -149,12 +149,7 @@ namespace AllOverIt.Evaluator
             }
             else
             {
-                // validate the symbol is valid
-                if (!_operationFactory.IsRegistered(operatorToken))
-                {
-                    throw new FormulaException($"Unknown operator: {operatorToken}");
-                }
-
+                // validate the symbol is valid - throws if it isn't registered
                 var currentOperation = _operationFactory.GetOperation(operatorToken);
 
                 ProcessOperators(_operatorStack, _expressionStack, () =>
@@ -303,7 +298,7 @@ namespace AllOverIt.Evaluator
 
             // an operator
             RegisterTokenProcessor(
-              (token, _) => _operationFactory.IsCandidate(token),
+              (token, _) => IsCandidateOperation(token),
               (_, _) =>
               {
                   ProcessOperator();
@@ -440,7 +435,7 @@ namespace AllOverIt.Evaluator
                 if (next != '(' &&
                     next != ')' &&
                     next != ',' &&
-                    !_operationFactory.IsCandidate(next))   // only looking to see if 'next' is the start of a new operation
+                    !IsCandidateOperation(next))   // only looking to see if 'next' is the start of a new operation
                 {
                     _currentIndex++;
                 }
@@ -483,8 +478,8 @@ namespace AllOverIt.Evaluator
                 // keep reading while ever the characters read are part of a registered operator
                 // (almost always a single character, but supports multi-character)
                 var isCandidate = startIndex == _currentIndex
-                    ? _operationFactory.IsCandidate(span[_currentIndex])        // avoid creation of a string
-                    : _operationFactory.IsCandidate(span.Slice(startIndex, _currentIndex - startIndex + 1).ToString());
+                    ? IsCandidateOperation(span[_currentIndex])        // avoid creation of a string
+                    : IsCandidateOperation(span.Slice(startIndex, _currentIndex - startIndex + 1).ToString());
 
                 if (isCandidate)
                 {
@@ -512,6 +507,16 @@ namespace AllOverIt.Evaluator
         private static bool IsUnaryPlusOrMinus(char token)
         {
             return token is '-' or '+';
+        }
+
+        private bool IsCandidateOperation(char symbol)
+        {
+            return _operationFactory.RegisteredOperations.Any(key => key[0] == symbol);
+        }
+
+        private bool IsCandidateOperation(string token)
+        {
+            return _operationFactory.RegisteredOperations.Any(key => key.StartsWith(token));
         }
     }
 }

@@ -2,7 +2,6 @@
 using AllOverIt.Evaluator.Operators;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Evaluator.Operations
@@ -15,34 +14,21 @@ namespace AllOverIt.Evaluator.Operations
     {
         private readonly IDictionary<string, Lazy<ArithmeticOperation>> _operations = new Dictionary<string, Lazy<ArithmeticOperation>>();
 
+        public IEnumerable<string> RegisteredOperations => _operations.Keys;
+
         public ArithmeticOperationFactory()
         {
             RegisterDefaultOperations();
         }
 
-        public bool IsCandidate(char symbol)
+        public bool TryRegisterOperation(string symbol, int precedence, int argumentCount, Func<Expression[], IOperator> operatorCreator)
         {
-            return _operations.Keys.Any(key => key[0] == symbol);
-        }
-
-        public bool IsCandidate(string token)
-        {
-            return _operations.Keys.Any(key => key.StartsWith(token));
-        }
-
-        public bool IsRegistered(string symbol)
-        {
-            return _operations.ContainsKey(symbol);
+            return TryRegisterOperation(symbol, precedence, argumentCount, operatorCreator, false);
         }
 
         public void RegisterOperation(string symbol, int precedence, int argumentCount, Func<Expression[], IOperator> operatorCreator)
         {
-            if (_operations.ContainsKey(symbol))
-            {
-                throw new OperationFactoryException($"Operation already registered for the '{symbol}' operator");
-            }
-
-            _operations[symbol] = new Lazy<ArithmeticOperation>(() => new ArithmeticOperation(precedence, argumentCount, operatorCreator));
+            TryRegisterOperation(symbol, precedence, argumentCount, operatorCreator, true);
         }
 
         // Creates the operation instances on demand. Only one instance per type is ever created.
@@ -66,6 +52,22 @@ namespace AllOverIt.Evaluator.Operations
             RegisterOperation("/", 3, 2, MakeDivideOperator);
             RegisterOperation("%", 3, 2, MakeModuloOperator);
             RegisterOperation("^", 2, 2, MakePowerOperator);
+        }
+
+        private bool TryRegisterOperation(string symbol, int precedence, int argumentCount, Func<Expression[], IOperator> operatorCreator, bool throwIfRegistered)
+        {
+            if (_operations.ContainsKey(symbol))
+            {
+                if (throwIfRegistered)
+                {
+                    throw new OperationFactoryException($"Operation already registered for the '{symbol}' operator");
+                }
+
+                return false;
+            }
+
+            _operations[symbol] = new Lazy<ArithmeticOperation>(() => new ArithmeticOperation(precedence, argumentCount, operatorCreator));
+            return true;
         }
 
         private static IOperator MakeAddOperator(Expression[] expressions)

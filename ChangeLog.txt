@@ -37,10 +37,10 @@ AllOverIt.Evaluator - v 3.0.0
     ======================================================================================================================
     |                            Method |        Mean |     Error |    StdDev |   Gen 0 |  Gen 1 | Allocated |
     |---------------------------------- |------------:|----------:|----------:|--------:|-------:|----------:|
-    |     AddTwoConstantsUsingGetResult |    83.77 us |  1.647 us |  2.415 us |  1.0986 | 0.2441 |      7 KB |
-    |      AddTwoVariablesUsingRegistry |   282.26 us |  5.062 us |  4.971 us |  1.4648 |      - |      9 KB |
-    | MultipleFormulaWithoutCompilation | 1,226.95 us | 24.163 us | 41.680 us | 18.5547 | 3.9063 |    116 KB |
-    |   CalculateAreaUsingHeronsFormula | 1,332.27 us | 26.459 us | 31.498 us | 21.4844 | 3.9063 |     95 KB |
+    |     AddTwoConstantsUsingGetResult |    83.13 us |  1.251 us |  1.536 us |  1.0986 | 0.2441 |      7 KB |
+    |      AddTwoVariablesUsingRegistry |   265.69 us |  4.261 us |  3.986 us |  0.9766 |      - |      9 KB |
+    | MultipleFormulaWithoutCompilation | 1,228.10 us | 22.643 us | 21.181 us | 18.5547 | 3.9063 |    116 KB |
+    |   CalculateAreaUsingHeronsFormula | 1,313.17 us | 17.622 us | 16.484 us | 21.4844 | 3.9063 |     94 KB |
 
 
 

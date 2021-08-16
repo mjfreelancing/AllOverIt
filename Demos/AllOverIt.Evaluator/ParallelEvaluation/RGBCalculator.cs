@@ -1,46 +1,49 @@
 using AllOverIt.Evaluator;
 using AllOverIt.Evaluator.Variables;
+using AllOverIt.Evaluator.Variables.Extensions;
 using System;
 
 namespace ParallelEvaluation
 {
     internal sealed class RGBCalculator
     {
-        private IVariableRegistry Variables { get; }
+        private static readonly IVariableFactory VariableFactory = new VariableFactory();
+        private readonly IVariableRegistry _variables;
         private readonly Func<double> _redFunc;
         private readonly Func<double> _greenFunc;
         private readonly Func<double> _blueFunc;
 
-        public byte RedValue => CalculateColourValue(_redFunc.Invoke());
-        public byte GreenValue => CalculateColourValue(_greenFunc.Invoke());
-        public byte BlueValue => CalculateColourValue(_blueFunc.Invoke());
+        public byte RedValue => CalculateColorValue(_redFunc.Invoke());
+        public byte GreenValue => CalculateColorValue(_greenFunc.Invoke());
+        public byte BlueValue => CalculateColorValue(_blueFunc.Invoke());
 
         public RGBCalculator(string redFormula, string greenFormula, string blueFormula)
         {
+            // must have a compiler per thread (the internal processor maintains state)
             var compiler = new FormulaCompiler();
 
-            var variableFactory = new VariableFactory();
-            Variables = variableFactory.CreateVariableRegistry();
+            // but the variable factory can be shared
+            _variables = VariableFactory.CreateVariableRegistry();
 
-            Variables.AddVariable(new MutableVariable("x"));
-            Variables.AddVariable(new MutableVariable("y"));
+            _variables.AddMutableVariable("x");
+            _variables.AddMutableVariable("y");
 
-            _redFunc = compiler.Compile(redFormula, Variables).Resolver;
-            _greenFunc = compiler.Compile(greenFormula, Variables).Resolver;
-            _blueFunc = compiler.Compile(blueFormula, Variables).Resolver;
+            _redFunc = compiler.Compile(redFormula, _variables).Resolver;
+            _greenFunc = compiler.Compile(greenFormula, _variables).Resolver;
+            _blueFunc = compiler.Compile(blueFormula, _variables).Resolver;
         }
 
         public void SetX(double value)
         {
-            Variables.SetValue("x", value);
+            _variables.SetValue("x", value);
         }
 
         public void SetY(double value)
         {
-            Variables.SetValue("y", value);
+            _variables.SetValue("y", value);
         }
 
-        private static byte CalculateColourValue(double x)
+        private static byte CalculateColorValue(double x)
         {
             if (double.IsNaN(x) || (x < 0.0d))
             {

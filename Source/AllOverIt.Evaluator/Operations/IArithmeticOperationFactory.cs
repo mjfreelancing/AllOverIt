@@ -1,18 +1,19 @@
 using AllOverIt.Evaluator.Operators;
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Evaluator.Operations
 {
-    // Represents an arithmetic operation factory.
+    /// <summary>Represents an arithmetic operation factory.</summary>
+    /// <remarks>It is recommended to use a single instance of the factory.</remarks>
     public interface IArithmeticOperationFactory
     {
-        // Indicates if the provided symbol represents the start of any of the registered operations.
-        bool IsCandidate(char symbol);
-        bool IsCandidate(string token);
+        /// <summary>Gets all registered operations based on their associated symbol.</summary>
+        IEnumerable<string> RegisteredOperations { get; }
 
-        // Indicates if the specified operation (operator symbol) is registered with the factory.
-        bool IsRegistered(string symbol);
+        // todo: requires a test
+        bool TryRegisterOperation(string symbol, int precedence, int argumentCount, Func<Expression[], IOperator> operatorCreator);
 
         // Registers a new operation in terms of its operator symbol, precedence level and a factory used for creating the required operation.
         void RegisterOperation(string symbol, int precedence, int argumentCount, Func<Expression[], IOperator> operatorCreator);

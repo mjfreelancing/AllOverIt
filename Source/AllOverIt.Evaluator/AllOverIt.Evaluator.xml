@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AllOverIt.Evaluator</name>
+    </assembly>
+    <members>
+        <member name="M:AllOverIt.Evaluator.Extensions.FormulaCompilerExtensions.GetResult(AllOverIt.Evaluator.IFormulaCompiler,System.String,AllOverIt.Evaluator.Variables.IVariableRegistry)">
+            <summary>Compiles a formula and returns the invoked result.</summary>
+            <param name="compiler">The IFormulaCompiler instance used to compile the formula.</param>
+            <param name="formula">The formula as a string.</param>
+            <param name="variableRegistry">An optional registry where, if required, contains previously populated variables required for the evaluation of the formula.</param>
+            <returns>The evaluated result.</returns>
+        </member>
+        <member name="T:AllOverIt.Evaluator.FormulaCompiler">
+            <summary>Compiles a mathematical expression provided as a string to a delegate that can be repeatedly invoked for re-evaluation.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.FormulaCompiler.#ctor(AllOverIt.Evaluator.Operations.IArithmeticOperationFactory,AllOverIt.Evaluator.Operations.IUserDefinedMethodFactory)">
+            <summary>Constructor.</summary>
+            <param name="arithmeticFactory"></param>
+            <param name="userMethodFactory"></param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operations.IArithmeticOperationFactory">
+            <summary>Represents an arithmetic operation factory.</summary>
+            <remarks>It is recommended to use a single instance of the factory.</remarks>
+        </member>
+        <member name="P:AllOverIt.Evaluator.Operations.IArithmeticOperationFactory.RegisteredOperations">
+            <summary>Gets all registered operations based on their associated symbol.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operations.IUserDefinedMethodFactory">
+            <summary>Represents a user defined method factory.</summary>
+            <remarks>It is recommended to use a single instance of the factory.</remarks>
+        </member>
+        <member name="P:AllOverIt.Evaluator.Operations.IUserDefinedMethodFactory.RegisteredMethods">
+            <summary>Gets all registered user-defined method names.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.IUserDefinedMethodFactory.RegisterMethod``1(System.String)">
+            <summary>Registers a user defined method with the factory using an associated name and operation type.</summary>
+            <typeparam name="TOperationType">The operation type (inheriting ArithmeticOperationBase) that implements the user-defined method.</typeparam>
+            <param name="methodName">The name of the user-defined method.</param>
+            <remarks>The operation type must not maintain state (and therefore be thread safe) as the factory will only ever create a single instance.</remarks>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.IUserDefinedMethodFactory.IsRegistered(System.String)">
+            <summary>Indicates if the provided user-defined method name is registered with the factory.</summary>
+            <param name="methodName">The name of the user-defined method to check.</param>
+            <returns>True if the user-defined method name is registered.</returns>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.IUserDefinedMethodFactory.GetMethod(System.String)">
+            <summary>Gets an instance of the class implementing the user-defined method identified by the provided method name.</summary>
+            <param name="methodName">The name of the user-defined method identifying the operation type to return.</param>
+            <returns>The concrete type implementing the user-defined method.</returns>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.Extensions.VariableExtensions.GetAllReferencedVariables(AllOverIt.Evaluator.Variables.IVariable)">
+            <summary>Gets a read-only collection of all variables referenced by the variable (explicit and implicit).</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Variables.IVariable">
+            <summary>Describes a named variable.</summary>
+        </member>
+        <member name="P:AllOverIt.Evaluator.Variables.IVariable.Name">
+            <summary>Gets the variable's name.</summary>
+        </member>
+        <member name="P:AllOverIt.Evaluator.Variables.IVariable.Value">
+            <summary>Gets the variable's value.</summary>
+        </member>
+        <member name="P:AllOverIt.Evaluator.Variables.IVariable.ReferencedVariables">
+            <summary>Gets all variables this variable references. Only applicable to variables constructed from a FormulaCompilerResult.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.LazyVariable.Reset">
+            <summary>Resets the variable to force its value to be re-evaluated.</summary>
+        </member>
+        <member name="P:AllOverIt.Evaluator.Variables.VariableBase.Value">
+            <summary>Gets the variable's value.</summary>
+        </member>
+        <member name="P:AllOverIt.Evaluator.Variables.VariableBase.ReferencedVariables">
+            <summary>Gets all variables this variable references. Only applicable to variables constructed from a FormulaCompilerResult.</summary>
+        </member>
+    </members>
+</doc>
