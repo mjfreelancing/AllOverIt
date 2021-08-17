@@ -17,6 +17,7 @@
 ======================================================================================================================
 AllOverIt.Fixture - v1.5.0
   * Updated to use FluentAssertions v6.0.0
+  * Removed Awaiting() as Invoking() can be used
 
 AllOverIt.Fixture.FakeItEasy - v1.3.0
   * Updated to use AllOverIt.Fixture v1.5.0
