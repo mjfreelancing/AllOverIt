@@ -21,7 +21,7 @@ namespace AllOverIt.Tests.Helpers
             {
                 var actual = AllOverIt.Helpers.EnumHelper.GetEnumValues<DummyEnum>();
 
-                actual.Should().BeEquivalentTo(DummyEnum.Value1, DummyEnum.Value2, DummyEnum.Value3);
+                actual.Should().BeEquivalentTo(new[]{ DummyEnum.Value1, DummyEnum.Value2, DummyEnum.Value3 });
             }
 
             [Fact]

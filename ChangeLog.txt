@@ -6,10 +6,21 @@
   [3] AllOverIt.Aws.Cdk.AppSync    (v0.8.1)  - requires [1] v1.16.1
   [4] AllOverIt.Evaluator          (v2.1.0)  - requires [1] v1.11.0
   [5] AllOverIt.GenericHost        (v1.1.0)  - requires [1] v1.14.0
-  [6] AllOverIt.Fixture            (v1.4.0)  - None
-  [7] AllOverIt.Fixture.FakeItEasy (v1.2.0)  - requires [6] v1.3.0
+  [6] AllOverIt.Fixture            (v1.5.0)  - None
+  [7] AllOverIt.Fixture.FakeItEasy (v1.3.0)  - requires [6] v1.5.0
 
 ======================================================================================================================
+
+
+
+17 Aug 2021
+======================================================================================================================
+AllOverIt.Fixture - v1.5.0
+  * Updated to use FluentAssertions v6.0.0
+  * Removed Awaiting() as Invoking() can be used
+
+AllOverIt.Fixture.FakeItEasy - v1.3.0
+  * Updated to use AllOverIt.Fixture v1.5.0
 
 
 

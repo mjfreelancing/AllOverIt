@@ -5,7 +5,6 @@ using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace AllOverIt.Fixture.Tests
@@ -55,60 +54,6 @@ namespace AllOverIt.Fixture.Tests
                 var invoked = Invoking(toInvoke);
 
                 invoked.Should().BeSameAs(toInvoke);
-            }
-        }
-
-        public class Awaiting_Task : FixtureBaseFixture
-        {
-            [Fact]
-            public void Should_Throw_When_Action_Null()
-            {
-                Func<Task> action = async () => await Awaiting((Func<Task>)null);
-
-                action
-                  .Should()
-                  .Throw<ArgumentNullException>();
-            }
-
-            [Fact]
-            public async Task Should_Invoke_Task()
-            {
-                var expected = Create<string>();
-                string actual = default;
-
-                Func<Task> toInvoke = () =>
-                {
-                    actual = expected;
-                    return Task.CompletedTask;
-                };
-
-                await Awaiting(toInvoke);
-
-                actual.Should().Be(expected);
-            }
-        }
-
-        public class Awaiting_Task_Result : FixtureBaseFixture
-        {
-            [Fact]
-            public void Should_Throw_When_Action_Null()
-            {
-                Func<Task<bool>> action = async () => await Awaiting((Func<Task<bool>>)null);
-
-                action
-                  .Should()
-                  .Throw<ArgumentNullException>();
-            }
-
-            [Fact]
-            public async Task Should_Return_Awaited_Result()
-            {
-                var expected = Create<string>();
-                Func<Task<string>> toInvoke = () => Task.FromResult(expected);
-
-                var actual = await Awaiting(toInvoke);
-
-                actual.Should().Be(expected);
             }
         }
 
@@ -382,7 +327,6 @@ namespace AllOverIt.Fixture.Tests
                     value2 = Create<DummyEnum>();
                 }
 
-                value1.Should().BeOfType<DummyEnum>();
                 (value2 - value1).Should().NotBe(1);
             }
 

@@ -44,7 +44,7 @@ namespace AllOverIt.Tests.Tasks
 
                 Invoking(() => task)
                   .Should()
-                  .Throw<TaskCanceledException>();
+                  .ThrowAsync<TaskCanceledException>();
             }
 
             [Fact]
@@ -204,7 +204,7 @@ namespace AllOverIt.Tests.Tasks
 
                 Invoking(() => task)
                   .Should()
-                  .Throw<TaskCanceledException>();
+                  .ThrowAsync<TaskCanceledException>();
             }
 
             [Fact]

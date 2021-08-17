@@ -86,10 +86,11 @@ namespace AllOverIt.Tests.Extensions
                 .Where(item => item.LessThan(comparisonPerson))
                 .AsReadOnlyList();
 
-            actual.Should().BeEquivalentTo(
-              new Person("Adam", "Baker"),
-              new Person("Adam", "Murphy")
-            );
+            actual.Should().BeEquivalentTo(new[]
+            {
+                new Person("Adam", "Baker"),
+                new Person("Adam", "Murphy")
+            });
         }
 
         [Fact]
@@ -112,10 +113,12 @@ namespace AllOverIt.Tests.Extensions
                         item.GreaterThan(comparisonPerson2))
                 .AsReadOnlyList();
 
-            actual.Should().BeEquivalentTo(
-              new Person("Adam", "Baker"),
-              new Person("Paul", "Nielson")
-            );
+            actual.Should().BeEquivalentTo(new[]
+                {
+
+                    new Person("Adam", "Baker"),
+                    new Person("Paul", "Nielson")
+                });
         }
     }
 }

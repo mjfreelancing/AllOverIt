@@ -25,9 +25,10 @@ namespace AllOverIt.Tests.Tasks
                     await lazy;
                 });
 
-                actual.Should()
-                  .Throw<ArgumentNullException>()
-                  .WithNamedMessageWhenNull("function");
+                actual
+                    .Should()
+                    .ThrowAsync<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("function");
             }
 
             [Fact]
@@ -70,7 +71,7 @@ namespace AllOverIt.Tests.Tasks
                 });
 
                 actual.Should()
-                  .Throw<ArgumentNullException>()
+                  .ThrowAsync<ArgumentNullException>()
                   .WithNamedMessageWhenNull("function");
             }
 

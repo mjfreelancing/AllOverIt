@@ -100,9 +100,7 @@ namespace AllOverIt.Tests.Helpers
             {
                 var actual = (object)ReflectionHelper.GetPropertyInfo<DummySuperClass>("Prop1");
 
-                actual.Should().BeEquivalentTo(
-                    new {Name = "Prop1", PropertyType = typeof(int)}
-                );
+                actual.Should().BeEquivalentTo(new {Name = "Prop1", PropertyType = typeof(int)});
             }
 
             [Fact]
@@ -121,11 +119,12 @@ namespace AllOverIt.Tests.Helpers
             {
                 var actual = ReflectionHelper.GetPropertyInfo<DummySuperClass>();
 
-                actual.Should().BeEquivalentTo(
+                actual.Should().BeEquivalentTo(new[]
+                {
                     new {Name = "Prop1", PropertyType = typeof(int)},
                     new {Name = "Prop2", PropertyType = typeof(string)},
                     new {Name = "Prop3", PropertyType = typeof(double)}
-                );
+                });
             }
 
             [Fact]
@@ -133,9 +132,10 @@ namespace AllOverIt.Tests.Helpers
             {
                 var actual = ReflectionHelper.GetPropertyInfo<DummySuperClass>(BindingOptions.Default, true);
 
-                actual.Should().BeEquivalentTo(
+                actual.Should().BeEquivalentTo(new[]
+                {
                     new {Name = "Prop3", PropertyType = typeof(double)}
-                );
+                });
             }
 
             [Fact]
@@ -166,10 +166,11 @@ namespace AllOverIt.Tests.Helpers
                       item.DeclaringType
                   });
 
-                actual.Should().BeEquivalentTo(
+                actual.Should().BeEquivalentTo(new[]
+                {
                     new {Name = "Method1", DeclaringType = typeof(DummyBaseClass)},
                     new {Name = "Method3", DeclaringType = typeof(DummySuperClass)}
-                );
+                });
             }
 
             [Fact]
@@ -183,9 +184,10 @@ namespace AllOverIt.Tests.Helpers
                       item.DeclaringType
                   });
 
-                actual.Should().BeEquivalentTo(
+                actual.Should().BeEquivalentTo(new[]
+                {
                     new {Name = "Method3", DeclaringType = typeof(DummySuperClass)}
-                );
+                });
             }
 
             [Fact]
@@ -199,10 +201,11 @@ namespace AllOverIt.Tests.Helpers
                       item.DeclaringType
                   });
 
-                actual.Should().BeEquivalentTo(
+                actual.Should().BeEquivalentTo(new[]
+                {
                     new {Name = "Method1", DeclaringType = typeof(DummyBaseClass)},
                     new {Name = "Method2", DeclaringType = typeof(DummyBaseClass)}
-                );
+                });
             }
 
             [Fact]
@@ -217,12 +220,13 @@ namespace AllOverIt.Tests.Helpers
                   });
 
                 // there are 3 overloads of Method4
-                actual.Should().BeEquivalentTo(
+                actual.Should().BeEquivalentTo(new[]
+                {
                     new {Name = "Method3", DeclaringType = typeof(DummySuperClass)},
                     new {Name = "Method4", DeclaringType = typeof(DummySuperClass)},
                     new {Name = "Method4", DeclaringType = typeof(DummySuperClass)},
                     new {Name = "Method4", DeclaringType = typeof(DummySuperClass)}
-                );
+                });
             }
 
             [Fact]
@@ -237,12 +241,13 @@ namespace AllOverIt.Tests.Helpers
                   });
 
                 // there are 3 overloads of Method4
-                actual.Should().BeEquivalentTo(
+                actual.Should().BeEquivalentTo(new[]
+                {
                     new {Name = "Method2", DeclaringType = typeof(DummyBaseClass)},
                     new {Name = "Method4", DeclaringType = typeof(DummySuperClass)},
                     new {Name = "Method4", DeclaringType = typeof(DummySuperClass)},
                     new {Name = "Method4", DeclaringType = typeof(DummySuperClass)}
-                );
+                });
             }
         }
 

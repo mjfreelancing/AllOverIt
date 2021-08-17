@@ -73,7 +73,7 @@ namespace AllOverIt.Tests.Expressions
 
             var actual = filtered.Select(item => item.Id);
 
-            actual.Should().BeEquivalentTo(1, 3, 5);
+            actual.Should().BeEquivalentTo(new[]{ 1, 3, 5 });
         }
 
         [Fact]
@@ -88,7 +88,7 @@ namespace AllOverIt.Tests.Expressions
 
             var actual = filtered.Select(item => item.Id);
 
-            actual.Should().BeEquivalentTo(1, 3);
+            actual.Should().BeEquivalentTo(new[]{ 1, 3 });
         }
 
         [Fact]
@@ -101,7 +101,7 @@ namespace AllOverIt.Tests.Expressions
 
             var actual = filtered.Select(item => item.Id);
 
-            actual.Should().BeEquivalentTo(1, 3);
+            actual.Should().BeEquivalentTo(new[] { 1, 3 });
         }
     }
 }

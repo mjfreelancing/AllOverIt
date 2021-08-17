@@ -127,23 +127,24 @@ namespace AllOverIt.Tests.Reflection
             {
                 var actual = ReflectionHelper.GetPropertyInfo<DummySuperClass>();
 
-                actual.Should().BeEquivalentTo(
-                  new
-                  {
-                      Name = "Prop1",
-                      PropertyType = typeof(int)
-                  },
-                  new
-                  {
-                      Name = "Prop2",
-                      PropertyType = typeof(string)
-                  },
-                  new
-                  {
-                      Name = "Prop3",
-                      PropertyType = typeof(double)
-                  }
-                );
+                actual.Should().BeEquivalentTo(new[]
+                {
+                    new
+                    {
+                        Name = "Prop1",
+                        PropertyType = typeof(int)
+                    },
+                    new
+                    {
+                        Name = "Prop2",
+                        PropertyType = typeof(string)
+                    },
+                    new
+                    {
+                        Name = "Prop3",
+                        PropertyType = typeof(double)
+                    }
+                });
             }
 
             [Fact]
@@ -151,13 +152,14 @@ namespace AllOverIt.Tests.Reflection
             {
                 var actual = ReflectionHelper.GetPropertyInfo<DummySuperClass>(BindingOptions.Default, true);
 
-                actual.Should().BeEquivalentTo(
-                  new
-                  {
-                      Name = "Prop3",
-                      PropertyType = typeof(double)
-                  }
-                );
+                actual.Should().BeEquivalentTo(new[]
+                {
+                    new
+                    {
+                        Name = "Prop3",
+                        PropertyType = typeof(double)
+                    }
+                });
             }
 
             [Fact]
@@ -188,18 +190,19 @@ namespace AllOverIt.Tests.Reflection
                       item.DeclaringType
                   });
 
-                actual.Should().BeEquivalentTo(
-                  new
-                  {
-                      Name = "Method1",
-                      DeclaringType = typeof(DummyBaseClass)
-                  },
-                  new
-                  {
-                      Name = "Method3",
-                      DeclaringType = typeof(DummySuperClass)
-                  }
-                );
+                actual.Should().BeEquivalentTo(new[]
+                {
+                    new
+                    {
+                        Name = "Method1",
+                        DeclaringType = typeof(DummyBaseClass)
+                    },
+                    new
+                    {
+                        Name = "Method3",
+                        DeclaringType = typeof(DummySuperClass)
+                    }
+                });
             }
 
             [Fact]
@@ -213,13 +216,14 @@ namespace AllOverIt.Tests.Reflection
                       item.DeclaringType
                   });
 
-                actual.Should().BeEquivalentTo(
-                  new
-                  {
-                      Name = "Method3",
-                      DeclaringType = typeof(DummySuperClass)
-                  }
-                );
+                actual.Should().BeEquivalentTo(new[]
+                {
+                    new
+                    {
+                        Name = "Method3",
+                        DeclaringType = typeof(DummySuperClass)
+                    }
+                });
             }
 
             [Fact]
@@ -233,18 +237,19 @@ namespace AllOverIt.Tests.Reflection
                       item.DeclaringType
                   });
 
-                actual.Should().BeEquivalentTo(
-                  new
-                  {
-                      Name = "Method1",
-                      DeclaringType = typeof(DummyBaseClass)
-                  },
-                  new
-                  {
-                      Name = "Method2",
-                      DeclaringType = typeof(DummyBaseClass)
-                  }
-                );
+                actual.Should().BeEquivalentTo(new[]
+                {
+                    new
+                    {
+                        Name = "Method1",
+                        DeclaringType = typeof(DummyBaseClass)
+                    },
+                    new
+                    {
+                        Name = "Method2",
+                        DeclaringType = typeof(DummyBaseClass)
+                    }
+                });
             }
 
             [Fact]
@@ -258,18 +263,19 @@ namespace AllOverIt.Tests.Reflection
                       item.DeclaringType
                   });
 
-                actual.Should().BeEquivalentTo(
-                  new
-                  {
-                      Name = "Method3",
-                      DeclaringType = typeof(DummySuperClass)
-                  },
-                  new
-                  {
-                      Name = "Method4",
-                      DeclaringType = typeof(DummySuperClass)
-                  }
-                );
+                actual.Should().BeEquivalentTo(new[]
+                {
+                    new
+                    {
+                        Name = "Method3",
+                        DeclaringType = typeof(DummySuperClass)
+                    },
+                    new
+                    {
+                        Name = "Method4",
+                        DeclaringType = typeof(DummySuperClass)
+                    }
+                });
             }
 
             [Fact]
@@ -283,18 +289,19 @@ namespace AllOverIt.Tests.Reflection
                       item.DeclaringType
                   });
 
-                actual.Should().BeEquivalentTo(
-                  new
-                  {
-                      Name = "Method2",
-                      DeclaringType = typeof(DummyBaseClass)
-                  },
-                  new
-                  {
-                      Name = "Method4",
-                      DeclaringType = typeof(DummySuperClass)
-                  }
-                );
+                actual.Should().BeEquivalentTo(new[]
+                {
+                    new
+                    {
+                        Name = "Method2",
+                        DeclaringType = typeof(DummyBaseClass)
+                    },
+                    new
+                    {
+                        Name = "Method4",
+                        DeclaringType = typeof(DummySuperClass)
+                    }
+                });
             }
         }
 

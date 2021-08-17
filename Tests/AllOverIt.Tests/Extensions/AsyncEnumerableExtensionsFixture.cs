@@ -26,24 +26,25 @@ namespace AllOverIt.Tests.Extensions
             }
 
             [Fact]
-            public async Task Should_Convert_To_Empty_List_When_Cancelled()
+            public void Should_Convert_To_Empty_List_When_Cancelled()
             {
                 var cancellationTokenSource = new CancellationTokenSource();
                 cancellationTokenSource.Cancel();
 
-                var actual = await Awaiting(async () =>
-                {
-                    try
+                Invoking(async () =>
                     {
-                        return await GetStrings(CreateMany<string>()).AsListAsync(cancellationTokenSource.Token).ConfigureAwait(false);
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        return null;
-                    }
-                });
-
-                actual.Should().BeNull();
+                        try
+                        {
+                            return await GetStrings(CreateMany<string>()).AsListAsync(cancellationTokenSource.Token)
+                                .ConfigureAwait(false);
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            return null;
+                        }
+                    })
+                    .Should()
+                    .BeNull();
             }
 
             [Fact]
@@ -57,11 +58,11 @@ namespace AllOverIt.Tests.Extensions
                         await GetStrings(CreateMany<string>()).AsListAsync(cancellationTokenSource.Token);
                     })
                     .Should()
-                    .Throw<OperationCanceledException>();
+                    .ThrowAsync<OperationCanceledException>();
             }
         }
 
-        private static async IAsyncEnumerable<string> GetStrings(IReadOnlyList<string> strings)
+        private static async IAsyncEnumerable<string> GetStrings(IEnumerable<string> strings)
         {
             foreach (var item in strings)
             {
