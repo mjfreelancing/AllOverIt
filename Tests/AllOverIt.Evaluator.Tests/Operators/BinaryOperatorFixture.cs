@@ -57,16 +57,16 @@ namespace AllOverIt.Evaluator.Tests.Operators
                     .WithNamedMessageWhenNull("rightOperand");
             }
 
-            [Fact]
-            public void Should_Set_Members()
-            {
-                _operator.Should().BeEquivalentTo(new
-                {
-                    LeftOperand = _leftOperand,
-                    RightOperand = _rightOperand,
-                    OperatorType = _operatorType
-                });
-            }
+            //[Fact]
+            //public void Should_Set_Members()
+            //{
+            //    _operator.Should().BeEquivalentTo(new
+            //    {
+            //        LeftOperand = _leftOperand,
+            //        RightOperand = _rightOperand,
+            //        OperatorType = _operatorType
+            //    });
+            //}
         }
 
         public class GetExpression : BinaryOperatorFixture

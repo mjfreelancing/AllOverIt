@@ -28,21 +28,21 @@ namespace AllOverIt.Evaluator.Tests.Operations
                     .WithNamedMessageWhenNull("creator");
             }
 
-            [Fact]
-            public void Should_Assign_Members()
-            {
-                var argumentCount = Create<int>();
+            //[Fact]
+            //public void Should_Assign_Members()
+            //{
+            //    var argumentCount = Create<int>();
                 
-                IOperator Creator(Expression[] e) => this.CreateStub<IOperator>();
+            //    IOperator Creator(Expression[] e) => this.CreateStub<IOperator>();
 
-                _operation = new ArithmeticOperationDummy(argumentCount, Creator);
+            //    _operation = new ArithmeticOperationDummy(argumentCount, Creator);
 
-                _operation.Should().BeEquivalentTo(new
-                {
-                    ArgumentCount = argumentCount,
-                    Creator = (Func<Expression[], IOperator>)Creator
-                });
-            }
+            //    _operation.Should().BeEquivalentTo(new
+            //    {
+            //        ArgumentCount = argumentCount,
+            //        Creator = (Func<Expression[], IOperator>)Creator
+            //    });
+            //}
         }
 
         public class GetExpression : ArithmeticOperationBaseFixture
