@@ -57,7 +57,7 @@ namespace AllOverIt.Tests.Extensions
                         await GetStrings(CreateMany<string>()).AsListAsync(cancellationTokenSource.Token);
                     })
                     .Should()
-                    .Throw<OperationCanceledException>();
+                    .ThrowAsync<OperationCanceledException>();
             }
         }
 

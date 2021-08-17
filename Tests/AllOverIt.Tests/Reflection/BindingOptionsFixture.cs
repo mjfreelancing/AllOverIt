@@ -16,11 +16,14 @@ namespace AllOverIt.Tests.Reflection
             {
                 var enumValues = EnumHelper.GetEnumValues<BindingOptions>();
 
-                enumValues.Should().BeEquivalentTo(BindingOptions.Static, BindingOptions.Instance, BindingOptions.Abstract,
-                  BindingOptions.Virtual, BindingOptions.NonVirtual, BindingOptions.Internal, BindingOptions.Private,
-                  BindingOptions.Protected, BindingOptions.Public, BindingOptions.DefaultScope, BindingOptions.DefaultAccessor,
-                  BindingOptions.DefaultVisibility, BindingOptions.AllScope, BindingOptions.AllAccessor, BindingOptions.AllVisibility,
-                  BindingOptions.Default, BindingOptions.All);
+                enumValues.Should().BeEquivalentTo(new[]
+                {
+                    BindingOptions.Static, BindingOptions.Instance, BindingOptions.Abstract,
+                    BindingOptions.Virtual, BindingOptions.NonVirtual, BindingOptions.Internal, BindingOptions.Private,
+                    BindingOptions.Protected, BindingOptions.Public, BindingOptions.DefaultScope,
+                    BindingOptions.DefaultAccessor, BindingOptions.DefaultVisibility, BindingOptions.AllScope,
+                    BindingOptions.AllAccessor, BindingOptions.AllVisibility, BindingOptions.Default, BindingOptions.All
+                });
             }
 
             [Theory]
@@ -35,7 +38,7 @@ namespace AllOverIt.Tests.Reflection
             [InlineData(BindingOptions.Public, 256)]
             public void Should_Have_Expected_Base_Value(BindingOptions option, int expected)
             {
-                option.Should().BeEquivalentTo(expected);
+                ((int)option).Should().Be(expected);
             }
 
             [Theory]
@@ -47,7 +50,7 @@ namespace AllOverIt.Tests.Reflection
             [InlineData(BindingOptions.All, (int)(BindingOptions.AllScope | BindingOptions.AllAccessor | BindingOptions.AllVisibility))]
             public void Should_Have_Expected_Composite_Value(BindingOptions option, int expected)
             {
-                option.Should().BeEquivalentTo(expected);
+                ((int) option).Should().Be(expected);
             }
 
             [Theory]
@@ -55,7 +58,7 @@ namespace AllOverIt.Tests.Reflection
             [InlineData(BindingOptions.AllAccessor, (int)BindingOptions.DefaultAccessor)]
             public void Should_Have_Equivalent_Value(BindingOptions option, int expected)
             {
-                option.Should().BeEquivalentTo(expected);
+                ((int) option).Should().Be(expected);
             }
         }
     }

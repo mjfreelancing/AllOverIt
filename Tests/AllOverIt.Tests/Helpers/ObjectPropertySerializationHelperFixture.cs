@@ -513,7 +513,7 @@ namespace AllOverIt.Tests.Helpers
 
                 helper.IgnoredTypes
                     .Should()
-                    .BeEquivalentTo(typeof(DummyType));
+                    .BeEquivalentTo(new[]{ typeof(DummyType) });
             }
 
             [Fact]
@@ -525,7 +525,7 @@ namespace AllOverIt.Tests.Helpers
 
                 helper.IgnoredTypes
                     .Should()
-                    .BeEquivalentTo(typeof(Task), typeof(Task<>), typeof(DummyType));
+                    .BeEquivalentTo(new[]{ typeof(Task), typeof(Task<>), typeof(DummyType) });
             }
         }
     }

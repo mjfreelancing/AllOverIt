@@ -67,7 +67,7 @@ namespace AllOverIt.Fixture.Tests
 
                 action
                   .Should()
-                  .Throw<ArgumentNullException>();
+                  .ThrowAsync<ArgumentNullException>();
             }
 
             [Fact]
@@ -97,7 +97,7 @@ namespace AllOverIt.Fixture.Tests
 
                 action
                   .Should()
-                  .Throw<ArgumentNullException>();
+                  .ThrowAsync<ArgumentNullException>();
             }
 
             [Fact]
@@ -382,7 +382,6 @@ namespace AllOverIt.Fixture.Tests
                     value2 = Create<DummyEnum>();
                 }
 
-                value1.Should().BeOfType<DummyEnum>();
                 (value2 - value1).Should().NotBe(1);
             }
 
