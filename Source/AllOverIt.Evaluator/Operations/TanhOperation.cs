@@ -3,9 +3,10 @@ using System.Linq.Expressions;
 
 namespace AllOverIt.Evaluator.Operations
 {
-    // An operation used to calculate the hyperbolic tangent of an angle (in radians).
+    /// <summary>An operation used to calculate the hyperbolic tangent of an angle (in radians).</summary>
     public sealed class TanhOperation : ArithmeticOperationBase
     {
+        /// <summary>Constructor.</summary>
         public TanhOperation()
             : base(1, MakeOperator)
         {

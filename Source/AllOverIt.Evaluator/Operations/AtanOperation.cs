@@ -3,9 +3,10 @@ using System.Linq.Expressions;
 
 namespace AllOverIt.Evaluator.Operations
 {
-    // An operation used to calculate the angle (in radians) of a tangent value.
+    /// <summary>An operation used to calculate the angle (in radians) of a tangent value.</summary>
     public sealed class AtanOperation : ArithmeticOperationBase
     {
+        /// <summary>Constructor.</summary>
         public AtanOperation()
             : base(1, MakeOperator)
         {

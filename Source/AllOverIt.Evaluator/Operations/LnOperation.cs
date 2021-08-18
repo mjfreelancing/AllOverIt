@@ -3,9 +3,10 @@ using System.Linq.Expressions;
 
 namespace AllOverIt.Evaluator.Operations
 {
-    // An operation used to calculate the natural log of a number.
+    /// <summary>An operation used to calculate the natural log of a number.</summary>
     public sealed class LnOperation : ArithmeticOperationBase
     {
+        /// <summary>Constructor.</summary>
         public LnOperation()
             : base(1, MakeOperator)
         {

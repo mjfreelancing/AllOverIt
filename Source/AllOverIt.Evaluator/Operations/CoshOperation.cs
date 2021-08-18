@@ -3,9 +3,10 @@ using System.Linq.Expressions;
 
 namespace AllOverIt.Evaluator.Operations
 {
-    // An operation used to calculate the hyperbolic cosine of an angle (in radians).
+    /// <summary>An operation used to calculate the hyperbolic cosine of an angle (in radians).</summary>
     public sealed class CoshOperation : ArithmeticOperationBase
     {
+        /// <summary>Constructor.</summary>
         public CoshOperation()
             : base(1, MakeOperator)
         {

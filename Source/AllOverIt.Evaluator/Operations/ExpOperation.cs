@@ -3,9 +3,10 @@ using System.Linq.Expressions;
 
 namespace AllOverIt.Evaluator.Operations
 {
-    // An operation used to raise 'e' to a specified power.
+    /// <summary>An operation used to raise 'e' to a specified power.</summary>
     public sealed class ExpOperation : ArithmeticOperationBase
     {
+        /// <summary>Constructor.</summary>
         public ExpOperation()
             : base(1, MakeOperator)
         {

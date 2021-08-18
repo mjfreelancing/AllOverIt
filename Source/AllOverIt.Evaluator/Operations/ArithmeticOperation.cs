@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace AllOverIt.Evaluator.Operations
 {
-    // Represents an arithmetic operator or a user defined method.
+    /// <summary>Represents an arithmetic operator or a user defined method.</summary>
     public sealed class ArithmeticOperation : ArithmeticOperationBase
     {
         public int Precedence { get; }

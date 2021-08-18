@@ -3,9 +3,10 @@ using System.Linq.Expressions;
 
 namespace AllOverIt.Evaluator.Operations
 {
-    // An operation used to calculate the cosine of an angle (in radians).
+    /// <summary>An operation used to calculate the cosine of an angle (in radians).</summary>
     public sealed class CosOperation : ArithmeticOperationBase
     {
+        /// <summary>Constructor.</summary>
         public CosOperation()
             : base(1, MakeOperator)
         {
