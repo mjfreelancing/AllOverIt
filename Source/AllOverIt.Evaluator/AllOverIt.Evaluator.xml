@@ -82,7 +82,7 @@
         <member name="T:AllOverIt.Evaluator.Extensions.FormulaCompilerExtensions">
             <summary>Provides extension methods for IFormulaCompiler.</summary>
         </member>
-        <member name="M:AllOverIt.Evaluator.Extensions.FormulaCompilerExtensions.GetResult(AllOverIt.Evaluator.IFormulaCompiler,System.String,AllOverIt.Evaluator.Variables.IVariableRegistry)">
+        <member name="M:AllOverIt.Evaluator.Extensions.FormulaCompilerExtensions.GetResult(AllOverIt.Evaluator.FormulaCompiler,System.String,AllOverIt.Evaluator.Variables.IVariableRegistry)">
             <summary>Compiles a formula and returns the invoked result.</summary>
             <param name="compiler">The IFormulaCompiler instance used to compile the formula.</param>
             <param name="formula">The formula as a string.</param>
@@ -97,19 +97,139 @@
             <param name="operationFactory">The arithmetic operation factory used for building expressions.</param>
             <param name="userMethodFactory">The user-defined method factory used for evaluating higher level operations.</param>
         </member>
-        <member name="M:AllOverIt.Evaluator.IFormulaCompiler.Compile(System.String,AllOverIt.Evaluator.Variables.IVariableRegistry)">
+        <member name="M:AllOverIt.Evaluator.FormulaCompiler.Compile(System.String,AllOverIt.Evaluator.Variables.IVariableRegistry)">
             <summary>Compiles a formula represented as a string into a delegate that can be repeatedly invoked for re-evaluation.</summary>
             <param name="formula">The mathematical formula to be compiled.</param>
             <param name="variableRegistry">The registry of variables referenced by the formula that are required for evaluation. This
-            can be populated with all required variables before or after compilation, but before evaluation.</param>
-            <returns></returns>
+            can be populated with all required variables before or after compilation, but before evaluation. If a registry is not provided
+            then an instance will be created. In both cases, the registry will be included with the compiler result.</param>
+            <returns>The compiler result containing the variable registry, the compiled delegate, and a list of variables referenced by the
+            formula (if applicable).</returns>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operations.AcosOperation">
+            <summary>An operation used to calculate the angle (in radians) of a cosine value.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.AcosOperation.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operations.ArithmeticOperation">
+            <summary>Represents an arithmetic operator or a user-defined method.</summary>
+        </member>
+        <member name="P:AllOverIt.Evaluator.Operations.ArithmeticOperation.Precedence">
+            <summary>The precedence that determines the order of operations. A lower precedence value indicates a higher priority
+            (refer to http://en.wikipedia.org/wiki/Order_of_operations).</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.ArithmeticOperation.#ctor(System.Int32,System.Int32,System.Func{System.Linq.Expressions.Expression[],AllOverIt.Evaluator.Operators.IOperator})">
+            <summary>Constructor.</summary>
+            <param name="precedence">The precedence that determines the order of operations.</param>
+            <param name="argumentCount">The number of required arguments for the operator or user-defined method.</param>
+            <param name="creator"></param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operations.ArithmeticOperationBase">
+            <summary>An abstract base class for all arithmetic operators and user defined methods.</summary>
+        </member>
+        <member name="P:AllOverIt.Evaluator.Operations.ArithmeticOperationBase.ArgumentCount">
+            <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.ArithmeticOperationBase.#ctor(System.Int32,System.Func{System.Linq.Expressions.Expression[],AllOverIt.Evaluator.Operators.IOperator})">
+            <summary>Constructor.</summary>
+            <param name="argumentCount">The number of required arguments.</param>
+            <param name="creator">The factory that creates the required operation using the provided arguments (as expressions).</param>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.ArithmeticOperationBase.GetExpression(System.Linq.Expressions.Expression[])">
+            <inheritdoc />
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operations.ArithmeticOperationFactory">
+            <summary>A factory used for registering and creating instances of an ArithmeticOperation that implements an associated operator.
+            The factory assumes a lower precedence value indicates a higher priority (refer to http://en.wikipedia.org/wiki/Order_of_operations).</summary>
+        </member>
+        <member name="P:AllOverIt.Evaluator.Operations.ArithmeticOperationFactory.RegisteredOperations">
+            <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.ArithmeticOperationFactory.#ctor">
+            <summary> Constructor.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.ArithmeticOperationFactory.TryRegisterOperation(System.String,System.Int32,System.Int32,System.Func{System.Linq.Expressions.Expression[],AllOverIt.Evaluator.Operators.IOperator})">
+            <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.ArithmeticOperationFactory.RegisterOperation(System.String,System.Int32,System.Int32,System.Func{System.Linq.Expressions.Expression[],AllOverIt.Evaluator.Operators.IOperator})">
+            <inheritdoc />
+            <remarks>If the symbol is already registered then an OperationFactoryException will be raised.</remarks>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.ArithmeticOperationFactory.GetOperation(System.String)">
+            <inheritdoc />
+            <returns>Only one instance per type is ever created.</returns>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operations.AsinOperation">
+            <summary>An operation used to calculate the angle (in radians) of a sine value.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.AsinOperation.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operations.AtanOperation">
+            <summary>An operation used to calculate the angle (in radians) of a tangent value.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.AtanOperation.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operations.CoshOperation">
+            <summary>An operation used to calculate the hyperbolic cosine of an angle (in radians).</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.CoshOperation.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operations.CosOperation">
+            <summary>An operation used to calculate the cosine of an angle (in radians).</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.CosOperation.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operations.ExpOperation">
+            <summary>An operation used to raise 'e' to a specified power.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.ExpOperation.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operations.IArithmeticOperation">
+            <summary>Represents an arithmetic operator or user defined method.</summary>
+        </member>
+        <member name="P:AllOverIt.Evaluator.Operations.IArithmeticOperation.ArgumentCount">
+            <summary>The number of arguments required by the operator or user defined method.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.IArithmeticOperation.GetExpression(System.Linq.Expressions.Expression[])">
+            <summary>Creates an Expression that represents the operator or user defined method.</summary>
+            <param name="expressions">The arguments required for creating the required expression.</param>
+            <returns>The expression representing the operator or user defined method.</returns>
         </member>
         <member name="T:AllOverIt.Evaluator.Operations.IArithmeticOperationFactory">
-            <summary>Represents an arithmetic operation factory.</summary>
+            <summary>Represents an arithmetic operation factory for registering and creating instances of an ArithmeticOperation
+            that implements an associated operator..</summary>
             <remarks>It is recommended to use a single instance of the factory.</remarks>
         </member>
         <member name="P:AllOverIt.Evaluator.Operations.IArithmeticOperationFactory.RegisteredOperations">
             <summary>Gets all registered operations based on their associated symbol.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.IArithmeticOperationFactory.TryRegisterOperation(System.String,System.Int32,System.Int32,System.Func{System.Linq.Expressions.Expression[],AllOverIt.Evaluator.Operators.IOperator})">
+            <summary>Attempts to register a new operation in terms of its operator symbol, precedence level and a factory used for
+            creating the required operation. If the symbol is already registered then the request is ignored.</summary>
+            <param name="symbol">The symbol that identifies the operation being registered.</param>
+            <param name="precedence">The precedence level that determines the order of operations. A lower value indicates a higher precedence.</param>
+            <param name="argumentCount">The number of required arguments.</param>
+            <param name="operatorCreator">The factory used to create the operation using the provided arguments (as expressions).</param>
+            <returns>True if the symbol was registered, otherwise false.</returns>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.IArithmeticOperationFactory.RegisterOperation(System.String,System.Int32,System.Int32,System.Func{System.Linq.Expressions.Expression[],AllOverIt.Evaluator.Operators.IOperator})">
+            <summary>Registers a new operation in terms of its operator symbol, precedence level and a factory used for creating the
+            required operation.</summary>
+            <param name="symbol">The symbol that identifies the operation being registered.</param>
+            <param name="precedence">The precedence level that determines the order of operations. A lower value indicates a higher precedence.</param>
+            <param name="argumentCount">The number of required arguments.</param>
+            <param name="operatorCreator">The factory used to create the operation using the provided arguments (as expressions).</param>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.IArithmeticOperationFactory.GetOperation(System.String)">
+            <summary>Gets the operation object associated with a specified operator symbol.</summary>
+            <param name="symbol">The symbol that identifies the operation to be created.</param>
+            <returns>The constructed operation.</returns>
         </member>
         <member name="T:AllOverIt.Evaluator.Operations.IUserDefinedMethodFactory">
             <summary>Represents a user defined method factory.</summary>
@@ -133,6 +253,60 @@
             <summary>Gets an instance of the class implementing the user-defined method identified by the provided method name.</summary>
             <param name="methodName">The name of the user-defined method identifying the operation type to return.</param>
             <returns>The concrete type implementing the user-defined method.</returns>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operations.LnOperation">
+            <summary>An operation used to calculate the natural log of a number.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.LnOperation.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operations.LogOperation">
+            <summary>An operation used to calculate the log10 of a number.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.LogOperation.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operations.PercentOperation">
+            <summary>An operation used to calculate the percentage that one operand is of another.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.PercentOperation.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operations.RoundOperation">
+            <summary>An operation used to round a number to a specified number of decimal places.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.RoundOperation.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operations.SinhOperation">
+            <summary>An operation used to calculate the hyperbolic sine of an angle (in radians).</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.SinhOperation.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operations.SinOperation">
+            <summary>An operation used to calculate the sine of an angle (in radians).</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.SinOperation.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operations.SqrtOperation">
+            <summary>An operation used to calculate the square root of a number.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.SqrtOperation.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operations.TanhOperation">
+            <summary>An operation used to calculate the hyperbolic tangent of an angle (in radians).</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.TanhOperation.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operations.TanOperation">
+            <summary>An operation used to calculate the tangent of an angle (in radians).</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.TanOperation.#ctor">
+            <summary>Constructor.</summary>
         </member>
         <member name="M:AllOverIt.Evaluator.Variables.Extensions.VariableExtensions.GetAllReferencedVariables(AllOverIt.Evaluator.Variables.IVariable)">
             <summary>Gets a read-only collection of all variables referenced by the variable (explicit and implicit).</summary>

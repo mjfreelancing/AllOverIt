@@ -6,32 +6,37 @@ using System.Linq.Expressions;
 
 namespace AllOverIt.Evaluator.Operations
 {
-    // Implements a factory used for registering and creating instances of an ArithmeticOperation that implements an associated operator.
-    // Refer to RegisterDefaultOperations() for the registered built-in operations.
-    // 
-    // This factory assumes a lower precedence value indicates a higher priority (refer to http://en.wikipedia.org/wiki/Order_of_operations).
+    /// <summary>A factory used for registering and creating instances of an ArithmeticOperation that implements an associated operator.
+    /// The factory assumes a lower precedence value indicates a higher priority (refer to http://en.wikipedia.org/wiki/Order_of_operations).</summary>
     public sealed class ArithmeticOperationFactory : IArithmeticOperationFactory
     {
         private readonly IDictionary<string, Lazy<ArithmeticOperation>> _operations = new Dictionary<string, Lazy<ArithmeticOperation>>();
 
+        /// <inheritdoc />
         public IEnumerable<string> RegisteredOperations => _operations.Keys;
 
+        /// <summary> Constructor.</summary>
         public ArithmeticOperationFactory()
         {
             RegisterDefaultOperations();
         }
 
+        /// <inheritdoc />
         public bool TryRegisterOperation(string symbol, int precedence, int argumentCount, Func<Expression[], IOperator> operatorCreator)
         {
             return TryRegisterOperation(symbol, precedence, argumentCount, operatorCreator, false);
         }
 
+
+        /// <inheritdoc />
+        /// <remarks>If the symbol is already registered then an OperationFactoryException will be raised.</remarks>
         public void RegisterOperation(string symbol, int precedence, int argumentCount, Func<Expression[], IOperator> operatorCreator)
         {
             TryRegisterOperation(symbol, precedence, argumentCount, operatorCreator, true);
         }
 
-        // Creates the operation instances on demand. Only one instance per type is ever created.
+        /// <inheritdoc />
+        /// <returns>Only one instance per type is ever created.</returns>
         public ArithmeticOperation GetOperation(string symbol)
         {
             if (_operations.TryGetValue(symbol, out var result))
