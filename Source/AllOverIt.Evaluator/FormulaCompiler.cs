@@ -6,9 +6,10 @@ using System.Text.RegularExpressions;
 
 namespace AllOverIt.Evaluator
 {
-    /// <summary>Compiles a mathematical expression provided as a string to a delegate that can be repeatedly invoked for re-evaluation.</summary>
+    /// <inheritdoc/>
     public sealed class FormulaCompiler : IFormulaCompiler
     {
+        private static readonly Regex StripWhitespaceRegex = new(@"\s+", RegexOptions.Compiled);
         private readonly FormulaProcessor _formulaProcessor;
 
         /// <summary>Constructor.</summary>
@@ -25,12 +26,13 @@ namespace AllOverIt.Evaluator
                 userMethodFactory ?? new UserDefinedMethodFactory());
         }
 
+        /// <inheritdoc/>
         public FormulaCompilerResult Compile(string formula, IVariableRegistry variableRegistry = null)
         {
             if (formula != null)
             {
                 // remove any extraneous whitespace
-                formula = Regex.Replace(formula, @"\s+", "");
+                formula = StripWhitespaceRegex.Replace(formula, string.Empty);
             }
 
             if (formula.IsNullOrEmpty())
