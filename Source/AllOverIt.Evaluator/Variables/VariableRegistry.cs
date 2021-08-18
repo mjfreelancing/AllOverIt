@@ -54,6 +54,11 @@ namespace AllOverIt.Evaluator.Variables
             variable.SetValue(value);
         }
 
+        public void Clear()
+        {
+            _variableRegistry.Clear();
+        }
+
         private IVariable GetVariable(string name)
         {
             if (!_variableRegistry.TryGetValue(name, out var variable))

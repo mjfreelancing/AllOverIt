@@ -30,9 +30,6 @@ namespace AllOverIt.Evaluator.Variables.Extensions
             return registry;
         }
 
-
-
-
         public static IVariable AddConstantVariable(this IVariableRegistry variableRegistry, string name, double value = default)
         {
             var variable = new ConstantVariable(name, value);
@@ -41,7 +38,7 @@ namespace AllOverIt.Evaluator.Variables.Extensions
             return variable;
         }
 
-        public static IVariable AddMutableVariable(this IVariableRegistry variableRegistry, string name, double value = default)
+        public static IMutableVariable AddMutableVariable(this IVariableRegistry variableRegistry, string name, double value = default)
         {
             var variable = new MutableVariable(name, value);
             variableRegistry.AddVariable(variable);

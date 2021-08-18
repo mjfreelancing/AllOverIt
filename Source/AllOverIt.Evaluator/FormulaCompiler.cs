@@ -2,6 +2,7 @@
 using AllOverIt.Evaluator.Variables;
 using AllOverIt.Extensions;
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace AllOverIt.Evaluator
@@ -11,6 +12,7 @@ namespace AllOverIt.Evaluator
     {
         private static readonly Regex StripWhitespaceRegex = new(@"\s+", RegexOptions.Compiled);
         private readonly FormulaProcessor _formulaProcessor;
+        private IVariableRegistry _variableRegistry;   // may be cached for future use when a previous compile found no variables in the formula
 
         /// <summary>Constructor.</summary>
         /// <param name="operationFactory">The arithmetic operation factory used for building expressions.</param>
@@ -30,9 +32,9 @@ namespace AllOverIt.Evaluator
         /// <param name="formula">The mathematical formula to be compiled.</param>
         /// <param name="variableRegistry">The registry of variables referenced by the formula that are required for evaluation. This
         /// can be populated with all required variables before or after compilation, but before evaluation. If a registry is not provided
-        /// then an instance will be created. In both cases, the registry will be included with the compiler result.</param>
-        /// <returns>The compiler result containing the variable registry, the compiled delegate, and a list of variables referenced by the
-        /// formula (if applicable).</returns>
+        /// and the formula contains variables then an instance will be created and provided as part of the result.</param>
+        /// <returns>The compiler result containing the variable registry (if originally provided or variables are found in the formula),
+        /// the compiled delegate, and a list of variables referenced by the formula (if applicable).</returns>
         public FormulaCompilerResult Compile(string formula, IVariableRegistry variableRegistry = null)
         {
             if (formula != null)
@@ -46,12 +48,23 @@ namespace AllOverIt.Evaluator
                 throw new FormatException("The formula is empty.");
             }
 
+            var variableRegistryProvided = variableRegistry != null;
+
+            variableRegistry ??= _variableRegistry;
             variableRegistry ??= new VariableRegistry();
 
             var processorResult = _formulaProcessor.Process(formula, variableRegistry);
             var compiledExpression = processorResult.FormulaExpression.Compile();
+            var referencedVariableNames = processorResult.ReferencedVariableNames;
 
-            return new FormulaCompilerResult(variableRegistry, compiledExpression, processorResult.ReferencedVariableNames);
+            if (!variableRegistryProvided && !referencedVariableNames.Any())
+            {
+                // since no variables were found we can hang onto variableRegistry for future use, and 
+                // return null in the final FormulaCompilerResult.
+                (_variableRegistry, variableRegistry) = (variableRegistry, null);
+            }
+
+            return new FormulaCompilerResult(variableRegistry, compiledExpression, referencedVariableNames);
         }
     }
 }

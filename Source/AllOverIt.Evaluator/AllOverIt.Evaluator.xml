@@ -102,9 +102,13 @@
             <param name="formula">The mathematical formula to be compiled.</param>
             <param name="variableRegistry">The registry of variables referenced by the formula that are required for evaluation. This
             can be populated with all required variables before or after compilation, but before evaluation. If a registry is not provided
-            then an instance will be created. In both cases, the registry will be included with the compiler result.</param>
-            <returns>The compiler result containing the variable registry, the compiled delegate, and a list of variables referenced by the
-            formula (if applicable).</returns>
+            and the formula contains variables then an instance will be created and provided as part of the result.</param>
+            <returns>The compiler result containing the variable registry (if originally provided or variables are found in the formula),
+            the compiled delegate, and a list of variables referenced by the formula (if applicable).</returns>
+        </member>
+        <member name="P:AllOverIt.Evaluator.FormulaCompilerResult.VariableRegistry">
+            <summary>The variable registry reference by the compiled formula. This will be null if the formula compiler was not provided
+            a variable registry and the formula did not contain any variables.</summary>
         </member>
         <member name="T:AllOverIt.Evaluator.Operations.AcosOperation">
             <summary>An operation used to calculate the angle (in radians) of a cosine value.</summary>
@@ -542,6 +546,22 @@
         </member>
         <member name="P:AllOverIt.Evaluator.Variables.IVariable.ReferencedVariables">
             <summary>Gets all variables this variable references. Only applicable to variables constructed from a FormulaCompilerResult.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.IVariableRegistry.AddVariable(AllOverIt.Evaluator.Variables.IVariable)">
+            <summary>Adds a new variable to the registry.</summary>
+            <param name="variable">The variable to add to the registry.</param>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.IVariableRegistry.AddVariables(AllOverIt.Evaluator.Variables.IVariable[])">
+            <summary>Adds one or more variables to the registry.</summary>
+            <param name="variables">The variables to add to the registry.</param>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.IVariableRegistry.SetValue(System.String,System.Double)">
+            <summary>Sets the value of a variable based on its name.</summary>
+            <param name="name">The name of the variable.</param>
+            <param name="value">The value of the variable.</param>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.IVariableRegistry.Clear">
+            <summary>Clears all variables from the registry.</summary>
         </member>
         <member name="M:AllOverIt.Evaluator.Variables.LazyVariable.Reset">
             <summary>Resets the variable to force its value to be re-evaluated.</summary>

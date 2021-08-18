@@ -9,7 +9,8 @@ namespace AllOverIt.Evaluator
     // A class containing a delegate and a list of referenced variables resulting from the compilation of a formula.
     public sealed record FormulaCompilerResult
     {
-        // The variable registry reference by the compiled formula.
+        /// <summary>The variable registry reference by the compiled formula. This will be null if the formula compiler was not provided
+        /// a variable registry and the formula did not contain any variables.</summary>
         public IVariableRegistry VariableRegistry { get; }
 
         // The delegate that returns the result of the formula when invoked.
@@ -20,7 +21,7 @@ namespace AllOverIt.Evaluator
 
         public FormulaCompilerResult(IVariableRegistry variableRegistry, Func<double> resolver, IEnumerable<string> referencedVariableNames)
         {
-            VariableRegistry = variableRegistry.WhenNotNull(nameof(variableRegistry));
+            VariableRegistry = variableRegistry;                    // will be null if the formula contained no variables
             Resolver = resolver.WhenNotNull(nameof(resolver));
 
             ReferencedVariableNames = referencedVariableNames

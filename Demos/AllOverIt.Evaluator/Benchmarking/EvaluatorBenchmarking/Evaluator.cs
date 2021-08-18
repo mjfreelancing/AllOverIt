@@ -4,6 +4,8 @@ using AllOverIt.Evaluator.Variables;
 using AllOverIt.Evaluator.Variables.Extensions;
 using BenchmarkDotNet.Attributes;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace EvaluatorBenchmarking
 {
@@ -25,50 +27,51 @@ namespace EvaluatorBenchmarking
             "log(19)",
             "ln(2.7)",
             "exp(3)",
-            "10/0"
+            "10/0",
+            "22 % 6"
         };
 
-        private readonly double _lhs;
-        private readonly double _rhs;
+        private readonly IList<double> _lhs;
+        private readonly IList<double> _rhs;
         private readonly FormulaCompiler _compiler;
-        private readonly VariableFactory _variableFactory;
+        private readonly VariableRegistry _variableRegistry;
 
         public Evaluator()
         {
             var rnd = new Random((int) DateTime.Now.Ticks);
 
-            _lhs = rnd.NextDouble();
-            _rhs = rnd.NextDouble();
+            _lhs = Enumerable.Range(1, 10000).Select(_ => rnd.NextDouble()).ToList();
+            _rhs = Enumerable.Range(1, 10000).Select(_ => rnd.NextDouble()).ToList();
             _compiler = new FormulaCompiler();
-            _variableFactory = new VariableFactory();
+            _variableRegistry = new VariableRegistry();
         }
 
         [Benchmark]
         public void AddTwoConstantsUsingGetResult()
         {
-            _compiler.GetResult($"{_lhs} + {_rhs}");
+            AddTwoConstantsUsingGetResult(1);
+        }
+
+        [Benchmark]
+        public void AddTwoConstantsUsingGetResult10000Times()
+        {
+            AddTwoConstantsUsingGetResult(10000);
         }
 
         [Benchmark]
         public void AddTwoVariablesUsingRegistry()
         {
-            var registry = _variableFactory.CreateVariableRegistry();
-
-            var formula = _compiler.Compile("x + y", registry).Resolver;
-
-            var x = _variableFactory.CreateMutableVariable("x");
-            var y = _variableFactory.CreateMutableVariable("y");
-
-            registry.Add(x, y);
-
-            x.SetValue(_lhs);
-            y.SetValue(_rhs);
-
-            _ = formula.Invoke();
+            AddTwoVariablesUsingRegistry(1);
         }
 
         [Benchmark]
-        public void MultipleFormulaWithoutCompilation()
+        public void AddTwoVariablesUsingRegistry10000Times()
+        {
+            AddTwoVariablesUsingRegistry(10000);
+        }
+
+        [Benchmark]
+        public void EvalMultipleFormulaUsingGetResult()
         {
             foreach (var item in Formula)
             {
@@ -77,55 +80,108 @@ namespace EvaluatorBenchmarking
         }
 
         [Benchmark]
-        public void CalculateAreaUsingHeronsFormula()
+        public void EvalMultipleFormulaUsingPreCompiled10000Times()
         {
-            var registry = _variableFactory.CreateVariableRegistry();
+            // using _variableRegistry to prevent multiple instances being created
+            var compilerResults = Formula
+                .Select(formula => _compiler.Compile(formula/*, FormulaCompiler.EmptyRegistry*/))
+                .ToList();
+
+            for (var i = 0; i < 10000; i++)
+            {
+                foreach (var compilerResult in compilerResults)
+                {
+                    _ = compilerResult.Resolver.Invoke();
+                }
+            }
+        }
+
+        [Benchmark]
+        public void CalculateDistancesAndAreaUsingHeronsFormula()
+        {
+            CalculateDistancesAndAreaUsingHeronsFormula(1);
+        }
+
+        [Benchmark]
+        public void CalculateDistancesAndAreaUsingHeronsFormula10000Times()
+        {
+            CalculateDistancesAndAreaUsingHeronsFormula(10000);
+        }
+
+        private void AddTwoConstantsUsingGetResult(int iterations)
+        {
+            for (var i = 0; i < iterations; i++)
+            {
+                _compiler.GetResult($"{_lhs[i]} + {_rhs[i]}"/*, FormulaCompiler.EmptyRegistry*/);
+            }
+        }
+
+        private void AddTwoVariablesUsingRegistry(int iterations)
+        {
+            var compilerResult = _compiler.Compile("x + y");
+            var registry = compilerResult.VariableRegistry;
+            var resolver = compilerResult.Resolver;
+
+            var x = registry.AddMutableVariable("x");
+            var y = registry.AddMutableVariable("y");
+
+            for (var i = 0; i < iterations; i++)
+            {
+                x.SetValue(_lhs[i]);
+                y.SetValue(_rhs[i]);
+
+                _ = resolver.Invoke();
+            }
+        }
+
+        private void CalculateDistancesAndAreaUsingHeronsFormula(int iterations)
+        {
+            // using a variable registry so it can be shared across multiple compilers
+            _variableRegistry.Clear();
 
             // define variables to represent three points of a triangle
-            var x1 = new MutableVariable("x1");
-            var y1 = new MutableVariable("y1");
-            var x2 = new MutableVariable("x2");
-            var y2 = new MutableVariable("y2");
-            var x3 = new MutableVariable("x3");
-            var y3 = new MutableVariable("y3");
+            var x1 = _variableRegistry.AddMutableVariable("x1");
+            var y1 = _variableRegistry.AddMutableVariable("y1");
+            var x2 = _variableRegistry.AddMutableVariable("x2");
+            var y2 = _variableRegistry.AddMutableVariable("y2");
+            var x3 = _variableRegistry.AddMutableVariable("x3");
+            var y3 = _variableRegistry.AddMutableVariable("y3");
 
             // calculate distance between two points
-            var distanceA = _compiler.Compile("sqrt((x2-x1)^2+(y2-y1)^2)", registry).Resolver;
-            var distanceB = _compiler.Compile("sqrt((x3-x1)^2+(y3-y1)^2)", registry).Resolver;
-            var distanceC = _compiler.Compile("sqrt((x3-x2)^2+(y3-y2)^2)", registry).Resolver;
+            var distanceA = _compiler.Compile("sqrt((x2-x1)^2+(y2-y1)^2)", _variableRegistry);
+            var distanceB = _compiler.Compile("sqrt((x3-x1)^2+(y3-y1)^2)", _variableRegistry);
+            var distanceC = _compiler.Compile("sqrt((x3-x2)^2+(y3-y2)^2)", _variableRegistry);
 
             // define variables to calculate the length of each side
-            var a = new DelegateVariable("a", distanceA);
-            var b = new DelegateVariable("b", distanceB);
-            var c = new DelegateVariable("c", distanceC);
+            var a = _variableRegistry.AddDelegateVariable("a", distanceA);
+            var b = _variableRegistry.AddDelegateVariable("b", distanceB);
+            var c = _variableRegistry.AddDelegateVariable("c", distanceC);
 
-            // and use this to find the area of the bound triangle using Heron's formula
-            var herons = _compiler.Compile("0.25 * sqrt((4*a^2*b^2)-(a^2+b^2-c^2)^2)", registry).Resolver;
+            for (var i = 0; i < iterations; i++)
+            {
+                // set the co-ordinates of the 3 points
+                x1.SetValue(5 + i);
+                y1.SetValue(5 + i);
 
-            // define all variables
-            registry.Add(x1, y1, x2, y2, x3, y3, a, b, c);
+                x2.SetValue(15 + i);
+                y2.SetValue(90 + i);
 
-            // set the co-ordinates of the 3 points
-            x1.SetValue(5);
-            y1.SetValue(5);
+                x3.SetValue(11 + i);
+                y3.SetValue(-6 + i);
 
-            x2.SetValue(15);
-            y2.SetValue(90);
+                // distance x1,y1 to x2,y2
+                var d1 = a.Value;
 
-            x3.SetValue(11);
-            y3.SetValue(-6);
+                // distance x1,y1 to x3,y3
+                var d2 = b.Value;
 
-            // distance x1,y1 to x2,y2
-            var d1 = a.Value;
+                // distance x2,y2 to x3,y3
+                var d3 = c.Value;
 
-            // distance x1,y1 to x3,y3
-            var d2 = b.Value;
-
-            // distance x2,y2 to x3,y3
-            var d3 = c.Value;
-
-            // area
-            var _ = herons.Invoke();
+                // and use this to find the area of the bound triangle using Heron's formula
+                var herons = _compiler.Compile("0.25 * sqrt((4*a^2*b^2)-(a^2+b^2-c^2)^2)", _variableRegistry).Resolver;
+                var _ = herons.Invoke();
+            }
         }
     }
 }
