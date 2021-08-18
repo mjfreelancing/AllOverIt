@@ -308,6 +308,226 @@
         <member name="M:AllOverIt.Evaluator.Operations.TanOperation.#ctor">
             <summary>Constructor.</summary>
         </member>
+        <member name="T:AllOverIt.Evaluator.Operators.AcosOperator">
+            <summary>An expression operator that calculates the angle (in radians) of a cosine value.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.AcosOperator.#ctor(System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="operand">The operand (argument) to be evaluated.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.AddOperator">
+            <summary>An expression operator that adds two operands.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.AddOperator.#ctor(System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="leftOperand">The left operand (argument) of the operator.</param>
+            <param name="rightOperand">The right operand (argument) of the operator.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.AsinOperator">
+            <summary>An expression operator that calculates the angle (in radians) of a sine value.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.AsinOperator.#ctor(System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="operand">The operand (argument) to be evaluated.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.AtanOperator">
+            <summary>An expression operator that calculates the angle (in radians) of a tangent value.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.AtanOperator.#ctor(System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="operand">The operand (argument) to be evaluated.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.BinaryOperator">
+            <summary>An expression operator that operates on two operands.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.BinaryOperator.#ctor(System.Func{System.Linq.Expressions.Expression,System.Linq.Expressions.Expression,System.Linq.Expressions.Expression},System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)">
+            <summary>
+            
+            </summary>
+            <param name="operatorType"></param>
+            <param name="leftOperand">The left operand (argument) of the operator.</param>
+            <param name="rightOperand">The right operand (argument) of the operator.</param>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.BinaryOperator.GetExpression">
+            <inheritdoc />
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.CoshOperator">
+            <summary>An expression operator that calculates the hyperbolic cosine of a specified angle (in radians).</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.CoshOperator.#ctor(System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="operand">The operand (argument) to be evaluated.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.CosOperator">
+            <summary>An expression operator that calculates the cosine of a specified angle (in radians).</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.CosOperator.#ctor(System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="operand">The operand (argument) to be evaluated.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.DivideOperator">
+            <summary>An expression operator that divides two operands.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.DivideOperator.#ctor(System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="leftOperand">The left operand (argument) of the operator.</param>
+            <param name="rightOperand">The right operand (argument) of the operator.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.ExpOperator">
+            <summary>An expression operator that calculates the value of 'e' raised to the power of a given operand.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.ExpOperator.#ctor(System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="operand">The operand (argument) to be evaluated.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.IOperator">
+            <summary>An interface used to obtain an Expression for an evaluator operator.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.IOperator.GetExpression">
+            <summary>Gets an Expression that is the result of invoking the operator.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.LnOperator">
+            <summary>An expression operator that calculates the natural logarithm of a given operand.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.LnOperator.#ctor(System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="operand">The operand (argument) to be evaluated.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.LogOperator">
+            <summary>An expression operator that calculates log10 of a given operand.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.LogOperator.#ctor(System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="operand">The operand (argument) to be evaluated.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.ModuloOperator">
+            <summary>An expression operator that calculates the modulo of a given operand.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.ModuloOperator.#ctor(System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="leftOperand">The left operand (argument) of the operator.</param>
+            <param name="rightOperand">The right operand (argument) of the operator.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.MultiplyOperator">
+            <summary>An expression operator that multiplies two operands.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.MultiplyOperator.#ctor(System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="leftOperand">The left operand (argument) of the operator.</param>
+            <param name="rightOperand">The right operand (argument) of the operator.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.NegateOperator">
+            <summary>An expression operator that negates the value of a given operand.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.NegateOperator.#ctor(System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="operand">The operand (argument) to be evaluated.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.Operator`1">
+            <summary>An abstract base class used for implementing unary, binary and custom operators.</summary>
+            <typeparam name="TType">The type (a Func) used for operating on one or more operands. This func must
+            accept one or more Expression arguments and return a resultant Expression.</typeparam>
+        </member>
+        <member name="P:AllOverIt.Evaluator.Operators.Operator`1.OperatorType">
+            <summary>The object type implementing the custom operator.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.Operator`1.#ctor(`0)">
+            <summary>Constructor.</summary>
+            <param name="operatorType">The operator type.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.OperatorBase">
+            <summary>An abstract class for defining an operator that can create an expression for the operation it performs.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.OperatorBase.GetExpression">
+            <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.OperatorBase.Create``1(System.Linq.Expressions.Expression[],System.Func{System.Linq.Expressions.Expression[],``0})">
+            <summary>A factory method to create a concrete instance of an operator.</summary>
+            <typeparam name="TOperator">The type implementing IOperator with a constructor containing the required number of arguments.</typeparam>
+            <param name="expressions">The arguments (as Expressions) to be passed to the constructor of the operator being created.</param>
+            <param name="creator">The factory method used to build the operator based on the provided arguments.</param>
+            <returns>The concrete IOperator instance.</returns>
+            <exception cref="T:AllOverIt.Evaluator.Exceptions.OperatorException">When the number of arguments passed in 'expressions' does not match the number of arguments expected by the operator's constructor.</exception>
+            <exception cref="T:System.InvalidOperationException">When the operator contains more than one constructor.</exception>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.PercentOperator">
+            <summary>An expression operator that calculates the percentage that one operand is of another.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.PercentOperator.#ctor(System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="leftOperand">The left operand (argument) of the operator.</param>
+            <param name="rightOperand">The right operand (argument) of the operator.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.PowerOperator">
+            <summary>An expression operator that calculates the value of one operand raised to the power of another.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.PowerOperator.#ctor(System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="leftOperand">The left operand (argument) of the operator.</param>
+            <param name="rightOperand">The right operand (argument) of the operator.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.RoundOperator">
+            <summary>An expression operator that rounds the value of one operand to the number of decimal places provided by another.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.RoundOperator.#ctor(System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="operand">The operand (argument) to be rounded.</param>
+            <param name="decimals">The number of decimal places to round the operand to.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.SinhOperator">
+            <summary>An expression operator that calculates the hyperbolic sine of a specified angle (in radians).</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.SinhOperator.#ctor(System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="operand">The operand (argument) to be evaluated.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.SinOperator">
+            <summary>An expression operator that calculates the sine of a specified angle (in radians).</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.SinOperator.#ctor(System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="operand">The operand (argument) to be evaluated.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.SqrtOperator">
+            <summary>An expression operator that calculates the square root of a given operand.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.SqrtOperator.#ctor(System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="operand">The operand (argument) to be evaluated.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.SubtractOperator">
+            <summary>An expression operator that subtracts one operand from another.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.SubtractOperator.#ctor(System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="leftOperand">The left operand (argument) of the operator.</param>
+            <param name="rightOperand">The right operand (argument) of the operator.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.TanhOperator">
+            <summary>An expression operator that calculates the hyperbolic tangent of a specified angle (in radians).</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.TanhOperator.#ctor(System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="operand">The operand (argument) to be evaluated.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.TanOperator">
+            <summary>An expression operator that calculates the tangent of a specified angle (in radians).</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.TanOperator.#ctor(System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="operand">The operand (argument) to be evaluated.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.UnaryOperator">
+            <summary>An expression operator that operates on a single operand to create a new expression as the result.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.UnaryOperator.#ctor(System.Func{System.Linq.Expressions.Expression,System.Linq.Expressions.Expression},System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="operatorType">The unary operator that returns the result of an operand (as Expressions).</param>
+            <param name="operand">The operand (argument) to be evaluated.</param>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.UnaryOperator.GetExpression">
+            <inheritdoc />
+        </member>
         <member name="M:AllOverIt.Evaluator.Variables.Extensions.VariableExtensions.GetAllReferencedVariables(AllOverIt.Evaluator.Variables.IVariable)">
             <summary>Gets a read-only collection of all variables referenced by the variable (explicit and implicit).</summary>
         </member>

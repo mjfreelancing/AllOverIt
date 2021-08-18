@@ -1,11 +1,18 @@
 using System;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace AllOverIt.Evaluator.Operators
 {
-    // An expression operator that rounds the value of one operand to the number of decimal places provided by another.
+    /// <summary>An expression operator that rounds the value of one operand to the number of decimal places provided by another.</summary>
     public sealed class RoundOperator : BinaryOperator
     {
+        private static readonly MethodInfo OperatorMethodInfo = typeof(Math).GetMethod("Round", new[] { typeof(double), typeof(int), typeof(MidpointRounding) });
+        private static readonly ConstantExpression MidpointRoundingExpression = Expression.Constant(MidpointRounding.AwayFromZero);
+
+        /// <summary>Constructor.</summary>
+        /// <param name="operand">The operand (argument) to be rounded.</param>
+        /// <param name="decimals">The number of decimal places to round the operand to.</param>
         public RoundOperator(Expression operand, Expression decimals)
             : base(CreateExpression, operand, decimals)
         {
@@ -13,11 +20,8 @@ namespace AllOverIt.Evaluator.Operators
 
         private static Expression CreateExpression(Expression operand, Expression decimals)
         {
-            var method = typeof(Math).GetMethod("Round", new[] { typeof(double), typeof(int), typeof(MidpointRounding) });
             var decimalPlaces = Expression.Convert(decimals, typeof(int));
-            var midpointRounding = Expression.Constant(MidpointRounding.AwayFromZero);
-
-            return Expression.Call(method!, operand, decimalPlaces, midpointRounding);
+            return Expression.Call(OperatorMethodInfo, operand, decimalPlaces, MidpointRoundingExpression);
         }
     }
 }

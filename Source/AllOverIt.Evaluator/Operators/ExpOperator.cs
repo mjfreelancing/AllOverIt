@@ -1,11 +1,16 @@
 using System;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace AllOverIt.Evaluator.Operators
 {
-    // An expression operator that calculates the value of 'e' raised to the power of a given operand.
+    /// <summary>An expression operator that calculates the value of 'e' raised to the power of a given operand.</summary>
     public sealed class ExpOperator : UnaryOperator
     {
+        private static readonly MethodInfo OperatorMethodInfo = typeof(Math).GetMethod("Exp", new[] {typeof(double)});
+
+        /// <summary>Constructor.</summary>
+        /// <param name="operand">The operand (argument) to be evaluated.</param>
         public ExpOperator(Expression operand)
             : base(CreateExpression, operand)
         {
@@ -13,8 +18,7 @@ namespace AllOverIt.Evaluator.Operators
 
         private static Expression CreateExpression(Expression operand)
         {
-            var method = typeof(Math).GetMethod("Exp", new[] { typeof(double) });
-            return Expression.Call(method!, operand);
+            return Expression.Call(OperatorMethodInfo, operand);
         }
     }
 }
