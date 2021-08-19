@@ -23,7 +23,6 @@ namespace AllOverIt.Evaluator
         }
 
         private static readonly char DecimalSeparator = Convert.ToChar(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
-        private static readonly FormulaExpressionFactory FormulaExpressionFactory = new();
         private readonly Stack<string> _operatorStack = new();
         private readonly Stack<Expression> _expressionStack = new();
         private readonly HashSet<string> _referencedVariableNames = new();
@@ -51,13 +50,7 @@ namespace AllOverIt.Evaluator
             _formula = formula.WhenNotNullOrEmpty(nameof(formula));
             _variableRegistry = variableRegistry.WhenNotNull(nameof(variableRegistry));
 
-            _operatorStack.Clear();
-            _expressionStack.Clear();
-            _referencedVariableNames.Clear();
-            _lastPushIsOperator = true;
-            _currentIndex = 0;
-
-            RegisterTokenProcessors();
+            ResetState();
             ParseContent(false);
             ProcessOperators(_operatorStack, _expressionStack, () => true);
 
@@ -65,6 +58,21 @@ namespace AllOverIt.Evaluator
             var funcExpression = Expression.Lambda<Func<double>>(lastExpression);
 
             return new FormulaProcessorResult(funcExpression, _referencedVariableNames);
+        }
+
+        private void ResetState()
+        {
+            _operatorStack.Clear();
+            _expressionStack.Clear();
+            _referencedVariableNames.Clear();
+
+            _lastPushIsOperator = true;
+            _currentIndex = 0;
+
+            if (!_tokenProcessors.Any())
+            {
+                RegisterTokenProcessors();
+            }
         }
 
         private void PushOperator(string operatorToken)

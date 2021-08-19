@@ -4,14 +4,20 @@ using AllOverIt.Evaluator.Variables;
 using AllOverIt.Helpers;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace AllOverIt.Evaluator
 {
-    // Implements a factory that creates expressions required for compiling a formula.
-    public sealed class FormulaExpressionFactory
+    /// <summary>Implements a factory that creates expressions required for compiling a formula.</summary>
+    public static class FormulaExpressionFactory
     {
-        // 'expressionStack' contains the expressions required for processing the provided operation
-        public Expression CreateExpression(IArithmeticOperation operation, Stack<Expression> expressionStack)
+        private static readonly MethodInfo GetValueMethodInfo = typeof(IReadableVariableRegistry).GetMethod("GetValue", new[] { typeof(string) });
+
+        /// <summary>Creates an Expression for an arithmetic operation.</summary>
+        /// <param name="operation">The arithmetic operation to create an Expression for.</param>
+        /// <param name="expressionStack">Contains the expressions required for processing the required operation.</param>
+        /// <returns>An Expression representing the arithmetic operation.</returns>
+        public static Expression CreateExpression(IArithmeticOperation operation, Stack<Expression> expressionStack)
         {
             _ = operation.WhenNotNull(nameof(operation));
             _ = expressionStack.WhenNotNull(nameof(expressionStack));
@@ -36,18 +42,18 @@ namespace AllOverIt.Evaluator
             return operation.GetExpression(expressions.ToArray());
         }
 
-        public Expression CreateExpression(string variableName, IVariableRegistry variableRegistry)
+        /// <summary>Creates an expression that gets the value of a variable from the variable registry.</summary>
+        /// <param name="variableName">The name of the variable to get the value for.</param>
+        /// <param name="variableRegistry">The variable registry containing the required value.</param>
+        /// <returns>An expression that gets the value of a variable from the variable registry.</returns>
+        public static Expression CreateExpression(string variableName, IVariableRegistry variableRegistry)
         {
             _ = variableName.WhenNotNullOrEmpty(nameof(variableName));
             _ = variableRegistry.WhenNotNull(nameof(variableRegistry));
 
             // create an expression that calls GetValue(), passing the name of the variable
             var registry = Expression.Constant(variableRegistry);
-
-            var getValueMethod = typeof(IReadableVariableRegistry).GetMethod("GetValue", new[] { typeof(string) });
-            var variableExpression = new Expression[] { Expression.Constant(variableName) };
-
-            return Expression.Call(registry, getValueMethod!, variableExpression);
+            return Expression.Call(registry, GetValueMethodInfo, Expression.Constant(variableName));
         }
     }
 }

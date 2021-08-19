@@ -84,7 +84,7 @@ namespace EvaluatorBenchmarking
         {
             // using _variableRegistry to prevent multiple instances being created
             var compilerResults = Formula
-                .Select(formula => _compiler.Compile(formula/*, FormulaCompiler.EmptyRegistry*/))
+                .Select(formula => _compiler.Compile(formula))
                 .ToList();
 
             for (var i = 0; i < 10000; i++)
@@ -112,7 +112,7 @@ namespace EvaluatorBenchmarking
         {
             for (var i = 0; i < iterations; i++)
             {
-                _compiler.GetResult($"{_lhs[i]} + {_rhs[i]}"/*, FormulaCompiler.EmptyRegistry*/);
+                _compiler.GetResult($"{_lhs[i]} + {_rhs[i]}");
             }
         }
 

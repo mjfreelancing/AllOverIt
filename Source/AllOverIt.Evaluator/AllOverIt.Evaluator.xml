@@ -106,9 +106,76 @@
             <returns>The compiler result containing the variable registry (if originally provided or variables are found in the formula),
             the compiled delegate, and a list of variables referenced by the formula (if applicable).</returns>
         </member>
+        <member name="T:AllOverIt.Evaluator.FormulaCompilerResult">
+            <summary>A class containing a delegate and a list of referenced variables resulting from the compilation of a formula.</summary>
+        </member>
         <member name="P:AllOverIt.Evaluator.FormulaCompilerResult.VariableRegistry">
             <summary>The variable registry reference by the compiled formula. This will be null if the formula compiler was not provided
             a variable registry and the formula did not contain any variables.</summary>
+        </member>
+        <member name="P:AllOverIt.Evaluator.FormulaCompilerResult.Resolver">
+            <summary>The compiled delegate that returns the result of the formula when invoked.</summary>
+        </member>
+        <member name="P:AllOverIt.Evaluator.FormulaCompilerResult.ReferencedVariableNames">
+            <summary>An enumerable of all variable names explicitly referenced by the formula.
+            This will be null if the formula did not have any variables.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.FormulaCompilerResult.#ctor(AllOverIt.Evaluator.Variables.IVariableRegistry,System.Func{System.Double},System.Collections.Generic.IEnumerable{System.String})">
+            <summary>Constructor.</summary>
+            <param name="variableRegistry">The variable registry reference by the compiled formula. Variables can be added at any time
+            prior to evaluation.</param>
+            <param name="resolver">The compiled delegate that when invoked will return the result of the formula.</param>
+            <param name="referencedVariableNames">An enumerable of all variable names explicitly referenced by the formula. This will be
+            null if the formula did not have any variables.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.FormulaExpressionFactory">
+            <summary>Implements a factory that creates expressions required for compiling a formula.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.FormulaExpressionFactory.CreateExpression(AllOverIt.Evaluator.Operations.IArithmeticOperation,System.Collections.Generic.Stack{System.Linq.Expressions.Expression})">
+            <summary>Creates an Expression for an arithmetic operation.</summary>
+            <param name="operation">The arithmetic operation to create an Expression for.</param>
+            <param name="expressionStack">Contains the expressions required for processing the required operation.</param>
+            <returns>An Expression representing the arithmetic operation.</returns>
+        </member>
+        <member name="M:AllOverIt.Evaluator.FormulaExpressionFactory.CreateExpression(System.String,AllOverIt.Evaluator.Variables.IVariableRegistry)">
+            <summary>Creates an expression that gets the value of a variable from the variable registry.</summary>
+            <param name="variableName">The name of the variable to get the value for.</param>
+            <param name="variableRegistry">The variable registry containing the required value.</param>
+            <returns>An expression that gets the value of a variable from the variable registry.</returns>
+        </member>
+        <member name="T:AllOverIt.Evaluator.FormulaProcessorResult">
+            <summary>Contains the result of parsing and processing a formula.</summary>
+        </member>
+        <member name="P:AllOverIt.Evaluator.FormulaProcessorResult.FormulaExpression">
+            <summary>Gets the expression built from a processed formula. When this expression is compiled and invoked
+            the value of the formula is returned.</summary>
+        </member>
+        <member name="P:AllOverIt.Evaluator.FormulaProcessorResult.ReferencedVariableNames">
+            <summary>Gets an enumerable of all variable names explicitly referenced by the formula.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.FormulaProcessorResult.#ctor(System.Linq.Expressions.Expression{System.Func{System.Double}},System.Collections.Generic.IEnumerable{System.String})">
+            <summary>Constructor.</summary>
+            <param name="formulaExpression">The expression built from a processed formula.</param>
+            <param name="referencedVariableNames">An enumerable of all variable names explicitly referenced by the formula.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.FormulaTokenProcessorContext">
+            <summary>Contains context information about a formula token and an associated processor.</summary>
+        </member>
+        <member name="P:AllOverIt.Evaluator.FormulaTokenProcessorContext.Predicate">
+            <summary>The predicate that determines if the processor should be invoked for the provided token.</summary>
+            <remarks>The input arguments of the predicate include the next token to be read and a flag to indicate if the
+            token is within the context of a user-defined method.</remarks>
+        </member>
+        <member name="P:AllOverIt.Evaluator.FormulaTokenProcessorContext.Processor">
+            <summary>The delegate used for processing a given token.</summary>
+            <remarks>The input arguments of the processor include the next token to be read and a flag to indicate if the token
+            is within the context of a user defined method. The processor returns true to indicate processing is to continue or
+            false to indicate processing of the current scope is complete (such as reading arguments of a user defined method).</remarks>
+        </member>
+        <member name="M:AllOverIt.Evaluator.FormulaTokenProcessorContext.#ctor(System.Func{System.Char,System.Boolean,System.Boolean},System.Func{System.Char,System.Boolean,System.Boolean})">
+            <summary>Constructor.</summary>
+            <param name="predicate">The predicate that determines if the processor should be invoked for the provided token.</param>
+            <param name="processor">The delegate used for processing a given token.</param>
         </member>
         <member name="T:AllOverIt.Evaluator.Operations.AcosOperation">
             <summary>An operation used to calculate the angle (in radians) of a cosine value.</summary>
