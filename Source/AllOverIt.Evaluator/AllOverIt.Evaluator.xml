@@ -112,6 +112,7 @@
         <member name="P:AllOverIt.Evaluator.FormulaCompilerResult.VariableRegistry">
             <summary>The variable registry reference by the compiled formula. This will be null if the formula compiler was not provided
             a variable registry and the formula did not contain any variables.</summary>
+            <remarks>Expected variables (as per ReferencedVariableNames) can be added to the registry after compilation if required.</remarks>
         </member>
         <member name="P:AllOverIt.Evaluator.FormulaCompilerResult.Resolver">
             <summary>The compiled delegate that returns the result of the formula when invoked.</summary>
@@ -120,7 +121,7 @@
             <summary>An enumerable of all variable names explicitly referenced by the formula.
             This will be null if the formula did not have any variables.</summary>
         </member>
-        <member name="M:AllOverIt.Evaluator.FormulaCompilerResult.#ctor(AllOverIt.Evaluator.Variables.IVariableRegistry,System.Func{System.Double},System.Collections.Generic.IEnumerable{System.String})">
+        <member name="M:AllOverIt.Evaluator.FormulaCompilerResult.#ctor(AllOverIt.Evaluator.Variables.IVariableRegistry,System.Func{System.Double},System.Collections.Generic.IReadOnlyCollection{System.String})">
             <summary>Constructor.</summary>
             <param name="variableRegistry">The variable registry reference by the compiled formula. Variables can be added at any time
             prior to evaluation.</param>
@@ -153,10 +154,10 @@
         <member name="P:AllOverIt.Evaluator.FormulaProcessorResult.ReferencedVariableNames">
             <summary>Gets an enumerable of all variable names explicitly referenced by the formula.</summary>
         </member>
-        <member name="M:AllOverIt.Evaluator.FormulaProcessorResult.#ctor(System.Linq.Expressions.Expression{System.Func{System.Double}},System.Collections.Generic.IEnumerable{System.String})">
+        <member name="M:AllOverIt.Evaluator.FormulaProcessorResult.#ctor(System.Linq.Expressions.Expression{System.Func{System.Double}},System.Collections.Generic.IReadOnlyCollection{System.String})">
             <summary>Constructor.</summary>
             <param name="formulaExpression">The expression built from a processed formula.</param>
-            <param name="referencedVariableNames">An enumerable of all variable names explicitly referenced by the formula.</param>
+            <param name="referencedVariableNames">A collection of all variable names explicitly referenced by the formula.</param>
         </member>
         <member name="T:AllOverIt.Evaluator.FormulaTokenProcessorContext">
             <summary>Contains context information about a formula token and an associated processor.</summary>

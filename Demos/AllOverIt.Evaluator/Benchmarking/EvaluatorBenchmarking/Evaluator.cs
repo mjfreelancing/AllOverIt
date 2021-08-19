@@ -112,7 +112,7 @@ namespace EvaluatorBenchmarking
         {
             for (var i = 0; i < iterations; i++)
             {
-                _compiler.GetResult($"{_lhs[i]} + {_rhs[i]}");
+                _ = _compiler.GetResult($"{_lhs[i]} + {_rhs[i]}");
             }
         }
 

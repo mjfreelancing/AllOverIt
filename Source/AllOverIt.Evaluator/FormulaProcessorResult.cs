@@ -1,4 +1,3 @@
-using AllOverIt.Extensions;
 using AllOverIt.Helpers;
 using System;
 using System.Collections.Generic;
@@ -18,14 +17,12 @@ namespace AllOverIt.Evaluator
 
         /// <summary>Constructor.</summary>
         /// <param name="formulaExpression">The expression built from a processed formula.</param>
-        /// <param name="referencedVariableNames">An enumerable of all variable names explicitly referenced by the formula.</param>
-        public FormulaProcessorResult(Expression<Func<double>> formulaExpression, IEnumerable<string> referencedVariableNames)
+        /// <param name="referencedVariableNames">A collection of all variable names explicitly referenced by the formula.</param>
+        internal FormulaProcessorResult(Expression<Func<double>> formulaExpression, IReadOnlyCollection<string> referencedVariableNames)
         {
+            // Note: referencedVariableNames is passed as IReadOnlyCollection<string> for performance reasons (from the FormulaProcessor)
             FormulaExpression = formulaExpression.WhenNotNull(nameof(formulaExpression));
-
-            ReferencedVariableNames = referencedVariableNames
-                .WhenNotNull(nameof(referencedVariableNames))
-                .AsReadOnlyCollection();
+            ReferencedVariableNames = referencedVariableNames.WhenNotNull(nameof(referencedVariableNames));
         }
     }
 }

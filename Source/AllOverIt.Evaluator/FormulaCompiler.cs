@@ -12,7 +12,6 @@ namespace AllOverIt.Evaluator
     {
         private static readonly Regex StripWhitespaceRegex = new(@"\s+", RegexOptions.Compiled);
         private readonly FormulaProcessor _formulaProcessor;
-        private IVariableRegistry _variableRegistry;   // may be cached for future use when a previous compile found no variables in the formula
 
         /// <summary>Constructor.</summary>
         /// <param name="operationFactory">The arithmetic operation factory used for building expressions.</param>
@@ -50,18 +49,16 @@ namespace AllOverIt.Evaluator
 
             var variableRegistryProvided = variableRegistry != null;
 
-            variableRegistry ??= _variableRegistry;
             variableRegistry ??= new VariableRegistry();
 
             var processorResult = _formulaProcessor.Process(formula, variableRegistry);
             var compiledExpression = processorResult.FormulaExpression.Compile();
-            var referencedVariableNames = processorResult.ReferencedVariableNames;
+            var referencedVariableNames = processorResult.ReferencedVariableNames;  // will be a static, empty, ReadOnlyCollection if there were no variables
 
             if (!variableRegistryProvided && !referencedVariableNames.Any())
             {
-                // since no variables were found we can hang onto variableRegistry for future use, and 
-                // return null in the final FormulaCompilerResult.
-                (_variableRegistry, variableRegistry) = (variableRegistry, null);
+                // release the internally created registry
+                variableRegistry = null;
             }
 
             return new FormulaCompilerResult(variableRegistry, compiledExpression, referencedVariableNames);

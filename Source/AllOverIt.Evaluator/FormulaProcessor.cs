@@ -6,6 +6,7 @@ using AllOverIt.Extensions;
 using AllOverIt.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
@@ -22,11 +23,12 @@ namespace AllOverIt.Evaluator
             internal const string OpenScope = "(";
         }
 
+        private static readonly IReadOnlyCollection<string> EmptyReadOnlyCollection = new ReadOnlyCollection<string>(new[] { string.Empty });
         private static readonly char DecimalSeparator = Convert.ToChar(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+        private readonly IList<FormulaTokenProcessorContext> _tokenProcessors = new List<FormulaTokenProcessorContext>();
         private readonly Stack<string> _operatorStack = new();
         private readonly Stack<Expression> _expressionStack = new();
         private readonly HashSet<string> _referencedVariableNames = new();
-        private readonly IList<FormulaTokenProcessorContext> _tokenProcessors = new List<FormulaTokenProcessorContext>();
         private readonly IArithmeticOperationFactory _operationFactory;
         private readonly IUserDefinedMethodFactory _userDefinedMethodFactory;
         private IVariableRegistry _variableRegistry;
@@ -43,6 +45,8 @@ namespace AllOverIt.Evaluator
 
             // custom operator registration (using TryRegisterOperation as the factory can be shared across threads)
             _operationFactory.TryRegisterOperation(CustomTokens.UnaryMinus, 4, 1, e => new NegateOperator(e[0]));
+
+            RegisterTokenProcessors();
         }
 
         public FormulaProcessorResult Process(string formula, IVariableRegistry variableRegistry)
@@ -50,29 +54,38 @@ namespace AllOverIt.Evaluator
             _formula = formula.WhenNotNullOrEmpty(nameof(formula));
             _variableRegistry = variableRegistry.WhenNotNull(nameof(variableRegistry));
 
-            ResetState();
-            ParseContent(false);
-            ProcessOperators(_operatorStack, _expressionStack, () => true);
+            _lastPushIsOperator = true;
+            _currentIndex = 0;
 
-            var lastExpression = _expressionStack.Pop();
-            var funcExpression = Expression.Lambda<Func<double>>(lastExpression);
+            try
+            {
+                ParseContent(false);
+                ProcessOperators(_operatorStack, _expressionStack, () => true);
 
-            return new FormulaProcessorResult(funcExpression, _referencedVariableNames);
+                var lastExpression = _expressionStack.Pop();
+                var funcExpression = Expression.Lambda<Func<double>>(lastExpression);
+
+                var referencedVariableNames = _referencedVariableNames.Any()
+
+                    // must return a copy of the referenced variable names
+                    ? new ReadOnlyCollection<string>(_referencedVariableNames.ToList())
+
+                    // prevent allocating multiple collections when there's nothing in them
+                    : EmptyReadOnlyCollection;
+                
+                return new FormulaProcessorResult(funcExpression, referencedVariableNames);
+            }
+            finally
+            {
+                ClearState();
+            }
         }
 
-        private void ResetState()
+        private void ClearState()
         {
             _operatorStack.Clear();
             _expressionStack.Clear();
             _referencedVariableNames.Clear();
-
-            _lastPushIsOperator = true;
-            _currentIndex = 0;
-
-            if (!_tokenProcessors.Any())
-            {
-                RegisterTokenProcessors();
-            }
         }
 
         private void PushOperator(string operatorToken)
