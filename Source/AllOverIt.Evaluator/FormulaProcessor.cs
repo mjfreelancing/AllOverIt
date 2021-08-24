@@ -31,7 +31,18 @@ namespace AllOverIt.Evaluator
         private readonly HashSet<string> _referencedVariableNames = new();
         private readonly IArithmeticOperationFactory _operationFactory;
         private readonly IUserDefinedMethodFactory _userDefinedMethodFactory;
+
         private IVariableRegistry _variableRegistry;
+        private IVariableRegistry VariableRegistry
+        {
+            get
+            {
+                // Using Lazy<IVariableRegistry> will achieve the same thing but this uses slightly less memory
+                _variableRegistry ??= new VariableRegistry();
+                return _variableRegistry;
+            }
+        }
+
         private string _formula;
         private int _currentIndex;
 
@@ -49,11 +60,21 @@ namespace AllOverIt.Evaluator
             RegisterTokenProcessors();
         }
 
+        /// <summary>Parses a provided formula to create a compiled expression that can later be evaluated.</summary>
+        /// <param name="formula">The formula to be parsed and compiled into an expression.</param>
+        /// <param name="variableRegistry">The variable registry to be referenced during the formula's evaluation (after compilation).</param>
+        /// <returns>The processed result, including the formula's compiled expression, a collection of any referenced variables, and a variable
+        /// registry that will be referenced by the compiled expression when it is evaluated.</returns>
+        /// <remarks>The variable registry does not need to be provided if the formula does not contain any variables. If the formula does contain
+        /// variables then there are two use cases. First, if a variable registry is not provided then an instance will be created during processing
+        /// and will be returned as part of the result. Second, if a variable registry is provided then that instance will be used (and will always
+        /// be returned with the result, even if there are no variables in the formula). It is the caller's responsibility to populate the variable
+        /// registry before the compiled expression is evaluated.</remarks>
         public FormulaProcessorResult Process(string formula, IVariableRegistry variableRegistry)
         {
             _formula = formula.WhenNotNullOrEmpty(nameof(formula));
-            _variableRegistry = variableRegistry.WhenNotNull(nameof(variableRegistry));
 
+            _variableRegistry = variableRegistry;   // can be null
             _lastPushIsOperator = true;
             _currentIndex = 0;
 
@@ -72,8 +93,14 @@ namespace AllOverIt.Evaluator
 
                     // prevent allocating multiple collections when there's nothing in them
                     : EmptyReadOnlyCollection;
-                
-                return new FormulaProcessorResult(funcExpression, referencedVariableNames);
+
+                // If the caller did not provide a registry (it was null) and
+                //  - there were no variables then returning null for the registry.
+                //  - there were variables then this processor will have created one, so return it.
+                // If the caller provided a registry, just return it
+                var registry = variableRegistry ?? _variableRegistry;
+
+                return new FormulaProcessorResult(funcExpression, referencedVariableNames, registry);
             }
             finally
             {
@@ -246,7 +273,7 @@ namespace AllOverIt.Evaluator
             // only compiling the expression.  It will be validated at runtime when the variables are available.
             _referencedVariableNames.Add(namedOperand);
 
-            return FormulaExpressionFactory.CreateExpression(namedOperand, _variableRegistry);
+            return FormulaExpressionFactory.CreateExpression(namedOperand, VariableRegistry);
         }
 
         private Expression ParseMethodToExpression(string methodName)

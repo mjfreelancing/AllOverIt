@@ -2,7 +2,6 @@
 using AllOverIt.Evaluator.Variables;
 using AllOverIt.Extensions;
 using System;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace AllOverIt.Evaluator
@@ -47,19 +46,14 @@ namespace AllOverIt.Evaluator
                 throw new FormatException("The formula is empty.");
             }
 
-            var variableRegistryProvided = variableRegistry != null;
-
-            variableRegistry ??= new VariableRegistry();
-
             var processorResult = _formulaProcessor.Process(formula, variableRegistry);
             var compiledExpression = processorResult.FormulaExpression.Compile();
             var referencedVariableNames = processorResult.ReferencedVariableNames;  // will be a static, empty, ReadOnlyCollection if there were no variables
 
-            if (!variableRegistryProvided && !referencedVariableNames.Any())
-            {
-                // release the internally created registry
-                variableRegistry = null;
-            }
+            // The result's variable registry will be the same reference as the passed in variableRegistry.
+            // If the caller did not provide a registry but the formula contained variables then the _formulaProcessor will have created a registry.
+            // It's the caller's responsibility to populate the registry (with IVariable and suitable values) before attempting to evaluate the formula.
+            variableRegistry = processorResult.VariableRegistry;
 
             return new FormulaCompilerResult(variableRegistry, compiledExpression, referencedVariableNames);
         }
