@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace AllOverIt.Aws.Cdk.AppSync.Attributes
 {
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Method)]
     public abstract class DataSourceAttribute : Attribute
     {
         // used for lookup in the DataSourceFactory

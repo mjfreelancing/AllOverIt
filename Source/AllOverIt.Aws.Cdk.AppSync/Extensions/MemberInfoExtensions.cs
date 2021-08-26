@@ -16,6 +16,11 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
                 : dataSourceFactory.CreateDataSource(attribute);
         }
 
+        public static RequestResponseMappingAttribute GetRequestResponseMapping(this MemberInfo memberInfo)
+        {
+            return memberInfo.GetCustomAttribute<RequestResponseMappingAttribute>(false);
+        }
+
         public static string GetFieldName(this MemberInfo memberInfo, string parentName)
         {
             return $"{parentName}.{memberInfo.Name}";

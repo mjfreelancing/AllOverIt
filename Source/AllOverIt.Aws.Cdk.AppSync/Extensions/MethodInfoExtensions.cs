@@ -1,6 +1,8 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync.Attributes;
 using AllOverIt.Aws.Cdk.AppSync.Exceptions;
+using AllOverIt.Aws.Cdk.AppSync.Mapping;
 using AllOverIt.Extensions;
+using AllOverIt.Helpers;
 using Amazon.CDK.AWS.AppSync;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,6 +59,21 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
             }
 
             return args;
+        }
+
+        public static void RegisterRequestResponseMappings(this MethodInfo methodInfo, string fieldMapping, MappingTemplates mappingTemplates)
+        {
+            _ = fieldMapping.WhenNotNullOrEmpty(nameof(fieldMapping));
+
+            var mappingAttribute = methodInfo.GetRequestResponseMapping();
+
+            if (mappingAttribute != null)
+            {
+                var mapping = mappingAttribute.MappingType;
+
+                // fieldMapping includes the parent names too
+                mappingTemplates.RegisterMappings(fieldMapping, mapping.RequestMapping, mapping.ResponseMapping);
+            }
         }
     }
 }

@@ -1,9 +1,10 @@
 ﻿using AllOverIt.Extensions;
+using Amazon.CDK.AWS.AppSync;
 using System.Collections.Generic;
 
-namespace AllOverIt.Aws.Cdk.AppSync
+namespace AllOverIt.Aws.Cdk.AppSync.Mapping
 {
-    public abstract class MappingTemplatesBase
+    public sealed class MappingTemplates
     {
         private readonly IDictionary<string, string> _functionRequestMappings = new Dictionary<string, string>();
         private readonly IDictionary<string, string> _functionResponseMappings = new Dictionary<string, string>();
@@ -14,7 +15,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
             _functionResponseMappings.Add(mappingKey, responseMapping);
         }
 
-        public string GetRequestMapping(string mappingKey)
+        public MappingTemplate GetRequestMapping(string mappingKey)
         {
             var mapping = _functionRequestMappings.GetValueOrDefault(mappingKey);
 
@@ -23,17 +24,17 @@ namespace AllOverIt.Aws.Cdk.AppSync
                 throw new KeyNotFoundException($"Request mapping not found for the key '{mappingKey}'");
             }
 
-            return mapping;
+            return MappingTemplate.FromString(mapping);
         }
 
-        public string GetResponseMapping(string mappingKey)
+        public MappingTemplate GetResponseMapping(string mappingKey)
         {
             var mapping = _functionResponseMappings.GetValueOrDefault(mappingKey); if (mapping == null)
             {
                 throw new KeyNotFoundException($"Response mapping not found for the key '{mappingKey}'");
             }
 
-            return mapping;
+            return MappingTemplate.FromString(mapping);
         }
     }
 }
