@@ -2,7 +2,7 @@
 
 namespace AllOverIt.Aws.Cdk.AppSync.Attributes
 {
-    public sealed class HttpDataSourceAttribute : DataSourceAttribute
+    public class HttpDataSourceAttribute : DataSourceAttribute
     {
         private readonly string _serviceName;
 

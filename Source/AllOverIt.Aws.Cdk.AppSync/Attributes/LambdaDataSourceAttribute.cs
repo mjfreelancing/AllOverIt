@@ -2,7 +2,7 @@
 
 namespace AllOverIt.Aws.Cdk.AppSync.Attributes
 {
-    public sealed class LambdaDataSourceAttribute : DataSourceAttribute
+    public class LambdaDataSourceAttribute : DataSourceAttribute
     {
         public string ServiceName { get; }
         public string FunctionName { get; }

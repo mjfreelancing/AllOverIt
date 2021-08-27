@@ -2,7 +2,7 @@
 
 namespace AllOverIt.Aws.Cdk.AppSync.Attributes
 {
-    public sealed class NoneDataSourceAttribute : DataSourceAttribute
+    public class NoneDataSourceAttribute : DataSourceAttribute
     {
         private readonly string _serviceName;
         private readonly string _identifier;
