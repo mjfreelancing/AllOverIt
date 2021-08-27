@@ -13,7 +13,7 @@ namespace GraphqlSchema.Schema
     internal interface IAppSyncDemoQueryDefinition : IQueryDefinition
     {
         // NOTE: Leave this as the first item as it is testing a parameter and return type that is unknown at the time of parsing
-        [NoneDataSource(Constants.AppName, nameof(CountryLanguage), typeof(CountryLanguageMapping))]
+        [NoneDataSource(Constants.AppName, nameof(CountryLanguage)/*, typeof(CountryLanguageMapping)*/)]        // providing this mapping via code
         ILanguage CountryLanguage([SchemaTypeRequired] ICountryFilterInput country);
 
         [SchemaArrayRequired]

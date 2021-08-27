@@ -1,6 +1,8 @@
-﻿using Amazon.CDK;
+﻿using AllOverIt.Aws.Cdk.AppSync.Mapping;
+using Amazon.CDK;
 using Amazon.CDK.AWS.AppSync;
 using GraphqlSchema.Schema;
+using GraphqlSchema.Schema.Mappings.Query;
 
 namespace GraphqlSchema.Constructs
 {
@@ -37,7 +39,14 @@ namespace GraphqlSchema.Constructs
             //        nameof(IAppSyncDemoQueryDefinition.AllContinents), GetHttpRequestMapping("GET", "/continents"), GetHttpResponseMapping())
             //    );
 
-            var graphql = new AppSyncDemoGraphql(this, appProps, authMode);
+
+            // Providing the mapping for IAppSyncDemoQueryDefinition.CountryLanguage manually via code
+            var mappingTemplates = new MappingTemplates();
+
+            var noneMapping = new CountryLanguageMapping();     // using this just for convenience
+            mappingTemplates.RegisterMappings("Query.CountryLanguage", noneMapping.RequestMapping, noneMapping.ResponseMapping);
+
+            var graphql = new AppSyncDemoGraphql(this, appProps, authMode, mappingTemplates);
 
             graphql
                 .AddSchemaQuery<IAppSyncDemoQueryDefinition>()
