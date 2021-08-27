@@ -113,12 +113,6 @@ namespace AllOverIt.Aws.Cdk.AppSync
                     throw new SchemaException($"{schemaType.Name} is missing a required datasource for '{methodInfo.Name}'");
                 }
 
-                //var returnType = methodInfo.ReturnType;
-                //var isRequired = methodInfo.IsGqlTypeRequired();
-                //var isList = returnType.IsArray;
-                //var isRequiredList = isList && methodInfo.IsGqlArrayRequired();
-
-
                 string rootName;
 
                 if (typeof(IQueryDefinition).IsAssignableFrom(schemaType))

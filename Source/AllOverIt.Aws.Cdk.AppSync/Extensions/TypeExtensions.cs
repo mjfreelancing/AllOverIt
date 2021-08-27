@@ -9,13 +9,17 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
 {
     internal static class TypeExtensions
     {
-        public static GraphqlSchemaTypeDescriptor GetGraphqlTypeDescriptor(this SystemType type)
+        public static SystemType GetElementTypeIfArray(this SystemType type)
         {
-            var elementType = type.IsArray
+            return type.IsArray
                 ? type.GetElementType()
                 : type;
+        }
 
-            var typeInfo = elementType.GetTypeInfo();
+        public static GraphqlSchemaTypeDescriptor GetGraphqlTypeDescriptor(this SystemType type)
+        {
+            var elementType = type.GetElementTypeIfArray();
+            var typeInfo = elementType!.GetTypeInfo();
             var typeDescription = elementType.IsClass ? "class" : "interface";
 
             // SchemaTypeAttribute indicates if this is an object, scalar, interface, input type (cannot be on an array)

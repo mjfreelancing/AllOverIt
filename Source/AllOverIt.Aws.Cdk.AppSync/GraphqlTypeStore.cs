@@ -65,11 +65,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
         {
             if (!_fieldTypes.TryGetValue(lookupTypeName, out var fieldTypeCreator))
             {
-                var isList = type.IsArray;
-
-                var elementType = isList
-                    ? type.GetElementType()
-                    : type;
+                var elementType = type.GetElementTypeIfArray();
 
                 var objectType = elementType!.IsEnum
                     ? CreateEnumType(elementType)
@@ -171,7 +167,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
 
                 GraphqlType returnObjectType;
 
-                if (_typeUnderConstruction.Contains(requiredTypeInfo.Type))
+                if (IsTypeUnderConstruction(requiredTypeInfo.Type))
                 {
                     // the type is already under construction - we can get away with a dummy intermediate type
                     // that has the name and no definition.
@@ -233,6 +229,12 @@ namespace AllOverIt.Aws.Cdk.AppSync
                     );
                 }
             }
+        }
+
+        private bool IsTypeUnderConstruction(SystemType type)
+        {
+            var elementType = type.GetElementTypeIfArray();
+            return _typeUnderConstruction.Contains(elementType);
         }
 
         private static GraphqlTypeOptions CreateTypeOptions(RequiredTypeInfo requiredTypeInfo)
