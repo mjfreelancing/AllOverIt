@@ -119,20 +119,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
 
                 ParseInterfaceTypeMethods(parentName, classDefinition, type);
 
-                // todo: currently handles Input and Type - haven't yet looked at 'interface'
-                //new InterfaceType()
-
-                IIntermediateType intermediateType = typeDescriptor.SchemaType == GraphqlSchemaType.Input
-                    ? new InputType(typeDescriptor.Name,
-                        new IntermediateTypeOptions
-                        {
-                            Definition = classDefinition
-                        })
-                    : new ObjectType(typeDescriptor.Name,
-                        new ObjectTypeOptions
-                        {
-                            Definition = classDefinition
-                        });
+                var intermediateType = CreateIntermediateType(typeDescriptor, classDefinition);
 
                 // cache for possible future use
                 _fieldTypes.Add(
@@ -172,18 +159,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
                     // the type is already under construction - we can get away with a dummy intermediate type
                     // that has the name and no definition.
                     var typeDescriptor = requiredTypeInfo.Type.GetGraphqlTypeDescriptor();
-
-                    IIntermediateType intermediateType = typeDescriptor.SchemaType == GraphqlSchemaType.Input
-                        ? new InputType(typeDescriptor.Name,
-                            new IntermediateTypeOptions
-                            {
-                                Definition = new Dictionary<string, IField>()
-                            })
-                        : new ObjectType(typeDescriptor.Name,
-                            new ObjectTypeOptions
-                            {
-                                Definition = new Dictionary<string, IField>()
-                            });
+                    var intermediateType = CreateIntermediateType(typeDescriptor);
 
                     returnObjectType = intermediateType.Attribute(CreateTypeOptions(requiredTypeInfo));
                 }
@@ -245,6 +221,28 @@ namespace AllOverIt.Aws.Cdk.AppSync
                 IsList = requiredTypeInfo.IsList,
                 IsRequiredList = requiredTypeInfo.IsRequiredList
             };
+        }
+
+        private IIntermediateType CreateIntermediateType(GraphqlSchemaTypeDescriptor typeDescriptor, IDictionary<string, IField> classDefinition = null)
+        {
+            // todo: currently handles Input and Type - haven't yet looked at 'interface'
+            //new InterfaceType()
+
+            classDefinition ??= new Dictionary<string, IField>();
+
+            IIntermediateType intermediateType = typeDescriptor.SchemaType == GraphqlSchemaType.Input
+                ? new InputType(typeDescriptor.Name,
+                    new IntermediateTypeOptions
+                    {
+                        Definition = classDefinition
+                    })
+                : new ObjectType(typeDescriptor.Name,
+                    new ObjectTypeOptions
+                    {
+                        Definition = classDefinition
+                    });
+
+            return intermediateType;
         }
     }
 }
