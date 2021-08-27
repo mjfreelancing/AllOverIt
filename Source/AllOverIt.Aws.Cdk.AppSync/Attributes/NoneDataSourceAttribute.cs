@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Helpers;
+using SystemType = System.Type;
 
 namespace AllOverIt.Aws.Cdk.AppSync.Attributes
 {
@@ -9,8 +10,8 @@ namespace AllOverIt.Aws.Cdk.AppSync.Attributes
 
         public override string LookupKey => SanitiseLookupKey($"{_serviceName}{_identifier}");
 
-        public NoneDataSourceAttribute(string serviceName, string identifier, string description = default)
-            : base(description)
+        public NoneDataSourceAttribute(string serviceName, string identifier, SystemType mappingType = default, string description = default)
+            : base(mappingType, description)
         {
             _serviceName = serviceName.WhenNotNullOrEmpty(nameof(serviceName));
             _identifier = identifier.WhenNotNullOrEmpty(nameof(identifier));

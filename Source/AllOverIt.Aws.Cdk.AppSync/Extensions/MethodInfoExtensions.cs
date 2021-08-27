@@ -70,14 +70,13 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
         {
             _ = fieldMapping.WhenNotNullOrEmpty(nameof(fieldMapping));
 
-            var mappingAttribute = methodInfo.GetRequestResponseMapping();
+            var requestResponseMapping = methodInfo.GetRequestResponseMapping();
 
-            if (mappingAttribute != null)
+            // will be null if the mapping has already been populated (via code)
+            if (requestResponseMapping != null)
             {
-                var mapping = mappingAttribute.MappingType;
-
                 // fieldMapping includes the parent names too
-                mappingTemplates.RegisterMappings(fieldMapping, mapping.RequestMapping, mapping.ResponseMapping);
+                mappingTemplates.RegisterMappings(fieldMapping, requestResponseMapping.RequestMapping, requestResponseMapping.ResponseMapping);
             }
         }
 
