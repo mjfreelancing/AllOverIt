@@ -17,28 +17,28 @@ namespace AllOverIt.Aws.Cdk.AppSync
 {
     public sealed class GraphqlTypeStore
     {
-        private readonly IList<SystemType> _circularReferences = new List<SystemType>();
+        private readonly IList<SystemType> _typeUnderConstruction = new List<SystemType>();
         private readonly GraphqlApi _graphqlApi;
         private readonly MappingTemplates _mappingTemplates;
         private readonly DataSourceFactory _dataSourceFactory;
 
-        private readonly IDictionary<string, Func<bool, bool, bool, GraphqlType>> _fieldTypes = new Dictionary<string, Func<bool, bool, bool, GraphqlType>>
+        private readonly IDictionary<string, Func<RequiredTypeInfo, GraphqlType>> _fieldTypes = new Dictionary<string, Func<RequiredTypeInfo, GraphqlType>>
         {
-            {nameof(GraphqlTypeId), (isRequired, isList, isRequiredList) => GraphqlType.Id(CreateTypeOptions(isRequired, isList, isRequiredList))},
-            {nameof(AwsTypePhone), (isRequired, isList, isRequiredList) => GraphqlType.AwsPhone(CreateTypeOptions(isRequired, isList, isRequiredList))},
-            {nameof(AwsTypeEmail), (isRequired, isList, isRequiredList) => GraphqlType.AwsEmail(CreateTypeOptions(isRequired, isList, isRequiredList))},
-            {nameof(AwsTypeIpAddress), (isRequired, isList, isRequiredList) => GraphqlType.AwsIpAddress(CreateTypeOptions(isRequired, isList, isRequiredList))},
-            {nameof(AwsTypeJson), (isRequired, isList, isRequiredList) => GraphqlType.AwsJson(CreateTypeOptions(isRequired, isList, isRequiredList))},
-            {nameof(AwsTypeUrl), (isRequired, isList, isRequiredList) => GraphqlType.AwsUrl(CreateTypeOptions(isRequired, isList, isRequiredList))},
-            {nameof(AwsTypeTimestamp), (isRequired, isList, isRequiredList) => GraphqlType.AwsTimestamp(CreateTypeOptions(isRequired, isList, isRequiredList))},
-            {nameof(AwsTypeDate), (isRequired, isList, isRequiredList) => GraphqlType.AwsDate(CreateTypeOptions(isRequired, isList, isRequiredList))},
-            {nameof(AwsTypeTime), (isRequired, isList, isRequiredList) => GraphqlType.AwsTime(CreateTypeOptions(isRequired, isList, isRequiredList))},
-            {nameof(AwsTypeDateTime), (isRequired, isList, isRequiredList) => GraphqlType.AwsDateTime(CreateTypeOptions(isRequired, isList, isRequiredList))},
-            {nameof(Int32), (isRequired, isList, isRequiredList) => GraphqlType.Int(CreateTypeOptions(isRequired, isList, isRequiredList))},
-            {nameof(Double), (isRequired, isList, isRequiredList) => GraphqlType.Float(CreateTypeOptions(isRequired, isList, isRequiredList))},
-            {nameof(Single), (isRequired, isList, isRequiredList) => GraphqlType.Float(CreateTypeOptions(isRequired, isList, isRequiredList))},
-            {nameof(Boolean), (isRequired, isList, isRequiredList) => GraphqlType.Boolean(CreateTypeOptions(isRequired, isList, isRequiredList))},
-            {nameof(String), (isRequired, isList, isRequiredList) => GraphqlType.String(CreateTypeOptions(isRequired, isList, isRequiredList))}
+            {nameof(GraphqlTypeId), requiredTypeInfo => GraphqlType.Id(CreateTypeOptions(requiredTypeInfo))},
+            {nameof(AwsTypePhone), requiredTypeInfo => GraphqlType.AwsPhone(CreateTypeOptions(requiredTypeInfo))},
+            {nameof(AwsTypeEmail), requiredTypeInfo => GraphqlType.AwsEmail(CreateTypeOptions(requiredTypeInfo))},
+            {nameof(AwsTypeIpAddress), requiredTypeInfo => GraphqlType.AwsIpAddress(CreateTypeOptions(requiredTypeInfo))},
+            {nameof(AwsTypeJson), requiredTypeInfo => GraphqlType.AwsJson(CreateTypeOptions(requiredTypeInfo))},
+            {nameof(AwsTypeUrl), requiredTypeInfo => GraphqlType.AwsUrl(CreateTypeOptions(requiredTypeInfo))},
+            {nameof(AwsTypeTimestamp), requiredTypeInfo => GraphqlType.AwsTimestamp(CreateTypeOptions(requiredTypeInfo))},
+            {nameof(AwsTypeDate), requiredTypeInfo => GraphqlType.AwsDate(CreateTypeOptions(requiredTypeInfo))},
+            {nameof(AwsTypeTime), requiredTypeInfo => GraphqlType.AwsTime(CreateTypeOptions(requiredTypeInfo))},
+            {nameof(AwsTypeDateTime), requiredTypeInfo => GraphqlType.AwsDateTime(CreateTypeOptions(requiredTypeInfo))},
+            {nameof(Int32), requiredTypeInfo => GraphqlType.Int(CreateTypeOptions(requiredTypeInfo))},
+            {nameof(Double), requiredTypeInfo => GraphqlType.Float(CreateTypeOptions(requiredTypeInfo))},
+            {nameof(Single), requiredTypeInfo => GraphqlType.Float(CreateTypeOptions(requiredTypeInfo))},
+            {nameof(Boolean), requiredTypeInfo => GraphqlType.Boolean(CreateTypeOptions(requiredTypeInfo))},
+            {nameof(String), requiredTypeInfo => GraphqlType.String(CreateTypeOptions(requiredTypeInfo))}
         };
 
         public GraphqlTypeStore(GraphqlApi graphqlApi, MappingTemplates mappingTemplates, DataSourceFactory dataSourceFactory)
@@ -48,19 +48,19 @@ namespace AllOverIt.Aws.Cdk.AppSync
             _dataSourceFactory = dataSourceFactory.WhenNotNull(nameof(dataSourceFactory));
         }
 
-        public GraphqlType GetGraphqlType(string fieldName, SystemType type, bool isRequired, bool isList, bool isRequiredList, Action<IIntermediateType> typeCreated)
+        public GraphqlType GetGraphqlType(string fieldName, RequiredTypeInfo requiredTypeInfo, Action<IIntermediateType> typeCreated)
         {
-            SchemaUtils.AssertNoProperties(type);
+            SchemaUtils.AssertNoProperties(requiredTypeInfo.Type);
 
-            var typeDescriptor = type.GetGraphqlTypeDescriptor();
+            var typeDescriptor = requiredTypeInfo.Type.GetGraphqlTypeDescriptor();
             var typeName = typeDescriptor.Name;
 
-            var fieldTypeCreator = GetTypeCreator(fieldName, type, typeName, typeDescriptor, typeCreated);
+            var fieldTypeCreator = GetTypeCreator(fieldName, requiredTypeInfo.Type, typeName, typeDescriptor, typeCreated);
 
-            return fieldTypeCreator.Invoke(isRequired, isList, isRequiredList);
+            return fieldTypeCreator.Invoke(requiredTypeInfo);
         }
 
-        private Func<bool, bool, bool, GraphqlType> GetTypeCreator(string parentName, SystemType type, string lookupTypeName,
+        private Func<RequiredTypeInfo, GraphqlType> GetTypeCreator(string parentName, SystemType type, string lookupTypeName,
             GraphqlSchemaTypeDescriptor typeDescriptor, Action<IIntermediateType> typeCreated)
         {
             if (!_fieldTypes.TryGetValue(lookupTypeName, out var fieldTypeCreator))
@@ -93,7 +93,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
 
             _fieldTypes.Add(
                 type.Name,
-                (isRequired, isList, isRequiredList) => enumType.Attribute(CreateTypeOptions(isRequired, isList, isRequiredList)));
+                requiredTypeInfo => enumType.Attribute(CreateTypeOptions(requiredTypeInfo)));
 
             return enumType;
         }
@@ -104,13 +104,20 @@ namespace AllOverIt.Aws.Cdk.AppSync
 
             try
             {
-                if (_circularReferences.Contains(type))
+
+
+
+                if (_typeUnderConstruction.Contains(type))
                 {
-                    var typeNames = string.Join(" -> ", _circularReferences.Select(item => item.Name).Concat(new[] { type.Name }));
-                    throw new NotSupportedException($"Not currently supporting type circular references (type '{typeNames}')");
+                    var typeNames = string.Join(" -> ", _typeUnderConstruction.Select(item => item.Name).Concat(new[] { type.Name }));
+                    throw new InvalidOperationException($"Unexpected re-entry while creating '{typeNames}'");
+
+                    //throw new NotSupportedException($"Not currently supporting type circular references (type '{typeNames}')");
                 }
 
-                _circularReferences.Add(type);
+
+
+                _typeUnderConstruction.Add(type);
 
                 var classDefinition = new Dictionary<string, IField>();
 
@@ -119,8 +126,8 @@ namespace AllOverIt.Aws.Cdk.AppSync
                 // todo: currently handles Input and Type - haven't yet looked at 'interface'
                 //new InterfaceType()
 
-                var intermediateType = typeDescriptor.SchemaType == GraphqlSchemaType.Input
-                    ? (IIntermediateType)new InputType(typeDescriptor.Name,
+                IIntermediateType intermediateType = typeDescriptor.SchemaType == GraphqlSchemaType.Input
+                    ? new InputType(typeDescriptor.Name,
                         new IntermediateTypeOptions
                         {
                             Definition = classDefinition
@@ -134,14 +141,14 @@ namespace AllOverIt.Aws.Cdk.AppSync
                 // cache for possible future use
                 _fieldTypes.Add(
                     intermediateType.Name,
-                    (isRequired, isList, isRequiredList) => intermediateType.Attribute(CreateTypeOptions(isRequired, isList, isRequiredList))
+                    requiredTypeInfo => intermediateType.Attribute(CreateTypeOptions(requiredTypeInfo))
                 );
 
                 return intermediateType;
             }
             finally
             {
-                _circularReferences.Remove(type);
+                _typeUnderConstruction.Remove(type);
             }
         }
 
@@ -159,21 +166,53 @@ namespace AllOverIt.Aws.Cdk.AppSync
             {
                 methodInfo.AssertReturnTypeIsNotNullable();
 
-                var returnType = methodInfo.ReturnType;
-                var isRequired = methodInfo.IsGqlTypeRequired();
-                var isList = returnType.IsArray;
-                var isRequiredList = isList && methodInfo.IsGqlArrayRequired();
+                //var returnType = methodInfo.ReturnType;
+                //var isRequired = methodInfo.IsGqlTypeRequired();
+                //var isList = returnType.IsArray;
+                //var isRequiredList = isList && methodInfo.IsGqlArrayRequired();
+
+                var requiredTypeInfo = new RequiredTypeInfo(methodInfo);
+
+
 
                 var fieldMapping = methodInfo.GetFieldName(parentName);
 
-                var returnObjectType =
-                    GetGraphqlType(
-                        fieldMapping,
-                        returnType,
-                        isRequired,
-                        isList,
-                        isRequiredList,
-                        objectType => _graphqlApi.AddType(objectType));
+
+
+                GraphqlType returnObjectType;
+
+                if (_typeUnderConstruction.Contains(requiredTypeInfo.Type))
+                {
+                    // the type is already under construction - we can get away with a dummy intermediate type
+                    // that has the name and no definition.
+                    var typeDescriptor = requiredTypeInfo.Type.GetGraphqlTypeDescriptor();
+
+                    IIntermediateType intermediateType = typeDescriptor.SchemaType == GraphqlSchemaType.Input
+                        ? new InputType(typeDescriptor.Name,
+                            new IntermediateTypeOptions
+                            {
+                                Definition = new Dictionary<string, IField>()
+                            })
+                        : new ObjectType(typeDescriptor.Name,
+                            new ObjectTypeOptions
+                            {
+                                Definition = new Dictionary<string, IField>()
+                            });
+
+                    returnObjectType = intermediateType.Attribute(CreateTypeOptions(requiredTypeInfo));
+                }
+                else
+                {
+                    returnObjectType =
+                        GetGraphqlType(
+                            fieldMapping,
+                            requiredTypeInfo,
+                            objectType => _graphqlApi.AddType(objectType));
+                }
+
+
+                
+
 
                 // optionally specified via a custom attribute
                 var dataSource = methodInfo.GetDataSource(_dataSourceFactory);
@@ -210,13 +249,13 @@ namespace AllOverIt.Aws.Cdk.AppSync
             }
         }
 
-        private static GraphqlTypeOptions CreateTypeOptions(bool isRequired, bool isList, bool isRequiredList)
+        private static GraphqlTypeOptions CreateTypeOptions(RequiredTypeInfo requiredTypeInfo)
         {
-            return new GraphqlTypeOptions()
+            return new GraphqlTypeOptions
             {
-                IsRequired = isRequired,
-                IsList = isList,
-                IsRequiredList = isRequiredList
+                IsRequired = requiredTypeInfo.IsRequired,
+                IsList = requiredTypeInfo.IsList,
+                IsRequiredList = requiredTypeInfo.IsRequiredList
             };
         }
     }

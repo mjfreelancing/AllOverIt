@@ -63,9 +63,12 @@ namespace AllOverIt.Aws.Cdk.AppSync
                     throw new SchemaException($"{schemaType.Name} is missing a required datasource for '{methodInfo.Name}'");
                 }
 
-                var isRequired = methodInfo.IsGqlTypeRequired();
-                var isList = methodInfo.ReturnType.IsArray;
-                var isRequiredList = isList && methodInfo.IsGqlArrayRequired();
+                //var isRequired = methodInfo.IsGqlTypeRequired();
+                //var isList = methodInfo.ReturnType.IsArray;
+                //var isRequiredList = isList && methodInfo.IsGqlArrayRequired();
+
+                var requiredTypeInfo = new RequiredTypeInfo(methodInfo);
+
                 var fieldMapping = methodInfo.GetFieldName(SubscriptionPrefix);
 
                 methodInfo.RegisterRequestResponseMappings(fieldMapping, _mappingTemplates);
@@ -73,10 +76,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
                 var returnObjectType = _typeStore
                     .GetGraphqlType(
                         fieldMapping,
-                        methodInfo.ReturnType,
-                        isRequired,
-                        isList,
-                        isRequiredList,
+                        requiredTypeInfo,
                         objectType => _graphqlApi.AddType(objectType));
 
                 _graphqlApi.AddSubscription(methodInfo.Name.GetGraphqlName(),
@@ -117,10 +117,11 @@ namespace AllOverIt.Aws.Cdk.AppSync
                     throw new SchemaException($"{schemaType.Name} is missing a required datasource for '{methodInfo.Name}'");
                 }
 
-                var returnType = methodInfo.ReturnType;
-                var isRequired = methodInfo.IsGqlTypeRequired();
-                var isList = returnType.IsArray;
-                var isRequiredList = isList && methodInfo.IsGqlArrayRequired();
+                //var returnType = methodInfo.ReturnType;
+                //var isRequired = methodInfo.IsGqlTypeRequired();
+                //var isList = returnType.IsArray;
+                //var isRequiredList = isList && methodInfo.IsGqlArrayRequired();
+
 
                 string rootName;
 
@@ -141,13 +142,12 @@ namespace AllOverIt.Aws.Cdk.AppSync
 
                 methodInfo.RegisterRequestResponseMappings(fieldMapping, _mappingTemplates);
 
+                var requiredTypeInfo = new RequiredTypeInfo(methodInfo);
+
                 var returnObjectType = _typeStore
                     .GetGraphqlType(
                         fieldMapping,
-                        returnType,
-                        isRequired,
-                        isList,
-                        isRequiredList,
+                        requiredTypeInfo,
                         objectType => _graphqlApi.AddType(objectType));
 
                 graphqlAction.Invoke(methodInfo.Name.GetGraphqlName(),

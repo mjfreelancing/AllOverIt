@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync;
 using AllOverIt.Aws.Cdk.AppSync.Attributes;
-using GraphqlSchema.Schema.Mappings;
 using GraphqlSchema.Schema.Mappings.Query;
 
 namespace GraphqlSchema.Schema.Types

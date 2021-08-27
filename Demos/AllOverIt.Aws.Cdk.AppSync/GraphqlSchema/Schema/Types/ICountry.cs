@@ -12,8 +12,8 @@ namespace GraphqlSchema.Schema.Types
         public string Currency();
 
         // todo: solve non-support for circular references
-        //[SchemaTypeRequired]
-        //public IContinent Continent ();
+        [SchemaTypeRequired]
+        public IContinent Continent();
 
         [SchemaArrayRequired]
         [SchemaTypeRequired]

@@ -12,6 +12,16 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
 {
     internal static class MethodInfoExtensions
     {
+        //public static RequiredTypeInfo GetReturnTypeInfo(this MethodInfo methodInfo)
+        //{
+        //    return new RequiredTypeInfo(methodInfo);
+        //}
+
+        //public static RequiredTypeInfo GetParameterTypeInfo(this ParameterInfo parameterInfo)
+        //{
+        //    return new RequiredTypeInfo(parameterInfo);
+        //}
+
         public static bool IsGqlTypeRequired(this MethodInfo methodInfo)
         {
             return methodInfo.GetCustomAttribute<SchemaTypeRequiredAttribute>(true) != null;
@@ -26,7 +36,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
         {
             if (methodInfo.ReturnType.IsGenericNullableType())
             {
-                throw new SchemaException($"{methodInfo.DeclaringType.Name}.{methodInfo.Name} has a nullable return type. The presence of {nameof(SchemaTypeRequiredAttribute)} " +
+                throw new SchemaException($"{methodInfo.DeclaringType!.Name}.{methodInfo.Name} has a nullable return type. The presence of {nameof(SchemaTypeRequiredAttribute)} " +
                                            "is used to declare a property as required, and its absence makes it optional.");
             }
         }
@@ -46,14 +56,16 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
             {
                 parameterInfo.AssertParameterTypeIsNotNullable();
 
-                var paramType = parameterInfo.ParameterType;
-                var isRequired = parameterInfo.IsGqlTypeRequired();
-                var isList = paramType.IsArray;
-                var isRequiredList = isList && parameterInfo.IsGqlArrayRequired();
+                //var paramType = parameterInfo.ParameterType;
+                //var isRequired = parameterInfo.IsGqlTypeRequired();
+                //var isList = paramType.IsArray;
+                //var isRequiredList = isList && parameterInfo.IsGqlArrayRequired();
+
+                var requiredTypeInfo = new RequiredTypeInfo(parameterInfo);
 
                 // Passing null for the field name because we are not creating a graphql field type, it is an argument type.
                 // The graphql fields are tracked for things like determining request/response mappings.
-                var graphqlType = typeStore.GetGraphqlType(null, paramType, isRequired, isList, isRequiredList, objectType => graphqlApi.AddType(objectType));
+                var graphqlType = typeStore.GetGraphqlType(null, requiredTypeInfo, objectType => graphqlApi.AddType(objectType));
 
                 args.Add(parameterInfo.Name.GetGraphqlName(), graphqlType);
             }
