@@ -4,9 +4,11 @@ using AllOverIt.Aws.Cdk.AppSync.Mapping;
 using AllOverIt.Extensions;
 using AllOverIt.Helpers;
 using Amazon.CDK.AWS.AppSync;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using SystemType = System.Type;
 
 namespace AllOverIt.Aws.Cdk.AppSync.Extensions
 {
@@ -50,6 +52,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
             foreach (var parameterInfo in parameters)
             {
                 parameterInfo.AssertParameterTypeIsNotNullable();
+                parameterInfo.AssertParameterSchemaType(methodInfo);
 
                 var requiredTypeInfo = parameterInfo.GetRequiredTypeInfo();
 
@@ -75,6 +78,27 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
 
                 // fieldMapping includes the parent names too
                 mappingTemplates.RegisterMappings(fieldMapping, mapping.RequestMapping, mapping.ResponseMapping);
+            }
+        }
+
+        public static void AssertReturnSchemaType(this MethodInfo methodInfo, SystemType parentType)
+        {
+            // make sure TYPE schema types on have other TYPE types, and similarly for INPUT schema types.
+            var parentSchemaType = parentType.GetGraphqlTypeDescriptor().SchemaType;
+            //var returnTypeInfo = methodInfo.GetRequiredTypeInfo();
+            var returnType = methodInfo.ReturnType;//.GetRequiredTypeInfo().Type;
+
+            if (parentSchemaType is GraphqlSchemaType.Input or GraphqlSchemaType.Type)
+            {
+                var methodSchemaType = returnType.GetGraphqlTypeDescriptor().SchemaType;
+
+                if (methodSchemaType is GraphqlSchemaType.Input or GraphqlSchemaType.Type)
+                {
+                    if (parentSchemaType != methodSchemaType)
+                    {
+                        throw new InvalidOperationException($"Expected '{returnType.FullName}.{methodInfo.Name}' to return a '{parentSchemaType}' type.");
+                    }
+                }
             }
         }
     }

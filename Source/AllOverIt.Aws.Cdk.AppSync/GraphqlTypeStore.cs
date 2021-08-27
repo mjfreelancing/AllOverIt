@@ -141,6 +141,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
             foreach (var methodInfo in methods)
             {
                 methodInfo.AssertReturnTypeIsNotNullable();
+                methodInfo.AssertReturnSchemaType(type);
 
                 var requiredTypeInfo = methodInfo.GetRequiredTypeInfo();
                 var fieldMapping = methodInfo.GetFieldName(parentName);
