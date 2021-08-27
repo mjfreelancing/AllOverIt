@@ -100,18 +100,11 @@ namespace AllOverIt.Aws.Cdk.AppSync
 
             try
             {
-
-
-
                 if (_typeUnderConstruction.Contains(type))
                 {
                     var typeNames = string.Join(" -> ", _typeUnderConstruction.Select(item => item.Name).Concat(new[] { type.Name }));
                     throw new InvalidOperationException($"Unexpected re-entry while creating '{typeNames}'");
-
-                    //throw new NotSupportedException($"Not currently supporting type circular references (type '{typeNames}')");
                 }
-
-
 
                 _typeUnderConstruction.Add(type);
 
