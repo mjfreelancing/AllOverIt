@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync.Mapping;
-using AllOverIt.Helpers;
 using System;
 using System.Text.RegularExpressions;
 
@@ -21,14 +20,17 @@ namespace AllOverIt.Aws.Cdk.AppSync.Attributes
 
         protected DataSourceAttribute(Type mappingType, string description)
         {
-            _ = mappingType.WhenNotNull(nameof(mappingType));
-
-            if (!typeof(IRequestResponseMapping).IsAssignableFrom(mappingType))
+            // Will be null if the mapping is being provided via code in a MappingTemplates
+            if (mappingType != null)
             {
-                throw new InvalidOperationException($"The type '{mappingType.FullName}' must implement '{nameof(IRequestResponseMapping)}'");
+                if (!typeof(IRequestResponseMapping).IsAssignableFrom(mappingType))
+                {
+                    throw new InvalidOperationException($"The type '{mappingType.FullName}' must implement '{nameof(IRequestResponseMapping)}'");
+                }
+
+                MappingType = (IRequestResponseMapping) Activator.CreateInstance(mappingType);
             }
 
-            MappingType = (IRequestResponseMapping) Activator.CreateInstance(mappingType);
             Description = description;
         }
     }
