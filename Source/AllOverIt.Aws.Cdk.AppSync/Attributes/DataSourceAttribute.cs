@@ -9,7 +9,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Attributes
     {
         // used for lookup in the DataSourceFactory
         public abstract string LookupKey { get; }
-        public IRequestResponseMapping MappingType { get; }
+        public Type MappingType { get; }
         public string Description { get; }
 
         protected static string SanitiseLookupKey(string lookupKey)
@@ -28,7 +28,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Attributes
                     throw new InvalidOperationException($"The type '{mappingType.FullName}' must implement '{nameof(IRequestResponseMapping)}'");
                 }
 
-                MappingType = (IRequestResponseMapping) Activator.CreateInstance(mappingType);
+                MappingType = mappingType;
             }
 
             Description = description;

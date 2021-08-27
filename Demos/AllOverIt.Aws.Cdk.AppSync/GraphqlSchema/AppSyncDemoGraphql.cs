@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync;
+using AllOverIt.Aws.Cdk.AppSync.Factories;
 using AllOverIt.Aws.Cdk.AppSync.Mapping;
 using Amazon.CDK;
 using Amazon.CDK.AWS.AppSync;
@@ -7,8 +8,8 @@ namespace GraphqlSchema
 {
     internal sealed class AppSyncDemoGraphql : AppGraphqlBase
     {
-        public AppSyncDemoGraphql(Construct scope, AppSyncDemoAppProps appProps, IAuthorizationMode authMode, MappingTemplates mappingTemplates)
-            : base(scope, "GraphQl", GetGraphqlApiProps(appProps, authMode), mappingTemplates)
+        public AppSyncDemoGraphql(Construct scope, AppSyncDemoAppProps appProps, IAuthorizationMode authMode, MappingTemplates mappingTemplates, MappingTypeFactory mappingTypeFactory)
+            : base(scope, "GraphQl", GetGraphqlApiProps(appProps, authMode), mappingTemplates, mappingTypeFactory)
         {
         }
 

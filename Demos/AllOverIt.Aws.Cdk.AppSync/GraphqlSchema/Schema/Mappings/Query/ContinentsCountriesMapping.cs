@@ -1,14 +1,11 @@
 ﻿namespace GraphqlSchema.Schema.Mappings.Query
 {
-    internal sealed class ContinentsCountriesMapping : RequestResponseMappingBase
+    internal sealed class ContinentsCountriesMapping : HttpGetResponseMappingBase
     {
-        public override string RequestMapping { get; }
-        public override string ResponseMapping { get; }
-
-        public ContinentsCountriesMapping()
+        // this class is used for demonstrating registration via a factory using a common base class
+        public ContinentsCountriesMapping(string apiKey)
+            : base("/countries", apiKey)
         {
-            RequestMapping = GetHttpRequestMapping("GET", "/countries");
-            ResponseMapping = GetHttpResponseMapping();
         }
     }
 }

@@ -21,13 +21,15 @@ namespace AllOverIt.Aws.Cdk.AppSync
 
         private readonly GraphqlApi _graphqlApi;
         private readonly MappingTemplates _mappingTemplates;
+        private readonly MappingTypeFactory _mappingTypeFactory;
         private readonly GraphqlTypeStore _typeStore;
         private readonly DataSourceFactory _dataSourceFactory;
 
-        public SchemaBuilder(GraphqlApi graphQlApi, MappingTemplates mappingTemplates, GraphqlTypeStore typeStore, DataSourceFactory dataSourceFactory)
+        public SchemaBuilder(GraphqlApi graphQlApi, MappingTemplates mappingTemplates, MappingTypeFactory mappingTypeFactory, GraphqlTypeStore typeStore, DataSourceFactory dataSourceFactory)
         {
             _graphqlApi = graphQlApi.WhenNotNull(nameof(graphQlApi));
             _mappingTemplates = mappingTemplates.WhenNotNull(nameof(mappingTemplates));
+            _mappingTypeFactory = mappingTypeFactory.WhenNotNull(nameof(mappingTypeFactory));
             _typeStore = typeStore.WhenNotNull(nameof(typeStore));
             _dataSourceFactory = dataSourceFactory.WhenNotNull(nameof(dataSourceFactory));
         }
@@ -65,7 +67,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
 
                 var fieldMapping = methodInfo.GetFieldName(SubscriptionPrefix);
 
-                methodInfo.RegisterRequestResponseMappings(fieldMapping, _mappingTemplates);
+                methodInfo.RegisterRequestResponseMappings(fieldMapping, _mappingTemplates, _mappingTypeFactory);
 
                 var requiredTypeInfo = methodInfo.GetRequiredTypeInfo();
 
@@ -130,7 +132,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
 
                 var fieldMapping = methodInfo.GetFieldName(rootName);
 
-                methodInfo.RegisterRequestResponseMappings(fieldMapping, _mappingTemplates);
+                methodInfo.RegisterRequestResponseMappings(fieldMapping, _mappingTemplates, _mappingTypeFactory);
 
                 var requiredTypeInfo = methodInfo.GetRequiredTypeInfo();
 

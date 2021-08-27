@@ -14,14 +14,15 @@ namespace AllOverIt.Aws.Cdk.AppSync
         /// <param name="mappingTemplates">Contains request and response mapping templates for all datasources not decorated
         /// with a [RequestResponseMapping] attribute. If an instance is not provided then an internal version will be created
         /// and there is an assumption that all mappings are provided via attributes.</param>
-        protected AppGraphqlBase(Construct scope, string id, IGraphqlApiProps apiProps, MappingTemplates mappingTemplates = null)
+        protected AppGraphqlBase(Construct scope, string id, IGraphqlApiProps apiProps, MappingTemplates mappingTemplates = default, MappingTypeFactory mappingTypeFactory = default)
             : base(scope, id, apiProps)
         {
             mappingTemplates ??= new MappingTemplates();
+            mappingTypeFactory ??= new MappingTypeFactory();
 
             var dataSourceFactory = new DataSourceFactory(this);
-            var gqlTypeCache = new GraphqlTypeStore(this, mappingTemplates, dataSourceFactory);
-            _schemaBuilder = new SchemaBuilder(this, mappingTemplates, gqlTypeCache, dataSourceFactory);
+            var gqlTypeCache = new GraphqlTypeStore(this, mappingTemplates, mappingTypeFactory, dataSourceFactory);
+            _schemaBuilder = new SchemaBuilder(this, mappingTemplates, mappingTypeFactory, gqlTypeCache, dataSourceFactory);
         }
 
         public AppGraphqlBase AddSchemaQuery<TType>() where TType : IQueryDefinition

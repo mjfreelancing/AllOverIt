@@ -16,6 +16,11 @@ namespace GraphqlSchema.Schema
         [NoneDataSource(Constants.AppName, nameof(CountryLanguage)/*, typeof(CountryLanguageMapping)*/)]        // providing this mapping via code
         ILanguage CountryLanguage([SchemaTypeRequired] ICountryFilterInput country);
 
+        // demonstrates how to obtain the datasource mapping via a user-provided factory
+        // ContinentLanguagesMapping does not have a default ctor - it has been registered with the factory
+        [NoneDataSource(Constants.AppName, nameof(ContinentLanguages), typeof(ContinentLanguagesMapping))]
+        ILanguage[] ContinentLanguages([SchemaTypeRequired] IContinentFilterInput filter);
+
         [SchemaArrayRequired]
         [SchemaTypeRequired]
         [NoneDataSource(Constants.AppName, nameof(Continents), typeof(ContinentsMapping))]
