@@ -3,7 +3,7 @@
     public sealed class SchemaInputAttribute : SchemaTypeBaseAttribute
     {
         public SchemaInputAttribute(string name)
-            : base(name, AppSync.GraphqlSchemaType.Input)
+            : base(name, GraphqlSchemaType.Input)
         {
         }
     }

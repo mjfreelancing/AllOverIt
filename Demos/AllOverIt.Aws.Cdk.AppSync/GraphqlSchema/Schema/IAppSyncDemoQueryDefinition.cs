@@ -15,7 +15,7 @@ namespace GraphqlSchema.Schema
         // NOTE: Leave this as the first item as it is testing a parameter type that is unknown at the time of parsing
         [RequestResponseMapping(typeof(CountryLanguageMapping))]
         [NoneDataSource(Constants.AppName, nameof(CountryLanguage))]
-        ILanguage CountryLanguage([SchemaTypeRequired] ICountry country);
+        ILanguage CountryLanguage([SchemaTypeRequired] ICountryFilterInput country);
 
         [SchemaArrayRequired]
         [SchemaTypeRequired]
