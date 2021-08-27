@@ -12,15 +12,10 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
 {
     internal static class MethodInfoExtensions
     {
-        //public static RequiredTypeInfo GetReturnTypeInfo(this MethodInfo methodInfo)
-        //{
-        //    return new RequiredTypeInfo(methodInfo);
-        //}
-
-        //public static RequiredTypeInfo GetParameterTypeInfo(this ParameterInfo parameterInfo)
-        //{
-        //    return new RequiredTypeInfo(parameterInfo);
-        //}
+        public static RequiredTypeInfo GetRequiredTypeInfo(this MethodInfo methodInfo)
+        {
+            return new RequiredTypeInfo(methodInfo);
+        }
 
         public static bool IsGqlTypeRequired(this MethodInfo methodInfo)
         {
@@ -56,12 +51,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
             {
                 parameterInfo.AssertParameterTypeIsNotNullable();
 
-                //var paramType = parameterInfo.ParameterType;
-                //var isRequired = parameterInfo.IsGqlTypeRequired();
-                //var isList = paramType.IsArray;
-                //var isRequiredList = isList && parameterInfo.IsGqlArrayRequired();
-
-                var requiredTypeInfo = new RequiredTypeInfo(parameterInfo);
+                var requiredTypeInfo = parameterInfo.GetRequiredTypeInfo();
 
                 // Passing null for the field name because we are not creating a graphql field type, it is an argument type.
                 // The graphql fields are tracked for things like determining request/response mappings.

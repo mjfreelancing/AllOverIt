@@ -8,6 +8,11 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
 {
     internal static class ParameterInfoExtensions
     {
+        public static RequiredTypeInfo GetRequiredTypeInfo(this ParameterInfo parameterInfo)
+        {
+            return new RequiredTypeInfo(parameterInfo);
+        }
+
         public static bool IsGqlTypeRequired(this ParameterInfo propertyInfo)
         {
             return propertyInfo.GetCustomAttribute<SchemaTypeRequiredAttribute>(true) != null;

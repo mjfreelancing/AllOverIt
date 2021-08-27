@@ -63,15 +63,11 @@ namespace AllOverIt.Aws.Cdk.AppSync
                     throw new SchemaException($"{schemaType.Name} is missing a required datasource for '{methodInfo.Name}'");
                 }
 
-                //var isRequired = methodInfo.IsGqlTypeRequired();
-                //var isList = methodInfo.ReturnType.IsArray;
-                //var isRequiredList = isList && methodInfo.IsGqlArrayRequired();
-
-                var requiredTypeInfo = new RequiredTypeInfo(methodInfo);
-
                 var fieldMapping = methodInfo.GetFieldName(SubscriptionPrefix);
 
                 methodInfo.RegisterRequestResponseMappings(fieldMapping, _mappingTemplates);
+
+                var requiredTypeInfo = methodInfo.GetRequiredTypeInfo();
 
                 var returnObjectType = _typeStore
                     .GetGraphqlType(
@@ -142,7 +138,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
 
                 methodInfo.RegisterRequestResponseMappings(fieldMapping, _mappingTemplates);
 
-                var requiredTypeInfo = new RequiredTypeInfo(methodInfo);
+                var requiredTypeInfo = methodInfo.GetRequiredTypeInfo();
 
                 var returnObjectType = _typeStore
                     .GetGraphqlType(

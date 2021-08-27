@@ -166,18 +166,8 @@ namespace AllOverIt.Aws.Cdk.AppSync
             {
                 methodInfo.AssertReturnTypeIsNotNullable();
 
-                //var returnType = methodInfo.ReturnType;
-                //var isRequired = methodInfo.IsGqlTypeRequired();
-                //var isList = returnType.IsArray;
-                //var isRequiredList = isList && methodInfo.IsGqlArrayRequired();
-
-                var requiredTypeInfo = new RequiredTypeInfo(methodInfo);
-
-
-
+                var requiredTypeInfo = methodInfo.GetRequiredTypeInfo();
                 var fieldMapping = methodInfo.GetFieldName(parentName);
-
-
 
                 GraphqlType returnObjectType;
 
@@ -209,10 +199,6 @@ namespace AllOverIt.Aws.Cdk.AppSync
                             requiredTypeInfo,
                             objectType => _graphqlApi.AddType(objectType));
                 }
-
-
-                
-
 
                 // optionally specified via a custom attribute
                 var dataSource = methodInfo.GetDataSource(_dataSourceFactory);
