@@ -12,6 +12,11 @@ namespace GraphqlSchema.Schema
     // Cannot use nullable return types are parameters. Use [SchemaTypeRequired] to indicate required, otherwise nullable is assumed.
     internal interface IAppSyncDemoQueryDefinition : IQueryDefinition
     {
+        // NOTE: Leave this as the first item as it is testing a parameter type that is unknown at the time of parsing
+        //[RequestResponseMapping(typeof(CountryLanguageMapping))]
+        //[NoneDataSource(Constants.AppName, nameof(CountryLanguage))]
+        //ILanguage CountryLanguage([SchemaTypeRequired] ICountry country);
+
         [SchemaArrayRequired]
         [SchemaTypeRequired]
         [RequestResponseMapping(typeof(ContinentsMapping))]
