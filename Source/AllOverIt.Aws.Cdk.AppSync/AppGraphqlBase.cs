@@ -11,10 +11,12 @@ namespace AllOverIt.Aws.Cdk.AppSync
         private readonly SchemaBuilder _schemaBuilder;
 
         /// <summary>Constructor.</summary>
-        /// <param name="mappingTemplates">Contains request and response mapping templates for all datasources not decorated
-        /// with a [RequestResponseMapping] attribute. If an instance is not provided then an internal version will be created
-        /// and there is an assumption that all mappings are provided via attributes.</param>
-        protected AppGraphqlBase(Construct scope, string id, IGraphqlApiProps apiProps, MappingTemplates mappingTemplates = default, MappingTypeFactory mappingTypeFactory = default)
+        /// <param name="mappingTemplates">Contains request and response mapping templates for datasources that are not provided
+        /// a mapping type. If null then an an internal version will be created.</param>
+        /// <param name="mappingTypeFactory">Contains registrations for mapping types (defined on a DataSource) that do not have
+        /// a default constructor because arguments need to be provided at runtime.</param>
+        protected AppGraphqlBase(Construct scope, string id, IGraphqlApiProps apiProps, MappingTemplates mappingTemplates = default,
+            MappingTypeFactory mappingTypeFactory = default)
             : base(scope, id, apiProps)
         {
             mappingTemplates ??= new MappingTemplates();

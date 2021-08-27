@@ -8,7 +8,8 @@ namespace GraphqlSchema
 {
     internal sealed class AppSyncDemoGraphql : AppGraphqlBase
     {
-        public AppSyncDemoGraphql(Construct scope, AppSyncDemoAppProps appProps, IAuthorizationMode authMode, MappingTemplates mappingTemplates, MappingTypeFactory mappingTypeFactory)
+        public AppSyncDemoGraphql(Construct scope, AppSyncDemoAppProps appProps, IAuthorizationMode authMode, MappingTemplates mappingTemplates,
+            MappingTypeFactory mappingTypeFactory)
             : base(scope, "GraphQl", GetGraphqlApiProps(appProps, authMode), mappingTemplates, mappingTypeFactory)
         {
         }
