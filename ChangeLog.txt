@@ -1,4 +1,47 @@
+
+
+
+DATE HERE
 ======================================================================================================================
+AllOverIt.Evaluator - v3.0.0
+  * Dropped support for .NET Standard 2.0 (now using records).
+  * Major refactor to simplify the implementation (remove interfaces that would never be injected).
+  * Some memory optimization using ReadOnlySpan<char> in place of string where possible.
+  * Variables now auto-determine referenced and referencing variables when constructed from a FormulaCompilerResult.
+  * Added VariableRegistry extensions that allow variables to be added without the need for a VariableFactory.
+
+  Some benchmarking comparisons
+    v2.1.0
+    ===============================================================================================================================================
+    |                                                Method |          Mean |         Error |        StdDev |      Gen 0 |      Gen 1 | Allocated |
+    |------------------------------------------------------ |--------------:|--------------:|--------------:|-----------:|-----------:|----------:|
+    |                         AddTwoConstantsUsingGetResult |      87.53 us |      1.490 us |      2.137 us |     2.3193 |     1.0986 |     10 KB |
+    |               AddTwoConstantsUsingGetResult10000Times | 859,256.70 us | 16,929.193 us | 24,279.343 us | 23000.0000 | 11000.0000 | 96,069 KB |
+    |                          AddTwoVariablesUsingRegistry |     283.20 us |      2.996 us |      2.656 us |     1.9531 |     0.9766 |     10 KB |
+    |                AddTwoVariablesUsingRegistry10000Times |   1,015.74 us |     18.928 us |     30.022 us |     1.9531 |          - |     10 KB |
+    |                     EvalMultipleFormulaUsingGetResult |   1,476.29 us |     27.771 us |     25.977 us |    31.2500 |    15.6250 |    129 KB |
+    |         EvalMultipleFormulaUsingPreCompiled10000Times |   4,453.09 us |     67.878 us |     60.172 us |    31.2500 |    15.6250 |    130 KB |
+    |           CalculateDistancesAndAreaUsingHeronsFormula |   1,318.68 us |     17.600 us |     16.463 us |    23.4375 |    11.7188 |     98 KB |
+    | CalculateDistancesAndAreaUsingHeronsFormula10000Times |  22,584.05 us |    345.437 us |    323.122 us |          - |          - |     98 KB |
+
+    v3.0.0
+    ===============================================================================================================================================
+    |                                                Method |          Mean |         Error |        StdDev |      Gen 0 |     Gen 1 | Allocated |
+    |------------------------------------------------------ |--------------:|--------------:|--------------:|-----------:|----------:|----------:|
+    |                         AddTwoConstantsUsingGetResult |      87.98 us |      1.689 us |      1.945 us |     1.5259 |    0.7324 |      6 KB |
+    |               AddTwoConstantsUsingGetResult10000Times | 806,422.05 us | 15,264.182 us | 16,332.504 us | 15000.0000 | 7000.0000 | 62,628 KB |
+    |                          AddTwoVariablesUsingRegistry |     279.14 us |      3.715 us |      3.293 us |     1.9531 |    0.9766 |      8 KB |
+    |                AddTwoVariablesUsingRegistry10000Times |     992.12 us |     18.008 us |     15.037 us |     1.9531 |         - |      8 KB |
+    |                     EvalMultipleFormulaUsingGetResult |   1,345.12 us |     22.187 us |     20.754 us |    27.3438 |   13.6719 |    112 KB |
+    |         EvalMultipleFormulaUsingPreCompiled10000Times |   4,424.36 us |     71.891 us |     70.606 us |    23.4375 |    7.8125 |    112 KB |
+    |           CalculateDistancesAndAreaUsingHeronsFormula |   1,354.88 us |     13.731 us |     12.844 us |    21.4844 |    9.7656 |     90 KB |
+    | CalculateDistancesAndAreaUsingHeronsFormula10000Times |  23,739.27 us |    278.628 us |    232.667 us |          - |         - |     90 KB |
+    ======================================================================================================================
+
+
+
+======================================================================================================================
+
   Current AllOverIt Inter-Dependencies
 
   [1] AllOverIt                    (v1.16.1) - None
@@ -43,44 +86,6 @@ AllOverIt.Fixture - v1.5.0
 
 AllOverIt.Fixture.FakeItEasy - v1.3.0
   * Updated to use AllOverIt.Fixture v1.5.0
-
-
-
-DATE HERE
-======================================================================================================================
-AllOverIt.Evaluator - v 3.0.0
-  * Dropped support for .NET Standard 2.0 (now using records).
-  * Major refactor to simplify the implementation (remove interfaces that would never be injected).
-  * Some memory optimization using ReadOnlySpan<char> in place of string where possible.
-  * Variables now auto-determine referenced and referencing variables when constructed from a FormulaCompilerResult.
-  * Added VariableRegistry extensions that allow variables to be added without the need for a VariableFactory.
-
-  Some benchmarking comparisons
-    v2.1.0
-    ===============================================================================================================================================
-    |                                                Method |          Mean |         Error |        StdDev |      Gen 0 |      Gen 1 | Allocated |
-    |------------------------------------------------------ |--------------:|--------------:|--------------:|-----------:|-----------:|----------:|
-    |                         AddTwoConstantsUsingGetResult |      87.53 us |      1.490 us |      2.137 us |     2.3193 |     1.0986 |     10 KB |
-    |               AddTwoConstantsUsingGetResult10000Times | 859,256.70 us | 16,929.193 us | 24,279.343 us | 23000.0000 | 11000.0000 | 96,069 KB |
-    |                          AddTwoVariablesUsingRegistry |     283.20 us |      2.996 us |      2.656 us |     1.9531 |     0.9766 |     10 KB |
-    |                AddTwoVariablesUsingRegistry10000Times |   1,015.74 us |     18.928 us |     30.022 us |     1.9531 |          - |     10 KB |
-    |                     EvalMultipleFormulaUsingGetResult |   1,476.29 us |     27.771 us |     25.977 us |    31.2500 |    15.6250 |    129 KB |
-    |         EvalMultipleFormulaUsingPreCompiled10000Times |   4,453.09 us |     67.878 us |     60.172 us |    31.2500 |    15.6250 |    130 KB |
-    |           CalculateDistancesAndAreaUsingHeronsFormula |   1,318.68 us |     17.600 us |     16.463 us |    23.4375 |    11.7188 |     98 KB |
-    | CalculateDistancesAndAreaUsingHeronsFormula10000Times |  22,584.05 us |    345.437 us |    323.122 us |          - |          - |     98 KB |
-
-    v3.0.0
-    ===============================================================================================================================================
-    |                                                Method |          Mean |         Error |        StdDev |      Gen 0 |     Gen 1 | Allocated |
-    |------------------------------------------------------ |--------------:|--------------:|--------------:|-----------:|----------:|----------:|
-    |                         AddTwoConstantsUsingGetResult |      87.98 us |      1.689 us |      1.945 us |     1.5259 |    0.7324 |      6 KB |
-    |               AddTwoConstantsUsingGetResult10000Times | 806,422.05 us | 15,264.182 us | 16,332.504 us | 15000.0000 | 7000.0000 | 62,628 KB |
-    |                          AddTwoVariablesUsingRegistry |     279.14 us |      3.715 us |      3.293 us |     1.9531 |    0.9766 |      8 KB |
-    |                AddTwoVariablesUsingRegistry10000Times |     992.12 us |     18.008 us |     15.037 us |     1.9531 |         - |      8 KB |
-    |                     EvalMultipleFormulaUsingGetResult |   1,345.12 us |     22.187 us |     20.754 us |    27.3438 |   13.6719 |    112 KB |
-    |         EvalMultipleFormulaUsingPreCompiled10000Times |   4,424.36 us |     71.891 us |     70.606 us |    23.4375 |    7.8125 |    112 KB |
-    |           CalculateDistancesAndAreaUsingHeronsFormula |   1,354.88 us |     13.731 us |     12.844 us |    21.4844 |    9.7656 |     90 KB |
-    | CalculateDistancesAndAreaUsingHeronsFormula10000Times |  23,739.27 us |    278.628 us |    232.667 us |          - |         - |     90 KB |
 
 
 
