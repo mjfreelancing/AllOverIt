@@ -6,8 +6,8 @@ using System.Linq.Expressions;
 
 namespace AllOverIt.Evaluator.Operations
 {
-    /// <summary>A factory used for registering and creating instances of an ArithmeticOperation that implements an associated operator.
-    /// The factory assumes a lower precedence value indicates a higher priority (refer to http://en.wikipedia.org/wiki/Order_of_operations).</summary>
+    /// <summary>A factory used for registering and creating instances of an ArithmeticOperation that implements an associated mathematical operator.
+    /// The factory assumes a lower precedence value indicates a higher priority (refer to http://en.wikipedia.org/wiki/Order_of_operations). </summary>
     public sealed class ArithmeticOperationFactory : IArithmeticOperationFactory
     {
         private readonly IDictionary<string, Lazy<ArithmeticOperation>> _operations = new Dictionary<string, Lazy<ArithmeticOperation>>();
@@ -15,7 +15,7 @@ namespace AllOverIt.Evaluator.Operations
         /// <inheritdoc />
         public IEnumerable<string> RegisteredOperations => _operations.Keys;
 
-        /// <summary> Constructor.</summary>
+        /// <summary>Constructor.</summary>
         public ArithmeticOperationFactory()
         {
             RegisterDefaultOperations();

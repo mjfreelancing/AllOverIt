@@ -144,6 +144,17 @@
             <param name="variableRegistry">The variable registry containing the required value.</param>
             <returns>An expression that gets the value of a variable from the variable registry.</returns>
         </member>
+        <member name="T:AllOverIt.Evaluator.FormulaProcessor">
+            <summary>Parses a mathematical formula and compiles it to an expression that can be later evaluated.</summary>
+            <remarks>A compiled expression provides a vast performance benefit when the formula needs to be evaluated multiple times.</remarks>
+        </member>
+        <member name="M:AllOverIt.Evaluator.FormulaProcessor.#ctor(AllOverIt.Evaluator.Operations.IArithmeticOperationFactory,AllOverIt.Evaluator.Operations.IUserDefinedMethodFactory)">
+            <summary>Constructor.</summary>
+            <param name="operationFactory">Provides the required support for performing mathematical operations, such as addition, multiplication,
+            and so on.</param>
+            <param name="userDefinedMethodFactory">Provides support for user-defined methods in addition to the built-in library of methods. Refer
+            to the <c>UserDefinedMethodFactory</c> for a list of available built-in methods.</param>
+        </member>
         <member name="M:AllOverIt.Evaluator.FormulaProcessor.Process(System.String,AllOverIt.Evaluator.Variables.IVariableRegistry)">
             <summary>Parses a provided formula to create a compiled expression that can later be evaluated.</summary>
             <param name="formula">The formula to be parsed and compiled into an expression.</param>
@@ -230,14 +241,14 @@
             <inheritdoc />
         </member>
         <member name="T:AllOverIt.Evaluator.Operations.ArithmeticOperationFactory">
-            <summary>A factory used for registering and creating instances of an ArithmeticOperation that implements an associated operator.
-            The factory assumes a lower precedence value indicates a higher priority (refer to http://en.wikipedia.org/wiki/Order_of_operations).</summary>
+            <summary>A factory used for registering and creating instances of an ArithmeticOperation that implements an associated mathematical operator.
+            The factory assumes a lower precedence value indicates a higher priority (refer to http://en.wikipedia.org/wiki/Order_of_operations). </summary>
         </member>
         <member name="P:AllOverIt.Evaluator.Operations.ArithmeticOperationFactory.RegisteredOperations">
             <inheritdoc />
         </member>
         <member name="M:AllOverIt.Evaluator.Operations.ArithmeticOperationFactory.#ctor">
-            <summary> Constructor.</summary>
+            <summary>Constructor.</summary>
         </member>
         <member name="M:AllOverIt.Evaluator.Operations.ArithmeticOperationFactory.TryRegisterOperation(System.String,System.Int32,System.Int32,System.Func{System.Linq.Expressions.Expression[],AllOverIt.Evaluator.Operators.IOperator})">
             <inheritdoc />
@@ -397,6 +408,27 @@
         </member>
         <member name="M:AllOverIt.Evaluator.Operations.TanOperation.#ctor">
             <summary>Constructor.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operations.UserDefinedMethodFactory">
+            <summary>A factory containing user-defined methods that can be evaluated as part of a formula.</summary>
+            <remarks>
+            The factory includes a number of pre-defined methods:
+            <para>ROUND: Rounds a number to a specified number of decimal places.</para>
+            <para>SQRT: Calculate the square root of a number.</para>
+            <para>LOG: Calculate the log10 of a number.</para>
+            <para>LN: Calculate the natural log of a number.</para>
+            <para>EXP: Raise 'e' to a specified power.</para>
+            <para>PERC: Calculate the percentage that one operand is of another.</para>
+            <para>SIN: Calculate the sine of an angle (in radians).</para>
+            <para>COS: Calculate the cosine of an angle (in radians).</para>
+            <para>TAN: Calculate the tangent of an angle (in radians).</para>
+            <para>SINH: Calculate the sine of an angle (in radians).</para>
+            <para>COSH: Calculate the cosine of an angle (in radians).</para>
+            <para>TANH: Calculate the tangent of an angle (in radians).</para>
+            <para>ASIN: Calculate the angle (in radians) of a sine value.</para>
+            <para>ACOS: Calculate the angle (in radians) of a cosine value.</para>
+            <para>ATAN: Calculate the angle (in radians) of a tangent value.</para>
+            </remarks>
         </member>
         <member name="T:AllOverIt.Evaluator.Operators.AcosOperator">
             <summary>An expression operator that calculates the angle (in radians) of a cosine value.</summary>

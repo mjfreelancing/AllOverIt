@@ -32,8 +32,7 @@ namespace AllOverIt.Evaluator.Tests.Operations
             [InlineData("ATAN", typeof(AtanOperation))]
             public void Should_Registry_Built_In_Method_Operations(string name, Type operationType)
             {
-                //var registry = new Dictionary<string, Lazy<ArithmeticOperationBase>>();
-                _factory = new UserDefinedMethodFactory(/*registry*/);
+                _factory = new UserDefinedMethodFactory();
 
                 // only here to make sure the test cases are updated if a new operation is added
                 _factory.RegisteredMethods.Should().HaveCount(15);
@@ -123,7 +122,7 @@ namespace AllOverIt.Evaluator.Tests.Operations
                 Invoking(() => _factory.GetMethod(name))
                     .Should()
                     .Throw<KeyNotFoundException>()
-                    .WithMessage($"The given key '{name}' was not present in the dictionary.");
+                    .WithMessage($"The '{name}' method is not registered with the {nameof(UserDefinedMethodFactory)}.");
             }
         }
     }

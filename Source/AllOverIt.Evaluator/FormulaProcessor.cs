@@ -13,6 +13,8 @@ using System.Linq.Expressions;
 
 namespace AllOverIt.Evaluator
 {
+    /// <summary>Parses a mathematical formula and compiles it to an expression that can be later evaluated.</summary>
+    /// <remarks>A compiled expression provides a vast performance benefit when the formula needs to be evaluated multiple times.</remarks>
     public sealed class FormulaProcessor
     {
         // Tags used to internally identify custom operators within the stack. Can be anything other than the operators defined in ArithmeticOperationFactory
@@ -49,6 +51,11 @@ namespace AllOverIt.Evaluator
         // tracks whether the last processed token was an operator or an expression so unary plus and unary minus can be handled.
         private bool _lastPushIsOperator;
 
+        /// <summary>Constructor.</summary>
+        /// <param name="operationFactory">Provides the required support for performing mathematical operations, such as addition, multiplication,
+        /// and so on.</param>
+        /// <param name="userDefinedMethodFactory">Provides support for user-defined methods in addition to the built-in library of methods. Refer
+        /// to the <c>UserDefinedMethodFactory</c> for a list of available built-in methods.</param>
         public FormulaProcessor(IArithmeticOperationFactory operationFactory, IUserDefinedMethodFactory userDefinedMethodFactory)
         {
             _operationFactory = operationFactory.WhenNotNull(nameof(operationFactory));
