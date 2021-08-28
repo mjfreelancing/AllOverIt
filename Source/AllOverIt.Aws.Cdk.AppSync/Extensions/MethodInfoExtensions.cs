@@ -1,15 +1,25 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync.Attributes;
 using AllOverIt.Aws.Cdk.AppSync.Exceptions;
+using AllOverIt.Aws.Cdk.AppSync.Factories;
+using AllOverIt.Aws.Cdk.AppSync.Mapping;
 using AllOverIt.Extensions;
+using AllOverIt.Helpers;
 using Amazon.CDK.AWS.AppSync;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using SystemType = System.Type;
 
 namespace AllOverIt.Aws.Cdk.AppSync.Extensions
 {
     internal static class MethodInfoExtensions
     {
+        public static RequiredTypeInfo GetRequiredTypeInfo(this MethodInfo methodInfo)
+        {
+            return new RequiredTypeInfo(methodInfo);
+        }
+
         public static bool IsGqlTypeRequired(this MethodInfo methodInfo)
         {
             return methodInfo.GetCustomAttribute<SchemaTypeRequiredAttribute>(true) != null;
@@ -24,7 +34,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
         {
             if (methodInfo.ReturnType.IsGenericNullableType())
             {
-                throw new SchemaException($"{methodInfo.DeclaringType.Name}.{methodInfo.Name} has a nullable return type. The presence of {nameof(SchemaTypeRequiredAttribute)} " +
+                throw new SchemaException($"{methodInfo.DeclaringType!.Name}.{methodInfo.Name} has a nullable return type. The presence of {nameof(SchemaTypeRequiredAttribute)} " +
                                            "is used to declare a property as required, and its absence makes it optional.");
             }
         }
@@ -43,20 +53,67 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
             foreach (var parameterInfo in parameters)
             {
                 parameterInfo.AssertParameterTypeIsNotNullable();
+                parameterInfo.AssertParameterSchemaType(methodInfo);
 
-                var paramType = parameterInfo.ParameterType;
-                var isRequired = parameterInfo.IsGqlTypeRequired();
-                var isList = paramType.IsArray;
-                var isRequiredList = isList && parameterInfo.IsGqlArrayRequired();
+                var requiredTypeInfo = parameterInfo.GetRequiredTypeInfo();
 
                 // Passing null for the field name because we are not creating a graphql field type, it is an argument type.
                 // The graphql fields are tracked for things like determining request/response mappings.
-                var graphqlType = typeStore.GetGraphqlType(null, paramType, isRequired, isList, isRequiredList, objectType => graphqlApi.AddType(objectType));
+                var graphqlType = typeStore.GetGraphqlType(null, requiredTypeInfo, objectType => graphqlApi.AddType(objectType));
 
                 args.Add(parameterInfo.Name.GetGraphqlName(), graphqlType);
             }
 
             return args;
+        }
+
+        public static void RegisterRequestResponseMappings(this MethodInfo methodInfo, string fieldMapping, MappingTemplates mappingTemplates, MappingTypeFactory mappingTypeFactory)
+        {
+            _ = fieldMapping.WhenNotNullOrEmpty(nameof(fieldMapping));
+
+            var requestResponseMapping = GetRequestResponseMapping(methodInfo, mappingTypeFactory);
+
+            // will be null if the mapping has already been populated (via code), or the factory will provide the information
+            if (requestResponseMapping != null)
+            {
+                // fieldMapping includes the parent names too
+                mappingTemplates.RegisterMappings(fieldMapping, requestResponseMapping.RequestMapping, requestResponseMapping.ResponseMapping);
+            }
+        }
+
+        public static void AssertReturnSchemaType(this MethodInfo methodInfo, SystemType parentType)
+        {
+            // make sure TYPE schema types on have other TYPE types, and similarly for INPUT schema types.
+            var parentSchemaType = parentType.GetGraphqlTypeDescriptor().SchemaType;
+            var returnType = methodInfo.ReturnType;
+
+            if (parentSchemaType is GraphqlSchemaType.Input or GraphqlSchemaType.Type)
+            {
+                var methodSchemaType = returnType.GetGraphqlTypeDescriptor().SchemaType;
+
+                if (methodSchemaType is GraphqlSchemaType.Input or GraphqlSchemaType.Type)
+                {
+                    if (parentSchemaType != methodSchemaType)
+                    {
+                        throw new InvalidOperationException($"Expected '{returnType.FullName}.{methodInfo.Name}' to return a '{parentSchemaType}' type.");
+                    }
+                }
+            }
+        }
+
+        private static IRequestResponseMapping GetRequestResponseMapping(MemberInfo memberInfo, MappingTypeFactory mappingTypeFactory)
+        {
+            var attribute = memberInfo.GetCustomAttribute<DataSourceAttribute>(true);
+
+            if (attribute == null)
+            {
+                throw new InvalidOperationException($"Expected {memberInfo.DeclaringType!.Name}.{memberInfo.Name} to have a datasource attribute");
+            }
+
+            // will be null if no type has been provided (assumes the mapping was added in code via MappingTemplates)
+            return attribute.MappingType != null
+                ? ((MappingTypeFactory) mappingTypeFactory).GetRequestResponseMapping(attribute.MappingType)
+                : null;
         }
     }
 }

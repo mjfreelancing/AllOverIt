@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync.Attributes;
 using AllOverIt.Aws.Cdk.AppSync.Factories;
+using AllOverIt.Extensions;
 using Amazon.CDK.AWS.AppSync;
 using System.Reflection;
 
@@ -18,7 +19,9 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
 
         public static string GetFieldName(this MemberInfo memberInfo, string parentName)
         {
-            return $"{parentName}.{memberInfo.Name}";
+            return parentName.IsNullOrEmpty()
+                ? memberInfo.Name
+                : $"{parentName}.{memberInfo.Name}";
         }
     }
 }

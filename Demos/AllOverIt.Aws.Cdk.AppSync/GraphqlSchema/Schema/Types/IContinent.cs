@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync;
 using AllOverIt.Aws.Cdk.AppSync.Attributes;
+using GraphqlSchema.Schema.Mappings.Query;
 
 namespace GraphqlSchema.Schema.Types
 {
@@ -12,13 +13,13 @@ namespace GraphqlSchema.Schema.Types
         // sharing this http datasource
         [SchemaArrayRequired]
         [SchemaTypeRequired]
-        [HttpDataSource(Constants.AppName, EndpointSource.ImportValue, Constants.Import.GetCountriesUrlImportName)]
+        [HttpDataSource(Constants.AppName, EndpointSource.ImportValue, Constants.Import.GetCountriesUrlImportName, typeof(ContinentsCountriesMapping))]
         ICountry[] Countries();
 
         // sharing this http datasource
         [SchemaArrayRequired]
         [SchemaTypeRequired]
-        [HttpDataSource(Constants.AppName, EndpointSource.ImportValue, Constants.Import.GetCountriesUrlImportName)]
+        [HttpDataSource(Constants.AppName, EndpointSource.ImportValue, Constants.Import.GetCountriesUrlImportName, typeof(ContinentsCountryCodesMapping))]
         string[] CountryCodes();
     }
 }

@@ -53,9 +53,7 @@ namespace GraphqlSchema
                 }
             };
 
-            var mappingTemplates = new AppSyncDemoMappingTemplates();
-
-            _ = new AppSyncConstruct(stack2, appProps, authMode, mappingTemplates);
+            _ = new AppSyncConstruct(stack2, appProps, authMode);
 
             _ = app.Synth();
         }

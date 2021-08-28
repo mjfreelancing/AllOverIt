@@ -3,6 +3,7 @@ using AllOverIt.Aws.Cdk.AppSync.Attributes;
 using AllOverIt.Aws.Cdk.AppSync.Schema;
 using AllOverIt.Aws.Cdk.AppSync.Schema.Types;
 using GraphqlSchema.Schema.Inputs;
+using GraphqlSchema.Schema.Mappings.Query;
 using GraphqlSchema.Schema.Types;
 
 namespace GraphqlSchema.Schema
@@ -11,107 +12,116 @@ namespace GraphqlSchema.Schema
     // Cannot use nullable return types are parameters. Use [SchemaTypeRequired] to indicate required, otherwise nullable is assumed.
     internal interface IAppSyncDemoQueryDefinition : IQueryDefinition
     {
+        // NOTE: Leave this as the first item as it is testing a parameter and return type that is unknown at the time of parsing
+        [NoneDataSource(Constants.AppName, nameof(CountryLanguage)/*, typeof(CountryLanguageMapping)*/)]        // providing this mapping via code
+        ILanguage CountryLanguage([SchemaTypeRequired] ICountryFilterInput country);
+
+        // demonstrates how to obtain the datasource mapping via a user-provided factory
+        // ContinentLanguagesMapping does not have a default ctor - it has been registered with the factory
+        [NoneDataSource(Constants.AppName, nameof(ContinentLanguages), typeof(ContinentLanguagesMapping))]
+        ILanguage[] ContinentLanguages([SchemaTypeRequired] IContinentFilterInput filter);
+
         [SchemaArrayRequired]
         [SchemaTypeRequired]
-        [NoneDataSource(Constants.AppName, nameof(Continents))]
+        [NoneDataSource(Constants.AppName, nameof(Continents), typeof(ContinentsMapping))]
         IContinent[] Continents([SchemaTypeRequired] IContinentFilterInput filter);
 
         [SchemaTypeRequired]
-        [HttpDataSource(Constants.AppName, EndpointSource.EnvironmentVariable, Constants.HttpDataSource.GetAllContinentsUrlEnvironmentName)]
+        [HttpDataSource(Constants.AppName, EndpointSource.EnvironmentVariable, Constants.HttpDataSource.GetAllContinentsUrlEnvironmentName, typeof(AllContinentsMapping))]
         IContinentConnection AllContinents();
 
         // NOTE: This can only be deployed after an initial deployment that excludes this (as it requires the export value to be available)
         [SchemaArrayRequired]
         [SchemaTypeRequired]
-        [HttpDataSource(Constants.AppName, EndpointSource.ImportValue, Constants.Import.GetCountriesUrlImportName)]
+        [HttpDataSource(Constants.AppName, EndpointSource.ImportValue, Constants.Import.GetCountriesUrlImportName, typeof(CountriesMapping))]
         ICountry[] Countries([SchemaTypeRequired] ICountryFilterInput filter);
 
         [SchemaTypeRequired]
-        [NoneDataSource(Constants.AppName, nameof(AllCountries))]
+        [NoneDataSource(Constants.AppName, nameof(AllCountries), typeof(AllCountriesMapping))]
         ICountryConnection AllCountries();
 
         [SchemaTypeRequired]
-        [HttpDataSource(Constants.AppName, Constants.HttpDataSource.GetLanguageUrlExplicit)]
-        ILanguage Language([SchemaTypeRequired] string code/*, bool? chk*/);
+        [HttpDataSource(Constants.AppName, Constants.HttpDataSource.GetLanguageUrlExplicit, typeof(LanguageMapping))]
+        ILanguage Language([SchemaTypeRequired] string code);
 
         [SchemaArrayRequired]
         [SchemaTypeRequired]
-        [LambdaDataSource(Constants.AppName, Constants.Function.GetLanguages)]
+        [LambdaDataSource(Constants.AppName, Constants.Function.GetLanguages, typeof(LanguagesMapping))]
         ILanguage[] Languages(ILanguageFilterInput filter);     // optional filter in this case, implies all languages will be returned if omitted
 
-        #region Date, Time, DateTime, Timestamp responses
+#region Date, Time, DateTime, Timestamp responses
 
         [SchemaTypeRequired]
-        [NoneDataSource(Constants.AppName, nameof(CountryDate))]
+        [NoneDataSource(Constants.AppName, nameof(CountryDate), typeof(CountryDateMapping))]
         AwsTypeDate CountryDate([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType);
 
         [SchemaTypeRequired]
-        [NoneDataSource(Constants.AppName, nameof(CountryTime))]
+        [NoneDataSource(Constants.AppName, nameof(CountryTime), typeof(CountryTimeMapping))]
         AwsTypeTime CountryTime([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType);
 
         [SchemaTypeRequired]
-        [NoneDataSource(Constants.AppName, nameof(CountryDateTime))]
+        [NoneDataSource(Constants.AppName, nameof(CountryDateTime), typeof(CountryDateTimeMapping))]
         AwsTypeDateTime CountryDateTime([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType);
 
         [SchemaTypeRequired]
-        [NoneDataSource(Constants.AppName, nameof(CountryTimestamp))]
+        [NoneDataSource(Constants.AppName, nameof(CountryTimestamp), typeof(CountryTimestampMapping))]
         AwsTypeTimestamp CountryTimestamp([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType);
 
-        #endregion
+#endregion
 
-        #region Date, Time, DateTime, timestamp array responses
+#region Date, Time, DateTime, timestamp array responses
 
         [SchemaArrayRequired]
         [SchemaTypeRequired]
-        [NoneDataSource(Constants.AppName, nameof(CountryDates))]
+        [NoneDataSource(Constants.AppName, nameof(CountryDates), typeof(CountryDatesMapping))]
         AwsTypeDate[] CountryDates([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType);
 
         [SchemaArrayRequired]
         [SchemaTypeRequired]
-        [NoneDataSource(Constants.AppName, nameof(CountryTimes))]
+        [NoneDataSource(Constants.AppName, nameof(CountryTimes), typeof(CountryTimesMapping))]
         AwsTypeTime[] CountryTimes([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType);
 
         [SchemaArrayRequired]
         [SchemaTypeRequired]
-        [NoneDataSource(Constants.AppName, nameof(CountryDateTimes))]
+        [NoneDataSource(Constants.AppName, nameof(CountryDateTimes), typeof(CountryDateTimesMapping))]
         AwsTypeDateTime[] CountryDateTimes([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType);
 
         [SchemaArrayRequired]
         [SchemaTypeRequired]
-        [NoneDataSource(Constants.AppName, nameof(CountryTimestamps))]
+        [NoneDataSource(Constants.AppName, nameof(CountryTimestamps), typeof(CountryTimestampsMapping))]
         AwsTypeTimestamp[] CountryTimestamps([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType);
 
-        #endregion
+#endregion
 
-        #region Date, Time, DateTime, timestamp input
+#region Date, Time, DateTime, timestamp input
 
         [SchemaTypeRequired]
-        [NoneDataSource(Constants.AppName, nameof(CountryByDate))]
+        [NoneDataSource(Constants.AppName, nameof(CountryByDate), typeof(CountryByDateMapping))]
         ICountry CountryByDate([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType,
             [SchemaTypeRequired] AwsTypeDate date);
 
         [SchemaTypeRequired]
-        [NoneDataSource(Constants.AppName, nameof(CountryByTime))]
+        [NoneDataSource(Constants.AppName, nameof(CountryByTime), typeof(CountryByTimeMapping))]
         ICountry CountryByTime([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType,
             [SchemaTypeRequired] AwsTypeTime time);
 
         [SchemaTypeRequired]
-        [NoneDataSource(Constants.AppName, nameof(CountryByDateTime))]
+        [NoneDataSource(Constants.AppName, nameof(CountryByDateTime), typeof(CountryByDateTimeMapping))]
         ICountry CountryByDateTime([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType,
             [SchemaTypeRequired] AwsTypeDateTime dateTime);
 
         [SchemaTypeRequired]
-        [NoneDataSource(Constants.AppName, nameof(CountryByTimestamp))]
+        [NoneDataSource(Constants.AppName, nameof(CountryByTimestamp), typeof(CountryByTimestampMapping))]
         ICountry CountryByTimestamp([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType,
             [SchemaTypeRequired] AwsTypeTimestamp timestamp);
 
-        #endregion
+#endregion
 
-        #region Date, Time, DateTime, timestamp array input
+#region Date, Time, DateTime, timestamp array input
 
         [SchemaArrayRequired]
         [SchemaTypeRequired]
-        [NoneDataSource(Constants.AppName, nameof(CountriesByDates))]
+        [NoneDataSource(Constants.AppName, nameof(CountriesByDates), typeof(CountriesByDatesMapping))]
         ICountry[] CountriesByDates([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType,
             [SchemaTypeRequired]
             [SchemaArrayRequired]
@@ -119,7 +129,7 @@ namespace GraphqlSchema.Schema
 
         [SchemaArrayRequired]
         [SchemaTypeRequired]
-        [NoneDataSource(Constants.AppName, nameof(CountriesByTimes))]
+        [NoneDataSource(Constants.AppName, nameof(CountriesByTimes), typeof(CountriesByTimesMapping))]
         ICountry[] CountriesByTimes([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType,
             [SchemaTypeRequired]
             [SchemaArrayRequired]
@@ -127,16 +137,16 @@ namespace GraphqlSchema.Schema
 
         [SchemaArrayRequired]
         [SchemaTypeRequired]
-        [NoneDataSource(Constants.AppName, nameof(CountriesByDateTimes))]
+        [NoneDataSource(Constants.AppName, nameof(CountriesByDateTimes), typeof(CountriesByDateTimesMapping))]
         ICountry[] CountriesByDateTimes([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType,
             [SchemaArrayRequired] AwsTypeDateTime[] dateTimes);
 
         [SchemaArrayRequired]
         [SchemaTypeRequired]
-        [NoneDataSource(Constants.AppName, nameof(CountriesByTimestamps))]
+        [NoneDataSource(Constants.AppName, nameof(CountriesByTimestamps), typeof(CountriesByTimestampsMapping))]
         ICountry[] CountriesByTimestamps([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType,
             [SchemaArrayRequired] AwsTypeTimestamp[] timestamps);
 
-        #endregion
+#endregion
     }
 }
