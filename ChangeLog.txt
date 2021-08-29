@@ -9,6 +9,8 @@ AllOverIt.Evaluator - v3.0.0
   * Some memory optimization using ReadOnlySpan<char> in place of string where possible.
   * Variables now auto-determine referenced and referencing variables when constructed from a FormulaCompilerResult.
   * Added VariableRegistry extensions that allow variables to be added without the need for a VariableFactory.
+  * Added more built-in functions to the user-defined factory.
+  * BREAKING CHANGE: Renamed LN to LOG and the previous LOG is now LOG10.
 
   Some benchmarking comparisons
     v2.1.0

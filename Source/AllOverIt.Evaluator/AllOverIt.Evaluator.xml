@@ -207,6 +207,12 @@
             <param name="predicate">The predicate that determines if the processor should be invoked for the provided token.</param>
             <param name="processor">The delegate used for processing a given token.</param>
         </member>
+        <member name="T:AllOverIt.Evaluator.Operations.AbsOperation">
+            <summary>An operation used to calculate the absolute value of a number.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.AbsOperation.#ctor">
+            <summary>Constructor.</summary>
+        </member>
         <member name="T:AllOverIt.Evaluator.Operations.AcosOperation">
             <summary>An operation used to calculate the angle (in radians) of a cosine value.</summary>
         </member>
@@ -273,6 +279,12 @@
         <member name="M:AllOverIt.Evaluator.Operations.AtanOperation.#ctor">
             <summary>Constructor.</summary>
         </member>
+        <member name="T:AllOverIt.Evaluator.Operations.CeilingOperation">
+            <summary>An operation used to calculate the smallest integral value greater than or equal to a given number.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.CeilingOperation.#ctor">
+            <summary>Constructor.</summary>
+        </member>
         <member name="T:AllOverIt.Evaluator.Operations.CoshOperation">
             <summary>An operation used to calculate the hyperbolic cosine of an angle (in radians).</summary>
         </member>
@@ -285,10 +297,22 @@
         <member name="M:AllOverIt.Evaluator.Operations.CosOperation.#ctor">
             <summary>Constructor.</summary>
         </member>
+        <member name="T:AllOverIt.Evaluator.Operations.CubeRootOperation">
+            <summary>An operation used to calculate the cube root of a number.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.CubeRootOperation.#ctor">
+            <summary>Constructor.</summary>
+        </member>
         <member name="T:AllOverIt.Evaluator.Operations.ExpOperation">
             <summary>An operation used to raise 'e' to a specified power.</summary>
         </member>
         <member name="M:AllOverIt.Evaluator.Operations.ExpOperation.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operations.FloorOperation">
+            <summary>An operation used to calculate the largest integral value greater than or equal to a given number.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.FloorOperation.#ctor">
             <summary>Constructor.</summary>
         </member>
         <member name="T:AllOverIt.Evaluator.Operations.IArithmeticOperation">
@@ -355,16 +379,34 @@
             <param name="methodName">The name of the user-defined method identifying the operation type to return.</param>
             <returns>The concrete type implementing the user-defined method.</returns>
         </member>
-        <member name="T:AllOverIt.Evaluator.Operations.LnOperation">
-            <summary>An operation used to calculate the natural log of a number.</summary>
+        <member name="T:AllOverIt.Evaluator.Operations.Log10Operation">
+            <summary>An operation used to calculate the log10 of a number.</summary>
         </member>
-        <member name="M:AllOverIt.Evaluator.Operations.LnOperation.#ctor">
+        <member name="M:AllOverIt.Evaluator.Operations.Log10Operation.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operations.Log2Operation">
+            <summary>An operation used to calculate the log2 of a number.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.Log2Operation.#ctor">
             <summary>Constructor.</summary>
         </member>
         <member name="T:AllOverIt.Evaluator.Operations.LogOperation">
-            <summary>An operation used to calculate the log10 of a number.</summary>
+            <summary>An operation used to calculate the natural log of a number.</summary>
         </member>
         <member name="M:AllOverIt.Evaluator.Operations.LogOperation.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operations.MaxOperation">
+            <summary>An operation used to get the maximum of two values.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.MaxOperation.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operations.MinOperation">
+            <summary>An operation used to get the minimum of two values.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.MinOperation.#ctor">
             <summary>Constructor.</summary>
         </member>
         <member name="T:AllOverIt.Evaluator.Operations.PercentOperation">
@@ -415,20 +457,34 @@
             The factory includes a number of pre-defined methods:
             <para>ROUND: Rounds a number to a specified number of decimal places.</para>
             <para>SQRT: Calculate the square root of a number.</para>
-            <para>LOG: Calculate the log10 of a number.</para>
-            <para>LN: Calculate the natural log of a number.</para>
+            <para>CBRT: Calculate the cube root of a number.</para>
+            <para>LOG10: Calculate the log10 of a number.</para>
+            <para>LOG2: Calculate the log2 of a number.</para>
+            <para>LOG: Calculate the natural log of a number.</para>
             <para>EXP: Raise 'e' to a specified power.</para>
             <para>PERC: Calculate the percentage that one operand is of another.</para>
             <para>SIN: Calculate the sine of an angle (in radians).</para>
             <para>COS: Calculate the cosine of an angle (in radians).</para>
             <para>TAN: Calculate the tangent of an angle (in radians).</para>
-            <para>SINH: Calculate the sine of an angle (in radians).</para>
-            <para>COSH: Calculate the cosine of an angle (in radians).</para>
-            <para>TANH: Calculate the tangent of an angle (in radians).</para>
+            <para>SINH: Calculate the hyperbolic sine of an angle (in radians).</para>
+            <para>COSH: Calculate the hyperbolic cosine of an angle (in radians).</para>
+            <para>TANH: Calculate the hyperbolic tangent of an angle (in radians).</para>
             <para>ASIN: Calculate the angle (in radians) of a sine value.</para>
             <para>ACOS: Calculate the angle (in radians) of a cosine value.</para>
             <para>ATAN: Calculate the angle (in radians) of a tangent value.</para>
+            <para>MIN: Returns the minimum of two values.</para>
+            <para>MAX: Returns the maximum of two values.</para>
+            <para>ABS: Returns the absolute value of a number.</para>
+            <para>CEIL: Returns the smallest integral value greater than or equal to a given number.</para>
+            <para>FLOOR: Returns the largest integral value greater than or equal to a given number.</para>
             </remarks>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.AbsOperator">
+            <summary>An expression operator that calculates the absolute value of a given operand.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.AbsOperator.#ctor(System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="operand">The operand (argument) to be evaluated.</param>
         </member>
         <member name="T:AllOverIt.Evaluator.Operators.AcosOperator">
             <summary>An expression operator that calculates the angle (in radians) of a cosine value.</summary>
@@ -473,6 +529,13 @@
         <member name="M:AllOverIt.Evaluator.Operators.BinaryOperator.GetExpression">
             <inheritdoc />
         </member>
+        <member name="T:AllOverIt.Evaluator.Operators.CeilingOperator">
+            <summary>An expression operator that returns the smallest integral value greater than or equal to the given operand.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.CeilingOperator.#ctor(System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="operand">The operand (argument) to be evaluated.</param>
+        </member>
         <member name="T:AllOverIt.Evaluator.Operators.CoshOperator">
             <summary>An expression operator that calculates the hyperbolic cosine of a specified angle (in radians).</summary>
         </member>
@@ -484,6 +547,13 @@
             <summary>An expression operator that calculates the cosine of a specified angle (in radians).</summary>
         </member>
         <member name="M:AllOverIt.Evaluator.Operators.CosOperator.#ctor(System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="operand">The operand (argument) to be evaluated.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.CubeRootOperator">
+            <summary>An expression operator that calculates the cube root of a given operand.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.CubeRootOperator.#ctor(System.Linq.Expressions.Expression)">
             <summary>Constructor.</summary>
             <param name="operand">The operand (argument) to be evaluated.</param>
         </member>
@@ -502,25 +572,55 @@
             <summary>Constructor.</summary>
             <param name="operand">The operand (argument) to be evaluated.</param>
         </member>
+        <member name="T:AllOverIt.Evaluator.Operators.FloorOperator">
+            <summary>An expression operator that return the largest integral value greater than or equal to the given operand.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.FloorOperator.#ctor(System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="operand">The operand (argument) to be evaluated.</param>
+        </member>
         <member name="T:AllOverIt.Evaluator.Operators.IOperator">
             <summary>An interface used to obtain an Expression for an evaluator operator.</summary>
         </member>
         <member name="M:AllOverIt.Evaluator.Operators.IOperator.GetExpression">
             <summary>Gets an Expression that is the result of invoking the operator.</summary>
         </member>
-        <member name="T:AllOverIt.Evaluator.Operators.LnOperator">
-            <summary>An expression operator that calculates the natural logarithm of a given operand.</summary>
+        <member name="T:AllOverIt.Evaluator.Operators.Log10Operator">
+            <summary>An expression operator that calculates log10 of a given operand.</summary>
         </member>
-        <member name="M:AllOverIt.Evaluator.Operators.LnOperator.#ctor(System.Linq.Expressions.Expression)">
+        <member name="M:AllOverIt.Evaluator.Operators.Log10Operator.#ctor(System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="operand">The operand (argument) to be evaluated.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.Log2Operator">
+            <summary>An expression operator that calculates log2 of a given operand.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.Log2Operator.#ctor(System.Linq.Expressions.Expression)">
             <summary>Constructor.</summary>
             <param name="operand">The operand (argument) to be evaluated.</param>
         </member>
         <member name="T:AllOverIt.Evaluator.Operators.LogOperator">
-            <summary>An expression operator that calculates log10 of a given operand.</summary>
+            <summary>An expression operator that calculates the natural logarithm of a given operand.</summary>
         </member>
         <member name="M:AllOverIt.Evaluator.Operators.LogOperator.#ctor(System.Linq.Expressions.Expression)">
             <summary>Constructor.</summary>
             <param name="operand">The operand (argument) to be evaluated.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.MaxOperator">
+            <summary>An expression operator that returns the maximum of two values.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.MaxOperator.#ctor(System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="leftOperand">The left operand (argument) of the operator.</param>
+            <param name="rightOperand">The right operand (argument) of the operator.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.MinOperator">
+            <summary>An expression operator that returns the minimum of two values.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.MinOperator.#ctor(System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="leftOperand">The left operand (argument) of the operator.</param>
+            <param name="rightOperand">The right operand (argument) of the operator.</param>
         </member>
         <member name="T:AllOverIt.Evaluator.Operators.ModuloOperator">
             <summary>An expression operator that calculates the modulo of a given operand.</summary>

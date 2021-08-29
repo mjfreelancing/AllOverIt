@@ -3,18 +3,18 @@ using System.Linq.Expressions;
 
 namespace AllOverIt.Evaluator.Operations
 {
-    /// <summary>An operation used to calculate the natural log of a number.</summary>
-    public sealed class LnOperation : ArithmeticOperationBase
+    /// <summary>An operation used to calculate the smallest integral value greater than or equal to a given number.</summary>
+    public sealed class CeilingOperation : ArithmeticOperationBase
     {
         /// <summary>Constructor.</summary>
-        public LnOperation()
+        public CeilingOperation()
             : base(1, MakeOperator)
         {
         }
 
         private static IOperator MakeOperator(Expression[] expressions)
         {
-            return OperatorBase.Create(expressions, e => new LnOperator(e[0]));
+            return OperatorBase.Create(expressions, e => new CeilingOperator(e[0]));
         }
     }
 }

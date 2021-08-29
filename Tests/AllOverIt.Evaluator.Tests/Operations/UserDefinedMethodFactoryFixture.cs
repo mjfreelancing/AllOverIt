@@ -17,8 +17,10 @@ namespace AllOverIt.Evaluator.Tests.Operations
             [Theory]
             [InlineData("ROUND", typeof(RoundOperation))]
             [InlineData("SQRT", typeof(SqrtOperation))]
+            [InlineData("CBRT", typeof(CubeRootOperation))]
+            [InlineData("LOG10", typeof(Log10Operation))]
+            [InlineData("LOG2", typeof(Log2Operation))]
             [InlineData("LOG", typeof(LogOperation))]
-            [InlineData("LN", typeof(LnOperation))]
             [InlineData("EXP", typeof(ExpOperation))]
             [InlineData("PERC", typeof(PercentOperation))]
             [InlineData("SIN", typeof(SinOperation))]
@@ -30,12 +32,17 @@ namespace AllOverIt.Evaluator.Tests.Operations
             [InlineData("ASIN", typeof(AsinOperation))]
             [InlineData("ACOS", typeof(AcosOperation))]
             [InlineData("ATAN", typeof(AtanOperation))]
+            [InlineData("MIN", typeof(MinOperation))]
+            [InlineData("MAX", typeof(MaxOperation))]
+            [InlineData("ABS", typeof(AbsOperation))]
+            [InlineData("CEIL", typeof(CeilingOperation))]
+            [InlineData("FLOOR", typeof(FloorOperation))]
             public void Should_Registry_Built_In_Method_Operations(string name, Type operationType)
             {
                 _factory = new UserDefinedMethodFactory();
 
                 // only here to make sure the test cases are updated if a new operation is added
-                _factory.RegisteredMethods.Should().HaveCount(15);
+                _factory.RegisteredMethods.Should().HaveCount(22);
 
                 var operation = _factory.GetMethod(name);
 

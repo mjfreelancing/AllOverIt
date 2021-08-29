@@ -12,13 +12,13 @@ namespace AllOverIt.Evaluator.Tests.Operators
     {
         private readonly double _value;
         private readonly Expression _operand;
-        private LnOperator _operator;
+        private LogOperator _operator;
 
         public LnOperatorFixture()
         {
             _value = Create<double>();
             _operand = Expression.Constant(_value);
-            _operator = new LnOperator(_operand);
+            _operator = new LogOperator(_operand);
         }
 
         public class Constructor : LnOperatorFixture
@@ -26,7 +26,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
             [Fact]
             public void Should_Throw_When_Operand_Null()
             {
-                Invoking(() => _operator = new LnOperator(null))
+                Invoking(() => _operator = new LogOperator(null))
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("operand");

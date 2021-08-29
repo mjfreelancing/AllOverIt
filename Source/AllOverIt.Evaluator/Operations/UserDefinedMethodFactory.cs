@@ -10,19 +10,26 @@ namespace AllOverIt.Evaluator.Operations
     /// The factory includes a number of pre-defined methods:
     /// <para>ROUND: Rounds a number to a specified number of decimal places.</para>
     /// <para>SQRT: Calculate the square root of a number.</para>
-    /// <para>LOG: Calculate the log10 of a number.</para>
-    /// <para>LN: Calculate the natural log of a number.</para>
+    /// <para>CBRT: Calculate the cube root of a number.</para>
+    /// <para>LOG10: Calculate the log10 of a number.</para>
+    /// <para>LOG2: Calculate the log2 of a number.</para>
+    /// <para>LOG: Calculate the natural log of a number.</para>
     /// <para>EXP: Raise 'e' to a specified power.</para>
     /// <para>PERC: Calculate the percentage that one operand is of another.</para>
     /// <para>SIN: Calculate the sine of an angle (in radians).</para>
     /// <para>COS: Calculate the cosine of an angle (in radians).</para>
     /// <para>TAN: Calculate the tangent of an angle (in radians).</para>
-    /// <para>SINH: Calculate the sine of an angle (in radians).</para>
-    /// <para>COSH: Calculate the cosine of an angle (in radians).</para>
-    /// <para>TANH: Calculate the tangent of an angle (in radians).</para>
+    /// <para>SINH: Calculate the hyperbolic sine of an angle (in radians).</para>
+    /// <para>COSH: Calculate the hyperbolic cosine of an angle (in radians).</para>
+    /// <para>TANH: Calculate the hyperbolic tangent of an angle (in radians).</para>
     /// <para>ASIN: Calculate the angle (in radians) of a sine value.</para>
     /// <para>ACOS: Calculate the angle (in radians) of a cosine value.</para>
     /// <para>ATAN: Calculate the angle (in radians) of a tangent value.</para>
+    /// <para>MIN: Returns the minimum of two values.</para>
+    /// <para>MAX: Returns the maximum of two values.</para>
+    /// <para>ABS: Returns the absolute value of a number.</para>
+    /// <para>CEIL: Returns the smallest integral value greater than or equal to a given number.</para>
+    /// <para>FLOOR: Returns the largest integral value greater than or equal to a given number.</para>
     /// </remarks>
     public sealed class UserDefinedMethodFactory : IUserDefinedMethodFactory
     {
@@ -40,8 +47,10 @@ namespace AllOverIt.Evaluator.Operations
         {
             RegisterMethod<RoundOperation>(BuiltInMethodsRegistry, "ROUND");
             RegisterMethod<SqrtOperation>(BuiltInMethodsRegistry, "SQRT");
+            RegisterMethod<CubeRootOperation>(BuiltInMethodsRegistry, "CBRT");
+            RegisterMethod<Log10Operation>(BuiltInMethodsRegistry, "LOG10");
+            RegisterMethod<Log2Operation>(BuiltInMethodsRegistry, "LOG2");
             RegisterMethod<LogOperation>(BuiltInMethodsRegistry, "LOG");
-            RegisterMethod<LnOperation>(BuiltInMethodsRegistry, "LN");
             RegisterMethod<ExpOperation>(BuiltInMethodsRegistry, "EXP");
             RegisterMethod<PercentOperation>(BuiltInMethodsRegistry, "PERC");
             RegisterMethod<SinOperation>(BuiltInMethodsRegistry, "SIN");
@@ -53,6 +62,11 @@ namespace AllOverIt.Evaluator.Operations
             RegisterMethod<AsinOperation>(BuiltInMethodsRegistry, "ASIN");
             RegisterMethod<AcosOperation>(BuiltInMethodsRegistry, "ACOS");
             RegisterMethod<AtanOperation>(BuiltInMethodsRegistry, "ATAN");
+            RegisterMethod<MinOperation>(BuiltInMethodsRegistry, "MIN");
+            RegisterMethod<MaxOperation>(BuiltInMethodsRegistry, "MAX");
+            RegisterMethod<AbsOperation>(BuiltInMethodsRegistry, "ABS");
+            RegisterMethod<CeilingOperation>(BuiltInMethodsRegistry, "CEIL");
+            RegisterMethod<FloorOperation>(BuiltInMethodsRegistry, "FLOOR");
         }
 
         // The method name is considered case-insensitive.
@@ -60,7 +74,7 @@ namespace AllOverIt.Evaluator.Operations
         {
             _userMethodsRegistry ??=  new Dictionary<string, Lazy<ArithmeticOperationBase>>();
 
-            RegisterMethod<TOperationType>(_userMethodsRegistry, methodName);
+            RegisterMethod<TOperationType>(_userMethodsRegistry, methodName, true);
         }
 
         // The method name is considered case-insensitive.
@@ -88,10 +102,17 @@ namespace AllOverIt.Evaluator.Operations
             throw new KeyNotFoundException($"The '{methodName}' method is not registered with the {nameof(UserDefinedMethodFactory)}.");
         }
 
-        private static void RegisterMethod<TOperationType>(IDictionary<string, Lazy<ArithmeticOperationBase>> operationRegistry, string methodName)
+        private static void RegisterMethod<TOperationType>(IDictionary<string, Lazy<ArithmeticOperationBase>> operationRegistry, string methodName,
+            bool requiresUppercase = false)
             where TOperationType : ArithmeticOperationBase, new()
         {
-            operationRegistry.Add(methodName.ToUpper(), MakeLazyOperation<TOperationType>());
+            // minor allocation improvement if this can be avoided
+            if (requiresUppercase)
+            {
+                methodName = methodName.ToUpperInvariant();
+            }
+
+            operationRegistry.Add(methodName, MakeLazyOperation<TOperationType>());
         }
 
         private static Lazy<ArithmeticOperationBase> MakeLazyOperation<TOperationType>() where TOperationType : ArithmeticOperationBase, new()

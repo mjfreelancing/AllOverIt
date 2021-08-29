@@ -308,7 +308,7 @@ namespace AllOverIt.Evaluator
 
             if (_expressionStack.Count - currentExpressionCount != expressionsRequired)
             {
-                throw new FormulaException($"Expected {operation.ArgumentCount} parameters");
+                throw new FormulaException($"The {methodName.ToUpper()} method expects {operation.ArgumentCount} parameter(s).");
             }
 
             return FormulaExpressionFactory.CreateExpression(operation, _expressionStack);

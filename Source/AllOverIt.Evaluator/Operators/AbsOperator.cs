@@ -4,14 +4,14 @@ using System.Reflection;
 
 namespace AllOverIt.Evaluator.Operators
 {
-    /// <summary>An expression operator that calculates the natural logarithm of a given operand.</summary>
-    public sealed class LogOperator : UnaryOperator
+    /// <summary>An expression operator that calculates the absolute value of a given operand.</summary>
+    public sealed class AbsOperator : UnaryOperator
     {
-        private static readonly MethodInfo OperatorMethodInfo = typeof(Math).GetMethod("Log", new[] { typeof(double) });
+        private static readonly MethodInfo OperatorMethodInfo = typeof(Math).GetMethod("Abs", new[] { typeof(double) });
 
         /// <summary>Constructor.</summary>
         /// <param name="operand">The operand (argument) to be evaluated.</param>
-        public LogOperator(Expression operand)
+        public AbsOperator(Expression operand)
             : base(CreateExpression, operand)
         {
         }
