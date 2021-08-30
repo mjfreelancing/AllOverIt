@@ -5,6 +5,7 @@ using Amazon.CDK.AWS.AppSync;
 using Amazon.CDK.AWS.Lambda;
 using System;
 using System.Collections.Generic;
+using AllOverIt.Aws.Cdk.AppSync.Attributes.Datasources;
 using SystemEnvironment = System.Environment;
 
 namespace AllOverIt.Aws.Cdk.AppSync.Factories

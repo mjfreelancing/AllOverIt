@@ -5,6 +5,7 @@
         Input,
         Type,
         //Interface,                pending support
+        //Union,                    pending support
         Scalar,
         AWSScalar
     }

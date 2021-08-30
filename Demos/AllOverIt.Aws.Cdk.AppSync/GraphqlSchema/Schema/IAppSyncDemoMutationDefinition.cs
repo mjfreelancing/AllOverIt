@@ -1,4 +1,5 @@
-﻿using AllOverIt.Aws.Cdk.AppSync.Attributes;
+﻿using AllOverIt.Aws.Cdk.AppSync.Attributes.Datasources;
+using AllOverIt.Aws.Cdk.AppSync.Attributes.Types;
 using AllOverIt.Aws.Cdk.AppSync.Schema;
 using GraphqlSchema.Schema.Inputs;
 using GraphqlSchema.Schema.Mappings.Mutation;

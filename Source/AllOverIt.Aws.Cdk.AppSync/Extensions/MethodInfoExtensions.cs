@@ -1,4 +1,6 @@
-﻿using AllOverIt.Aws.Cdk.AppSync.Attributes;
+﻿using AllOverIt.Aws.Cdk.AppSync.Attributes.Datasources;
+using AllOverIt.Aws.Cdk.AppSync.Attributes.Directives;
+using AllOverIt.Aws.Cdk.AppSync.Attributes.Types;
 using AllOverIt.Aws.Cdk.AppSync.Exceptions;
 using AllOverIt.Aws.Cdk.AppSync.Factories;
 using AllOverIt.Aws.Cdk.AppSync.Mapping;
@@ -99,6 +101,15 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
                     }
                 }
             }
+        }
+
+        public static IReadOnlyCollection<Directive> GetAuthDirectives(this MethodInfo methodInfo)
+        {
+            var attributes = methodInfo
+                .GetCustomAttributes<AuthDirectiveBaseAttribute>(true)
+                .AsReadOnlyCollection();
+
+            return attributes.GetAuthDirectives();
         }
 
         private static IRequestResponseMapping GetRequestResponseMapping(MemberInfo memberInfo, MappingTypeFactory mappingTypeFactory)

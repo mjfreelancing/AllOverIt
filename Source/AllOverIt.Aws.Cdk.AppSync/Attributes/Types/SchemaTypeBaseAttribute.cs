@@ -1,7 +1,8 @@
 ﻿using System;
 
-namespace AllOverIt.Aws.Cdk.AppSync.Attributes
+namespace AllOverIt.Aws.Cdk.AppSync.Attributes.Types
 {
+    // NOTE: Keep the 'Attribute' suffix (and not Base)
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class)]
     public abstract class SchemaTypeBaseAttribute : Attribute
     {

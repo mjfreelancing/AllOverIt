@@ -1,4 +1,4 @@
-﻿namespace AllOverIt.Aws.Cdk.AppSync.Attributes
+﻿namespace AllOverIt.Aws.Cdk.AppSync.Attributes.Types
 {
     public sealed class SchemaScalarAttribute : SchemaTypeBaseAttribute
     {

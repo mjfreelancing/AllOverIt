@@ -116,6 +116,10 @@ namespace AllOverIt.Aws.Cdk.AppSync
 
                 var intermediateType = CreateIntermediateType(typeDescriptor, classDefinition);
 
+                // Not currently validating auth modes on each field is also on its' return type because it's also possible to define
+                // them on all fields of that type. AWS will validate this during deployment. Not currently a priority feature.
+                // https://docs.aws.amazon.com/appsync/latest/devguide/security-authz.html#using-additional-authorization-modes
+
                 // cache for possible future use
                 _fieldTypes.Add(
                     intermediateType.Name,
@@ -171,6 +175,9 @@ namespace AllOverIt.Aws.Cdk.AppSync
                 // optionally specified via a custom attribute
                 var dataSource = methodInfo.GetDataSource(_dataSourceFactory);
 
+                // Note: Directives work at the field level so you need to give the same access to the declaring type too.
+                var authDirectives = methodInfo.GetAuthDirectives().ToArray();
+
                 if (dataSource == null)
                 {
                     classDefinition.Add(
@@ -179,7 +186,8 @@ namespace AllOverIt.Aws.Cdk.AppSync
                             new FieldOptions
                             {
                                 Args = methodInfo.GetMethodArgs(_graphqlApi, this),
-                                ReturnType = returnObjectType
+                                ReturnType = returnObjectType,
+                                Directives = authDirectives
                             })
                     );
                 }
@@ -196,7 +204,8 @@ namespace AllOverIt.Aws.Cdk.AppSync
                                 RequestMappingTemplate = _mappingTemplates.GetRequestMapping(fieldMapping),
                                 ResponseMappingTemplate = _mappingTemplates.GetResponseMapping(fieldMapping),
                                 Args = methodInfo.GetMethodArgs(_graphqlApi, this),
-                                ReturnType = returnObjectType
+                                ReturnType = returnObjectType,
+                                Directives = authDirectives
                             })
                     );
                 }
@@ -221,22 +230,35 @@ namespace AllOverIt.Aws.Cdk.AppSync
 
         private static IIntermediateType CreateIntermediateType(GraphqlSchemaTypeDescriptor typeDescriptor, IDictionary<string, IField> classDefinition = null)
         {
-            // todo: currently handles Input and Type - haven't yet looked at 'interface'
-            //new InterfaceType()
+            // todo: currently handles Input and Type - haven't yet looked at these below
+
+            // new InterfaceType()
+            // https://docs.aws.amazon.com/cdk/api/latest/dotnet/api/Amazon.CDK.AWS.AppSync.InterfaceType.html
+            //
+            // new UnionType()
+            // https://docs.aws.amazon.com/cdk/api/latest/dotnet/api/Amazon.CDK.AWS.AppSync.UnionType.html
 
             classDefinition ??= new Dictionary<string, IField>();
 
-            IIntermediateType intermediateType = typeDescriptor.SchemaType == GraphqlSchemaType.Input
-                ? new InputType(typeDescriptor.Name,
+            IIntermediateType intermediateType = typeDescriptor.SchemaType switch
+            {
+                GraphqlSchemaType.Input => new InputType(
+                    typeDescriptor.Name,
                     new IntermediateTypeOptions
                     {
                         Definition = classDefinition
-                    })
-                : new ObjectType(typeDescriptor.Name,
+                    }),
+
+                GraphqlSchemaType.Type => new ObjectType(
+                    typeDescriptor.Name,
                     new ObjectTypeOptions
                     {
-                        Definition = classDefinition
-                    });
+                        Definition = classDefinition,
+                        Directives = typeDescriptor.Type.GetAuthDirectives()?.ToArray()
+                    }),
+
+                _ => throw new InvalidOperationException($"Unexpected schema type '{typeDescriptor.SchemaType}'")
+            };
 
             return intermediateType;
         }

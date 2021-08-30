@@ -1,8 +1,8 @@
-﻿using AllOverIt.Aws.Cdk.AppSync.Mapping;
-using System;
+﻿using System;
 using System.Text.RegularExpressions;
+using AllOverIt.Aws.Cdk.AppSync.Mapping;
 
-namespace AllOverIt.Aws.Cdk.AppSync.Attributes
+namespace AllOverIt.Aws.Cdk.AppSync.Attributes.Datasources
 {
     [AttributeUsage(AttributeTargets.Method)]
     public abstract class DataSourceAttribute : Attribute

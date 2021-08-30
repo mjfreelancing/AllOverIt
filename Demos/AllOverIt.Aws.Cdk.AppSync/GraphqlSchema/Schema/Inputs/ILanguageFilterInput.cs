@@ -1,4 +1,4 @@
-﻿using AllOverIt.Aws.Cdk.AppSync.Attributes;
+﻿using AllOverIt.Aws.Cdk.AppSync.Attributes.Types;
 
 namespace GraphqlSchema.Schema.Inputs
 {
