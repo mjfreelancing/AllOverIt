@@ -7,7 +7,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
 {
     public static class AttributeExtensions
     {
-        public static IReadOnlyCollection<Directive> GetAuthDirectives(this IReadOnlyCollection<AuthDirectiveBaseAttribute> attributes)
+        public static Directive[] GetAuthDirectivesOrDefault(this IReadOnlyCollection<AuthDirectiveBaseAttribute> attributes)
         {
             var directives = new List<Directive>();
 
@@ -24,7 +24,9 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
                 directives.Add(directive);
             }
 
-            return directives;
+            return directives.Any()
+                ? directives.ToArray()
+                : null;
         }
     }
 }

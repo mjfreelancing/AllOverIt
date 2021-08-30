@@ -3,7 +3,6 @@ using AllOverIt.Aws.Cdk.AppSync.Attributes.Types;
 using AllOverIt.Aws.Cdk.AppSync.Exceptions;
 using AllOverIt.Extensions;
 using Amazon.CDK.AWS.AppSync;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using SystemType = System.Type;
@@ -50,13 +49,13 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
             return new GraphqlSchemaTypeDescriptor(elementType, GraphqlSchemaType.Scalar, elementType!.Name);
         }
 
-        public static IReadOnlyCollection<Directive> GetAuthDirectives(this SystemType type)
+        public static Directive[] GetAuthDirectivesOrDefault(this SystemType type)
         {
             var attributes = type
                 .GetCustomAttributes<AuthDirectiveBaseAttribute>(true)
                 .AsReadOnlyCollection();
 
-            return attributes.GetAuthDirectives();
+            return attributes.GetAuthDirectivesOrDefault();
         }
     }
 }
