@@ -3,7 +3,7 @@
 
   [1] AllOverIt                    (v1.16.1) - None
   [2] AllOverIt.Validation         (v0.1.0)  - requires [1] v1.16.1
-  [3] AllOverIt.Aws.Cdk.AppSync    (v0.11.0) - requires [1] v1.16.1
+  [3] AllOverIt.Aws.Cdk.AppSync    (v0.12.0) - requires [1] v1.16.1
   [4] AllOverIt.Evaluator          (v2.1.0)  - requires [1] v1.11.0
   [5] AllOverIt.GenericHost        (v1.1.0)  - requires [1] v1.14.0
   [6] AllOverIt.Fixture            (v1.5.0)  - None
@@ -15,6 +15,9 @@
 
 30 Aug 2021
 ======================================================================================================================
+AllOverIt.Aws.Cdk.AppSync - v0.12.0
+  * Added Auth directive attributes
+
 AllOverIt.Aws.Cdk.AppSync - v0.11.0
   * Removed 'ServiceName' from datasources - not required
 
