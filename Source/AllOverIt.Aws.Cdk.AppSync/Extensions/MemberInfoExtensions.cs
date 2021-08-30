@@ -1,4 +1,4 @@
-﻿using AllOverIt.Aws.Cdk.AppSync.Attributes;
+﻿using AllOverIt.Aws.Cdk.AppSync.Attributes.Datasources;
 using AllOverIt.Aws.Cdk.AppSync.Factories;
 using AllOverIt.Extensions;
 using Amazon.CDK.AWS.AppSync;

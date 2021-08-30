@@ -1,7 +1,7 @@
 ﻿using AllOverIt.Helpers;
 using SystemType = System.Type;
 
-namespace AllOverIt.Aws.Cdk.AppSync.Attributes
+namespace AllOverIt.Aws.Cdk.AppSync.Attributes.Datasources
 {
     public class NoneDataSourceAttribute : DataSourceAttribute
     {

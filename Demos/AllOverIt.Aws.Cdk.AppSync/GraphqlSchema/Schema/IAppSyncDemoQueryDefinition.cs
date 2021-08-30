@@ -1,5 +1,7 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync;
-using AllOverIt.Aws.Cdk.AppSync.Attributes;
+using AllOverIt.Aws.Cdk.AppSync.Attributes.Datasources;
+using AllOverIt.Aws.Cdk.AppSync.Attributes.Directives;
+using AllOverIt.Aws.Cdk.AppSync.Attributes.Types;
 using AllOverIt.Aws.Cdk.AppSync.Schema;
 using AllOverIt.Aws.Cdk.AppSync.Schema.Types;
 using GraphqlSchema.Schema.Inputs;
@@ -14,6 +16,7 @@ namespace GraphqlSchema.Schema
     {
         // NOTE: Leave this as the first item as it is testing a parameter and return type that is unknown at the time of parsing
         [NoneDataSource(nameof(CountryLanguage)/*, typeof(CountryLanguageMapping)*/)]        // providing this mapping via code
+        [AuthApiKeyDirective]
         ILanguage CountryLanguage([SchemaTypeRequired] ICountryFilterInput country);
 
         // demonstrates how to obtain the datasource mapping via a user-provided factory
