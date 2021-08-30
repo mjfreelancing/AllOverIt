@@ -7,9 +7,7 @@ using AllOverIt.Helpers;
 using Amazon.CDK.AWS.AppSync;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using System.Reflection;
 using EnumType = Amazon.CDK.AWS.AppSync.EnumType;
 using SystemType = System.Type;
 
