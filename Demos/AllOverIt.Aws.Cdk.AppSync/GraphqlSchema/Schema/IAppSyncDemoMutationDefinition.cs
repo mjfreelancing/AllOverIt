@@ -9,11 +9,11 @@ namespace GraphqlSchema.Schema
     internal interface IAppSyncDemoMutationDefinition : IMutationDefinition
     {
         [SchemaTypeRequired]
-        [LambdaDataSource(Constants.AppName, Constants.Function.AddCountry, typeof(AddCountryMapping))]
+        [LambdaDataSource(Constants.Function.AddCountry, typeof(AddCountryMapping))]
         ICountry AddCountry([SchemaTypeRequired] ICountryInput country);
 
         [SchemaTypeRequired]
-        [LambdaDataSource(Constants.AppName, Constants.Function.UpdateCountry, typeof(UpdateCountryMapping))]
+        [LambdaDataSource(Constants.Function.UpdateCountry, typeof(UpdateCountryMapping))]
         ICountry UpdateCountry([SchemaTypeRequired] ICountryInput country);
     }
 }

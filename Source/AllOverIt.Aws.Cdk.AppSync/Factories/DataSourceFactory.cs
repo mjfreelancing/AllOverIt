@@ -47,8 +47,8 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
                 Api = _graphQlApi,
                 Name = $"{attribute.LookupKey}DataSource",
                 Description = attribute.Description,
-                LambdaFunction = Function.FromFunctionArn(stack, $"{attribute.ServiceName}{attribute.FunctionName}Function",
-                    $"arn:aws:lambda:{stack.Region}:{stack.Account}:function:{attribute.ServiceName}_{attribute.FunctionName}")
+                LambdaFunction = Function.FromFunctionArn(stack, $"{attribute.FunctionName}Function",
+                    $"arn:aws:lambda:{stack.Region}:{stack.Account}:function:{attribute.FunctionName}")
             });
         }
 
