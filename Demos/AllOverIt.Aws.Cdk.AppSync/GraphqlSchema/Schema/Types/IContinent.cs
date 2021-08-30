@@ -13,13 +13,13 @@ namespace GraphqlSchema.Schema.Types
         // sharing this http datasource
         [SchemaArrayRequired]
         [SchemaTypeRequired]
-        [HttpDataSource(Constants.AppName, EndpointSource.ImportValue, Constants.Import.GetCountriesUrlImportName, typeof(ContinentsCountriesMapping))]
+        [HttpDataSource(EndpointSource.ImportValue, Constants.Import.GetCountriesUrlImportName, typeof(ContinentsCountriesMapping))]
         ICountry[] Countries();
 
         // sharing this http datasource
         [SchemaArrayRequired]
         [SchemaTypeRequired]
-        [HttpDataSource(Constants.AppName, EndpointSource.ImportValue, Constants.Import.GetCountriesUrlImportName, typeof(ContinentsCountryCodesMapping))]
+        [HttpDataSource(EndpointSource.ImportValue, Constants.Import.GetCountriesUrlImportName, typeof(ContinentsCountryCodesMapping))]
         string[] CountryCodes();
     }
 }
