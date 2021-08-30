@@ -103,13 +103,13 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
             }
         }
 
-        public static IReadOnlyCollection<Directive> GetAuthDirectives(this MethodInfo methodInfo)
+        public static Directive[] GetAuthDirectivesOrDefault(this MethodInfo methodInfo)
         {
             var attributes = methodInfo
                 .GetCustomAttributes<AuthDirectiveBaseAttribute>(true)
                 .AsReadOnlyCollection();
 
-            return attributes.GetAuthDirectives();
+            return attributes.GetAuthDirectivesOrDefault();
         }
 
         private static IRequestResponseMapping GetRequestResponseMapping(MemberInfo memberInfo, MappingTypeFactory mappingTypeFactory)

@@ -174,7 +174,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
                 var dataSource = methodInfo.GetDataSource(_dataSourceFactory);
 
                 // Note: Directives work at the field level so you need to give the same access to the declaring type too.
-                var authDirectives = methodInfo.GetAuthDirectives().ToArray();
+                var authDirectives = methodInfo.GetAuthDirectivesOrDefault();
 
                 if (dataSource == null)
                 {
@@ -252,7 +252,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
                     new ObjectTypeOptions
                     {
                         Definition = classDefinition,
-                        Directives = typeDescriptor.Type.GetAuthDirectives()?.ToArray()
+                        Directives = typeDescriptor.Type.GetAuthDirectivesOrDefault()
                     }),
 
                 _ => throw new InvalidOperationException($"Unexpected schema type '{typeDescriptor.SchemaType}'")
