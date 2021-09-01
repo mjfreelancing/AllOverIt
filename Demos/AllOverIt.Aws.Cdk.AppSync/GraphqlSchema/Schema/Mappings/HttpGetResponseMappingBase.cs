@@ -4,9 +4,6 @@ namespace GraphqlSchema.Schema.Mappings
 {
     internal abstract class HttpGetResponseMappingBase : RequestResponseMappingBase
     {
-        public override string RequestMapping { get; }
-        public override string ResponseMapping { get; }
-
         public HttpGetResponseMappingBase(string resource, string apiKey)
         {
             RequestMapping = GetHttpRequestMapping("GET", resource, apiKey);

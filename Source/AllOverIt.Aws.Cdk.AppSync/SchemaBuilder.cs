@@ -142,6 +142,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
                         requiredTypeInfo,
                         objectType => _graphqlApi.AddType(objectType));
 
+                // AddQuery / AddMutation
                 graphqlAction.Invoke(methodInfo.Name.GetGraphqlName(),
                     new ResolvableField(
                         new ResolvableFieldOptions

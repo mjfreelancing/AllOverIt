@@ -5,8 +5,8 @@ namespace GraphqlSchema.Schema.Mappings
 {
     internal abstract class RequestResponseMappingBase : IRequestResponseMapping
     {
-        public abstract string RequestMapping { get; }
-        public abstract string ResponseMapping { get; }
+        public string RequestMapping { get; protected set; }
+        public string ResponseMapping { get; protected set; }
 
         protected static string GetNoneRequestMapping()
         {
@@ -14,7 +14,7 @@ namespace GraphqlSchema.Schema.Mappings
             return Formatter.FormatJsonString(
                 @"
                     {
-                      ""version"": ""2018-05-09"",
+                      ""version"": ""2017-02-28"",
                       ""payload"": ""true""
                     }"
             );
