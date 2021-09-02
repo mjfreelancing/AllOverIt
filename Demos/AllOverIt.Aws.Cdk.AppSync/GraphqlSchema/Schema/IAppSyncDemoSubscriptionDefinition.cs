@@ -14,5 +14,10 @@ namespace GraphqlSchema.Schema
         [NoneDataSource(nameof(AddedCountry), typeof(AddedCountryMapping))]         // the handling datasource
         [SchemaTypeRequired]
         ICountry AddedCountry(GraphqlTypeId code);                                  // optional, so all countries added will be reported
+
+        [SubscriptionMutation(nameof(IAppSyncDemoMutationDefinition.AddLanguage))]   
+        [NoneDataSource(nameof(AddedLanguage), typeof(AddedLanguageMapping))]
+        [SchemaTypeRequired]
+        ILanguage AddedLanguage(GraphqlTypeId code);                                 
     }
 }

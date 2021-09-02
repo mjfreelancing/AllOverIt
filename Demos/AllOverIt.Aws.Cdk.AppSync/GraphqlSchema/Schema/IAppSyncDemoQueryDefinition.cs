@@ -6,6 +6,7 @@ using AllOverIt.Aws.Cdk.AppSync.Schema;
 using AllOverIt.Aws.Cdk.AppSync.Schema.Types;
 using GraphqlSchema.Schema.Inputs;
 using GraphqlSchema.Schema.Mappings.Query;
+using GraphqlSchema.Schema.Mappings.Subscription;
 using GraphqlSchema.Schema.Types;
 
 namespace GraphqlSchema.Schema
@@ -23,6 +24,10 @@ namespace GraphqlSchema.Schema
         // ContinentLanguagesMapping does not have a default ctor - it has been registered with the factory
         [NoneDataSource(nameof(ContinentLanguages), typeof(ContinentLanguagesMapping))]
         ILanguage[] ContinentLanguages([SchemaTypeRequired] IContinentFilterInput filter);
+
+        [SchemaTypeRequired]
+        [NoneDataSource(nameof(ContinentLanguages), typeof(DefaultLanguageMapping))]
+        ILanguage DefaultLanguage();
 
         [SchemaArrayRequired]
         [SchemaTypeRequired]

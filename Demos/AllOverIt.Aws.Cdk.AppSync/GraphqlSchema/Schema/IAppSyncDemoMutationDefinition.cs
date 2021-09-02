@@ -16,5 +16,9 @@ namespace GraphqlSchema.Schema
         [SchemaTypeRequired]
         [LambdaDataSource(Constants.Function.UpdateCountry, typeof(UpdateCountryMapping))]
         ICountry UpdateCountry([SchemaTypeRequired] ICountryInput country);
+
+        [SchemaTypeRequired]
+        [NoneDataSource(nameof(AddLanguage), typeof(AddLanguageMapping))]
+        ILanguage AddLanguage(ILanguageInput language);
     }
 }
