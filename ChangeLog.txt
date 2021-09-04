@@ -46,10 +46,10 @@ AllOverIt.Evaluator - v3.0.0
 
   Current AllOverIt Inter-Dependencies
 
-  [1] AllOverIt                    (v1.16.1) - None
+  [1] AllOverIt                    (v1.17.0) - None
   [2] AllOverIt.Validation         (v0.1.0)  - requires [1] v1.16.1
   [3] AllOverIt.Aws.Cdk.AppSync    (v0.12.1) - requires [1] v1.16.1
-  [4] AllOverIt.Evaluator          (v2.1.0)  - requires [1] v1.11.0
+  [4] AllOverIt.Evaluator          (v2.1.0)  - requires [1] v1.17.0
   [5] AllOverIt.GenericHost        (v1.1.0)  - requires [1] v1.14.0
   [6] AllOverIt.Fixture            (v1.5.0)  - None
   [7] AllOverIt.Fixture.FakeItEasy (v1.3.0)  - requires [6] v1.5.0
