@@ -3,6 +3,7 @@ using AllOverIt.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -31,23 +32,13 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         private readonly IAppSyncClientSerializer _serializer;
         private readonly CancellationTokenSource _cts = new();
         private readonly ArraySegment<byte> _buffer = new(new byte[8192]);
-        private readonly IDictionary<string, SubscriptionRegistration> _subscriptions = new Dictionary<string, SubscriptionRegistration>();
-        
-        //private readonly BlockingCollection<AppSyncGraphqlResponse> _responses = new();     // todo: clear on close
-
-        //private readonly Subject<AppSyncGraphqlResponse> _responses2 = new();
-
+        private readonly IDictionary<string, SubscriptionRegistration> _subscriptions = new ConcurrentDictionary<string, SubscriptionRegistration>();
         private IConnectableObservable<AppSyncGraphqlResponse> _incomingMessages;
         private IDisposable _incomingMessagesConnection;
 
-
-
         // One WebSocket connection can have multiple subscriptions (even with different authentication modes).
         private ClientWebSocket _webSocket;
-        
-        //private Task _receiveMessageTask;
-        //private Task _processResponsesTask;
-
+        private readonly SemaphoreSlim _webSocketLock = new(1, 1);
         private readonly BehaviorSubject<SubscriptionConnectionState> _connectionStateSubject = new(SubscriptionConnectionState.Disconnected);
         private readonly Subject<Exception> _exceptionSubject = new();
         private readonly Subject<WebSocketResponse<GraphqlError>> _graphqlErrorSubject = new();
@@ -60,7 +51,6 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         // endpoint is the graphql endpoint (not realtime) without https, wss, or /graphql
         // e.g., example123abc.appsync-api.ap-southeast-2.amazonaws.com
         public AppSyncSubscriptionClient(string host, IAuthorization defaultAuthorization, IAppSyncClientSerializer serializer)
-            //CancellationToken cancellationToken = default)
         {
             _host = host.WhenNotNullOrEmpty(nameof(host));
 
@@ -88,7 +78,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             IAuthorization authorization)
         {
             // will connect (and wait for ACK) if required
-            var connectionState = await CheckWebSocketConnection();
+            var connectionState = await CheckWebSocketConnection().ConfigureAwait(false);
 
             if (connectionState == SubscriptionConnectionState.Disconnected)
             {
@@ -109,7 +99,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
             _subscriptions.Add(registration.Id, registration);
 
-            var ackTask = await SendRegistration(registration);
+            var ackTask = await SendRegistration(registration).ConfigureAwait(false);
 
             // wait for the registration ACK
             await ackTask;
@@ -118,63 +108,72 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                 () => registration,
                 async subscription =>
                 {
-                    await UnregisterSubscription(subscription.Id);
+                    await UnregisterSubscription(subscription.Id).ConfigureAwait(false);
                 });
         }
 
         private async Task<SubscriptionConnectionState> CheckWebSocketConnection()
         {
-            if (_webSocket is {State: WebSocketState.Open})
-            {
-                return SubscriptionConnectionState.Connected;
-            }
+            await _webSocketLock.WaitAsync().ConfigureAwait(false);
 
             try
             {
-                // dispose if not currently in an Open state
-                DisposeWebSocketConnection();
-
-                _connectionStateSubject.OnNext(SubscriptionConnectionState.Connecting);
-
-                _webSocket = new ClientWebSocket();
-                _webSocket.Options.AddSubProtocol("graphql-ws");
-
-                if (_webSocket.State != WebSocketState.Open)
+                if (_webSocket is { State: WebSocketState.Open })
                 {
-                    await _webSocket.ConnectAsync(_uri, _cts.Token);
+                    return SubscriptionConnectionState.Connected;
+                }
 
-                    ConfigureMessageProcessing();
+                try
+                {
+                    // dispose if not currently in an Open state
+                    DisposeWebSocketConnection();
 
-                    var ack = _incomingMessages
-                        .TakeUntil(response => response is { Type: GraphqlResponseType.ConnectionAck or GraphqlResponseType.ConnectionError })
-                        .LastAsync()
-                        .ToTask();
+                    _connectionStateSubject.OnNext(SubscriptionConnectionState.Connecting);
 
-                    await SendInitRequest();
+                    _webSocket = new ClientWebSocket();
+                    _webSocket.Options.AddSubProtocol("graphql-ws");
 
-                    var response = await ack;
-
-                    if (response.Type == GraphqlResponseType.ConnectionAck)
+                    if (_webSocket.State != WebSocketState.Open)
                     {
-                        _connectionStateSubject.OnNext(SubscriptionConnectionState.Connected);
+                        await _webSocket.ConnectAsync(_uri, _cts.Token).ConfigureAwait(false);
 
-                        // re-register any existing subscriptions
-                        await SendRegistrationRequests();
-                    }
-                    else
-                    {
-                        var error = JsonConvert.DeserializeObject<WebSocketResponse<GraphqlError>>(response.Message);
-                        throw new GraphqlConnectionException(error);      // the maintenance subscription will disconnect the web socket
+                        ConfigureMessageProcessing();
+
+                        var ack = _incomingMessages
+                            .TakeUntil(response => response is { Type: GraphqlResponseType.ConnectionAck or GraphqlResponseType.ConnectionError })
+                            .LastAsync()
+                            .ToTask();
+
+                        await SendInitRequest().ConfigureAwait(false);
+
+                        var response = await ack.ConfigureAwait(false);
+
+                        if (response.Type == GraphqlResponseType.ConnectionAck)
+                        {
+                            _connectionStateSubject.OnNext(SubscriptionConnectionState.Connected);
+
+                            // re-register any existing subscriptions
+                            await SendRegistrationRequests().ConfigureAwait(false);
+                        }
+                        else
+                        {
+                            var error = JsonConvert.DeserializeObject<WebSocketResponse<GraphqlError>>(response.Message);
+                            throw new GraphqlConnectionException(error);      // the maintenance subscription will disconnect the web socket
+                        }
                     }
                 }
-            }
-            catch (Exception exception)
-            {
-                _exceptionSubject.OnNext(exception);
-                ShutdownConnection();
-            }
+                catch (Exception exception)
+                {
+                    _exceptionSubject.OnNext(exception);
+                    ShutdownConnection();
+                }
 
-            return _connectionStateSubject.Value;
+                return _connectionStateSubject.Value;
+            }
+            finally
+            {
+                _webSocketLock.Release();
+            }
         }
 
         private void ShutdownConnection()
@@ -217,7 +216,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                         do
                         {
                             // WebSocketException is reported via maintenanceSubscription
-                            webSocketReceiveResult = await _webSocket.ReceiveAsync(_buffer, _cts.Token);
+                            webSocketReceiveResult = await _webSocket.ReceiveAsync(_buffer, _cts.Token).ConfigureAwait(false);
                             ms.Write(_buffer.Array!, _buffer.Offset, webSocketReceiveResult.Count);
                         } while (!webSocketReceiveResult.EndOfMessage && !_cts.Token.IsCancellationRequested);
 
@@ -338,8 +337,8 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                 .LastAsync()
                 .ToTask(CancellationToken.None);
 
-            await SendRequest(request);
-            await completeTask;
+            await SendRequest(request).ConfigureAwait(false);
+            await completeTask.ConfigureAwait(false);
 
             _subscriptions.Remove(id);
 
@@ -368,7 +367,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                 foreach (var registration in _subscriptions.Values)
                 {
 
-                    var ackTask = await SendRegistration(registration);
+                    var ackTask = await SendRegistration(registration).ConfigureAwait(false);
                     ackTasks.Add(ackTask);
                 }
 
@@ -376,7 +375,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
                 try
                 {
-                    await Task.WhenAll(ackTasks.Concat(new[] { timeout }));
+                    await Task.WhenAll(ackTasks.Concat(new[] { timeout })).ConfigureAwait(false);
                 }
                 catch (TaskCanceledException)
                 {
@@ -395,7 +394,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                 .LastAsync()
                 .ToTask(_cts.Token);
 
-            await SendRequest(request);
+            await SendRequest(request).ConfigureAwait(false);
 
             return ackTask;
         }

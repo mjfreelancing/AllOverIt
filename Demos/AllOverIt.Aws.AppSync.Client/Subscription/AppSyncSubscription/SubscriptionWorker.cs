@@ -3,6 +3,7 @@ using AllOverIt.Aws.AppSync.Client.Subscription;
 using AllOverIt.Extensions;
 using AllOverIt.GenericHost;
 using AllOverIt.Helpers;
+using AllOverIt.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -85,9 +86,10 @@ namespace AppSyncSubscription
                     Console.WriteLine(exception.Message);
                 });
 
-            // Subscribe to a mutation using two different queries
-            var subscription1 = await GetSubscription1(client);
-            var subscription2 = await GetSubscription1(client);
+            // Subscribe to a mutation using two different queries - at the same time to test connection locking
+            var (subscription1, subscription2) = await TaskHelper.WhenAll(
+                GetSubscription1(client),
+                GetSubscription2(client));
 
             Console.WriteLine("Subscriptions are now ready");
 
@@ -121,6 +123,8 @@ namespace AppSyncSubscription
 
         private static async Task<IAsyncDisposable> GetSubscription1(AppSyncSubscriptionClient client)
         {
+            Console.WriteLine("Adding Subscription1");
+
             var query1 = new SubscriptionQuery
             {
                 // try this for an unsupported operation error
@@ -141,11 +145,15 @@ namespace AppSyncSubscription
                     Console.WriteLine();
                 });
 
+            Console.WriteLine("Subscription1 is registered");
+
             return subscription;
         }
 
         private static async Task<IAsyncDisposable> GetSubscription2(AppSyncSubscriptionClient client)
         {
+            Console.WriteLine("Adding Subscription2");
+
             var query2 = new SubscriptionQuery
             {
                 Query = @"subscription MySubscription2 {addedLanguage {code name}}"
@@ -162,6 +170,8 @@ namespace AppSyncSubscription
                     Console.WriteLine($"Sub2: {JsonConvert.SerializeObject(message, new JsonSerializerSettings { Formatting = Formatting.Indented })}");
                     Console.WriteLine();
                 });
+
+            Console.WriteLine("Subscription2 is registered");
 
             return subscription;
         }
