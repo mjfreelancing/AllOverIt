@@ -16,6 +16,8 @@ namespace AppSyncSubscription
                 // an additional worker background service just to demonstrate it is possible.
                 .ConfigureServices(services =>
                 {
+                    services.AddSingleton<IWorkerReady, WorkerReady>();
+
                     // SubscriptionWorker subscribes to a graphql
                     services.AddHostedService<SubscriptionWorker>();
                 })

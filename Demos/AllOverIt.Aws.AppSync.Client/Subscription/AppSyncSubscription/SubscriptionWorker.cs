@@ -28,19 +28,22 @@ namespace AppSyncSubscription
         }
     }
 
-     */
+    */
 
     public sealed class SubscriptionWorker : ConsoleWorker
     {
         private readonly AppSyncOptions _apiOptions;
+        private readonly IWorkerReady _workerReady;
         private readonly ILogger<SubscriptionWorker> _logger;
         private CompositeAsyncDisposable _compositeSubscriptions = new();
 
-        public SubscriptionWorker(IHostApplicationLifetime applicationLifetime, IOptions<AppSyncOptions> options, ILogger<SubscriptionWorker> logger)
+        public SubscriptionWorker(IHostApplicationLifetime applicationLifetime, IOptions<AppSyncOptions> options, IWorkerReady workerReady,
+            ILogger<SubscriptionWorker> logger)
             : base(applicationLifetime)
         {
-            _logger = logger.WhenNotNull(nameof(logger));
             _apiOptions = options.Value.WhenNotNull(nameof(options));
+            _workerReady = workerReady.WhenNotNull(nameof(workerReady));
+            _logger = logger.WhenNotNull(nameof(logger));
         }
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
@@ -91,15 +94,6 @@ namespace AppSyncSubscription
                 GetSubscription1(client),
                 GetSubscription2(client));
 
-            if (_compositeSubscriptions == null)
-            {
-                // the user has pressed a key - this worker is shutting down - probably won't even get this far
-                // - It's a demo, not making it resilient to the user shutting down the app before we get this far. We could
-                //   improve it by making the main console waiting for this worker to be full initialized before allowing
-                //   the user to close (by pressing a key).
-                return;
-            }
-
             // Track all valid subscriptions that we need to wait for when shutting down
             // Example: If one subscription is an invalid query then it will be returned as null
             if (subscription1 != null)
@@ -120,6 +114,9 @@ namespace AppSyncSubscription
 
             // This task will complete when all subscriptions are cleaned up when _compositeSubscriptions is disposed via OnStopping()
             var subscriptionDisposalTask = _compositeSubscriptions.GetDisposalCompletion();
+
+            // the user can now press a key to terminate (via the main console)
+            _workerReady.SetCompleted();
 
             // non - blocking wait => will complete when the user presses a key in the main console (cancellationToken is signaled)
             var waitForCancelTask = Task.Run(() =>
