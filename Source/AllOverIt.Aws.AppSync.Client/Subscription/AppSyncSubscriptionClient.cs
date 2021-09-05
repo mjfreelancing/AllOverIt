@@ -298,7 +298,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                             var responseError = new GraphqlSubscriptionResponseError(response.Id, error);
                             _graphqlErrorSubject.OnNext(responseError);
 
-                            ShutdownConnection();
+                            // not shutting down the connection because that would cause other subscriptions to be killed
                             break;
 
                         case GraphqlResponseType.Close:
@@ -404,8 +404,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             var request = registration.Request;
 
             var ackTask = _incomingMessages
-                .TakeUntil(response => response.Id == request.Id && response.Type is GraphqlResponseType.StartAck ||
-                                       response.Type == GraphqlResponseType.Error)
+                .TakeUntil(response => response.Id == request.Id && response.Type is GraphqlResponseType.StartAck or GraphqlResponseType.Error)
                 .LastAsync()
                 .ToTask(_cts.Token);
 

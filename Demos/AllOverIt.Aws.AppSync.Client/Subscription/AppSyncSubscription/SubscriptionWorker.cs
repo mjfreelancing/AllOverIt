@@ -85,7 +85,6 @@ namespace AppSyncSubscription
                         Console.WriteLine(message);
                     }
 
-
                     Console.WriteLine(exception.Message);
                 });
 
@@ -148,7 +147,7 @@ namespace AppSyncSubscription
             var badQuery = "query MyQuery { defaultLanguage { code name } }";
             var goodQuery = @"subscription MySubscription1 {addedLanguage(code: ""LNG"") {code name}}";
 
-            return GetSubscription(client, "Subscription1", goodQuery);
+            return GetSubscription(client, "Subscription1", badQuery);
         }
 
         private static Task<IAsyncDisposable> GetSubscription2(AppSyncSubscriptionClient client)
