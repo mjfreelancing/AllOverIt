@@ -91,6 +91,15 @@ namespace AppSyncSubscription
                 GetSubscription1(client),
                 GetSubscription2(client));
 
+            if (_compositeSubscriptions == null)
+            {
+                // the user has pressed a key - this worker is shutting down - probably won't even get this far
+                // - It's a demo, not making it resilient to the user shutting down the app before we get this far. We could
+                //   improve it by making the main console waiting for this worker to be full initialized before allowing
+                //   the user to close (by pressing a key).
+                return;
+            }
+
             // Track all valid subscriptions that we need to wait for when shutting down
             // Example: If one subscription is an invalid query then it will be returned as null
             if (subscription1 != null)
@@ -132,6 +141,8 @@ namespace AppSyncSubscription
         protected override void OnStopped()
         {
             _logger.LogInformation("The background worker is done");
+
+            // shutdown is not graceful after this returns
         }
 
         private static Task<IAsyncDisposable> GetSubscription1(AppSyncSubscriptionClient client)

@@ -186,6 +186,8 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
         private void ShutdownConnection()
         {
+            _connectionStateSubject.OnNext(SubscriptionConnectionState.Disconnecting);
+
             // disposes of all subscriptions
             _incomingMessagesConnection?.Dispose();
             _incomingMessagesConnection = null;
