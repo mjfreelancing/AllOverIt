@@ -20,18 +20,6 @@ using GraphqlResponseType = AllOverIt.Aws.AppSync.Client.Subscription.Constants.
 
 namespace AllOverIt.Aws.AppSync.Client.Subscription
 {
-    public sealed class GraphqlSubscriptionResponseError
-    {
-        public string Id { get; }
-        public WebSocketResponse<GraphqlError> Error { get; }
-
-        public GraphqlSubscriptionResponseError(string id, WebSocketResponse<GraphqlError> error)
-        {
-            Id = id.WhenNotNullOrEmpty(nameof(id));
-            Error = error.WhenNotNull(nameof(error));
-        }
-    }
-
     // Implemented as per the protocol described at:
     // https://docs.aws.amazon.com/appsync/latest/devguide/real-time-websocket-client.html
 
@@ -107,7 +95,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                 Extensions = new { authorization = hostAuthorization.KeyValues }
             };
 
-            var registration = new SubscriptionRegistration<TResponse>(payload, responseAction);
+            var registration = new SubscriptionRegistration<TResponse>(query.Id, payload, responseAction);
 
             _subscriptions.Add(registration.Id, registration);
 

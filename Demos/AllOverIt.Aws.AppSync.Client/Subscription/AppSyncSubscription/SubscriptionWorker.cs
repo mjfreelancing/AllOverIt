@@ -150,12 +150,12 @@ namespace AppSyncSubscription
 
         private static async Task<IAsyncDisposable> GetSubscription(AppSyncSubscriptionClient client, string name, string query)
         {
-            Console.WriteLine($"Adding subscription {name}");
-
             var subscriptionQuery = new SubscriptionQuery
             {
                 Query = query
             };
+
+            Console.WriteLine($"Adding subscription {name}, Id = {subscriptionQuery.Id}");
 
             var subscription = await client.SubscribeAsync<AddedLanguageResponse>(
                 subscriptionQuery,

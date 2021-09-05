@@ -4,32 +4,13 @@ using System;
 
 namespace AllOverIt.Aws.AppSync.Client.Subscription
 {
-    internal class SubscriptionRegistration<TResponse> : SubscriptionRegistration
-    {
-        private Action<SubscriptionResponse<TResponse>> ResponseAction { get; }
-
-        public SubscriptionRegistration(SubscriptionQueryPayload payload, Action<SubscriptionResponse<TResponse>> responseAction)
-            : base(payload)
-        {
-            ResponseAction = responseAction.WhenNotNull(nameof(responseAction));
-        }
-
-        public override void NotifyResponse(string message)
-        {
-            // todo: add serializer - how to do with other framework
-            var response = JsonConvert.DeserializeObject<WebSocketSubscriptionResponse<SubscriptionResponse<TResponse>>>(message);
-
-            ResponseAction.Invoke(response.Payload);
-        }
-    }
-
     internal abstract class SubscriptionRegistration
     {
         internal class SubscriptionRequest : SubscriptionQueryMessage
         {
-            public SubscriptionRequest(SubscriptionQueryPayload payload)
+            public SubscriptionRequest(string id, SubscriptionQueryPayload payload)
             {
-                Id = $"{Guid.NewGuid():N}";
+                Id = id.WhenNotNull(nameof(id));
                 Type = "start";
                 Payload = payload.WhenNotNull(nameof(payload));
             }
@@ -40,11 +21,31 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
         public abstract void NotifyResponse(string message);
 
-        protected SubscriptionRegistration(SubscriptionQueryPayload payload)
+        protected SubscriptionRegistration(string id, SubscriptionQueryPayload payload)
         {
+            _ = id.WhenNotNull(nameof(id));
             _ = payload.WhenNotNull(nameof(payload));
 
-            Request = new SubscriptionRequest(payload);
+            Request = new SubscriptionRequest(id, payload);
+        }
+    }
+
+    internal class SubscriptionRegistration<TResponse> : SubscriptionRegistration
+    {
+        private Action<SubscriptionResponse<TResponse>> ResponseAction { get; }
+
+        public SubscriptionRegistration(string id, SubscriptionQueryPayload payload, Action<SubscriptionResponse<TResponse>> responseAction)
+            : base(id, payload)
+        {
+            ResponseAction = responseAction.WhenNotNull(nameof(responseAction));
+        }
+
+        public override void NotifyResponse(string message)
+        {
+            // todo: add serializer - how to do with other framework
+            var response = JsonConvert.DeserializeObject<WebSocketSubscriptionResponse<SubscriptionResponse<TResponse>>>(message);
+
+            ResponseAction.Invoke(response.Payload);
         }
     }
 }

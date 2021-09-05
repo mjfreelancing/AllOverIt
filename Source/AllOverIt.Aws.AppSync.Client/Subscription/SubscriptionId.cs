@@ -19,6 +19,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
         public ValueTask DisposeAsync()
         {
+            // Unregisters the subscription from AppSync
             return _disposable.DisposeAsync();
         }
     }
