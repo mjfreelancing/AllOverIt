@@ -93,8 +93,17 @@ namespace AppSyncSubscription
 
             Console.WriteLine("Subscriptions are now ready");
 
-            // Track all subscriptions that we need to wait for when shutting down
-            _compositeSubscriptions.Add(subscription1, subscription2);
+            // Track all valid subscriptions that we need to wait for when shutting down
+            // Example: If one subscription is an invalid query then it will be returned as null
+            if (subscription1 != null)
+            {
+                _compositeSubscriptions.Add(subscription1);
+            }
+
+            if (subscription2 != null)
+            {
+                _compositeSubscriptions.Add(subscription2);
+            }
 
             // This task will complete when all subscriptions are cleaned up when _compositeSubscriptions is disposed via OnStopping()
             var subscriptionDisposalTask = _compositeSubscriptions.GetDisposalCompletion();
@@ -128,9 +137,9 @@ namespace AppSyncSubscription
             var query1 = new SubscriptionQuery
             {
                 // try this for an unsupported operation error
-                //Query = "query MyQuery { defaultLanguage { code name } }"
+                Query = "query MyQuery { defaultLanguage { code name } }"
 
-                Query = @"subscription MySubscription1 {addedLanguage(code: ""LNG"") {code name}}"
+                //Query = @"subscription MySubscription1 {addedLanguage(code: ""LNG"") {code name}}"
             };
 
             var subscription = await client.SubscribeAsync<AddedLanguageResponse>(
@@ -145,7 +154,9 @@ namespace AppSyncSubscription
                     Console.WriteLine();
                 });
 
-            Console.WriteLine("Subscription1 is registered");
+            Console.WriteLine(subscription != null
+                ? "Subscription1 is registered"
+                : "Subscription1 failed to register");
 
             return subscription;
         }
@@ -171,7 +182,9 @@ namespace AppSyncSubscription
                     Console.WriteLine();
                 });
 
-            Console.WriteLine("Subscription2 is registered");
+            Console.WriteLine(subscription != null
+                ? "Subscription2 is registered"
+                : "Subscription2 failed to register");
 
             return subscription;
         }

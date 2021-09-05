@@ -73,13 +73,14 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         }
 
         // returns null if there was an internal exception, such as a connection error (would have been reported via observables)
-        // the default authorization mode will be used if authorization is null
+        // or subscription error (such as an invalid query). The default authorization mode will be used if authorization is null.
         public async Task<IAsyncDisposable> SubscribeAsync<TResponse>(SubscriptionQuery query, Action<SubscriptionResponse<TResponse>> responseAction,
             IAuthorization authorization)
         {
-            // will connect (and wait for ACK) if required
+            // Will connect (and wait for ACK) if required
             var connectionState = await CheckWebSocketConnection().ConfigureAwait(false);
 
+            // Abort if the connection failed
             if (connectionState == SubscriptionConnectionState.Disconnected)
             {
                 return null;
@@ -102,7 +103,12 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             var ackTask = await SendRegistration(registration).ConfigureAwait(false);
 
             // wait for the registration ACK
-            await ackTask;
+            var response = await ackTask;
+
+            if (response.Type == GraphqlResponseType.Error)
+            {
+                return null;
+            }
 
             return new RaiiAsync<SubscriptionRegistration>(
                 () => registration,
@@ -283,12 +289,11 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                             break;
 
                         case GraphqlResponseType.Error: // test by providing a query rather than a subscription
-                        //case GraphqlResponseType.ConnectionError: // test by not adding subprotocol on websocket
-
-                            DisposeWebSocketConnection();       // ?? probably not now
-
+                            
                             var error = JsonConvert.DeserializeObject<WebSocketResponse<GraphqlError>>(responseMessage);
                             _graphqlErrorSubject.OnNext(error);
+
+                            ShutdownConnection();
                             break;
 
                         case GraphqlResponseType.Close:
@@ -366,7 +371,6 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
                 foreach (var registration in _subscriptions.Values)
                 {
-
                     var ackTask = await SendRegistration(registration).ConfigureAwait(false);
                     ackTasks.Add(ackTask);
                 }
@@ -377,7 +381,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                 {
                     await Task.WhenAll(ackTasks.Concat(new[] { timeout })).ConfigureAwait(false);
                 }
-                catch (TaskCanceledException)
+                catch (OperationCanceledException)
                 {
                     // ?? something went wrong - need to deal with this
                     throw;
@@ -385,12 +389,13 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             }
         }
 
-        private async Task<Task> SendRegistration(SubscriptionRegistration registration)
+        private async Task<Task<AppSyncGraphqlResponse>> SendRegistration(SubscriptionRegistration registration)
         {
             var request = registration.Request;
 
             var ackTask = _incomingMessages
-                .TakeUntil(response => response.Id == request.Id && response.Type == GraphqlResponseType.StartAck)
+                .TakeUntil(response => response.Id == request.Id && response.Type is GraphqlResponseType.StartAck ||
+                                       response.Type == GraphqlResponseType.Error)
                 .LastAsync()
                 .ToTask(_cts.Token);
 
