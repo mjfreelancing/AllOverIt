@@ -165,7 +165,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                         }
                         else
                         {
-                            var error = JsonConvert.DeserializeObject<WebSocketResponse<GraphqlError>>(response.Message);
+                            var error = GetGraphqlErrorFromResponseMessage(response.Message);
                             throw new GraphqlConnectionException(error);      // the maintenance subscription will disconnect the web socket
                         }
                     }
@@ -292,7 +292,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
                         case GraphqlResponseType.Error: // test by providing a query rather than a subscription
                             
-                            var error = JsonConvert.DeserializeObject<WebSocketResponse<GraphqlError>>(responseMessage);
+                            var error = GetGraphqlErrorFromResponseMessage(responseMessage);
                             var responseError = new GraphqlSubscriptionResponseError(response.Id, error);
                             _graphqlErrorSubject.OnNext(responseError);
 
@@ -304,14 +304,19 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                             //throw new Exception("Connection closed by the server");
                             break;
 
-                        case GraphqlResponseType.Complete:  // follows a 'stop'
-                            break;
+                        //case GraphqlResponseType.Complete:  // follows a 'stop'
+                        //    break;
                     }
                 });
 
             var connection = _incomingMessages.Connect();
 
             _incomingMessagesConnection = new CompositeDisposable(maintenanceSubscription, connection);
+        }
+
+        private WebSocketResponse<GraphqlError> GetGraphqlErrorFromResponseMessage(string message)
+        {
+            return _serializer.DeserializeObject<WebSocketResponse<GraphqlError>>(message);
         }
 
         private AppSyncGraphqlResponse GetAppSyncGraphqlResponse(MemoryStream ms)
