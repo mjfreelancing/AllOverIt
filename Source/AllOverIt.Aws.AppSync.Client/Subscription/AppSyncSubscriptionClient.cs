@@ -70,7 +70,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             try
             {
                 // Will connect (and wait for ACK) if required
-                var connectionState = await CheckWebSocketConnection().ConfigureAwait(false);
+                var connectionState = await CheckWebSocketConnectionAsync().ConfigureAwait(false);
 
                 // Abort if the connection failed
                 if (connectionState == SubscriptionConnectionState.Disconnected)
@@ -93,7 +93,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
                 _subscriptions.Add(registration.Id, registration);
 
-                var ackTask = await SendRegistration(registration).ConfigureAwait(false);
+                var ackTask = await SendRegistrationAsync(registration).ConfigureAwait(false);
 
                 // wait for the registration ACK or error
                 var response = await ackTask;
@@ -106,7 +106,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                 // This is decorated by SubscriptionId to avoid leaking SubscriptionRegistration
                 var disposable = new RaiiAsync<SubscriptionRegistration>(
                     () => registration,
-                    async subscription => { await UnregisterSubscription(subscription.Id).ConfigureAwait(false); });
+                    async subscription => { await UnregisterSubscriptionAsync(subscription.Id).ConfigureAwait(false); });
 
                 return new SubscriptionId(registration.Id, disposable);
             }
@@ -118,7 +118,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             }
         }
 
-        private async Task<SubscriptionConnectionState> CheckWebSocketConnection()
+        private async Task<SubscriptionConnectionState> CheckWebSocketConnectionAsync()
         {
             await _webSocketLock.WaitAsync().ConfigureAwait(false);
 
@@ -156,7 +156,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                         .LastAsync()
                         .ToTask();
 
-                    await SendInitRequest().ConfigureAwait(false);
+                    await SendInitRequestAsync().ConfigureAwait(false);
 
                     var response = await ack.ConfigureAwait(false);
 
@@ -165,12 +165,12 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                         _connectionStateSubject.OnNext(SubscriptionConnectionState.Connected);
 
                         // re-register any existing subscriptions
-                        await SendRegistrationRequests().ConfigureAwait(false);
+                        await SendRegistrationRequestsAsync().ConfigureAwait(false);
                     }
                     else
                     {
                         var error = GetGraphqlErrorFromResponseMessage(response.Message);
-                        throw new GraphqlConnectionException(error); // incomingExceptionSubscription will disconnect the web socket
+                        throw new GraphqlConnectionException(error); // shutdownSubscription will disconnect the web socket
                     }
                 }
 
@@ -220,26 +220,30 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
         private async Task<AppSyncGraphqlResponse> GetIncomingMessageAsync()
         {
-            using (var ms = new MemoryStream())
+            using (var stream = new MemoryStream())
             {
                 WebSocketReceiveResult webSocketReceiveResult;
 
                 do
                 {
-                    // WebSocketException is reported via incomingExceptionSubscription
+                    // WebSocketException is reported via shutdownSubscription
                     webSocketReceiveResult = await _webSocket.ReceiveAsync(_buffer, _cts.Token).ConfigureAwait(false);
-                    ms.Write(_buffer.Array!, _buffer.Offset, webSocketReceiveResult.Count);
+
+                    if (!_cts.Token.IsCancellationRequested)
+                    {
+                        stream.Write(_buffer.Array!, _buffer.Offset, webSocketReceiveResult.Count);
+                    }
                 } while (!webSocketReceiveResult.EndOfMessage && !_cts.Token.IsCancellationRequested);
 
                 _cts.Token.ThrowIfCancellationRequested();
 
-                ms.Seek(0, SeekOrigin.Begin);
+                stream.Seek(0, SeekOrigin.Begin);
 
                 switch (webSocketReceiveResult.MessageType)
                 {
                     case WebSocketMessageType.Text:
                     case WebSocketMessageType.Close:
-                        return GetAppSyncGraphqlResponse(ms);
+                        return GetAppSyncGraphqlResponse(stream);
 
                     default:
                         throw new InvalidOperationException($"Unexpected websocket message type '{webSocketReceiveResult.MessageType}'.");
@@ -259,7 +263,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
             // Process exceptions by closing the WebSocket connection - not auto-reconnecting in case the
             // issue results in a permanent loop that cannot be escaped.
-            var incomingExceptionSubscription = _incomingMessages
+            var shutdownSubscription = _incomingMessages
                 .Subscribe(
                     _ => { },
                     exception =>
@@ -313,7 +317,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                 // connect all subscriptions to the source
                 var connection = _incomingMessages.Connect();
 
-                _incomingMessagesConnection = new CompositeDisposable(incomingExceptionSubscription, connection);
+                _incomingMessagesConnection = new CompositeDisposable(shutdownSubscription, connection);
             }
             catch (WebSocketException)
             {
@@ -342,7 +346,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             return response;
         }
 
-        private Task SendInitRequest()
+        private Task SendInitRequestAsync()
         {
             var request = new SubscriptionQueryMessage
             {
@@ -352,7 +356,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             return SendRequest(request);
         }
 
-        private async Task UnregisterSubscription(string id)
+        private async Task UnregisterSubscriptionAsync(string id)
         {
             var request = new SubscriptionQueryMessage
             {
@@ -384,7 +388,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             }
         }
 
-        private async Task SendRegistrationRequests()
+        private async Task SendRegistrationRequestsAsync()
         {
             // todo: throw if not completed within a give time period
             // make sure all registrations ACK
@@ -392,14 +396,14 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
             foreach (var registration in _subscriptions.Values)
             {
-                var ackTask = await SendRegistration(registration).ConfigureAwait(false);
+                var ackTask = await SendRegistrationAsync(registration).ConfigureAwait(false);
                 ackTasks.Add(ackTask);
             }
 
             await Task.WhenAll(ackTasks).ConfigureAwait(false);
         }
 
-        private async Task<Task<AppSyncGraphqlResponse>> SendRegistration(SubscriptionRegistration registration)
+        private async Task<Task<AppSyncGraphqlResponse>> SendRegistrationAsync(SubscriptionRegistration registration)
         {
             var request = registration.Request;
 
