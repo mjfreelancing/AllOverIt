@@ -77,9 +77,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllOverIt.Validation", "All
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicValidation", "Demos\AllOverIt.Validation\BasicValidation\BasicValidation.csproj", "{35D19783-B365-49C0-A556-97F3E8609B54}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EvaluatorBenchmarking", "Demos\AllOverIt.Evaluator\Benchmarking\EvaluatorBenchmarking\EvaluatorBenchmarking.csproj", "{A24B905A-CA34-43F4-BB7E-8D5BDB378513}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EvaluatorBenchmarking", "Demos\AllOverIt.Evaluator\Benchmarking\EvaluatorBenchmarking\EvaluatorBenchmarking.csproj", "{A24B905A-CA34-43F4-BB7E-8D5BDB378513}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Benchmarking", "Benchmarking", "{C0559391-35D0-4F52-8224-589CEDA72A54}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.Aws.AppSync.Client", "Source\AllOverIt.Aws.AppSync.Client\AllOverIt.Aws.AppSync.Client.csproj", "{F0E272A8-B1F9-4C18-A55A-A37673034765}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppSyncSubscription", "Demos\AllOverIt.Aws.AppSync.Client\Subscription\AppSyncSubscription\AppSyncSubscription.csproj", "{BB8CF83E-ACCB-4FE4-9BD5-3FC328A1A16B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllOverIt.Aws.AppSync.Client", "AllOverIt.Aws.AppSync.Client", "{CBDD29EC-7EEC-482B-BA26-AAD4ED6508C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -195,6 +201,14 @@ Global
 		{A24B905A-CA34-43F4-BB7E-8D5BDB378513}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A24B905A-CA34-43F4-BB7E-8D5BDB378513}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A24B905A-CA34-43F4-BB7E-8D5BDB378513}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0E272A8-B1F9-4C18-A55A-A37673034765}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0E272A8-B1F9-4C18-A55A-A37673034765}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0E272A8-B1F9-4C18-A55A-A37673034765}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0E272A8-B1F9-4C18-A55A-A37673034765}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB8CF83E-ACCB-4FE4-9BD5-3FC328A1A16B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB8CF83E-ACCB-4FE4-9BD5-3FC328A1A16B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB8CF83E-ACCB-4FE4-9BD5-3FC328A1A16B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB8CF83E-ACCB-4FE4-9BD5-3FC328A1A16B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -233,6 +247,9 @@ Global
 		{35D19783-B365-49C0-A556-97F3E8609B54} = {736417D6-56B0-46F7-9717-5C8E7A2327EA}
 		{A24B905A-CA34-43F4-BB7E-8D5BDB378513} = {C0559391-35D0-4F52-8224-589CEDA72A54}
 		{C0559391-35D0-4F52-8224-589CEDA72A54} = {E511BE3F-9514-4F49-86D7-1F168A5606A7}
+		{F0E272A8-B1F9-4C18-A55A-A37673034765} = {FC8E8DB2-1299-44F4-A233-0EDCE225BB8C}
+		{BB8CF83E-ACCB-4FE4-9BD5-3FC328A1A16B} = {CBDD29EC-7EEC-482B-BA26-AAD4ED6508C1}
+		{CBDD29EC-7EEC-482B-BA26-AAD4ED6508C1} = {D9F6B8A1-4B01-4708-8851-741FC19F2440}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19DD11B3-596E-4862-B5C4-1FFFFB173106}

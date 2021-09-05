@@ -1,0 +1,652 @@
+﻿using AllOverIt.Aws.AppSync.Client.Exceptions;
+using AllOverIt.Helpers;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net.WebSockets;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
+using System.Reactive.Threading.Tasks;
+using System.Runtime.Serialization;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using GraphqlRequestType = AllOverIt.Aws.AppSync.Client.Subscription.Constants.GraphqlRequestType;
+using GraphqlResponseType = AllOverIt.Aws.AppSync.Client.Subscription.Constants.GraphqlResponseType;
+
+namespace AllOverIt.Aws.AppSync.Client.Subscription
+{
+    // Implemented as per the protocol described at:
+    // https://docs.aws.amazon.com/appsync/latest/devguide/real-time-websocket-client.html
+
+    public sealed class AppSyncSubscriptionClient
+    {
+        private readonly string _host;
+        private readonly Uri _uri;
+        private readonly IAuthorization _defaultAuthorization;
+        private readonly IAppSyncClientSerializer _serializer;
+        private readonly CancellationTokenSource _cts = new();
+        private readonly ArraySegment<byte> _buffer = new(new byte[8192]);
+        private readonly IDictionary<string, SubscriptionRegistration> _subscriptions = new Dictionary<string, SubscriptionRegistration>();
+        
+        //private readonly BlockingCollection<AppSyncGraphqlResponse> _responses = new();     // todo: clear on close
+
+        //private readonly Subject<AppSyncGraphqlResponse> _responses2 = new();
+
+        private IConnectableObservable<AppSyncGraphqlResponse> _incomingMessages;
+        private IDisposable _incomingMessagesConnection;
+
+
+
+        // One WebSocket connection can have multiple subscriptions (even with different authentication modes).
+        private ClientWebSocket _webSocket;
+        
+        //private Task _receiveMessageTask;
+        //private Task _processResponsesTask;
+
+        private readonly BehaviorSubject<SubscriptionConnectionState> _connectionStateSubject = new(SubscriptionConnectionState.Disconnected);
+        private readonly Subject<Exception> _exceptionSubject = new();
+        private readonly Subject<WebSocketResponse<GraphqlError>> _graphqlErrorSubject = new();
+
+        public IObservable<SubscriptionConnectionState> ConnectionState => _connectionStateSubject;
+        public IObservable<Exception> Exceptions => _exceptionSubject;
+        public IObservable<WebSocketResponse<GraphqlError>> GraphqlErrors => _graphqlErrorSubject;
+
+
+        // endpoint is the graphql endpoint (not realtime) without https, wss, or /graphql
+        // e.g., example123abc.appsync-api.ap-southeast-2.amazonaws.com
+        public AppSyncSubscriptionClient(string host, IAuthorization defaultAuthorization, IAppSyncClientSerializer serializer)
+            //CancellationToken cancellationToken = default)
+        {
+            _host = host.WhenNotNullOrEmpty(nameof(host));
+
+            var realtime = _host.Replace("appsync-api", "appsync-realtime-api");
+            var hostAuth = new HostAuthorization(host, defaultAuthorization);
+            var encodedHeader = hostAuth.GetEncodedHeader();
+
+            _uri = new Uri($"wss://{realtime}/graphql?header={encodedHeader}&payload=e30=");
+
+
+
+            _defaultAuthorization = defaultAuthorization.WhenNotNull(nameof(defaultAuthorization));
+            _serializer = serializer.WhenNotNull(nameof(serializer));
+        }
+
+        // returns null if there was an internal exception, such as a connection error (would have been reported via observables)
+        public Task<IAsyncDisposable> SubscribeAsync<TResponse>(SubscriptionQuery query, Action<SubscriptionResponse<TResponse>> responseAction)
+        {
+            return SubscribeAsync(query, responseAction, null);
+        }
+
+        // returns null if there was an internal exception, such as a connection error (would have been reported via observables)
+        // the default authorization mode will be used if authorization is null
+        public async Task<IAsyncDisposable> SubscribeAsync<TResponse>(SubscriptionQuery query, Action<SubscriptionResponse<TResponse>> responseAction,
+            IAuthorization authorization)
+        {
+            // will connect (and wait for ACK) if required
+            var connectionState = await CheckWebSocketConnection();
+
+            if (connectionState == SubscriptionConnectionState.Disconnected)
+            {
+                return null;
+            }
+
+            authorization ??= _defaultAuthorization;
+
+            var hostAuthorization = new HostAuthorization(_host, authorization);
+
+            var payload = new SubscriptionQueryPayload
+            {
+                Data = _serializer.SerializeObject(query),
+                Extensions = new { authorization = hostAuthorization.KeyValues }
+            };
+
+            var registration = new SubscriptionRegistration<TResponse>(payload, responseAction);
+
+            _subscriptions.Add(registration.Id, registration);
+
+            var ackTask = await SendRegistration(registration);
+
+            // wait for the registration ACK
+            await ackTask;
+
+            return new RaiiAsync<SubscriptionRegistration>(
+                () => registration,
+                async subscription =>
+                {
+                    await UnregisterSubscription(subscription.Id);
+                });
+        }
+
+        private async Task<SubscriptionConnectionState> CheckWebSocketConnection()
+        {
+            if (_webSocket is {State: WebSocketState.Open})
+            {
+                return SubscriptionConnectionState.Connected;
+            }
+
+            try
+            {
+                // dispose if not currently in an Open state
+                DisposeWebSocketConnection();
+
+                _connectionStateSubject.OnNext(SubscriptionConnectionState.Connecting);
+
+                _webSocket = new ClientWebSocket();
+                _webSocket.Options.AddSubProtocol("graphql-ws");
+
+                if (_webSocket.State != WebSocketState.Open)
+                {
+                    await _webSocket.ConnectAsync(_uri, _cts.Token);
+
+                    ConfigureMessageProcessing();
+
+                    var ack = _incomingMessages
+                        .TakeUntil(response => response is { Type: GraphqlResponseType.ConnectionAck or GraphqlResponseType.ConnectionError })
+                        .LastAsync()
+                        .ToTask();
+
+                    await SendInitRequest();
+
+                    var response = await ack;
+
+                    if (response.Type == GraphqlResponseType.ConnectionAck)
+                    {
+                        _connectionStateSubject.OnNext(SubscriptionConnectionState.Connected);
+
+                        // re-register any existing subscriptions
+                        await SendRegistrationRequests();
+                    }
+                    else
+                    {
+                        var error = JsonConvert.DeserializeObject<WebSocketResponse<GraphqlError>>(response.Message);
+                        throw new GraphqlConnectionException(error);      // the maintenance subscription will disconnect the web socket
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                _exceptionSubject.OnNext(exception);
+                ShutdownConnection();
+            }
+
+            return _connectionStateSubject.Value;
+        }
+
+        private void ShutdownConnection()
+        {
+            // disposes of all subscriptions
+            _incomingMessagesConnection?.Dispose();
+            _incomingMessagesConnection = null;
+
+            DisposeWebSocketConnection();
+
+            _connectionStateSubject.OnNext(SubscriptionConnectionState.Disconnected);
+        }
+
+        private void DisposeWebSocketConnection()
+        {
+            // attempting to close the connection fails if the internal stream has been closed due to an error - disposing it is fine
+            _webSocket?.Dispose();
+            _webSocket = null;
+        }
+
+        private SubscriptionRegistration GetSubscription(string id)
+        {
+            if (_subscriptions.TryGetValue(id, out var subscription))
+            {
+                return subscription;
+            }
+
+            throw new KeyNotFoundException($"Subscription Id '{id}' not found.");
+        }
+
+        private void ConfigureMessageProcessing()
+        {
+            _incomingMessages = Observable
+                .Defer(() => Task.Run(async () =>
+                {
+                    using (var ms = new MemoryStream())
+                    {
+                        WebSocketReceiveResult webSocketReceiveResult;
+
+                        do
+                        {
+                            // WebSocketException is reported via maintenanceSubscription
+                            webSocketReceiveResult = await _webSocket.ReceiveAsync(_buffer, _cts.Token);
+                            ms.Write(_buffer.Array!, _buffer.Offset, webSocketReceiveResult.Count);
+                        } while (!webSocketReceiveResult.EndOfMessage && !_cts.Token.IsCancellationRequested);
+
+                        _cts.Token.ThrowIfCancellationRequested();
+
+                        ms.Seek(0, SeekOrigin.Begin);
+
+                        switch (webSocketReceiveResult.MessageType)
+                        {
+                            case WebSocketMessageType.Text:
+                            case WebSocketMessageType.Close:
+                                return GetAppSyncGraphqlResponse(ms);
+
+                            default:
+                                throw new InvalidOperationException(
+                                    $"Unexpected websocket message type '{webSocketReceiveResult.MessageType}'.");
+                        }
+                    }
+                }).ToObservable())
+                .Repeat()
+                .Catch<AppSyncGraphqlResponse, OperationCanceledException>(_ => Observable.Empty<AppSyncGraphqlResponse>())
+                .Publish();
+
+
+
+            var maintenanceSubscription = _incomingMessages.Subscribe(
+                _ => { }, 
+                exception =>
+                {
+                    _exceptionSubject.OnNext(exception);
+
+                    ShutdownConnection();
+                },
+                () =>
+                {
+                    ShutdownConnection();
+                });
+
+
+
+
+
+            _incomingMessages
+                .Subscribe(response =>
+                {
+                    var responseMessage = response.Message;
+
+                    switch (response.Type)
+                    {
+                        //case GraphqlResponseType.ConnectionAck:
+                            //await SendRegistrationRequests();
+                        //    break;
+
+                        //case GraphqlResponseType.StartAck:
+                        //    break;
+
+                        // this is received for both data responses and response errors
+                        case GraphqlResponseType.Data:
+                            var subscription = GetSubscription(response.Id);
+                            subscription.NotifyResponse(responseMessage);
+                            break;
+
+                        case GraphqlResponseType.KeepAlive:
+                            break;
+
+                        case GraphqlResponseType.Error: // test by providing a query rather than a subscription
+                        //case GraphqlResponseType.ConnectionError: // test by not adding subprotocol on websocket
+
+                            DisposeWebSocketConnection();       // ?? probably not now
+
+                            var error = JsonConvert.DeserializeObject<WebSocketResponse<GraphqlError>>(responseMessage);
+                            _graphqlErrorSubject.OnNext(error);
+                            break;
+
+                        case GraphqlResponseType.Close:
+                            // todo: close the connection and report the error ?
+                            //throw new Exception("Connection closed by the server");
+                            break;
+
+                        case GraphqlResponseType.Complete:  // follows a 'stop'
+                            break;
+                    }
+                });
+
+            var connection = _incomingMessages.Connect();
+
+            _incomingMessagesConnection = new CompositeDisposable(maintenanceSubscription, connection);
+        }
+
+        private AppSyncGraphqlResponse GetAppSyncGraphqlResponse(MemoryStream ms)
+        {
+            var response = _serializer.GetAppSyncGraphqlResponse(ms);
+            response.Message = Encoding.UTF8.GetString(ms.ToArray());
+
+            return response;
+        }
+
+        private Task SendInitRequest()
+        {
+            var request = new SubscriptionQueryMessage
+            {
+                Type = GraphqlRequestType.ConnectionInit
+            };
+
+            return SendRequest(request);
+        }
+
+        private async Task UnregisterSubscription(string id)
+        {
+            var request = new SubscriptionQueryMessage
+            {
+                Id = id,
+                Type = GraphqlRequestType.Stop
+            };
+
+            var completeTask = _incomingMessages
+                .TakeUntil(response => response.Id == id && response.Type == GraphqlResponseType.Complete)
+                .LastAsync()
+                .ToTask(CancellationToken.None);
+
+            await SendRequest(request);
+            await completeTask;
+
+            _subscriptions.Remove(id);
+
+            if (!_subscriptions.Any())
+            {
+                try
+                {
+                    _cts.Cancel();
+                }
+                catch (OperationCanceledException)
+                {
+
+                }
+
+                ShutdownConnection();
+            }
+        }
+
+        private async Task SendRegistrationRequests()
+        {
+            // make sure all registrations ACK
+            using (var cts = new CancellationTokenSource())
+            {
+                var ackTasks = new List<Task>();
+
+                foreach (var registration in _subscriptions.Values)
+                {
+
+                    var ackTask = await SendRegistration(registration);
+                    ackTasks.Add(ackTask);
+                }
+
+                var timeout = GetExpiringTask(TimeSpan.FromSeconds(5), cts);
+
+                try
+                {
+                    await Task.WhenAll(ackTasks.Concat(new[] { timeout }));
+                }
+                catch (TaskCanceledException)
+                {
+                    // ?? something went wrong - need to deal with this
+                    throw;
+                }
+            }
+        }
+
+        private async Task<Task> SendRegistration(SubscriptionRegistration registration)
+        {
+            var request = registration.Request;
+
+            var ackTask = _incomingMessages
+                .TakeUntil(response => response.Id == request.Id && response.Type == GraphqlResponseType.StartAck)
+                .LastAsync()
+                .ToTask(_cts.Token);
+
+            await SendRequest(request);
+
+            return ackTask;
+        }
+
+        private Task SendRequest<TMessage>(TMessage message)
+        {
+            var buffer = _serializer.SerializeToBytes(message);
+            var segment = new ArraySegment<byte>(buffer);
+
+            return _webSocket.SendAsync(segment, WebSocketMessageType.Text, true, _cts.Token);
+        }
+
+        private Task GetExpiringTask(TimeSpan timeSpan, CancellationTokenSource cts)
+        {
+            return Task
+                .Delay(timeSpan)
+                .ContinueWith(t => cts.Cancel(), TaskContinuationOptions.OnlyOnRanToCompletion);
+        }
+    }
+
+
+
+    // caller passes this in with the subscription query
+    public sealed class SubscriptionQuery
+    {
+        public string Query { get; set; }
+        public object Variables { get; set; }
+    }
+
+
+    // the message type sent to AppSync
+    //public sealed class GraphqlSubscriptionRequest
+    //{
+    //    public string Id { get; set; }
+    //    public string Type { get; set; }
+    //    public object Payload { get; set; }
+    //    public object Authorization { get; set; }
+    //}
+
+
+
+    internal sealed class SubscriptionQueryPayload
+    {
+        public string Data { get; set; }        // string representation of query and variables
+        public object Extensions { get; set; }
+    }
+
+
+    // used for sending messages and deserializing responses
+    internal class SubscriptionQueryMessage
+    {
+        public string Id { get; set; }
+        public string Type { get; set; }
+        public SubscriptionQueryPayload Payload { get; set; }
+    }
+
+
+    // incoming responses
+    public class WebSocketResponse<TPayload>
+    {
+        public string Type { get; set; }
+        public TPayload Payload { get; set; }
+    }
+
+    public sealed class WebSocketSubscriptionResponse<TPayload> : WebSocketResponse<TPayload>
+    {
+        public string Id { get; set; }
+    }
+
+
+
+    public sealed class GraphqlLocation
+    {
+        public int Line { get; set; }
+        public int Column { get; set; }
+    }
+
+    public class GraphqlErrorDetail
+    {
+        public int? ErrorCode { get; set; }
+        public string ErrorType { get; set; }
+        public string Message { get; set; }
+        public IEnumerable<GraphqlLocation> Locations { get; set; }
+        public IEnumerable<object> Path { get; set; }
+    }
+
+
+    public sealed class SubscriptionResponse<TResponse>
+    {
+        public TResponse Data { get; set; }
+
+        public IEnumerable<GraphqlErrorDetail> Errors { get; set; }
+    }
+
+    public sealed class GraphqlError
+    {
+        public IEnumerable<GraphqlErrorDetail> Errors { get; set; }
+    }
+
+
+    // {"id":"4aaa9f4a94e64f1396ee12f234d3aef3","type":"data",
+    //   "payload": {
+    //     "data": null,
+    //     "errors": [{
+    //       "message": "Exception while fetching data (/addedLanguage) : should not happen : parent type must be an object or interface null",
+    //       "locations": [{
+    //         "line":1,
+    //         "column":31
+    //         }
+    //       ],
+    //       "path":["addedLanguage"]}]}}
+
+
+
+    // internally used to contain everything that is sent to start a new subscription
+    internal abstract class SubscriptionRegistration
+    {
+        internal class SubscriptionRequest : SubscriptionQueryMessage
+        {
+            public SubscriptionRequest(SubscriptionQueryPayload payload)
+            {
+                Id = $"{Guid.NewGuid():N}";
+                Type = "start";
+                Payload = payload.WhenNotNull(nameof(payload));
+            }
+        }
+
+        public string Id => Request.Id;
+        public SubscriptionRequest Request { get; }
+
+        public abstract void NotifyResponse(string message);
+
+        protected SubscriptionRegistration(SubscriptionQueryPayload payload)
+        {
+            _ = payload.WhenNotNull(nameof(payload));
+
+            Request = new SubscriptionRequest(payload);
+        }
+    }
+
+
+    // 
+    internal class SubscriptionRegistration<TResponse> : SubscriptionRegistration
+    {
+        private Action<SubscriptionResponse<TResponse>> ResponseAction { get; }
+
+        public SubscriptionRegistration(SubscriptionQueryPayload payload, Action<SubscriptionResponse<TResponse>> responseAction)
+            : base(payload)
+        {
+            ResponseAction = responseAction.WhenNotNull(nameof(responseAction));
+        }
+
+        public override void NotifyResponse(string message)
+        {
+
+            var response = JsonConvert.DeserializeObject<WebSocketSubscriptionResponse<SubscriptionResponse<TResponse>>>(message);
+
+
+
+            // todo: add serializer - how to do with other framework
+            //var result = response.ToObject<GraphqlResponse<TResponse>>();   // JsonConvert.DeserializeObject<GraphqlResponse<TResponse>>(data);
+            ResponseAction.Invoke(response.Payload);
+        }
+    }
+
+    
+
+
+    public interface IAppSyncClientSerializer
+    {
+        string SerializeObject<TType>(TType request);
+        byte[] SerializeToBytes<TType>(TType request);
+        TType DeserializeFromStream<TType>(Stream stream);
+    }
+
+
+    public static class AppSyncClientSerializerExtensions
+    {
+        public static AppSyncGraphqlResponse GetAppSyncGraphqlResponse(this IAppSyncClientSerializer serializer, Stream stream)
+        {
+            return serializer.DeserializeFromStream<AppSyncGraphqlResponse>(stream);
+        }
+    }
+
+
+
+
+    public abstract class GraphQLWebSocketResponse
+    {
+        public string Id { get; set; }
+        public string Type { get; set; }
+    }
+
+
+    public class AppSyncGraphqlResponse : GraphQLWebSocketResponse
+    {
+
+        [IgnoreDataMember]
+        public string Message { get; set; }
+    }
+
+
+
+    // todo: need to create serializer packages for newtonsoft and system.text
+    public sealed class AppSyncClientNewtonsoftJsonSerializer : IAppSyncClientSerializer
+    {
+        private readonly JsonSerializerSettings _defaultSerializerSettings = new()
+        {
+            ContractResolver = new DefaultContractResolver
+            {
+                NamingStrategy = new CamelCaseNamingStrategy()
+            }
+        };
+
+        public string SerializeObject<TMessage>(TMessage message)
+        {
+            return JsonConvert.SerializeObject(message, _defaultSerializerSettings);
+        }
+
+        public byte[] SerializeToBytes<TMessage>(TMessage message)
+        {
+            var json = SerializeObject(message);
+            return Encoding.UTF8.GetBytes(json);
+        }
+
+        //public AppSyncGraphqlResponse DeserializeToAppSyncGraphqlResponse(Stream stream)
+        //{
+        //    return DeserializeFromStream<AppSyncGraphqlResponse>(stream);
+        //}
+
+        public TType DeserializeFromStream<TType>(Stream stream)
+        {
+            using (var sr = new StreamReader(stream))
+            {
+                using (JsonReader reader = new JsonTextReader(sr))
+                {
+                    var serializer = JsonSerializer.Create(_defaultSerializerSettings);
+                    var result = serializer.Deserialize<TType>(reader);
+                    return result;
+                }
+            }
+        }
+    }
+
+    //public sealed class AppSyncClientNewtonsoftJsonSerializer : IAppSyncClientSerializer
+    //{
+    //    public byte[] SerializeToBytes(GraphqlSubscriptionRequest request)
+    //    {
+    //        var json = System.Text.JsonSerializer.SerializeToUtf8Bytes(request);
+    //        return Encoding.UTF8.GetBytes(json);
+    //    }
+    //}
+
+}
