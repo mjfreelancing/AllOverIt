@@ -45,7 +45,7 @@ namespace AllOverIt.Helpers
 
                 foreach (var disposable in _disposables)
                 {
-                    await disposable.DisposeAsync();
+                    await disposable.DisposeAsync().ConfigureAwait(false);
                 }
 
                 _doneDisposalCancellation.Cancel();
