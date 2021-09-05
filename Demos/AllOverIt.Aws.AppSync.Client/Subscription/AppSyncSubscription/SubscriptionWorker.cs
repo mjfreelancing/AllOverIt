@@ -91,8 +91,6 @@ namespace AppSyncSubscription
                 GetSubscription1(client),
                 GetSubscription2(client));
 
-            Console.WriteLine("Subscriptions are now ready");
-
             // Track all valid subscriptions that we need to wait for when shutting down
             // Example: If one subscription is an invalid query then it will be returned as null
             if (subscription1 != null)
@@ -103,6 +101,12 @@ namespace AppSyncSubscription
             if (subscription2 != null)
             {
                 _compositeSubscriptions.Add(subscription2);
+            }
+
+            if (subscription1 != null && subscription2 != null)
+            {
+                Console.WriteLine("Subscriptions are now ready");
+                Console.WriteLine();
             }
 
             // This task will complete when all subscriptions are cleaned up when _compositeSubscriptions is disposed via OnStopping()
@@ -130,61 +134,43 @@ namespace AppSyncSubscription
             _logger.LogInformation("The background worker is done");
         }
 
-        private static async Task<IAsyncDisposable> GetSubscription1(AppSyncSubscriptionClient client)
+        private static Task<IAsyncDisposable> GetSubscription1(AppSyncSubscriptionClient client)
         {
-            Console.WriteLine("Adding Subscription1");
+            // try this for an unsupported operation error
+            // "query MyQuery { defaultLanguage { code name } }"
 
-            var query1 = new SubscriptionQuery
-            {
-                // try this for an unsupported operation error
-                Query = "query MyQuery { defaultLanguage { code name } }"
-
-                //Query = @"subscription MySubscription1 {addedLanguage(code: ""LNG"") {code name}}"
-            };
-
-            var subscription = await client.SubscribeAsync<AddedLanguageResponse>(
-                query1,
-                response =>
-                {
-                    var message = response.Errors.IsNullOrEmpty()
-                        ? (object) response.Data
-                        : response.Errors;
-
-                    Console.WriteLine($"Sub1: {JsonConvert.SerializeObject(message, new JsonSerializerSettings { Formatting = Formatting.Indented })}");
-                    Console.WriteLine();
-                });
-
-            Console.WriteLine(subscription != null
-                ? "Subscription1 is registered"
-                : "Subscription1 failed to register");
-
-            return subscription;
+            return GetSubscription(client, "Subscription1", @"subscription MySubscription1 {addedLanguage(code: ""LNG"") {code name}}");
         }
 
-        private static async Task<IAsyncDisposable> GetSubscription2(AppSyncSubscriptionClient client)
+        private static Task<IAsyncDisposable> GetSubscription2(AppSyncSubscriptionClient client)
         {
-            Console.WriteLine("Adding Subscription2");
+            return GetSubscription(client, "Subscription2", @"subscription MySubscription2 {addedLanguage {code name}}");
+        }
 
-            var query2 = new SubscriptionQuery
+        private static async Task<IAsyncDisposable> GetSubscription(AppSyncSubscriptionClient client, string name, string query)
+        {
+            Console.WriteLine($"Adding subscription {name}");
+
+            var subscriptionQuery = new SubscriptionQuery
             {
-                Query = @"subscription MySubscription2 {addedLanguage {code name}}"
+                Query = query
             };
 
             var subscription = await client.SubscribeAsync<AddedLanguageResponse>(
-                query2,
+                subscriptionQuery,
                 response =>
                 {
                     var message = response.Errors.IsNullOrEmpty()
                         ? (object) response.Data
                         : response.Errors;
 
-                    Console.WriteLine($"Sub2: {JsonConvert.SerializeObject(message, new JsonSerializerSettings { Formatting = Formatting.Indented })}");
+                    Console.WriteLine($"{name}: {JsonConvert.SerializeObject(message, new JsonSerializerSettings { Formatting = Formatting.Indented })}");
                     Console.WriteLine();
                 });
 
             Console.WriteLine(subscription != null
-                ? "Subscription2 is registered"
-                : "Subscription2 failed to register");
+                ? $"{name} is registered"
+                : $"{name} failed to register");
 
             return subscription;
         }
