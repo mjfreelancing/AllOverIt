@@ -95,7 +95,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                 Extensions = new { authorization = hostAuthorization.KeyValues }
             };
 
-            var registration = new SubscriptionRegistration<TResponse>(query.Id, payload, responseAction);
+            var registration = new SubscriptionRegistration<TResponse>(query.Id, payload, responseAction, _serializer);
 
             _subscriptions.Add(registration.Id, registration);
 
@@ -428,6 +428,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
     {
         string SerializeObject<TType>(TType request);
         byte[] SerializeToBytes<TType>(TType request);
+        TType DeserializeObject<TType>(string value);
         TType DeserializeFromStream<TType>(Stream stream);
     }
 
@@ -461,6 +462,11 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         {
             var json = SerializeObject(message);
             return Encoding.UTF8.GetBytes(json);
+        }
+
+        public TType DeserializeObject<TType>(string value)
+        {
+            return JsonConvert.DeserializeObject<TType>(value, _defaultSerializerSettings);
         }
 
         //public AppSyncGraphqlResponse DeserializeToAppSyncGraphqlResponse(Stream stream)

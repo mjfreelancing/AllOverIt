@@ -140,7 +140,7 @@ namespace AppSyncSubscription
             var badQuery = "query MyQuery { defaultLanguage { code name } }";
             var goodQuery = @"subscription MySubscription1 {addedLanguage(code: ""LNG"") {code name}}";
 
-            return GetSubscription(client, "Subscription1", badQuery);
+            return GetSubscription(client, "Subscription1", goodQuery);
         }
 
         private static Task<IAsyncDisposable> GetSubscription2(AppSyncSubscriptionClient client)
