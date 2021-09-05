@@ -10,7 +10,6 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
-using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -55,7 +54,6 @@ namespace AppSyncSubscription
 
             // Write the current connection status to the console
             client.ConnectionState
-                .ObserveOn(Scheduler.CurrentThread)
                 .Subscribe(state =>
                 {
                     Console.WriteLine($"Connection State: {state}");
@@ -63,7 +61,6 @@ namespace AppSyncSubscription
 
             // Write all errors to the console
             client.GraphqlErrors
-                .ObserveOn(Scheduler.CurrentThread)
                 .Subscribe(response =>
                 {
                     // Not displaying the error.Type, which can be:
@@ -75,7 +72,6 @@ namespace AppSyncSubscription
 
             // Write all exceptions to the console
             client.Exceptions
-                .ObserveOn(Scheduler.CurrentThread)
                 .Subscribe(exception =>
                 {
                     // "connection_error"  - such as when the sub-protocol is not defined on the web socket (will have error type)
@@ -85,13 +81,33 @@ namespace AppSyncSubscription
                         Console.WriteLine(message);
                     }
 
+                    // WebSocketConnectionLostException
+
                     Console.WriteLine(exception.Message);
                 });
 
             // Subscribe to a mutation using two different queries - at the same time to test connection locking
+            // A null subscription is returned if there was a problem with the connection or subscription request.
+            // The error / exception observables will have reported the problem.
+
+            // first, subscribe them both at the same time
             var (subscription1, subscription2) = await TaskHelper.WhenAll(
                 GetSubscription1(client),
                 GetSubscription2(client));
+
+            // then dispose of them
+            Console.WriteLine();
+            Console.WriteLine("Disposing of subscriptions...");
+            Console.WriteLine();
+            await subscription1.DisposeAsync();
+            await subscription2.DisposeAsync();
+
+            // and subscribe again, sequentially, to check everything re-connects as expected
+            Console.WriteLine();
+            Console.WriteLine("Registering subscriptions again, sequentially...");
+            Console.WriteLine();
+            subscription1 = await GetSubscription1(client);
+            subscription2 = await GetSubscription2(client);
 
             // Track all valid subscriptions that we need to wait for when shutting down
             // Example: If one subscription is an invalid query then it will be returned as null
@@ -110,7 +126,7 @@ namespace AppSyncSubscription
                 Console.WriteLine("Subscriptions are now ready");
                 Console.WriteLine();
             }
-
+ 
             // This task will complete when all subscriptions are cleaned up when _compositeSubscriptions is disposed via OnStopping()
             var subscriptionDisposalTask = _compositeSubscriptions.GetDisposalCompletion();
 
@@ -147,7 +163,7 @@ namespace AppSyncSubscription
             var badQuery = "query MyQuery { defaultLanguage { code name } }";
             var goodQuery = @"subscription MySubscription1 {addedLanguage(code: ""LNG"") {code name}}";
 
-            return GetSubscription(client, "Subscription1", badQuery);
+            return GetSubscription(client, "Subscription1", goodQuery);
         }
 
         private static Task<IAsyncDisposable> GetSubscription2(AppSyncSubscriptionClient client)

@@ -9,7 +9,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
         public GraphqlSubscriptionResponseError(string id, WebSocketResponse<GraphqlError> error)
         {
-            Id = id.WhenNotNullOrEmpty(nameof(id));
+            Id = id;        // will be null if it is an immediate connection error at the time of subscription
             Error = error.WhenNotNull(nameof(error));
         }
     }
