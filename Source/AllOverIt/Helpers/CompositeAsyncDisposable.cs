@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace AllOverIt.Helpers
 {
     /// <summary>A composite that caters for asynchronous disposal of multiple IAsyncDisposable's.</summary>
-    internal sealed class CompositeAsyncDisposable : IDisposable
+    public sealed class CompositeAsyncDisposable : IDisposable
     {
         private readonly CancellationTokenSource _beginDisposalCancellationTokenSource = new();
         private readonly CancellationTokenSource _doneDisposalCancellation = new();
