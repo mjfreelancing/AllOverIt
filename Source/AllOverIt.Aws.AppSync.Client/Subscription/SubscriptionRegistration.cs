@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Helpers;
 using System;
+using GraphqlRequestType = AllOverIt.Aws.AppSync.Client.Subscription.Constants.GraphqlRequestType;
 
 namespace AllOverIt.Aws.AppSync.Client.Subscription
 {
@@ -10,7 +11,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             public SubscriptionRequest(string id, SubscriptionQueryPayload payload)
             {
                 Id = id.WhenNotNull(nameof(id));
-                Type = "start";
+                Type = GraphqlRequestType.Start;
                 Payload = payload.WhenNotNull(nameof(payload));
             }
         }

@@ -17,6 +17,7 @@
         public static class GraphqlRequestType
         {
             public const string ConnectionInit = "connection_init";
+            public const string Start = "start";
             public const string Stop = "stop";
         }
     }
