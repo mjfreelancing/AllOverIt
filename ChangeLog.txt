@@ -58,6 +58,14 @@ AllOverIt.Evaluator - v3.0.0
 
 
 
+XX Sep 2021
+======================================================================================================================
+AllOverIt.Aws.Cdk.AppSync - v0.17.0
+  * Added RaiiAsync to cater for an async cleanup
+  * Added CompositeAsyncDisposable to cater for composite async disposal
+
+
+
 30 Aug 2021
 ======================================================================================================================
 AllOverIt.Aws.Cdk.AppSync - v0.12.1
