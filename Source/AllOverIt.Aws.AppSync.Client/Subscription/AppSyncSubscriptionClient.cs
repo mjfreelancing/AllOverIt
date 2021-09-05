@@ -12,7 +12,6 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Reactive.Threading.Tasks;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,6 +20,18 @@ using GraphqlResponseType = AllOverIt.Aws.AppSync.Client.Subscription.Constants.
 
 namespace AllOverIt.Aws.AppSync.Client.Subscription
 {
+    public sealed class GraphqlSubscriptionResponseError
+    {
+        public string Id { get; }
+        public WebSocketResponse<GraphqlError> Error { get; }
+
+        public GraphqlSubscriptionResponseError(string id, WebSocketResponse<GraphqlError> error)
+        {
+            Id = id.WhenNotNullOrEmpty(nameof(id));
+            Error = error.WhenNotNull(nameof(error));
+        }
+    }
+
     // Implemented as per the protocol described at:
     // https://docs.aws.amazon.com/appsync/latest/devguide/real-time-websocket-client.html
 
@@ -41,11 +52,11 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         private readonly SemaphoreSlim _webSocketLock = new(1, 1);
         private readonly BehaviorSubject<SubscriptionConnectionState> _connectionStateSubject = new(SubscriptionConnectionState.Disconnected);
         private readonly Subject<Exception> _exceptionSubject = new();
-        private readonly Subject<WebSocketResponse<GraphqlError>> _graphqlErrorSubject = new();
+        private readonly Subject<GraphqlSubscriptionResponseError> _graphqlErrorSubject = new();
 
         public IObservable<SubscriptionConnectionState> ConnectionState => _connectionStateSubject;
         public IObservable<Exception> Exceptions => _exceptionSubject;
-        public IObservable<WebSocketResponse<GraphqlError>> GraphqlErrors => _graphqlErrorSubject;
+        public IObservable<GraphqlSubscriptionResponseError> GraphqlErrors => _graphqlErrorSubject;
 
 
         // endpoint is the graphql endpoint (not realtime) without https, wss, or /graphql
@@ -67,14 +78,14 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         }
 
         // returns null if there was an internal exception, such as a connection error (would have been reported via observables)
-        public Task<IAsyncDisposable> SubscribeAsync<TResponse>(SubscriptionQuery query, Action<SubscriptionResponse<TResponse>> responseAction)
+        public Task<SubscriptionId> SubscribeAsync<TResponse>(SubscriptionQuery query, Action<SubscriptionResponse<TResponse>> responseAction)
         {
             return SubscribeAsync(query, responseAction, null);
         }
 
         // returns null if there was an internal exception, such as a connection error (would have been reported via observables)
         // or subscription error (such as an invalid query). The default authorization mode will be used if authorization is null.
-        public async Task<IAsyncDisposable> SubscribeAsync<TResponse>(SubscriptionQuery query, Action<SubscriptionResponse<TResponse>> responseAction,
+        public async Task<SubscriptionId> SubscribeAsync<TResponse>(SubscriptionQuery query, Action<SubscriptionResponse<TResponse>> responseAction,
             IAuthorization authorization)
         {
             // Will connect (and wait for ACK) if required
@@ -110,12 +121,15 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                 return null;
             }
 
-            return new RaiiAsync<SubscriptionRegistration>(
+            // This is decorated by SubscriptionId to avoid leaking SubscriptionRegistration
+            var disposable = new RaiiAsync<SubscriptionRegistration>(
                 () => registration,
                 async subscription =>
                 {
                     await UnregisterSubscription(subscription.Id).ConfigureAwait(false);
                 });
+
+            return new SubscriptionId(registration.Id, disposable);
         }
 
         private async Task<SubscriptionConnectionState> CheckWebSocketConnection()
@@ -291,7 +305,8 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                         case GraphqlResponseType.Error: // test by providing a query rather than a subscription
                             
                             var error = JsonConvert.DeserializeObject<WebSocketResponse<GraphqlError>>(responseMessage);
-                            _graphqlErrorSubject.OnNext(error);
+                            var responseError = new GraphqlSubscriptionResponseError(response.Id, error);
+                            _graphqlErrorSubject.OnNext(responseError);
 
                             ShutdownConnection();
                             break;
@@ -421,153 +436,6 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
     }
 
 
-
-    // caller passes this in with the subscription query
-    public sealed class SubscriptionQuery
-    {
-        public string Query { get; set; }
-        public object Variables { get; set; }
-    }
-
-
-    // the message type sent to AppSync
-    //public sealed class GraphqlSubscriptionRequest
-    //{
-    //    public string Id { get; set; }
-    //    public string Type { get; set; }
-    //    public object Payload { get; set; }
-    //    public object Authorization { get; set; }
-    //}
-
-
-
-    internal sealed class SubscriptionQueryPayload
-    {
-        public string Data { get; set; }        // string representation of query and variables
-        public object Extensions { get; set; }
-    }
-
-
-    // used for sending messages and deserializing responses
-    internal class SubscriptionQueryMessage
-    {
-        public string Id { get; set; }
-        public string Type { get; set; }
-        public SubscriptionQueryPayload Payload { get; set; }
-    }
-
-
-    // incoming responses
-    public class WebSocketResponse<TPayload>
-    {
-        public string Type { get; set; }
-        public TPayload Payload { get; set; }
-    }
-
-    public sealed class WebSocketSubscriptionResponse<TPayload> : WebSocketResponse<TPayload>
-    {
-        public string Id { get; set; }
-    }
-
-
-
-    public sealed class GraphqlLocation
-    {
-        public int Line { get; set; }
-        public int Column { get; set; }
-    }
-
-    public class GraphqlErrorDetail
-    {
-        public int? ErrorCode { get; set; }
-        public string ErrorType { get; set; }
-        public string Message { get; set; }
-        public IEnumerable<GraphqlLocation> Locations { get; set; }
-        public IEnumerable<object> Path { get; set; }
-    }
-
-
-    public sealed class SubscriptionResponse<TResponse>
-    {
-        public TResponse Data { get; set; }
-
-        public IEnumerable<GraphqlErrorDetail> Errors { get; set; }
-    }
-
-    public sealed class GraphqlError
-    {
-        public IEnumerable<GraphqlErrorDetail> Errors { get; set; }
-    }
-
-
-    // {"id":"4aaa9f4a94e64f1396ee12f234d3aef3","type":"data",
-    //   "payload": {
-    //     "data": null,
-    //     "errors": [{
-    //       "message": "Exception while fetching data (/addedLanguage) : should not happen : parent type must be an object or interface null",
-    //       "locations": [{
-    //         "line":1,
-    //         "column":31
-    //         }
-    //       ],
-    //       "path":["addedLanguage"]}]}}
-
-
-
-    // internally used to contain everything that is sent to start a new subscription
-    internal abstract class SubscriptionRegistration
-    {
-        internal class SubscriptionRequest : SubscriptionQueryMessage
-        {
-            public SubscriptionRequest(SubscriptionQueryPayload payload)
-            {
-                Id = $"{Guid.NewGuid():N}";
-                Type = "start";
-                Payload = payload.WhenNotNull(nameof(payload));
-            }
-        }
-
-        public string Id => Request.Id;
-        public SubscriptionRequest Request { get; }
-
-        public abstract void NotifyResponse(string message);
-
-        protected SubscriptionRegistration(SubscriptionQueryPayload payload)
-        {
-            _ = payload.WhenNotNull(nameof(payload));
-
-            Request = new SubscriptionRequest(payload);
-        }
-    }
-
-
-    // 
-    internal class SubscriptionRegistration<TResponse> : SubscriptionRegistration
-    {
-        private Action<SubscriptionResponse<TResponse>> ResponseAction { get; }
-
-        public SubscriptionRegistration(SubscriptionQueryPayload payload, Action<SubscriptionResponse<TResponse>> responseAction)
-            : base(payload)
-        {
-            ResponseAction = responseAction.WhenNotNull(nameof(responseAction));
-        }
-
-        public override void NotifyResponse(string message)
-        {
-
-            var response = JsonConvert.DeserializeObject<WebSocketSubscriptionResponse<SubscriptionResponse<TResponse>>>(message);
-
-
-
-            // todo: add serializer - how to do with other framework
-            //var result = response.ToObject<GraphqlResponse<TResponse>>();   // JsonConvert.DeserializeObject<GraphqlResponse<TResponse>>(data);
-            ResponseAction.Invoke(response.Payload);
-        }
-    }
-
-    
-
-
     public interface IAppSyncClientSerializer
     {
         string SerializeObject<TType>(TType request);
@@ -583,24 +451,6 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             return serializer.DeserializeFromStream<AppSyncGraphqlResponse>(stream);
         }
     }
-
-
-
-
-    public abstract class GraphQLWebSocketResponse
-    {
-        public string Id { get; set; }
-        public string Type { get; set; }
-    }
-
-
-    public class AppSyncGraphqlResponse : GraphQLWebSocketResponse
-    {
-
-        [IgnoreDataMember]
-        public string Message { get; set; }
-    }
-
 
 
     // todo: need to create serializer packages for newtonsoft and system.text

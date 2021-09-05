@@ -61,13 +61,13 @@ namespace AppSyncSubscription
             // Write all errors to the console
             client.GraphqlErrors
                 .ObserveOn(Scheduler.CurrentThread)
-                .Subscribe(error =>
+                .Subscribe(response =>
                 {
                     // Not displaying the error.Type, which can be:
                     // "error" - such as when a query is provided instead of a subscription (will have error code)
 
-                    var message = string.Join(", ", error.Payload.Errors.Select(GetErrorMessage));
-                    Console.WriteLine(message);
+                    var message = string.Join(", ", response.Error.Payload.Errors.Select(GetErrorMessage));
+                    Console.WriteLine($"{response.Id}: {message}");
                 });
 
             // Write all exceptions to the console
@@ -137,9 +137,10 @@ namespace AppSyncSubscription
         private static Task<IAsyncDisposable> GetSubscription1(AppSyncSubscriptionClient client)
         {
             // try this for an unsupported operation error
-            // "query MyQuery { defaultLanguage { code name } }"
+            var badQuery = "query MyQuery { defaultLanguage { code name } }";
+            var goodQuery = @"subscription MySubscription1 {addedLanguage(code: ""LNG"") {code name}}";
 
-            return GetSubscription(client, "Subscription1", @"subscription MySubscription1 {addedLanguage(code: ""LNG"") {code name}}");
+            return GetSubscription(client, "Subscription1", badQuery);
         }
 
         private static Task<IAsyncDisposable> GetSubscription2(AppSyncSubscriptionClient client)
@@ -169,7 +170,7 @@ namespace AppSyncSubscription
                 });
 
             Console.WriteLine(subscription != null
-                ? $"{name} is registered"
+                ? $"{name} is registered (Id: {subscription.Id})"
                 : $"{name} failed to register");
 
             return subscription;
