@@ -278,6 +278,12 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
             // Process messages related to data responses/errors, keep alive notifications, and server-side termination.
             _incomingMessages
+                .Where(item => item.Type is
+                    GraphqlResponseType.ConnectionError or
+                    GraphqlResponseType.Data or
+                    GraphqlResponseType.KeepAlive or
+                    GraphqlResponseType.Error or
+                    GraphqlResponseType.Close)
                 .Subscribe(response =>
                 {
                     var responseMessage = response.Message;
@@ -285,7 +291,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                     switch (response.Type)
                     {
                         // This error has been seen when the websocket sub-protocol has not been set.
-                        case GraphqlResponseType.ConnectionError:       // response.Id will be null
+                        case GraphqlResponseType.ConnectionError:   // response.Id will be null
                             NotifySubscriptionError(null, responseMessage);
                             break;
 
@@ -295,7 +301,8 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                             subscription.NotifyResponse(responseMessage);
                             break;
 
-                        case GraphqlResponseType.KeepAlive:     // todo: I need to track and kill / restore the connection and re-subscribe
+                        case GraphqlResponseType.KeepAlive:         // todo: ? track and kill / restore the connection and re-subscribe
+                            _connectionStateSubject.OnNext(SubscriptionConnectionState.KeepAlive);
                             break;
 
                         case GraphqlResponseType.Error:

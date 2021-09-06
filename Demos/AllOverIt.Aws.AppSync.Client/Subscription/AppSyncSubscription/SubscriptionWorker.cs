@@ -57,7 +57,7 @@ namespace AppSyncSubscription
             client.ConnectionState
                 .Subscribe(state =>
                 {
-                    Console.WriteLine($"Connection State: {state}");
+                    Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - Connection State: {state}");
                 });
 
             // Write all errors to the console
@@ -68,7 +68,7 @@ namespace AppSyncSubscription
                     // "error" - such as when a query is provided instead of a subscription (will have error code)
 
                     var message = string.Join(", ", response.Error.Payload.Errors.Select(GetErrorMessage));
-                    Console.WriteLine($"{response.Id}: {message}");
+                    Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {response.Id}: {message}");
                 });
 
             // Write all exceptions to the console
@@ -79,7 +79,7 @@ namespace AppSyncSubscription
                     if (exception is GraphqlConnectionException connectionException)
                     {
                         var message = string.Join(", ", connectionException.Errors.Select(GetErrorMessage));
-                        Console.WriteLine(message);
+                        Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}");
                     }
 
                     // WebSocketConnectionLostException
@@ -98,7 +98,7 @@ namespace AppSyncSubscription
 
             // then dispose of them
             Console.WriteLine();
-            Console.WriteLine("Disposing of subscriptions...");
+            Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - Disposing of subscriptions...");
             Console.WriteLine();
             if (subscription1 != null)
             {
@@ -111,7 +111,7 @@ namespace AppSyncSubscription
 
             // and subscribe again, sequentially, to check everything re-connects as expected
             Console.WriteLine();
-            Console.WriteLine("Registering subscriptions again, sequentially...");
+            Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - Registering subscriptions again, sequentially...");
             Console.WriteLine();
             subscription1 = await GetSubscription1(client);
             subscription2 = await GetSubscription2(client);
@@ -130,28 +130,23 @@ namespace AppSyncSubscription
 
             if (subscription1 != null && subscription2 != null)
             {
-                Console.WriteLine("Subscriptions are now ready");
+                Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - Subscriptions are now ready");
                 Console.WriteLine();
             }
  
-            // This task will complete when all subscriptions are cleaned up when _compositeSubscriptions is disposed via OnStopping()
-            var subscriptionDisposalTask = _compositeSubscriptions.GetDisposalCompletion();
-
             // the user can now press a key to terminate (via the main console)
             _workerReady.SetCompleted();
 
             // non - blocking wait => will complete when the user presses a key in the main console (cancellationToken is signaled)
-            var waitForCancelTask = Task.Run(() =>
+            await Task.Run(() =>
             {
                 cancellationToken.WaitHandle.WaitOne();
             }, cancellationToken);
-
-            await Task.WhenAll(subscriptionDisposalTask, waitForCancelTask);
         }
 
         protected override void OnStopping()
         {
-            _logger.LogInformation("The background worker is stopping");
+            _logger.LogInformation($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - The background worker is stopping");
 
             _compositeSubscriptions.Dispose();
             _compositeSubscriptions = null;
@@ -159,7 +154,7 @@ namespace AppSyncSubscription
 
         protected override void OnStopped()
         {
-            _logger.LogInformation("The background worker is done");
+            _logger.LogInformation($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - The background worker is done");
 
             // shutdown is not graceful after this returns
         }
@@ -186,7 +181,7 @@ namespace AppSyncSubscription
                 Query = query
             };
 
-            Console.WriteLine($"Adding subscription {name}, Id = {subscriptionQuery.Id}");
+            Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - Adding subscription {name}, Id = {subscriptionQuery.Id}");
 
             var subscription = await client.SubscribeAsync<AddedLanguageResponse>(
                 subscriptionQuery,
@@ -201,8 +196,8 @@ namespace AppSyncSubscription
                 });
 
             Console.WriteLine(subscription != null
-                ? $"{name} is registered (Id: {subscription.Id})"
-                : $"{name} failed to register");
+                ? $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {name} is registered (Id: {subscription.Id})"
+                : $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {name} failed to register");
 
             return subscription;
         }

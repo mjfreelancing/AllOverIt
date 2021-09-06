@@ -4,6 +4,7 @@
     {
         Connecting,
         Connected,
+        KeepAlive,
         Disconnecting,
         Disconnected
     }
