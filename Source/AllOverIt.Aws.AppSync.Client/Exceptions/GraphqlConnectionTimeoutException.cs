@@ -2,14 +2,11 @@
 
 namespace AllOverIt.Aws.AppSync.Client.Exceptions
 {
-    public sealed class GraphqlConnectionTimeoutException : Exception
+    [Serializable]
+    public sealed class GraphqlConnectionTimeoutException : GraphqlTimeoutExceptionBase
     {
-        public GraphqlConnectionTimeoutException()
-        {
-        }
-
-        public GraphqlConnectionTimeoutException(string message)
-            : base(message)
+        public GraphqlConnectionTimeoutException(TimeSpan timeoutPeriod)
+            : base($"Failed to make a websocket connection within {timeoutPeriod.TotalMilliseconds}ms.", timeoutPeriod)
         {
         }
     }

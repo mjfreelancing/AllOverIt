@@ -75,27 +75,57 @@ namespace AppSyncSubscription
             client.Exceptions
                 .Subscribe(exception =>
                 {
-                    // "connection_error"  - such as when the sub-protocol is not defined on the web socket (will have error type)
-                    if (exception is GraphqlConnectionException connectionException)
+                    switch (exception)
                     {
-                        var message = string.Join(", ", connectionException.Errors.Select(GetErrorMessage));
-                        Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}");
+                        // "connection_error"  - such as when the sub-protocol is not defined on the web socket (will have error type)
+                        case GraphqlConnectionException connectionException:
+                        {
+                            var message = string.Join(", ", connectionException.Errors.Select(GetErrorMessage));
+                            Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}");
+                            break;
+                        }
+
+                        case GraphqlConnectionTimeoutException timeoutException:
+                            Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {timeoutException.Message}");
+                            break;
+
+                        case GraphqlUnsubscribeTimeoutException unsubscribeException:
+                            Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {unsubscribeException.Message}");
+                            break;
+
+                        default:
+                            // ? WebSocketConnectionLostException
+                            Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {exception.Message}");
+                            break;
                     }
-
-                    // WebSocketConnectionLostException
-
-                    Console.WriteLine(exception.Message);
                 });
 
             // Subscribe to a mutation using two different queries - at the same time to test connection locking
             // A null subscription is returned if there was a problem with the connection or subscription request.
             // The error / exception observables will have reported the problem.
+            
+            // Although the exceptions are subscribed to above for logging, also showing that we can subscribe here
+            // to also get notification.
+            Exception connectionException = null;
 
-            // first, subscribe them both at the same time
+            var connectionExceptionSubscription = client.Exceptions
+                .Subscribe(ex =>
+                {
+                    connectionException = ex;
+                });
+
+            // first, subscribe them all at the same time
             var (subscription1, subscription2, subscription3) = await TaskHelper.WhenAll(
                 GetSubscription1(client),
                 GetSubscription2(client),
                 GetSubscription3(client));
+
+            connectionExceptionSubscription.Dispose();
+
+            if (connectionException != null)
+            {
+                Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - A connection exception was received - {connectionException.Message}");
+            }
 
             // then dispose of them
             Console.WriteLine();
