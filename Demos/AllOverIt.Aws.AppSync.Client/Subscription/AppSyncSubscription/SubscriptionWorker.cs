@@ -130,6 +130,7 @@ namespace AppSyncSubscription
             Console.WriteLine();
             Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - Disposing of subscriptions...");
             Console.WriteLine();
+
             if (subscription1 != null)
             {
                 await subscription1.DisposeAsync();
@@ -149,6 +150,7 @@ namespace AppSyncSubscription
             Console.WriteLine();
             Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - Registering subscriptions again, sequentially...");
             Console.WriteLine();
+
             subscription1 = await GetSubscription1(client);
             subscription2 = await GetSubscription2(client);
             subscription3 = await GetSubscription3(client);
