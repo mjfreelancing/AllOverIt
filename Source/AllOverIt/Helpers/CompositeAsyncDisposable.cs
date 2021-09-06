@@ -2,23 +2,19 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace AllOverIt.Helpers
 {
-    /// <summary>A composite that caters for asynchronous disposal of multiple IAsyncDisposable's.</summary>
-    public sealed class CompositeAsyncDisposable : IDisposable
+    /// <summary>A composite that caters for asynchronous disposal of multiple IAsyncDisposable's using a synchronous Dispose().</summary>
+    public sealed class CompositeAsyncDisposable : IDisposable, IAsyncDisposable
     {
-        private readonly CancellationTokenSource _beginDisposalCancellationTokenSource = new();
-        private readonly CancellationTokenSource _doneDisposalCancellation = new();
-        private readonly List<IAsyncDisposable> _disposables = new();
+        private List<IAsyncDisposable> _disposables;
+        private CancellationTokenSource _beginDisposalCancellationTokenSource;
+        private CancellationTokenSource _doneDisposalCancellation;
         private Task _completionTask;
-
-        /// <summary>Constructor.</summary>
-        public CompositeAsyncDisposable()
-        {
-        }
 
         /// <summary>Constructor.</summary>
         /// <param name="disposables">Async disposables to add to the composite disposable.</param>
@@ -31,22 +27,23 @@ namespace AllOverIt.Helpers
         /// <param name="disposables">Async disposables to add to the composite disposable.</param>
         public void Add(params IAsyncDisposable[] disposables)
         {
+            _disposables ??= new List<IAsyncDisposable>();
             _disposables.AddRange(disposables);
         }
 
-        /// <summary>Gets a task that completes when all disposables have been asynchronously disposed of.</summary>
+        /// <summary>Gets a task that completes when all disposables have been asynchronously disposed of via the Dispose() method.</summary>
         /// <returns>A task that completes when all disposables have been asynchronously disposed of.</returns>
-        /// <remarks>The disposables are processed when this CompositeAsyncDisposable is disposed.</remarks>
+        /// <remarks>This task is only required when disposing via Dispose().</remarks>
         public Task GetDisposalCompletion()
         {
+            _beginDisposalCancellationTokenSource ??= new CancellationTokenSource();
+            _doneDisposalCancellation ??= new CancellationTokenSource();
+
             _completionTask ??= Task.Run(async () =>
             {
                 _beginDisposalCancellationTokenSource.Token.WaitHandle.WaitOne();
 
-                foreach (var disposable in _disposables)
-                {
-                    await disposable.DisposeAsync().ConfigureAwait(false);
-                }
+                await DisposeResources().ConfigureAwait(false);
 
                 _doneDisposalCancellation.Cancel();
             });
@@ -55,10 +52,15 @@ namespace AllOverIt.Helpers
         }
 
         /// <summary>Disposes each of the registered disposables. This method does not return until they are all processed.</summary>
+        /// <remarks>Dispose() will dispose of all registered IAsyncDisposable's in a background thread, whereas DisposeAsync() will
+        /// perform the disposal on the calling thread.</remarks>
         public void Dispose()
         {
-            if (_completionTask != null)
+            if (_disposables.Any())
             {
+                // make sure the background thread has been created, otherwise nothing will be disposed of.
+                _ = GetDisposalCompletion();
+
                 // Trigger the start of all async disposals
                 _beginDisposalCancellationTokenSource.Cancel();
 
@@ -67,7 +69,30 @@ namespace AllOverIt.Helpers
             }
 
             _beginDisposalCancellationTokenSource?.Dispose();
+            _beginDisposalCancellationTokenSource = null;
+
             _doneDisposalCancellation?.Dispose();
+            _doneDisposalCancellation = null;
+
+            _completionTask = null;
+        }
+
+        /// <summary>Disposes each of the registered disposables. This method does not return until they are all processed.</summary>
+        /// <remarks>Dispose() will dispose of all registered IAsyncDisposable's in a background thread, whereas DisposeAsync() will
+        /// perform the disposal on the calling thread.</remarks>
+        public async ValueTask DisposeAsync()
+        {
+            await DisposeResources().ConfigureAwait(false);
+        }
+
+        private async Task DisposeResources()
+        {
+            foreach (var disposable in _disposables)
+            {
+                await disposable.DisposeAsync().ConfigureAwait(false);
+            }
+
+            _disposables.Clear();
         }
     }
 }
