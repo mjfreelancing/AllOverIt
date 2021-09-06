@@ -183,7 +183,9 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
         private void ShutdownConnection()
         {
-            if (_connectionStateSubject.Value is SubscriptionConnectionState.Connected or SubscriptionConnectionState.Connecting)
+            // Start disconnecting if Connecting, Connected, or KeepAlive were the last known states
+            if (_connectionStateSubject.Value != SubscriptionConnectionState.Disconnecting &&
+                _connectionStateSubject.Value != SubscriptionConnectionState.Connecting)
             {
                 _connectionStateSubject.OnNext(SubscriptionConnectionState.Disconnecting);
 

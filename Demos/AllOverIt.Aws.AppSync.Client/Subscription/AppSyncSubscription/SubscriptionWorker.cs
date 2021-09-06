@@ -92,9 +92,10 @@ namespace AppSyncSubscription
             // The error / exception observables will have reported the problem.
 
             // first, subscribe them both at the same time
-            var (subscription1, subscription2) = await TaskHelper.WhenAll(
+            var (subscription1, subscription2, subscription3) = await TaskHelper.WhenAll(
                 GetSubscription1(client),
-                GetSubscription2(client));
+                GetSubscription2(client),
+                GetSubscription3(client));
 
             // then dispose of them
             Console.WriteLine();
@@ -104,9 +105,15 @@ namespace AppSyncSubscription
             {
                 await subscription1.DisposeAsync();
             }
+
             if (subscription2 != null)
             {
                 await subscription2.DisposeAsync();
+            }
+
+            if (subscription3 != null)
+            {
+                await subscription3.DisposeAsync();
             }
 
             // and subscribe again, sequentially, to check everything re-connects as expected
@@ -115,6 +122,7 @@ namespace AppSyncSubscription
             Console.WriteLine();
             subscription1 = await GetSubscription1(client);
             subscription2 = await GetSubscription2(client);
+            subscription3 = await GetSubscription3(client);
 
             // Track all valid subscriptions that we need to wait for when shutting down
             // Example: If one subscription is an invalid query then it will be returned as null
@@ -128,9 +136,14 @@ namespace AppSyncSubscription
                 _compositeSubscriptions.Add(subscription2);
             }
 
-            if (subscription1 != null && subscription2 != null)
+            if (subscription3 != null)
             {
-                Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - Subscriptions are now ready");
+                _compositeSubscriptions.Add(subscription3);
+            }
+
+            if (subscription1 != null || subscription2 != null || subscription3 != null)
+            {
+                Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - One or more subscriptions are now ready");
                 Console.WriteLine();
             }
  
@@ -163,22 +176,50 @@ namespace AppSyncSubscription
         {
             // try this for an unsupported operation error
             var badQuery = "query MyQuery { defaultLanguage { code name } }";
-            //var goodQuery = @"subscription MySubscription1 {addedLanguage(code: ""LNG"") {code name}}";
-            var goodQuery = @"subscription MySubscription1 {addedLanguage(language: {code: ""LNG"", name: ""Language Name""}) {code name}}";
+
+            var goodQuery = @"subscription MySubscription1 {
+                                addedLanguage(code: ""LNG"") {
+                                  code
+                                  name
+                                }
+                              }";
 
             return GetSubscription(client, "Subscription1", goodQuery);
         }
 
         private static Task<IAsyncDisposable> GetSubscription2(AppSyncSubscriptionClient client)
         {
-            return GetSubscription(client, "Subscription2", @"subscription MySubscription2 {addedLanguage {code name}}");
+            return GetSubscription(
+                client,
+                "Subscription2",
+                @"subscription Subscription2 {
+                    addedLanguage {
+                      code
+                      name
+                    }
+                  }");
         }
 
-        private static async Task<IAsyncDisposable> GetSubscription(AppSyncSubscriptionClient client, string name, string query)
+        private static Task<IAsyncDisposable> GetSubscription3(AppSyncSubscriptionClient client)
+        {
+            return GetSubscription(
+                client,
+                "Subscription3",
+                @"subscription Subscription3($code: ID) {
+                    addedLanguage(code: $code) {
+                      code
+                      name
+                    }
+                  }",
+                new { code = "LNG" });
+        }
+
+        private static async Task<IAsyncDisposable> GetSubscription(AppSyncSubscriptionClient client, string name, string query, object variables = null)
         {
             var subscriptionQuery = new SubscriptionQuery
             {
-                Query = query
+                Query = query,
+                Variables = variables
             };
 
             Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - Adding subscription {name}, Id = {subscriptionQuery.Id}");
@@ -187,11 +228,16 @@ namespace AppSyncSubscription
                 subscriptionQuery,
                 response =>
                 {
+                    var type = response.Errors.IsNullOrEmpty()
+                        ? "Data"
+                        : "Errors";
+
                     var message = response.Errors.IsNullOrEmpty()
                         ? (object) response.Data
                         : response.Errors;
 
-                    Console.WriteLine($"{name}: {JsonConvert.SerializeObject(message, new JsonSerializerSettings { Formatting = Formatting.Indented })}");
+                    Console.WriteLine($"{name}: {type}{Environment.NewLine}" +
+                                      $"{JsonConvert.SerializeObject(message, new JsonSerializerSettings { Formatting = Formatting.Indented })}");
                     Console.WriteLine();
                 });
 
