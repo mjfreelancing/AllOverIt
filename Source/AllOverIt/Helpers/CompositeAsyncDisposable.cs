@@ -11,10 +11,7 @@ namespace AllOverIt.Helpers
     /// <summary>A composite that caters for asynchronous disposal of multiple IAsyncDisposable's using a synchronous Dispose().</summary>
     public sealed class CompositeAsyncDisposable : IDisposable, IAsyncDisposable
     {
-        private List<IAsyncDisposable> _disposables;
-        private CancellationTokenSource _beginDisposalCancellationTokenSource;
-        private CancellationTokenSource _doneDisposalCancellation;
-        private Task _completionTask;
+        private readonly List<IAsyncDisposable> _disposables = new();
 
         /// <summary>Constructor.</summary>
         /// <param name="disposables">Async disposables to add to the composite disposable.</param>
@@ -27,28 +24,7 @@ namespace AllOverIt.Helpers
         /// <param name="disposables">Async disposables to add to the composite disposable.</param>
         public void Add(params IAsyncDisposable[] disposables)
         {
-            _disposables ??= new List<IAsyncDisposable>();
             _disposables.AddRange(disposables);
-        }
-
-        /// <summary>Gets a task that completes when all disposables have been asynchronously disposed of via the Dispose() method.</summary>
-        /// <returns>A task that completes when all disposables have been asynchronously disposed of.</returns>
-        /// <remarks>This task is only required when disposing via Dispose().</remarks>
-        public Task GetDisposalCompletion()
-        {
-            _beginDisposalCancellationTokenSource ??= new CancellationTokenSource();
-            _doneDisposalCancellation ??= new CancellationTokenSource();
-
-            _completionTask ??= Task.Run(async () =>
-            {
-                _beginDisposalCancellationTokenSource.Token.WaitHandle.WaitOne();
-
-                await DisposeResources().ConfigureAwait(false);
-
-                _doneDisposalCancellation.Cancel();
-            });
-
-            return _completionTask;
         }
 
         /// <summary>Disposes each of the registered disposables. This method does not return until they are all processed.</summary>
@@ -58,23 +34,8 @@ namespace AllOverIt.Helpers
         {
             if (_disposables.Any())
             {
-                // make sure the background thread has been created, otherwise nothing will be disposed of.
-                _ = GetDisposalCompletion();
-
-                // Trigger the start of all async disposals
-                _beginDisposalCancellationTokenSource.Cancel();
-
-                // Wait for them to all complete
-                _doneDisposalCancellation.Token.WaitHandle.WaitOne();
+                DisposeResources();
             }
-
-            _beginDisposalCancellationTokenSource?.Dispose();
-            _beginDisposalCancellationTokenSource = null;
-
-            _doneDisposalCancellation?.Dispose();
-            _doneDisposalCancellation = null;
-
-            _completionTask = null;
         }
 
         /// <summary>Disposes each of the registered disposables. This method does not return until they are all processed.</summary>
@@ -82,17 +43,66 @@ namespace AllOverIt.Helpers
         /// perform the disposal on the calling thread.</remarks>
         public async ValueTask DisposeAsync()
         {
-            await DisposeResources().ConfigureAwait(false);
+            if (_disposables.Any())
+            {
+                await DisposeResourcesAsync().ConfigureAwait(false);
+            }
         }
 
-        private async Task DisposeResources()
+        private void DisposeResources()
         {
+            AggregateException aggregateException = null;
+
+            using (var cts = new CancellationTokenSource())
+            {
+                Task.Run(async () =>
+                {
+                    try
+                    {
+                        await DisposeResourcesAsync().ConfigureAwait(false);
+                    }
+                    catch (AggregateException exception)
+                    {
+                        aggregateException = exception;
+                    }
+                    finally
+                    {
+                        cts.Cancel();
+                    }
+                });
+
+                cts.Token.WaitHandle.WaitOne();
+            }
+
+            if (aggregateException != null)
+            {
+                throw aggregateException;
+            }
+        }
+
+        private async Task DisposeResourcesAsync()
+        {
+             IList<Exception> innerExceptions = null;
+
             foreach (var disposable in _disposables)
             {
-                await disposable.DisposeAsync().ConfigureAwait(false);
+                try
+                {
+                    await disposable.DisposeAsync().ConfigureAwait(false);
+                }
+                catch(Exception exception)
+                {
+                    innerExceptions ??= new List<Exception>();
+                    innerExceptions.Add(exception);
+                }
             }
 
             _disposables.Clear();
+
+            if (innerExceptions != null)
+            {
+                throw new AggregateException(innerExceptions);
+            }
         }
     }
 }
