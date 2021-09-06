@@ -26,36 +26,16 @@ namespace AllOverIt.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Convert_To_Empty_List_When_Cancelled()
+            public void Should_Throw_When_Cancelled()
             {
                 var cancellationTokenSource = new CancellationTokenSource();
                 cancellationTokenSource.Cancel();
 
                 Invoking(async () =>
                     {
-                        try
-                        {
-                            return await GetStrings(CreateMany<string>()).AsListAsync(cancellationTokenSource.Token)
-                                .ConfigureAwait(false);
-                        }
-                        catch (OperationCanceledException)
-                        {
-                            return null;
-                        }
-                    })
-                    .Should()
-                    .BeNull();
-            }
-
-            [Fact]
-            public void Should_Cancel_Conversion()
-            {
-                var cancellationTokenSource = new CancellationTokenSource();
-                cancellationTokenSource.Cancel();
-
-                Invoking(async () =>
-                    {
-                        await GetStrings(CreateMany<string>()).AsListAsync(cancellationTokenSource.Token);
+                        await GetStrings(CreateMany<string>())
+                            .AsListAsync(cancellationTokenSource.Token)
+                            .ConfigureAwait(false);
                     })
                     .Should()
                     .ThrowAsync<OperationCanceledException>();
