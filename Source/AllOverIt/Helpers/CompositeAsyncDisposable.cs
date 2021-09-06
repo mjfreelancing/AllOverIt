@@ -2,23 +2,16 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace AllOverIt.Helpers
 {
-    /// <summary>A composite that caters for asynchronous disposal of multiple IAsyncDisposable's.</summary>
-    public sealed class CompositeAsyncDisposable : IDisposable
+    /// <summary>A composite that caters for asynchronous disposal of multiple IAsyncDisposable's using a synchronous Dispose().</summary>
+    public sealed class CompositeAsyncDisposable : IDisposable, IAsyncDisposable
     {
-        private readonly CancellationTokenSource _beginDisposalCancellationTokenSource = new();
-        private readonly CancellationTokenSource _doneDisposalCancellation = new();
         private readonly List<IAsyncDisposable> _disposables = new();
-        private Task _completionTask;
-
-        /// <summary>Constructor.</summary>
-        public CompositeAsyncDisposable()
-        {
-        }
 
         /// <summary>Constructor.</summary>
         /// <param name="disposables">Async disposables to add to the composite disposable.</param>
@@ -34,40 +27,82 @@ namespace AllOverIt.Helpers
             _disposables.AddRange(disposables);
         }
 
-        /// <summary>Gets a task that completes when all disposables have been asynchronously disposed of.</summary>
-        /// <returns>A task that completes when all disposables have been asynchronously disposed of.</returns>
-        /// <remarks>The disposables are processed when this CompositeAsyncDisposable is disposed.</remarks>
-        public Task GetDisposalCompletion()
+        /// <summary>Disposes each of the registered disposables. This method does not return until they are all processed.</summary>
+        /// <remarks>Dispose() will dispose of all registered IAsyncDisposable's in a background thread, whereas DisposeAsync() will
+        /// perform the disposal on the calling thread.</remarks>
+        public void Dispose()
         {
-            _completionTask ??= Task.Run(async () =>
+            if (_disposables.Any())
             {
-                _beginDisposalCancellationTokenSource.Token.WaitHandle.WaitOne();
-
-                foreach (var disposable in _disposables)
-                {
-                    await disposable.DisposeAsync().ConfigureAwait(false);
-                }
-
-                _doneDisposalCancellation.Cancel();
-            });
-
-            return _completionTask;
+                DisposeResources();
+            }
         }
 
         /// <summary>Disposes each of the registered disposables. This method does not return until they are all processed.</summary>
-        public void Dispose()
+        /// <remarks>Dispose() will dispose of all registered IAsyncDisposable's in a background thread, whereas DisposeAsync() will
+        /// perform the disposal on the calling thread.</remarks>
+        public async ValueTask DisposeAsync()
         {
-            if (_completionTask != null)
+            if (_disposables.Any())
             {
-                // Trigger the start of all async disposals
-                _beginDisposalCancellationTokenSource.Cancel();
+                await DisposeResourcesAsync().ConfigureAwait(false);
+            }
+        }
 
-                // Wait for them to all complete
-                _doneDisposalCancellation.Token.WaitHandle.WaitOne();
+        private void DisposeResources()
+        {
+            AggregateException aggregateException = null;
+
+            using (var cts = new CancellationTokenSource())
+            {
+                Task.Run(async () =>
+                {
+                    try
+                    {
+                        await DisposeResourcesAsync().ConfigureAwait(false);
+                    }
+                    catch (AggregateException exception)
+                    {
+                        aggregateException = exception;
+                    }
+                    finally
+                    {
+                        cts.Cancel();
+                    }
+                }, CancellationToken.None);
+
+                cts.Token.WaitHandle.WaitOne();
             }
 
-            _beginDisposalCancellationTokenSource?.Dispose();
-            _doneDisposalCancellation?.Dispose();
+            if (aggregateException != null)
+            {
+                throw aggregateException;
+            }
+        }
+
+        private async Task DisposeResourcesAsync()
+        {
+             IList<Exception> innerExceptions = null;
+
+            foreach (var disposable in _disposables)
+            {
+                try
+                {
+                    await disposable.DisposeAsync().ConfigureAwait(false);
+                }
+                catch(Exception exception)
+                {
+                    innerExceptions ??= new List<Exception>();
+                    innerExceptions.Add(exception);
+                }
+            }
+
+            _disposables.Clear();
+
+            if (innerExceptions != null)
+            {
+                throw new AggregateException(innerExceptions);
+            }
         }
     }
 }
