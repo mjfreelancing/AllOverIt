@@ -23,6 +23,7 @@ namespace AllOverIt.Helpers
         public void Dispose()
         {
             Dispose(true);
+            GC.SuppressFinalize(this);      // just in case an inherited class has a finalizer
         }
 
         /// <summary>
@@ -70,7 +71,7 @@ namespace AllOverIt.Helpers
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
+            GC.SuppressFinalize(this);      // just in case an inherited class has a finalizer
         }
 
         /// <summary>
