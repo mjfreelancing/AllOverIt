@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Aws.AppSync.Client.Exceptions;
 using AllOverIt.Helpers;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using AllOverIt.Serialization.Abstractions;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -28,7 +27,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         private readonly string _host;
         private readonly Uri _uri;
         private readonly IAuthorization _defaultAuthorization;
-        private readonly IAppSyncClientSerializer _serializer;
+        private readonly IJsonSerializer _serializer;
         private readonly ArraySegment<byte> _buffer = new(new byte[8192]);
         private readonly IDictionary<string, SubscriptionRegistration> _subscriptions = new ConcurrentDictionary<string, SubscriptionRegistration>();
         private CancellationTokenSource _cts;
@@ -48,7 +47,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
         // endpoint is the graphql endpoint (not realtime) without https, wss, or /graphql
         // e.g., example123abc.appsync-api.ap-southeast-2.amazonaws.com
-        public AppSyncSubscriptionClient(string host, IAuthorization defaultAuthorization, IAppSyncClientSerializer serializer)
+        public AppSyncSubscriptionClient(string host, IAuthorization defaultAuthorization, IJsonSerializer serializer)
         {
             _host = host.WhenNotNullOrEmpty(nameof(host));
 
@@ -154,7 +153,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                     var ack = _incomingMessages
                         .TakeUntil(response => response is { Type: GraphqlResponseType.ConnectionAck or GraphqlResponseType.ConnectionError })
                         .LastAsync()
-                        .ToTask();
+                        .ToTask(CancellationToken.None);
 
                     await SendInitRequestAsync().ConfigureAwait(false);
 
@@ -274,7 +273,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                     },
                     () =>
                     {
-                        ShutdownConnection();
+                        ShutdownConnection();       // todo: when do I need to call OnComplete
                     });
 
             // Process messages related to data responses/errors, keep alive notifications, and server-side termination.
@@ -296,7 +295,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                             subscription.NotifyResponse(responseMessage);
                             break;
 
-                        case GraphqlResponseType.KeepAlive:
+                        case GraphqlResponseType.KeepAlive:     // todo: I need to track and kill / restore the connection and re-subscribe
                             break;
 
                         case GraphqlResponseType.Error:
@@ -333,15 +332,16 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             _graphqlErrorSubject.OnNext(responseError);
         }
 
+        // todo: move to an extension method
         private WebSocketResponse<GraphqlError> GetGraphqlErrorFromResponseMessage(string message)
         {
             return _serializer.DeserializeObject<WebSocketResponse<GraphqlError>>(message);
         }
 
-        private AppSyncGraphqlResponse GetAppSyncGraphqlResponse(MemoryStream ms)
+        private AppSyncGraphqlResponse GetAppSyncGraphqlResponse(MemoryStream stream)
         {
-            var response = _serializer.GetAppSyncGraphqlResponse(ms);
-            response.Message = Encoding.UTF8.GetString(ms.ToArray());
+            var response = _serializer.GetAppSyncGraphqlResponse(stream);
+            response.Message = Encoding.UTF8.GetString(stream.ToArray());
 
             return response;
         }
@@ -370,8 +370,11 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                 .ToTask(CancellationToken.None);
 
             await SendRequest(request).ConfigureAwait(false);
-            await completeTask.ConfigureAwait(false);
 
+            // todo: what if there is a connection lost AFTER the request is sent - could block
+            // todo: ?? throw if not completed within a give time period
+            await completeTask.ConfigureAwait(false); 
+            
             _subscriptions.Remove(id);
 
             if (!_subscriptions.Any())
@@ -407,6 +410,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         {
             var request = registration.Request;
 
+            // todo: ? handle a timeout
             var ackTask = _incomingMessages
                 .TakeUntil(response => response.Id == request.Id && response.Type is GraphqlResponseType.StartAck or GraphqlResponseType.Error)
                 .LastAsync()
@@ -433,72 +437,11 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
     }
 
 
-    public interface IAppSyncClientSerializer
-    {
-        string SerializeObject<TType>(TType request);
-        byte[] SerializeToBytes<TType>(TType request);
-        TType DeserializeObject<TType>(string value);
-        TType DeserializeObject<TType>(Stream stream);
-    }
-
-
     public static class AppSyncClientSerializerExtensions
     {
-        public static AppSyncGraphqlResponse GetAppSyncGraphqlResponse(this IAppSyncClientSerializer serializer, Stream stream)
+        public static AppSyncGraphqlResponse GetAppSyncGraphqlResponse(this IJsonSerializer serializer, Stream stream)
         {
             return serializer.DeserializeObject<AppSyncGraphqlResponse>(stream);
         }
     }
-
-
-    // todo: need to create serializer packages for newtonsoft and system.text
-    public sealed class AppSyncClientNewtonsoftJsonSerializer : IAppSyncClientSerializer
-    {
-        private readonly JsonSerializerSettings _defaultSerializerSettings = new()
-        {
-            ContractResolver = new DefaultContractResolver
-            {
-                NamingStrategy = new CamelCaseNamingStrategy()
-            }
-        };
-
-        public string SerializeObject<TMessage>(TMessage message)
-        {
-            return JsonConvert.SerializeObject(message, _defaultSerializerSettings);
-        }
-
-        public byte[] SerializeToBytes<TMessage>(TMessage message)
-        {
-            var json = SerializeObject(message);
-            return Encoding.UTF8.GetBytes(json);
-        }
-
-        public TType DeserializeObject<TType>(string value)
-        {
-            return JsonConvert.DeserializeObject<TType>(value, _defaultSerializerSettings);
-        }
-
-        public TType DeserializeObject<TType>(Stream stream)
-        {
-            using (var sr = new StreamReader(stream))
-            {
-                using (JsonReader reader = new JsonTextReader(sr))
-                {
-                    var serializer = JsonSerializer.Create(_defaultSerializerSettings);
-                    var result = serializer.Deserialize<TType>(reader);
-                    return result;
-                }
-            }
-        }
-    }
-
-    //public sealed class AppSyncClientNewtonsoftJsonSerializer : IAppSyncClientSerializer
-    //{
-    //    public byte[] SerializeToBytes(GraphqlSubscriptionRequest request)
-    //    {
-    //        var json = System.Text.JsonSerializer.SerializeToUtf8Bytes(request);
-    //        return Encoding.UTF8.GetBytes(json);
-    //    }
-    //}
-
 }

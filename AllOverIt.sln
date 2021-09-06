@@ -83,9 +83,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Benchmarking", "Benchmarkin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.Aws.AppSync.Client", "Source\AllOverIt.Aws.AppSync.Client\AllOverIt.Aws.AppSync.Client.csproj", "{F0E272A8-B1F9-4C18-A55A-A37673034765}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppSyncSubscription", "Demos\AllOverIt.Aws.AppSync.Client\Subscription\AppSyncSubscription\AppSyncSubscription.csproj", "{BB8CF83E-ACCB-4FE4-9BD5-3FC328A1A16B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppSyncSubscription", "Demos\AllOverIt.Aws.AppSync.Client\Subscription\AppSyncSubscription\AppSyncSubscription.csproj", "{BB8CF83E-ACCB-4FE4-9BD5-3FC328A1A16B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllOverIt.Aws.AppSync.Client", "AllOverIt.Aws.AppSync.Client", "{CBDD29EC-7EEC-482B-BA26-AAD4ED6508C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllOverIt.Serialization.Newtonsoft", "Source\AllOverIt.Serialization.Newtonsoft\AllOverIt.Serialization.Newtonsoft.csproj", "{426B2639-8C5C-4231-BBF2-092838B7E72B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllOverIt.Serialization.SystemTextJson", "Source\AllOverIt.Serialization.SystemTextJson\AllOverIt.Serialization.SystemTextJson.csproj", "{D2246B45-7665-41E2-84F2-27A67DB37680}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllOverIt.Serialization.Abstractions", "Source\AllOverIt.Serialization.Abstractions\AllOverIt.Serialization.Abstractions.csproj", "{2C055F98-F19E-469F-96DF-6169A1D1FC5A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -209,6 +215,18 @@ Global
 		{BB8CF83E-ACCB-4FE4-9BD5-3FC328A1A16B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB8CF83E-ACCB-4FE4-9BD5-3FC328A1A16B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB8CF83E-ACCB-4FE4-9BD5-3FC328A1A16B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{426B2639-8C5C-4231-BBF2-092838B7E72B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{426B2639-8C5C-4231-BBF2-092838B7E72B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{426B2639-8C5C-4231-BBF2-092838B7E72B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{426B2639-8C5C-4231-BBF2-092838B7E72B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2246B45-7665-41E2-84F2-27A67DB37680}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2246B45-7665-41E2-84F2-27A67DB37680}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2246B45-7665-41E2-84F2-27A67DB37680}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2246B45-7665-41E2-84F2-27A67DB37680}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C055F98-F19E-469F-96DF-6169A1D1FC5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C055F98-F19E-469F-96DF-6169A1D1FC5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C055F98-F19E-469F-96DF-6169A1D1FC5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C055F98-F19E-469F-96DF-6169A1D1FC5A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -250,6 +268,9 @@ Global
 		{F0E272A8-B1F9-4C18-A55A-A37673034765} = {FC8E8DB2-1299-44F4-A233-0EDCE225BB8C}
 		{BB8CF83E-ACCB-4FE4-9BD5-3FC328A1A16B} = {CBDD29EC-7EEC-482B-BA26-AAD4ED6508C1}
 		{CBDD29EC-7EEC-482B-BA26-AAD4ED6508C1} = {D9F6B8A1-4B01-4708-8851-741FC19F2440}
+		{426B2639-8C5C-4231-BBF2-092838B7E72B} = {FC8E8DB2-1299-44F4-A233-0EDCE225BB8C}
+		{D2246B45-7665-41E2-84F2-27A67DB37680} = {FC8E8DB2-1299-44F4-A233-0EDCE225BB8C}
+		{2C055F98-F19E-469F-96DF-6169A1D1FC5A} = {FC8E8DB2-1299-44F4-A233-0EDCE225BB8C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19DD11B3-596E-4862-B5C4-1FFFFB173106}

@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netcoreapp3.1;netstandard2.1;net5.0</TargetFrameworks>
+        <TargetFrameworks>netcoreapp3.1;netstandard2.1;netstandard2.0;net5.0</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <Version>0.1.0</Version>
         <Authors>Malcolm Smith</Authors>
         <Company></Company>
         <Copyright>Copyright © 2021</Copyright>
-        <Description>A library to connect to AppSync GraphQL.</Description>
+        <Description>A wrapper for Newtonsoft serialization.</Description>
         <PackageTags>utilities</PackageTags>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <RepositoryType>git</RepositoryType>
@@ -16,12 +16,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\AllOverIt.Serialization.Abstractions\AllOverIt.Serialization.Abstractions.csproj" />
-        <ProjectReference Include="..\AllOverIt\AllOverIt.csproj" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="System.Reactive" Version="5.0.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="System.Reactive" Version="5.0.0" />
+      <ProjectReference Include="..\AllOverIt.Serialization.Abstractions\AllOverIt.Serialization.Abstractions.csproj" />
     </ItemGroup>
 
 </Project>

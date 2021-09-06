@@ -15,6 +15,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             }
         }
 
+        // todo: make this an extension method
         public string GetEncodedHeader()
         {
             var headerValues = string.Join(", ", KeyValues.Select(kvp => $@"""{kvp.Key}"": ""{kvp.Value}"""));

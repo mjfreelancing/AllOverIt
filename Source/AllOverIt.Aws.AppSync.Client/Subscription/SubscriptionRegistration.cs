@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Helpers;
+using AllOverIt.Serialization.Abstractions;
 using System;
 using GraphqlRequestType = AllOverIt.Aws.AppSync.Client.Subscription.Constants.GraphqlRequestType;
 
@@ -32,11 +33,11 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
     internal class SubscriptionRegistration<TResponse> : SubscriptionRegistration
     {
-        private readonly IAppSyncClientSerializer _serializer;
+        private readonly IJsonSerializer _serializer;
         private Action<SubscriptionResponse<TResponse>> ResponseAction { get; }
 
         public SubscriptionRegistration(string id, SubscriptionQueryPayload payload, Action<SubscriptionResponse<TResponse>> responseAction,
-            IAppSyncClientSerializer serializer)
+            IJsonSerializer serializer)
             : base(id, payload)
         {
             ResponseAction = responseAction.WhenNotNull(nameof(responseAction));

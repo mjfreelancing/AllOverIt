@@ -15,7 +15,15 @@
 
 XX Sep 2021
 ======================================================================================================================
-AllOverIt.Aws.Cdk.AppSync - v0.17.0
+AllOverIt.Serialization.Abstractions - v0.1.0
+
+AllOverIt.Serialization.Newtonsoft - v0.1.0
+
+AllOverIt.Serialization.SystemTextJson - v0.1.0
+
+AllOverIt.Aws.AppSync.Client - v0.1.0
+
+AllOverIt - v0.17.0
   * Added RaiiAsync to cater for an async cleanup
   * Added CompositeAsyncDisposable to cater for composite async disposal
 

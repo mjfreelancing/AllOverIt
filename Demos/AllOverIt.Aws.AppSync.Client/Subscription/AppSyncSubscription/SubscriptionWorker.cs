@@ -3,6 +3,7 @@ using AllOverIt.Aws.AppSync.Client.Subscription;
 using AllOverIt.Extensions;
 using AllOverIt.GenericHost;
 using AllOverIt.Helpers;
+using AllOverIt.Serialization.Newtonsoft;
 using AllOverIt.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -50,7 +51,7 @@ namespace AppSyncSubscription
             var client = new AppSyncSubscriptionClient(
                 _apiOptions.ApiHost,
                 new ApiKeyAuthorization(_apiOptions.ApiKey),
-                new AppSyncClientNewtonsoftJsonSerializer());
+                new NewtonsoftJsonSerializer());
 
             // Write the current connection status to the console
             client.ConnectionState
@@ -99,8 +100,14 @@ namespace AppSyncSubscription
             Console.WriteLine();
             Console.WriteLine("Disposing of subscriptions...");
             Console.WriteLine();
-            await subscription1.DisposeAsync();
-            await subscription2.DisposeAsync();
+            if (subscription1 != null)
+            {
+                await subscription1.DisposeAsync();
+            }
+            if (subscription2 != null)
+            {
+                await subscription2.DisposeAsync();
+            }
 
             // and subscribe again, sequentially, to check everything re-connects as expected
             Console.WriteLine();
@@ -161,7 +168,8 @@ namespace AppSyncSubscription
         {
             // try this for an unsupported operation error
             var badQuery = "query MyQuery { defaultLanguage { code name } }";
-            var goodQuery = @"subscription MySubscription1 {addedLanguage(code: ""LNG"") {code name}}";
+            //var goodQuery = @"subscription MySubscription1 {addedLanguage(code: ""LNG"") {code name}}";
+            var goodQuery = @"subscription MySubscription1 {addedLanguage(language: {code: ""LNG"", name: ""Language Name""}) {code name}}";
 
             return GetSubscription(client, "Subscription1", goodQuery);
         }
