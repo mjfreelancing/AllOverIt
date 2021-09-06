@@ -28,11 +28,13 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
         // todo: make this configurable
         private readonly TimeSpan _connectionTimeout = DefaultTimeout;
-        private readonly TimeSpan _unregisterTimeout = DefaultTimeout;
+        private readonly TimeSpan _subscribeTimeout = DefaultTimeout;
+        private readonly TimeSpan _unsubscribeTimeout = DefaultTimeout;
 
         // create a new token each time it is called
         private CancellationToken ConnectionTimeoutToken => new CancellationTokenSource(_connectionTimeout).Token;
-        private CancellationToken UnregisterTimeoutToken => new CancellationTokenSource(_unregisterTimeout).Token;
+        private CancellationToken SubscribeTimeoutToken => new CancellationTokenSource(_subscribeTimeout).Token;
+        private CancellationToken UnsubscribeTimeoutToken => new CancellationTokenSource(_unsubscribeTimeout).Token;
 
         private readonly string _host;
         private readonly Uri _uri;
@@ -102,10 +104,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
                 _subscriptions.Add(registration.Id, registration);
 
-                var ackTask = await SendRegistrationAsync(registration).ConfigureAwait(false);
-
-                // wait for the registration ACK or error
-                var response = await ackTask;
+                var response = await SendRegistrationAsync(registration).ConfigureAwait(false);
 
                 if (response.Type == GraphqlResponseType.Error)
                 {
@@ -123,6 +122,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             {
                 // GraphqlConnectionException
                 // GraphqlConnectionTimeoutException
+                // GraphqlSubscribeTimeoutException
                 // GraphqlUnsubscribeTimeoutException
                 // WebSocketConnectionLostException - if the websocket was shutdown mid-subscription registration
                 _exceptionSubject.OnNext(exception);
@@ -370,20 +370,6 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             _graphqlErrorSubject.OnNext(responseError);
         }
 
-        // todo: move to an extension method
-        private WebSocketResponse<GraphqlError> GetGraphqlErrorFromResponseMessage(string message)
-        {
-            return _serializer.DeserializeObject<WebSocketResponse<GraphqlError>>(message);
-        }
-
-        private AppSyncGraphqlResponse GetAppSyncGraphqlResponse(MemoryStream stream)
-        {
-            var response = _serializer.GetAppSyncGraphqlResponse(stream);
-            response.Message = Encoding.UTF8.GetString(stream.ToArray());
-
-            return response;
-        }
-
         private Task SendInitRequestAsync()
         {
             var request = new SubscriptionQueryMessage
@@ -405,7 +391,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             var completeTask = _incomingMessages
                 .TakeUntil(response => response.Id == id && response.Type == GraphqlResponseType.Complete)
                 .LastAsync()
-                .ToTask(UnregisterTimeoutToken);
+                .ToTask(UnsubscribeTimeoutToken);
 
             try
             {
@@ -421,7 +407,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             {
                 // We can't throw from here - the subscription is being disposed of within a RaiiAsync instance.
                 // The exception will not be observed.
-                var timeoutException = new GraphqlUnsubscribeTimeoutException(id, _unregisterTimeout);
+                var timeoutException = new GraphqlUnsubscribeTimeoutException(id, _unsubscribeTimeout);
                 _exceptionSubject.OnNext(timeoutException);
             }
             finally
@@ -445,26 +431,32 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
             foreach (var registration in _subscriptions.Values)
             {
-                var ackTask = await SendRegistrationAsync(registration).ConfigureAwait(false);
+                // todo: deal with subscription timeouts, loss of connectivity
+                var ackTask = SendRegistrationAsync(registration);
                 ackTasks.Add(ackTask);
             }
 
             await Task.WhenAll(ackTasks).ConfigureAwait(false);
         }
 
-        private async Task<Task<AppSyncGraphqlResponse>> SendRegistrationAsync(SubscriptionRegistration registration)
+        private async Task<AppSyncGraphqlResponse> SendRegistrationAsync(SubscriptionRegistration registration)
         {
             var request = registration.Request;
 
-            // todo: ? handle a timeout
             var ackTask = _incomingMessages
                 .TakeUntil(response => response.Id == request.Id && response.Type is GraphqlResponseType.StartAck or GraphqlResponseType.Error)
                 .LastAsync()
-                .ToTask(_cts.Token);
+                .ToTask(SubscribeTimeoutToken);
 
-            await SendRequest(request).ConfigureAwait(false);
-
-            return ackTask;
+            try
+            {
+                await SendRequest(request).ConfigureAwait(false);
+                return await ackTask;
+            }
+            catch (OperationCanceledException)
+            {
+                throw new GraphqlSubscribeTimeoutException(registration.Id, _unsubscribeTimeout);
+            }
         }
 
         private Task SendRequest<TMessage>(TMessage message)
@@ -480,14 +472,18 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
             return _webSocket.SendAsync(segment, WebSocketMessageType.Text, true, _cts.Token);
         }
-    }
 
-
-    public static class AppSyncClientSerializerExtensions
-    {
-        public static AppSyncGraphqlResponse GetAppSyncGraphqlResponse(this IJsonSerializer serializer, Stream stream)
+        private WebSocketResponse<GraphqlError> GetGraphqlErrorFromResponseMessage(string message)
         {
-            return serializer.DeserializeObject<AppSyncGraphqlResponse>(stream);
+            return _serializer.DeserializeObject<WebSocketResponse<GraphqlError>>(message);
+        }
+
+        private AppSyncGraphqlResponse GetAppSyncGraphqlResponse(MemoryStream stream)
+        {
+            var response = _serializer.DeserializeObject<AppSyncGraphqlResponse>(stream);
+            response.Message = Encoding.UTF8.GetString(stream.ToArray());
+
+            return response;
         }
     }
 }

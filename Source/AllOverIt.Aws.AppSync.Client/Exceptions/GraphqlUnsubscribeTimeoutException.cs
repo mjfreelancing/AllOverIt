@@ -6,7 +6,7 @@ namespace AllOverIt.Aws.AppSync.Client.Exceptions
     public sealed class GraphqlUnsubscribeTimeoutException : GraphqlTimeoutExceptionBase
     {
         public GraphqlUnsubscribeTimeoutException(string id, TimeSpan timeoutPeriod)
-            : base($"Failed to unsubscribe subscription '{id}' within {timeoutPeriod.TotalMilliseconds}ms.", timeoutPeriod)
+            : base($"Failed to unsubscribe '{id}' within {timeoutPeriod.TotalMilliseconds}ms.", timeoutPeriod)
         {
         }
     }

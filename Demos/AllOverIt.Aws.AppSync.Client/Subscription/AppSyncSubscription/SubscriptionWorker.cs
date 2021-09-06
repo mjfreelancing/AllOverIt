@@ -85,12 +85,11 @@ namespace AppSyncSubscription
                             break;
                         }
 
-                        case GraphqlConnectionTimeoutException timeoutException:
+                        // GraphqlConnectionTimeoutException:
+                        // GraphqlSubscribeTimeoutException
+                        // GraphqlUnsubscribeTimeoutException
+                        case GraphqlTimeoutExceptionBase timeoutException:
                             Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {timeoutException.Message}");
-                            break;
-
-                        case GraphqlUnsubscribeTimeoutException unsubscribeException:
-                            Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {unsubscribeException.Message}");
                             break;
 
                         default:
