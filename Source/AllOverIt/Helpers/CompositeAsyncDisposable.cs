@@ -69,7 +69,7 @@ namespace AllOverIt.Helpers
                     {
                         cts.Cancel();
                     }
-                });
+                }, CancellationToken.None);
 
                 cts.Token.WaitHandle.WaitOne();
             }
