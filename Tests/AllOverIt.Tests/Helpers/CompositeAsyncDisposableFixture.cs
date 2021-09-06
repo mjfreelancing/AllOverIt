@@ -153,6 +153,7 @@ namespace AllOverIt.Tests.Helpers
                         .CallsTo(item => item.DisposeAsync())
                         .Invokes(_ => throw new Exception());
                 }
+
                 var goodFakes = this.CreateManyFakes<IAsyncDisposable>(3);
 
                 var disposables = faultyFakes
