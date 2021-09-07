@@ -100,30 +100,40 @@ namespace AppSyncSubscription
                 });
 
             // Subscribe to a mutation using two different queries - at the same time to test connection locking
-            // A null subscription is returned if there was a problem with the connection or subscription request.
-            // The error / exception observables will have reported the problem.
+            // Exceptions are raised on the exception observable as well as being populated in the subscription result.
             
-            // Although the exceptions are subscribed to above for logging, also showing that we can subscribe here
-            // to also get notification.
-            Exception connectionException = null;
-
-            var connectionExceptionSubscription = client.Exceptions
-                .Subscribe(ex =>
-                {
-                    connectionException = ex;
-                });
-
             // first, subscribe them all at the same time
             var (subscription1, subscription2, subscription3) = await TaskHelper.WhenAll(
                 GetSubscription1(client),
                 GetSubscription2(client),
                 GetSubscription3(client));
 
-            connectionExceptionSubscription.Dispose();
+            // collate all exceptions raised during the subscription process
+            var subscriptionErrors = new[] {subscription1, subscription2, subscription3}
+                .Where(item => item.Exceptions != null)
+                .Select(item => item)
+                .GroupBy(item => item.Id)
+                .AsReadOnlyCollection();
 
-            if (connectionException != null)
+            if (subscriptionErrors.Any())
             {
-                Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - A connection exception was received - {connectionException.Message}");
+                Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - Subscription errors received:");
+
+                foreach (var subscription in subscriptionErrors)
+                {
+                    var subscriptionId = subscription.Key;
+
+                    Console.WriteLine(subscriptionId.IsNullOrEmpty()
+                        ? " - Subscription failure with no collection"
+                        : $" - Subscription '{subscription.Key}'");
+
+                    var exceptions = subscription.SelectMany(item => item.Exceptions);
+
+                    foreach (var exception in exceptions)
+                    {
+                        Console.WriteLine($"  - {exception.Message}");
+                    }
+                }
             }
 
             // then dispose of them
@@ -131,20 +141,10 @@ namespace AppSyncSubscription
             Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - Disposing of subscriptions...");
             Console.WriteLine();
 
-            if (subscription1 != null)
-            {
-                await subscription1.DisposeAsync();
-            }
-
-            if (subscription2 != null)
-            {
-                await subscription2.DisposeAsync();
-            }
-
-            if (subscription3 != null)
-            {
-                await subscription3.DisposeAsync();
-            }
+            // safe to do even if the subscription failed
+            await subscription1.DisposeAsync();
+            await subscription2.DisposeAsync();
+            await subscription3.DisposeAsync();
 
             // and subscribe again, sequentially, to check everything re-connects as expected
             Console.WriteLine();
@@ -157,22 +157,22 @@ namespace AppSyncSubscription
 
             // Track all valid subscriptions that we need to wait for when shutting down
             // Example: If one subscription is an invalid query then it will be returned as null
-            if (subscription1 != null)
+            if (subscription1.Success)
             {
                 _compositeSubscriptions.Add(subscription1);
             }
 
-            if (subscription2 != null)
+            if (subscription2.Success)
             {
                 _compositeSubscriptions.Add(subscription2);
             }
 
-            if (subscription3 != null)
+            if (subscription3.Success)
             {
                 _compositeSubscriptions.Add(subscription3);
             }
 
-            if (subscription1 != null || subscription2 != null || subscription3 != null)
+            if (subscription1.Success || subscription2.Success || subscription3.Success)
             {
                 Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - One or more subscriptions are now ready");
                 Console.WriteLine();
@@ -203,13 +203,14 @@ namespace AppSyncSubscription
             // shutdown is not graceful after this returns
         }
 
-        private static Task<IAsyncDisposable> GetSubscription1(AppSyncSubscriptionClient client)
+        // Explicitly subscribes to the addLanguage("LNG1") mutation
+        private static Task<SubscriptionId> GetSubscription1(AppSyncSubscriptionClient client)
         {
             // try this for an unsupported operation error
             var badQuery = "query MyQuery { defaultLanguage { code name } }";
 
             var goodQuery = @"subscription MySubscription1 {
-                                addedLanguage(code: ""LNG"") {
+                                addedLanguage(code: ""LNG1"") {
                                   code
                                   name
                                 }
@@ -218,7 +219,8 @@ namespace AppSyncSubscription
             return GetSubscription(client, "Subscription1", goodQuery);
         }
 
-        private static Task<IAsyncDisposable> GetSubscription2(AppSyncSubscriptionClient client)
+        // Subscribes to ALL addLanguage() mutations
+        private static Task<SubscriptionId> GetSubscription2(AppSyncSubscriptionClient client)
         {
             return GetSubscription(
                 client,
@@ -231,21 +233,22 @@ namespace AppSyncSubscription
                   }");
         }
 
-        private static Task<IAsyncDisposable> GetSubscription3(AppSyncSubscriptionClient client)
+        // Explicitly subscribes to the addLanguage("LNG1") mutation using a variable
+        private static Task<SubscriptionId> GetSubscription3(AppSyncSubscriptionClient client)
         {
             return GetSubscription(
                 client,
                 "Subscription3",
-                @"subscription Subscription3($code: ID) {
+                @"subscription Subscription3($code: ID!) {
                     addedLanguage(code: $code) {
                       code
                       name
                     }
                   }",
-                new { code = "LNG" });
+                new { code = "LNG1" });
         }
 
-        private static async Task<IAsyncDisposable> GetSubscription(AppSyncSubscriptionClient client, string name, string query, object variables = null)
+        private static async Task<SubscriptionId> GetSubscription(AppSyncSubscriptionClient client, string name, string query, object variables = null)
         {
             var subscriptionQuery = new SubscriptionQuery
             {
@@ -272,7 +275,7 @@ namespace AppSyncSubscription
                     Console.WriteLine();
                 });
 
-            Console.WriteLine(subscription != null
+            Console.WriteLine(subscription.Success
                 ? $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {name} is registered (Id: {subscription.Id})"
                 : $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {name} failed to register");
 
