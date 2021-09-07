@@ -13,19 +13,14 @@ namespace GraphqlSchema.Schema.Types
     [AuthOidcDirective]
     internal interface IContinent : ISchemaTypeBase
     {
-        [SchemaTypeRequired]
         string Name();
 
-        // sharing this http datasource
-        [SchemaArrayRequired]
-        [SchemaTypeRequired]
+        // sharing this http datasource - just for testing the schema generator
         [HttpDataSource(EndpointSource.ImportValue, Constants.Import.GetCountriesUrlImportName, typeof(ContinentsCountriesMapping))]
         [AuthApiKeyDirective]
         ICountry[] Countries();
 
-        // sharing this http datasource
-        [SchemaArrayRequired]
-        [SchemaTypeRequired]
+        // sharing this http datasource - just for testing the schema generator
         [HttpDataSource(EndpointSource.ImportValue, Constants.Import.GetCountriesUrlImportName, typeof(ContinentsCountryCodesMapping))]
         [AuthIamDirective]
         string[] CountryCodes();

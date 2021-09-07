@@ -26,10 +26,11 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
             {
                 dataSource = attribute switch
                 {
-                    LambdaDataSourceAttribute lambdaDataSourceAttribute => CreateLambdaDataSource(lambdaDataSourceAttribute),
-                    HttpDataSourceAttribute httpDataSourceAttribute => CreateHttpDataSource(httpDataSourceAttribute),
-                    NoneDataSourceAttribute noneDataSourceAttribute => CreateNoneDataSource(noneDataSourceAttribute),
-                    _ => throw new InvalidOperationException($"Unhandled DataSource type '{attribute.GetType().Name}'")
+                    LambdaDataSourceAttribute lambda => CreateLambdaDataSource(lambda),
+                    HttpDataSourceAttribute http => CreateHttpDataSource(http),
+                    NoneDataSourceAttribute none => CreateNoneDataSource(none),
+                    SubscriptionDataSourceAttribute subscription => CreateNoneDataSource(subscription),
+                    _ => throw new ArgumentOutOfRangeException($"Unknown DataSource type '{attribute.GetType().Name}'")
                 };
 
                 _dataSourceCache.Add(attribute.LookupKey, dataSource);
@@ -65,7 +66,8 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
             });
         }
 
-        private BaseDataSource CreateNoneDataSource(NoneDataSourceAttribute attribute)
+        // Applicable to NoneDataSourceAttribute and SubscriptionDataSourceAttribute
+        private BaseDataSource CreateNoneDataSource(DataSourceAttribute attribute)
         {
             var stack = Stack.Of(_graphQlApi);
 

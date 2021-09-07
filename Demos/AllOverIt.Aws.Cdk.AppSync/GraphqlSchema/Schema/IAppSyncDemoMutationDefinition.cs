@@ -19,6 +19,6 @@ namespace GraphqlSchema.Schema
 
         [SchemaTypeRequired]
         [NoneDataSource(nameof(AddLanguage), typeof(AddLanguageMapping))]
-        ILanguage AddLanguage(ILanguageInput language);
+        ILanguage AddLanguage([SchemaTypeRequired] ILanguageInput language);
     }
 }

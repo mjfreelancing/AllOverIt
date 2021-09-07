@@ -15,7 +15,7 @@ namespace GraphqlSchema.Schema.Mappings
                 @"
                     {
                       ""version"": ""2017-02-28"",
-                      ""payload"": ""true""
+                      ""payload"": ""{}""
                     }"
             );
         }
