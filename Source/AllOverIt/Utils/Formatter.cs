@@ -1,13 +1,39 @@
 ﻿using AllOverIt.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace AllOverIt.Utils
 {
     public static class Formatter
     {
+        private class FormatterState
+        {
+            private readonly StringBuilder _stringBuilder = new();
+
+            public char Char { get; set; }
+            public bool Unquoted { get; set; }
+            //public bool NewBracket { get; set; }
+            public bool PendingIndent { get; set; }
+
+            public FormatterState Append(char value)
+            {
+                _stringBuilder.Append(value);
+                return this;
+            }
+
+            public FormatterState Append(string value)
+            {
+                _stringBuilder.Append(value);
+                return this;
+            }
+
+            public override string ToString()
+            {
+                return _stringBuilder.ToString();
+            }
+        }
+
         /// <summary>Returns a beautified version of the provided string, assumed to be in a JSON format.</summary>
         /// <param name="jsonValue">The string to be beautified.</param>
         /// <param name="indentSize">The number of spaces to use for indentation.</param>
@@ -26,16 +52,21 @@ namespace AllOverIt.Utils
             }
 
             var indentation = 0;
-            var indent = string.Concat(Enumerable.Repeat(" ", indentSize));
 
-            var tokenProcessors = new List<Func<bool, char, StringBuilder, bool>>
+            string GetIndent()
             {
-                // add a space after a colon
-                (unquoted, ch, sb) =>
+                return new string(' ', indentSize * indentation);
+            }
+
+            var tokenProcessors = new List<Func<FormatterState, bool>>
+            {
+                // add a space after a colon because we are ignoring whitespace
+                state =>
                 {
-                    if (unquoted && ch == ':')
+                    if (state.Unquoted && state.Char == ':')
                     {
-                        sb.Append(": ");
+                        state.Append(": ");
+
                         return true;
                     }
 
@@ -43,58 +74,71 @@ namespace AllOverIt.Utils
                 },
 
                 // ignore whitespace
-                (unquoted, ch, sb) =>
-                {
-                    return unquoted && char.IsWhiteSpace(ch);
-                },
+                state => state.Unquoted && char.IsWhiteSpace(state.Char),
 
-                // add a linebreak after a comma
-                (unquoted, ch, sb) =>
+                // add a line break after a comma
+                state =>
                 {
-                    if (unquoted && ch == ',')
+                    if (state.Unquoted && state.Char == ',')
                     {
-                        sb.Append(ch);
-                        sb.Append(Environment.NewLine);
-                        sb.Append(string.Concat(Enumerable.Repeat(indent, indentation)));
+                        state.Append(state.Char);
+                        state.Append(Environment.NewLine);
+                        state.Append(GetIndent());
+
                         return true;
                     }
 
                     return false;
                 },
 
-                // start a new line after an opening bracket, and indent the next line
-                (unquoted, ch, sb) =>
+                // start a new line after an opening bracket and note the next line requires indenting
+                state =>
                 {
-                    if (unquoted && (ch == '{' || ch == '['))
+                    if (state.Unquoted && state.Char is '{' or '[')
                     {
-                        sb.Append(ch);
-                        sb.Append(Environment.NewLine);
-                        sb.Append(string.Concat(Enumerable.Repeat(indent, ++indentation)));
+                        state.Append(state.Char);
+                        state.PendingIndent = true;
+                        indentation++;
+
                         return true;
                     }
 
                     return false;
                 },
 
-                // moving a closing bracket to the next line, with appropriate indentation
-                (unquoted, ch, sb) =>
+                // move a closing bracket to the next line with appropriate indentation
+                state =>
                 {
-                    if (unquoted && (ch == '}' || ch == ']'))
+                    if (state.Unquoted && state.Char is '}' or ']')
                     {
-                        sb.Append(Environment.NewLine);
-                        sb.Append(string.Concat(Enumerable.Repeat(indent, --indentation)));
-                        sb.Append(ch);
+                        state.Append(Environment.NewLine);
+                        indentation--;
+                        state.Append(GetIndent());
+                        state.Append(state.Char);
+
+                        return true;
                     }
-                    else
+
+                    return false;
+                },
+
+                // some other character
+                state =>
+                {
+                    if (state.PendingIndent)
                     {
-                        sb.Append(ch);
+                        state.Append(Environment.NewLine);
+                        state.Append(GetIndent());
                     }
+
+                    state.Append(state.Char);
+                    state.PendingIndent = false;
 
                     return true;
                 }
             };
 
-            var stringBuilder = new StringBuilder();
+            var state = new FormatterState();
             var quoteCount = 0;
             var escapeCount = 0;
 
@@ -110,23 +154,25 @@ namespace AllOverIt.Utils
                 }
 
                 var escaped = escapeCount > 0;
-                var unquoted = quoteCount % 2 == 0;
+                state.Unquoted = quoteCount % 2 == 0;
 
                 if (ch == '"' && !escaped)
                 {
                     quoteCount++;
                 }
 
+                state.Char = ch;
+
                 foreach (var processor in tokenProcessors)
                 {
-                    if (processor.Invoke(unquoted, ch, stringBuilder))
+                    if (processor.Invoke(state))
                     {
                         break;
                     }
                 }
             }
 
-            return stringBuilder.ToString();
+            return state.ToString();
         }
     }
 }

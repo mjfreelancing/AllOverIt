@@ -191,6 +191,19 @@ namespace AllOverIt.Tests.Utils
         }
 
         [Fact]
+        public void Should_Not_Add_Blank_Line_For_Empty_Object()
+        {
+            var source = @"{}";
+            var expected =
+@"{
+}";
+
+            var actual = Formatter.FormatJsonString(source);
+
+            actual.Should().Be(expected);
+        }
+
+        [Fact]
         public void Should_Not_Add_LineBreak_After_Quoted_Opening_Bracket()
         {
             var source = @"{""key1"":[""val[ue1""]}";
@@ -214,6 +227,21 @@ namespace AllOverIt.Tests.Utils
 @"{
   ""key1"": [
     ""val]ue1""
+  ]
+}";
+
+            var actual = Formatter.FormatJsonString(source);
+
+            actual.Should().Be(expected);
+        }
+
+        [Fact]
+        public void Should_Not_Add_Blank_Line_For_Empty_Array()
+        {
+            var source = @"{""key1"":[]}";
+            var expected =
+                @"{
+  ""key1"": [
   ]
 }";
 

@@ -46,7 +46,7 @@ AllOverIt.Evaluator - v3.0.0
 
   Current AllOverIt Inter-Dependencies
 
-  [1] AllOverIt                    (v1.17.0) - None
+  [1] AllOverIt                    (v1.17.1) - None
   [2] AllOverIt.Validation         (v1.0.0)  - requires [1] v1.17.0
   [3] AllOverIt.Aws.Cdk.AppSync    (v0.13.0) - requires [1] v1.17.0
   [4] AllOverIt.Evaluator          (v2.1.0)  - requires [1] v1.17.0
@@ -56,6 +56,12 @@ AllOverIt.Evaluator - v3.0.0
 
 ======================================================================================================================
 
+
+
+07 Sep 2021
+======================================================================================================================
+AllOverIt - v1.17.1
+  * Updated Formatter class to prevent blank lines being added. Tests updated.
 
 
 06 Sep 2021
