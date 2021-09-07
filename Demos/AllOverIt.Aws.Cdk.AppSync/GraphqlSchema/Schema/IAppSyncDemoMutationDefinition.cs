@@ -21,6 +21,6 @@ namespace GraphqlSchema.Schema
         // splitting out arguments so the subscription can filter
         [SchemaTypeRequired]
         [NoneDataSource(nameof(AddLanguage), typeof(AddLanguageMapping))]
-        ILanguage AddLanguage([SchemaTypeRequired] GraphqlTypeId code, string name);
+        ILanguage AddLanguage(ILanguageInput language);
     }
 }

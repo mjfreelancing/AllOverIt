@@ -15,10 +15,6 @@ namespace GraphqlSchema.Schema.Inputs
         [SchemaTypeRequired]
         public string Currency();
 
-        // todo: solve non-support for circular references
-        //[SchemaTypeRequired]
-        //public IContinentInput Continent();
-
         [SchemaArrayRequired]
         [SchemaTypeRequired]
         public ILanguageInput[] Languages();

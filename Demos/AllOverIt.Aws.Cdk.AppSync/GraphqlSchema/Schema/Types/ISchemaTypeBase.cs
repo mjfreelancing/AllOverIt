@@ -5,7 +5,7 @@ namespace GraphqlSchema.Schema.Types
 {
     public interface ISchemaTypeBase
     {
-        [SchemaTypeRequired]
+        [SchemaTypeRequired]        // leave this on the base type - good for testing subscriptions
         public GraphqlTypeId Code();
     }
 }

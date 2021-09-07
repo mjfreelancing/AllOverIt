@@ -86,11 +86,11 @@ namespace AllOverIt.Tests.Helpers
             public void Should_Throw_When_Null()
             {
                 Invoking(() =>
-                {
-                    IEnumerable<DummyClass> dummy = null;
+                    {
+                        IEnumerable<DummyClass> dummy = null;
 
-                    Guard.InvalidWhenNullOrEmpty(dummy);
-                })
+                        Guard.InvalidWhenNullOrEmpty(dummy);
+                    })
                     .Should()
                     .Throw<InvalidOperationException>()
                     .WithMessageWhenNull();
@@ -118,9 +118,9 @@ namespace AllOverIt.Tests.Helpers
                 var expected = new List<DummyClass>();
 
                 Invoking(() =>
-                {
-                    Guard.InvalidWhenNullOrEmpty(expected);
-                })
+                    {
+                        Guard.InvalidWhenNullOrEmpty(expected);
+                    })
                     .Should()
                     .Throw<InvalidOperationException>()
                     .WithMessageWhenEmpty();

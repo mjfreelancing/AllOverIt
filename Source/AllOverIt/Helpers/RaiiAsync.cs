@@ -43,8 +43,6 @@ namespace AllOverIt.Helpers
         }
     }
 
-
-
     /// <summary>A strongly-type async disposable object implementing the Resource Acquisition Is Initialization idiom.</summary>
     /// <typeparam name="TType">The type being initialized.</typeparam>
     public class RaiiAsync<TType> : IAsyncDisposable
