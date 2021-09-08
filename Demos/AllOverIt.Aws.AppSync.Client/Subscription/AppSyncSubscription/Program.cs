@@ -29,8 +29,8 @@ namespace AppSyncSubscription
                         
                         return new AppSyncSubscriptionConfiguration
                         {
-                            Host = options.ApiHost,
-                            RealTime = options.ApiHost?.Replace("appsync-api", "appsync-realtime-api"),
+                            HostUrl = options.ApiHost,
+                            // RealTimeUrl will be derived from HostUrl when not provided by replacing 'appsync-api' with 'appsync-realtime-api'
                             DefaultAuthorization = new AppSyncApiKeyAuthorization(options.ApiKey),
                             Serializer = new NewtonsoftJsonSerializer()
                         };

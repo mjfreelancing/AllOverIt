@@ -33,7 +33,8 @@ namespace AllOverIt.Aws.AppSync.Client.Extensions
                     .TakeUntil(predicate)
                     .LastAsync()
                     .SelectMany(action.Invoke)
-                    .Subscribe(state =>
+                    .Subscribe(
+                        state =>
                         {
                             tcs.SetResult(state);
                         },

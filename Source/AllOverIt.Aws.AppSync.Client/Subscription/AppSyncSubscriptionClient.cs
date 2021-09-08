@@ -20,15 +20,6 @@ using GraphqlResponseType = AllOverIt.Aws.AppSync.Client.Subscription.Constants.
 
 namespace AllOverIt.Aws.AppSync.Client.Subscription
 {
-    public sealed class AppSyncSubscriptionConfiguration
-    {
-        public string Host { get; set; }
-        public string RealTime { get; set; }
-        public IAppSyncAuthorization DefaultAuthorization { get; set; }
-        public IJsonSerializer Serializer { get; set; }
-    }
-
-
     // Implemented as per the protocol described at:
     // https://docs.aws.amazon.com/appsync/latest/devguide/real-time-websocket-client.html
 
@@ -92,12 +83,13 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         public IObservable<GraphqlSubscriptionResponseError> GraphqlErrors => _graphqlErrorSubject;
 
         public AppSyncSubscriptionClient(AppSyncSubscriptionConfiguration configuration)
-            : this(configuration.Host, configuration.RealTime, configuration.DefaultAuthorization, configuration.Serializer)
+            : this(configuration.HostUrl, configuration.RealTimeUrl, configuration.DefaultAuthorization, configuration.Serializer)
         {
         }
 
-        // endpoint is the graphql endpoint (not realtime) without https, wss, or /graphql
+        // host is the graphql endpoint (not realtime) without https, wss, or /graphql
         // e.g., example123abc.appsync-api.ap-southeast-2.amazonaws.com
+        // This constructor will derive the realtime url based on the host by replacing 'appsync-api' with 'appsync-realtime-api'.
         public AppSyncSubscriptionClient(string host, IAppSyncAuthorization defaultAuthorization, IJsonSerializer serializer)
             : this(host, host?.Replace("appsync-api", "appsync-realtime-api"), defaultAuthorization, serializer)
         {
@@ -118,7 +110,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         }
 
         // The default authorization mode will be used if authorization is null.
-        public async Task<SubscriptionId> SubscribeAsync<TResponse>(SubscriptionQuery query, Action<SubscriptionResponse<TResponse>> responseAction,
+        public async Task<IAppSubscriptionRegistration> SubscribeAsync<TResponse>(SubscriptionQuery query, Action<SubscriptionResponse<TResponse>> responseAction,
             IAppSyncAuthorization authorization = null)
         {
             // Only allow a single registration at a time to avoid complex overlapping connection states when there's a WebSocket issue.
@@ -141,10 +133,9 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                                 var connectionState = await CheckWebSocketConnectionAsync().ConfigureAwait(false);
 
                                 // Abort if the connection failed
-                                if (connectionState == SubscriptionConnectionState.Disconnected ||
-                                    connectionState == SubscriptionConnectionState.Disconnecting)
+                                if (connectionState is SubscriptionConnectionState.Disconnected or SubscriptionConnectionState.Disconnecting)
                                 {
-                                    return new SubscriptionId(subscriptionErrors.Exceptions);
+                                    return new AppSubscriptionRegistration(query.Id, subscriptionErrors.Exceptions);
                                 }
 
                                 authorization ??= _defaultAuthorization;
@@ -157,21 +148,20 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                                     Extensions = new {authorization = hostAuthorization.KeyValues}
                                 };
 
-                                var registration =
-                                    new SubscriptionRegistration<TResponse>(query.Id, payload, responseAction,
-                                        _serializer);
+                                var registration = new SubscriptionRegistration<TResponse>(query.Id, payload, responseAction, _serializer);
 
-                                _subscriptions.Add(registration.Id, registration);
+                                // registration.Id will be the same as query.Id
+                                _subscriptions.Add(query.Id, registration);
 
                                 var response = await SendRegistrationAsync(registration).ConfigureAwait(false);
 
                                 if (response.Type == GraphqlResponseType.Error)
                                 {
                                     var graphqlErrorMessage = GetGraphqlErrorFromResponseMessage(response.Message);
-                                    return new SubscriptionId(registration.Id, graphqlErrorMessage.Payload.Errors);
+                                    return new AppSubscriptionRegistration(query.Id, graphqlErrorMessage.Payload.Errors);
                                 }
 
-                                // This is decorated by SubscriptionId to avoid leaking SubscriptionRegistration
+                                // This is decorated by AppSubscriptionRegistration to avoid leaking SubscriptionRegistration
                                 var disposable = new RaiiAsync<SubscriptionRegistration>(
                                     () => registration,
                                     async subscription =>
@@ -179,7 +169,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                                         await UnregisterSubscriptionAsync(subscription.Id).ConfigureAwait(false);
                                     });
 
-                                return new SubscriptionId(registration.Id, disposable);
+                                return new AppSubscriptionRegistration(query.Id, disposable);
                             }
                             catch (Exception exception)
                             {
@@ -191,7 +181,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                                 // GraphqlUnsubscribeTimeoutException
                                 // WebSocketConnectionLostException - if the websocket is shutdown mid-subscription registration
                                 _exceptionSubject.OnNext(exception);
-                                return new SubscriptionId(subscriptionErrors.Exceptions);
+                                return new AppSubscriptionRegistration(query.Id, subscriptionErrors.Exceptions);
                             }
                         }
                     });
