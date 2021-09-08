@@ -236,11 +236,11 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         //}        //}
 
 
+
         private async Task<SubscriptionConnectionState> CheckWebSocketConnectionAsync()
         {
             return await _connectionStateSubject
-                .WaitUntil(
-                state => state is
+                .WaitUntil(state => state is
                     SubscriptionConnectionState.Disconnected or
                     SubscriptionConnectionState.Connected or
                     SubscriptionConnectionState.KeepAlive,
@@ -274,32 +274,34 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                         {
                             try
                             {
-                                var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(_cts.Token, timeoutSource.Token);
+                                using (var linkedCts = GetConnectionLinkedTokenSource(timeoutSource.Token))
+                                {
+                                    var ack = _incomingMessages
+                                        .TakeUntil(response => response is
+                                        {
+                                            Type: GraphqlResponseType.ConnectionAck or GraphqlResponseType
+                                                .ConnectionError
+                                        })
+                                        .LastAsync()
+                                        .ToTask(linkedCts.Token);
 
-                                var ack = _incomingMessages
-                                    .TakeUntil(response => response is
+                                    await SendInitRequestAsync().ConfigureAwait(false);
+
+                                    // if there's an error, the process will be aborted via a cancellation
+                                    var response = await ack.ConfigureAwait(false);
+
+                                    if (response.Type == GraphqlResponseType.ConnectionAck)
                                     {
-                                        Type: GraphqlResponseType.ConnectionAck or GraphqlResponseType.ConnectionError
-                                    })
-                                    .LastAsync()
-                                    .ToTask(linkedCts.Token);
+                                        _connectionStateSubject.OnNext(SubscriptionConnectionState.Connected);
 
-                                await SendInitRequestAsync().ConfigureAwait(false);
-
-                                // if there's an error, the process will be aborted via a cancellation
-                                var response = await ack.ConfigureAwait(false);
-
-                                if (response.Type == GraphqlResponseType.ConnectionAck)
-                                {
-                                    _connectionStateSubject.OnNext(SubscriptionConnectionState.Connected);
-
-                                    // re-register any existing subscriptions
-                                    await SendRegistrationRequestsAsync().ConfigureAwait(false);
-                                }
-                                else
-                                {
-                                    var error = GetGraphqlErrorFromResponseMessage(response.Message);
-                                    throw new GraphqlConnectionException(error);
+                                        // re-register any existing subscriptions
+                                        await SendRegistrationRequestsAsync().ConfigureAwait(false);
+                                    }
+                                    else
+                                    {
+                                        var error = GetGraphqlErrorFromResponseMessage(response.Message);
+                                        throw new GraphqlConnectionException(error);
+                                    }
                                 }
                             }
                             catch (OperationCanceledException)
@@ -606,15 +608,16 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                         Type = GraphqlRequestType.Stop
                     };
 
-                    var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(_cts.Token, timeoutSource.Token);
+                    using (var linkedCts = GetConnectionLinkedTokenSource(timeoutSource.Token))
+                    {
+                        var completeTask = _incomingMessages
+                            .TakeUntil(response => response.Id == id && response.Type == GraphqlResponseType.Complete)
+                            .LastAsync()
+                            .ToTask(linkedCts.Token);
 
-                    var completeTask = _incomingMessages
-                        .TakeUntil(response => response.Id == id && response.Type == GraphqlResponseType.Complete)
-                        .LastAsync()
-                        .ToTask(linkedCts.Token);
-
-                    await SendRequest(request).ConfigureAwait(false);
-                    await completeTask.ConfigureAwait(false);
+                        await SendRequest(request).ConfigureAwait(false);
+                        await completeTask.ConfigureAwait(false);
+                    }
                 }
             }
             catch (WebSocketConnectionLostException)
@@ -662,26 +665,36 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         {
             try
             {
-                var request = registration.Request;
-
                 using (var timeoutSource = SubscribeTimeoutSource)
                 {
-                    var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(_cts.Token, timeoutSource.Token);
+                    using (var linkedCts = GetConnectionLinkedTokenSource(timeoutSource.Token))
+                    {
+                        var request = registration.Request;
 
-                    var ackTask = _incomingMessages
-                        .TakeUntil(response =>
-                            response.Id == request.Id &&
-                            response.Type is GraphqlResponseType.StartAck or GraphqlResponseType.Error)
-                        .LastAsync()
-                        .ToTask(linkedCts.Token);
+                        var ackTask = _incomingMessages
+                            .TakeUntil(response =>
+                                response.Id == request.Id &&
+                                response.Type is GraphqlResponseType.StartAck or GraphqlResponseType.Error)
+                            .LastAsync()
+                            .ToTask(linkedCts.Token);
 
-                    await SendRequest(request).ConfigureAwait(false);
-                    return await ackTask.ConfigureAwait(false);
+                        await SendRequest(request).ConfigureAwait(false);
+                        return await ackTask.ConfigureAwait(false);
+                    }
                 }
             }
             catch (OperationCanceledException)
             {
-                throw new GraphqlSubscribeTimeoutException(registration.Id, _unsubscribeTimeout);
+                // If _cts was cancelled then there was a connection issue - probably wouldn't even get here unless it
+                // was the timeout token that cancelled. In reality, if _cts is cancelled then the connection was most
+                // likely shutdown and an exception would have been thrown - not caught in this method.
+                if (UnsubscribeTimeoutSource.IsCancellationRequested)
+                {
+                    throw new GraphqlSubscribeTimeoutException(registration.Id, _unsubscribeTimeout);
+                }
+
+                // Probably won't get here but is needed to keep the compiler happy. Worse case, the exception is reported twice.
+                throw;
             }
         }
 
@@ -716,7 +729,17 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         {
             return new ExceptionCollector(_exceptionSubject);
         }
+
+        private CancellationTokenSource GetConnectionLinkedTokenSource(CancellationToken token)
+        {
+            return CancellationTokenSource.CreateLinkedTokenSource(_cts.Token, token);
+        }
     }
+
+
+
+
+
 
     public static class ObservableExtensions
     {
