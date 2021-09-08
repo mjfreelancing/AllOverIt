@@ -20,6 +20,15 @@ using GraphqlResponseType = AllOverIt.Aws.AppSync.Client.Subscription.Constants.
 
 namespace AllOverIt.Aws.AppSync.Client.Subscription
 {
+    public sealed class AppSyncSubscriptionConfiguration
+    {
+        public string Host { get; set; }
+        public string RealTime { get; set; }
+        public IAppSyncAuthorization DefaultAuthorization { get; set; }
+        public IJsonSerializer Serializer { get; set; }
+    }
+
+
     // Implemented as per the protocol described at:
     // https://docs.aws.amazon.com/appsync/latest/devguide/real-time-websocket-client.html
 
@@ -59,7 +68,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
         private readonly string _host;
         private readonly Uri _uri;
-        private readonly IAuthorization _defaultAuthorization;
+        private readonly IAppSyncAuthorization _defaultAuthorization;
         private readonly IJsonSerializer _serializer;
         private readonly ArraySegment<byte> _buffer = new(new byte[8192]);
         private readonly IDictionary<string, SubscriptionRegistration> _subscriptions = new ConcurrentDictionary<string, SubscriptionRegistration>();
@@ -82,21 +91,24 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         public IObservable<Exception> Exceptions => _exceptionSubject;
         public IObservable<GraphqlSubscriptionResponseError> GraphqlErrors => _graphqlErrorSubject;
 
-        // todo: consider DI implications
-        // todo: create a configuration class that everything can be added to
+        public AppSyncSubscriptionClient(AppSyncSubscriptionConfiguration configuration)
+            : this(configuration.Host, configuration.RealTime, configuration.DefaultAuthorization, configuration.Serializer)
+        {
+        }
+
         // endpoint is the graphql endpoint (not realtime) without https, wss, or /graphql
         // e.g., example123abc.appsync-api.ap-southeast-2.amazonaws.com
-        public AppSyncSubscriptionClient(string host, IAuthorization defaultAuthorization, IJsonSerializer serializer)
+        public AppSyncSubscriptionClient(string host, IAppSyncAuthorization defaultAuthorization, IJsonSerializer serializer)
             : this(host, host?.Replace("appsync-api", "appsync-realtime-api"), defaultAuthorization, serializer)
         {
         }
 
-        public AppSyncSubscriptionClient(string host, string realtime, IAuthorization defaultAuthorization, IJsonSerializer serializer)
+        public AppSyncSubscriptionClient(string host, string realtime, IAppSyncAuthorization defaultAuthorization, IJsonSerializer serializer)
         {
             _host = host.WhenNotNullOrEmpty(nameof(host));
             _ = realtime.WhenNotNullOrEmpty(nameof(realtime));
 
-            var hostAuth = new HostAuthorization(host, defaultAuthorization);
+            var hostAuth = new AppSyncHostAuthorization(host, defaultAuthorization);
             var encodedHeader = hostAuth.GetEncodedHeader();
 
             _uri = new Uri($"wss://{realtime}/graphql?header={encodedHeader}&payload=e30=");
@@ -107,7 +119,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
         // The default authorization mode will be used if authorization is null.
         public async Task<SubscriptionId> SubscribeAsync<TResponse>(SubscriptionQuery query, Action<SubscriptionResponse<TResponse>> responseAction,
-            IAuthorization authorization = null)
+            IAppSyncAuthorization authorization = null)
         {
             // Only allow a single registration at a time to avoid complex overlapping connection states when there's a WebSocket issue.
             await _subscriptionLock.WaitAsync().ConfigureAwait(false);
@@ -137,7 +149,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
                                 authorization ??= _defaultAuthorization;
 
-                                var hostAuthorization = new HostAuthorization(_host, authorization);
+                                var hostAuthorization = new AppSyncHostAuthorization(_host, authorization);
 
                                 var payload = new SubscriptionQueryPayload
                                 {

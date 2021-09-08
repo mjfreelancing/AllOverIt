@@ -1,8 +1,8 @@
 ﻿namespace AllOverIt.Aws.AppSync.Client.Subscription
 {
-    public sealed class ApiKeyAuthorization : AuthorizationBase
+    public sealed class AppSyncApiKeyAuthorization : AppSyncAuthorizationBase
     {
-        public ApiKeyAuthorization(string apiKey)
+        public AppSyncApiKeyAuthorization(string apiKey)
         {
             KeyValues.Add("x-api-key", apiKey);
         }

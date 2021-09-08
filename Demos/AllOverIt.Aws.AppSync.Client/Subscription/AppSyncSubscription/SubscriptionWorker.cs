@@ -3,11 +3,9 @@ using AllOverIt.Aws.AppSync.Client.Subscription;
 using AllOverIt.Extensions;
 using AllOverIt.GenericHost;
 using AllOverIt.Helpers;
-using AllOverIt.Serialization.Newtonsoft;
 using AllOverIt.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
@@ -32,36 +30,31 @@ namespace AppSyncSubscription
 
     public sealed class SubscriptionWorker : ConsoleWorker
     {
-        private readonly AppSyncOptions _apiOptions;
+        private readonly AppSyncSubscriptionClient _subscriptionClient;
         private readonly IWorkerReady _workerReady;
         private readonly ILogger<SubscriptionWorker> _logger;
         private CompositeAsyncDisposable _compositeSubscriptions = new();
 
-        public SubscriptionWorker(IHostApplicationLifetime applicationLifetime, IOptions<AppSyncOptions> options, IWorkerReady workerReady,
-            ILogger<SubscriptionWorker> logger)
+        public SubscriptionWorker(IHostApplicationLifetime applicationLifetime, AppSyncSubscriptionClient subscriptionClient,
+            IWorkerReady workerReady, ILogger<SubscriptionWorker> logger)
             : base(applicationLifetime)
         {
-            _apiOptions = options.Value.WhenNotNull(nameof(options));
+            _subscriptionClient = subscriptionClient.WhenNotNull(nameof(subscriptionClient));
             _workerReady = workerReady.WhenNotNull(nameof(workerReady));
             _logger = logger.WhenNotNull(nameof(logger));
         }
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            var client = new AppSyncSubscriptionClient(
-                _apiOptions.ApiHost,
-                new ApiKeyAuthorization(_apiOptions.ApiKey),
-                new NewtonsoftJsonSerializer());
-
             // Write the current connection status to the console
-            client.ConnectionState
+            _subscriptionClient.ConnectionState
                 .Subscribe(state =>
                 {
                     LogMessage($"Connection State: {state}");
                 });
 
             // Write all errors to the console
-            client.GraphqlErrors
+            _subscriptionClient.GraphqlErrors
                 .Subscribe(response =>
                 {
                     // Not displaying the error.Type, which can be:
@@ -72,7 +65,7 @@ namespace AppSyncSubscription
                 });
 
             // Write all exceptions to the console
-            client.Exceptions
+            _subscriptionClient.Exceptions
                 .Subscribe(exception =>
                 {
                     switch (exception)
@@ -104,9 +97,9 @@ namespace AppSyncSubscription
 
             // first, subscribe them all at the same time
             var (subscription1, subscription2, subscription3) = await TaskHelper.WhenAll(
-                GetSubscription1(client),
-                GetSubscription2(client),
-                GetSubscription3(client));
+                GetSubscription1(_subscriptionClient),
+                GetSubscription2(_subscriptionClient),
+                GetSubscription3(_subscriptionClient));
 
             // collate all exceptions raised during the subscription process
             var subscriptionErrors = new[] {subscription1, subscription2, subscription3}
@@ -151,9 +144,9 @@ namespace AppSyncSubscription
             LogMessage("Registering subscriptions again, sequentially...");
             Console.WriteLine();
 
-            subscription1 = await GetSubscription1(client);
-            subscription2 = await GetSubscription2(client);
-            subscription3 = await GetSubscription3(client);
+            subscription1 = await GetSubscription1(_subscriptionClient);
+            subscription2 = await GetSubscription2(_subscriptionClient);
+            subscription3 = await GetSubscription3(_subscriptionClient);
 
             // Track all valid subscriptions that we need to wait for when shutting down
             // Example: If one subscription is an invalid query then it will be returned as null

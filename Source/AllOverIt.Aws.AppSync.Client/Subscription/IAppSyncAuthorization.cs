@@ -2,7 +2,7 @@
 
 namespace AllOverIt.Aws.AppSync.Client.Subscription
 {
-    public interface IAuthorization
+    public interface IAppSyncAuthorization
     {
         IDictionary<string, string> KeyValues { get; }
     }

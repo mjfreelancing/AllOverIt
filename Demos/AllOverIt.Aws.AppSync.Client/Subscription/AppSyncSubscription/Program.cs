@@ -1,7 +1,11 @@
-﻿using AllOverIt.GenericHost;
+﻿using AllOverIt.Aws.AppSync.Client.Subscription;
+using AllOverIt.GenericHost;
+using AllOverIt.Serialization.Abstractions;
+using AllOverIt.Serialization.Newtonsoft;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 
 namespace AppSyncSubscription
@@ -18,7 +22,31 @@ namespace AppSyncSubscription
                 {
                     services.AddSingleton<IWorkerReady, WorkerReady>();
 
-                    // SubscriptionWorker subscribes to a graphql
+                    // registers AppSyncSubscriptionConfiguration and populates properties via IOptions<AppSyncOptions>
+                    services.AddSingleton(provider =>
+                    {
+                        var options = provider.GetRequiredService<IOptions<AppSyncOptions>>().Value;
+                        
+                        return new AppSyncSubscriptionConfiguration
+                        {
+                            Host = options.ApiHost,
+                            RealTime = options.ApiHost?.Replace("appsync-api", "appsync-realtime-api"),
+                            DefaultAuthorization = new AppSyncApiKeyAuthorization(options.ApiKey),
+                            Serializer = new NewtonsoftJsonSerializer()
+                        };
+                    });
+
+                    // AppSyncSubscriptionClient has several constructors so register a factory method to construct it
+                    // using a AppSyncSubscriptionConfiguration
+                    services.AddSingleton(provider =>
+                    {
+                        var configuration = provider.GetRequiredService<AppSyncSubscriptionConfiguration>();
+                        return new AppSyncSubscriptionClient(configuration);
+                    });
+
+                    services.AddScoped<IJsonSerializer, NewtonsoftJsonSerializer>();
+
+                    // This performs the graphql subscription and logging of errors and responses received
                     services.AddHostedService<SubscriptionWorker>();
                 })
                 .RunConsoleAsync(options => options.SuppressStatusMessages = true);
@@ -35,8 +63,10 @@ namespace AppSyncSubscription
                 .ConfigureHostConfiguration(configBuilder => configBuilder.AddUserSecrets<AppSyncOptions>())
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.Configure<AppSyncOptions>(hostContext.Configuration.GetSection(nameof(AppSyncOptions)))
+                    // AppSyncOptions is loaded from user secrets
+                    services
                         .AddOptions()
+                        .Configure<AppSyncOptions>(hostContext.Configuration.GetSection(nameof(AppSyncOptions)))
                         .AddScoped<IConsoleApp, SubscriptionConsole>();
                 });
         }

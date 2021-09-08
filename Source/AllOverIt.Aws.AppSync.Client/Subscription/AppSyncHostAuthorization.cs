@@ -3,9 +3,9 @@ using System.Linq;
 
 namespace AllOverIt.Aws.AppSync.Client.Subscription
 {
-    public sealed class HostAuthorization : AuthorizationBase
+    public sealed class AppSyncHostAuthorization : AppSyncAuthorizationBase
     {
-        public HostAuthorization(string host, IAuthorization authorization)
+        public AppSyncHostAuthorization(string host, IAppSyncAuthorization authorization)
         {
             KeyValues.Add("host", host);
 
