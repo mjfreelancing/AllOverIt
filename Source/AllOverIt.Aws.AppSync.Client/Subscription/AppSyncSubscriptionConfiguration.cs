@@ -22,5 +22,6 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
         public IAppSyncAuthorization DefaultAuthorization { get; set; }
         public IJsonSerializer Serializer { get; set; }
+        public AppSyncClientConnectionOptions ConnectionOptions { get; set; } = new();
     }
 }
