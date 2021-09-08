@@ -2,7 +2,7 @@
 
 namespace AllOverIt.Aws.AppSync.Client.Subscription
 {
-    public class AppSyncGraphqlResponse : GraphQLWebSocketResponse
+    public class AppSyncGraphqlResponse : GraphqlWebSocketResponse
     {
 
         [IgnoreDataMember]

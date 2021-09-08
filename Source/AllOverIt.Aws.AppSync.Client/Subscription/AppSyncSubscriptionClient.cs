@@ -573,9 +573,9 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             return _webSocket.SendAsync(segment, WebSocketMessageType.Text, true, _cts.Token);
         }
 
-        private WebSocketResponse<GraphqlError> GetGraphqlErrorFromResponseMessage(string message)
+        private WebSocketGraphqlResponse<GraphqlError> GetGraphqlErrorFromResponseMessage(string message)
         {
-            return _serializer.DeserializeObject<WebSocketResponse<GraphqlError>>(message);
+            return _serializer.DeserializeObject<WebSocketGraphqlResponse<GraphqlError>>(message);
         }
 
         private AppSyncGraphqlResponse GetAppSyncGraphqlResponse(MemoryStream stream)

@@ -13,7 +13,7 @@ namespace AllOverIt.Aws.AppSync.Client.Exceptions
         public string ErrorType { get; }
         public IEnumerable<GraphqlErrorDetail> Errors { get; }
 
-        public GraphqlConnectionException(WebSocketResponse<GraphqlError> error)
+        public GraphqlConnectionException(WebSocketGraphqlResponse<GraphqlError> error)
             : base(error.Type)
         {
             ErrorType = error.Type;

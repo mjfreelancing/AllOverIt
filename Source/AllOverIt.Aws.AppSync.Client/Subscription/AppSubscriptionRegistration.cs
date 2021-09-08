@@ -46,13 +46,17 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                 .AsReadOnlyCollection();
         }
 
-        // Used when a connection is available but the subscription fails due to one or more graphql errors
+        /// <summary>Constructor.</summary>
+        /// <param name="id">The subscription identifier.</param>
+        /// <param name="errors">One or more graphql errors raised during the registration process. These errors
+        /// are typically associated with invalid queries or request/response mappings.</param>
         public AppSubscriptionRegistration(string id, IEnumerable<GraphqlErrorDetail> errors)
         {
             Id = id.WhenNotNullOrEmpty(nameof(id));
             GraphqlErrors = errors.AsReadOnlyCollection();
         }
 
+        /// <summary>Disposes of the subscription included unregistering from AppSync.</summary>
         public async ValueTask DisposeAsync()
         {
             // Unsubscribe from AppSync
