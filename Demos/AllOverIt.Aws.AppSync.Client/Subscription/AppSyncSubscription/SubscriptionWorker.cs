@@ -57,7 +57,7 @@ namespace AppSyncSubscription
             client.ConnectionState
                 .Subscribe(state =>
                 {
-                    Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - Connection State: {state}");
+                    LogMessage($"Connection State: {state}");
                 });
 
             // Write all errors to the console
@@ -68,7 +68,7 @@ namespace AppSyncSubscription
                     // "error" - such as when a query is provided instead of a subscription (will have error code)
 
                     var message = string.Join(", ", response.Error.Payload.Errors.Select(GetErrorMessage));
-                    Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {response.Id}: {message}");
+                    LogMessage($"{response.Id}: {message}");
                 });
 
             // Write all exceptions to the console
@@ -81,7 +81,7 @@ namespace AppSyncSubscription
                         case GraphqlConnectionException connectionException:
                         {
                             var message = string.Join(", ", connectionException.Errors.Select(GetErrorMessage));
-                            Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}");
+                            LogMessage($"{message}");
                             break;
                         }
 
@@ -89,12 +89,12 @@ namespace AppSyncSubscription
                         // GraphqlSubscribeTimeoutException
                         // GraphqlUnsubscribeTimeoutException
                         case GraphqlTimeoutExceptionBase timeoutException:
-                            Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {timeoutException.Message}");
+                            LogMessage($"{timeoutException.Message}");
                             break;
 
                         default:
                             // ? WebSocketConnectionLostException
-                            Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {exception.Message}");
+                            LogMessage($"{exception.Message}");
                             break;
                     }
                 });
@@ -117,28 +117,28 @@ namespace AppSyncSubscription
 
             if (subscriptionErrors.Any())
             {
-                Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - Subscription errors received:");
+                LogMessage("Subscription errors received:");
 
                 foreach (var subscription in subscriptionErrors)
                 {
                     var subscriptionId = subscription.Key;
 
-                    Console.WriteLine(subscriptionId.IsNullOrEmpty()
-                        ? " - Subscription failure with no collection"
+                    LogMessage(subscriptionId.IsNullOrEmpty()
+                        ? " - Subscription failure with no connection"
                         : $" - Subscription '{subscription.Key}'");
 
                     var exceptions = subscription.SelectMany(item => item.Exceptions);
 
                     foreach (var exception in exceptions)
                     {
-                        Console.WriteLine($"  - {exception.Message}");
+                        LogMessage($"  - {exception.Message}");
                     }
                 }
             }
 
             // then dispose of them
             Console.WriteLine();
-            Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - Disposing of subscriptions...");
+            LogMessage("Disposing of subscriptions...");
             Console.WriteLine();
 
             // safe to do even if the subscription failed
@@ -148,7 +148,7 @@ namespace AppSyncSubscription
 
             // and subscribe again, sequentially, to check everything re-connects as expected
             Console.WriteLine();
-            Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - Registering subscriptions again, sequentially...");
+            LogMessage("Registering subscriptions again, sequentially...");
             Console.WriteLine();
 
             subscription1 = await GetSubscription1(client);
@@ -174,7 +174,7 @@ namespace AppSyncSubscription
 
             if (subscription1.Success || subscription2.Success || subscription3.Success)
             {
-                Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - One or more subscriptions are now ready");
+                LogMessage("One or more subscriptions are now ready");
                 Console.WriteLine();
             }
  
@@ -204,7 +204,7 @@ namespace AppSyncSubscription
         }
 
         // Explicitly subscribes to the addLanguage("LNG1") mutation
-        private static Task<SubscriptionId> GetSubscription1(AppSyncSubscriptionClient client)
+        private static async Task<SubscriptionId> GetSubscription1(AppSyncSubscriptionClient client)
         {
             // try this for an unsupported operation error
             var badQuery = "query MyQuery { defaultLanguage { code name } }";
@@ -216,13 +216,20 @@ namespace AppSyncSubscription
                                 }
                               }";
 
-            return GetSubscription(client, "Subscription1", goodQuery);
+            var subscription = await GetSubscription(client, "Subscription1", goodQuery);
+
+            if (subscription.Success)
+            {
+                LogMessage(" => Listening ONLY for the code 'LNG1'");
+            }
+
+            return subscription;
         }
 
         // Subscribes to ALL addLanguage() mutations
-        private static Task<SubscriptionId> GetSubscription2(AppSyncSubscriptionClient client)
+        private static async Task<SubscriptionId> GetSubscription2(AppSyncSubscriptionClient client)
         {
-            return GetSubscription(
+            var subscription = await GetSubscription(
                 client,
                 "Subscription2",
                 @"subscription Subscription2 {
@@ -231,12 +238,21 @@ namespace AppSyncSubscription
                       name
                     }
                   }");
+
+            if (subscription.Success)
+            {
+                LogMessage(" => Listening for ALL codes");
+            }
+
+            return subscription;
         }
 
         // Explicitly subscribes to the addLanguage("LNG1") mutation using a variable
-        private static Task<SubscriptionId> GetSubscription3(AppSyncSubscriptionClient client)
+        private static async Task<SubscriptionId> GetSubscription3(AppSyncSubscriptionClient client)
         {
-            return GetSubscription(
+            var langCode = "LNG3";
+
+            var subscription = await GetSubscription(
                 client,
                 "Subscription3",
                 @"subscription Subscription3($code: ID!) {
@@ -245,7 +261,14 @@ namespace AppSyncSubscription
                       name
                     }
                   }",
-                new { code = "LNG1" });
+                new { code = langCode });
+
+            if (subscription.Success)
+            {
+                LogMessage($" => Listening ONLY for the code '{langCode}' using a variable");
+            }
+
+            return subscription;
         }
 
         private static async Task<SubscriptionId> GetSubscription(AppSyncSubscriptionClient client, string name, string query, object variables = null)
@@ -256,7 +279,7 @@ namespace AppSyncSubscription
                 Variables = variables
             };
 
-            Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - Adding subscription {name}, Id = {subscriptionQuery.Id}");
+            LogMessage($"Adding subscription {name}, Id = {subscriptionQuery.Id}");
 
             var subscription = await client.SubscribeAsync<AddedLanguageResponse>(
                 subscriptionQuery,
@@ -270,14 +293,24 @@ namespace AppSyncSubscription
                         ? (object) response.Data
                         : response.Errors;
 
-                    Console.WriteLine($"{name}: {type}{Environment.NewLine}" +
-                                      $"{JsonConvert.SerializeObject(message, new JsonSerializerSettings { Formatting = Formatting.Indented })}");
+                    LogMessage($"{name}: {type}{Environment.NewLine}" +
+                               $"{JsonConvert.SerializeObject(message, new JsonSerializerSettings { Formatting = Formatting.Indented })}");
+
                     Console.WriteLine();
                 });
 
-            Console.WriteLine(subscription.Success
-                ? $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {name} is registered (Id: {subscription.Id})"
-                : $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {name} failed to register");
+            string GetFailureMessage()
+            {
+                var errors = subscription.Exceptions != null
+                    ? subscription.Exceptions.Select(item => item.Message)
+                    : subscription.GraphqlErrors.Select(item => item.Message);
+
+                return string.Join(", ", errors);
+            }
+
+            LogMessage(subscription.Success
+                ? $"{name} is registered (Id: {subscription.Id})"
+                : $"{name} FAILED: {GetFailureMessage()}");
 
             return subscription;
         }
@@ -295,6 +328,11 @@ namespace AppSyncSubscription
             }
 
             return detail.Message;
+        }
+
+        private static void LogMessage(string message)
+        {
+            Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}");
         }
     }
 }

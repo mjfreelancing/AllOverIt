@@ -1,4 +1,5 @@
-﻿using AllOverIt.Helpers;
+﻿using AllOverIt.Extensions;
+using AllOverIt.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,8 +12,9 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         private IAsyncDisposable _disposable;
 
         public string Id { get; }
-        public IReadOnlyList<Exception> Exceptions { get; }
-        public bool Success => Exceptions == null;
+        public IReadOnlyCollection<Exception> Exceptions { get; }
+        public IReadOnlyCollection<GraphqlErrorDetail> GraphqlErrors { get; }
+        public bool Success => Exceptions == null && GraphqlErrors == null;
 
         // Used when the subscription was registered successfully
         public SubscriptionId(string id, IAsyncDisposable disposable)
@@ -22,19 +24,25 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         }
 
         // Used when a connection cannot be established (no registration Id)
-        public SubscriptionId(IReadOnlyList<Exception> exceptions)
+        public SubscriptionId(IEnumerable<Exception> exceptions)
         {
-            // Not assigning to Exceptions - would require a Cast<>
-            _ = exceptions.WhenNotNullOrEmpty(nameof(exceptions));
-
-            Exceptions = exceptions;
+            Exceptions = exceptions
+                .WhenNotNullOrEmpty(nameof(exceptions))
+                .AsReadOnlyCollection();
         }
 
-        // Used when a connection is available but the subscription fails
-        public SubscriptionId(string id, IReadOnlyList<Exception> exceptions)
+        // Used when a connection is available but the subscription fails due to one or more exceptions (such as connection issues)
+        public SubscriptionId(string id, IEnumerable<Exception> exceptions)
             : this(exceptions)
         {
             Id = id.WhenNotNullOrEmpty(nameof(id));
+        }
+
+        // Used when a connection is available but the subscription fails due to one or more graphql errors
+        public SubscriptionId(string id, IEnumerable<GraphqlErrorDetail> errors)
+        {
+            Id = id.WhenNotNullOrEmpty(nameof(id));
+            GraphqlErrors = errors.AsReadOnlyCollection();
         }
 
         public async ValueTask DisposeAsync()

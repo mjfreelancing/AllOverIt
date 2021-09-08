@@ -154,13 +154,8 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
                                 if (response.Type == GraphqlResponseType.Error)
                                 {
-                                    // temp - need to re-test this one
-                                    var error = GetGraphqlErrorFromResponseMessage(response.Message);
-                                    var exception = new Exception(error.ToString());
-
-                                    var exceptions = new List<Exception>(subscriptionErrors.Exceptions) {exception};
-
-                                    return new SubscriptionId(registration.Id, subscriptionErrors.Exceptions);
+                                    var graphqlErrorMessage = GetGraphqlErrorFromResponseMessage(response.Message);
+                                    return new SubscriptionId(registration.Id, graphqlErrorMessage.Payload.Errors);
                                 }
 
                                 // This is decorated by SubscriptionId to avoid leaking SubscriptionRegistration
@@ -309,7 +304,12 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                             }
                             catch (OperationCanceledException)
                             {
-                                throw new GraphqlConnectionTimeoutException(_connectionTimeout);
+                                // if _cts was cancelled then there was a connection issue - the exception will have been captured
+                                // from the _exceptionSubject (being observed at the start of the subscription process)
+                                if (timeoutSource.Token.IsCancellationRequested)
+                                {
+                                    throw new GraphqlConnectionTimeoutException(_connectionTimeout);
+                                }
                             }
                         }
                     }
