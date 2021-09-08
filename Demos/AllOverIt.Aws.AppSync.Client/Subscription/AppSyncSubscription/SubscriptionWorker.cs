@@ -101,7 +101,7 @@ namespace AppSyncSubscription
 
             // Subscribe to a mutation using two different queries - at the same time to test connection locking
             // Exceptions are raised on the exception observable as well as being populated in the subscription result.
-            
+
             // first, subscribe them all at the same time
             var (subscription1, subscription2, subscription3) = await TaskHelper.WhenAll(
                 GetSubscription1(client),
