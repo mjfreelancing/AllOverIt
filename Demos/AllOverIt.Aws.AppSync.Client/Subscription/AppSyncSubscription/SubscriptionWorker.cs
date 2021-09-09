@@ -179,7 +179,7 @@ namespace AppSyncSubscription
             // this, all 3 subscriptions should still be working.
             //
             LogMessage("Closing the connection (keeping any existing subscriptions)");
-            _subscriptionClient.Disconnect();
+            await _subscriptionClient.DisconnectAsync();
 
             LogMessage($"Disposing of {nameof(subscription2)}");
             await subscription2.DisposeAsync();

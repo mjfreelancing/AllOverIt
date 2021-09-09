@@ -123,7 +123,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                                     () => registration,
                                     async subscription =>
                                     {
-                                        await UnregisterSubscriptionAsync(subscription.Id).ConfigureAwait(false);
+                                        await UnregisterSubscriptionAsync(subscription.Id, true).ConfigureAwait(false);
                                     });
 
                                 return new AppSubscriptionRegistration(query.Id, disposable);
@@ -149,17 +149,37 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             }
         }
 
-        /// <summary>Opens a WebSocket connection and registers the client with AppSync.</summary>
-        /// <returns></returns>
+        /// <summary>Opens a WebSocket connection and registers the client with AppSync. Any existing subscriptions will
+        /// also be re-subscribed.</summary>
+        /// <returns>True if the connection was established, otherwise false.</returns>
+        /// <remarks>Refer to <see cref="DisconnectAsync"/> for more information on how existing subscriptions are retained
+        /// if the client is disconnected while there are active subscriptions.</remarks>
         public async Task<bool> ConnectAsync()
         {
             await CheckWebSocketConnectionAsync();
             return IsAlive;
         }
 
-        public void Disconnect()
+        /// <summary>Unsubscribes any existing subscriptions and then disconnects the client from AppSync. The subscription
+        /// registrations are maintained (not disposed of). If a new connection is later established by calling
+        /// <see cref="ConnectAsync"/> or making a new subscription then all previous subscriptions will be re-subscribed.</summary>
+        public async Task DisconnectAsync()
         {
-            ShutdownConnection();
+            // unsubscribe from AppSync but do not remove them from the registry
+            try
+            {
+                foreach (var subscriptionId in _subscriptions.Keys)
+                {
+                    await UnregisterSubscriptionAsync(subscriptionId, false);
+                }
+
+                // If there was an exception above then the connection should already be closed
+                ShutdownConnection();
+            }
+            catch (Exception)
+            {
+                // nothing to do here - if there was an exception it would have been reported by the _exceptionSubject
+            }
         }
 
         private async Task<SubscriptionConnectionState> CheckWebSocketConnectionAsync()
@@ -432,7 +452,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             return SendRequestAsync(request);
         }
 
-        private async Task UnregisterSubscriptionAsync(string id)
+        private async Task UnregisterSubscriptionAsync(string id, bool removeFromRegistry)
         {
             // It's possible to explicitly disconnect without unsubscribing a subscription (it will be re-subscribed
             // later when re-opening the connection).
@@ -479,13 +499,15 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                 }
                 finally
                 {
-                    // needs to be removed because the subscription is being disposed
-                    _subscriptions.Remove(id);
-
-                    // shutdown the web socket if there's no more registered subscriptions
-                    if (!_subscriptions.Any())
+                    if (removeFromRegistry)
                     {
-                        ShutdownConnection();
+                        _subscriptions.Remove(id);
+
+                        // shutdown the web socket if there's no more registered subscriptions
+                        if (!_subscriptions.Any())
+                        {
+                            ShutdownConnection();
+                        }
                     }
                 }
             }
