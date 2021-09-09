@@ -26,59 +26,14 @@ using GraphqlResponseType = AllOverIt.Aws.AppSync.Client.Subscription.Constants.
 
 namespace AllOverIt.Aws.AppSync.Client.Subscription
 {
-    public sealed class TimeoutCancellationSource : IDisposable
-    {
-        private CancellationTokenSource _cts;
-
-        public CancellationToken Token => _cts.Token;
-        public TimeSpan Timeout { get; }
-
-        public TimeoutCancellationSource(TimeSpan timeout)
-        {
-            Timeout = timeout;
-            _cts = new CancellationTokenSource(timeout);
-        }
-
-        public void Dispose()
-        {
-            _cts?.Dispose();
-            _cts = null;
-        }
-
-        public CancellationTokenSource GetLinkedTokenSource(CancellationToken token)
-        {
-            return CancellationTokenSource.CreateLinkedTokenSource(Token, token);
-        }
-    }
-
-
     // Implemented as per the protocol described at:
     // https://docs.aws.amazon.com/appsync/latest/devguide/real-time-websocket-client.html
 
     public sealed class AppSyncSubscriptionClient
     {
-        //private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(1);
-
-        // todo: make this configurable
-        //private readonly TimeSpan _connectionTimeout = DefaultTimeout;
-        //private readonly TimeSpan _subscribeTimeout = DefaultTimeout;
-        //private readonly TimeSpan _unsubscribeTimeout = DefaultTimeout;
-        //private CancellationTokenSource ConnectionTimeoutSource => new(_connectionTimeout);
-        //private CancellationTokenSource SubscribeTimeoutSource => new(_subscribeTimeout);
-        //private CancellationTokenSource UnsubscribeTimeoutSource => new(_unsubscribeTimeout);
-
         private readonly AppSyncSubscriptionConfiguration _configuration;
         private readonly ArraySegment<byte> _buffer = new(new byte[8192]);
         private readonly IDictionary<string, SubscriptionRegistration> _subscriptions = new ConcurrentDictionary<string, SubscriptionRegistration>();
-
-        // the primary CancellationTokenSource used for message retrieval from the web socket
-        private CancellationTokenSource _webSocketCancellationTokenSource;
-
-        private IConnectableObservable<AppSyncGraphqlResponse> _incomingMessages;
-        private IDisposable _incomingMessagesConnection;
-
-        // One WebSocket connection can have multiple subscriptions (even with different authentication modes).
-        private ClientWebSocket _webSocket;
 
         // Only allow a single subscription to be processed at a time, just in case there are communication errors during
         // the connection or registration handshaking. Trying to deal with overlapping state is too complex.
@@ -87,6 +42,18 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         private readonly BehaviorSubject<SubscriptionConnectionState> _connectionStateSubject = new(SubscriptionConnectionState.Disconnected);
         private readonly Subject<Exception> _exceptionSubject = new();
         private readonly Subject<GraphqlSubscriptionResponseError> _graphqlErrorSubject = new();
+
+        private IConnectableObservable<AppSyncGraphqlResponse> _incomingMessages;
+        private IDisposable _incomingMessagesConnection;
+
+        // the primary CancellationTokenSource used for message retrieval from the web socket
+        private CancellationTokenSource _webSocketCancellationTokenSource;
+
+        // One WebSocket connection can have multiple subscriptions (even with different authentication modes).
+        private ClientWebSocket _webSocket;
+
+        // The last raised connection state
+        private SubscriptionConnectionState CurrentConnectionState => _connectionStateSubject.Value;
 
         public IObservable<SubscriptionConnectionState> ConnectionState => _connectionStateSubject;
         public IObservable<Exception> Exceptions => _exceptionSubject;
@@ -183,7 +150,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
         private async Task<SubscriptionConnectionState> CheckWebSocketConnectionAsync()
         {
-            if (_connectionStateSubject.Value is SubscriptionConnectionState.Connected or SubscriptionConnectionState.KeepAlive)
+            if (CurrentConnectionState is SubscriptionConnectionState.Connected or SubscriptionConnectionState.KeepAlive)
             {
                 return SubscriptionConnectionState.Connected;
             }
@@ -201,7 +168,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                     ConfigureMessageProcessing();
 
                     // If a websocket exception occurred above then we cannot continue
-                    if (_connectionStateSubject.Value != SubscriptionConnectionState.Disconnected)
+                    if (CurrentConnectionState != SubscriptionConnectionState.Disconnected)
                     {
                         using (var timeoutSource = new TimeoutCancellationSource(_configuration.ConnectionOptions.ConnectionTimeout))
                         {
@@ -248,7 +215,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                         }
                     }
 
-                    return _connectionStateSubject.Value;
+                    return CurrentConnectionState;
                 },
                 ex =>
                 {
@@ -272,7 +239,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
         private void ShutdownConnection()
         {
-            var isShuttingDown = _connectionStateSubject.Value is
+            var isShuttingDown = CurrentConnectionState is
                 SubscriptionConnectionState.Disconnecting or
                 SubscriptionConnectionState.Disconnected;
 
