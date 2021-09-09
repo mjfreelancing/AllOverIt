@@ -87,7 +87,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             {
                 foreach (var subscriptionId in _subscriptions.Keys)
                 {
-                    await UnregisterSubscriptionAsync(subscriptionId, false);
+                    await UnsubscribeSubscriptionAsync(subscriptionId, false);
                 }
 
                 // If there was an exception above then the connection should already be closed
@@ -156,7 +156,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                                     () => registration,
                                     async subscription =>
                                     {
-                                        await UnregisterSubscriptionAsync(subscription.Id, true).ConfigureAwait(false);
+                                        await UnsubscribeSubscriptionAsync(subscription.Id, true).ConfigureAwait(false);
                                     });
 
                                 return new AppSubscriptionRegistration(query.Id, disposable);
@@ -266,7 +266,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             if (response != null)
             {
                 var data = response.GetConnectionResponseData(_configuration.Serializer);
-                _healthCheckPeriod = TimeSpan.FromMilliseconds(10000);   // data.ConnectionTimeoutMs
+                _healthCheckPeriod = TimeSpan.FromMilliseconds(data.ConnectionTimeoutMs);
             }
 
             _healthDisposable?.Dispose();
@@ -434,7 +434,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
                         // Such as a websocket issue - this can be received here or within CheckWebSocketConnectionAsync(), timing dependent
                         case GraphqlResponseType.ConnectionError:   // response.Id will be null
-                            NotifySubscriptionError(null, responseMessage, response);
+                            NotifySubscriptionError(null, response);
                             break;
 
                         // Applies to both data responses and response errors (such as mapping issues)
@@ -450,12 +450,12 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
                         // An error specific to a specific subscription (such as a malformed query).
                         case GraphqlResponseType.Error:
-                            NotifySubscriptionError(response.Id, responseMessage, response);
+                            NotifySubscriptionError(response.Id, response);
                             break;
 
                         // AppSync has closed the connection
                         case GraphqlResponseType.Close:
-                            NotifySubscriptionError(response.Id, responseMessage, response);
+                            NotifySubscriptionError(response.Id, response);
                             ShutdownConnection();
                             break;
                     }
@@ -475,7 +475,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             }
         }
 
-        private void NotifySubscriptionError(string id, string responseMessage, AppSyncGraphqlResponse response)
+        private void NotifySubscriptionError(string id, AppSyncGraphqlResponse response)
         {
             var error = response.GetGraphqlErrorFromResponseMessage(_configuration.Serializer);
             var responseError = new GraphqlSubscriptionResponseError(id, error);
@@ -492,7 +492,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             return SendRequestAsync(request);
         }
 
-        private async Task UnregisterSubscriptionAsync(string id, bool removeFromRegistry)
+        private async Task UnsubscribeSubscriptionAsync(string id, bool removeFromRegistry)
         {
             // It's possible to explicitly disconnect without unsubscribing a subscription (it will be re-subscribed
             // later when re-opening the connection).
