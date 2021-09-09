@@ -127,7 +127,7 @@ namespace AppSyncSubscription
 
             // then dispose of them
             Console.WriteLine();
-            LogMessage("Disposing of subscriptions...");
+            LogMessage("Disposing of ALL subscriptions...");
             Console.WriteLine();
 
             // safe to do even if the subscription failed
@@ -135,14 +135,21 @@ namespace AppSyncSubscription
             await subscription2.DisposeAsync();
             await subscription3.DisposeAsync();
 
-            // and subscribe again, sequentially, to check everything re-connects as expected
+            // at this point the WebSocket will have been closed by the client as all subscriptions are now disposed of
             Console.WriteLine();
+
+            // and subscribe again, sequentially, to check everything re-connects as expected
             LogMessage("Registering subscriptions again, sequentially...");
             Console.WriteLine();
 
             subscription1 = await GetSubscription1(_subscriptionClient);
+            Console.WriteLine();
+
             subscription2 = await GetSubscription2(_subscriptionClient);
+            Console.WriteLine();
+            
             subscription3 = await GetSubscription3(_subscriptionClient);
+            Console.WriteLine();
 
             // Track all valid subscriptions that we need to wait for when shutting down
             // Example: If one subscription is an invalid query then it will be returned as null
@@ -166,7 +173,35 @@ namespace AppSyncSubscription
                 LogMessage("One or more subscriptions are now ready");
                 Console.WriteLine();
             }
- 
+
+            // Testing closing the connection without unsubscribing, then dispose of one subscription,
+            // then reconnect, the re-subscribe the closed subscription (will get a new Id). After all
+            // this, all 3 subscriptions should still be working.
+            //
+            LogMessage("Closing the connection (keeping any existing subscriptions)");
+            _subscriptionClient.Disconnect();
+
+            LogMessage($"Disposing of {nameof(subscription2)}");
+            await subscription2.DisposeAsync();
+
+            LogMessage("Re-opening the connection, will re-subscribe the existing subscriptions with AppSync");
+            var isAlive = await _subscriptionClient.ConnectAsync();
+
+            LogMessage(isAlive
+                ? "The connection has been re-established"
+                : "The connection has not been re-established");
+
+            // If the connection is not available this will retry to establish the connection
+            LogMessage($"Re-create a new subscription for {nameof(subscription2)}");
+            subscription2 = await GetSubscription2(_subscriptionClient);
+
+            // ready to start receiving messages
+            if (subscription1.Success || subscription2.Success || subscription3.Success)
+            {
+                LogMessage("Ready to start receiving subscription responses");
+                Console.WriteLine();
+            }
+
             // the user can now press a key to terminate (via the main console)
             _workerReady.SetCompleted();
 

@@ -22,7 +22,6 @@ using GraphqlResponseType = AllOverIt.Aws.AppSync.Client.Subscription.Constants.
 // todo:
 // - Cognito
 // - internal connection recovery
-// - client-side connect/disconnect without loss of subscriptions
 
 namespace AllOverIt.Aws.AppSync.Client.Subscription
 {
@@ -58,6 +57,8 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         public IObservable<SubscriptionConnectionState> ConnectionState => _connectionStateSubject;
         public IObservable<Exception> Exceptions => _exceptionSubject;
         public IObservable<GraphqlSubscriptionResponseError> GraphqlErrors => _graphqlErrorSubject;
+
+        public bool IsAlive => CurrentConnectionState is SubscriptionConnectionState.Connected or SubscriptionConnectionState.KeepAlive;
 
         public AppSyncSubscriptionClient(AppSyncSubscriptionConfiguration configuration)
         {
@@ -148,9 +149,22 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             }
         }
 
+        /// <summary>Opens a WebSocket connection and registers the client with AppSync.</summary>
+        /// <returns></returns>
+        public async Task<bool> ConnectAsync()
+        {
+            await CheckWebSocketConnectionAsync();
+            return IsAlive;
+        }
+
+        public void Disconnect()
+        {
+            ShutdownConnection();
+        }
+
         private async Task<SubscriptionConnectionState> CheckWebSocketConnectionAsync()
         {
-            if (CurrentConnectionState is SubscriptionConnectionState.Connected or SubscriptionConnectionState.KeepAlive)
+            if (IsAlive)
             {
                 return SubscriptionConnectionState.Connected;
             }
@@ -215,6 +229,8 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                         }
                     }
 
+                    // If there was a connection issue, this could be Disconnecting or Disconnected, depending on whether the
+                    // error was immediately raised or sometime later during the incoming message processing.
                     return CurrentConnectionState;
                 },
                 ex =>
@@ -243,7 +259,8 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                 SubscriptionConnectionState.Disconnecting or
                 SubscriptionConnectionState.Disconnected;
 
-            // Only disconnect if currently Connecting, Connected, or KeepAlive were the last known states
+            // Only disconnect if currently 'Connecting', 'Connected', or 'KeepAlive' were the last known states.
+            // Don't use 'IsAlive' here as that does not consider 'Connecting'.
             if (!isShuttingDown)
             {
                 _connectionStateSubject.OnNext(SubscriptionConnectionState.Disconnecting);
@@ -417,6 +434,16 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
         private async Task UnregisterSubscriptionAsync(string id)
         {
+            // It's possible to explicitly disconnect without unsubscribing a subscription (it will be re-subscribed
+            // later when re-opening the connection).
+            if (!IsAlive)
+            {
+                // this implies the subscription is being disposed of after the connection was closed (by the consumer)
+                // so just remove it from the collection of subscriptions.
+                _subscriptions.Remove(id);
+                return;
+            }
+
             using (var timeoutSource = new TimeoutCancellationSource(_configuration.ConnectionOptions.SubscriptionTimeout))
             {
                 try
