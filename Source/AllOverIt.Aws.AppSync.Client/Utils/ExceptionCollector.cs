@@ -1,9 +1,11 @@
 ﻿using AllOverIt.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Reactive.Linq;
 
 namespace AllOverIt.Aws.AppSync.Client.Utils
 {
+    // Used to capture exceptions. Cannot use the reactive ToList() because the sequence does not complete.
     internal sealed class ExceptionCollector : IDisposable
     {
         private readonly List<Exception> _exceptions = new();

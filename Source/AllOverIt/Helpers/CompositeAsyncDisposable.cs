@@ -53,17 +53,24 @@ namespace AllOverIt.Helpers
         {
             AggregateException aggregateException = null;
 
-            using (var cts = new CancellationTokenSource())
+            using (var cancellationTokenSource = new CancellationTokenSource())
             {
+                // capture for the closure below (keep the analyzer happy)
+                var cts = cancellationTokenSource;
+
                 Task.Run(async () =>
                 {
                     try
                     {
                         await DisposeResourcesAsync().ConfigureAwait(false);
                     }
-                    catch (AggregateException exception)
+                    catch (AggregateException aggregate)
                     {
-                        aggregateException = exception;
+                        aggregateException = aggregate;
+                    }
+                    catch (Exception exception)
+                    {
+                        aggregateException = new AggregateException(exception);
                     }
                     finally
                     {
@@ -71,7 +78,7 @@ namespace AllOverIt.Helpers
                     }
                 }, CancellationToken.None);
 
-                cts.Token.WaitHandle.WaitOne();
+                cancellationTokenSource.Token.WaitHandle.WaitOne();
             }
 
             if (aggregateException != null)
