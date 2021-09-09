@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Aws.AppSync.Client.Subscription;
+using AllOverIt.Aws.AppSync.Client.Subscription.Configuration;
 using AllOverIt.GenericHost;
 using AllOverIt.Serialization.Abstractions;
 using AllOverIt.Serialization.Newtonsoft;

@@ -1,6 +1,6 @@
 ﻿using AllOverIt.Serialization.Abstractions;
 
-namespace AllOverIt.Aws.AppSync.Client.Subscription
+namespace AllOverIt.Aws.AppSync.Client.Subscription.Configuration
 {
     public sealed class AppSyncSubscriptionConfiguration
     {

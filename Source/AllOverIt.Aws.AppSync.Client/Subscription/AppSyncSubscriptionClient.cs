@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Aws.AppSync.Client.Exceptions;
 using AllOverIt.Aws.AppSync.Client.Extensions;
+using AllOverIt.Aws.AppSync.Client.Subscription.Configuration;
 using AllOverIt.Aws.AppSync.Client.Utils;
 using AllOverIt.Helpers;
 using System;
@@ -19,29 +20,36 @@ using GraphqlRequestType = AllOverIt.Aws.AppSync.Client.Subscription.Constants.G
 using GraphqlResponseType = AllOverIt.Aws.AppSync.Client.Subscription.Constants.GraphqlResponseType;
 
 // todo:
-// - configurable timeouts
-// - exponential jitter-backoff
 // - Cognito
 // - internal connection recovery
 // - client-side connect/disconnect without loss of subscriptions
 
 namespace AllOverIt.Aws.AppSync.Client.Subscription
 {
-
-    public sealed class AppSyncClientConnectionOptions
+    public sealed class TimeoutCancellationSource : IDisposable
     {
-        private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(3);
-        private static readonly TimeSpan MaxTimeout = TimeSpan.FromSeconds(30);
+        private CancellationTokenSource _cts;
 
-        public TimeSpan ConnectionTimeout { get; } = DefaultTimeout;
+        public CancellationToken Token => _cts.Token;
+        public TimeSpan Timeout { get; }
 
-        /// <summary>Initial subscribe and unsubscribe timeout period. If a subscribe fails the subscription is
-        /// returned in an error state. If an unsubscribe fails, the subscription is dropped on the assumption
-        /// there is something wrong with the connection.</summary>
-        public TimeSpan SubscriptionTimeout { get; } = DefaultTimeout;
+        public TimeoutCancellationSource(TimeSpan timeout)
+        {
+            Timeout = timeout;
+            _cts = new CancellationTokenSource(timeout);
+        }
 
+        public void Dispose()
+        {
+            _cts?.Dispose();
+            _cts = null;
+        }
+
+        public CancellationTokenSource GetLinkedTokenSource(CancellationToken token)
+        {
+            return CancellationTokenSource.CreateLinkedTokenSource(Token, token);
+        }
     }
-
 
 
     // Implemented as per the protocol described at:
@@ -49,16 +57,15 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
     public sealed class AppSyncSubscriptionClient
     {
-        private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(1);
+        //private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(1);
 
         // todo: make this configurable
-        private readonly TimeSpan _connectionTimeout = DefaultTimeout;
-        private readonly TimeSpan _subscribeTimeout = DefaultTimeout;
-        private readonly TimeSpan _unsubscribeTimeout = DefaultTimeout;
-
-        private CancellationTokenSource ConnectionTimeoutSource => new(_connectionTimeout);
-        private CancellationTokenSource SubscribeTimeoutSource => new(_subscribeTimeout);
-        private CancellationTokenSource UnsubscribeTimeoutSource => new(_unsubscribeTimeout);
+        //private readonly TimeSpan _connectionTimeout = DefaultTimeout;
+        //private readonly TimeSpan _subscribeTimeout = DefaultTimeout;
+        //private readonly TimeSpan _unsubscribeTimeout = DefaultTimeout;
+        //private CancellationTokenSource ConnectionTimeoutSource => new(_connectionTimeout);
+        //private CancellationTokenSource SubscribeTimeoutSource => new(_subscribeTimeout);
+        //private CancellationTokenSource UnsubscribeTimeoutSource => new(_unsubscribeTimeout);
 
         private readonly AppSyncSubscriptionConfiguration _configuration;
         private readonly ArraySegment<byte> _buffer = new(new byte[8192]);
@@ -107,7 +114,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                         SubscriptionConnectionState.KeepAlive,
                     async _ =>
                     {
-                        using (var subscriptionErrors = GetExceptionCollector())
+                        using (var subscriptionErrors = new ExceptionCollector(_exceptionSubject))
                         {
                             try
                             {
@@ -196,17 +203,16 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                     // If a websocket exception occurred above then we cannot continue
                     if (_connectionStateSubject.Value != SubscriptionConnectionState.Disconnected)
                     {
-                        using (var timeoutSource = ConnectionTimeoutSource)
+                        using (var timeoutSource = new TimeoutCancellationSource(_configuration.ConnectionOptions.ConnectionTimeout))
                         {
                             try
                             {
-                                using (var linkedCts = GetConnectionLinkedTokenSource(timeoutSource.Token))
+                                using (var linkedCts = timeoutSource.GetLinkedTokenSource(_webSocketCancellationTokenSource.Token))
                                 {
                                     var ack = _incomingMessages
                                         .TakeUntil(response => response is
                                         {
-                                            Type: GraphqlResponseType.ConnectionAck or GraphqlResponseType
-                                                .ConnectionError
+                                            Type: GraphqlResponseType.ConnectionAck or GraphqlResponseType.ConnectionError
                                         })
                                         .LastAsync()
                                         .ToTask(linkedCts.Token);
@@ -236,7 +242,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                                 // from the _exceptionSubject (being observed at the start of the subscription process)
                                 if (timeoutSource.Token.IsCancellationRequested)
                                 {
-                                    throw new GraphqlConnectionTimeoutException(_connectionTimeout);
+                                    throw new GraphqlConnectionTimeoutException(timeoutSource.Timeout);
                                 }
                             }
                         }
@@ -444,9 +450,9 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
         private async Task UnregisterSubscriptionAsync(string id)
         {
-            try
+            using (var timeoutSource = new TimeoutCancellationSource(_configuration.ConnectionOptions.SubscriptionTimeout))
             {
-                using (var timeoutSource = UnsubscribeTimeoutSource)
+                try
                 {
                     var request = new SubscriptionQueryMessage
                     {
@@ -454,7 +460,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                         Type = GraphqlRequestType.Stop
                     };
 
-                    using (var linkedCts = GetConnectionLinkedTokenSource(timeoutSource.Token))
+                    using (var linkedCts = timeoutSource.GetLinkedTokenSource(_webSocketCancellationTokenSource.Token))
                     {
                         var completeTask = _incomingMessages
                             .TakeUntil(response => response.Id == id && response.Type == GraphqlResponseType.Complete)
@@ -465,33 +471,33 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                         await completeTask.ConfigureAwait(false);
                     }
                 }
-            }
-            catch (WebSocketConnectionLostException)
-            {
-                // The connection was lost after the message was sent.
-                // The error would have been reported, do nothing here.
-            }
-            catch (OperationCanceledException)
-            {
-                // We can't throw from here - the subscription is being disposed of within a RaiiAsync instance.
-                // The exception will not be observed.
-                var timeoutException = new GraphqlUnsubscribeTimeoutException(id, _unsubscribeTimeout);
-                _exceptionSubject.OnNext(timeoutException);
-            }
-            finally
-            {
-                // needs to be removed because the subscription is being disposed
-                _subscriptions.Remove(id);
-
-                // shutdown the web socket if there's no more registered subscriptions
-                if (!_subscriptions.Any())
+                catch (WebSocketConnectionLostException)
                 {
-                    ShutdownConnection();
+                    // The connection was lost after the message was sent.
+                    // The error would have been reported, do nothing here.
+                }
+                catch (OperationCanceledException)
+                {
+                    // We can't throw from here - the subscription is being disposed of within a RaiiAsync instance.
+                    // The exception will not be observed.
+                    var timeoutException = new GraphqlUnsubscribeTimeoutException(id, timeoutSource.Timeout);
+                    _exceptionSubject.OnNext(timeoutException);
+                }
+                finally
+                {
+                    // needs to be removed because the subscription is being disposed
+                    _subscriptions.Remove(id);
+
+                    // shutdown the web socket if there's no more registered subscriptions
+                    if (!_subscriptions.Any())
+                    {
+                        ShutdownConnection();
+                    }
                 }
             }
         }
 
-        private async Task SendRegistrationRequestsAsync()
+    private async Task SendRegistrationRequestsAsync()
         {
             // todo: throw if not completed within a give time period
             // make sure all registrations ACK
@@ -509,11 +515,11 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
         private async Task<AppSyncGraphqlResponse> SendRegistrationAsync(SubscriptionRegistration registration)
         {
-            try
+            using (var timeoutSource = new TimeoutCancellationSource(_configuration.ConnectionOptions.SubscriptionTimeout))
             {
-                using (var timeoutSource = SubscribeTimeoutSource)
+                try
                 {
-                    using (var linkedCts = GetConnectionLinkedTokenSource(timeoutSource.Token))
+                    using (var linkedCts = timeoutSource.GetLinkedTokenSource(_webSocketCancellationTokenSource.Token))
                     {
                         var request = registration.Request;
 
@@ -528,19 +534,19 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                         return await ackTask.ConfigureAwait(false);
                     }
                 }
-            }
-            catch (OperationCanceledException)
-            {
-                // If _webSocketCancellationTokenSource was cancelled then there was a connection issue - probably wouldn't even get here unless it
-                // was the timeout token that cancelled. In reality, if _webSocketCancellationTokenSource is cancelled then the connection was most
-                // likely shutdown and an exception would have been thrown - not caught in this method.
-                if (UnsubscribeTimeoutSource.IsCancellationRequested)
+                catch (OperationCanceledException)
                 {
-                    throw new GraphqlSubscribeTimeoutException(registration.Id, _unsubscribeTimeout);
-                }
+                    // If _webSocketCancellationTokenSource was cancelled then there was a connection issue - probably wouldn't even get here unless it
+                    // was the timeout token that cancelled. In reality, if _webSocketCancellationTokenSource is cancelled then the connection was most
+                    // likely shutdown and an exception would have been thrown - not caught in this method.
+                    if (timeoutSource.Token.IsCancellationRequested)
+                    {
+                        throw new GraphqlSubscribeTimeoutException(registration.Id, timeoutSource.Timeout);
+                    }
 
-                // Probably won't get here but is needed to keep the compiler happy. Worse case, the exception is reported twice.
-                throw;
+                    // Probably won't get here but is needed to keep the compiler happy. Worse case, the exception is reported twice.
+                    throw;
+                }
             }
         }
 
@@ -569,16 +575,6 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             response.Message = Encoding.UTF8.GetString(stream.ToArray());
 
             return response;
-        }
-
-        private ExceptionCollector GetExceptionCollector()
-        {
-            return new ExceptionCollector(_exceptionSubject);
-        }
-
-        private CancellationTokenSource GetConnectionLinkedTokenSource(CancellationToken token)
-        {
-            return CancellationTokenSource.CreateLinkedTokenSource(_webSocketCancellationTokenSource.Token, token);
         }
     }
 }
