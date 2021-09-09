@@ -312,7 +312,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                 {
                     case WebSocketMessageType.Text:
                     case WebSocketMessageType.Close:
-                        return GetAppSyncGraphqlResponse(stream);
+                        return GetGraphqlResponse(stream);
 
                     default:
                         throw new InvalidOperationException($"Unexpected websocket message type '{webSocketReceiveResult.MessageType}'.");
@@ -412,7 +412,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                 Type = GraphqlRequestType.ConnectionInit
             };
 
-            return SendRequest(request);
+            return SendRequestAsync(request);
         }
 
         private async Task UnregisterSubscriptionAsync(string id)
@@ -434,7 +434,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                             .LastAsync()
                             .ToTask(linkedCts.Token);
 
-                        await SendRequest(request).ConfigureAwait(false);
+                        await SendRequestAsync(request).ConfigureAwait(false);
                         await completeTask.ConfigureAwait(false);
                     }
                 }
@@ -464,7 +464,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             }
         }
 
-    private async Task SendRegistrationRequestsAsync()
+        private async Task SendRegistrationRequestsAsync()
         {
             // todo: throw if not completed within a give time period
             // make sure all registrations ACK
@@ -497,7 +497,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                             .LastAsync()
                             .ToTask(linkedCts.Token);
 
-                        await SendRequest(request).ConfigureAwait(false);
+                        await SendRequestAsync(request).ConfigureAwait(false);
                         return await ackTask.ConfigureAwait(false);
                     }
                 }
@@ -517,7 +517,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             }
         }
 
-        private Task SendRequest<TMessage>(TMessage message)
+        private Task SendRequestAsync<TMessage>(TMessage message)
         {
             var buffer = _configuration.Serializer.SerializeToBytes(message);
             var segment = new ArraySegment<byte>(buffer);
@@ -536,7 +536,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             return _configuration.Serializer.DeserializeObject<WebSocketGraphqlResponse<GraphqlError>>(message);
         }
 
-        private AppSyncGraphqlResponse GetAppSyncGraphqlResponse(MemoryStream stream)
+        private AppSyncGraphqlResponse GetGraphqlResponse(MemoryStream stream)
         {
             var response = _configuration.Serializer.DeserializeObject<AppSyncGraphqlResponse>(stream);
             response.Message = Encoding.UTF8.GetString(stream.ToArray());
