@@ -1,8 +1,15 @@
 ﻿namespace AllOverIt.Aws.AppSync.Client.Subscription
 {
-    public static class Constants
+    internal static class ProtocolMessage
     {
-        public static class GraphqlResponseType
+        public static class Request
+        {
+            public const string ConnectionInit = "connection_init";
+            public const string Start = "start";
+            public const string Stop = "stop";
+        }
+
+        public static class Response
         {
             public const string ConnectionAck = "connection_ack";
             public const string StartAck = "start_ack";
@@ -12,13 +19,6 @@
             public const string ConnectionError = "connection_error";
             public const string Close = "close";
             public const string Complete = "complete";
-        }
-
-        public static class GraphqlRequestType
-        {
-            public const string ConnectionInit = "connection_init";
-            public const string Start = "start";
-            public const string Stop = "stop";
         }
     }
 }

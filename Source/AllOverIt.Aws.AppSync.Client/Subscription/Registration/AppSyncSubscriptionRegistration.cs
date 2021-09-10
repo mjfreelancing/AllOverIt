@@ -4,11 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace AllOverIt.Aws.AppSync.Client.Subscription
+namespace AllOverIt.Aws.AppSync.Client.Subscription.Registration
 {
     /// <summary>Decorates the async disposable created by SubscribeAsync() so the caller can obtain the generated
     /// subscription Id and any errors that occurred during connection / registration.</summary>
-    internal sealed class AppSyncSubscriptionRegistration : IAppSubscriptionRegistration
+    internal sealed class AppSyncSubscriptionRegistration : IAppSyncSubscriptionRegistration
     {
         // The subscription registration being decorated. When disposed, the registration is unregistered from AppSync.
         private IAsyncDisposable _disposable;

@@ -1,9 +1,9 @@
-﻿using AllOverIt.Helpers;
+﻿using AllOverIt.Aws.AppSync.Client.Subscription.Payload;
+using AllOverIt.Helpers;
 using AllOverIt.Serialization.Abstractions;
 using System;
-using GraphqlRequestType = AllOverIt.Aws.AppSync.Client.Subscription.Constants.GraphqlRequestType;
 
-namespace AllOverIt.Aws.AppSync.Client.Subscription
+namespace AllOverIt.Aws.AppSync.Client.Subscription.Registration
 {
     internal abstract class SubscriptionRegistration
     {
@@ -12,7 +12,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             public SubscriptionRequest(string id, SubscriptionQueryPayload payload)
             {
                 Id = id.WhenNotNull(nameof(id));
-                Type = GraphqlRequestType.Start;
+                Type = ProtocolMessage.Request.Start;
                 Payload = payload.WhenNotNull(nameof(payload));
             }
         }

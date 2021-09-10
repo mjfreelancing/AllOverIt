@@ -1,4 +1,4 @@
-﻿namespace AllOverIt.Aws.AppSync.Client.Subscription
+﻿namespace AllOverIt.Aws.AppSync.Client.Subscription.Payload
 {
     internal sealed class SubscriptionQueryPayload
     {

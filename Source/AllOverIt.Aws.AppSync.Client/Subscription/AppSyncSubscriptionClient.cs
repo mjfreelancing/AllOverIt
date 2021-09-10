@@ -2,6 +2,8 @@
 using AllOverIt.Aws.AppSync.Client.Extensions;
 using AllOverIt.Aws.AppSync.Client.Subscription.Authorization;
 using AllOverIt.Aws.AppSync.Client.Subscription.Configuration;
+using AllOverIt.Aws.AppSync.Client.Subscription.Payload;
+using AllOverIt.Aws.AppSync.Client.Subscription.Registration;
 using AllOverIt.Aws.AppSync.Client.Utils;
 using AllOverIt.Extensions;
 using AllOverIt.Helpers;
@@ -19,8 +21,6 @@ using System.Reactive.Threading.Tasks;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using GraphqlRequestType = AllOverIt.Aws.AppSync.Client.Subscription.Constants.GraphqlRequestType;
-using GraphqlResponseType = AllOverIt.Aws.AppSync.Client.Subscription.Constants.GraphqlResponseType;
 
 namespace AllOverIt.Aws.AppSync.Client.Subscription
 {
@@ -115,7 +115,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         }
 
         // The default authorization mode will be used if authorization is null.
-        public async Task<IAppSubscriptionRegistration> SubscribeAsync<TResponse>(SubscriptionQuery query,
+        public async Task<IAppSyncSubscriptionRegistration> SubscribeAsync<TResponse>(SubscriptionQuery query,
             Action<SubscriptionResponse<TResponse>> responseAction, IAppSyncAuthorization authorization = null)
         {
             // Only allow a single registration at a time to avoid complex overlapping connection states when there's a WebSocket issue.
@@ -160,7 +160,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
                                 var response = await SendRegistrationAsync(registration).ConfigureAwait(false);
 
-                                if (response.Type == GraphqlResponseType.Error)
+                                if (response.Type == ProtocolMessage.Response.Error)
                                 {
                                     var graphqlErrorMessage = response.GetGraphqlErrorFromResponseMessage(_configuration.Serializer);
                                     return new AppSyncSubscriptionRegistration(query.Id, graphqlErrorMessage.Payload.Errors);
@@ -241,7 +241,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                                     var ack = _incomingMessages
                                         .TakeUntil(response => response is
                                         {
-                                            Type: GraphqlResponseType.ConnectionAck or GraphqlResponseType.ConnectionError
+                                            Type: ProtocolMessage.Response.ConnectionAck or ProtocolMessage.Response.ConnectionError
                                         })
                                         .LastAsync()
                                         .ToTask(linkedCts.Token);
@@ -253,7 +253,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
                                     // The main message processing subscription takes care of creating the health check subscription
                                     // when GraphqlResponseType.ConnectionAck is received (because it also refreshed it periodically)
-                                    if (response.Type == GraphqlResponseType.ConnectionAck)
+                                    if (response.Type == ProtocolMessage.Response.ConnectionAck)
                                     {
                                         _connectionStateSubject.OnNext(SubscriptionConnectionState.Connected);
 
@@ -269,8 +269,8 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                             }
                             catch (OperationCanceledException)
                             {
-                                // if _webSocketCancellationTokenSource was cancelled then there was a connection issue - the exception will have been captured
-                                // from the _exceptionSubject (being observed at the start of the subscription process)
+                                // if _webSocketCancellationTokenSource was cancelled then there was a connection issue - the exception
+                                // will have been captured from the _exceptionSubject (being observed at the start of the subscription process)
                                 if (timeoutSource.Token.IsCancellationRequested)
                                 {
                                     throw new GraphqlConnectionTimeoutException(timeoutSource.Timeout);
@@ -459,33 +459,33 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
                     switch (response.Type)
                     {
-                        case GraphqlResponseType.ConnectionAck:
+                        case ProtocolMessage.Response.ConnectionAck:
                             ResetHealthCheck(response);
                             break;
 
                         // Such as a websocket issue - this can be received here or within CheckWebSocketConnectionAsync(), timing dependent
-                        case GraphqlResponseType.ConnectionError:   // response.Id will be null
+                        case ProtocolMessage.Response.ConnectionError:   // response.Id will be null
                             NotifySubscriptionError(null, response);
                             break;
 
                         // Applies to both data responses and response errors (such as mapping issues)
-                        case GraphqlResponseType.Data:
+                        case ProtocolMessage.Response.Data:
                             var subscription = GetSubscription(response.Id);
                             subscription.NotifyResponse(responseMessage);
                             break;
 
-                        case GraphqlResponseType.KeepAlive:
+                        case ProtocolMessage.Response.KeepAlive:
                             ResetHealthCheck();
                             _connectionStateSubject.OnNext(SubscriptionConnectionState.KeepAlive);
                             break;
 
                         // An error specific to a specific subscription (such as a malformed query).
-                        case GraphqlResponseType.Error:
+                        case ProtocolMessage.Response.Error:
                             NotifySubscriptionError(response.Id, response);
                             break;
 
                         // AppSync has closed the connection
-                        case GraphqlResponseType.Close:
+                        case ProtocolMessage.Response.Close:
                             NotifySubscriptionError(response.Id, response);
                             ShutdownConnection();
                             break;
@@ -517,7 +517,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         {
             var request = new SubscriptionQueryMessage
             {
-                Type = GraphqlRequestType.ConnectionInit
+                Type = ProtocolMessage.Request.ConnectionInit
             };
 
             return SendRequestAsync(request);
@@ -546,13 +546,13 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                     var request = new SubscriptionQueryMessage
                     {
                         Id = id,
-                        Type = GraphqlRequestType.Stop
+                        Type = ProtocolMessage.Request.Stop
                     };
 
                     using (var linkedCts = timeoutSource.GetLinkedTokenSource(_webSocketCancellationTokenSource.Token))
                     {
                         var completeTask = _incomingMessages
-                            .TakeUntil(response => response.Id == id && response.Type == GraphqlResponseType.Complete)
+                            .TakeUntil(response => response.Id == id && response.Type == ProtocolMessage.Response.Complete)
                             .LastAsync()
                             .ToTask(linkedCts.Token);
 
@@ -623,7 +623,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                         var ackTask = _incomingMessages
                             .TakeUntil(response =>
                                 response.Id == request.Id &&
-                                response.Type is GraphqlResponseType.StartAck or GraphqlResponseType.Error)
+                                response.Type is ProtocolMessage.Response.StartAck or ProtocolMessage.Response.Error)
                             .LastAsync()
                             .ToTask(linkedCts.Token);
 
@@ -633,9 +633,10 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                 }
                 catch (OperationCanceledException)
                 {
-                    // If _webSocketCancellationTokenSource was cancelled then there was a connection issue - probably wouldn't even get here unless it
-                    // was the timeout token that cancelled. In reality, if _webSocketCancellationTokenSource is cancelled then the connection was most
-                    // likely shutdown and an exception would have been thrown - not caught in this method.
+                    // If _webSocketCancellationTokenSource was cancelled then there was a connection issue - probably wouldn't
+                    // even get here unless it was the timeout token that cancelled. In reality, if _webSocketCancellationTokenSource
+                    // is cancelled then the connection was most likely shutdown and an exception would have been thrown - not caught
+                    // in this method.
                     if (timeoutSource.Token.IsCancellationRequested)
                     {
                         throw new GraphqlSubscribeTimeoutException(registration.Id, timeoutSource.Timeout);

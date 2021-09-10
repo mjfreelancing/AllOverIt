@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Aws.AppSync.Client.Exceptions;
 using AllOverIt.Aws.AppSync.Client.Subscription;
+using AllOverIt.Aws.AppSync.Client.Subscription.Registration;
 using AllOverIt.Extensions;
 using AllOverIt.GenericHost;
 using AllOverIt.Helpers;
@@ -229,7 +230,7 @@ namespace AppSyncSubscription
         }
 
         // Explicitly subscribes to the addLanguage("LNG1") mutation
-        private static async Task<IAppSubscriptionRegistration> GetSubscription1(AppSyncSubscriptionClient client)
+        private static async Task<IAppSyncSubscriptionRegistration> GetSubscription1(AppSyncSubscriptionClient client)
         {
             // try this for an unsupported operation error
             var badQuery = "query MyQuery { defaultLanguage { code name } }";
@@ -252,7 +253,7 @@ namespace AppSyncSubscription
         }
 
         // Subscribes to ALL addLanguage() mutations
-        private static async Task<IAppSubscriptionRegistration> GetSubscription2(AppSyncSubscriptionClient client)
+        private static async Task<IAppSyncSubscriptionRegistration> GetSubscription2(AppSyncSubscriptionClient client)
         {
             var subscription = await GetSubscription(
                 client,
@@ -273,7 +274,7 @@ namespace AppSyncSubscription
         }
 
         // Explicitly subscribes to the addLanguage("LNG1") mutation using a variable
-        private static async Task<IAppSubscriptionRegistration> GetSubscription3(AppSyncSubscriptionClient client)
+        private static async Task<IAppSyncSubscriptionRegistration> GetSubscription3(AppSyncSubscriptionClient client)
         {
             var langCode = "LNG3";
 
@@ -296,7 +297,7 @@ namespace AppSyncSubscription
             return subscription;
         }
 
-        private static async Task<IAppSubscriptionRegistration> GetSubscription(AppSyncSubscriptionClient client, string name, string query, object variables = null)
+        private static async Task<IAppSyncSubscriptionRegistration> GetSubscription(AppSyncSubscriptionClient client, string name, string query, object variables = null)
         {
             var subscriptionQuery = new SubscriptionQuery
             {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AllOverIt.Aws.AppSync.Client.Subscription
+namespace AllOverIt.Aws.AppSync.Client.Subscription.Registration
 {
-    public interface IAppSubscriptionRegistration : IAsyncDisposable
+    public interface IAppSyncSubscriptionRegistration : IAsyncDisposable
     {
         string Id { get; }
         IReadOnlyCollection<Exception> Exceptions { get; }
