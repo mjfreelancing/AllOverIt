@@ -46,7 +46,7 @@ AllOverIt.Evaluator - v3.0.0
 
   Current AllOverIt Inter-Dependencies
 
-  [1] AllOverIt                    (v1.17.1) - None
+  [1] AllOverIt                    (v1.17.2) - None
   [2] AllOverIt.Validation         (v1.0.0)  - requires [1] v1.17.0
   [3] AllOverIt.Aws.Cdk.AppSync    (v0.13.1) - requires [1] v1.17.1
   [4] AllOverIt.Evaluator          (v3.0.0)  - requires [1] v1.17.1
@@ -55,6 +55,14 @@ AllOverIt.Evaluator - v3.0.0
   [7] AllOverIt.Fixture.FakeItEasy (v1.4.0)  - requires [6] v1.6.0
 
 ======================================================================================================================
+
+
+
+10 Sep 2021
+======================================================================================================================
+AllOverIt - v1.17.2
+  * Updated CompositeAsyncDisposable to assume the composed disposables will not throw (as per recommendations).
+  * Added ExceptionAggregator to help collate exceptions and throw them as an AggregateException.
 
 
 
