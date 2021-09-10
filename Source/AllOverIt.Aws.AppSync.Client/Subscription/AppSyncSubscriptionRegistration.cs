@@ -8,7 +8,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 {
     /// <summary>Decorates the async disposable created by SubscribeAsync() so the caller can obtain the generated
     /// subscription Id and any errors that occurred during connection / registration.</summary>
-    internal sealed class AppSubscriptionRegistration : IAppSubscriptionRegistration
+    internal sealed class AppSyncSubscriptionRegistration : IAppSubscriptionRegistration
     {
         // The subscription registration being decorated. When disposed, the registration is unregistered from AppSync.
         private IAsyncDisposable _disposable;
@@ -28,7 +28,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         /// <summary>Constructor. Used when a successful subscription is registered with AppSync.</summary>
         /// <param name="id">The subscription identifier.</param>
         /// <param name="disposable">The subscription that will unregister from AppSync when disposed.</param>
-        public AppSubscriptionRegistration(string id, IAsyncDisposable disposable)
+        public AppSyncSubscriptionRegistration(string id, IAsyncDisposable disposable)
         {
             Id = id.WhenNotNullOrEmpty(nameof(id));
             _disposable = disposable.WhenNotNull(nameof(disposable));
@@ -38,7 +38,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         /// <param name="id">The subscription identifier.</param>
         /// <param name="exceptions">One or more exceptions raised during the registration process. These exceptions
         /// are typically associated with connectivity issues.</param>
-        public AppSubscriptionRegistration(string id, IEnumerable<Exception> exceptions)
+        public AppSyncSubscriptionRegistration(string id, IEnumerable<Exception> exceptions)
         {
             Id = id.WhenNotNullOrEmpty(nameof(id));
             Exceptions = exceptions
@@ -50,7 +50,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         /// <param name="id">The subscription identifier.</param>
         /// <param name="errors">One or more graphql errors raised during the registration process. These errors
         /// are typically associated with invalid queries or request/response mappings.</param>
-        public AppSubscriptionRegistration(string id, IEnumerable<GraphqlErrorDetail> errors)
+        public AppSyncSubscriptionRegistration(string id, IEnumerable<GraphqlErrorDetail> errors)
         {
             Id = id.WhenNotNullOrEmpty(nameof(id));
             GraphqlErrors = errors.AsReadOnlyCollection();

@@ -1,7 +1,9 @@
 ﻿using AllOverIt.Aws.AppSync.Client.Exceptions;
 using AllOverIt.Aws.AppSync.Client.Extensions;
+using AllOverIt.Aws.AppSync.Client.Subscription.Authorization;
 using AllOverIt.Aws.AppSync.Client.Subscription.Configuration;
 using AllOverIt.Aws.AppSync.Client.Utils;
+using AllOverIt.Extensions;
 using AllOverIt.Helpers;
 using System;
 using System.Collections.Concurrent;
@@ -138,7 +140,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                                 // Abort if the connection failed
                                 if (connectionState is SubscriptionConnectionState.Disconnected or SubscriptionConnectionState.Disconnecting)
                                 {
-                                    return new AppSubscriptionRegistration(query.Id, subscriptionErrors.Exceptions);
+                                    return new AppSyncSubscriptionRegistration(query.Id, subscriptionErrors.Exceptions);
                                 }
 
                                 authorization ??= _configuration.DefaultAuthorization;
@@ -161,13 +163,13 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                                 if (response.Type == GraphqlResponseType.Error)
                                 {
                                     var graphqlErrorMessage = response.GetGraphqlErrorFromResponseMessage(_configuration.Serializer);
-                                    return new AppSubscriptionRegistration(query.Id, graphqlErrorMessage.Payload.Errors);
+                                    return new AppSyncSubscriptionRegistration(query.Id, graphqlErrorMessage.Payload.Errors);
                                 }
 
                                 // The disposable unsubscribes from AppSync
                                 var disposable = CreateSubscriptionDisposable(registration);
 
-                                return new AppSubscriptionRegistration(query.Id, disposable);
+                                return new AppSyncSubscriptionRegistration(query.Id, disposable);
                             }
                             catch (Exception exception)
                             {
@@ -179,7 +181,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                                 // GraphqlUnsubscribeTimeoutException
                                 // WebSocketConnectionLostException - if the websocket is shutdown mid-subscription registration
                                 _exceptionSubject.OnNext(exception);
-                                return new AppSubscriptionRegistration(query.Id, subscriptionErrors.Exceptions);
+                                return new AppSyncSubscriptionRegistration(query.Id, subscriptionErrors.Exceptions);
                             }
                         }
                     });
@@ -327,7 +329,10 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             _webSocketCancellationTokenSource = new CancellationTokenSource();
 
             var hostAuth = new AppSyncHostAuthorization(_configuration.HostUrl, _configuration.DefaultAuthorization);
-            var encodedHeader = hostAuth.GetEncodedHeader();
+
+            var headerValues = string.Join(",", hostAuth.KeyValues.Select(kvp => $@"""{kvp.Key}"":""{kvp.Value}"""));
+            var encodedHeader = $@"{{{headerValues}}}".ToBase64();
+
             var uri = new Uri($"wss://{_configuration.RealTimeUrl}/graphql?header={encodedHeader}&payload=e30=");
 
             _webSocket = new ClientWebSocket();
