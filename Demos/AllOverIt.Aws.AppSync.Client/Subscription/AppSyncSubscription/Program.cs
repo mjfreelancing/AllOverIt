@@ -2,8 +2,7 @@
 using AllOverIt.Aws.AppSync.Client.Subscription.Authorization;
 using AllOverIt.Aws.AppSync.Client.Subscription.Configuration;
 using AllOverIt.GenericHost;
-using AllOverIt.Serialization.Abstractions;
-using AllOverIt.Serialization.Newtonsoft;
+using AllOverIt.Serialization.SystemTextJson;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -34,7 +33,9 @@ namespace AppSyncSubscription
                             HostUrl = options.ApiHost,
                             // RealTimeUrl will be derived from HostUrl when not provided by replacing 'appsync-api' with 'appsync-realtime-api'
                             DefaultAuthorization = new AppSyncApiKeyAuthorization(options.ApiKey),
-                            Serializer = new NewtonsoftJsonSerializer()
+
+                            // take your pick between Newtonsoft and System.Text
+                            Serializer = new SystemTextJsonSerializer() // or NewtonsoftJsonSerializer()
                         };
                     });
 
@@ -45,8 +46,6 @@ namespace AppSyncSubscription
                         var configuration = provider.GetRequiredService<AppSyncSubscriptionConfiguration>();
                         return new AppSyncSubscriptionClient(configuration);
                     });
-
-                    services.AddScoped<IJsonSerializer, NewtonsoftJsonSerializer>();
 
                     // This performs the graphql subscription and logging of errors and responses received
                     services.AddHostedService<SubscriptionWorker>();

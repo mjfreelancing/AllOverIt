@@ -15,6 +15,7 @@
         <ProjectReference Include="..\..\..\..\Source\AllOverIt.Aws.AppSync.Client\AllOverIt.Aws.AppSync.Client.csproj" />
         <ProjectReference Include="..\..\..\..\Source\AllOverIt.GenericHost\AllOverIt.GenericHost.csproj" />
         <ProjectReference Include="..\..\..\..\Source\AllOverIt.Serialization.Newtonsoft\AllOverIt.Serialization.Newtonsoft.csproj" />
+        <ProjectReference Include="..\..\..\..\Source\AllOverIt.Serialization.SystemTextJson\AllOverIt.Serialization.SystemTextJson.csproj" />
     </ItemGroup>
 
 </Project>

@@ -3,53 +3,62 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.IO;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace AllOverIt.Serialization.Newtonsoft
 {
+    /// <summary>An implementation of <see cref="IJsonSerializer"/> using Newtonsoft.Json.</summary>
     public sealed class NewtonsoftJsonSerializer : IJsonSerializer
     {
-        private readonly JsonSerializerSettings _defaultSerializerSettings = new()
-        {
-            ContractResolver = new DefaultContractResolver
-            {
-                NamingStrategy = new CamelCaseNamingStrategy()
-            }
-        };
+        /// <summary>The serialization options. If no settings are provided then a default set will be applied.</summary>
+        public JsonSerializerSettings Settings { get; }
 
-        private readonly JsonSerializerSettings _serializerSettings;
-
-        public NewtonsoftJsonSerializer(JsonSerializerSettings serializerSettings = default)
+        /// <summary>Constructor.</summary>
+        /// <param name="settings">The serialization settings to use. If no settings are provided then a default set will be applied.</param>
+        public NewtonsoftJsonSerializer(JsonSerializerSettings settings = default)
         {
-            _serializerSettings = serializerSettings ?? _defaultSerializerSettings;
+            Settings = settings ?? CreateDefaultSettings();
         }
 
-        public string SerializeObject<TMessage>(TMessage message)
+        public string SerializeObject<TType>(TType value)
         {
-            return JsonConvert.SerializeObject(message, _serializerSettings);
+            return JsonConvert.SerializeObject(value, Settings);
         }
 
-        public byte[] SerializeToBytes<TMessage>(TMessage message)
+        public byte[] SerializeToUtf8Bytes<TType>(TType value)
         {
-            var json = SerializeObject(message);
+            var json = SerializeObject(value);
             return Encoding.UTF8.GetBytes(json);
         }
 
         public TType DeserializeObject<TType>(string value)
         {
-            return JsonConvert.DeserializeObject<TType>(value, _serializerSettings);
+            return JsonConvert.DeserializeObject<TType>(value, Settings);
         }
 
-        public TType DeserializeObject<TType>(Stream stream)
+        public Task<TType> DeserializeObjectAsync<TType>(Stream stream, CancellationToken cancellationToken)
         {
             using (var sr = new StreamReader(stream))
             {
                 using (JsonReader reader = new JsonTextReader(sr))
                 {
-                    var serializer = JsonSerializer.Create(_serializerSettings);
+                    var serializer = JsonSerializer.Create(Settings);
                     var result = serializer.Deserialize<TType>(reader);
-                    return result;
+                    return Task.FromResult(result);
                 }
             }
+        }
+
+        private static JsonSerializerSettings CreateDefaultSettings()
+        {
+            return new JsonSerializerSettings
+            {
+                ContractResolver = new DefaultContractResolver
+                {
+                    NamingStrategy = new CamelCaseNamingStrategy()
+                }
+            };
         }
     }
 }

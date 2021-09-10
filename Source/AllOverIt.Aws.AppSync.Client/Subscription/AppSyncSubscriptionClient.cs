@@ -422,7 +422,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                 {
                     case WebSocketMessageType.Text:
                     case WebSocketMessageType.Close:
-                        return GetGraphqlResponse(stream);
+                        return await GetGraphqlResponse(stream);
 
                     default:
                         throw new InvalidOperationException($"Unexpected websocket message type '{webSocketReceiveResult.MessageType}'.");
@@ -651,7 +651,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
         private Task SendRequestAsync<TMessage>(TMessage message)
         {
-            var buffer = _configuration.Serializer.SerializeToBytes(message);
+            var buffer = _configuration.Serializer.SerializeToUtf8Bytes(message);
             var segment = new ArraySegment<byte>(buffer);
 
             // check if an error has occurred mid-subscription that resulted in the WebSocket being disposed
@@ -663,9 +663,9 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             return _webSocket.SendAsync(segment, WebSocketMessageType.Text, true, _webSocketCancellationTokenSource.Token);
         }
 
-        private AppSyncGraphqlResponse GetGraphqlResponse(MemoryStream stream)
+        private async Task<AppSyncGraphqlResponse> GetGraphqlResponse(MemoryStream stream)
         {
-            var response = _configuration.Serializer.DeserializeObject<AppSyncGraphqlResponse>(stream);
+            var response = await _configuration.Serializer.DeserializeObjectAsync<AppSyncGraphqlResponse>(stream, _webSocketCancellationTokenSource.Token);
             response.Message = Encoding.UTF8.GetString(stream.ToArray());
 
             return response;
