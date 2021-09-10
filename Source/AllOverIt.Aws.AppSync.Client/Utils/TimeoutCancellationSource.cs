@@ -16,15 +16,15 @@ namespace AllOverIt.Aws.AppSync.Client.Utils
             _cts = new CancellationTokenSource(timeout);
         }
 
+        public CancellationTokenSource GetLinkedTokenSource(CancellationToken token)
+        {
+            return CancellationTokenSource.CreateLinkedTokenSource(Token, token);
+        }
+
         public void Dispose()
         {
             _cts?.Dispose();
             _cts = null;
-        }
-
-        public CancellationTokenSource GetLinkedTokenSource(CancellationToken token)
-        {
-            return CancellationTokenSource.CreateLinkedTokenSource(Token, token);
         }
     }
 }
