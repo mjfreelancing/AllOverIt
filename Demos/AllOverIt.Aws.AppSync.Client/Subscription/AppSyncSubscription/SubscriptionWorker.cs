@@ -181,6 +181,7 @@ namespace AppSyncSubscription
             LogMessage("Closing the connection (keeping any existing subscriptions)");
             await _subscriptionClient.DisconnectAsync();
 
+            // will only remove from the internal registered list because there's no active connection
             LogMessage($"Disposing of {nameof(subscription2)}");
             await subscription2.DisposeAsync();
 

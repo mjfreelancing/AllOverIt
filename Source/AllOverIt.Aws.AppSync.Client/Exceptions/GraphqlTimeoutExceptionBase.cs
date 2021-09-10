@@ -1,24 +1,24 @@
-﻿using System;
+﻿using AllOverIt.Helpers;
+using System;
 using System.Runtime.Serialization;
-using AllOverIt.Helpers;
 
 namespace AllOverIt.Aws.AppSync.Client.Exceptions
 {
     public abstract class GraphqlTimeoutExceptionBase : Exception
     {
-        public TimeSpan TimeoutPeriod { get; }
+        public TimeSpan Timeout { get; }
 
-        protected GraphqlTimeoutExceptionBase(string message, TimeSpan timeoutPeriod)
+        protected GraphqlTimeoutExceptionBase(string message, TimeSpan timeout)
             : base(message)
         {
-            TimeoutPeriod = timeoutPeriod;
+            Timeout = timeout;
         }
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             _ = info.WhenNotNull(nameof(info));
 
-            info.AddValue("TimeoutPeriod", TimeoutPeriod);
+            info.AddValue("Timeout", Timeout);
 
             base.GetObjectData(info, context);
         }
@@ -26,7 +26,7 @@ namespace AllOverIt.Aws.AppSync.Client.Exceptions
         protected GraphqlTimeoutExceptionBase(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            TimeoutPeriod = (TimeSpan) info.GetValue("TimeoutPeriod", typeof(TimeSpan))!;
+            Timeout = (TimeSpan) info.GetValue("Timeout", typeof(TimeSpan))!;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER || NET5_0_OR_GREATER
 
+using AllOverIt.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,7 @@ namespace AllOverIt.Helpers
         {
             if (_disposables.Any())
             {
+                // Dispose should not throw, so it is assumed this will not throw
                 DisposeResources();
             }
         }
@@ -45,14 +47,13 @@ namespace AllOverIt.Helpers
         {
             if (_disposables.Any())
             {
+                // Dispose should not throw, so it is assumed this will not throw
                 await DisposeResourcesAsync().ConfigureAwait(false);
             }
         }
 
         private void DisposeResources()
         {
-            AggregateException aggregateException = null;
-
             using (var cancellationTokenSource = new CancellationTokenSource())
             {
                 // capture for the closure below (keep the analyzer happy)
@@ -62,15 +63,8 @@ namespace AllOverIt.Helpers
                 {
                     try
                     {
+                        // Dispose should not throw, so it is assumed this will not throw
                         await DisposeResourcesAsync().ConfigureAwait(false);
-                    }
-                    catch (AggregateException aggregate)
-                    {
-                        aggregateException = aggregate;
-                    }
-                    catch (Exception exception)
-                    {
-                        aggregateException = new AggregateException(exception);
                     }
                     finally
                     {
@@ -80,35 +74,21 @@ namespace AllOverIt.Helpers
 
                 cancellationTokenSource.Token.WaitHandle.WaitOne();
             }
-
-            if (aggregateException != null)
-            {
-                throw aggregateException;
-            }
         }
 
         private async Task DisposeResourcesAsync()
         {
-             IList<Exception> innerExceptions = null;
-
-            foreach (var disposable in _disposables)
+            try
             {
-                try
+                foreach (var disposable in _disposables)
                 {
+                    // Dispose should not throw, so it is assumed this will not throw
                     await disposable.DisposeAsync().ConfigureAwait(false);
                 }
-                catch(Exception exception)
-                {
-                    innerExceptions ??= new List<Exception>();
-                    innerExceptions.Add(exception);
-                }
             }
-
-            _disposables.Clear();
-
-            if (innerExceptions != null)
+            finally
             {
-                throw new AggregateException(innerExceptions);
+                _disposables.Clear();
             }
         }
     }

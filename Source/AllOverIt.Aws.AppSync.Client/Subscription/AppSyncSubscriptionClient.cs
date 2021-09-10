@@ -20,8 +20,6 @@ using System.Threading.Tasks;
 using GraphqlRequestType = AllOverIt.Aws.AppSync.Client.Subscription.Constants.GraphqlRequestType;
 using GraphqlResponseType = AllOverIt.Aws.AppSync.Client.Subscription.Constants.GraphqlResponseType;
 
-// todo: internal connection recovery
-
 namespace AllOverIt.Aws.AppSync.Client.Subscription
 {
     /// <summary>An AppSync subscription client that supports API KEY and Cognito based authorization.</summary>
@@ -80,22 +78,37 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         /// <summary>Unsubscribes any existing subscriptions and then disconnects the client from AppSync. The subscription
         /// registrations are maintained (not disposed of). If a new connection is later established by calling
         /// <see cref="ConnectAsync"/> or making a new subscription then all previous subscriptions will be re-subscribed.</summary>
+        /// <exception cref="GraphqlUnsubscribeTimeoutException"></exception>
         public async Task DisconnectAsync()
         {
-            // unsubscribe from AppSync but do not remove them from the registry
+            var aggregator = new ExceptionAggregator();
+
             try
             {
                 foreach (var subscriptionId in _subscriptions.Keys)
                 {
-                    await UnsubscribeSubscriptionAsync(subscriptionId, false);
+                    try
+                    {
+                        // unsubscribe from AppSync but do not remove them from the registry
+                        await UnsubscribeSubscriptionAsync(subscriptionId, false);
+                    }
+                    catch (Exception exception)
+                    {
+                        // GraphqlUnsubscribeTimeoutException
+                        aggregator.AddException(exception);
+                    }
                 }
 
                 // If there was an exception above then the connection should already be closed
                 ShutdownConnection();
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                // nothing to do here - if there was an exception it would have been reported by the _exceptionSubject
+                aggregator.AddException(exception);
+            }
+            finally
+            {
+                aggregator.ThrowIfAnyExceptions();
             }
         }
 
@@ -115,7 +128,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                         SubscriptionConnectionState.KeepAlive,
                     async _ =>
                     {
-                        using (var subscriptionErrors = new ExceptionCollector(_exceptionSubject))
+                        using (var subscriptionErrors = new ObservableExceptionCollector(_exceptionSubject))
                         {
                             try
                             {
@@ -151,13 +164,8 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                                     return new AppSubscriptionRegistration(query.Id, graphqlErrorMessage.Payload.Errors);
                                 }
 
-                                // This is decorated by AppSubscriptionRegistration to avoid leaking SubscriptionRegistration
-                                var disposable = new RaiiAsync<SubscriptionRegistration>(
-                                    () => registration,
-                                    async subscription =>
-                                    {
-                                        await UnsubscribeSubscriptionAsync(subscription.Id, true).ConfigureAwait(false);
-                                    });
+                                // The disposable unsubscribes from AppSync
+                                var disposable = CreateSubscriptionDisposable(registration);
 
                                 return new AppSubscriptionRegistration(query.Id, disposable);
                             }
@@ -180,6 +188,24 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             {
                 _subscriptionLock.Release();
             }
+        }
+
+        private IAsyncDisposable CreateSubscriptionDisposable(SubscriptionRegistration registration)
+        {
+            return new RaiiAsync<SubscriptionRegistration>(
+                () => registration,
+                async subscription =>
+                {
+                    // this is a disposal, so don't allow any uncaught exceptions
+                    try
+                    {
+                        await UnsubscribeSubscriptionAsync(subscription.Id, true).ConfigureAwait(false);
+                    }
+                    catch (Exception exception)
+                    {
+                        _exceptionSubject.OnNext(exception);
+                    }
+                });
         }
 
         private async Task<SubscriptionConnectionState> CheckWebSocketConnectionAsync()
