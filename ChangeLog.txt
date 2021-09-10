@@ -46,13 +46,17 @@ AllOverIt.Evaluator - v3.0.0
 
   Current AllOverIt Inter-Dependencies
 
-  [1] AllOverIt                    (v1.17.3) - None
-  [2] AllOverIt.Validation         (v1.0.0)  - requires [1] v1.17.0
-  [3] AllOverIt.Aws.Cdk.AppSync    (v0.13.1) - requires [1] v1.17.1
-  [4] AllOverIt.Evaluator          (v3.0.0)  - requires [1] v1.17.3
-  [5] AllOverIt.GenericHost        (v1.2.0)  - requires [1] v1.17.0
-  [6] AllOverIt.Fixture            (v1.6.0)  - None
-  [7] AllOverIt.Fixture.FakeItEasy (v1.4.0)  - requires [6] v1.6.0
+  [1]  AllOverIt                               (v1.17.3) - None
+  [2]  AllOverIt.Validation                    (v1.0.0)  - requires [1] v1.17.0
+  [3]  AllOverIt.Aws.Cdk.AppSync               (v0.13.1) - requires [1] v1.17.1
+  [4]  AllOverIt.Evaluator                     (v3.0.0)  - requires [1] v1.17.3
+  [5]  AllOverIt.GenericHost                   (v1.2.0)  - requires [1] v1.17.0
+  [6]  AllOverIt.Fixture                       (v1.6.0)  - None
+  [7]  AllOverIt.Fixture.FakeItEasy            (v1.4.0)  - requires [6] v1.6.0
+  [8]  AllOverIt.Serialization.Abstractions    (v1.0.0)  - None
+  [9]  AllOverIt.Serialization.NewtonsoftJson  (v1.0.0)  - [8] v1.0.0
+  [10] AllOverIt.Serialization.SystemTextJson  (v1.0.0)  - [8] v1.0.0
+  [11] AllOverIt.Aws.AppSync.Client            (v1.0.0)  - requires [1] v1.17.3, [8] v1.0.0
 
 ======================================================================================================================
 
@@ -60,12 +64,20 @@ AllOverIt.Evaluator - v3.0.0
 
 10 Sep 2021
 ======================================================================================================================
-AllOverIt - v1.17.3
-  * Changed ExceptionAggregator.Exeptions to be IReadOnlyCollection.
-
 AllOverIt - v1.17.2
   * Updated CompositeAsyncDisposable to assume the composed disposables will not throw (as per recommendations).
   * Added ExceptionAggregator to help collate exceptions and throw them as an AggregateException.
+
+AllOverIt - v1.17.3
+  * Changed ExceptionAggregator.Exeptions to be IReadOnlyCollection.
+
+AllOverIt.Serialization.Abstractions - v1.0.0
+AllOverIt.Serialization.NewtonsoftJson - v1.0.0
+AllOverIt.Serialization.SystemTextJson - v1.0.0
+  * Initial implementation of JSON wrappers
+
+AllOverIt.Aws.AppSync.Client - v0.1.0
+  * Initial implementation of an AWS AppSync Subscription client
 
 
 

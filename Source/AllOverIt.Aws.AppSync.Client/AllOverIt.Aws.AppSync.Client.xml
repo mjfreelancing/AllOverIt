@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AllOverIt.Aws.AppSync.Client</name>
+    </assembly>
+    <members>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Subscription.AppSyncSubscriptionClient">
+            <summary>An AppSync subscription client that supports API KEY and Cognito based authorization.</summary>
+            <remarks>Implemented as per the protocol described at https://docs.aws.amazon.com/appsync/latest/devguide/real-time-websocket-client.html.</remarks>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.Subscription.AppSyncSubscriptionClient.ConnectAsync">
+            <summary>Opens a WebSocket connection and registers the client with AppSync. Any existing subscriptions will
+            also be re-subscribed.</summary>
+            <returns>True if the connection was established, otherwise false.</returns>
+            <remarks>Refer to <see cref="M:AllOverIt.Aws.AppSync.Client.Subscription.AppSyncSubscriptionClient.DisconnectAsync"/> for more information on how existing subscriptions are retained
+            if the client is disconnected while there are active subscriptions.</remarks>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.Subscription.AppSyncSubscriptionClient.DisconnectAsync">
+            <summary>Unsubscribes any existing subscriptions and then disconnects the client from AppSync. The subscription
+            registrations are maintained (not disposed of). If a new connection is later established by calling
+            <see cref="M:AllOverIt.Aws.AppSync.Client.Subscription.AppSyncSubscriptionClient.ConnectAsync"/> or making a new subscription then all previous subscriptions will be re-subscribed.</summary>
+            <exception cref="T:AllOverIt.Aws.AppSync.Client.Exceptions.UnsubscribeTimeoutException"></exception>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Subscription.Authorization.AppSyncHostAuthorization">
+            <summary>Decorates a <see cref="T:AllOverIt.Aws.AppSync.Client.Subscription.Authorization.AppSyncAuthorizationBase"/> with a 'host' header.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Subscription.Configuration.AppSyncClientConnectionOptions.SubscriptionTimeout">
+            <summary>Initial subscribe and unsubscribe timeout period. If a subscribe fails the subscription is
+            returned in an error state. If an unsubscribe fails, the subscription is dropped on the assumption
+            there is something wrong with the connection.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Subscription.Registration.AppSyncSubscriptionRegistration">
+            <summary>Decorates the async disposable created by SubscribeAsync() so the caller can obtain the generated
+            subscription Id and any errors that occurred during connection / registration.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Subscription.Registration.AppSyncSubscriptionRegistration.Id">
+            <summary>The subscription Id.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Subscription.Registration.AppSyncSubscriptionRegistration.Exceptions">
+            <summary>When not null, contains exceptions raised during registration, such as connection issues.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Subscription.Registration.AppSyncSubscriptionRegistration.GraphqlErrors">
+            <summary>When not null, contains graphql errors raised during registration, such as request/response mapping errors.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Subscription.Registration.AppSyncSubscriptionRegistration.Success">
+            <summary>Returns true if the registration was completed successfully (no graphql errors or exceptions).</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.Subscription.Registration.AppSyncSubscriptionRegistration.#ctor(System.String,System.IAsyncDisposable)">
+            <summary>Constructor. Used when a successful subscription is registered with AppSync.</summary>
+            <param name="id">The subscription identifier.</param>
+            <param name="disposable">The subscription that will unregister from AppSync when disposed.</param>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.Subscription.Registration.AppSyncSubscriptionRegistration.#ctor(System.String,System.Collections.Generic.IEnumerable{System.Exception})">
+            <summary>Constructor.</summary>
+            <param name="id">The subscription identifier.</param>
+            <param name="exceptions">One or more exceptions raised during the registration process. These exceptions
+            are typically associated with connectivity issues.</param>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.Subscription.Registration.AppSyncSubscriptionRegistration.#ctor(System.String,System.Collections.Generic.IEnumerable{AllOverIt.Aws.AppSync.Client.Subscription.Response.GraphqlErrorDetail})">
+            <summary>Constructor.</summary>
+            <param name="id">The subscription identifier.</param>
+            <param name="errors">One or more graphql errors raised during the registration process. These errors
+            are typically associated with invalid queries or request/response mappings.</param>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.Subscription.Registration.AppSyncSubscriptionRegistration.DisposeAsync">
+            <summary>Disposes of the subscription including unsubscribing from AppSync.</summary>
+        </member>
+    </members>
+</doc>
