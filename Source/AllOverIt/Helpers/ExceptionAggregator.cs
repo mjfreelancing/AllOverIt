@@ -7,10 +7,10 @@ namespace AllOverIt.Helpers
     /// <summary>Collects exceptions that can be thrown as an AggregateException.</summary>
     public sealed class ExceptionAggregator
     {
-        private readonly IList<Exception> _exceptions = new List<Exception>();
+        private readonly List<Exception> _exceptions = new();
 
         /// <summary>Provides all exceptions currently added to the aggregator.</summary>
-        public ICollection<Exception> Exceptions => _exceptions;
+        public IReadOnlyCollection<Exception> Exceptions => _exceptions;
 
         /// <summary>Adds a new exception to the aggregator. If it is an AggregateException it will be flattened into
         /// the resulting AggregateException thrown at the time of calling <see cref="ThrowIfAnyExceptions"/>.</summary>
