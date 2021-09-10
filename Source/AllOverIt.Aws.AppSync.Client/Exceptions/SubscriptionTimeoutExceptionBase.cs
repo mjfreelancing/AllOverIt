@@ -4,12 +4,12 @@ using System.Runtime.Serialization;
 
 namespace AllOverIt.Aws.AppSync.Client.Exceptions
 {
-    public abstract class GraphqlSubscriptionTimeoutExceptionBase : GraphqlTimeoutExceptionBase
+    public abstract class SubscriptionTimeoutExceptionBase : TimeoutExceptionBase
     {
         public string Id { get; }
 
-        protected GraphqlSubscriptionTimeoutExceptionBase(string message, string id, TimeSpan timeout)
-            : base(message, timeout)
+        protected SubscriptionTimeoutExceptionBase(string id, TimeSpan timeout)
+            : base(timeout)
         {
             Id = id;
         }
@@ -23,7 +23,7 @@ namespace AllOverIt.Aws.AppSync.Client.Exceptions
             base.GetObjectData(info, context);
         }
 
-        protected GraphqlSubscriptionTimeoutExceptionBase(SerializationInfo info, StreamingContext context)
+        protected SubscriptionTimeoutExceptionBase(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
             Id = (string) info.GetValue("Id", typeof(string))!;

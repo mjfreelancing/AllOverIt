@@ -1,6 +1,6 @@
 ﻿using AllOverIt.Helpers;
 
-namespace AllOverIt.Aws.AppSync.Client.Subscription
+namespace AllOverIt.Aws.AppSync.Client.Subscription.Response
 {
     public sealed class GraphqlSubscriptionResponseError
     {

@@ -1,4 +1,5 @@
-﻿using AllOverIt.Extensions;
+﻿using AllOverIt.Aws.AppSync.Client.Subscription.Response;
+using AllOverIt.Extensions;
 using AllOverIt.Helpers;
 using System;
 using System.Collections.Generic;
@@ -56,7 +57,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription.Registration
             GraphqlErrors = errors.AsReadOnlyCollection();
         }
 
-        /// <summary>Disposes of the subscription included unregistering from AppSync.</summary>
+        /// <summary>Disposes of the subscription including unsubscribing from AppSync.</summary>
         public async ValueTask DisposeAsync()
         {
             // Unsubscribe from AppSync

@@ -1,6 +1,7 @@
 ﻿using AllOverIt.Aws.AppSync.Client.Exceptions;
 using AllOverIt.Aws.AppSync.Client.Subscription;
 using AllOverIt.Aws.AppSync.Client.Subscription.Registration;
+using AllOverIt.Aws.AppSync.Client.Subscription.Response;
 using AllOverIt.Extensions;
 using AllOverIt.GenericHost;
 using AllOverIt.Helpers;
@@ -10,7 +11,6 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
-using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -72,22 +72,22 @@ namespace AppSyncSubscription
                     switch (exception)
                     {
                         // "connection_error"  - such as when the sub-protocol is not defined on the web socket (will have error type)
-                        case GraphqlConnectionException connectionException:
+                        case ConnectionException connectionException:
                         {
                             var message = string.Join(", ", connectionException.Errors.Select(GetErrorMessage));
                             LogMessage($"{message}");
                             break;
                         }
 
-                        // GraphqlConnectionTimeoutException:
-                        // GraphqlSubscribeTimeoutException
-                        // GraphqlUnsubscribeTimeoutException
-                        case GraphqlTimeoutExceptionBase timeoutException:
+                        // ConnectionTimeoutException:
+                        // SubscribeTimeoutException
+                        // UnsubscribeTimeoutException
+                        case TimeoutExceptionBase timeoutException:
                             LogMessage($"{timeoutException.Message}");
                             break;
 
                         default:
-                            // ? WebSocketConnectionLostException
+                            // ? ConnectionLostException
                             LogMessage($"{exception.Message}");
                             break;
                     }

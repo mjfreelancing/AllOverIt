@@ -1,11 +1,11 @@
-﻿using AllOverIt.Aws.AppSync.Client.Subscription.Payload;
+﻿using AllOverIt.Aws.AppSync.Client.Subscription.Response;
 using AllOverIt.Helpers;
 using AllOverIt.Serialization.Abstractions;
 using System;
 
-namespace AllOverIt.Aws.AppSync.Client.Subscription.Registration
+namespace AllOverIt.Aws.AppSync.Client.Subscription.Request
 {
-    internal abstract class SubscriptionRegistration
+    internal abstract class SubscriptionRegistrationRequest
     {
         internal class SubscriptionRequest : SubscriptionQueryMessage
         {
@@ -22,7 +22,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription.Registration
 
         public abstract void NotifyResponse(string message);
 
-        protected SubscriptionRegistration(string id, SubscriptionQueryPayload payload)
+        protected SubscriptionRegistrationRequest(string id, SubscriptionQueryPayload payload)
         {
             _ = id.WhenNotNull(nameof(id));
             _ = payload.WhenNotNull(nameof(payload));
@@ -31,12 +31,12 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription.Registration
         }
     }
 
-    internal class SubscriptionRegistration<TResponse> : SubscriptionRegistration
+    internal sealed class SubscriptionRegistrationRequest<TResponse> : SubscriptionRegistrationRequest
     {
         private readonly IJsonSerializer _serializer;
         private Action<SubscriptionResponse<TResponse>> ResponseAction { get; }
 
-        public SubscriptionRegistration(string id, SubscriptionQueryPayload payload, Action<SubscriptionResponse<TResponse>> responseAction,
+        public SubscriptionRegistrationRequest(string id, SubscriptionQueryPayload payload, Action<SubscriptionResponse<TResponse>> responseAction,
             IJsonSerializer serializer)
             : base(id, payload)
         {

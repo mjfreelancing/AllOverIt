@@ -1,4 +1,5 @@
-﻿using AllOverIt.Serialization.Abstractions;
+﻿using AllOverIt.Aws.AppSync.Client.Subscription.Authorization;
+using AllOverIt.Serialization.Abstractions;
 
 namespace AllOverIt.Aws.AppSync.Client.Subscription.Configuration
 {
@@ -22,6 +23,6 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription.Configuration
 
         public IAppSyncAuthorization DefaultAuthorization { get; set; }
         public IJsonSerializer Serializer { get; set; }
-        public AppSyncClientConnectionOptions ConnectionOptions { get; set; } = new();
+        public AppSyncClientConnectionOptions ConnectionOptions { get; } = new();
     }
 }

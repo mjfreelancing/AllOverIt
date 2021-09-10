@@ -6,11 +6,11 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription.Configuration
     {
         private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(5);
 
-        public TimeSpan ConnectionTimeout { get; } = DefaultTimeout;
+        public TimeSpan ConnectionTimeout { get; set; } = DefaultTimeout;
 
         /// <summary>Initial subscribe and unsubscribe timeout period. If a subscribe fails the subscription is
         /// returned in an error state. If an unsubscribe fails, the subscription is dropped on the assumption
         /// there is something wrong with the connection.</summary>
-        public TimeSpan SubscriptionTimeout { get; } = DefaultTimeout;
+        public TimeSpan SubscriptionTimeout { get; set; } = DefaultTimeout;
     }
 }

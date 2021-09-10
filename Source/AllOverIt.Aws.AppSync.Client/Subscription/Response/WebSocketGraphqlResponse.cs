@@ -1,4 +1,4 @@
-﻿namespace AllOverIt.Aws.AppSync.Client.Subscription
+﻿namespace AllOverIt.Aws.AppSync.Client.Subscription.Response
 {
     public class WebSocketGraphqlResponse<TPayload>
     {

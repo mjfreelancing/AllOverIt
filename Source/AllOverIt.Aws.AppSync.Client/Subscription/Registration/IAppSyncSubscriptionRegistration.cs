@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AllOverIt.Aws.AppSync.Client.Subscription.Response;
+using System;
 using System.Collections.Generic;
 
 namespace AllOverIt.Aws.AppSync.Client.Subscription.Registration

@@ -1,8 +1,8 @@
 ﻿using System.Runtime.Serialization;
 
-namespace AllOverIt.Aws.AppSync.Client.Subscription
+namespace AllOverIt.Aws.AppSync.Client.Subscription.Response
 {
-    public class AppSyncGraphqlResponse : GraphqlWebSocketResponse
+    public sealed class AppSyncGraphqlResponse : GraphqlWebSocketResponse
     {
 
         [IgnoreDataMember]

@@ -4,12 +4,11 @@ using System.Runtime.Serialization;
 
 namespace AllOverIt.Aws.AppSync.Client.Exceptions
 {
-    public abstract class GraphqlTimeoutExceptionBase : Exception
+    public abstract class TimeoutExceptionBase : Exception
     {
         public TimeSpan Timeout { get; }
 
-        protected GraphqlTimeoutExceptionBase(string message, TimeSpan timeout)
-            : base(message)
+        protected TimeoutExceptionBase(TimeSpan timeout)
         {
             Timeout = timeout;
         }
@@ -23,7 +22,7 @@ namespace AllOverIt.Aws.AppSync.Client.Exceptions
             base.GetObjectData(info, context);
         }
 
-        protected GraphqlTimeoutExceptionBase(SerializationInfo info, StreamingContext context)
+        protected TimeoutExceptionBase(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
             Timeout = (TimeSpan) info.GetValue("Timeout", typeof(TimeSpan))!;

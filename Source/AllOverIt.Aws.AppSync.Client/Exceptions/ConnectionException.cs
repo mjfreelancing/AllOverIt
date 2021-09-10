@@ -1,4 +1,4 @@
-﻿using AllOverIt.Aws.AppSync.Client.Subscription;
+﻿using AllOverIt.Aws.AppSync.Client.Subscription.Response;
 using AllOverIt.Extensions;
 using AllOverIt.Helpers;
 using System;
@@ -8,12 +8,12 @@ using System.Runtime.Serialization;
 namespace AllOverIt.Aws.AppSync.Client.Exceptions
 {
     [Serializable]
-    public sealed class GraphqlConnectionException : Exception
+    public sealed class ConnectionException : Exception
     {
         public string ErrorType { get; }
         public IEnumerable<GraphqlErrorDetail> Errors { get; }
 
-        public GraphqlConnectionException(WebSocketGraphqlResponse<GraphqlError> error)
+        public ConnectionException(WebSocketGraphqlResponse<GraphqlError> error)
             : base(error.Type)
         {
             ErrorType = error.Type;
@@ -30,7 +30,7 @@ namespace AllOverIt.Aws.AppSync.Client.Exceptions
             base.GetObjectData(info, context);
         }
 
-        private GraphqlConnectionException(SerializationInfo info, StreamingContext context)
+        private ConnectionException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
             ErrorType = info.GetString("ErrorType");
