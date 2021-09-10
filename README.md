@@ -28,11 +28,39 @@ A library designed to parse and evaluate mathemtical expressions. It provides su
 Provides the ability to quickly create console applications that support dependency injection without being concerned with all of the ceremony.
 
 
+# AllOverIt.Serialization.Abstractions
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Serialization.Abstractions?style=for-the-badge)](https://www.nuget.org/packages/AllOverIt.Serialization.Abstractions/)
+[![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Serialization.Abstractions?style=for-the-badge)](https://www.nuget.org/packages/AllOverIt.Serialization.Abstractions/)
+
+Provides abstractions for JSON serialization
+
+
+# AllOverIt.Serialization.NewtonSoftJson
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Serialization.NewtonSoftJson?style=for-the-badge)](https://www.nuget.org/packages/AllOverIt.Serialization.NewtonSoftJson/)
+[![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Serialization.NewtonSoftJson?style=for-the-badge)](https://www.nuget.org/packages/AllOverIt.Serialization.NewtonSoftJson/)
+
+A JSON serialization wrapper around NewtsonSoft.Json (an implementation for AllOverIt.Serialization.Abstractions)
+
+
+# AllOverIt.Serialization.SystemTextJson
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Serialization.SystemTextJson?style=for-the-badge)](https://www.nuget.org/packages/AllOverIt.Serialization.SystemTextJson/)
+[![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Serialization.SystemTextJson?style=for-the-badge)](https://www.nuget.org/packages/AllOverIt.Serialization.SystemTextJson/)
+
+A JSON serialization wrapper around System.Text.Json (an implementation for AllOverIt.Serialization.Abstractions)
+
+
 # AllOverIt.Aws.Cdk.AppSync
 [![NuGet](https://img.shields.io/nuget/v/AllOverIt.Aws.Cdk.AppSync?style=for-the-badge)](https://www.nuget.org/packages/AllOverIt.Aws.Cdk.AppSync/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Aws.Cdk.AppSync?style=for-the-badge)](https://www.nuget.org/packages/AllOverIt.Aws.Cdk.AppSync/)
 
 Includes a code-first graphql schema generator that also provides support for binding resolvers to None, Http, and Lamda datasources.
+
+
+# AllOverIt.Aws.AppSync.Client
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Aws.AppSync.Client?style=for-the-badge)](https://www.nuget.org/packages/AllOverIt.Aws.AppSync.Client/)
+[![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Aws.AppSync.Client?style=for-the-badge)](https://www.nuget.org/packages/AllOverIt.Aws.AppSync.Client/)
+
+Provides an AWS AppSync Graphql Subscription client.
 
 
 # AllOverIt.Fixture
