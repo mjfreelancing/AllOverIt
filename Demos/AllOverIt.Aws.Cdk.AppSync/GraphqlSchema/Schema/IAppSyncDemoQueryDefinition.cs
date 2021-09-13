@@ -24,7 +24,7 @@ namespace GraphqlSchema.Schema
         [NoneDataSource(nameof(ContinentLanguages), typeof(ContinentLanguagesMapping))]
         ILanguage[] ContinentLanguages([SchemaTypeRequired] IContinentFilterInput filter);
 
-        [NoneDataSource(nameof(ContinentLanguages), typeof(DefaultLanguageMapping))]
+        [NoneDataSource(nameof(DefaultLanguage), typeof(DefaultLanguageMapping))]
         ILanguage DefaultLanguage();
 
         [NoneDataSource(nameof(Continents), typeof(ContinentsMapping))]
