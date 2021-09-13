@@ -37,7 +37,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Attributes.Datasources
 
         private readonly string _identifier;
 
-        public override string LookupKey => SanitiseLookupKey(_identifier);
+        public override string DataSourceName => _identifier;
 
         public SubscriptionDataSourceAttribute(string identifier, string description = default)
             : base(typeof(SubscriptionMapping), description)

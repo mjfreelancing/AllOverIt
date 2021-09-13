@@ -7,7 +7,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Attributes.Datasources
     {
         public EndpointSource EndpointSource { get; }
         public string EndpointKey { get; }
-        public override string LookupKey => SanitiseLookupKey(EndpointKey);
+        public override string DataSourceName => EndpointKey;
 
         public HttpDataSourceAttribute(string endpoint, SystemType mappingType = default, string description = default)
             : this(EndpointSource.Explicit, endpoint, mappingType, description)

@@ -7,7 +7,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Attributes.Datasources
     {
         private readonly string _identifier;
 
-        public override string LookupKey => SanitiseLookupKey(_identifier);
+        public override string DataSourceName => _identifier;
 
         public NoneDataSourceAttribute(string identifier, SystemType mappingType = default, string description = default)
             : base(mappingType, description)
