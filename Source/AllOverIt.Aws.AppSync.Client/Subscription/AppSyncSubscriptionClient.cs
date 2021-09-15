@@ -289,6 +289,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             }
             catch(Exception exception)
             {
+                // WebSocketException
                 _exceptionSubject.OnNext(exception);
                 ShutdownConnection();
 
