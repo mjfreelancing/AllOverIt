@@ -146,7 +146,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
                                 authorization ??= _configuration.DefaultAuthorization;
 
-                                var hostAuthorization = new AppSyncHostAuthorization(_configuration.HostUrl, authorization);
+                                var hostAuthorization = new AppSyncHostAuthorization(_configuration.Host, authorization);
 
                                 var payload = new SubscriptionQueryPayload
                                 {
@@ -336,7 +336,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         {
             _webSocketCancellationTokenSource = new CancellationTokenSource();
 
-            var hostAuth = new AppSyncHostAuthorization(_configuration.HostUrl, _configuration.DefaultAuthorization);
+            var hostAuth = new AppSyncHostAuthorization(_configuration.Host, _configuration.DefaultAuthorization);
 
             var headerValues = string.Join(",", hostAuth.KeyValues.Select(kvp => $@"""{kvp.Key}"":""{kvp.Value}"""));
             var encodedHeader = $@"{{{headerValues}}}".ToBase64();
