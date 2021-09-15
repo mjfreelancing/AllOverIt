@@ -20,6 +20,7 @@
 15 Sep 2021
 ======================================================================================================================
 AllOverIt.Aws.AppSync.Client - v0.2.0
+  * Some error handling improvements.
   * Updates to track current subscription status.
 
 
