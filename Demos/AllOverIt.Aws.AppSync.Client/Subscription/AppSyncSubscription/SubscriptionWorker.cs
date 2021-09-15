@@ -242,9 +242,7 @@ namespace AppSyncSubscription
                                 }
                               }";
 
-            var testQuery = "subscription MySubscription1 { addedtest }";
-
-            var subscription = await GetSubscription(client, "Subscription1", testQuery);
+            var subscription = await GetSubscription(client, "Subscription1", goodQuery);
 
             if (subscription.Success)
             {
