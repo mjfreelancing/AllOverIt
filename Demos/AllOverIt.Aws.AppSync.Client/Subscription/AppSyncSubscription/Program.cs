@@ -30,8 +30,11 @@ namespace AppSyncSubscription
                         
                         return new AppSyncSubscriptionConfiguration
                         {
-                            HostUrl = options.ApiHost,
-                            // RealTimeUrl will be derived from HostUrl when not provided by replacing 'appsync-api' with 'appsync-realtime-api'
+                            Host = options.Host,
+
+                            // RealTimeUrl will be derived from Host when not provided by replacing 'appsync-api' with 'appsync-realtime-api'
+                            RealTimeUrl = options.RealTimeUrl,
+
                             DefaultAuthorization = new AppSyncApiKeyAuthorization(options.ApiKey),
 
                             // take your pick between Newtonsoft and System.Text

@@ -11,17 +11,19 @@ namespace AllOverIt.Aws.AppSync.Client.Extensions
         public static Task<TResult> WaitUntilAsync<TResult>(
             this IObservable<TResult> observable,
             Func<TResult, bool> predicate,
-            Func<TResult, Task<TResult>> action,
-            Action<Exception> exceptionHandler = null)
+            Func<TResult, Task<TResult>> action
+            //Action<Exception> exceptionHandler = null
+            )
         {
-            return WaitUntilAsync<TResult, TResult>(observable, predicate, action, exceptionHandler);
+            return WaitUntilAsync<TResult, TResult>(observable, predicate, action/*, exceptionHandler*/);
         }
 
         public static async Task<TResult> WaitUntilAsync<TType, TResult>(
             this IObservable<TType> observable,
             Func<TType, bool> predicate,
-            Func<TType, Task<TResult>> action,
-            Action<Exception> exceptionHandler = null)
+            Func<TType, Task<TResult>> action
+            //Action<Exception> exceptionHandler = null
+            )
         {
             IDisposable subscription = null;
 
@@ -40,11 +42,12 @@ namespace AllOverIt.Aws.AppSync.Client.Extensions
                         },
                         exception =>
                         {
-                            exceptionHandler?.Invoke(exception);
+                            //exceptionHandler?.Invoke(exception);
                             tcs.SetException(exception);
                         },
                         () => { });
 
+                // If there was an exception it will be re-thrown as we cannot return a result
                 return await tcs.Task;
             }
             finally

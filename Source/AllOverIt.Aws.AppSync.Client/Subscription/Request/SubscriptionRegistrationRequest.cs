@@ -19,6 +19,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription.Request
 
         public string Id => Request.Id;
         public SubscriptionRequest Request { get; }
+        public bool IsSubscribed { get; set; }
 
         public abstract void NotifyResponse(string message);
 
