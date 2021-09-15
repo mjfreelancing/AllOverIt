@@ -88,12 +88,12 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
             try
             {
-                foreach (var subscriptionId in _subscriptions.Keys)
+                foreach (var subscription in _subscriptions.Values)
                 {
                     try
                     {
                         // unsubscribe from AppSync but do not remove them from the registry
-                        await UnsubscribeSubscriptionAsync(subscriptionId, false);
+                        await UnsubscribeSubscriptionAsync(subscription, false);                            
                     }
                     catch (Exception exception)
                     {
@@ -201,7 +201,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                     // this is a disposal, so don't allow any uncaught exceptions
                     try
                     {
-                        await UnsubscribeSubscriptionAsync(subscription.Id, true).ConfigureAwait(false);
+                        await UnsubscribeSubscriptionAsync(subscription, true).ConfigureAwait(false);
                     }
                     catch (Exception exception)
                     {
@@ -531,17 +531,19 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             return SendRequestAsync(request);
         }
 
-        private async Task UnsubscribeSubscriptionAsync(string id, bool removeFromRegistry)
+        private async Task UnsubscribeSubscriptionAsync(SubscriptionRegistrationRequest registration, bool removeFromRegistry)
         {
             // It's possible to explicitly disconnect without unsubscribing a subscription (it will be re-subscribed
             // later when re-opening the connection).
             if (!IsAlive)
             {
+                registration.IsSubscribed = false;
+
                 // this implies the subscription is being disposed of after the connection was closed (by the consumer)
                 // so just remove it from the collection of subscriptions.
                 if(removeFromRegistry)
                 {
-                    _subscriptions.Remove(id);
+                    _subscriptions.Remove(registration.Id);
                 }
 
                 return;
@@ -551,21 +553,24 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             {
                 try
                 {
-                    var request = new SubscriptionQueryMessage
+                    if (registration.IsSubscribed)
                     {
-                        Id = id,
-                        Type = ProtocolMessage.Request.Stop
-                    };
+                        var request = new SubscriptionQueryMessage
+                        {
+                            Id = registration.Id,
+                            Type = ProtocolMessage.Request.Stop
+                        };
 
-                    using (var linkedCts = timeoutSource.GetLinkedTokenSource(_webSocketCancellationTokenSource.Token))
-                    {
-                        var completeTask = _incomingMessages
-                            .TakeUntil(response => response.Id == id && response.Type == ProtocolMessage.Response.Complete)
-                            .LastAsync()
-                            .ToTask(linkedCts.Token);
+                        using (var linkedCts = timeoutSource.GetLinkedTokenSource(_webSocketCancellationTokenSource.Token))
+                        {
+                            var completeTask = _incomingMessages
+                                .TakeUntil(response => response.Id == registration.Id && response.Type == ProtocolMessage.Response.Complete)
+                                .LastAsync()
+                                .ToTask(linkedCts.Token);
 
-                        await SendRequestAsync(request).ConfigureAwait(false);
-                        await completeTask.ConfigureAwait(false);
+                            await SendRequestAsync(request).ConfigureAwait(false);
+                            await completeTask.ConfigureAwait(false);
+                        }
                     }
                 }
                 catch (ConnectionLostException)
@@ -577,14 +582,16 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                 {
                     // We can't throw from here - the subscription is being disposed of within a RaiiAsync instance.
                     // The exception will not be observed.
-                    var timeoutException = new UnsubscribeTimeoutException(id, timeoutSource.Timeout);
+                    var timeoutException = new UnsubscribeTimeoutException(registration.Id, timeoutSource.Timeout);
                     _exceptionSubject.OnNext(timeoutException);
                 }
                 finally
                 {
+                    registration.IsSubscribed = false;
+
                     if (removeFromRegistry)
                     {
-                        _subscriptions.Remove(id);
+                        _subscriptions.Remove(registration.Id);
 
                         // shutdown the web socket if there's no more registered subscriptions
                         if (!_subscriptions.Any())
@@ -636,7 +643,12 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                             .ToTask(linkedCts.Token);
 
                         await SendRequestAsync(request).ConfigureAwait(false);
-                        return await ackTask.ConfigureAwait(false);
+
+                        var response = await ackTask.ConfigureAwait(false);
+
+                        registration.IsSubscribed = response.Type != ProtocolMessage.Response.Error;
+
+                        return response;
                     }
                 }
                 catch (OperationCanceledException)
