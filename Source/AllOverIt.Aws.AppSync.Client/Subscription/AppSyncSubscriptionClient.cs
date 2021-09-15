@@ -340,7 +340,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             var headerValues = string.Join(",", hostAuth.KeyValues.Select(kvp => $@"""{kvp.Key}"":""{kvp.Value}"""));
             var encodedHeader = $@"{{{headerValues}}}".ToBase64();
 
-            var uri = new Uri($"wss://{_configuration.RealTimeUrl}/graphql?header={encodedHeader}&payload=e30=");
+            var uri = new Uri($"wss://{_configuration.RealTimeUrl}?header={encodedHeader}&payload=e30=");
 
             _webSocket = new ClientWebSocket();
             _webSocket.Options.AddSubProtocol("graphql-ws");

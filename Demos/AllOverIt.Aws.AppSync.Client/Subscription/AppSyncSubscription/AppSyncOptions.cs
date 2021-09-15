@@ -2,8 +2,13 @@
 {
     public sealed class AppSyncOptions
     {
-        public string ApiHost { get; set; }         // graphql host (no https:// or /graphql suffix, such as example123.appsync-api.ap-southeast-2.amazonaws.com)
+        // AppSync's graphql host Url without https:// or /graphql suffix, such as example123.appsync-api.ap-southeast-2.amazonaws.com
+        public string ApiHost { get; set; }
+
+        // If provided, the full custom realtime Url, but without https://
         public string RealTimeHost { get; set; }
-        public string ApiKey { get; set; }          // graphql Api Key
+
+        // graphql Api Key
+        public string ApiKey { get; set; }
     }
 }
