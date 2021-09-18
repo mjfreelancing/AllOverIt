@@ -11,9 +11,17 @@
   [8]  AllOverIt.Serialization.Abstractions    (v1.0.0)  - None
   [9]  AllOverIt.Serialization.NewtonsoftJson  (v1.0.0)  - [8] v1.0.0
   [10] AllOverIt.Serialization.SystemTextJson  (v1.0.0)  - [8] v1.0.0
-  [11] AllOverIt.Aws.AppSync.Client            (v0.2.0)  - requires [1] v1.17.3, [8] v1.0.0
+  [11] AllOverIt.Aws.AppSync.Client            (v0.3.0)  - requires [1] v1.17.3, [8] v1.0.0
 
 ======================================================================================================================
+
+
+
+XX Sep 2021
+======================================================================================================================
+AllOverIt.Aws.AppSync.Client - v0.3.0
+  * Added support for queries and mutations.
+  * Reorganised file structure
 
 
 
