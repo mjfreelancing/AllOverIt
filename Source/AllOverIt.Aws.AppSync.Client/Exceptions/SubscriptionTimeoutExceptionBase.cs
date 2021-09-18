@@ -26,7 +26,7 @@ namespace AllOverIt.Aws.AppSync.Client.Exceptions
         protected SubscriptionTimeoutExceptionBase(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            Id = (string) info.GetValue("Id", typeof(string))!;
+            Id = info.GetString("Id");
         }
     }
 }

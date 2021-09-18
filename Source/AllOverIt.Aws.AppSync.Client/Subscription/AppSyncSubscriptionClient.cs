@@ -1,7 +1,7 @@
-﻿using AllOverIt.Aws.AppSync.Client.Exceptions;
+﻿using AllOverIt.Aws.AppSync.Client.Configuration;
+using AllOverIt.Aws.AppSync.Client.Exceptions;
 using AllOverIt.Aws.AppSync.Client.Extensions;
 using AllOverIt.Aws.AppSync.Client.Subscription.Authorization;
-using AllOverIt.Aws.AppSync.Client.Subscription.Configuration;
 using AllOverIt.Aws.AppSync.Client.Subscription.Registration;
 using AllOverIt.Aws.AppSync.Client.Subscription.Request;
 using AllOverIt.Aws.AppSync.Client.Subscription.Response;
@@ -29,7 +29,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
     /// <remarks>Implemented as per the protocol described at https://docs.aws.amazon.com/appsync/latest/devguide/real-time-websocket-client.html.</remarks>
     public sealed class AppSyncSubscriptionClient
     {
-        private readonly AppSyncSubscriptionConfiguration _configuration;
+        private readonly SubscriptionClientConfiguration _configuration;
         private readonly ArraySegment<byte> _buffer = new(new byte[8192]);
         private readonly IDictionary<string, SubscriptionRegistrationRequest> _subscriptions = new ConcurrentDictionary<string, SubscriptionRegistrationRequest>();
 
@@ -61,7 +61,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
         public bool IsAlive => CurrentConnectionState is SubscriptionConnectionState.Connected or SubscriptionConnectionState.KeepAlive;
 
-        public AppSyncSubscriptionClient(AppSyncSubscriptionConfiguration configuration)
+        public AppSyncSubscriptionClient(SubscriptionClientConfiguration configuration)
         {
             _configuration = configuration.WhenNotNull(nameof(configuration));
             _ = configuration.RealTimeUrl.WhenNotNullOrEmpty(nameof(configuration.RealTimeUrl));
@@ -117,7 +117,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
 
         // The default authorization mode will be used if authorization is null.
         public async Task<IAppSyncSubscriptionRegistration> SubscribeAsync<TResponse>(SubscriptionQuery query,
-            Action<SubscriptionResponse<TResponse>> responseAction, IAppSyncAuthorization authorization = null)
+            Action<GraphqlSubscriptionResponse<TResponse>> responseAction, IAppSyncAuthorization authorization = null)
         {
             // Only allow a single registration at a time to avoid complex overlapping connection states when there's a WebSocket issue.
             await _subscriptionLock.WaitAsync().ConfigureAwait(false);

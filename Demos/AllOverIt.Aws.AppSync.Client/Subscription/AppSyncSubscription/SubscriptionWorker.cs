@@ -1,10 +1,14 @@
-﻿using AllOverIt.Aws.AppSync.Client.Exceptions;
+﻿using AllOverIt.Aws.AppSync.Client;
+using AllOverIt.Aws.AppSync.Client.Configuration;
+using AllOverIt.Aws.AppSync.Client.Exceptions;
 using AllOverIt.Aws.AppSync.Client.Subscription;
+using AllOverIt.Aws.AppSync.Client.Subscription.Authorization;
 using AllOverIt.Aws.AppSync.Client.Subscription.Registration;
 using AllOverIt.Aws.AppSync.Client.Subscription.Response;
 using AllOverIt.Extensions;
 using AllOverIt.GenericHost;
 using AllOverIt.Helpers;
+using AllOverIt.Serialization.NewtonsoftJson;
 using AllOverIt.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -207,6 +211,8 @@ namespace AppSyncSubscription
             // the user can now press a key to terminate (via the main console)
             _workerReady.SetCompleted();
 
+            SendMutations(cancellationToken);
+
             // non - blocking wait => will complete when the user presses a key in the main console (cancellationToken is signaled)
             await Task.Run(() =>
             {
@@ -359,6 +365,54 @@ namespace AppSyncSubscription
         private static void LogMessage(string message)
         {
             Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}");
+        }
+
+        private static void SendMutations(CancellationToken cancellationToken)
+        {
+            var options = new ClientConfiguration
+            {
+                EndPoint = "https://pbwlv45sfbfzzd22wqmlrahw5y.appsync-api.ap-southeast-2.amazonaws.com/graphql",
+                Serializer = new NewtonsoftJsonSerializer(),
+                DefaultAuthorization = new AppSyncApiKeyAuthorization("da2-gcb75twfwjep5ols2qwyefjlki")
+            };
+
+            var client = new AppSyncClient(options);
+
+            var mutation = new GraphqlQuery
+            {
+                //Query = "query MyQuery { defaultLanguage { code name } }"
+
+                Query =
+                    @"mutation MyMutation($code: ID!, $name: String!) {
+                        addLanguage(language: {code: $code, name: $name}) {
+                          code
+                          name
+                        }
+                     }"
+            };
+
+            var counter = 0;
+            var codes = new[] {"LNG1", "LNG2", "LNG3"};
+
+            RepeatingTask.Start(async () =>
+            {
+                counter++;
+
+                mutation.Variables = new
+                {
+                    Code = codes[counter % 3],
+                    Name = $"{Guid.NewGuid()}"
+                };
+
+                // Queries are identical; just call SendQueryAsync()
+                // SendQueryAsync() and SendMutationAsync() are identical - the two methods exist for readability
+                var response = await client
+                    .SendMutationAsync<AddLanguageResponse>(mutation, cancellationToken)
+                    .ConfigureAwait(false);
+
+                LogMessage($"Sent mutation: {options.Serializer.SerializeObject(mutation.Variables)}");
+                LogMessage($"Response: {options.Serializer.SerializeObject(response.Data)}");
+            }, cancellationToken, 3000);
         }
     }
 }

@@ -35,9 +35,9 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription.Request
     internal sealed class SubscriptionRegistrationRequest<TResponse> : SubscriptionRegistrationRequest
     {
         private readonly IJsonSerializer _serializer;
-        private Action<SubscriptionResponse<TResponse>> ResponseAction { get; }
+        private Action<GraphqlSubscriptionResponse<TResponse>> ResponseAction { get; }
 
-        public SubscriptionRegistrationRequest(string id, SubscriptionQueryPayload payload, Action<SubscriptionResponse<TResponse>> responseAction,
+        public SubscriptionRegistrationRequest(string id, SubscriptionQueryPayload payload, Action<GraphqlSubscriptionResponse<TResponse>> responseAction,
             IJsonSerializer serializer)
             : base(id, payload)
         {
@@ -47,7 +47,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription.Request
 
         public override void NotifyResponse(string message)
         {
-            var response = _serializer.DeserializeObject<WebSocketSubscriptionResponse<SubscriptionResponse<TResponse>>>(message);
+            var response = _serializer.DeserializeObject<WebSocketSubscriptionResponse<GraphqlSubscriptionResponse<TResponse>>>(message);
             ResponseAction.Invoke(response.Payload);
         }
     }

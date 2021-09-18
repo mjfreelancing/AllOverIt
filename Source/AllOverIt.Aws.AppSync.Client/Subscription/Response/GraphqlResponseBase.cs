@@ -2,7 +2,7 @@
 
 namespace AllOverIt.Aws.AppSync.Client.Subscription.Response
 {
-    public sealed class SubscriptionResponse<TResponse>
+    public abstract class GraphqlResponseBase<TResponse>
     {
         public TResponse Data { get; set; }
 

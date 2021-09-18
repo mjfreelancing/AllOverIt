@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace AllOverIt.Aws.AppSync.Client.Subscription.Configuration
+namespace AllOverIt.Aws.AppSync.Client.Configuration
 {
-    public sealed class AppSyncClientConnectionOptions
+    public sealed class SubscriptionClientConnectionOptions
     {
         private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(5);
 
