@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace AllOverIt.Aws.AppSync.Client.Subscription.Response
+namespace AllOverIt.Aws.AppSync.Client.Response
 {
-    public abstract class GraphqlResponseBase<TResponse>
+    public abstract record GraphqlResponseBase<TResponse>
     {
         public TResponse Data { get; init; }
 

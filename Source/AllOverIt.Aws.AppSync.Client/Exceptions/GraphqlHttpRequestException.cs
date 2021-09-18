@@ -1,6 +1,5 @@
-﻿using AllOverIt.Aws.AppSync.Client.Subscription.Response;
+﻿using AllOverIt.Aws.AppSync.Client.Response;
 using AllOverIt.Extensions;
-using AllOverIt.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -24,8 +23,6 @@ namespace AllOverIt.Aws.AppSync.Client.Exceptions
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            _ = info.WhenNotNull(nameof(info));
-
             info.AddValue("StatusCode", StatusCode);
             info.AddValue("Errors", Errors, typeof(IEnumerable<GraphqlErrorDetail>));
             info.AddValue("Content", Content);

@@ -1,8 +1,8 @@
-﻿using AllOverIt.Aws.AppSync.Client.Subscription.Response;
+﻿using AllOverIt.Aws.AppSync.Client.Response;
 using System;
 using System.Collections.Generic;
 
-namespace AllOverIt.Aws.AppSync.Client.Subscription.Registration
+namespace AllOverIt.Aws.AppSync.Client.Subscription
 {
     public interface IAppSyncSubscriptionRegistration : IAsyncDisposable
     {

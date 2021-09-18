@@ -1,4 +1,4 @@
-﻿namespace AllOverIt.Aws.AppSync.Client.Subscription.Response
+﻿namespace AllOverIt.Aws.AppSync.Client.Subscription
 {
     internal sealed class ConnectionAckResponse
     {

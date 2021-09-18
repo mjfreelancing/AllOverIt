@@ -1,11 +1,11 @@
-﻿using AllOverIt.Aws.AppSync.Client.Subscription.Response;
+﻿using AllOverIt.Aws.AppSync.Client.Response;
 using AllOverIt.Extensions;
 using AllOverIt.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace AllOverIt.Aws.AppSync.Client.Subscription.Registration
+namespace AllOverIt.Aws.AppSync.Client.Subscription
 {
     /// <summary>Decorates the async disposable created by SubscribeAsync() so the caller can obtain the generated
     /// subscription Id and any errors that occurred during connection / registration.</summary>

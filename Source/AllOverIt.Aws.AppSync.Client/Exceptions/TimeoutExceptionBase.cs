@@ -1,5 +1,4 @@
-﻿using AllOverIt.Helpers;
-using System;
+﻿using System;
 using System.Runtime.Serialization;
 
 namespace AllOverIt.Aws.AppSync.Client.Exceptions
@@ -15,8 +14,6 @@ namespace AllOverIt.Aws.AppSync.Client.Exceptions
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            _ = info.WhenNotNull(nameof(info));
-
             info.AddValue("Timeout", Timeout);
 
             base.GetObjectData(info, context);

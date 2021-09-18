@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace AllOverIt.Aws.AppSync.Client.Subscription.Response
+namespace AllOverIt.Aws.AppSync.Client.Response
 {
-    public sealed class GraphqlError
+    public sealed record GraphqlError
     {
         public IEnumerable<GraphqlErrorDetail> Errors { get; init; }
     }

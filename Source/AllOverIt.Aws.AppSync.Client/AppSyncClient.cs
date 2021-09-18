@@ -2,7 +2,7 @@
 using AllOverIt.Aws.AppSync.Client.Configuration;
 using AllOverIt.Aws.AppSync.Client.Exceptions;
 using AllOverIt.Aws.AppSync.Client.Request;
-using AllOverIt.Aws.AppSync.Client.Subscription.Response;
+using AllOverIt.Aws.AppSync.Client.Response;
 using AllOverIt.Helpers;
 using System.Net.Http;
 using System.Text;

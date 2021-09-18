@@ -1,9 +1,9 @@
-﻿using AllOverIt.Aws.AppSync.Client.Subscription.Response;
+﻿using System;
+using AllOverIt.Aws.AppSync.Client.Response;
 using AllOverIt.Helpers;
 using AllOverIt.Serialization.Abstractions;
-using System;
 
-namespace AllOverIt.Aws.AppSync.Client.Subscription.Request
+namespace AllOverIt.Aws.AppSync.Client.Subscription
 {
     internal abstract class SubscriptionRegistrationRequest
     {

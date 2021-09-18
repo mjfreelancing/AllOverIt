@@ -1,4 +1,4 @@
-﻿namespace AllOverIt.Aws.AppSync.Client.Subscription.Request
+﻿namespace AllOverIt.Aws.AppSync.Client.Subscription
 {
     internal class SubscriptionQueryMessage
     {
