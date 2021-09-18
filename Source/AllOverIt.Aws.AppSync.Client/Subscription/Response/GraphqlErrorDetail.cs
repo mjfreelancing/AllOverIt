@@ -4,10 +4,10 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription.Response
 {
     public class GraphqlErrorDetail
     {
-        public int? ErrorCode { get; set; }
-        public string ErrorType { get; set; }
-        public string Message { get; set; }
-        public IEnumerable<GraphqlLocation> Locations { get; set; }
-        public IEnumerable<object> Path { get; set; }
+        public int? ErrorCode { get; init; }
+        public string ErrorType { get; init; }
+        public string Message { get; init; }
+        public IEnumerable<GraphqlLocation> Locations { get; init; }
+        public IEnumerable<object> Path { get; init; }
     }
 }

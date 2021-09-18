@@ -2,6 +2,6 @@
 {
     public sealed class WebSocketSubscriptionResponse<TPayload> : WebSocketGraphqlResponse<TPayload>
     {
-        public string Id { get; set; }
+        public string Id { get; init; }
     }
 }

@@ -8,12 +8,12 @@ using System.Runtime.Serialization;
 namespace AllOverIt.Aws.AppSync.Client.Exceptions
 {
     [Serializable]
-    public sealed class ConnectionException : Exception
+    public sealed class WebSocketConnectionException : Exception
     {
         public string ErrorType { get; }
         public IEnumerable<GraphqlErrorDetail> Errors { get; }
 
-        public ConnectionException(WebSocketGraphqlResponse<GraphqlError> error)
+        public WebSocketConnectionException(WebSocketGraphqlResponse<GraphqlError> error)
             : base(error.Type)
         {
             ErrorType = error.Type;
@@ -30,7 +30,7 @@ namespace AllOverIt.Aws.AppSync.Client.Exceptions
             base.GetObjectData(info, context);
         }
 
-        private ConnectionException(SerializationInfo info, StreamingContext context)
+        private WebSocketConnectionException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
             ErrorType = info.GetString("ErrorType");

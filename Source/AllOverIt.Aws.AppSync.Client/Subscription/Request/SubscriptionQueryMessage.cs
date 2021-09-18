@@ -2,8 +2,8 @@
 {
     internal class SubscriptionQueryMessage
     {
-        public string Id { get; set; }
-        public string Type { get; set; }
-        public SubscriptionQueryPayload Payload { get; set; }
+        public string Id { get; init; }
+        public string Type { get; init; }
+        public SubscriptionQueryPayload Payload { get; init; }
     }
 }

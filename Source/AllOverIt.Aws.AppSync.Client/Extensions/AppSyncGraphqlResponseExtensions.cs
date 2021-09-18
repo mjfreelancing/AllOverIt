@@ -1,5 +1,4 @@
-﻿using AllOverIt.Aws.AppSync.Client.Subscription;
-using AllOverIt.Aws.AppSync.Client.Subscription.Response;
+﻿using AllOverIt.Aws.AppSync.Client.Subscription.Response;
 using AllOverIt.Serialization.Abstractions;
 
 namespace AllOverIt.Aws.AppSync.Client.Extensions

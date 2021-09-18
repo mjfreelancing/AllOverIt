@@ -2,7 +2,7 @@
 {
     public abstract class GraphqlWebSocketResponse
     {
-        public string Id { get; set; }
-        public string Type { get; set; }
+        public string Id { get; init; }
+        public string Type { get; init; }
     }
 }

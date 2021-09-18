@@ -1,4 +1,4 @@
-﻿namespace AllOverIt.Aws.AppSync.Client.Subscription.Authorization
+﻿namespace AllOverIt.Aws.AppSync.Client.Authorization
 {
     /// <summary>Decorates a <see cref="AppSyncAuthorizationBase"/> with a 'host' header.</summary>
     public sealed class AppSyncHostAuthorization : AppSyncAuthorizationBase

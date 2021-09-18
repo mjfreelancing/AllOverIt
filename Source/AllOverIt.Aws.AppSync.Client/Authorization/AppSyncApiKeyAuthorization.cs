@@ -1,4 +1,4 @@
-﻿namespace AllOverIt.Aws.AppSync.Client.Subscription.Authorization
+﻿namespace AllOverIt.Aws.AppSync.Client.Authorization
 {
     public sealed class AppSyncApiKeyAuthorization : AppSyncAuthorizationBase
     {

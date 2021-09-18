@@ -5,8 +5,8 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription.Response
 {
     public sealed class GraphqlHttpResponse<TResponse> : GraphqlResponseBase<TResponse>
     {
-        public HttpStatusCode StatusCode { get; set; }
-        public HttpResponseHeaders Headers { get; set; }
+        public HttpStatusCode StatusCode { get; internal set; }
+        public HttpResponseHeaders Headers { get; internal set; }
 
     }
 }

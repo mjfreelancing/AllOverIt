@@ -3,6 +3,6 @@
     internal sealed class ConnectionAckResponse
     {
         // Time in milliseconds waiting for ka message before the client should terminate the WebSocket connection
-        public int ConnectionTimeoutMs { get; set; }
+        public int ConnectionTimeoutMs { get; init; }
     }
 }

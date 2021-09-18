@@ -6,6 +6,6 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription.Response
     {
 
         [IgnoreDataMember]
-        public string Message { get; set; }
+        public string Message { get; internal set; }
     }
 }

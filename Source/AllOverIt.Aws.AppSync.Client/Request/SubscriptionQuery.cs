@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AllOverIt.Aws.AppSync.Client.Subscription
+namespace AllOverIt.Aws.AppSync.Client.Request
 {
     public sealed class SubscriptionQuery
     {

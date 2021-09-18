@@ -2,7 +2,7 @@
 {
     internal sealed class SubscriptionQueryPayload
     {
-        public string Data { get; set; }        // string representation of query and variables
-        public object Extensions { get; set; }
+        public string Data { get; init; }        // string representation of query and variables
+        public object Extensions { get; init; }
     }
 }

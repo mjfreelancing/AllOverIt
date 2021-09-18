@@ -1,7 +1,9 @@
-﻿using AllOverIt.Aws.AppSync.Client.Configuration;
+﻿using AllOverIt.Aws.AppSync.Client.Authorization;
+using AllOverIt.Aws.AppSync.Client.Configuration;
 using AllOverIt.Aws.AppSync.Client.Exceptions;
 using AllOverIt.Aws.AppSync.Client.Extensions;
-using AllOverIt.Aws.AppSync.Client.Subscription.Authorization;
+using AllOverIt.Aws.AppSync.Client.Request;
+using AllOverIt.Aws.AppSync.Client.Subscription;
 using AllOverIt.Aws.AppSync.Client.Subscription.Registration;
 using AllOverIt.Aws.AppSync.Client.Subscription.Request;
 using AllOverIt.Aws.AppSync.Client.Subscription.Response;
@@ -23,7 +25,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AllOverIt.Aws.AppSync.Client.Subscription
+namespace AllOverIt.Aws.AppSync.Client
 {
     /// <summary>An AppSync subscription client that supports API KEY and Cognito based authorization.</summary>
     /// <remarks>Implemented as per the protocol described at https://docs.aws.amazon.com/appsync/latest/devguide/real-time-websocket-client.html.</remarks>
@@ -175,7 +177,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                             catch (Exception exception)
                             {
                                 // SubscribeTimeoutException
-                                // ConnectionLostException - if the websocket is shutdown mid-subscription registration
+                                // WebSocketConnectionLostException - if the websocket is shutdown mid-subscription registration
                                 _exceptionSubject.OnNext(exception);
                                 
                                 // The disconnection has most likely already been performed, but just in case
@@ -266,7 +268,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                                             else
                                             {
                                                 var error = response.GetGraphqlErrorFromResponseMessage(_configuration.Serializer);
-                                                throw new ConnectionException(error);
+                                                throw new WebSocketConnectionException(error);
                                             }
                                         }
                                     }
@@ -276,7 +278,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                                         // will have been captured from the _exceptionSubject (being observed at the start of the subscription process)
                                         if (timeoutSource.Token.IsCancellationRequested)
                                         {
-                                            throw new ConnectionTimeoutException(timeoutSource.Timeout);
+                                            throw new WebSocketConnectionTimeoutException(timeoutSource.Timeout);
                                         }
                                     }
                                 }
@@ -323,7 +325,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                     {
                         // If we don't have a connection then it's time to bail - the client will need to retry
                         // as once this handler exits we have no way to re-try.
-                        var connectionLost = new ConnectionLostException();
+                        var connectionLost = new WebSocketConnectionLostException();
                         _exceptionSubject.OnNext(connectionLost);
                     }
 
@@ -573,7 +575,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
                         }
                     }
                 }
-                catch (ConnectionLostException)
+                catch (WebSocketConnectionLostException)
                 {
                     // The connection was lost after the message was sent.
                     // The error would have been reported, do nothing here.
@@ -676,7 +678,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             // check if an error has occurred mid-subscription that resulted in the WebSocket being disposed
             if (_webSocket == null)
             {
-                throw new ConnectionLostException();
+                throw new WebSocketConnectionLostException();
             }
 
             return _webSocket.SendAsync(segment, WebSocketMessageType.Text, true, _webSocketCancellationTokenSource.Token);

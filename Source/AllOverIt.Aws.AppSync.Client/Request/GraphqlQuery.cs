@@ -1,4 +1,4 @@
-﻿namespace AllOverIt.Aws.AppSync.Client
+﻿namespace AllOverIt.Aws.AppSync.Client.Request
 {
     public sealed class GraphqlQuery
     {

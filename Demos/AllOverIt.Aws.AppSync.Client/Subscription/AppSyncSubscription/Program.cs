@@ -1,6 +1,6 @@
-﻿using AllOverIt.Aws.AppSync.Client.Configuration;
-using AllOverIt.Aws.AppSync.Client.Subscription;
-using AllOverIt.Aws.AppSync.Client.Subscription.Authorization;
+﻿using AllOverIt.Aws.AppSync.Client;
+using AllOverIt.Aws.AppSync.Client.Authorization;
+using AllOverIt.Aws.AppSync.Client.Configuration;
 using AllOverIt.GenericHost;
 using AllOverIt.Serialization.SystemTextJson;
 using Microsoft.Extensions.Configuration;

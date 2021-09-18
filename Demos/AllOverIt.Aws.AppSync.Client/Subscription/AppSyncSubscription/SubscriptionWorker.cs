@@ -1,8 +1,8 @@
 ﻿using AllOverIt.Aws.AppSync.Client;
+using AllOverIt.Aws.AppSync.Client.Authorization;
 using AllOverIt.Aws.AppSync.Client.Configuration;
 using AllOverIt.Aws.AppSync.Client.Exceptions;
-using AllOverIt.Aws.AppSync.Client.Subscription;
-using AllOverIt.Aws.AppSync.Client.Subscription.Authorization;
+using AllOverIt.Aws.AppSync.Client.Request;
 using AllOverIt.Aws.AppSync.Client.Subscription.Registration;
 using AllOverIt.Aws.AppSync.Client.Subscription.Response;
 using AllOverIt.Extensions;
@@ -76,14 +76,14 @@ namespace AppSyncSubscription
                     switch (exception)
                     {
                         // "connection_error"  - such as when the sub-protocol is not defined on the web socket (will have error type)
-                        case ConnectionException connectionException:
+                        case WebSocketConnectionException connectionException:
                         {
                             var message = string.Join(", ", connectionException.Errors.Select(GetErrorMessage));
                             LogMessage($"{message}");
                             break;
                         }
 
-                        // ConnectionTimeoutException:
+                        // WebSocketConnectionTimeoutException:
                         // SubscribeTimeoutException
                         // UnsubscribeTimeoutException
                         case TimeoutExceptionBase timeoutException:
@@ -91,7 +91,7 @@ namespace AppSyncSubscription
                             break;
 
                         default:
-                            // ? ConnectionLostException
+                            // ? WebSocketConnectionLostException
                             LogMessage($"{exception.Message}");
                             break;
                     }
@@ -369,7 +369,7 @@ namespace AppSyncSubscription
 
         private static void SendMutations(CancellationToken cancellationToken)
         {
-            var options = new ClientConfiguration
+            var options = new GraphqlClientConfiguration
             {
                 EndPoint = "https://pbwlv45sfbfzzd22wqmlrahw5y.appsync-api.ap-southeast-2.amazonaws.com/graphql",
                 Serializer = new NewtonsoftJsonSerializer(),
@@ -396,11 +396,9 @@ namespace AppSyncSubscription
 
             RepeatingTask.Start(async () =>
             {
-                counter++;
-
                 mutation.Variables = new
                 {
-                    Code = codes[counter % 3],
+                    Code = codes[counter++ % 3],
                     Name = $"{Guid.NewGuid()}"
                 };
 

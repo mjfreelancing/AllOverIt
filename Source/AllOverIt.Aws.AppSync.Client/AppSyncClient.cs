@@ -1,6 +1,7 @@
-﻿using AllOverIt.Aws.AppSync.Client.Configuration;
+﻿using AllOverIt.Aws.AppSync.Client.Authorization;
+using AllOverIt.Aws.AppSync.Client.Configuration;
 using AllOverIt.Aws.AppSync.Client.Exceptions;
-using AllOverIt.Aws.AppSync.Client.Subscription.Authorization;
+using AllOverIt.Aws.AppSync.Client.Request;
 using AllOverIt.Aws.AppSync.Client.Subscription.Response;
 using AllOverIt.Helpers;
 using System.Net.Http;
@@ -13,9 +14,9 @@ namespace AllOverIt.Aws.AppSync.Client
     public sealed class AppSyncClient
     {
         private static readonly HttpClient HttpClient = new();
-        private readonly ClientConfiguration _configuration;
+        private readonly GraphqlClientConfiguration _configuration;
 
-        public AppSyncClient(ClientConfiguration configuration)
+        public AppSyncClient(GraphqlClientConfiguration configuration)
         {
             _configuration = configuration.WhenNotNull(nameof(configuration));
         }

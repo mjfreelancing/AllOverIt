@@ -2,7 +2,7 @@
 {
     public class WebSocketGraphqlResponse<TPayload>
     {
-        public string Type { get; set; }
-        public TPayload Payload { get; set; }
+        public string Type { get; init; }
+        public TPayload Payload { get; init; }
     }
 }

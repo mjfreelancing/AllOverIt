@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AllOverIt.Aws.AppSync.Client.Subscription.Authorization
+namespace AllOverIt.Aws.AppSync.Client.Authorization
 {
     public abstract class AppSyncAuthorizationBase : IAppSyncAuthorization
     {
