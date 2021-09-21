@@ -17,19 +17,15 @@
 
 
 
-XX Sep 2021
+21 Sep 2021
 ======================================================================================================================
 AllOverIt.Aws.AppSync.Client - v0.3.0
   * Added support for queries and mutations.
-  * Reorganised file structure
-
-
-
-21 Sep 2021
-======================================================================================================================
+  * Some type renaming and reorganised file structure
+  
 AllOverIt.Aws.Cdk.AppSync - v0.15.0
   * Updated IConnection available options
-  
+
   
   
 15 Sep 2021
