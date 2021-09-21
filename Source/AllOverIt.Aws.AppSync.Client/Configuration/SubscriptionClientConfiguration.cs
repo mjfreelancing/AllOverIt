@@ -3,7 +3,7 @@ using AllOverIt.Serialization.Abstractions;
 
 namespace AllOverIt.Aws.AppSync.Client.Configuration
 {
-    /// <summary>Contains configuration details for AppSync Graphql subscriptions.</summary>
+    /// <summary>Contains configuration details for the AppSync Graphql subscription client.</summary>
     public sealed record SubscriptionClientConfiguration
     {
         private string _realTimeUrl;

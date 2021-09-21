@@ -11,32 +11,59 @@ using System.Threading.Tasks;
 
 namespace AllOverIt.Aws.AppSync.Client
 {
+    /// <summary>An AppSync query and mutation graphql client.</summary>
     public sealed class AppSyncClient
     {
         private static readonly HttpClient HttpClient = new();
         private readonly GraphqlClientConfiguration _configuration;
 
+        /// <summary>Constructor.</summary>
+        /// <param name="configuration">Contains configuration details for AppSync Graphql query and mutation operations.</param>
         public AppSyncClient(GraphqlClientConfiguration configuration)
         {
             _configuration = configuration.WhenNotNull(nameof(configuration));
         }
 
+        /// <summary>Sends a graphql query request using the default authorization specified on the configuration
+        /// provided at the time of construction.</summary>
+        /// <typeparam name="TResponse">The query response type.</typeparam>
+        /// <param name="query">The query request to send.</param>
+        /// <param name="cancellationToken">An optional cancellation token.</param>
+        /// <returns>The query response, or error information.</returns>
         public Task<GraphqlHttpResponse<TResponse>> SendQueryAsync<TResponse>(GraphqlQuery query, CancellationToken cancellationToken = default)
         {
             return SendRequestAsync<TResponse>(query, null, cancellationToken);
         }
 
+        /// <summary>Sends a graphql query request.</summary>
+        /// <typeparam name="TResponse">The query response type.</typeparam>
+        /// <param name="query">The query request to send.</param>
+        /// <param name="authorization">The authorization to use for the request.</param>
+        /// <param name="cancellationToken">An optional cancellation token.</param>
+        /// <returns>The query response, or error information.</returns>
         public Task<GraphqlHttpResponse<TResponse>> SendQueryAsync<TResponse>(GraphqlQuery query, IAppSyncAuthorization authorization,
             CancellationToken cancellationToken = default)
         {
             return SendRequestAsync<TResponse>(query, authorization, cancellationToken);
         }
 
+        /// <summary>Sends a graphql mutation request using the default authorization specified on the configuration
+        /// provided at the time of construction.</summary>
+        /// <typeparam name="TResponse">The mutation response type.</typeparam>
+        /// <param name="query">The mutation request to send.</param>
+        /// <param name="cancellationToken">An optional cancellation token.</param>
+        /// <returns>The mutation response, or error information.</returns>
         public Task<GraphqlHttpResponse<TResponse>> SendMutationAsync<TResponse>(GraphqlQuery query, CancellationToken cancellationToken = default)
         {
             return SendRequestAsync<TResponse>(query, null, cancellationToken);
         }
 
+        /// <summary>Sends a graphql mutation request.</summary>
+        /// <typeparam name="TResponse">The mutation response type.</typeparam>
+        /// <param name="query">The mutation request to send.</param>
+        /// <param name="authorization">The authorization to use for the request.</param>
+        /// <param name="cancellationToken">An optional cancellation token.</param>
+        /// <returns>The mutation response, or error information.</returns>
         public Task<GraphqlHttpResponse<TResponse>> SendMutationAsync<TResponse>(GraphqlQuery query, IAppSyncAuthorization authorization,
             CancellationToken cancellationToken = default)
         {

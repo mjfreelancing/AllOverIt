@@ -46,7 +46,7 @@ namespace AllOverIt.Aws.AppSync.Client
         private IConnectableObservable<AppSyncSubscriptionMessage> _incomingMessages;
         private IDisposable _incomingMessagesConnection;
 
-        // the primary CancellationTokenSource used for message retrieval from the web socket
+        // The primary CancellationTokenSource used for message retrieval from the web socket
         private CancellationTokenSource _webSocketCancellationTokenSource;
 
         // One WebSocket connection can have multiple subscriptions (even with different authentication modes).
@@ -55,20 +55,28 @@ namespace AllOverIt.Aws.AppSync.Client
         // The last raised connection state
         private SubscriptionConnectionState CurrentConnectionState => _connectionStateSubject.Value;
 
+        /// <summary>An observable providing the current connection status.</summary>
         public IObservable<SubscriptionConnectionState> ConnectionState => _connectionStateSubject;
+
+        /// <summary>An observable reporting connection and subscription related exceptions.</summary>
         public IObservable<Exception> Exceptions => _exceptionSubject;
+
+        /// <summary>An observable reporting subscription related graphql errors.</summary>
         public IObservable<GraphqlSubscriptionResponseError> GraphqlErrors => _graphqlErrorSubject;
 
+        /// <summary>Indicates if the client is currently connected to AppSync.</summary>
         public bool IsAlive => CurrentConnectionState is SubscriptionConnectionState.Connected or SubscriptionConnectionState.KeepAlive;
 
+        /// <summary>Constructor.</summary>
+        /// <param name="configuration">Contains configuration details for the AppSync Graphql subscription client.</param>
         public AppSyncSubscriptionClient(SubscriptionClientConfiguration configuration)
         {
             _configuration = configuration.WhenNotNull(nameof(configuration));
             _ = configuration.RealTimeUrl.WhenNotNullOrEmpty(nameof(configuration.RealTimeUrl));
         }
 
-        /// <summary>Opens a WebSocket connection and registers the client with AppSync. Any existing subscriptions will
-        /// also be re-subscribed.</summary>
+        /// <summary>Opens a WebSocket connection and registers the client with AppSync. Any existing subscriptions from a
+        /// previous connection will be re-subscribed.</summary>
         /// <returns>True if the connection was established, otherwise false.</returns>
         /// <remarks>Refer to <see cref="DisconnectAsync"/> for more information on how existing subscriptions are retained
         /// if the client is disconnected while there are active subscriptions.</remarks>
@@ -116,6 +124,14 @@ namespace AllOverIt.Aws.AppSync.Client
         }
 
         // The default authorization mode will be used if authorization is null.
+
+        /// <summary>Registers a new subscription with AppSync. If there is no action connection then that will be established first.</summary>
+        /// <typeparam name="TResponse">The response type to be populated when the subscription receives a message.</typeparam>
+        /// <param name="query">The subscription query.</param>
+        /// <param name="responseAction">The action to invoke when a response is received.</param>
+        /// <param name="authorization">The authorization to use for the request. If null is provided then the default authorization provided
+        /// on the client configuration during construction will be used.</param>
+        /// <returns></returns>
         public async Task<IAppSyncSubscriptionRegistration> SubscribeAsync<TResponse>(SubscriptionQuery query,
             Action<GraphqlSubscriptionResponse<TResponse>> responseAction, IAppSyncAuthorization authorization = null)
         {
