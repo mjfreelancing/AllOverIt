@@ -10,7 +10,7 @@ namespace AllOverIt.Aws.AppSync.Client.Utils
         private readonly List<Exception> _exceptions = new();
         private IDisposable _subscription;
 
-        public IReadOnlyCollection<Exception> Exceptions => _exceptions;
+        public IEnumerable<Exception> Exceptions => _exceptions;
 
         public ObservableExceptionCollector(IObservable<Exception> observable)
         {

@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 
 namespace AllOverIt.Aws.AppSync.Client.Extensions
 {
-    public static class ObservableExtensions
+    internal static class ObservableExtensions
     {
-        public static Task<TResult> WaitUntilAsync<TResult>(
+        internal static Task<TResult> WaitUntilAsync<TResult>(
             this IObservable<TResult> observable,
             Func<TResult, bool> predicate,
             Func<TResult, Task<TResult>> action)
@@ -14,7 +14,7 @@ namespace AllOverIt.Aws.AppSync.Client.Extensions
             return WaitUntilAsync<TResult, TResult>(observable, predicate, action);
         }
 
-        public static async Task<TResult> WaitUntilAsync<TType, TResult>(
+        internal static async Task<TResult> WaitUntilAsync<TType, TResult>(
             this IObservable<TType> observable,
             Func<TType, bool> predicate,
             Func<TType, Task<TResult>> action)

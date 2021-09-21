@@ -6,12 +6,18 @@ using System.Runtime.Serialization;
 
 namespace AllOverIt.Aws.AppSync.Client.Exceptions
 {
+    /// <summary>Contains the reason for a websocket error that occurred during a connection request.</summary>
     [Serializable]
     public sealed class WebSocketConnectionException : Exception
     {
+        /// <summary>The graphql error type.</summary>
         public string ErrorType { get; }
+        
+        /// <summary>A collection of graphql errors as reported by AppSync.</summary>
         public IEnumerable<GraphqlErrorDetail> Errors { get; }
 
+        /// <summary>Constructor.</summary>
+        /// <param name="error">The error payload reported by AppSync.</param>
         public WebSocketConnectionException(WebSocketGraphqlResponse<GraphqlError> error)
             : base(error.Type)
         {

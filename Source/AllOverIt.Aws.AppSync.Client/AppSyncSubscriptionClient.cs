@@ -43,7 +43,7 @@ namespace AllOverIt.Aws.AppSync.Client
 
         private TimeSpan _healthCheckPeriod;        // Max period to wait before a keep alive message from AppSync
         private IDisposable _healthDisposable;      // Subscription for resetting the connection and re-subscribing all subscriptions
-        private IConnectableObservable<AppSyncGraphqlResponse> _incomingMessages;
+        private IConnectableObservable<AppSyncSubscriptionMessage> _incomingMessages;
         private IDisposable _incomingMessagesConnection;
 
         // the primary CancellationTokenSource used for message retrieval from the web socket
@@ -297,7 +297,7 @@ namespace AllOverIt.Aws.AppSync.Client
             }
         }
 
-        private void ResetHealthCheck(AppSyncGraphqlResponse response = default)
+        private void ResetHealthCheck(AppSyncSubscriptionMessage response = default)
         {
             if (response != null)
             {
@@ -404,7 +404,7 @@ namespace AllOverIt.Aws.AppSync.Client
             throw new KeyNotFoundException($"Subscription Id '{id}' not found.");
         }
 
-        private async Task<AppSyncGraphqlResponse> GetIncomingMessageAsync()
+        private async Task<AppSyncSubscriptionMessage> GetIncomingMessageAsync()
         {
             using (var stream = new MemoryStream())
             {
@@ -444,7 +444,7 @@ namespace AllOverIt.Aws.AppSync.Client
             _incomingMessages = Observable
                 .FromAsync(GetIncomingMessageAsync)
                 .Repeat()
-                .Catch<AppSyncGraphqlResponse, OperationCanceledException>(_ => Observable.Empty<AppSyncGraphqlResponse>())
+                .Catch<AppSyncSubscriptionMessage, OperationCanceledException>(_ => Observable.Empty<AppSyncSubscriptionMessage>())
                 .Publish();
 
             // Process exceptions by closing the WebSocket connection - not auto-reconnecting in case the
@@ -514,7 +514,7 @@ namespace AllOverIt.Aws.AppSync.Client
             }
         }
 
-        private void NotifySubscriptionError(string id, AppSyncGraphqlResponse response)
+        private void NotifySubscriptionError(string id, AppSyncSubscriptionMessage response)
         {
             var error = response.GetGraphqlErrorFromResponseMessage(_configuration.Serializer);
             var responseError = new GraphqlSubscriptionResponseError(id, error);
@@ -625,7 +625,7 @@ namespace AllOverIt.Aws.AppSync.Client
             }
         }
 
-        private async Task<AppSyncGraphqlResponse> SendRegistrationAsync(SubscriptionRegistrationRequest registration)
+        private async Task<AppSyncSubscriptionMessage> SendRegistrationAsync(SubscriptionRegistrationRequest registration)
         {
             using (var timeoutSource = new TimeoutCancellationSource(_configuration.ConnectionOptions.SubscriptionTimeout))
             {
@@ -682,9 +682,9 @@ namespace AllOverIt.Aws.AppSync.Client
             return _webSocket.SendAsync(segment, WebSocketMessageType.Text, true, _webSocketCancellationTokenSource.Token);
         }
 
-        private async Task<AppSyncGraphqlResponse> GetGraphqlResponse(MemoryStream stream)
+        private async Task<AppSyncSubscriptionMessage> GetGraphqlResponse(MemoryStream stream)
         {
-            var response = await _configuration.Serializer.DeserializeObjectAsync<AppSyncGraphqlResponse>(stream, _webSocketCancellationTokenSource.Token);
+            var response = await _configuration.Serializer.DeserializeObjectAsync<AppSyncSubscriptionMessage>(stream, _webSocketCancellationTokenSource.Token);
             response.Message = Encoding.UTF8.GetString(stream.ToArray());
 
             return response;
