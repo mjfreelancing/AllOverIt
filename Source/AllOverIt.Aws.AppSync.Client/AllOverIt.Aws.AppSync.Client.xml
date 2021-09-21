@@ -4,66 +4,504 @@
         <name>AllOverIt.Aws.AppSync.Client</name>
     </assembly>
     <members>
-        <member name="T:AllOverIt.Aws.AppSync.Client.Subscription.AppSyncSubscriptionClient">
+        <member name="T:AllOverIt.Aws.AppSync.Client.AppSyncClient">
+            <summary>An AppSync query and mutation graphql client.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.AppSyncClient.#ctor(AllOverIt.Aws.AppSync.Client.Configuration.GraphqlClientConfiguration)">
+            <summary>Constructor.</summary>
+            <param name="configuration">Contains configuration details for AppSync Graphql query and mutation operations.</param>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.AppSyncClient.SendQueryAsync``1(AllOverIt.Aws.AppSync.Client.Request.GraphqlQuery,System.Threading.CancellationToken)">
+            <summary>Sends a graphql query request using the default authorization specified on the configuration
+            provided at the time of construction.</summary>
+            <typeparam name="TResponse">The query response type.</typeparam>
+            <param name="query">The query request to send.</param>
+            <param name="cancellationToken">An optional cancellation token.</param>
+            <returns>The query response, or error information.</returns>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.AppSyncClient.SendQueryAsync``1(AllOverIt.Aws.AppSync.Client.Request.GraphqlQuery,AllOverIt.Aws.AppSync.Client.Authorization.IAppSyncAuthorization,System.Threading.CancellationToken)">
+            <summary>Sends a graphql query request.</summary>
+            <typeparam name="TResponse">The query response type.</typeparam>
+            <param name="query">The query request to send.</param>
+            <param name="authorization">The authorization to use for the request.</param>
+            <param name="cancellationToken">An optional cancellation token.</param>
+            <returns>The query response, or error information.</returns>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.AppSyncClient.SendMutationAsync``1(AllOverIt.Aws.AppSync.Client.Request.GraphqlQuery,System.Threading.CancellationToken)">
+            <summary>Sends a graphql mutation request using the default authorization specified on the configuration
+            provided at the time of construction.</summary>
+            <typeparam name="TResponse">The mutation response type.</typeparam>
+            <param name="query">The mutation request to send.</param>
+            <param name="cancellationToken">An optional cancellation token.</param>
+            <returns>The mutation response, or error information.</returns>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.AppSyncClient.SendMutationAsync``1(AllOverIt.Aws.AppSync.Client.Request.GraphqlQuery,AllOverIt.Aws.AppSync.Client.Authorization.IAppSyncAuthorization,System.Threading.CancellationToken)">
+            <summary>Sends a graphql mutation request.</summary>
+            <typeparam name="TResponse">The mutation response type.</typeparam>
+            <param name="query">The mutation request to send.</param>
+            <param name="authorization">The authorization to use for the request.</param>
+            <param name="cancellationToken">An optional cancellation token.</param>
+            <returns>The mutation response, or error information.</returns>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.AppSyncSubscriptionClient">
             <summary>An AppSync subscription client that supports API KEY and Cognito based authorization.</summary>
             <remarks>Implemented as per the protocol described at https://docs.aws.amazon.com/appsync/latest/devguide/real-time-websocket-client.html.</remarks>
         </member>
-        <member name="M:AllOverIt.Aws.AppSync.Client.Subscription.AppSyncSubscriptionClient.ConnectAsync">
-            <summary>Opens a WebSocket connection and registers the client with AppSync. Any existing subscriptions will
-            also be re-subscribed.</summary>
+        <member name="P:AllOverIt.Aws.AppSync.Client.AppSyncSubscriptionClient.ConnectionState">
+            <summary>An observable providing the current connection status.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.AppSyncSubscriptionClient.Exceptions">
+            <summary>An observable reporting connection and subscription related exceptions.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.AppSyncSubscriptionClient.GraphqlErrors">
+            <summary>An observable reporting subscription related graphql errors.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.AppSyncSubscriptionClient.IsAlive">
+            <summary>Indicates if the client is currently connected to AppSync.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.AppSyncSubscriptionClient.#ctor(AllOverIt.Aws.AppSync.Client.Configuration.SubscriptionClientConfiguration)">
+            <summary>Constructor.</summary>
+            <param name="configuration">Contains configuration details for the AppSync Graphql subscription client.</param>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.AppSyncSubscriptionClient.ConnectAsync">
+            <summary>Opens a WebSocket connection and registers the client with AppSync. Any existing subscriptions from a
+            previous connection will be re-subscribed.</summary>
             <returns>True if the connection was established, otherwise false.</returns>
-            <remarks>Refer to <see cref="M:AllOverIt.Aws.AppSync.Client.Subscription.AppSyncSubscriptionClient.DisconnectAsync"/> for more information on how existing subscriptions are retained
+            <remarks>Refer to <see cref="M:AllOverIt.Aws.AppSync.Client.AppSyncSubscriptionClient.DisconnectAsync"/> for more information on how existing subscriptions are retained
             if the client is disconnected while there are active subscriptions.</remarks>
         </member>
-        <member name="M:AllOverIt.Aws.AppSync.Client.Subscription.AppSyncSubscriptionClient.DisconnectAsync">
+        <member name="M:AllOverIt.Aws.AppSync.Client.AppSyncSubscriptionClient.DisconnectAsync">
             <summary>Unsubscribes any existing subscriptions and then disconnects the client from AppSync. The subscription
             registrations are maintained (not disposed of). If a new connection is later established by calling
-            <see cref="M:AllOverIt.Aws.AppSync.Client.Subscription.AppSyncSubscriptionClient.ConnectAsync"/> or making a new subscription then all previous subscriptions will be re-subscribed.</summary>
+            <see cref="M:AllOverIt.Aws.AppSync.Client.AppSyncSubscriptionClient.ConnectAsync"/> or making a new subscription then all previous subscriptions will be re-subscribed.</summary>
             <exception cref="T:AllOverIt.Aws.AppSync.Client.Exceptions.UnsubscribeTimeoutException"></exception>
         </member>
-        <member name="T:AllOverIt.Aws.AppSync.Client.Subscription.Authorization.AppSyncHostAuthorization">
-            <summary>Decorates a <see cref="T:AllOverIt.Aws.AppSync.Client.Subscription.Authorization.AppSyncAuthorizationBase"/> with a 'host' header.</summary>
+        <member name="M:AllOverIt.Aws.AppSync.Client.AppSyncSubscriptionClient.SubscribeAsync``1(AllOverIt.Aws.AppSync.Client.Request.SubscriptionQuery,System.Action{AllOverIt.Aws.AppSync.Client.Response.GraphqlSubscriptionResponse{``0}},AllOverIt.Aws.AppSync.Client.Authorization.IAppSyncAuthorization)">
+            <summary>Registers a new subscription with AppSync. If there is no action connection then that will be established first.</summary>
+            <typeparam name="TResponse">The response type to be populated when the subscription receives a message.</typeparam>
+            <param name="query">The subscription query.</param>
+            <param name="responseAction">The action to invoke when a response is received.</param>
+            <param name="authorization">The authorization to use for the request. If null is provided then the default authorization provided
+            on the client configuration during construction will be used.</param>
+            <returns></returns>
         </member>
-        <member name="P:AllOverIt.Aws.AppSync.Client.Subscription.Configuration.AppSyncClientConnectionOptions.SubscriptionTimeout">
-            <summary>Initial subscribe and unsubscribe timeout period. If a subscribe fails the subscription is
-            returned in an error state. If an unsubscribe fails, the subscription is dropped on the assumption
-            there is something wrong with the connection.</summary>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Authorization.AppSyncApiKeyAuthorization">
+            <summary>Contains AppSync ApiKey authorization header key-value pairs.</summary>
         </member>
-        <member name="T:AllOverIt.Aws.AppSync.Client.Subscription.Registration.AppSyncSubscriptionRegistration">
+        <member name="M:AllOverIt.Aws.AppSync.Client.Authorization.AppSyncApiKeyAuthorization.#ctor(System.String)">
+            <summary>Constructor.</summary>
+            <param name="apiKey">The authorization ApiKey.</param>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Authorization.AppSyncAuthorizationBase">
+            <summary>Base class for AppSync authorization headers.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Authorization.AppSyncAuthorizationBase.KeyValues">
+            <summary>Contains authorization header key-value pairs.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Authorization.AppSyncCognitoAuthorization">
+            <summary>Contains AppSync Cognito authorization header key-value pairs.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.Authorization.AppSyncCognitoAuthorization.#ctor(System.String)">
+            <summary>Constructor.</summary>
+            <param name="accessToken">The Cognito access token.</param>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Authorization.AppSyncHostAuthorization">
+            <summary>Decorates an <see cref="T:AllOverIt.Aws.AppSync.Client.Authorization.IAppSyncAuthorization"/> with a 'host' header key-value pair.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.Authorization.AppSyncHostAuthorization.#ctor(System.String,AllOverIt.Aws.AppSync.Client.Authorization.IAppSyncAuthorization)">
+            <summary>Constructor.</summary>
+            <param name="host">The host value.</param>
+            <param name="authorization">The <see cref="T:AllOverIt.Aws.AppSync.Client.Authorization.IAppSyncAuthorization"/> being decorated.</param>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Authorization.IAppSyncAuthorization">
+            <summary>Represents AppSync authorization header key-value pairs.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Authorization.IAppSyncAuthorization.KeyValues">
+            <summary>Contains authorization header key-value pairs.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Configuration.GraphqlClientConfiguration">
+            <summary>Contains configuration details for AppSync Graphql query and mutation operations.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Configuration.GraphqlClientConfiguration.EndPoint">
+            <summary>The fully-qualified AppSync Graphql endpoint to perform query and mutation operations.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Configuration.GraphqlClientConfiguration.Serializer">
+            <summary>The serializer to be used for message processing.</summary>
+            <remarks>See 'AllOverIt.Serialization.NewtonsoftJson' and 'AllOverIt.Serialization.SystemTextJson' for suitable implementations.</remarks>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Configuration.GraphqlClientConfiguration.DefaultAuthorization">
+            <summary>Provides the default authorization mode to use for all requests.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Configuration.SubscriptionClientConfiguration">
+            <summary>Contains configuration details for the AppSync Graphql subscription client.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Configuration.SubscriptionClientConfiguration.Host">
+            <summary>AppSync's graphql host Url without the https:// prefix or /graphql suffix.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Configuration.SubscriptionClientConfiguration.RealTimeUrl">
+            <summary>The realtime url used for subscriptions without the https:// prefix.</summary>
+            <remarks>If not set, this Url is derived from the Host by replacing 'appsync-api' with 'appsync-realtime-api' and
+            appending '/graphql'. If a value is provided then it must be the full custom domain realtime Url without the
+            https:// prefix.</remarks>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Configuration.SubscriptionClientConfiguration.Serializer">
+            <summary>The serializer to be used for message processing.</summary>
+            <remarks>See 'AllOverIt.Serialization.NewtonsoftJson' and 'AllOverIt.Serialization.SystemTextJson' for suitable implementations.</remarks>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Configuration.SubscriptionClientConfiguration.DefaultAuthorization">
+            <summary>Provides the default authorization mode to use for all requests.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Configuration.SubscriptionClientConfiguration.ConnectionOptions">
+            <summary>Provides subscription connection options.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Configuration.SubscriptionClientConnectionOptions">
+            <summary>Provides subscription client connection options.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Configuration.SubscriptionClientConnectionOptions.ConnectionTimeout">
+            <summary>The initial connection-handshake timeout period.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Configuration.SubscriptionClientConnectionOptions.SubscriptionTimeout">
+            <summary>The initial subscribe-handshake and unsubscribe-handshake timeout period. If a subscribe fails
+            then the subscription is returned in an error state. If an unsubscribe fails, the subscription is dropped
+            on the assumption there is something wrong with the connection.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Exceptions.GraphqlHttpRequestException">
+            <summary>This exception is raised when a non-successful graphql query or mutation occurs.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Exceptions.GraphqlHttpRequestException.StatusCode">
+            <summary>The HTTP status code.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Exceptions.GraphqlHttpRequestException.Errors">
+            <summary>When not null, this provides all graphql errors associated with the query or mutation request.</summary>
+            <remarks>The <see cref="P:AllOverIt.Aws.AppSync.Client.Exceptions.GraphqlHttpRequestException.StatusCode"/> may be 200 in some circumstances, such as when an invalid query is provided.</remarks>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Exceptions.GraphqlHttpRequestException.Content">
+            <summary>The raw HTT response content returned.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.Exceptions.GraphqlHttpRequestException.#ctor(System.Net.HttpStatusCode,System.Collections.Generic.IEnumerable{AllOverIt.Aws.AppSync.Client.Response.GraphqlErrorDetail},System.String)">
+            <summary>Constructor.</summary>
+            <param name="statusCode">The HTTP status code.</param>
+            <param name="errors">When not null, this provides all graphql errors associated with the query or mutation request.</param>
+            <param name="content">The raw HTT response content returned.</param>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Exceptions.SubscribeTimeoutException">
+            <summary>This exception is raised when a subscription request does not complete within a period defined on the connection options.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.Exceptions.SubscribeTimeoutException.#ctor(System.String,System.TimeSpan)">
+            <summary>Constructor.</summary>
+            <param name="id">The unique subscription Id.</param>
+            <param name="timeout">The timeout period that the subscription was expected to be completed within.</param>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Exceptions.SubscriptionTimeoutExceptionBase">
+            <summary>Base class for all subscription related timeout exceptions.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Exceptions.SubscriptionTimeoutExceptionBase.Id">
+            <summary>The unique Id for the subscription that timed out.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.Exceptions.SubscriptionTimeoutExceptionBase.#ctor(System.String,System.TimeSpan)">
+            <summary>Constructor.</summary>
+            <param name="id">The unique Id for the subscription that timed out.</param>
+            <param name="timeout">The timeout period that expired.</param>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Exceptions.TimeoutExceptionBase">
+            <summary>A base class for all graphql related timeout based exceptions.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Exceptions.TimeoutExceptionBase.Timeout">
+            <summary>The timeout period that expired.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.Exceptions.TimeoutExceptionBase.#ctor(System.TimeSpan)">
+            <summary>Constructor.</summary>
+            <param name="timeout">The timeout period that expired.</param>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Exceptions.UnsubscribeTimeoutException">
+            <summary>This exception is raised when a request to unsubscribe a subscription does not complete within a period defined on the connection options.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.Exceptions.UnsubscribeTimeoutException.#ctor(System.String,System.TimeSpan)">
+            <summary>Constructor.</summary>
+            <param name="id">The unique subscription Id.</param>
+            <param name="timeout">The timeout period that the unsubscribe was expected to be completed within.</param>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Exceptions.WebSocketConnectionException">
+            <summary>Contains the reason for a websocket error that occurred during a connection request.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Exceptions.WebSocketConnectionException.ErrorType">
+            <summary>The graphql error type.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Exceptions.WebSocketConnectionException.Errors">
+            <summary>A collection of graphql errors as reported by AppSync.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.Exceptions.WebSocketConnectionException.#ctor(AllOverIt.Aws.AppSync.Client.Response.WebSocketGraphqlResponse{AllOverIt.Aws.AppSync.Client.Response.GraphqlError})">
+            <summary>Constructor.</summary>
+            <param name="error">The error payload reported by AppSync.</param>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Exceptions.WebSocketConnectionLostException">
+            <summary>This exception is raised when there was an expectation that a WebSocket is available but found to be
+            unavailable (due to an error that caused the connection to be shutdown).</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Exceptions.WebSocketConnectionTimeoutException">
+            <summary>This exception is raised when an attempt to make a new websocket connection times out within a specified period.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.Exceptions.WebSocketConnectionTimeoutException.#ctor(System.TimeSpan)">
+            <summary>Constructor.</summary>
+            <param name="timeout">The timeout period.</param>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Request.GraphqlQuery">
+            <summary>A graphql query with optional variables associated with the query.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Request.GraphqlQuery.Query">
+            <summary> The graphql query.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Request.GraphqlQuery.Variables">
+            <summary>An object (can be anonymous) that contains variables referenced by the query.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Request.SubscriptionQuery">
+            <summary>A subscription query with a unique identifier and optional variables associated with the query.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Request.SubscriptionQuery.Id">
+            <summary>The unique subscription identifier.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Request.SubscriptionQuery.Query">
+            <summary> The subscription query.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Request.SubscriptionQuery.Variables">
+            <summary>An object (can be anonymous) that contains variables referenced by the query.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.Request.SubscriptionQuery.#ctor">
+            <summary>Constructor. Sets a new, unique, identifier for the subscription.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.Request.SubscriptionQuery.#ctor(System.Guid)">
+            <summary>Constructor.</summary>
+            <param name="id">The unique subscription identifier to use.</param>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Response.GraphqlError">
+            <summary>Contains graphql errors reported by AppSync.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Response.GraphqlError.Errors">
+            <summary>One or more detailed graphql errors reported by AppSync.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Response.GraphqlErrorDetail">
+            <summary>Contains detailed error information reported by AppSync.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Response.GraphqlErrorDetail.ErrorCode">
+            <summary>The graphql error code, if applicable for the error reported.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Response.GraphqlErrorDetail.ErrorType">
+            <summary>The graphql error type.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Response.GraphqlErrorDetail.Message">
+            <summary>A description for the reported error.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Response.GraphqlErrorDetail.Locations">
+            <summary>When provided, this describes the location of the error within a query.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Response.GraphqlErrorDetail.Path">
+            <summary>When provided, this describes the node path within the query that caused the error.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Response.GraphqlHttpResponse`1">
+            <summary>Contains response information for a HTTP-based graphql request (such as a query or mutation).</summary>
+            <typeparam name="TResponse">The type populated with the required response.</typeparam>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Response.GraphqlHttpResponse`1.StatusCode">
+            <summary>Contains the HTTP Status Code of the response.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Response.GraphqlHttpResponse`1.Headers">
+            <summary>Contains the HTTP headers on the response.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Response.GraphqlLocation">
+            <summary>Contains location information within a query or mutation request.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Response.GraphqlLocation.Line">
+            <summary>The line within the request that caused an error.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Response.GraphqlLocation.Column">
+            <summary>The column within the indicated line that caused an error.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Response.GraphqlResponseBase`1">
+            <summary>A base class for all graphql responses.</summary>
+            <typeparam name="TResponse">The response type populated with the expected response data.</typeparam>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Response.GraphqlResponseBase`1.Data">
+            <summary>In the absence of errors, this contains the response data.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Response.GraphqlResponseBase`1.Errors">
+            <summary>When a query error occurs this contains the error information reported by AppSync.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Response.GraphqlSubscriptionResponse`1">
+            <summary>Contains response data for a subscription request when the associated mutation has been invoked.</summary>
+            <typeparam name="TResponse">The subscription response type.</typeparam>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Response.GraphqlSubscriptionResponseError">
+            <summary>Contains error information for a subscription query.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Response.GraphqlSubscriptionResponseError.Id">
+            <summary>The unique identifier of the failed subscription request.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Response.GraphqlSubscriptionResponseError.Error">
+            <summary>Contains detailed error information reported by AppSync.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.Response.GraphqlSubscriptionResponseError.#ctor(System.String,AllOverIt.Aws.AppSync.Client.Response.WebSocketGraphqlResponse{AllOverIt.Aws.AppSync.Client.Response.GraphqlError})">
+            <summary>Constructor.</summary>
+            <param name="id">The unique identifier of the failed subscription request.</param>
+            <param name="error">Detailed error information reported by AppSync.</param>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Response.WebSocketGraphqlResponse`1">
+            <summary>A wrapper class that contains the payload for a websocket response.</summary>
+            <typeparam name="TPayload">The payload type wrapped within the response.</typeparam>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Response.WebSocketGraphqlResponse`1.Type">
+            <summary>The response type. See <see cref="T:AllOverIt.Aws.AppSync.Client.Subscription.ProtocolMessage.Response"/> for possible values.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Response.WebSocketGraphqlResponse`1.Payload">
+            <summary>The payload of the response.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Subscription.AppSyncSubscriptionMessage">
+            <summary>Contains a graphql subscription message from AppSync.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Subscription.AppSyncSubscriptionMessage.Id">
+            <summary>The subscription identifier this message is related to.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Subscription.AppSyncSubscriptionMessage.Type">
+            <summary>The message type. See <see cref="T:AllOverIt.Aws.AppSync.Client.Subscription.ProtocolMessage.Response"/> for possible values.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Subscription.AppSyncSubscriptionMessage.Message">
+            <summary>The content of the message received from AppSync.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Subscription.AppSyncSubscriptionRegistration">
             <summary>Decorates the async disposable created by SubscribeAsync() so the caller can obtain the generated
             subscription Id and any errors that occurred during connection / registration.</summary>
         </member>
-        <member name="P:AllOverIt.Aws.AppSync.Client.Subscription.Registration.AppSyncSubscriptionRegistration.Id">
+        <member name="P:AllOverIt.Aws.AppSync.Client.Subscription.AppSyncSubscriptionRegistration.Id">
             <summary>The subscription Id.</summary>
         </member>
-        <member name="P:AllOverIt.Aws.AppSync.Client.Subscription.Registration.AppSyncSubscriptionRegistration.Exceptions">
+        <member name="P:AllOverIt.Aws.AppSync.Client.Subscription.AppSyncSubscriptionRegistration.Exceptions">
             <summary>When not null, contains exceptions raised during registration, such as connection issues.</summary>
         </member>
-        <member name="P:AllOverIt.Aws.AppSync.Client.Subscription.Registration.AppSyncSubscriptionRegistration.GraphqlErrors">
+        <member name="P:AllOverIt.Aws.AppSync.Client.Subscription.AppSyncSubscriptionRegistration.GraphqlErrors">
             <summary>When not null, contains graphql errors raised during registration, such as request/response mapping errors.</summary>
         </member>
-        <member name="P:AllOverIt.Aws.AppSync.Client.Subscription.Registration.AppSyncSubscriptionRegistration.Success">
+        <member name="P:AllOverIt.Aws.AppSync.Client.Subscription.AppSyncSubscriptionRegistration.Success">
             <summary>Returns true if the registration was completed successfully (no graphql errors or exceptions).</summary>
         </member>
-        <member name="M:AllOverIt.Aws.AppSync.Client.Subscription.Registration.AppSyncSubscriptionRegistration.#ctor(System.String,System.IAsyncDisposable)">
+        <member name="M:AllOverIt.Aws.AppSync.Client.Subscription.AppSyncSubscriptionRegistration.#ctor(System.String,System.IAsyncDisposable)">
             <summary>Constructor. Used when a successful subscription is registered with AppSync.</summary>
             <param name="id">The subscription identifier.</param>
             <param name="disposable">The subscription that will unregister from AppSync when disposed.</param>
         </member>
-        <member name="M:AllOverIt.Aws.AppSync.Client.Subscription.Registration.AppSyncSubscriptionRegistration.#ctor(System.String,System.Collections.Generic.IEnumerable{System.Exception})">
+        <member name="M:AllOverIt.Aws.AppSync.Client.Subscription.AppSyncSubscriptionRegistration.#ctor(System.String,System.Collections.Generic.IEnumerable{System.Exception})">
             <summary>Constructor.</summary>
             <param name="id">The subscription identifier.</param>
             <param name="exceptions">One or more exceptions raised during the registration process. These exceptions
             are typically associated with connectivity issues.</param>
         </member>
-        <member name="M:AllOverIt.Aws.AppSync.Client.Subscription.Registration.AppSyncSubscriptionRegistration.#ctor(System.String,System.Collections.Generic.IEnumerable{AllOverIt.Aws.AppSync.Client.Subscription.Response.GraphqlErrorDetail})">
+        <member name="M:AllOverIt.Aws.AppSync.Client.Subscription.AppSyncSubscriptionRegistration.#ctor(System.String,System.Collections.Generic.IEnumerable{AllOverIt.Aws.AppSync.Client.Response.GraphqlErrorDetail})">
             <summary>Constructor.</summary>
             <param name="id">The subscription identifier.</param>
             <param name="errors">One or more graphql errors raised during the registration process. These errors
             are typically associated with invalid queries or request/response mappings.</param>
         </member>
-        <member name="M:AllOverIt.Aws.AppSync.Client.Subscription.Registration.AppSyncSubscriptionRegistration.DisposeAsync">
+        <member name="M:AllOverIt.Aws.AppSync.Client.Subscription.AppSyncSubscriptionRegistration.DisposeAsync">
             <summary>Disposes of the subscription including unsubscribing from AppSync.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Subscription.IAppSyncSubscriptionRegistration">
+            <summary>Contains details of the success or failure of a subscription registration request.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Subscription.IAppSyncSubscriptionRegistration.Id">
+            <summary>The unique subscription identifier.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Subscription.IAppSyncSubscriptionRegistration.Exceptions">
+            <summary>When not null, contains one or more exceptions raised during the request to register the subscription.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Subscription.IAppSyncSubscriptionRegistration.GraphqlErrors">
+            <summary>When not null, contains one or more graphql errors received during the request to register the subscription.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Subscription.IAppSyncSubscriptionRegistration.Success">
+            <summary>Indicates if the subscription was successfully registered with AppSync.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Subscription.SubscriptionConnectionState">
+            <summary>Contains all connection states applicable to a subscription registration.</summary>
+        </member>
+        <member name="F:AllOverIt.Aws.AppSync.Client.Subscription.SubscriptionConnectionState.Connecting">
+            <summary>A new connection to AppSync has begun.</summary>
+        </member>
+        <member name="F:AllOverIt.Aws.AppSync.Client.Subscription.SubscriptionConnectionState.Connected">
+            <summary>A connection has been established with AppSync and is now ready for subscription registrations.</summary>
+        </member>
+        <member name="F:AllOverIt.Aws.AppSync.Client.Subscription.SubscriptionConnectionState.KeepAlive">
+            <summary>Indicates the subscription registration is still healthy.</summary>
+        </member>
+        <member name="F:AllOverIt.Aws.AppSync.Client.Subscription.SubscriptionConnectionState.Disconnecting">
+            <summary>The websocket connection is disconnecting either explicitly or due to an error.</summary>
+        </member>
+        <member name="F:AllOverIt.Aws.AppSync.Client.Subscription.SubscriptionConnectionState.Disconnected">
+            <summary>The websocket connection has disconnected from AppSync.</summary>
+        </member>
+        <member name="F:AllOverIt.Aws.AppSync.Client.Subscription.SubscriptionConnectionState.ConnectionReset">
+            <summary>A <see cref="F:AllOverIt.Aws.AppSync.Client.Subscription.SubscriptionConnectionState.KeepAlive"/> message has not been received so the connection is being re-established.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Subscription.SubscriptionQueryMessage">
+            <summary>Contains a query message for a subscription handshake.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Subscription.SubscriptionQueryMessage.Id">
+            <summary>When applicable to a subscription, this is the registered identifier.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Subscription.SubscriptionQueryMessage.Type">
+            <summary>The message type. See <see cref="T:AllOverIt.Aws.AppSync.Client.Subscription.ProtocolMessage.Request"/> for possible values.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Subscription.SubscriptionQueryMessage.Payload">
+            <summary>The message payload to be sent to AppSync.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Subscription.SubscriptionQueryPayload">
+            <summary>Contains subscription registration details to be sent to AppSync.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Subscription.SubscriptionQueryPayload.Data">
+            <summary>A string representation of the subscription's query and variable definition.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Subscription.SubscriptionQueryPayload.Extensions">
+            <summary>Contains additional information to be sent along with the registration request, such as authorization headers.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Subscription.SubscriptionRegistrationRequest">
+            <summary>Contains information about a registered subscription.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Subscription.SubscriptionRegistrationRequest.Id">
+            <summary>The subscription identifier.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Subscription.SubscriptionRegistrationRequest.Request">
+            <summary>The subscription message used for registration with AppSync.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Subscription.SubscriptionRegistrationRequest.IsSubscribed">
+            <summary>Indicates if the subscription is currently registered with AppSync.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.Subscription.SubscriptionRegistrationRequest.NotifyResponse(System.String)">
+            <summary>This method is called when a message is received from AppSync that needs to be decoded into a strongly typed response.</summary>
+            <param name="message">The response data as a serialized string.</param>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.Subscription.SubscriptionRegistrationRequest.#ctor(System.String,AllOverIt.Aws.AppSync.Client.Subscription.SubscriptionQueryPayload)">
+            <summary>Constructor.</summary>
+            <param name="id">The subscription identifier.</param>
+            <param name="payload">The registration payload to be sent to AppSync.</param>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Subscription.SubscriptionRegistrationRequest`1">
+            <summary>A strongly typed wrapper for a subscription registration.</summary>
+            <typeparam name="TResponse">The response type to be populated when the subscription receives data.</typeparam>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.Subscription.SubscriptionRegistrationRequest`1.#ctor(System.String,AllOverIt.Aws.AppSync.Client.Subscription.SubscriptionQueryPayload,System.Action{AllOverIt.Aws.AppSync.Client.Response.GraphqlSubscriptionResponse{`0}},AllOverIt.Serialization.Abstractions.IJsonSerializer)">
+            <summary>Constructor.</summary>
+            <param name="id">The subscription identifier.</param>
+            <param name="payload">The registration payload to be sent to AppSync.</param>
+            <param name="responseAction">The action to invoke when the subscription receives data.</param>
+            <param name="serializer">The serializer to use when deserializing the received content. See 'AllOverIt.Serialization.NewtonsoftJson'
+            and 'AllOverIt.Serialization.SystemTextJson' for suitable implementations.</param>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.Subscription.SubscriptionRegistrationRequest`1.NotifyResponse(System.String)">
+            <summary>Deserializes the received message into a strongly-typed response.</summary>
+            <param name="message">The response data as a serialized string.</param>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Subscription.WebSocketSubscriptionResponse`1">
+            <summary>A wrapper class that contains the payload for a websocket subscription response.</summary>
+            <typeparam name="TPayload">The payload type wrapped within the subscription response.</typeparam>
+        </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Subscription.WebSocketSubscriptionResponse`1.Id">
+            <summary>The subscription identifier this response is associated with.</summary>
         </member>
     </members>
 </doc>

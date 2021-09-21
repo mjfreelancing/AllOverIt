@@ -1,8 +1,8 @@
-﻿using AllOverIt.Aws.AppSync.Client.Subscription;
-using AllOverIt.Aws.AppSync.Client.Subscription.Authorization;
-using AllOverIt.Aws.AppSync.Client.Subscription.Configuration;
+﻿using AllOverIt.Aws.AppSync.Client;
+using AllOverIt.Aws.AppSync.Client.Authorization;
+using AllOverIt.Aws.AppSync.Client.Configuration;
 using AllOverIt.GenericHost;
-using AllOverIt.Serialization.SystemTextJson;
+using AllOverIt.Serialization.NewtonsoftJson;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,12 +23,12 @@ namespace AppSyncSubscription
                 {
                     services.AddSingleton<IWorkerReady, WorkerReady>();
 
-                    // registers AppSyncSubscriptionConfiguration and populates properties via IOptions<AppSyncOptions>
+                    // registers SubscriptionClientConfiguration and populates properties via IOptions<AppSyncOptions>
                     services.AddSingleton(provider =>
                     {
                         var options = provider.GetRequiredService<IOptions<AppSyncOptions>>().Value;
                         
-                        return new AppSyncSubscriptionConfiguration
+                        return new SubscriptionClientConfiguration
                         {
                             Host = options.Host,
 
@@ -38,15 +38,16 @@ namespace AppSyncSubscription
                             DefaultAuthorization = new AppSyncApiKeyAuthorization(options.ApiKey),
 
                             // take your pick between Newtonsoft and System.Text
-                            Serializer = new SystemTextJsonSerializer() // or NewtonsoftJsonSerializer()
+                            Serializer = new NewtonsoftJsonSerializer()
+                            //Serializer = new SystemTextJsonSerializer()
                         };
                     });
 
                     // AppSyncSubscriptionClient has several constructors so register a factory method to construct it
-                    // using a AppSyncSubscriptionConfiguration
+                    // using a SubscriptionClientConfiguration
                     services.AddSingleton(provider =>
                     {
-                        var configuration = provider.GetRequiredService<AppSyncSubscriptionConfiguration>();
+                        var configuration = provider.GetRequiredService<SubscriptionClientConfiguration>();
                         return new AppSyncSubscriptionClient(configuration);
                     });
 

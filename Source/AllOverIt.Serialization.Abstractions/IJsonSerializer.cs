@@ -27,6 +27,7 @@ namespace AllOverIt.Serialization.Abstractions
         /// <summary>Deserializes the provided stream to a specified type. The stream is assumed to contain UTF8 bytes.</summary>
         /// <typeparam name="TType">The type to be deserialized from the provided stream.</typeparam>
         /// <param name="stream">The stream to be deserialized.</param>
+        /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns>An instance of the specified type.</returns>
         Task<TType> DeserializeObjectAsync<TType>(Stream stream, CancellationToken cancellationToken);
     }

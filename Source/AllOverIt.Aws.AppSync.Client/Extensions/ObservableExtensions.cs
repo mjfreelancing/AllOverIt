@@ -4,26 +4,20 @@ using System.Threading.Tasks;
 
 namespace AllOverIt.Aws.AppSync.Client.Extensions
 {
-    public static class ObservableExtensions
+    internal static class ObservableExtensions
     {
-        // If the exception handler is provided then the exception is re-thrown after the handler returns. If this is not
-        // the desired behaviour, then handle the exception within the subscribed action.
-        public static Task<TResult> WaitUntilAsync<TResult>(
+        internal static Task<TResult> WaitUntilAsync<TResult>(
             this IObservable<TResult> observable,
             Func<TResult, bool> predicate,
-            Func<TResult, Task<TResult>> action
-            //Action<Exception> exceptionHandler = null
-            )
+            Func<TResult, Task<TResult>> action)
         {
-            return WaitUntilAsync<TResult, TResult>(observable, predicate, action/*, exceptionHandler*/);
+            return WaitUntilAsync<TResult, TResult>(observable, predicate, action);
         }
 
-        public static async Task<TResult> WaitUntilAsync<TType, TResult>(
+        internal static async Task<TResult> WaitUntilAsync<TType, TResult>(
             this IObservable<TType> observable,
             Func<TType, bool> predicate,
-            Func<TType, Task<TResult>> action
-            //Action<Exception> exceptionHandler = null
-            )
+            Func<TType, Task<TResult>> action)
         {
             IDisposable subscription = null;
 
@@ -42,7 +36,6 @@ namespace AllOverIt.Aws.AppSync.Client.Extensions
                         },
                         exception =>
                         {
-                            //exceptionHandler?.Invoke(exception);
                             tcs.SetException(exception);
                         },
                         () => { });

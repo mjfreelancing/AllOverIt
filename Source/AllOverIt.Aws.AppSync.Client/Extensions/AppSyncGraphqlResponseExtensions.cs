@@ -1,17 +1,17 @@
-﻿using AllOverIt.Aws.AppSync.Client.Subscription;
-using AllOverIt.Aws.AppSync.Client.Subscription.Response;
+﻿using AllOverIt.Aws.AppSync.Client.Response;
+using AllOverIt.Aws.AppSync.Client.Subscription;
 using AllOverIt.Serialization.Abstractions;
 
 namespace AllOverIt.Aws.AppSync.Client.Extensions
 {
     internal static class AppSyncGraphqlResponseExtensions
     {
-        public static WebSocketGraphqlResponse<GraphqlError> GetGraphqlErrorFromResponseMessage(this AppSyncGraphqlResponse response, IJsonSerializer serializer)
+        internal static WebSocketGraphqlResponse<GraphqlError> GetGraphqlErrorFromResponseMessage(this AppSyncSubscriptionMessage response, IJsonSerializer serializer)
         {
             return serializer.DeserializeObject<WebSocketGraphqlResponse<GraphqlError>>(response.Message);
         }
 
-        public static ConnectionAckResponse GetConnectionResponseData(this AppSyncGraphqlResponse response, IJsonSerializer serializer)
+        internal static ConnectionAckResponse GetConnectionResponseData(this AppSyncSubscriptionMessage response, IJsonSerializer serializer)
         {
             return serializer.DeserializeObject<WebSocketGraphqlResponse<ConnectionAckResponse>>(response.Message).Payload;
         }

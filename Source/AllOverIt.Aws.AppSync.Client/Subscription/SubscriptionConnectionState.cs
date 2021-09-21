@@ -1,12 +1,24 @@
 ﻿namespace AllOverIt.Aws.AppSync.Client.Subscription
 {
+    /// <summary>Contains all connection states applicable to a subscription registration.</summary>
     public enum SubscriptionConnectionState
     {
-        Connecting,         // Beginning a new connection to AppSync.
-        Connected,          // Connection is established with AppSync and now ready for subscriptions.
-        KeepAlive,          // A healthy status check.
-        Disconnecting,      // Disconnecting either explicitly or due to an error.
-        Disconnected,       // Disconnected from AppSync.
-        ConnectionReset     // A health status message has not been received so the connection is being re-established.
+        /// <summary>A new connection to AppSync has begun.</summary>
+        Connecting,
+
+        /// <summary>A connection has been established with AppSync and is now ready for subscription registrations.</summary>
+        Connected,
+
+        /// <summary>Indicates the subscription registration is still healthy.</summary>
+        KeepAlive,
+
+        /// <summary>The websocket connection is disconnecting either explicitly or due to an error.</summary>
+        Disconnecting,
+
+        /// <summary>The websocket connection has disconnected from AppSync.</summary>
+        Disconnected,
+
+        /// <summary>A <see cref="KeepAlive"/> message has not been received so the connection is being re-established.</summary>
+        ConnectionReset
     }
 }
