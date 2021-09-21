@@ -3,7 +3,7 @@
 
   [1]  AllOverIt                               (v1.17.3) - None
   [2]  AllOverIt.Validation                    (v1.0.0)  - requires [1] v1.17.0
-  [3]  AllOverIt.Aws.Cdk.AppSync               (v0.14.0) - requires [1] v1.17.3
+  [3]  AllOverIt.Aws.Cdk.AppSync               (v0.15.0) - requires [1] v1.17.3
   [4]  AllOverIt.Evaluator                     (v2.1.0)  - requires [1] v1.11.0
   [5]  AllOverIt.GenericHost                   (v1.2.0)  - requires [1] v1.17.0
   [6]  AllOverIt.Fixture                       (v1.6.0)  - None
@@ -25,6 +25,13 @@ AllOverIt.Aws.AppSync.Client - v0.3.0
 
 
 
+21 Sep 2021
+======================================================================================================================
+AllOverIt.Aws.Cdk.AppSync - v0.15.0
+  * Updated IConnection available options
+  
+  
+  
 15 Sep 2021
 ======================================================================================================================
 AllOverIt.Aws.AppSync.Client - v0.2.0

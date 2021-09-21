@@ -1,10 +1,12 @@
 ﻿namespace AllOverIt.Aws.Cdk.AppSync.Schema.Types
 {
-    public interface IConnection<out TEdge, out TNode>
+    public interface IConnection
     {
-        public TEdge[] Edges();
-        public TNode[] Nodes();
         public int TotalCount();
         public IPageInfo PageInfo();
+    }
+
+    public interface IConnection<out TEdge, out TNode> : INodesConnection<TNode>, IEdgesConnection<TEdge>
+    {
     }
 }
