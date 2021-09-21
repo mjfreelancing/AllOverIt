@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 
 namespace AllOverIt.Aws.AppSync.Client.Exceptions
 {
+    /// <summary>Base class for all subscription related timeout exceptions.</summary>
     public abstract class SubscriptionTimeoutExceptionBase : TimeoutExceptionBase
     {
         public string Id { get; }
