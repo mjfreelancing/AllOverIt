@@ -239,7 +239,7 @@ namespace AppSyncSubscription
         private static async Task<IAppSyncSubscriptionRegistration> GetSubscription1(AppSyncSubscriptionClient client)
         {
             // try this for an unsupported operation error
-            var badQuery = "query MyQuery { defaultLanguage { code name } }";
+            // var badQuery = "query MyQuery { defaultLanguage { code name } }";
 
             var goodQuery = @"subscription MySubscription1 {
                                 addedLanguage(code: ""LNG1"") {

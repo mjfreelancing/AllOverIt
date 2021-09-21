@@ -2,7 +2,7 @@
 using AllOverIt.Aws.AppSync.Client.Authorization;
 using AllOverIt.Aws.AppSync.Client.Configuration;
 using AllOverIt.GenericHost;
-using AllOverIt.Serialization.SystemTextJson;
+using AllOverIt.Serialization.NewtonsoftJson;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -38,7 +38,8 @@ namespace AppSyncSubscription
                             DefaultAuthorization = new AppSyncApiKeyAuthorization(options.ApiKey),
 
                             // take your pick between Newtonsoft and System.Text
-                            Serializer = new SystemTextJsonSerializer() // or NewtonsoftJsonSerializer()
+                            Serializer = new NewtonsoftJsonSerializer()
+                            //Serializer = new SystemTextJsonSerializer()
                         };
                     });
 
