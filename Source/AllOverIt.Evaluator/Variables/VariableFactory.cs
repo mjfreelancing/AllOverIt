@@ -55,7 +55,9 @@ namespace AllOverIt.Evaluator.Variables
         {
             _ = name.WhenNotNullOrEmpty(nameof(name));
             _ = variableRegistry.WhenNotNull(nameof(variableRegistry));
-            var selectedVariableNames = variableNames.WhenNotNullOrEmpty(nameof(variableNames))?.AsReadOnlyCollection();
+
+            // Can be null, but cannot be empty when it isn't
+            var selectedVariableNames = variableNames.WhenNotEmpty(nameof(variableNames))?.AsReadOnlyCollection();
 
             var allVariables = from item in variableRegistry.Variables
                                let variable = item.Value
