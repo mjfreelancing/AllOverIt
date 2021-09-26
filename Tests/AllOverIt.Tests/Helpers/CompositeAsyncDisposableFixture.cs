@@ -7,7 +7,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
-using AggregateException = System.AggregateException;
 
 namespace AllOverIt.Tests.Helpers
 {
@@ -78,45 +77,7 @@ namespace AllOverIt.Tests.Helpers
                 disposableFakes.Count.Should().NotBe(0);
                 count.Should().Be(disposableFakes.Count);
             }
-
-            [Fact]
-            public void Should_Report_Exceptions()
-            {
-                var faultyFakes = this.CreateManyFakes<IAsyncDisposable>(3);
-
-                foreach (var fake in faultyFakes)
-                {
-                    fake
-                        .CallsTo(item => item.DisposeAsync())
-                        .Invokes(_ => throw new Exception());
-                }
-                var goodFakes = this.CreateManyFakes<IAsyncDisposable>(3);
-
-                var disposables = faultyFakes
-                    .Concat(goodFakes)
-                    .Select(item => item.FakedObject)
-                    .ToArray();
-
-                var innerExceptionCount = 0;
-
-                try
-                {
-                    var sut = new CompositeAsyncDisposable(disposables);
-                    sut.Dispose();
-                }
-                catch (Exception exception)
-                {
-                    if (exception is AggregateException aggregateException)
-                    {
-                        innerExceptionCount = aggregateException.InnerExceptions.Count;
-                    }
-                }
-
-                innerExceptionCount.Should().Be(3);
-            }
         }
-
-
 
         public class DisposeAsync : CompositeAsyncDisposableFixture
         {
@@ -140,43 +101,6 @@ namespace AllOverIt.Tests.Helpers
 
                 disposableFakes.Count.Should().NotBe(0);
                 count.Should().Be(disposableFakes.Count);
-            }
-
-            [Fact]
-            public async Task Should_Report_Exceptions()
-            {
-                var faultyFakes = this.CreateManyFakes<IAsyncDisposable>(3);
-
-                foreach (var fake in faultyFakes)
-                {
-                    fake
-                        .CallsTo(item => item.DisposeAsync())
-                        .Invokes(_ => throw new Exception());
-                }
-
-                var goodFakes = this.CreateManyFakes<IAsyncDisposable>(3);
-
-                var disposables = faultyFakes
-                    .Concat(goodFakes)
-                    .Select(item => item.FakedObject)
-                    .ToArray();
-
-                var innerExceptionCount = 0;
-
-                try
-                {
-                    var sut = new CompositeAsyncDisposable(disposables);
-                    await sut.DisposeAsync();
-                }
-                catch (Exception exception)
-                {
-                    if (exception is AggregateException aggregateException)
-                    {
-                        innerExceptionCount = aggregateException.InnerExceptions.Count;
-                    }
-                }
-
-                innerExceptionCount.Should().Be(3);
             }
         }
     }
