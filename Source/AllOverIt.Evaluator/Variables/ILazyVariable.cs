@@ -1,9 +1,9 @@
 namespace AllOverIt.Evaluator.Variables
 {
-    // Describes a read-only variable that obtains its value via a deferred delegate.
+    /// <summary>A delegate based variable that is evaluated the first time the <see cref="Value"/> is read.</summary>
     public interface ILazyVariable : IVariable
     {
-        // Resets the variable to force its value to be re-evaluated.
+        /// <summary>Resets the variable to force its value to be re-evaluated when <see cref="Value"/> is next read.</summary>
         void Reset();
     }
 }

@@ -454,7 +454,7 @@
         <member name="T:AllOverIt.Evaluator.Operations.UserDefinedMethodFactory">
             <summary>A factory containing user-defined methods that can be evaluated as part of a formula.</summary>
             <remarks>
-            The factory includes a number of pre-defined methods:
+            The factory includes the following pre-defined methods:
             <para>ROUND: Rounds a number to a specified number of decimal places.</para>
             <para>SQRT: Calculate the square root of a number.</para>
             <para>CBRT: Calculate the cube root of a number.</para>
@@ -478,6 +478,23 @@
             <para>CEIL: Returns the smallest integral value greater than or equal to a given number.</para>
             <para>FLOOR: Returns the largest integral value greater than or equal to a given number.</para>
             </remarks>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.UserDefinedMethodFactory.RegisterMethod``1(System.String)">
+            <summary>Registers an operation type that provides the implementation for a named method.</summary>
+            <typeparam name="TOperationType">The type implementing the registered method.</typeparam>
+            <param name="methodName">The case-insensitive method name being registered.</param>
+            <remarks>The operation type is expected to be thread-safe and should therefore not store state.</remarks>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.UserDefinedMethodFactory.IsRegistered(System.String)">
+            <summary>Indicates if the requested method name has been registered.</summary>
+            <param name="methodName">The case-insensitive method name being queried.</param>
+            <returns>True if the requested method name has been registered, otherwise false.</returns>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.UserDefinedMethodFactory.GetMethod(System.String)">
+            <summary>Gets an instance of the operation type that was registered using the provided method name.</summary>
+            <param name="methodName">The registered method name associated with the operation type to be returned.</param>
+            <returns>An instance of the operation type that was registered using the provided method name.</returns>
+            <remarks>The operation type is only ever created once (per factory instance).</remarks>
         </member>
         <member name="T:AllOverIt.Evaluator.Operators.AbsOperator">
             <summary>An expression operator that calculates the absolute value of a given operand.</summary>
@@ -750,8 +767,130 @@
         <member name="M:AllOverIt.Evaluator.Operators.UnaryOperator.GetExpression">
             <inheritdoc />
         </member>
+        <member name="T:AllOverIt.Evaluator.Variables.ConstantVariable">
+            <summary>A read-only constant variable that must be initialized at the time of construction.</summary>
+        </member>
+        <member name="P:AllOverIt.Evaluator.Variables.ConstantVariable.Value">
+            <summary>The variable's value.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.ConstantVariable.#ctor(System.String,System.Double)">
+            <summary>Constructor.</summary>
+            <param name="name">The variable's name.</param>
+            <param name="value">The variable's value.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Variables.DelegateVariable">
+            <summary>A delegate based variable that is re-evaluated each time the <see cref="P:AllOverIt.Evaluator.Variables.DelegateVariable.Value"/> is read.</summary>
+            <remarks>For a delegate based variable that is only evaluated the first time the <see cref="P:AllOverIt.Evaluator.Variables.DelegateVariable.Value"/> is read,
+            see <see cref="T:AllOverIt.Evaluator.Variables.LazyVariable"/>.</remarks>
+        </member>
+        <member name="P:AllOverIt.Evaluator.Variables.DelegateVariable.Value">
+            <summary>The current value of the variable. The value may change on each evaluation depending on how the
+            delegate is implemented.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.DelegateVariable.#ctor(System.String,System.Func{System.Double})">
+            <summary>Constructor.</summary>
+            <param name="name">The variable's name.</param>
+            <param name="valueResolver">The delegate to invoke each time the <see cref="P:AllOverIt.Evaluator.Variables.DelegateVariable.Value"/> is read.</param>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.DelegateVariable.#ctor(System.String,AllOverIt.Evaluator.FormulaCompilerResult)">
+            <summary>Constructor.</summary>
+            <param name="name">The variable's name.</param>
+            <param name="compilerResult">The compiled result of a formula. The associated resolver will be re-evaluated
+            each time the <see cref="P:AllOverIt.Evaluator.Variables.DelegateVariable.Value"/> is read.</param>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.Extensions.FormulaCompilerResultExtensions.GetReferencedVariables(AllOverIt.Evaluator.FormulaCompilerResult)">
+            <summary>Gets all referenced variables for a compiled formula.</summary>
+            <param name="compilerResult">The compiled formula result.</param>
+            <returns>All referenced variables for a compiled formula.</returns>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.Extensions.VariableExtensions.SetVariableRegistry(AllOverIt.Evaluator.Variables.IVariable,AllOverIt.Evaluator.Variables.IVariableRegistry)">
+            <summary>Associates a variable with the specified variable registry if it inherits from VariableBase.</summary>
+            <param name="variable">The variable to be associated with a variable registry.</param>
+            <param name="variableRegistry">The variable registry to be associated with a variable.</param>
+            <remarks>The variable registry replaces any other registry previously associated with the variable.</remarks>
+        </member>
         <member name="M:AllOverIt.Evaluator.Variables.Extensions.VariableExtensions.GetAllReferencedVariables(AllOverIt.Evaluator.Variables.IVariable)">
-            <summary>Gets a read-only collection of all variables referenced by the variable (explicit and implicit).</summary>
+            <summary>Gets all variables referenced by the variable (explicit and implicit).</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.Extensions.VariableRegistryExtensions.Add(AllOverIt.Evaluator.Variables.IVariableRegistry,AllOverIt.Evaluator.Variables.IVariable)">
+            <summary>Adds a variable to a variable registry.</summary>
+            <param name="registry">The registry to add a variable to.</param>
+            <param name="variable">The variable to add to the registry.</param>
+            <returns>The same registry to provide a fluent syntax.</returns>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.Extensions.VariableRegistryExtensions.Add(AllOverIt.Evaluator.Variables.IVariableRegistry,AllOverIt.Evaluator.Variables.IVariable[])">
+            <summary>Adds one or more variables to a variable registry.</summary>
+            <param name="registry">The registry to add the variables to.</param>
+            <param name="variables">The variables to add to the registry.</param>
+            <returns>The same registry to provide a fluent syntax.</returns>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.Extensions.VariableRegistryExtensions.AddConstantVariable(AllOverIt.Evaluator.Variables.IVariableRegistry,System.String,System.Double)">
+            <summary>Creates, and adds, a new <see cref="T:AllOverIt.Evaluator.Variables.ConstantVariable"/> to the variable registry.</summary>
+            <param name="variableRegistry">The variable registry to add the newly created variable to.</param>
+            <param name="name">The name to be assigned to the variable.</param>
+            <param name="value">The constant value to be assigned to the variable.</param>
+            <returns>The new variable instance.</returns>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.Extensions.VariableRegistryExtensions.AddMutableVariable(AllOverIt.Evaluator.Variables.IVariableRegistry,System.String,System.Double)">
+            <summary>Creates, and adds, a new <see cref="T:AllOverIt.Evaluator.Variables.MutableVariable"/> to the variable registry.</summary>
+            <param name="variableRegistry">The variable registry to add the newly created variable to.</param>
+            <param name="name">The name to be assigned to the variable.</param>
+            <param name="value">The initial value to be assigned to the variable.</param>
+            <returns>The new variable instance.</returns>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.Extensions.VariableRegistryExtensions.AddDelegateVariable(AllOverIt.Evaluator.Variables.IVariableRegistry,System.String,System.Func{System.Double})">
+            <summary>Creates, and adds, a new <see cref="T:AllOverIt.Evaluator.Variables.DelegateVariable"/> to the variable registry.</summary>
+            <param name="variableRegistry">The variable registry to add the newly created variable to.</param>
+            <param name="name">The name to be assigned to the variable.</param>
+            <param name="valueResolver">The initial delegate to be assigned to the variable.</param>
+            <returns>The new variable instance.</returns>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.Extensions.VariableRegistryExtensions.AddDelegateVariable(AllOverIt.Evaluator.Variables.IVariableRegistry,System.String,AllOverIt.Evaluator.FormulaCompilerResult)">
+            <summary>Creates, and adds, a new <see cref="T:AllOverIt.Evaluator.Variables.DelegateVariable"/> to the variable registry.</summary>
+            <param name="variableRegistry">The variable registry to add the newly created variable to.</param>
+            <param name="name">The name to be assigned to the variable.</param>
+            <param name="compilerResult">The compiled result of a formula. The associated resolver will be assigned to the
+            new variable's delegate.</param>
+            <returns>The new variable instance.</returns>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.Extensions.VariableRegistryExtensions.AddLazyVariable(AllOverIt.Evaluator.Variables.IVariableRegistry,System.String,System.Func{System.Double})">
+            <summary>Creates, and adds, a new <see cref="T:AllOverIt.Evaluator.Variables.LazyVariable"/> to the variable registry.</summary>
+            <param name="variableRegistry">The variable registry to add the newly created variable to.</param>
+            <param name="name">The name to be assigned to the variable.</param>
+            <param name="valueResolver">The initial lazily-evaluated delegate to be assigned to the variable.</param>
+            <returns>The new variable instance.</returns>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.Extensions.VariableRegistryExtensions.AddLazyVariable(AllOverIt.Evaluator.Variables.IVariableRegistry,System.String,AllOverIt.Evaluator.FormulaCompilerResult)">
+            <summary>Creates, and adds, a new <see cref="T:AllOverIt.Evaluator.Variables.LazyVariable"/> to the variable registry.</summary>
+            <param name="variableRegistry">The variable registry to add the newly created variable to.</param>
+            <param name="name">The name to be assigned to the variable.</param>
+            <param name="compilerResult">The compiled result of a formula. The associated resolver will be assigned to the
+            new variable's lazily-evaluated delegate.</param>
+            <returns>The new variable instance.</returns>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Variables.ILazyVariable">
+            <summary>A delegate based variable that is evaluated the first time the <see cref="!:Value"/> is read.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.ILazyVariable.Reset">
+            <summary>Resets the variable to force its value to be re-evaluated when <see cref="!:Value"/> is next read.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Variables.IMutableVariable">
+            <summary>A variable that can have its value changed.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.IMutableVariable.SetValue(System.Double)">
+            <summary>Sets a new value on the variable.</summary>
+            <param name="value">The new value to be assigned.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Variables.IReadableVariableRegistry">
+            <summary>A read-only registry of variables.</summary>
+        </member>
+        <member name="P:AllOverIt.Evaluator.Variables.IReadableVariableRegistry.Variables">
+            <summary>Gets an enumerable of all variables and their associated name contained in the registry.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.IReadableVariableRegistry.GetValue(System.String)">
+            <summary>Gets the current value of a variable based on its name.</summary>
+            <param name="name">The name of the variable to be evaluated.</param>
+            <returns>The current value of a variable based on its name.</returns>
         </member>
         <member name="T:AllOverIt.Evaluator.Variables.IVariable">
             <summary>Describes a named variable.</summary>
@@ -764,6 +903,49 @@
         </member>
         <member name="P:AllOverIt.Evaluator.Variables.IVariable.ReferencedVariables">
             <summary>Gets all variables this variable references. Only applicable to variables constructed from a FormulaCompilerResult.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.IVariableFactory.CreateVariableRegistry">
+            <summary>Creates a new instance of a variable registry.</summary>
+            <returns>A new instance of a variable registry.</returns>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.IVariableFactory.CreateConstantVariable(System.String,System.Double)">
+            <summary>Creates a new constant variable.</summary>
+            <param name="name">The name to be assigned to the variable.</param>
+            <param name="value">The constant value to be assigned to the variable.</param>
+            <returns>The new variable instance.</returns>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.IVariableFactory.CreateMutableVariable(System.String,System.Double)">
+            <summary>Creates a new mutable variable.</summary>
+            <param name="name">The name to be assigned to the variable.</param>
+            <param name="value">The initial value to be assigned to the variable.</param>
+            <returns>The new variable instance.</returns>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.IVariableFactory.CreateDelegateVariable(System.String,System.Func{System.Double})">
+            <summary>Creates a new delegate variable that will be re-evaluated each time its value is read.</summary>
+            <param name="name">The name to be assigned to the variable.</param>
+            <param name="valueResolver">The initial delegate to be assigned to the variable.</param>
+            <returns>The new variable instance.</returns>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.IVariableFactory.CreateLazyVariable(System.String,System.Func{System.Double},System.Boolean)">
+            <summary>Creates a new lazily-evaluated delegate variable.</summary>
+            <param name="name">The name to be assigned to the variable.</param>
+            <param name="valueResolver">The initial lazily-evaluated delegate to be assigned to the variable.</param>
+            <returns>The new variable instance.</returns>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.IVariableFactory.CreateAggregateVariable(System.String,System.Func{System.Double}[])">
+            <summary>Creates a delegate-based variable that will invoke one or more value resolvers and aggregate their values.</summary>
+            <param name="name">The name to be assigned to the variable.</param>
+            <param name="valueResolvers">The value resolvers to be evaluated and aggregated. These will be re-evaluated each
+             time the created variable is evaluated.</param>
+            <returns>The new variable instance.</returns>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.IVariableFactory.CreateAggregateVariable(System.String,AllOverIt.Evaluator.Variables.IVariableRegistry,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>Creates a delegate-based variable that calculates the sum of registered variables by their name.</summary>
+            <param name="name">The name to be assigned to the variable.</param>
+            <param name="variableRegistry">The variable registry containing the named variables to be aggregated.</param>
+            <param name="variableNames">The names of the variables to be aggregated. This cannot be an empty collection.
+            If null is provided then all variables within the registry will be aggregated.</param>
+            <returns>The new variable instance.</returns>
         </member>
         <member name="M:AllOverIt.Evaluator.Variables.IVariableRegistry.AddVariable(AllOverIt.Evaluator.Variables.IVariable)">
             <summary>Adds a new variable to the registry.</summary>
@@ -781,14 +963,71 @@
         <member name="M:AllOverIt.Evaluator.Variables.IVariableRegistry.Clear">
             <summary>Clears all variables from the registry.</summary>
         </member>
+        <member name="T:AllOverIt.Evaluator.Variables.LazyVariable">
+            <summary>A delegate based variable that is evaluated the first time the <see cref="P:AllOverIt.Evaluator.Variables.LazyVariable.Value"/> is read.</summary>
+            <remarks>For a delegate based variable that is re-evaluated each time the <see cref="P:AllOverIt.Evaluator.Variables.LazyVariable.Value"/> is read,
+            see <see cref="T:AllOverIt.Evaluator.Variables.DelegateVariable"/>.</remarks>
+        </member>
+        <member name="P:AllOverIt.Evaluator.Variables.LazyVariable.Value">
+            <summary>The value of the variable. This value is evaluated the first time the value is read. Subsequent
+            reads will return the same value.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.LazyVariable.#ctor(System.String,System.Func{System.Double},System.Boolean)">
+            <summary>Constructor.</summary>
+            <param name="name">The variable's name.</param>
+            <param name="valueResolver">The delegate to invoke the first time <see cref="P:AllOverIt.Evaluator.Variables.LazyVariable.Value"/> is read.</param>
+            <param name="threadSafe">Indicates if the underlying lazy-evaluator should evaluate in a thread safe ammner.</param>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.LazyVariable.#ctor(System.String,AllOverIt.Evaluator.FormulaCompilerResult,System.Boolean)">
+            <summary>Constructor.</summary>
+            <param name="name">The variable's name.</param>
+            <param name="compilerResult">The compiled result of a formula. The associated resolver will be evaluated
+            the first time the <see cref="P:AllOverIt.Evaluator.Variables.LazyVariable.Value"/> is read.</param>
+            <param name="threadSafe">Indicates if the underlying lazy-evaluator should evaluate in a thread safe ammner.</param>
+        </member>
         <member name="M:AllOverIt.Evaluator.Variables.LazyVariable.Reset">
-            <summary>Resets the variable to force its value to be re-evaluated.</summary>
+            <inheritdoc />
+        </member>
+        <member name="T:AllOverIt.Evaluator.Variables.MutableVariable">
+            <summary>A variable that can have its value changed.</summary>
+        </member>
+        <member name="P:AllOverIt.Evaluator.Variables.MutableVariable.Value">
+            <summary>The current value of the variable.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.MutableVariable.#ctor(System.String,System.Double)">
+            <summary>Constructor.</summary>
+            <param name="name">The variable's name.</param>
+            <param name="value">The variable's initial value.</param>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.MutableVariable.SetValue(System.Double)">
+            <inheritdoc />
         </member>
         <member name="P:AllOverIt.Evaluator.Variables.VariableBase.Value">
             <summary>Gets the variable's value.</summary>
         </member>
         <member name="P:AllOverIt.Evaluator.Variables.VariableBase.ReferencedVariables">
             <summary>Gets all variables this variable references. Only applicable to variables constructed from a FormulaCompilerResult.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.VariableFactory.CreateVariableRegistry">
+            <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.VariableFactory.CreateConstantVariable(System.String,System.Double)">
+            <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.VariableFactory.CreateMutableVariable(System.String,System.Double)">
+            <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.VariableFactory.CreateDelegateVariable(System.String,System.Func{System.Double})">
+            <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.VariableFactory.CreateLazyVariable(System.String,System.Func{System.Double},System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.VariableFactory.CreateAggregateVariable(System.String,System.Func{System.Double}[])">
+            <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.VariableFactory.CreateAggregateVariable(System.String,AllOverIt.Evaluator.Variables.IVariableRegistry,System.Collections.Generic.IEnumerable{System.String})">
+            <inheritdoc />
         </member>
     </members>
 </doc>

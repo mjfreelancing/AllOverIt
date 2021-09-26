@@ -1,9 +1,10 @@
 namespace AllOverIt.Evaluator.Variables
 {
-    // Provides the ability to set a variable's value.
+    /// <summary>A variable that can have its value changed.</summary>
     public interface IMutableVariable : IVariable
     {
-        // Sets a new value on the variable.
+        /// <summary>Sets a new value on the variable.</summary>
+        /// <param name="value">The new value to be assigned.</param>
         void SetValue(double value);
     }
 }

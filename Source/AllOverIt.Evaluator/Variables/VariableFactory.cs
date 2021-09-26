@@ -8,56 +8,62 @@ namespace AllOverIt.Evaluator.Variables
 {
     public sealed class VariableFactory : IVariableFactory
     {
+        /// <inheritdoc />
         public IVariableRegistry CreateVariableRegistry()
         {
             return new VariableRegistry();
         }
 
-        public IMutableVariable CreateMutableVariable(string name, double value = default)
-        {
-            return new MutableVariable(name, value);
-        }
-
+        /// <inheritdoc />
         public IVariable CreateConstantVariable(string name, double value = default)
         {
             return new ConstantVariable(name, value);
         }
 
-        public IVariable CreateDelegateVariable(string name, Func<double> func)
+        /// <inheritdoc />
+        public IMutableVariable CreateMutableVariable(string name, double value = default)
         {
-            return new DelegateVariable(name, func);
+            return new MutableVariable(name, value);
         }
 
-        public ILazyVariable CreateLazyVariable(string name, Func<double> func, bool threadSafe = false)
+        /// <inheritdoc />
+        public IVariable CreateDelegateVariable(string name, Func<double> valueResolver)
         {
-            return new LazyVariable(name, func, threadSafe);
+            return new DelegateVariable(name, valueResolver);
         }
 
-        public IVariable CreateAggregateVariable(string name, params Func<double>[] funcs)
+        /// <inheritdoc />
+        public ILazyVariable CreateLazyVariable(string name, Func<double> valueResolver, bool threadSafe = false)
         {
-            _ = funcs.WhenNotNullOrEmpty(nameof(funcs));
-
-            var sumValues = from func in funcs
-                            select func.Invoke();
-
-            return new DelegateVariable(name, () => sumValues.Sum());
+            return new LazyVariable(name, valueResolver, threadSafe);
         }
 
-        // Creates a read-only variable that calculates the sum of registered variables.
-        // 'variableNames' contains the variable names to be aggregated. If this parameter is null then all variables are aggregated. It cannot be an empty list.
+        /// <inheritdoc />
+        public IVariable CreateAggregateVariable(string name, params Func<double>[] valueResolvers)
+        {
+            _ = valueResolvers.WhenNotNullOrEmpty(nameof(valueResolvers));
+
+            var sumValues = valueResolvers
+                .Select(resolver => resolver.Invoke())
+                .Sum();
+
+            return new DelegateVariable(name, () => sumValues);
+        }
+
+        /// <inheritdoc />
         public IVariable CreateAggregateVariable(string name, IVariableRegistry variableRegistry, IEnumerable<string> variableNames = null)
         {
             _ = name.WhenNotNullOrEmpty(nameof(name));
             _ = variableRegistry.WhenNotNull(nameof(variableRegistry));
-            var filteredVariableNames = variableNames?.WhenNotNullOrEmpty(nameof(variableNames)).AsReadOnlyCollection();
+            var selectedVariableNames = variableNames.WhenNotNullOrEmpty(nameof(variableNames))?.AsReadOnlyCollection();
 
             var allVariables = from item in variableRegistry.Variables
                                let variable = item.Value
                                select variable.Value;
             
-            var sumValues = filteredVariableNames == null
+            var sumValues = selectedVariableNames == null
               ? allVariables
-              : filteredVariableNames.Select(variableRegistry.GetValue);
+              : selectedVariableNames.Select(variableRegistry.GetValue);
 
             return new DelegateVariable(name, () => sumValues.Sum());
         }

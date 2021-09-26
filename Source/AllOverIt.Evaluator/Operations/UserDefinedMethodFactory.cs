@@ -7,7 +7,7 @@ namespace AllOverIt.Evaluator.Operations
 {
     /// <summary>A factory containing user-defined methods that can be evaluated as part of a formula.</summary>
     /// <remarks>
-    /// The factory includes a number of pre-defined methods:
+    /// The factory includes the following pre-defined methods:
     /// <para>ROUND: Rounds a number to a specified number of decimal places.</para>
     /// <para>SQRT: Calculate the square root of a number.</para>
     /// <para>CBRT: Calculate the cube root of a number.</para>
@@ -69,7 +69,10 @@ namespace AllOverIt.Evaluator.Operations
             RegisterMethod<FloorOperation>(BuiltInMethodsRegistry, "FLOOR");
         }
 
-        // The method name is considered case-insensitive.
+        /// <summary>Registers an operation type that provides the implementation for a named method.</summary>
+        /// <typeparam name="TOperationType">The type implementing the registered method.</typeparam>
+        /// <param name="methodName">The case-insensitive method name being registered.</param>
+        /// <remarks>The operation type is expected to be thread-safe and should therefore not store state.</remarks>
         public void RegisterMethod<TOperationType>(string methodName) where TOperationType : ArithmeticOperationBase, new()
         {
             _userMethodsRegistry ??=  new Dictionary<string, Lazy<ArithmeticOperationBase>>();
@@ -77,14 +80,19 @@ namespace AllOverIt.Evaluator.Operations
             RegisterMethod<TOperationType>(_userMethodsRegistry, methodName, true);
         }
 
-        // The method name is considered case-insensitive.
+        /// <summary>Indicates if the requested method name has been registered.</summary>
+        /// <param name="methodName">The case-insensitive method name being queried.</param>
+        /// <returns>True if the requested method name has been registered, otherwise false.</returns>
         public bool IsRegistered(string methodName)
         {
             return BuiltInMethodsRegistry.ContainsKey(methodName.ToUpper()) ||
                    _userMethodsRegistry != null && _userMethodsRegistry.ContainsKey(methodName.ToUpper());
         }
 
-        // The method name is considered case-insensitive. The object returned is expected to be thread-safe and should therefore not store state.
+        /// <summary>Gets an instance of the operation type that was registered using the provided method name.</summary>
+        /// <param name="methodName">The registered method name associated with the operation type to be returned.</param>
+        /// <returns>An instance of the operation type that was registered using the provided method name.</returns>
+        /// <remarks>The operation type is only ever created once (per factory instance).</remarks>
         public ArithmeticOperationBase GetMethod(string methodName)
         {
             var upperMethodName = methodName.ToUpper();
