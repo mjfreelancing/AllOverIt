@@ -32,22 +32,22 @@ namespace AllOverIt.Evaluator.Tests.Operators
                     .WithNamedMessageWhenNull("operand");
             }
 
-            //[Fact]
-            //public void Should_Set_Members()
-            //{
-            //    _operator.Should().BeEquivalentTo(new
-            //    {
-            //        Operand = _operand,
-            //        OperatorType = default(Func<Expression, Expression>)
-            //    },
-            //      opt => opt.Excluding(o => o.OperatorType));
-            //}
+            [Fact]
+            public void Should_Set_Members()
+            {
+                _operator.Should().BeEquivalentTo(new
+                {
+                    Operand = _operand,
+                    OperatorType = default(Func<Expression, Expression>)
+                },
+                  opt => opt.Excluding(o => o.OperatorType));
+            }
         }
 
         public class GetExpression : SinOperatorFixture
         {
             [Fact]
-            public void Should_Generate_Ln_Expression()
+            public void Should_Generate_Expression()
             {
                 var expected = $"Sin({_value})";
                 var expression = _operator.GetExpression();

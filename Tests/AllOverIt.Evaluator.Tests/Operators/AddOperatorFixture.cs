@@ -46,24 +46,24 @@ namespace AllOverIt.Evaluator.Tests.Operators
                     .WithNamedMessageWhenNull("rightOperand");
             }
 
-            //[Fact]
-            //public void Should_Set_Members()
-            //{
-            //    _operator.Should().BeEquivalentTo(
-            //        new
-            //        {
-            //            LeftOperand = _leftOperand,
-            //            RightOperand = _rightOperand,
-            //            OperatorType = default(Func<Expression, Expression>)
-            //        },
-            //        opt => opt.Excluding(o => o.OperatorType));
-            //}
+            [Fact]
+            public void Should_Set_Members()
+            {
+                _operator.Should().BeEquivalentTo(
+                    new
+                    {
+                        LeftOperand = _leftOperand,
+                        RightOperand = _rightOperand,
+                        OperatorType = default(Func<Expression, Expression>)
+                    },
+                    opt => opt.Excluding(o => o.OperatorType));
+            }
         }
 
         public class GetExpression : AddOperatorFixture
         {
             [Fact]
-            public void Should_Generate_Add_Expression()
+            public void Should_Generate_Expression()
             {
                 var expected = $"({_leftValue} + {_rightValue})";
                 var expression = _operator.GetExpression();

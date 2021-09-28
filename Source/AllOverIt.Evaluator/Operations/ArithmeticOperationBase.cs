@@ -9,7 +9,7 @@ namespace AllOverIt.Evaluator.Operations
     public abstract class ArithmeticOperationBase : IArithmeticOperation
     {
         // A delegate that creates an instance of a concrete IOperator. The Expression array must have as many elements as is specified by the ArgumentCount property.
-        private readonly Func<Expression[], IOperator> _creator;
+        internal readonly Func<Expression[], IOperator> Creator;
 
         /// <inheritdoc />
         public int ArgumentCount { get; }
@@ -20,7 +20,7 @@ namespace AllOverIt.Evaluator.Operations
         protected ArithmeticOperationBase(int argumentCount, Func<Expression[], IOperator> creator)
         {
             ArgumentCount = argumentCount;
-            _creator = creator.WhenNotNull(nameof(creator));
+            Creator = creator.WhenNotNull(nameof(creator));
         }
 
         /// <inheritdoc />
@@ -30,7 +30,7 @@ namespace AllOverIt.Evaluator.Operations
             // 'expressions' is the array of arguments required to initialize the operator or user defined method.
 
             // Note: Cannot cache the result of Creator.Invoke(expressions) because the resultant expression is dependent on the input expressions.
-            return _creator.Invoke(expressions).GetExpression();
+            return Creator.Invoke(expressions).GetExpression();
         }
     }
 }

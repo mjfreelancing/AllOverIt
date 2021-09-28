@@ -27,7 +27,6 @@ namespace AllOverIt.Evaluator.Operations
             return TryRegisterOperation(symbol, precedence, argumentCount, operatorCreator, false);
         }
 
-
         /// <inheritdoc />
         /// <remarks>If the symbol is already registered then an OperationFactoryException will be raised.</remarks>
         public void RegisterOperation(string symbol, int precedence, int argumentCount, Func<Expression[], IOperator> operatorCreator)

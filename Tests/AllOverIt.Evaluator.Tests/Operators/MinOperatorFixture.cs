@@ -9,29 +9,29 @@ using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Operators
 {
-    public class RoundOperatorFixture : FixtureBase
+    public class MinOperatorFixture : FixtureBase
     {
-        private readonly double _value;
-        private readonly int _decimals;
+        private readonly double _leftValue;
+        private readonly double _rightValue;
         private readonly Expression _leftOperand;
         private readonly Expression _rightOperand;
-        private RoundOperator _operator;
+        private MinOperator _operator;
 
-        public RoundOperatorFixture()
+        public MinOperatorFixture()
         {
-            _value = Create<double>();
-            _decimals = Create<int>();
-            _leftOperand = Expression.Constant(_value);
-            _rightOperand = Expression.Constant(_decimals);
-            _operator = new RoundOperator(_leftOperand, _rightOperand);
+            _leftValue = Create<double>();
+            _rightValue = Create<double>();
+            _leftOperand = Expression.Constant(_leftValue);
+            _rightOperand = Expression.Constant(_rightValue);
+            _operator = new MinOperator(_leftOperand, _rightOperand);
         }
 
-        public class Constructor : RoundOperatorFixture
+        public class Constructor : MinOperatorFixture
         {
             [Fact]
             public void Should_Throw_When_Left_Operand_Null()
             {
-                Invoking(() => _operator = new RoundOperator(null, this.CreateStub<Expression>()))
+                Invoking(() => _operator = new MinOperator(null, this.CreateStub<Expression>()))
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("leftOperand");
@@ -40,7 +40,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
             [Fact]
             public void Should_Throw_When_Right_Operand_Null()
             {
-                Invoking(() => _operator = new RoundOperator(this.CreateStub<Expression>(), null))
+                Invoking(() => _operator = new MinOperator(this.CreateStub<Expression>(), null))
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("rightOperand");
@@ -55,16 +55,16 @@ namespace AllOverIt.Evaluator.Tests.Operators
                     RightOperand = _rightOperand,
                     OperatorType = default(Func<Expression, Expression>)
                 },
-                  opt => opt.Excluding(o => o.OperatorType));
+                    opt => opt.Excluding(o => o.OperatorType));
             }
         }
 
-        public class GetExpression : RoundOperatorFixture
+        public class GetExpression : MinOperatorFixture
         {
             [Fact]
             public void Should_Generate_Expression()
             {
-                var expected = $"Round({_value}, Convert({_decimals}, Int32), AwayFromZero)";
+                var expected = $"Min({_leftValue}, {_rightValue})";
                 var expression = _operator.GetExpression();
 
                 var actual = expression.ToString();

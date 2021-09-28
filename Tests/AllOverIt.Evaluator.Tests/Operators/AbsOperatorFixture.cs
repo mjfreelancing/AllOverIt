@@ -1,4 +1,4 @@
-using AllOverIt.Evaluator.Operators;
+﻿using AllOverIt.Evaluator.Operators;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
@@ -8,48 +8,49 @@ using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Operators
 {
-    public class LnOperatorFixture : FixtureBase
+    public class AbsOperatorFixture : FixtureBase
     {
         private readonly double _value;
         private readonly Expression _operand;
-        private LogOperator _operator;
+        private AbsOperator _operator;
 
-        public LnOperatorFixture()
+        public AbsOperatorFixture()
         {
             _value = Create<double>();
             _operand = Expression.Constant(_value);
-            _operator = new LogOperator(_operand);
+            _operator = new AbsOperator(_operand);
         }
 
-        public class Constructor : LnOperatorFixture
+        public class Constructor : AbsOperatorFixture
         {
             [Fact]
             public void Should_Throw_When_Operand_Null()
             {
-                Invoking(() => _operator = new LogOperator(null))
+                Invoking(() => _operator = new AbsOperator(null))
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("operand");
             }
-            
-            //[Fact]
-            //public void Should_Set_Members()
-            //{
-            //    _operator.Should().BeEquivalentTo(new
-            //    {
-            //        Operand = _operand,
-            //        OperatorType = default(Func<Expression, Expression>)
-            //    },
-            //      opt => opt.Excluding(o => o.OperatorType));
-            //}
+
+            [Fact]
+            public void Should_Set_Members()
+            {
+                _operator.Should().BeEquivalentTo(
+                    new
+                    {
+                        Operand = _operand,
+                        OperatorType = default(Func<Expression, Expression>)
+                    },
+                    opt => opt.Excluding(o => o.OperatorType));
+            }
         }
 
-        public class GetExpression : LnOperatorFixture
+        public class GetExpression : AbsOperatorFixture
         {
             [Fact]
-            public void Should_Generate_Ln_Expression()
+            public void Should_Generate_Expression()
             {
-                var expected = $"Log({_value})";
+                var expected = $"Abs({_value})";
                 var expression = _operator.GetExpression();
 
                 var actual = expression.ToString();

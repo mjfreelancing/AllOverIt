@@ -4,8 +4,8 @@ using System;
 
 namespace AllOverIt.Evaluator.Tests.Operations
 {
-    public class LnOperationFixture : UnaryOperationFixtureBase<LogOperation>
+    public class MinOperationFixture : BinaryOperationFixtureBase<MinOperation>
     {
-        protected override Type OperatorType => typeof(LogOperator);
+        protected override Type OperatorType => typeof(MinOperator);
     }
 }

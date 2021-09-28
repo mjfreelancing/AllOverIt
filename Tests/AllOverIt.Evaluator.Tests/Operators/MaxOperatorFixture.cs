@@ -9,29 +9,29 @@ using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Operators
 {
-    public class RoundOperatorFixture : FixtureBase
+    public class MaxOperatorFixture : FixtureBase
     {
-        private readonly double _value;
-        private readonly int _decimals;
+        private readonly double _leftValue;
+        private readonly double _rightValue;
         private readonly Expression _leftOperand;
         private readonly Expression _rightOperand;
-        private RoundOperator _operator;
+        private MaxOperator _operator;
 
-        public RoundOperatorFixture()
+        public MaxOperatorFixture()
         {
-            _value = Create<double>();
-            _decimals = Create<int>();
-            _leftOperand = Expression.Constant(_value);
-            _rightOperand = Expression.Constant(_decimals);
-            _operator = new RoundOperator(_leftOperand, _rightOperand);
+            _leftValue = Create<double>();
+            _rightValue = Create<double>();
+            _leftOperand = Expression.Constant(_leftValue);
+            _rightOperand = Expression.Constant(_rightValue);
+            _operator = new MaxOperator(_leftOperand, _rightOperand);
         }
 
-        public class Constructor : RoundOperatorFixture
+        public class Constructor : MaxOperatorFixture
         {
             [Fact]
             public void Should_Throw_When_Left_Operand_Null()
             {
-                Invoking(() => _operator = new RoundOperator(null, this.CreateStub<Expression>()))
+                Invoking(() => _operator = new MaxOperator(null, this.CreateStub<Expression>()))
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("leftOperand");
@@ -40,7 +40,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
             [Fact]
             public void Should_Throw_When_Right_Operand_Null()
             {
-                Invoking(() => _operator = new RoundOperator(this.CreateStub<Expression>(), null))
+                Invoking(() => _operator = new MaxOperator(this.CreateStub<Expression>(), null))
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("rightOperand");
@@ -50,21 +50,21 @@ namespace AllOverIt.Evaluator.Tests.Operators
             public void Should_Set_Members()
             {
                 _operator.Should().BeEquivalentTo(new
-                {
-                    LeftOperand = _leftOperand,
-                    RightOperand = _rightOperand,
-                    OperatorType = default(Func<Expression, Expression>)
-                },
-                  opt => opt.Excluding(o => o.OperatorType));
+                    {
+                        LeftOperand = _leftOperand,
+                        RightOperand = _rightOperand,
+                        OperatorType = default(Func<Expression, Expression>)
+                    },
+                    opt => opt.Excluding(o => o.OperatorType));
             }
         }
 
-        public class GetExpression : RoundOperatorFixture
+        public class GetExpression : MaxOperatorFixture
         {
             [Fact]
             public void Should_Generate_Expression()
             {
-                var expected = $"Round({_value}, Convert({_decimals}, Int32), AwayFromZero)";
+                var expected = $"Max({_leftValue}, {_rightValue})";
                 var expression = _operator.GetExpression();
 
                 var actual = expression.ToString();

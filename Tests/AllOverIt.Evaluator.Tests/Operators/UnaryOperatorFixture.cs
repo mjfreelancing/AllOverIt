@@ -46,15 +46,15 @@ namespace AllOverIt.Evaluator.Tests.Operators
                     .WithNamedMessageWhenNull("operand");
             }
 
-            //[Fact]
-            //public void Should_Set_Members()
-            //{
-            //    _operator.Should().BeEquivalentTo(new
-            //    {
-            //        Operand = _operand,
-            //        OperatorType = _operatorType
-            //    });
-            //}
+            [Fact]
+            public void Should_Set_Members()
+            {
+                _operator.Should().BeEquivalentTo(new
+                {
+                    Operand = _operand,
+                    OperatorType = _operatorType
+                });
+            }
         }
 
         public class GetExpression : UnaryOperatorFixture

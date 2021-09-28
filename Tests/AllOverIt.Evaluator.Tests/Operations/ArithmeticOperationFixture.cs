@@ -1,8 +1,11 @@
 ﻿using AllOverIt.Evaluator.Operations;
+using AllOverIt.Evaluator.Operators;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
+using AllOverIt.Fixture.FakeItEasy;
 using FluentAssertions;
 using System;
+using System.Linq.Expressions;
 using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Operations
@@ -23,24 +26,24 @@ namespace AllOverIt.Evaluator.Tests.Operations
                     .WithNamedMessageWhenNull("creator");
             }
 
-            //[Fact]
-            //public void Should_Assign_Members()
-            //{
-            //    var precedence = Create<int>();
-            //    var argumentCount = Create<int>();
+            [Fact]
+            public void Should_Assign_Members()
+            {
+                var precedence = Create<int>();
+                var argumentCount = Create<int>();
 
-            //    IOperator Creator(Expression[] e) => this.CreateStub<IOperator>();
+                IOperator Creator(Expression[] e) => this.CreateStub<IOperator>();
 
-            //    _operation = new ArithmeticOperation(precedence, argumentCount, Creator);
+                _operation = new ArithmeticOperation(precedence, argumentCount, Creator);
 
-            //    _operation.Should().BeEquivalentTo(
-            //        new
-            //        {
-            //            Precedence = precedence,
-            //            ArgumentCount = argumentCount,
-            //            Creator = (Func<Expression[], IOperator>) Creator
-            //        });
-            //}
+                _operation.Should().BeEquivalentTo(
+                    new
+                    {
+                        Precedence = precedence,
+                        ArgumentCount = argumentCount,
+                        Creator = (Func<Expression[], IOperator>) Creator
+                    });
+            }
         }
     }
 }

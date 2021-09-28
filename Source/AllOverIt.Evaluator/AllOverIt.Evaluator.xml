@@ -187,6 +187,7 @@
             <summary>Constructor.</summary>
             <param name="formulaExpression">The expression built from a processed formula.</param>
             <param name="referencedVariableNames">A collection of all variable names explicitly referenced by the formula.</param>
+            <param name="variableRegistry">The variable registry that will be referenced by the compiled expression during evaluation.</param>
         </member>
         <member name="T:AllOverIt.Evaluator.FormulaTokenProcessorContext">
             <summary>Contains context information about a formula token and an associated processor.</summary>

@@ -25,6 +25,7 @@ namespace AllOverIt.Evaluator
         /// <summary>Constructor.</summary>
         /// <param name="formulaExpression">The expression built from a processed formula.</param>
         /// <param name="referencedVariableNames">A collection of all variable names explicitly referenced by the formula.</param>
+        /// <param name="variableRegistry">The variable registry that will be referenced by the compiled expression during evaluation.</param>
         internal FormulaProcessorResult(Expression<Func<double>> formulaExpression, IReadOnlyCollection<string> referencedVariableNames, IVariableRegistry variableRegistry)
         {
             // Note: referencedVariableNames is passed as IReadOnlyCollection<string> for performance reasons (from the FormulaProcessor)
