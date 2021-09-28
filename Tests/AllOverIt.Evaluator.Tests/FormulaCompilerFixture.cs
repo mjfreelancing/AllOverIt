@@ -1,9 +1,7 @@
-﻿//using AllOverIt.Evaluator.Tests.Helpers;
-//using AllOverIt.Evaluator.Variables;
+﻿//using AllOverIt.Evaluator.Variables;
 //using AllOverIt.Fixture;
 //using AllOverIt.Fixture.Extensions;
 //using AllOverIt.Fixture.FakeItEasy;
-//using FakeItEasy;
 //using FluentAssertions;
 //using System;
 //using System.Collections.Generic;
@@ -13,7 +11,6 @@
 //{
 //    public class FormulaCompilerFixture : FixtureBase
 //    {
-//        private readonly Fake<IFormulaParser> _parserFake;
 //        private readonly IVariableRegistry _variableRegistry;
 //        private readonly string _formula;
 //        private FormulaCompiler _formulaCompiler;
@@ -22,7 +19,6 @@
 //        {
 //            this.UseFakeItEasy();
 
-//            _parserFake = this.CreateFake<IFormulaParser>(true);         // freeze it so it can be used when creating the SUT, via Create<FormulaCompiler>()
 //            _variableRegistry = this.CreateStub<IVariableRegistry>();
 //            _formula = Create<string>();
 //        }
@@ -49,11 +45,6 @@
 
 //                _value = Create<double>();
 //                _referencedVariableNames = CreateMany<string>();
-//                var processorResult = EvaluatorHelpers.CreateFormulaProcessorResult(_value, _referencedVariableNames);
-
-//                _parserFake
-//                  .CallsTo(fake => fake.Parse(_formula, _variableRegistry))
-//                  .Returns(processorResult);
 //            }
 
 //            [Fact]
@@ -81,16 +72,6 @@
 //                    .Should()
 //                    .Throw<ArgumentException>()
 //                    .WithNamedMessageWhenEmpty("formula");
-//            }
-
-//            [Fact]
-//            public void Should_Call_Parser_Parse()
-//            {
-//                _formulaCompiler.Compile(_formula, _variableRegistry);
-
-//                _parserFake
-//                  .CallsTo(fake => fake.Parse(_formula, _variableRegistry))
-//                  .MustHaveHappened(1, Times.Exactly);
 //            }
 
 //            [Fact]
