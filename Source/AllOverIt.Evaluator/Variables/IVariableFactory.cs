@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace AllOverIt.Evaluator.Variables
 {
+    /// <summary>Represents a factory for creating variables.</summary>
     public interface IVariableFactory
     {
         /// <summary>Creates a new instance of a variable registry.</summary>

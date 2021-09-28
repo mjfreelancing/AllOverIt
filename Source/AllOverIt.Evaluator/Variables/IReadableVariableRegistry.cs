@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace AllOverIt.Evaluator.Variables
 {
-    /// <summary>A read-only registry of variables.</summary>
+    /// <summary>Represents a read-only registry of variables referenced by one or more formula.</summary>
     public interface IReadableVariableRegistry
     {
         /// <summary>Gets an enumerable of all variables and their associated name contained in the registry.</summary>

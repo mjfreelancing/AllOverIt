@@ -1,5 +1,6 @@
 namespace AllOverIt.Evaluator.Variables
 {
+    /// <summary>Represents a registry of variables referenced by one or more formula.</summary>
     public interface IVariableRegistry : IReadableVariableRegistry
     {
         /// <summary>Adds a new variable to the registry.</summary>

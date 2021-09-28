@@ -6,6 +6,7 @@ using System.Linq;
 
 namespace AllOverIt.Evaluator.Variables
 {
+    /// <summary>A factory for creating variables.</summary>
     public sealed class VariableFactory : IVariableFactory
     {
         /// <inheritdoc />

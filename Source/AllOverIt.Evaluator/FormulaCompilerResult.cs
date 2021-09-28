@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace AllOverIt.Evaluator
 {
-    /// <summary>A class containing a delegate and a list of referenced variables resulting from the compilation of a formula.</summary>
+    /// <summary>Contains a compiled delegate (resolver) and a list of referenced variables resulting from the compilation of a formula.</summary>
     public sealed record FormulaCompilerResult
     {
         /// <summary>The variable registry reference by the compiled formula. This will be null if the formula compiler was not provided

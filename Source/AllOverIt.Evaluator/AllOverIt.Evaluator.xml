@@ -107,7 +107,7 @@
             the compiled delegate, and a list of variables referenced by the formula (if applicable).</returns>
         </member>
         <member name="T:AllOverIt.Evaluator.FormulaCompilerResult">
-            <summary>A class containing a delegate and a list of referenced variables resulting from the compilation of a formula.</summary>
+            <summary>Contains a compiled delegate (resolver) and a list of referenced variables resulting from the compilation of a formula.</summary>
         </member>
         <member name="P:AllOverIt.Evaluator.FormulaCompilerResult.VariableRegistry">
             <summary>The variable registry reference by the compiled formula. This will be null if the formula compiler was not provided
@@ -882,7 +882,7 @@
             <param name="value">The new value to be assigned.</param>
         </member>
         <member name="T:AllOverIt.Evaluator.Variables.IReadableVariableRegistry">
-            <summary>A read-only registry of variables.</summary>
+            <summary>Represents a read-only registry of variables referenced by one or more formula.</summary>
         </member>
         <member name="P:AllOverIt.Evaluator.Variables.IReadableVariableRegistry.Variables">
             <summary>Gets an enumerable of all variables and their associated name contained in the registry.</summary>
@@ -896,13 +896,16 @@
             <summary>Describes a named variable.</summary>
         </member>
         <member name="P:AllOverIt.Evaluator.Variables.IVariable.Name">
-            <summary>Gets the variable's name.</summary>
+            <summary>Gets the name of the variable.</summary>
         </member>
         <member name="P:AllOverIt.Evaluator.Variables.IVariable.Value">
-            <summary>Gets the variable's value.</summary>
+            <summary>Gets the value of the variable.</summary>
         </member>
         <member name="P:AllOverIt.Evaluator.Variables.IVariable.ReferencedVariables">
             <summary>Gets all variables this variable references. Only applicable to variables constructed from a FormulaCompilerResult.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Variables.IVariableFactory">
+            <summary>Represents a factory for creating variables.</summary>
         </member>
         <member name="M:AllOverIt.Evaluator.Variables.IVariableFactory.CreateVariableRegistry">
             <summary>Creates a new instance of a variable registry.</summary>
@@ -946,6 +949,24 @@
             <param name="variableNames">The names of the variables to be aggregated. This cannot be an empty collection.
             If null is provided then all variables within the registry will be aggregated.</param>
             <returns>The new variable instance.</returns>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Variables.IVariableLookup">
+            <summary>Provides the ability to look up referenced and referencing variables for a specified variable.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.IVariableLookup.GetReferencedVariables(AllOverIt.Evaluator.Variables.IVariable,AllOverIt.Evaluator.Variables.VariableLookupMode)">
+            <summary>Get all variables referenced by the specified variable using the specified lookup mode.</summary>
+            <param name="variable">The source variable to look up referenced variables for.</param>
+            <param name="lookupMode">Specifies the lookup mode that determines which variables will be returned.</param>
+            <returns>All variables referenced by the specified variable.</returns>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.IVariableLookup.GetReferencingVariables(AllOverIt.Evaluator.Variables.IVariable,AllOverIt.Evaluator.Variables.VariableLookupMode)">
+            <summary>Get all variables referencing the specified variable using the specified lookup mode.</summary>
+            <param name="variable">The source variable to look up referencing variables for.</param>
+            <param name="lookupMode">Specifies the lookup mode that determines which variables will be returned.</param>
+            <returns>All variables referencing the specified variable.</returns>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Variables.IVariableRegistry">
+            <summary>Represents a registry of variables referenced by one or more formula.</summary>
         </member>
         <member name="M:AllOverIt.Evaluator.Variables.IVariableRegistry.AddVariable(AllOverIt.Evaluator.Variables.IVariable)">
             <summary>Adds a new variable to the registry.</summary>
@@ -1002,11 +1023,24 @@
         <member name="M:AllOverIt.Evaluator.Variables.MutableVariable.SetValue(System.Double)">
             <inheritdoc />
         </member>
+        <member name="T:AllOverIt.Evaluator.Variables.VariableBase">
+            <summary>An abstract base class for a named variable.</summary>
+        </member>
+        <member name="P:AllOverIt.Evaluator.Variables.VariableBase.Name">
+            <inheritdoc />
+        </member>
         <member name="P:AllOverIt.Evaluator.Variables.VariableBase.Value">
             <summary>Gets the variable's value.</summary>
         </member>
         <member name="P:AllOverIt.Evaluator.Variables.VariableBase.ReferencedVariables">
             <summary>Gets all variables this variable references. Only applicable to variables constructed from a FormulaCompilerResult.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.VariableBase.#ctor(System.String)">
+            <summary>Constructor.</summary>
+            <param name="name">The name of the ariable.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Variables.VariableFactory">
+            <summary>A factory for creating variables.</summary>
         </member>
         <member name="M:AllOverIt.Evaluator.Variables.VariableFactory.CreateVariableRegistry">
             <inheritdoc />
@@ -1027,6 +1061,46 @@
             <inheritdoc />
         </member>
         <member name="M:AllOverIt.Evaluator.Variables.VariableFactory.CreateAggregateVariable(System.String,AllOverIt.Evaluator.Variables.IVariableRegistry,System.Collections.Generic.IEnumerable{System.String})">
+            <inheritdoc />
+        </member>
+        <member name="T:AllOverIt.Evaluator.Variables.VariableLookup">
+            <summary>Provides the ability to lookup referenced and referencing variables from a variable registry.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.VariableLookup.#ctor(AllOverIt.Evaluator.Variables.IVariableRegistry)">
+            <summary>Constructor.</summary>
+            <param name="variableRegistry">The variable registry used for lookup operations.</param>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.VariableLookup.GetReferencedVariables(AllOverIt.Evaluator.Variables.IVariable,AllOverIt.Evaluator.Variables.VariableLookupMode)">
+            <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.VariableLookup.GetReferencingVariables(AllOverIt.Evaluator.Variables.IVariable,AllOverIt.Evaluator.Variables.VariableLookupMode)">
+            <inheritdoc />
+        </member>
+        <member name="T:AllOverIt.Evaluator.Variables.VariableLookupMode">
+            <summary>Determines how variable lookup operations are performed.</summary>
+        </member>
+        <member name="F:AllOverIt.Evaluator.Variables.VariableLookupMode.Explicit">
+            <summary>The lookup process should only return explicitly referenced or referencing variables.</summary>
+        </member>
+        <member name="F:AllOverIt.Evaluator.Variables.VariableLookupMode.All">
+            <summary>The lookup process should return all (explicit and implicit) referenced or referencing variables.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Variables.VariableRegistry">
+            <summary>A registry of variables referenced by one or more formula.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.VariableRegistry.AddVariable(AllOverIt.Evaluator.Variables.IVariable)">
+            <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.VariableRegistry.AddVariables(AllOverIt.Evaluator.Variables.IVariable[])">
+            <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.VariableRegistry.GetValue(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.VariableRegistry.SetValue(System.String,System.Double)">
+            <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Evaluator.Variables.VariableRegistry.Clear">
             <inheritdoc />
         </member>
     </members>

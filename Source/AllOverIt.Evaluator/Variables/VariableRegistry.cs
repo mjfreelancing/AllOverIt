@@ -5,11 +5,13 @@ using System.Collections.Generic;
 
 namespace AllOverIt.Evaluator.Variables
 {
+    /// <summary>A registry of variables referenced by one or more formula.</summary>
     public sealed class VariableRegistry : IVariableRegistry
     {
         private readonly IDictionary<string, IVariable> _variableRegistry = new Dictionary<string, IVariable>();
         public IEnumerable<KeyValuePair<string, IVariable>> Variables => _variableRegistry;
 
+        /// <inheritdoc />
         public void AddVariable(IVariable variable)
         {
             _ = variable.WhenNotNull(nameof(variable));
@@ -25,6 +27,7 @@ namespace AllOverIt.Evaluator.Variables
             variable.SetVariableRegistry(this);
         }
 
+        /// <inheritdoc />
         public void AddVariables(params IVariable[] variables)
         {
             foreach (var variable in variables)
@@ -33,6 +36,7 @@ namespace AllOverIt.Evaluator.Variables
             }
         }
 
+        /// <inheritdoc />
         public double GetValue(string name)
         {
             _ = name.WhenNotNullOrEmpty(nameof(name));
@@ -42,6 +46,7 @@ namespace AllOverIt.Evaluator.Variables
             return variable.Value;
         }
 
+        /// <inheritdoc />
         public void SetValue(string name, double value)
         {
             _ = name.WhenNotNullOrEmpty(nameof(name));
@@ -54,6 +59,7 @@ namespace AllOverIt.Evaluator.Variables
             variable.SetValue(value);
         }
 
+        /// <inheritdoc />
         public void Clear()
         {
             _variableRegistry.Clear();

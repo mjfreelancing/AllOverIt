@@ -4,11 +4,12 @@ using System.Linq;
 
 namespace AllOverIt.Evaluator.Variables
 {
-    // An abstract base class for a named variable.
+    /// <summary>An abstract base class for a named variable.</summary>
     public abstract record VariableBase : IVariable
     {
         internal IVariableRegistry VariableRegistry { get; set; }
 
+        /// <inheritdoc />
         public string Name { get; }
 
         /// <summary>Gets the variable's value.</summary>
@@ -17,7 +18,8 @@ namespace AllOverIt.Evaluator.Variables
         /// <summary>Gets all variables this variable references. Only applicable to variables constructed from a FormulaCompilerResult.</summary>
         public IEnumerable<IVariable> ReferencedVariables { get; protected init; } = Enumerable.Empty<IVariable>();
 
-        // 'referencedVariableNames' is an optional list of variable names that this variable depends on to calculate its value.
+        /// <summary>Constructor.</summary>
+        /// <param name="name">The name of the ariable.</param>
         protected VariableBase(string name)
         {
             Name = name.WhenNotNullOrEmpty(nameof(name));
