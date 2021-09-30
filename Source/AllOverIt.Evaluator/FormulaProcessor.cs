@@ -18,14 +18,14 @@ namespace AllOverIt.Evaluator
     public sealed class FormulaProcessor
     {
         // Tags used to internally identify custom operators within the stack. Can be anything other than the operators defined in ArithmeticOperationFactory
-        private static class CustomTokens
+        internal static class CustomTokens
         {
             internal const string UserMethod = "$1";
             internal const string UnaryMinus = "$2";
             internal const string OpenScope = "(";
         }
 
-        private static readonly IReadOnlyCollection<string> EmptyReadOnlyCollection = new ReadOnlyCollection<string>(new[] { string.Empty });
+        private static readonly IReadOnlyCollection<string> EmptyReadOnlyCollection = new List<string>();
         private static readonly char DecimalSeparator = Convert.ToChar(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
         private readonly IList<FormulaTokenProcessorContext> _tokenProcessors = new List<FormulaTokenProcessorContext>();
         private readonly Stack<string> _operatorStack = new();
@@ -109,6 +109,13 @@ namespace AllOverIt.Evaluator
 
                 return new FormulaProcessorResult(funcExpression, referencedVariableNames, registry);
             }
+            catch (Exception exception)
+            {
+                var span = _formula.AsSpan();
+                var processed = span[.._currentIndex].ToString();
+
+                throw new FormulaException($"Invalid expression. See index {_currentIndex}, near '{processed}'.", exception);
+            }
             finally
             {
                 ClearState();
@@ -154,7 +161,7 @@ namespace AllOverIt.Evaluator
                 // we should at least have a 'UserMethod' in the stack to indicate a user method is being parsed
                 if (!_operatorStack.Any())
                 {
-                    throw new FormulaException("Invalid expression stack");
+                    throw new FormulaException("Invalid expression stack.");
                 }
 
                 // methods pushed onto the operator stack have been prefixed with 'UserMethod' to identify them as methods since they 
@@ -189,7 +196,7 @@ namespace AllOverIt.Evaluator
 
                 if (tokenSpan.Length != 1 || !IsUnaryPlusOrMinus(tokenSpan[0]))
                 {
-                    throw new FormulaException("Invalid expression stack");
+                    throw new FormulaException("Invalid expression stack.");
                 }
 
                 if (tokenSpan[0] == '-')
@@ -230,6 +237,13 @@ namespace AllOverIt.Evaluator
 
         private void ProcessNamedOperand()
         {
+            if (!_lastPushIsOperator)
+            {
+                var namedOperand = ReadNamedOperand();
+
+                throw new FormulaException($"'{namedOperand}' is a variable or method that does not follow an operator, or is an unregistered operator.");
+            }
+
             var operandExpression = GetNamedOperandExpression();
 
             PushExpression(operandExpression);
@@ -254,10 +268,10 @@ namespace AllOverIt.Evaluator
         // get the expression for a variable or method at the current position
         private Expression GetNamedOperandExpression()
         {
-            var span = _formula.AsSpan();
-
             // continue to scan until we get a full word (which may include the full stop character)
             var namedOperand = ReadNamedOperand();
+
+            var span = _formula.AsSpan();
 
             // In the case of a method, we need to peek ahead to see if the next character is a '('.
             // We need to also make sure we are not at the end of a formula (the named operand will be a variable)
@@ -273,7 +287,7 @@ namespace AllOverIt.Evaluator
                     return ParseMethodToExpression(namedOperand);
                 }
 
-                throw new FormulaException($"Unknown method: {namedOperand}");
+                throw new FormulaException($"Unknown method: {namedOperand}.");
             }
 
             // For everything else, assume it must be a variable - not validating it exists since we are 
@@ -294,10 +308,10 @@ namespace AllOverIt.Evaluator
             // passing true to indicate it is a method being parsed (so parameters can be parsed / read correctly)
             ParseContent(true);
 
-            // check if the expression is missing the required )
+            // check if the expression is missing the required user method token
             if (_operatorStack.Peek() != CustomTokens.UserMethod)
             {
-                throw new FormulaException($"Invalid expression near method: {methodName}");
+                throw new FormulaException($"Invalid expression near method: {methodName}.");
             }
 
             _operatorStack.Pop();                        // pop the 'UserMethod'
@@ -424,7 +438,7 @@ namespace AllOverIt.Evaluator
 
             if (_currentIndex == span.Length)
             {
-                throw new FormulaException("Nothing to read");
+                throw new FormulaException("Nothing to read.");
             }
 
             var startIndex = _currentIndex;
@@ -451,7 +465,7 @@ namespace AllOverIt.Evaluator
 
             if (startIndex == _currentIndex)
             {
-                throw new FormulaException("Unexpected non-numerical token");
+                throw new FormulaException("Unexpected non-numerical token.");
             }
 
             var operand = span[startIndex.._currentIndex];
@@ -466,7 +480,7 @@ namespace AllOverIt.Evaluator
 
             catch (FormatException exception)
             {
-                throw new FormulaException($"Invalid numerical value: {operand.ToString()}", exception);
+                throw new FormulaException($"Invalid numerical value: {operand.ToString()}.", exception);
             }
 
             return value;
@@ -487,6 +501,7 @@ namespace AllOverIt.Evaluator
             {
                 var next = span[_currentIndex];
 
+                // numerical characters are not checked since variables can contain numbers
                 if (next != '(' &&
                     next != ')' &&
                     next != ',' &&
@@ -502,7 +517,7 @@ namespace AllOverIt.Evaluator
 
             if (startIndex == _currentIndex)
             {
-                throw new FormulaException("Unexpected empty named operand");
+                throw new FormulaException("Unexpected empty named operand.");
             }
 
             return span[startIndex.._currentIndex].ToString();
@@ -548,7 +563,7 @@ namespace AllOverIt.Evaluator
 
             if (startIndex == _currentIndex)
             {
-                throw new FormulaException("Unexpected empty operation");
+                throw new FormulaException("Unexpected empty operation.");
             }
 
             return span[startIndex.._currentIndex].ToString();
