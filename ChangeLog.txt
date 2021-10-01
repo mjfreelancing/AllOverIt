@@ -46,7 +46,7 @@ AllOverIt.Evaluator - v3.0.0
 
   Current AllOverIt Inter-Dependencies
 
-  [1]  AllOverIt                               (v1.17.3) - None
+  [1]  AllOverIt                               (v1.17.4) - None
   [2]  AllOverIt.Validation                    (v1.0.0)  - requires [1] v1.17.0
   [3]  AllOverIt.Aws.Cdk.AppSync               (v0.15.0) - requires [1] v1.17.3
   [4]  AllOverIt.Evaluator                     (v3.0.0)  - requires [1] v1.17.3
@@ -59,6 +59,13 @@ AllOverIt.Evaluator - v3.0.0
   [11] AllOverIt.Aws.AppSync.Client            (v0.3.0)  - requires [1] v1.17.3, [8] v1.0.0
 
 ======================================================================================================================
+
+
+
+01 Oct 2021
+======================================================================================================================
+AllOverIt - v1.17.4
+  * Fixed a self-referencing exception when serializing an object with objects shared across collection items.
 
 
 

@@ -108,13 +108,15 @@ namespace AllOverIt.Helpers
                     ? string.Empty
                     : $"{prefix}.";
 
+                var parentReferences = new List<object>(references);
+
                 AppendNameValue(
                     isClassType
                         ? $"{namePrefix}{keyType.GetFriendlyName()}`{idx}"
                         : $"{namePrefix}{keyEnumerator.Current}",
                     valueEnumerator.Current,
                     values,
-                    references
+                    parentReferences
                 );
 
                 ++idx;
@@ -141,7 +143,8 @@ namespace AllOverIt.Helpers
 
             foreach (var value in enumerable)
             {
-                AppendNameValue($"{prefix}[{idx++}]", value, values, references);
+                var parentReferences = new List<object>(references);
+                AppendNameValue($"{prefix}[{idx++}]", value, values, parentReferences);
             }
 
             if (!IncludeEmptyCollections || idx != 0)
@@ -159,8 +162,7 @@ namespace AllOverIt.Helpers
                 .GetPropertyInfo(BindingOptions)
                 .Where(propInfo => propInfo.CanRead &&
                                    !propInfo.IsIndexer() &&
-                                   !IgnoreType(propInfo.PropertyType)
-                );
+                                   !IgnoreType(propInfo.PropertyType));
 
             foreach (var propertyInfo in properties)
             {
@@ -175,7 +177,9 @@ namespace AllOverIt.Helpers
                         name = prefix + "." + name;
                     }
 
-                    AppendNameValue(name, value, values, references);
+                    var parentReferences = new List<object>(references);
+
+                    AppendNameValue(name, value, values, parentReferences);
                 }
             }
         }

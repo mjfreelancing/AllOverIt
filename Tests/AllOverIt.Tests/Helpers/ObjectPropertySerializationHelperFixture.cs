@@ -51,6 +51,18 @@ namespace AllOverIt.Tests.Helpers
             public int That { get; set; }
         }
 
+        private sealed class CollectionRoot
+        {
+            internal sealed class RootItem
+            {
+                public IEnumerable<double> Values { get; set; }
+            }
+
+            public IList<RootItem> Items { get; } = new List<RootItem>();
+
+            public IDictionary<int, IEnumerable<RootItem>> Maps { get; } = new Dictionary<int, IEnumerable<RootItem>>();
+        }
+
         protected ObjectPropertySerializationHelperFixture()
         {
             // prevent self-references
@@ -478,6 +490,34 @@ namespace AllOverIt.Tests.Helpers
                         { "10", "ten" }
                         //{ "list", "System.Collections.Generic.List`1[System.Int32]" }
                     });
+            }
+
+            [Fact]
+            public void Should_Not_Throw_When_Sharing_Non_Self_Referencing_Data()
+            {
+                var values = CreateMany<double>();
+
+                var root = new CollectionRoot();
+
+                root.Items.Add(new CollectionRoot.RootItem
+                {
+                    Values = values
+                });
+
+                root.Items.Add(new CollectionRoot.RootItem
+                {
+                    Values = values
+                });
+
+                root.Maps[0] = root.Items;
+                root.Maps[1] = root.Items;
+
+                Invoking(() =>
+                    {
+                        _ = _helper.SerializeToDictionary(root);
+                    })
+                    .Should()
+                    .NotThrow();
             }
         }
 
