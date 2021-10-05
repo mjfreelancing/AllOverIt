@@ -27,8 +27,8 @@ namespace AllOverIt.Aws.AppSync.Client.Exceptions
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue("ErrorType", ErrorType);
-            info.AddValue("Errors", Errors, typeof(IEnumerable<GraphqlErrorDetail>));
+            info.AddValue(nameof(ErrorType), ErrorType);
+            info.AddValue(nameof(Errors), Errors, typeof(IEnumerable<GraphqlErrorDetail>));
 
             base.GetObjectData(info, context);
         }

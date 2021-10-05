@@ -5,6 +5,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AllOverIt.Extensions
@@ -18,6 +19,7 @@ namespace AllOverIt.Extensions
         /// otherwise a new list is created and populated before being returned.</returns>
         public static IList<TType> AsList<TType>(this IEnumerable<TType> items)
         {
+            // ReSharper disable once PossibleMultipleEnumeration
             _ = items.WhenNotNull(nameof(items));
 
             return items is IList<TType> list
@@ -32,6 +34,7 @@ namespace AllOverIt.Extensions
         /// reference is returned, otherwise a new list is created and populated before being returned.</returns>
         public static IReadOnlyList<TType> AsReadOnlyList<TType>(this IEnumerable<TType> items)
         {
+            // ReSharper disable once PossibleMultipleEnumeration
             _ = items.WhenNotNull(nameof(items));
 
             return items is IReadOnlyList<TType> list
@@ -46,6 +49,7 @@ namespace AllOverIt.Extensions
         /// reference is returned, otherwise a new list is created and populated before being returned.</returns>
         public static IReadOnlyCollection<TType> AsReadOnlyCollection<TType>(this IEnumerable<TType> items)
         {
+            // ReSharper disable once PossibleMultipleEnumeration
             _ = items.WhenNotNull(nameof(items));
 
             return items is IReadOnlyCollection<TType> list
@@ -61,6 +65,7 @@ namespace AllOverIt.Extensions
         /// <returns>The projected results as an IList{TResult}.</returns>
         public static IList<TResult> SelectAsList<TSource, TResult>(this IEnumerable<TSource> items, Func<TSource, TResult> selector)
         {
+            // ReSharper disable once PossibleMultipleEnumeration
             _ = items.WhenNotNull(nameof(items));
 
             return items.Select(selector).ToList();
@@ -74,6 +79,7 @@ namespace AllOverIt.Extensions
         /// <returns>The projected results as an IReadOnlyCollection{TResult}.</returns>
         public static IReadOnlyCollection<TResult> SelectAsReadOnlyCollection<TSource, TResult>(this IEnumerable<TSource> items, Func<TSource, TResult> selector)
         {
+            // ReSharper disable once PossibleMultipleEnumeration
             _ = items.WhenNotNull(nameof(items));
 
             return items.Select(selector).ToList();
@@ -87,6 +93,7 @@ namespace AllOverIt.Extensions
         /// <returns>The projected results as an IReadOnlyList{TResult}.</returns>
         public static IReadOnlyList<TResult> SelectAsReadOnlyList<TSource, TResult>(this IEnumerable<TSource> items, Func<TSource, TResult> selector)
         {
+            // ReSharper disable once PossibleMultipleEnumeration
             _ = items.WhenNotNull(nameof(items));
 
             return items.Select(selector).ToList();
@@ -111,6 +118,7 @@ namespace AllOverIt.Extensions
         /// <returns>One or more batches containing the source items partitioned into a maximum batch size.</returns>
         public static IEnumerable<IEnumerable<TSource>> Batch<TSource>(this IEnumerable<TSource> items, int batchSize)
         {
+            // ReSharper disable once PossibleMultipleEnumeration
             _ = items.WhenNotNull(nameof(items));
 
             var batch = new List<TSource>(batchSize);
@@ -136,7 +144,8 @@ namespace AllOverIt.Extensions
 
         #region ForEachAsTaskAsync
 
-        public static Task ForEachAsTaskAsync<TType>(this IEnumerable<TType> items, Func<TType, Task> func, int degreeOfParallelism)
+        public static Task ForEachAsTaskAsync<TType>(this IEnumerable<TType> items, Func<TType, Task> func, int degreeOfParallelism,
+            CancellationToken cancellationToken = default)
         {
             return Task.WhenAll(
                 items
@@ -145,12 +154,13 @@ namespace AllOverIt.Extensions
                     {
                         return Task.Run(async () =>
                         {
-                            await ProcessPartitionAsync(partition, func);
-                        });
+                            await ProcessPartitionAsync(partition, func, cancellationToken);
+                        }, cancellationToken);
                     }));
         }
 
-        public static Task ForEachAsTaskAsync<TType, TInput>(this IEnumerable<TType> items, Func<TType, TInput, Task> func, TInput input, int degreeOfParallelism)
+        public static Task ForEachAsTaskAsync<TType, TInput>(this IEnumerable<TType> items, Func<TType, TInput, Task> func, TInput input, int degreeOfParallelism,
+            CancellationToken cancellationToken = default)
         {
             return Task.WhenAll(
                 items
@@ -159,13 +169,13 @@ namespace AllOverIt.Extensions
                     {
                         return Task.Run(async () =>
                         {
-                            await ProcessPartitionAsync(partition, func, input);
-                        });
+                            await ProcessPartitionAsync(partition, func, input, cancellationToken);
+                        }, cancellationToken);
                     }));
         }
 
         public static Task ForEachAsTaskAsync<TType, TInput1, TInput2>(this IEnumerable<TType> items, Func<TType, TInput1, TInput2, Task> func, 
-            TInput1 input1, TInput2 input2, int degreeOfParallelism)
+            TInput1 input1, TInput2 input2, int degreeOfParallelism, CancellationToken cancellationToken = default)
         {
             return Task.WhenAll(
                 items
@@ -174,13 +184,13 @@ namespace AllOverIt.Extensions
                     {
                         return Task.Run(async () =>
                         {
-                            await ProcessPartitionAsync(partition, func, input1, input2);
-                        });
+                            await ProcessPartitionAsync(partition, func, input1, input2, cancellationToken);
+                        }, cancellationToken);
                     }));
         }
 
         public static Task ForEachAsTaskAsync<TType, TInput1, TInput2, TInput3>(this IEnumerable<TType> items, Func<TType, TInput1, TInput2, TInput3, Task> func,
-            TInput1 input1, TInput2 input2, TInput3 input3, int degreeOfParallelism)
+            TInput1 input1, TInput2 input2, TInput3 input3, int degreeOfParallelism, CancellationToken cancellationToken = default)
         {
             return Task.WhenAll(
                 items
@@ -189,14 +199,14 @@ namespace AllOverIt.Extensions
                     {
                         return Task.Run(async () =>
                         {
-                            await ProcessPartitionAsync(partition, func, input1, input2, input3);
-                        });
+                            await ProcessPartitionAsync(partition, func, input1, input2, input3, cancellationToken);
+                        }, cancellationToken);
                     }));
         }
 
         public static Task ForEachAsTaskAsync<TType, TInput1, TInput2, TInput3, TInput4>(this IEnumerable<TType> items,
-            Func<TType, TInput1, TInput2, TInput3, TInput4, Task> func,
-            TInput1 input1, TInput2 input2, TInput3 input3, TInput4 input4, int degreeOfParallelism)
+            Func<TType, TInput1, TInput2, TInput3, TInput4, Task> func, TInput1 input1, TInput2 input2, TInput3 input3, TInput4 input4,
+            int degreeOfParallelism, CancellationToken cancellationToken = default)
         {
             return Task.WhenAll(
                 items
@@ -205,8 +215,8 @@ namespace AllOverIt.Extensions
                     {
                         return Task.Run(async () =>
                         {
-                            await ProcessPartitionAsync(partition, func, input1, input2, input3, input4);
-                        });
+                            await ProcessPartitionAsync(partition, func, input1, input2, input3, input4, cancellationToken);
+                        }, cancellationToken);
                     }));
         }
 
@@ -214,53 +224,55 @@ namespace AllOverIt.Extensions
 
         #region ForEachAsParallelAsync
 
-        public static Task ForEachAsParallelAsync<TType>(this IEnumerable<TType> items, Func<TType, Task> func, int degreeOfParallelism)
+        public static Task ForEachAsParallelAsync<TType>(this IEnumerable<TType> items, Func<TType, Task> func, int degreeOfParallelism,
+            CancellationToken cancellationToken = default)
         {
             return Task.WhenAll(
                 items
                     .GetPartitions(degreeOfParallelism)
                     .AsParallel()
-                    .Select(partition => ProcessPartitionAsync(partition, func)));
+                    .Select(partition => ProcessPartitionAsync(partition, func, cancellationToken)));
         }
 
-        public static Task ForEachAsParallelAsync<TType, TInput>(this IEnumerable<TType> items, Func<TType, TInput, Task> func, TInput input, int degreeOfParallelism)
+        public static Task ForEachAsParallelAsync<TType, TInput>(this IEnumerable<TType> items, Func<TType, TInput, Task> func, TInput input, int degreeOfParallelism,
+            CancellationToken cancellationToken = default)
         {
             return Task.WhenAll(
                 items
                     .GetPartitions(degreeOfParallelism)
                     .AsParallel()
-                    .Select(partition => ProcessPartitionAsync(partition, func, input)));
+                    .Select(partition => ProcessPartitionAsync(partition, func, input, cancellationToken)));
         }
 
         public static Task ForEachAsParallelAsync<TType, TInput1, TInput2>(this IEnumerable<TType> items, Func<TType, TInput1, TInput2, Task> func,
-            TInput1 input1, TInput2 input2, int degreeOfParallelism)
+            TInput1 input1, TInput2 input2, int degreeOfParallelism, CancellationToken cancellationToken = default)
         {
             return Task.WhenAll(
                 items
                     .GetPartitions(degreeOfParallelism)
                     .AsParallel()
-                    .Select(partition => ProcessPartitionAsync(partition, func, input1, input2)));
+                    .Select(partition => ProcessPartitionAsync(partition, func, input1, input2, cancellationToken)));
         }
 
         public static Task ForEachAsParallelAsync<TType, TInput1, TInput2, TInput3>(this IEnumerable<TType> items, Func<TType, TInput1, TInput2, TInput3, Task> func,
-            TInput1 input1, TInput2 input2, TInput3 input3, int degreeOfParallelism)
+            TInput1 input1, TInput2 input2, TInput3 input3, int degreeOfParallelism, CancellationToken cancellationToken = default)
         {
             return Task.WhenAll(
                 items
                     .GetPartitions(degreeOfParallelism)
                     .AsParallel()
-                    .Select(partition => ProcessPartitionAsync(partition, func, input1, input2, input3)));
+                    .Select(partition => ProcessPartitionAsync(partition, func, input1, input2, input3, cancellationToken)));
         }
 
         public static Task ForEachAsParallelAsync<TType, TInput1, TInput2, TInput3, TInput4>(this IEnumerable<TType> items,
-            Func<TType, TInput1, TInput2, TInput3, TInput4, Task> func,
-            TInput1 input1, TInput2 input2, TInput3 input3, TInput4 input4, int degreeOfParallelism)
+            Func<TType, TInput1, TInput2, TInput3, TInput4, Task> func, TInput1 input1, TInput2 input2, TInput3 input3, TInput4 input4,
+            int degreeOfParallelism, CancellationToken cancellationToken = default)
         {
             return Task.WhenAll(
                 items
                     .GetPartitions(degreeOfParallelism)
                     .AsParallel()
-                    .Select(partition => ProcessPartitionAsync(partition, func, input1, input2, input3, input4)));
+                    .Select(partition => ProcessPartitionAsync(partition, func, input1, input2, input3, input4, cancellationToken)));
         }
 
         #endregion
@@ -272,59 +284,66 @@ namespace AllOverIt.Extensions
 
         #region ProcessPartitionAsync
 
-        private static async Task ProcessPartitionAsync<TType>(IEnumerator<TType> partition, Func<TType, Task> func)
+        private static async Task ProcessPartitionAsync<TType>(IEnumerator<TType> partition, Func<TType, Task> func, CancellationToken cancellationToken)
         {
             using (partition)
             {
                 while (partition.MoveNext())
                 {
+                    cancellationToken.ThrowIfCancellationRequested();
                     await func.Invoke(partition.Current).ConfigureAwait(false);
                 }
             }
         }
 
-        private static async Task ProcessPartitionAsync<TType, TInput>(IEnumerator<TType> partition, Func<TType, TInput, Task> func, TInput input)
+        private static async Task ProcessPartitionAsync<TType, TInput>(IEnumerator<TType> partition, Func<TType, TInput, Task> func, TInput input,
+            CancellationToken cancellationToken)
         {
             using (partition)
             {
                 while (partition.MoveNext())
                 {
+                    cancellationToken.ThrowIfCancellationRequested();
                     await func.Invoke(partition.Current, input).ConfigureAwait(false);
                 }
             }
         }
 
         private static async Task ProcessPartitionAsync<TType, TInput1, TInput2>(IEnumerator<TType> partition, Func<TType, TInput1, TInput2, Task> func,
-            TInput1 input1, TInput2 input2)
+            TInput1 input1, TInput2 input2, CancellationToken cancellationToken)
         {
             using (partition)
             {
                 while (partition.MoveNext())
                 {
+                    cancellationToken.ThrowIfCancellationRequested();
                     await func.Invoke(partition.Current, input1, input2).ConfigureAwait(false);
                 }
             }
         }
 
         private static async Task ProcessPartitionAsync<TType, TInput1, TInput2, TInput3>(IEnumerator<TType> partition, Func<TType, TInput1, TInput2, TInput3, Task> func,
-            TInput1 input1, TInput2 input2, TInput3 input3)
+            TInput1 input1, TInput2 input2, TInput3 input3, CancellationToken cancellationToken)
         {
             using (partition)
             {
                 while (partition.MoveNext())
                 {
+                    cancellationToken.ThrowIfCancellationRequested();
                     await func.Invoke(partition.Current, input1, input2, input3).ConfigureAwait(false);
                 }
             }
         }
 
         private static async Task ProcessPartitionAsync<TType, TInput1, TInput2, TInput3, TInput4>(IEnumerator<TType> partition,
-            Func<TType, TInput1, TInput2, TInput3, TInput4, Task> func, TInput1 input1, TInput2 input2, TInput3 input3, TInput4 input4)
+            Func<TType, TInput1, TInput2, TInput3, TInput4, Task> func, TInput1 input1, TInput2 input2, TInput3 input3, TInput4 input4,
+            CancellationToken cancellationToken)
         {
             using (partition)
             {
                 while (partition.MoveNext())
                 {
+                    cancellationToken.ThrowIfCancellationRequested();
                     await func.Invoke(partition.Current, input1, input2, input3, input4).ConfigureAwait(false);
                 }
             }

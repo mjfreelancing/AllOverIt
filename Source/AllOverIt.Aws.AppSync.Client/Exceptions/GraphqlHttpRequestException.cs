@@ -34,9 +34,9 @@ namespace AllOverIt.Aws.AppSync.Client.Exceptions
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue("StatusCode", StatusCode);
-            info.AddValue("Errors", Errors, typeof(IEnumerable<GraphqlErrorDetail>));
-            info.AddValue("Content", Content);
+            info.AddValue(nameof(StatusCode), StatusCode);
+            info.AddValue(nameof(Errors), Errors, typeof(IEnumerable<GraphqlErrorDetail>));
+            info.AddValue(nameof(Content), Content);
 
             base.GetObjectData(info, context);
         }
@@ -44,9 +44,9 @@ namespace AllOverIt.Aws.AppSync.Client.Exceptions
         private GraphqlHttpRequestException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            StatusCode = (HttpStatusCode) info.GetValue("StatusCode", typeof(HttpStatusCode))!;
-            Errors = (IEnumerable<GraphqlErrorDetail>) info.GetValue("Errors", typeof(IEnumerable<GraphqlErrorDetail>))!;
-            Content = info.GetString("Content");
+            StatusCode = (HttpStatusCode) info.GetValue(nameof(StatusCode), typeof(HttpStatusCode))!;
+            Errors = (IEnumerable<GraphqlErrorDetail>) info.GetValue(nameof(Errors), typeof(IEnumerable<GraphqlErrorDetail>))!;
+            Content = info.GetString(nameof(Content));
         }
     }
 }
