@@ -15,7 +15,6 @@ namespace AllOverIt.Evaluator.Tests
 {
     public class FormulaProcessorFixture : FixtureBase
     {
-        private readonly Expression _expression;
         private readonly Fake<IArithmeticOperationFactory> _operationFactoryFake;
         private readonly Fake<IUserDefinedMethodFactory> _userDefinedMethodFactoryFake;
         private readonly Fake<IVariableRegistry> _variableRegistryFake;
@@ -23,7 +22,6 @@ namespace AllOverIt.Evaluator.Tests
 
         public FormulaProcessorFixture()
         {
-            _expression = Expression.Constant(Create<double>());
             _operationFactoryFake = new Fake<IArithmeticOperationFactory>();
             _userDefinedMethodFactoryFake = new Fake<IUserDefinedMethodFactory>();
             _variableRegistryFake = new Fake<IVariableRegistry>();
