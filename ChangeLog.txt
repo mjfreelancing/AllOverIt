@@ -64,7 +64,7 @@ AllOverIt.Evaluator - v3.0.0
 
 06 Oct 2021
 ======================================================================================================================
-AllOverIt.Aws.AppSync.Client
+AllOverIt.Aws.AppSync.Client - v0.4.0
   * Reverted response records to use set over init to avoid issues with deserialization
 
 
