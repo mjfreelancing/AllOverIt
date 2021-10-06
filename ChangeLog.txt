@@ -11,14 +11,22 @@
   [8]  AllOverIt.Serialization.Abstractions    (v1.0.0)  - None
   [9]  AllOverIt.Serialization.NewtonsoftJson  (v1.0.0)  - [8] v1.0.0
   [10] AllOverIt.Serialization.SystemTextJson  (v1.0.0)  - [8] v1.0.0
-  [11] AllOverIt.Aws.AppSync.Client            (v0.3.0)  - requires [1] v1.17.3, [8] v1.0.0
+  [11] AllOverIt.Aws.AppSync.Client            (v0.4.0)  - requires [1] v1.18.0, [8] v1.0.0
 
 ======================================================================================================================
+
+
+
+06 Oct 2021
+======================================================================================================================
+AllOverIt.Aws.AppSync.Client
+  * Reverted response records to use set over init to avoid issues with deserialization
 
 
 
 05 Oct 2021
 ======================================================================================================================
+AllOverIt - v1.18.0
   * Added cancellation support to ForEachAsTaskAsync() and ForEachAsParallelAsync()
 
 

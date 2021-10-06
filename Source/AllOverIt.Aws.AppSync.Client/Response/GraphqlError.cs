@@ -6,6 +6,6 @@ namespace AllOverIt.Aws.AppSync.Client.Response
     public sealed record GraphqlError
     {
         /// <summary>One or more detailed graphql errors reported by AppSync.</summary>
-        public IEnumerable<GraphqlErrorDetail> Errors { get; init; }
+        public IEnumerable<GraphqlErrorDetail> Errors { get; set; }
     }
 }

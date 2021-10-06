@@ -4,9 +4,9 @@
     public sealed record GraphqlLocation
     {
         /// <summary>The line within the request that caused an error.</summary>
-        public int Line { get; init; }
+        public int Line { get; set; }
 
         /// <summary>The column within the indicated line that caused an error.</summary>
-        public int Column { get; init; }
+        public int Column { get; set; }
     }
 }

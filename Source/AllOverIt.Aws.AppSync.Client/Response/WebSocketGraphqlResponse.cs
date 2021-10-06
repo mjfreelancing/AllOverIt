@@ -7,9 +7,9 @@ namespace AllOverIt.Aws.AppSync.Client.Response
     public class WebSocketGraphqlResponse<TPayload>
     {
         /// <summary>The response type. See <see cref="ProtocolMessage.Response"/> for possible values.</summary>
-        public string Type { get; init; }
+        public string Type { get; set; }
 
         /// <summary>The payload of the response.</summary>
-        public TPayload Payload { get; init; }
+        public TPayload Payload { get; set; }
     }
 }
