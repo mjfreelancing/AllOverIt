@@ -1,38 +1,29 @@
 ﻿using AllOverIt.Exceptions;
 using AllOverIt.Extensions;
-using AllOverIt.Reflection;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Helpers
 {
     /// <summary>Converts an object to an IDictionary{string, string} using a dot notation for nested members.</summary>
-    public sealed class ObjectPropertySerializationHelper
+    public sealed class ObjectPropertySerializer
     {
-        internal readonly List<Type> IgnoredTypes = new()
+        /// <summary>Provides options that determine how serialization of properties and their values are handled.</summary>
+        public ObjectPropertySerializerOptions Options { get; }
+
+        /// <summary>Constructor.</summary>
+        /// <param name="options">Specifies options that determine how serialization of properties and their values are handled.
+        /// If null, a default set of options will be used.</param>
+        public ObjectPropertySerializer(ObjectPropertySerializerOptions options = default)
         {
-            typeof(Task),
-            typeof(Task<>)
-        };
-
-        public bool IncludeNulls { get; set; }
-
-        public bool IncludeEmptyCollections { get; set; }
-
-        public BindingOptions BindingOptions { get; set; }
-
-        public string NullValueOutput { get; set; } = "<null>";
-
-        public string EmptyValueOutput { get; set; } = "<empty>";
-
-        public ObjectPropertySerializationHelper(BindingOptions bindingOptions = BindingOptions.Default)
-        {
-            BindingOptions = bindingOptions;
+            Options = options ?? new ObjectPropertySerializerOptions();
         }
 
+        /// <summary>Serializes an object to an IDictionary{string, string}.</summary>
+        /// <param name="instance">The object to be serialized.</param>
+        /// <returns>A flat IDictionary{string, string} of all properties using a dot notation for nested members.</returns>
         public IDictionary<string, string> SerializeToDictionary(object instance)
         {
             _ = instance.WhenNotNull(nameof(instance));
@@ -45,16 +36,6 @@ namespace AllOverIt.Helpers
             }
 
             return dictionary;
-        }
-
-        public void ClearIgnoredTypes()
-        {
-            IgnoredTypes.Clear();
-        }
-
-        public void AddIgnoredTypes(params Type[] types)
-        {
-            IgnoredTypes.AddRange(types);
         }
 
         private void Populate(string prefix, object instance, IDictionary<string, string> values, IList<object> references)
@@ -122,12 +103,12 @@ namespace AllOverIt.Helpers
                 ++idx;
             }
 
-            if (!IncludeEmptyCollections || idx != 0)
+            if (!Options.IncludeEmptyCollections || idx != 0)
             {
                 return;
             }
 
-            AppendNameValue(prefix, EmptyValueOutput, values, references);
+            AppendNameValue(prefix, Options.EmptyValueOutput, values, references);
         }
 
         private void AppendEnumerableAsPropertyValues(string prefix, IEnumerable enumerable, IDictionary<string, string> values, IList<object> references)
@@ -147,19 +128,19 @@ namespace AllOverIt.Helpers
                 AppendNameValue($"{prefix}[{idx++}]", value, values, parentReferences);
             }
 
-            if (!IncludeEmptyCollections || idx != 0)
+            if (!Options.IncludeEmptyCollections || idx != 0)
             {
                 return;
             }
 
-            AppendNameValue(prefix, EmptyValueOutput, values, references);
+            AppendNameValue(prefix, Options.EmptyValueOutput, values, references);
         }
 
         private void AppendObjectAsPropertyValues(string prefix, object instance, IDictionary<string, string> values, IList<object> references)
         {
             var properties = instance
                 .GetType()
-                .GetPropertyInfo(BindingOptions)
+                .GetPropertyInfo(Options.BindingOptions)
                 .Where(propInfo => propInfo.CanRead &&
                                    !propInfo.IsIndexer() &&
                                    !IgnoreType(propInfo.PropertyType));
@@ -168,7 +149,7 @@ namespace AllOverIt.Helpers
             {
                 var value = propertyInfo.GetValue(instance);
 
-                if (IncludeNulls || value != null)
+                if (Options.IncludeNulls || value != null)
                 {
                     var name = propertyInfo.Name;
 
@@ -188,15 +169,31 @@ namespace AllOverIt.Helpers
         {
             if (value == null)
             {
-                values.Add(name, NullValueOutput);
+                values.Add(name, Options.NullValueOutput);
             }
             else
             {
                 var type = value.GetType();
 
-                if (type.IsValueType || type == typeof(string))
+                var isString = type == typeof(string);
+
+                if (isString && ((string)value).IsNullOrEmpty())        // null was already checked, so this only applies to empty values
                 {
-                    values.Add(name, $"{value}");
+                    values.Add(name, Options.EmptyValueOutput);
+                }
+                else if (isString || type.IsValueType)
+                {
+                    var valueStr = $"{value}";
+
+                    if (Options.Filter != null)
+                    {
+                        if (!IncludePropertyValue(Options.Filter, type, name, references, ref valueStr))
+                        {
+                            return;
+                        }
+                    }
+
+                    values.Add(name, valueStr);
                 }
                 else
                 {
@@ -208,6 +205,14 @@ namespace AllOverIt.Helpers
                     if (references.Contains(value))
                     {
                         throw new SelfReferenceException($"Self referencing detected at '{name}' of type '{type.GetFriendlyName()}'");
+                    }
+
+                    if (Options.Filter != null)
+                    {
+                        if (!IncludeProperty(Options.Filter, type, name, references))
+                        {
+                            return;
+                        }
                     }
 
                     references.Add(value);
@@ -223,12 +228,30 @@ namespace AllOverIt.Helpers
                 return true;
             }
 
-            if (IgnoredTypes.Contains(type))
+            if (Options.IgnoredTypes.Contains(type))
             {
                 return true;
             }
 
-            return type.IsGenericType && IgnoredTypes.Contains(type.GetGenericTypeDefinition());
+            return type.IsGenericType && Options.IgnoredTypes.Contains(type.GetGenericTypeDefinition());
+        }
+
+        private static bool IncludeProperty(ObjectPropertyFilter filter, Type type, string name, IEnumerable<object> references)
+        {
+            filter.Type = type;
+            filter.Name = name;
+            filter.Chain = references.AsReadOnlyCollection();
+
+            return filter.OnIncludeProperty();
+        }
+
+        private static bool IncludePropertyValue(ObjectPropertyFilter filter, Type type, string name, IEnumerable<object> references, ref string value)
+        {
+            filter.Type = type;
+            filter.Name = name;
+            filter.Chain = references.AsReadOnlyCollection();
+
+            return filter.OnIncludeValue(ref value);
         }
     }
 }

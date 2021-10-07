@@ -13,7 +13,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Helpers
 {
-    public class ObjectPropertySerializationHelperFixture : FixtureBase
+    public class ObjectPropertySerializerFixture : FixtureBase
     {
         private class DummyType
         {
@@ -33,6 +33,8 @@ namespace AllOverIt.Tests.Helpers
 #pragma warning disable IDE0052 // Remove unread private members
             private string Prop13 { get; set; }
 #pragma warning restore IDE0052 // Remove unread private members
+
+            public string Prop14 { get; set; }
 
             public DummyType()
             {
@@ -63,13 +65,13 @@ namespace AllOverIt.Tests.Helpers
             public IDictionary<int, IEnumerable<RootItem>> Maps { get; } = new Dictionary<int, IEnumerable<RootItem>>();
         }
 
-        protected ObjectPropertySerializationHelperFixture()
+        protected ObjectPropertySerializerFixture()
         {
             // prevent self-references
             Fixture.Customizations.Add(new PropertyNameOmitter("Prop2", "Prop6", "Prop7", "Prop12"));
         }
 
-        public class Defaults : ObjectPropertySerializationHelperFixture
+        public class Defaults : ObjectPropertySerializerFixture
         {
             [Fact]
             public void Should_Have_Known_Ignored_Types()
@@ -80,22 +82,22 @@ namespace AllOverIt.Tests.Helpers
                     typeof(Task<>),
                 };
 
-                var helper = new ObjectPropertySerializationHelper();
+                var helper = new ObjectPropertySerializer();
 
-                helper.IgnoredTypes
+                helper.Options.IgnoredTypes
                     .Should()
                     .BeEquivalentTo(expected);
             }
         }
 
-        public class Constructor : ObjectPropertySerializationHelperFixture
+        public class Constructor : ObjectPropertySerializerFixture
         {
             [Fact]
             public void Should_Have_Default_IncludeNulls()
             {
-                var helper = new ObjectPropertySerializationHelper();
+                var helper = new ObjectPropertySerializer();
 
-                helper
+                helper.Options
                     .Should()
                     .BeEquivalentTo(new
                     {
@@ -113,9 +115,14 @@ namespace AllOverIt.Tests.Helpers
             [InlineData(BindingOptions.Protected | BindingOptions.Abstract | BindingOptions.Private)]
             public void Should_Have_Custom_BindingOptions(BindingOptions bindingOptions)
             {
-                var helper = new ObjectPropertySerializationHelper(bindingOptions);
+                var options = new ObjectPropertySerializerOptions
+                {
+                    BindingOptions = bindingOptions
+                };
 
-                helper
+                var helper = new ObjectPropertySerializer(options);
+
+                helper.Options
                     .Should()
                     .BeEquivalentTo(new
                     {
@@ -128,9 +135,9 @@ namespace AllOverIt.Tests.Helpers
             }
         }
 
-        public class SerializeToDictionary : ObjectPropertySerializationHelperFixture
+        public class SerializeToDictionary : ObjectPropertySerializerFixture
         {
-            private readonly ObjectPropertySerializationHelper _helper;
+            private readonly ObjectPropertySerializer _helper;
 
             public SerializeToDictionary()
             {
@@ -155,7 +162,8 @@ namespace AllOverIt.Tests.Helpers
                         { $"Prop5.{dummy.Prop5.ElementAt(0).Key}", $"{dummy.Prop5.ElementAt(0).Value}" },
                         { $"Prop5.{dummy.Prop5.ElementAt(1).Key}", $"{dummy.Prop5.ElementAt(1).Value}" },
                         { $"Prop5.{dummy.Prop5.ElementAt(2).Key}", $"{dummy.Prop5.ElementAt(2).Value}" },
-                        { "Prop8", $"{dummy.Prop8}" }
+                        { "Prop8", $"{dummy.Prop8}" },
+                        { "Prop14", $"{dummy.Prop14}" }
                     });
             }
 
@@ -164,7 +172,7 @@ namespace AllOverIt.Tests.Helpers
             {
                 var dummy = Create<DummyType>();
 
-                _helper.BindingOptions = BindingOptions.Private | BindingOptions.Instance;
+                _helper.Options.BindingOptions = BindingOptions.Private | BindingOptions.Instance;
 
                 var actual = _helper.SerializeToDictionary(dummy);
 
@@ -218,6 +226,7 @@ namespace AllOverIt.Tests.Helpers
                         { $"Prop5.{dummy1.Prop5.ElementAt(1).Key}", $"{dummy1.Prop5.ElementAt(1).Value}" },
                         { $"Prop5.{dummy1.Prop5.ElementAt(2).Key}", $"{dummy1.Prop5.ElementAt(2).Value}" },
                         { "Prop8", $"{dummy1.Prop8}" },
+                        { "Prop14", $"{dummy1.Prop14}" },
 
                         { "Prop2.Prop1", $"{dummy2.Prop1}" },
                         { "Prop2.Prop4[0]", $"{dummy2.Prop4.ElementAt(0)}" },
@@ -227,6 +236,7 @@ namespace AllOverIt.Tests.Helpers
                         { $"Prop2.Prop5.{dummy2.Prop5.ElementAt(1).Key}", $"{dummy2.Prop5.ElementAt(1).Value}" },
                         { $"Prop2.Prop5.{dummy2.Prop5.ElementAt(2).Key}", $"{dummy2.Prop5.ElementAt(2).Value}" },
                         { "Prop2.Prop8", $"{dummy2.Prop8}" },
+                        { "Prop2.Prop14", $"{dummy2.Prop14}" },
 
                         { "Prop2.Prop2.Prop1", $"{dummy3.Prop1}" },
                         { "Prop2.Prop2.Prop4[0]", $"{dummy3.Prop4.ElementAt(0)}" },
@@ -235,7 +245,8 @@ namespace AllOverIt.Tests.Helpers
                         { $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(0).Key}", $"{dummy3.Prop5.ElementAt(0).Value}" },
                         { $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(1).Key}", $"{dummy3.Prop5.ElementAt(1).Value}" },
                         { $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(2).Key}", $"{dummy3.Prop5.ElementAt(2).Value}" },
-                        { "Prop2.Prop2.Prop8", $"{dummy3.Prop8}" }
+                        { "Prop2.Prop2.Prop8", $"{dummy3.Prop8}" },
+                        { "Prop2.Prop2.Prop14", $"{dummy3.Prop14}" }
                     });
             }
 
@@ -244,7 +255,7 @@ namespace AllOverIt.Tests.Helpers
             {
                 var dummy = new DummyType();
 
-                _helper.IncludeNulls = true;
+                _helper.Options.IncludeNulls = true;
                 var actual = _helper.SerializeToDictionary(dummy);
 
                 actual
@@ -259,7 +270,8 @@ namespace AllOverIt.Tests.Helpers
                         { "Prop7", "<null>" },
                         { "Prop8", "<null>" },
                         { "Prop11", "<null>" },
-                        { "Prop12", "<null>" }
+                        { "Prop12", "<null>" },
+                        { "Prop14", "<null>" }
                    });
             }
 
@@ -273,10 +285,11 @@ namespace AllOverIt.Tests.Helpers
                     Prop6 = new Dictionary<DummyType, string>(),
                     Prop7 = new Dictionary<string, DummyType>(),
                     Prop11 = new Dictionary<string, Task>(),        // should not be serialized
-                    Prop12 = new Dictionary<int, DummyType>()
+                    Prop12 = new Dictionary<int, DummyType>(),
+                    Prop14 = string.Empty
                 };
 
-                _helper.IncludeEmptyCollections = true;
+                _helper.Options.IncludeEmptyCollections = true;
 
                 var actual = _helper.SerializeToDictionary(dummy);
 
@@ -289,7 +302,8 @@ namespace AllOverIt.Tests.Helpers
                         { "Prop5", "<empty>" },
                         { "Prop6", "<empty>" },
                         { "Prop7", "<empty>" },
-                        { "Prop12", "<empty>" }
+                        { "Prop12", "<empty>" },
+                        { "Prop14", "<empty>" }
                     });
             }
 
@@ -306,8 +320,8 @@ namespace AllOverIt.Tests.Helpers
                     Prop12 = new Dictionary<int, DummyType>()
                 };
 
-                _helper.IncludeNulls = true;
-                _helper.IncludeEmptyCollections = true;
+                _helper.Options.IncludeNulls = true;
+                _helper.Options.IncludeEmptyCollections = true;
 
                 var actual = _helper.SerializeToDictionary(dummy);
 
@@ -322,7 +336,8 @@ namespace AllOverIt.Tests.Helpers
                         { "Prop6", "<empty>" },
                         { "Prop7", "<empty>" },
                         { "Prop8", "<null>" },
-                        { "Prop12", "<empty>" }
+                        { "Prop12", "<empty>" },
+                        { "Prop14", "<null>" }
                     });
             }
 
@@ -521,37 +536,37 @@ namespace AllOverIt.Tests.Helpers
             }
         }
 
-        public class ClearIgnoredTypes : ObjectPropertySerializationHelperFixture
+        public class ClearIgnoredTypes : ObjectPropertySerializerFixture
         {
             [Fact]
             public void Should_Clear_Ignored_Types()
             {
-                var helper = new ObjectPropertySerializationHelper();
+                var helper = new ObjectPropertySerializer();
 
-                helper.IgnoredTypes
+                helper.Options.IgnoredTypes
                     .Should()
                     .NotBeEmpty();
 
-                helper.ClearIgnoredTypes();
+                helper.Options.ClearIgnoredTypes();
 
-                helper.IgnoredTypes
+                helper.Options.IgnoredTypes
                     .Should()
                     .BeEmpty();
             }
         }
 
-        public class AddIgnoredTypes : ObjectPropertySerializationHelperFixture
+        public class AddIgnoredTypes : ObjectPropertySerializerFixture
         {
             [Fact]
             public void Should_Add_Ignored_Type_After_Clearing()
             {
-                var helper = new ObjectPropertySerializationHelper();
+                var helper = new ObjectPropertySerializer();
 
-                helper.ClearIgnoredTypes();
+                helper.Options.ClearIgnoredTypes();
 
-                helper.AddIgnoredTypes(typeof(DummyType));
+                helper.Options.AddIgnoredTypes(typeof(DummyType));
 
-                helper.IgnoredTypes
+                helper.Options.IgnoredTypes
                     .Should()
                     .BeEquivalentTo(new[]{ typeof(DummyType) });
             }
@@ -559,11 +574,11 @@ namespace AllOverIt.Tests.Helpers
             [Fact]
             public void Should_Add_Ignored_Type()
             {
-                var helper = new ObjectPropertySerializationHelper();
+                var helper = new ObjectPropertySerializer();
 
-                helper.AddIgnoredTypes(typeof(DummyType));
+                helper.Options.AddIgnoredTypes(typeof(DummyType));
 
-                helper.IgnoredTypes
+                helper.Options.IgnoredTypes
                     .Should()
                     .BeEquivalentTo(new[]{ typeof(Task), typeof(Task<>), typeof(DummyType) });
             }

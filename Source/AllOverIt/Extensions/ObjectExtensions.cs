@@ -36,24 +36,16 @@ namespace AllOverIt.Extensions
 
         /// <summary>Converts an object to an IDictionary{string, string} using a dot notation for nested members.</summary>
         /// <param name="instance">The instance to convert.</param>
-        /// <param name="includeNulls">If true then null value properties will be included, otherwise they will be omitted.</param>
-        /// <param name="includeEmptyCollections">If true then empty collection properties will be included, otherwise they will be omitted.</param>
-        /// <param name="bindingOptions">Binding options that determine how properties are resolved.</param>
+        /// <param name="options">Options that determine how serialization of properties and their values are handled.</param>
         /// <returns>Returns a dictionary containing property names and associated values (as strings). Nested members are named using dot notation.</returns>
         /// <remarks>
         /// <para>Collection type properties are named using a zero-based index notation.</para>
         /// <para>Dictionary type properties are named using the key values where possible. If the key is a class type then the class name is used along with
         /// a backtick and zero-based index suffix (to provide uniqueness).</para>
-        /// <para>If property types need to be excluded use the <see cref="ObjectPropertySerializationHelper"/> class.</para>
         /// </remarks>
-        public static IDictionary<string, string> ToSerializedDictionary(this object instance, bool includeNulls = false, bool includeEmptyCollections = false,
-            BindingOptions bindingOptions = BindingOptions.Default)
+        public static IDictionary<string, string> ToSerializedDictionary(this object instance, ObjectPropertySerializerOptions options = default)
         {
-            var serializer = new ObjectPropertySerializationHelper(bindingOptions)
-            {
-                IncludeNulls = includeNulls,
-                IncludeEmptyCollections = includeEmptyCollections
-            };
+            var serializer = new ObjectPropertySerializer(options);
 
             return serializer.SerializeToDictionary(instance);
         }

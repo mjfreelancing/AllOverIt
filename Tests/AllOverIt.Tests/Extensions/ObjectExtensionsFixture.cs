@@ -1,6 +1,7 @@
 ﻿using AllOverIt.Exceptions;
 using AllOverIt.Extensions;
 using AllOverIt.Fixture;
+using AllOverIt.Helpers;
 using AllOverIt.Reflection;
 using FluentAssertions;
 using System;
@@ -260,9 +261,12 @@ namespace AllOverIt.Tests.Extensions
             {
                 var dummy = Create<DummyType>();
 
-                var bindingOptions = BindingOptions.Private | BindingOptions.Instance;
+                var options = new ObjectPropertySerializerOptions
+                {
+                    BindingOptions = BindingOptions.Private | BindingOptions.Instance
+                };
 
-                var actual = dummy.ToSerializedDictionary(false, false, bindingOptions);
+                var actual = dummy.ToSerializedDictionary(options);
 
                 actual
                     .Should()
@@ -340,7 +344,12 @@ namespace AllOverIt.Tests.Extensions
             {
                 var dummy = new DummyType();
 
-                var actual = dummy.ToSerializedDictionary(true);
+                var options = new ObjectPropertySerializerOptions
+                {
+                    IncludeNulls = true
+                };
+
+                var actual = dummy.ToSerializedDictionary(options);
 
                 actual
                    .Should()
@@ -371,7 +380,12 @@ namespace AllOverIt.Tests.Extensions
                     Prop12 = new Dictionary<int, DummyType>()
                 };
 
-                var actual = dummy.ToSerializedDictionary(includeEmptyCollections: true);
+                var options = new ObjectPropertySerializerOptions
+                {
+                    IncludeEmptyCollections = true
+                };
+
+                var actual = dummy.ToSerializedDictionary(options);
 
                 actual
                     .Should()
@@ -399,7 +413,13 @@ namespace AllOverIt.Tests.Extensions
                     Prop12 = new Dictionary<int, DummyType>()
                 };
 
-                var actual = dummy.ToSerializedDictionary(true, true);
+                var options = new ObjectPropertySerializerOptions
+                {
+                    IncludeNulls = true,
+                    IncludeEmptyCollections = true
+                };
+
+                var actual = dummy.ToSerializedDictionary(options);
 
                 actual
                     .Should()
