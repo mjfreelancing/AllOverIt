@@ -19,9 +19,11 @@ namespace AllOverIt.Helpers
         public IEnumerable<Type> IgnoredTypes => _ignoredTypes;
 
         /// <summary>If true then null value properties will be included, otherwise they will be omitted.</summary>
+        /// <remarks>This takes priority over custom filters via the <see cref="Filter"/> option.</remarks>
         public bool IncludeNulls { get; set; }
 
         /// <summary>If true then empty collection properties will be included, otherwise they will be omitted.</summary>
+        /// <remarks>This takes priority over custom filters via the <see cref="Filter"/> option.</remarks>
         public bool IncludeEmptyCollections { get; set; }
 
         /// <summary>Binding options that determine how properties are resolved.</summary>

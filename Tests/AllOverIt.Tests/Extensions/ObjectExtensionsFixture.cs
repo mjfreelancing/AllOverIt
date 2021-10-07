@@ -50,6 +50,18 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
+        private sealed class CollectionRoot
+        {
+            internal sealed class RootItem
+            {
+                public IEnumerable<double> Values { get; set; }
+            }
+
+            public IList<RootItem> Items { get; } = new List<RootItem>();
+
+            public IDictionary<int, IEnumerable<RootItem>> Maps { get; } = new Dictionary<int, IEnumerable<RootItem>>();
+        }
+
         public ObjectExtensionsFixture()
         {
             // prevent self-references
@@ -216,6 +228,7 @@ namespace AllOverIt.Tests.Extensions
                 public IDictionary<string, Task> Prop11 { get; set; }
                 public IDictionary<int, DummyType> Prop12 { get; set; }
                 private string Prop13 { get; set; }
+                public string Prop14 { get; set; }
 
                 public DummyType()
                 {
@@ -223,6 +236,55 @@ namespace AllOverIt.Tests.Extensions
                 }
             }
 
+            private class DummyTypePropertyNameFilter : ObjectPropertyFilter
+            {
+                private readonly Func<string, bool> _predicate;
+
+                public DummyTypePropertyNameFilter(Func<string, bool> predicate)
+                {
+                    _predicate = predicate;
+                }
+
+                public override bool OnIncludeProperty()
+                {
+                    return _predicate.Invoke(Name);
+                }
+            }
+
+            private class DummyTypePropertyValueFilter : ObjectPropertyFilter
+            {
+                public override bool OnIncludeValue(ref string value)
+                {
+                    var includeProperty = Name == nameof(DummyType.Prop1);
+
+                    if (includeProperty)
+                    {
+                        value = "Included";
+                    }
+
+                    return includeProperty;
+                }
+            }
+
+            private class DummyTypePropertyNameValueFilter : ObjectPropertyFilter
+            {
+                public override bool OnIncludeProperty()
+                {
+                    return Name == nameof(DummyType.Prop1) || Name.StartsWith("Prop2");
+                }
+
+                public override bool OnIncludeValue(ref string value)
+                {
+                    if (Name == nameof(DummyType.Prop1))
+                    {
+                        value = "Included";
+                    }
+
+                    // OnIncludeProperty() has filtered down to two variables
+                    return true;
+                }
+            }
+          
             private class Typed<TType>
             {
                 public TType Prop { get; set; }
@@ -252,7 +314,8 @@ namespace AllOverIt.Tests.Extensions
                         { $"Prop5.{dummy.Prop5.ElementAt(0).Key}", $"{dummy.Prop5.ElementAt(0).Value}" },
                         { $"Prop5.{dummy.Prop5.ElementAt(1).Key}", $"{dummy.Prop5.ElementAt(1).Value}" },
                         { $"Prop5.{dummy.Prop5.ElementAt(2).Key}", $"{dummy.Prop5.ElementAt(2).Value}" },
-                        { "Prop8", $"{dummy.Prop8}" }
+                        { "Prop8", $"{dummy.Prop8}" },
+                        { "Prop14", $"{dummy.Prop14}" }
                     });
             }
 
@@ -318,6 +381,7 @@ namespace AllOverIt.Tests.Extensions
                         { $"Prop5.{dummy1.Prop5.ElementAt(1).Key}", $"{dummy1.Prop5.ElementAt(1).Value}" },
                         { $"Prop5.{dummy1.Prop5.ElementAt(2).Key}", $"{dummy1.Prop5.ElementAt(2).Value}" },
                         { "Prop8", $"{dummy1.Prop8}" },
+                        { "Prop14", $"{dummy1.Prop14}" },
 
                         { "Prop2.Prop1", $"{dummy2.Prop1}" },
                         { "Prop2.Prop4[0]", $"{dummy2.Prop4.ElementAt(0)}" },
@@ -327,6 +391,7 @@ namespace AllOverIt.Tests.Extensions
                         { $"Prop2.Prop5.{dummy2.Prop5.ElementAt(1).Key}", $"{dummy2.Prop5.ElementAt(1).Value}" },
                         { $"Prop2.Prop5.{dummy2.Prop5.ElementAt(2).Key}", $"{dummy2.Prop5.ElementAt(2).Value}" },
                         { "Prop2.Prop8", $"{dummy2.Prop8}" },
+                        { "Prop2.Prop14", $"{dummy2.Prop14}" },
 
                         { "Prop2.Prop2.Prop1", $"{dummy3.Prop1}" },
                         { "Prop2.Prop2.Prop4[0]", $"{dummy3.Prop4.ElementAt(0)}" },
@@ -335,7 +400,8 @@ namespace AllOverIt.Tests.Extensions
                         { $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(0).Key}", $"{dummy3.Prop5.ElementAt(0).Value}" },
                         { $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(1).Key}", $"{dummy3.Prop5.ElementAt(1).Value}" },
                         { $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(2).Key}", $"{dummy3.Prop5.ElementAt(2).Value}" },
-                        { "Prop2.Prop2.Prop8", $"{dummy3.Prop8}" }
+                        { "Prop2.Prop2.Prop8", $"{dummy3.Prop8}" },
+                        { "Prop2.Prop2.Prop14", $"{dummy3.Prop14}" }
                     });
             }
 
@@ -363,7 +429,8 @@ namespace AllOverIt.Tests.Extensions
                         { "Prop7", "<null>" },
                         { "Prop8", "<null>" },
                         { "Prop11", "<null>" },
-                        { "Prop12", "<null>" }
+                        { "Prop12", "<null>" },
+                        { "Prop14", "<null>" }
                    });
             }
 
@@ -432,7 +499,8 @@ namespace AllOverIt.Tests.Extensions
                         { "Prop6", "<empty>" },
                         { "Prop7", "<empty>" },
                         { "Prop8", "<null>" },
-                        { "Prop12", "<empty>" }
+                        { "Prop12", "<empty>" },
+                        { "Prop14", "<null>" }
                     });
             }
 
@@ -599,6 +667,229 @@ namespace AllOverIt.Tests.Extensions
                         { "True", "1" },
                         { "10", "ten" }
                         //{ "list", "System.Collections.Generic.List`1[System.Int32]" }
+                    });
+            }
+
+            [Fact]
+            public void Should_Not_Throw_When_Sharing_Non_Self_Referencing_Data()
+            {
+                var values = CreateMany<double>();
+
+                var root = new CollectionRoot();
+
+                root.Items.Add(new CollectionRoot.RootItem
+                {
+                    Values = values
+                });
+
+                root.Items.Add(new CollectionRoot.RootItem
+                {
+                    Values = values
+                });
+
+                root.Maps[0] = root.Items;
+                root.Maps[1] = root.Items;
+
+                Invoking(() =>
+                    {
+                        _ = root.ToSerializedDictionary();
+                    })
+                    .Should()
+                    .NotThrow();
+            }
+
+
+
+
+
+
+            [Fact]
+            public void Should_Filter_To_Two_Properties_By_Name()
+            {
+                var dummy = Create<DummyType>();
+                dummy.Prop2 = Create<DummyType>();
+
+                // Prop2 is a class type so to include all values we need to check for "Prop2" as well as "Prop2.XXX"
+                // Checking for Prop2 is required to ensure the sub-properties are not filtered out.
+                var options = new ObjectPropertySerializerOptions
+                {
+                    Filter = new DummyTypePropertyNameFilter(name =>
+                        name is nameof(DummyType.Prop1) or nameof(DummyType.Prop2) ||
+                        name.StartsWith("Prop2.Prop4"))
+                };
+
+                var actual = dummy.ToSerializedDictionary(options);
+
+                actual
+                    .Should()
+                    .BeEquivalentTo(new Dictionary<string, string>
+                    {
+                        { "Prop1", $"{dummy.Prop1}" },
+                        { "Prop2.Prop4[0]", $"{dummy.Prop2.Prop4.ElementAt(0)}" },
+                        { "Prop2.Prop4[1]", $"{dummy.Prop2.Prop4.ElementAt(1)}" },
+                        { "Prop2.Prop4[2]", $"{dummy.Prop2.Prop4.ElementAt(2)}" }
+                    });
+            }
+
+            [Fact]
+            public void Should_Filter_Out_A_Complete_Nested_Property()
+            {
+                var dummy1 = Create<DummyType>();
+                var dummy2 = Create<DummyType>();
+                var dummy3 = Create<DummyType>();
+
+                dummy1.Prop2 = dummy2;
+                dummy2.Prop2 = dummy3;
+
+                var options = new ObjectPropertySerializerOptions
+                {
+                    Filter = new DummyTypePropertyNameFilter(name => name != nameof(DummyType.Prop2))
+                };
+
+                var actual = dummy1.ToSerializedDictionary(options);
+
+                actual
+                    .Should()
+                    .BeEquivalentTo(new Dictionary<string, string>
+                    {
+                            { "Prop1", $"{dummy1.Prop1}" },
+                            { "Prop4[0]", $"{dummy1.Prop4.ElementAt(0)}" },
+                            { "Prop4[1]", $"{dummy1.Prop4.ElementAt(1)}" },
+                            { "Prop4[2]", $"{dummy1.Prop4.ElementAt(2)}" },
+                            { $"Prop5.{dummy1.Prop5.ElementAt(0).Key}", $"{dummy1.Prop5.ElementAt(0).Value}" },
+                            { $"Prop5.{dummy1.Prop5.ElementAt(1).Key}", $"{dummy1.Prop5.ElementAt(1).Value}" },
+                            { $"Prop5.{dummy1.Prop5.ElementAt(2).Key}", $"{dummy1.Prop5.ElementAt(2).Value}" },
+                            { "Prop8", $"{dummy1.Prop8}" },
+                            { "Prop14", $"{dummy1.Prop14}" },
+
+                        // the applied filter will result in the following being excluded:
+                        //
+                        //{ "Prop2.Prop1", $"{dummy2.Prop1}" },
+                        //{ "Prop2.Prop4[0]", $"{dummy2.Prop4.ElementAt(0)}" },
+                        //{ "Prop2.Prop4[1]", $"{dummy2.Prop4.ElementAt(1)}" },
+                        //{ "Prop2.Prop4[2]", $"{dummy2.Prop4.ElementAt(2)}" },
+                        //{ $"Prop2.Prop5.{dummy2.Prop5.ElementAt(0).Key}", $"{dummy2.Prop5.ElementAt(0).Value}" },
+                        //{ $"Prop2.Prop5.{dummy2.Prop5.ElementAt(1).Key}", $"{dummy2.Prop5.ElementAt(1).Value}" },
+                        //{ $"Prop2.Prop5.{dummy2.Prop5.ElementAt(2).Key}", $"{dummy2.Prop5.ElementAt(2).Value}" },
+                        //{ "Prop2.Prop8", $"{dummy2.Prop8}" },
+                        //{ "Prop2.Prop14", $"{dummy2.Prop14}" },
+
+                        //{ "Prop2.Prop2.Prop1", $"{dummy3.Prop1}" },
+                        //{ "Prop2.Prop2.Prop4[0]", $"{dummy3.Prop4.ElementAt(0)}" },
+                        //{ "Prop2.Prop2.Prop4[1]", $"{dummy3.Prop4.ElementAt(1)}" },
+                        //{ "Prop2.Prop2.Prop4[2]", $"{dummy3.Prop4.ElementAt(2)}" },
+                        //{ $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(0).Key}", $"{dummy3.Prop5.ElementAt(0).Value}" },
+                        //{ $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(1).Key}", $"{dummy3.Prop5.ElementAt(1).Value}" },
+                        //{ $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(2).Key}", $"{dummy3.Prop5.ElementAt(2).Value}" },
+                        //{ "Prop2.Prop2.Prop8", $"{dummy3.Prop8}" },
+                        //{ "Prop2.Prop2.Prop14", $"{dummy3.Prop14}" }
+                    });
+            }
+
+            [Fact]
+            public void Should_Filter_Out_A_Single_Nested_Property()
+            {
+                var dummy1 = Create<DummyType>();
+                var dummy2 = Create<DummyType>();
+                var dummy3 = Create<DummyType>();
+
+                dummy1.Prop2 = dummy2;
+                dummy2.Prop2 = dummy3;
+
+                var nameToFilter = $"Prop2.Prop5.{dummy2.Prop5.ElementAt(1).Key}";
+
+                var options = new ObjectPropertySerializerOptions
+                {
+                    Filter = new DummyTypePropertyNameFilter(name => name != nameToFilter)
+                };
+
+                var actual = dummy1.ToSerializedDictionary(options);
+
+                actual
+                    .Should()
+                    .BeEquivalentTo(new Dictionary<string, string>
+                    {
+                            { "Prop1", $"{dummy1.Prop1}" },
+                            { "Prop4[0]", $"{dummy1.Prop4.ElementAt(0)}" },
+                            { "Prop4[1]", $"{dummy1.Prop4.ElementAt(1)}" },
+                            { "Prop4[2]", $"{dummy1.Prop4.ElementAt(2)}" },
+                            { $"Prop5.{dummy1.Prop5.ElementAt(0).Key}", $"{dummy1.Prop5.ElementAt(0).Value}" },
+                            { $"Prop5.{dummy1.Prop5.ElementAt(1).Key}", $"{dummy1.Prop5.ElementAt(1).Value}" },
+                            { $"Prop5.{dummy1.Prop5.ElementAt(2).Key}", $"{dummy1.Prop5.ElementAt(2).Value}" },
+                            { "Prop8", $"{dummy1.Prop8}" },
+                            { "Prop14", $"{dummy1.Prop14}" },
+                            { "Prop2.Prop1", $"{dummy2.Prop1}" },
+                            { "Prop2.Prop4[0]", $"{dummy2.Prop4.ElementAt(0)}" },
+                            { "Prop2.Prop4[1]", $"{dummy2.Prop4.ElementAt(1)}" },
+                            { "Prop2.Prop4[2]", $"{dummy2.Prop4.ElementAt(2)}" },
+                            { $"Prop2.Prop5.{dummy2.Prop5.ElementAt(0).Key}", $"{dummy2.Prop5.ElementAt(0).Value}" },
+                            
+                            // the applied filter will result in the following being excluded:
+                            // { $"Prop2.Prop5.{dummy2.Prop5.ElementAt(1).Key}", $"{dummy2.Prop5.ElementAt(1).Value}" },
+
+                            { $"Prop2.Prop5.{dummy2.Prop5.ElementAt(2).Key}", $"{dummy2.Prop5.ElementAt(2).Value}" },
+                            { "Prop2.Prop8", $"{dummy2.Prop8}" },
+                            { "Prop2.Prop14", $"{dummy2.Prop14}" },
+                            { "Prop2.Prop2.Prop1", $"{dummy3.Prop1}" },
+                            { "Prop2.Prop2.Prop4[0]", $"{dummy3.Prop4.ElementAt(0)}" },
+                            { "Prop2.Prop2.Prop4[1]", $"{dummy3.Prop4.ElementAt(1)}" },
+                            { "Prop2.Prop2.Prop4[2]", $"{dummy3.Prop4.ElementAt(2)}" },
+                            { $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(0).Key}", $"{dummy3.Prop5.ElementAt(0).Value}" },
+                            { $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(1).Key}", $"{dummy3.Prop5.ElementAt(1).Value}" },
+                            { $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(2).Key}", $"{dummy3.Prop5.ElementAt(2).Value}" },
+                            { "Prop2.Prop2.Prop8", $"{dummy3.Prop8}" },
+                            { "Prop2.Prop2.Prop14", $"{dummy3.Prop14}" }
+                    });
+            }
+
+            [Fact]
+            public void Should_Filter_To_One_Property_And_Change_Value()
+            {
+                var dummy = Create<DummyType>();
+
+                var options = new ObjectPropertySerializerOptions
+                {
+                    Filter = new DummyTypePropertyValueFilter()
+                };
+
+                var actual = dummy.ToSerializedDictionary(options);
+
+                actual
+                    .Should()
+                    .BeEquivalentTo(new Dictionary<string, string>
+                    {
+                        { "Prop1", "Included" }
+                    });
+            }
+
+            [Fact]
+            public void Should_Change_One_Property_Value()
+            {
+                var dummy = Create<DummyType>();
+                var dummy2 = Create<DummyType>();
+                dummy.Prop2 = dummy2;
+
+                var options = new ObjectPropertySerializerOptions
+                {
+                    Filter = new DummyTypePropertyNameValueFilter()
+                };
+
+                var actual = dummy.ToSerializedDictionary(options);
+
+                actual
+                    .Should()
+                    .BeEquivalentTo(new Dictionary<string, string>
+                    {
+                        {"Prop1", "Included"},
+                        { "Prop2.Prop1", $"{dummy2.Prop1}" },
+                        {"Prop2.Prop4[0]", $"{dummy2.Prop4.ElementAt(0)}"},
+                        {"Prop2.Prop4[1]", $"{dummy2.Prop4.ElementAt(1)}"},
+                        {"Prop2.Prop4[2]", $"{dummy2.Prop4.ElementAt(2)}"},
+                        {$"Prop2.Prop5.{dummy2.Prop5.ElementAt(0).Key}", $"{dummy2.Prop5.ElementAt(0).Value}"},
+                        {$"Prop2.Prop5.{dummy2.Prop5.ElementAt(1).Key}", $"{dummy2.Prop5.ElementAt(1).Value}"},
+                        {$"Prop2.Prop5.{dummy2.Prop5.ElementAt(2).Key}", $"{dummy2.Prop5.ElementAt(2).Value}"},
+                        {"Prop2.Prop8", $"{dummy2.Prop8}"},
+                        {"Prop2.Prop14", $"{dummy2.Prop14}"},
                     });
             }
         }

@@ -181,17 +181,22 @@ namespace SerializeObjectProperties
 
             serializer.Options.Filter = new ComplexObjectFilter();
 
-            Console.WriteLine("Complex Object serialization values:");
-            Console.WriteLine("====================================");
-
-            var items = serializer.SerializeToDictionary(complexObject).Select(kvp => $"{kvp.Key} = {kvp.Value}");
-
-            foreach (var item in items)
+            try
             {
-                Console.WriteLine($"  {item}");
-            }
+                Console.WriteLine("Complex Object serialization values:");
+                Console.WriteLine("====================================");
 
-            serializer.Options.Filter = null;
+                var items = serializer.SerializeToDictionary(complexObject).Select(kvp => $"{kvp.Key} = {kvp.Value}");
+
+                foreach (var item in items)
+                {
+                    Console.WriteLine($"  {item}");
+                }
+            }
+            finally
+            {
+                serializer.Options.Filter = null;
+            }
         }
 
         private static void SerializeDictionary1(ObjectPropertySerializer serializer)

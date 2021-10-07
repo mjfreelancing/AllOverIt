@@ -187,7 +187,8 @@ namespace AllOverIt.Helpers
 
                     if (Options.Filter != null)
                     {
-                        if (!IncludePropertyValue(Options.Filter, type, name, references, ref valueStr))
+                        if (!IncludeProperty(Options.Filter, type, name, references) ||
+                            !IncludePropertyValue(Options.Filter, type, name, references, ref valueStr))
                         {
                             return;
                         }
