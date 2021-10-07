@@ -288,6 +288,9 @@
         <member name="P:AllOverIt.Aws.AppSync.Client.Response.GraphqlErrorDetail.ErrorType">
             <summary>The graphql error type.</summary>
         </member>
+        <member name="P:AllOverIt.Aws.AppSync.Client.Response.GraphqlErrorDetail.ErrorInfo">
+            <summary>Additional error information.</summary>
+        </member>
         <member name="P:AllOverIt.Aws.AppSync.Client.Response.GraphqlErrorDetail.Message">
             <summary>A description for the reported error.</summary>
         </member>
