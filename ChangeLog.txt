@@ -2,7 +2,7 @@
 
   Current AllOverIt Inter-Dependencies
 
-  [1]  AllOverIt                               (v1.18.0) - None
+  [1]  AllOverIt                               (v1.19.0) - None
   [2]  AllOverIt.Validation                    (v1.0.0)  - requires [1] v1.17.0
   [3]  AllOverIt.Aws.Cdk.AppSync               (v0.15.0) - requires [1] v1.17.3
   [4]  AllOverIt.Evaluator                     (v3.0.0)  - requires [1] v1.18.0
@@ -15,6 +15,17 @@
   [11] AllOverIt.Aws.AppSync.Client            (v0.5.2)  - requires [1] v1.18.0, [8] v1.0.0
 
 ======================================================================================================================
+
+
+
+08 Oct 2021
+======================================================================================================================
+AllOverIt - v1.19.0
+  * BREAKING CHANGE - Renamed ObjectPropertySerializationHelper to ObjectPropertySerializer and refactored it to
+    accept an options class. Added the ability to filter properties and values, as well as change the serialized
+    property value. The associated extension method ObjectExtensions.ToSerializedDictionary() has been refactored
+    accordingly to accept these options. If not provided, a default set of options is used that behaves identically
+    to v1.18.0
 
 
 
