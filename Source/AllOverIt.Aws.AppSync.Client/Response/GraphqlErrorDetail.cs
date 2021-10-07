@@ -11,6 +11,9 @@ namespace AllOverIt.Aws.AppSync.Client.Response
         /// <summary>The graphql error type.</summary>
         public string ErrorType { get; init; }
 
+        /// <summary>Additional error information.</summary>
+        public object[] ErrorInfo { get; init; }
+
         /// <summary>A description for the reported error.</summary>
         public string Message { get; init; }
 
