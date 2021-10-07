@@ -24,19 +24,19 @@ namespace SerializeObjectProperties
                     }
                 };
 
-                //SerializeObject(serializer);
+                SerializeObject(serializer);
 
                 Console.WriteLine();
                 SerializeFilteredObject(serializer);
 
-                //Console.WriteLine();
-                //SerializeDictionary1(serializer);
+                Console.WriteLine();
+                SerializeDictionary1(serializer);
 
-                //Console.WriteLine();
-                //SerializeDictionary2(serializer);
+                Console.WriteLine();
+                SerializeDictionary2(serializer);
 
-                //Console.WriteLine();
-                //SerializeList(serializer);
+                Console.WriteLine();
+                SerializeList(serializer);
             }
             catch (Exception exception)
             {
@@ -155,7 +155,8 @@ namespace SerializeObjectProperties
                         Factor = 1.1,
                         Data = new ComplexObject.Item.ItemData
                         {
-                            Points = Enumerable.Range(1, 5).SelectAsReadOnlyCollection(value => value)
+                            Timestamp = DateTime.Now,
+                            Values = Enumerable.Range(1, 5).SelectAsReadOnlyCollection(value => value)
                         }
                     },
                     new()
@@ -164,7 +165,8 @@ namespace SerializeObjectProperties
                         Factor = 2.2,
                         Data = new ComplexObject.Item.ItemData
                         {
-                            Points = Enumerable.Range(11, 5).SelectAsReadOnlyCollection(value => value)
+                            Timestamp = DateTime.Now,
+                            Values = Enumerable.Range(11, 5).SelectAsReadOnlyCollection(value => value)
                         }
                     },
                     new()
@@ -173,7 +175,8 @@ namespace SerializeObjectProperties
                         Factor = 3.3,
                         Data = new ComplexObject.Item.ItemData
                         {
-                            Points = Enumerable.Range(21, 5).SelectAsReadOnlyCollection(value => value)
+                            Timestamp = DateTime.Now,
+                            Values = Enumerable.Range(21, 5).SelectAsReadOnlyCollection(value => value)
                         }
                     },
                 }

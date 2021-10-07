@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SerializeObjectProperties
 {
@@ -8,7 +9,8 @@ namespace SerializeObjectProperties
         {
             public sealed class ItemData
             {
-                public IEnumerable<int> Points { get; set; }
+                public DateTime Timestamp { get; set; }
+                public IEnumerable<int> Values { get; set; }
             }
 
             public string Name { get; set; }
