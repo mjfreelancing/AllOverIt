@@ -33,13 +33,13 @@ namespace AllOverIt.Helpers
 
             if (instance != null)
             {
-                Populate(null, instance, dictionary, new List<ObjectPropertyParent>());
+                Populate(null, instance, dictionary, new Dictionary<object, ObjectPropertyParent>());
             }
 
             return dictionary;
         }
 
-        private void Populate(string prefix, object instance, IDictionary<string, string> values, IList<ObjectPropertyParent> references)
+        private void Populate(string prefix, object instance, IDictionary<string, string> values, IDictionary<object, ObjectPropertyParent> references)
         {
             switch (instance)
             {
@@ -58,7 +58,7 @@ namespace AllOverIt.Helpers
         }
 
         private void AppendDictionaryAsPropertyValues(string prefix, IDictionary dictionary, IDictionary<string, string> values,
-            IList<ObjectPropertyParent> references)
+            IDictionary<object, ObjectPropertyParent> references)
         {
             if (ExcludeDictionary(dictionary))
             {
@@ -82,7 +82,7 @@ namespace AllOverIt.Helpers
                     ? string.Empty
                     : $"{prefix}.";
 
-                var parentReferences = new List<ObjectPropertyParent>(references);
+                var parentReferences = new Dictionary<object, ObjectPropertyParent>(references);
 
                 AppendNameValue(
                     isClassType
@@ -108,8 +108,9 @@ namespace AllOverIt.Helpers
         }
 
         private void AppendEnumerableAsPropertyValues(string prefix, IEnumerable enumerable, IDictionary<string, string> values,
-            IList<ObjectPropertyParent> references)
+            IDictionary<object, ObjectPropertyParent> references)
         {
+            // ReSharper disable once PossibleMultipleEnumeration
             if (ExcludeEnumerable(enumerable))
             {
                 return;
@@ -117,9 +118,10 @@ namespace AllOverIt.Helpers
 
             var idx = 0;
 
+            // ReSharper disable once PossibleMultipleEnumeration
             foreach (var value in enumerable)
             {
-                var parentReferences = new List<ObjectPropertyParent>(references);
+                var parentReferences = new Dictionary<object, ObjectPropertyParent>(references);
                 AppendNameValue($"{prefix}[{idx}]", null, value, idx, values, parentReferences);
                 idx++;
             }
@@ -134,7 +136,7 @@ namespace AllOverIt.Helpers
         }
 
         private void AppendObjectAsPropertyValues(string prefix, object instance, IDictionary<string, string> values,
-            IList<ObjectPropertyParent> references)
+            IDictionary<object, ObjectPropertyParent> references)
         {
             var properties = instance
                 .GetType()
@@ -156,7 +158,7 @@ namespace AllOverIt.Helpers
                         fullPath = prefix + "." + fullPath;
                     }
 
-                    var parentReferences = new List<ObjectPropertyParent>(references);
+                    var parentReferences = new Dictionary<object, ObjectPropertyParent>(references);
 
                     AppendNameValue(fullPath, propertyInfo.Name, value, null, values, parentReferences);
                 }
@@ -164,7 +166,7 @@ namespace AllOverIt.Helpers
         }
 
         private void AppendNameValue(string path, string name, object value, int? index, IDictionary<string, string> values,
-            IList<ObjectPropertyParent> references)
+            IDictionary<object, ObjectPropertyParent> references)
         {
             if (value == null)
             {
@@ -186,7 +188,7 @@ namespace AllOverIt.Helpers
 
                     if (Options.Filter != null)
                     {
-                        if (!IncludePropertyValue(type, path, name, index, references.AsReadOnlyCollection()))
+                        if (!IncludePropertyValue(type, path, name, index, references))
                         {
                             return;
                         }
@@ -206,21 +208,21 @@ namespace AllOverIt.Helpers
                         return;
                     }
 
-                    if (references.Contains(value))
+                    if (references.ContainsKey(value))
                     {
                         throw new SelfReferenceException($"Self referencing detected at '{path}' of type '{type.GetFriendlyName()}'");
                     }
 
                     if (Options.Filter != null)
                     {
-                        if (ExcludeValueType(value) || !IncludeProperty(type, path, name, index, references.AsReadOnlyCollection()))
+                        if (ExcludeValueType(value) || !IncludeProperty(type, path, name, index, references))
                         {
                             return;
                         }
                     }
 
                     var parent = new ObjectPropertyParent(name, value, index);
-                    references.Add(parent);
+                    references.Add(value, parent);
 
                     Populate(path, value, values, references);
                 }
@@ -282,23 +284,23 @@ namespace AllOverIt.Helpers
             return args.Any() && IgnoreType(args[0]);
         }
 
-        private void SetFilterAttributes(Type type, string path, string name, int? index, IReadOnlyCollection<ObjectPropertyParent> references)
+        private void SetFilterAttributes(Type type, string path, string name, int? index, IDictionary<object, ObjectPropertyParent> references)
         {
             Options.Filter.Type = type;
             Options.Filter.Path = path;
             Options.Filter.Name = name;
             Options.Filter.Index = index;
-            Options.Filter.Parents = references;
+            Options.Filter.Parents = references.Values.AsReadOnlyCollection();
         }
 
-        private bool IncludeProperty(Type type, string path, string name, int? index, IReadOnlyCollection<ObjectPropertyParent> references)
+        private bool IncludeProperty(Type type, string path, string name, int? index, IDictionary<object, ObjectPropertyParent> references)
         {
             SetFilterAttributes(type, path, name, index, references);
 
             return Options.Filter.OnIncludeProperty();
         }
 
-        private bool IncludePropertyValue(Type type, string path, string name, int? index, IReadOnlyCollection<ObjectPropertyParent> references)
+        private bool IncludePropertyValue(Type type, string path, string name, int? index, IDictionary<object, ObjectPropertyParent> references)
         {
             return IncludeProperty(type, path, name, index, references) && Options.Filter.OnIncludeValue();
         }

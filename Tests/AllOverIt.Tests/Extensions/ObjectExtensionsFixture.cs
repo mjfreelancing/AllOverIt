@@ -345,9 +345,9 @@ namespace AllOverIt.Tests.Extensions
                 dummy2.Prop2 = dummy1;
 
                 Invoking(() =>
-                {
-                    _ = dummy1.ToSerializedDictionary();
-                })
+                    {
+                        _ = dummy1.ToSerializedDictionary();
+                    })
                     .Should()
                     .Throw<SelfReferenceException>()
                     .WithMessage("Self referencing detected at 'Prop2.Prop2.Prop2' of type 'DummyType'");
@@ -694,11 +694,6 @@ namespace AllOverIt.Tests.Extensions
                     .NotThrow();
             }
 
-
-
-
-
-
             [Fact]
             public void Should_Filter_To_Two_Properties_By_Name()
             {
@@ -887,6 +882,184 @@ namespace AllOverIt.Tests.Extensions
                         {"Prop2.Prop8", $"{dummy2.Prop8}"},
                         {"Prop2.Prop14", $"{dummy2.Prop14}"},
                     });
+            }
+
+            public class SerializeObjectPropertyFilter : ToSerializedDictionary
+            {
+                private sealed class DummyTypeTrackingFilter : ObjectPropertyFilter
+                {
+                    public List<Type> Types { get; } = new();
+                    public List<string> Paths { get; } = new();
+                    public List<string> Names { get; } = new();
+                    public List<int?> Indexes { get; } = new();
+                    public List<IReadOnlyCollection<ObjectPropertyParent>> ParentChains { get; } = new();
+
+                    public override bool OnIncludeProperty()
+                    {
+                        Types.Add(Type);
+                        Paths.Add(Path);
+                        Names.Add(Name);
+                        Indexes.Add(Index);
+                        ParentChains.Add(Parents);
+
+                        return true;
+                    }
+                }
+
+                [Fact]
+                public void Should_Track_Types()
+                {
+                    var dummy = Create<DummyType>();
+
+                    dummy.Prop11 = new Dictionary<string, Task>();      // will be ignored because of Task
+                    dummy.Prop12 = new Dictionary<int, DummyType>();    // will include an empty value in the output
+
+                    var dummy2 = Create<DummyType>();
+                    dummy.Prop2 = dummy2;
+
+                    // fix types so not being determined as AutoFixture based collections
+                    dummy.Prop4 = dummy.Prop4.ToList();
+                    dummy.Prop2.Prop4 = dummy.Prop2.Prop4.ToList();
+
+                    var filter = new DummyTypeTrackingFilter();
+
+                    var options = new ObjectPropertySerializerOptions
+                    {
+                        IncludeEmptyCollections = true,
+                        Filter = filter
+                    };
+
+                    dummy.ToSerializedDictionary(options);
+
+                    filter.Types.Should().HaveCount(25);
+
+                    // Prop1, Prop2, Prop1, Prop4, , , , Prop5, , , , Prop8, Prop14, Prop4, , , , Prop5, , , , Prop8, Prop12, , Prop14
+
+                    filter.Types
+                        .Should()
+                        .BeEquivalentTo(new[]
+                        {
+                            typeof(int),                                        // Prop1
+                            typeof(DummyType),                                  // Prop2
+                            typeof(int),                                        // Prop2.Prop1
+                            typeof(List<string>),                               // Prop2.Prop4
+                            typeof(string), typeof(string), typeof(string),     // Prop2.Prop4 elements
+                            typeof(Dictionary<int, bool>),                      // Prop2.Prop5
+                            typeof(bool), typeof(bool), typeof(bool),           // Prop2.Prop5 elements
+                            typeof(double),                                     // Prop2.Prop8
+                            typeof(string),                                     // Prop2.Prop14
+                            typeof(List<string>),                               // Prop4
+                            typeof(string), typeof(string), typeof(string),     // Prop4 elements
+                            typeof(Dictionary<int, bool>),                      // Prop5
+                            typeof(bool), typeof(bool), typeof(bool),           // Prop5 elements
+                            typeof(double),                                     // Prop8
+                            typeof(Dictionary<int, DummyType>),                 // Prop12
+                            typeof(string),                                     // Empty value for Prop12
+                            typeof(string)                                      // Prop14
+                        });
+                }
+
+                [Fact]
+                public void Should_Track_Names()
+                {
+                    var dummy = Create<DummyType>();
+
+                    dummy.Prop11 = new Dictionary<string, Task>();      // will be ignored because of Task
+                    dummy.Prop12 = new Dictionary<int, DummyType>();    // will include an empty value in the output
+
+                    var dummy2 = Create<DummyType>();
+                    dummy.Prop2 = dummy2;
+
+                    var filter = new DummyTypeTrackingFilter();
+
+                    var options = new ObjectPropertySerializerOptions
+                    {
+                        IncludeEmptyCollections = true,
+                        Filter = filter
+                    };
+
+                    dummy.ToSerializedDictionary(options);
+
+                    filter.Names.Should().HaveCount(25);
+
+                    filter.Names
+                        .Should()
+                        .BeEquivalentTo(new string[]
+                        {
+                           "Prop1", "Prop2", "Prop1", "Prop4", null, null, null, "Prop5", null, null, null,
+                            "Prop8", "Prop14", "Prop4", null, null, null, "Prop5", null, null, null, "Prop8",
+                            "Prop12", null, "Prop14"
+                        });
+                }
+
+                [Fact]
+                public void Should_Track_Paths()
+                {
+                    var dummy = Create<DummyType>();
+
+                    dummy.Prop11 = new Dictionary<string, Task>();      // will be ignored because of Task
+                    dummy.Prop12 = new Dictionary<int, DummyType>();    // will include an empty value in the output
+
+                    var dummy2 = Create<DummyType>();
+                    dummy.Prop2 = dummy2;
+
+                    var filter = new DummyTypeTrackingFilter();
+
+                    var options = new ObjectPropertySerializerOptions
+                    {
+                        IncludeEmptyCollections = true,
+                        Filter = filter
+                    };
+
+                    dummy.ToSerializedDictionary(options);
+
+                    filter.Paths.Should().HaveCount(25);
+
+                    // Prop12 is listed twice because it includes the root property as well as an <empty> value
+                    filter.Paths
+                        .Should()
+                        .BeEquivalentTo(new string[]
+                        {
+                            "Prop1", "Prop2", "Prop2.Prop1", "Prop2.Prop4", "Prop2.Prop4[0]", "Prop2.Prop4[1]", "Prop2.Prop4[2]",
+                            "Prop2.Prop5", $"Prop2.Prop5.{dummy.Prop2.Prop5.ElementAt(0).Key}",
+                            $"Prop2.Prop5.{dummy.Prop2.Prop5.ElementAt(1).Key}", $"Prop2.Prop5.{dummy.Prop2.Prop5.ElementAt(2).Key}",
+                            "Prop2.Prop8", "Prop2.Prop14", "Prop4", "Prop4[0]", "Prop4[1]", "Prop4[2]", "Prop5",
+                            $"Prop5.{dummy.Prop5.ElementAt(0).Key}", $"Prop5.{dummy.Prop5.ElementAt(1).Key}",
+                            $"Prop5.{dummy.Prop5.ElementAt(2).Key}", "Prop8", "Prop12", "Prop12", "Prop14"
+                        });
+                }
+
+                [Fact]
+                public void Should_Track_Indexes()
+                {
+                    var dummy = Create<DummyType>();
+
+                    dummy.Prop11 = new Dictionary<string, Task>();      // will be ignored because of Task
+                    dummy.Prop12 = new Dictionary<int, DummyType>();    // will include an empty value in the output
+
+                    var dummy2 = Create<DummyType>();
+                    dummy.Prop2 = dummy2;
+
+                    var filter = new DummyTypeTrackingFilter();
+
+                    var options = new ObjectPropertySerializerOptions
+                    {
+                        IncludeEmptyCollections = true,
+                        Filter = filter
+                    };
+
+                    dummy.ToSerializedDictionary(options);
+
+                    filter.Indexes.Should().HaveCount(25);
+
+                    filter.Indexes
+                        .Should()
+                        .BeEquivalentTo(new int?[]
+                        {
+                            null, null, null, null, 0, 1, 2, null, 0, 1, 2, null, null, null,
+                            0, 1, 2, null, 0, 1, 2, null, null, null, null
+                        });
+                }
             }
         }
 

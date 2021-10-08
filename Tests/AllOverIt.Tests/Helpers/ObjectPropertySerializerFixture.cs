@@ -774,8 +774,6 @@ namespace AllOverIt.Tests.Helpers
                     });
             }
 
-
-
             public class SerializeObjectPropertyFilter : SerializeToDictionary
             {
                 private sealed class DummyTypeTrackingFilter : ObjectPropertyFilter
