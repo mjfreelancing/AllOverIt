@@ -187,10 +187,14 @@ namespace AllOverIt.Helpers
 
                     if (Options.Filter != null)
                     {
-                        if (!IncludeProperty(Options.Filter, type, name, references) ||
-                            !IncludePropertyValue(Options.Filter, type, name, references, ref valueStr))
+                        if (!IncludePropertyValue(type, name, references))
                         {
                             return;
+                        }
+
+                        if (Options.Filter is IFormattableObjectPropertyFilter formattable)
+                        {
+                            valueStr = formattable.OnFormatValue(valueStr);
                         }
                     }
 
@@ -210,7 +214,7 @@ namespace AllOverIt.Helpers
 
                     if (Options.Filter != null)
                     {
-                        if (!IncludeProperty(Options.Filter, type, name, references))
+                        if (!IncludeProperty(type, name, references))
                         {
                             return;
                         }
@@ -237,22 +241,23 @@ namespace AllOverIt.Helpers
             return type.IsGenericType && Options.IgnoredTypes.Contains(type.GetGenericTypeDefinition());
         }
 
-        private static bool IncludeProperty(ObjectPropertyFilter filter, Type type, string name, IEnumerable<object> references)
+        private void SetFilterAttributes(Type type, string name, IEnumerable<object> references)
         {
-            filter.Type = type;
-            filter.Path = name;
-            filter.Parents = references.AsReadOnlyCollection();
-
-            return filter.OnIncludeProperty();
+            Options.Filter.Type = type;
+            Options.Filter.Path = name;
+            Options.Filter.Parents = references.AsReadOnlyCollection();
         }
 
-        private static bool IncludePropertyValue(ObjectPropertyFilter filter, Type type, string name, IEnumerable<object> references, ref string value)
+        private bool IncludeProperty(Type type, string name, IEnumerable<object> references)
         {
-            filter.Type = type;
-            filter.Path = name;
-            filter.Parents = references.AsReadOnlyCollection();
+            SetFilterAttributes(type, name, references);
 
-            return filter.OnIncludeValue(ref value);
+            return Options.Filter.OnIncludeProperty();
+        }
+
+        private bool IncludePropertyValue(Type type, string name, IEnumerable<object> references)
+        {
+            return IncludeProperty(type, name, references) && Options.Filter.OnIncludeValue();
         }
     }
 }

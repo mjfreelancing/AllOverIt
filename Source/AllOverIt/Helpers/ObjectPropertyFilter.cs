@@ -14,16 +14,9 @@ namespace AllOverIt.Helpers
             return true;
         }
 
-        public virtual bool OnIncludeValue(ref string value)
+        public virtual bool OnIncludeValue()
         {
             return true;
         }
-
-        //public virtual ref string OnFormatValue(ref string value)
-        //{
-        //    value = "";
-
-        //    return ref value;
-        //}
     }
 }

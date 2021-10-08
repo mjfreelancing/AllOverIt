@@ -2,22 +2,18 @@
 
 namespace SerializationFilterBenchmarking
 {
-    internal sealed class ComplexObjectFilter : ObjectPropertyFilter
+    internal sealed class ComplexObjectFilter : FormattableObjectPropertyFilter
     {
         public override bool OnIncludeProperty()
         {
             return !Path.EndsWith(".Values");
         }
 
-        public override bool OnIncludeValue(ref string value)
+        public override string OnFormatValue(string value)
         {
-            // Reformat the timestamp property
-            if (Path.EndsWith(".Timestamp"))
-            {
-                value = $"[{value}]";
-            }
-
-            return true;
+            return Path.EndsWith(".Timestamp")
+                ? $"[{value}]"
+                : value;
         }
     }
 }

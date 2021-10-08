@@ -251,37 +251,33 @@ namespace AllOverIt.Tests.Extensions
                 }
             }
 
-            private class DummyTypePropertyValueFilter : ObjectPropertyFilter
+            private class DummyTypePropertyValueFilter : FormattableObjectPropertyFilter
             {
-                public override bool OnIncludeValue(ref string value)
+                public override bool OnIncludeValue()
                 {
-                    var includeProperty = Path == nameof(DummyType.Prop1);
+                    return Path == nameof(DummyType.Prop1);
+                }
 
-                    if (includeProperty)
-                    {
-                        value = "Included";
-                    }
-
-                    return includeProperty;
+                public override string OnFormatValue(string value)
+                {
+                    return Path == nameof(DummyType.Prop1)
+                        ? "Included"
+                        : value;
                 }
             }
 
-            private class DummyTypePropertyNameValueFilter : ObjectPropertyFilter
+            private class DummyTypePropertyNameValueFilter : FormattableObjectPropertyFilter
             {
                 public override bool OnIncludeProperty()
                 {
                     return Path == nameof(DummyType.Prop1) || Path.StartsWith("Prop2");
                 }
 
-                public override bool OnIncludeValue(ref string value)
+                public override string OnFormatValue(string value)
                 {
-                    if (Path == nameof(DummyType.Prop1))
-                    {
-                        value = "Included";
-                    }
-
-                    // OnIncludeProperty() has filtered down to two variables
-                    return true;
+                    return Path == nameof(DummyType.Prop1)
+                        ? "Included"
+                        : value;
                 }
             }
           
