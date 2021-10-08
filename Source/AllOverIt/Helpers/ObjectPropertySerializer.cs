@@ -7,6 +7,7 @@ using System.Linq;
 
 namespace AllOverIt.Helpers
 {
+
     /// <summary>Converts an object to an IDictionary{string, string} using a dot notation for nested members.</summary>
     public sealed class ObjectPropertySerializer
     {
@@ -32,13 +33,13 @@ namespace AllOverIt.Helpers
 
             if (instance != null)
             {
-                Populate(null, instance, dictionary, new List<object>());
+                Populate(null, instance, dictionary, new List<ObjectPropertyParent>());
             }
 
             return dictionary;
         }
 
-        private void Populate(string prefix, object instance, IDictionary<string, string> values, IList<object> references)
+        private void Populate(string prefix, object instance, IDictionary<string, string> values, IList<ObjectPropertyParent> references)
         {
             switch (instance)
             {
@@ -56,24 +57,16 @@ namespace AllOverIt.Helpers
             }
         }
 
-        private void AppendDictionaryAsPropertyValues(string prefix, IDictionary dictionary, IDictionary<string, string> values, IList<object> references)
+        private void AppendDictionaryAsPropertyValues(string prefix, IDictionary dictionary, IDictionary<string, string> values,
+            IList<ObjectPropertyParent> references)
         {
-            var args = dictionary.GetType().GetGenericArguments();
-
-            if (!args.Any())
-            {
-                // Assume IDictionary, such as from Environment.GetEnvironmentVariables(), contains values that can be converted to strings
-                dictionary = dictionary.Cast<DictionaryEntry>().ToDictionary(entry => $"{entry.Key}", entry => $"{entry.Value}");
-                args = dictionary.GetType().GetGenericArguments();
-            }
-
-            var keyType = args[0];
-            var valueType = args[1];
-
-            if (IgnoreType(keyType) || IgnoreType(valueType))
+            if (ExcludeDictionary(dictionary))
             {
                 return;
             }
+
+            var args = GetDictionaryGenericArguments(dictionary);
+            var keyType = args[0];
 
             var isClassType = keyType.IsClass && keyType != typeof(string);
             var idx = 0;
@@ -89,13 +82,15 @@ namespace AllOverIt.Helpers
                     ? string.Empty
                     : $"{prefix}.";
 
-                var parentReferences = new List<object>(references);
+                var parentReferences = new List<ObjectPropertyParent>(references);
 
                 AppendNameValue(
                     isClassType
                         ? $"{namePrefix}{keyType.GetFriendlyName()}`{idx}"
                         : $"{namePrefix}{keyEnumerator.Current}",
+                    null,
                     valueEnumerator.Current,
+                    idx,
                     values,
                     parentReferences
                 );
@@ -108,14 +103,14 @@ namespace AllOverIt.Helpers
                 return;
             }
 
-            AppendNameValue(prefix, Options.EmptyValueOutput, values, references);
+            // output an empty value
+            AppendNameValue(prefix, null, Options.EmptyValueOutput, null, values, references);
         }
 
-        private void AppendEnumerableAsPropertyValues(string prefix, IEnumerable enumerable, IDictionary<string, string> values, IList<object> references)
+        private void AppendEnumerableAsPropertyValues(string prefix, IEnumerable enumerable, IDictionary<string, string> values,
+            IList<ObjectPropertyParent> references)
         {
-            var args = enumerable.GetType().GetGenericArguments();
-
-            if (args.Any() && IgnoreType(args[0]))
+            if (ExcludeEnumerable(enumerable))
             {
                 return;
             }
@@ -124,8 +119,9 @@ namespace AllOverIt.Helpers
 
             foreach (var value in enumerable)
             {
-                var parentReferences = new List<object>(references);
-                AppendNameValue($"{prefix}[{idx++}]", value, values, parentReferences);
+                var parentReferences = new List<ObjectPropertyParent>(references);
+                AppendNameValue($"{prefix}[{idx}]", null, value, idx, values, parentReferences);
+                idx++;
             }
 
             if (!Options.IncludeEmptyCollections || idx != 0)
@@ -133,10 +129,12 @@ namespace AllOverIt.Helpers
                 return;
             }
 
-            AppendNameValue(prefix, Options.EmptyValueOutput, values, references);
+            // output an empty value
+            AppendNameValue(prefix, null, Options.EmptyValueOutput, null, values, references);
         }
 
-        private void AppendObjectAsPropertyValues(string prefix, object instance, IDictionary<string, string> values, IList<object> references)
+        private void AppendObjectAsPropertyValues(string prefix, object instance, IDictionary<string, string> values,
+            IList<ObjectPropertyParent> references)
         {
             var properties = instance
                 .GetType()
@@ -151,25 +149,26 @@ namespace AllOverIt.Helpers
 
                 if (Options.IncludeNulls || value != null)
                 {
-                    var name = propertyInfo.Name;
+                    var fullPath = propertyInfo.Name;
 
                     if (!prefix.IsNullOrEmpty())
                     {
-                        name = prefix + "." + name;
+                        fullPath = prefix + "." + fullPath;
                     }
 
-                    var parentReferences = new List<object>(references);
+                    var parentReferences = new List<ObjectPropertyParent>(references);
 
-                    AppendNameValue(name, value, values, parentReferences);
+                    AppendNameValue(fullPath, propertyInfo.Name, value, null, values, parentReferences);
                 }
             }
         }
 
-        private void AppendNameValue(string name, object value, IDictionary<string, string> values, IList<object> references)
+        private void AppendNameValue(string path, string name, object value, int? index, IDictionary<string, string> values,
+            IList<ObjectPropertyParent> references)
         {
             if (value == null)
             {
-                values.Add(name, Options.NullValueOutput);
+                values.Add(path, Options.NullValueOutput);
             }
             else
             {
@@ -179,7 +178,7 @@ namespace AllOverIt.Helpers
 
                 if (isString && ((string)value).IsNullOrEmpty())        // null was already checked, so this only applies to empty values
                 {
-                    values.Add(name, Options.EmptyValueOutput);
+                    values.Add(path, Options.EmptyValueOutput);
                 }
                 else if (isString || type.IsValueType)
                 {
@@ -187,7 +186,7 @@ namespace AllOverIt.Helpers
 
                     if (Options.Filter != null)
                     {
-                        if (!IncludePropertyValue(type, name, references))
+                        if (!IncludePropertyValue(type, path, name, index, references.AsReadOnlyCollection()))
                         {
                             return;
                         }
@@ -198,7 +197,7 @@ namespace AllOverIt.Helpers
                         }
                     }
 
-                    values.Add(name, valueStr);
+                    values.Add(path, valueStr);
                 }
                 else
                 {
@@ -209,19 +208,21 @@ namespace AllOverIt.Helpers
 
                     if (references.Contains(value))
                     {
-                        throw new SelfReferenceException($"Self referencing detected at '{name}' of type '{type.GetFriendlyName()}'");
+                        throw new SelfReferenceException($"Self referencing detected at '{path}' of type '{type.GetFriendlyName()}'");
                     }
 
                     if (Options.Filter != null)
                     {
-                        if (!IncludeProperty(type, name, references))
+                        if (ExcludeValueType(value) || !IncludeProperty(type, path, name, index, references.AsReadOnlyCollection()))
                         {
                             return;
                         }
                     }
 
-                    references.Add(value);
-                    Populate(name, value, values, references);
+                    var parent = new ObjectPropertyParent(name, value, index);
+                    references.Add(parent);
+
+                    Populate(path, value, values, references);
                 }
             }
         }
@@ -241,23 +242,65 @@ namespace AllOverIt.Helpers
             return type.IsGenericType && Options.IgnoredTypes.Contains(type.GetGenericTypeDefinition());
         }
 
-        private void SetFilterAttributes(Type type, string name, IEnumerable<object> references)
+        private bool ExcludeValueType(object instance)
         {
-            Options.Filter.Type = type;
-            Options.Filter.Path = name;
-            Options.Filter.Parents = references.AsReadOnlyCollection();
+            return instance switch
+            {
+                IDictionary dictionary => ExcludeDictionary(dictionary),
+                IEnumerable enumerable => ExcludeEnumerable(enumerable),
+                _ => false,
+            };
         }
 
-        private bool IncludeProperty(Type type, string name, IEnumerable<object> references)
+        private static Type[] GetDictionaryGenericArguments(IDictionary dictionary)
         {
-            SetFilterAttributes(type, name, references);
+            var args = dictionary.GetType().GetGenericArguments();
+
+            if (!args.Any())
+            {
+                // Assume IDictionary, such as from Environment.GetEnvironmentVariables(), contains values that can be converted to strings
+                dictionary = dictionary.Cast<DictionaryEntry>().ToDictionary(entry => $"{entry.Key}", entry => $"{entry.Value}");
+                args = dictionary.GetType().GetGenericArguments();
+            }
+
+            return args;
+        }
+
+        private bool ExcludeDictionary(IDictionary dictionary)
+        {
+            var args = GetDictionaryGenericArguments(dictionary);
+
+            var keyType = args[0];
+            var valueType = args[1];
+
+            return IgnoreType(keyType) || IgnoreType(valueType);
+        }
+
+        private bool ExcludeEnumerable(IEnumerable enumerable)
+        {
+            var args = enumerable.GetType().GetGenericArguments();
+            return args.Any() && IgnoreType(args[0]);
+        }
+
+        private void SetFilterAttributes(Type type, string path, string name, int? index, IReadOnlyCollection<ObjectPropertyParent> references)
+        {
+            Options.Filter.Type = type;
+            Options.Filter.Path = path;
+            Options.Filter.Name = name;
+            Options.Filter.Index = index;
+            Options.Filter.Parents = references;
+        }
+
+        private bool IncludeProperty(Type type, string path, string name, int? index, IReadOnlyCollection<ObjectPropertyParent> references)
+        {
+            SetFilterAttributes(type, path, name, index, references);
 
             return Options.Filter.OnIncludeProperty();
         }
 
-        private bool IncludePropertyValue(Type type, string name, IEnumerable<object> references)
+        private bool IncludePropertyValue(Type type, string path, string name, int? index, IReadOnlyCollection<ObjectPropertyParent> references)
         {
-            return IncludeProperty(type, name, references) && Options.Filter.OnIncludeValue();
+            return IncludeProperty(type, path, name, index, references) && Options.Filter.OnIncludeValue();
         }
     }
 }

@@ -13,6 +13,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Helpers
 {
+
     public class ObjectPropertySerializerFixture : FixtureBase
     {
         private class DummyType
@@ -80,14 +81,14 @@ namespace AllOverIt.Tests.Helpers
             }
         }
 
-        private class DummyTypePropertyValueFilter : FormattableObjectPropertyFilter
+        private class DummyTypePropertyValueFilter : ObjectPropertyFilter, IFormattableObjectPropertyFilter
         {
             public override bool OnIncludeValue()
             {
                 return Path == nameof(DummyType.Prop1);
             }
 
-            public override string OnFormatValue(string value)
+            public string OnFormatValue(string value)
             {
                 return Path == nameof(DummyType.Prop1)
                     ? "Included"
@@ -95,14 +96,14 @@ namespace AllOverIt.Tests.Helpers
             }
         }
 
-        private class DummyTypePropertyNameValueFilter : FormattableObjectPropertyFilter
+        private class DummyTypePropertyNameValueFilter : ObjectPropertyFilter, IFormattableObjectPropertyFilter
         {
             public override bool OnIncludeProperty()
             {
                 return Path == nameof(DummyType.Prop1) || Path.StartsWith("Prop2");
             }
 
-            public override string OnFormatValue(string value)
+            public string OnFormatValue(string value)
             {
                 return Path == nameof(DummyType.Prop1)
                     ? "Included"
@@ -182,19 +183,13 @@ namespace AllOverIt.Tests.Helpers
 
         public class SerializeToDictionary : ObjectPropertySerializerFixture
         {
-            private readonly ObjectPropertySerializer _helper;
-
-            public SerializeToDictionary()
-            {
-                _helper = new();
-            }
-
             [Fact]
             public void Should_Serialize_Type_Using_Default_Settings()
             {
                 var dummy = Create<DummyType>();
 
-                var actual = _helper.SerializeToDictionary(dummy);
+                var serializer = GetSerializer();
+                var actual = serializer.SerializeToDictionary(dummy);
 
                 actual
                     .Should()
@@ -217,9 +212,10 @@ namespace AllOverIt.Tests.Helpers
             {
                 var dummy = Create<DummyType>();
 
-                _helper.Options.BindingOptions = BindingOptions.Private | BindingOptions.Instance;
+                var serializer = GetSerializer();
+                serializer.Options.BindingOptions = BindingOptions.Private | BindingOptions.Instance;
 
-                var actual = _helper.SerializeToDictionary(dummy);
+                var actual = serializer.SerializeToDictionary(dummy);
 
                 actual
                     .Should()
@@ -238,9 +234,11 @@ namespace AllOverIt.Tests.Helpers
                 dummy1.Prop2 = dummy2;
                 dummy2.Prop2 = dummy1;
 
+                var serializer = GetSerializer();
+
                 Invoking(() =>
                     {
-                        _ = _helper.SerializeToDictionary(dummy1);
+                        _ = serializer.SerializeToDictionary(dummy1);
                     })
                     .Should()
                     .Throw<SelfReferenceException>()
@@ -257,7 +255,8 @@ namespace AllOverIt.Tests.Helpers
                 dummy1.Prop2 = dummy2;
                 dummy2.Prop2 = dummy3;
 
-                var actual = _helper.SerializeToDictionary(dummy1);
+                var serializer = GetSerializer();
+                var actual = serializer.SerializeToDictionary(dummy1);
 
                 actual
                     .Should()
@@ -300,8 +299,10 @@ namespace AllOverIt.Tests.Helpers
             {
                 var dummy = new DummyType();
 
-                _helper.Options.IncludeNulls = true;
-                var actual = _helper.SerializeToDictionary(dummy);
+                var serializer = GetSerializer();
+                serializer.Options.IncludeNulls = true;
+
+                var actual = serializer.SerializeToDictionary(dummy);
 
                 actual
                    .Should()
@@ -334,9 +335,10 @@ namespace AllOverIt.Tests.Helpers
                     Prop14 = string.Empty
                 };
 
-                _helper.Options.IncludeEmptyCollections = true;
+                var serializer = GetSerializer();
+                serializer.Options.IncludeEmptyCollections = true;
 
-                var actual = _helper.SerializeToDictionary(dummy);
+                var actual = serializer.SerializeToDictionary(dummy);
 
                 actual
                     .Should()
@@ -365,10 +367,11 @@ namespace AllOverIt.Tests.Helpers
                     Prop12 = new Dictionary<int, DummyType>()
                 };
 
-                _helper.Options.IncludeNulls = true;
-                _helper.Options.IncludeEmptyCollections = true;
+                var serializer = GetSerializer();
+                serializer.Options.IncludeNulls = true;
+                serializer.Options.IncludeEmptyCollections = true;
 
-                var actual = _helper.SerializeToDictionary(dummy);
+                var actual = serializer.SerializeToDictionary(dummy);
 
                 actual
                     .Should()
@@ -393,7 +396,8 @@ namespace AllOverIt.Tests.Helpers
                 var keys = dictionary.Keys.Select(item => item).ToList();
                 var values = dictionary.Values.Select(item => $"{item}").ToList();
 
-                var actual = _helper.SerializeToDictionary(dictionary);
+                var serializer = GetSerializer();
+                var actual = serializer.SerializeToDictionary(dictionary);
 
                 actual
                     .Should()
@@ -411,7 +415,8 @@ namespace AllOverIt.Tests.Helpers
                 var dictionary = Create<Dictionary<string, Dictionary<bool, int>>>();
                 var keys = dictionary.Keys.Select(item => item).ToList();
 
-                var actual = _helper.SerializeToDictionary(dictionary);
+                var serializer = GetSerializer();
+                var actual = serializer.SerializeToDictionary(dictionary);
 
                 actual
                     .Should()
@@ -433,7 +438,8 @@ namespace AllOverIt.Tests.Helpers
             {
                 var list = CreateMany<string>();
 
-                var actual = _helper.SerializeToDictionary(list);
+                var serializer = GetSerializer();
+                var actual = serializer.SerializeToDictionary(list);
 
                 actual
                     .Should()
@@ -459,7 +465,8 @@ namespace AllOverIt.Tests.Helpers
                     }
                 };
 
-                var actual = _helper.SerializeToDictionary(dummy);
+                var serializer = GetSerializer();
+                var actual = serializer.SerializeToDictionary(dummy);
 
                 actual
                     .Should()
@@ -481,7 +488,8 @@ namespace AllOverIt.Tests.Helpers
                     {new Typed<DummyType>{Prop = new DummyType()}, false}
                 };
 
-                var actual = _helper.SerializeToDictionary(dummy);
+                var serializer = GetSerializer();
+                var actual = serializer.SerializeToDictionary(dummy);
 
                 actual
                     .Should()
@@ -501,7 +509,8 @@ namespace AllOverIt.Tests.Helpers
                     Prop10 = () => true
                 };
 
-                var actual = _helper.SerializeToDictionary(dummy);
+                var serializer = GetSerializer();
+                var actual = serializer.SerializeToDictionary(dummy);
 
                 actual
                     .Should()
@@ -516,7 +525,8 @@ namespace AllOverIt.Tests.Helpers
             {
                 var dummy = new DummyWithIndexer();
 
-                var actual = _helper.SerializeToDictionary(dummy);
+                var serializer = GetSerializer();
+                var actual = serializer.SerializeToDictionary(dummy);
 
                 actual
                     .Should()
@@ -538,7 +548,8 @@ namespace AllOverIt.Tests.Helpers
                     //{ "list", new List<int>() }     // WILL NOT serialize as expected
                 };
 
-                var actual = _helper.SerializeToDictionary(table);
+                var serializer = GetSerializer();
+                var actual = serializer.SerializeToDictionary(table);
 
                 actual
                     .Should()
@@ -572,9 +583,11 @@ namespace AllOverIt.Tests.Helpers
                 root.Maps[0] = root.Items;
                 root.Maps[1] = root.Items;
 
+                var serializer = GetSerializer();
+
                 Invoking(() =>
                     {
-                        _ = _helper.SerializeToDictionary(root);
+                        _ = serializer.SerializeToDictionary(root);
                     })
                     .Should()
                     .NotThrow();
@@ -586,30 +599,25 @@ namespace AllOverIt.Tests.Helpers
                 var dummy = Create<DummyType>();
                 dummy.Prop2 = Create<DummyType>();
 
+                var serializer = GetSerializer();
+
                 // Prop2 is a class type so to include all values we need to check for "Prop2" as well as "Prop2.XXX"
                 // Checking for Prop2 is required to ensure the sub-properties are not filtered out.
-                _helper.Options.Filter = new DummyTypePropertyNameFilter(name =>
+                serializer.Options.Filter = new DummyTypePropertyNameFilter(name =>
                     name is nameof(DummyType.Prop1) or nameof(DummyType.Prop2) ||
                     name.StartsWith("Prop2.Prop4"));
 
-                try
-                {
-                    var actual = _helper.SerializeToDictionary(dummy);
+                var actual = serializer.SerializeToDictionary(dummy);
 
-                    actual
-                        .Should()
-                        .BeEquivalentTo(new Dictionary<string, string>
-                        {
-                            { "Prop1", $"{dummy.Prop1}" },
-                            { "Prop2.Prop4[0]", $"{dummy.Prop2.Prop4.ElementAt(0)}" },
-                            { "Prop2.Prop4[1]", $"{dummy.Prop2.Prop4.ElementAt(1)}" },
-                            { "Prop2.Prop4[2]", $"{dummy.Prop2.Prop4.ElementAt(2)}" }
-                        });
-                }
-                finally
-                {
-                    _helper.Options.Filter = null;
-                }
+                actual
+                    .Should()
+                    .BeEquivalentTo(new Dictionary<string, string>
+                    {
+                        { "Prop1", $"{dummy.Prop1}" },
+                        { "Prop2.Prop4[0]", $"{dummy.Prop2.Prop4.ElementAt(0)}" },
+                        { "Prop2.Prop4[1]", $"{dummy.Prop2.Prop4.ElementAt(1)}" },
+                        { "Prop2.Prop4[2]", $"{dummy.Prop2.Prop4.ElementAt(2)}" }
+                    });
             }
 
             [Fact]
@@ -622,53 +630,47 @@ namespace AllOverIt.Tests.Helpers
                 dummy1.Prop2 = dummy2;
                 dummy2.Prop2 = dummy3;
 
-                _helper.Options.Filter = new DummyTypePropertyNameFilter(name => name != nameof(DummyType.Prop2));
+                var serializer = GetSerializer();
+                serializer.Options.Filter = new DummyTypePropertyNameFilter(name => name != nameof(DummyType.Prop2));
 
-                try
-                {
-                    var actual = _helper.SerializeToDictionary(dummy1);
+                var actual = serializer.SerializeToDictionary(dummy1);
 
-                    actual
-                        .Should()
-                        .BeEquivalentTo(new Dictionary<string, string>
-                        {
-                            { "Prop1", $"{dummy1.Prop1}" },
-                            { "Prop4[0]", $"{dummy1.Prop4.ElementAt(0)}" },
-                            { "Prop4[1]", $"{dummy1.Prop4.ElementAt(1)}" },
-                            { "Prop4[2]", $"{dummy1.Prop4.ElementAt(2)}" },
-                            { $"Prop5.{dummy1.Prop5.ElementAt(0).Key}", $"{dummy1.Prop5.ElementAt(0).Value}" },
-                            { $"Prop5.{dummy1.Prop5.ElementAt(1).Key}", $"{dummy1.Prop5.ElementAt(1).Value}" },
-                            { $"Prop5.{dummy1.Prop5.ElementAt(2).Key}", $"{dummy1.Prop5.ElementAt(2).Value}" },
-                            { "Prop8", $"{dummy1.Prop8}" },
-                            { "Prop14", $"{dummy1.Prop14}" },
+                actual
+                    .Should()
+                    .BeEquivalentTo(new Dictionary<string, string>
+                    {
+                        { "Prop1", $"{dummy1.Prop1}" },
+                        { "Prop4[0]", $"{dummy1.Prop4.ElementAt(0)}" },
+                        { "Prop4[1]", $"{dummy1.Prop4.ElementAt(1)}" },
+                        { "Prop4[2]", $"{dummy1.Prop4.ElementAt(2)}" },
+                        { $"Prop5.{dummy1.Prop5.ElementAt(0).Key}", $"{dummy1.Prop5.ElementAt(0).Value}" },
+                        { $"Prop5.{dummy1.Prop5.ElementAt(1).Key}", $"{dummy1.Prop5.ElementAt(1).Value}" },
+                        { $"Prop5.{dummy1.Prop5.ElementAt(2).Key}", $"{dummy1.Prop5.ElementAt(2).Value}" },
+                        { "Prop8", $"{dummy1.Prop8}" },
+                        { "Prop14", $"{dummy1.Prop14}" },
 
-                            // the applied filter will result in the following being excluded:
-                            //
-                            //{ "Prop2.Prop1", $"{dummy2.Prop1}" },
-                            //{ "Prop2.Prop4[0]", $"{dummy2.Prop4.ElementAt(0)}" },
-                            //{ "Prop2.Prop4[1]", $"{dummy2.Prop4.ElementAt(1)}" },
-                            //{ "Prop2.Prop4[2]", $"{dummy2.Prop4.ElementAt(2)}" },
-                            //{ $"Prop2.Prop5.{dummy2.Prop5.ElementAt(0).Key}", $"{dummy2.Prop5.ElementAt(0).Value}" },
-                            //{ $"Prop2.Prop5.{dummy2.Prop5.ElementAt(1).Key}", $"{dummy2.Prop5.ElementAt(1).Value}" },
-                            //{ $"Prop2.Prop5.{dummy2.Prop5.ElementAt(2).Key}", $"{dummy2.Prop5.ElementAt(2).Value}" },
-                            //{ "Prop2.Prop8", $"{dummy2.Prop8}" },
-                            //{ "Prop2.Prop14", $"{dummy2.Prop14}" },
+                        // the applied filter will result in the following being excluded:
+                        //
+                        //{ "Prop2.Prop1", $"{dummy2.Prop1}" },
+                        //{ "Prop2.Prop4[0]", $"{dummy2.Prop4.ElementAt(0)}" },
+                        //{ "Prop2.Prop4[1]", $"{dummy2.Prop4.ElementAt(1)}" },
+                        //{ "Prop2.Prop4[2]", $"{dummy2.Prop4.ElementAt(2)}" },
+                        //{ $"Prop2.Prop5.{dummy2.Prop5.ElementAt(0).Key}", $"{dummy2.Prop5.ElementAt(0).Value}" },
+                        //{ $"Prop2.Prop5.{dummy2.Prop5.ElementAt(1).Key}", $"{dummy2.Prop5.ElementAt(1).Value}" },
+                        //{ $"Prop2.Prop5.{dummy2.Prop5.ElementAt(2).Key}", $"{dummy2.Prop5.ElementAt(2).Value}" },
+                        //{ "Prop2.Prop8", $"{dummy2.Prop8}" },
+                        //{ "Prop2.Prop14", $"{dummy2.Prop14}" },
 
-                            //{ "Prop2.Prop2.Prop1", $"{dummy3.Prop1}" },
-                            //{ "Prop2.Prop2.Prop4[0]", $"{dummy3.Prop4.ElementAt(0)}" },
-                            //{ "Prop2.Prop2.Prop4[1]", $"{dummy3.Prop4.ElementAt(1)}" },
-                            //{ "Prop2.Prop2.Prop4[2]", $"{dummy3.Prop4.ElementAt(2)}" },
-                            //{ $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(0).Key}", $"{dummy3.Prop5.ElementAt(0).Value}" },
-                            //{ $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(1).Key}", $"{dummy3.Prop5.ElementAt(1).Value}" },
-                            //{ $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(2).Key}", $"{dummy3.Prop5.ElementAt(2).Value}" },
-                            //{ "Prop2.Prop2.Prop8", $"{dummy3.Prop8}" },
-                            //{ "Prop2.Prop2.Prop14", $"{dummy3.Prop14}" }
-                        });
-                }
-                finally
-                {
-                    _helper.Options.Filter = null;
-                }
+                        //{ "Prop2.Prop2.Prop1", $"{dummy3.Prop1}" },
+                        //{ "Prop2.Prop2.Prop4[0]", $"{dummy3.Prop4.ElementAt(0)}" },
+                        //{ "Prop2.Prop2.Prop4[1]", $"{dummy3.Prop4.ElementAt(1)}" },
+                        //{ "Prop2.Prop2.Prop4[2]", $"{dummy3.Prop4.ElementAt(2)}" },
+                        //{ $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(0).Key}", $"{dummy3.Prop5.ElementAt(0).Value}" },
+                        //{ $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(1).Key}", $"{dummy3.Prop5.ElementAt(1).Value}" },
+                        //{ $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(2).Key}", $"{dummy3.Prop5.ElementAt(2).Value}" },
+                        //{ "Prop2.Prop2.Prop8", $"{dummy3.Prop8}" },
+                        //{ "Prop2.Prop2.Prop14", $"{dummy3.Prop14}" }
+                    });
             }
 
             [Fact]
@@ -683,52 +685,46 @@ namespace AllOverIt.Tests.Helpers
 
                 var nameToFilter = $"Prop2.Prop5.{dummy2.Prop5.ElementAt(1).Key}";
 
-                _helper.Options.Filter = new DummyTypePropertyNameFilter(name => name != nameToFilter);
+                var serializer = GetSerializer();
+                serializer.Options.Filter = new DummyTypePropertyNameFilter(name => name != nameToFilter);
 
-                try
-                {
-                    var actual = _helper.SerializeToDictionary(dummy1);
+                var actual = serializer.SerializeToDictionary(dummy1);
 
-                    actual
-                        .Should()
-                        .BeEquivalentTo(new Dictionary<string, string>
-                        {
-                            { "Prop1", $"{dummy1.Prop1}" },
-                            { "Prop4[0]", $"{dummy1.Prop4.ElementAt(0)}" },
-                            { "Prop4[1]", $"{dummy1.Prop4.ElementAt(1)}" },
-                            { "Prop4[2]", $"{dummy1.Prop4.ElementAt(2)}" },
-                            { $"Prop5.{dummy1.Prop5.ElementAt(0).Key}", $"{dummy1.Prop5.ElementAt(0).Value}" },
-                            { $"Prop5.{dummy1.Prop5.ElementAt(1).Key}", $"{dummy1.Prop5.ElementAt(1).Value}" },
-                            { $"Prop5.{dummy1.Prop5.ElementAt(2).Key}", $"{dummy1.Prop5.ElementAt(2).Value}" },
-                            { "Prop8", $"{dummy1.Prop8}" },
-                            { "Prop14", $"{dummy1.Prop14}" },
-                            { "Prop2.Prop1", $"{dummy2.Prop1}" },
-                            { "Prop2.Prop4[0]", $"{dummy2.Prop4.ElementAt(0)}" },
-                            { "Prop2.Prop4[1]", $"{dummy2.Prop4.ElementAt(1)}" },
-                            { "Prop2.Prop4[2]", $"{dummy2.Prop4.ElementAt(2)}" },
-                            { $"Prop2.Prop5.{dummy2.Prop5.ElementAt(0).Key}", $"{dummy2.Prop5.ElementAt(0).Value}" },
+                actual
+                    .Should()
+                    .BeEquivalentTo(new Dictionary<string, string>
+                    {
+                        { "Prop1", $"{dummy1.Prop1}" },
+                        { "Prop4[0]", $"{dummy1.Prop4.ElementAt(0)}" },
+                        { "Prop4[1]", $"{dummy1.Prop4.ElementAt(1)}" },
+                        { "Prop4[2]", $"{dummy1.Prop4.ElementAt(2)}" },
+                        { $"Prop5.{dummy1.Prop5.ElementAt(0).Key}", $"{dummy1.Prop5.ElementAt(0).Value}" },
+                        { $"Prop5.{dummy1.Prop5.ElementAt(1).Key}", $"{dummy1.Prop5.ElementAt(1).Value}" },
+                        { $"Prop5.{dummy1.Prop5.ElementAt(2).Key}", $"{dummy1.Prop5.ElementAt(2).Value}" },
+                        { "Prop8", $"{dummy1.Prop8}" },
+                        { "Prop14", $"{dummy1.Prop14}" },
+                        { "Prop2.Prop1", $"{dummy2.Prop1}" },
+                        { "Prop2.Prop4[0]", $"{dummy2.Prop4.ElementAt(0)}" },
+                        { "Prop2.Prop4[1]", $"{dummy2.Prop4.ElementAt(1)}" },
+                        { "Prop2.Prop4[2]", $"{dummy2.Prop4.ElementAt(2)}" },
+                        { $"Prop2.Prop5.{dummy2.Prop5.ElementAt(0).Key}", $"{dummy2.Prop5.ElementAt(0).Value}" },
                             
-                            // the applied filter will result in the following being excluded:
-                            // { $"Prop2.Prop5.{dummy2.Prop5.ElementAt(1).Key}", $"{dummy2.Prop5.ElementAt(1).Value}" },
+                        // the applied filter will result in the following being excluded:
+                        // { $"Prop2.Prop5.{dummy2.Prop5.ElementAt(1).Key}", $"{dummy2.Prop5.ElementAt(1).Value}" },
 
-                            { $"Prop2.Prop5.{dummy2.Prop5.ElementAt(2).Key}", $"{dummy2.Prop5.ElementAt(2).Value}" },
-                            { "Prop2.Prop8", $"{dummy2.Prop8}" },
-                            { "Prop2.Prop14", $"{dummy2.Prop14}" },
-                            { "Prop2.Prop2.Prop1", $"{dummy3.Prop1}" },
-                            { "Prop2.Prop2.Prop4[0]", $"{dummy3.Prop4.ElementAt(0)}" },
-                            { "Prop2.Prop2.Prop4[1]", $"{dummy3.Prop4.ElementAt(1)}" },
-                            { "Prop2.Prop2.Prop4[2]", $"{dummy3.Prop4.ElementAt(2)}" },
-                            { $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(0).Key}", $"{dummy3.Prop5.ElementAt(0).Value}" },
-                            { $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(1).Key}", $"{dummy3.Prop5.ElementAt(1).Value}" },
-                            { $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(2).Key}", $"{dummy3.Prop5.ElementAt(2).Value}" },
-                            { "Prop2.Prop2.Prop8", $"{dummy3.Prop8}" },
-                            { "Prop2.Prop2.Prop14", $"{dummy3.Prop14}" }
-                        });
-                }
-                finally
-                {
-                    _helper.Options.Filter = null;
-                }
+                        { $"Prop2.Prop5.{dummy2.Prop5.ElementAt(2).Key}", $"{dummy2.Prop5.ElementAt(2).Value}" },
+                        { "Prop2.Prop8", $"{dummy2.Prop8}" },
+                        { "Prop2.Prop14", $"{dummy2.Prop14}" },
+                        { "Prop2.Prop2.Prop1", $"{dummy3.Prop1}" },
+                        { "Prop2.Prop2.Prop4[0]", $"{dummy3.Prop4.ElementAt(0)}" },
+                        { "Prop2.Prop2.Prop4[1]", $"{dummy3.Prop4.ElementAt(1)}" },
+                        { "Prop2.Prop2.Prop4[2]", $"{dummy3.Prop4.ElementAt(2)}" },
+                        { $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(0).Key}", $"{dummy3.Prop5.ElementAt(0).Value}" },
+                        { $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(1).Key}", $"{dummy3.Prop5.ElementAt(1).Value}" },
+                        { $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(2).Key}", $"{dummy3.Prop5.ElementAt(2).Value}" },
+                        { "Prop2.Prop2.Prop8", $"{dummy3.Prop8}" },
+                        { "Prop2.Prop2.Prop14", $"{dummy3.Prop14}" }
+                    });
             }
 
             [Fact]
@@ -736,23 +732,17 @@ namespace AllOverIt.Tests.Helpers
             {
                 var dummy = Create<DummyType>();
 
-                _helper.Options.Filter = new DummyTypePropertyValueFilter();
+                var serializer = GetSerializer();
+                serializer.Options.Filter = new DummyTypePropertyValueFilter();
 
-                try
-                {
-                    var actual = _helper.SerializeToDictionary(dummy);
+                var actual = serializer.SerializeToDictionary(dummy);
 
-                    actual
-                        .Should()
-                        .BeEquivalentTo(new Dictionary<string, string>
-                        {
-                            { "Prop1", "Included" }
-                        });
-                }
-                finally
-                {
-                    _helper.Options.Filter = null;
-                }
+                actual
+                    .Should()
+                    .BeEquivalentTo(new Dictionary<string, string>
+                    {
+                        { "Prop1", "Included" }
+                    });
             }
 
             [Fact]
@@ -762,32 +752,207 @@ namespace AllOverIt.Tests.Helpers
                 var dummy2 = Create<DummyType>();
                 dummy.Prop2 = dummy2;
 
-                _helper.Options.Filter = new DummyTypePropertyNameValueFilter();
+                var serializer = GetSerializer();
+                serializer.Options.Filter = new DummyTypePropertyNameValueFilter();
 
-                try
+                var actual = serializer.SerializeToDictionary(dummy);
+
+                actual
+                    .Should()
+                    .BeEquivalentTo(new Dictionary<string, string>
+                    {
+                        {"Prop1", "Included"},
+                        { "Prop2.Prop1", $"{dummy2.Prop1}" },
+                        {"Prop2.Prop4[0]", $"{dummy2.Prop4.ElementAt(0)}"},
+                        {"Prop2.Prop4[1]", $"{dummy2.Prop4.ElementAt(1)}"},
+                        {"Prop2.Prop4[2]", $"{dummy2.Prop4.ElementAt(2)}"},
+                        {$"Prop2.Prop5.{dummy2.Prop5.ElementAt(0).Key}", $"{dummy2.Prop5.ElementAt(0).Value}"},
+                        {$"Prop2.Prop5.{dummy2.Prop5.ElementAt(1).Key}", $"{dummy2.Prop5.ElementAt(1).Value}"},
+                        {$"Prop2.Prop5.{dummy2.Prop5.ElementAt(2).Key}", $"{dummy2.Prop5.ElementAt(2).Value}"},
+                        {"Prop2.Prop8", $"{dummy2.Prop8}"},
+                        {"Prop2.Prop14", $"{dummy2.Prop14}"},
+                    });
+            }
+
+
+
+            public class SerializeObjectPropertyFilter : SerializeToDictionary
+            {
+                private sealed class DummyTypeTrackingFilter : ObjectPropertyFilter
                 {
-                    var actual = _helper.SerializeToDictionary(dummy);
+                    public List<Type> Types { get; } = new();
+                    public List<string> Paths { get; } = new();
+                    public List<string> Names { get; } = new();
+                    public List<int?> Indexes { get; } = new();
+                    public List<IReadOnlyCollection<ObjectPropertyParent>> ParentChains { get; } = new();
 
-                    actual
+                    public override bool OnIncludeProperty()
+                    {
+                        Types.Add(Type);
+                        Paths.Add(Path);
+                        Names.Add(Name);
+                        Indexes.Add(Index);
+                        ParentChains.Add(Parents);
+
+                        return true;
+                    }
+                }
+
+                [Fact]
+                public void Should_Track_Types()
+                {
+                    var dummy = Create<DummyType>();
+
+                    dummy.Prop11 = new Dictionary<string, Task>();      // will be ignored because of Task
+                    dummy.Prop12 = new Dictionary<int, DummyType>();    // will include an empty value in the output
+
+                    var dummy2 = Create<DummyType>();
+                    dummy.Prop2 = dummy2;
+
+                    // fix types so not being determined as AutoFixture based collections
+                    dummy.Prop4 = dummy.Prop4.ToList();
+                    dummy.Prop2.Prop4 = dummy.Prop2.Prop4.ToList();
+
+                    var filter = new DummyTypeTrackingFilter();
+
+                    var serializer = GetSerializer();
+
+                    serializer.Options.IncludeEmptyCollections = true;
+                    serializer.Options.Filter = filter;
+
+                    _ = serializer.SerializeToDictionary(dummy);
+
+                    filter.Types.Should().HaveCount(25);
+
+                    // Prop1, Prop2, Prop1, Prop4, , , , Prop5, , , , Prop8, Prop14, Prop4, , , , Prop5, , , , Prop8, Prop12, , Prop14
+
+                    filter.Types
                         .Should()
-                        .BeEquivalentTo(new Dictionary<string, string>
+                        .BeEquivalentTo(new[] 
                         {
-                            {"Prop1", "Included"},
-                            { "Prop2.Prop1", $"{dummy2.Prop1}" },
-                            {"Prop2.Prop4[0]", $"{dummy2.Prop4.ElementAt(0)}"},
-                            {"Prop2.Prop4[1]", $"{dummy2.Prop4.ElementAt(1)}"},
-                            {"Prop2.Prop4[2]", $"{dummy2.Prop4.ElementAt(2)}"},
-                            {$"Prop2.Prop5.{dummy2.Prop5.ElementAt(0).Key}", $"{dummy2.Prop5.ElementAt(0).Value}"},
-                            {$"Prop2.Prop5.{dummy2.Prop5.ElementAt(1).Key}", $"{dummy2.Prop5.ElementAt(1).Value}"},
-                            {$"Prop2.Prop5.{dummy2.Prop5.ElementAt(2).Key}", $"{dummy2.Prop5.ElementAt(2).Value}"},
-                            {"Prop2.Prop8", $"{dummy2.Prop8}"},
-                            {"Prop2.Prop14", $"{dummy2.Prop14}"},
+                            typeof(int),                                        // Prop1
+                            typeof(DummyType),                                  // Prop2
+                            typeof(int),                                        // Prop2.Prop1
+                            typeof(List<string>),                               // Prop2.Prop4
+                            typeof(string), typeof(string), typeof(string),     // Prop2.Prop4 elements
+                            typeof(Dictionary<int, bool>),                      // Prop2.Prop5
+                            typeof(bool), typeof(bool), typeof(bool),           // Prop2.Prop5 elements
+                            typeof(double),                                     // Prop2.Prop8
+                            typeof(string),                                     // Prop2.Prop14
+                            typeof(List<string>),                               // Prop4
+                            typeof(string), typeof(string), typeof(string),     // Prop4 elements
+                            typeof(Dictionary<int, bool>),                      // Prop5
+                            typeof(bool), typeof(bool), typeof(bool),           // Prop5 elements
+                            typeof(double),                                     // Prop8
+                            typeof(Dictionary<int, DummyType>),                 // Prop12
+                            typeof(string),                                     // Empty value for Prop12
+                            typeof(string)                                      // Prop14
                         });
                 }
-                finally
+
+                [Fact]
+                public void Should_Track_Names()
                 {
-                    _helper.Options.Filter = null;
+                    var dummy = Create<DummyType>();
+
+                    dummy.Prop11 = new Dictionary<string, Task>();      // will be ignored because of Task
+                    dummy.Prop12 = new Dictionary<int, DummyType>();    // will include an empty value in the output
+
+                    var dummy2 = Create<DummyType>();
+                    dummy.Prop2 = dummy2;
+
+                    var filter = new DummyTypeTrackingFilter();
+
+                    var serializer = GetSerializer();
+
+                    serializer.Options.IncludeEmptyCollections = true;
+                    serializer.Options.Filter = filter;
+
+                    _ = serializer.SerializeToDictionary(dummy);
+
+                    filter.Names.Should().HaveCount(25);
+
+                    filter.Names
+                        .Should()
+                        .BeEquivalentTo(new string[]
+                        {
+                           "Prop1", "Prop2", "Prop1", "Prop4", null, null, null, "Prop5", null, null, null,
+                            "Prop8", "Prop14", "Prop4", null, null, null, "Prop5", null, null, null, "Prop8",
+                            "Prop12", null, "Prop14"
+                        });
                 }
+
+                [Fact]
+                public void Should_Track_Paths()
+                {
+                    var dummy = Create<DummyType>();
+
+                    dummy.Prop11 = new Dictionary<string, Task>();      // will be ignored because of Task
+                    dummy.Prop12 = new Dictionary<int, DummyType>();    // will include an empty value in the output
+
+                    var dummy2 = Create<DummyType>();
+                    dummy.Prop2 = dummy2;
+
+                    var filter = new DummyTypeTrackingFilter();
+
+                    var serializer = GetSerializer();
+
+                    serializer.Options.IncludeEmptyCollections = true;
+                    serializer.Options.Filter = filter;
+
+                    _ = serializer.SerializeToDictionary(dummy);
+
+                    filter.Paths.Should().HaveCount(25);
+
+                    // Prop12 is listed twice because it includes the root property as well as an <empty> value
+                    filter.Paths
+                        .Should()
+                        .BeEquivalentTo(new string[]
+                        {
+                            "Prop1", "Prop2", "Prop2.Prop1", "Prop2.Prop4", "Prop2.Prop4[0]", "Prop2.Prop4[1]", "Prop2.Prop4[2]",
+                            "Prop2.Prop5", $"Prop2.Prop5.{dummy.Prop2.Prop5.ElementAt(0).Key}",
+                            $"Prop2.Prop5.{dummy.Prop2.Prop5.ElementAt(1).Key}", $"Prop2.Prop5.{dummy.Prop2.Prop5.ElementAt(2).Key}",
+                            "Prop2.Prop8", "Prop2.Prop14", "Prop4", "Prop4[0]", "Prop4[1]", "Prop4[2]", "Prop5",
+                            $"Prop5.{dummy.Prop5.ElementAt(0).Key}", $"Prop5.{dummy.Prop5.ElementAt(1).Key}",
+                            $"Prop5.{dummy.Prop5.ElementAt(2).Key}", "Prop8", "Prop12", "Prop12", "Prop14"
+                        });
+                }
+
+                [Fact]
+                public void Should_Track_Indexes()
+                {
+                    var dummy = Create<DummyType>();
+
+                    dummy.Prop11 = new Dictionary<string, Task>();      // will be ignored because of Task
+                    dummy.Prop12 = new Dictionary<int, DummyType>();    // will include an empty value in the output
+
+                    var dummy2 = Create<DummyType>();
+                    dummy.Prop2 = dummy2;
+
+                    var filter = new DummyTypeTrackingFilter();
+
+                    var serializer = GetSerializer();
+
+                    serializer.Options.IncludeEmptyCollections = true;
+                    serializer.Options.Filter = filter;
+
+                    _ = serializer.SerializeToDictionary(dummy);
+
+                    filter.Indexes.Should().HaveCount(25);
+
+                    filter.Indexes
+                        .Should()
+                        .BeEquivalentTo(new int?[]
+                        {
+                            null, null, null, null, 0, 1, 2, null, 0, 1, 2, null, null, null,
+                            0, 1, 2, null, 0, 1, 2, null, null, null, null
+                        });
+                }
+            }
+
+            private ObjectPropertySerializer GetSerializer()
+            {
+                return new();
             }
         }
     }

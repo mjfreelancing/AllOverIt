@@ -206,8 +206,9 @@ namespace SerializeObjectProperties
             Console.WriteLine("Dictionary #1 serialization values:");
             Console.WriteLine("===================================");
 
-            var items2 = serializer.SerializeToDictionary(dictionary).Select(kvp => $"{kvp.Key} = {kvp.Value}");
-            foreach (var item in items2)
+            var items = serializer.SerializeToDictionary(dictionary).Select(kvp => $"{kvp.Key} = {kvp.Value}");
+
+            foreach (var item in items)
             {
                 Console.WriteLine($"  {item}");
             }
@@ -227,8 +228,9 @@ namespace SerializeObjectProperties
             Console.WriteLine("Dictionary #2 serialization values:");
             Console.WriteLine("===================================");
 
-            var items2 = serializer.SerializeToDictionary(dictionary).Select(kvp => $"{kvp.Key} = {kvp.Value}");
-            foreach (var item in items2)
+            var items = serializer.SerializeToDictionary(dictionary).Select(kvp => $"{kvp.Key} = {kvp.Value}");
+
+            foreach (var item in items)
             {
                 Console.WriteLine($"  {item}");
             }
@@ -241,8 +243,9 @@ namespace SerializeObjectProperties
             Console.WriteLine("List serialization values:");
             Console.WriteLine("==========================");
 
-            var items3 = serializer.SerializeToDictionary(list).Select(kvp => $"{kvp.Key} = {kvp.Value}");
-            foreach (var item in items3)
+            var items = serializer.SerializeToDictionary(list).Select(kvp => $"{kvp.Key} = {kvp.Value}");
+
+            foreach (var item in items)
             {
                 Console.WriteLine($"  {item}");
             }

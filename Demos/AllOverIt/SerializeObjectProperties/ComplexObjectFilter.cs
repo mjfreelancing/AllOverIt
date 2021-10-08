@@ -2,16 +2,16 @@
 
 namespace SerializeObjectProperties
 {
-    internal sealed class ComplexObjectFilter : FormattableObjectPropertyFilter
+    internal sealed class ComplexObjectFilter : ObjectPropertyFilter, IFormattableObjectPropertyFilter
     {
         public override bool OnIncludeProperty()
         {
-            return !Path.EndsWith(".Values");
+            return Name != nameof(ComplexObject.Item.ItemData.Values);
         }
 
-        public override string OnFormatValue(string value)
-        {
-            return Path.EndsWith(".Timestamp")
+        public string OnFormatValue(string value)
+{
+            return Name == nameof(ComplexObject.Item.ItemData.Timestamp)
                 ? $"[{value}]"
                 : value;
         }

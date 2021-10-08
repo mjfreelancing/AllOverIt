@@ -251,14 +251,14 @@ namespace AllOverIt.Tests.Extensions
                 }
             }
 
-            private class DummyTypePropertyValueFilter : FormattableObjectPropertyFilter
+            private class DummyTypePropertyValueFilter : ObjectPropertyFilter, IFormattableObjectPropertyFilter
             {
                 public override bool OnIncludeValue()
                 {
                     return Path == nameof(DummyType.Prop1);
                 }
 
-                public override string OnFormatValue(string value)
+                public string OnFormatValue(string value)
                 {
                     return Path == nameof(DummyType.Prop1)
                         ? "Included"
@@ -266,14 +266,14 @@ namespace AllOverIt.Tests.Extensions
                 }
             }
 
-            private class DummyTypePropertyNameValueFilter : FormattableObjectPropertyFilter
+            private class DummyTypePropertyNameValueFilter : ObjectPropertyFilter, IFormattableObjectPropertyFilter
             {
                 public override bool OnIncludeProperty()
                 {
                     return Path == nameof(DummyType.Prop1) || Path.StartsWith("Prop2");
                 }
 
-                public override string OnFormatValue(string value)
+                public string OnFormatValue(string value)
                 {
                     return Path == nameof(DummyType.Prop1)
                         ? "Included"
