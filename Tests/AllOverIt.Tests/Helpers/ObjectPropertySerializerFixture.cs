@@ -76,7 +76,7 @@ namespace AllOverIt.Tests.Helpers
 
             public override bool OnIncludeProperty()
             {
-                return _predicate.Invoke(Name);
+                return _predicate.Invoke(Path);
             }
         }
 
@@ -84,7 +84,7 @@ namespace AllOverIt.Tests.Helpers
         {
             public override bool OnIncludeValue(ref string value)
             {
-                var includeProperty = Name == nameof(DummyType.Prop1);
+                var includeProperty = Path == nameof(DummyType.Prop1);
 
                 if (includeProperty)
                 {
@@ -99,12 +99,12 @@ namespace AllOverIt.Tests.Helpers
         {
             public override bool OnIncludeProperty()
             {
-                return Name == nameof(DummyType.Prop1) || Name.StartsWith("Prop2");
+                return Path == nameof(DummyType.Prop1) || Path.StartsWith("Prop2");
             }
 
             public override bool OnIncludeValue(ref string value)
             {
-                if (Name == nameof(DummyType.Prop1))
+                if (Path == nameof(DummyType.Prop1))
                 {
                     value = "Included";
                 }

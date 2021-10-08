@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Helpers;
-using AllOverIt.Reflection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,15 +13,7 @@ namespace SerializeObjectProperties
         {
             try
             {
-                var serializer = new ObjectPropertySerializer
-                {
-                    Options =
-                    {
-                        IncludeEmptyCollections = true,
-                        IncludeNulls = true,
-                        BindingOptions = BindingOptions.Default
-                    }
-                };
+                var serializer = new ObjectPropertySerializer();
 
                 SerializeObject(serializer);
 

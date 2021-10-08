@@ -240,8 +240,8 @@ namespace AllOverIt.Helpers
         private static bool IncludeProperty(ObjectPropertyFilter filter, Type type, string name, IEnumerable<object> references)
         {
             filter.Type = type;
-            filter.Name = name;
-            filter.Chain = references.AsReadOnlyCollection();
+            filter.Path = name;
+            filter.Parents = references.AsReadOnlyCollection();
 
             return filter.OnIncludeProperty();
         }
@@ -249,8 +249,8 @@ namespace AllOverIt.Helpers
         private static bool IncludePropertyValue(ObjectPropertyFilter filter, Type type, string name, IEnumerable<object> references, ref string value)
         {
             filter.Type = type;
-            filter.Name = name;
-            filter.Chain = references.AsReadOnlyCollection();
+            filter.Path = name;
+            filter.Parents = references.AsReadOnlyCollection();
 
             return filter.OnIncludeValue(ref value);
         }

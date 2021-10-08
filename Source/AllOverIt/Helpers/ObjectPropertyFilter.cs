@@ -6,8 +6,8 @@ namespace AllOverIt.Helpers
     public abstract class ObjectPropertyFilter
     {
         public Type Type { get; internal set; }
-        public string Name { get; internal set; }
-        public IReadOnlyCollection<object> Chain { get; internal set; }
+        public string Path { get; internal set; }
+        public IReadOnlyCollection<object> Parents { get; internal set; }
 
         public virtual bool OnIncludeProperty()
         {
@@ -18,5 +18,12 @@ namespace AllOverIt.Helpers
         {
             return true;
         }
+
+        //public virtual ref string OnFormatValue(ref string value)
+        //{
+        //    value = "";
+
+        //    return ref value;
+        //}
     }
 }
