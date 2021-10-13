@@ -4,7 +4,7 @@
 
   [1]  AllOverIt                               (v1.19.0) - None
   [2]  AllOverIt.Validation                    (v1.0.0)  - requires [1] v1.17.0
-  [3]  AllOverIt.Aws.Cdk.AppSync               (v0.15.0) - requires [1] v1.17.3
+  [3]  AllOverIt.Aws.Cdk.AppSync               (v0.16.0) - requires [1] v1.19.0
   [4]  AllOverIt.Evaluator                     (v3.0.0)  - requires [1] v1.18.0
   [5]  AllOverIt.GenericHost                   (v1.2.0)  - requires [1] v1.17.0
   [6]  AllOverIt.Fixture                       (v1.6.0)  - None
@@ -15,6 +15,14 @@
   [11] AllOverIt.Aws.AppSync.Client            (v0.5.2)  - requires [1] v1.18.0, [8] v1.0.0
 
 ======================================================================================================================
+
+
+
+14 Oct 2021
+======================================================================================================================
+AllOverIt.Aws.Cdk.AppSync - v0.16.0
+  * Updated to Amazon.CDK.AWS.AppSync v1.127.0
+  * Added CurrentPageCursor to IPageInfo
 
 
 
