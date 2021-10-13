@@ -2,11 +2,12 @@
 
 namespace AllOverIt.Threading
 {
-    /// <summary>An interface representing a lock that is used to manage access to a resource, allowing multiple threads
+    /// <summary>Represents a lock that is used to manage access to a resource, allowing multiple threads
     /// for reading or exclusive access for writing.</summary>
     public interface IReadWriteLock : IDisposable
     {
-        /// <summary>Blocks the calling thread until a read lock is acquired.</summary>
+        /// <summary>Blocks the calling thread until a read lock is acquired. The lock will be acquired immediately
+        /// if there are no current write locks.</summary>
         /// <param name="upgradeable">Indicates if the read lock can be upgraded to a write lock.</param>
         void EnterReadLock(bool upgradeable);
 

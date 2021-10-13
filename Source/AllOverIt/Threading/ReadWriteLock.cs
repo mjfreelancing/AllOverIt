@@ -15,16 +15,21 @@ namespace AllOverIt.Threading
         // Only one thread can enter a write lock and meanwhile no other thread can enter any other lock type.
         private ReaderWriterLockSlim _slimLock;
 
+        /// <summary>Constructor.</summary>
+        /// <remarks>Defaults to a non-recursive lock policy.</remarks>
         public ReadWriteLock()
             : this(LockRecursionPolicy.NoRecursion)
         {
         }
 
+        /// <summary>Constructor.</summary>
+        /// <param name="recursionPolicy">Determines if a lock can be entered multiple times by the same thread.</param>
         public ReadWriteLock(LockRecursionPolicy recursionPolicy)
         {
             _slimLock = new ReaderWriterLockSlim(recursionPolicy);
         }
 
+        /// <inheritdoc />
         public void EnterReadLock(bool upgradeable)
         {
             if (upgradeable)
@@ -37,6 +42,7 @@ namespace AllOverIt.Threading
             }
         }
 
+        /// <inheritdoc />
         public bool TryEnterReadLock(bool upgradeable, int millisecondsTimeout)
         {
             return upgradeable
@@ -44,6 +50,7 @@ namespace AllOverIt.Threading
                 : _slimLock.TryEnterReadLock(millisecondsTimeout);
         }
 
+        /// <inheritdoc />
         public void ExitReadLock()
         {
             if (_slimLock.IsUpgradeableReadLockHeld)
@@ -56,16 +63,19 @@ namespace AllOverIt.Threading
             }
         }
 
+        /// <inheritdoc />
         public void EnterWriteLock()
         {
             _slimLock.EnterWriteLock();
         }
 
+        /// <inheritdoc />
         public bool TryEnterWriteLock(int millisecondsTimeout)
         {
             return _slimLock.TryEnterWriteLock(millisecondsTimeout);
         }
 
+        /// <inheritdoc />
         public void ExitWriteLock()
         {
             _slimLock.ExitWriteLock();
