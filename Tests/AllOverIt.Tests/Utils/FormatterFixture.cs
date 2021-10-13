@@ -7,7 +7,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Utils
 {
-    public class UtilsFixture : FixtureBase
+    public class FormatterFixture : FixtureBase
     {
         private static readonly string _basicSourceString = @"{""key"":""value""}";
 
@@ -34,7 +34,7 @@ namespace AllOverIt.Tests.Utils
                })
                .Should()
                .Throw<ArgumentOutOfRangeException>()
-               .WithMessage($"The indent size cannot be negtive. (Parameter 'indentSize')");
+               .WithMessage("The indent size cannot be negative. (Parameter 'indentSize')");
         }
 
         [Fact]
@@ -243,6 +243,27 @@ namespace AllOverIt.Tests.Utils
                 @"{
   ""key1"": [
   ]
+}";
+
+            var actual = Formatter.FormatJsonString(source);
+
+            actual.Should().Be(expected);
+        }
+
+        [Fact]
+        public void Should_Remove_Extra_Whitespace()
+        {
+            var source = @"    {   ""key1""    :
+
+
+""value1""   ,  ""key2"":   ""value2""   }
+
+";
+
+            var expected =
+                @"{
+  ""key1"": ""value1"",
+  ""key2"": ""value2""
 }";
 
             var actual = Formatter.FormatJsonString(source);

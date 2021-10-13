@@ -13,7 +13,6 @@ namespace AllOverIt.Utils
 
             public char Char { get; set; }
             public bool Unquoted { get; set; }
-            //public bool NewBracket { get; set; }
             public bool PendingIndent { get; set; }
 
             public FormatterState Append(char value)
@@ -48,7 +47,7 @@ namespace AllOverIt.Utils
 
             if (indentSize < 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(indentSize), "The indent size cannot be negtive.");
+                throw new ArgumentOutOfRangeException(nameof(indentSize), "The indent size cannot be negative.");
             }
 
             var indentation = 0;
