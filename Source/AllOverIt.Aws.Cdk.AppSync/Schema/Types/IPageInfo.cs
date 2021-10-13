@@ -5,6 +5,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Schema.Types
     [SchemaType("PageInfo")]
     public interface IPageInfo
     {
+        public string CurrentPageCursor();
         public string PreviousPageCursor();
         public string NextPageCursor();
     }

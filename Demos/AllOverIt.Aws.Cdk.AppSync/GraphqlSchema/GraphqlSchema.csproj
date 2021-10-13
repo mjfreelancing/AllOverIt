@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Amazon.CDK.AWS.AppSync" Version="1.121.0" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\..\..\Source\AllOverIt.Aws.Cdk.AppSync\AllOverIt.Aws.Cdk.AppSync.csproj" />
     </ItemGroup>
 
