@@ -131,16 +131,12 @@ namespace AllOverIt.Evaluator
 
         private void PushOperator(string operatorToken)
         {
-            _ = operatorToken.WhenNotNullOrEmpty(nameof(operatorToken));
-
             _operatorStack.Push(operatorToken);
             _lastPushIsOperator = true;
         }
 
         private void PushExpression(Expression expression)
         {
-            expression.WhenNotNull(nameof(expression));
-
             _expressionStack.Push(expression);
             _lastPushIsOperator = false;
         }
@@ -406,10 +402,6 @@ namespace AllOverIt.Evaluator
 
         private void ProcessOperators(Stack<string> operators, Stack<Expression> expressions, Func<bool> condition)
         {
-            _ = operators.WhenNotNull(nameof(operators));
-            _ = expressions.WhenNotNull(nameof(expressions));
-            _ = condition.WhenNotNull(nameof(condition));
-
             while (operators.Any() && condition.Invoke())
             {
                 var nextOperator = operators.Pop();

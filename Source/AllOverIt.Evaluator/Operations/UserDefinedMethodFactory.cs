@@ -86,8 +86,10 @@ namespace AllOverIt.Evaluator.Operations
         /// <returns>True if the requested method name has been registered, otherwise false.</returns>
         public bool IsRegistered(string methodName)
         {
-            return BuiltInMethodsRegistry.ContainsKey(methodName.ToUpper()) ||
-                   _userMethodsRegistry != null && _userMethodsRegistry.ContainsKey(methodName.ToUpper());
+            var upperMethodName = methodName.ToUpperInvariant();
+
+            return BuiltInMethodsRegistry.ContainsKey(upperMethodName) ||
+                   _userMethodsRegistry != null && _userMethodsRegistry.ContainsKey(upperMethodName);
         }
 
         /// <summary>Gets an instance of the operation type that was registered using the provided method name.</summary>
@@ -96,7 +98,7 @@ namespace AllOverIt.Evaluator.Operations
         /// <remarks>The operation type is only ever created once (per factory instance).</remarks>
         public ArithmeticOperationBase GetMethod(string methodName)
         {
-            var upperMethodName = methodName.ToUpper();
+            var upperMethodName = methodName.ToUpperInvariant();
 
             if (BuiltInMethodsRegistry.TryGetValue(upperMethodName, out var builtInOperation))
             {
