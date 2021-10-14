@@ -281,7 +281,7 @@ namespace AllOverIt.Evaluator
                 if (_userDefinedMethodFactory.IsRegistered(namedOperand))
                 {
                     // consume the opening (
-                    _currentIndex++;
+                    ++_currentIndex;
 
                     // the token processor consumes the trailing ')'
                     return ParseMethodToExpression(namedOperand);
@@ -338,7 +338,7 @@ namespace AllOverIt.Evaluator
               (_, _) =>
               {
                   // consume the '('
-                  _currentIndex++;
+                  ++_currentIndex;
                   
                   ProcessScopeStart();
                   return true;
@@ -350,7 +350,7 @@ namespace AllOverIt.Evaluator
               (_, isUserDefined) =>
               {
                   // consume the ')'
-                  _currentIndex++;
+                  ++_currentIndex;
                   
                   return ProcessScopeEnd(isUserDefined);
               });
@@ -360,7 +360,7 @@ namespace AllOverIt.Evaluator
               (token, isUserDefined) => isUserDefined && token == ',',
               (_, _) =>
               {
-                  _currentIndex++;
+                  ++_currentIndex;
                   ProcessMethodArgument();
                   return true;
               });
@@ -454,7 +454,7 @@ namespace AllOverIt.Evaluator
 
                 if (IsNumericalCandidate(next) || isExponent || allowMinus)
                 {
-                    _currentIndex++;
+                    ++_currentIndex;
                     previousTokenWasExponent = isExponent;
                 }
                 else
@@ -507,7 +507,7 @@ namespace AllOverIt.Evaluator
                     next != ',' &&
                     !IsCandidateOperation(next))   // only looking to see if 'next' is the start of a new operation
                 {
-                    _currentIndex++;
+                    ++_currentIndex;
                 }
                 else
                 {
@@ -553,7 +553,7 @@ namespace AllOverIt.Evaluator
 
                 if (isCandidate)
                 {
-                    _currentIndex++;
+                    ++_currentIndex;
                 }
                 else
                 {
