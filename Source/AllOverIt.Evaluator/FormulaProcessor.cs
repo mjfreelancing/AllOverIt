@@ -226,6 +226,12 @@ namespace AllOverIt.Evaluator
         {
             // starting at the current reader position, read a numerical result and return it as an expression
             var value = ReadNumerical();
+
+            if (!_lastPushIsOperator)
+            {
+                throw new FormulaException($"The number '{value}' did not follow an operator.");
+            }
+
             var numericalExpression = Expression.Constant(value);
 
             PushExpression(numericalExpression);
@@ -253,7 +259,11 @@ namespace AllOverIt.Evaluator
             {
                 var next = span[_currentIndex];
 
-                if (!ProcessToken(next, isUserMethod))
+                if (char.IsWhiteSpace(next))
+                {
+                    ++_currentIndex;
+                }
+                else if (!ProcessToken(next, isUserMethod))
                 {
                     return;
                 }
@@ -497,6 +507,7 @@ namespace AllOverIt.Evaluator
                 if (next != '(' &&
                     next != ')' &&
                     next != ',' &&
+                    !char.IsWhiteSpace(next) &&
                     !IsCandidateOperation(next))   // only looking to see if 'next' is the start of a new operation
                 {
                     ++_currentIndex;
