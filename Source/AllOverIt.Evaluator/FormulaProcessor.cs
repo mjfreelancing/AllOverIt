@@ -548,8 +548,8 @@ namespace AllOverIt.Evaluator
                 // keep reading while ever the characters read are part of a registered operator
                 // (almost always a single character, but supports multi-character)
                 var isCandidate = startIndex == _currentIndex
-                    ? IsCandidateOperation(span[_currentIndex])        // avoid creation of a string
-                    : IsCandidateOperation(span.Slice(startIndex, _currentIndex - startIndex + 1).ToString());
+                    ? IsCandidateOperation(span[_currentIndex])
+                    : IsCandidateOperation(span.Slice(startIndex, _currentIndex - startIndex + 1));
 
                 if (isCandidate)
                 {
@@ -584,9 +584,19 @@ namespace AllOverIt.Evaluator
             return _operationFactory.RegisteredOperations.Any(key => key[0] == symbol);
         }
 
-        private bool IsCandidateOperation(string token)
+        private bool IsCandidateOperation(ReadOnlySpan<char> token)
         {
-            return _operationFactory.RegisteredOperations.Any(key => key.StartsWith(token));
+            // Cannot use ReadOnlySpan<> in a LINQ statement.
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            foreach (var operation in _operationFactory.RegisteredOperations)
+            {
+                if (operation.AsSpan().StartsWith(token))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
