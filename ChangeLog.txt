@@ -18,6 +18,13 @@
 
 
 
+XX XXX 2021 - PENDING - Update version info above
+======================================================================================================================
+AllOverIt.Evaluator - v3.1.0
+  * Internal improvements to reduce memory allocations
+
+
+
 14 Oct 2021
 ======================================================================================================================
 AllOverIt.Aws.Cdk.AppSync - v0.16.0
