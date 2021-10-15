@@ -2,7 +2,6 @@ using AllOverIt.Evaluator.Exceptions;
 using AllOverIt.Evaluator.Operations;
 using AllOverIt.Evaluator.Operators;
 using AllOverIt.Evaluator.Variables;
-using AllOverIt.Extensions;
 using AllOverIt.Helpers;
 using System;
 using System.Collections.Generic;
@@ -94,7 +93,7 @@ namespace AllOverIt.Evaluator
             try
             {
                 ParseContent(false);
-                ProcessOperators(_operatorStack, _expressionStack, () => true);
+                ProcessOperators(_operatorStack, _expressionStack);
 
                 var lastExpression = _expressionStack.Pop();
                 var funcExpression = Expression.Lambda<Func<double>>(lastExpression);
@@ -243,7 +242,7 @@ namespace AllOverIt.Evaluator
             if (isUserMethod)
             {
                 // we should at least have a 'UserMethod' in the stack to indicate a user method is being parsed
-                if (!_operatorStack.Any())
+                if (_operatorStack.Count == 0)
                 {
                     throw new FormulaException("Invalid expression stack.");
                 }
@@ -422,9 +421,9 @@ namespace AllOverIt.Evaluator
             return FormulaExpressionFactory.CreateExpression(operation, _expressionStack);
         }
 
-        private void ProcessOperators(Stack<string> operators, Stack<Expression> expressions, Func<bool> condition)
+        private void ProcessOperators(Stack<string> operators, Stack<Expression> expressions, Func<bool> condition = null)
         {
-            while (operators.Count > 0 && condition.Invoke())
+            while (operators.Count > 0 && (condition == null || condition.Invoke()))
             {
                 var nextOperator = operators.Pop();
                 var operation = _operationFactory.GetOperation(nextOperator);
@@ -466,7 +465,7 @@ namespace AllOverIt.Evaluator
             {
                 var next = span[_currentIndex];
 
-                var isExponent = "eE".ContainsChar(next);
+                var isExponent = next is 'e' or 'E';
 
                 var allowMinus = previousTokenWasExponent && (next == '-');
 
