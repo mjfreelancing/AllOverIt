@@ -29,7 +29,6 @@ namespace AllOverIt.Evaluator
             internal const string OpenScope = "(";
         }
 
-        private static readonly IReadOnlyCollection<string> EmptyReadOnlyCollection = new List<string>();
         private static readonly char DecimalSeparator = Convert.ToChar(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
 
         // More efficient than IList and IEnumerable
@@ -100,13 +99,11 @@ namespace AllOverIt.Evaluator
                 var lastExpression = _expressionStack.Pop();
                 var funcExpression = Expression.Lambda<Func<double>>(lastExpression);
 
-                var referencedVariableNames = _referencedVariableNames.Any()
-
-                    // must return a copy of the referenced variable names
+                var referencedVariableNames = _referencedVariableNames.Count > 0
+                    // Must return a copy of the referenced variable names
                     ? new ReadOnlyCollection<string>(_referencedVariableNames.ToList())
-
-                    // prevent allocating multiple collections when there's nothing in them
-                    : EmptyReadOnlyCollection;
+                    // FormulaProcessorResult handles this so it points to an empty ReadOnlyCollection
+                    : null;
 
                 // If the caller did not provide a registry (it was null) and
                 //  - there were no variables then returning null for the registry.

@@ -1,7 +1,9 @@
 using AllOverIt.Evaluator.Variables;
+using AllOverIt.Extensions;
 using AllOverIt.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Evaluator
@@ -9,12 +11,15 @@ namespace AllOverIt.Evaluator
     /// <summary>Contains the result of parsing and processing a formula.</summary>
     public sealed record FormulaProcessorResult
     {
+        private static readonly ReadOnlyCollection<string> EmptyList = new(new List<string>());
+        private readonly IReadOnlyCollection<string> _referencedVariableNames;
+
         /// <summary>Gets the expression built from a processed formula. When this expression is compiled and invoked
         /// the value of the formula is returned.</summary>
         public Expression<Func<double>> FormulaExpression { get; }
 
         /// <summary>Gets an enumerable of all variable names explicitly referenced by the formula.</summary>
-        public IReadOnlyCollection<string> ReferencedVariableNames { get; }
+        public IReadOnlyCollection<string> ReferencedVariableNames => _referencedVariableNames ?? EmptyList;
 
         /// <summary>The variable registry that will be referenced by the compiled expression during evaluation.
         /// This may be null if the formula does not contain any variables.</summary>
@@ -24,14 +29,15 @@ namespace AllOverIt.Evaluator
 
         /// <summary>Constructor.</summary>
         /// <param name="formulaExpression">The expression built from a processed formula.</param>
-        /// <param name="referencedVariableNames">A collection of all variable names explicitly referenced by the formula.</param>
-        /// <param name="variableRegistry">The variable registry that will be referenced by the compiled expression during evaluation.</param>
-        internal FormulaProcessorResult(Expression<Func<double>> formulaExpression, IReadOnlyCollection<string> referencedVariableNames, IVariableRegistry variableRegistry)
+        /// <param name="referencedVariableNames">When not null, a collection of all variable names explicitly referenced by the formula.</param>
+        /// <param name="variableRegistry">When not null, the variable registry that will be referenced by the compiled expression during evaluation.</param>
+        internal FormulaProcessorResult(Expression<Func<double>> formulaExpression, IEnumerable<string> referencedVariableNames, IVariableRegistry variableRegistry)
         {
-            // Note: referencedVariableNames is passed as IReadOnlyCollection<string> for performance reasons (from the FormulaProcessor)
             FormulaExpression = formulaExpression.WhenNotNull(nameof(formulaExpression));
-            ReferencedVariableNames = referencedVariableNames.WhenNotNull(nameof(referencedVariableNames));
-            VariableRegistry = variableRegistry;    // can be NULL if there were no variables in the formula
+
+            // can be NULL if there were no variables in the formula
+            _referencedVariableNames = referencedVariableNames?.AsReadOnlyCollection();
+            VariableRegistry = variableRegistry;
         }
     }
 }
