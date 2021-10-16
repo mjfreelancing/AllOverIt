@@ -38,4 +38,9 @@
         <ProjectReference Include="..\..\Source\AllOverIt\AllOverIt.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Patterns\ChainOfResponsibility\" />
+      <Folder Include="Patterns\Specification\" />
+    </ItemGroup>
+
 </Project>

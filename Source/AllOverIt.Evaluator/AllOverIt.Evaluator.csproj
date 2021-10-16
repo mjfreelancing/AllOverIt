@@ -23,6 +23,10 @@
       <DocumentationFile>C:\Data\GitHub\mjfreelancing\Projects\AllOverIt\Source\AllOverIt.Evaluator\AllOverIt.Evaluator.xml</DocumentationFile>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp3.1|AnyCPU'">
+      <DocumentationFile>C:\Data\GitHub\mjfreelancing\Projects\AllOverIt\Source\AllOverIt.Evaluator\AllOverIt.Evaluator.xml</DocumentationFile>
+    </PropertyGroup>
+
     <ItemGroup>
         <ProjectReference Include="..\AllOverIt\AllOverIt.csproj" />
     </ItemGroup>

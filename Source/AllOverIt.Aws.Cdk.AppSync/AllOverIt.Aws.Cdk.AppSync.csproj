@@ -15,6 +15,10 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+      <DocumentationFile>C:\Data\GitHub\mjfreelancing\Projects\AllOverIt\Source\AllOverIt.Aws.Cdk.AppSync\AllOverIt.Aws.Cdk.AppSync.xml</DocumentationFile>
+    </PropertyGroup>
+
     <ItemGroup>
         <PackageReference Include="Amazon.CDK.AWS.AppSync" Version="1.127.0" />
     </ItemGroup>
