@@ -1,9 +1,10 @@
 ﻿#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER || NET5_0_OR_GREATER
 
+using AllOverIt.Helpers;
 using System;
 using System.Threading.Tasks;
 
-namespace AllOverIt.Helpers
+namespace AllOverIt.Patterns.ResourceInitialization
 {
     /// <summary>An async disposable object implementing the Resource Acquisition Is Initialization idiom.</summary>
     public class RaiiAsync : IAsyncDisposable

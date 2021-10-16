@@ -8,6 +8,7 @@ using AllOverIt.Aws.AppSync.Client.Subscription;
 using AllOverIt.Aws.AppSync.Client.Utils;
 using AllOverIt.Extensions;
 using AllOverIt.Helpers;
+using AllOverIt.Patterns.ResourceInitialization;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;

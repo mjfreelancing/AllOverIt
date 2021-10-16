@@ -1,4 +1,4 @@
-﻿using AllOverIt.Helpers;
+﻿using AllOverIt.Patterns.ResourceInitialization;
 using AllOverIt.Threading;
 using System;
 using System.Diagnostics.CodeAnalysis;

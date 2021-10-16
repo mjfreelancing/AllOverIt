@@ -1,16 +1,15 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using AllOverIt.Helpers;
+using AllOverIt.Patterns.ResourceInitialization;
 using FluentAssertions;
 using System;
-using System.Threading.Tasks;
 using Xunit;
 
-namespace AllOverIt.Tests.Helpers
+namespace AllOverIt.Tests.Patterns.ResourceInitialization
 {
-    public class RaiiAsyncFixture : FixtureBase
+    public class RaiiFixture : FixtureBase
     {
-        public class RaiiAsync_NonType : RaiiFixture
+        public class Raii_NonType : RaiiFixture
         {
             public class Constructor : Raii_NonType
             {
@@ -19,7 +18,7 @@ namespace AllOverIt.Tests.Helpers
                 {
                     Invoking(() =>
                         {
-                            var _ = new RaiiAsync(null, () => Task.CompletedTask);
+                            var _ = new Raii(null, () => { });
                         })
                         .Should()
                         .Throw<ArgumentNullException>()
@@ -31,7 +30,7 @@ namespace AllOverIt.Tests.Helpers
                 {
                     Invoking(() =>
                         {
-                            var _ = new RaiiAsync(() => { }, null);
+                            var _ = new Raii(() => { }, null);
                         })
                         .Should()
                         .Throw<ArgumentNullException>()
@@ -39,7 +38,7 @@ namespace AllOverIt.Tests.Helpers
                 }
 
                 [Fact]
-                public async Task Should_Call_Initialize()
+                public void Should_Call_Initialize()
                 {
                     var initialized = false;
 
@@ -48,43 +47,40 @@ namespace AllOverIt.Tests.Helpers
                         initialized = true;
                     };
 
-                    await using (new RaiiAsync(initialize, () => Task.CompletedTask))
+                    using (new Raii(initialize, () => { }))
                     {
                         initialized.Should().BeTrue();
                     }
                 }
 
                 [Fact]
-                public async Task Should_Not_Call_Cleanup()
+                public void Should_Not_Call_Cleanup()
                 {
                     var cleanedUp = false;
 
-                    Func<Task> cleanup = () =>
+                    Action cleanup = () =>
                     {
                         cleanedUp = true;
-                        return Task.CompletedTask;
                     };
 
-                    await using(new RaiiAsync(() => { }, cleanup))
+                    using (new Raii(() => { }, cleanup))
                     {
                         cleanedUp.Should().BeFalse();
                     }
                 }
 
                 [Fact]
-                public async Task Should_Call_Cleanup()
+                public void Should_Call_Cleanup()
                 {
                     var cleanedUp = false;
 
-                    Func<Task> cleanup = () =>
+                    Action cleanup = () =>
                     {
                         cleanedUp = true;
-                        return Task.CompletedTask;
                     };
 
-                    await using (new RaiiAsync(() => { }, cleanup))
-                    {
-                    }
+                    using (new Raii(() => { }, cleanup))
+                    { }
 
                     cleanedUp.Should().BeTrue();
                 }
@@ -93,17 +89,16 @@ namespace AllOverIt.Tests.Helpers
             public class Disposal : Raii_NonType
             {
                 [Fact]
-                public async Task Should_Dispose()
+                public void Should_Dispose()
                 {
                     var cleanedUp = false;
 
-                    Func<Task> cleanup = () =>
+                    Action cleanup = () =>
                     {
                         cleanedUp = true;
-                        return Task.CompletedTask;
                     };
 
-                    await using (new RaiiAsync(() => { }, cleanup))
+                    using (new Raii(() => { }, cleanup))
                     {
                     }
 
@@ -112,16 +107,16 @@ namespace AllOverIt.Tests.Helpers
             }
         }
 
-        public class RaiiAsync_Type : RaiiFixture
+        public class Raii_Type : RaiiFixture
         {
-            public class Constructor : RaiiAsync_Type
+            public class Constructor : Raii_Type
             {
                 [Fact]
                 public void Should_Throw_When_Initialize_Null()
                 {
                     Invoking(() =>
                         {
-                            var _ = new RaiiAsync<int>(null, _ => Task.CompletedTask);
+                            var _ = new Raii<int>(null, _ => { });
                         })
                         .Should()
                         .Throw<ArgumentNullException>()
@@ -135,7 +130,7 @@ namespace AllOverIt.Tests.Helpers
 
                     Invoking(() =>
                         {
-                            var _ = new RaiiAsync<int>(() => value, null);
+                            var _ = new Raii<int>(() => value, null);
                         })
                         .Should()
                         .Throw<ArgumentNullException>()
@@ -143,7 +138,7 @@ namespace AllOverIt.Tests.Helpers
                 }
 
                 [Fact]
-                public async Task Should_Call_Initialize()
+                public void Should_Call_Initialize()
                 {
                     var value = Create<int>();
                     var initialized = -value;
@@ -154,14 +149,14 @@ namespace AllOverIt.Tests.Helpers
                         return value;
                     };
 
-                    await using (new RaiiAsync<int>(initialize, _ => Task.CompletedTask))
+                    using (new Raii<int>(initialize, _ => { }))
                     {
                         initialized.Should().Be(value);
                     }
                 }
 
                 [Fact]
-                public async Task Should_Initialize_Context()
+                public void Should_Initialize_Context()
                 {
                     var value = Create<int>();
 
@@ -170,14 +165,14 @@ namespace AllOverIt.Tests.Helpers
                         return value;
                     };
 
-                    await using (var raii = new RaiiAsync<int>(initialize, _ => Task.CompletedTask))
+                    using (var raii = new Raii<int>(initialize, _ => { }))
                     {
                         raii.Context.Should().Be(value);
                     }
                 }
 
                 [Fact]
-                public async Task Should_Pass_Initialize_To_Cleanup()
+                public void Should_Pass_Initialize_To_Cleanup()
                 {
                     var value = Create<int>();
                     var initValue = value;
@@ -187,13 +182,7 @@ namespace AllOverIt.Tests.Helpers
                         return value;
                     };
 
-                    await using (new RaiiAsync<int>(
-                        initialize,
-                        val =>
-                        {
-                            initValue = val;
-                            return Task.CompletedTask;
-                        }))
+                    using (new Raii<int>(initialize, val => { initValue = val; }))
                     {
                     }
 
@@ -201,34 +190,32 @@ namespace AllOverIt.Tests.Helpers
                 }
 
                 [Fact]
-                public async Task Should_Not_Call_Cleanup()
+                public void Should_Not_Call_Cleanup()
                 {
                     var cleanedUp = false;
 
-                    Func<int, Task> cleanup = _ =>
+                    Action<int> cleanup = _ =>
                     {
                         cleanedUp = true;
-                        return Task.CompletedTask;
                     };
 
-                    await using (new RaiiAsync<int>(Create<int>, cleanup))
+                    using (new Raii<int>(Create<int>, cleanup))
                     {
                         cleanedUp.Should().BeFalse();
                     }
                 }
 
                 [Fact]
-                public async Task Should_Call_Cleanup()
+                public void Should_Call_Cleanup()
                 {
                     var cleanedUp = false;
 
-                    Func<int, Task> cleanup = _ =>
+                    Action<int> cleanup = _ =>
                     {
                         cleanedUp = true;
-                        return Task.CompletedTask;
                     };
 
-                    await using (new RaiiAsync<int>(Create<int>, cleanup))
+                    using (new Raii<int>(Create<int>, cleanup))
                     {
                     }
 
@@ -239,17 +226,16 @@ namespace AllOverIt.Tests.Helpers
             public class Disposal : Raii_NonType
             {
                 [Fact]
-                public async Task Should_Dispose()
+                public void Should_Dispose()
                 {
                     var cleanedUp = false;
 
-                    Func<int, Task> cleanup = _ =>
+                    Action<int> cleanup = _ =>
                     {
                         cleanedUp = true;
-                        return Task.CompletedTask;
                     };
 
-                    await using (new RaiiAsync<int>(Create<int>, cleanup))
+                    using (new Raii<int>(Create<int>, cleanup))
                     {
                     }
 

@@ -1,6 +1,7 @@
-﻿using System;
+﻿using AllOverIt.Helpers;
+using System;
 
-namespace AllOverIt.Helpers
+namespace AllOverIt.Patterns.ResourceInitialization
 {
     /// <summary>A disposable object implementing the Resource Acquisition Is Initialization idiom.</summary>
     public class Raii : IDisposable

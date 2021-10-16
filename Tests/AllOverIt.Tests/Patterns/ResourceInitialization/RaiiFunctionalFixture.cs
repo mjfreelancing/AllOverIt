@@ -1,12 +1,12 @@
 ﻿using AllOverIt.Fixture;
-using AllOverIt.Helpers;
+using AllOverIt.Patterns.ResourceInitialization;
 using FluentAssertions;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace AllOverIt.Tests.Helpers
+namespace AllOverIt.Tests.Patterns.ResourceInitialization
 {
     public class RaiiFunctionalFixture : FixtureBase
     {
