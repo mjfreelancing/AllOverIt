@@ -326,8 +326,14 @@
         <member name="T:AllOverIt.Evaluator.Operations.GreaterThanOperation">
             <summary>An operation that returns true if one operand is greater than a second, otherwise false.</summary>
         </member>
+        <member name="M:AllOverIt.Evaluator.Operations.GreaterThanOperation.#ctor">
+            <summary>Constructor.</summary>
+        </member>
         <member name="T:AllOverIt.Evaluator.Operations.GreaterThanOrEqualOperation">
             <summary>An operation that returns true if one operand is greater than or equal to a second, otherwise false.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.GreaterThanOrEqualOperation.#ctor">
+            <summary>Constructor.</summary>
         </member>
         <member name="T:AllOverIt.Evaluator.Operations.IArithmeticOperation">
             <summary>Represents an arithmetic operator or user defined method.</summary>
@@ -402,8 +408,14 @@
         <member name="T:AllOverIt.Evaluator.Operations.LessThanOperation">
             <summary>An operation that returns true if one operand is less than a second, otherwise false.</summary>
         </member>
+        <member name="M:AllOverIt.Evaluator.Operations.LessThanOperation.#ctor">
+            <summary>Constructor.</summary>
+        </member>
         <member name="T:AllOverIt.Evaluator.Operations.LessThanOrEqualOperation">
             <summary>An operation that returns true if one operand is less than or equal to a second, otherwise false.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.LessThanOrEqualOperation.#ctor">
+            <summary>Constructor.</summary>
         </member>
         <member name="T:AllOverIt.Evaluator.Operations.Log10Operation">
             <summary>An operation used to calculate the log10 of a number.</summary>
