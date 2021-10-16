@@ -6,6 +6,7 @@ namespace AllOverIt.Evaluator.Operations
     /// <summary>An operation that returns true if one operand is greater than or equal to a second, otherwise false.</summary>
     public sealed class GreaterThanOrEqualOperation : ArithmeticOperationBase
     {
+        /// <summary>Constructor.</summary>
         public GreaterThanOrEqualOperation()
             : base(2, MakeOperator)
         {
