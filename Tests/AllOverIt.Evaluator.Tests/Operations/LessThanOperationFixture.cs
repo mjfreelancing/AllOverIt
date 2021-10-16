@@ -1,0 +1,11 @@
+using System;
+using AllOverIt.Evaluator.Operations;
+using AllOverIt.Evaluator.Operators;
+
+namespace AllOverIt.Evaluator.Tests.Operations
+{
+    public class LessThanOperationFixture : BinaryOperationFixtureBase<LessThanOperation>
+    {
+        protected override Type OperatorType => typeof(LessThanOperator);
+    }
+}

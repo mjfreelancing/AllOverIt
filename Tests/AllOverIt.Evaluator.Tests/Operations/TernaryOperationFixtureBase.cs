@@ -6,7 +6,7 @@ using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Operations
 {
-    public abstract class BinaryOperationFixtureBase<TOperationType> : OperationFixtureBase<TOperationType>
+    public abstract class TernaryOperationFixtureBase<TOperationType> : OperationFixtureBase<TOperationType>
         where TOperationType : ArithmeticOperationBase, new()
     {
         [Fact]
@@ -14,6 +14,7 @@ namespace AllOverIt.Evaluator.Tests.Operations
         {
             var operands = new[]
             {
+                Expression.Constant(Create<bool>()),
                 Expression.Constant(Create<double>()),
                 Expression.Constant(Create<double>())
             };
@@ -23,16 +24,17 @@ namespace AllOverIt.Evaluator.Tests.Operations
             var operation = creator.Invoke(operands);
             operation.Should().BeOfType(OperatorType);
 
-            var symbol = operation as BinaryOperator;
+            var symbol = operation as TernaryOperator;
 
-            symbol!.LeftOperand.Should().BeSameAs(operands[0]);
-            symbol.RightOperand.Should().BeSameAs(operands[1]);
+            symbol!.Operand1.Should().BeSameAs(operands[0]);
+            symbol!.Operand2.Should().BeSameAs(operands[1]);
+            symbol.Operand3.Should().BeSameAs(operands[2]);
         }
 
         [Fact]
         public void Should_Assign_Base_Members()
         {
-            AssertOperationArgumentCount(2);
+            AssertOperationArgumentCount(3);
         }
     }
 }

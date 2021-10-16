@@ -6,8 +6,8 @@ namespace AllOverIt.Evaluator.Tests.Operators.Dummies
 {
     internal class BinaryOperatorDummy : BinaryOperator
     {
-        public BinaryOperatorDummy(Func<Expression, Expression, Expression> operatorType, Expression leftOperand, Expression rightOperand)
-            : base(operatorType, leftOperand, rightOperand)
+        public BinaryOperatorDummy(Func<Expression, Expression, Expression> operatorType, Expression operand1, Expression operand2)
+            : base(operatorType, operand1, operand2)
         {
         }
     }

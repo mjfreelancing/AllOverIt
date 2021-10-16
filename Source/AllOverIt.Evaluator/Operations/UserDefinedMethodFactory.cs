@@ -68,6 +68,13 @@ namespace AllOverIt.Evaluator.Operations
             RegisterMethod<AbsOperation>(BuiltInMethodsRegistry, "ABS");
             RegisterMethod<CeilingOperation>(BuiltInMethodsRegistry, "CEIL");
             RegisterMethod<FloorOperation>(BuiltInMethodsRegistry, "FLOOR");
+            RegisterMethod<IfOperation>(BuiltInMethodsRegistry, "IF");
+            RegisterMethod<EqualOperation>(BuiltInMethodsRegistry, "EQ");
+            RegisterMethod<NotEqualOperation>(BuiltInMethodsRegistry, "NE");
+            RegisterMethod<GreaterThanOperation>(BuiltInMethodsRegistry, "GT");
+            RegisterMethod<GreaterThanOrEqualOperation>(BuiltInMethodsRegistry, "GTE");
+            RegisterMethod<LessThanOperation>(BuiltInMethodsRegistry, "LT");
+            RegisterMethod<LessThanOrEqualOperation>(BuiltInMethodsRegistry, "LTE");
         }
 
         /// <summary>Registers an operation type that provides the implementation for a named method.</summary>

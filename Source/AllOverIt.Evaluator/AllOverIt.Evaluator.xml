@@ -304,6 +304,13 @@
         <member name="M:AllOverIt.Evaluator.Operations.CubeRootOperation.#ctor">
             <summary>Constructor.</summary>
         </member>
+        <member name="T:AllOverIt.Evaluator.Operations.EqualOperation">
+            <summary>An operation used to compare two values for equality, returning true or false.</summary>
+            <remarks>Can be used in combination with the <see cref="T:AllOverIt.Evaluator.Operations.IfOperation"/>.</remarks>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.EqualOperation.#ctor">
+            <summary>Constructor.</summary>
+        </member>
         <member name="T:AllOverIt.Evaluator.Operations.ExpOperation">
             <summary>An operation used to raise 'e' to a specified power.</summary>
         </member>
@@ -315,6 +322,12 @@
         </member>
         <member name="M:AllOverIt.Evaluator.Operations.FloorOperation.#ctor">
             <summary>Constructor.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operations.GreaterThanOperation">
+            <summary>An operation that returns true if one operand is greater than a second, otherwise false.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operations.GreaterThanOrEqualOperation">
+            <summary>An operation that returns true if one operand is greater than or equal to a second, otherwise false.</summary>
         </member>
         <member name="T:AllOverIt.Evaluator.Operations.IArithmeticOperation">
             <summary>Represents an arithmetic operator or user defined method.</summary>
@@ -357,6 +370,12 @@
             <param name="symbol">The symbol that identifies the operation to be created.</param>
             <returns>The constructed operation.</returns>
         </member>
+        <member name="T:AllOverIt.Evaluator.Operations.IfOperation">
+            <summary>An operation that accepts a boolean expression and returns a second or third expression based on the true/false result.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.IfOperation.#ctor">
+            <summary>Constructor.</summary>
+        </member>
         <member name="T:AllOverIt.Evaluator.Operations.IUserDefinedMethodFactory">
             <summary>Represents a user defined method factory.</summary>
             <remarks>It is recommended to use a single instance of the factory.</remarks>
@@ -379,6 +398,12 @@
             <summary>Gets an instance of the class implementing the user-defined method identified by the provided method name.</summary>
             <param name="methodName">The name of the user-defined method identifying the operation type to return.</param>
             <returns>The concrete type implementing the user-defined method.</returns>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operations.LessThanOperation">
+            <summary>An operation that returns true if one operand is less than a second, otherwise false.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operations.LessThanOrEqualOperation">
+            <summary>An operation that returns true if one operand is less than or equal to a second, otherwise false.</summary>
         </member>
         <member name="T:AllOverIt.Evaluator.Operations.Log10Operation">
             <summary>An operation used to calculate the log10 of a number.</summary>
@@ -408,6 +433,13 @@
             <summary>An operation used to get the minimum of two values.</summary>
         </member>
         <member name="M:AllOverIt.Evaluator.Operations.MinOperation.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operations.NotEqualOperation">
+            <summary>An operation used to compare two values for inequality, returning true or false.</summary>
+            <remarks>Can be used in combination with the <see cref="T:AllOverIt.Evaluator.Operations.IfOperation"/>.</remarks>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operations.NotEqualOperation.#ctor">
             <summary>Constructor.</summary>
         </member>
         <member name="T:AllOverIt.Evaluator.Operations.PercentOperation">
@@ -586,6 +618,9 @@
             <param name="leftOperand">The left operand (argument) of the operator.</param>
             <param name="rightOperand">The right operand (argument) of the operator.</param>
         </member>
+        <member name="T:AllOverIt.Evaluator.Operators.EqualOperator">
+            <summary>An expression operator that compares two operands for equality.</summary>
+        </member>
         <member name="T:AllOverIt.Evaluator.Operators.ExpOperator">
             <summary>An expression operator that calculates the value of 'e' raised to the power of a given operand.</summary>
         </member>
@@ -600,11 +635,32 @@
             <summary>Constructor.</summary>
             <param name="operand">The operand (argument) to be evaluated.</param>
         </member>
+        <member name="T:AllOverIt.Evaluator.Operators.GreaterThanOperator">
+            <summary>An expression operator that compares if one operand is greater than a second.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.GreaterThanOrEqualOperator">
+            <summary>An expression operator that compares if one operand is greater than or equal to a second.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.IfOperator">
+            <summary>An operator that accepts a boolean operand and returns a 'true' or 'false' operand based on the condition's result.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.IfOperator.#ctor(System.Linq.Expressions.Expression,System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="condition">The boolean condition operand.</param>
+            <param name="trueOperand">The operand used if the condition is true.</param>
+            <param name="falseOperand">The operand used if the condition is false.</param>
+        </member>
         <member name="T:AllOverIt.Evaluator.Operators.IOperator">
             <summary>An interface used to obtain an Expression for an evaluator operator.</summary>
         </member>
         <member name="M:AllOverIt.Evaluator.Operators.IOperator.GetExpression">
             <summary>Gets an Expression that is the result of invoking the operator.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.LessThanOperator">
+            <summary>An expression operator that compares if one operand is less than a second.</summary>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.LessThanOrEqualOperator">
+            <summary>An expression operator that compares if one operand is less than or equal to a second.</summary>
         </member>
         <member name="T:AllOverIt.Evaluator.Operators.Log10Operator">
             <summary>An expression operator that calculates log10 of a given operand.</summary>
@@ -665,6 +721,9 @@
         <member name="M:AllOverIt.Evaluator.Operators.NegateOperator.#ctor(System.Linq.Expressions.Expression)">
             <summary>Constructor.</summary>
             <param name="operand">The operand (argument) to be evaluated.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.NotEqualOperator">
+            <summary>An expression operator that compares two operands for inequality.</summary>
         </member>
         <member name="T:AllOverIt.Evaluator.Operators.Operator`1">
             <summary>An abstract base class used for implementing unary, binary and custom operators.</summary>
@@ -759,6 +818,21 @@
         <member name="M:AllOverIt.Evaluator.Operators.TanOperator.#ctor(System.Linq.Expressions.Expression)">
             <summary>Constructor.</summary>
             <param name="operand">The operand (argument) to be evaluated.</param>
+        </member>
+        <member name="T:AllOverIt.Evaluator.Operators.TernaryOperator">
+            <summary>An expression operator that operates on three operands.</summary>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.TernaryOperator.#ctor(System.Func{System.Linq.Expressions.Expression,System.Linq.Expressions.Expression,System.Linq.Expressions.Expression,System.Linq.Expressions.Expression},System.Linq.Expressions.Expression,System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)">
+            <summary>
+            
+            </summary>
+            <param name="operatorType"></param>
+            <param name="operand1">The first operand (argument) of the operator.</param>
+            <param name="operand2">The second operand (argument) of the operator.</param>
+            <param name="operand3">The third operand (argument) of the operator.</param>
+        </member>
+        <member name="M:AllOverIt.Evaluator.Operators.TernaryOperator.GetExpression">
+            <inheritdoc />
         </member>
         <member name="T:AllOverIt.Evaluator.Operators.UnaryOperator">
             <summary>An expression operator that operates on a single operand to create a new expression as the result.</summary>
