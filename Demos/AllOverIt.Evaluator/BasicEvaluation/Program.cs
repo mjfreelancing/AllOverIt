@@ -22,7 +22,8 @@ namespace BasicEvaluation
                 "log10(19)",
                 "log(2.7)", 
                 "exp(3)",
-                "10/0"
+                "10/0",
+                "IF(EQ(1,2),50*2,40*3)"         // 120
             };
 
             var compiler = new FormulaCompiler();

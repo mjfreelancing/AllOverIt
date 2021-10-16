@@ -18,7 +18,7 @@ namespace CustomOperation.Operators
             var val1 = Expression.Convert(value1, typeof(int));
             var val2 = Expression.Convert(value2, typeof(int));
 
-            var result = Expression.Call(method, val1, val2);
+            var result = Expression.Call(method!, val1, val2);
 
             return Expression.Convert(result, typeof(double));
         }

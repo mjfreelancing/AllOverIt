@@ -24,9 +24,12 @@ namespace CustomOperation.Math
                     return value1;
                 }
 
-                var value3 = value1;
-                value1 = value2;
-                value2 = value3 % value2;
+                //var value3 = value1;
+                //value1 = value2;
+                //value2 = value3 % value2;
+
+                // same as above
+                (value1, value2) = (value2, value1 % value2);
             }
         }
     }
