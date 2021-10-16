@@ -2,7 +2,6 @@ using AllOverIt.Evaluator.Exceptions;
 using AllOverIt.Evaluator.Operations;
 using AllOverIt.Evaluator.Operators;
 using AllOverIt.Evaluator.Variables;
-using AllOverIt.Extensions;
 using AllOverIt.Helpers;
 using System;
 using System.Collections.Generic;
@@ -13,6 +12,10 @@ using System.Linq.Expressions;
 
 namespace AllOverIt.Evaluator
 {
+    // NOTE: This class is deliberately implemented without using LINQ as it has a significant impact
+    // on memory allocation and hence performance. Other micro-optimizations are also in place, such as
+    // using an array in place of a list for _tokenProcessors.
+
     /// <summary>Parses a mathematical formula and compiles it to an expression that can be later evaluated.</summary>
     /// <remarks>A compiled expression provides a vast performance benefit when the formula needs to be evaluated multiple times.</remarks>
     public sealed class FormulaProcessor
@@ -25,9 +28,11 @@ namespace AllOverIt.Evaluator
             internal const string OpenScope = "(";
         }
 
-        private static readonly IReadOnlyCollection<string> EmptyReadOnlyCollection = new List<string>();
         private static readonly char DecimalSeparator = Convert.ToChar(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
-        private readonly IList<FormulaTokenProcessorContext> _tokenProcessors = new List<FormulaTokenProcessorContext>();
+
+        // More efficient than IList and IEnumerable
+        private readonly FormulaTokenProcessorContext[] _tokenProcessors;
+
         private readonly Stack<string> _operatorStack = new();
         private readonly Stack<Expression> _expressionStack = new();
         private readonly HashSet<string> _referencedVariableNames = new();
@@ -64,7 +69,7 @@ namespace AllOverIt.Evaluator
             // custom operator registration (using TryRegisterOperation as the factory can be shared across threads)
             _operationFactory.TryRegisterOperation(CustomTokens.UnaryMinus, 4, 1, e => new NegateOperator(e[0]));
 
-            RegisterTokenProcessors();
+            _tokenProcessors = GetFormulaTokenProcessors();
         }
 
         /// <summary>Parses a provided formula to create a compiled expression that can later be evaluated.</summary>
@@ -82,24 +87,22 @@ namespace AllOverIt.Evaluator
             _formula = formula.WhenNotNullOrEmpty(nameof(formula));
 
             _variableRegistry = variableRegistry;   // can be null
-            _lastPushIsOperator = true;
+            _lastPushIsOperator = true;             // first token cannot be an operator (unary plus/minus is handled)
             _currentIndex = 0;
 
             try
             {
                 ParseContent(false);
-                ProcessOperators(_operatorStack, _expressionStack, () => true);
+                ProcessOperators(_operatorStack, _expressionStack);
 
                 var lastExpression = _expressionStack.Pop();
                 var funcExpression = Expression.Lambda<Func<double>>(lastExpression);
 
-                var referencedVariableNames = _referencedVariableNames.Any()
-
-                    // must return a copy of the referenced variable names
+                var referencedVariableNames = _referencedVariableNames.Count > 0
+                    // Must return a copy of the referenced variable names
                     ? new ReadOnlyCollection<string>(_referencedVariableNames.ToList())
-
-                    // prevent allocating multiple collections when there's nothing in them
-                    : EmptyReadOnlyCollection;
+                    // FormulaProcessorResult handles this so it points to an empty ReadOnlyCollection
+                    : null;
 
                 // If the caller did not provide a registry (it was null) and
                 //  - there were no variables then returning null for the registry.
@@ -129,18 +132,98 @@ namespace AllOverIt.Evaluator
             _referencedVariableNames.Clear();
         }
 
+        private FormulaTokenProcessorContext[] GetFormulaTokenProcessors()
+        {
+            return new FormulaTokenProcessorContext[]
+            {
+                // args are (token, isUserDefined)
+
+                // The predicate is used to determine if the associated processor will be invoked. The input arguments of the predicate include the
+                // next token to be read and a flag to indicate if the token is within the context of a user defined method. The processor 
+                // is invoked if the predicate returns true.
+                // The input arguments of the processor include the next token to be read and a flag to indicate if the token is within the context
+                // of a user defined method. The processor returns true to indicate processing is to continue or false to indicate processing of the
+                // current scope is complete (such as reading arguments of a user defined method).
+
+                // start of a new scope
+                new FormulaTokenProcessorContext(
+                    (token, _) => token == '(',
+                    (_, _) =>
+                    {
+                        // consume the '('
+                        ++_currentIndex;
+
+                        ProcessScopeStart();
+                        return true;
+                    }),
+
+                // end of a scope
+                new FormulaTokenProcessorContext(
+                    (token, _) => token == ')',
+                    (_, isUserDefined) =>
+                    {
+                        // consume the ')'
+                        ++_currentIndex;
+
+                        return ProcessScopeEnd(isUserDefined);
+                    }),
+
+                // arguments of a method
+                new FormulaTokenProcessorContext(
+                    (token, isUserDefined) => isUserDefined && token == ',',
+                    (_, _) =>
+                    {
+                        ++_currentIndex;
+                        ProcessMethodArgument();
+                        return true;
+                    }),
+
+                new FormulaTokenProcessorContext(
+                    (token, isUserDefined) => isUserDefined && token == ',',
+                    (_, _) =>
+                    {
+                        ++_currentIndex;
+                        ProcessMethodArgument();
+                        return true;
+                    }),
+
+                // an operator
+                new FormulaTokenProcessorContext(
+                    (token, _) => IsCandidateOperation(token),
+                    (_, _) =>
+                    {
+                        ProcessOperator();
+                        return true;
+                    }),
+
+                // numerical constant
+                new FormulaTokenProcessorContext(
+                    (token, _) => IsNumericalCandidate(token),
+                    (_, _) =>
+                    {
+                        ProcessNumerical();
+                        return true;
+                    }),
+
+                // everything else - variables and methods
+                new FormulaTokenProcessorContext(
+                    (_, _) => true,
+                    (_, _) =>
+                    {
+                        ProcessNamedOperand();
+                        return true;
+                    })
+            };
+        }
+
         private void PushOperator(string operatorToken)
         {
-            _ = operatorToken.WhenNotNullOrEmpty(nameof(operatorToken));
-
             _operatorStack.Push(operatorToken);
             _lastPushIsOperator = true;
         }
 
         private void PushExpression(Expression expression)
         {
-            expression.WhenNotNull(nameof(expression));
-
             _expressionStack.Push(expression);
             _lastPushIsOperator = false;
         }
@@ -159,7 +242,7 @@ namespace AllOverIt.Evaluator
             if (isUserMethod)
             {
                 // we should at least have a 'UserMethod' in the stack to indicate a user method is being parsed
-                if (!_operatorStack.Any())
+                if (_operatorStack.Count == 0)
                 {
                     throw new FormulaException("Invalid expression stack.");
                 }
@@ -230,6 +313,12 @@ namespace AllOverIt.Evaluator
         {
             // starting at the current reader position, read a numerical result and return it as an expression
             var value = ReadNumerical();
+
+            if (!_lastPushIsOperator)
+            {
+                throw new FormulaException($"The number '{value}' did not follow an operator.");
+            }
+
             var numericalExpression = Expression.Constant(value);
 
             PushExpression(numericalExpression);
@@ -257,7 +346,11 @@ namespace AllOverIt.Evaluator
             {
                 var next = span[_currentIndex];
 
-                if (!ProcessToken(next, isUserMethod))
+                if (char.IsWhiteSpace(next))
+                {
+                    ++_currentIndex;
+                }
+                else if (!ProcessToken(next, isUserMethod))
                 {
                     return;
                 }
@@ -281,7 +374,7 @@ namespace AllOverIt.Evaluator
                 if (_userDefinedMethodFactory.IsRegistered(namedOperand))
                 {
                     // consume the opening (
-                    _currentIndex++;
+                    ++_currentIndex;
 
                     // the token processor consumes the trailing ')'
                     return ParseMethodToExpression(namedOperand);
@@ -328,89 +421,9 @@ namespace AllOverIt.Evaluator
             return FormulaExpressionFactory.CreateExpression(operation, _expressionStack);
         }
 
-        private void RegisterTokenProcessors()
+        private void ProcessOperators(Stack<string> operators, Stack<Expression> expressions, Func<bool> condition = null)
         {
-            // args are (token, isUserDefined)
-
-            // start of a new scope
-            RegisterTokenProcessor(
-              (token, _) => token == '(',
-              (_, _) =>
-              {
-                  // consume the '('
-                  _currentIndex++;
-                  
-                  ProcessScopeStart();
-                  return true;
-              });
-
-            // end of a scope
-            RegisterTokenProcessor(
-              (token, _) => token == ')',
-              (_, isUserDefined) =>
-              {
-                  // consume the ')'
-                  _currentIndex++;
-                  
-                  return ProcessScopeEnd(isUserDefined);
-              });
-
-            // arguments of a method
-            RegisterTokenProcessor(
-              (token, isUserDefined) => isUserDefined && token == ',',
-              (_, _) =>
-              {
-                  _currentIndex++;
-                  ProcessMethodArgument();
-                  return true;
-              });
-
-            // an operator
-            RegisterTokenProcessor(
-              (token, _) => IsCandidateOperation(token),
-              (_, _) =>
-              {
-                  ProcessOperator();
-                  return true;
-              });
-
-            // numerical constant
-            RegisterTokenProcessor(
-              (token, _) => IsNumericalCandidate(token),
-              (_, _) =>
-              {
-                  ProcessNumerical();
-                  return true;
-              });
-
-            // everything else - variables and methods
-            RegisterTokenProcessor(
-              (_, _) => true,
-              (_, _) =>
-              {
-                  ProcessNamedOperand();
-                  return true;
-              });
-        }
-
-        // The predicate is used to determine if the associated processor will be invoked. The input arguments of the predicate include the
-        // next token to be read and a flag to indicate if the token is within the context of a user defined method. The processor 
-        // is invoked if the predicate returns true.
-        // The input arguments of the processor include the next token to be read and a flag to indicate if the token is within the context
-        // of a user defined method. The processor returns true to indicate processing is to continue or false to indicate processing of the
-        // current scope is complete (such as reading arguments of a user defined method).
-        private void RegisterTokenProcessor(Func<char, bool, bool> predicate, Func<char, bool, bool> processor)
-        {
-            _tokenProcessors.Add(new FormulaTokenProcessorContext(predicate, processor));
-        }
-
-        private void ProcessOperators(Stack<string> operators, Stack<Expression> expressions, Func<bool> condition)
-        {
-            _ = operators.WhenNotNull(nameof(operators));
-            _ = expressions.WhenNotNull(nameof(expressions));
-            _ = condition.WhenNotNull(nameof(condition));
-
-            while (operators.Any() && condition.Invoke())
+            while (operators.Count > 0 && (condition == null || condition.Invoke()))
             {
                 var nextOperator = operators.Pop();
                 var operation = _operationFactory.GetOperation(nextOperator);
@@ -422,12 +435,16 @@ namespace AllOverIt.Evaluator
 
         private bool ProcessToken(char token, bool isUserMethod)
         {
-            var processor = _tokenProcessors
-                .SkipWhile(context => !context.Predicate.Invoke(token, isUserMethod))
-                .First();     // process the first match found
+            foreach (var context in _tokenProcessors)
+            {
+                if (context.Predicate.Invoke(token, isUserMethod))
+                {
+                    // returns true to indicate processing should continue
+                    return context.Processor.Invoke(token, isUserMethod);
+                }
+            }
 
-            // returns true to indicate processing should continue
-            return processor.Processor.Invoke(token, isUserMethod);
+            throw new InvalidOperationException("Expected to find a token processor.");
         }
 
         private double ReadNumerical()
@@ -448,13 +465,13 @@ namespace AllOverIt.Evaluator
             {
                 var next = span[_currentIndex];
 
-                var isExponent = "eE".ContainsChar(next);
+                var isExponent = next is 'e' or 'E';
 
                 var allowMinus = previousTokenWasExponent && (next == '-');
 
                 if (IsNumericalCandidate(next) || isExponent || allowMinus)
                 {
-                    _currentIndex++;
+                    ++_currentIndex;
                     previousTokenWasExponent = isExponent;
                 }
                 else
@@ -505,9 +522,10 @@ namespace AllOverIt.Evaluator
                 if (next != '(' &&
                     next != ')' &&
                     next != ',' &&
+                    !char.IsWhiteSpace(next) &&
                     !IsCandidateOperation(next))   // only looking to see if 'next' is the start of a new operation
                 {
-                    _currentIndex++;
+                    ++_currentIndex;
                 }
                 else
                 {
@@ -548,12 +566,12 @@ namespace AllOverIt.Evaluator
                 // keep reading while ever the characters read are part of a registered operator
                 // (almost always a single character, but supports multi-character)
                 var isCandidate = startIndex == _currentIndex
-                    ? IsCandidateOperation(span[_currentIndex])        // avoid creation of a string
-                    : IsCandidateOperation(span.Slice(startIndex, _currentIndex - startIndex + 1).ToString());
+                    ? IsCandidateOperation(span[_currentIndex])
+                    : IsCandidateOperation(span.Slice(startIndex, _currentIndex - startIndex + 1));
 
                 if (isCandidate)
                 {
-                    _currentIndex++;
+                    ++_currentIndex;
                 }
                 else
                 {
@@ -584,9 +602,19 @@ namespace AllOverIt.Evaluator
             return _operationFactory.RegisteredOperations.Any(key => key[0] == symbol);
         }
 
-        private bool IsCandidateOperation(string token)
+        private bool IsCandidateOperation(ReadOnlySpan<char> token)
         {
-            return _operationFactory.RegisteredOperations.Any(key => key.StartsWith(token));
+            // Cannot use ReadOnlySpan<> in a LINQ statement.
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            foreach (var operation in _operationFactory.RegisteredOperations)
+            {
+                if (operation.AsSpan().StartsWith(token))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

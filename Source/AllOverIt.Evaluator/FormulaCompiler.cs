@@ -2,14 +2,12 @@
 using AllOverIt.Evaluator.Variables;
 using AllOverIt.Extensions;
 using System;
-using System.Text.RegularExpressions;
 
 namespace AllOverIt.Evaluator
 {
     /// <summary>Compiles a mathematical expression provided as a string to a delegate that can be repeatedly invoked for re-evaluation.</summary>
     public sealed class FormulaCompiler
     {
-        private static readonly Regex StripWhitespaceRegex = new(@"\s+", RegexOptions.Compiled);
         private readonly FormulaProcessor _formulaProcessor;
 
         /// <summary>Constructor.</summary>
@@ -35,12 +33,6 @@ namespace AllOverIt.Evaluator
         /// the compiled delegate, and a list of variables referenced by the formula (if applicable).</returns>
         public FormulaCompilerResult Compile(string formula, IVariableRegistry variableRegistry = null)
         {
-            if (formula != null)
-            {
-                // remove any extraneous whitespace
-                formula = StripWhitespaceRegex.Replace(formula, string.Empty);
-            }
-
             if (formula.IsNullOrEmpty())
             {
                 throw new FormatException("The formula is empty.");

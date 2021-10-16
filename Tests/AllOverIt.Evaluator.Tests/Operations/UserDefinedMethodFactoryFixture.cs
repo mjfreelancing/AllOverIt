@@ -37,12 +37,19 @@ namespace AllOverIt.Evaluator.Tests.Operations
             [InlineData("ABS", typeof(AbsOperation))]
             [InlineData("CEIL", typeof(CeilingOperation))]
             [InlineData("FLOOR", typeof(FloorOperation))]
+            [InlineData("IF", typeof(IfOperation))]
+            [InlineData("EQ", typeof(EqualOperation))]
+            [InlineData("NE", typeof(NotEqualOperation))]
+            [InlineData("GT", typeof(GreaterThanOperation))]
+            [InlineData("GTE", typeof(GreaterThanOrEqualOperation))]
+            [InlineData("LT", typeof(LessThanOperation))]
+            [InlineData("LTE", typeof(LessThanOrEqualOperation))]
             public void Should_Registry_Built_In_Method_Operations(string name, Type operationType)
             {
                 _factory = new UserDefinedMethodFactory();
 
                 // only here to make sure the test cases are updated if a new operation is added
-                _factory.RegisteredMethods.Should().HaveCount(22);
+                _factory.RegisteredMethods.Should().HaveCount(29);
 
                 var operation = _factory.GetMethod(name);
 

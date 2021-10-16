@@ -68,6 +68,13 @@ namespace AllOverIt.Evaluator.Operations
             RegisterMethod<AbsOperation>(BuiltInMethodsRegistry, "ABS");
             RegisterMethod<CeilingOperation>(BuiltInMethodsRegistry, "CEIL");
             RegisterMethod<FloorOperation>(BuiltInMethodsRegistry, "FLOOR");
+            RegisterMethod<IfOperation>(BuiltInMethodsRegistry, "IF");
+            RegisterMethod<EqualOperation>(BuiltInMethodsRegistry, "EQ");
+            RegisterMethod<NotEqualOperation>(BuiltInMethodsRegistry, "NE");
+            RegisterMethod<GreaterThanOperation>(BuiltInMethodsRegistry, "GT");
+            RegisterMethod<GreaterThanOrEqualOperation>(BuiltInMethodsRegistry, "GTE");
+            RegisterMethod<LessThanOperation>(BuiltInMethodsRegistry, "LT");
+            RegisterMethod<LessThanOrEqualOperation>(BuiltInMethodsRegistry, "LTE");
         }
 
         /// <summary>Registers an operation type that provides the implementation for a named method.</summary>
@@ -86,8 +93,10 @@ namespace AllOverIt.Evaluator.Operations
         /// <returns>True if the requested method name has been registered, otherwise false.</returns>
         public bool IsRegistered(string methodName)
         {
-            return BuiltInMethodsRegistry.ContainsKey(methodName.ToUpper()) ||
-                   _userMethodsRegistry != null && _userMethodsRegistry.ContainsKey(methodName.ToUpper());
+            var upperMethodName = methodName.ToUpperInvariant();
+
+            return BuiltInMethodsRegistry.ContainsKey(upperMethodName) ||
+                   _userMethodsRegistry != null && _userMethodsRegistry.ContainsKey(upperMethodName);
         }
 
         /// <summary>Gets an instance of the operation type that was registered using the provided method name.</summary>
@@ -96,7 +105,7 @@ namespace AllOverIt.Evaluator.Operations
         /// <remarks>The operation type is only ever created once (per factory instance).</remarks>
         public ArithmeticOperationBase GetMethod(string methodName)
         {
-            var upperMethodName = methodName.ToUpper();
+            var upperMethodName = methodName.ToUpperInvariant();
 
             if (BuiltInMethodsRegistry.TryGetValue(upperMethodName, out var builtInOperation))
             {

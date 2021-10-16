@@ -110,6 +110,22 @@ namespace AllOverIt.Evaluator.Tests
             }
 
             [Fact]
+            public void Should_Throw_When_Invalid_Expression0000()
+            {
+                Invoking(() =>
+                    {
+                        var formula = "1 4 + 2";
+
+                        _ = _formulaCompiler.Compile(formula, _variableRegistry);
+                    })
+                    .Should()
+                    .Throw<FormulaException>()
+                    .WithMessage("Invalid expression. See index 3, near '1 4'.")
+                    .WithInnerException<FormulaException>()
+                    .WithMessage("The number '4' did not follow an operator.");
+            }
+
+            [Fact]
             public void Should_Return_Compiled_Expression()
             {
                 var val1 = Create<int>();
