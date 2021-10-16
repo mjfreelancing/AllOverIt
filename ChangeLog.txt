@@ -17,15 +17,25 @@
 ======================================================================================================================
 
 
+
+
+
 XX XXX 2021 - PENDING - Update version info above
 ======================================================================================================================
-AllOverIt - v1.XX.0
+AllOverIt - v1.20.0
   * BREAKING CHANGE: Moved Raii and RaiiAsync from AllOverIt.Helpers to AllOverIt.Patterns.ResourceInitialization
-        ==>> requires a new version of AllOverIt.Aws.AppSync.Client
+
+AllOverIt.Aws.AppSync.Client - v0.6.0
+  * Rebuilt against AllOverIt v1.20.0 due to moving RaiiAsync
 
 AllOverIt.Evaluator - v3.1.0
   * Internal improvements to reduce memory allocations
   * Added conditional and comparison methods: IF, EQ, NE, LT, LTE, GT, GTE
+
+
+
+
+
 
 
 
