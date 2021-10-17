@@ -8,7 +8,7 @@ namespace VariableLookup
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             var compiler = new FormulaCompiler();
             var registry = new VariableRegistry();

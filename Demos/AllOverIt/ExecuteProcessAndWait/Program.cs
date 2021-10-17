@@ -6,7 +6,7 @@ namespace ExecuteProcessAndWait
 {
     class Program
     {
-        static async Task Main(string[] args)
+        static async Task Main()
         {
             Console.WriteLine("Close notepad within 10 seconds so this console application can complete");
 

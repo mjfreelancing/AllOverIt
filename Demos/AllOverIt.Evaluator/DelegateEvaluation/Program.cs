@@ -6,7 +6,7 @@ namespace DelegateEvaluation
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             var factorial = new Factorial();
 

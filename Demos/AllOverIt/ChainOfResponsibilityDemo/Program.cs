@@ -5,7 +5,7 @@ namespace ChainOfResponsibilityDemo
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             var message = new QueueMessage();
             var broker = new QueueBroker();

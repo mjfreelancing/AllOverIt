@@ -1,13 +1,13 @@
-﻿using System;
+﻿using AllOverIt.Tasks;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AllOverIt.Tasks;
 
 namespace RepeatingTaskDemo
 {
     class Program
     {
-        static async Task Main(string[] args)
+        static async Task Main()
         {
             const int initialDelay = 5000;
             const int repeatDelay = 1000;

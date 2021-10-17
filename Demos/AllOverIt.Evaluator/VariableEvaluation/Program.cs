@@ -7,7 +7,7 @@ namespace VariableEvaluation
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             var factory = new VariableFactory();
             var registry = factory.CreateVariableRegistry();

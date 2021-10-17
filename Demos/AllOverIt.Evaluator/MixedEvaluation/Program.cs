@@ -7,7 +7,7 @@ namespace MixedEvaluation
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             var compiler = new FormulaCompiler();
             var factory = new VariableFactory();

@@ -11,7 +11,7 @@ namespace CustomOperation
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             EvaluateCustomMin();          // example 1: MIN()
             EvaluateUniqueAngles();       // example 2: GCD()
