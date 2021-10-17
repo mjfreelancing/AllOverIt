@@ -24,6 +24,7 @@ XX XXX 2021 - PENDING - Update version info above
 ======================================================================================================================
 AllOverIt - v1.20.0
   * BREAKING CHANGE: Moved Raii and RaiiAsync from AllOverIt.Helpers to AllOverIt.Patterns.ResourceInitialization
+  * Added ChainOfResponsibility implementation and a demo
 
 AllOverIt.Aws.Cdk.AppSync - v0.16.1
   * Updated to Amazon.CDK.AWS.AppSync v1.128.0

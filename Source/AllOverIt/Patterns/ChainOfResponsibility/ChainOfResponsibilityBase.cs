@@ -9,8 +9,6 @@ namespace AllOverIt.Patterns.ChainOfResponsibility
         public IChainOfResponsibility<TInput, TOutput> SetNext(IChainOfResponsibility<TInput, TOutput> handler)
         {
             _nextHandler = handler.WhenNotNull(nameof(handler));
-
-            // provides a fluent syntax
             return handler;
         }
 
