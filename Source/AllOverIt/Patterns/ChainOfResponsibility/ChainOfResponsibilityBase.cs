@@ -14,6 +14,9 @@ namespace AllOverIt.Patterns.ChainOfResponsibility
 
         public virtual TOutput Handle(TInput request)
         {
+            // The last handler passed to SetNext() will have its _nextHandler un-assigned - return default
+            // to indicate it's the end of the chain. A better practice would be to include a terminal handler
+            // that does not call base.Handle() at the end of its processing.
             return _nextHandler == null
               ? default
               : _nextHandler.Handle(request);
