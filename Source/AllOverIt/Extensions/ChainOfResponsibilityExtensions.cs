@@ -13,7 +13,7 @@ namespace AllOverIt.Extensions
             var firstHandler = allHandlers.First();
 
             // chain all of the handlers together
-            allHandlers
+            _ = allHandlers
                 .Aggregate(
                     firstHandler,
                     (current, handler) => current.SetNext(handler)
