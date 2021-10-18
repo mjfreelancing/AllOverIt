@@ -2,12 +2,12 @@ using AllOverIt.Helpers;
 
 namespace AllOverIt.Patterns.ChainOfResponsibility
 {
-    public abstract class ChainOfResponsibilityBase<TInput, TOutput> : IChainOfResponsibility<TInput, TOutput>
+    public abstract class ChainOfResponsibilityHandler<TInput, TOutput> : IChainOfResponsibilityHandler<TInput, TOutput>
     {
-        private IChainOfResponsibility<TInput, TOutput> _nextHandler;
+        private IChainOfResponsibilityHandler<TInput, TOutput> _nextHandler;
 
         /// <inheritdoc />
-        public IChainOfResponsibility<TInput, TOutput> SetNext(IChainOfResponsibility<TInput, TOutput> handler)
+        public IChainOfResponsibilityHandler<TInput, TOutput> SetNext(IChainOfResponsibilityHandler<TInput, TOutput> handler)
         {
             _nextHandler = handler.WhenNotNull(nameof(handler));
             return handler;

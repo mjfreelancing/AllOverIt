@@ -1,31 +1,21 @@
-﻿using System;
-using System.Linq;
-using AllOverIt.Patterns.ChainOfResponsibility;
+﻿using AllOverIt.Patterns.ChainOfResponsibility;
+using System;
+using System.Collections.Generic;
 
 namespace ChainOfResponsibilityDemo.Handlers
 {
-    public sealed class QueueBrokerExceptionHandler
+    public sealed class QueueBrokerExceptionHandler : ChainOfResponsibilityComposer<QueueMessageHandlerState, QueueMessageHandlerState>
     {
-        private readonly QueueMessageHandlerBase _firstHandler;
+        private static readonly IEnumerable<QueueMessageHandlerBase> Handlers = new List<QueueMessageHandlerBase>
+        {
+            new NullMessageExceptionHandler(),
+            new EmptyMessageExceptionHandler(),
+            new UnhandledExceptionHandler() // end of the chain
+        };
 
         public QueueBrokerExceptionHandler()
+            : base(Handlers)
         {
-            var handlers = new QueueMessageHandlerBase[]
-            {
-                new NullMessageExceptionHandler(),
-                new EmptyMessageExceptionHandler(),
-                new UnhandledExceptionHandler()     // end of the chain
-            };
-
-            _firstHandler = handlers.First();
-
-            // chain all of the handlers together
-            handlers
-                .Aggregate<QueueMessageHandlerBase,
-                    IChainOfResponsibility<QueueMessageHandlerState, QueueMessageHandlerState>>(
-                    _firstHandler,
-                    (current, handler) => current.SetNext(handler)
-                );
         }
 
         public QueueMessageHandlerState Handle(QueueMessage queueMessage, QueueBroker queueBroker, Exception exception)
@@ -33,8 +23,8 @@ namespace ChainOfResponsibilityDemo.Handlers
             // Create state that can be passed from one handler to the next
             var state = new QueueMessageHandlerState(queueMessage, queueBroker, exception);
 
-            // Start with the first handler....
-            return _firstHandler.Handle(state);
+            // Starts with the first handler...
+            return Handle(state);
         }
     }
 }

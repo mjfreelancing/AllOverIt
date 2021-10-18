@@ -1,8 +1,8 @@
 ﻿using AllOverIt.Patterns.ChainOfResponsibility;
 
-namespace ChainOfResponsibilityDemo
+namespace ChainOfResponsibilityDemo.Handlers
 {
-    public abstract class QueueMessageHandlerBase : ChainOfResponsibilityBase<QueueMessageHandlerState, QueueMessageHandlerState>
+    public abstract class QueueMessageHandlerBase : ChainOfResponsibilityHandler<QueueMessageHandlerState, QueueMessageHandlerState>
     {
         protected QueueMessageHandlerState Abandon(QueueMessageHandlerState state)
         {
