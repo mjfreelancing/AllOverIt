@@ -19,8 +19,4 @@
       <DocumentationFile>C:\Data\GitHub\mjfreelancing\Projects\AllOverIt\Source\AllOverIt\AllOverIt.xml</DocumentationFile>
     </PropertyGroup>
 
-    <ItemGroup>
-      <Folder Include="Patterns\Specification\" />
-    </ItemGroup>
-
 </Project>
