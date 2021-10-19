@@ -2,6 +2,9 @@ using AllOverIt.Helpers;
 
 namespace AllOverIt.Patterns.ChainOfResponsibility
 {
+    /// <summary>A base 'Chain Of Responsibility' handler.</summary>
+    /// <typeparam name="TInput">The input state type.</typeparam>
+    /// <typeparam name="TOutput">The output state type.</typeparam>
     public abstract class ChainOfResponsibilityHandler<TInput, TOutput> : IChainOfResponsibilityHandler<TInput, TOutput>
     {
         private IChainOfResponsibilityHandler<TInput, TOutput> _nextHandler;

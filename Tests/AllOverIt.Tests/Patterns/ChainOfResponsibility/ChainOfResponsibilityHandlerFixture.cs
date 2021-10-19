@@ -54,7 +54,8 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
                         var sut = new ChainOfResponsibilityDummy1();
 
                         sut.SetNext(null);
-                    }).Should()
+                    })
+                    .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("handler");
             }
