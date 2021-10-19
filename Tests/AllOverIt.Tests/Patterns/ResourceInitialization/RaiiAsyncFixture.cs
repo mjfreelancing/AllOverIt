@@ -19,7 +19,7 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                 {
                     Invoking(() =>
                         {
-                            var _ = new RaiiAsync(null, () => Task.CompletedTask);
+                            _ = new RaiiAsync(null, () => Task.CompletedTask);
                         })
                         .Should()
                         .Throw<ArgumentNullException>()
@@ -31,7 +31,7 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                 {
                     Invoking(() =>
                         {
-                            var _ = new RaiiAsync(() => { }, null);
+                            _ = new RaiiAsync(() => { }, null);
                         })
                         .Should()
                         .Throw<ArgumentNullException>()
@@ -43,12 +43,12 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                 {
                     var initialized = false;
 
-                    Action initialize = () =>
+                    void Initialize()
                     {
                         initialized = true;
-                    };
+                    }
 
-                    await using (new RaiiAsync(initialize, () => Task.CompletedTask))
+                    await using (new RaiiAsync(Initialize, () => Task.CompletedTask))
                     {
                         initialized.Should().BeTrue();
                     }
@@ -59,13 +59,13 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                 {
                     var cleanedUp = false;
 
-                    Func<Task> cleanup = () =>
+                    Task Cleanup()
                     {
                         cleanedUp = true;
                         return Task.CompletedTask;
-                    };
+                    }
 
-                    await using(new RaiiAsync(() => { }, cleanup))
+                    await using(new RaiiAsync(() => { }, Cleanup))
                     {
                         cleanedUp.Should().BeFalse();
                     }
@@ -76,13 +76,13 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                 {
                     var cleanedUp = false;
 
-                    Func<Task> cleanup = () =>
+                    Task Cleanup()
                     {
                         cleanedUp = true;
                         return Task.CompletedTask;
-                    };
+                    }
 
-                    await using (new RaiiAsync(() => { }, cleanup))
+                    await using (new RaiiAsync(() => { }, Cleanup))
                     {
                     }
 
@@ -97,13 +97,13 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                 {
                     var cleanedUp = false;
 
-                    Func<Task> cleanup = () =>
+                    Task Cleanup()
                     {
                         cleanedUp = true;
                         return Task.CompletedTask;
-                    };
+                    }
 
-                    await using (new RaiiAsync(() => { }, cleanup))
+                    await using (new RaiiAsync(() => { }, Cleanup))
                     {
                     }
 
@@ -121,7 +121,7 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                 {
                     Invoking(() =>
                         {
-                            var _ = new RaiiAsync<int>(null, _ => Task.CompletedTask);
+                            _ = new RaiiAsync<int>(null, _ => Task.CompletedTask);
                         })
                         .Should()
                         .Throw<ArgumentNullException>()
@@ -135,7 +135,7 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
 
                     Invoking(() =>
                         {
-                            var _ = new RaiiAsync<int>(() => value, null);
+                            _ = new RaiiAsync<int>(() => value, null);
                         })
                         .Should()
                         .Throw<ArgumentNullException>()
@@ -148,13 +148,13 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                     var value = Create<int>();
                     var initialized = -value;
 
-                    Func<int> initialize = () =>
+                    int Initialize()
                     {
                         initialized = value;
                         return value;
-                    };
+                    }
 
-                    await using (new RaiiAsync<int>(initialize, _ => Task.CompletedTask))
+                    await using (new RaiiAsync<int>(Initialize, _ => Task.CompletedTask))
                     {
                         initialized.Should().Be(value);
                     }
@@ -165,12 +165,13 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                 {
                     var value = Create<int>();
 
-                    Func<int> initialize = () =>
+                    int Initialize()
                     {
                         return value;
-                    };
+                    }
 
-                    await using (var raii = new RaiiAsync<int>(initialize, _ => Task.CompletedTask))
+                    // ReSharper disable oce ConvertToUsingDeclaration
+                    await using (var raii = new RaiiAsync<int>(Initialize, _ => Task.CompletedTask))
                     {
                         raii.Context.Should().Be(value);
                     }
@@ -182,13 +183,13 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                     var value = Create<int>();
                     var initValue = value;
 
-                    Func<int> initialize = () =>
+                    int Initialize()
                     {
                         return value;
-                    };
+                    }
 
                     await using (new RaiiAsync<int>(
-                        initialize,
+                        Initialize,
                         val =>
                         {
                             initValue = val;
@@ -205,13 +206,13 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                 {
                     var cleanedUp = false;
 
-                    Func<int, Task> cleanup = _ =>
+                    Task Cleanup(int _)
                     {
                         cleanedUp = true;
                         return Task.CompletedTask;
-                    };
+                    }
 
-                    await using (new RaiiAsync<int>(Create<int>, cleanup))
+                    await using (new RaiiAsync<int>(Create<int>, Cleanup))
                     {
                         cleanedUp.Should().BeFalse();
                     }
@@ -222,13 +223,13 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                 {
                     var cleanedUp = false;
 
-                    Func<int, Task> cleanup = _ =>
+                    Task Cleanup(int _)
                     {
                         cleanedUp = true;
                         return Task.CompletedTask;
-                    };
+                    }
 
-                    await using (new RaiiAsync<int>(Create<int>, cleanup))
+                    await using (new RaiiAsync<int>(Create<int>, Cleanup))
                     {
                     }
 
@@ -243,13 +244,13 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                 {
                     var cleanedUp = false;
 
-                    Func<int, Task> cleanup = _ =>
+                    Task Cleanup(int _)
                     {
                         cleanedUp = true;
                         return Task.CompletedTask;
-                    };
+                    }
 
-                    await using (new RaiiAsync<int>(Create<int>, cleanup))
+                    await using (new RaiiAsync<int>(Create<int>, Cleanup))
                     {
                     }
 

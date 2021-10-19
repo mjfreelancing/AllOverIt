@@ -181,7 +181,7 @@ namespace EvaluatorBenchmarking
                 // distance x2,y2 to x3,y3
                 var d3 = c.Value;
 
-                var _ = herons.Invoke();
+                _ = herons.Invoke();
             }
         }
     }

@@ -18,7 +18,7 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                 {
                     Invoking(() =>
                         {
-                            var _ = new Raii(null, () => { });
+                            _ = new Raii(null, () => { });
                         })
                         .Should()
                         .Throw<ArgumentNullException>()
@@ -30,7 +30,7 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                 {
                     Invoking(() =>
                         {
-                            var _ = new Raii(() => { }, null);
+                            _ = new Raii(() => { }, null);
                         })
                         .Should()
                         .Throw<ArgumentNullException>()
@@ -42,12 +42,12 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                 {
                     var initialized = false;
 
-                    Action initialize = () =>
+                    void Initialize()
                     {
                         initialized = true;
-                    };
+                    }
 
-                    using (new Raii(initialize, () => { }))
+                    using (new Raii(Initialize, () => { }))
                     {
                         initialized.Should().BeTrue();
                     }
@@ -58,12 +58,12 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                 {
                     var cleanedUp = false;
 
-                    Action cleanup = () =>
+                    void Cleanup()
                     {
                         cleanedUp = true;
-                    };
+                    }
 
-                    using (new Raii(() => { }, cleanup))
+                    using (new Raii(() => { }, Cleanup))
                     {
                         cleanedUp.Should().BeFalse();
                     }
@@ -74,12 +74,12 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                 {
                     var cleanedUp = false;
 
-                    Action cleanup = () =>
+                    void Cleanup()
                     {
                         cleanedUp = true;
-                    };
+                    }
 
-                    using (new Raii(() => { }, cleanup))
+                    using (new Raii(() => { }, Cleanup))
                     { }
 
                     cleanedUp.Should().BeTrue();
@@ -93,12 +93,12 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                 {
                     var cleanedUp = false;
 
-                    Action cleanup = () =>
+                    void Cleanup()
                     {
                         cleanedUp = true;
-                    };
+                    }
 
-                    using (new Raii(() => { }, cleanup))
+                    using (new Raii(() => { }, Cleanup))
                     {
                     }
 
@@ -116,7 +116,7 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                 {
                     Invoking(() =>
                         {
-                            var _ = new Raii<int>(null, _ => { });
+                            _ = new Raii<int>(null, _ => { });
                         })
                         .Should()
                         .Throw<ArgumentNullException>()
@@ -130,7 +130,7 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
 
                     Invoking(() =>
                         {
-                            var _ = new Raii<int>(() => value, null);
+                            _ = new Raii<int>(() => value, null);
                         })
                         .Should()
                         .Throw<ArgumentNullException>()
@@ -143,13 +143,13 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                     var value = Create<int>();
                     var initialized = -value;
 
-                    Func<int> initialize = () =>
+                    int Initialize()
                     {
                         initialized = value;
                         return value;
-                    };
+                    }
 
-                    using (new Raii<int>(initialize, _ => { }))
+                    using (new Raii<int>(Initialize, _ => { }))
                     {
                         initialized.Should().Be(value);
                     }
@@ -160,12 +160,13 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                 {
                     var value = Create<int>();
 
-                    Func<int> initialize = () =>
+                    int Initialize()
                     {
                         return value;
-                    };
+                    }
 
-                    using (var raii = new Raii<int>(initialize, _ => { }))
+                    // ReSharper disable once ConvertToUsingDeclaration
+                    using (var raii = new Raii<int>(Initialize, _ => { }))
                     {
                         raii.Context.Should().Be(value);
                     }
@@ -177,12 +178,12 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                     var value = Create<int>();
                     var initValue = value;
 
-                    Func<int> initialize = () =>
+                    int Initialize()
                     {
                         return value;
-                    };
+                    }
 
-                    using (new Raii<int>(initialize, val => { initValue = val; }))
+                    using (new Raii<int>(Initialize, val => { initValue = val; }))
                     {
                     }
 
@@ -194,12 +195,12 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                 {
                     var cleanedUp = false;
 
-                    Action<int> cleanup = _ =>
+                    void Cleanup(int _)
                     {
                         cleanedUp = true;
-                    };
+                    }
 
-                    using (new Raii<int>(Create<int>, cleanup))
+                    using (new Raii<int>(Create<int>, Cleanup))
                     {
                         cleanedUp.Should().BeFalse();
                     }
@@ -210,12 +211,12 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                 {
                     var cleanedUp = false;
 
-                    Action<int> cleanup = _ =>
+                    void Cleanup(int _)
                     {
                         cleanedUp = true;
-                    };
+                    }
 
-                    using (new Raii<int>(Create<int>, cleanup))
+                    using (new Raii<int>(Create<int>, Cleanup))
                     {
                     }
 
@@ -230,12 +231,12 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                 {
                     var cleanedUp = false;
 
-                    Action<int> cleanup = _ =>
+                    void Cleanup(int _)
                     {
                         cleanedUp = true;
-                    };
+                    }
 
-                    using (new Raii<int>(Create<int>, cleanup))
+                    using (new Raii<int>(Create<int>, Cleanup))
                     {
                     }
 
