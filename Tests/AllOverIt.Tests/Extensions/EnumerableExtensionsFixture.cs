@@ -7,6 +7,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace AllOverIt.Tests.Extensions
@@ -343,6 +345,54 @@ namespace AllOverIt.Tests.Extensions
                 actual.Should().BeEquivalentTo(expected);
             }
         }
+
+#if !NETSTANDARD2_0
+        public class SelectAsync : EnumerableExtensionsFixture
+        {
+            [Fact]
+            public async Task Should_Throw_When_Null()
+            {                
+                await Invoking(
+                    async () =>
+                    {
+                        IEnumerable<bool> items = null;
+
+                        await items.SelectAsync(item => Task.FromResult(item)).AsListAsync();
+                    })
+                  .Should()
+                  .ThrowAsync<ArgumentNullException>()
+                  .WithNamedMessageWhenNull("items");
+            }
+
+            [Fact]
+            public async Task Should_Cancel_Iteration()
+            {
+                var cts = new CancellationTokenSource();
+                cts.Cancel();
+
+                await Invoking(
+                    async () =>
+                    {
+                        IEnumerable<bool> items = new[] { true };
+
+                        await items.SelectAsync(item => Task.FromResult(item), cts.Token).AsListAsync();
+                    })
+                  .Should()
+                  .ThrowAsync<OperationCanceledException>();
+            }
+
+            [Fact]
+            public async Task Should_Iterate_Collection()
+            {
+                var values = CreateMany<bool>();
+                var expected = values.SelectAsReadOnlyCollection(item => !item);
+
+                var actual = await values.SelectAsync(item => Task.FromResult(!item)).AsListAsync();
+
+                actual.Should().BeEquivalentTo(expected);
+            }
+        }
+#endif
 
         public class IsNullOrEmpty : EnumerableExtensionsFixture
         {

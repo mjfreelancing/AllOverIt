@@ -35,14 +35,14 @@ namespace AllOverIt.Tests.Tasks
             }
 
             [Fact]
-            public void Should_Not_Invoke_Action_When_Cancelled()
+            public async Task Should_Not_Invoke_Action_When_Cancelled()
             {
                 var cancellationToken = new CancellationTokenSource();
                 cancellationToken.Cancel();
 
                 var task = RepeatingTask.Start(() => Task.CompletedTask, cancellationToken.Token, 10);
 
-                Invoking(() => task)
+                await Invoking(() => task)
                   .Should()
                   .ThrowAsync<TaskCanceledException>();
             }
@@ -195,14 +195,14 @@ namespace AllOverIt.Tests.Tasks
             }
 
             [Fact]
-            public void Should_Not_Invoke_Action_When_Cancelled()
+            public async Task Should_Not_Invoke_Action_When_Cancelled()
             {
                 var cancellationToken = new CancellationTokenSource();
                 cancellationToken.Cancel();
 
                 var task = RepeatingTask.Start(() => { }, cancellationToken.Token, 10);
 
-                Invoking(() => task)
+                await Invoking(() => task)
                   .Should()
                   .ThrowAsync<TaskCanceledException>();
             }

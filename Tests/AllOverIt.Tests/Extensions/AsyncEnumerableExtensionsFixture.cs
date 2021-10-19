@@ -26,12 +26,12 @@ namespace AllOverIt.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Throw_When_Cancelled()
+            public async Task Should_Throw_When_Cancelled()
             {
                 var cancellationTokenSource = new CancellationTokenSource();
                 cancellationTokenSource.Cancel();
 
-                Invoking(async () =>
+                await Invoking(async () =>
                     {
                         await GetStrings(CreateMany<string>())
                             .AsListAsync(cancellationTokenSource.Token)

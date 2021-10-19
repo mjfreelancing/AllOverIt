@@ -14,18 +14,16 @@ namespace AllOverIt.Tests.Tasks
         public class Constructor_Type : AsyncLazyFixture
         {
             [Fact]
-            public void Should_Throw_When_Null_Factory()
+            public async Task Should_Throw_When_Null_Factory()
             {
-                var actual = Invoking(async () =>
-                {
-                    Func<int> factory = null;
+                await Invoking(async () =>
+                    {
+                        Func<int> factory = null;
 
-                    var lazy = new AsyncLazy<int>(factory);
+                        var lazy = new AsyncLazy<int>(factory);
 
-                    await lazy;
-                });
-
-                actual
+                        await lazy;
+                    })
                     .Should()
                     .ThrowAsync<ArgumentNullException>()
                     .WithNamedMessageWhenNull("function");
@@ -59,20 +57,19 @@ namespace AllOverIt.Tests.Tasks
         public class Constructor_Task_Type : AsyncLazyFixture
         {
             [Fact]
-            public void Should_Throw_When_Null_Factory()
+            public async Task Should_Throw_When_Null_Factory()
             {
-                var actual = Invoking(async () =>
-                {
-                    Func<Task<int>> factory = null;
+                await Invoking(async () =>
+                    {
+                        Func<Task<int>> factory = null;
 
-                    var lazy = new AsyncLazy<int>(factory);
+                        var lazy = new AsyncLazy<int>(factory);
 
-                    await lazy;
-                });
-
-                actual.Should()
-                  .ThrowAsync<ArgumentNullException>()
-                  .WithNamedMessageWhenNull("function");
+                        await lazy;
+                    })
+                    .Should()
+                    .ThrowAsync<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("function");
             }
 
             [Fact]

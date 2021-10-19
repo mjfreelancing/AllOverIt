@@ -5,6 +5,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -98,6 +99,29 @@ namespace AllOverIt.Extensions
 
             return items.Select(selector).ToList();
         }
+
+#if !NETSTANDARD2_0
+        /// <summary>Asynchronously projects each item within a sequence.</summary>
+        /// <typeparam name="TType">The type of each element to be projected.</typeparam>
+        /// <typeparam name="TResult">The projected result type.</typeparam>
+        /// <param name="items">The sequence of elements to be projected.</param>
+        /// <param name="selector">The transform function to be applied to each element.</param>
+        /// <param name="cancellationToken">A cancellation token.</param>
+        /// <returns>An enumerator that provides asynchronous iteration over a sequence of elements.</returns>
+        public static async IAsyncEnumerable<TResult> SelectAsync<TType, TResult>(this IEnumerable<TType> items, Func<TType, Task<TResult>> selector,
+            [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        {
+            // ReSharper disable once PossibleMultipleEnumeration
+            _ = items.WhenNotNull(nameof(items));
+
+            foreach (var item in items)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                yield return await selector.Invoke(item).ConfigureAwait(false);
+            }
+        }
+#endif
 
         /// <summary>
         /// Applicable to strings and collections, this method determines if the instance is null or empty.
