@@ -103,6 +103,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepeatingTaskDemo", "Demos\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecificationDemo", "Demos\AllOverIt\SpecificationDemo\SpecificationDemo.csproj", "{343B00B7-7850-4125-BF6D-9C57876FB709}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqSpecificationDemo", "Demos\AllOverIt\LinqSpecificationDemo\LinqSpecificationDemo.csproj", "{F46E753E-AA7F-401C-A387-DCC1789FA6E6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -249,6 +251,10 @@ Global
 		{343B00B7-7850-4125-BF6D-9C57876FB709}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{343B00B7-7850-4125-BF6D-9C57876FB709}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{343B00B7-7850-4125-BF6D-9C57876FB709}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F46E753E-AA7F-401C-A387-DCC1789FA6E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F46E753E-AA7F-401C-A387-DCC1789FA6E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F46E753E-AA7F-401C-A387-DCC1789FA6E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F46E753E-AA7F-401C-A387-DCC1789FA6E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -298,6 +304,7 @@ Global
 		{1B67249E-FF5D-44C8-9D05-0A0CD40C82F6} = {0DC79E13-DE7A-417D-8A7B-64ABA3F4E1C8}
 		{A9F5B0CB-5E7E-413D-9CD0-1E19195DCB7B} = {0DC79E13-DE7A-417D-8A7B-64ABA3F4E1C8}
 		{343B00B7-7850-4125-BF6D-9C57876FB709} = {595F3EB1-3F3D-4942-9A5A-95CD8621607B}
+		{F46E753E-AA7F-401C-A387-DCC1789FA6E6} = {595F3EB1-3F3D-4942-9A5A-95CD8621607B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19DD11B3-596E-4862-B5C4-1FFFFB173106}

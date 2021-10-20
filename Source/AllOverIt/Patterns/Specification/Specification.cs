@@ -74,21 +74,24 @@ namespace AllOverIt.Patterns.Specification
 
 
 
+    public interface ILinqSpecification<TType> : ISpecification<TType>
+    {
+        Expression<Func<TType, bool>> AsExpression();
+    }
 
-    public abstract class LinqSpecification<TType> : Specification<TType>
+
+
+
+    public abstract class LinqSpecification<TType> : Specification<TType>, ILinqSpecification<TType>
     {
         private Func<TType, bool> _compiled;
 
-        public abstract Expression<Func<TType, bool>> AsExpression();
-
-        protected sealed override bool DoIsSatisfiedBy(TType candidate)
+        protected LinqSpecification(bool negate = false)
+            : base(negate)
         {
-            _compiled ??= AsExpression().Compile();
-
-            return _compiled.Invoke(candidate);
         }
 
-
+        public abstract Expression<Func<TType, bool>> AsExpression();
 
         // Use with IQueryable LINQ
         public static implicit operator Expression<Func<TType, bool>>(LinqSpecification<TType> specification)
@@ -98,9 +101,27 @@ namespace AllOverIt.Patterns.Specification
             return specification.AsExpression();
         }
 
+        public static LinqSpecification<TType> operator &(LinqSpecification<TType> leftSpecification, LinqSpecification<TType> rightSpecification)
+        {
+            return new AndLinqSpecification<TType>(leftSpecification, rightSpecification);
+        }
 
+        public static LinqSpecification<TType> operator |(LinqSpecification<TType> leftSpecification, LinqSpecification<TType> rightSpecification)
+        {
+            return new OrLinqSpecification<TType>(leftSpecification, rightSpecification);
+        }
 
+        public static LinqSpecification<TType> operator !(LinqSpecification<TType> specification)
+        {
+            return new NotLinqSpecification<TType>(specification);
+        }
 
+        protected sealed override bool DoIsSatisfiedBy(TType candidate)
+        {
+            _compiled ??= AsExpression().Compile();
+
+            return _compiled.Invoke(candidate);
+        }
     }
 
 

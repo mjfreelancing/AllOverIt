@@ -22,9 +22,12 @@ namespace SpecificationDemo
 
             // IQueryable
             var isEven1 = new IsEven();
-            //var isOdd1 = !isEven1;
+            var isOdd1 = !isEven1;
             var evenValues1 = values.AsQueryable().Where(isEven1).ToList();
-            //var oddValues1 = values.AsQueryable().Where(!isOdd1).ToList();
+            var oddValues1 = values.AsQueryable().Where(isOdd1).ToList();
+
+
+
 
 
             // IEnumerable
