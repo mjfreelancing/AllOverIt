@@ -9,21 +9,8 @@ namespace AllOverIt.Patterns.Specification
         protected ISpecification<TType> LeftSpecification { get; }
         protected ISpecification<TType> RightSpecification { get; }
 
-        protected BinarySpecification(ISpecification<TType> leftSpecification, ISpecification<TType> rightSpecification, bool negate = false)
-            : base(negate)
-        {
-            LeftSpecification = leftSpecification.WhenNotNull(nameof(leftSpecification));
-            RightSpecification = rightSpecification.WhenNotNull(nameof(rightSpecification));
-        }
-    }
-
-
-    public abstract class BinaryLinqSpecification<TType> : LinqSpecification<TType>
-    {
-        protected ILinqSpecification<TType> LeftSpecification { get; }
-        protected ILinqSpecification<TType> RightSpecification { get; }
-
-        protected BinaryLinqSpecification(ILinqSpecification<TType> leftSpecification, ILinqSpecification<TType> rightSpecification, bool negate = false)
+        protected BinarySpecification(ISpecification<TType> leftSpecification, ISpecification<TType> rightSpecification,
+            bool negate = false)
             : base(negate)
         {
             LeftSpecification = leftSpecification.WhenNotNull(nameof(leftSpecification));
