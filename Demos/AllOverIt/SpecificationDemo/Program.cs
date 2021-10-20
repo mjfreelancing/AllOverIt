@@ -2,22 +2,50 @@
 using AllOverIt.Patterns.Specification;
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace SpecificationDemo
 {
+    public sealed class IsEven : LinqSpecification<int>
+    {
+        public override Expression<Func<int, bool>> AsExpression()
+        {
+            return value => value % 2 == 0;
+        }
+    }
+
     class Program
     {
         static void Main()
         {
+            var values = Enumerable.Range(1, 10).ToList();
+
+            // IQueryable
+            var isEven1 = new IsEven();
+            //var isOdd1 = !isEven1;
+            var evenValues1 = values.AsQueryable().Where(isEven1).ToList();
+            //var oddValues1 = values.AsQueryable().Where(!isOdd1).ToList();
+
+
+            // IEnumerable
+            var isEven2 = new IsMultipleOf(2);
+            var isOdd2 = !isEven2;
+            var evenValues2 = values.Where(isEven2).ToList();
+            var oddValues2 = values.Where(isOdd2).ToList();
+
+
+
+
+
             #region Define specifications
 
             var multipleOfTwo = new IsMultipleOf(2);
             var multipleOfThree = new IsMultipleOf(3);
             var multipleOfSeven = new IsMultipleOf(7);
 
-            var twoOrThreeSpecification = multipleOfTwo.Or(multipleOfThree);
-            var twoAndThreeSpecification = multipleOfTwo.And(multipleOfThree);
-            var complexSpecification = twoAndThreeSpecification.Or(multipleOfSeven);
+            var twoOrThreeSpecification = multipleOfTwo || multipleOfThree;                     // multipleOfTwo.Or(multipleOfThree);
+            var twoAndThreeSpecification = multipleOfTwo && multipleOfThree;                    // multipleOfTwo.And(multipleOfThree);
+            var complexSpecification = (multipleOfTwo && multipleOfThree) || multipleOfSeven;   // twoAndThreeSpecification.Or(multipleOfSeven);
 
             #endregion
 

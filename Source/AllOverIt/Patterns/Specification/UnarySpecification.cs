@@ -9,7 +9,7 @@ namespace AllOverIt.Patterns.Specification
         protected ISpecification<TType> Specification { get; }
 
         protected UnarySpecification(ISpecification<TType> specification, bool negate = false)
-          : base(negate)
+            : base(negate)
         {
             Specification = specification.WhenNotNull(nameof(specification));
         }
