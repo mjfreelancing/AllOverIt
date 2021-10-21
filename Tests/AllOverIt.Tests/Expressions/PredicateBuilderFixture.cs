@@ -98,23 +98,23 @@ namespace AllOverIt.Tests.Expressions
         public class Or : PredicateBuilderFixture
         {
             [Fact]
-            public void Should_Throw_When_First_Expression_Null()
+            public void Should_Throw_When_Left_Expression_Null()
             {
                 Invoking(
                     () => PredicateBuilder.Or<DummySubject>(null, model => Create<bool>()))
                   .Should()
                   .Throw<ArgumentNullException>()
-                  .WithNamedMessageWhenNull("expression1");
+                  .WithNamedMessageWhenNull("leftExpression");
             }
 
             [Fact]
-            public void Should_Throw_When_Second_Expression_Null()
+            public void Should_Throw_When_Right_Expression_Null()
             {
                 Invoking(
                     () => PredicateBuilder.Or<DummySubject>(model => Create<bool>(), null))
                   .Should()
                   .Throw<ArgumentNullException>()
-                  .WithNamedMessageWhenNull("expression2");
+                  .WithNamedMessageWhenNull("rightExpression");
             }
 
             [Theory]
@@ -170,23 +170,23 @@ namespace AllOverIt.Tests.Expressions
         public class And : PredicateBuilderFixture
         {
             [Fact]
-            public void Should_Throw_When_First_Expression_Null()
+            public void Should_Throw_When_Left_Expression_Null()
             {
                 Invoking(
                     () => PredicateBuilder.And<DummySubject>(null, model => Create<bool>()))
                   .Should()
                   .Throw<ArgumentNullException>()
-                  .WithNamedMessageWhenNull("expression1");
+                  .WithNamedMessageWhenNull("leftExpression");
             }
 
             [Fact]
-            public void Should_Throw_When_Second_Expression_Null()
+            public void Should_Throw_When_Right_Expression_Null()
             {
                 Invoking(
                     () => PredicateBuilder.And<DummySubject>(model => Create<bool>(), null))
                   .Should()
                   .Throw<ArgumentNullException>()
-                  .WithNamedMessageWhenNull("expression2");
+                  .WithNamedMessageWhenNull("rightExpression");
             }
 
             [Theory]

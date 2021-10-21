@@ -8,7 +8,8 @@ namespace AllOverIt.Expressions
     // https://blogs.msdn.microsoft.com/meek/2008/05/02/linq-to-entities-combining-predicates/
     // https://docs.microsoft.com/en-us/archive/blogs/meek/linq-to-entities-combining-predicates
 
-    public class ParameterRebinder : ExpressionVisitor
+    /// <summary>A helper class that replaces parameter expressions in a lambda expression with alternate parameter expressions.</summary>
+    public sealed class ParameterRebinder : ExpressionVisitor
     {
         private readonly IDictionary<ParameterExpression, ParameterExpression> _parameterMap;
 
@@ -29,6 +30,7 @@ namespace AllOverIt.Expressions
             return new ParameterRebinder(parameterMap).Visit(expression);
         }
 
+        /// <inheritdoc />
         protected override Expression VisitParameter(ParameterExpression parameter)
         {
             if (_parameterMap.TryGetValue(parameter, out var replacement))
