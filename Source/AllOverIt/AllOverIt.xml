@@ -79,6 +79,15 @@
             <param name="selector">The transform function applied to each element.</param>
             <returns>The projected results as an IReadOnlyList{TResult}.</returns>
         </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.SelectAsync``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Threading.Tasks.Task{``1}},System.Threading.CancellationToken)">
+            <summary>Asynchronously projects each item within a sequence.</summary>
+            <typeparam name="TType">The type of each element to be projected.</typeparam>
+            <typeparam name="TResult">The projected result type.</typeparam>
+            <param name="items">The sequence of elements to be projected.</param>
+            <param name="selector">The transform function to be applied to each element.</param>
+            <param name="cancellationToken">A cancellation token.</param>
+            <returns>An enumerator that provides asynchronous iteration over a sequence of elements.</returns>
+        </member>
         <member name="M:AllOverIt.Extensions.EnumerableExtensions.IsNullOrEmpty(System.Collections.IEnumerable)">
             <summary>
             Applicable to strings and collections, this method determines if the instance is null or empty.
@@ -712,6 +721,51 @@
             <param name="cancellationToken">The cancellation token to signal when enumeration needs to be prematurely completed.</param>
             <returns>Returns an enumerable collection of files. The enumeration may not be complete if the <c>cancellationToken</c>
             is cancelled.</returns>
+        </member>
+        <member name="T:AllOverIt.Patterns.ChainOfResponsibility.ChainOfResponsibilityComposer`2">
+            <summary>Composes a sequence of 'Chain Of Responsibility' handlers.</summary>
+            <typeparam name="TInput">The input state type.</typeparam>
+            <typeparam name="TOutput">The output state type.</typeparam>
+        </member>
+        <member name="M:AllOverIt.Patterns.ChainOfResponsibility.ChainOfResponsibilityComposer`2.#ctor(System.Collections.Generic.IEnumerable{AllOverIt.Patterns.ChainOfResponsibility.IChainOfResponsibilityHandler{`0,`1}})">
+            <summary>Constructor.</summary>
+            <param name="handlers">The collection of handlers to be composed in the order they are provided.</param>
+        </member>
+        <member name="M:AllOverIt.Patterns.ChainOfResponsibility.ChainOfResponsibilityComposer`2.Handle(`0)">
+            <summary>Invokes each handler in turn with the provided state until the state is actioned.</summary>
+            <param name="state">The input state to be processed.</param>
+            <returns>The final output state of the input was processed. If the input state is not processed by one of the handlers
+            then the default value for <typeparam name="TInput" /> is returned (null if it is a reference type).</returns>
+        </member>
+        <member name="T:AllOverIt.Patterns.ChainOfResponsibility.ChainOfResponsibilityHandler`2">
+            <summary>A base 'Chain Of Responsibility' handler.</summary>
+            <typeparam name="TInput">The input state type.</typeparam>
+            <typeparam name="TOutput">The output state type.</typeparam>
+        </member>
+        <member name="M:AllOverIt.Patterns.ChainOfResponsibility.ChainOfResponsibilityHandler`2.SetNext(AllOverIt.Patterns.ChainOfResponsibility.IChainOfResponsibilityHandler{`0,`1})">
+            <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Patterns.ChainOfResponsibility.ChainOfResponsibilityHandler`2.Handle(`0)">
+            <inheritdoc />
+            <remarks>If the current handler cannot process the request then it should call base.Handle() to give
+            the next handler in the chain an opportunity to process the request. To terminate the processing
+            at the current handler do not call the base method.</remarks>
+        </member>
+        <member name="T:AllOverIt.Patterns.ChainOfResponsibility.IChainOfResponsibilityHandler`2">
+            <summary>An interface that describes an implementation of the Chain Of Responsibility pattern.</summary>
+            <typeparam name="TInput">The input state type.</typeparam>
+            <typeparam name="TOutput">The output state type.</typeparam>
+        </member>
+        <member name="M:AllOverIt.Patterns.ChainOfResponsibility.IChainOfResponsibilityHandler`2.SetNext(AllOverIt.Patterns.ChainOfResponsibility.IChainOfResponsibilityHandler{`0,`1})">
+            <summary>Sets the next handler in the chain.</summary>
+            <param name="handler">The next handler that may choose to process a request.</param>
+            <returns>The original handler to allow for a fluent syntax.</returns>
+        </member>
+        <member name="M:AllOverIt.Patterns.ChainOfResponsibility.IChainOfResponsibilityHandler`2.Handle(`0)">
+            <summary>Potentially handles a given request using the provided state.</summary>
+            <param name="state">Contains the request and possibly other state information to potentially be processed
+            by the current handler.</param>
+            <returns>An output state.</returns>
         </member>
         <member name="T:AllOverIt.Patterns.ResourceInitialization.Raii">
             <summary>A disposable object implementing the Resource Acquisition Is Initialization idiom.</summary>

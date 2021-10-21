@@ -1,6 +1,6 @@
-﻿using System;
+﻿using AllOverIt.Helpers;
+using System;
 using System.Linq.Expressions;
-using AllOverIt.Helpers;
 
 namespace AllOverIt.Patterns.Specification
 {
@@ -22,6 +22,13 @@ namespace AllOverIt.Patterns.Specification
             return specification.AsExpression();
         }
 
+        public static explicit operator Func<TType, bool>(LinqSpecification<TType> specification)
+        {
+            _ = specification.WhenNotNull(nameof(specification));
+
+            return specification.GetCompiledExpression();
+        }
+
         public static LinqSpecification<TType> operator &(LinqSpecification<TType> leftSpecification, LinqSpecification<TType> rightSpecification)
         {
             return new AndLinqSpecification<TType>(leftSpecification, rightSpecification);
@@ -39,9 +46,13 @@ namespace AllOverIt.Patterns.Specification
 
         protected sealed override bool DoIsSatisfiedBy(TType candidate)
         {
-            _compiled ??= AsExpression().Compile();
+            return GetCompiledExpression().Invoke(candidate);
+        }
 
-            return _compiled.Invoke(candidate);
+        private Func<TType, bool> GetCompiledExpression()
+        {
+            _compiled ??= AsExpression().Compile();
+            return _compiled;
         }
     }
 }
