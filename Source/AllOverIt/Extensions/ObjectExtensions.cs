@@ -11,7 +11,7 @@ namespace AllOverIt.Extensions
     {
         /// <summary>
         /// Specifies the binding options to use when calculating the hash code of an object when using
-        /// <see cref="CalculateHashCode{TType}(TType,System.Collections.Generic.IEnumerable{string},System.Collections.Generic.IEnumerable{string})"/>.
+        /// <see cref="CalculateHashCode{TType}(TType,IEnumerable{string},IEnumerable{string})"/>.
         /// </summary>
         public static BindingOptions DefaultHashCodeBindings { get; set; } = BindingOptions.Instance | BindingOptions.AllAccessor | BindingOptions.AllVisibility;
 
@@ -248,16 +248,14 @@ namespace AllOverIt.Extensions
             return AggregateHashCode(properties);
         }
 
-        /// <summary>
-        /// Calculates the hash code based on explicitly specified properties, fields, or the return result from a method call.
-        /// </summary>
+        /// <summary>Calculates the hash code based on explicitly specified properties, fields, or the return result from a method call.</summary>
         /// <typeparam name="TType">The object type.</typeparam>
         /// <param name="instance">The instance having its hash code calculated.</param>
         /// <param name="resolvers">One or more resolvers that provide the properties, fields, or method calls used to calculate the hash code.</param>
         /// <returns>The calculated hash code.</returns>
         public static int CalculateHashCode<TType>(this TType instance, params Func<TType, object>[] resolvers)
         {
-            var properties = resolvers.Select(propertyResolver => propertyResolver.Invoke(instance));
+            var properties = resolvers.Select(resolver => resolver.Invoke(instance));
 
             return AggregateHashCode(properties);
         }

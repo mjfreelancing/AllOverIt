@@ -18,37 +18,15 @@ namespace SpecificationDemo
     {
         static void Main()
         {
-            var values = Enumerable.Range(1, 10).ToList();
-
-            // IQueryable
-            var isEven1 = new IsEven();
-            var isOdd1 = !isEven1;
-            var evenValues1 = values.AsQueryable().Where(isEven1).ToList();
-            var oddValues1 = values.AsQueryable().Where(isOdd1).ToList();
-
-
-
-
-
-            // IEnumerable
-            var isEven2 = new IsMultipleOf(2);
-            var isOdd2 = !isEven2;
-            var evenValues2 = values.Where(isEven2).ToList();
-            var oddValues2 = values.Where(isOdd2).ToList();
-
-
-
-
-
             #region Define specifications
 
             var multipleOfTwo = new IsMultipleOf(2);
             var multipleOfThree = new IsMultipleOf(3);
             var multipleOfSeven = new IsMultipleOf(7);
 
-            var twoOrThreeSpecification = multipleOfTwo || multipleOfThree;                     // multipleOfTwo.Or(multipleOfThree);
-            var twoAndThreeSpecification = multipleOfTwo && multipleOfThree;                    // multipleOfTwo.And(multipleOfThree);
-            var complexSpecification = (multipleOfTwo && multipleOfThree) || multipleOfSeven;   // twoAndThreeSpecification.Or(multipleOfSeven);
+            var twoOrThreeSpecification = multipleOfTwo || multipleOfThree;                     // Same as: multipleOfTwo.Or(multipleOfThree);
+            var twoAndThreeSpecification = multipleOfTwo && multipleOfThree;                    // Same as: multipleOfTwo.And(multipleOfThree);
+            var complexSpecification = (multipleOfTwo && multipleOfThree) || multipleOfSeven;   // Same as: twoAndThreeSpecification.Or(multipleOfSeven);
 
             #endregion
 

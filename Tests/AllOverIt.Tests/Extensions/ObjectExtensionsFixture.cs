@@ -227,7 +227,11 @@ namespace AllOverIt.Tests.Extensions
                 public Func<bool> Prop10 { get; set; }
                 public IDictionary<string, Task> Prop11 { get; set; }
                 public IDictionary<int, DummyType> Prop12 { get; set; }
+
+#pragma warning disable IDE0052 // Remove unread private members
                 private string Prop13 { get; set; }
+#pragma warning restore IDE0052 // Remove unread private members
+
                 public string Prop14 { get; set; }
 
                 public DummyType()
