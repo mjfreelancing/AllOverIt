@@ -9,13 +9,13 @@
         /// <returns>True if the candidate satisfies the specification, otherwise false.</returns>
         public abstract bool IsSatisfiedBy(TType candidate);
 
-        /// <summary>Required in combination with operator & and | to support operator &amp;&amp; and ||.</summary>
+        /// <summary>Required in combination with operator &amp; and | to support operator &amp;&amp; and ||.</summary>
         public static bool operator true(SpecificationBase<TType> _)
         {
             return false;
         }
 
-        /// <summary>Required in combination with operator & and | to support operator &amp;&amp; and ||.</summary>
+        /// <summary>Required in combination with operator &amp; and | to support operator &amp;&amp; and ||.</summary>
         public static bool operator false(SpecificationBase<TType> _)
         {
             return false;

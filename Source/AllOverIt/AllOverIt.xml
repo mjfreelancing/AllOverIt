@@ -158,6 +158,83 @@
             <param name="batchSize">The maximum number of items in each batch.</param>
             <returns>One or more batches containing the source items partitioned into a maximum batch size.</returns>
         </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.Where``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
+            <summary>Gets all candidates that meet the criteria of a provided specification.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="candidates">The elements to apply the specification against.</param>
+            <param name="specification">The specification to apply against a collection of elements.</param>
+            <returns>The candidates that meet the criteria of the provided specification.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.Any``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
+            <summary>Determines if any candidates meet the criteria of a provided specification.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="candidates">The elements to apply the specification against.</param>
+            <param name="specification">The specification to apply against a collection of elements.</param>
+            <returns>True if any of the candidates meet the criteria of the provided specification.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.All``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
+            <summary>Determines if all candidates meet the criteria of a provided specification.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="candidates">The elements to apply the specification against.</param>
+            <param name="specification">The specification to apply against a collection of elements.</param>
+            <returns>True if all of the candidates meet the criteria of the provided specification.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.Count``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
+            <summary>Counts the number of candidates that meet the criteria of a provided specification.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="candidates">The elements to apply the specification against.</param>
+            <param name="specification">The specification to apply against a collection of elements.</param>
+            <returns>The count of candidates that meet the criteria of a provided specification.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.First``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
+            <summary>Gets the first candidate that meets the criteria of a provided specification.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="candidates">The elements to apply the specification against.</param>
+            <param name="specification">The specification to apply against a collection of elements.</param>
+            <returns>The first candidate that meets the criteria of a provided specification.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.FirstOrDefault``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
+            <summary>Gets the first candidate that meets the criteria of a provided specification or the type's
+            default if there are no matches.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="candidates">The elements to apply the specification against.</param>
+            <param name="specification">The specification to apply against a collection of elements.</param>
+            <returns>The first candidate that meets the criteria of a provided specification or the type's
+            default if there are no matches.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.Last``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
+            <summary>Gets the last candidate that meets the criteria of a provided specification.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="candidates">The elements to apply the specification against.</param>
+            <param name="specification">The specification to apply against a collection of elements.</param>
+            <returns>The last candidate that meets the criteria of a provided specification.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.LastOrDefault``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
+            <summary>Gets the last candidate that meets the criteria of a provided specification or the type's
+            default if there are no matches.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="candidates">The elements to apply the specification against.</param>
+            <param name="specification">The specification to apply against a collection of elements.</param>
+            <returns>The last candidate that meets the criteria of a provided specification or the type's
+            default if there are no matches.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.SkipWhile``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
+            <summary>Gets the elements from the first element of the input candidates that meets the criteria of a provided
+            specification.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="candidates">The elements to apply the specification against.</param>
+            <param name="specification">The specification to apply against a collection of elements.</param>
+            <returns>An enumerable that contains the elements from the first element of the input candidates that meets
+            the criteria of a provided specification.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.TakeWhile``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
+            <summary>Gets the elements from the input candidates while they meet the criteria of a provided specification.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="candidates">The elements to apply the specification against.</param>
+            <param name="specification">The specification to apply against a collection of elements.</param>
+            <returns>An enumerable that contains the elements from the input candidates while they meet the criteria of a provided
+            specification.</returns>
+        </member>
         <member name="M:AllOverIt.Extensions.ExpressionExtensions.GetMemberExpressions(System.Linq.Expressions.MemberExpression)">
             <summary>
             Recursively get all <see cref="T:System.Linq.Expressions.MemberExpression"/> expressions linked to <param name="expression"></param>
@@ -206,6 +283,45 @@
             <summary>Determines whether the <paramref name="fileInfo"/> instance represents a directory.</summary>
             <param name="fileInfo">The <c>FileInfo</c> instance containing information about a file or directory.</param>
             <returns>Returns <c>true</c> if the <paramref name="fileInfo"/> instance represents a directory.</returns>
+        </member>
+        <member name="T:AllOverIt.Extensions.LinqSpecificationExtensions">
+            <summary>Provides extensions methods that simplify the composition of LINQ compatible specifications.</summary>
+        </member>
+        <member name="M:AllOverIt.Extensions.LinqSpecificationExtensions.And``1(AllOverIt.Patterns.Specification.ILinqSpecification{``0},AllOverIt.Patterns.Specification.ILinqSpecification{``0})">
+            <summary>Gets an expression that composes two specifications to perform a logical AND operation.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="leftSpecification">The left specification applied against a candidate.</param>
+            <param name="rightSpecification">The right specification applied against a candidate.</param>
+            <returns>An expression that composes two specifications to perform a logical AND operation.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.LinqSpecificationExtensions.AndNot``1(AllOverIt.Patterns.Specification.ILinqSpecification{``0},AllOverIt.Patterns.Specification.ILinqSpecification{``0})">
+            <summary>Gets an expression that composes two specifications to perform a logical AND operation after negating
+            the result of the right operand.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="leftSpecification">The left specification applied against a candidate.</param>
+            <param name="rightSpecification">The right specification applied against a candidate.</param>
+            <returns>An expression that composes two specifications to perform a logical AND operation.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.LinqSpecificationExtensions.Or``1(AllOverIt.Patterns.Specification.ILinqSpecification{``0},AllOverIt.Patterns.Specification.ILinqSpecification{``0})">
+            <summary>Gets an expression that composes two specifications to perform a logical OR operation.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="leftSpecification">The left specification applied against a candidate.</param>
+            <param name="rightSpecification">The right specification applied against a candidate.</param>
+            <returns>An expression that composes two specifications to perform a logical OR operation.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.LinqSpecificationExtensions.OrNot``1(AllOverIt.Patterns.Specification.ILinqSpecification{``0},AllOverIt.Patterns.Specification.ILinqSpecification{``0})">
+            <summary>Gets an expression that composes two specifications to perform a logical OR operation after negating
+            the result of the right operand.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="leftSpecification">The left specification applied against a candidate.</param>
+            <param name="rightSpecification">The right specification applied against a candidate.</param>
+            <returns>An expression that composes two specifications to perform a logical OR operation.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.LinqSpecificationExtensions.Not``1(AllOverIt.Patterns.Specification.ILinqSpecification{``0})">
+            <summary>Gets an expression that negates a provided specification.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="specification">The specification applied against a candidate.</param>
+            <returns>An expression that negates a provided specification.</returns>
         </member>
         <member name="P:AllOverIt.Extensions.ObjectExtensions.DefaultHashCodeBindings">
             <summary>
@@ -366,6 +482,122 @@
             </summary>
             <param name="propertyInfo">The <see cref="T:System.Reflection.PropertyInfo"/> for a property.</param>
             <returns>True if the property is an indexer.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.QueryableExtensions.Where``1(System.Linq.IQueryable{``0},AllOverIt.Patterns.Specification.ILinqSpecification{``0})">
+            <summary>Gets all candidates that meet the criteria of a provided specification.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="candidates">The elements to apply the specification against.</param>
+            <param name="specification">The specification to apply against a collection of elements.</param>
+            <returns>The candidates that meet the criteria of the provided specification.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.QueryableExtensions.Any``1(System.Linq.IQueryable{``0},AllOverIt.Patterns.Specification.ILinqSpecification{``0})">
+            <summary>Determines if any candidates meet the criteria of a provided specification.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="candidates">The elements to apply the specification against.</param>
+            <param name="specification">The specification to apply against a collection of elements.</param>
+            <returns>True if any of the candidates meet the criteria of the provided specification.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.QueryableExtensions.All``1(System.Linq.IQueryable{``0},AllOverIt.Patterns.Specification.ILinqSpecification{``0})">
+            <summary>Determines if all candidates meet the criteria of a provided specification.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="candidates">The elements to apply the specification against.</param>
+            <param name="specification">The specification to apply against a collection of elements.</param>
+            <returns>True if all of the candidates meet the criteria of the provided specification.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.QueryableExtensions.Count``1(System.Linq.IQueryable{``0},AllOverIt.Patterns.Specification.ILinqSpecification{``0})">
+            <summary>Counts the number of candidates that meet the criteria of a provided specification.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="candidates">The elements to apply the specification against.</param>
+            <param name="specification">The specification to apply against a collection of elements.</param>
+            <returns>The count of candidates that meet the criteria of a provided specification.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.QueryableExtensions.First``1(System.Linq.IQueryable{``0},AllOverIt.Patterns.Specification.ILinqSpecification{``0})">
+            <summary>Gets the first candidate that meets the criteria of a provided specification.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="candidates">The elements to apply the specification against.</param>
+            <param name="specification">The specification to apply against a collection of elements.</param>
+            <returns>The first candidate that meets the criteria of a provided specification.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.QueryableExtensions.FirstOrDefault``1(System.Linq.IQueryable{``0},AllOverIt.Patterns.Specification.ILinqSpecification{``0})">
+            <summary>Gets the first candidate that meets the criteria of a provided specification or the type's
+            default if there are no matches.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="candidates">The elements to apply the specification against.</param>
+            <param name="specification">The specification to apply against a collection of elements.</param>
+            <returns>The first candidate that meets the criteria of a provided specification or the type's
+            default if there are no matches.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.QueryableExtensions.Last``1(System.Linq.IQueryable{``0},AllOverIt.Patterns.Specification.ILinqSpecification{``0})">
+            <summary>Gets the last candidate that meets the criteria of a provided specification.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="candidates">The elements to apply the specification against.</param>
+            <param name="specification">The specification to apply against a collection of elements.</param>
+            <returns>The last candidate that meets the criteria of a provided specification.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.QueryableExtensions.LastOrDefault``1(System.Linq.IQueryable{``0},AllOverIt.Patterns.Specification.ILinqSpecification{``0})">
+            <summary>Gets the last candidate that meets the criteria of a provided specification or the type's
+            default if there are no matches.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="candidates">The elements to apply the specification against.</param>
+            <param name="specification">The specification to apply against a collection of elements.</param>
+            <returns>The last candidate that meets the criteria of a provided specification or the type's
+            default if there are no matches.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.QueryableExtensions.SkipWhile``1(System.Linq.IQueryable{``0},AllOverIt.Patterns.Specification.ILinqSpecification{``0})">
+            <summary>Gets the elements from the first element of the input candidates that meets the criteria of a provided
+            specification.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="candidates">The elements to apply the specification against.</param>
+            <param name="specification">The specification to apply against a collection of elements.</param>
+            <returns>An enumerable that contains the elements from the first element of the input candidates that meets
+            the criteria of a provided specification.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.QueryableExtensions.TakeWhile``1(System.Linq.IQueryable{``0},AllOverIt.Patterns.Specification.ILinqSpecification{``0})">
+            <summary>Gets the elements from the input candidates while they meet the criteria of a provided specification.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="candidates">The elements to apply the specification against.</param>
+            <param name="specification">The specification to apply against a collection of elements.</param>
+            <returns>An enumerable that contains the elements from the input candidates while they meet the criteria of a provided
+            specification.</returns>
+        </member>
+        <member name="T:AllOverIt.Extensions.SpecificationExtensions">
+            <summary>Provides extensions methods that simplify the composition of specifications.</summary>
+        </member>
+        <member name="M:AllOverIt.Extensions.SpecificationExtensions.And``1(AllOverIt.Patterns.Specification.ISpecification{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
+            <summary>Gets an expression that composes two specifications to perform a logical AND operation.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="leftSpecification">The left specification applied against a candidate.</param>
+            <param name="rightSpecification">The right specification applied against a candidate.</param>
+            <returns>An expression that composes two specifications to perform a logical AND operation.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.SpecificationExtensions.AndNot``1(AllOverIt.Patterns.Specification.ISpecification{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
+            <summary>Gets an expression that composes two specifications to perform a logical AND operation after negating
+            the result of the right operand.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="leftSpecification">The left specification applied against a candidate.</param>
+            <param name="rightSpecification">The right specification applied against a candidate.</param>
+            <returns>An expression that composes two specifications to perform a logical AND operation.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.SpecificationExtensions.Or``1(AllOverIt.Patterns.Specification.ISpecification{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
+            <summary>Gets an expression that composes two specifications to perform a logical OR operation.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="leftSpecification">The left specification applied against a candidate.</param>
+            <param name="rightSpecification">The right specification applied against a candidate.</param>
+            <returns>An expression that composes two specifications to perform a logical OR operation.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.SpecificationExtensions.OrNot``1(AllOverIt.Patterns.Specification.ISpecification{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
+            <summary>Gets an expression that composes two specifications to perform a logical OR operation after negating
+            the result of the right operand.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="leftSpecification">The left specification applied against a candidate.</param>
+            <param name="rightSpecification">The right specification applied against a candidate.</param>
+            <returns>An expression that composes two specifications to perform a logical OR operation.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.SpecificationExtensions.Not``1(AllOverIt.Patterns.Specification.ISpecification{``0})">
+            <summary>Gets an expression that negates a provided specification.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="specification">The specification applied against a candidate.</param>
+            <returns>An expression that negates a provided specification.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.StringExtensions.As``1(System.String,``0)">
             <summary>Converts a given string to another type.</summary>
@@ -889,49 +1121,49 @@
             provided at the time of construction being invoked.</summary>
         </member>
         <member name="T:AllOverIt.Patterns.Specification.AndLinqSpecification`1">
-            <summary>A specification that performs an AND operation between two expressions.</summary>
+            <summary>A specification that performs a logical AND operation between two expressions.</summary>
             <typeparam name="TType">The candidate type the specification applies to.</typeparam>
         </member>
         <member name="M:AllOverIt.Patterns.Specification.AndLinqSpecification`1.#ctor(AllOverIt.Patterns.Specification.ILinqSpecification{`0},AllOverIt.Patterns.Specification.ILinqSpecification{`0})">
             <summary>Constructor.</summary>
-            <param name="leftSpecification">The left specification of the AND operation to apply to a candidate.</param>
-            <param name="rightSpecification">The right specification of the AND operation to apply to a candidate.</param>
+            <param name="leftSpecification">The left specification applied against a candidate.</param>
+            <param name="rightSpecification">The right specification applied against a candidate.</param>
         </member>
         <member name="M:AllOverIt.Patterns.Specification.AndLinqSpecification`1.AsExpression">
             <inheritdoc />
         </member>
         <member name="T:AllOverIt.Patterns.Specification.AndNotLinqSpecification`1">
-            <summary>A specification that performs an AND NOT operation between two expressions.</summary>
+            <summary>A specification that performs a logical AND operation between two expressions after negating the result of the right operand.</summary>
             <typeparam name="TType">The candidate type the specification applies to.</typeparam>
         </member>
         <member name="M:AllOverIt.Patterns.Specification.AndNotLinqSpecification`1.#ctor(AllOverIt.Patterns.Specification.ILinqSpecification{`0},AllOverIt.Patterns.Specification.ILinqSpecification{`0})">
             <summary>Constructor.</summary>
-            <param name="leftSpecification">The left specification of the AND NOT operation to apply to a candidate.</param>
-            <param name="rightSpecification">The right specification of the AND NOT operation to apply to a candidate.</param>
+            <param name="leftSpecification">The left specification applied against a candidate.</param>
+            <param name="rightSpecification">The right specification applied against a candidate.</param>
         </member>
         <member name="M:AllOverIt.Patterns.Specification.AndNotLinqSpecification`1.AsExpression">
             <inheritdoc />
         </member>
         <member name="T:AllOverIt.Patterns.Specification.AndNotSpecification`1">
-            <summary>A specification that performs an AND NOT operation between two expressions.</summary>
+            <summary>A specification that performs a logical AND operation between two expressions after negating the result of the right operand.</summary>
             <typeparam name="TType">The candidate type the specification applies to.</typeparam>
         </member>
         <member name="M:AllOverIt.Patterns.Specification.AndNotSpecification`1.#ctor(AllOverIt.Patterns.Specification.ISpecification{`0},AllOverIt.Patterns.Specification.ISpecification{`0})">
             <summary>Constructor.</summary>
-            <param name="leftSpecification">The left specification of the AND NOT operation to apply to a candidate.</param>
-            <param name="rightSpecification">The right specification of the AND NOT operation to apply to a candidate.</param>
+            <param name="leftSpecification">The left specification applied against a candidate.</param>
+            <param name="rightSpecification">The right specification applied against a candidate.</param>
         </member>
         <member name="M:AllOverIt.Patterns.Specification.AndNotSpecification`1.IsSatisfiedBy(`0)">
             <inheritdoc />
         </member>
         <member name="T:AllOverIt.Patterns.Specification.AndSpecification`1">
-            <summary>A specification that performs an AND operation between two expressions.</summary>
+            <summary>A specification that performs a logical AND operation between two expressions.</summary>
             <typeparam name="TType">The candidate type the specification applies to.</typeparam>
         </member>
         <member name="M:AllOverIt.Patterns.Specification.AndSpecification`1.#ctor(AllOverIt.Patterns.Specification.ISpecification{`0},AllOverIt.Patterns.Specification.ISpecification{`0})">
             <summary>Constructor.</summary>
-            <param name="leftSpecification">The left specification of the AND operation to apply to a candidate.</param>
-            <param name="rightSpecification">The right specification of the AND operation to apply to a candidate.</param>
+            <param name="leftSpecification">The left specification applied against a candidate.</param>
+            <param name="rightSpecification">The right specification applied against a candidate.</param>
         </member>
         <member name="M:AllOverIt.Patterns.Specification.AndSpecification`1.IsSatisfiedBy(`0)">
             <inheritdoc />
@@ -940,19 +1172,31 @@
             <summary>An abstract base class for all concrete LINQ-based binary specifications.</summary>
             <typeparam name="TType">The candidate type the specification applies to.</typeparam>
         </member>
+        <member name="P:AllOverIt.Patterns.Specification.BinaryLinqSpecification`1.LeftSpecification">
+            <summary>The left specification of the binary operation to apply to a candidate.</summary>
+        </member>
+        <member name="P:AllOverIt.Patterns.Specification.BinaryLinqSpecification`1.RightSpecification">
+            <summary>The right specification of the binary operation to apply to a candidate.</summary>
+        </member>
         <member name="M:AllOverIt.Patterns.Specification.BinaryLinqSpecification`1.#ctor(AllOverIt.Patterns.Specification.ILinqSpecification{`0},AllOverIt.Patterns.Specification.ILinqSpecification{`0})">
             <summary>Constructor.</summary>
-            <param name="leftSpecification">The left specification of a binary operation to apply to a candidate.</param>
-            <param name="rightSpecification">The right specification of a binary operation to apply to a candidate.</param>
+            <param name="leftSpecification">The left specification applied against a candidate.</param>
+            <param name="rightSpecification">The right specification applied against a candidate.</param>
         </member>
         <member name="T:AllOverIt.Patterns.Specification.BinarySpecification`1">
             <summary>An abstract base class for all concrete binary specifications.</summary>
             <typeparam name="TType">The candidate type the specification applies to.</typeparam>
         </member>
+        <member name="P:AllOverIt.Patterns.Specification.BinarySpecification`1.LeftSpecification">
+            <summary>The left specification of the binary operation to apply to a candidate.</summary>
+        </member>
+        <member name="P:AllOverIt.Patterns.Specification.BinarySpecification`1.RightSpecification">
+            <summary>The right specification of the binary operation to apply to a candidate.</summary>
+        </member>
         <member name="M:AllOverIt.Patterns.Specification.BinarySpecification`1.#ctor(AllOverIt.Patterns.Specification.ISpecification{`0},AllOverIt.Patterns.Specification.ISpecification{`0})">
             <summary>Constructor.</summary>
-            <param name="leftSpecification">The left specification of a binary operation to apply to a candidate.</param>
-            <param name="rightSpecification">The right specification of a binary operation to apply to a candidate.</param>
+            <param name="leftSpecification">The left specification applied against a candidate.</param>
+            <param name="rightSpecification">The right specification applied against a candidate.</param>
         </member>
         <member name="T:AllOverIt.Patterns.Specification.ILinqSpecification`1">
             <summary>Defines an interface that allows for complex Expression-based specifications to be built.</summary>
@@ -973,6 +1217,11 @@
         </member>
         <member name="T:AllOverIt.Patterns.Specification.LinqSpecification`1">
             <inheritdoc cref="T:AllOverIt.Patterns.Specification.SpecificationBase`1"/>
+        </member>
+        <member name="M:AllOverIt.Patterns.Specification.LinqSpecification`1.Create(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>Creates an ad-hoc specification based on the provided predicate.</summary>
+            <param name="predicate">The predicate to be used by the specification.</param>
+            <returns>An ad-hoc specification based on the provided predicate.</returns>
         </member>
         <member name="M:AllOverIt.Patterns.Specification.LinqSpecification`1.AsExpression">
             <inheritdoc />
@@ -1005,77 +1254,85 @@
             <returns>A new specification that inverts the result of the provided specification.</returns>
         </member>
         <member name="M:AllOverIt.Patterns.Specification.LinqSpecification`1.IsSatisfiedBy(`0)">
-            <inheritdoc />
+            <inheritdoc cref="T:AllOverIt.Patterns.Specification.SpecificationBase`1"/>
         </member>
         <member name="T:AllOverIt.Patterns.Specification.NotLinqSpecification`1">
-            <summary>A specification that performs a NOT operation between two expressions.</summary>
+            <summary>A specification that performs a logical NOT operation on a provided expression.</summary>
             <typeparam name="TType">The candidate type the specification applies to.</typeparam>
         </member>
         <member name="M:AllOverIt.Patterns.Specification.NotLinqSpecification`1.#ctor(AllOverIt.Patterns.Specification.ILinqSpecification{`0})">
             <summary>Constructor.</summary>
-            <param name="specification">The specification of the NOT operation to apply to a candidate.</param>
+            <param name="specification">The specification applied against a candidate.</param>
         </member>
         <member name="M:AllOverIt.Patterns.Specification.NotLinqSpecification`1.AsExpression">
             <inheritdoc />
         </member>
         <member name="T:AllOverIt.Patterns.Specification.NotSpecification`1">
-            <summary>A specification that performs a NOT operation between two expressions.</summary>
+            <summary>A specification that performs a logical NOT operation on a provided expression.</summary>
             <typeparam name="TType">The candidate type the specification applies to.</typeparam>
         </member>
         <member name="M:AllOverIt.Patterns.Specification.NotSpecification`1.#ctor(AllOverIt.Patterns.Specification.ISpecification{`0})">
             <summary>Constructor.</summary>
-            <param name="specification">The specification of the NOT operation to apply to a candidate.</param>
+            <param name="specification">The specification applied against a candidate.</param>
+        </member>
+        <member name="M:AllOverIt.Patterns.Specification.NotSpecification`1.IsSatisfiedBy(`0)">
+            <inheritdoc />
         </member>
         <member name="T:AllOverIt.Patterns.Specification.OrLinqSpecification`1">
-            <summary>A specification that performs an OR operation between two expressions.</summary>
+            <summary>A specification that performs a logical OR operation between two expressions.</summary>
             <typeparam name="TType">The candidate type the specification applies to.</typeparam>
         </member>
         <member name="M:AllOverIt.Patterns.Specification.OrLinqSpecification`1.#ctor(AllOverIt.Patterns.Specification.ILinqSpecification{`0},AllOverIt.Patterns.Specification.ILinqSpecification{`0})">
             <summary>Constructor.</summary>
-            <param name="leftSpecification">The left specification of the OR operation to apply to a candidate.</param>
-            <param name="rightSpecification">The right specification of the OR operation to apply to a candidate.</param>
+            <param name="leftSpecification">The left specification applied against a candidate.</param>
+            <param name="rightSpecification">The right specification applied against a candidate.</param>
         </member>
         <member name="M:AllOverIt.Patterns.Specification.OrLinqSpecification`1.AsExpression">
             <inheritdoc />
         </member>
         <member name="T:AllOverIt.Patterns.Specification.OrNotLinqSpecification`1">
-            <summary>A specification that performs an OR NOT operation between two expressions.</summary>
+            <summary>A specification that performs a logical OR operation between two expressions after negating the result of the right operand.</summary>
             <typeparam name="TType">The candidate type the specification applies to.</typeparam>
         </member>
         <member name="M:AllOverIt.Patterns.Specification.OrNotLinqSpecification`1.#ctor(AllOverIt.Patterns.Specification.ILinqSpecification{`0},AllOverIt.Patterns.Specification.ILinqSpecification{`0})">
             <summary>Constructor.</summary>
-            <param name="leftSpecification">The left specification of the OR NOT operation to apply to a candidate.</param>
-            <param name="rightSpecification">The right specification of the OR NOT operation to apply to a candidate.</param>
+            <param name="leftSpecification">The left specification applied against a candidate.</param>
+            <param name="rightSpecification">The right specification applied against a candidate.</param>
         </member>
         <member name="M:AllOverIt.Patterns.Specification.OrNotLinqSpecification`1.AsExpression">
             <inheritdoc />
         </member>
         <member name="T:AllOverIt.Patterns.Specification.OrNotSpecification`1">
-            <summary>A specification that performs an OR NOT operation between two expressions.</summary>
+            <summary>A specification that performs a logical OR operation between two expressions after negating the result of the right operand.</summary>
             <typeparam name="TType">The candidate type the specification applies to.</typeparam>
         </member>
         <member name="M:AllOverIt.Patterns.Specification.OrNotSpecification`1.#ctor(AllOverIt.Patterns.Specification.ISpecification{`0},AllOverIt.Patterns.Specification.ISpecification{`0})">
             <summary>Constructor.</summary>
-            <param name="leftSpecification">The left specification of the OR NOT operation to apply to a candidate.</param>
-            <param name="rightSpecification">The right specification of the OR NOT operation to apply to a candidate.</param>
+            <param name="leftSpecification">The left specification applied against a candidate.</param>
+            <param name="rightSpecification">The right specification applied against a candidate.</param>
         </member>
         <member name="M:AllOverIt.Patterns.Specification.OrNotSpecification`1.IsSatisfiedBy(`0)">
             <inheritdoc />
         </member>
         <member name="T:AllOverIt.Patterns.Specification.OrSpecification`1">
-            <summary>A specification that performs an OR operation between two expressions.</summary>
+            <summary>A specification that performs a logical OR operation between two expressions.</summary>
             <typeparam name="TType">The candidate type the specification applies to.</typeparam>
         </member>
         <member name="M:AllOverIt.Patterns.Specification.OrSpecification`1.#ctor(AllOverIt.Patterns.Specification.ISpecification{`0},AllOverIt.Patterns.Specification.ISpecification{`0})">
             <summary>Constructor.</summary>
-            <param name="leftSpecification">The left specification of the OR operation to apply to a candidate.</param>
-            <param name="rightSpecification">The right specification of the OR operation to apply to a candidate.</param>
+            <param name="leftSpecification">The left specification applied against a candidate.</param>
+            <param name="rightSpecification">The right specification applied against a candidate.</param>
         </member>
         <member name="M:AllOverIt.Patterns.Specification.OrSpecification`1.IsSatisfiedBy(`0)">
             <inheritdoc />
         </member>
         <member name="T:AllOverIt.Patterns.Specification.Specification`1">
             <inheritdoc cref="T:AllOverIt.Patterns.Specification.SpecificationBase`1"/>
+        </member>
+        <member name="M:AllOverIt.Patterns.Specification.Specification`1.Create(System.Func{`0,System.Boolean})">
+            <summary>Creates an ad-hoc specification based on the provided predicate.</summary>
+            <param name="predicate">The predicate to be used by the specification.</param>
+            <returns>An ad-hoc specification based on the provided predicate.</returns>
         </member>
         <member name="M:AllOverIt.Patterns.Specification.Specification`1.op_Implicit(AllOverIt.Patterns.Specification.Specification{`0})~System.Func{`0,System.Boolean}">
             <summary>An implicit operator to return the specification as a Func&lt;TType, bool&gt; so it can be used with
@@ -1108,11 +1365,18 @@
             <param name="candidate">The subject to be tested against the specification.</param>
             <returns>True if the candidate satisfies the specification, otherwise false.</returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:AllOverIt.Patterns.Specification.SpecificationBase`1.op_True(AllOverIt.Patterns.Specification.SpecificationBase{`0})" -->
-        <!-- Badly formed XML comment ignored for member "M:AllOverIt.Patterns.Specification.SpecificationBase`1.op_False(AllOverIt.Patterns.Specification.SpecificationBase{`0})" -->
+        <member name="M:AllOverIt.Patterns.Specification.SpecificationBase`1.op_True(AllOverIt.Patterns.Specification.SpecificationBase{`0})">
+            <summary>Required in combination with operator &amp; and | to support operator &amp;&amp; and ||.</summary>
+        </member>
+        <member name="M:AllOverIt.Patterns.Specification.SpecificationBase`1.op_False(AllOverIt.Patterns.Specification.SpecificationBase{`0})">
+            <summary>Required in combination with operator &amp; and | to support operator &amp;&amp; and ||.</summary>
+        </member>
         <member name="T:AllOverIt.Patterns.Specification.UnaryLinqSpecification`1">
             <summary>An abstract base class for all concrete LINQ-based unary specifications.</summary>
             <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+        </member>
+        <member name="P:AllOverIt.Patterns.Specification.UnaryLinqSpecification`1.Specification">
+            <summary>The specification of the unary operation to apply to a candidate.</summary>
         </member>
         <member name="M:AllOverIt.Patterns.Specification.UnaryLinqSpecification`1.#ctor(AllOverIt.Patterns.Specification.ILinqSpecification{`0})">
             <summary>Constructor.</summary>

@@ -21,6 +21,9 @@ namespace AllOverIt.Patterns.Specification
             }
         }
 
+        /// <summary>Creates an ad-hoc specification based on the provided predicate.</summary>
+        /// <param name="predicate">The predicate to be used by the specification.</param>
+        /// <returns>An ad-hoc specification based on the provided predicate.</returns>
         // Note: Cannot return ISpecification<TType> as this will not work with the implicit operator conversions
         public static Specification<TType> Create(Func<TType, bool> predicate)
         {

@@ -6,6 +6,7 @@ namespace AllOverIt.Patterns.Specification
     /// <typeparam name="TType">The candidate type the specification applies to.</typeparam>
     public abstract class UnaryLinqSpecification<TType> : LinqSpecification<TType>
     {
+        /// <summary>The specification of the unary operation to apply to a candidate.</summary>
         protected ILinqSpecification<TType> Specification { get; }
 
         /// <summary>Constructor.</summary>

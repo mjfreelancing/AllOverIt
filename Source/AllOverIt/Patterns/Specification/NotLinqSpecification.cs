@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace AllOverIt.Patterns.Specification
 {
-    /// <summary>A specification that performs a logical NOT operation between two expressions.</summary>
+    /// <summary>A specification that performs a logical NOT operation on a provided expression.</summary>
     /// <typeparam name="TType">The candidate type the specification applies to.</typeparam>
     public sealed class NotLinqSpecification<TType> : UnaryLinqSpecification<TType>
     {

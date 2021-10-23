@@ -2,84 +2,55 @@
 
 namespace AllOverIt.Extensions
 {
+    /// <summary>Provides extensions methods that simplify the composition of specifications.</summary>
     public static class SpecificationExtensions
     {
-        // Builds a new composite specification that performs a logical AND of one specification result with another.
-        // TType is the candidate type to be tested.
+        /// <summary>Gets an expression that composes two specifications to perform a logical AND operation.</summary>
+        /// <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+        /// <param name="leftSpecification">The left specification applied against a candidate.</param>
+        /// <param name="rightSpecification">The right specification applied against a candidate.</param>
+        /// <returns>An expression that composes two specifications to perform a logical AND operation.</returns>
         public static ISpecification<TType> And<TType>(this ISpecification<TType> leftSpecification, ISpecification<TType> rightSpecification)
         {
             return new AndSpecification<TType>(leftSpecification, rightSpecification);
         }
 
-        // Builds a new composite specification that performs a logical AND of one specification result with another.
-        // TSpecification is the the right-hand specification operand to construct and include as part of the resultant composite.
-        // TSpecification must have a default constructor.
-        // TType is the candidate type to be tested.
-        public static ISpecification<TType> And<TSpecification, TType>(this ISpecification<TType> leftSpecification)
-          where TSpecification : ISpecification<TType>, new()
-        {
-            var rightSpecification = new TSpecification();
-            return leftSpecification.And(rightSpecification);
-        }
-
-        // Builds a new composite specification that performs a logical AND of one specification result with another and then negates the result.
-        // TType is the candidate type to be tested.
+        /// <summary>Gets an expression that composes two specifications to perform a logical AND operation after negating
+        /// the result of the right operand.</summary>
+        /// <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+        /// <param name="leftSpecification">The left specification applied against a candidate.</param>
+        /// <param name="rightSpecification">The right specification applied against a candidate.</param>
+        /// <returns>An expression that composes two specifications to perform a logical AND operation.</returns>
         public static ISpecification<TType> AndNot<TType>(this ISpecification<TType> leftSpecification, ISpecification<TType> rightSpecification)
         {
             return new AndNotSpecification<TType>(leftSpecification, rightSpecification);
         }
 
-        // Builds a new composite specification that performs a logical AND of one specification result with another and then negates the result.
-        // TType is the candidate type to be tested.
-        // TSpecification is the the right-hand specification operand to construct and include as part of the resultant composite.
-        // TSpecification must have a default constructor.
-        // TType is the candidate type to be tested.
-        public static ISpecification<TType> AndNot<TSpecification, TType>(this ISpecification<TType> leftSpecification)
-          where TSpecification : ISpecification<TType>, new()
-        {
-            var rightSpecification = new TSpecification();
-            return leftSpecification.AndNot(rightSpecification);
-        }
-
-        // Builds a new composite specification that performs a logical OR of one specification result with another.
-        // TType is the candidate type to be tested.
+        /// <summary>Gets an expression that composes two specifications to perform a logical OR operation.</summary>
+        /// <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+        /// <param name="leftSpecification">The left specification applied against a candidate.</param>
+        /// <param name="rightSpecification">The right specification applied against a candidate.</param>
+        /// <returns>An expression that composes two specifications to perform a logical OR operation.</returns>
         public static ISpecification<TType> Or<TType>(this ISpecification<TType> leftSpecification, ISpecification<TType> rightSpecification)
         {
             return new OrSpecification<TType>(leftSpecification, rightSpecification);
         }
 
-        // Builds a new composite specification that performs a logical OR of one specification result with another.
-        // TSpecification is the the right-hand specification operand to construct and include as part of the resultant composite.
-        // TSpecification must have a default constructor.
-        // TType is the candidate type to be tested.
-        public static ISpecification<TType> Or<TSpecification, TType>(this ISpecification<TType> leftSpecification)
-          where TSpecification : ISpecification<TType>, new()
-        {
-            var rightSpecification = new TSpecification();
-            return leftSpecification.Or(rightSpecification);
-        }
-
-        // Builds a new composite specification that performs a logical OR of one specification result with another and then negates the result.
-        // TType is the candidate type to be tested.
+        /// <summary>Gets an expression that composes two specifications to perform a logical OR operation after negating
+        /// the result of the right operand.</summary>
+        /// <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+        /// <param name="leftSpecification">The left specification applied against a candidate.</param>
+        /// <param name="rightSpecification">The right specification applied against a candidate.</param>
+        /// <returns>An expression that composes two specifications to perform a logical OR operation.</returns>
         public static ISpecification<TType> OrNot<TType>(this ISpecification<TType> leftSpecification, ISpecification<TType> rightSpecification)
         {
             return new OrNotSpecification<TType>(leftSpecification, rightSpecification);
         }
 
-        // Builds a new composite specification that performs a logical OR of one specification result with another and then negates the result.
-        // TType is the candidate type to be tested.
-        // TSpecification is the the right-hand specification operand to construct and include as part of the resultant composite.
-        // TSpecification must have a default constructor.
-        // TType is the candidate type to be tested.
-        public static ISpecification<TType> OrNot<TSpecification, TType>(this ISpecification<TType> leftSpecification)
-          where TSpecification : ISpecification<TType>, new()
-        {
-            var rightSpecification = new TSpecification();
-            return leftSpecification.OrNot(rightSpecification);
-        }
-
-        // Builds a new specification that negates the result of the specified specification.
-        // TType is the candidate type to be tested.
+        /// <summary>Gets an expression that negates a provided specification.</summary>
+        /// <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+        /// <param name="specification">The specification applied against a candidate.</param>
+        /// <returns>An expression that negates a provided specification.</returns>
         public static ISpecification<TType> Not<TType>(this ISpecification<TType> specification)
         {
             return new NotSpecification<TType>(specification);

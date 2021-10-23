@@ -24,6 +24,9 @@ namespace AllOverIt.Patterns.Specification
 
         private Func<TType, bool> _compiled;
 
+        /// <summary>Creates an ad-hoc specification based on the provided predicate.</summary>
+        /// <param name="predicate">The predicate to be used by the specification.</param>
+        /// <returns>An ad-hoc specification based on the provided predicate.</returns>
         // Note: Cannot return ILinqSpecification<TType> as this will not work with the implicit operator conversions
         public static LinqSpecification<TType> Create(Expression<Func<TType, bool>> predicate)
         {
