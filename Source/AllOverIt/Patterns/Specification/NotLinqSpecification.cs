@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AllOverIt.Expressions;
+using System;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Patterns.Specification
@@ -10,14 +11,15 @@ namespace AllOverIt.Patterns.Specification
         /// <summary>Constructor.</summary>
         /// <param name="specification">The specification of the NOT operation to apply to a candidate.</param>
         public NotLinqSpecification(ILinqSpecification<TType> specification)
-            : base(specification, true)
+            : base(specification)
         {
         }
 
         /// <inheritdoc />
         public override Expression<Func<TType, bool>> AsExpression()
         {
-            return Specification.AsExpression();
+            // todo: CACHE
+            return Specification.AsExpression().Not();
         }
     }
 }

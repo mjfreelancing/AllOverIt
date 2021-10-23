@@ -11,10 +11,8 @@ namespace AllOverIt.Patterns.Specification
         /// <summary>Constructor.</summary>
         /// <param name="leftSpecification">The left specification of the AND operation to apply to a candidate.</param>
         /// <param name="rightSpecification">The right specification of the AND operation to apply to a candidate.</param>
-        /// <param name="negate">Indicates if the result of the specification should be negated (invert true/false results).</param>
-        public AndLinqSpecification(ILinqSpecification<TType> leftSpecification, ILinqSpecification<TType> rightSpecification,
-            bool negate = false)
-            : base(leftSpecification, rightSpecification, negate)
+        public AndLinqSpecification(ILinqSpecification<TType> leftSpecification, ILinqSpecification<TType> rightSpecification)
+            : base(leftSpecification, rightSpecification)
         {
         }
 

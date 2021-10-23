@@ -8,13 +8,13 @@ namespace AllOverIt.Tests.Patterns.Specification
 {
     public class BinarySpecificationFixture : SpecificationFixtureBase
     {
-        private readonly bool _negate;
+        private readonly bool _expectedResult;
         private readonly BinarySpecificationDummy _specification;
 
         public BinarySpecificationFixture()
         {
-            _negate = Create<bool>();
-            _specification = new BinarySpecificationDummy(IsEven, IsPositive, _negate);
+            _expectedResult = Create<bool>();
+            _specification = new BinarySpecificationDummy(IsEven, IsPositive, _expectedResult);
         }
 
         [Fact]
@@ -22,7 +22,7 @@ namespace AllOverIt.Tests.Patterns.Specification
         {
             Invoking(() =>
                 {
-                    _ = new BinarySpecificationDummy(null, IsPositive, _negate);
+                    _ = new BinarySpecificationDummy(null, IsPositive, _expectedResult);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -34,7 +34,7 @@ namespace AllOverIt.Tests.Patterns.Specification
         {
             Invoking(() =>
                 {
-                    _ = new BinarySpecificationDummy(IsEven, null, _negate);
+                    _ = new BinarySpecificationDummy(IsEven, null, _expectedResult);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -63,8 +63,7 @@ namespace AllOverIt.Tests.Patterns.Specification
         {
             var actual = _specification.IsSatisfiedBy(Create<int>());
 
-            // the dummy returns 'true', so the base class returns a value based on _negate
-            actual.Should().Be(!_negate);
+            actual.Should().Be(_expectedResult);
         }
     }
 }

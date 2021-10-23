@@ -9,13 +9,6 @@ namespace AllOverIt.Patterns.Specification
     {
         private Func<TType, bool> _compiled;
 
-        /// <summary>Constructor.</summary>
-        /// <param name="negate">Indicates if the result of the specification should be negated (invert true/false results).</param>
-        protected LinqSpecification(bool negate = false)
-            : base(negate)
-        {
-        }
-
         /// <inheritdoc />
         public abstract Expression<Func<TType, bool>> AsExpression();
 
@@ -66,7 +59,7 @@ namespace AllOverIt.Patterns.Specification
         }
 
         /// <inheritdoc />
-        protected sealed override bool DoIsSatisfiedBy(TType candidate)
+        public override bool IsSatisfiedBy(TType candidate)
         {
             return GetCompiledExpression().Invoke(candidate);
         }

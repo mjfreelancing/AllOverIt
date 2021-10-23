@@ -13,7 +13,7 @@
         }
 
         /// <inheritdoc />
-        protected override bool DoIsSatisfiedBy(TType candidate)
+        public override bool IsSatisfiedBy(TType candidate)
         {
             return LeftSpecification.IsSatisfiedBy(candidate) || !RightSpecification.IsSatisfiedBy(candidate);
         }

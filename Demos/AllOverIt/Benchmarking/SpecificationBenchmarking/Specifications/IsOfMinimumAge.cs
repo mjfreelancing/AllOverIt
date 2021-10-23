@@ -11,7 +11,7 @@ namespace SpecificationBenchmarking.Specifications
             _age = age;
         }
 
-        protected override bool DoIsSatisfiedBy(Person candidate)
+        public override bool IsSatisfiedBy(Person candidate)
         {
             return candidate.Age >= _age;
         }

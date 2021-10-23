@@ -1,6 +1,6 @@
+using AllOverIt.Patterns.Specification;
 using System;
 using System.Linq.Expressions;
-using AllOverIt.Patterns.Specification;
 
 namespace AllOverIt.Tests.Patterns.Specification.Dummies
 {
@@ -8,8 +8,8 @@ namespace AllOverIt.Tests.Patterns.Specification.Dummies
     {
         public ILinqSpecification<int> Spec { get; }
 
-        public UnaryLinqSpecificationDummy(ILinqSpecification<int> specification, bool negate = false)
-            : base(specification, negate)
+        public UnaryLinqSpecificationDummy(ILinqSpecification<int> specification)
+            : base(specification)
         {
             Spec = specification;
         }

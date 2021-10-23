@@ -6,13 +6,13 @@ namespace AllOverIt.Tests.Patterns.Specification
 {
     public class SpecificationFixture : SpecificationFixtureBase
     {
-        private readonly bool _negate;
+        private readonly bool _expectedResult;
         private readonly SpecificationDummy _specification;
 
         public SpecificationFixture()
         {
-            _negate = Create<bool>();
-            _specification = new SpecificationDummy(_negate);
+            _expectedResult = Create<bool>();
+            _specification = new SpecificationDummy(_expectedResult);
         }
 
         [Fact]
@@ -30,8 +30,7 @@ namespace AllOverIt.Tests.Patterns.Specification
         {
             var actual = _specification.IsSatisfiedBy(Create<int>());
 
-            // the dummy returns 'true', so the base class returns a value based on _negate
-            actual.Should().Be(!_negate);
+            actual.Should().Be(_expectedResult);
         }
     }
 }

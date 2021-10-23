@@ -11,7 +11,7 @@ namespace SpecificationBenchmarking.Specifications
             _sex = sex;
         }
 
-        protected override bool DoIsSatisfiedBy(Person candidate)
+        public override bool IsSatisfiedBy(Person candidate)
         {
             return candidate.Sex == _sex;
         }

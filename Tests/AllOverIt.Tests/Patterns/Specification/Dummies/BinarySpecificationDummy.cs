@@ -4,19 +4,21 @@ namespace AllOverIt.Tests.Patterns.Specification.Dummies
 {
     internal class BinarySpecificationDummy : BinarySpecification<int>
     {
+        private readonly bool _result;
         public ISpecification<int> Left => LeftSpecification;
         public ISpecification<int> Right => RightSpecification;
         public int? Candidate { get; private set; }
 
-        public BinarySpecificationDummy(ISpecification<int> leftSpecification, ISpecification<int> rightSpecification, bool negate = false)
-            : base(leftSpecification, rightSpecification, negate)
+        public BinarySpecificationDummy(ISpecification<int> leftSpecification, ISpecification<int> rightSpecification, bool result)
+            : base(leftSpecification, rightSpecification)
         {
+            _result = result;
         }
 
-        protected override bool DoIsSatisfiedBy(int candidate)
+        public override bool IsSatisfiedBy(int candidate)
         {
             Candidate = candidate;
-            return true;
+            return _result;
         }
     }
 }

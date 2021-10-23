@@ -1,23 +1,25 @@
+using AllOverIt.Patterns.Specification;
 using System;
 using System.Linq.Expressions;
-using AllOverIt.Patterns.Specification;
 
 namespace AllOverIt.Tests.Patterns.Specification.Dummies
 {
     internal class BinaryLinqSpecificationDummy : BinaryLinqSpecification<int>
     {
+        private readonly bool _result;
         public ISpecification<int> Left => LeftSpecification;
         public ISpecification<int> Right => RightSpecification;
 
         public BinaryLinqSpecificationDummy(ILinqSpecification<int> leftSpecification, ILinqSpecification<int> rightSpecification,
-            bool negate = false)
-            : base(leftSpecification, rightSpecification, negate)
+            bool result)
+            : base(leftSpecification, rightSpecification)
         {
+            _result = result;
         }
 
         public override Expression<Func<int, bool>> AsExpression()
         {
-            return _ => true;
+            return _ => _result;
         }
     }
 }

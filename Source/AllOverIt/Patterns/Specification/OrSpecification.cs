@@ -7,15 +7,13 @@ namespace AllOverIt.Patterns.Specification
         /// <summary>Constructor.</summary>
         /// <param name="leftSpecification">The left specification of the OR operation to apply to a candidate.</param>
         /// <param name="rightSpecification">The right specification of the OR operation to apply to a candidate.</param>
-        /// <param name="negate">Indicates if the result of the specification should be negated (invert true/false results).</param>
-        public OrSpecification(ISpecification<TType> leftSpecification, ISpecification<TType> rightSpecification,
-            bool negate = false)
-            : base(leftSpecification, rightSpecification, negate)
+        public OrSpecification(ISpecification<TType> leftSpecification, ISpecification<TType> rightSpecification)
+            : base(leftSpecification, rightSpecification)
         {
         }
 
         /// <inheritdoc />
-        protected override bool DoIsSatisfiedBy(TType candidate)
+        public override bool IsSatisfiedBy(TType candidate)
         {
             return LeftSpecification.IsSatisfiedBy(candidate) || RightSpecification.IsSatisfiedBy(candidate);
         }

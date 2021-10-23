@@ -4,18 +4,19 @@ namespace AllOverIt.Tests.Patterns.Specification.Dummies
 {
     internal class SpecificationDummy : Specification<int>
     {
-        public int Candidate { get; set; }
+        private readonly bool _result;
+        public int Candidate { get; private set; }
 
-        public SpecificationDummy(bool negate)
-            : base(negate)
+        public SpecificationDummy(bool result)
         {
+            _result = result;
         }
 
-        protected override bool DoIsSatisfiedBy(int candidate)
+        public override bool IsSatisfiedBy(int candidate)
         {
             Candidate = candidate;
 
-            return true;
+            return _result;
         }
     }
 }

@@ -11,7 +11,7 @@ namespace SpecificationDemo
             Value = value;
         }
 
-        protected override bool DoIsSatisfiedBy(int candidate)
+        public override bool IsSatisfiedBy(int candidate)
         {
             return candidate % Value == 0;
         }

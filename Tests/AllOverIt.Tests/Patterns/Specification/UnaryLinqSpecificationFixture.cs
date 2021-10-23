@@ -1,20 +1,20 @@
-using System;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Tests.Patterns.Specification.Dummies;
 using FluentAssertions;
+using System;
 using Xunit;
 
 namespace AllOverIt.Tests.Patterns.Specification
 {
     public class UnaryLinqSpecificationFixture : LinqSpecificationFixtureBase
     {
-        private readonly bool _negate;
+        private readonly bool _expectedResult;
         private readonly UnaryLinqSpecificationDummy _specification;
 
         public UnaryLinqSpecificationFixture()
         {
-            _negate = Create<bool>();
-            _specification = new UnaryLinqSpecificationDummy(LinqIsEven, _negate);
+            _expectedResult = Create<bool>();
+            _specification = new UnaryLinqSpecificationDummy(LinqIsEven);
         }
 
         [Fact]
@@ -22,7 +22,7 @@ namespace AllOverIt.Tests.Patterns.Specification
         {
             Invoking(() =>
                 {
-                    _ = new UnaryLinqSpecificationDummy(null, _negate);
+                    _ = new UnaryLinqSpecificationDummy(null);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -40,8 +40,7 @@ namespace AllOverIt.Tests.Patterns.Specification
         {
             var actual = _specification.IsSatisfiedBy(Create<int>());
 
-            // the dummy returns 'true', so the base class returns a value based on _negate
-            actual.Should().Be(!_negate);
+            actual.Should().Be(_expectedResult);
         }
     }
 }

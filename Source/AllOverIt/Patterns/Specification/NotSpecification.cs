@@ -7,8 +7,13 @@
         /// <summary>Constructor.</summary>
         /// <param name="specification">The specification of the NOT operation to apply to a candidate.</param>
         public NotSpecification(ISpecification<TType> specification)
-            : base(specification, true)
+            : base(specification)
         {
+        }
+
+        public override bool IsSatisfiedBy(TType candidate)
+        {
+            return !base.IsSatisfiedBy(candidate);
         }
     }
 }

@@ -6,13 +6,6 @@ namespace AllOverIt.Patterns.Specification
     /// <inheritdoc cref="SpecificationBase{TType}"/>
     public abstract class Specification<TType> : SpecificationBase<TType>, ISpecification<TType>
     {
-        /// <summary>Constructor.</summary>
-        /// <param name="negate">Indicates if the result of the specification should be negated (invert true/false results).</param>
-        protected Specification(bool negate = false)
-            : base(negate)
-        {
-        }
-
         /// <summary>An implicit operator to return the specification as a Func&lt;TType, bool&gt; so it can be used with
         /// <see cref="System.Collections.Generic.IEnumerable{T}"/> based LINQ queries.</summary>
         /// <param name="specification">The specification to be returned as a Func&lt;TType, bool&gt;.</param>

@@ -10,9 +10,7 @@ namespace AllOverIt.Patterns.Specification
 
         /// <summary>Constructor.</summary>
         /// <param name="specification">The unary specification to apply to a candidate.</param>
-        /// <param name="negate">Indicates if the result of the specification should be negated (invert true/false results).</param>
-        protected UnaryLinqSpecification(ILinqSpecification<TType> specification, bool negate = false)
-            : base(negate)
+        protected UnaryLinqSpecification(ILinqSpecification<TType> specification)
         {
             Specification = specification.WhenNotNull(nameof(specification));
         }
