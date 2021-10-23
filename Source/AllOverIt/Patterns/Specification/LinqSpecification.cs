@@ -7,7 +7,28 @@ namespace AllOverIt.Patterns.Specification
     /// <inheritdoc cref="SpecificationBase{TType}"/>
     public abstract class LinqSpecification<TType> : SpecificationBase<TType>, ILinqSpecification<TType>
     {
+        private sealed class AdHocSpecification : LinqSpecification<TType>
+        {
+            private readonly Expression<Func<TType, bool>> _predicate;
+
+            public AdHocSpecification(Expression<Func<TType, bool>> predicate)
+            {
+                _predicate = predicate.WhenNotNull(nameof(predicate));
+            }
+
+            public override Expression<Func<TType, bool>> AsExpression()
+            {
+                return _predicate;
+            }
+        }
+
         private Func<TType, bool> _compiled;
+
+        // Note: Cannot return ILinqSpecification<TType> as this will not work with the implicit operator conversions
+        public static LinqSpecification<TType> Create(Expression<Func<TType, bool>> predicate)
+        {
+            return new AdHocSpecification(predicate);
+        }
 
         /// <inheritdoc />
         public abstract Expression<Func<TType, bool>> AsExpression();
@@ -66,7 +87,12 @@ namespace AllOverIt.Patterns.Specification
 
         private Func<TType, bool> GetCompiledExpression()
         {
-            _compiled ??= AsExpression().Compile();
+            // ??= was profiled and is marginally slower than this implementation
+            if (_compiled == null)
+            {
+                _compiled = AsExpression().Compile();
+            }
+            
             return _compiled;
         }
     }

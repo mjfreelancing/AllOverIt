@@ -21,7 +21,11 @@ namespace SpecificationDemo
             #region Define specifications
 
             var multipleOfTwo = new IsMultipleOf(2);
-            var multipleOfThree = new IsMultipleOf(3);
+
+            // Alternative to creating a concrete Specification class and using as:
+            // var multipleOfThree = new IsMultipleOf(3);
+            var multipleOfThree = Specification<int>.Create(candidate => candidate % 3 == 0);
+
             var multipleOfSeven = new IsMultipleOf(7);
 
             var twoOrThreeSpecification = multipleOfTwo || multipleOfThree;                     // Same as: multipleOfTwo.Or(multipleOfThree);

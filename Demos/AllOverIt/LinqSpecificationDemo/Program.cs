@@ -1,4 +1,5 @@
-﻿using LinqSpecificationDemo.Specifications;
+﻿using AllOverIt.Patterns.Specification;
+using LinqSpecificationDemo.Specifications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,11 @@ namespace LinqSpecificationDemo
         static void Main()
         {
             var isMale = new IsOfSex(Sex.Male);
-            var isFemale = new IsOfSex(Sex.Female);
+
+            // Alternative to creating a concrete Specification class and using as:
+            // var isFemale = new IsOfSex(Sex.Female);
+            var isFemale = LinqSpecification<Person>.Create(candidate => candidate.Sex == Sex.Female);
+
             var minimumAge = new IsOfMinimumAge(20);
 
             var criteria = isMale && minimumAge ||
