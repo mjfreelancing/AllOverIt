@@ -170,26 +170,57 @@ namespace AllOverIt.Extensions
 
 
         // Gets all candidates that meet the criteria of a specified specification.
-        // TType is the candidate type to be tested.
-        public static IEnumerable<TType> WhereSatisfied<TType>(this IEnumerable<TType> candidates, ISpecification<TType> specification)
+        public static IEnumerable<TType> Where<TType>(this IEnumerable<TType> candidates, ISpecification<TType> specification)
         {
             return candidates.Where(specification.IsSatisfiedBy);
         }
 
         // Determines if any specified candidates meet the criteria of a specified specification.
-        // TType is the candidate type to be tested.
-        public static bool AnySatisfied<TType>(this IEnumerable<TType> candidates, ISpecification<TType> specification)
+        public static bool Any<TType>(this IEnumerable<TType> candidates, ISpecification<TType> specification)
         {
             return candidates.Any(specification.IsSatisfiedBy);
         }
 
         // Determines if all specified candidates meet the criteria of a specified specification.
-        // TType is the candidate type to be tested.
-        public static bool AllSatisfied<TType>(this IEnumerable<TType> candidates, ISpecification<TType> specification)
+        public static bool All<TType>(this IEnumerable<TType> candidates, ISpecification<TType> specification)
         {
             return candidates.All(specification.IsSatisfiedBy);
         }
 
+        public static int Count<TType>(this IEnumerable<TType> candidates, ISpecification<TType> specification)
+        {
+            return candidates.Count(specification.IsSatisfiedBy);
+        }
+
+        public static TType First<TType>(this IEnumerable<TType> candidates, ISpecification<TType> specification)
+        {
+            return candidates.First(specification.IsSatisfiedBy);
+        }
+
+        public static TType FirstOrDefault<TType>(this IEnumerable<TType> candidates, ISpecification<TType> specification)
+        {
+            return candidates.FirstOrDefault(specification.IsSatisfiedBy);
+        }
+
+        public static TType Last<TType>(this IEnumerable<TType> candidates, ISpecification<TType> specification)
+        {
+            return candidates.Last(specification.IsSatisfiedBy);
+        }
+
+        public static TType LastOrDefault<TType>(this IEnumerable<TType> candidates, ISpecification<TType> specification)
+        {
+            return candidates.LastOrDefault(specification.IsSatisfiedBy);
+        }
+
+        public static IEnumerable<TType> SkipWhile<TType>(this IEnumerable<TType> candidates, ISpecification<TType> specification)
+        {
+            return candidates.SkipWhile(specification.IsSatisfiedBy);
+        }
+
+        public static IEnumerable<TType> TakeWhile<TType>(this IEnumerable<TType> candidates, ISpecification<TType> specification)
+        {
+            return candidates.TakeWhile(specification.IsSatisfiedBy);
+        }
 
 
 

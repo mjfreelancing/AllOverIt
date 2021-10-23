@@ -1,6 +1,6 @@
 ﻿namespace AllOverIt.Patterns.Specification
 {
-    /// <summary>A specification that performs an AND NOT operation between two expressions.</summary>
+    /// <summary>A specification that performs an AND NOT operation (left &amp;&amp; !right) between two expressions.</summary>
     /// <typeparam name="TType">The candidate type the specification applies to.</typeparam>
     public sealed class AndNotSpecification<TType> : BinarySpecification<TType>
     {

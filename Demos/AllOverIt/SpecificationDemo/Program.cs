@@ -64,7 +64,7 @@ namespace SpecificationDemo
             Console.WriteLine("");
 
             // find all matches where a value is divisible by 2 and 3
-            var twoAndThreeResults = Enumerable.Range(1, 12).WhereSatisfied(twoAndThreeSpecification);
+            var twoAndThreeResults = Enumerable.Range(1, 12).Where(twoAndThreeSpecification);
 
             foreach (var i in twoAndThreeResults)
             {
@@ -80,7 +80,7 @@ namespace SpecificationDemo
             Console.WriteLine("");
 
             // find all matches where a value is divisible by 2 or 3
-            var twoOrThreeResults = Enumerable.Range(1, 12).WhereSatisfied(twoOrThreeSpecification);
+            var twoOrThreeResults = Enumerable.Range(1, 12).Where(twoOrThreeSpecification);
 
             foreach (var i in twoOrThreeResults)
             {
@@ -97,7 +97,7 @@ namespace SpecificationDemo
             Console.ReadKey();
             Console.WriteLine("");
 
-            var results = Enumerable.Range(1, 21).WhereSatisfied(complexSpecification);
+            var results = Enumerable.Range(1, 21).Where(complexSpecification);
 
             foreach (var i in results)
             {
@@ -115,7 +115,7 @@ namespace SpecificationDemo
             Console.WriteLine("");
 
             var notSpecification = complexSpecification.Not();
-            var results = Enumerable.Range(1, 21).WhereSatisfied(notSpecification);
+            var results = Enumerable.Range(1, 21).Where(notSpecification);
 
             foreach (var i in results)
             {

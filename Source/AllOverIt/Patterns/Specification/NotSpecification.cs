@@ -11,6 +11,7 @@
         {
         }
 
+        /// <inheritdoc />
         public override bool IsSatisfiedBy(TType candidate)
         {
             return !base.IsSatisfiedBy(candidate);

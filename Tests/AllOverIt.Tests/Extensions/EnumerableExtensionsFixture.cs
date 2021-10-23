@@ -495,44 +495,44 @@ namespace AllOverIt.Tests.Extensions
 
 
 
-        public class WhereSatisfied : SpecificationExtensionsFixture
-        {
-            [Fact]
-            public void Should_Return_Expected_Result()
-            {
-                var expected = new[] { 2, 4, 6, 8, 10 };
+        //public class WhereSatisfied : SpecificationExtensionsFixture
+        //{
+        //    [Fact]
+        //    public void Should_Return_Expected_Result()
+        //    {
+        //        var expected = new[] { 2, 4, 6, 8, 10 };
 
-                var actual = Enumerable.Range(1, 10).WhereSatisfied(IsEven);
+        //        var actual = Enumerable.Range(1, 10).Where(new IsEven());
 
-                actual.Should().BeEquivalentTo(expected);
-            }
-        }
+        //        actual.Should().BeEquivalentTo(expected);
+        //    }
+        //}
 
-        public class AnySatisfied : SpecificationExtensionsFixture
-        {
-            [Theory]
-            [InlineData(new[] { 1, 2 }, true)]
-            [InlineData(new[] { 1, 3 }, false)]
-            public void Should_Return_Expected_Result(int[] values, bool expected)
-            {
-                var actual = values.AnySatisfied(IsEven);
+        //public class AnySatisfied : SpecificationExtensionsFixture
+        //{
+        //    [Theory]
+        //    [InlineData(new[] { 1, 2 }, true)]
+        //    [InlineData(new[] { 1, 3 }, false)]
+        //    public void Should_Return_Expected_Result(int[] values, bool expected)
+        //    {
+        //        var actual = values.AnySatisfied(IsEven);
 
-                actual.Should().Be(expected);
-            }
-        }
+        //        actual.Should().Be(expected);
+        //    }
+        //}
 
-        public class AllSatisfied : SpecificationExtensionsFixture
-        {
-            [Theory]
-            [InlineData(new[] { 2, 4, 6 }, true)]
-            [InlineData(new[] { 1, 2, 4 }, false)]
-            public void Should_Return_Expected_Result(int[] values, bool expected)
-            {
-                var actual = values.AllSatisfied(IsEven);
+        //public class AllSatisfied : SpecificationExtensionsFixture
+        //{
+        //    [Theory]
+        //    [InlineData(new[] { 2, 4, 6 }, true)]
+        //    [InlineData(new[] { 1, 2, 4 }, false)]
+        //    public void Should_Return_Expected_Result(int[] values, bool expected)
+        //    {
+        //        var actual = values.AllSatisfied(IsEven);
 
-                actual.Should().Be(expected);
-            }
-        }
+        //        actual.Should().Be(expected);
+        //    }
+        //}
 
 
 

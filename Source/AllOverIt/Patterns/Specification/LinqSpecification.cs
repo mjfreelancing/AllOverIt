@@ -58,7 +58,7 @@ namespace AllOverIt.Patterns.Specification
             return new NotLinqSpecification<TType>(specification);
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="SpecificationBase{TType}"/>
         public override bool IsSatisfiedBy(TType candidate)
         {
             return GetCompiledExpression().Invoke(candidate);

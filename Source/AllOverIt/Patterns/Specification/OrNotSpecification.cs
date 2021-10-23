@@ -1,6 +1,6 @@
 ﻿namespace AllOverIt.Patterns.Specification
 {
-    /// <summary>A specification that performs an OR NOT operation between two expressions.</summary>
+    /// <summary>A specification that performs an OR NOT operation (left || !right) between two expressions.</summary>
     /// <typeparam name="TType">The candidate type the specification applies to.</typeparam>
     public sealed class OrNotSpecification<TType> : BinarySpecification<TType>
     {
