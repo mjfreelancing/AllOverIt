@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Helpers;
+using AllOverIt.Patterns.Specification;
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
@@ -163,6 +164,36 @@ namespace AllOverIt.Extensions
                 yield return batch;
             }
         }
+
+
+
+
+
+        // Gets all candidates that meet the criteria of a specified specification.
+        // TType is the candidate type to be tested.
+        public static IEnumerable<TType> WhereSatisfied<TType>(this IEnumerable<TType> candidates, ISpecification<TType> specification)
+        {
+            return candidates.Where(specification.IsSatisfiedBy);
+        }
+
+        // Determines if any specified candidates meet the criteria of a specified specification.
+        // TType is the candidate type to be tested.
+        public static bool AnySatisfied<TType>(this IEnumerable<TType> candidates, ISpecification<TType> specification)
+        {
+            return candidates.Any(specification.IsSatisfiedBy);
+        }
+
+        // Determines if all specified candidates meet the criteria of a specified specification.
+        // TType is the candidate type to be tested.
+        public static bool AllSatisfied<TType>(this IEnumerable<TType> candidates, ISpecification<TType> specification)
+        {
+            return candidates.All(specification.IsSatisfiedBy);
+        }
+
+
+
+
+
 
         // Parallel based processing derived from https://devblogs.microsoft.com/pfxteam/implementing-a-simple-foreachasync-part-2/
 

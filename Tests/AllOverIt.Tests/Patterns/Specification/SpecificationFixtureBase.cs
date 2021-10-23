@@ -9,7 +9,7 @@ namespace AllOverIt.Tests.Patterns.Specification
         protected readonly ISpecification<int> IsEven;
         protected readonly ISpecification<int> IsPositive;
 
-        public SpecificationFixtureBase()
+        protected SpecificationFixtureBase()
         {
             IsEven = new IsEven();
             IsPositive = new IsPositive();

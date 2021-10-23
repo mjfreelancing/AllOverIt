@@ -6,9 +6,9 @@ using Xunit;
 
 namespace AllOverIt.Tests.Extensions
 {
-    public class SpecificationExtensionsFixture : SpecificationFixtureBase
+    public class LinqSpecificationExtensionsFixture : LinqSpecificationFixtureBase
     {
-        public class And : SpecificationExtensionsFixture
+        public class And : LinqSpecificationExtensionsFixture
         {
             [Theory]
             [InlineData(-2, false)]
@@ -17,7 +17,7 @@ namespace AllOverIt.Tests.Extensions
             [InlineData(3, false)]
             public void Should_Return_Expected_Result(int value, bool expected)
             {
-                var combined = IsEven.And(IsPositive);
+                var combined = LinqIsEven.And(LinqIsPositive);
 
                 var actual = combined.IsSatisfiedBy(value);
 
@@ -25,7 +25,7 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
-        public class And_Specification_Type : SpecificationExtensionsFixture
+        public class And_Specification_Type : LinqSpecificationExtensionsFixture
         {
             [Theory]
             [InlineData(-2, false)]
@@ -34,7 +34,7 @@ namespace AllOverIt.Tests.Extensions
             [InlineData(3, false)]
             public void Should_Return_Expected_Result(int value, bool expected)
             {
-                var combined = IsEven.And<IsPositive, int>();
+                var combined = LinqIsEven.And<LinqIsPositive, int>();
 
                 var actual = combined.IsSatisfiedBy(value);
 
@@ -42,7 +42,7 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
-        public class AndNot : SpecificationExtensionsFixture
+        public class AndNot : LinqSpecificationExtensionsFixture
         {
             [Theory]
             [InlineData(-2, true)]
@@ -51,7 +51,7 @@ namespace AllOverIt.Tests.Extensions
             [InlineData(3, false)]
             public void Should_Return_Expected_Result(int value, bool expected)
             {
-                var combined = IsEven.AndNot(IsPositive);
+                var combined = LinqIsEven.AndNot(LinqIsPositive);
 
                 var actual = combined.IsSatisfiedBy(value);
 
@@ -59,7 +59,7 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
-        public class AndNot_Specification_Type : SpecificationExtensionsFixture
+        public class AndNot_Specification_Type : LinqSpecificationExtensionsFixture
         {
             [Theory]
             [InlineData(-2, true)]
@@ -68,7 +68,7 @@ namespace AllOverIt.Tests.Extensions
             [InlineData(3, false)]
             public void Should_Return_Expected_Result(int value, bool expected)
             {
-                var combined = IsEven.AndNot<IsPositive, int>();
+                var combined = LinqIsEven.AndNot<LinqIsPositive, int>();
 
                 var actual = combined.IsSatisfiedBy(value);
 
@@ -76,7 +76,7 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
-        public class Or : SpecificationExtensionsFixture
+        public class Or : LinqSpecificationExtensionsFixture
         {
             [Theory]
             [InlineData(-2, true)]
@@ -85,7 +85,7 @@ namespace AllOverIt.Tests.Extensions
             [InlineData(3, true)]
             public void Should_Return_Expected_Result(int value, bool expected)
             {
-                var combined = IsEven.Or(IsPositive);
+                var combined = LinqIsEven.Or(LinqIsPositive);
 
                 var actual = combined.IsSatisfiedBy(value);
 
@@ -93,7 +93,7 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
-        public class Or_Specification_Type : SpecificationExtensionsFixture
+        public class Or_Specification_Type : LinqSpecificationExtensionsFixture
         {
             [Theory]
             [InlineData(-2, true)]
@@ -102,7 +102,7 @@ namespace AllOverIt.Tests.Extensions
             [InlineData(3, true)]
             public void Should_Return_Expected_Result(int value, bool expected)
             {
-                var combined = IsEven.Or<IsPositive, int>();
+                var combined = LinqIsEven.Or<LinqIsPositive, int>();
 
                 var actual = combined.IsSatisfiedBy(value);
 
@@ -110,7 +110,7 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
-        public class OrNot : SpecificationExtensionsFixture
+        public class OrNot : LinqSpecificationExtensionsFixture
         {
             [Theory]
             [InlineData(-2, true)]
@@ -119,7 +119,7 @@ namespace AllOverIt.Tests.Extensions
             [InlineData(3, false)]
             public void Should_Return_Expected_Result(int value, bool expected)
             {
-                var combined = IsEven.OrNot(IsPositive);
+                var combined = LinqIsEven.OrNot(LinqIsPositive);
 
                 var actual = combined.IsSatisfiedBy(value);
 
@@ -127,7 +127,7 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
-        public class OrNot_Specification_Type : SpecificationExtensionsFixture
+        public class OrNot_Specification_Type : LinqSpecificationExtensionsFixture
         {
             [Theory]
             [InlineData(-2, true)]
@@ -136,7 +136,7 @@ namespace AllOverIt.Tests.Extensions
             [InlineData(3, false)]
             public void Should_Return_Expected_Result(int value, bool expected)
             {
-                var combined = IsEven.OrNot<IsPositive, int>();
+                var combined = LinqIsEven.OrNot<LinqIsPositive, int>();
 
                 var actual = combined.IsSatisfiedBy(value);
 
@@ -144,14 +144,14 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
-        public class Not : SpecificationExtensionsFixture
+        public class Not : LinqSpecificationExtensionsFixture
         {
             [Theory]
             [InlineData(2, false)]
             [InlineData(3, true)]
             public void Should_Return_Expected_Result(int value, bool expected)
             {
-                var combined = IsEven.Not();
+                var combined = LinqIsEven.Not();
 
                 var actual = combined.IsSatisfiedBy(value);
 

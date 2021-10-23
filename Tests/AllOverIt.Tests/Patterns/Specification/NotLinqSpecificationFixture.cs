@@ -4,7 +4,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Patterns.Specification
 {
-    public class NotSpecificationFixture : SpecificationFixtureBase
+    public class NotLinqSpecificationFixture : LinqSpecificationFixtureBase
     {
         [Theory]
         [InlineData(-2, false)]
@@ -13,7 +13,7 @@ namespace AllOverIt.Tests.Patterns.Specification
         [InlineData(3, true)]
         public void Should_Return_Expected_Result(int value, bool expected)
         {
-            var combined = IsEven.Not();
+            var combined = LinqIsEven.Not();
 
             var actual = combined.IsSatisfiedBy(value);
 

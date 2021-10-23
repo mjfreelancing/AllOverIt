@@ -1,5 +1,4 @@
-﻿using AllOverIt.Expressions;
-using System;
+﻿using System;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Patterns.Specification
@@ -18,7 +17,7 @@ namespace AllOverIt.Patterns.Specification
         /// <inheritdoc />
         public override Expression<Func<TType, bool>> AsExpression()
         {
-            return Specification.AsExpression().Not();
+            return Specification.AsExpression();
         }
     }
 }
