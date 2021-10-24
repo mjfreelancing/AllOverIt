@@ -22,6 +22,14 @@ namespace AllOverIt.Tests.Extensions
             public class Where : Specifications
             {
                 [Fact]
+                public void Should_Return_IQueryable()
+                {
+                    var actual = Enumerable.Range(1, 10).AsQueryable().Where(_isEven);
+                    
+                    actual.Should().BeAssignableTo<IQueryable<int>>();
+                }
+
+                [Fact]
                 public void Should_Return_Expected_Result()
                 {
                     var expected = new[] { 2, 4, 6, 8, 10 };
@@ -126,11 +134,22 @@ namespace AllOverIt.Tests.Extensions
             public class SkipWhile : Specifications
             {
                 [Fact]
+                public void Should_Return_IQueryable()
+                {
+                    var values = Enumerable.Range(1, 10).AsQueryable();
+
+                    var specification = LinqSpecification<int>.Create(value => value < 5);
+                    var actual = values.SkipWhile(specification);
+
+                    actual.Should().BeAssignableTo<IQueryable<int>>();
+                }
+
+                [Fact]
                 public void Should_Return_Expected_Result()
                 {
                     var values = Enumerable.Range(1, 10).AsQueryable();
 
-                    ILinqSpecification<int> specification = LinqSpecification<int>.Create(value => value < 5);
+                    var specification = LinqSpecification<int>.Create(value => value < 5);
                     var actual = values.SkipWhile(specification).ToList();
 
                     actual.Should().BeEquivalentTo(new[] { 5, 6, 7, 8, 9, 10 });
@@ -140,11 +159,22 @@ namespace AllOverIt.Tests.Extensions
             public class TakeWhile : Specifications
             {
                 [Fact]
+                public void Should_Return_IQueryable()
+                {
+                    var values = Enumerable.Range(1, 10).AsQueryable();
+
+                    var specification = LinqSpecification<int>.Create(value => value < 5);
+                    var actual = values.TakeWhile(specification);
+
+                    actual.Should().BeAssignableTo<IQueryable<int>>();
+                }
+
+                [Fact]
                 public void Should_Return_Expected_Result()
                 {
                     var values = Enumerable.Range(1, 10).AsQueryable();
 
-                    ILinqSpecification<int> specification = LinqSpecification<int>.Create(value => value < 5);
+                    var specification = LinqSpecification<int>.Create(value => value < 5);
                     var actual = values.TakeWhile(specification).ToList();
 
                     actual.Should().BeEquivalentTo(new[] { 1, 2, 3, 4 });

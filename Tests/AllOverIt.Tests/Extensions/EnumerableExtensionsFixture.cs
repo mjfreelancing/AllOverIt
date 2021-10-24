@@ -614,7 +614,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     var values = Enumerable.Range(1, 10);
 
-                    ISpecification<int> specification = Specification<int>.Create(value => value < 5);
+                    var specification = Specification<int>.Create(value => value < 5);
                     var actual = values.SkipWhile(specification).ToList();
 
                     actual.Should().BeEquivalentTo(new[] { 5, 6, 7, 8, 9, 10 });
@@ -628,7 +628,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     var values = Enumerable.Range(1, 10);
 
-                    ISpecification<int> specification = Specification<int>.Create(value => value < 5);
+                    var specification = Specification<int>.Create(value => value < 5);
                     var actual = values.TakeWhile(specification).ToList();
 
                     actual.Should().BeEquivalentTo(new[] { 1, 2, 3, 4 });

@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Patterns.Specification;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace AllOverIt.Extensions
@@ -11,7 +10,7 @@ namespace AllOverIt.Extensions
         /// <param name="candidates">The elements to apply the specification against.</param>
         /// <param name="specification">The specification to apply against a collection of elements.</param>
         /// <returns>The candidates that meet the criteria of the provided specification.</returns>
-        public static IEnumerable<TType> Where<TType>(this IQueryable<TType> candidates, ILinqSpecification<TType> specification)
+        public static IQueryable<TType> Where<TType>(this IQueryable<TType> candidates, ILinqSpecification<TType> specification)
         {
             return candidates.Where(specification.AsExpression());
         }

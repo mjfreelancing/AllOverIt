@@ -24,7 +24,8 @@ namespace SpecificationDemo
 
             // Alternative to creating a concrete Specification class and using as:
             // var multipleOfThree = new IsMultipleOf(3);
-            var multipleOfThree = Specification<int>.Create(candidate => candidate % 3 == 0);
+            // Note: Must cast to Specification<int> when using this factory method if using operator && or ||
+            var multipleOfThree = Specification<int>.Create(candidate => candidate % 3 == 0) as Specification<int>;
 
             var multipleOfSeven = new IsMultipleOf(7);
 
@@ -36,7 +37,7 @@ namespace SpecificationDemo
 
             ShowIndividualResults(twoOrThreeSpecification, twoAndThreeSpecification);
             ShowDivisbleAndTest(twoAndThreeSpecification);
-            ShowDivisbleOrTest(twoOrThreeSpecification);
+            ShowDivisibleOrTest(twoOrThreeSpecification);
             ShowComplexTest(complexSpecification);
             ShowNotComplexTest(complexSpecification);
 
@@ -76,7 +77,7 @@ namespace SpecificationDemo
             }
         }
 
-        private static void ShowDivisbleOrTest(ISpecification<int> twoOrThreeSpecification)
+        private static void ShowDivisibleOrTest(ISpecification<int> twoOrThreeSpecification)
         {
             Console.WriteLine("");
             Console.WriteLine("Press any key for the next test (list only those divisible by 2 or 3)...");

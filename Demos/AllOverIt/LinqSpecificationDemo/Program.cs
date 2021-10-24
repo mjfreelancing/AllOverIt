@@ -1,4 +1,5 @@
-﻿using AllOverIt.Patterns.Specification;
+﻿using AllOverIt.Extensions;
+using AllOverIt.Patterns.Specification;
 using LinqSpecificationDemo.Specifications;
 using System;
 using System.Collections.Generic;
@@ -14,10 +15,12 @@ namespace LinqSpecificationDemo
 
             // Alternative to creating a concrete Specification class and using as:
             // var isFemale = new IsOfSex(Sex.Female);
-            var isFemale = LinqSpecification<Person>.Create(candidate => candidate.Sex == Sex.Female);
+            // Note: Must cast to LinqSpecification<Person> when using this factory method if using operator && or ||
+            var isFemale = LinqSpecification<Person>.Create(candidate => candidate.Sex == Sex.Female) as LinqSpecification<Person>;
 
             var minimumAge = new IsOfMinimumAge(20);
 
+            // Same as isMale.And(minimumAge).Or(isFemale.And(minimumAge.Not()));
             var criteria = isMale && minimumAge ||
                            isFemale && !minimumAge;
 
@@ -26,12 +29,12 @@ namespace LinqSpecificationDemo
             Console.WriteLine();
 
             Console.WriteLine("Filtered Data as IQueryable<Person> - (Male >= 20 or Female < 20)");
-            LogData(Repository.Persons.AsQueryable().Where(criteria));
+            LogData(Queryable.Where(Repository.Persons.AsQueryable(), criteria));
             Console.WriteLine();
 
             // Testing inverse criteria by using the not (!) operator on the same criteria
             Console.WriteLine("Filtered Data as IQueryable<Person> - NOT (Male >= 20 or Female < 20)");
-            LogData(Repository.Persons.AsQueryable().Where(!criteria));
+            LogData(Queryable.Where(Repository.Persons.AsQueryable(), !criteria));
             Console.WriteLine();
 
             Console.WriteLine("====== Do the same tests using an explicit conversion for non-IQueryable based filtering ======");
