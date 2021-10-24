@@ -2,18 +2,9 @@
 using AllOverIt.Patterns.Specification;
 using System;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace SpecificationDemo
 {
-    public sealed class IsEven : LinqSpecification<int>
-    {
-        public override Expression<Func<int, bool>> AsExpression()
-        {
-            return value => value % 2 == 0;
-        }
-    }
-
     class Program
     {
         static void Main()
