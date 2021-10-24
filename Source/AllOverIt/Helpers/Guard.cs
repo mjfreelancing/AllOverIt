@@ -2,6 +2,7 @@
 
 namespace AllOverIt.Helpers
 {
+    /// <summary>Provides a number of extensions that enable method pre-condition checking.</summary>
     public static partial class Guard
     {
         private static string ThrowArgumentNullException(string name, string errorMessage)

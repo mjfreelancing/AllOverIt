@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace AllOverIt.Extensions
 {
+    /// <summary>Provides a variety of extension methods for <see cref="IQueryable{T}"/>.</summary>
     public static class QueryableExtensions
     {
         /// <summary>Gets all candidates that meet the criteria of a provided specification.</summary>

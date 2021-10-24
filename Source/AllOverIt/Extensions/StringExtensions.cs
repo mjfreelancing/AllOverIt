@@ -5,8 +5,13 @@ using System.Text;
 
 namespace AllOverIt.Extensions
 {
+    /// <summary>Provides a variety of extension methods for <see cref="string"/> types.</summary>
     public static class StringExtensions
     {
+        /// <summary>Determines if a string contains a specified character.</summary>
+        /// <param name="str">The string to be tested.</param>
+        /// <param name="value">The character value to be searched for within the string.</param>
+        /// <returns>True if the string contains the specified character, otherwise false.</returns>
         public static bool ContainsChar(this string str, char value)
         {
 #if NETSTANDARD2_0
@@ -19,9 +24,9 @@ namespace AllOverIt.Extensions
         /// <summary>Converts a given string to another type.</summary>
         /// <typeparam name="TType">The type to convert to.</typeparam>
         /// <param name="value">The value to be converted.</param>
-        /// <param name="defaultValue">The value to return if <see cref="value"/> is null, empty or contains whitespace, or is considered
+        /// <param name="defaultValue">The value to return if <paramref name="value"/> is null, empty or contains whitespace, or is considered
         /// invalid for the <typeparamref name="TType"/> converter.</param>
-        /// <returns>The converted value, or the <see cref="defaultValue"/> value if the conversion cannot be performed.</returns>
+        /// <returns>The converted value, or the <paramref name="defaultValue"/> value if the conversion cannot be performed.</returns>
         /// <remarks>
         ///   <para>Supported conversions include byte, sbyte, decimal, double, float, int, uint, long, ulong, short, ushort, string, bool and enum.</para>
         ///   <para>Char and Boolean type conversions must be performed using the <see cref="ObjectExtensions.As{TType}(object, TType)"/> method.</para>

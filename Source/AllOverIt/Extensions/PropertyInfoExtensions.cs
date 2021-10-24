@@ -3,6 +3,7 @@ using System.Reflection;
 
 namespace AllOverIt.Extensions
 {
+    /// <summary>Provides a variety of extension methods for <see cref="PropertyInfo"/> types.</summary>
     public static class PropertyInfoExtensions
     {
         /// <summary>

@@ -7,13 +7,12 @@ using System.Reflection;
 
 namespace AllOverIt.Extensions
 {
+    /// <summary>Provides a variety of extension methods for <see cref="Expression"/> types.</summary>
     public static class ExpressionExtensions
     {
-        /// <summary>
-        /// Recursively get all <see cref="MemberExpression"/> expressions linked to <param name="expression"></param>
-        /// </summary>
+        /// <summary>Recursively get all <see cref="MemberExpression"/> expressions linked to <paramref name="expression"/>.</summary>
         /// <param name="expression">The expression to get all linked <see cref="MemberExpression"/> expressions.</param>
-        /// <returns>All linked <see cref="MemberExpression"/> expressions, including <param name="expression"></param>.</returns>
+        /// <returns>All linked <see cref="MemberExpression"/> expressions, including <paramref name="expression"/>.</returns>
         public static IEnumerable<MemberExpression> GetMemberExpressions(this MemberExpression expression)
         {
             _ = expression ?? throw new ArgumentNullException(nameof(expression));
@@ -32,14 +31,12 @@ namespace AllOverIt.Extensions
             return GetMembers().Reverse();
         }
 
-        /// <summary>
-        /// Gets the <param name="expression"> as a <see cref="MemberExpression"/></param>.
-        /// </summary>
+        /// <summary>Gets the <paramref name="expression"/> as a <see cref="MemberExpression"/>.</summary>
         /// <param name="expression">The expression to be unwrapped as a <see cref="MemberExpression"/>.</param>
         /// <returns>
-        /// If <param name="expression"></param> is a <see cref="MemberExpression"/> then the same expression is returned.
-        /// If <param name="expression"></param> is a <see cref="LambdaExpression"/> then its Body is returned if it is a
-        /// <see cref="MemberExpression"/>, or a <see cref="UnaryExpression"/> whos Operand is a <see cref="MemberExpression"/>.
+        /// If <paramref name="expression"/> is a <see cref="MemberExpression"/> then the same expression is returned.
+        /// If <paramref name="expression"/> is a <see cref="LambdaExpression"/> then its Body is returned if it is a
+        /// <see cref="MemberExpression"/>, or a <see cref="UnaryExpression"/> whos' Operand is a <see cref="MemberExpression"/>.
         /// In all other cases, null is returned.</returns>
         public static MemberExpression UnwrapMemberExpression(this Expression expression)
         {
@@ -76,7 +73,7 @@ namespace AllOverIt.Extensions
         /// expressions are also supported if its body can be evaluated.
         /// </summary>
         /// <param name="expression">The expression to be evaluated.</param>
-        /// <returns>The value of the <param name="expression"></param>.</returns>
+        /// <returns>The value of the <paramref name="expression"/>.</returns>
         public static object GetValue(this Expression expression)
         {
             try

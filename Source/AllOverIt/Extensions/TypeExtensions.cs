@@ -8,6 +8,7 @@ using System.Text;
 
 namespace AllOverIt.Extensions
 {
+    /// <summary>Provides a variety of extension methods for <see cref="Type"/> types.</summary>
     public static class TypeExtensions
     {
         /// <summary>
@@ -15,9 +16,9 @@ namespace AllOverIt.Extensions
         /// </summary>
         /// <param name="type">The <see cref="Type"/> to obtain the property metadata from.</param>
         /// <param name="propertyName">The name of the property to obtain metadata for.</param>
-        /// <returns>The property metadata, as <see cref="PropertyInfo"/>, of a specified property on the provided <param name="type"></param>.</returns>
+        /// <returns>The property metadata, as <see cref="PropertyInfo"/>, of a specified property on the provided <paramref name="type"/>.</returns>
         /// <remarks>When class inheritance is involved, this method returns the first property found, starting at the type represented
-        /// by <param name="type"></param>.</remarks>
+        /// by <paramref name="type"/>.</remarks>
         public static PropertyInfo GetPropertyInfo(this Type type, string propertyName)
         {
             return TypeInfoExtensions.GetPropertyInfo(type.GetTypeInfo(), propertyName);
@@ -32,7 +33,7 @@ namespace AllOverIt.Extensions
         /// If false, only property metadata of the declared type is returned.</param>
         /// <returns>The property metadata, as <see cref="PropertyInfo"/>, of a provided <see cref="Type"/>.</returns>
         /// <remarks>When class inheritance is involved, this method returns the first property found, starting at the type represented
-        /// by <param name="type"></param>.</remarks>
+        /// by <paramref name="type"/>.</remarks>
         public static IEnumerable<PropertyInfo> GetPropertyInfo(this Type type, BindingOptions binding = BindingOptions.Default, bool declaredOnly = false)
         {
             var predicate = BindingOptionsHelper.BuildBindingPredicate(binding);
@@ -53,7 +54,7 @@ namespace AllOverIt.Extensions
         /// If false, only method metadata of the declared type is returned.</param>
         /// <returns>The method metadata, as <see cref="MethodInfo"/>, of a provided <see cref="Type"/>.</returns>
         /// <remarks>When class inheritance is involved, this method returns the first method found, starting at the type represented
-        /// by <param name="type"></param>.</remarks>
+        /// by <paramref name="type"/>.</remarks>
         public static IEnumerable<MethodInfo> GetMethodInfo(this Type type, BindingOptions binding = BindingOptions.Default, bool declaredOnly = false)
         {
             var predicate = BindingOptionsHelper.BuildBindingPredicate(binding);
@@ -204,7 +205,7 @@ namespace AllOverIt.Extensions
         /// </summary>
         /// <param name="type">The current type.</param>
         /// <param name="fromType">The type to check.</param>
-        /// <returns>True if the <see cref="fromType"/> can be assigned to the current type, otherwise false.</returns>
+        /// <returns>True if the <paramref name="fromType"/> can be assigned to the current <paramref name="type"/>, otherwise false.</returns>
         public static bool IsAssignableFromType(this Type type, Type fromType)
         {
             var fromTypeInfo = fromType.GetTypeInfo();

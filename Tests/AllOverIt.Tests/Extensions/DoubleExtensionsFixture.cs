@@ -61,14 +61,14 @@ namespace AllOverIt.Tests.Extensions
                 actual.Should().BeFalse();
             }
         }
-        public class IsZero_Tolerance : DoubleExtensionsFixture
+        public class IsZero_Epsilon : DoubleExtensionsFixture
         {
-            private const double Tolerance = 0.01;
+            private readonly double _epsilon = 0.01;
 
             [Fact]
             public void Should_Compare_To_Zero()
             {
-                var actual = DoubleExtensions.IsZero(0.0d, Tolerance);
+                var actual = DoubleExtensions.IsZero(0.0d, _epsilon);
 
                 actual.Should().BeTrue();
             }
@@ -76,7 +76,7 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Not_Compare_To_Internal_Epsilon()
             {
-                var actual = DoubleExtensions.IsZero(Tolerance, Tolerance);
+                var actual = DoubleExtensions.IsZero(_epsilon, _epsilon);
 
                 actual.Should().BeFalse();
             }
@@ -84,8 +84,8 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Compare_To_Less_Than_Internal_Epsilon()
             {
-                var value = Tolerance / 10;
-                var actual = DoubleExtensions.IsZero(value, Tolerance);
+                var value = _epsilon / 10;
+                var actual = DoubleExtensions.IsZero(value, _epsilon);
 
                 actual.Should().BeTrue();
             }
@@ -93,8 +93,8 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Not_Compare_To_Greater_Than_Internal_Epsilon()
             {
-                var value = Tolerance * 10;
-                var actual = DoubleExtensions.IsZero(value, Tolerance);
+                var value = _epsilon * 10;
+                var actual = DoubleExtensions.IsZero(value, _epsilon);
 
                 actual.Should().BeFalse();
             }
@@ -103,7 +103,7 @@ namespace AllOverIt.Tests.Extensions
             public void Should_Not_Compare_Negative_To_Zero()
             {
                 var value = -Create<double>() - 0.1d;
-                var actual = DoubleExtensions.IsZero(value, Tolerance);
+                var actual = DoubleExtensions.IsZero(value, _epsilon);
 
                 actual.Should().BeFalse();
             }
@@ -112,7 +112,7 @@ namespace AllOverIt.Tests.Extensions
             public void Should_Not_Compare_Positive_To_Zero()
             {
                 var value = -Create<double>() + 0.1d;
-                var actual = DoubleExtensions.IsZero(value, Tolerance);
+                var actual = DoubleExtensions.IsZero(value, _epsilon);
 
                 actual.Should().BeFalse();
             }
@@ -171,38 +171,38 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
-        public class IsEqualTo_Tolerance : DoubleExtensionsFixture
+        public class IsEqualTo_Epsilon : DoubleExtensionsFixture
         {
-            private const double Tolerance = 0.01;
-            private const double ToleranceSmaller = 0.001;
-            private const double ToleranceBigger = 0.1;
+            private const double Epsilon = 0.01;
+            private const double EpsilonSmaller = 0.001;
+            private const double EpsilonBigger = 0.1;
 
             [Theory]
-            [InlineData(Tolerance, 0.0d)]
-            [InlineData(0.0d, Tolerance)]
+            [InlineData(Epsilon, 0.0d)]
+            [InlineData(0.0d, Epsilon)]
             public void Should_Not_Compare_To_Epsilon_Difference(double val1, double val2)
             {
-                var actual = DoubleExtensions.IsEqualTo(val1, val2, Tolerance);
+                var actual = DoubleExtensions.IsEqualTo(val1, val2, Epsilon);
 
                 actual.Should().BeFalse();
             }
 
             [Theory]
-            [InlineData(ToleranceSmaller, 0.0d)]
-            [InlineData(0.0d, ToleranceSmaller)]
+            [InlineData(EpsilonSmaller, 0.0d)]
+            [InlineData(0.0d, EpsilonSmaller)]
             public void Should_Compare_To_Less_Than_Epsilon(double val1, double val2)
             {
-                var actual = DoubleExtensions.IsEqualTo(val1, val2, Tolerance);
+                var actual = DoubleExtensions.IsEqualTo(val1, val2, Epsilon);
 
                 actual.Should().BeTrue();
             }
 
             [Theory]
-            [InlineData(ToleranceBigger, 0.0d)]
-            [InlineData(0.0d, ToleranceBigger)]
+            [InlineData(EpsilonBigger, 0.0d)]
+            [InlineData(0.0d, EpsilonBigger)]
             public void Should_Not_Compare_To_Greater_Than_Epsilon(double val1, double val2)
             {
-                var actual = DoubleExtensions.IsEqualTo(val1, val2, Tolerance);
+                var actual = DoubleExtensions.IsEqualTo(val1, val2, Epsilon);
 
                 actual.Should().BeFalse();
             }
@@ -211,7 +211,7 @@ namespace AllOverIt.Tests.Extensions
             public void Should_Compare_Same_Value()
             {
                 var val = Create<double>();
-                var actual = DoubleExtensions.IsEqualTo(val, val, Tolerance);
+                var actual = DoubleExtensions.IsEqualTo(val, val, Epsilon);
 
                 actual.Should().BeTrue();
             }
@@ -222,7 +222,7 @@ namespace AllOverIt.Tests.Extensions
                 var val1 = Create<double>();
                 var val2 = CreateExcluding(val1);
 
-                var actual = DoubleExtensions.IsEqualTo(val1, val2, Tolerance);
+                var actual = DoubleExtensions.IsEqualTo(val1, val2, Epsilon);
 
                 actual.Should().BeFalse();
             }

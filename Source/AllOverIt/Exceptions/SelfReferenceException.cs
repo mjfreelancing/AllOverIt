@@ -2,6 +2,7 @@
 
 namespace AllOverIt.Exceptions
 {
+    /// <summary>Represents on object self-reference error.</summary>
     public class SelfReferenceException : Exception
     {
         /// <summary>Default constructor.</summary>

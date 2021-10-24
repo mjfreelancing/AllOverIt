@@ -88,6 +88,54 @@
             <param name="expression">The source expression.</param>
             <returns>An expression that represents a bitwise complement of the provided expression.</returns>
         </member>
+        <member name="T:AllOverIt.Extensions.AsyncEnumerableExtensions">
+            <summary>Provides a variety of extension methods for <see cref="T:System.Collections.Generic.IAsyncEnumerable`1"/>.</summary>
+        </member>
+        <member name="M:AllOverIt.Extensions.AsyncEnumerableExtensions.AsListAsync``1(System.Collections.Generic.IAsyncEnumerable{``0},System.Threading.CancellationToken)">
+            <summary>Iterates over an <see cref="T:System.Collections.Generic.IAsyncEnumerable`1"/> to create a <see cref="T:System.Collections.Generic.List`1"/>.</summary>
+            <typeparam name="TType">The element type.</typeparam>
+            <param name="items">The enumerable to convert to a list asynchronously.</param>
+            <param name="cancellationToken">A cancellation token to cancel the processing.</param>
+            <returns>A <see cref="T:System.Collections.Generic.List`1"/> from the source items.</returns>
+        </member>
+        <member name="T:AllOverIt.Extensions.DoubleExtensions">
+            <summary>Provides a variety of extension methods for double values.</summary>
+        </member>
+        <member name="M:AllOverIt.Extensions.DoubleExtensions.IsZero(System.Double)">
+            <summary>Determines if the provided value is considered to be zero.</summary>
+            <param name="value">The value to be compared.</param>
+            <returns>True if the value is considered to be zero, otherwise false.</returns>
+            <remarks>The value is considered to be zero if the absolute value is less than an internal value of
+            Epsilon (1E-7). Use the <see cref="M:AllOverIt.Extensions.DoubleExtensions.IsZero(System.Double,System.Double)"/> overload to provide an alternative value
+            of Epsilon.</remarks>
+        </member>
+        <member name="M:AllOverIt.Extensions.DoubleExtensions.IsZero(System.Double,System.Double)">
+            <summary>Determines if the provided value is considered to be zero based on a provided value of Epsilon.</summary>
+            <param name="value">The value to be compared.</param>
+            <param name="epsilon">The value of Epsilon to determine if the value should be considered as zero.</param>
+            <returns>True if the value is considered to be zero, otherwise false.</returns>
+            <remarks>The value is considered to be zero if the absolute value is less than the provided value of
+            Epsilon.</remarks>
+        </member>
+        <member name="M:AllOverIt.Extensions.DoubleExtensions.IsEqualTo(System.Double,System.Double)">
+            <summary>Compares two double values and considers them equal if their absolute difference is less than an internal
+            value of Epsilon (1E-7). Use the <see cref="M:AllOverIt.Extensions.DoubleExtensions.IsEqualTo(System.Double,System.Double)"/> overload to provide an alternative value
+            of Epsilon.</summary>
+            <param name="lhs">The left double value to be compared.</param>
+            <param name="rhs">The right double value to be compared.</param>
+            <returns>True if the values are considered to be equal, otherwise false.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.DoubleExtensions.IsEqualTo(System.Double,System.Double,System.Double)">
+            <summary>Compares two double values and considers them equal if their absolute difference is less than the provided
+            value of Epsilon.</summary>
+            <param name="lhs">The left double value to be compared.</param>
+            <param name="rhs">The right double value to be compared.</param>
+            <param name="epsilon"></param>
+            <returns>True if the values are considered to be equal, otherwise false.</returns>
+        </member>
+        <member name="T:AllOverIt.Extensions.EnumerableExtensions">
+            <summary>Provides a variety of extension methods for <see cref="T:System.Collections.Generic.IEnumerable`1"/>.</summary>
+        </member>
         <member name="M:AllOverIt.Extensions.EnumerableExtensions.AsList``1(System.Collections.Generic.IEnumerable{``0})">
             <summary>Returns the source items as an IList.</summary>
             <typeparam name="TType">The type stored in the source collection.</typeparam>
@@ -234,6 +282,146 @@
             <param name="specification">The specification to apply against a collection of elements.</param>
             <returns>An enumerable that contains the elements from the input candidates while they meet the criteria of a provided
             specification.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.ForEachAsTaskAsync``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Threading.Tasks.Task},System.Int32,System.Threading.CancellationToken)">
+            <summary>Creates a Task for each item in a collection and invokes an asynchronous function. The number of tasks is
+            partitioned based on a provided degree of parallelism.</summary>
+            <typeparam name="TType">The type of each element.</typeparam>
+            <param name="items">The collection of items to be processed.</param>
+            <param name="func">The asynchronous function to be invoked.</param>
+            <param name="degreeOfParallelism">Determines the maximum number of tasks that will be created.</param>
+            <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
+            <returns>A task that will complete when all items have been processed.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.ForEachAsTaskAsync``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1,System.Threading.Tasks.Task},``1,System.Int32,System.Threading.CancellationToken)">
+            <summary>Creates a Task for each item in a collection and invokes an asynchronous function. The number of tasks is
+            partitioned based on a provided degree of parallelism.</summary>
+            <typeparam name="TType">The type of each element.</typeparam>
+            <typeparam name="TInput">The type of the additional input that will be passed to the invoked function.</typeparam>
+            <param name="items">The collection of items to be processed.</param>
+            <param name="func">The asynchronous function to be invoked.</param>
+            <param name="input">An additional input that will be passed to the invoked function.</param>
+            <param name="degreeOfParallelism">Determines the maximum number of tasks that will be created.</param>
+            <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
+            <returns>A task that will complete when all items have been processed.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.ForEachAsTaskAsync``3(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1,``2,System.Threading.Tasks.Task},``1,``2,System.Int32,System.Threading.CancellationToken)">
+            <summary>Creates a Task for each item in a collection and invokes an asynchronous function. The number of tasks is
+            partitioned based on a provided degree of parallelism.</summary>
+            <typeparam name="TType">The type of each element.</typeparam>
+            <typeparam name="TInput1">The type of the first input that will be passed to the invoked function.</typeparam>
+            <typeparam name="TInput2">The type of the second input that will be passed to the invoked function.</typeparam>
+            <param name="items">The collection of items to be processed.</param>
+            <param name="func">The asynchronous function to be invoked.</param>
+            <param name="input1">The first input that will be passed to the invoked function.</param>
+            <param name="input2">The second input that will be passed to the invoked function.</param>
+            <param name="degreeOfParallelism">Determines the maximum number of tasks that will be created.</param>
+            <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
+            <returns>A task that will complete when all items have been processed.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.ForEachAsTaskAsync``4(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1,``2,``3,System.Threading.Tasks.Task},``1,``2,``3,System.Int32,System.Threading.CancellationToken)">
+            <summary>Creates a Task for each item in a collection and invokes an asynchronous function. The number of tasks is
+            partitioned based on a provided degree of parallelism.</summary>
+            <typeparam name="TType">The type of each element.</typeparam>
+            <typeparam name="TInput1">The type of the first input that will be passed to the invoked function.</typeparam>
+            <typeparam name="TInput2">The type of the second input that will be passed to the invoked function.</typeparam>
+            <typeparam name="TInput3">The type of the third input that will be passed to the invoked function.</typeparam>
+            <param name="items">The collection of items to be processed.</param>
+            <param name="func">The asynchronous function to be invoked.</param>
+            <param name="input1">The first input that will be passed to the invoked function.</param>
+            <param name="input2">The second input that will be passed to the invoked function.</param>
+            <param name="input3">The third input that will be passed to the invoked function.</param>
+            <param name="degreeOfParallelism">Determines the maximum number of tasks that will be created.</param>
+            <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
+            <returns>A task that will complete when all items have been processed.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.ForEachAsTaskAsync``5(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1,``2,``3,``4,System.Threading.Tasks.Task},``1,``2,``3,``4,System.Int32,System.Threading.CancellationToken)">
+            <summary>Creates a Task for each item in a collection and invokes an asynchronous function. The number of tasks is
+            partitioned based on a provided degree of parallelism.</summary>
+            <typeparam name="TType">The type of each element.</typeparam>
+            <typeparam name="TInput1">The type of the first input that will be passed to the invoked function.</typeparam>
+            <typeparam name="TInput2">The type of the second input that will be passed to the invoked function.</typeparam>
+            <typeparam name="TInput3">The type of the third input that will be passed to the invoked function.</typeparam>
+            <typeparam name="TInput4">The type of the forth input that will be passed to the invoked function.</typeparam>
+            <param name="items">The collection of items to be processed.</param>
+            <param name="func">The asynchronous function to be invoked.</param>
+            <param name="input1">The first input that will be passed to the invoked function.</param>
+            <param name="input2">The second input that will be passed to the invoked function.</param>
+            <param name="input3">The third input that will be passed to the invoked function.</param>
+            <param name="input4">The forth input that will be passed to the invoked function.</param>
+            <param name="degreeOfParallelism">Determines the maximum number of tasks that will be created.</param>
+            <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
+            <returns>A task that will complete when all items have been processed.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.ForEachAsParallelAsync``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Threading.Tasks.Task},System.Int32,System.Threading.CancellationToken)">
+            <summary>Parallelizes the invocation of a function against a collection of items. The parallelization is partitioned
+            based on a provided degree of parallelism.</summary>
+            <typeparam name="TType">The type of each element.</typeparam>
+            <param name="items">The collection of items to be processed.</param>
+            <param name="func">The asynchronous function to be invoked.</param>
+            <param name="degreeOfParallelism">Determines the maximum number of parallel operations.</param>
+            <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
+            <returns>A task that will complete when all items have been processed.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.ForEachAsParallelAsync``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1,System.Threading.Tasks.Task},``1,System.Int32,System.Threading.CancellationToken)">
+            <summary>Parallelizes the invocation of a function against a collection of items. The parallelization is partitioned
+            based on a provided degree of parallelism.</summary>
+            <typeparam name="TType">The type of each element.</typeparam>
+            <typeparam name="TInput">The type of the additional input that will be passed to the invoked function.</typeparam>
+            <param name="items">The collection of items to be processed.</param>
+            <param name="func">The asynchronous function to be invoked.</param>
+            <param name="input">An additional input that will be passed to the invoked function.</param>
+            <param name="degreeOfParallelism">Determines the maximum number of parallel operations.</param>
+            <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
+            <returns>A task that will complete when all items have been processed.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.ForEachAsParallelAsync``3(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1,``2,System.Threading.Tasks.Task},``1,``2,System.Int32,System.Threading.CancellationToken)">
+            <summary>Parallelizes the invocation of a function against a collection of items. The parallelization is partitioned
+            based on a provided degree of parallelism.</summary>
+            <typeparam name="TType">The type of each element.</typeparam>
+            <typeparam name="TInput1">The type of the first input that will be passed to the invoked function.</typeparam>
+            <typeparam name="TInput2">The type of the second input that will be passed to the invoked function.</typeparam>
+            <param name="items">The collection of items to be processed.</param>
+            <param name="func">The asynchronous function to be invoked.</param>
+            <param name="input1">The first input that will be passed to the invoked function.</param>
+            <param name="input2">The second input that will be passed to the invoked function.</param>
+            <param name="degreeOfParallelism">Determines the maximum number of parallel operations.</param>
+            <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
+            <returns>A task that will complete when all items have been processed.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.ForEachAsParallelAsync``4(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1,``2,``3,System.Threading.Tasks.Task},``1,``2,``3,System.Int32,System.Threading.CancellationToken)">
+            <summary>Parallelizes the invocation of a function against a collection of items. The parallelization is partitioned
+            based on a provided degree of parallelism.</summary>
+            <typeparam name="TType">The type of each element.</typeparam>
+            <typeparam name="TInput1">The type of the first input that will be passed to the invoked function.</typeparam>
+            <typeparam name="TInput2">The type of the second input that will be passed to the invoked function.</typeparam>
+            <typeparam name="TInput3">The type of the third input that will be passed to the invoked function.</typeparam>
+            <param name="items">The collection of items to be processed.</param>
+            <param name="func">The asynchronous function to be invoked.</param>
+            <param name="input1">The first input that will be passed to the invoked function.</param>
+            <param name="input2">The second input that will be passed to the invoked function.</param>
+            <param name="input3">The third input that will be passed to the invoked function.</param>
+            <param name="degreeOfParallelism">Determines the maximum number of parallel operations.</param>
+            <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
+            <returns>A task that will complete when all items have been processed.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.ForEachAsParallelAsync``5(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1,``2,``3,``4,System.Threading.Tasks.Task},``1,``2,``3,``4,System.Int32,System.Threading.CancellationToken)">
+            <summary>Parallelizes the invocation of a function against a collection of items. The parallelization is partitioned
+            based on a provided degree of parallelism.</summary>
+            <typeparam name="TType">The type of each element.</typeparam>
+            <typeparam name="TInput1">The type of the first input that will be passed to the invoked function.</typeparam>
+            <typeparam name="TInput2">The type of the second input that will be passed to the invoked function.</typeparam>
+            <typeparam name="TInput3">The type of the third input that will be passed to the invoked function.</typeparam>
+            <typeparam name="TInput4">The type of the forth input that will be passed to the invoked function.</typeparam>
+            <param name="items">The collection of items to be processed.</param>
+            <param name="func">The asynchronous function to be invoked.</param>
+            <param name="input1">The first input that will be passed to the invoked function.</param>
+            <param name="input2">The second input that will be passed to the invoked function.</param>
+            <param name="input3">The third input that will be passed to the invoked function.</param>
+            <param name="input4">The forth input that will be passed to the invoked function.</param>
+            <param name="degreeOfParallelism">Determines the maximum number of parallel operations.</param>
+            <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
+            <returns>A task that will complete when all items have been processed.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.ExpressionExtensions.GetMemberExpressions(System.Linq.Expressions.MemberExpression)">
             <summary>
@@ -482,6 +670,9 @@
             </summary>
             <param name="propertyInfo">The <see cref="T:System.Reflection.PropertyInfo"/> for a property.</param>
             <returns>True if the property is an indexer.</returns>
+        </member>
+        <member name="T:AllOverIt.Extensions.QueryableExtensions">
+            <summary>Provides a variety of extension methods for <see cref="T:System.Linq.IQueryable`1"/>.</summary>
         </member>
         <member name="M:AllOverIt.Extensions.QueryableExtensions.Where``1(System.Linq.IQueryable{``0},AllOverIt.Patterns.Specification.ILinqSpecification{``0})">
             <summary>Gets all candidates that meet the criteria of a provided specification.</summary>
@@ -1334,27 +1525,22 @@
             <param name="predicate">The predicate to be used by the specification.</param>
             <returns>An ad-hoc specification based on the provided predicate.</returns>
         </member>
-        <member name="M:AllOverIt.Patterns.Specification.Specification`1.op_Implicit(AllOverIt.Patterns.Specification.Specification{`0})~System.Func{`0,System.Boolean}">
-            <summary>An implicit operator to return the specification as a Func&lt;TType, bool&gt; so it can be used with
-            <see cref="T:System.Collections.Generic.IEnumerable`1"/> based LINQ queries.</summary>
-            <param name="specification">The specification to be returned as a Func&lt;TType, bool&gt;.</param>
-        </member>
         <member name="M:AllOverIt.Patterns.Specification.Specification`1.op_BitwiseAnd(AllOverIt.Patterns.Specification.Specification{`0},AllOverIt.Patterns.Specification.Specification{`0})">
             <summary>Provides support for operator &amp;&amp;.</summary>
             <param name="leftSpecification">The left operand applied to the operator.</param>
             <param name="rightSpecification">The right operand applied to the operator.</param>
-            <returns>A new specification that AND's the provided specifications.</returns>
+            <returns>A new specification that performs a logical AND operation between two expressions.</returns>
         </member>
         <member name="M:AllOverIt.Patterns.Specification.Specification`1.op_BitwiseOr(AllOverIt.Patterns.Specification.Specification{`0},AllOverIt.Patterns.Specification.Specification{`0})">
             <summary>Provides support for operator ||.</summary>
             <param name="leftSpecification">The left operand applied to the operator.</param>
             <param name="rightSpecification">The right operand applied to the operator.</param>
-            <returns>A new specification that OR's the provided specifications.</returns>
+            <returns>A new specification that performs a logical OR operation between two expressions.</returns>
         </member>
         <member name="M:AllOverIt.Patterns.Specification.Specification`1.op_LogicalNot(AllOverIt.Patterns.Specification.Specification{`0})">
             <summary>Provides support for operator ! (Not).</summary>
             <param name="specification">The operand applied to the operator.</param>
-            <returns>A new specification that inverts the result of the provided specification.</returns>
+            <returns>A new specification that that performs a logical NOT operation between two expressions.</returns>
         </member>
         <member name="T:AllOverIt.Patterns.Specification.SpecificationBase`1">
             <summary>An abstract base class for all concrete specifications.</summary>
@@ -1625,6 +1811,9 @@
             Gets an awaiter that allows for 'await lazyProp' instead of 'await lazyProp.Value'
             </summary>
             <returns>An awaiter for the value being initialized.</returns>
+        </member>
+        <member name="T:AllOverIt.Tasks.TaskHelper">
+            <summary>Provides a variety of extension methods for <see cref="T:System.Threading.Tasks.Task`1"/>.</summary>
         </member>
         <member name="M:AllOverIt.Tasks.TaskHelper.WhenAll``2(System.Threading.Tasks.Task{``0},System.Threading.Tasks.Task{``1},System.Boolean)">
             <summary>

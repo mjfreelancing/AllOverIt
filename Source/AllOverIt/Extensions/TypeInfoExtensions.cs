@@ -4,6 +4,7 @@ using System.Reflection;
 
 namespace AllOverIt.Extensions
 {
+    /// <summary>Provides a variety of extension methods for <see cref="TypeInfo"/> types.</summary>
     public static class TypeInfoExtensions
     {
         /// <summary>
@@ -15,7 +16,7 @@ namespace AllOverIt.Extensions
         /// If false, only property metadata of the declared type is returned.</param>
         /// <returns>The property metadata, as <see cref="PropertyInfo"/>, of a provided <see cref="TypeInfo"/>.</returns>
         /// <remarks>When class inheritance is involved, this method returns the first property found, starting at the type represented
-        /// by <param name="typeInfo"></param>.</remarks>
+        /// by <paramref name="typeInfo"/>.</remarks>
         public static IEnumerable<PropertyInfo> GetPropertyInfo(this TypeInfo typeInfo, bool declaredOnly = false)
         {
             var propInfoList = new List<PropertyInfo>();
@@ -30,9 +31,9 @@ namespace AllOverIt.Extensions
         /// </summary>
         /// <param name="typeInfo">The <see cref="TypeInfo"/> to obtain the property metadata from.</param>
         /// <param name="propertyName">The name of the property to obtain metadata for.</param>
-        /// <returns>The property metadata, as <see cref="PropertyInfo"/>, of a specified property on the provided <param name="typeInfo"></param>.</returns>
+        /// <returns>The property metadata, as <see cref="PropertyInfo"/>, of a specified property on the provided <paramref name="typeInfo"/>.</returns>
         /// <remarks>When class inheritance is involved, this method returns the first property found, starting at the type represented
-        /// by <param name="typeInfo"></param>. If the property is overriden, this means the base class <see cref="PropertyInfo"/> will not be
+        /// by <paramref name="typeInfo"/>. If the property is overriden, this means the base class <see cref="PropertyInfo"/> will not be
         /// returned. If you require the base class <see cref="PropertyInfo"/> then use the <see cref="GetPropertyInfo(System.Reflection.TypeInfo,bool)"/>
         /// method.</remarks>
         public static PropertyInfo GetPropertyInfo(this TypeInfo typeInfo, string propertyName)

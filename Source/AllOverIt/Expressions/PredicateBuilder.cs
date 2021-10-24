@@ -71,7 +71,7 @@ namespace AllOverIt.Expressions
         /// <summary>Logically AND combines two expressions.</summary>
         /// <typeparam name="TType">The source type of the lambda expression.</typeparam>
         /// <param name="leftExpression">The expression to the left of the AND operation.</param>
-        /// <param name="expression2">The expression to the right of the AND operation.</param>
+        /// <param name="rightExpression">The expression to the right of the AND operation.</param>
         /// <returns>An expression that combines the two expressions as an AND operation.</returns>
         public static Expression<Func<TType, bool>> And<TType>(this Expression<Func<TType, bool>> leftExpression,
             Expression<Func<TType, bool>> rightExpression)

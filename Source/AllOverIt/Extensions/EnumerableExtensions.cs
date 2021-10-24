@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace AllOverIt.Extensions
 {
+    /// <summary>Provides a variety of extension methods for <see cref="IEnumerable{T}"/>.</summary>
     public static class EnumerableExtensions
     {
         /// <summary>Returns the source items as an IList.</summary>
@@ -276,6 +277,14 @@ namespace AllOverIt.Extensions
 
         #region ForEachAsTaskAsync
 
+        /// <summary>Creates a Task for each item in a collection and invokes an asynchronous function. The number of tasks is
+        /// partitioned based on a provided degree of parallelism.</summary>
+        /// <typeparam name="TType">The type of each element.</typeparam>
+        /// <param name="items">The collection of items to be processed.</param>
+        /// <param name="func">The asynchronous function to be invoked.</param>
+        /// <param name="degreeOfParallelism">Determines the maximum number of tasks that will be created.</param>
+        /// <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
+        /// <returns>A task that will complete when all items have been processed.</returns>
         public static Task ForEachAsTaskAsync<TType>(this IEnumerable<TType> items, Func<TType, Task> func, int degreeOfParallelism,
             CancellationToken cancellationToken = default)
         {
@@ -291,8 +300,18 @@ namespace AllOverIt.Extensions
                     }));
         }
 
-        public static Task ForEachAsTaskAsync<TType, TInput>(this IEnumerable<TType> items, Func<TType, TInput, Task> func, TInput input, int degreeOfParallelism,
-            CancellationToken cancellationToken = default)
+        /// <summary>Creates a Task for each item in a collection and invokes an asynchronous function. The number of tasks is
+        /// partitioned based on a provided degree of parallelism.</summary>
+        /// <typeparam name="TType">The type of each element.</typeparam>
+        /// <typeparam name="TInput">The type of the additional input that will be passed to the invoked function.</typeparam>
+        /// <param name="items">The collection of items to be processed.</param>
+        /// <param name="func">The asynchronous function to be invoked.</param>
+        /// <param name="input">An additional input that will be passed to the invoked function.</param>
+        /// <param name="degreeOfParallelism">Determines the maximum number of tasks that will be created.</param>
+        /// <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
+        /// <returns>A task that will complete when all items have been processed.</returns>
+        public static Task ForEachAsTaskAsync<TType, TInput>(this IEnumerable<TType> items, Func<TType, TInput, Task> func, TInput input,
+            int degreeOfParallelism, CancellationToken cancellationToken = default)
         {
             return Task.WhenAll(
                 items
@@ -306,6 +325,18 @@ namespace AllOverIt.Extensions
                     }));
         }
 
+        /// <summary>Creates a Task for each item in a collection and invokes an asynchronous function. The number of tasks is
+        /// partitioned based on a provided degree of parallelism.</summary>
+        /// <typeparam name="TType">The type of each element.</typeparam>
+        /// <typeparam name="TInput1">The type of the first input that will be passed to the invoked function.</typeparam>
+        /// <typeparam name="TInput2">The type of the second input that will be passed to the invoked function.</typeparam>
+        /// <param name="items">The collection of items to be processed.</param>
+        /// <param name="func">The asynchronous function to be invoked.</param>
+        /// <param name="input1">The first input that will be passed to the invoked function.</param>
+        /// <param name="input2">The second input that will be passed to the invoked function.</param>
+        /// <param name="degreeOfParallelism">Determines the maximum number of tasks that will be created.</param>
+        /// <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
+        /// <returns>A task that will complete when all items have been processed.</returns>
         public static Task ForEachAsTaskAsync<TType, TInput1, TInput2>(this IEnumerable<TType> items, Func<TType, TInput1, TInput2, Task> func, 
             TInput1 input1, TInput2 input2, int degreeOfParallelism, CancellationToken cancellationToken = default)
         {
@@ -321,6 +352,20 @@ namespace AllOverIt.Extensions
                     }));
         }
 
+        /// <summary>Creates a Task for each item in a collection and invokes an asynchronous function. The number of tasks is
+        /// partitioned based on a provided degree of parallelism.</summary>
+        /// <typeparam name="TType">The type of each element.</typeparam>
+        /// <typeparam name="TInput1">The type of the first input that will be passed to the invoked function.</typeparam>
+        /// <typeparam name="TInput2">The type of the second input that will be passed to the invoked function.</typeparam>
+        /// <typeparam name="TInput3">The type of the third input that will be passed to the invoked function.</typeparam>
+        /// <param name="items">The collection of items to be processed.</param>
+        /// <param name="func">The asynchronous function to be invoked.</param>
+        /// <param name="input1">The first input that will be passed to the invoked function.</param>
+        /// <param name="input2">The second input that will be passed to the invoked function.</param>
+        /// <param name="input3">The third input that will be passed to the invoked function.</param>
+        /// <param name="degreeOfParallelism">Determines the maximum number of tasks that will be created.</param>
+        /// <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
+        /// <returns>A task that will complete when all items have been processed.</returns>
         public static Task ForEachAsTaskAsync<TType, TInput1, TInput2, TInput3>(this IEnumerable<TType> items, Func<TType, TInput1, TInput2, TInput3, Task> func,
             TInput1 input1, TInput2 input2, TInput3 input3, int degreeOfParallelism, CancellationToken cancellationToken = default)
         {
@@ -336,6 +381,22 @@ namespace AllOverIt.Extensions
                     }));
         }
 
+        /// <summary>Creates a Task for each item in a collection and invokes an asynchronous function. The number of tasks is
+        /// partitioned based on a provided degree of parallelism.</summary>
+        /// <typeparam name="TType">The type of each element.</typeparam>
+        /// <typeparam name="TInput1">The type of the first input that will be passed to the invoked function.</typeparam>
+        /// <typeparam name="TInput2">The type of the second input that will be passed to the invoked function.</typeparam>
+        /// <typeparam name="TInput3">The type of the third input that will be passed to the invoked function.</typeparam>
+        /// <typeparam name="TInput4">The type of the forth input that will be passed to the invoked function.</typeparam>
+        /// <param name="items">The collection of items to be processed.</param>
+        /// <param name="func">The asynchronous function to be invoked.</param>
+        /// <param name="input1">The first input that will be passed to the invoked function.</param>
+        /// <param name="input2">The second input that will be passed to the invoked function.</param>
+        /// <param name="input3">The third input that will be passed to the invoked function.</param>
+        /// <param name="input4">The forth input that will be passed to the invoked function.</param>
+        /// <param name="degreeOfParallelism">Determines the maximum number of tasks that will be created.</param>
+        /// <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
+        /// <returns>A task that will complete when all items have been processed.</returns>
         public static Task ForEachAsTaskAsync<TType, TInput1, TInput2, TInput3, TInput4>(this IEnumerable<TType> items,
             Func<TType, TInput1, TInput2, TInput3, TInput4, Task> func, TInput1 input1, TInput2 input2, TInput3 input3, TInput4 input4,
             int degreeOfParallelism, CancellationToken cancellationToken = default)
@@ -356,6 +417,14 @@ namespace AllOverIt.Extensions
 
         #region ForEachAsParallelAsync
 
+        /// <summary>Parallelizes the invocation of a function against a collection of items. The parallelization is partitioned
+        /// based on a provided degree of parallelism.</summary>
+        /// <typeparam name="TType">The type of each element.</typeparam>
+        /// <param name="items">The collection of items to be processed.</param>
+        /// <param name="func">The asynchronous function to be invoked.</param>
+        /// <param name="degreeOfParallelism">Determines the maximum number of parallel operations.</param>
+        /// <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
+        /// <returns>A task that will complete when all items have been processed.</returns>
         public static Task ForEachAsParallelAsync<TType>(this IEnumerable<TType> items, Func<TType, Task> func, int degreeOfParallelism,
             CancellationToken cancellationToken = default)
         {
@@ -366,6 +435,16 @@ namespace AllOverIt.Extensions
                     .Select(partition => ProcessPartitionAsync(partition, func, cancellationToken)));
         }
 
+        /// <summary>Parallelizes the invocation of a function against a collection of items. The parallelization is partitioned
+        /// based on a provided degree of parallelism.</summary>
+        /// <typeparam name="TType">The type of each element.</typeparam>
+        /// <typeparam name="TInput">The type of the additional input that will be passed to the invoked function.</typeparam>
+        /// <param name="items">The collection of items to be processed.</param>
+        /// <param name="func">The asynchronous function to be invoked.</param>
+        /// <param name="input">An additional input that will be passed to the invoked function.</param>
+        /// <param name="degreeOfParallelism">Determines the maximum number of parallel operations.</param>
+        /// <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
+        /// <returns>A task that will complete when all items have been processed.</returns>
         public static Task ForEachAsParallelAsync<TType, TInput>(this IEnumerable<TType> items, Func<TType, TInput, Task> func, TInput input, int degreeOfParallelism,
             CancellationToken cancellationToken = default)
         {
@@ -376,6 +455,18 @@ namespace AllOverIt.Extensions
                     .Select(partition => ProcessPartitionAsync(partition, func, input, cancellationToken)));
         }
 
+        /// <summary>Parallelizes the invocation of a function against a collection of items. The parallelization is partitioned
+        /// based on a provided degree of parallelism.</summary>
+        /// <typeparam name="TType">The type of each element.</typeparam>
+        /// <typeparam name="TInput1">The type of the first input that will be passed to the invoked function.</typeparam>
+        /// <typeparam name="TInput2">The type of the second input that will be passed to the invoked function.</typeparam>
+        /// <param name="items">The collection of items to be processed.</param>
+        /// <param name="func">The asynchronous function to be invoked.</param>
+        /// <param name="input1">The first input that will be passed to the invoked function.</param>
+        /// <param name="input2">The second input that will be passed to the invoked function.</param>
+        /// <param name="degreeOfParallelism">Determines the maximum number of parallel operations.</param>
+        /// <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
+        /// <returns>A task that will complete when all items have been processed.</returns>
         public static Task ForEachAsParallelAsync<TType, TInput1, TInput2>(this IEnumerable<TType> items, Func<TType, TInput1, TInput2, Task> func,
             TInput1 input1, TInput2 input2, int degreeOfParallelism, CancellationToken cancellationToken = default)
         {
@@ -386,6 +477,20 @@ namespace AllOverIt.Extensions
                     .Select(partition => ProcessPartitionAsync(partition, func, input1, input2, cancellationToken)));
         }
 
+        /// <summary>Parallelizes the invocation of a function against a collection of items. The parallelization is partitioned
+        /// based on a provided degree of parallelism.</summary>
+        /// <typeparam name="TType">The type of each element.</typeparam>
+        /// <typeparam name="TInput1">The type of the first input that will be passed to the invoked function.</typeparam>
+        /// <typeparam name="TInput2">The type of the second input that will be passed to the invoked function.</typeparam>
+        /// <typeparam name="TInput3">The type of the third input that will be passed to the invoked function.</typeparam>
+        /// <param name="items">The collection of items to be processed.</param>
+        /// <param name="func">The asynchronous function to be invoked.</param>
+        /// <param name="input1">The first input that will be passed to the invoked function.</param>
+        /// <param name="input2">The second input that will be passed to the invoked function.</param>
+        /// <param name="input3">The third input that will be passed to the invoked function.</param>
+        /// <param name="degreeOfParallelism">Determines the maximum number of parallel operations.</param>
+        /// <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
+        /// <returns>A task that will complete when all items have been processed.</returns>
         public static Task ForEachAsParallelAsync<TType, TInput1, TInput2, TInput3>(this IEnumerable<TType> items, Func<TType, TInput1, TInput2, TInput3, Task> func,
             TInput1 input1, TInput2 input2, TInput3 input3, int degreeOfParallelism, CancellationToken cancellationToken = default)
         {
@@ -396,6 +501,22 @@ namespace AllOverIt.Extensions
                     .Select(partition => ProcessPartitionAsync(partition, func, input1, input2, input3, cancellationToken)));
         }
 
+        /// <summary>Parallelizes the invocation of a function against a collection of items. The parallelization is partitioned
+        /// based on a provided degree of parallelism.</summary>
+        /// <typeparam name="TType">The type of each element.</typeparam>
+        /// <typeparam name="TInput1">The type of the first input that will be passed to the invoked function.</typeparam>
+        /// <typeparam name="TInput2">The type of the second input that will be passed to the invoked function.</typeparam>
+        /// <typeparam name="TInput3">The type of the third input that will be passed to the invoked function.</typeparam>
+        /// <typeparam name="TInput4">The type of the forth input that will be passed to the invoked function.</typeparam>
+        /// <param name="items">The collection of items to be processed.</param>
+        /// <param name="func">The asynchronous function to be invoked.</param>
+        /// <param name="input1">The first input that will be passed to the invoked function.</param>
+        /// <param name="input2">The second input that will be passed to the invoked function.</param>
+        /// <param name="input3">The third input that will be passed to the invoked function.</param>
+        /// <param name="input4">The forth input that will be passed to the invoked function.</param>
+        /// <param name="degreeOfParallelism">Determines the maximum number of parallel operations.</param>
+        /// <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
+        /// <returns>A task that will complete when all items have been processed.</returns>
         public static Task ForEachAsParallelAsync<TType, TInput1, TInput2, TInput3, TInput4>(this IEnumerable<TType> items,
             Func<TType, TInput1, TInput2, TInput3, TInput4, Task> func, TInput1 input1, TInput2 input2, TInput3 input3, TInput4 input4,
             int degreeOfParallelism, CancellationToken cancellationToken = default)
