@@ -4,6 +4,68 @@
         <name>AllOverIt</name>
     </assembly>
     <members>
+        <member name="T:AllOverIt.Events.EventAggregator">
+            <summary>Provides support for produces to publish messages and consumers to subscribe for notification of those messages.</summary>
+        </member>
+        <member name="M:AllOverIt.Events.EventAggregator.Publish``1(``0)">
+            <inheritdoc />
+            <remarks>Cannot be used when there are registered async subscriptions for the provided message type. Use
+            <see cref="M:AllOverIt.Events.EventAggregator.PublishAsync``1(``0)"/> instead.</remarks>
+        </member>
+        <member name="M:AllOverIt.Events.EventAggregator.PublishAsync``1(``0)">
+            <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Events.EventAggregator.Subscribe``1(System.Action{``0},System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Events.EventAggregator.Subscribe``1(System.Func{``0,System.Threading.Tasks.Task},System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Events.EventAggregator.Unsubscribe``1(System.Action{``0})">
+            <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Events.EventAggregator.Unsubscribe``1(System.Func{``0,System.Threading.Tasks.Task})">
+            <inheritdoc />
+        </member>
+        <member name="T:AllOverIt.Events.IEventAggregator">
+            <summary>Represents a mechanism for produces to publish messages and consumers to subscribe for notification of those messages.</summary>
+        </member>
+        <member name="M:AllOverIt.Events.IEventAggregator.Publish``1(``0)">
+            <summary>Publishes a message and delivers it to all subscribers.</summary>
+            <typeparam name="TMessage">The message type.</typeparam>
+            <param name="message">The message instance.</param>
+        </member>
+        <member name="M:AllOverIt.Events.IEventAggregator.PublishAsync``1(``0)">
+            <summary>Asynchronously publishes a message and delivers it to all subscribers.</summary>
+            <typeparam name="TMessage">The message type.</typeparam>
+            <param name="message">The message instance.</param>
+            <returns>A task that completes after all subscribers have handled the message.</returns>
+        </member>
+        <member name="M:AllOverIt.Events.IEventAggregator.Subscribe``1(System.Action{``0},System.Boolean)">
+            <summary>Registers a message handler for a given message type.</summary>
+            <typeparam name="TMessage">The message type.</typeparam>
+            <param name="handler">The message handler for the registered message type.</param>
+            <param name="weakSubscription">Indicates if the handler should be registered as a weak subscription. This is the default behaviour.</param>
+        </member>
+        <member name="M:AllOverIt.Events.IEventAggregator.Subscribe``1(System.Func{``0,System.Threading.Tasks.Task},System.Boolean)">
+            <summary>Registers an asynchronous message handler for a given message type.</summary>
+            <typeparam name="TMessage">The message type.</typeparam>
+            <param name="handler">The message handler for the registered message type.</param>
+            <param name="weakSubscription">Indicates if the handler should be registered as a weak subscription. This is the default behaviour.</param>
+        </member>
+        <member name="M:AllOverIt.Events.IEventAggregator.Unsubscribe``1(System.Action{``0})">
+            <summary>Unsubscribes a previously registered message handler.</summary>
+            <typeparam name="TMessage">The message type.</typeparam>
+            <param name="handler">The message handler to unsubscribe.</param>
+        </member>
+        <member name="M:AllOverIt.Events.IEventAggregator.Unsubscribe``1(System.Func{``0,System.Threading.Tasks.Task})">
+            <summary>Unsubscribes a previously registered asynchronous message handler.</summary>
+            <typeparam name="TMessage">The message type.</typeparam>
+            <param name="handler">The message handler to unsubscribe.</param>
+        </member>
+        <member name="T:AllOverIt.Exceptions.ProcessException">
+            <summary>Represents an error that occurred while executing an external process.</summary>
+        </member>
         <member name="M:AllOverIt.Exceptions.ProcessException.#ctor">
             <summary>Default constructor.</summary>
         </member>
@@ -15,6 +77,9 @@
             <summary>Constructor.</summary>
             <param name="message">The exception message.</param>
             <param name="innerException">The inner exception.</param>
+        </member>
+        <member name="T:AllOverIt.Exceptions.SelfReferenceException">
+            <summary>Represents on object self-reference error.</summary>
         </member>
         <member name="M:AllOverIt.Exceptions.SelfReferenceException.#ctor">
             <summary>Default constructor.</summary>
@@ -79,7 +144,7 @@
             <summary>Logically AND combines two expressions.</summary>
             <typeparam name="TType">The source type of the lambda expression.</typeparam>
             <param name="leftExpression">The expression to the left of the AND operation.</param>
-            <param name="expression2">The expression to the right of the AND operation.</param>
+            <param name="rightExpression">The expression to the right of the AND operation.</param>
             <returns>An expression that combines the two expressions as an AND operation.</returns>
         </member>
         <member name="M:AllOverIt.Expressions.PredicateBuilder.Not``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
@@ -97,6 +162,82 @@
             <param name="items">The enumerable to convert to a list asynchronously.</param>
             <param name="cancellationToken">A cancellation token to cancel the processing.</param>
             <returns>A <see cref="T:System.Collections.Generic.List`1"/> from the source items.</returns>
+        </member>
+        <member name="T:AllOverIt.Extensions.ChainOfResponsibilityExtensions">
+            <summary>Provides a variety of extension methods for <see cref="T:AllOverIt.Patterns.ChainOfResponsibility.IChainOfResponsibilityHandler`2"/> types.</summary>
+        </member>
+        <member name="M:AllOverIt.Extensions.ChainOfResponsibilityExtensions.Compose``2(System.Collections.Generic.IEnumerable{AllOverIt.Patterns.ChainOfResponsibility.IChainOfResponsibilityHandler{``0,``1}})">
+            <summary>Composes a collection of <see cref="T:AllOverIt.Patterns.ChainOfResponsibility.IChainOfResponsibilityHandler`2"/> handlers so they are chained in the provided order.</summary>
+            <typeparam name="TInput">The type of the input state provided to the handler.</typeparam>
+            <typeparam name="TOutput">The type of the output state provided to the handler. This can be the same as <typeparamref name="TInput"/>.</typeparam>
+            <param name="handlers">The collection of handlers to be chained together.</param>
+            <returns>The first handler in the chain.</returns>
+        </member>
+        <member name="T:AllOverIt.Extensions.ComparableExtensions">
+            <summary>Provides a variety of extension methods for <see cref="T:System.IComparable`1"/> types.</summary>
+        </member>
+        <member name="M:AllOverIt.Extensions.ComparableExtensions.LessThan``1(System.IComparable{``0},``0)">
+            <summary>Compares one comparable with another and returns a result indicating if it is less than the other.</summary>
+            <typeparam name="TType">The value type.</typeparam>
+            <param name="comparable">The left operand of the comparison.</param>
+            <param name="other">The right operand of the comparison.</param>
+            <returns>True if the left operand is less than the right operand.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.ComparableExtensions.LessThanOrEqual``1(System.IComparable{``0},``0)">
+            <summary>Compares one comparable with another and returns a result indicating if it is less than or equal to the other.</summary>
+            <typeparam name="TType">The value type.</typeparam>
+            <param name="comparable">The left operand of the comparison.</param>
+            <param name="other">The right operand of the comparison.</param>
+            <returns>True if the left operand is less than or equal to the right operand.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.ComparableExtensions.GreaterThan``1(System.IComparable{``0},``0)">
+            <summary>Compares one comparable with another and returns a result indicating if it is greater than the other.</summary>
+            <typeparam name="TType">The value type.</typeparam>
+            <param name="comparable">The left operand of the comparison.</param>
+            <param name="other">The right operand of the comparison.</param>
+            <returns>True if the left operand is greater than the right operand.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.ComparableExtensions.GreaterThanOrEqual``1(System.IComparable{``0},``0)">
+            <summary>Compares one comparable with another and returns a result indicating if it is greater than or equal to the other.</summary>
+            <typeparam name="TType">The value type.</typeparam>
+            <param name="comparable">The left operand of the comparison.</param>
+            <param name="other">The right operand of the comparison.</param>
+            <returns>True if the left operand is greater than or equal to the right operand.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.ComparableExtensions.EqualTo``1(System.IComparable{``0},``0)">
+            <summary>Compares one comparable with another and returns a result indicating if it is equal to the other.</summary>
+            <typeparam name="TType">The value type.</typeparam>
+            <param name="comparable">The left operand of the comparison.</param>
+            <param name="other">The right operand of the comparison.</param>
+            <returns>True if the left operand is equal to the right operand.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.ComparableExtensions.NotEqualTo``1(System.IComparable{``0},``0)">
+            <summary>Compares one comparable with another and returns a result indicating if it is not equal to the other.</summary>
+            <typeparam name="TType">The value type.</typeparam>
+            <param name="comparable">The left operand of the comparison.</param>
+            <param name="other">The right operand of the comparison.</param>
+            <returns>True if the left operand is not equal to the right operand.</returns>
+        </member>
+        <member name="T:AllOverIt.Extensions.DictionaryExtensions">
+            <summary>Provides a variety of extension methods for <see cref="T:System.Collections.Generic.IDictionary`2"/>.</summary>
+        </member>
+        <member name="M:AllOverIt.Extensions.DictionaryExtensions.GetValueOrDefault``2(System.Collections.Generic.IDictionary{``0,``1},``0,``1)">
+            <summary>Gets the value based on a specified key, or the value type default if the key is not found.</summary>
+            <typeparam name="TKey">The key type.</typeparam>
+            <typeparam name="TValue">The value type.</typeparam>
+            <param name="dictionary">The source dictionary.</param>
+            <param name="key">The key value.</param>
+            <param name="defaultValue">When provided, this will be returned as the default value if the key is not found in the dictionary.</param>
+            <returns>The value associated with the specified key, otherwise a default value.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.DictionaryExtensions.GetOrSet``2(System.Collections.Generic.IDictionary{``0,``1},``0,System.Func{``1})">
+            <summary>Gets the value based on a specified key, or sets the value via a Func when the key is not found.</summary>
+            <typeparam name="TKey">The key type.</typeparam>
+            <typeparam name="TValue">The value type.</typeparam>
+            <param name="dictionary">The source dictionary.</param>
+            <param name="key">The key value.</param>
+            <param name="valueCreator">The Func that provides the value to set when the key is not found.</param>
+            <returns>The value based on a specified key, or the value returned by a specified Func when the key is not found.</returns>
         </member>
         <member name="T:AllOverIt.Extensions.DoubleExtensions">
             <summary>Provides a variety of extension methods for double values.</summary>
@@ -423,22 +564,21 @@
             <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
             <returns>A task that will complete when all items have been processed.</returns>
         </member>
+        <member name="T:AllOverIt.Extensions.ExpressionExtensions">
+            <summary>Provides a variety of extension methods for <see cref="T:System.Linq.Expressions.Expression"/> types.</summary>
+        </member>
         <member name="M:AllOverIt.Extensions.ExpressionExtensions.GetMemberExpressions(System.Linq.Expressions.MemberExpression)">
-            <summary>
-            Recursively get all <see cref="T:System.Linq.Expressions.MemberExpression"/> expressions linked to <param name="expression"></param>
-            </summary>
+            <summary>Recursively get all <see cref="T:System.Linq.Expressions.MemberExpression"/> expressions linked to <paramref name="expression"/>.</summary>
             <param name="expression">The expression to get all linked <see cref="T:System.Linq.Expressions.MemberExpression"/> expressions.</param>
-            <returns>All linked <see cref="T:System.Linq.Expressions.MemberExpression"/> expressions, including <param name="expression"></param>.</returns>
+            <returns>All linked <see cref="T:System.Linq.Expressions.MemberExpression"/> expressions, including <paramref name="expression"/>.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.ExpressionExtensions.UnwrapMemberExpression(System.Linq.Expressions.Expression)">
-            <summary>
-            Gets the <param name="expression"> as a <see cref="T:System.Linq.Expressions.MemberExpression"/></param>.
-            </summary>
+            <summary>Gets the <paramref name="expression"/> as a <see cref="T:System.Linq.Expressions.MemberExpression"/>.</summary>
             <param name="expression">The expression to be unwrapped as a <see cref="T:System.Linq.Expressions.MemberExpression"/>.</param>
             <returns>
-            If <param name="expression"></param> is a <see cref="T:System.Linq.Expressions.MemberExpression"/> then the same expression is returned.
-            If <param name="expression"></param> is a <see cref="T:System.Linq.Expressions.LambdaExpression"/> then its Body is returned if it is a
-            <see cref="T:System.Linq.Expressions.MemberExpression"/>, or a <see cref="T:System.Linq.Expressions.UnaryExpression"/> whos Operand is a <see cref="T:System.Linq.Expressions.MemberExpression"/>.
+            If <paramref name="expression"/> is a <see cref="T:System.Linq.Expressions.MemberExpression"/> then the same expression is returned.
+            If <paramref name="expression"/> is a <see cref="T:System.Linq.Expressions.LambdaExpression"/> then its Body is returned if it is a
+            <see cref="T:System.Linq.Expressions.MemberExpression"/>, or a <see cref="T:System.Linq.Expressions.UnaryExpression"/> whos' Operand is a <see cref="T:System.Linq.Expressions.MemberExpression"/>.
             In all other cases, null is returned.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.ExpressionExtensions.GetFieldOrProperty(System.Linq.Expressions.Expression)">
@@ -455,7 +595,7 @@
             expressions are also supported if its body can be evaluated.
             </summary>
             <param name="expression">The expression to be evaluated.</param>
-            <returns>The value of the <param name="expression"></param>.</returns>
+            <returns>The value of the <paramref name="expression"/>.</returns>
         </member>
         <member name="T:AllOverIt.Extensions.FileInfoExtensions">
             <summary>Contains extension methods for use with <see cref="T:System.IO.FileInfo"/> instances.</summary>
@@ -511,6 +651,9 @@
             <param name="specification">The specification applied against a candidate.</param>
             <returns>An expression that negates a provided specification.</returns>
         </member>
+        <member name="T:AllOverIt.Extensions.ObjectExtensions">
+            <summary>Provides a variety of extension methods for object types.</summary>
+        </member>
         <member name="P:AllOverIt.Extensions.ObjectExtensions.DefaultHashCodeBindings">
             <summary>
             Specifies the binding options to use when calculating the hash code of an object when using
@@ -558,12 +701,11 @@
             <exception cref="T:System.MemberAccessException">When the property name cannot be found using the provided binding options.</exception>
         </member>
         <member name="M:AllOverIt.Extensions.ObjectExtensions.SetPropertyValue``1(System.Object,System.String,``0,System.Reflection.BindingFlags)">
-            <summary>
-            Uses reflection to set the value of an object's property by name.
-            </summary>
+            <summary>Uses reflection to set the value of an object's property by name.</summary>
             <typeparam name="TValue">The property type.</typeparam>
             <param name="instance">The object to get the property value.</param>
             <param name="propertyName">The property name.</param>
+            <param name="value">The value to set.</param>
             <param name="bindingFlags">.NET binding options that determine how property names are resolved.</param>
             <exception cref="T:System.MemberAccessException">When the property name cannot be found using the provided binding flags.</exception>
         </member>
@@ -588,14 +730,14 @@
             <typeparam name="TType">The type that <paramref name="instance"/> is to be converted to.</typeparam>
             <param name="instance">The object instance to be converted.</param>
             <param name="defaultValue">The default value to be returned when <paramref name="instance"/> is null.</param>
-            <returns>Returns <paramref name="instance"/> converted to the specified <typeparam name="TType"></typeparam>.</returns>
+            <returns>Returns <paramref name="instance"/> converted to the specified <typeparamref name="TType"/>.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.ObjectExtensions.AsNullable``1(System.Object,System.Nullable{``0})">
             <summary>Converts the provided source <paramref name="instance"/> to a specified nullable type.</summary>
             <typeparam name="TType">The (nullable) type that <paramref name="instance"/> is to be converted to.</typeparam>
             <param name="instance">The object instance to be converted.</param>
             <param name="defaultValue">The default value to be returned when <paramref name="instance"/> is null.</param>
-            <returns>Returns <paramref name="instance"/> converted to the specified <typeparam name="TType"></typeparam>.</returns>
+            <returns>Returns <paramref name="instance"/> converted to the specified <typeparamref name="TType"/>.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.ObjectExtensions.CalculateHashCode``1(``0,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String})">
             <summary>
@@ -614,6 +756,9 @@
             <param name="instance">The instance having its hash code calculated.</param>
             <param name="resolvers">One or more resolvers that provide the properties, fields, or method calls used to calculate the hash code.</param>
             <returns>The calculated hash code.</returns>
+        </member>
+        <member name="T:AllOverIt.Extensions.PropertyInfoExtensions">
+            <summary>Provides a variety of extension methods for <see cref="T:System.Reflection.PropertyInfo"/> types.</summary>
         </member>
         <member name="M:AllOverIt.Extensions.PropertyInfoExtensions.IsAbstract(System.Reflection.PropertyInfo)">
             <summary>
@@ -751,6 +896,20 @@
             <returns>An enumerable that contains the elements from the input candidates while they meet the criteria of a provided
             specification.</returns>
         </member>
+        <member name="T:AllOverIt.Extensions.ReadWriteLockExtensions">
+            <summary>Provides a variety of extension methods for <see cref="T:AllOverIt.Threading.IReadWriteLock"/> types.</summary>
+        </member>
+        <member name="M:AllOverIt.Extensions.ReadWriteLockExtensions.GetReadLock(AllOverIt.Threading.IReadWriteLock,System.Boolean)">
+            <summary>Gets a read lock that will auto-release when disposed.</summary>
+            <param name="lock">The lock to obtain a read lock.</param>
+            <param name="upgradeable">Indicates if the read lock can be upgraded to a write lock.</param>
+            <returns>A disposable that will release the lock when disposed.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.ReadWriteLockExtensions.GetWriteLock(AllOverIt.Threading.IReadWriteLock)">
+            <summary>Gets a write lock that will auto-release when disposed.</summary>
+            <param name="lock">The lock to obtain a write lock.</param>
+            <returns>A disposable that will release the lock when disposed.</returns>
+        </member>
         <member name="T:AllOverIt.Extensions.SpecificationExtensions">
             <summary>Provides extensions methods that simplify the composition of specifications.</summary>
         </member>
@@ -790,13 +949,22 @@
             <param name="specification">The specification applied against a candidate.</param>
             <returns>An expression that negates a provided specification.</returns>
         </member>
+        <member name="T:AllOverIt.Extensions.StringExtensions">
+            <summary>Provides a variety of extension methods for <see cref="T:System.String"/> types.</summary>
+        </member>
+        <member name="M:AllOverIt.Extensions.StringExtensions.ContainsChar(System.String,System.Char)">
+            <summary>Determines if a string contains a specified character.</summary>
+            <param name="str">The string to be tested.</param>
+            <param name="value">The character value to be searched for within the string.</param>
+            <returns>True if the string contains the specified character, otherwise false.</returns>
+        </member>
         <member name="M:AllOverIt.Extensions.StringExtensions.As``1(System.String,``0)">
             <summary>Converts a given string to another type.</summary>
             <typeparam name="TType">The type to convert to.</typeparam>
             <param name="value">The value to be converted.</param>
-            <param name="defaultValue">The value to return if <see cref="!:value"/> is null, empty or contains whitespace, or is considered
+            <param name="defaultValue">The value to return if <paramref name="value"/> is null, empty or contains whitespace, or is considered
             invalid for the <typeparamref name="TType"/> converter.</param>
-            <returns>The converted value, or the <see cref="!:defaultValue"/> value if the conversion cannot be performed.</returns>
+            <returns>The converted value, or the <paramref name="defaultValue"/> value if the conversion cannot be performed.</returns>
             <remarks>
               <para>Supported conversions include byte, sbyte, decimal, double, float, int, uint, long, ulong, short, ushort, string, bool and enum.</para>
               <para>Char and Boolean type conversions must be performed using the <see cref="M:AllOverIt.Extensions.ObjectExtensions.As``1(System.Object,``0)"/> method.</para>
@@ -824,15 +992,18 @@
             <param name="value">The base-64 representation of a string to convert.</param>
             <returns>The string decoded from a source string previously encoded with base-64 digits.</returns>
         </member>
+        <member name="T:AllOverIt.Extensions.TypeExtensions">
+            <summary>Provides a variety of extension methods for <see cref="T:System.Type"/> types.</summary>
+        </member>
         <member name="M:AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(System.Type,System.String)">
             <summary>
             Gets the <see cref="T:System.Reflection.PropertyInfo"/> (property metadata) for a given public or protected property on a <see cref="T:System.Type"/>.
             </summary>
             <param name="type">The <see cref="T:System.Type"/> to obtain the property metadata from.</param>
             <param name="propertyName">The name of the property to obtain metadata for.</param>
-            <returns>The property metadata, as <see cref="T:System.Reflection.PropertyInfo"/>, of a specified property on the provided <param name="type"></param>.</returns>
+            <returns>The property metadata, as <see cref="T:System.Reflection.PropertyInfo"/>, of a specified property on the provided <paramref name="type"/>.</returns>
             <remarks>When class inheritance is involved, this method returns the first property found, starting at the type represented
-            by <param name="type"></param>.</remarks>
+            by <paramref name="type"/>.</remarks>
         </member>
         <member name="M:AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(System.Type,AllOverIt.Reflection.BindingOptions,System.Boolean)">
             <summary>
@@ -844,7 +1015,7 @@
             If false, only property metadata of the declared type is returned.</param>
             <returns>The property metadata, as <see cref="T:System.Reflection.PropertyInfo"/>, of a provided <see cref="T:System.Type"/>.</returns>
             <remarks>When class inheritance is involved, this method returns the first property found, starting at the type represented
-            by <param name="type"></param>.</remarks>
+            by <paramref name="type"/>.</remarks>
         </member>
         <member name="M:AllOverIt.Extensions.TypeExtensions.GetMethodInfo(System.Type,AllOverIt.Reflection.BindingOptions,System.Boolean)">
             <summary>
@@ -856,7 +1027,7 @@
             If false, only method metadata of the declared type is returned.</param>
             <returns>The method metadata, as <see cref="T:System.Reflection.MethodInfo"/>, of a provided <see cref="T:System.Type"/>.</returns>
             <remarks>When class inheritance is involved, this method returns the first method found, starting at the type represented
-            by <param name="type"></param>.</remarks>
+            by <paramref name="type"/>.</remarks>
         </member>
         <member name="M:AllOverIt.Extensions.TypeExtensions.GetMethodInfo(System.Type,System.String)">
             <summary>
@@ -947,7 +1118,7 @@
             </summary>
             <param name="type">The current type.</param>
             <param name="fromType">The type to check.</param>
-            <returns>True if the <see cref="!:fromType"/> can be assigned to the current type, otherwise false.</returns>
+            <returns>True if the <paramref name="fromType"/> can be assigned to the current <paramref name="type"/>, otherwise false.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.TypeExtensions.IsGenericNullableType(System.Type)">
             <summary>
@@ -963,6 +1134,9 @@
             <param name="type">The type to generate a print-friendly name for.</param>
             <returns>A print-friendly name for a given type.</returns>
         </member>
+        <member name="T:AllOverIt.Extensions.TypeInfoExtensions">
+            <summary>Provides a variety of extension methods for <see cref="T:System.Reflection.TypeInfo"/> types.</summary>
+        </member>
         <member name="M:AllOverIt.Extensions.TypeInfoExtensions.GetPropertyInfo(System.Reflection.TypeInfo,System.Boolean)">
             <summary>
             Gets all <see cref="T:System.Reflection.PropertyInfo"/> (property metadata) for a given <see cref="T:System.Reflection.TypeInfo"/>.
@@ -973,7 +1147,7 @@
             If false, only property metadata of the declared type is returned.</param>
             <returns>The property metadata, as <see cref="T:System.Reflection.PropertyInfo"/>, of a provided <see cref="T:System.Reflection.TypeInfo"/>.</returns>
             <remarks>When class inheritance is involved, this method returns the first property found, starting at the type represented
-            by <param name="typeInfo"></param>.</remarks>
+            by <paramref name="typeInfo"/>.</remarks>
         </member>
         <member name="M:AllOverIt.Extensions.TypeInfoExtensions.GetPropertyInfo(System.Reflection.TypeInfo,System.String)">
             <summary>
@@ -981,9 +1155,9 @@
             </summary>
             <param name="typeInfo">The <see cref="T:System.Reflection.TypeInfo"/> to obtain the property metadata from.</param>
             <param name="propertyName">The name of the property to obtain metadata for.</param>
-            <returns>The property metadata, as <see cref="T:System.Reflection.PropertyInfo"/>, of a specified property on the provided <param name="typeInfo"></param>.</returns>
+            <returns>The property metadata, as <see cref="T:System.Reflection.PropertyInfo"/>, of a specified property on the provided <paramref name="typeInfo"/>.</returns>
             <remarks>When class inheritance is involved, this method returns the first property found, starting at the type represented
-            by <param name="typeInfo"></param>. If the property is overriden, this means the base class <see cref="T:System.Reflection.PropertyInfo"/> will not be
+            by <paramref name="typeInfo"/>. If the property is overriden, this means the base class <see cref="T:System.Reflection.PropertyInfo"/> will not be
             returned. If you require the base class <see cref="T:System.Reflection.PropertyInfo"/> then use the <see cref="M:AllOverIt.Extensions.TypeInfoExtensions.GetPropertyInfo(System.Reflection.TypeInfo,System.Boolean)"/>
             method.</remarks>
         </member>
@@ -1030,6 +1204,97 @@
         <member name="M:AllOverIt.Helpers.ExceptionAggregator.ThrowIfAnyExceptions">
             <summary>Throws an AggregateException if any exceptions were added to the aggregator. If any of the exceptions
             are an AggregateException they will be flattened into the resulting AggregateException thrown.</summary>
+        </member>
+        <member name="T:AllOverIt.Helpers.Guard">
+            <summary>Provides a number of extensions that enable method pre-condition checking.</summary>
+        </member>
+        <member name="M:AllOverIt.Helpers.Guard.CheckNotNull``1(``0,System.String,System.String)">
+            <summary>Checks the specified object is not null.</summary>
+            <typeparam name="TType">The object type.</typeparam>
+            <param name="object">The object instance.</param>
+            <param name="name">The name of the instance.</param>
+            <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be null".</param>
+            <exception cref="T:System.InvalidOperationException"/>
+        </member>
+        <member name="M:AllOverIt.Helpers.Guard.CheckNotNullOrEmpty``1(System.Collections.Generic.IEnumerable{``0},System.String,System.String)">
+            <summary>Checks the specified enumerable is not null or empty.</summary>
+            <typeparam name="TType">The element type.</typeparam>
+            <param name="object">The enumerable instance</param>
+            <param name="name">The name of the instance.</param>
+            <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be null" for a null
+            instance and "Value cannot be empty" for an empty collection.</param>
+            <remarks>If <paramref name="object"/> is a lazily-evaluated enumerable, such as the result if a LINQ Select() then multiple
+            enumeration will occur. Only pass a concrete enumerable, such as an array or list, to this method.</remarks>
+            <exception cref="T:System.InvalidOperationException"/>
+        </member>
+        <member name="M:AllOverIt.Helpers.Guard.CheckNotEmpty``1(System.Collections.Generic.IEnumerable{``0},System.String,System.String)">
+            <summary>Checks the specified enumerable is not empty.</summary>
+            <typeparam name="TType">The element type.</typeparam>
+            <param name="object">The enumerable instance.</param>
+            <param name="name">The name of the instance.</param>
+            <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be empty".</param>
+            <remarks>If <paramref name="object"/> is a lazily-evaluated enumerable, such as the result if a LINQ Select() then multiple
+            enumeration will occur. Only pass a concrete enumerable, such as an array or list, to this method.</remarks>
+            <exception cref="T:System.InvalidOperationException"/>
+        </member>
+        <member name="M:AllOverIt.Helpers.Guard.CheckNotNullOrEmpty(System.String,System.String,System.String)">
+            <summary>Checks the specified string is not null or empty.</summary>
+            <param name="object">The string instance</param>
+            <param name="name">The name of the instance.</param>
+            <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be null" for a null
+            instance and "Value cannot be empty" for an empty string.</param>
+            <exception cref="T:System.InvalidOperationException"/>
+        </member>
+        <member name="M:AllOverIt.Helpers.Guard.CheckNotEmpty(System.String,System.String,System.String)">
+            <summary>Checks the specified string is not empty.</summary>
+            <param name="object">The string instance</param>
+            <param name="name">The name of the instance.</param>
+            <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be empty".</param>
+            <exception cref="T:System.InvalidOperationException"/>
+        </member>
+        <member name="M:AllOverIt.Helpers.Guard.InvalidWhenNull``1(``0,System.String)">
+            <summary>Throws an exception if the object instance is null, otherwise it returns the same instance.</summary>
+            <typeparam name="TType">The object type.</typeparam>
+            <param name="object">The object instance.</param>
+            <param name="errorMessage">The error message to throw if the instance is null. If not provided, the default message
+            is "Value cannot be null".</param>
+            <returns>The same source object instance.</returns>
+        </member>
+        <member name="M:AllOverIt.Helpers.Guard.InvalidWhenNullOrEmpty``1(System.Collections.Generic.IEnumerable{``0},System.String)">
+            <summary>Throws an exception if the specified enumerable is null or empty, otherwise it returns the same instance.</summary>
+            <typeparam name="TType">The element type.</typeparam>
+            <param name="object">The enumerable instance</param>
+            <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be null" for a null
+            instance and "Value cannot be empty" for an empty collection.</param>
+            <remarks>If <paramref name="object"/> is a lazily-evaluated enumerable, such as the result if a LINQ Select() then multiple
+            enumeration will occur. Only pass a concrete enumerable, such as an array or list, to this method.</remarks>
+            <exception cref="T:System.InvalidOperationException"/>
+            <returns>The same source object instance.</returns>
+        </member>
+        <member name="M:AllOverIt.Helpers.Guard.InvalidWhenEmpty``1(System.Collections.Generic.IEnumerable{``0},System.String)">
+            <summary>Throws an exception if the specified enumerable is empty, otherwise it returns the same instance.</summary>
+            <typeparam name="TType">The element type.</typeparam>
+            <param name="object">The enumerable instance</param>
+            <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be empty".</param>
+            <remarks>If <paramref name="object"/> is a lazily-evaluated enumerable, such as the result if a LINQ Select() then multiple
+            enumeration will occur. Only pass a concrete enumerable, such as an array or list, to this method.</remarks>
+            <exception cref="T:System.InvalidOperationException"/>
+            <returns>The same source object instance.</returns>
+        </member>
+        <member name="M:AllOverIt.Helpers.Guard.InvalidWhenNullOrEmpty(System.String,System.String)">
+            <summary>Throws an exception if the specified string is null or empty, otherwise it returns the same instance.</summary>
+            <param name="object">The string instance</param>
+            <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be null" for a null
+            instance and "Value cannot be empty" for an empty string.</param>
+            <exception cref="T:System.InvalidOperationException"/>
+            <returns>The same source string instance.</returns>
+        </member>
+        <member name="M:AllOverIt.Helpers.Guard.InvalidWhenEmpty(System.String,System.String)">
+            <summary>Throws an exception if the specified string is empty, otherwise it returns the same instance.</summary>
+            <param name="object">The string instance</param>
+            <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be empty".</param>
+            <exception cref="T:System.InvalidOperationException"/>
+            <returns>The same source string instance.</returns>
         </member>
         <member name="M:AllOverIt.Helpers.Guard.WhenNotNull``1(System.Linq.Expressions.Expression{System.Func{``0}},System.String)">
             <summary>Checks that the evaluated expression is not null.</summary>
@@ -1210,7 +1475,7 @@
             <summary>Invokes each handler in turn with the provided state until the state is actioned.</summary>
             <param name="state">The input state to be processed.</param>
             <returns>The final output state of the input was processed. If the input state is not processed by one of the handlers
-            then the default value for <typeparam name="TInput" /> is returned (null if it is a reference type).</returns>
+            then the default value for <typeparamref name="TInput" /> is returned (null if it is a reference type).</returns>
         </member>
         <member name="T:AllOverIt.Patterns.ChainOfResponsibility.ChainOfResponsibilityHandler`2">
             <summary>A base 'Chain Of Responsibility' handler.</summary>
@@ -1295,6 +1560,9 @@
             <summary>Called asynchronously when the instance is being disposed, resulting in the cleanup action
             provided at the time of construction being invoked.</summary>
         </member>
+        <member name="M:AllOverIt.Patterns.ResourceInitialization.RaiiAsync.DisposeAsyncCore">
+            <summary>Performs the asynchronous disposal of resources.</summary>
+        </member>
         <member name="T:AllOverIt.Patterns.ResourceInitialization.RaiiAsync`1">
             <summary>A strongly-type async disposable object implementing the Resource Acquisition Is Initialization idiom.</summary>
             <typeparam name="TType">The type being initialized.</typeparam>
@@ -1310,6 +1578,9 @@
         <member name="M:AllOverIt.Patterns.ResourceInitialization.RaiiAsync`1.DisposeAsync">
             <summary>Called asynchronously when the instance is being disposed, resulting in the cleanup action
             provided at the time of construction being invoked.</summary>
+        </member>
+        <member name="M:AllOverIt.Patterns.ResourceInitialization.RaiiAsync`1.DisposeAsyncCore">
+            <summary>Performs the asynchronous disposal of resources.</summary>
         </member>
         <member name="T:AllOverIt.Patterns.Specification.AndLinqSpecification`1">
             <summary>A specification that performs a logical AND operation between two expressions.</summary>

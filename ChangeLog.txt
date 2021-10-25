@@ -17,6 +17,11 @@
 ======================================================================================================================
 
 
+Discussion Points:
+  * AsListAsync => ToListAsync
+  * IEnumerable extensions - some can be moved closer to primary source, such as Specification extensions
+  * Review structure if considering a v2
+
 
 
 
@@ -27,6 +32,7 @@ AllOverIt - v1.20.0
   * Added Chain Of Responsibility pattern implementation and a demo
   * Added Specification pattern implementation and demos for IEnumerable and IQueryable sources
   * Removed some Guard constraints that should not have been present
+  * Changed event aggregator subscription interface and classes from public to internal
 
 AllOverIt.Aws.Cdk.AppSync - v0.16.1
   * Updated to Amazon.CDK.AWS.AppSync v1.128.0

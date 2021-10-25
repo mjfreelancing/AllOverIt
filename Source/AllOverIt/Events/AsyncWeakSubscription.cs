@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace AllOverIt.Events
 {
-    public class AsyncWeakSubscription : IAsyncSubscription
+    internal sealed class AsyncWeakSubscription : IAsyncSubscription
     {
         private readonly WeakReference _weakReference;
         private readonly MethodInfo _handlerMethod;

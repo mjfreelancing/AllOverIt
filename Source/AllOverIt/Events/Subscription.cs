@@ -3,7 +3,7 @@ using System;
 
 namespace AllOverIt.Events
 {
-    public class Subscription : ISubscription
+    internal sealed class Subscription : ISubscription
     {
         private readonly Delegate _handler;
 

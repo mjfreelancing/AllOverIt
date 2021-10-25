@@ -6,10 +6,28 @@
     <members>
         <member name="M:AllOverIt.Aws.Cdk.AppSync.AppGraphqlBase.#ctor(Amazon.CDK.Construct,System.String,Amazon.CDK.AWS.AppSync.IGraphqlApiProps,AllOverIt.Aws.Cdk.AppSync.Mapping.MappingTemplates,AllOverIt.Aws.Cdk.AppSync.Factories.MappingTypeFactory)">
             <summary>Constructor.</summary>
+            <param name="scope">The construct scope.</param>
+            <param name="id">The construct Id.</param>
+            <param name="apiProps">The AppSync GraphQL API properties.</param>
             <param name="mappingTemplates">Contains request and response mapping templates for datasources that are not provided
             a mapping type. If null then an an internal version will be created.</param>
             <param name="mappingTypeFactory">Contains registrations for mapping types (defined on a DataSource) that do not have
             a default constructor because arguments need to be provided at runtime.</param>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.AppGraphqlBase.AddSchemaQuery``1">
+            <summary>Adds a Query definition to the AppSync GraphQL API.</summary>
+            <typeparam name="TType">The interface that provides the definition for the Query.</typeparam>
+            <returns>Returns 'this' to support a fluent syntax.</returns>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.AppGraphqlBase.AddSchemaMutation``1">
+            <summary>Adds a Mutation definition to the AppSync GraphQL API.</summary>
+            <typeparam name="TType">The interface that provides the definition for the Mutation.</typeparam>
+            <returns>Returns 'this' to support a fluent syntax.</returns>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.AppGraphqlBase.AddSchemaSubscription``1">
+            <summary>Adds a Subscription definition to the AppSync GraphQL API.</summary>
+            <typeparam name="TType">The interface that provides the definition for the Subscription.</typeparam>
+            <returns>Returns 'this' to support a fluent syntax.</returns>
         </member>
     </members>
 </doc>

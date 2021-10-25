@@ -6,11 +6,15 @@ using System.Threading.Tasks;
 
 namespace AllOverIt.Events
 {
-    public class EventAggregator : IEventAggregator
+    /// <summary>Provides support for produces to publish messages and consumers to subscribe for notification of those messages.</summary>
+    public sealed class EventAggregator : IEventAggregator
     {
         private readonly IDictionary<Type, IList<ISubscription>> _subscriptions = new Dictionary<Type, IList<ISubscription>>();
         private readonly IDictionary<Type, IList<IAsyncSubscription>> _asyncSubscriptions = new Dictionary<Type, IList<IAsyncSubscription>>();
 
+        /// <inheritdoc />
+        /// <remarks>Cannot be used when there are registered async subscriptions for the provided message type. Use
+        /// <see cref="PublishAsync{TMessage}"/> instead.</remarks>
         public void Publish<TMessage>(TMessage message)
         {
             if (_asyncSubscriptions.TryGetValue(typeof(TMessage), out _))
@@ -21,6 +25,7 @@ namespace AllOverIt.Events
             PublishToSubscriptions(message);
         }
 
+        /// <inheritdoc />
         public Task PublishAsync<TMessage>(TMessage message)
         {
             var publishTask = PublishToAsyncSubscriptions(message);
@@ -29,6 +34,7 @@ namespace AllOverIt.Events
             return publishTask;
         }
 
+        /// <inheritdoc />
         public void Subscribe<TMessage>(Action<TMessage> handler, bool weakSubscription = true)
         {
             var subscription = weakSubscription
@@ -38,6 +44,7 @@ namespace AllOverIt.Events
             Subscribe<TMessage>(subscription);
         }
 
+        /// <inheritdoc />
         public void Subscribe<TMessage>(Func<TMessage, Task> handler, bool weakSubscription = true)
         {
             var subscription = weakSubscription
@@ -47,6 +54,7 @@ namespace AllOverIt.Events
             Subscribe<TMessage>(subscription);
         }
 
+        /// <inheritdoc />
         public void Unsubscribe<TMessage>(Action<TMessage> handler)
         {
             if (_subscriptions.TryGetValue(typeof(TMessage), out var subscriptions))
@@ -64,6 +72,7 @@ namespace AllOverIt.Events
             }
         }
 
+        /// <inheritdoc />
         public void Unsubscribe<TMessage>(Func<TMessage, Task> handler)
         {
             if (_asyncSubscriptions.TryGetValue(typeof(TMessage), out var subscriptions))
