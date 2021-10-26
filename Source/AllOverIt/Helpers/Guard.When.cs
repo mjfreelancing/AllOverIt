@@ -10,7 +10,12 @@ namespace AllOverIt.Helpers
         #region expression extensions
 
         /// <summary>Checks that the evaluated expression is not null.</summary>
-        /// <remarks>The expression argument cannot be null.</remarks>
+        /// <typeparam name="TType">The expression's return type.</typeparam>
+        /// <param name="expression">The expression to evaluate.</param>
+        /// <param name="errorMessage">The error message to throw if the instance is null. If not provided, the default message
+        /// is "Value cannot be null".</param>
+        /// <returns>The value of the evaluated expression.</returns>
+        /// <remarks>Evaluating the expression is an expensive operation as it must be compiled before it can be invoked.</remarks>
         public static TType WhenNotNull<TType>(Expression<Func<TType>> expression, string errorMessage = default)
             where TType : class
         {
@@ -32,7 +37,12 @@ namespace AllOverIt.Helpers
         }
 
         /// <summary>Checks that the evaluated expression is not null and not empty.</summary>
-        /// <remarks>The expression argument cannot be null.</remarks>
+        /// <typeparam name="TType">The expression's return type.</typeparam>
+        /// <param name="expression">The expression to evaluate.</param>
+        /// <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be null" for a null
+        /// instance and "Value cannot be empty" for an empty collection.</param>
+        /// <returns>The value of the evaluated expression.</returns>
+        /// <remarks>Evaluating the expression is an expensive operation as it must be compiled before it can be invoked.</remarks>
         public static IEnumerable<TType> WhenNotNullOrEmpty<TType>(Expression<Func<IEnumerable<TType>>> expression, string errorMessage = default)
         {
             _ = expression ?? ThrowArgumentNullException<Expression<Func<IEnumerable<TType>>>>(nameof(expression), errorMessage);
@@ -53,7 +63,12 @@ namespace AllOverIt.Helpers
         }
 
         /// <summary>Checks that the evaluated expression is not empty.</summary>
-        /// <remarks>The expression argument cannot be null.</remarks>
+        /// <typeparam name="TType">The expression's return type.</typeparam>
+        /// <param name="expression">The expression to evaluate.</param>
+        /// <param name="errorMessage">The error message to throw if the instance is null. If not provided, the default message
+        /// is "Value cannot be empty".</param>
+        /// <returns>The value of the evaluated expression. The evaluated value can be null.</returns>
+        /// <remarks>Evaluating the expression is an expensive operation as it must be compiled before it can be invoked.</remarks>
         public static IEnumerable<TType> WhenNotEmpty<TType>(Expression<Func<IEnumerable<TType>>> expression, string errorMessage = default)
         {
             _ = expression ?? ThrowArgumentNullException<Expression<Func<IEnumerable<TType>>>>(nameof(expression), errorMessage);
@@ -74,7 +89,11 @@ namespace AllOverIt.Helpers
         }
 
         /// <summary>Checks that the evaluated expression is not null and not empty.</summary>
-        /// <remarks>The expression argument cannot be null.</remarks>
+        /// <param name="expression">The expression to evaluate.</param>
+        /// <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be null" for a null
+        /// instance and "Value cannot be empty" for an empty collection.</param>
+        /// <returns>The value of the evaluated expression.</returns>
+        /// <remarks>Evaluating the expression is an expensive operation as it must be compiled before it can be invoked.</remarks>
         public static string WhenNotNullOrEmpty(Expression<Func<string>> expression, string errorMessage = default)
         {
             _ = expression ?? ThrowArgumentNullException<Expression<Func<string>>>(nameof(expression), errorMessage);
@@ -95,7 +114,11 @@ namespace AllOverIt.Helpers
         }
 
         /// <summary>Checks that the evaluated expression is not empty.</summary>
-        /// <remarks>The expression argument cannot be null.</remarks>
+        /// <param name="expression">The expression to evaluate.</param>
+        /// <param name="errorMessage">The error message to throw if the instance is null. If not provided, the default message
+        /// is "Value cannot be empty".</param>
+        /// <returns>The value of the evaluated expression. The evaluated value can be null.</returns>
+        /// <remarks>Evaluating the expression is an expensive operation as it must be compiled before it can be invoked.</remarks>
         public static string WhenNotEmpty(Expression<Func<string>> expression, string errorMessage = default)
         {
             _ = expression ?? ThrowArgumentNullException<Expression<Func<string>>>(nameof(expression), errorMessage);
@@ -119,72 +142,119 @@ namespace AllOverIt.Helpers
 
         #region object extensions
 
-        // returns argument if not null, otherwise throws ArgumentNullException
-        public static TType WhenNotNull<TType>(this TType argument, string name, string errorMessage = default)
+        /// <summary>Checks that the provided object is not null.</summary>
+        /// <typeparam name="TType">The object type.</typeparam>
+        /// <param name="object">The object instance.</param>
+        /// <param name="name">The name identifying the object instance.</param>
+        /// <param name="errorMessage">The error message to throw if the instance is null. If not provided, the default message
+        /// is "Value cannot be null".</param>
+        /// <returns>The original object instance when not null.</returns>
+        public static TType WhenNotNull<TType>(this TType @object, string name, string errorMessage = default)
             where TType : class
         {
-            return argument ?? ThrowArgumentNullException<TType>(name, errorMessage);
+            return @object ?? ThrowArgumentNullException<TType>(name, errorMessage);
         }
 
-        // returns argument if not null or empty, otherwise throws ArgumentNullException / ArgumentException
-        public static IEnumerable<TType> WhenNotNullOrEmpty<TType>(this IEnumerable<TType> argument, string name, string errorMessage = default)
+        /// <summary>Checks that the provided collection is not null and not empty.</summary>
+        /// <typeparam name="TType">The element type.</typeparam>
+        /// <param name="object">The collection instance.</param>
+        /// <param name="name">The name identifying the collection instance.</param>
+        /// <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be null" for a null
+        /// instance and "Value cannot be empty" for an empty collection.</param>
+        /// <returns>The original object instance when not null and not empty.</returns>
+        /// <remarks>This method also validates that the enumerable is an array or ICollection&lt;TType&gt; to prevent multiple enumeration of the IEnumerable.</remarks>
+        public static IEnumerable<TType> WhenNotNullOrEmpty<TType>(this IEnumerable<TType> @object, string name, string errorMessage = default)
         {
-            return WhenNotNullOrEmpty(argument, name, true, errorMessage);
+            return WhenNotNullOrEmpty(@object, name, true, errorMessage);
         }
 
-        public static IEnumerable<TType> WhenNotNullOrEmpty<TType>(this IEnumerable<TType> argument, string name, bool ensureIsCollection, string errorMessage = default)
+        /// <summary>Checks that the provided collection is not null and not empty.</summary>
+        /// <typeparam name="TType">The element type.</typeparam>
+        /// <param name="object">The collection instance.</param>
+        /// <param name="name">The name identifying the collection instance.</param>
+        /// <param name="ensureIsCollection">Indicates if the method should also validate that the enumerable is an array or ICollection&lt;TType&gt;
+        /// to prevent multiple enumeration of the IEnumerable.</param>
+        /// <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be null" for a null
+        /// instance and "Value cannot be empty" for an empty collection.</param>
+        /// <returns>The original object instance when not null and not empty.</returns>
+        public static IEnumerable<TType> WhenNotNullOrEmpty<TType>(this IEnumerable<TType> @object, string name, bool ensureIsCollection, string errorMessage = default)
         {
-            _ = argument ?? ThrowArgumentNullException<IEnumerable<TType>>(name, errorMessage);
+            _ = @object ?? ThrowArgumentNullException<IEnumerable<TType>>(name, errorMessage);
 
-            return WhenNotEmpty(argument, name, ensureIsCollection, errorMessage);
+            return WhenNotEmpty(@object, name, ensureIsCollection, errorMessage);
         }
 
-        // returns argument if null or not empty, otherwise throws ArgumentException
-        public static IEnumerable<TType> WhenNotEmpty<TType>(this IEnumerable<TType> argument, string name, string errorMessage = default)
+        /// <summary>Checks that the provided collection is not empty.</summary>
+        /// <typeparam name="TType">The element type.</typeparam>
+        /// <param name="object">The collection instance.</param>
+        /// <param name="name">The name identifying the collection instance.</param>
+        /// <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be null" for a null
+        /// instance and "Value cannot be empty" for an empty collection.</param>
+        /// <returns>The original collection instance when not empty. If the instance was null then null will be returned.</returns>
+        /// <remarks>This method also validates that the enumerable is an array or ICollection&lt;TType&gt; to prevent multiple enumeration of the IEnumerable.</remarks>
+        public static IEnumerable<TType> WhenNotEmpty<TType>(this IEnumerable<TType> @object, string name, string errorMessage = default)
         {
-            return WhenNotEmpty<TType>(argument, name, true, errorMessage);
+            return WhenNotEmpty<TType>(@object, name, true, errorMessage);
         }
 
-        public static IEnumerable<TType> WhenNotEmpty<TType>(this IEnumerable<TType> argument, string name, bool ensureIsCollection, string errorMessage = default)
+        /// <summary>Checks that the provided collection is not empty.</summary>
+        /// <typeparam name="TType">The element type.</typeparam>
+        /// <param name="object">The collection instance.</param>
+        /// <param name="name">The name identifying the collection instance.</param>
+        /// <param name="ensureIsCollection">Indicates if the method should also validate that the enumerable is an array or ICollection&lt;TType&gt;
+        /// to prevent multiple enumeration of the IEnumerable.</param>
+        /// <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be empty".</param>
+        /// <returns>The original collection instance when not empty. If the instance was null then null will be returned.</returns>
+        public static IEnumerable<TType> WhenNotEmpty<TType>(this IEnumerable<TType> @object, string name, bool ensureIsCollection, string errorMessage = default)
         {
-            if (argument != null)
+            if (@object != null)
             {
-                // ReSharper disable once PossibleMultipleEnumeration
-                if (!argument.Any())
-                // ReSharper disable once PossibleMultipleEnumeration
-                {
-                    throw new ArgumentException(errorMessage ?? "The argument cannot be empty", name);
-                }
-
                 if (ensureIsCollection)
                 {
-                    var isCollection = argument is ICollection<TType>;
-                    var isArray = argument.GetType().IsArray;
+                    var isCollection = @object is ICollection<TType>;
+                    var isArray = @object.GetType().IsArray;
 
                     if (!(isCollection || isArray))
                     {
                         throw new InvalidOperationException($"Expecting an array or ICollection<T> (Parameter '{name}')");
                     }
                 }
+
+                // ReSharper disable once PossibleMultipleEnumeration
+                if (!@object.Any())
+                    // ReSharper disable once PossibleMultipleEnumeration
+                {
+                    throw new ArgumentException(errorMessage ?? "The argument cannot be empty", name);
+                }
             }
 
-            return argument;
+            // ReSharper disable once PossibleMultipleEnumeration
+            return @object;
         }
 
-        // returns argument if not null or empty, otherwise throws ArgumentNullException / ArgumentException
-        public static string WhenNotNullOrEmpty(this string argument, string name, string errorMessage = default)
+        /// <summary>Checks that the provided string is not null and not empty.</summary>
+        /// <param name="object">The string instance.</param>
+        /// <param name="name">The name identifying the string instance.</param>
+        /// <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be null" for a null
+        /// instance and "Value cannot be empty" for an empty collection.</param>
+        /// <returns>The original string instance when not null and not empty.</returns>
+        public static string WhenNotNullOrEmpty(this string @object, string name, string errorMessage = default)
         {
-            _ = argument ?? ThrowArgumentNullException(name, errorMessage);
+            _ = @object ?? ThrowArgumentNullException(name, errorMessage);
 
-            return WhenNotEmpty(argument, name, errorMessage);
+            return WhenNotEmpty(@object, name, errorMessage);
         }
 
-        // returns argument if null or not empty, otherwise throws ArgumentNullException / ArgumentException
-        public static string WhenNotEmpty(this string argument, string name, string errorMessage = default)
+        /// <summary>Checks that the provided string is not empty.</summary>
+        /// <param name="object">The string instance.</param>
+        /// <param name="name">The name identifying the string instance.</param>
+        /// <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be empty".</param>
+        /// <returns>The original string instance when not empty.</returns>
+        public static string WhenNotEmpty(this string @object, string name, string errorMessage = default)
         {
-            if (argument == null || !string.IsNullOrWhiteSpace(argument))
+            if (@object == null || !string.IsNullOrWhiteSpace(@object))
             {
-                return argument;
+                return @object;
             }
 
             throw new ArgumentException(errorMessage ?? "The argument cannot be empty", name);

@@ -4,7 +4,6 @@ using AllOverIt.Patterns.ChainOfResponsibility;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
 namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
@@ -66,7 +65,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
             {
                 Invoking(() =>
                     {
-                        var handlers = Enumerable.Empty<IChainOfResponsibilityHandler<DummyState, DummyState>>();
+                        var handlers = new List<IChainOfResponsibilityHandler<DummyState, DummyState>>();
 
                         _ = new ChainOfResponsibilityComposer<DummyState, DummyState>(handlers);
                     })
