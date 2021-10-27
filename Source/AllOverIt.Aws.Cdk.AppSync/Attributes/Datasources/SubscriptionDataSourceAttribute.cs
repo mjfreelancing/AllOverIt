@@ -2,7 +2,7 @@
 using AllOverIt.Extensions;
 using AllOverIt.Helpers;
 
-namespace AllOverIt.Aws.Cdk.AppSync.Attributes.Datasources
+namespace AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources
 {
     public class SubscriptionDataSourceAttribute : DataSourceAttribute
     {

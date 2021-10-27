@@ -32,6 +32,7 @@ AllOverIt - v1.20.0
 
 AllOverIt.Aws.Cdk.AppSync - v0.16.1
   * Updated to Amazon.CDK.AWS.AppSync v1.128.0
+  * Renamed namespace Datasources to DataSources
 
 AllOverIt.Aws.AppSync.Client - v0.6.0
   * Rebuilt against AllOverIt v1.20.0 due to breaking changes

@@ -1,7 +1,7 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync.Mapping;
 using System;
 
-namespace AllOverIt.Aws.Cdk.AppSync.Attributes.Datasources
+namespace AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources
 {
     [AttributeUsage(AttributeTargets.Method)]
     public abstract class DataSourceAttribute : Attribute

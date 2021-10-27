@@ -6,6 +6,7 @@ using Amazon.CDK.AWS.AppSync;
 
 namespace AllOverIt.Aws.Cdk.AppSync
 {
+    /// <summary>A base class for generating AppSync Graphql constructs.</summary>
     public abstract class AppGraphqlBase : GraphqlApi
     {
         private readonly SchemaBuilder _schemaBuilder;
