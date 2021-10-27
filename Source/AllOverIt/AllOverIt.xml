@@ -1019,6 +1019,16 @@
             <param name="value">The base-64 representation of a string to convert.</param>
             <returns>The string decoded from a source string previously encoded with base-64 digits.</returns>
         </member>
+        <member name="T:AllOverIt.Extensions.StringFormatExtensions">
+            <summary>Provides extensions for formatting strings in a known format.</summary>
+        </member>
+        <member name="M:AllOverIt.Extensions.StringFormatExtensions.FormatJsonString(System.String,System.Int32)">
+            <summary>Returns a beautified version of the provided string, assumed to be in a JSON format.</summary>
+            <param name="jsonValue">The string to be beautified.</param>
+            <param name="indentSize">The number of spaces to use for indentation.</param>
+            <returns>A beautified version of the provided string, assumed to be in a JSON format.</returns>
+            <remarks>This method does not validate the string is well-formed.</remarks>
+        </member>
         <member name="T:AllOverIt.Extensions.TypeExtensions">
             <summary>Provides a variety of extension methods for <see cref="T:System.Type"/> types.</summary>
         </member>
@@ -2511,13 +2521,6 @@
         </member>
         <member name="M:AllOverIt.Threading.ReadWriteLock.Dispose">
             <summary>Disposes of the internal lock.</summary>
-        </member>
-        <member name="M:AllOverIt.Utils.Formatter.FormatJsonString(System.String,System.Int32)">
-            <summary>Returns a beautified version of the provided string, assumed to be in a JSON format.</summary>
-            <param name="jsonValue">The string to be beautified.</param>
-            <param name="indentSize">The number of spaces to use for indentation.</param>
-            <returns>A beautified version of the provided string, assumed to be in a JSON format.</returns>
-            <remarks>This method does not validate the string is well-formed.</remarks>
         </member>
     </members>
 </doc>

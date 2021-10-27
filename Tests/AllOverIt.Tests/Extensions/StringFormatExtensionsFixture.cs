@@ -1,13 +1,13 @@
-﻿using AllOverIt.Fixture;
+﻿using System;
+using AllOverIt.Extensions;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using AllOverIt.Utils;
 using FluentAssertions;
-using System;
 using Xunit;
 
-namespace AllOverIt.Tests.Utils
+namespace AllOverIt.Tests.Extensions
 {
-    public class FormatterFixture : FixtureBase
+    public class StringFormatExtensionsFixture : FixtureBase
     {
         private static readonly string _basicSourceString = @"{""key"":""value""}";
 
@@ -17,7 +17,7 @@ namespace AllOverIt.Tests.Utils
             Invoking(
                 () =>
                 {
-                    _ = Formatter.FormatJsonString(null);
+                    _ = StringFormatExtensions.FormatJsonString(null);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -30,7 +30,7 @@ namespace AllOverIt.Tests.Utils
             Invoking(
                () =>
                {
-                   _ = Formatter.FormatJsonString(_basicSourceString, -1);
+                   _ = StringFormatExtensions.FormatJsonString(_basicSourceString, -1);
                })
                .Should()
                .Throw<ArgumentOutOfRangeException>()
@@ -43,7 +43,7 @@ namespace AllOverIt.Tests.Utils
             Invoking(
                () =>
                {
-                   _ = Formatter.FormatJsonString(_basicSourceString, 0);
+                   _ = StringFormatExtensions.FormatJsonString(_basicSourceString, 0);
                })
                .Should()
                .NotThrow();
@@ -55,7 +55,7 @@ namespace AllOverIt.Tests.Utils
             Invoking(
                () =>
                {
-                   _ = Formatter.FormatJsonString(_basicSourceString, Create<int>());
+                   _ = StringFormatExtensions.FormatJsonString(_basicSourceString, Create<int>());
                })
                .Should()
                .NotThrow();
@@ -69,7 +69,7 @@ namespace AllOverIt.Tests.Utils
   ""key"": ""value""
 }";
 
-            var actual = Formatter.FormatJsonString(_basicSourceString);
+            var actual = StringFormatExtensions.FormatJsonString(_basicSourceString);
 
             actual.Should().Be(expected);
         }
@@ -78,7 +78,7 @@ namespace AllOverIt.Tests.Utils
         public void Should_Return_Same_String_When_Not_Json()
         {
             var expected = Create<string>();
-            var actual = Formatter.FormatJsonString(expected);
+            var actual = StringFormatExtensions.FormatJsonString(expected);
 
             actual.Should().Be(expected);
         }
@@ -92,7 +92,7 @@ namespace AllOverIt.Tests.Utils
   ""key"": ""value""
 }";
 
-            var actual = Formatter.FormatJsonString(source);
+            var actual = StringFormatExtensions.FormatJsonString(source);
 
             actual.Should().Be(expected);
         }
@@ -106,7 +106,7 @@ namespace AllOverIt.Tests.Utils
   ""key"": ""val ue""
 }";
 
-            var actual = Formatter.FormatJsonString(source);
+            var actual = StringFormatExtensions.FormatJsonString(source);
 
             actual.Should().Be(expected);
         }
@@ -120,7 +120,7 @@ namespace AllOverIt.Tests.Utils
   ""key"": ""val,ue""
 }";
 
-            var actual = Formatter.FormatJsonString(source);
+            var actual = StringFormatExtensions.FormatJsonString(source);
 
             actual.Should().Be(expected);
         }
@@ -135,7 +135,7 @@ namespace AllOverIt.Tests.Utils
   ""key2"": ""value2""
 }";
 
-            var actual = Formatter.FormatJsonString(source);
+            var actual = StringFormatExtensions.FormatJsonString(source);
 
             actual.Should().Be(expected);
         }
@@ -151,7 +151,7 @@ namespace AllOverIt.Tests.Utils
   }
 }";
 
-            var actual = Formatter.FormatJsonString(source);
+            var actual = StringFormatExtensions.FormatJsonString(source);
 
             actual.Should().Be(expected);
         }
@@ -169,7 +169,7 @@ namespace AllOverIt.Tests.Utils
   ]
 }";
 
-            var actual = Formatter.FormatJsonString(source);
+            var actual = StringFormatExtensions.FormatJsonString(source);
 
             actual.Should().Be(expected);
         }
@@ -185,7 +185,7 @@ namespace AllOverIt.Tests.Utils
   ]
 }";
 
-            var actual = Formatter.FormatJsonString(source);
+            var actual = StringFormatExtensions.FormatJsonString(source);
 
             actual.Should().Be(expected);
         }
@@ -198,7 +198,7 @@ namespace AllOverIt.Tests.Utils
 @"{
 }";
 
-            var actual = Formatter.FormatJsonString(source);
+            var actual = StringFormatExtensions.FormatJsonString(source);
 
             actual.Should().Be(expected);
         }
@@ -214,7 +214,7 @@ namespace AllOverIt.Tests.Utils
   ]
 }";
 
-            var actual = Formatter.FormatJsonString(source);
+            var actual = StringFormatExtensions.FormatJsonString(source);
 
             actual.Should().Be(expected);
         }
@@ -230,7 +230,7 @@ namespace AllOverIt.Tests.Utils
   ]
 }";
 
-            var actual = Formatter.FormatJsonString(source);
+            var actual = StringFormatExtensions.FormatJsonString(source);
 
             actual.Should().Be(expected);
         }
@@ -245,7 +245,7 @@ namespace AllOverIt.Tests.Utils
   ]
 }";
 
-            var actual = Formatter.FormatJsonString(source);
+            var actual = StringFormatExtensions.FormatJsonString(source);
 
             actual.Should().Be(expected);
         }
@@ -266,7 +266,7 @@ namespace AllOverIt.Tests.Utils
   ""key2"": ""value2""
 }";
 
-            var actual = Formatter.FormatJsonString(source);
+            var actual = StringFormatExtensions.FormatJsonString(source);
 
             actual.Should().Be(expected);
         }

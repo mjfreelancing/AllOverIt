@@ -1,6 +1,6 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync.Mapping;
+using AllOverIt.Extensions;
 using AllOverIt.Helpers;
-using AllOverIt.Utils;
 
 namespace AllOverIt.Aws.Cdk.AppSync.Attributes.Datasources
 {
@@ -20,7 +20,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Attributes.Datasources
             private static string GetRequestMapping()
             {
                 // Using FormatJsonString() to remove the extra padding
-                return Formatter.FormatJsonString(
+                return StringFormatExtensions.FormatJsonString(
                     @"
                     {
                       ""version"": ""2017-02-28"",

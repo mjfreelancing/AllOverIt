@@ -1,5 +1,5 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync.Mapping;
-using AllOverIt.Utils;
+using AllOverIt.Extensions;
 
 namespace GraphqlSchema.Schema.Mappings
 {
@@ -11,13 +11,11 @@ namespace GraphqlSchema.Schema.Mappings
         protected static string GetNoneRequestMapping()
         {
             // Using FormatJsonString() to remove the extra padding
-            return Formatter.FormatJsonString(
-                @"
+            return @"
                     {
                       ""version"": ""2017-02-28"",
                       ""payload"": ""{}""
-                    }"
-            );
+                    }".FormatJsonString();
         }
 
         protected static string GetNoneResponseMapping()
@@ -28,14 +26,12 @@ namespace GraphqlSchema.Schema.Mappings
         protected static string GetFunctionRequestMapping()
         {
             // Using FormatJsonString() to remove the extra padding
-            return Formatter.FormatJsonString(
-                @"
+            return @"
                     {
                       ""version"": ""2017-02-28"",
                       ""operation"": ""Invoke"",
                       ""payload"": $util.toJson($ctx.args)
-                    }"
-            );
+                    }".FormatJsonString();
         }
 
         protected static string GetFunctionResponseMapping()
@@ -46,8 +42,7 @@ namespace GraphqlSchema.Schema.Mappings
         protected static string GetHttpRequestMapping(string verb, string resourcePath)
         {
             // Using FormatJsonString() to remove the extra padding
-            return Formatter.FormatJsonString(
-                $@"
+            return $@"
                     {{
                       ""version"": ""2018-05-29"",
                       ""method"": ""{verb}"",
@@ -63,8 +58,7 @@ namespace GraphqlSchema.Schema.Mappings
                         ""param2"": ""$ctx.args.id"",
                         ""email"": ""$ctx.identity.claims['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress']""
                       }},
-                    }}"
-            );
+                    }}".FormatJsonString();
         }
 
         protected static string GetHttpResponseMapping()

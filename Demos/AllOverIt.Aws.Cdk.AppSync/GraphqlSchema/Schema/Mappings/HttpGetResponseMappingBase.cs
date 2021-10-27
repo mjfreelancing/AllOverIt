@@ -1,4 +1,4 @@
-﻿using AllOverIt.Utils;
+﻿using AllOverIt.Extensions;
 
 namespace GraphqlSchema.Schema.Mappings
 {
@@ -13,8 +13,7 @@ namespace GraphqlSchema.Schema.Mappings
         private static string GetHttpRequestMapping(string verb, string resourcePath, string apiKey)
         {
             // Using FormatJsonString() to remove the extra padding
-            return Formatter.FormatJsonString(
-                $@"
+            return $@"
                     {{
                       ""version"": ""2018-05-29"",
                       ""method"": ""{verb}"",
@@ -30,8 +29,7 @@ namespace GraphqlSchema.Schema.Mappings
                         ""param2"": ""$ctx.args.id"",
                         ""email"": ""$ctx.identity.claims['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress']""
                       }},
-                    }}"
-            );
+                    }}".FormatJsonString();
         }
     }
 }

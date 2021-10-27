@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace AllOverIt.Utils
+namespace AllOverIt.Formatters
 {
-    public static class Formatter
+    internal static class JsonString
     {
         private class FormatterState
         {
@@ -15,16 +15,14 @@ namespace AllOverIt.Utils
             public bool Unquoted { get; set; }
             public bool PendingIndent { get; set; }
 
-            public FormatterState Append(char value)
+            public void Append(char value)
             {
                 _stringBuilder.Append(value);
-                return this;
             }
 
-            public FormatterState Append(string value)
+            public void Append(string value)
             {
                 _stringBuilder.Append(value);
-                return this;
             }
 
             public override string ToString()
@@ -33,12 +31,7 @@ namespace AllOverIt.Utils
             }
         }
 
-        /// <summary>Returns a beautified version of the provided string, assumed to be in a JSON format.</summary>
-        /// <param name="jsonValue">The string to be beautified.</param>
-        /// <param name="indentSize">The number of spaces to use for indentation.</param>
-        /// <returns>A beautified version of the provided string, assumed to be in a JSON format.</returns>
-        /// <remarks>This method does not validate the string is well-formed.</remarks>
-        public static string FormatJsonString(this string jsonValue, int indentSize = 2)
+        public static string Format(string jsonValue, int indentSize = 2)
         {
             // This implementation is inspired by https://stackoverflow.com/questions/4580397/json-formatter-in-c) but not
             // using LINQ as the memory and speed performance is significantly poorer.
