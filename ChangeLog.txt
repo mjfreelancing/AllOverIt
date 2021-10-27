@@ -20,7 +20,7 @@
 
 XX XXX 2021 - PENDING - Update version info above
 ======================================================================================================================
-AllOverIt - v1.20.0
+AllOverIt - v2.0.0
   * BREAKING CHANGE: Moved Raii and RaiiAsync from AllOverIt.Helpers to AllOverIt.Patterns.ResourceInitialization
   * Added Chain Of Responsibility pattern implementation and a demo
   * Added Specification pattern implementation and demos for IEnumerable and IQueryable sources
@@ -30,8 +30,8 @@ AllOverIt - v1.20.0
   * Changed order of arguments passed to RepeatingTask.Start() so the cancellation token is immediately prior to default args
   * Moved FormatJsonString() to StringFormatExtensions and JsonString.Format()
 
-AllOverIt.Aws.Cdk.AppSync - v0.16.1
-  * Updated to Amazon.CDK.AWS.AppSync v1.128.0
+AllOverIt.Aws.Cdk.AppSync - v0.17.0
+  * Updated to Amazon.CDK.AWS.AppSync v1.129.0
   * Renamed namespace Datasources to DataSources
 
 AllOverIt.Aws.AppSync.Client - v0.6.0

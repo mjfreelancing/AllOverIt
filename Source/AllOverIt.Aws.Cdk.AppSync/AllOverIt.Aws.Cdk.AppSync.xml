@@ -4,6 +4,9 @@
         <name>AllOverIt.Aws.Cdk.AppSync</name>
     </assembly>
     <members>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.AppGraphqlBase">
+            <summary>A base class for generating AppSync Graphql constructs.</summary>
+        </member>
         <member name="M:AllOverIt.Aws.Cdk.AppSync.AppGraphqlBase.#ctor(Amazon.CDK.Construct,System.String,Amazon.CDK.AWS.AppSync.IGraphqlApiProps,AllOverIt.Aws.Cdk.AppSync.Mapping.MappingTemplates,AllOverIt.Aws.Cdk.AppSync.Factories.MappingTypeFactory)">
             <summary>Constructor.</summary>
             <param name="scope">The construct scope.</param>
