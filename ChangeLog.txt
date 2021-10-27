@@ -27,12 +27,13 @@ AllOverIt - v1.20.0
   * Removed some Guard constraints that should not have been present
   * Changed event aggregator subscription interface and classes from public to internal
   * Added more SelectAsXXXAsync() methods for IAsyncEnumerable<TType>
+  * Changed order of arguments passed to RepeatingTask.Start() so the cancellation token is immediately prior to default args
 
 AllOverIt.Aws.Cdk.AppSync - v0.16.1
   * Updated to Amazon.CDK.AWS.AppSync v1.128.0
 
 AllOverIt.Aws.AppSync.Client - v0.6.0
-  * Rebuilt against AllOverIt v1.20.0 due to moving RaiiAsync
+  * Rebuilt against AllOverIt v1.20.0 due to breaking changes
 
 AllOverIt.Evaluator - v3.1.0
   * Internal improvements to reduce memory allocations

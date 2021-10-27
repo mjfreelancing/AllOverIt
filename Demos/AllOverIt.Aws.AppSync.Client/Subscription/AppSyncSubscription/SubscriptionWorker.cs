@@ -410,7 +410,7 @@ namespace AppSyncSubscription
 
                 LogMessage($"Sent mutation: {options.Serializer.SerializeObject(mutation.Variables)}");
                 LogMessage($"Response: {options.Serializer.SerializeObject(response.Data)}");
-            }, cancellationToken, 3000);
+            }, 3000, cancellationToken);
         }
     }
 }

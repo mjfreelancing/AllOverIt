@@ -69,6 +69,7 @@ namespace AllOverIt.Tests.Io
             public void Should_Return_Is_SubFolder()
             {
                 Assert.True(FileUtils.PathIsSubFolder(@"C:\", @"C:\abc"));
+                Assert.True(FileUtils.PathIsSubFolder(@"C:\", @"C:\abc\"));
                 Assert.True(FileUtils.PathIsSubFolder(@"C:\", @"C:\"));
             }
 
@@ -76,6 +77,7 @@ namespace AllOverIt.Tests.Io
             public void Should_Return_Is_Not_SubFolder()
             {
                 Assert.False(FileUtils.PathIsSubFolder(@"C:\abc", @"C:\"));
+                Assert.True(FileUtils.PathIsSubFolder(@"C:\", @"C:\d\abc"));
                 Assert.False(FileUtils.PathIsSubFolder(@"D:\", @"C:\abc"));
             }
         }
@@ -115,7 +117,7 @@ namespace AllOverIt.Tests.Io
                 Invoking(() => FileUtils.GetAbsolutePath(Create<string>(), null))
                   .Should()
                   .Throw<ArgumentNullException>()
-                  .WithNamedMessageWhenNull("relativePathOffset");
+                  .WithNamedMessageWhenNull("relativePath");
             }
 
             [Fact]
@@ -139,9 +141,9 @@ namespace AllOverIt.Tests.Io
             [InlineData(@"..", @"C:\a\b")]
             [InlineData(@"..\", @"C:\a\b\")]
             [InlineData(@"..\d", @"C:\a\b\d")]
-            public void Should_Return_Absolute_Path(string pathOffset, string expected)
+            public void Should_Return_Absolute_Path(string relativePath, string expected)
             {
-                var actual = FileUtils.GetAbsolutePath(@"C:\a\b\c", pathOffset);
+                var actual = FileUtils.GetAbsolutePath(@"C:\a\b\c", relativePath);
 
                 actual.Should().Be(expected);
             }
@@ -182,7 +184,7 @@ namespace AllOverIt.Tests.Io
                 Invoking(() => FileUtils.GetAbsoluteFileName(Create<string>(), null))
                   .Should()
                   .Throw<ArgumentNullException>()
-                  .WithNamedMessageWhenNull("relativePathOffset");
+                  .WithNamedMessageWhenNull("relativePath");
             }
 
             [Fact]
@@ -191,7 +193,7 @@ namespace AllOverIt.Tests.Io
                 Invoking(() => FileUtils.GetAbsoluteFileName(Create<string>(), string.Empty))
                   .Should()
                   .Throw<ArgumentException>()
-                  .WithNamedMessageWhenEmpty("relativePathOffset");
+                  .WithNamedMessageWhenEmpty("relativePath");
             }
 
             [Fact]
@@ -200,7 +202,7 @@ namespace AllOverIt.Tests.Io
                 Invoking(() => FileUtils.GetAbsoluteFileName(Create<string>(), " "))
                   .Should()
                   .Throw<ArgumentException>()
-                  .WithNamedMessageWhenEmpty("relativePathOffset");
+                  .WithNamedMessageWhenEmpty("relativePath");
             }
 
             [Theory]

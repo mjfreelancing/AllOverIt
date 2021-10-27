@@ -39,7 +39,7 @@ namespace EventAggregatorDemo
                 };
 
                 aggregator.Publish(message);
-            }, cts.Token, 1000);
+            }, 1000, cts.Token);
 
             var task2 = RepeatingTask.Start(async () =>
             {
@@ -49,7 +49,7 @@ namespace EventAggregatorDemo
                 };
 
                 await aggregator.PublishAsync(message);
-            }, cts.Token, 1000);
+            }, 1000, cts.Token);
 
             try
             {

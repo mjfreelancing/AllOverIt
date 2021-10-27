@@ -3,10 +3,12 @@ using System.Threading;
 
 namespace AllOverIt.Threading
 {
-    // Represents a lock that is used to manage access to a resource, allowing multiple threads for reading or exclusive access for writing.
     // Internally, this class uses a default constructed ReaderWriterLockSlim object to perform all locking operations.
-    // Refer to http://msdn.microsoft.com/en-us/library/system.threading.readerwriterlockslim(v=vs.110).aspx for more information on the
-    // semantics of this lock type.
+    // Refer to http://msdn.microsoft.com/en-us/library/system.threading.readerwriterlockslim(v=vs.110).aspx for more
+    // information on the semantics of this lock type.
+
+    /// <summary>Represents a lock that is used to manage access to a resource, allowing multiple threads for reading or
+    /// exclusive access for writing.</summary>
     [ExcludeFromCodeCoverage]
     public sealed class ReadWriteLock : IReadWriteLock
     {
@@ -81,6 +83,7 @@ namespace AllOverIt.Threading
             _slimLock.ExitWriteLock();
         }
 
+        /// <summary>Disposes of the internal lock.</summary>
         public void Dispose()
         {
             _slimLock.Dispose();

@@ -161,7 +161,34 @@
             <typeparam name="TType">The element type.</typeparam>
             <param name="items">The enumerable to convert to a list asynchronously.</param>
             <param name="cancellationToken">A cancellation token to cancel the processing.</param>
-            <returns>A <see cref="T:System.Collections.Generic.List`1"/> from the source items.</returns>
+            <returns>An <see cref="T:System.Collections.Generic.IList`1"/> from the source items.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.AsyncEnumerableExtensions.SelectAsListAsync``2(System.Collections.Generic.IAsyncEnumerable{``0},System.Func{``0,System.Threading.Tasks.Task{``1}},System.Threading.CancellationToken)">
+            <summary>Asynchronously projects each element into another form and returns the result as an IList{TResult}.</summary>
+            <typeparam name="TSource">The source elements.</typeparam>
+            <typeparam name="TResult">The projected result type.</typeparam>
+            <param name="items">The source items to be projected and returned as an IList{TResult}.</param>
+            <param name="selector">The transform function applied to each element.</param>
+            <param name="cancellationToken">A cancellation token to cancel the processing.</param>
+            <returns>The projected results as an IList{TResult}.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.AsyncEnumerableExtensions.SelectAsReadOnlyCollectionAsync``2(System.Collections.Generic.IAsyncEnumerable{``0},System.Func{``0,System.Threading.Tasks.Task{``1}},System.Threading.CancellationToken)">
+            <summary>Asynchronously projects each element into another form and returns the result as an IReadOnlyCollection{TResult}.</summary>
+            <typeparam name="TSource">The source elements.</typeparam>
+            <typeparam name="TResult">The projected result type.</typeparam>
+            <param name="items">The source items to be projected and returned as an IReadOnlyCollection{TResult}.</param>
+            <param name="selector">The transform function applied to each element.</param>
+            <param name="cancellationToken">A cancellation token to cancel the processing.</param>
+            <returns>The projected results as an IReadOnlyCollection{TResult}.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.AsyncEnumerableExtensions.SelectAsReadOnlyListAsync``2(System.Collections.Generic.IAsyncEnumerable{``0},System.Func{``0,System.Threading.Tasks.Task{``1}},System.Threading.CancellationToken)">
+            <summary>Asynchronously projects each element into another form and returns the result as an IReadOnlyList{TResult}.</summary>
+            <typeparam name="TSource">The source elements.</typeparam>
+            <typeparam name="TResult">The projected result type.</typeparam>
+            <param name="items">The source items to be projected and returned as an IReadOnlyList{TResult}.</param>
+            <param name="selector">The transform function applied to each element.</param>
+            <param name="cancellationToken">A cancellation token to cancel the processing.</param>
+            <returns>The projected results as an IReadOnlyList{TResult}.</returns>
         </member>
         <member name="T:AllOverIt.Extensions.ChainOfResponsibilityExtensions">
             <summary>Provides a variety of extension methods for <see cref="T:AllOverIt.Patterns.ChainOfResponsibility.IChainOfResponsibilityHandler`2"/> types.</summary>
@@ -347,83 +374,6 @@
             <param name="batchSize">The maximum number of items in each batch.</param>
             <returns>One or more batches containing the source items partitioned into a maximum batch size.</returns>
         </member>
-        <member name="M:AllOverIt.Extensions.EnumerableExtensions.Where``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
-            <summary>Gets all candidates that meet the criteria of a provided specification.</summary>
-            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
-            <param name="candidates">The elements to apply the specification against.</param>
-            <param name="specification">The specification to apply against a collection of elements.</param>
-            <returns>The candidates that meet the criteria of the provided specification.</returns>
-        </member>
-        <member name="M:AllOverIt.Extensions.EnumerableExtensions.Any``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
-            <summary>Determines if any candidates meet the criteria of a provided specification.</summary>
-            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
-            <param name="candidates">The elements to apply the specification against.</param>
-            <param name="specification">The specification to apply against a collection of elements.</param>
-            <returns>True if any of the candidates meet the criteria of the provided specification.</returns>
-        </member>
-        <member name="M:AllOverIt.Extensions.EnumerableExtensions.All``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
-            <summary>Determines if all candidates meet the criteria of a provided specification.</summary>
-            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
-            <param name="candidates">The elements to apply the specification against.</param>
-            <param name="specification">The specification to apply against a collection of elements.</param>
-            <returns>True if all of the candidates meet the criteria of the provided specification.</returns>
-        </member>
-        <member name="M:AllOverIt.Extensions.EnumerableExtensions.Count``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
-            <summary>Counts the number of candidates that meet the criteria of a provided specification.</summary>
-            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
-            <param name="candidates">The elements to apply the specification against.</param>
-            <param name="specification">The specification to apply against a collection of elements.</param>
-            <returns>The count of candidates that meet the criteria of a provided specification.</returns>
-        </member>
-        <member name="M:AllOverIt.Extensions.EnumerableExtensions.First``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
-            <summary>Gets the first candidate that meets the criteria of a provided specification.</summary>
-            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
-            <param name="candidates">The elements to apply the specification against.</param>
-            <param name="specification">The specification to apply against a collection of elements.</param>
-            <returns>The first candidate that meets the criteria of a provided specification.</returns>
-        </member>
-        <member name="M:AllOverIt.Extensions.EnumerableExtensions.FirstOrDefault``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
-            <summary>Gets the first candidate that meets the criteria of a provided specification or the type's
-            default if there are no matches.</summary>
-            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
-            <param name="candidates">The elements to apply the specification against.</param>
-            <param name="specification">The specification to apply against a collection of elements.</param>
-            <returns>The first candidate that meets the criteria of a provided specification or the type's
-            default if there are no matches.</returns>
-        </member>
-        <member name="M:AllOverIt.Extensions.EnumerableExtensions.Last``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
-            <summary>Gets the last candidate that meets the criteria of a provided specification.</summary>
-            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
-            <param name="candidates">The elements to apply the specification against.</param>
-            <param name="specification">The specification to apply against a collection of elements.</param>
-            <returns>The last candidate that meets the criteria of a provided specification.</returns>
-        </member>
-        <member name="M:AllOverIt.Extensions.EnumerableExtensions.LastOrDefault``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
-            <summary>Gets the last candidate that meets the criteria of a provided specification or the type's
-            default if there are no matches.</summary>
-            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
-            <param name="candidates">The elements to apply the specification against.</param>
-            <param name="specification">The specification to apply against a collection of elements.</param>
-            <returns>The last candidate that meets the criteria of a provided specification or the type's
-            default if there are no matches.</returns>
-        </member>
-        <member name="M:AllOverIt.Extensions.EnumerableExtensions.SkipWhile``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
-            <summary>Gets the elements from the first element of the input candidates that meets the criteria of a provided
-            specification.</summary>
-            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
-            <param name="candidates">The elements to apply the specification against.</param>
-            <param name="specification">The specification to apply against a collection of elements.</param>
-            <returns>An enumerable that contains the elements from the first element of the input candidates that meets
-            the criteria of a provided specification.</returns>
-        </member>
-        <member name="M:AllOverIt.Extensions.EnumerableExtensions.TakeWhile``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
-            <summary>Gets the elements from the input candidates while they meet the criteria of a provided specification.</summary>
-            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
-            <param name="candidates">The elements to apply the specification against.</param>
-            <param name="specification">The specification to apply against a collection of elements.</param>
-            <returns>An enumerable that contains the elements from the input candidates while they meet the criteria of a provided
-            specification.</returns>
-        </member>
         <member name="M:AllOverIt.Extensions.EnumerableExtensions.ForEachAsTaskAsync``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Threading.Tasks.Task},System.Int32,System.Threading.CancellationToken)">
             <summary>Creates a Task for each item in a collection and invokes an asynchronous function. The number of tasks is
             partitioned based on a provided degree of parallelism.</summary>
@@ -563,6 +513,83 @@
             <param name="degreeOfParallelism">Determines the maximum number of parallel operations.</param>
             <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
             <returns>A task that will complete when all items have been processed.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.Where``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
+            <summary>Gets all candidates that meet the criteria of a provided specification.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="candidates">The elements to apply the specification against.</param>
+            <param name="specification">The specification to apply against a collection of elements.</param>
+            <returns>The candidates that meet the criteria of the provided specification.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.Any``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
+            <summary>Determines if any candidates meet the criteria of a provided specification.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="candidates">The elements to apply the specification against.</param>
+            <param name="specification">The specification to apply against a collection of elements.</param>
+            <returns>True if any of the candidates meet the criteria of the provided specification.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.All``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
+            <summary>Determines if all candidates meet the criteria of a provided specification.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="candidates">The elements to apply the specification against.</param>
+            <param name="specification">The specification to apply against a collection of elements.</param>
+            <returns>True if all of the candidates meet the criteria of the provided specification.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.Count``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
+            <summary>Counts the number of candidates that meet the criteria of a provided specification.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="candidates">The elements to apply the specification against.</param>
+            <param name="specification">The specification to apply against a collection of elements.</param>
+            <returns>The count of candidates that meet the criteria of a provided specification.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.First``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
+            <summary>Gets the first candidate that meets the criteria of a provided specification.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="candidates">The elements to apply the specification against.</param>
+            <param name="specification">The specification to apply against a collection of elements.</param>
+            <returns>The first candidate that meets the criteria of a provided specification.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.FirstOrDefault``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
+            <summary>Gets the first candidate that meets the criteria of a provided specification or the type's
+            default if there are no matches.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="candidates">The elements to apply the specification against.</param>
+            <param name="specification">The specification to apply against a collection of elements.</param>
+            <returns>The first candidate that meets the criteria of a provided specification or the type's
+            default if there are no matches.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.Last``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
+            <summary>Gets the last candidate that meets the criteria of a provided specification.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="candidates">The elements to apply the specification against.</param>
+            <param name="specification">The specification to apply against a collection of elements.</param>
+            <returns>The last candidate that meets the criteria of a provided specification.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.LastOrDefault``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
+            <summary>Gets the last candidate that meets the criteria of a provided specification or the type's
+            default if there are no matches.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="candidates">The elements to apply the specification against.</param>
+            <param name="specification">The specification to apply against a collection of elements.</param>
+            <returns>The last candidate that meets the criteria of a provided specification or the type's
+            default if there are no matches.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.SkipWhile``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
+            <summary>Gets the elements from the first element of the input candidates that meets the criteria of a provided
+            specification.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="candidates">The elements to apply the specification against.</param>
+            <param name="specification">The specification to apply against a collection of elements.</param>
+            <returns>An enumerable that contains the elements from the first element of the input candidates that meets
+            the criteria of a provided specification.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.TakeWhile``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
+            <summary>Gets the elements from the input candidates while they meet the criteria of a provided specification.</summary>
+            <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+            <param name="candidates">The elements to apply the specification against.</param>
+            <param name="specification">The specification to apply against a collection of elements.</param>
+            <returns>An enumerable that contains the elements from the input candidates while they meet the criteria of a provided
+            specification.</returns>
         </member>
         <member name="T:AllOverIt.Extensions.ExpressionExtensions">
             <summary>Provides a variety of extension methods for <see cref="T:System.Linq.Expressions.Expression"/> types.</summary>
@@ -1298,23 +1325,119 @@
         </member>
         <member name="M:AllOverIt.Helpers.Guard.WhenNotNull``1(System.Linq.Expressions.Expression{System.Func{``0}},System.String)">
             <summary>Checks that the evaluated expression is not null.</summary>
-            <remarks>The expression argument cannot be null.</remarks>
+            <typeparam name="TType">The expression's return type.</typeparam>
+            <param name="expression">The expression to evaluate.</param>
+            <param name="errorMessage">The error message to throw if the instance is null. If not provided, the default message
+            is "Value cannot be null".</param>
+            <returns>The value of the evaluated expression.</returns>
+            <remarks>Evaluating the expression is an expensive operation as it must be compiled before it can be invoked.</remarks>
         </member>
         <member name="M:AllOverIt.Helpers.Guard.WhenNotNullOrEmpty``1(System.Linq.Expressions.Expression{System.Func{System.Collections.Generic.IEnumerable{``0}}},System.String)">
             <summary>Checks that the evaluated expression is not null and not empty.</summary>
-            <remarks>The expression argument cannot be null.</remarks>
+            <typeparam name="TType">The expression's return type.</typeparam>
+            <param name="expression">The expression to evaluate.</param>
+            <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be null" for a null
+            instance and "Value cannot be empty" for an empty collection.</param>
+            <returns>The value of the evaluated expression.</returns>
+            <remarks>Evaluating the expression is an expensive operation as it must be compiled before it can be invoked.</remarks>
         </member>
         <member name="M:AllOverIt.Helpers.Guard.WhenNotEmpty``1(System.Linq.Expressions.Expression{System.Func{System.Collections.Generic.IEnumerable{``0}}},System.String)">
             <summary>Checks that the evaluated expression is not empty.</summary>
-            <remarks>The expression argument cannot be null.</remarks>
+            <typeparam name="TType">The expression's return type.</typeparam>
+            <param name="expression">The expression to evaluate.</param>
+            <param name="errorMessage">The error message to throw if the instance is null. If not provided, the default message
+            is "Value cannot be empty".</param>
+            <returns>The value of the evaluated expression. The evaluated value can be null.</returns>
+            <remarks>Evaluating the expression is an expensive operation as it must be compiled before it can be invoked.</remarks>
         </member>
         <member name="M:AllOverIt.Helpers.Guard.WhenNotNullOrEmpty(System.Linq.Expressions.Expression{System.Func{System.String}},System.String)">
             <summary>Checks that the evaluated expression is not null and not empty.</summary>
-            <remarks>The expression argument cannot be null.</remarks>
+            <param name="expression">The expression to evaluate.</param>
+            <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be null" for a null
+            instance and "Value cannot be empty" for an empty collection.</param>
+            <returns>The value of the evaluated expression.</returns>
+            <remarks>Evaluating the expression is an expensive operation as it must be compiled before it can be invoked.</remarks>
         </member>
         <member name="M:AllOverIt.Helpers.Guard.WhenNotEmpty(System.Linq.Expressions.Expression{System.Func{System.String}},System.String)">
             <summary>Checks that the evaluated expression is not empty.</summary>
-            <remarks>The expression argument cannot be null.</remarks>
+            <param name="expression">The expression to evaluate.</param>
+            <param name="errorMessage">The error message to throw if the instance is null. If not provided, the default message
+            is "Value cannot be empty".</param>
+            <returns>The value of the evaluated expression. The evaluated value can be null.</returns>
+            <remarks>Evaluating the expression is an expensive operation as it must be compiled before it can be invoked.</remarks>
+        </member>
+        <member name="M:AllOverIt.Helpers.Guard.WhenNotNull``1(``0,System.String,System.String)">
+            <summary>Checks that the provided object is not null.</summary>
+            <typeparam name="TType">The object type.</typeparam>
+            <param name="object">The object instance.</param>
+            <param name="name">The name identifying the object instance.</param>
+            <param name="errorMessage">The error message to throw if the instance is null. If not provided, the default message
+            is "Value cannot be null".</param>
+            <returns>The original object instance when not null.</returns>
+        </member>
+        <member name="M:AllOverIt.Helpers.Guard.WhenNotNullOrEmpty``1(System.Collections.Generic.IEnumerable{``0},System.String,System.String)">
+            <summary>Checks that the provided collection is not null and not empty.</summary>
+            <typeparam name="TType">The element type.</typeparam>
+            <param name="object">The collection instance.</param>
+            <param name="name">The name identifying the collection instance.</param>
+            <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be null" for a null
+            instance and "Value cannot be empty" for an empty collection.</param>
+            <returns>The original object instance when not null and not empty.</returns>
+            <remarks>This method also validates that the enumerable is an array or ICollection&lt;TType&gt; to prevent multiple enumeration of the IEnumerable.</remarks>
+        </member>
+        <member name="M:AllOverIt.Helpers.Guard.WhenNotNullOrEmpty``1(System.Collections.Generic.IEnumerable{``0},System.String,System.Boolean,System.String)">
+            <summary>Checks that the provided collection is not null and not empty.</summary>
+            <typeparam name="TType">The element type.</typeparam>
+            <param name="object">The collection instance.</param>
+            <param name="name">The name identifying the collection instance.</param>
+            <param name="ensureIsCollection">Indicates if the method should also validate that the enumerable is an array or ICollection&lt;TType&gt;
+            to prevent multiple enumeration of the IEnumerable.</param>
+            <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be null" for a null
+            instance and "Value cannot be empty" for an empty collection.</param>
+            <returns>The original object instance when not null and not empty.</returns>
+        </member>
+        <member name="M:AllOverIt.Helpers.Guard.WhenNotEmpty``1(System.Collections.Generic.IEnumerable{``0},System.String,System.String)">
+            <summary>Checks that the provided collection is not empty.</summary>
+            <typeparam name="TType">The element type.</typeparam>
+            <param name="object">The collection instance.</param>
+            <param name="name">The name identifying the collection instance.</param>
+            <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be null" for a null
+            instance and "Value cannot be empty" for an empty collection.</param>
+            <returns>The original collection instance when not empty. If the instance was null then null will be returned.</returns>
+            <remarks>This method also validates that the enumerable is an array or ICollection&lt;TType&gt; to prevent multiple enumeration of the IEnumerable.</remarks>
+        </member>
+        <member name="M:AllOverIt.Helpers.Guard.WhenNotEmpty``1(System.Collections.Generic.IEnumerable{``0},System.String,System.Boolean,System.String)">
+            <summary>Checks that the provided collection is not empty.</summary>
+            <typeparam name="TType">The element type.</typeparam>
+            <param name="object">The collection instance.</param>
+            <param name="name">The name identifying the collection instance.</param>
+            <param name="ensureIsCollection">Indicates if the method should also validate that the enumerable is an array or ICollection&lt;TType&gt;
+            to prevent multiple enumeration of the IEnumerable.</param>
+            <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be empty".</param>
+            <returns>The original collection instance when not empty. If the instance was null then null will be returned.</returns>
+        </member>
+        <member name="M:AllOverIt.Helpers.Guard.WhenNotNullOrEmpty(System.String,System.String,System.String)">
+            <summary>Checks that the provided string is not null and not empty.</summary>
+            <param name="object">The string instance.</param>
+            <param name="name">The name identifying the string instance.</param>
+            <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be null" for a null
+            instance and "Value cannot be empty" for an empty collection.</param>
+            <returns>The original string instance when not null and not empty.</returns>
+        </member>
+        <member name="M:AllOverIt.Helpers.Guard.WhenNotEmpty(System.String,System.String,System.String)">
+            <summary>Checks that the provided string is not empty.</summary>
+            <param name="object">The string instance.</param>
+            <param name="name">The name identifying the string instance.</param>
+            <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be empty".</param>
+            <returns>The original string instance when not empty.</returns>
+        </member>
+        <member name="T:AllOverIt.Helpers.IFormattableObjectPropertyFilter">
+            <summary>Represents the ability to format values serialized by the <see cref="T:AllOverIt.Helpers.ObjectPropertySerializer"/>.</summary>
+        </member>
+        <member name="M:AllOverIt.Helpers.IFormattableObjectPropertyFilter.OnFormatValue(System.String)">
+            <summary>Provides the ability to format a value generated by the <see cref="T:AllOverIt.Helpers.ObjectPropertySerializer"/>.</summary>
+            <param name="value">The value that can be formatted.</param>
+            <returns>The replacement, formatted, value to be serialized.</returns>
         </member>
         <member name="T:AllOverIt.Helpers.ObjectPropertyFilter">
             <summary>A base class that provides support for filtering properties and values when serializing via
@@ -1461,6 +1584,36 @@
             <param name="cancellationToken">The cancellation token to signal when enumeration needs to be prematurely completed.</param>
             <returns>Returns an enumerable collection of files. The enumeration may not be complete if the <c>cancellationToken</c>
             is cancelled.</returns>
+        </member>
+        <member name="T:AllOverIt.Io.FileUtils">
+            <summary>Contains file and path related utilities.</summary>
+        </member>
+        <member name="M:AllOverIt.Io.FileUtils.CreateUniqueFilename(System.String)">
+            <summary>Ensures a filename is unique by generating a unique filename if the specified file already exists.</summary>
+            <param name="filename">The filename to check for uniqueness.</param>
+            <returns>A filename that will not conflict with an existing file.</returns>
+            <remarks>If the provided filename exists this method generates a new name that contains a numerical suffix (starting at 1) while
+            ensuring the new filename also does not exist. This method does not create the file so applications should take extra measures to
+            ensure the returned filename is still unique before using it (the file may have since been created by another process).</remarks>
+        </member>
+        <member name="M:AllOverIt.Io.FileUtils.PathIsSubFolder(System.String,System.String)">
+            <summary>Determines if the provided child path is a subfolder of the provided parent path.</summary>
+            <param name="parentPath">The parent path.</param>
+            <param name="childPath">The child path.</param>
+            <returns>True if the child path is an immediate subfolder of the parent path.</returns>
+        </member>
+        <member name="M:AllOverIt.Io.FileUtils.GetAbsolutePath(System.String,System.String)">
+            <summary>Creates an absolute path from a source path and a relative path.</summary>
+            <param name="sourcePath">The source path.</param>
+            <param name="relativePath">The relative path to apply to the source path.</param>
+            <returns>The absolute path derived from combining the source and relative paths.</returns>
+        </member>
+        <member name="M:AllOverIt.Io.FileUtils.GetAbsoluteFileName(System.String,System.String,System.String)">
+            <summary>Gets an absolute filename after applying a relative path to the original source filename.</summary>
+            <param name="sourceFileName">The original source filename (with path).</param>
+            <param name="relativePath">The relative path to apply to the path portion of the source filename.</param>
+            <param name="newFileName">If not null then the source filename is replaced.</param>
+            <returns>The absolute filename derived from applying a relative path to the original source filename.</returns>
         </member>
         <member name="T:AllOverIt.Patterns.ChainOfResponsibility.ChainOfResponsibilityComposer`2">
             <summary>Composes a sequence of 'Chain Of Responsibility' handlers.</summary>
@@ -1981,79 +2134,66 @@
             and <see cref="F:AllOverIt.Reflection.BindingOptions.AllVisibility"/> visibility.
             </summary>
         </member>
+        <member name="T:AllOverIt.Reflection.ReflectionHelper">
+            <summary>Contains a number of helper functions related to reflection.</summary>
+        </member>
         <member name="M:AllOverIt.Reflection.ReflectionHelper.GetPropertyInfo``1(System.String)">
-            <summary>
-            Gets the <see cref="T:System.Reflection.PropertyInfo"/> (property metadata) for a given property on a <typeparam name="TType"/>.
-            </summary>
+            <summary>Gets the <see cref="T:System.Reflection.PropertyInfo"/> (property metadata) for a given property on a <typeparamref name="TType"/>.</summary>
             <typeparam name="TType">The type to obtain the property metadata from.</typeparam>
             <param name="propertyName">The name of the property to obtain metadata for.</param>
-            <returns>The property metadata, as <see cref="T:System.Reflection.PropertyInfo"/>, of a specified property on the specified <typeparam name="TType"/>.</returns>
+            <returns>The property metadata, as <see cref="T:System.Reflection.PropertyInfo"/>, of a specified property on the specified <typeparamref name="TType"/>.</returns>
             <remarks>When class inheritance is involved, this method returns the first property found, starting at the type represented
-            by <typeparam name="TType"/>.</remarks>
+            by <typeparamref name="TType"/>.</remarks>
         </member>
         <member name="M:AllOverIt.Reflection.ReflectionHelper.GetPropertyInfo``1(AllOverIt.Reflection.BindingOptions,System.Boolean)">
-            <summary>
-            Gets <see cref="T:System.Reflection.PropertyInfo"/> (property metadata) for a given <typeparam name="TType"/> and binding option.
-            </summary>
+            <summary>Gets <see cref="T:System.Reflection.PropertyInfo"/> (property metadata) for a given <typeparamref name="TType"/> and binding option.</summary>
             <typeparam name="TType">The type to obtain property metadata for.</typeparam>
             <param name="binding">The binding option that determines the scope, access, and visibility rules to apply when searching for the metadata.</param>
             <param name="declaredOnly">If true, the metadata of properties in the declared class as well as base class(es) are returned.
             If false, only property metadata of the declared type is returned.</param>
-            <returns>The property metadata, as <see cref="T:System.Reflection.PropertyInfo"/>, of a specified <typeparam name="TType"/>.</returns>
+            <returns>The property metadata, as <see cref="T:System.Reflection.PropertyInfo"/>, of a specified <typeparamref name="TType"/>.</returns>
             <remarks>When class inheritance is involved, this method returns the first property found, starting at the type represented
-            by <typeparam name="TType"/>.</remarks>
+            by <typeparamref name="TType"/>.</remarks>
         </member>
         <member name="M:AllOverIt.Reflection.ReflectionHelper.GetMethodInfo``1(AllOverIt.Reflection.BindingOptions,System.Boolean)">
-            <summary>
-            Gets <see cref="T:System.Reflection.MethodInfo"/> (method metadata) for a given <typeparam name="TType"/> and binding option.
-            </summary>
+            <summary>Gets <see cref="T:System.Reflection.MethodInfo"/> (method metadata) for a given <typeparamref name="TType"/> and binding option.</summary>
             <typeparam name="TType">The type to obtain method metadata for.</typeparam>
             <param name="binding">The binding option that determines the scope, access, and visibility rules to apply when searching for the metadata.</param>
             <param name="declaredOnly">If true, the metadata of properties in the declared class as well as base class(es) are returned.
             If false, only method metadata of the declared type is returned.</param>
-            <returns>The method metadata, as <see cref="T:System.Reflection.MethodInfo"/>, of a specified <typeparam name="TType"/>.</returns>
+            <returns>The method metadata, as <see cref="T:System.Reflection.MethodInfo"/>, of a specified <typeparamref name="TType"/>.</returns>
             <remarks>When class inheritance is involved, this method returns the first method found, starting at the type represented
-            by <typeparam name="TType"/>.</remarks>
+            by <typeparamref name="TType"/>.</remarks>
         </member>
         <member name="M:AllOverIt.Reflection.ReflectionHelper.GetMethodInfo``1(System.String)">
-            <summary>
-            Gets <see cref="T:System.Reflection.MethodInfo"/> (method metadata) for a given <typeparam name="TType"/> method with a given name and no arguments.
-            </summary>
+            <summary>Gets <see cref="T:System.Reflection.MethodInfo"/> (method metadata) for a given <typeparamref name="TType"/> method with a given name and no arguments.</summary>
             <typeparam name="TType">The type to obtain method metadata for.</typeparam>
             <param name="name">The name of the method.</param>
-            <returns>The method metadata, as <see cref="T:System.Reflection.MethodInfo"/>, of a specified <typeparam name="TType"/> with a given name and no arguments.</returns>
+            <returns>The method metadata, as <see cref="T:System.Reflection.MethodInfo"/>, of a specified <typeparamref name="TType"/> with a given name and no arguments.</returns>
             <remarks>All instance, static, public, and non-public methods are searched.</remarks>
         </member>
         <member name="M:AllOverIt.Reflection.ReflectionHelper.GetMethodInfo``1(System.String,System.Type[])">
-            <summary>
-            Gets <see cref="T:System.Reflection.MethodInfo"/> (method metadata) for a given <typeparam name="TType"/> method with a given name and argument types.
-            </summary>
+            <summary>Gets <see cref="T:System.Reflection.MethodInfo"/> (method metadata) for a given <typeparamref name="TType"/> method with a given name and argument types.</summary>
             <typeparam name="TType">The type to obtain method metadata for.</typeparam>
             <param name="name">The name of the method.</param>
             <param name="types">The argument types expected on the method</param>
-            <returns>The method metadata, as <see cref="T:System.Reflection.MethodInfo"/>, of a specified <typeparam name="TType"/> with a given name and argument types.</returns>
+            <returns>The method metadata, as <see cref="T:System.Reflection.MethodInfo"/>, of a specified <typeparamref name="TType"/> with a given name and argument types.</returns>
             <remarks>All instance, static, public, and non-public methods are searched.</remarks>
         </member>
         <member name="M:AllOverIt.Reflection.ReflectionHelper.SetMemberValue(System.Reflection.MemberInfo,System.Object,System.Object)">
-            <summary>
-            Sets the value of a target property or field using its associated <see cref="T:System.Reflection.MemberInfo"/>.
-            </summary>
+            <summary>Sets the value of a target property or field using its associated <see cref="T:System.Reflection.MemberInfo"/>.</summary>
             <param name="memberInfo">The <see cref="T:System.Reflection.MemberInfo"/> of the property or field to have its value set.</param>
             <param name="target">The target object being updated.</param>
             <param name="value">The value to assign to the property or field.</param>
         </member>
         <member name="M:AllOverIt.Reflection.ReflectionHelper.GetMemberValue(System.Reflection.MemberInfo,System.Object)">
-            <summary>
-            Gets the value of a target property or field using its associated <see cref="T:System.Reflection.MemberInfo"/>.
-            </summary>
+            <summary>Gets the value of a target property or field using its associated <see cref="T:System.Reflection.MemberInfo"/>.</summary>
             <param name="memberInfo">The <see cref="T:System.Reflection.MemberInfo"/> of the property or field being read.</param>
             <param name="target">The target object being read.</param>
-            <returns>The value of the property or field referred to by <param name="memberInfo"></param>.</returns>
+            <returns>The value of the property or field referred to by <paramref name="memberInfo" />.</returns>
         </member>
         <member name="M:AllOverIt.Reflection.ReflectionHelper.GetMemberType(System.Reflection.MemberInfo)">
-            <summary>
-            Gets the property, field or method call return type associated with the <see cref="!:memberInfo"/>.
-            </summary>
+            <summary>Gets the property, field or method call return type associated with the <paramref name="memberInfo"/>.</summary>
             <param name="memberInfo">The <see cref="T:System.Reflection.MemberInfo"/> of the property, field or method call.</param>
             <returns>The property, field or method call return type.</returns>
         </member>
@@ -2082,6 +2222,25 @@
             Gets an awaiter that allows for 'await lazyProp' instead of 'await lazyProp.Value'
             </summary>
             <returns>An awaiter for the value being initialized.</returns>
+        </member>
+        <member name="T:AllOverIt.Tasks.RepeatingTask">
+            <summary>Provides support for creating and executing a new task repeatedly until cancelled.</summary>
+        </member>
+        <member name="M:AllOverIt.Tasks.RepeatingTask.Start(System.Func{System.Threading.Tasks.Task},System.Int32,System.Threading.CancellationToken,System.Int32)">
+            <summary>Creates and starts a new task that repeatedly invokes an asynchronous function.</summary>
+            <param name="action">The asynchronous function to execute each time the task repeats.</param>
+            <param name="cancellationToken">The cancellation token used to terminate the task.</param>
+            <param name="repeatDelay">The frequency (milliseconds) the task should repeat.</param>
+            <param name="initialDelay">An initial delay (milliseconds) to wait before executing the first function invocation.</param>
+            <returns>The started task.</returns>
+        </member>
+        <member name="M:AllOverIt.Tasks.RepeatingTask.Start(System.Action,System.Int32,System.Threading.CancellationToken,System.Int32)">
+            <summary>Creates and starts a new task that repeatedly invokes a function.</summary>
+            <param name="action">The function to execute each time the task repeats.</param>
+            <param name="cancellationToken">The cancellation token used to terminate the task.</param>
+            <param name="repeatDelay">The frequency (milliseconds) the task should repeat.</param>
+            <param name="initialDelay">An initial delay (milliseconds) to wait before executing the first function invocation.</param>
+            <returns>The started task.</returns>
         </member>
         <member name="T:AllOverIt.Tasks.TaskHelper">
             <summary>Provides a variety of extension methods for <see cref="T:System.Threading.Tasks.Task`1"/>.</summary>
@@ -2320,6 +2479,10 @@
         <member name="M:AllOverIt.Threading.NoLock.Dispose">
             <summary>Performs no action.</summary>
         </member>
+        <member name="T:AllOverIt.Threading.ReadWriteLock">
+            <summary>Represents a lock that is used to manage access to a resource, allowing multiple threads for reading or
+            exclusive access for writing.</summary>
+        </member>
         <member name="M:AllOverIt.Threading.ReadWriteLock.#ctor">
             <summary>Constructor.</summary>
             <remarks>Defaults to a non-recursive lock policy.</remarks>
@@ -2345,6 +2508,9 @@
         </member>
         <member name="M:AllOverIt.Threading.ReadWriteLock.ExitWriteLock">
             <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Threading.ReadWriteLock.Dispose">
+            <summary>Disposes of the internal lock.</summary>
         </member>
         <member name="M:AllOverIt.Utils.Formatter.FormatJsonString(System.String,System.Int32)">
             <summary>Returns a beautified version of the provided string, assumed to be in a JSON format.</summary>

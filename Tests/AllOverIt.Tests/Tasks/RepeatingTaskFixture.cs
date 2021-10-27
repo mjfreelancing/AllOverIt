@@ -27,7 +27,7 @@ namespace AllOverIt.Tests.Tasks
                     return Task.CompletedTask;
                 }
 
-                var task = RepeatingTask.Start(DoAction, cancellationToken.Token, 10);
+                var task = RepeatingTask.Start(DoAction, 10, cancellationToken.Token);
 
                 await task.ConfigureAwait(false);
 
@@ -40,7 +40,7 @@ namespace AllOverIt.Tests.Tasks
                 var cancellationToken = new CancellationTokenSource();
                 cancellationToken.Cancel();
 
-                var task = RepeatingTask.Start(() => Task.CompletedTask, cancellationToken.Token, 10);
+                var task = RepeatingTask.Start(() => Task.CompletedTask, 10, cancellationToken.Token);
 
                 await Invoking(() => task)
                   .Should()
@@ -62,7 +62,7 @@ namespace AllOverIt.Tests.Tasks
                     await Task.Delay(1, cancellationToken.Token);
                 }
 
-                var task = RepeatingTask.Start(DoAction, cancellationToken.Token, 10);
+                var task = RepeatingTask.Start(DoAction, 10, cancellationToken.Token);
 
                 await task.ConfigureAwait(false);
 
@@ -87,7 +87,7 @@ namespace AllOverIt.Tests.Tasks
                     return Task.CompletedTask;
                 }
 
-                var task = RepeatingTask.Start(DoAction, cancellationToken.Token, 10);
+                var task = RepeatingTask.Start(DoAction, 10, cancellationToken.Token);
 
                 await task.ConfigureAwait(false);
 
@@ -123,7 +123,7 @@ namespace AllOverIt.Tests.Tasks
 
                 stopwatch.Start();
 
-                var task = RepeatingTask.Start(DoAction, cancellationToken.Token, repeatDelay);
+                var task = RepeatingTask.Start(DoAction, repeatDelay, cancellationToken.Token);
 
                 await task.ConfigureAwait(false);
 
@@ -161,7 +161,7 @@ namespace AllOverIt.Tests.Tasks
                     return Task.CompletedTask;
                 }
 
-                var task = RepeatingTask.Start(DoAction, cancellationToken.Token, repeatDelay, initialDelay);
+                var task = RepeatingTask.Start(DoAction, repeatDelay, cancellationToken.Token, initialDelay);
 
                 await task.ConfigureAwait(false);
 
@@ -187,7 +187,7 @@ namespace AllOverIt.Tests.Tasks
                     cancellationToken.Cancel();
                 }
 
-                var task = RepeatingTask.Start(DoAction, cancellationToken.Token, 10);
+                var task = RepeatingTask.Start(DoAction, 10, cancellationToken.Token);
 
                 await task.ConfigureAwait(false);
 
@@ -200,7 +200,7 @@ namespace AllOverIt.Tests.Tasks
                 var cancellationToken = new CancellationTokenSource();
                 cancellationToken.Cancel();
 
-                var task = RepeatingTask.Start(() => { }, cancellationToken.Token, 10);
+                var task = RepeatingTask.Start(() => { }, 10, cancellationToken.Token);
 
                 await Invoking(() => task)
                   .Should()
@@ -222,7 +222,7 @@ namespace AllOverIt.Tests.Tasks
                     Task.Delay(1, cancellationToken.Token).GetAwaiter().GetResult();
                 }
 
-                var task = RepeatingTask.Start(DoAction, cancellationToken.Token, 10);
+                var task = RepeatingTask.Start(DoAction, 10, cancellationToken.Token);
 
                 await task.ConfigureAwait(false);
 
@@ -245,7 +245,7 @@ namespace AllOverIt.Tests.Tasks
                     }
                 }
 
-                var task = RepeatingTask.Start(DoAction, cancellationToken.Token, 10);
+                var task = RepeatingTask.Start(DoAction, 10, cancellationToken.Token);
 
                 await task.ConfigureAwait(false);
 
@@ -279,7 +279,7 @@ namespace AllOverIt.Tests.Tasks
 
                 stopwatch.Start();
 
-                var task = RepeatingTask.Start(DoAction, cancellationToken.Token, repeatDelay);
+                var task = RepeatingTask.Start(DoAction, repeatDelay, cancellationToken.Token);
 
                 await task.ConfigureAwait(false);
 
@@ -315,7 +315,7 @@ namespace AllOverIt.Tests.Tasks
                     }
                 }
 
-                var task = RepeatingTask.Start(DoAction, cancellationToken.Token, repeatDelay, initialDelay);
+                var task = RepeatingTask.Start(DoAction, repeatDelay, cancellationToken.Token, initialDelay);
 
                 await task.ConfigureAwait(false);
 
