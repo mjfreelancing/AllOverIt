@@ -2,7 +2,7 @@
 
 namespace AllOverIt.Aws.Cdk.AppSync.Attributes.Types
 {
-    // Used to indicate an array 'type' or 'input' is required
+    /// <summary>Apply to schema 'type' and 'input' array types to indicate they are required.</summary>
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Parameter)]
     public sealed class SchemaArrayRequiredAttribute : Attribute
     {

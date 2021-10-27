@@ -1,8 +1,8 @@
 ﻿namespace GraphqlSchema.Schema.Mappings
 {
-    internal abstract class NoneResponseMapping : RequestResponseMappingBase
+    internal class NoneResponseMapping : RequestResponseMappingBase
     {
-        protected NoneResponseMapping()
+        public NoneResponseMapping()
         {
             RequestMapping = GetNoneRequestMapping();
             ResponseMapping = GetNoneResponseMapping();

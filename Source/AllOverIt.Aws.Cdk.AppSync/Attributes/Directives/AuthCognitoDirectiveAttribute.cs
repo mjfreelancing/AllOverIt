@@ -4,10 +4,14 @@ using System.Collections.Generic;
 
 namespace AllOverIt.Aws.Cdk.AppSync.Attributes.Directives
 {
+    /// <summary>Applies a Cognito Authorization directive.</summary>
     public sealed class AuthCognitoDirectiveAttribute : AuthDirectiveBaseAttribute
     {
+        /// <summary>One or more Cognito groups.</summary>
         public IReadOnlyCollection<string> Groups { get; }
 
+        /// <summary>Constructor.</summary>
+        /// <param name="groups">One or more Cognito groups.</param>
         public AuthCognitoDirectiveAttribute(params string[] groups)
             : base(AuthDirectiveMode.Cognito)
         {

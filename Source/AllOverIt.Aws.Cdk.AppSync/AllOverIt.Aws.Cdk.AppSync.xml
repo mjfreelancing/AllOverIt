@@ -32,5 +32,196 @@
             <typeparam name="TType">The interface that provides the definition for the Subscription.</typeparam>
             <returns>Returns 'this' to support a fluent syntax.</returns>
         </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Attributes.Directives.AuthApiKeyDirectiveAttribute">
+            <summary>Applies an API KEY Authorization directive.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Attributes.Directives.AuthApiKeyDirectiveAttribute.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Attributes.Directives.AuthCognitoDirectiveAttribute">
+            <summary>Applies a Cognito Authorization directive.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.Cdk.AppSync.Attributes.Directives.AuthCognitoDirectiveAttribute.Groups">
+            <summary>One or more Cognito groups.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Attributes.Directives.AuthCognitoDirectiveAttribute.#ctor(System.String[])">
+            <summary>Constructor.</summary>
+            <param name="groups">One or more Cognito groups.</param>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Attributes.Directives.AuthDirectiveBaseAttribute">
+            <summary>A base Authorization directive.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.Cdk.AppSync.Attributes.Directives.AuthDirectiveBaseAttribute.Mode">
+            <summary>The authorization mode.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Attributes.Directives.AuthDirectiveBaseAttribute.#ctor(AllOverIt.Aws.Cdk.AppSync.AuthDirectiveMode)">
+            <summary>Constructor.</summary>
+            <param name="mode">The authorization mode.</param>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Attributes.Directives.AuthIamDirectiveAttribute">
+            <summary>Applies an IAM Authorization directive.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Attributes.Directives.AuthIamDirectiveAttribute.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Attributes.Directives.AuthOidcDirectiveAttribute">
+            <summary>Applies an OIDC Authorization directive.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Attributes.Directives.AuthOidcDirectiveAttribute.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Attributes.SubscriptionMutationAttribute">
+            <summary>Apply to a subscription to indicate which mutations will trigger the subscription notifications.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.Cdk.AppSync.Attributes.SubscriptionMutationAttribute.Mutations">
+            <summary>One or more mutations that will trigger the subscription notifications.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Attributes.SubscriptionMutationAttribute.#ctor(System.String[])">
+            <summary>Constructor.</summary>
+            <param name="mutations">One or more mutations that will trigger the subscription notifications.</param>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Attributes.Types.SchemaArrayRequiredAttribute">
+            <summary>Apply to schema 'type' and 'input' array types to indicate they are required.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Attributes.Types.SchemaInputAttribute">
+            <summary>Apply to an interface that describes a schema 'input' type.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Attributes.Types.SchemaInputAttribute.#ctor(System.String)">
+            <summary>Constructor.</summary>
+            <param name="name">The name of the schema 'input' type to apply to the Graphql schema.</param>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Attributes.Types.SchemaScalarAttribute">
+            <summary>Apply to a class that describes a schema 'scalar' type.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Attributes.Types.SchemaScalarAttribute.#ctor(System.String)">
+            <summary>Constructor.</summary>
+            <param name="name">The name of the schema 'scalar' type to apply to the Graphql schema.</param>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Attributes.Types.SchemaTypeAttribute">
+            <summary>Apply to an interface that describes a schema 'type' type.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Attributes.Types.SchemaTypeAttribute.#ctor(System.String)">
+            <summary>Constructor.</summary>
+            <param name="name">The name of the schema 'type' type to apply to the Graphql schema.</param>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Attributes.Types.SchemaTypeBaseAttribute">
+            <summary>Base class for all custom schema types.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.Cdk.AppSync.Attributes.Types.SchemaTypeBaseAttribute.Name">
+            <summary>The Graphql schema type name.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.Cdk.AppSync.Attributes.Types.SchemaTypeBaseAttribute.GraphqlSchemaType">
+            <summary>The Graphql schema type.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Attributes.Types.SchemaTypeBaseAttribute.#ctor(System.String,AllOverIt.Aws.Cdk.AppSync.GraphqlSchemaType)">
+            <summary>Constructor.</summary>
+            <param name="name">The Graphql schema type name.</param>
+            <param name="graphqlSchemaType">The Graphql schema type.</param>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Attributes.Types.SchemaTypeRequiredAttribute">
+            <summary>Apply to schema 'type' and 'input' types to indicate they are required.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.AuthDirectiveMode">
+            <summary>Provides available authorization directive modes.</summary>
+        </member>
+        <member name="F:AllOverIt.Aws.Cdk.AppSync.AuthDirectiveMode.Oidc">
+            <summary>OIDC authorization mode.</summary>
+        </member>
+        <member name="F:AllOverIt.Aws.Cdk.AppSync.AuthDirectiveMode.ApiKey">
+            <summary>API KEY authorization mode.</summary>
+        </member>
+        <member name="F:AllOverIt.Aws.Cdk.AppSync.AuthDirectiveMode.Cognito">
+            <summary>Cognito authorization mode.</summary>
+        </member>
+        <member name="F:AllOverIt.Aws.Cdk.AppSync.AuthDirectiveMode.Iam">
+            <summary>IAM authorization mode.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Schema.IMutationDefinition">
+            <summary>A base (marker) interface to describe all Graphql mutations.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Schema.IQueryDefinition">
+            <summary>A base (marker) interface to describe all Graphql queries.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Schema.ISubscriptionDefinition">
+            <summary>A base (marker) interface to describe all Graphql subscriptions.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Schema.Types.AwsTypeDate">
+            <summary>A custom scalar type that will be interpreted as an AwsDate type.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Schema.Types.AwsTypeDateTime">
+            <summary>A custom scalar type that will be interpreted as an AwsDateTime type.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Schema.Types.AwsTypeEmail">
+            <summary>A custom scalar type that will be interpreted as an AwsEmail type.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Schema.Types.AwsTypeIpAddress">
+            <summary>A custom scalar type that will be interpreted as an AwsIpAddress type.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Schema.Types.AwsTypeJson">
+            <summary>A custom scalar type that will be interpreted as an AwsJson type.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Schema.Types.AwsTypePhone">
+            <summary>A custom scalar type that will be interpreted as an AwsPhone type.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Schema.Types.AwsTypeTime">
+            <summary>A custom scalar type that will be interpreted as an AwsTime type.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Schema.Types.AwsTypeTimestamp">
+            <summary>A custom scalar type that will be interpreted as an AwsTimestamp type.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Schema.Types.AwsTypeUrl">
+            <summary>A custom scalar type that will be interpreted as an AwsUrl type.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Schema.Types.GraphqlTypeId">
+            <summary>A custom scalar type that will be interpreted as ID type.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Schema.Types.IConnection">
+            <summary>Represents a Graphql Connection.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Schema.Types.IConnection.TotalCount">
+            <summary>Provides the total count for the connection.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Schema.Types.IConnection.PageInfo">
+            <summary>Provides pagination information for the connection.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Schema.Types.IConnection`2">
+            <summary>Represents a Graphql Connection with nodes and edges.</summary>
+            <typeparam name="TEdge">The edge type.</typeparam>
+            <typeparam name="TNode">The node type.</typeparam>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Schema.Types.IEdge`1">
+            <summary>Represents an edge on a connection.</summary>
+            <typeparam name="TNode">The node type on the edge.</typeparam>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Schema.Types.IEdge`1.Node">
+            <summary>The edge's node type.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Schema.Types.IEdge`1.Cursor">
+            <summary>A cursor representing the current edge.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Schema.Types.IEdgesConnection`1">
+            <summary>Represents a Graphql Connection with edges.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Schema.Types.IEdgesConnection`1.Edges">
+            <summary>The edges on the connection.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Schema.Types.INodesConnection`1">
+            <summary>Represents a Graphql Connection with nodes.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Schema.Types.INodesConnection`1.Nodes">
+            <summary>The nodes on the connection.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Schema.Types.IPageInfo">
+            <summary>Represents pagination details on a Connection.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Schema.Types.IPageInfo.CurrentPageCursor">
+            <summary>The cursor for the start of the current page.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Schema.Types.IPageInfo.PreviousPageCursor">
+            <summary>The cursor for the start of the previous page.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Schema.Types.IPageInfo.NextPageCursor">
+            <summary>The cursor for the start of the next page.</summary>
+        </member>
     </members>
 </doc>

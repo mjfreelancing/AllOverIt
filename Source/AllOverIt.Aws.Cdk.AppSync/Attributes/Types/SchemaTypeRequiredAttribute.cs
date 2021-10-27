@@ -2,7 +2,7 @@
 
 namespace AllOverIt.Aws.Cdk.AppSync.Attributes.Types
 {
-    // Used to indicate a schema scalar, custom 'type', or 'input' is required
+    /// <summary>Apply to schema 'type' and 'input' types to indicate they are required.</summary>
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Parameter)]
     public sealed class SchemaTypeRequiredAttribute : Attribute
     {

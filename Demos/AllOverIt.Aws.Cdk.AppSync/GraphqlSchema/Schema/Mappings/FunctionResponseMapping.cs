@@ -1,8 +1,8 @@
 ﻿namespace GraphqlSchema.Schema.Mappings
 {
-    internal abstract class FunctionResponseMapping : RequestResponseMappingBase
+    internal class FunctionResponseMapping : RequestResponseMappingBase
     {
-        protected FunctionResponseMapping()
+        public FunctionResponseMapping()
         {
             RequestMapping = GetFunctionRequestMapping();
             ResponseMapping = GetFunctionResponseMapping();
