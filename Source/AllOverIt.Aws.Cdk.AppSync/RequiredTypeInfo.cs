@@ -4,7 +4,7 @@ using SystemType = System.Type;
 
 namespace AllOverIt.Aws.Cdk.AppSync
 {
-    public sealed class RequiredTypeInfo
+    internal sealed class RequiredTypeInfo
     {
         public SystemType Type { get; }
         public bool IsRequired { get; }

@@ -1,12 +1,10 @@
-﻿using AllOverIt.Aws.Cdk.AppSync.Extensions;
-using AllOverIt.Aws.Cdk.AppSync.Factories;
+﻿using AllOverIt.Aws.Cdk.AppSync.Factories;
 using AllOverIt.Aws.Cdk.AppSync.Mapping;
 using Amazon.CDK;
 using Amazon.CDK.AWS.AppSync;
 using GraphqlSchema.Schema;
 using GraphqlSchema.Schema.Mappings;
 using GraphqlSchema.Schema.Mappings.Query;
-using GraphqlSchema.Schema.Types;
 using System;
 
 namespace GraphqlSchema.Constructs
@@ -22,7 +20,7 @@ namespace GraphqlSchema.Constructs
             // using these just for convenience of explanation
             var noneMapping = new NoneResponseMapping();
 
-#if true
+#if false
 
             // This demo is using the [RequestResponseMapping] attributes to define all mappings, but they can alternatively be coded
             // using either of the two approaches below, and pass the 'mappingTemplates' to the AppSyncDemoGraphql instance, which can

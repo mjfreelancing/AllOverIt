@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync.Mapping;
+using AllOverIt.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,33 +7,60 @@ using SystemType = System.Type;
 
 namespace AllOverIt.Aws.Cdk.AppSync.Factories
 {
+    /// <summary>A factory that creates an <see cref="IRequestResponseMapping"/> instance based on a registered type.</summary>
     public sealed class MappingTypeFactory
     {
         private readonly IDictionary<SystemType, Func<IRequestResponseMapping>> _exactMappingRegistry = new Dictionary<SystemType, Func<IRequestResponseMapping>>();
         private readonly IDictionary<SystemType, Func<SystemType, IRequestResponseMapping>> _inheritedMappingRegistry = new Dictionary<SystemType, Func<SystemType, IRequestResponseMapping>>();
 
-        // registers an exact mapping type (declared on a datasource attribute)
-        public MappingTypeFactory Register<TType>(Func<IRequestResponseMapping> creator)
+        /// <summary>Registers an exact mapping type (declared on a concrete <see cref="Attributes.DataSources.DataSourceAttribute"/> attribute)
+        /// against a factory method to create an <see cref="IRequestResponseMapping"/> instance, which would typically be a <typeparamref name="TType"/>.</summary>
+        /// <typeparam name="TType">The mapping type being registered.</typeparam>
+        /// <param name="creator">The factory method to create the required <see cref="IRequestResponseMapping"/> instance.</param>
+        /// <returns>Returns the <see cref="MappingTypeFactory"/> to allow for a fluent syntax.</returns>
+        public MappingTypeFactory Register<TType>(Func<IRequestResponseMapping> creator) where TType : IRequestResponseMapping
         {
             return Register(typeof(TType), creator);
         }
 
-        // registers an exact mapping type (declared on a datasource attribute)
+        /// <summary>Registers an exact mapping type (declared on a concrete <see cref="Attributes.DataSources.DataSourceAttribute"/> attribute)
+        /// against a factory method to create an <see cref="IRequestResponseMapping"/> instance.</summary>
+        /// <param name="mappingType">The mapping type registered against the factory method.</param>
+        /// <param name="creator">The factory method to create the required <see cref="IRequestResponseMapping"/> instance.</param>
+        /// <returns>Returns the <see cref="MappingTypeFactory"/> to allow for a fluent syntax.</returns>
         public MappingTypeFactory Register(SystemType mappingType, Func<IRequestResponseMapping> creator)
         {
+            if (!typeof(IRequestResponseMapping).IsAssignableFromType(mappingType))
+            {
+                throw new InvalidOperationException($"The mapping type '{mappingType.Name}' must inherit '{nameof(IRequestResponseMapping)}'.");
+            }
+
             _exactMappingRegistry.Add(mappingType, creator);
             return this;
         }
 
-        // registers a func that will be called for any type that inherits TBaseType
-        public MappingTypeFactory Register<TBaseType>(Func<SystemType, IRequestResponseMapping> creator)
+        /// <summary>Registers a base mapping type (declared on a concrete <see cref="Attributes.DataSources.DataSourceAttribute"/> attribute)
+        /// against a factory method to create an <see cref="IRequestResponseMapping"/> instance.</summary>
+        /// <typeparam name="TBaseType">The base mapping type registered against the factory method.</typeparam>
+        /// <param name="creator">The factory method to create the required <see cref="IRequestResponseMapping"/> instance.</param>
+        /// <returns>Returns the <see cref="MappingTypeFactory"/> to allow for a fluent syntax.</returns>
+        public MappingTypeFactory Register<TBaseType>(Func<SystemType, IRequestResponseMapping> creator) where TBaseType : IRequestResponseMapping
         {
             return Register(typeof(TBaseType), creator);
         }
 
-        // registers a func that will be called for any type that inherits TBaseType
-        public MappingTypeFactory Register(Type baseMappingType, Func<SystemType, IRequestResponseMapping> creator)
+        /// <summary>Registers a base mapping type (declared on a concrete <see cref="Attributes.DataSources.DataSourceAttribute"/> attribute)
+        /// against a factory method to create an <see cref="IRequestResponseMapping"/> instance.</summary>
+        /// <param name="baseMappingType">The base mapping type registered against the factory method.</param>
+        /// <param name="creator">The factory method to create the required <see cref="IRequestResponseMapping"/> instance.</param>
+        /// <returns>Returns the <see cref="MappingTypeFactory"/> to allow for a fluent syntax.</returns>
+        public MappingTypeFactory Register(SystemType baseMappingType, Func<SystemType, IRequestResponseMapping> creator)
         {
+            if (!typeof(IRequestResponseMapping).IsAssignableFromType(baseMappingType))
+            {
+                throw new InvalidOperationException($"The mapping type '{baseMappingType.Name}' must inherit '{nameof(IRequestResponseMapping)}'.");
+            }
+
             _inheritedMappingRegistry.Add(baseMappingType, creator);
             return this;
         }

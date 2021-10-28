@@ -32,6 +32,92 @@
             <typeparam name="TType">The interface that provides the definition for the Subscription.</typeparam>
             <returns>Returns 'this' to support a fluent syntax.</returns>
         </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources.DataSourceAttribute">
+            <summary>Base class for all AppSync datasource types.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources.DataSourceAttribute.DataSourceName">
+            <summary>The datasource name.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources.DataSourceAttribute.MappingType">
+            <summary>The mapping type that provides the required request and response mapping details. This type must inherit <see cref="T:AllOverIt.Aws.Cdk.AppSync.Mapping.IRequestResponseMapping"/>.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources.DataSourceAttribute.Description">
+            <summary>A description for the datasource.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources.DataSourceAttribute.#ctor(System.Type,System.String)">
+            <summary>Constructor.</summary>
+            <param name="mappingType">The mapping type, inheriting <see cref="T:AllOverIt.Aws.Cdk.AppSync.Mapping.IRequestResponseMapping"/>, that provides the datasource request and response
+            mapping. If null, it is expected that the required mapping will be provided via <see cref="T:AllOverIt.Aws.Cdk.AppSync.Mapping.MappingTemplates"/>.</param>
+            <param name="description">A description for the datasource.</param>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources.HttpDataSourceAttribute">
+            <summary>Provides information required to declare an AppSync HTTP datasource.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources.HttpDataSourceAttribute.EndpointSource">
+            <summary>Determines how the <see cref="P:AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources.HttpDataSourceAttribute.EndpointKey"/> value should be interpreted.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources.HttpDataSourceAttribute.EndpointKey">
+            <summary>This value is interpreted based on the <see cref="P:AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources.HttpDataSourceAttribute.EndpointSource"/>.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources.HttpDataSourceAttribute.DataSourceName">
+            <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources.HttpDataSourceAttribute.#ctor(System.String,System.Type,System.String)">
+            <summary>Constructor.</summary>
+            <param name="endpoint">An explicit HTTP endpoint. <see cref="P:AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources.HttpDataSourceAttribute.EndpointSource"/> is set to 'Explicit' (<see cref="P:AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources.HttpDataSourceAttribute.EndpointSource"/>).</param>
+            <param name="mappingType">The mapping type, inheriting <see cref="T:AllOverIt.Aws.Cdk.AppSync.Mapping.IRequestResponseMapping"/>, that provides the datasource request and response
+            mapping. If null, it is expected that the required mapping will be provided via <see cref="T:AllOverIt.Aws.Cdk.AppSync.Mapping.MappingTemplates"/>.</param>
+            <param name="description">A description for the datasource.</param>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources.HttpDataSourceAttribute.#ctor(AllOverIt.Aws.Cdk.AppSync.EndpointSource,System.String,System.Type,System.String)">
+            <summary>Constructor.</summary>
+            <param name="endpointSource">Determines how the <see cref="P:AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources.HttpDataSourceAttribute.EndpointKey"/> value should be interpreted.</param>
+            <param name="endpointKey">This value is interpreted based on the <see cref="P:AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources.HttpDataSourceAttribute.EndpointSource"/>.</param>
+            <param name="mappingType">The mapping type, inheriting <see cref="T:AllOverIt.Aws.Cdk.AppSync.Mapping.IRequestResponseMapping"/>, that provides the datasource request and response
+            mapping. If null, it is expected that the required mapping will be provided via <see cref="T:AllOverIt.Aws.Cdk.AppSync.Mapping.MappingTemplates"/>.</param>
+            <param name="description">A description for the datasource.</param>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources.LambdaDataSourceAttribute">
+            <summary>Provides information required to declare an AppSync lambda datasource.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources.LambdaDataSourceAttribute.FunctionName">
+            <summary>The name of the lambda function.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources.LambdaDataSourceAttribute.DataSourceName">
+            <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources.LambdaDataSourceAttribute.#ctor(System.String,System.Type,System.String)">
+            <summary>Constructor.</summary>
+            <param name="functionName">The name of the lambda function.</param>
+            <param name="mappingType">The mapping type, inheriting <see cref="T:AllOverIt.Aws.Cdk.AppSync.Mapping.IRequestResponseMapping"/>, that provides the datasource request and response
+            mapping. If null, it is expected that the required mapping will be provided via <see cref="T:AllOverIt.Aws.Cdk.AppSync.Mapping.MappingTemplates"/>.</param>
+            <param name="description">A description for the datasource.</param>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources.NoneDataSourceAttribute">
+            <summary>Provides information required to declare an AppSync None datasource.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources.NoneDataSourceAttribute.DataSourceName">
+            <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources.NoneDataSourceAttribute.#ctor(System.String,System.Type,System.String)">
+            <summary>Constructor.</summary>
+            <param name="identifier">A unique identifier for this datasource.</param>
+            <param name="mappingType">The mapping type, inheriting <see cref="T:AllOverIt.Aws.Cdk.AppSync.Mapping.IRequestResponseMapping"/>, that provides the datasource request and response
+            mapping. If null, it is expected that the required mapping will be provided via <see cref="T:AllOverIt.Aws.Cdk.AppSync.Mapping.MappingTemplates"/>.</param>
+            <param name="description">A description for the datasource.</param>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources.SubscriptionDataSourceAttribute">
+            <summary>Provides information required to declare an AppSync subscription datasource that uses a request mapping with an
+            empty payload and a response mapping that returns an empty result.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources.SubscriptionDataSourceAttribute.DataSourceName">
+            <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources.SubscriptionDataSourceAttribute.#ctor(System.String,System.String)">
+            <summary>Constructor.</summary>
+            <param name="identifier">A unique identifier for this datasource.</param>
+            <param name="description">A description for the datasource.</param>
+        </member>
         <member name="T:AllOverIt.Aws.Cdk.AppSync.Attributes.Directives.AuthApiKeyDirectiveAttribute">
             <summary>Applies an API KEY Authorization directive.</summary>
         </member>
@@ -135,6 +221,145 @@
         </member>
         <member name="F:AllOverIt.Aws.Cdk.AppSync.AuthDirectiveMode.Iam">
             <summary>IAM authorization mode.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.EndpointSource">
+            <summary>Indicates how a HTTP datasource determines its endpoint.</summary>
+        </member>
+        <member name="F:AllOverIt.Aws.Cdk.AppSync.EndpointSource.Explicit">
+            <summary>Indicates the endpoint value is explicit.</summary>
+        </member>
+        <member name="F:AllOverIt.Aws.Cdk.AppSync.EndpointSource.ImportValue">
+            <summary>Indicates the endpoint value refers to an Import key.</summary>
+        </member>
+        <member name="F:AllOverIt.Aws.Cdk.AppSync.EndpointSource.EnvironmentVariable">
+            <summary>Indicates the endpoint value refers to an environment variable name.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Exceptions.SchemaException">
+            <summary>An error describing a condition that would result in an invalid schema.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Exceptions.SchemaException.#ctor(System.String)">
+            <summary>Constructor.</summary>
+            <param name="message">The error message.</param>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Extensions.MappingTemplatesExtensions">
+            <summary>Provides extension methods for <see cref="T:AllOverIt.Aws.Cdk.AppSync.Mapping.MappingTemplates"/>.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Extensions.MappingTemplatesExtensions.RegisterQueryMappings(AllOverIt.Aws.Cdk.AppSync.Mapping.MappingTemplates,AllOverIt.Aws.Cdk.AppSync.Mapping.MappingNode[])">
+            <summary>Registers the request and response mappings (via a <see cref="T:AllOverIt.Aws.Cdk.AppSync.Mapping.MappingNode"/>) of one or more root query nodes.</summary>
+            <param name="mappingTemplates">The mapping templates registry to register the nodes with.</param>
+            <param name="nodes">The root nodes, along with any containing child nodes, to register.</param>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Extensions.MappingTemplatesExtensions.RegisterMutationMappings(AllOverIt.Aws.Cdk.AppSync.Mapping.MappingTemplates,AllOverIt.Aws.Cdk.AppSync.Mapping.MappingNode[])">
+            <summary>Registers the request and response mappings (via a <see cref="T:AllOverIt.Aws.Cdk.AppSync.Mapping.MappingNode"/>) of one or more root mutation nodes.</summary>
+            <param name="mappingTemplates">The mapping templates registry to register the nodes with.</param>
+            <param name="nodes">The root nodes, along with any containing child nodes, to register.</param>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Extensions.MappingTemplatesExtensions.RegisterSubscriptionMappings(AllOverIt.Aws.Cdk.AppSync.Mapping.MappingTemplates,AllOverIt.Aws.Cdk.AppSync.Mapping.MappingNode[])">
+            <summary>Registers the request and response mappings (via a <see cref="T:AllOverIt.Aws.Cdk.AppSync.Mapping.MappingNode"/>) of one or more root subscription nodes.</summary>
+            <param name="mappingTemplates">The mapping templates registry to register the nodes with.</param>
+            <param name="nodes">The root nodes, along with any containing child nodes, to register.</param>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Factories.MappingTypeFactory">
+            <summary>A factory that creates an <see cref="T:AllOverIt.Aws.Cdk.AppSync.Mapping.IRequestResponseMapping"/> instance based on a registered type.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Factories.MappingTypeFactory.Register``1(System.Func{AllOverIt.Aws.Cdk.AppSync.Mapping.IRequestResponseMapping})">
+            <summary>Registers an exact mapping type (declared on a concrete <see cref="T:AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources.DataSourceAttribute"/> attribute)
+            against a factory method to create an <see cref="T:AllOverIt.Aws.Cdk.AppSync.Mapping.IRequestResponseMapping"/> instance, which would typically be a <typeparamref name="TType"/>.</summary>
+            <typeparam name="TType">The mapping type being registered.</typeparam>
+            <param name="creator">The factory method to create the required <see cref="T:AllOverIt.Aws.Cdk.AppSync.Mapping.IRequestResponseMapping"/> instance.</param>
+            <returns>Returns the <see cref="T:AllOverIt.Aws.Cdk.AppSync.Factories.MappingTypeFactory"/> to allow for a fluent syntax.</returns>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Factories.MappingTypeFactory.Register(System.Type,System.Func{AllOverIt.Aws.Cdk.AppSync.Mapping.IRequestResponseMapping})">
+            <summary>Registers an exact mapping type (declared on a concrete <see cref="T:AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources.DataSourceAttribute"/> attribute)
+            against a factory method to create an <see cref="T:AllOverIt.Aws.Cdk.AppSync.Mapping.IRequestResponseMapping"/> instance.</summary>
+            <param name="mappingType">The mapping type registered against the factory method.</param>
+            <param name="creator">The factory method to create the required <see cref="T:AllOverIt.Aws.Cdk.AppSync.Mapping.IRequestResponseMapping"/> instance.</param>
+            <returns>Returns the <see cref="T:AllOverIt.Aws.Cdk.AppSync.Factories.MappingTypeFactory"/> to allow for a fluent syntax.</returns>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Factories.MappingTypeFactory.Register``1(System.Func{System.Type,AllOverIt.Aws.Cdk.AppSync.Mapping.IRequestResponseMapping})">
+            <summary>Registers a base mapping type (declared on a concrete <see cref="T:AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources.DataSourceAttribute"/> attribute)
+            against a factory method to create an <see cref="T:AllOverIt.Aws.Cdk.AppSync.Mapping.IRequestResponseMapping"/> instance.</summary>
+            <typeparam name="TBaseType">The base mapping type registered against the factory method.</typeparam>
+            <param name="creator">The factory method to create the required <see cref="T:AllOverIt.Aws.Cdk.AppSync.Mapping.IRequestResponseMapping"/> instance.</param>
+            <returns>Returns the <see cref="T:AllOverIt.Aws.Cdk.AppSync.Factories.MappingTypeFactory"/> to allow for a fluent syntax.</returns>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Factories.MappingTypeFactory.Register(System.Type,System.Func{System.Type,AllOverIt.Aws.Cdk.AppSync.Mapping.IRequestResponseMapping})">
+            <summary>Registers a base mapping type (declared on a concrete <see cref="T:AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources.DataSourceAttribute"/> attribute)
+            against a factory method to create an <see cref="T:AllOverIt.Aws.Cdk.AppSync.Mapping.IRequestResponseMapping"/> instance.</summary>
+            <param name="baseMappingType">The base mapping type registered against the factory method.</param>
+            <param name="creator">The factory method to create the required <see cref="T:AllOverIt.Aws.Cdk.AppSync.Mapping.IRequestResponseMapping"/> instance.</param>
+            <returns>Returns the <see cref="T:AllOverIt.Aws.Cdk.AppSync.Factories.MappingTypeFactory"/> to allow for a fluent syntax.</returns>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.GraphqlSchemaType">
+            <summary>Identifies a schema type.</summary>
+        </member>
+        <member name="F:AllOverIt.Aws.Cdk.AppSync.GraphqlSchemaType.Input">
+            <summary>Specifies a schema 'Input' ype.</summary>
+        </member>
+        <member name="F:AllOverIt.Aws.Cdk.AppSync.GraphqlSchemaType.Type">
+            <summary>Specifies a schema 'Type' ype.</summary>
+        </member>
+        <member name="F:AllOverIt.Aws.Cdk.AppSync.GraphqlSchemaType.Scalar">
+            <summary>Specifies a schema scalar ype.</summary>
+        </member>
+        <member name="F:AllOverIt.Aws.Cdk.AppSync.GraphqlSchemaType.AWSScalar">
+            <summary>Specifies a schema custom AWS scalar type.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Mapping.IRequestResponseMapping">
+            <summary>Represents an AppSync datasource request and response mapping.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.Cdk.AppSync.Mapping.IRequestResponseMapping.RequestMapping">
+            <summary>The request mapping as a string.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.Cdk.AppSync.Mapping.IRequestResponseMapping.ResponseMapping">
+            <summary>The response mapping as a string.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Mapping.Mapping">
+            <summary>Contains mapping helper functions.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Mapping.Mapping.Template(System.String,System.String,System.String,System.Collections.Generic.IEnumerable{AllOverIt.Aws.Cdk.AppSync.Mapping.MappingNode})">
+            <summary>A factory method that creates a <see cref="T:AllOverIt.Aws.Cdk.AppSync.Mapping.MappingNode"/>.</summary>
+            <param name="name">The dot-notation based name of the node within the GraphQL hierarchy.</param>
+            <param name="requestMapping">The datasource request mapping for the current node.</param>
+            <param name="responseMapping">The datasource response mapping for the current node.</param>
+            <param name="children">Child nodes, if any, of the current node.</param>
+            <returns>A new <see cref="T:AllOverIt.Aws.Cdk.AppSync.Mapping.MappingNode"/> containing the provided request and response mapping details.</returns>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Mapping.MappingNode">
+            <summary>A node within a GraphQL hierarchy that contains a datasource request and response mapping.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.Cdk.AppSync.Mapping.MappingNode.Name">
+            <summary>The dot-notation based name of the node within the GraphQL hierarchy.</summary>
+            <remarks>Query root nodes are prefixed with 'Query'. Mutation root nodes are prefixed with 'Mutation'.
+            Subscription root nodes are prefixed with 'Subscription'.</remarks>
+        </member>
+        <member name="P:AllOverIt.Aws.Cdk.AppSync.Mapping.MappingNode.RequestMapping">
+            <summary>The datasource request mapping for the current node.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.Cdk.AppSync.Mapping.MappingNode.ResponseMapping">
+            <summary>The datasource response mapping for the current node.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.Cdk.AppSync.Mapping.MappingNode.Children">
+            <summary>Child nodes, if any, of the current node.</summary>
+        </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Mapping.MappingTemplates">
+            <summary>A registry of AppSync datasource request and response mappings.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Mapping.MappingTemplates.RegisterMappings(System.String,System.String,System.String)">
+            <summary>Registers a request and response mapping against a specified key.</summary>
+            <param name="mappingKey">The key to register the mappings against.</param>
+            <param name="requestMapping">The datasource request mapping as a string.</param>
+            <param name="responseMapping">The datasource response mapping as a string.</param>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Mapping.MappingTemplates.GetRequestMapping(System.String)">
+            <summary>Gets the datasource request mapping for the specified mapping key.</summary>
+            <param name="mappingKey">The key associated with the request mapping.</param>
+            <returns>The request mapping as an AppSync MappingTemplate.</returns>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Mapping.MappingTemplates.GetResponseMapping(System.String)">
+            <summary>Gets the datasource response mapping for the specified mapping key.</summary>
+            <param name="mappingKey">The key associated with the response mapping.</param>
+            <returns>The response mapping as an AppSync MappingTemplate.</returns>
         </member>
         <member name="T:AllOverIt.Aws.Cdk.AppSync.Schema.IMutationDefinition">
             <summary>A base (marker) interface to describe all Graphql mutations.</summary>

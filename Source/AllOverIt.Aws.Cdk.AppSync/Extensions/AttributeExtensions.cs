@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace AllOverIt.Aws.Cdk.AppSync.Extensions
 {
-    public static class AttributeExtensions
+    internal static class AttributeExtensions
     {
-        public static Directive[] GetAuthDirectivesOrDefault(this IReadOnlyCollection<AuthDirectiveBaseAttribute> attributes)
+        public static Directive[] GetAuthDirectivesOrDefault(this IEnumerable<AuthDirectiveBaseAttribute> attributes)
         {
             var directives = new List<Directive>();
 

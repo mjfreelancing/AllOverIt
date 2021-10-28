@@ -13,7 +13,7 @@ using SystemType = System.Type;
 
 namespace AllOverIt.Aws.Cdk.AppSync
 {
-    public sealed class GraphqlTypeStore
+    internal sealed class GraphqlTypeStore
     {
         private readonly IList<SystemType> _typeUnderConstruction = new List<SystemType>();
         private readonly GraphqlApi _graphqlApi;

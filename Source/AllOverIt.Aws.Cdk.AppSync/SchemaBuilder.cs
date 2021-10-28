@@ -13,7 +13,7 @@ using System.Reflection;
 
 namespace AllOverIt.Aws.Cdk.AppSync
 {
-    public sealed class SchemaBuilder
+    internal sealed class SchemaBuilder
     {
         private const string QueryPrefix = "Query";
         private const string MutationPrefix = "Mutation";
