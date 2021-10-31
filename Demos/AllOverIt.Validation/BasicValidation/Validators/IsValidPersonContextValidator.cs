@@ -19,9 +19,9 @@ namespace BasicValidation.Validators
                 .Custom((value, context) =>
                 {
                     // access custom data attached to the context
-                    var personContext = ValidationContextExtensions.GetContextData<Person, PersonContext>(context);
+                    var personContext = context.GetContextData<Person, PersonContext>();
 
-                    if (!personContext.LastNameIsOptional && StringExtensions.IsNullOrEmpty(value))
+                    if (!personContext.LastNameIsOptional && value.IsNullOrEmpty())
                     {
                         context.AddFailure($"'{context.PropertyName}' requires a value (not optional).");
                     }

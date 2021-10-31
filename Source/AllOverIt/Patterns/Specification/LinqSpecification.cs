@@ -89,13 +89,7 @@ namespace AllOverIt.Patterns.Specification
 
         private Func<TType, bool> GetCompiledExpression()
         {
-            // ??= was profiled and is marginally slower than this implementation
-            if (_compiled == null)
-            {
-                _compiled = AsExpression().Compile();
-            }
-            
-            return _compiled;
+            return _compiled ??= AsExpression().Compile();
         }
     }
 }

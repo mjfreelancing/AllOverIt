@@ -1,5 +1,4 @@
-﻿using AllOverIt.Extensions;
-using AllOverIt.Patterns.Specification;
+﻿using AllOverIt.Patterns.Specification;
 using LinqSpecificationDemo.Specifications;
 using System;
 using System.Collections.Generic;
