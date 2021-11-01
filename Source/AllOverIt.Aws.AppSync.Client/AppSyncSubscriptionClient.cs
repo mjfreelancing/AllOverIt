@@ -442,15 +442,12 @@ namespace AllOverIt.Aws.AppSync.Client
 
                 stream.Seek(0, SeekOrigin.Begin);
 
-                switch (webSocketReceiveResult.MessageType)
+                return webSocketReceiveResult.MessageType switch
                 {
-                    case WebSocketMessageType.Text:
-                    case WebSocketMessageType.Close:
-                        return await GetGraphqlResponse(stream);
-
-                    default:
-                        throw new InvalidOperationException($"Unexpected websocket message type '{webSocketReceiveResult.MessageType}'.");
-                }
+                    WebSocketMessageType.Text => await GetGraphqlResponse(stream),
+                    WebSocketMessageType.Close => await GetGraphqlResponse(stream),
+                    _ => throw new InvalidOperationException($"Unexpected websocket message type '{webSocketReceiveResult.MessageType}'.")
+                };
             }
         }
 
