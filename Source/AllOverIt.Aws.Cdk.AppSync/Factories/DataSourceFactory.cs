@@ -1,5 +1,5 @@
-﻿using AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources;
-using AllOverIt.Helpers;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources;
 using Amazon.CDK;
 using Amazon.CDK.AWS.AppSync;
 using Amazon.CDK.AWS.Lambda;

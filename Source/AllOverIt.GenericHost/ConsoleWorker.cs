@@ -1,4 +1,4 @@
-﻿using AllOverIt.Helpers;
+﻿using AllOverIt.Assertion;
 using Microsoft.Extensions.Hosting;
 
 namespace AllOverIt.GenericHost

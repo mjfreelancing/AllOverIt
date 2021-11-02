@@ -1,6 +1,6 @@
-﻿using AllOverIt.Fixture;
+﻿using AllOverIt.Async;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.FakeItEasy;
-using AllOverIt.Helpers;
 using FluentAssertions;
 using System;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace AllOverIt.Tests.Helpers
+namespace AllOverIt.Tests.Async
 {
     public class CompositeAsyncDisposableFixture : FixtureBase
     {

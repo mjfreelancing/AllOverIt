@@ -1,10 +1,10 @@
-﻿using AllOverIt.Fixture;
-using AllOverIt.Tasks;
+﻿using AllOverIt.Async;
+using AllOverIt.Fixture;
 using FluentAssertions;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace AllOverIt.Tests.Tasks
+namespace AllOverIt.Tests.Async
 {
     public class TaskHelperFixture : FixtureBase
     {

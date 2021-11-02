@@ -1,5 +1,5 @@
-﻿using AllOverIt.Aws.AppSync.Client.Response;
-using AllOverIt.Helpers;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Aws.AppSync.Client.Response;
 using AllOverIt.Serialization.Abstractions;
 using System;
 

@@ -1,22 +1,11 @@
-﻿using AllOverIt.Events;
-using AllOverIt.Tasks;
+﻿using AllOverIt.Async;
+using AllOverIt.Events;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace EventAggregatorDemo
 {
-    internal sealed class StringMessage
-    {
-        public string  Value { get; set; }
-    }
-
-    internal sealed class LongMessage
-    {
-        public long Value { get; set; }
-    }
-
-
     class Program
     {
         static async Task Main(string[] args)

@@ -1,15 +1,15 @@
-﻿using AllOverIt.Fixture.Extensions;
-using AllOverIt.Helpers;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace AllOverIt.Tests.Helpers
+namespace AllOverIt.Tests.Assertion
 {
     public partial class GuardFixture
     {
-        public class InvalidWhenNull_Type : GuardFixture
+        public class InvalidWhenNull_Type : Assertion.GuardFixture
         {
             [Fact]
             public void Should_Throw_When_Null()
@@ -80,7 +80,7 @@ namespace AllOverIt.Tests.Helpers
             }
         }
 
-        public class InvalidWhenNullOrEmpty_Type : GuardFixture
+        public class InvalidWhenNullOrEmpty_Type : Assertion.GuardFixture
         {
             [Fact]
             public void Should_Throw_When_Null()
@@ -181,7 +181,7 @@ namespace AllOverIt.Tests.Helpers
             }
         }
 
-        public class InvalidWhenEmpty_Type : GuardFixture
+        public class InvalidWhenEmpty_Type : Assertion.GuardFixture
         {
             [Fact]
             public void Should_Not_Throw_When_Null()

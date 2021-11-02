@@ -1,5 +1,5 @@
-﻿using System;
-using AllOverIt.Helpers;
+﻿using AllOverIt.Assertion;
+using System;
 
 namespace ChainOfResponsibilityDemo
 {

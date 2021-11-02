@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace AllOverIt.Tasks
+namespace AllOverIt.Async
 {
     /// <summary>Provides a variety of extension methods for <see cref="Task{T}"/>.</summary>
     public static class TaskHelper

@@ -34,6 +34,14 @@ namespace BasicValidation
             PrintResult(nameof(IsValidPersonContextValidator), isValidPersonContextResult);
 
 
+            // Example 3
+            var personWithIdValidator = new PersonWithIdValidator();        // a validator that uses a tuple to allow a Guid to also be validated
+            person.Age = 28;
+            var personWithIdResult = personWithIdValidator.Validate((person, Guid.Empty));
+
+            PrintResult(nameof(PersonWithIdValidator), personWithIdResult);
+
+
             Console.WriteLine();
             Console.WriteLine("All Over It.");
             Console.ReadKey();

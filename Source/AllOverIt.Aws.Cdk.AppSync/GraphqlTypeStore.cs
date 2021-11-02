@@ -1,9 +1,9 @@
-﻿using AllOverIt.Aws.Cdk.AppSync.Extensions;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Aws.Cdk.AppSync.Extensions;
 using AllOverIt.Aws.Cdk.AppSync.Factories;
 using AllOverIt.Aws.Cdk.AppSync.Mapping;
 using AllOverIt.Aws.Cdk.AppSync.Schema.Types;
 using AllOverIt.Extensions;
-using AllOverIt.Helpers;
 using Amazon.CDK.AWS.AppSync;
 using System;
 using System.Collections.Generic;

@@ -1,6 +1,6 @@
 ﻿using AllOverIt.Fixture;
 
-namespace AllOverIt.Tests.Helpers
+namespace AllOverIt.Tests.Assertion
 {
     public partial class GuardFixture : FixtureBase
     {

@@ -1,13 +1,13 @@
-﻿using AllOverIt.Fixture;
+﻿using AllOverIt.Async;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using AllOverIt.Tasks;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace AllOverIt.Tests.Tasks
+namespace AllOverIt.Tests.Async
 {
     public class AsyncLazyFixture : FixtureBase
     {

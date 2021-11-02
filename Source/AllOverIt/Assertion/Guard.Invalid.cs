@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AllOverIt.Helpers
+namespace AllOverIt.Assertion
 {
     public static partial class Guard
     {
@@ -64,7 +64,7 @@ namespace AllOverIt.Helpers
         /// <returns>The same source string instance.</returns>
         public static string InvalidWhenNullOrEmpty(this string @object, string errorMessage = default)
         {
-            CheckNotNull(@object, errorMessage);
+            Assertion.Guard.CheckNotNull(@object, errorMessage);
             return InvalidWhenEmpty(@object, errorMessage);
         }
 

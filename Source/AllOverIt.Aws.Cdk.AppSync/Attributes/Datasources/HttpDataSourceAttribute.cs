@@ -1,5 +1,5 @@
-﻿using AllOverIt.Aws.Cdk.AppSync.Mapping;
-using AllOverIt.Helpers;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Aws.Cdk.AppSync.Mapping;
 using SystemType = System.Type;
 
 namespace AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources

@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AllOverIt.Tasks
+namespace AllOverIt.Async
 {
     /// <summary>Provides support for creating and executing a new task repeatedly until cancelled.</summary>
     public static class RepeatingTask

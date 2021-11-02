@@ -1,10 +1,10 @@
-﻿using AllOverIt.Aws.Cdk.AppSync.Attributes;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Aws.Cdk.AppSync.Attributes;
 using AllOverIt.Aws.Cdk.AppSync.Exceptions;
 using AllOverIt.Aws.Cdk.AppSync.Extensions;
 using AllOverIt.Aws.Cdk.AppSync.Factories;
 using AllOverIt.Aws.Cdk.AppSync.Mapping;
 using AllOverIt.Aws.Cdk.AppSync.Schema;
-using AllOverIt.Helpers;
 using Amazon.CDK.AWS.AppSync;
 using System;
 using System.Collections.Generic;

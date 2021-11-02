@@ -1,4 +1,5 @@
-﻿using AllOverIt.Aws.AppSync.Client.Authorization;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Aws.AppSync.Client.Authorization;
 using AllOverIt.Aws.AppSync.Client.Configuration;
 using AllOverIt.Aws.AppSync.Client.Exceptions;
 using AllOverIt.Aws.AppSync.Client.Extensions;

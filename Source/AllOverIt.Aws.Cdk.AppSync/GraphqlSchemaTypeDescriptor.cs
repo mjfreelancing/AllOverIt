@@ -1,4 +1,4 @@
-﻿using AllOverIt.Helpers;
+﻿using AllOverIt.Assertion;
 using SystemType = System.Type;
 
 namespace AllOverIt.Aws.Cdk.AppSync

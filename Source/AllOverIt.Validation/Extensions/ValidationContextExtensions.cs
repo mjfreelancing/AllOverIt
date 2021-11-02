@@ -1,4 +1,4 @@
-﻿using AllOverIt.Helpers;
+﻿using AllOverIt.Assertion;
 using FluentValidation;
 
 namespace AllOverIt.Validation.Extensions

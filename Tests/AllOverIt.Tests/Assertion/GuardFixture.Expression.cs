@@ -1,16 +1,16 @@
-﻿using AllOverIt.Fixture.Extensions;
-using AllOverIt.Helpers;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Xunit;
 
-namespace AllOverIt.Tests.Helpers
+namespace AllOverIt.Tests.Assertion
 {
     public partial class GuardFixture
     {
-        public class WhenNotNull_Expression : GuardFixture
+        public class WhenNotNull_Expression : Assertion.GuardFixture
         {
             [Fact]
             public void Should_Throw_When_Expression_Null()
@@ -96,7 +96,7 @@ namespace AllOverIt.Tests.Helpers
             }
         }
 
-        public class WhenNotNullOrEmpty_Expression_Type : GuardFixture
+        public class WhenNotNullOrEmpty_Expression_Type : Assertion.GuardFixture
         {
             [Fact]
             public void Should_Throw_When_Expression_Null()
@@ -227,7 +227,7 @@ namespace AllOverIt.Tests.Helpers
             }
         }
 
-        public class WhenNotEmpty_Expression_Type : GuardFixture
+        public class WhenNotEmpty_Expression_Type : Assertion.GuardFixture
         {
             [Fact]
             public void Should_Throw_When_Expression_Null()
@@ -342,7 +342,7 @@ namespace AllOverIt.Tests.Helpers
             }
         }
 
-        public class WhenNotNullOrEmpty_Expression_String : GuardFixture
+        public class WhenNotNullOrEmpty_Expression_String : Assertion.GuardFixture
         {
             [Fact]
             public void Should_Throw_When_Expression_Null()
@@ -473,7 +473,7 @@ namespace AllOverIt.Tests.Helpers
             }
         }
 
-        public class WhenNotEmpty_Expression_String : GuardFixture
+        public class WhenNotEmpty_Expression_String : Assertion.GuardFixture
         {
             [Fact]
             public void Should_Throw_When_Expression_Null()

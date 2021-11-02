@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace AllOverIt.Tasks
+namespace AllOverIt.Async
 {
     // Original source: https://devblogs.microsoft.com/pfxteam/asynclazyt/
 
@@ -18,8 +18,9 @@ namespace AllOverIt.Tasks
         /// </summary>
         /// <param name="factory">The factory used for lazy initialization of the stored value.</param>
         public AsyncLazy(Func<TType> factory)
-          : base(() => Task.Factory.StartNew(factory))
-        { }
+            : base(() => Task.Factory.StartNew(factory))
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the AsyncLazy{TType} class. When lazy initialization occurs, the specified initialization
@@ -27,8 +28,9 @@ namespace AllOverIt.Tasks
         /// </summary>
         /// <param name="factory">The factory used for lazy initialization of the stored value.</param>
         public AsyncLazy(Func<Task<TType>> factory)
-          : base(() => Task.Factory.StartNew(factory).Unwrap())
-        { }
+            : base(() => Task.Factory.StartNew(factory).Unwrap())
+        {
+        }
 
         /// <summary>
         /// Gets an awaiter that allows for 'await lazyProp' instead of 'await lazyProp.Value'

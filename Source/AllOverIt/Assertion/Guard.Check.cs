@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AllOverIt.Helpers
+namespace AllOverIt.Assertion
 {
     public static partial class Guard
     {

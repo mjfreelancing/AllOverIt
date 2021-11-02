@@ -1,4 +1,6 @@
-﻿using AllOverIt.Aws.AppSync.Client;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Async;
+using AllOverIt.Aws.AppSync.Client;
 using AllOverIt.Aws.AppSync.Client.Authorization;
 using AllOverIt.Aws.AppSync.Client.Configuration;
 using AllOverIt.Aws.AppSync.Client.Exceptions;
@@ -9,7 +11,6 @@ using AllOverIt.Extensions;
 using AllOverIt.GenericHost;
 using AllOverIt.Helpers;
 using AllOverIt.Serialization.NewtonsoftJson;
-using AllOverIt.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;

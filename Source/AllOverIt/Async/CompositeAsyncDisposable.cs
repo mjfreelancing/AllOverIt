@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AllOverIt.Helpers
+namespace AllOverIt.Async
 {
     /// <summary>A composite that caters for asynchronous disposal of multiple IAsyncDisposable's using a synchronous Dispose().</summary>
     public sealed class CompositeAsyncDisposable : IDisposable, IAsyncDisposable

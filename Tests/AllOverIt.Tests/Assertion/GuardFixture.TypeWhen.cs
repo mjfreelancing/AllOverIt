@@ -1,5 +1,5 @@
-﻿using AllOverIt.Fixture.Extensions;
-using AllOverIt.Helpers;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
@@ -7,11 +7,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Xunit;
 
-namespace AllOverIt.Tests.Helpers
+namespace AllOverIt.Tests.Assertion
 {
     public partial class GuardFixture
     {
-        public class WhenNotNull_Type : GuardFixture
+        public class WhenNotNull_Type : Assertion.GuardFixture
         {
             [Fact]
             public void Should_Throw_When_Null()
@@ -86,7 +86,7 @@ namespace AllOverIt.Tests.Helpers
             }
         }
 
-        public class WhenNotNullOrEmpty_Type : GuardFixture
+        public class WhenNotNullOrEmpty_Type : Assertion.GuardFixture
         {
             [Fact]
             public void Should_Throw_When_Null()
@@ -306,7 +306,7 @@ namespace AllOverIt.Tests.Helpers
             }
         }
 
-        public class WhenNotEmpty_Type : GuardFixture
+        public class WhenNotEmpty_Type : Assertion.GuardFixture
         {
             [Fact]
             public void Should_Not_Throw_When_Null()

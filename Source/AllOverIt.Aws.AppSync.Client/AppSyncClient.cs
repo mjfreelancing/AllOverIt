@@ -1,9 +1,9 @@
-﻿using AllOverIt.Aws.AppSync.Client.Authorization;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Aws.AppSync.Client.Authorization;
 using AllOverIt.Aws.AppSync.Client.Configuration;
 using AllOverIt.Aws.AppSync.Client.Exceptions;
 using AllOverIt.Aws.AppSync.Client.Request;
 using AllOverIt.Aws.AppSync.Client.Response;
-using AllOverIt.Helpers;
 using System.Net.Http;
 using System.Text;
 using System.Threading;

@@ -1,4 +1,5 @@
-﻿using AllOverIt.Exceptions;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Exceptions;
 using AllOverIt.Extensions;
 using System;
 using System.Collections;

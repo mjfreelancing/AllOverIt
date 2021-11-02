@@ -1,6 +1,6 @@
 ﻿#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER || NET5_0_OR_GREATER
 
-using AllOverIt.Helpers;
+using AllOverIt.Assertion;
 using System;
 using System.Threading.Tasks;
 

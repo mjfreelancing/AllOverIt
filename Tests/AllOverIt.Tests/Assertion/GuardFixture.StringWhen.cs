@@ -1,14 +1,14 @@
-﻿using AllOverIt.Fixture.Extensions;
-using AllOverIt.Helpers;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
 using Xunit;
 
-namespace AllOverIt.Tests.Helpers
+namespace AllOverIt.Tests.Assertion
 {
     public partial class GuardFixture
     {
-        public class WhenNotNullOrEmpty_String : GuardFixture
+        public class WhenNotNullOrEmpty_String : Assertion.GuardFixture
         {
             [Fact]
             public void Should_Throw_When_Null()
@@ -131,7 +131,7 @@ namespace AllOverIt.Tests.Helpers
             }
         }
 
-        public class WhenNotEmpty_String : GuardFixture
+        public class WhenNotEmpty_String : Assertion.GuardFixture
         {
             [Fact]
             public void Should_Not_Throw_When_Null()

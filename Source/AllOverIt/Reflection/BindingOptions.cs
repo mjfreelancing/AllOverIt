@@ -2,16 +2,10 @@
 
 namespace AllOverIt.Reflection
 {
-    /// <Summary>
-    /// Specifies binding options that, when combined, provide the ability to filter reflection operations that
-    /// target property and method information on a type.
-    /// </Summary>
+    /// <Summary>Specifies binding options that, when combined, provide the ability to filter reflection operations that
+    /// target property and method information on a type.</Summary>
     [Flags]
-#pragma warning disable RCS1135 // Declare enum member with zero value (when enum has FlagsAttribute).
-#pragma warning disable RCS1154 // Sort enum members.
     public enum BindingOptions
-#pragma warning restore RCS1154 // Sort enum members.
-#pragma warning restore RCS1135 // Declare enum member with zero value (when enum has FlagsAttribute).
     {
         #region Scope
 

@@ -1,4 +1,4 @@
-﻿using AllOverIt.Helpers;
+﻿using AllOverIt.Assertion;
 
 namespace AllOverIt.Aws.AppSync.Client.Response
 {

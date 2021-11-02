@@ -1,4 +1,4 @@
-using AllOverIt.Helpers;
+using AllOverIt.Assertion;
 
 namespace AllOverIt.Patterns.ChainOfResponsibility
 {

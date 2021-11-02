@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace AllOverIt.Helpers
+namespace AllOverIt.Assertion
 {
     public static partial class Guard
     {

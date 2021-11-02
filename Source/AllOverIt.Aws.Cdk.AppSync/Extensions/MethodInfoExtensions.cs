@@ -1,11 +1,11 @@
-﻿using AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources;
 using AllOverIt.Aws.Cdk.AppSync.Attributes.Directives;
 using AllOverIt.Aws.Cdk.AppSync.Attributes.Types;
 using AllOverIt.Aws.Cdk.AppSync.Exceptions;
 using AllOverIt.Aws.Cdk.AppSync.Factories;
 using AllOverIt.Aws.Cdk.AppSync.Mapping;
 using AllOverIt.Extensions;
-using AllOverIt.Helpers;
 using Amazon.CDK.AWS.AppSync;
 using System;
 using System.Collections.Generic;

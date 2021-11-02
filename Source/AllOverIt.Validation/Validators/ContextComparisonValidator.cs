@@ -1,9 +1,8 @@
-﻿using AllOverIt.Helpers;
+﻿using AllOverIt.Assertion;
 using AllOverIt.Validation.Extensions;
 using FluentValidation;
 using FluentValidation.Validators;
 using System;
-using System.Collections.Generic;
 
 namespace AllOverIt.Validation.Validators
 {
