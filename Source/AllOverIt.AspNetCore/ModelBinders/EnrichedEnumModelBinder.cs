@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 
 namespace AllOverIt.AspNetCore.ModelBinders
 {
+    /// <summary>A factory for creating an <see cref="EnrichedEnum{TEnum}"/> specific model binder.</summary>
     public static class EnrichedEnumModelBinder
     {
+        /// <summary>Creates an <see cref="EnrichedEnum{TEnum}"/> specific model binder.</summary>
         public static EnrichedEnumModelBinder<TEnum> CreateInstance<TEnum>()
             where TEnum : EnrichedEnum<TEnum>
         {
@@ -14,9 +16,12 @@ namespace AllOverIt.AspNetCore.ModelBinders
         }
     }
 
-    public class EnrichedEnumModelBinder<TEnum> : IModelBinder
+    /// <summary>Implements an <see cref="EnrichedEnum{TEnum}"/> specific model binder.</summary>
+    /// <typeparam name="TEnum">The concrete <see cref="EnrichedEnum{TEnum}"/> type.</typeparam>
+    public sealed class EnrichedEnumModelBinder<TEnum> : IModelBinder
         where TEnum : EnrichedEnum<TEnum>
     {
+        /// <inheritdoc />
         public Task BindModelAsync(ModelBindingContext bindingContext)
         {
             if (bindingContext == null)

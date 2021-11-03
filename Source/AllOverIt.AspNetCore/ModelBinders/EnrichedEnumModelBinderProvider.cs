@@ -6,26 +6,28 @@ using System.Reflection;
 
 namespace AllOverIt.AspNetCore.ModelBinders
 {
-    public class EnrichedEnumModelBinderProvider : IModelBinderProvider
+    /// <summary>A model binder provider for all <see cref="EnrichedEnum{T}"/> types.</summary>
+    public sealed class EnrichedEnumModelBinderProvider : IModelBinderProvider
     {
-        private static readonly Type RichEnumType = typeof(EnrichedEnum<>);
+        private static readonly Type EnrichedEnumType = typeof(EnrichedEnum<>);
 
+        /// <inheritdoc cref=""/>
         public IModelBinder GetBinder(ModelBinderProviderContext context)
         {
             _ = context.WhenNotNull(nameof(context));
 
-            var fullyQualifiedAssemblyName = context.Metadata.ModelType.FullName;
+            var fullyQualifiedName = context.Metadata.ModelType.FullName;
 
-            if (fullyQualifiedAssemblyName == null)
+            if (fullyQualifiedName == null)
             {
                 return null;
             }
 
-            var enumType = context.Metadata.ModelType.Assembly.GetType(fullyQualifiedAssemblyName, false);
+            var enumType = context.Metadata.ModelType.Assembly.GetType(fullyQualifiedName, false);
 
             var baseType = enumType?.BaseType;
 
-            if (baseType is {IsGenericType: true} && baseType.GetGenericTypeDefinition() == RichEnumType)
+            if (baseType is {IsGenericType: true} && baseType.GetGenericTypeDefinition() == EnrichedEnumType)
             {
                 var methodInfo = typeof(EnrichedEnumModelBinder).GetMethod("CreateInstance", BindingFlags.Static | BindingFlags.Public);
 
