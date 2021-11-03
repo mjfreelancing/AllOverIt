@@ -1,12 +1,12 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using AllOverIt.Fixture;
-using AllOverIt.Helpers;
+﻿using AllOverIt.Fixture;
+using AllOverIt.Formatters.Objects;
 using AllOverIt.Reflection;
 using FluentAssertions;
+using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
-namespace AllOverIt.Tests.Helpers
+namespace AllOverIt.Tests.Formatters.Objects
 {
     public class ObjectPropertySerializerOptionsFixture : FixtureBase
     {

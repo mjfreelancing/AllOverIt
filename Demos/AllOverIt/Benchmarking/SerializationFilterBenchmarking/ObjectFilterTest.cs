@@ -1,5 +1,5 @@
 ﻿using AllOverIt.Extensions;
-using AllOverIt.Helpers;
+using AllOverIt.Formatters.Objects;
 using BenchmarkDotNet.Attributes;
 using System;
 using System.Linq;

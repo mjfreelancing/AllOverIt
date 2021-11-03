@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace AllOverIt.Helpers
+namespace AllOverIt.Formatters.Objects
 {
     /// <summary>Provides options that determine how serialization of properties and their values are handled by <see cref="ObjectPropertySerializer"/>.</summary>
     public sealed class ObjectPropertySerializerOptions

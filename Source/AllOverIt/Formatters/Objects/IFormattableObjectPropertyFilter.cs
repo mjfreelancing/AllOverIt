@@ -1,4 +1,4 @@
-﻿namespace AllOverIt.Helpers
+﻿namespace AllOverIt.Formatters.Objects
 {
     /// <summary>Represents the ability to format values serialized by the <see cref="ObjectPropertySerializer"/>.</summary>
     public interface IFormattableObjectPropertyFilter

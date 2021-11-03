@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AllOverIt.Helpers
+namespace AllOverIt.Formatters.Objects
 {
 
     /// <summary>Converts an object to an IDictionary{string, string} using a dot notation for nested members.</summary>

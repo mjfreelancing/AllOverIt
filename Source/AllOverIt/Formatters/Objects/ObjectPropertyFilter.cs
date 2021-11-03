@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AllOverIt.Helpers
+namespace AllOverIt.Formatters.Objects
 {
     /// <summary>A base class that provides support for filtering properties and values when serializing via
     /// <see cref="ObjectPropertySerializer"/>.</summary>

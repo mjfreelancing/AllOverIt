@@ -1,4 +1,4 @@
-﻿namespace AllOverIt.Helpers
+﻿namespace AllOverIt.Formatters.Objects
 {
     /// <summary>Contains serialization information for the parent of an object property.</summary>
     public sealed class ObjectPropertyParent

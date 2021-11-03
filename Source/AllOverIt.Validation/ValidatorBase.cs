@@ -22,7 +22,4 @@ namespace AllOverIt.Validation
             return Validate(validationContext);
         }
     }
-
-    // TODO - Consider how to validate based on more than one type
-
 }

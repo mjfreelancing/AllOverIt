@@ -1,7 +1,7 @@
 ﻿using AllOverIt.Exceptions;
 using AllOverIt.Extensions;
 using AllOverIt.Fixture;
-using AllOverIt.Helpers;
+using AllOverIt.Formatters.Objects;
 using AllOverIt.Reflection;
 using FluentAssertions;
 using System;

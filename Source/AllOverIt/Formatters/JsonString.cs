@@ -31,9 +31,14 @@ namespace AllOverIt.Formatters
             }
         }
 
+        /// <summary>Formats a well-formed JSON string.</summary>
+        /// <param name="jsonValue">The JSON string to format.</param>
+        /// <param name="indentSize">The indent size. The default is 2 spaces.</param>
+        /// <returns>The formatted string. The input string is expected to be well-formed so an invalid
+        /// input will result in an invalid formatted output.</returns>
         public static string Format(string jsonValue, int indentSize = 2)
         {
-            // This implementation is inspired by https://stackoverflow.com/questions/4580397/json-formatter-in-c) but not
+            // Inspired by https://stackoverflow.com/questions/4580397/json-formatter-in-c) but not
             // using LINQ as the memory and speed performance is significantly poorer.
 
             _ = jsonValue.WhenNotNull(nameof(jsonValue));
