@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 namespace AllOverIt.Patterns.Enumeration
 {
@@ -25,7 +24,12 @@ namespace AllOverIt.Patterns.Enumeration
 
         public override string ToString() => Name;
 
-        public virtual int CompareTo(EnrichedEnum<TEnum> other) => Value.CompareTo(other.Value);
+        public virtual int CompareTo(EnrichedEnum<TEnum> other)
+        {
+            var value = other.WhenNotNull(nameof(other)).Value;
+            
+            return Value.CompareTo(value);
+        }
 
         public override bool Equals(object obj) => obj is EnrichedEnum<TEnum> other && Equals(other);
 
@@ -91,11 +95,6 @@ namespace AllOverIt.Patterns.Enumeration
             return int.TryParse(nameOrValue, out var intValue) && TryParse(item => item.Value == intValue, out enumeration);
         }
 
-
-
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool operator ==(EnrichedEnum<TEnum> left, EnrichedEnum<TEnum> right)
         {
             if (left is null)
@@ -106,12 +105,19 @@ namespace AllOverIt.Patterns.Enumeration
             return left.Equals(right);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool operator !=(EnrichedEnum<TEnum> left, EnrichedEnum<TEnum> right) => !(left == right);
 
+        public static bool operator >(EnrichedEnum<TEnum> left, EnrichedEnum<TEnum> right) => left.CompareTo(right) > 0;
 
+        public static bool operator >=(EnrichedEnum<TEnum> left, EnrichedEnum<TEnum> right) => left.CompareTo(right) >= 0;
 
+        public static bool operator <(EnrichedEnum<TEnum> left, EnrichedEnum<TEnum> right) => left.CompareTo(right) < 0;
 
+        public static bool operator <=(EnrichedEnum<TEnum> left, EnrichedEnum<TEnum> right) => left.CompareTo(right) <= 0;
+
+        public static implicit operator int(EnrichedEnum<TEnum> smartEnum) => smartEnum.Value;
+
+        public static explicit operator EnrichedEnum<TEnum>(int value) => From(value);
 
         private static TEnum Parse<TValueType>(TValueType value, Func<TEnum, bool> predicate)
         {

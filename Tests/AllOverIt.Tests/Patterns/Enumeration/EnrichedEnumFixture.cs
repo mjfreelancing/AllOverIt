@@ -1,7 +1,9 @@
 ﻿using AllOverIt.Exceptions;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.Enumeration;
 using FluentAssertions;
+using System;
 using System.Runtime.CompilerServices;
 using Xunit;
 
@@ -81,6 +83,19 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 var actual = EnrichedEnumDummy.Value2.CompareTo(EnrichedEnumDummy.Value2);
                 actual.Should().Be(0);
+            }
+
+            [Fact]
+            public void Should_Throw_When_Null()
+            {
+                Invoking(() =>
+                    {
+                        // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+                        EnrichedEnumDummy.Value2.CompareTo(null);
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("other");
             }
         }
 
@@ -288,6 +303,230 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             public void Should_Not_Convert_From_Name()
             {
                 EnrichedEnumDummy.TryFromNameOrValue("Value 1", out var _).Should().BeFalse();
+            }
+        }
+
+        public class Operator_Equals : EnrichedEnumFixture
+        {
+            [Fact]
+            public void Should_Be_Equal()
+            {
+                var enum1 = EnrichedEnumDummy.Value1;
+                var actual = EnrichedEnumDummy.Value1 == enum1;
+
+                actual.Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Not_Be_Equal_When_Null()
+            {
+                EnrichedEnumDummy enumNull = null;
+                var actual = EnrichedEnumDummy.Value1 == enumNull;
+
+                actual.Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Not_Be_Equal_Same_Type()
+            {
+                var actual = EnrichedEnumDummy.Value1 == EnrichedEnumDummy.Value2;
+
+                actual.Should().BeFalse();
+            }
+        }
+
+        public class Operator_NotEquals : EnrichedEnumFixture
+        {
+            [Fact]
+            public void Should_Be_Equal()
+            {
+                var enum1 = EnrichedEnumDummy.Value1;
+                var actual = EnrichedEnumDummy.Value1 != enum1;
+
+                actual.Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Not_Be_Equal_When_Null()
+            {
+                EnrichedEnumDummy enumNull = null;
+
+                // ReSharper disable once ExpressionIsAlwaysNull
+                var actual = EnrichedEnumDummy.Value1 != enumNull;
+
+                actual.Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Not_Be_Equal_Same_Type()
+            {
+                var actual = EnrichedEnumDummy.Value1 != EnrichedEnumDummy.Value2;
+
+                actual.Should().BeTrue();
+            }
+        }
+
+        public class Operator_GreaterThan : EnrichedEnumFixture
+        {
+            [Fact]
+            public void Should_Be_GreaterThan()
+            {
+                var actual = EnrichedEnumDummy.Value2 > EnrichedEnumDummy.Value1;
+
+                actual.Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Not_Be_GreaterThan()
+            {
+                var actual = EnrichedEnumDummy.Value1 > EnrichedEnumDummy.Value2;
+
+                actual.Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Throw_When_Null()
+            {
+                Invoking(() =>
+                    {
+                        _ = EnrichedEnumDummy.Value2 > null;
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("other");
+            }
+        }
+
+        public class Operator_GreaterThanOrEqual : EnrichedEnumFixture
+        {
+            [Fact]
+            public void Should_Be_GreaterThan()
+            {
+                var actual = EnrichedEnumDummy.Value2 >= EnrichedEnumDummy.Value1;
+
+                actual.Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Be_Equal()
+            {
+                var enum2 = EnrichedEnumDummy.Value2;
+                var actual = EnrichedEnumDummy.Value2 >= enum2;
+
+                actual.Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Not_Be_GreaterThanOrEqual()
+            {
+                var actual = EnrichedEnumDummy.Value1 >= EnrichedEnumDummy.Value2;
+
+                actual.Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Throw_When_Null()
+            {
+                Invoking(() =>
+                    {
+                        _ = EnrichedEnumDummy.Value2 >= null;
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("other");
+            }
+        }
+
+        public class Operator_LessThan : EnrichedEnumFixture
+        {
+            [Fact]
+            public void Should_Be_LessThan()
+            {
+                var actual = EnrichedEnumDummy.Value1 < EnrichedEnumDummy.Value2;
+
+                actual.Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Not_Be_LessThan()
+            {
+                var actual = EnrichedEnumDummy.Value2 < EnrichedEnumDummy.Value1;
+
+                actual.Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Throw_When_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = EnrichedEnumDummy.Value2 < null;
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("other");
+            }
+        }
+
+        public class Operator_LessThanOrEqual : EnrichedEnumFixture
+        {
+            [Fact]
+            public void Should_Be_LessThan()
+            {
+                var actual = EnrichedEnumDummy.Value1 <= EnrichedEnumDummy.Value2;
+
+                actual.Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Be_Equal()
+            {
+                var enum2 = EnrichedEnumDummy.Value2;
+                var actual = EnrichedEnumDummy.Value2 <= enum2;
+
+                actual.Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Not_Be_LessThanOrEqual()
+            {
+                var actual = EnrichedEnumDummy.Value2 <= EnrichedEnumDummy.Value1;
+
+                actual.Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Throw_When_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = EnrichedEnumDummy.Value2 <= null;
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("other");
+            }
+        }
+
+        public class Implicit_Operator : EnrichedEnumFixture
+        {
+            [Fact]
+            public void Should_Convert()
+            {
+                int value = EnrichedEnumDummy.Value2;
+
+                value.Should().Be(2);
+            }
+        }
+
+        public class Explicit_Operator : EnrichedEnumFixture
+        {
+            [Fact]
+            public void Should_Convert()
+            {
+                var value = (EnrichedEnumDummy) 2;
+
+                value.Should().Be(EnrichedEnumDummy.Value2);
             }
         }
     }
