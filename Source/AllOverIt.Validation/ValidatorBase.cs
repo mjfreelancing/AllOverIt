@@ -4,16 +4,22 @@ using FluentValidation.Results;
 
 namespace AllOverIt.Validation
 {
-    // Adds support for validating rules against a context
+    /// <summary>A base validator that adds support for validating rules against custom context data.</summary>
+    /// <typeparam name="TType">The model type being validated.</typeparam>
     public abstract class ValidatorBase<TType> : AbstractValidator<TType>
     {
+        /// <summary>Prevents Pascal property name splitting.</summary>
         public static void DisablePropertyNameSplitting()
         {
-            // prevent Pascal name splitting
             ValidatorOptions.Global.DisplayNameResolver = (type, info, expression) => info.Name;
         }
 
-        // The context contains data that can be used by a rule at the time of its invocation
+        /// <summary>Validates a model instance. Additional context data is associated with the request that
+        /// can be utilized in the validation rules.</summary>
+        /// <typeparam name="TContext"></typeparam>
+        /// <param name="instance">The model instance.</param>
+        /// <param name="context">The context type.</param>
+        /// <returns>The validation result.</returns>
         public ValidationResult Validate<TContext>(TType instance, TContext context)
         {
             var validationContext = new ValidationContext<TType>(instance);

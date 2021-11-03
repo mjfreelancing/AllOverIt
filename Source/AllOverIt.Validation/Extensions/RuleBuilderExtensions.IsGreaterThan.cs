@@ -4,8 +4,14 @@ using System;
 
 namespace AllOverIt.Validation.Extensions
 {
+    /// <summary>Provides a variety of extension methods for <see cref="IRuleBuilder{TType, TProperty}"/>.</summary>
     public static partial class RuleBuilderExtensions
     {
+        /// <summary>Defines a validator on the current rule builder that will fail if the value of the property is greater than a specified value.</summary>
+        /// <typeparam name="TType">The model type containing the property to be validated.</typeparam>
+        /// <typeparam name="TProperty">The property type.</typeparam>
+        /// <param name="ruleBuilder">The rule builder.</param>
+        /// <param name="comparison">The value to compare the property value with.</param>
         public static IRuleBuilderOptions<TType, TProperty> IsGreaterThan<TType, TProperty>(
             this IRuleBuilder<TType, TProperty> ruleBuilder, TProperty comparison)
             where TProperty : IComparable<TProperty>, IComparable
@@ -16,6 +22,11 @@ namespace AllOverIt.Validation.Extensions
                 .WithErrorCode(ValidationErrorCode.OutOfRange);
         }
 
+        /// <summary>Defines a validator on the current rule builder that will fail if the value of the property is greater than a specified value.</summary>
+        /// <typeparam name="TType">The model type containing the property to be validated.</typeparam>
+        /// <typeparam name="TProperty">The property type.</typeparam>
+        /// <param name="ruleBuilder">The rule builder.</param>
+        /// <param name="comparison">The value to compare the property value with.</param>
         public static IRuleBuilderOptions<TType, TProperty?> IsGreaterThan<TType, TProperty>(
             this IRuleBuilder<TType, TProperty?> ruleBuilder, TProperty comparison)
             where TProperty : struct, IComparable<TProperty>, IComparable
@@ -26,21 +37,35 @@ namespace AllOverIt.Validation.Extensions
                 .WithErrorCode(ValidationErrorCode.OutOfRange);
         }
 
+        /// <summary>Defines a validator on the current rule builder that will fail if the value of the property is greater than the value provided
+        /// by a resolver that has access to the root context data.</summary>
+        /// <typeparam name="TType">The model type containing the property to be validated.</typeparam>
+        /// <typeparam name="TProperty">The property type.</typeparam>
+        /// <typeparam name="TContext">The root context type.</typeparam>
+        /// <param name="ruleBuilder">The rule builder.</param>
+        /// <param name="valueResolver">The resolver that provides the value to be compared with.</param>
         public static IRuleBuilderOptions<TType, TProperty> IsGreaterThan<TType, TProperty, TContext>(
-            this IRuleBuilder<TType, TProperty> ruleBuilder, Func<TContext, TProperty> contextValueResolver)
+            this IRuleBuilder<TType, TProperty> ruleBuilder, Func<TContext, TProperty> valueResolver)
             where TProperty : IComparable<TProperty>, IComparable
         {
             return ruleBuilder
-                .SetValidator(new GreaterThanContextValidator<TType, TProperty, TContext>(contextValueResolver))
+                .SetValidator(new GreaterThanContextValidator<TType, TProperty, TContext>(valueResolver))
                 .WithErrorCode(ValidationErrorCode.OutOfRange);
         }
 
+        /// <summary>Defines a validator on the current rule builder that will fail if the value of the property is greater than the value provided
+        /// by a resolver that has access to the root context data.</summary>
+        /// <typeparam name="TType">The model type containing the property to be validated.</typeparam>
+        /// <typeparam name="TProperty">The property type.</typeparam>
+        /// <typeparam name="TContext">The root context type.</typeparam>
+        /// <param name="ruleBuilder">The rule builder.</param>
+        /// <param name="valueResolver">The resolver that provides the value to be compared with.</param>
         public static IRuleBuilderOptions<TType, TProperty?> IsGreaterThan<TType, TProperty, TContext>(
-            this IRuleBuilder<TType, TProperty?> ruleBuilder, Func<TContext, TProperty> contextValueResolver)
+            this IRuleBuilder<TType, TProperty?> ruleBuilder, Func<TContext, TProperty> valueResolver)
             where TProperty : struct, IComparable<TProperty>, IComparable
         {
             return ruleBuilder
-                .SetValidator(new GreaterThanContextValidator<TType, TProperty, TContext>(contextValueResolver))
+                .SetValidator(new GreaterThanContextValidator<TType, TProperty, TContext>(valueResolver))
                 .WithErrorCode(ValidationErrorCode.OutOfRange);
         }
     }

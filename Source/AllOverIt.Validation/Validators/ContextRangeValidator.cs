@@ -6,18 +6,26 @@ using System;
 
 namespace AllOverIt.Validation.Validators
 {
+    /// <summary>A base validation class that is used to validate a property value against two values available on the validation context.</summary>
+    /// <typeparam name="TType">The model type containing the property to be validated.</typeparam>
+    /// <typeparam name="TProperty">The property type.</typeparam>
+    /// <typeparam name="TContext">The root context type.</typeparam>
     public abstract class ContextRangeValidator<TType, TProperty, TContext> : PropertyValidator<TType, TProperty>
         where TProperty : IComparable<TProperty>, IComparable
     {
         private readonly Func<TContext, TProperty> _fromValueResolver;
         private readonly Func<TContext, TProperty> _toValueResolver;
 
+        /// <summary>Constructor.</summary>
+        /// <param name="fromValueResolver">The resolver to obtain the lower limit from the validation context.</param>
+        /// <param name="toValueResolver">The resolver to obtain the upper limit from the validation context.</param>
         protected ContextRangeValidator(Func<TContext, TProperty> fromValueResolver, Func<TContext, TProperty> toValueResolver)
         {
             _fromValueResolver = fromValueResolver.WhenNotNull(nameof(fromValueResolver));
             _toValueResolver = toValueResolver.WhenNotNull(nameof(toValueResolver));
         }
 
+        /// <inheritdoc />
         public override bool IsValid(ValidationContext<TType> context, TProperty value)
         {
             var contextData = context.GetContextData<TType, TContext>();
@@ -35,6 +43,11 @@ namespace AllOverIt.Validation.Validators
             return isValid;
         }
 
+        /// <summary>Override in a concrete validator to indicate if the property value is valid compared to the two specified values.</summary>
+        /// <param name="value">The property value.</param>
+        /// <param name="fromValue">The lower limit value to compare to the property value.</param>
+        /// <param name="toValue">The upper limit value to compare to the property value.</param>
+        /// <returns>True if the property value is valid, otherwise false.</returns>
         protected abstract bool IsValid(TProperty value, TProperty fromValue, TProperty toValue);
     }
 }

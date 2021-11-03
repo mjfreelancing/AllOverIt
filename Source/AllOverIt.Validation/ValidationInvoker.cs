@@ -7,11 +7,13 @@ using System.Collections.Generic;
 
 namespace AllOverIt.Validation
 {
+    /// <summary>A validation invoker that utilizes a registry to determine which validator to invoke based on the model type.</summary>
     public sealed class ValidationInvoker : IValidationRegistry, IValidationInvoker
     {
         // can only re-use validators that don't store state (context)
         private readonly IDictionary<Type, Lazy<object>> _validatorCache = new Dictionary<Type, Lazy<object>>();
 
+        /// <inheritdoc />
         public IValidationRegistry Register<TType, TValidator>() where TValidator : ValidatorBase<TType>, new()
         {
             _validatorCache.Add(typeof(TType), new Lazy<object>(() => new TValidator()));
@@ -19,6 +21,7 @@ namespace AllOverIt.Validation
             return this;
         }
 
+        /// <inheritdoc />
         public ValidationResult Validate<TType>(TType instance)
         {
             var validator = GetValidator<TType>();
@@ -26,6 +29,7 @@ namespace AllOverIt.Validation
             return validator.Validate(instance);
         }
 
+        /// <inheritdoc />
         public ValidationResult Validate<TType, TContext>(TType instance, TContext context)
         {
             var validator = GetValidator<TType>();
@@ -33,19 +37,21 @@ namespace AllOverIt.Validation
             return validator.Validate(instance, context);
         }
 
-        // Throws a ValidationException if any rules are violated.
+        /// <inheritdoc />
         public void AssertValidation<TType>(TType instance)
         {
             var validator = GetValidator<TType>();
 
+            // Throws a ValidationException if any rules are violated.
             validator.ValidateAndThrow(instance);
         }
 
-        // Throws a ValidationException if any rules are violated.
+        /// <inheritdoc />
         public void AssertValidation<TType, TContext>(TType instance, TContext context)
         {
             var validator = GetValidator<TType>();
 
+            // Throws a ValidationException if any rules are violated.
             validator.ValidateAndThrow(instance, context);
         }
 
