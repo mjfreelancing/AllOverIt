@@ -4,19 +4,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace AllOverIt.Patterns.Enumeration
 {
     // Inspired by https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/enumeration-classes-over-enum-types
-    public abstract class RichEnum<TEnum> : IComparable<RichEnum<TEnum>>, IEquatable<RichEnum<TEnum>>
-        where TEnum : RichEnum<TEnum>
+    public abstract class EnrichedEnum<TEnum> : IComparable<EnrichedEnum<TEnum>>, IEquatable<EnrichedEnum<TEnum>>
+        where TEnum : EnrichedEnum<TEnum>
     {
         private static readonly TEnum[] AllValues = GetAllEnums().ToArray();
 
         public int Value { get; }
         public string Name { get; }
 
-        protected RichEnum(int value, string name)
+        protected EnrichedEnum(int value, string name)
         {
             Value = value;
             Name = name.WhenNotNullOrEmpty(nameof(name));
@@ -24,11 +25,11 @@ namespace AllOverIt.Patterns.Enumeration
 
         public override string ToString() => Name;
 
-        public virtual int CompareTo(RichEnum<TEnum> other) => Value.CompareTo(other.Value);
+        public virtual int CompareTo(EnrichedEnum<TEnum> other) => Value.CompareTo(other.Value);
 
-        public override bool Equals(object obj) => obj is RichEnum<TEnum> other && Equals(other);
+        public override bool Equals(object obj) => obj is EnrichedEnum<TEnum> other && Equals(other);
 
-        public virtual bool Equals(RichEnum<TEnum> other)
+        public virtual bool Equals(EnrichedEnum<TEnum> other)
         {
             if (ReferenceEquals(this, other))
             {
@@ -60,7 +61,7 @@ namespace AllOverIt.Patterns.Enumeration
             return Parse(value, item => item.Value == value);
         }
 
-        // will try and parse by the RichEnum Name, then by its Value if 'value' can be converted to an integer.
+        // will try and parse by the EnrichedEnum Name, then by its Value if 'value' can be converted to an integer.
         public static TEnum From(string value)
         {
             // assume parsing a name
@@ -75,7 +76,7 @@ namespace AllOverIt.Patterns.Enumeration
                 return From(intValue);
             }
 
-            throw new RichEnumException($"Unable to convert '{value}' to a {typeof(TEnum).Name}.");
+            throw new EnrichedEnumException($"Unable to convert '{value}' to a {typeof(TEnum).Name}.");
         }
 
         public static bool TryFromNameOrValue(string nameOrValue, out TEnum enumeration)
@@ -90,6 +91,28 @@ namespace AllOverIt.Patterns.Enumeration
             return int.TryParse(nameOrValue, out var intValue) && TryParse(item => item.Value == intValue, out enumeration);
         }
 
+
+
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator ==(EnrichedEnum<TEnum> left, EnrichedEnum<TEnum> right)
+        {
+            if (left is null)
+            {
+                return right is null;
+            }
+
+            return left.Equals(right);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator !=(EnrichedEnum<TEnum> left, EnrichedEnum<TEnum> right) => !(left == right);
+
+
+
+
+
         private static TEnum Parse<TValueType>(TValueType value, Func<TEnum, bool> predicate)
         {
             if (TryParse(predicate, out var enumeration))
@@ -97,7 +120,7 @@ namespace AllOverIt.Patterns.Enumeration
                 return enumeration;
             }
 
-            throw new RichEnumException($"Unable to convert '{value}' to a {typeof(TEnum).Name}.");
+            throw new EnrichedEnumException($"Unable to convert '{value}' to a {typeof(TEnum).Name}.");
         }
 
         private static bool TryParse(Func<TEnum, bool> predicate, out TEnum enumeration)

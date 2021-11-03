@@ -1,0 +1,294 @@
+﻿using AllOverIt.Exceptions;
+using AllOverIt.Fixture;
+using AllOverIt.Patterns.Enumeration;
+using FluentAssertions;
+using System.Runtime.CompilerServices;
+using Xunit;
+
+namespace AllOverIt.Tests.Patterns.Enumeration
+{
+    public class EnrichedEnumFixture : FixtureBase
+    {
+        private class EnrichedEnumDummy : EnrichedEnum<EnrichedEnumDummy>
+        {
+            public static readonly EnrichedEnumDummy Value1 = new(1);
+
+            // ReSharper disable once ExplicitCallerInfoArgument
+            public static readonly EnrichedEnumDummy Value2 = new(2, "Value 2");
+
+            private EnrichedEnumDummy(int value, [CallerMemberName] string name = null)
+                : base(value, name)
+            {
+            }
+        }
+
+        private class EnrichedEnumDummy2 : EnrichedEnum<EnrichedEnumDummy2>
+        {
+            public static readonly EnrichedEnumDummy2 Value1 = new(1);
+
+            // ReSharper disable once ExplicitCallerInfoArgument
+            public static readonly EnrichedEnumDummy2 Value2 = new(2, "Value 2");
+
+            private EnrichedEnumDummy2(int value, [CallerMemberName] string name = null)
+                : base(value, name)
+            {
+            }
+        }
+
+        public class Constructor : EnrichedEnumFixture
+        {
+            [Fact]
+            public void Should_Set_Value()
+            {
+                EnrichedEnumDummy.Value1.Value.Should().Be(1);
+                EnrichedEnumDummy.Value2.Value.Should().Be(2);
+            }
+
+            [Fact]
+            public void Should_Set_Name_Same_As_Field()
+            {
+                EnrichedEnumDummy.Value1.Name.Should().Be(nameof(EnrichedEnumDummy.Value1));
+            }
+
+            [Fact]
+            public void Should_Set_Name_As_Specified()
+            {
+                EnrichedEnumDummy.Value2.Name.Should().Be("Value 2");
+            }
+        }
+
+        public class ToStringMethod : EnrichedEnumFixture
+        {
+            [Fact]
+            public void Should_Return_Name()
+            {
+                EnrichedEnumDummy.Value1.ToString().Should().Be(EnrichedEnumDummy.Value1.Name);
+                EnrichedEnumDummy.Value2.ToString().Should().Be(EnrichedEnumDummy.Value2.Name);
+            }
+        }
+
+        public class CompareTo : EnrichedEnumFixture
+        {
+            [Fact]
+            public void Should_Not_Compare()
+            {
+                var actual = EnrichedEnumDummy.Value1.CompareTo(EnrichedEnumDummy.Value2);
+                actual.Should().NotBe(0);
+            }
+
+            [Fact]
+            public void Should_Compare()
+            {
+                var actual = EnrichedEnumDummy.Value2.CompareTo(EnrichedEnumDummy.Value2);
+                actual.Should().Be(0);
+            }
+        }
+
+        public class Equals_Object : EnrichedEnumFixture
+        {
+            [Fact]
+            public void Should_Be_Equal()
+            {
+                object enum1 = EnrichedEnumDummy.Value1;
+                var actual = EnrichedEnumDummy.Value1.Equals(enum1);
+
+                actual.Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Not_Be_Equal_When_Null()
+            {
+                object enumNull = null;
+                var actual = EnrichedEnumDummy.Value1.Equals(enumNull);
+
+                actual.Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Not_Be_Equal_Same_Type()
+            {
+                object enum2 = EnrichedEnumDummy.Value2;
+                var actual = EnrichedEnumDummy.Value1.Equals(enum2);
+
+                actual.Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Not_Be_Equal_Different_Type_Same_Value()
+            {
+                object enum1 = EnrichedEnumDummy2.Value1;
+                var actual = EnrichedEnumDummy.Value1.Equals(enum1);
+
+                actual.Should().BeFalse();
+            }
+        }
+
+        public class Equals_Typed : EnrichedEnumFixture
+        {
+            [Fact]
+            public void Should_Be_Equal()
+            {
+                var enum1 = EnrichedEnumDummy.Value1;
+                var actual = EnrichedEnumDummy.Value1.Equals(enum1);
+
+                actual.Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Not_Be_Equal_When_Null()
+            {
+                EnrichedEnumDummy enumNull = null;
+                var actual = EnrichedEnumDummy.Value1.Equals(enumNull);
+
+                actual.Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Not_Be_Equal_Same_Type()
+            {
+                var enum2 = EnrichedEnumDummy.Value2;
+                var actual = EnrichedEnumDummy.Value1.Equals(enum2);
+
+                actual.Should().BeFalse();
+            }
+        }
+
+        public class GetHashCodeMethod : EnrichedEnumFixture
+        {
+            [Fact]
+            public void Should_Return_Value_HashCode()
+            {
+                var expected = 2.GetHashCode();
+                var actual = EnrichedEnumDummy.Value2.GetHashCode();
+
+                actual.Should().Be(expected);
+            }
+        }
+
+        public class GetAllValues : EnrichedEnumFixture
+        {
+            [Fact]
+            public void Should_Get_All_Values()
+            {
+                var actual = EnrichedEnumDummy.GetAllValues();
+
+                actual.Should().BeEquivalentTo(new[] { EnrichedEnumDummy.Value1.Value, EnrichedEnumDummy.Value2.Value });
+            }
+        }
+
+        public class GetAllNames : EnrichedEnumFixture
+        {
+            [Fact]
+            public void Should_Get_All_Names()
+            {
+                var actual = EnrichedEnumDummy.GetAllNames();
+
+                actual.Should().BeEquivalentTo(EnrichedEnumDummy.Value1.Name, EnrichedEnumDummy.Value2.Name);
+            }
+        }
+
+        public class GetAll : EnrichedEnumFixture
+        {
+            [Fact]
+            public void Should_Get_All()
+            {
+                var actual = EnrichedEnumDummy.GetAll();
+
+                actual.Should().BeEquivalentTo(new[] { EnrichedEnumDummy.Value1, EnrichedEnumDummy.Value2 });
+            }
+        }
+
+        public class From_Int_Value : EnrichedEnumFixture
+        {
+            [Fact]
+            public void Should_Get_From_Number()
+            {
+                EnrichedEnumDummy.From(1).Should().Be(EnrichedEnumDummy.Value1);
+                EnrichedEnumDummy.From(2).Should().Be(EnrichedEnumDummy.Value2);
+            }
+
+            [Fact]
+            public void Should_Not_Get_From_Invalid_Value()
+            {
+                Invoking(() =>
+                    {
+                        _ = EnrichedEnumDummy.From(0);
+                    })
+                    .Should()
+                    .Throw<EnrichedEnumException>()
+                    .WithMessage("Unable to convert '0' to a EnrichedEnumDummy.");
+            }
+        }
+
+        public class From_String_Value : EnrichedEnumFixture
+        {
+            [Fact]
+            public void Should_Get_From_Number_String()
+            {
+                EnrichedEnumDummy.From("1").Should().Be(EnrichedEnumDummy.Value1);
+                EnrichedEnumDummy.From("2").Should().Be(EnrichedEnumDummy.Value2);
+            }
+
+            [Fact]
+            public void Should_Get_From_Name()
+            {
+                EnrichedEnumDummy.From(nameof(EnrichedEnumDummy.Value1)).Should().Be(EnrichedEnumDummy.Value1);
+                EnrichedEnumDummy.From("Value 2").Should().Be(EnrichedEnumDummy.Value2);
+                EnrichedEnumDummy.From("VALUE 2").Should().Be(EnrichedEnumDummy.Value2);
+            }
+
+            [Fact]
+            public void Should_Not_Get_From_Invalid_Value()
+            {
+                var value = Create<string>();
+
+                Invoking(() =>
+                    {
+                        _ = EnrichedEnumDummy.From(value);
+                    })
+                    .Should()
+                    .Throw<EnrichedEnumException>()
+                    .WithMessage($"Unable to convert '{value}' to a EnrichedEnumDummy.");
+            }
+        }
+
+        public class TryFromNameOrValue : EnrichedEnumFixture
+        {
+            [Fact]
+            public void Should_Convert_From_Value()
+            {
+                EnrichedEnumDummy.TryFromNameOrValue("2", out var enumeration).Should().BeTrue();
+
+                enumeration.Should().Be(EnrichedEnumDummy.Value2);
+            }
+
+            [Fact]
+            public void Should_Convert_From_Name()
+            {
+                EnrichedEnumDummy.TryFromNameOrValue("Value 2", out var enumeration).Should().BeTrue();
+
+                enumeration.Should().Be(EnrichedEnumDummy.Value2);
+            }
+
+            [Fact]
+            public void Should_Convert_From_Name_Case_Insensitive()
+            {
+                EnrichedEnumDummy.TryFromNameOrValue("VaLuE 2", out var enumeration).Should().BeTrue();
+
+                enumeration.Should().Be(EnrichedEnumDummy.Value2);
+            }
+
+            [Fact]
+            public void Should_Not_Convert_From_Value()
+            {
+                EnrichedEnumDummy.TryFromNameOrValue("3", out var _).Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Not_Convert_From_Name()
+            {
+                EnrichedEnumDummy.TryFromNameOrValue("Value 1", out var _).Should().BeFalse();
+            }
+        }
+    }
+}
