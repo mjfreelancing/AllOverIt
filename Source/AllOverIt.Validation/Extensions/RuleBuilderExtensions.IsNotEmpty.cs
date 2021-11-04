@@ -10,7 +10,7 @@ namespace AllOverIt.Validation.Extensions
         /// <typeparam name="TType">The model type containing the property to be validated.</typeparam>
         /// <typeparam name="TProperty">The property type.</typeparam>
         /// <param name="ruleBuilder">The rule builder.</param>
-        public static IRuleBuilderOptions<TType, TProperty> IsNotNullOrEmpty<TType, TProperty>(this IRuleBuilder<TType, TProperty> ruleBuilder)
+        public static IRuleBuilderOptions<TType, TProperty> IsNotEmpty<TType, TProperty>(this IRuleBuilder<TType, TProperty> ruleBuilder)
         {
             return ruleBuilder
                 .NotEmpty()

@@ -36,15 +36,17 @@ AllOverIt - v2.0.0
 
 AllOverIt.Validation - v1.1.0
   * Rebuilt against AllOverIt v1.20.0 due to breaking changes
+  # Renamed IsNotNullOrEmpty to IsNotEmpty - bring it into alignment with FluentValidation's NotEmpty()
 
 AllOverIt.Aws.Cdk.AppSync - v0.17.0
+  * Rebuilt against AllOverIt v1.20.0 due to breaking changes
   * Updated to Amazon.CDK.AWS.AppSync v1.129.0
   * Renamed namespace Datasources to DataSources
 
 AllOverIt.Evaluator - v3.1.0
+  * Rebuilt against AllOverIt v1.20.0 due to breaking changes
   * Internal improvements to reduce memory allocations
   * Added conditional and comparison methods: IF, EQ, NE, LT, LTE, GT, GTE
-  * Rebuilt against AllOverIt v1.20.0 due to breaking changes
 
 AllOverIt.GenericHost - v1.3.0
   * Rebuilt against AllOverIt v1.20.0 due to breaking changes

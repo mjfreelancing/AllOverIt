@@ -28,8 +28,8 @@ namespace AllOverIt.Validation.Tests
             public DummyModelValidator()
             {
                 RuleFor(model => model.ValueOne).IsRequired();
-                RuleFor(model => model.ValueTwo).IsNotNullOrEmpty();
-                RuleFor(model => model.ValueThree).IsNotNullOrEmpty();
+                RuleFor(model => model.ValueTwo).IsNotEmpty();
+                RuleFor(model => model.ValueThree).IsNotEmpty();
 
                 RuleFor(model => model.ValueFour)
                     .Custom((value, context) =>

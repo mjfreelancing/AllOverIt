@@ -214,7 +214,7 @@
             <param name="ruleBuilder">The rule builder.</param>
             <param name="valueResolver">The resolver that provides the value to be compared with.</param>
         </member>
-        <member name="M:AllOverIt.Validation.Extensions.RuleBuilderExtensions.IsNotNullOrEmpty``2(FluentValidation.IRuleBuilder{``0,``1})">
+        <member name="M:AllOverIt.Validation.Extensions.RuleBuilderExtensions.IsNotEmpty``2(FluentValidation.IRuleBuilder{``0,``1})">
             <summary>Defines a validator on the current rule builder that will fail if the value of the property is null, an empty string, whitespace,
             an empty collection or the default value of the type.</summary>
             <typeparam name="TType">The model type containing the property to be validated.</typeparam>

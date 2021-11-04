@@ -7,16 +7,16 @@ namespace AllOverIt.Validation.Tests.Validators
 {
     public partial class ValidatorsFixture
     {
-        public class IsNotNullOrEmpty : ValidatorsFixture
+        public class IsNotEmpty : ValidatorsFixture
         {
             private class DummyIsRequiredValidator : ValidatorBase<DummyComparisonModel>
             {
                 public DummyIsRequiredValidator()
                 {
-                    RuleFor(model => model.Value1).IsNotNullOrEmpty();    // string
-                    RuleFor(model => model.Value2).IsNotNullOrEmpty();    // Guid
-                    RuleFor(model => model.Value3).IsNotNullOrEmpty();    // nullable
-                    RuleFor(model => model.Value7).IsNotNullOrEmpty();    // IReadOnlyList<int>
+                    RuleFor(model => model.Value1).IsNotEmpty();    // string
+                    RuleFor(model => model.Value2).IsNotEmpty();    // Guid
+                    RuleFor(model => model.Value3).IsNotEmpty();    // nullable
+                    RuleFor(model => model.Value7).IsNotEmpty();    // IReadOnlyList<int>
                 }
             }
 
