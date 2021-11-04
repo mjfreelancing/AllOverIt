@@ -1,19 +1,19 @@
-﻿// unset
-
-using AllOverIt.Extensions;
+﻿using AllOverIt.Extensions;
 using BenchmarkDotNet.Attributes;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ForEachAsParallelAsync
+namespace ForEachAsyncBenchmarking
 {
     public class AsyncCalculations
     {
+        private static readonly IEnumerable<(int input1, int input2)> Inputs = GetInputs();
+
         [Benchmark]
         public async Task MultiplySequentially()
         {
-            foreach (var input in GetInputs())
+            foreach (var input in Inputs)
             {
                 await Multiply(input);
             }
@@ -22,28 +22,28 @@ namespace ForEachAsParallelAsync
         [Benchmark]
         public async Task MultiplyAsParallel16()
         {
-            await GetInputs().ForEachAsParallelAsync(Multiply, 16);
+            await Inputs.ForEachAsParallelAsync(Multiply, 16);
         }
 
         [Benchmark]
         public async Task MultiplyAsTask16()
         {
-            await GetInputs().ForEachAsTaskAsync(Multiply, 16);
+            await Inputs.ForEachAsTaskAsync(Multiply, 16);
         }
 
         [Benchmark]
         public async Task MultiplyAsParallel100()
         {
-            await GetInputs().ForEachAsParallelAsync(Multiply, 100);
+            await Inputs.ForEachAsParallelAsync(Multiply, 100);
         }
 
         [Benchmark]
         public async Task MultiplyAsTask100()
         {
-            await GetInputs().ForEachAsTaskAsync(Multiply, 100);
+            await Inputs.ForEachAsTaskAsync(Multiply, 100);
         }
 
-        private IEnumerable<(int input1, int input2)> GetInputs()
+        private static IEnumerable<(int input1, int input2)> GetInputs()
         {
             return
                 from input1 in Enumerable.Range(1, 10)

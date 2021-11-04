@@ -1,7 +1,7 @@
 ﻿using BenchmarkDotNet.Running;
 using System;
 
-namespace ForEachAsParallelAsync
+namespace ForEachAsyncBenchmarking
 {
     class Program
     {
