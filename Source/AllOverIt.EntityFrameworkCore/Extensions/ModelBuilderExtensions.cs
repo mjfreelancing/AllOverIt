@@ -19,13 +19,10 @@ namespace AllOverIt.EntityFrameworkCore.Extensions
         /// <summary>Configures the model builder so all properties derived from <see cref="EnrichedEnum{T}"/> across all entity types
         /// will store the enumeration's Name (string) in a string column.</summary>
         /// <param name="modelBuilder">The model builder instance.</param>
-        /// <param name="columnType">Optional. If provided this value is used as the data type of the string column that the property maps
-        /// to when targeting a relational database. This must be the complete type name, including length, applicable for the database in use.</param>
-        /// <param name="maxLength">Optional. If provided this value specifies the column's maximum length. This parameter is not required
-        /// if the [MaxLength] attribute is used.</param>
-        public static void UseEnrichedEnumName(this ModelBuilder modelBuilder, string columnType = default, int? maxLength = default)
+        /// <param name="columnOptions">Optional. If provided, this contains column type and max length options.</param>
+        public static void UseEnrichedEnumName(this ModelBuilder modelBuilder, EnrichedEnumStringColumnOptions columnOptions = default)
         {
-            var propertyBuilder = CreateStringPropertyBuilder(columnType, maxLength);
+            var propertyBuilder = CreateStringPropertyBuilder(columnOptions);
 
             modelBuilder.UseEnrichedEnum(
                 typeof(EnrichedEnumNameConverter<>),
@@ -38,14 +35,11 @@ namespace AllOverIt.EntityFrameworkCore.Extensions
         /// will store the enumeration's Name (string) in a string column. The property type must inherit <see cref="EnrichedEnum{T}"/>.</summary>
         /// <typeparam name="TProperty">The property type.</typeparam>
         /// <param name="modelBuilder">The model builder instance.</param>
-        /// <param name="columnType">Optional. If provided this value is used as the data type of the string column that the property maps
-        /// to when targeting a relational database. This must be the complete type name, including length, applicable for the database in use.</param>
-        /// <param name="maxLength">Optional. If provided this value specifies the column's maximum length. This parameter is not required
-        /// if the [MaxLength] attribute is used.</param>
-        public static void UseEnrichedEnumName<TProperty>(this ModelBuilder modelBuilder, string columnType = default, int? maxLength = default)
+        /// <param name="columnOptions">Optional. If provided, this contains column type and max length options.</param>
+        public static void UseEnrichedEnumName<TProperty>(this ModelBuilder modelBuilder, EnrichedEnumStringColumnOptions columnOptions = default)
             where TProperty : EnrichedEnum<TProperty>
         {
-            var propertyBuilder = CreateStringPropertyBuilder(columnType, maxLength);
+            var propertyBuilder = CreateStringPropertyBuilder(columnOptions);
 
             modelBuilder.UseEnrichedEnum(
                 typeof(EnrichedEnumNameConverter<>),
@@ -60,14 +54,11 @@ namespace AllOverIt.EntityFrameworkCore.Extensions
         /// <typeparam name="TEntity">The entity type to match.</typeparam>
         /// <typeparam name="TProperty">The property type.</typeparam>
         /// <param name="modelBuilder">The model builder instance.</param>
-        /// <param name="columnType">Optional. If provided this value is used as the data type of the string column that the property maps
-        /// to when targeting a relational database. This must be the complete type name, including length, applicable for the database in use.</param>
-        /// <param name="maxLength">Optional. If provided this value specifies the column's maximum length. This parameter is not required
-        /// if the [MaxLength] attribute is used.</param>
-        public static void UseEnrichedEnumName<TEntity, TProperty>(this ModelBuilder modelBuilder, string columnType = default, int? maxLength = default)
+        /// <param name="columnOptions">Optional. If provided, this contains column type and max length options.</param>
+        public static void UseEnrichedEnumName<TEntity, TProperty>(this ModelBuilder modelBuilder, EnrichedEnumStringColumnOptions columnOptions = default)
             where TProperty : EnrichedEnum<TProperty>
         {
-            var propertyBuilder = CreateStringPropertyBuilder(columnType, maxLength);
+            var propertyBuilder = CreateStringPropertyBuilder(columnOptions);
 
             modelBuilder.UseEnrichedEnum(
                 typeof(EnrichedEnumNameConverter<>),
@@ -81,13 +72,10 @@ namespace AllOverIt.EntityFrameworkCore.Extensions
         /// <typeparam name="TEntity">The entity type to match.</typeparam>
         /// <param name="modelBuilder">The model builder instance.</param>
         /// <param name="propertyName">The property name to match.</param>
-        /// <param name="columnType">Optional. If provided this value is used as the data type of the string column that the property maps
-        /// to when targeting a relational database. This must be the complete type name, including length, applicable for the database in use.</param>
-        /// <param name="maxLength">Optional. If provided this value specifies the column's maximum length. This parameter is not required
-        /// if the [MaxLength] attribute is used.</param>
-        public static void UseEnrichedEnumName<TEntity>(this ModelBuilder modelBuilder, string propertyName, string columnType = default, int? maxLength = default)
+        /// <param name="columnOptions">Optional. If provided, this contains column type and max length options.</param>
+        public static void UseEnrichedEnumName<TEntity>(this ModelBuilder modelBuilder, string propertyName, EnrichedEnumStringColumnOptions columnOptions = default)
         {
-            var propertyBuilder = CreateStringPropertyBuilder(columnType, maxLength);
+            var propertyBuilder = CreateStringPropertyBuilder(columnOptions);
 
             modelBuilder.UseEnrichedEnum(
                 typeof(EnrichedEnumNameConverter<>),
@@ -99,11 +87,10 @@ namespace AllOverIt.EntityFrameworkCore.Extensions
         /// <summary>Configures the model builder so all properties derived from <see cref="EnrichedEnum{T}"/> across all entity types
         /// will store the enumeration's Value (integer) in an integer column</summary>
         /// <param name="modelBuilder">The model builder instance.</param>
-        /// <param name="columnType">Optional. If provided this value is used as the data type of the integer column that the property maps
-        /// to when targeting a relational database.</param>
-        public static void UseEnrichedEnumValue(this ModelBuilder modelBuilder, string columnType = default)
+        /// <param name="columnOptions">Optional. If provided, this contains column type options.</param>
+        public static void UseEnrichedEnumValue(this ModelBuilder modelBuilder, EnrichedEnumColumnOptions columnOptions = default)
         {
-            var propertyBuilder = CreateIntegerPropertyBuilder(columnType);
+            var propertyBuilder = CreateIntegerPropertyBuilder(columnOptions);
 
             modelBuilder.UseEnrichedEnum(
                 typeof(EnrichedEnumValueConverter<>),
@@ -116,12 +103,11 @@ namespace AllOverIt.EntityFrameworkCore.Extensions
         /// will store the enumeration's Value (integer) in an integer column. The property type must inherit <see cref="EnrichedEnum{T}"/>.</summary>
         /// <typeparam name="TProperty">The property type.</typeparam>
         /// <param name="modelBuilder">The model builder instance.</param>
-        /// <param name="columnType">Optional. If provided this value is used as the data type of the integer column that the property maps
-        /// to when targeting a relational database.</param>
-        public static void UseEnrichedEnumValue<TProperty>(this ModelBuilder modelBuilder, string columnType = default)
+        /// <param name="columnOptions">Optional. If provided, this contains column type options.</param>
+        public static void UseEnrichedEnumValue<TProperty>(this ModelBuilder modelBuilder, EnrichedEnumColumnOptions columnOptions = default)
             where TProperty : EnrichedEnum<TProperty>
         {
-            var propertyBuilder = CreateIntegerPropertyBuilder(columnType);
+            var propertyBuilder = CreateIntegerPropertyBuilder(columnOptions);
 
             modelBuilder.UseEnrichedEnum(
                 typeof(EnrichedEnumValueConverter<>),
@@ -136,18 +122,16 @@ namespace AllOverIt.EntityFrameworkCore.Extensions
         /// <typeparam name="TEntity">The entity type to match.</typeparam>
         /// <typeparam name="TProperty">The property type.</typeparam>
         /// <param name="modelBuilder">The model builder instance.</param>
-        /// <param name="columnType">Optional. If provided this value is used as the data type of the integer column that the property maps
-        /// to when targeting a relational database.</param>
-        public static void UseEnrichedEnumValue<TEntity, TProperty>(this ModelBuilder modelBuilder, string propertyName = default,
-            string columnType = default)
+        /// <param name="columnOptions">Optional. If provided, this contains column type options.</param>
+        public static void UseEnrichedEnumValue<TEntity, TProperty>(this ModelBuilder modelBuilder, EnrichedEnumColumnOptions columnOptions = default)
             where TProperty : EnrichedEnum<TProperty>
         {
-            var propertyBuilder = CreateIntegerPropertyBuilder(columnType);
+            var propertyBuilder = CreateIntegerPropertyBuilder(columnOptions);
 
             modelBuilder.UseEnrichedEnum(
                 typeof(EnrichedEnumValueConverter<>),
                 entity => entity.ClrType == typeof(TEntity),
-                property => property.PropertyType == typeof(TProperty) && (propertyName == null || property.Name == propertyName),
+                property => property.PropertyType == typeof(TProperty),
                 propertyBuilder);
         }
 
@@ -156,11 +140,10 @@ namespace AllOverIt.EntityFrameworkCore.Extensions
         /// <typeparam name="TEntity">The entity type to match.</typeparam>
         /// <param name="modelBuilder">The model builder instance.</param>
         /// <param name="propertyName">The property name to match.</param>
-        /// <param name="columnType">Optional. If provided this value is used as the data type of the integer column that the property maps
-        /// to when targeting a relational database.</param>
-        public static void UseEnrichedEnumValue<TEntity>(this ModelBuilder modelBuilder, string propertyName, string columnType = default)
+        /// <param name="columnOptions">Optional. If provided, this contains column type options.</param>
+        public static void UseEnrichedEnumValue<TEntity>(this ModelBuilder modelBuilder, string propertyName, EnrichedEnumColumnOptions columnOptions = default)
         {
-            var propertyBuilder = CreateIntegerPropertyBuilder(columnType);
+            var propertyBuilder = CreateIntegerPropertyBuilder(columnOptions);
 
             modelBuilder.UseEnrichedEnum(
                 typeof(EnrichedEnumValueConverter<>),
@@ -194,38 +177,41 @@ namespace AllOverIt.EntityFrameworkCore.Extensions
             }
         }
 
-        private static Action<PropertyBuilder> CreateStringPropertyBuilder(string columnType, int? maxLength)
+        private static Action<PropertyBuilder> CreateStringPropertyBuilder(EnrichedEnumStringColumnOptions columnOptions)
         {
             Action<PropertyBuilder> propertyBuilder = null;
 
-            if (columnType != null || maxLength.HasValue)
+            if (columnOptions != null)
             {
-                propertyBuilder = builder =>
+                if (columnOptions.ColumnType != null || columnOptions.MaxLength.HasValue)
                 {
-                    if (columnType != null)
+                    propertyBuilder = builder =>
                     {
-                        builder.HasColumnType(columnType);
-                    }
+                        if (columnOptions.ColumnType != null)
+                        {
+                            builder.HasColumnType(columnOptions.ColumnType);
+                        }
 
-                    if (maxLength.HasValue)
-                    {
-                        builder.HasMaxLength(maxLength.Value);
-                    }
-                };
+                        if (columnOptions.MaxLength.HasValue)
+                        {
+                            builder.HasMaxLength(columnOptions.MaxLength.Value);
+                        }
+                    };
+                }
             }
 
             return propertyBuilder;
         }
 
-        private static Action<PropertyBuilder> CreateIntegerPropertyBuilder(string columnType)
+        private static Action<PropertyBuilder> CreateIntegerPropertyBuilder(EnrichedEnumColumnOptions columnOptions)
         {
             Action<PropertyBuilder> propertyBuilder = null;
 
-            if (columnType != null)
+            if (columnOptions?.ColumnType != null)
             {
                 propertyBuilder = builder =>
                 {
-                    builder.HasColumnType(columnType);
+                    builder.HasColumnType(columnOptions.ColumnType);
                 };
             }
 
