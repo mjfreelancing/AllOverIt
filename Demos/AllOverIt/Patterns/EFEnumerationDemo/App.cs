@@ -66,29 +66,40 @@ namespace EFEnumerationDemo
 
             if (blogCount == 0)
             {
-                var index = 0;
+                var postIndex = 0;
                 var blogs = new List<Blog>();
 
                 for (var blogIndex = 1; blogIndex <= 1000; blogIndex++)
                 {
                     var blog = new Blog
                     {
-                        Description = $"Description #{blogIndex}"
+                        Description = $"Description #{blogIndex}",
+                        Status1 = BlogStatus.From((postIndex + blogIndex) % 5),
+                        Status3 = BlogStatus.From((postIndex + blogIndex + 5) % 5),
                     };
+
+                    if (blogIndex % 2 == 0)
+                    {
+                        blog.Status2 = BlogStatus.From((postIndex + blogIndex + 3) % 5);
+                    }
 
                     var posts = new List<Post>();
 
-                    for (var postIndex = 1; postIndex <= 10; postIndex++)
+                    for (var idx = 1; idx <= 10; idx++)
                     {
                         var post = new Post
                         {
-                            Title = $"Title #{postIndex}",
-                            Content = $"Content #{postIndex}",
-                            Rating = PostRating.From(index % 3)
+                            Title = $"Title #{idx}",
+                            Content = $"Content #{idx}",
+                            Rating = PostRating.From(postIndex % 3),
+                            Status = PublishedStatus.From((postIndex+2) % 3)
                         };
 
+                        post.StatusValue = post.Status;
+                        post.RatingValue = post.Rating;
+
                         posts.Add(post);
-                        index++;
+                        postIndex++;
                     }
 
                     blog.Posts = posts;

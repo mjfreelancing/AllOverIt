@@ -11,7 +11,7 @@ namespace AllOverIt.AspNetCore.ModelBinders
     {
         private static readonly Type EnrichedEnumType = typeof(EnrichedEnum<>);
 
-        /// <inheritdoc cref=""/>
+        /// <inheritdoc />
         public IModelBinder GetBinder(ModelBinderProviderContext context)
         {
             _ = context.WhenNotNull(nameof(context));

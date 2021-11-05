@@ -26,6 +26,15 @@ namespace EFEnumerationDemo.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Status1")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Status2")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Status3")
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
                     b.ToTable("Blogs");
@@ -46,8 +55,19 @@ namespace EFEnumerationDemo.Migrations
 
                     b.Property<string>("Rating")
                         .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("longtext");
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<int?>("RatingValue")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<int?>("StatusValue")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()

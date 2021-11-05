@@ -1,5 +1,6 @@
 ﻿using AllOverIt.EntityFrameworkCore.Extensions;
 using EFEnumerationDemo.Entities;
+using EFEnumerationDemo.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -28,18 +29,34 @@ namespace EFEnumerationDemo
         {
             base.OnModelCreating(modelBuilder);
 
-            // Note: The migration code provided with this demo is using string values. To test with integers:
+            // Note: To test a different configuration:
             //
             //  * delete the Migrations folder
-            //  * swap the `UseEnrichedEnumXXX` lines below
+            //  * edit setup as required
             //  * run the 'add-migration Init' command
             //  * run the application.
 
-            // use this to store the PostRating as a string - the 'longtext' is the type of string on the relational database
-            modelBuilder.UseEnrichedEnumName("longtext");
+            // This will store ALL enriched enums as strings
+            // modelBuilder.UseEnrichedEnumName();
 
-            // use this to store the PostRating as an integer - the 'int' is the type of string on the relational database
-            //modelBuilder.UseEnrichedEnumName("int");
+            // This will store all properties of type PublishedStatus on the Post entity as a string.
+            // modelBuilder.UseEnrichedEnumName<Post, PublishedStatus>();
+
+            // This will store all properties of type PublishedStatus on the Post entity as an integer.
+            // modelBuilder.UseEnrichedEnumValue<Post, PublishedStatus>();
+
+
+            // All BlogStatus properties across all entities
+            // Will automatically store as a string (based on storing the Name)
+            modelBuilder.UseEnrichedEnumName<BlogStatus>();
+
+            // Will automatically store as a string (based on storing the Name)
+            modelBuilder.UseEnrichedEnumName<Post>(nameof(Post.Rating));
+            modelBuilder.UseEnrichedEnumName<Post>(nameof(Post.Status));
+
+            // Will automatically store as an integer (based on storing the Value)
+            modelBuilder.UseEnrichedEnumValue<Post>(nameof(Post.RatingValue));
+            modelBuilder.UseEnrichedEnumValue<Post>(nameof(Post.StatusValue));
         }
     }
 }

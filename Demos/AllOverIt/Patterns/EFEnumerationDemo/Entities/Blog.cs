@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using EFEnumerationDemo.Models;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace EFEnumerationDemo.Entities
@@ -9,6 +10,10 @@ namespace EFEnumerationDemo.Entities
 
         [Required]
         public string Description { get; set; }
+
+        public BlogStatus Status1 { get; set; }
+        public BlogStatus Status2 { get; set; }
+        public BlogStatus Status3 { get; set; }
 
         public ICollection<Post> Posts { get; set; }
     }
