@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace HostedConsoleApp
 {
-    public sealed class DemoConsole : ConsoleAppBase
+    public sealed class App : ConsoleAppBase
     {
-        private readonly ILogger<DemoConsole> _logger;
+        private readonly ILogger<App> _logger;
 
-        public DemoConsole(ILogger<DemoConsole> logger)
+        public App(ILogger<App> logger)
         {
             _logger = logger.WhenNotNull(nameof(logger));
         }
@@ -50,12 +50,12 @@ namespace HostedConsoleApp
 
         public override void OnStopping()
         {
-            _logger.LogInformation("DemoConsole is stopping");
+            _logger.LogInformation("App is stopping");
         }
 
         public override void OnStopped()
         {
-            _logger.LogInformation("DemoConsole is stopped");
+            _logger.LogInformation("App is stopped");
         }
     }
 }

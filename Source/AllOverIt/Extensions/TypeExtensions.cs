@@ -145,7 +145,7 @@ namespace AllOverIt.Extensions
         {
             return type == typeof(string)
               ? includeString
-              : typeof(IEnumerable).IsAssignableFromType(type);
+              : typeof(IEnumerable).IsAssignableFrom(type);
         }
 
         /// <summary>Indicates if the <see cref="Type"/> represents a generic enumerable type.</summary>
@@ -153,7 +153,7 @@ namespace AllOverIt.Extensions
         /// <returns>True if the <see cref="Type"/> represents a generic enumerable type, otherwise false.</returns>
         public static bool IsGenericEnumerableType(this Type type)
         {
-            return type.IsGenericType() && typeof(IEnumerable).IsAssignableFromType(type);
+            return type.IsGenericType() && typeof(IEnumerable).IsAssignableFrom(type);
         }
 
         /// <summary>Indicates if the <see cref="Type"/> represents a generic type.</summary>
@@ -172,15 +172,46 @@ namespace AllOverIt.Extensions
             return type.GetTypeInfo().GenericTypeArguments;
         }
 
-        /// <summary>Indicates if another type can be assigned to the current type.</summary>
-        /// <param name="type">The current type.</param>
-        /// <param name="fromType">The type to check.</param>
-        /// <returns>True if the <paramref name="fromType"/> can be assigned to the current <paramref name="type"/>, otherwise false.</returns>
-        public static bool IsAssignableFromType(this Type type, Type fromType)
+        /// <summary>Determines if a type (or interface) inherits from another type (or interface).</summary>
+        /// <param name="type">The type to be tested.</param>
+        /// <param name="fromType">The generic type, such as typeof(List&lt;T&gt;).</param>
+        /// <returns>True if <param name="type"/> inherits from <param name="fromType"/>, otherwise false.</returns>
+        public static bool IsDerivedFrom(this Type type, Type fromType)
         {
-            var fromTypeInfo = fromType.GetTypeInfo();
+            if (fromType.IsInterface)
+            {
+                var typeInterfaces = type
+                    .GetInterfaces()
+                    .Where(item => item.IsGenericType == fromType.IsGenericType);
 
-            return type.GetTypeInfo().IsAssignableFrom(fromTypeInfo);
+                return typeInterfaces.Any(typeInterface => typeInterface == fromType);
+            }
+
+            if (type.IsInterface)
+            {
+                return false;
+            }
+
+            var currentType = type.BaseType;
+
+            while (currentType != null && currentType != typeof(object))
+            {
+                if (currentType.IsGenericType)
+                {
+                    if (currentType.GetGenericTypeDefinition() == fromType)
+                    {
+                        return true;
+                    }
+                }
+                else if (currentType == fromType)
+                {
+                    return true;
+                }
+
+                currentType = currentType.BaseType;
+            }
+
+            return false;
         }
 
         /// <summary>Indicates if the <see cref="Type"/> represents a generic nullable type.</summary>

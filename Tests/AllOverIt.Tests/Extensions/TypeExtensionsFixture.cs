@@ -1,4 +1,5 @@
-﻿using AllOverIt.Fixture;
+﻿using AllOverIt.Extensions;
+using AllOverIt.Fixture;
 using AllOverIt.Reflection;
 using FluentAssertions;
 using System;
@@ -483,17 +484,42 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
-        public class IsAssignableFromType : TypeExtensionsFixture
+        public class IsDerivedFrom : TypeExtensionsFixture
         {
-            [Theory]
-            [InlineData(typeof(DummySuperClass), typeof(DummySuperClass), true)]
-            [InlineData(typeof(DummySuperClass), typeof(DummyBaseClass), false)]
-            [InlineData(typeof(DummyBaseClass), typeof(DummySuperClass), true)]
-            public void Should_Return_If_Is_Assignable_From_Type(Type type, Type fromType, bool expected)
-            {
-                var actual = AllOverIt.Extensions.TypeExtensions.IsAssignableFromType(type, fromType);
+            private interface IBase { }
+            private interface IDerived : IBase { }
+            private interface IDerived2<TType1, TType2> : IDerived { }
+            private interface IDerived3<TType1, TType2> : IDerived2<TType1, TType2> { }
+            private interface IDerived4<TType1, TType2> : IDerived2<TType2, TType1> { }
+            private interface IDerived5<TType1, TType2> : IDerived2<TType1, IDerived3<TType1, TType2>> { }
+            private class Base : IBase { }
+            private class Derived : Base { }
+            private class Derived2 : Derived, IDerived2<string, double> { }
+            private class Derived<TType> : Derived { }
+            private class Derived3 : Derived<Derived3> { }
 
-                actual.Should().Be(expected);
+            [Theory]
+            [InlineData(typeof(IDerived2<,>), typeof(IBase), true)]
+            [InlineData(typeof(IDerived2<int, double>), typeof(IBase), true)]
+            [InlineData(typeof(IDerived2<int, double>), typeof(IDerived2<int, int>), false)]
+            [InlineData(typeof(IDerived3<int, double>), typeof(IDerived2<int, double>), true)]
+            [InlineData(typeof(IDerived4<int, double>), typeof(IDerived2<int, double>), false)]
+            [InlineData(typeof(IDerived4<int, double>), typeof(IDerived2<double, int>), true)]
+            [InlineData(typeof(IDerived5<int, double>), typeof(IDerived2<double, int>), false)]
+            [InlineData(typeof(IDerived5<int, double>), typeof(IDerived), true)]
+            [InlineData(typeof(IDerived5<int, double>), typeof(IDerived2<int, IDerived3<int, double>>), true)]
+            [InlineData(typeof(IDerived5<int, double>), typeof(IDerived2<int, IDerived3<double, int>>), false)]
+            [InlineData(typeof(Derived), typeof(IBase), true)]
+            [InlineData(typeof(Derived2), typeof(IDerived2<string, double>), true)]
+            [InlineData(typeof(IDerived2<string, double>), typeof(Derived2), false)]
+            [InlineData(typeof(Derived2), typeof(IDerived2<double, string>), false)]
+            [InlineData(typeof(Derived2), typeof(IDerived2<,>), false)]
+            [InlineData(typeof(Derived<>), typeof(Derived), true)]
+            [InlineData(typeof(Derived3), typeof(Derived<>), true)]
+            [InlineData(typeof(Derived3), typeof(Derived<bool>), false)]
+            public void Should_Return_Expected_Result(Type derivedType, Type baseType, bool expected)
+            {
+                derivedType.IsDerivedFrom(baseType).Should().Be(expected);
             }
         }
 

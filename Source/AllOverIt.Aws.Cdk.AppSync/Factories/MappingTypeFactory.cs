@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync.Mapping;
-using AllOverIt.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +29,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
         /// <returns>Returns the <see cref="MappingTypeFactory"/> to allow for a fluent syntax.</returns>
         public MappingTypeFactory Register(SystemType mappingType, Func<IRequestResponseMapping> creator)
         {
-            if (!typeof(IRequestResponseMapping).IsAssignableFromType(mappingType))
+            if (!typeof(IRequestResponseMapping).IsAssignableFrom(mappingType))
             {
                 throw new InvalidOperationException($"The mapping type '{mappingType.Name}' must inherit '{nameof(IRequestResponseMapping)}'.");
             }
@@ -56,7 +55,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
         /// <returns>Returns the <see cref="MappingTypeFactory"/> to allow for a fluent syntax.</returns>
         public MappingTypeFactory Register(SystemType baseMappingType, Func<SystemType, IRequestResponseMapping> creator)
         {
-            if (!typeof(IRequestResponseMapping).IsAssignableFromType(baseMappingType))
+            if (!typeof(IRequestResponseMapping).IsAssignableFrom(baseMappingType))
             {
                 throw new InvalidOperationException($"The mapping type '{baseMappingType.Name}' must inherit '{nameof(IRequestResponseMapping)}'.");
             }

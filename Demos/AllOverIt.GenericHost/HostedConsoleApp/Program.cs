@@ -11,7 +11,7 @@ namespace HostedConsoleApp
         {
             await CreateHostBuilder(args)
                 
-                // The main console app is implemented in the DemoConsole class. Here we are injecting
+                // The main console app is implemented in the App class. Here we are injecting
                 // an additional worker background service just to demonstrate it is possible.
                 .ConfigureServices(services =>
                 {
@@ -31,7 +31,7 @@ namespace HostedConsoleApp
                 .CreateConsoleHostBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddScoped<IConsoleApp, DemoConsole>();
+                    services.AddScoped<IConsoleApp, App>();
                 });
         }
     }

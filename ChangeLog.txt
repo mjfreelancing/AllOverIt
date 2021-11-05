@@ -14,6 +14,7 @@
   [10] AllOverIt.Serialization.SystemTextJson  (v1.0.0)  - [8] v1.0.0
   [11] AllOverIt.Aws.AppSync.Client            (v0.6.0)  - requires [1] v1.20.0, [8] v1.0.0
   [12] AllOverIt.AspNetCore                    (v1.0.0)  - requires [1] v1.20.0
+  [13] AllOverIt.EntityFrameworkCore           (v1.0.0)  - requires [1] v1.20.0
 
 ======================================================================================================================
 
@@ -33,6 +34,7 @@ AllOverIt - v2.0.0
   * Moved Guard from AllOverIt.Helpers to AllOverIt.Assert
   * Renamed AllOverIt.Tasks to AllOverIt.Async
   * Added EnrichedEnum<T> type
+  * Removed IsAssignableFromType() since Type.IsAssignableFrom() and TypeInfo.IsAssignableFrom() already exist.
 
 AllOverIt.Validation - v1.1.0
   * Rebuilt against AllOverIt v1.20.0 due to breaking changes
@@ -56,7 +58,11 @@ AllOverIt.Aws.AppSync.Client - v0.6.0
 
 AllOverIt.AspNetCore - v1.0.0
   * New project
-  * Provides an input formatter (JsonConverter) and model binder for EnrichedEnum types.
+  * Provides an input formatter (JsonConverter) and model binder for EnrichedEnum<> types.
+
+AllOverIt.EntityFrameworkCore - v1.0.0
+  * New project
+  * Added support for use EnrichedEnum<> types as properties on entities
 
 
 

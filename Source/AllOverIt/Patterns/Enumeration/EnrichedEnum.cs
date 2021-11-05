@@ -23,6 +23,12 @@ namespace AllOverIt.Patterns.Enumeration
         public string Name { get; }
 
         /// <summary>Constructor.</summary>
+        protected EnrichedEnum()
+        {
+            // Required for some serialization scenarios
+        }
+
+        /// <summary>Constructor.</summary>
         /// <param name="value">The integer value of the enumeration.</param>
         /// <param name="name">The name, or string value, of the enumeration.</param>
         protected EnrichedEnum(int value, string name)
