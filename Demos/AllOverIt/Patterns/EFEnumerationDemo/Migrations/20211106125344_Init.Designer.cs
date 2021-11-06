@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFEnumerationDemo.Migrations
 {
     [DbContext(typeof(BloggingContext))]
-    [Migration("20211105125430_Init")]
+    [Migration("20211106125344_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,14 +28,14 @@ namespace EFEnumerationDemo.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Status1")
-                        .HasColumnType("longtext");
+                    b.Property<int?>("Status1")
+                        .HasColumnType("int");
 
                     b.Property<string>("Status2")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Status3")
-                        .HasColumnType("longtext");
+                    b.Property<int?>("Status3")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -60,8 +60,8 @@ namespace EFEnumerationDemo.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("varchar(20)");
 
-                    b.Property<int?>("RatingValue")
-                        .HasColumnType("int");
+                    b.Property<string>("RatingValue")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Status")
                         .IsRequired()

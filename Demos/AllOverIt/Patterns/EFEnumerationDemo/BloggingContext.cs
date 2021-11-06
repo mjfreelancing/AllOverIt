@@ -36,27 +36,51 @@ namespace EFEnumerationDemo
             //  * run the 'add-migration Init' command
             //  * run the application.
 
-            // This will store ALL enriched enums as strings
-            // modelBuilder.UseEnrichedEnumName();
+            // options is optional - if not used then all properties will be stored as integers
+            modelBuilder.UseEnrichedEnum(options =>
+            {
+                // By type: Status1, Status2, Status3 as integer - could be left out as this is the default fallback
+                options
+                    .Entity<Blog>()
+                    .Property(typeof(BlogStatus));
 
-            // This will store all properties of type PublishedStatus on the Post entity as a string.
-            // modelBuilder.UseEnrichedEnumName<Post, PublishedStatus>();
+                // By name: Status2 now becomes stored as a string (replaces the previous line for this property)
+                options
+                    .Entity<Blog>()
+                    .Property(nameof(Blog.Status2))
+                    .AsName();
 
-            // This will store all properties of type PublishedStatus on the Post entity as an integer.
-            // modelBuilder.UseEnrichedEnumValue<Post, PublishedStatus>();
+                // By type: Rating and RatingValue as Name
+                options
+                    .Entity<Post>()
+                    .Properties(typeof(PostRating))
+                    .AsName();
 
+                // By name: Status as Name, leaving StatusValue as the default integer (since not configured)
+                options
+                    .Entity<Post>()
+                    .Property(nameof(Post.Status))
+                    .AsName();
 
-            // All BlogStatus properties across all entities
-            // Will automatically store as a string (based on storing the Name)
-            modelBuilder.UseEnrichedEnumName<BlogStatus>();
+                /*
+                // Specific entity / property / conversion type
+                options.Entity<Blog>().Property(typeof(BlogStatus)).AsName();
+                options.Entity<Post>().Properties(typeof(PostRating), typeof(PublishedStatus)).AsValue();
 
-            // Will automatically store as a string (based on storing the Name)
-            modelBuilder.UseEnrichedEnumName<Post>(nameof(Post.Rating));
-            modelBuilder.UseEnrichedEnumName<Post>(nameof(Post.Status));
+                // OR
 
-            // Will automatically store as an integer (based on storing the Value)
-            modelBuilder.UseEnrichedEnumValue<Post>(nameof(Post.RatingValue));
-            modelBuilder.UseEnrichedEnumValue<Post>(nameof(Post.StatusValue));
+                // All properties on the given entity type
+                options.Entity<Blog>().AsName();
+                options.Entity<Post>().AsValue();
+
+                // OR
+
+                // This will iterate over all entities configured and set them all to the requested Name / Value conversion
+                // If no entities have been configured then all entities / properties are set
+                options.AsName();
+                options.AsValue();      // - last one wins
+                */
+            });
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using AllOverIt.Patterns.Enumeration;
 using Microsoft.EntityFrameworkCore;
 
-namespace AllOverIt.EntityFrameworkCore
+namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
 {
     /// <summary>Provides column options for configuring <see cref="EnrichedEnum{TEnum}"/> value conversion on a <see cref="ModelBuilder"/>.</summary>
     public record EnrichedEnumColumnOptions
