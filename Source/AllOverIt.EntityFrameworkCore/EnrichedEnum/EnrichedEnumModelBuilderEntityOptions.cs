@@ -32,11 +32,6 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
             return Properties(typeof(TProperty));
         }
 
-        public EnrichedEnumModelBuilderPropertyOptions Property(Type propertyType)
-        {
-            return Properties(propertyType);
-        }
-
         public EnrichedEnumModelBuilderPropertyOptions Properties(params Type[] propertyTypes)
         {
             PropertyPredicate = property =>
@@ -51,13 +46,6 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
             };
 
             return PropertyOptions;
-        }
-
-        public EnrichedEnumModelBuilderPropertyOptions Property(string propertyName)
-        {
-            _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
-
-            return Properties(propertyName);
         }
 
         public EnrichedEnumModelBuilderPropertyOptions Properties(params string[] propertyNames)

@@ -42,12 +42,12 @@ namespace EFEnumerationDemo
                 // By type: Status1, Status2, Status3 as integer - could be left out as this is the default fallback
                 options
                     .Entity<Blog>()
-                    .Property(typeof(BlogStatus));
+                    .Properties(typeof(BlogStatus));
 
                 // By name: Status2 now becomes stored as a string (replaces the previous line for this property)
                 options
                     .Entity<Blog>()
-                    .Property(nameof(Blog.Status2))
+                    .Properties(nameof(Blog.Status2))
                     .AsName();
 
                 // By type: Rating and RatingValue as Name
@@ -59,7 +59,7 @@ namespace EFEnumerationDemo
                 // By name: Status as Name, leaving StatusValue as the default integer (since not configured)
                 options
                     .Entity<Post>()
-                    .Property(nameof(Post.Status))
+                    .Properties(nameof(Post.Status))
                     .AsName();
 
                 /*
