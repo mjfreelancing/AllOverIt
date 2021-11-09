@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 class Program
 {
-    static async Task Main(string[] args)
+    static async Task Main()
     {
         await GenericHost
-            .CreateConsoleHostBuilder(args)
-            .ConfigureServices((hostContext, services) =>
+            .CreateConsoleHostBuilder()
+            .ConfigureServices(services =>
             {
                 services.AddDbContext<BloggingContext>();
                 services.AddScoped<IConsoleApp, App>();

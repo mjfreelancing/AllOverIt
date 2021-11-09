@@ -14,7 +14,6 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
     {
         internal Func<IMutableEntityType, bool> EntityPredicate { get; }
         internal Func<PropertyInfo, bool> PropertyPredicate { get; private set; }
-
         internal EnrichedEnumPropertyOptions PropertyOptions { get; } = new();
 
         /// <summary>Constructor. The default behaviour is to include all properties on all entities that inherit <see cref="EnrichedEnum{TEnum}"/>.</summary>
