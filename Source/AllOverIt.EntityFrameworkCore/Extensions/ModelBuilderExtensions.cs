@@ -1,5 +1,6 @@
 ﻿using AllOverIt.EntityFrameworkCore.EnrichedEnum;
 using AllOverIt.Extensions;
+using AllOverIt.Patterns.Enumeration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -14,6 +15,9 @@ namespace AllOverIt.EntityFrameworkCore.Extensions
     /// <summary>Provides a variety of extension methods for <see cref="ModelBuilder"/>.</summary>
     public static class ModelBuilderExtensions
     {
+        /// <summary>Configures the model builder to store entity properties that inherit <see cref="EnrichedEnum{TENum}"/> as integer or string values.</summary>
+        /// <param name="modelBuilder">The model builder being configured.</param>
+        /// <param name="configure">The configuration action to invoke. If null then the model builder will be configured to store all values as integers.</param>
         public static void UseEnrichedEnum(this ModelBuilder modelBuilder, Action<EnrichedEnumModelBuilderOptions> configure = default)
         {
             var options = new EnrichedEnumModelBuilderOptions();
@@ -70,12 +74,6 @@ namespace AllOverIt.EntityFrameworkCore.Extensions
             }
         }
 
-        private static ValueConverter CreateValueConverter(Type propertyType, Type valueConverter)
-        {
-            var converterType = valueConverter.MakeGenericType(propertyType);
-            return (ValueConverter) Activator.CreateInstance(converterType);
-        }
-
         private static void ConfigureEntityProperty(ModelBuilder modelBuilder, IMutableEntityType entityType, PropertyInfo property,
             Action<PropertyBuilder> propertyBuilder, Type valueConverter)
         {
@@ -87,6 +85,12 @@ namespace AllOverIt.EntityFrameworkCore.Extensions
                 .HasConversion(converter);
 
             propertyBuilder?.Invoke(propBuilder);
+        }
+
+        private static ValueConverter CreateValueConverter(Type propertyType, Type valueConverter)
+        {
+            var converterType = valueConverter.MakeGenericType(propertyType);
+            return (ValueConverter) Activator.CreateInstance(converterType);
         }
     }
 }
