@@ -40,7 +40,7 @@ AllOverIt.Validation - v2.0.0
   * Rebuilt against AllOverIt v2.0.0 due to breaking changes
   # Renamed IsNotNullOrEmpty to IsNotEmpty - bring it into alignment with FluentValidation's NotEmpty()
 
-AllOverIt.Aws.Cdk.AppSync - v1.0.0
+AllOverIt.Aws.Cdk.AppSync - v1.0.0 (only targeting netcoreapp3.1)
   * Rebuilt against AllOverIt v2.0.0 due to breaking changes
   * Updated to Amazon.CDK.AWS.AppSync v1.132.0
   * Renamed namespace Datasources to DataSources
