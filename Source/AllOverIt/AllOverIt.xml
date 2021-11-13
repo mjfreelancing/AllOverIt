@@ -1575,11 +1575,11 @@
             <param name="type">The <see cref="T:System.Type"/> containing the generic type arguments.</param>
             <returns>An array of the generic type arguments for this type.</returns>
         </member>
-        <member name="M:AllOverIt.Extensions.TypeExtensions.IsAssignableFromType(System.Type,System.Type)">
-            <summary>Indicates if another type can be assigned to the current type.</summary>
-            <param name="type">The current type.</param>
-            <param name="fromType">The type to check.</param>
-            <returns>True if the <paramref name="fromType"/> can be assigned to the current <paramref name="type"/>, otherwise false.</returns>
+        <member name="M:AllOverIt.Extensions.TypeExtensions.IsDerivedFrom(System.Type,System.Type)">
+            <summary>Determines if a type (or interface) inherits from another type (or interface).</summary>
+            <param name="type">The type to be tested.</param>
+            <param name="fromType">The generic type, such as typeof(List&lt;T&gt;).</param>
+            <returns>True if <param name="type"/> inherits from <param name="fromType"/>, otherwise false.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.TypeExtensions.IsGenericNullableType(System.Type)">
             <summary>Indicates if the <see cref="T:System.Type"/> represents a generic nullable type.</summary>
@@ -1886,6 +1886,9 @@
         </member>
         <member name="P:AllOverIt.Patterns.Enumeration.EnrichedEnum`1.Name">
             <summary>The name, or string value, of the enumeration.</summary>
+        </member>
+        <member name="M:AllOverIt.Patterns.Enumeration.EnrichedEnum`1.#ctor">
+            <summary>Constructor.</summary>
         </member>
         <member name="M:AllOverIt.Patterns.Enumeration.EnrichedEnum`1.#ctor(System.Int32,System.String)">
             <summary>Constructor.</summary>

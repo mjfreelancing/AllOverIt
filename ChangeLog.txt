@@ -2,25 +2,25 @@
 
   Current AllOverIt Inter-Dependencies
 
-  [1]  AllOverIt                               (v1.20.0) - None
-  [2]  AllOverIt.Validation                    (v1.1.0)  - requires [1] v1.20.0
-  [3]  AllOverIt.Aws.Cdk.AppSync               (v0.17.0) - requires [1] v1.20.0
-  [4]  AllOverIt.Evaluator                     (v3.1.0)  - requires [1] v1.20.0
-  [5]  AllOverIt.GenericHost                   (v1.3.0)  - requires [1] v1.20.0
+  [1]  AllOverIt                               (v2.0.0)  - None
+  [2]  AllOverIt.Validation                    (v2.0.0)  - requires [1] v2.0.0
+  [3]  AllOverIt.Aws.Cdk.AppSync               (v1.0.0)  - requires [1] v2.0.0
+  [4]  AllOverIt.Evaluator                     (v4.0.0)  - requires [1] v2.0.0
+  [5]  AllOverIt.GenericHost                   (v2.0.0)  - requires [1] v2.0.0
   [6]  AllOverIt.Fixture                       (v1.6.0)  - None
   [7]  AllOverIt.Fixture.FakeItEasy            (v1.4.0)  - requires [6] v1.6.0
   [8]  AllOverIt.Serialization.Abstractions    (v1.0.0)  - None
   [9]  AllOverIt.Serialization.NewtonsoftJson  (v1.0.0)  - [8] v1.0.0
   [10] AllOverIt.Serialization.SystemTextJson  (v1.0.0)  - [8] v1.0.0
-  [11] AllOverIt.Aws.AppSync.Client            (v0.6.0)  - requires [1] v1.20.0, [8] v1.0.0
-  [12] AllOverIt.AspNetCore                    (v1.0.0)  - requires [1] v1.20.0
-  [13] AllOverIt.EntityFrameworkCore           (v1.0.0)  - requires [1] v1.20.0
+  [11] AllOverIt.Aws.AppSync.Client            (v1.0.0)  - requires [1] v2.0.0, [8] v1.0.0
+  [12] AllOverIt.AspNetCore                    (v1.0.0)  - requires [1] v2.0.0
+  [13] AllOverIt.EntityFrameworkCore           (v1.0.0)  - requires [1] v2.0.0
 
 ======================================================================================================================
 
 
 
-XX XXX 2021 - PENDING - Update version info above
+13 Nov 2021
 ======================================================================================================================
 AllOverIt - v2.0.0
   * BREAKING CHANGE: Moved Raii and RaiiAsync from AllOverIt.Helpers to AllOverIt.Patterns.ResourceInitialization
@@ -36,25 +36,25 @@ AllOverIt - v2.0.0
   * Added EnrichedEnum<T> type
   * Removed IsAssignableFromType() since Type.IsAssignableFrom() and TypeInfo.IsAssignableFrom() already exist.
 
-AllOverIt.Validation - v1.1.0
-  * Rebuilt against AllOverIt v1.20.0 due to breaking changes
+AllOverIt.Validation - v2.0.0
+  * Rebuilt against AllOverIt v2.0.0 due to breaking changes
   # Renamed IsNotNullOrEmpty to IsNotEmpty - bring it into alignment with FluentValidation's NotEmpty()
 
-AllOverIt.Aws.Cdk.AppSync - v0.17.0
-  * Rebuilt against AllOverIt v1.20.0 due to breaking changes
-  * Updated to Amazon.CDK.AWS.AppSync v1.129.0
+AllOverIt.Aws.Cdk.AppSync - v1.0.0
+  * Rebuilt against AllOverIt v2.0.0 due to breaking changes
+  * Updated to Amazon.CDK.AWS.AppSync v1.132.0
   * Renamed namespace Datasources to DataSources
 
-AllOverIt.Evaluator - v3.1.0
-  * Rebuilt against AllOverIt v1.20.0 due to breaking changes
+AllOverIt.Evaluator - v4.0.0
+  * Rebuilt against AllOverIt v2.0.0 due to breaking changes
   * Internal improvements to reduce memory allocations
   * Added conditional and comparison methods: IF, EQ, NE, LT, LTE, GT, GTE
 
-AllOverIt.GenericHost - v1.3.0
-  * Rebuilt against AllOverIt v1.20.0 due to breaking changes
+AllOverIt.GenericHost - v2.0.0
+  * Rebuilt against AllOverIt v2.0.0 due to breaking changes
 
-AllOverIt.Aws.AppSync.Client - v0.6.0
-  * Rebuilt against AllOverIt v1.20.0 due to breaking changes
+AllOverIt.Aws.AppSync.Client - v1.0.0
+  * Rebuilt against AllOverIt v2.0.0 due to breaking changes
 
 AllOverIt.AspNetCore - v1.0.0
   * New project
@@ -208,9 +208,6 @@ AllOverIt.Validation - v1.0.0
 AllOverIt.Aws.Cdk.AppSync - v0.13.0
   * Updated to AllOverIt v1.17.0
   * Updated to Amazon.CDK.AWS.AppSync v1.121.0
-
-AllOverIt.GenericHost - v1.2.0
-  * Updated to AllOverIt v1.17.0
 
 AllOverIt.Fixture - v1.6.0
   * Updated to AllOverIt v1.17.0

@@ -5,7 +5,7 @@
     </assembly>
     <members>
         <member name="T:AllOverIt.AspNetCore.Converters.EnrichedEnumConverter`1">
-            <summary>A base class to convert JSON to and from an <see cref="T:AllOverIt.Patterns.Enumeration.EnrichedEnum`1"/> type.</summary>
+            <summary>Converts JSON to and from an <see cref="T:AllOverIt.Patterns.Enumeration.EnrichedEnum`1"/> type.</summary>
             <typeparam name="TEnum">The concrete <see cref="T:AllOverIt.Patterns.Enumeration.EnrichedEnum`1"/> type.</typeparam>
         </member>
         <member name="M:AllOverIt.AspNetCore.Converters.EnrichedEnumConverter`1.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
@@ -13,6 +13,10 @@
         </member>
         <member name="M:AllOverIt.AspNetCore.Converters.EnrichedEnumConverter`1.Write(System.Text.Json.Utf8JsonWriter,`0,System.Text.Json.JsonSerializerOptions)">
             <summary>Writes the value of a <typeparamref name="TEnum"/> instance to the current JSON writer.</summary>
+        </member>
+        <member name="M:AllOverIt.AspNetCore.Converters.EnrichedEnumConverter`1.Create">
+            <summary>Creates a <see cref="T:System.Text.Json.Serialization.JsonConverter"/> for an <see cref="T:AllOverIt.Patterns.Enumeration.EnrichedEnum`1"/> type.</summary>
+            <returns>A new JsonConverter instance.</returns>
         </member>
         <member name="T:AllOverIt.AspNetCore.ModelBinders.EnrichedEnumModelBinder">
             <summary>A factory for creating an <see cref="T:AllOverIt.Patterns.Enumeration.EnrichedEnum`1"/> specific model binder.</summary>
@@ -31,7 +35,7 @@
             <summary>A model binder provider for all <see cref="T:AllOverIt.Patterns.Enumeration.EnrichedEnum`1"/> types.</summary>
         </member>
         <member name="M:AllOverIt.AspNetCore.ModelBinders.EnrichedEnumModelBinderProvider.GetBinder(Microsoft.AspNetCore.Mvc.ModelBinding.ModelBinderProviderContext)">
-            <inheritdoc cref="!:"/>
+            <inheritdoc />
         </member>
     </members>
 </doc>

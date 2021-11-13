@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AllOverIt.EntityFrameworkCore</name>
+    </assembly>
+    <members>
+        <member name="T:AllOverIt.EntityFrameworkCore.EnrichedEnum.EnrichedEnumColumnOptions">
+            <summary>Provides column options for configuring <see cref="T:AllOverIt.Patterns.Enumeration.EnrichedEnum`1"/> value conversion on a <see cref="T:Microsoft.EntityFrameworkCore.ModelBuilder"/>.</summary>
+        </member>
+        <member name="P:AllOverIt.EntityFrameworkCore.EnrichedEnum.EnrichedEnumColumnOptions.ColumnType">
+            <summary>If provided, this contains the data type of the column that the property maps to when targeting a relational database.
+            This must be the complete type name applicable for the database in use.</summary>
+        </member>
+        <member name="T:AllOverIt.EntityFrameworkCore.EnrichedEnum.EnrichedEnumEntityOptions">
+            <summary>Provides options for entities containing <see cref="T:AllOverIt.Patterns.Enumeration.EnrichedEnum`1"/> properties.</summary>
+        </member>
+        <member name="M:AllOverIt.EntityFrameworkCore.EnrichedEnum.EnrichedEnumEntityOptions.#ctor">
+            <summary>Constructor. The default behaviour is to include all properties on all entities that inherit <see cref="T:AllOverIt.Patterns.Enumeration.EnrichedEnum`1"/>.</summary>
+        </member>
+        <member name="M:AllOverIt.EntityFrameworkCore.EnrichedEnum.EnrichedEnumEntityOptions.#ctor(System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>Constructor. The property options to be configured will be applied to the specified entity types.</summary>
+            <param name="entityTypes">One or more entity types to be configured.</param>
+        </member>
+        <member name="M:AllOverIt.EntityFrameworkCore.EnrichedEnum.EnrichedEnumEntityOptions.Property``1">
+            <summary>Gets options for all properties of the specified type on the entity types being configured.</summary>
+            <typeparam name="TProperty">The property type to configure.</typeparam>
+            <returns>An options instance for the specified property type.</returns>
+        </member>
+        <member name="M:AllOverIt.EntityFrameworkCore.EnrichedEnum.EnrichedEnumEntityOptions.Property(System.Type)">
+            <summary>Gets options for all properties of the specified type on the entity types being configured.</summary>
+            <param name="propertyType">The property type to configure.</param>
+            <returns>An options instance for the specified property type.</returns>
+        </member>
+        <member name="M:AllOverIt.EntityFrameworkCore.EnrichedEnum.EnrichedEnumEntityOptions.Properties(System.Type[])">
+            <summary>Gets options for the specified property types on the entity types being configured.</summary>
+            <param name="propertyTypes">One or more property types to be configured.</param>
+            <returns>An options instance for the specified property types on the entity types being configured.</returns>
+        </member>
+        <member name="M:AllOverIt.EntityFrameworkCore.EnrichedEnum.EnrichedEnumEntityOptions.Property(System.String)">
+            <summary>Gets options for all properties of the specified name on the entity types being configured.</summary>
+            <param name="propertyName">The property name.</param>
+            <returns>An options instance for the specified property on the entity types being configured.</returns>
+        </member>
+        <member name="M:AllOverIt.EntityFrameworkCore.EnrichedEnum.EnrichedEnumEntityOptions.Properties(System.String[])">
+            <summary>Gets options for all properties of the specified names on the entity types being configured.</summary>
+            <param name="propertyNames">The property names.</param>
+            <returns>An options instance for the specified properties on the entity types being configured.</returns>
+        </member>
+        <member name="M:AllOverIt.EntityFrameworkCore.EnrichedEnum.EnrichedEnumEntityOptions.AsName(System.String,System.Nullable{System.Int32})">
+            <summary>Configures all properties on the entity types being configured to store their values as a string.</summary>
+            <param name="columnType">Optional. If provided, this configures the data type of the column that the property maps to when targeting a relational database.
+            This should be the complete type name, including its length.</param>
+            <param name="maxLength">Optional. If provided this value specifies the column's maximum length. This parameter is not required if the [MaxLength] attribute is used.</param>
+        </member>
+        <member name="M:AllOverIt.EntityFrameworkCore.EnrichedEnum.EnrichedEnumEntityOptions.AsValue(System.String)">
+            <summary>Configures all properties on the entity types being configured to store their values as an integer.</summary>
+            <param name="columnType">Optional. If provided, this configures the data type of the column that the property maps to when targeting a relational database.</param>
+        </member>
+        <member name="T:AllOverIt.EntityFrameworkCore.EnrichedEnum.EnrichedEnumModelBuilderOptions">
+            <summary>Provides model builder options to configure entities containing properties that inherit <see cref="T:AllOverIt.Patterns.Enumeration.EnrichedEnum`1"/>.</summary>
+        </member>
+        <member name="M:AllOverIt.EntityFrameworkCore.EnrichedEnum.EnrichedEnumModelBuilderOptions.Entity``1">
+            <summary>Provides access to the configuration of a specified entity type.</summary>
+            <typeparam name="TEntity">The entity type.</typeparam>
+            <returns>An options instance for the specified entity type.</returns>
+        </member>
+        <member name="M:AllOverIt.EntityFrameworkCore.EnrichedEnum.EnrichedEnumModelBuilderOptions.Entity(System.Type)">
+            <summary>Provides access to the configuration of a specified entity type.</summary>
+            <param name="entityType">The entity type.</param>
+            <returns>An options instance for the specified entity type.</returns>
+        </member>
+        <member name="M:AllOverIt.EntityFrameworkCore.EnrichedEnum.EnrichedEnumModelBuilderOptions.Entities(System.Type[])">
+            <summary>Provides access to the configuration of one or more entity types.</summary>
+            <param name="entityTypes">The entity types.</param>
+            <returns>An options instance for the specified entity types.</returns>
+        </member>
+        <member name="M:AllOverIt.EntityFrameworkCore.EnrichedEnum.EnrichedEnumModelBuilderOptions.AsName(System.String,System.Nullable{System.Int32})">
+            <summary>Configures all <see cref="T:AllOverIt.Patterns.Enumeration.EnrichedEnum`1"/> properties on all entities to store their values as a string.</summary>
+            <param name="columnType">Optional. If provided, this configures the data type of the column that the property maps to when targeting a relational database.
+            This should be the complete type name, including its length.</param>
+            <param name="maxLength">Optional. If provided this value specifies the column's maximum length. This parameter is not required if the [MaxLength] attribute is used.</param>
+        </member>
+        <member name="M:AllOverIt.EntityFrameworkCore.EnrichedEnum.EnrichedEnumModelBuilderOptions.AsValue(System.String)">
+            <summary>Configures all <see cref="T:AllOverIt.Patterns.Enumeration.EnrichedEnum`1"/> properties on all entities to store their values as an integer.</summary>
+            <param name="columnType">Optional. If provided, this configures the data type of the column that the property maps to when targeting a relational database.</param>
+        </member>
+        <member name="T:AllOverIt.EntityFrameworkCore.EnrichedEnum.EnrichedEnumPropertyOptions">
+            <summary>Provides entity property options for types inheriting <see cref="T:AllOverIt.Patterns.Enumeration.EnrichedEnum`1"/> that determine how the values will be stored.</summary>
+        </member>
+        <member name="M:AllOverIt.EntityFrameworkCore.EnrichedEnum.EnrichedEnumPropertyOptions.#ctor">
+            <summary>Constructor. The default behaviour is to store the property value as an integer.</summary>
+        </member>
+        <member name="M:AllOverIt.EntityFrameworkCore.EnrichedEnum.EnrichedEnumPropertyOptions.AsName(System.String,System.Nullable{System.Int32})">
+            <summary>Configures the property to be stored as a string.</summary>
+            <param name="columnType">Optional. If provided, this configures the data type of the column that the property maps to when targeting a relational database.
+            This should be the complete type name, including its length.</param>
+            <param name="maxLength">Optional. If provided this value specifies the column's maximum length. This parameter is not required if the [MaxLength] attribute is used.</param>
+        </member>
+        <member name="M:AllOverIt.EntityFrameworkCore.EnrichedEnum.EnrichedEnumPropertyOptions.AsValue(System.String)">
+            <summary>Configures the property to be stored as an integer.</summary>
+            <param name="columnType">Optional. If provided, this configures the data type of the column that the property maps to when targeting a relational database.</param>
+        </member>
+        <member name="T:AllOverIt.EntityFrameworkCore.EnrichedEnum.EnrichedEnumStringColumnOptions">
+            <summary>Provides string column options for configuring <see cref="T:AllOverIt.Patterns.Enumeration.EnrichedEnum`1"/> value conversion on a <see cref="T:Microsoft.EntityFrameworkCore.ModelBuilder"/>.</summary>
+        </member>
+        <member name="P:AllOverIt.EntityFrameworkCore.EnrichedEnum.EnrichedEnumStringColumnOptions.MaxLength">
+            <summary>If provided this value specifies the column's maximum length. This parameter is not required if the [MaxLength] attribute is used.</summary>
+        </member>
+        <member name="T:AllOverIt.EntityFrameworkCore.Extensions.ModelBuilderExtensions">
+            <summary>Provides a variety of extension methods for <see cref="T:Microsoft.EntityFrameworkCore.ModelBuilder"/>.</summary>
+        </member>
+        <member name="M:AllOverIt.EntityFrameworkCore.Extensions.ModelBuilderExtensions.UseEnrichedEnum(Microsoft.EntityFrameworkCore.ModelBuilder,System.Action{AllOverIt.EntityFrameworkCore.EnrichedEnum.EnrichedEnumModelBuilderOptions})">
+            <summary>Configures the model builder to store entity properties that inherit <see cref="T:AllOverIt.Patterns.Enumeration.EnrichedEnum`1"/> as integer or string values.</summary>
+            <param name="modelBuilder">The model builder being configured.</param>
+            <param name="configure">The configuration action to invoke. If null then the model builder will be configured to store all values as integers.</param>
+        </member>
+        <member name="T:AllOverIt.EntityFrameworkCore.ValueConverters.EnrichedEnumNameConverter`1">
+            <summary>Defines the conversion from an <see cref="T:AllOverIt.Patterns.Enumeration.EnrichedEnum`1"/> type to a string.</summary>
+            <typeparam name="TEnum">The enriched enum type. This must inherit <see cref="T:AllOverIt.Patterns.Enumeration.EnrichedEnum`1"/>.</typeparam>
+        </member>
+        <member name="M:AllOverIt.EntityFrameworkCore.ValueConverters.EnrichedEnumNameConverter`1.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="T:AllOverIt.EntityFrameworkCore.ValueConverters.EnrichedEnumValueConverter`1">
+            <summary>Defines the conversion from an <see cref="T:AllOverIt.Patterns.Enumeration.EnrichedEnum`1"/> type to an integer.</summary>
+            <typeparam name="TEnum">The enriched enum type. This must inherit <see cref="T:AllOverIt.Patterns.Enumeration.EnrichedEnum`1"/>.</typeparam>
+        </member>
+        <member name="M:AllOverIt.EntityFrameworkCore.ValueConverters.EnrichedEnumValueConverter`1.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+    </members>
+</doc>
