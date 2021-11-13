@@ -20,7 +20,7 @@
 
 
 
-13 Nov 2021
+13 Nov 2021 - Targeting .NET 5
 ======================================================================================================================
 AllOverIt - v2.0.0
   * BREAKING CHANGE: Moved Raii and RaiiAsync from AllOverIt.Helpers to AllOverIt.Patterns.ResourceInitialization
