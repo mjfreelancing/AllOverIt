@@ -17,9 +17,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\..\Source\AllOverIt.EntityFrameworkCore\AllOverIt.EntityFrameworkCore.csproj" />
-        <ProjectReference Include="..\..\..\..\Source\AllOverIt.GenericHost\AllOverIt.GenericHost.csproj" />
-        <ProjectReference Include="..\..\..\..\Source\AllOverIt\AllOverIt.csproj" />
+        <ProjectReference Include="..\..\..\Source\AllOverIt.EntityFrameworkCore\AllOverIt.EntityFrameworkCore.csproj" />
+        <ProjectReference Include="..\..\..\Source\AllOverIt.GenericHost\AllOverIt.GenericHost.csproj" />
+        <ProjectReference Include="..\..\..\Source\AllOverIt\AllOverIt.csproj" />
     </ItemGroup>
 
 </Project>
