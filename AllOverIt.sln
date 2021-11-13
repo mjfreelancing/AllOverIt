@@ -135,6 +135,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFEnumerationDemo", "Demos\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnumerationDemo", "Demos\AllOverIt\Patterns\EnumerationDemo\EnumerationDemo.csproj", "{2691BE45-E44C-4B4E-BDAD-8BD9F837BCBC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandDemo", "Demos\AllOverIt\Patterns\Command\CommandDemo\CommandDemo.csproj", "{FF9BD9F1-96B3-4B52-B365-BCB167FD4878}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -317,6 +319,10 @@ Global
 		{2691BE45-E44C-4B4E-BDAD-8BD9F837BCBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2691BE45-E44C-4B4E-BDAD-8BD9F837BCBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2691BE45-E44C-4B4E-BDAD-8BD9F837BCBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF9BD9F1-96B3-4B52-B365-BCB167FD4878}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF9BD9F1-96B3-4B52-B365-BCB167FD4878}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF9BD9F1-96B3-4B52-B365-BCB167FD4878}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF9BD9F1-96B3-4B52-B365-BCB167FD4878}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -382,6 +388,7 @@ Global
 		{FF30E74E-0317-4439-9327-A0BB72B230D0} = {D9F6B8A1-4B01-4708-8851-741FC19F2440}
 		{2F1AC178-B4D2-475D-8AD7-A1FEFBD19938} = {FF30E74E-0317-4439-9327-A0BB72B230D0}
 		{2691BE45-E44C-4B4E-BDAD-8BD9F837BCBC} = {595F3EB1-3F3D-4942-9A5A-95CD8621607B}
+		{FF9BD9F1-96B3-4B52-B365-BCB167FD4878} = {595F3EB1-3F3D-4942-9A5A-95CD8621607B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19DD11B3-596E-4862-B5C4-1FFFFB173106}

@@ -20,6 +20,16 @@
 
 
 
+XX XXX 2021 
+======================================================================================================================
+NEED TO ADD ALL AFFECTED PROJECTS
+  * Added .NET 6 target
+
+AllOverIt - v2.x.x
+  * Added Command pattern interfaces, command pipeline, and demo
+
+
+
 13 Nov 2021 - Targeting .NET 5
 ======================================================================================================================
 AllOverIt - v2.0.0
