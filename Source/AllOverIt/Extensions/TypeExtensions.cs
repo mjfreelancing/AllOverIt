@@ -175,7 +175,7 @@ namespace AllOverIt.Extensions
         /// <summary>Determines if a type (or interface) inherits from another type (or interface).</summary>
         /// <param name="type">The type to be tested.</param>
         /// <param name="fromType">The generic type, such as typeof(List&lt;T&gt;).</param>
-        /// <returns>True if <param name="type"/> inherits from <param name="fromType"/>, otherwise false.</returns>
+        /// <returns>True if <paramref name="type"/> inherits from <paramref name="fromType"/>, otherwise false.</returns>
         public static bool IsDerivedFrom(this Type type, Type fromType)
         {
             if (fromType.IsInterface)

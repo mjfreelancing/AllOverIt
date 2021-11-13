@@ -1579,7 +1579,7 @@
             <summary>Determines if a type (or interface) inherits from another type (or interface).</summary>
             <param name="type">The type to be tested.</param>
             <param name="fromType">The generic type, such as typeof(List&lt;T&gt;).</param>
-            <returns>True if <param name="type"/> inherits from <param name="fromType"/>, otherwise false.</returns>
+            <returns>True if <paramref name="type"/> inherits from <paramref name="fromType"/>, otherwise false.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.TypeExtensions.IsGenericNullableType(System.Type)">
             <summary>Indicates if the <see cref="T:System.Type"/> represents a generic nullable type.</summary>
