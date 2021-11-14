@@ -173,11 +173,11 @@ namespace AllOverIt.Patterns.Enumeration
         public static bool operator <=(EnrichedEnum<TEnum> left, EnrichedEnum<TEnum> right) => left.CompareTo(right) <= 0;
 
         /// <summary>Implicit operator to convert an enumeration to its integer equivalent.</summary>
-        /// <param name="enum"></param>
+        /// <param name="enum">The value to implicitly convert.</param>
         public static implicit operator int(EnrichedEnum<TEnum> @enum) => @enum.Value;
 
         /// <summary>Explicit operator to convert an integer value to its enumeration equivalent.</summary>
-        /// <param name="value"></param>
+        /// <param name="value">The value to explicitly convert.</param>
         public static explicit operator EnrichedEnum<TEnum>(int value) => From(value);
 
         private static TEnum Parse<TValueType>(TValueType value, Func<TEnum, bool> predicate)
