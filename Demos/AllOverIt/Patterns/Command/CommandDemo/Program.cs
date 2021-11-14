@@ -17,8 +17,7 @@ namespace CommandDemo
             var result = pipeline
                 .Append(times2)
                 .Append(times3)
-                .Append(times4)
-                .Append(times5)
+                .Append(times4, times5)
                 .Execute(7);
 
             Console.WriteLine();
