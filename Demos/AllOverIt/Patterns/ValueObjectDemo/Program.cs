@@ -8,6 +8,9 @@ namespace ValueObjectDemo
     {
         static void Main()
         {
+            // A temperature cannot be less than 0 Kelvin. The `TemperatureValueObject` uses a double to store the temperature
+            // but it provides it's own domain-specific validation. To make the example a little more elaborate, the value object
+            // is using an `EnrichedTemperature` type that stores the value and allows for conversion between different units.
             var temp1 = new TemperatureValueObject(TemperatureUnits.Kelvin, 0.0d);
             var temp2 = new TemperatureValueObject(20);                                 // defaults to Celcius
             var temp3 = new TemperatureValueObject(TemperatureUnits.Farenheit, -4);
