@@ -385,6 +385,16 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             }
 
             [Fact]
+            public void Should_Not_Be_GreaterThan_When_Equal()
+            {
+#pragma warning disable CS1718 // Comparison made to same variable
+                var actual = EnrichedEnumDummy.Value1 > EnrichedEnumDummy.Value1;
+#pragma warning restore CS1718 // Comparison made to same variable
+
+                actual.Should().BeFalse();
+            }
+
+            [Fact]
             public void Should_Throw_When_Null()
             {
                 Invoking(() =>
@@ -451,6 +461,16 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             public void Should_Not_Be_LessThan()
             {
                 var actual = EnrichedEnumDummy.Value2 < EnrichedEnumDummy.Value1;
+
+                actual.Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Not_Be_LessThan_When_Equal()
+            {
+#pragma warning disable CS1718 // Comparison made to same variable
+                var actual = EnrichedEnumDummy.Value2 < EnrichedEnumDummy.Value2;
+#pragma warning restore CS1718 // Comparison made to same variable
 
                 actual.Should().BeFalse();
             }

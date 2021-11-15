@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Exceptions;
 using System;
-using System.Diagnostics.CodeAnalysis;
 using ValueObjectDemo.Extensions;
 
 namespace ValueObjectDemo
