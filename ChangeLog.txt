@@ -27,6 +27,7 @@ NEED TO ADD ALL AFFECTED PROJECTS
 
 AllOverIt - v2.x.x
   * Added Command pattern interfaces, command pipeline, and demo
+  * Added ValueObject pattern and demo
 
 
 
