@@ -502,6 +502,21 @@
             <typeparam name="TMessage">The message type.</typeparam>
             <param name="handler">The message handler to unsubscribe.</param>
         </member>
+        <member name="T:AllOverIt.Exceptions.CommandException">
+            <summary>Represents an error that occurred while executing a command.</summary>
+        </member>
+        <member name="M:AllOverIt.Exceptions.CommandException.#ctor">
+            <summary>Default constructor.</summary>
+        </member>
+        <member name="M:AllOverIt.Exceptions.CommandException.#ctor(System.String)">
+            <summary>Constructor.</summary>
+            <param name="message">The exception message.</param>
+        </member>
+        <member name="M:AllOverIt.Exceptions.CommandException.#ctor(System.String,System.Exception)">
+            <summary>Constructor.</summary>
+            <param name="message">The exception message.</param>
+            <param name="innerException">The inner exception.</param>
+        </member>
         <member name="T:AllOverIt.Exceptions.EnrichedEnumException">
             <summary>Represents an error that occurred while attempting to interpret a name or value as a <see cref="T:AllOverIt.Patterns.Enumeration.EnrichedEnum`1"/>.</summary>
         </member>
@@ -546,6 +561,24 @@
             <summary>Constructor.</summary>
             <param name="message">The exception message.</param>
             <param name="innerException">The inner exception.</param>
+        </member>
+        <member name="T:AllOverIt.Exceptions.ValueObjectValidationException">
+            <summary>Represents a validation error that occurred while initializing a <see cref="T:AllOverIt.Patterns.ValueObject.ValueObject`2"/>.</summary>
+        </member>
+        <member name="M:AllOverIt.Exceptions.ValueObjectValidationException.#ctor">
+            <summary>Default constructor.</summary>
+        </member>
+        <member name="M:AllOverIt.Exceptions.ValueObjectValidationException.#ctor(System.String)">
+            <summary>Constructor.</summary>
+            <param name="message">The exception message.</param>
+        </member>
+        <member name="M:AllOverIt.Exceptions.ValueObjectValidationException.#ctor(System.String,System.Exception)">
+            <summary>Constructor.</summary>
+            <param name="message">The exception message.</param>
+            <param name="innerException">The inner exception.</param>
+        </member>
+        <member name="M:AllOverIt.Exceptions.ValueObjectValidationException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <inheritdoc />
         </member>
         <member name="T:AllOverIt.Expressions.ParameterRebinder">
             <summary>A helper class that replaces parameter expressions in a lambda expression with alternate parameter expressions.</summary>
@@ -1877,6 +1910,114 @@
             by the current handler.</param>
             <returns>An output state.</returns>
         </member>
+        <member name="T:AllOverIt.Patterns.Command.AsyncCommandPipeline`1">
+            <summary>Implements a pipeline that allows multiple commands to be executed in turn where the output of each command
+            is provided as the input to the next. The input and output are of the same type.</summary>
+            <typeparam name="TInput">The input type to be provided to the command.</typeparam>
+        </member>
+        <member name="T:AllOverIt.Patterns.Command.AsyncCommandPipeline`2">
+            <summary>Implements a pipeline that allows multiple commands to be executed in turn where the output of each command
+            is provided as the input to the next. The output type must be the same as, or inherit from, the input type.</summary>
+            <typeparam name="TInput">The input type to be provided to the command.</typeparam>
+            <typeparam name="TOutput">The output type to be returned from the command.</typeparam>
+        </member>
+        <member name="M:AllOverIt.Patterns.Command.AsyncCommandPipeline`2.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="M:AllOverIt.Patterns.Command.AsyncCommandPipeline`2.#ctor(AllOverIt.Patterns.Command.IAsyncCommand{`0,`1}[])">
+            <summary>Constructor.</summary>
+            <param name="commands">Commands to be appended to the pipeline.</param>
+        </member>
+        <member name="M:AllOverIt.Patterns.Command.AsyncCommandPipeline`2.Append(AllOverIt.Patterns.Command.IAsyncCommand{`0,`1}[])">
+            <summary>Appends the specified command to the pipeline.</summary>
+            <param name="commands">One or more commands to be appended to the pipeline.</param>
+            <returns>The pipeline instance, allowing for a fluent syntax.</returns>
+        </member>
+        <member name="M:AllOverIt.Patterns.Command.AsyncCommandPipeline`2.ExecuteAsync(`0)">
+            <summary>Asynchronously processes a specified input by passing it to the first command in the pipeline and
+            sequentially passing the output to the next command in the sequence.</summary>
+            <typeparam name="TInput">The input type to be provided to the command.</typeparam>
+            <returns>The output from the last command in the pipeline sequence.</returns>
+        </member>
+        <member name="T:AllOverIt.Patterns.Command.CommandPipeline`1">
+            <summary>Implements a pipeline that allows multiple commands to be executed in turn where the output of each command
+            is provided as the input to the next. The input and output are of the same type.</summary>
+            <typeparam name="TInput">The input type to be provided to the command.</typeparam>
+        </member>
+        <member name="T:AllOverIt.Patterns.Command.CommandPipeline`2">
+            <summary>Implements a pipeline that allows multiple commands to be executed in turn where the output of each command
+            is provided as the input to the next. The output type must be the same as, or inherit from, the input type.</summary>
+            <typeparam name="TInput">The input type to be provided to the command.</typeparam>
+            <typeparam name="TOutput">The output type to be returned from the command.</typeparam>
+        </member>
+        <member name="M:AllOverIt.Patterns.Command.CommandPipeline`2.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="M:AllOverIt.Patterns.Command.CommandPipeline`2.#ctor(AllOverIt.Patterns.Command.ICommand{`0,`1}[])">
+            <summary>Constructor.</summary>
+            <param name="commands">Commands to be appended to the pipeline.</param>
+        </member>
+        <member name="M:AllOverIt.Patterns.Command.CommandPipeline`2.Append(AllOverIt.Patterns.Command.ICommand{`0,`1}[])">
+            <summary>Appends the specified command to the pipeline.</summary>
+            <param name="commands">One or more commands to be appended to the pipeline.</param>
+            <returns>The pipeline instance, allowing for a fluent syntax.</returns>
+        </member>
+        <member name="M:AllOverIt.Patterns.Command.CommandPipeline`2.Execute(`0)">
+            <summary>Processes a specified input by passing it to the first command in the pipeline and sequentially passing the
+            output to the next command in the sequence.</summary>
+            <typeparam name="TInput">The input type to be provided to the command.</typeparam>
+            <returns>The output from the last command in the pipeline sequence.</returns>
+        </member>
+        <member name="T:AllOverIt.Patterns.Command.IAsyncCommand">
+            <summary>Represents an asynchronous command with no input or output.</summary>
+        </member>
+        <member name="M:AllOverIt.Patterns.Command.IAsyncCommand.ExecuteAsync">
+            <summary>Asynchronously executes the command.</summary>
+            <returns>A task that completes when the command has executed.</returns>
+        </member>
+        <member name="T:AllOverIt.Patterns.Command.IAsyncCommand`1">
+            <summary>Represents an asynchronous command with a specified input type and no output type.</summary>
+            <typeparam name="TInput">The input type to be provided to the command.</typeparam>
+        </member>
+        <member name="M:AllOverIt.Patterns.Command.IAsyncCommand`1.ExecuteAsync(`0)">
+            <summary>Asynchronously executes the command with a specified input.</summary>
+            <param name="input">The input instance to be provided to the command.</param>
+            <returns>A task that completes when the command has executed.</returns>
+        </member>
+        <member name="T:AllOverIt.Patterns.Command.IAsyncCommand`2">
+            <summary>Represents an asynchronous command with a specified input and output type.</summary>
+            <typeparam name="TInput">The input type to be provided to the command.</typeparam>
+            <typeparam name="TOutput">The output type to be returned from the command.</typeparam>
+        </member>
+        <member name="M:AllOverIt.Patterns.Command.IAsyncCommand`2.ExecuteAsync(`0)">
+            <summary>Asynchronously executes the command with a specified input and returns an output.</summary>
+            <param name="input">The input instance to be provided to the command.</param>
+            <returns>A task, with the command output, that completes when the command has executed.</returns>
+        </member>
+        <member name="T:AllOverIt.Patterns.Command.ICommand">
+            <summary>Represents a command with no input or output.</summary>
+        </member>
+        <member name="M:AllOverIt.Patterns.Command.ICommand.Execute">
+            <summary>Executes the command.</summary>
+        </member>
+        <member name="T:AllOverIt.Patterns.Command.ICommand`1">
+            <summary>Represents a command with a specified input type and no output type.</summary>
+            <typeparam name="TInput">The input type to be provided to the command.</typeparam>
+        </member>
+        <member name="M:AllOverIt.Patterns.Command.ICommand`1.Execute(`0)">
+            <summary>Executes the command with a specified input.</summary>
+            <param name="input">The input instance to be provided to the command.</param>
+        </member>
+        <member name="T:AllOverIt.Patterns.Command.ICommand`2">
+            <summary>Represents a command with a specified input and output type.</summary>
+            <typeparam name="TInput">The input type to be provided to the command.</typeparam>
+            <typeparam name="TOutput">The output type to be returned from the command.</typeparam>
+        </member>
+        <member name="M:AllOverIt.Patterns.Command.ICommand`2.Execute(`0)">
+            <summary>Executes the command with a specified input and returns an output.</summary>
+            <param name="input">The input instance to be provided to the command.</param>
+            <returns>The output result from the command.</returns>
+        </member>
         <member name="T:AllOverIt.Patterns.Enumeration.EnrichedEnum`1">
             <summary>A base class for creating an enumeration type that has a integer and string value.</summary>
             <typeparam name="TEnum">The type inheriting this class.</typeparam>
@@ -1969,11 +2110,11 @@
         </member>
         <member name="M:AllOverIt.Patterns.Enumeration.EnrichedEnum`1.op_Implicit(AllOverIt.Patterns.Enumeration.EnrichedEnum{`0})~System.Int32">
             <summary>Implicit operator to convert an enumeration to its integer equivalent.</summary>
-            <param name="enum"></param>
+            <param name="enum">The value to implicitly convert.</param>
         </member>
         <member name="M:AllOverIt.Patterns.Enumeration.EnrichedEnum`1.op_Explicit(System.Int32)~AllOverIt.Patterns.Enumeration.EnrichedEnum{`0}">
             <summary>Explicit operator to convert an integer value to its enumeration equivalent.</summary>
-            <param name="value"></param>
+            <param name="value">The value to explicitly convert.</param>
         </member>
         <member name="T:AllOverIt.Patterns.ResourceInitialization.Raii">
             <summary>A disposable object implementing the Resource Acquisition Is Initialization idiom.</summary>
@@ -2317,6 +2458,63 @@
         </member>
         <member name="M:AllOverIt.Patterns.Specification.UnarySpecification`1.IsSatisfiedBy(`0)">
             <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Patterns.ValueObject.ValueObject`2.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="M:AllOverIt.Patterns.ValueObject.ValueObject`2.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Patterns.ValueObject.ValueObject`2.Equals(AllOverIt.Patterns.ValueObject.ValueObject{`0,`1})">
+            <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Patterns.ValueObject.ValueObject`2.CompareTo(AllOverIt.Patterns.ValueObject.ValueObject{`0,`1})">
+            <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Patterns.ValueObject.ValueObject`2.op_Equality(AllOverIt.Patterns.ValueObject.ValueObject{`0,`1},AllOverIt.Patterns.ValueObject.ValueObject{`0,`1})">
+            <param name="left">The left operand of the comparison.</param>
+            <param name="right">The right operand of the comparison.</param>
+            <returns>True if the ValueObject instances are equal, otherwise false.</returns>
+        </member>
+        <member name="M:AllOverIt.Patterns.ValueObject.ValueObject`2.op_Inequality(AllOverIt.Patterns.ValueObject.ValueObject{`0,`1},AllOverIt.Patterns.ValueObject.ValueObject{`0,`1})">
+            <param name="left">The left operand of the comparison.</param>
+            <param name="right">The right operand of the comparison.</param>
+            <returns>True if the ValueObject instances are not equal, otherwise false.</returns>
+        </member>
+        <member name="M:AllOverIt.Patterns.ValueObject.ValueObject`2.op_GreaterThan(AllOverIt.Patterns.ValueObject.ValueObject{`0,`1},AllOverIt.Patterns.ValueObject.ValueObject{`0,`1})">
+            <param name="left">The left operand of the comparison.</param>
+            <param name="right">The right operand of the comparison.</param>
+            <returns>True if the left operand is greater than the right operand, otherwise false.</returns>
+        </member>
+        <member name="M:AllOverIt.Patterns.ValueObject.ValueObject`2.op_GreaterThanOrEqual(AllOverIt.Patterns.ValueObject.ValueObject{`0,`1},AllOverIt.Patterns.ValueObject.ValueObject{`0,`1})">
+            <param name="left">The left operand of the comparison.</param>
+            <param name="right">The right operand of the comparison.</param>
+            <returns>True if the left operand is greater than or equal to the right operand, otherwise false.</returns>
+        </member>
+        <member name="M:AllOverIt.Patterns.ValueObject.ValueObject`2.op_LessThan(AllOverIt.Patterns.ValueObject.ValueObject{`0,`1},AllOverIt.Patterns.ValueObject.ValueObject{`0,`1})">
+            <param name="left">The left operand of the comparison.</param>
+            <param name="right">The right operand of the comparison.</param>
+            <returns>True if the left operand is less than the right operand, otherwise false.</returns>
+        </member>
+        <member name="M:AllOverIt.Patterns.ValueObject.ValueObject`2.op_LessThanOrEqual(AllOverIt.Patterns.ValueObject.ValueObject{`0,`1},AllOverIt.Patterns.ValueObject.ValueObject{`0,`1})">
+            <param name="left">The left operand of the comparison.</param>
+            <param name="right">The right operand of the comparison.</param>
+            <returns>True if the left operand is less than or equal to the right operand, otherwise false.</returns>
+        </member>
+        <member name="M:AllOverIt.Patterns.ValueObject.ValueObject`2.op_Implicit(AllOverIt.Patterns.ValueObject.ValueObject{`0,`1})~`0">
+            <summary>Implicit operator to convert a ValueObject to its underlying value equivalent.</summary>
+            <param name="value">The value to implicitly convert.</param>
+        </member>
+        <member name="M:AllOverIt.Patterns.ValueObject.ValueObject`2.op_Explicit(`0)~AllOverIt.Patterns.ValueObject.ValueObject{`0,`1}">
+            <summary>Explicit operator to convert an underlying type to its ValueObject equivalent.</summary>
+            <param name="value">The value to explicitly convert.</param>
+        </member>
+        <member name="M:AllOverIt.Patterns.ValueObject.ValueObject`2.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Patterns.ValueObject.ValueObject`2.ValidateValue(`0)">
+            <summary>Override to validate the initialized value.</summary>
+            <param name="value">The value to be validated.</param>
         </member>
         <member name="T:AllOverIt.Process.Process">
             <summary>Provides support for general process activities.</summary>

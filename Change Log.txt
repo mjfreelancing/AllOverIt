@@ -1,33 +1,59 @@
 ======================================================================================================================
 
-  Current AllOverIt Inter-Dependencies
 
-  [1]  AllOverIt                               (v2.0.0)  - None
-  [2]  AllOverIt.Validation                    (v2.0.0)  - requires [1] v2.0.0
-  [3]  AllOverIt.Aws.Cdk.AppSync               (v1.0.0)  - requires [1] v2.0.0
-  [4]  AllOverIt.Evaluator                     (v4.0.0)  - requires [1] v2.0.0
-  [5]  AllOverIt.GenericHost                   (v2.0.0)  - requires [1] v2.0.0
-  [6]  AllOverIt.Fixture                       (v1.6.0)  - None
-  [7]  AllOverIt.Fixture.FakeItEasy            (v1.4.0)  - requires [6] v1.6.0
-  [8]  AllOverIt.Serialization.Abstractions    (v1.0.0)  - None
-  [9]  AllOverIt.Serialization.NewtonsoftJson  (v1.0.0)  - [8] v1.0.0
-  [10] AllOverIt.Serialization.SystemTextJson  (v1.0.0)  - [8] v1.0.0
-  [11] AllOverIt.Aws.AppSync.Client            (v1.0.0)  - requires [1] v2.0.0, [8] v1.0.0
-  [12] AllOverIt.AspNetCore                    (v1.0.0)  - requires [1] v2.0.0
-  [13] AllOverIt.EntityFrameworkCore           (v1.0.1)  - requires [1] v2.0.0
-
+18 Nov 2021 
 ======================================================================================================================
-
-
-
-XX XXX 2021 
-======================================================================================================================
-NEED TO ADD ALL AFFECTED PROJECTS
+AllOverIt - v2.1.0
   * Added .NET 6 target
-
-AllOverIt - v2.x.x
   * Added Command pattern interfaces, command pipeline, and demo
   * Added ValueObject pattern and demo
+
+AllOverIt.Validation v2.1.0
+  * Added .NET 6 target
+  * Built against AllOverIt v2.1.0
+
+AllOverIt.Aws.Cdk.AppSync v1.1.0
+  * Added .NET 6 target
+  * Built against AllOverIt v2.1.0
+
+AllOverIt.Evaluator v4.1.0
+  * Added .NET 6 target
+  * Built against AllOverIt v2.1.0
+
+AllOverIt.GenericHost v2.1.0
+  * Added .NET 6 target
+  * Built against AllOverIt v2.1.0
+
+AllOverIt.Fixture v1.7.0
+  * Added .NET 6 target
+
+AllOverIt.Fixture.FakeItEasy v1.5.0
+  * Added .NET 6 target
+  * Built against AllOverIt.Fixture.FakeItEasy v1.7.0
+
+AllOverIt.Serialization.Abstractions v1.1.0
+  * Added .NET 6 target
+
+AllOverIt.Serialization.NewtonsoftJson v1.1.0
+  * Added .NET 6 target
+  * Built against AllOverIt.Serialization.Abstractions v1.1.0
+
+AllOverIt.Serialization.SystemTextJson v1.1.0
+  * Added .NET 6 target
+  * Built against AllOverIt.Serialization.Abstractions v1.1.0
+
+AllOverIt.Aws.AppSync.Client v1.1.0
+  * Added .NET 6 target
+  * Built against AllOverIt v2.1.0
+  * Built against AllOverIt.Serialization.Abstractions v1.1.0
+
+AllOverIt.AspNetCore v1.1.0
+  * Added .NET 6 target
+  * Built against AllOverIt v2.1.0
+
+AllOverIt.EntityFrameworkCore v1.1.0
+  * Added .NET 6 target
+  * Built against AllOverIt v2.1.0
 
 
 

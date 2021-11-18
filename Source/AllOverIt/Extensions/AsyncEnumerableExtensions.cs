@@ -1,4 +1,6 @@
-﻿using AllOverIt.Assertion;
+﻿#if !NETSTANDARD2_0
+
+using AllOverIt.Assertion;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -6,8 +8,6 @@ using System.Threading.Tasks;
 
 namespace AllOverIt.Extensions
 {
-    // This works because we are only targeting NetStandard 2 and above
-#if !NETSTANDARD2_0
     /// <summary>Provides a variety of extension methods for <see cref="IAsyncEnumerable{T}"/>.</summary>
     public static class AsyncEnumerableExtensions
     {
@@ -67,7 +67,7 @@ namespace AllOverIt.Extensions
         public static async Task<IReadOnlyCollection<TResult>> SelectAsReadOnlyCollectionAsync<TSource, TResult>(this IAsyncEnumerable<TSource> items,
             Func<TSource, Task<TResult>> selector, CancellationToken cancellationToken = default)
         {
-            var results = await SelectAsListAsync(items, selector, cancellationToken);
+            var results = await SelectAsListAsync(items, selector, cancellationToken).ConfigureAwait(false);
             return results.AsReadOnlyCollection();
         }
 
@@ -81,9 +81,9 @@ namespace AllOverIt.Extensions
         public static async Task<IReadOnlyList<TResult>> SelectAsReadOnlyListAsync<TSource, TResult>(this IAsyncEnumerable<TSource> items,
             Func<TSource, Task<TResult>> selector, CancellationToken cancellationToken = default)
         {
-            var results = await SelectAsListAsync(items, selector, cancellationToken);
+            var results = await SelectAsListAsync(items, selector, cancellationToken).ConfigureAwait(false);
             return results.AsReadOnlyList();
         }
     }
-#endif
 }
+#endif

@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace AllOverIt.Exceptions
 {
-    /// <summary>Represents a validation error that occurred while initializing a <see cref="ValueObject"/>.</summary>
+    /// <summary>Represents a validation error that occurred while initializing a <see cref="Patterns.ValueObject.ValueObject{TValue, TType}"/>.</summary>
     [Serializable]
     public sealed class ValueObjectValidationException : Exception
     {

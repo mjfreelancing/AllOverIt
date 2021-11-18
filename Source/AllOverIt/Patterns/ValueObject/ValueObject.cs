@@ -98,11 +98,11 @@ namespace AllOverIt.Patterns.ValueObject
         public static bool operator <=(ValueObject<TValue, TType> left, ValueObject<TValue, TType> right) => left.CompareTo(right) <= 0;
 
         /// <summary>Implicit operator to convert a ValueObject to its underlying value equivalent.</summary>
-        /// <param name="enum"></param>
+        /// <param name="value">The value to implicitly convert.</param>
         public static implicit operator TValue(ValueObject<TValue, TType> value) => value.Value;
 
         /// <summary>Explicit operator to convert an underlying type to its ValueObject equivalent.</summary>
-        /// <param name="value"></param>
+        /// <param name="value">The value to explicitly convert.</param>
         public static explicit operator ValueObject<TValue, TType>(TValue value) => new (value);
 
         /// <inheritdoc />

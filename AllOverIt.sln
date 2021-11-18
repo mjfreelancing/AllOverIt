@@ -6,7 +6,8 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3B60B280-0CE6-4330-8BED-9C289760D4A7}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		ChangeLog.txt = ChangeLog.txt
+		Change Log.txt = Change Log.txt
+		Current Versions.txt = Current Versions.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{D9F6B8A1-4B01-4708-8851-741FC19F2440}"
@@ -137,7 +138,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnumerationDemo", "Demos\Al
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommandDemo", "Demos\AllOverIt\Patterns\Command\CommandDemo\CommandDemo.csproj", "{FF9BD9F1-96B3-4B52-B365-BCB167FD4878}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValueObjectDemo", "Demos\AllOverIt\Patterns\ValueObjectDemo\ValueObjectDemo.csproj", "{94ADD2AF-0D36-4619-A71B-6D01E5CB7D5E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ValueObjectDemo", "Demos\AllOverIt\Patterns\ValueObjectDemo\ValueObjectDemo.csproj", "{94ADD2AF-0D36-4619-A71B-6D01E5CB7D5E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
