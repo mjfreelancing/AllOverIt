@@ -45,10 +45,11 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
 
             if (parameterSchemaType != GraphqlSchemaType.Scalar &&
                 parameterSchemaType != GraphqlSchemaType.AWSScalar &&
-                parameterSchemaType != GraphqlSchemaType.Input)
+                parameterSchemaType != GraphqlSchemaType.Input &&
+                parameterSchemaType != GraphqlSchemaType.Enum)
             {
                 throw new InvalidOperationException($"The argument '({parameterInfo.ParameterType.Name} {parameterInfo.Name})' passed to " +
-                                                    $"{methodInfo.DeclaringType!.FullName}.{methodInfo.Name} must be either a scalar or an INPUT type.");
+                                                    $"{methodInfo.DeclaringType!.FullName}.{methodInfo.Name} must be either a scalar, enum, or an INPUT type.");
             }
         }
     }

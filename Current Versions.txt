@@ -12,10 +12,10 @@
         - External dependencies:                            - FluentValidation v10.3.4
 
 
-  [3]  AllOverIt.Aws.Cdk.AppSync                v1.1.0
+  [3]  AllOverIt.Aws.Cdk.AppSync                v1.2.0
         - Targets                                           - netcoreapp3.1
         - AllOverIt dependencies:                           - [1] v2.1.0
-        - External dependencies:                            - Amazon.CDK.AWS.AppSync v1.132.0
+        - External dependencies:                            - Amazon.CDK.AWS.AppSync v1.133.0
 
 
   [4]  AllOverIt.Evaluator                      v4.1.0

@@ -169,6 +169,16 @@
         <member name="T:AllOverIt.Aws.Cdk.AppSync.Attributes.Types.SchemaArrayRequiredAttribute">
             <summary>Apply to schema 'type' and 'input' array types to indicate they are required.</summary>
         </member>
+        <member name="T:AllOverIt.Aws.Cdk.AppSync.Attributes.Types.SchemaEnumAttribute">
+            <summary>Apply to an enum that requires a custom name to be generated in the schema.</summary>
+        </member>
+        <member name="P:AllOverIt.Aws.Cdk.AppSync.Attributes.Types.SchemaEnumAttribute.Name">
+            <summary>The Graphql schema enum name.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.Cdk.AppSync.Attributes.Types.SchemaEnumAttribute.#ctor(System.String)">
+            <summary>Constructor.</summary>
+            <param name="name">The name of the schema enum type to apply to the Graphql schema.</param>
+        </member>
         <member name="T:AllOverIt.Aws.Cdk.AppSync.Attributes.Types.SchemaInputAttribute">
             <summary>Apply to an interface that describes a schema 'input' type.</summary>
         </member>
@@ -304,6 +314,9 @@
         </member>
         <member name="F:AllOverIt.Aws.Cdk.AppSync.GraphqlSchemaType.AWSScalar">
             <summary>Specifies a schema custom AWS scalar type.</summary>
+        </member>
+        <member name="F:AllOverIt.Aws.Cdk.AppSync.GraphqlSchemaType.Enum">
+            <summary>Specifies a schema enum type.</summary>
         </member>
         <member name="T:AllOverIt.Aws.Cdk.AppSync.Mapping.IRequestResponseMapping">
             <summary>Represents an AppSync datasource request and response mapping.</summary>

@@ -6,5 +6,8 @@ namespace GraphqlSchema.Schema.Types
     internal interface ILanguage : ISchemaTypeBase
     {
         public string Name();
+
+        // The LanguageType is renamed to LanguageGroup in the schema (see the attribute on its definition)
+        public LanguageType LanguageType();
     }
 }

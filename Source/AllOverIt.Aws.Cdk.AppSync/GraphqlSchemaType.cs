@@ -16,6 +16,9 @@
         Scalar,
 
         /// <summary>Specifies a schema custom AWS scalar type.</summary>
-        AWSScalar
+        AWSScalar,
+
+        /// <summary>Specifies a schema enum type.</summary>
+        Enum
     }
 }

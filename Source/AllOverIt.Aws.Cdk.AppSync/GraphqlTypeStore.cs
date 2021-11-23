@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Assertion;
+using AllOverIt.Aws.Cdk.AppSync.Attributes.Types;
 using AllOverIt.Aws.Cdk.AppSync.Extensions;
 using AllOverIt.Aws.Cdk.AppSync.Factories;
 using AllOverIt.Aws.Cdk.AppSync.Mapping;
@@ -8,6 +9,7 @@ using Amazon.CDK.AWS.AppSync;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using EnumType = Amazon.CDK.AWS.AppSync.EnumType;
 using SystemType = System.Type;
 
@@ -68,7 +70,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
                 var elementType = type.GetElementTypeIfArray();
 
                 var objectType = elementType!.IsEnum
-                    ? CreateEnumType(elementType)
+                    ? CreateEnumType(elementType, typeDescriptor)
                     : CreateInterfaceType(parentName, elementType, typeDescriptor);
 
                 // notify of type creation so it can, for example, be added to a schema
@@ -80,15 +82,15 @@ namespace AllOverIt.Aws.Cdk.AppSync
             return fieldTypeCreator;
         }
 
-        private IIntermediateType CreateEnumType(SystemType type)
+        private IIntermediateType CreateEnumType(SystemType type, GraphqlSchemaTypeDescriptor typeDescriptor)
         {
-            var enumType = new EnumType(type.Name, new EnumTypeOptions
+            var enumType = new EnumType(typeDescriptor.Name, new EnumTypeOptions
             {
                 Definition = type.GetEnumNames().Select(item => item.ToUpperSnakeCase()).ToArray()
             });
 
             _fieldTypes.Add(
-                type.Name,
+                typeDescriptor.Name,
                 requiredTypeInfo => enumType.Attribute(CreateTypeOptions(requiredTypeInfo)));
 
             return enumType;

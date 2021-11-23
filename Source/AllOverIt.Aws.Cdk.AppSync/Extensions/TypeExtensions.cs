@@ -3,6 +3,7 @@ using AllOverIt.Aws.Cdk.AppSync.Attributes.Types;
 using AllOverIt.Aws.Cdk.AppSync.Exceptions;
 using AllOverIt.Extensions;
 using Amazon.CDK.AWS.AppSync;
+using System;
 using System.Linq;
 using System.Reflection;
 using SystemType = System.Type;
@@ -22,9 +23,18 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
         {
             var elementType = type.GetElementTypeIfArray();
             var typeInfo = elementType!.GetTypeInfo();
-            var typeDescription = elementType.IsClass ? "class" : "interface";
 
-            // SchemaTypeAttribute indicates if this is an object, scalar, interface, input type (cannot be on an array)
+            // Is the type an enum
+            if (type.IsEnum)
+            {
+                var attribute = type.GetCustomAttribute<SchemaEnumAttribute>();
+
+                return attribute == null
+                    ? new GraphqlSchemaTypeDescriptor(elementType, GraphqlSchemaType.Enum, type.Name)
+                    : new GraphqlSchemaTypeDescriptor(elementType, GraphqlSchemaType.Enum, attribute.Name);
+            }
+
+            // SchemaTypeAttribute indicates if this is a scalar, interface, or input type (cannot be on an array)
             var schemaTypeAttributes = typeInfo
                 .GetCustomAttributes<SchemaTypeBaseAttribute>(true)
                 .AsReadOnlyCollection();
@@ -33,7 +43,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
             {
                 if (schemaTypeAttributes.Count > 1)
                 {
-                    throw new SchemaException($"The {typeDescription} {typeInfo.Name} contains more than one schema type attribute");
+                    throw new SchemaException($"'{typeInfo.Name}' contains more than one schema type attribute");
                 }
 
                 var schemaTypeAttribute = schemaTypeAttributes.Single();
@@ -43,6 +53,8 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
             // not expecting class types to be used, but check anyway
             if (elementType != typeof(string) && (elementType.IsClass || elementType.IsInterface))
             {
+                var typeDescription = elementType.IsClass ? "class" : "interface";
+
                 throw new SchemaException($"A {typeDescription} based schema type must have a {nameof(SchemaTypeAttribute)} applied ({typeInfo.Name})");
             }
 
