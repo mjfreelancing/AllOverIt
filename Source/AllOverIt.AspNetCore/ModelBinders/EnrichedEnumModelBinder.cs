@@ -35,7 +35,6 @@ namespace AllOverIt.AspNetCore.ModelBinders
 
             TEnum result = null;
 
-            // Removing quotes
             if (enumerationValue == null || TryGetEnrichedEnum(enumerationName.FirstValue, out result))
             {
                 bindingContext.Result = ModelBindingResult.Success(result);
