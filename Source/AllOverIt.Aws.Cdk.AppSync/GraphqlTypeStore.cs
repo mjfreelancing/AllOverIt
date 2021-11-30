@@ -257,7 +257,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
                         Directives = typeDescriptor.Type.GetAuthDirectivesOrDefault()
                     }),
 
-                _ => throw new InvalidOperationException($"Unexpected schema type '{typeDescriptor.SchemaType}'")
+                _ => throw new InvalidOperationException($"Unexpected schema type '{typeDescriptor.SchemaType}' ({typeDescriptor.Name})")
             };
 
             return intermediateType;
