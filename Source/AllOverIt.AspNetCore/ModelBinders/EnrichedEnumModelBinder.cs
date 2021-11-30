@@ -35,7 +35,7 @@ namespace AllOverIt.AspNetCore.ModelBinders
 
             TEnum result = null;
 
-            if (enumerationValue == null || EnrichedEnum<TEnum>.TryFromNameOrValue(enumerationName.FirstValue, out result))
+            if (enumerationValue == null || TryGetEnrichedEnum(enumerationName.FirstValue, out result))
             {
                 bindingContext.Result = ModelBindingResult.Success(result);
             }
@@ -47,6 +47,13 @@ namespace AllOverIt.AspNetCore.ModelBinders
             }
 
             return Task.CompletedTask;
+        }
+
+        private static bool TryGetEnrichedEnum(string value, out TEnum result)
+        {
+            // Removing leading/trailing quotes in case they are provided on a query string
+            value = value.Trim('"');
+            return EnrichedEnum<TEnum>.TryFromNameOrValue(value, out result);
         }
     }
 }
