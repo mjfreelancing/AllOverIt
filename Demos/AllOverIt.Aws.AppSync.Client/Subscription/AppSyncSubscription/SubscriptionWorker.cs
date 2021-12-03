@@ -26,7 +26,7 @@ namespace AppSyncSubscription
 
     {
         "appSyncOptions": {
-            "apiHost": " example123.appsync-api.ap-southeast-2.amazonaws.com",
+            "host": "example123.appsync-api.ap-southeast-2.amazonaws.com",
             "apiKey": "graphql_api_key"
         }
     }
@@ -371,9 +371,9 @@ namespace AppSyncSubscription
         {
             var options = new GraphqlClientConfiguration
             {
-                EndPoint = "https://pbwlv45sfbfzzd22wqmlrahw5y.appsync-api.ap-southeast-2.amazonaws.com/graphql",
+                EndPoint = "https://<...>.appsync-api.ap-southeast-2.amazonaws.com/graphql",
                 Serializer = new NewtonsoftJsonSerializer(),
-                DefaultAuthorization = new AppSyncApiKeyAuthorization("da2-gcb75twfwjep5ols2qwyefjlki")
+                DefaultAuthorization = new AppSyncApiKeyAuthorization("api_key")
             };
 
             var client = new AppSyncClient(options);
