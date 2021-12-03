@@ -1,6 +1,14 @@
 ======================================================================================================================
 
 
+03 Dec 2021 
+======================================================================================================================
+AllOverIt.Aws.Cdk.AppSync v1.2.1
+  * Minor improvement to an exception message
+  * Updated to Amazon.CDK.AWS.AppSync v1.134.0
+  * Built against AllOverIt v2.2.0
+
+
 30 Nov 2021 
 ======================================================================================================================
 AllOverIt.AspNetCore v1.1.1
@@ -21,12 +29,10 @@ AllOverIt.Evaluator v4.2.0
   * Updated to use Collection.EmptyReadOnly() from AllOverIt v2.2.0
 
 
-
 19 Nov 2021 
 ======================================================================================================================
 AllOverIt.EntityFrameworkCore v1.1.1
   * Added .NET Standard 2.1 target
-
 
 
 18 Nov 2021 
