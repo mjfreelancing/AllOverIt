@@ -29,9 +29,9 @@ namespace AllOverIt.Aws.AppSync.Client
 {
     /// <summary>An AppSync subscription client that supports API KEY and Cognito based authorization.</summary>
     /// <remarks>Implemented as per the protocol described at https://docs.aws.amazon.com/appsync/latest/devguide/real-time-websocket-client.html.</remarks>
-    public sealed class AppSyncSubscriptionClient
+    public sealed class AppSyncSubscriptionClient : IAppSyncSubscriptionClient
     {
-        private readonly SubscriptionClientConfiguration _configuration;
+        private readonly ISubscriptionClientConfiguration _configuration;
         private readonly ArraySegment<byte> _buffer = new(new byte[8192]);
         private readonly IDictionary<string, SubscriptionRegistrationRequest> _subscriptions = new ConcurrentDictionary<string, SubscriptionRegistrationRequest>();
 
@@ -57,40 +57,34 @@ namespace AllOverIt.Aws.AppSync.Client
         // The last raised connection state
         private SubscriptionConnectionState CurrentConnectionState => _connectionStateSubject.Value;
 
-        /// <summary>An observable providing the current connection status.</summary>
+        /// <inheritdoc />
         public IObservable<SubscriptionConnectionState> ConnectionState => _connectionStateSubject;
 
-        /// <summary>An observable reporting connection and subscription related exceptions.</summary>
+        /// <inheritdoc />
         public IObservable<Exception> Exceptions => _exceptionSubject;
 
-        /// <summary>An observable reporting subscription related graphql errors.</summary>
+        /// <inheritdoc />
         public IObservable<GraphqlSubscriptionResponseError> GraphqlErrors => _graphqlErrorSubject;
 
-        /// <summary>Indicates if the client is currently connected to AppSync.</summary>
+        /// <inheritdoc />
         public bool IsAlive => CurrentConnectionState is SubscriptionConnectionState.Connected or SubscriptionConnectionState.KeepAlive;
 
         /// <summary>Constructor.</summary>
         /// <param name="configuration">Contains configuration details for the AppSync Graphql subscription client.</param>
-        public AppSyncSubscriptionClient(SubscriptionClientConfiguration configuration)
+        public AppSyncSubscriptionClient(ISubscriptionClientConfiguration configuration)
         {
             _configuration = configuration.WhenNotNull(nameof(configuration));
             _ = configuration.RealTimeUrl.WhenNotNullOrEmpty(nameof(configuration.RealTimeUrl));
         }
 
-        /// <summary>Opens a WebSocket connection and registers the client with AppSync. Any existing subscriptions from a
-        /// previous connection will be re-subscribed.</summary>
-        /// <returns>True if the connection was established, otherwise false.</returns>
-        /// <remarks>Refer to <see cref="DisconnectAsync"/> for more information on how existing subscriptions are retained
-        /// if the client is disconnected while there are active subscriptions.</remarks>
+        /// <inheritdoc />
         public async Task<bool> ConnectAsync()
         {
             await CheckWebSocketConnectionAsync();
             return IsAlive;
         }
 
-        /// <summary>Unsubscribes any existing subscriptions and then disconnects the client from AppSync. The subscription
-        /// registrations are maintained (not disposed of). If a new connection is later established by calling
-        /// <see cref="ConnectAsync"/> or making a new subscription then all previous subscriptions will be re-subscribed.</summary>
+        /// <inheritdoc />
         /// <exception cref="UnsubscribeTimeoutException"></exception>
         public async Task DisconnectAsync()
         {
@@ -125,15 +119,7 @@ namespace AllOverIt.Aws.AppSync.Client
             }
         }
 
-        // The default authorization mode will be used if authorization is null.
-
-        /// <summary>Registers a new subscription with AppSync. If there is no action connection then that will be established first.</summary>
-        /// <typeparam name="TResponse">The response type to be populated when the subscription receives a message.</typeparam>
-        /// <param name="query">The subscription query.</param>
-        /// <param name="responseAction">The action to invoke when a response is received.</param>
-        /// <param name="authorization">The authorization to use for the request. If null is provided then the default authorization provided
-        /// on the client configuration during construction will be used.</param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public async Task<IAppSyncSubscriptionRegistration> SubscribeAsync<TResponse>(SubscriptionQuery query,
             Action<GraphqlSubscriptionResponse<TResponse>> responseAction, IAppSyncAuthorization authorization = null)
         {

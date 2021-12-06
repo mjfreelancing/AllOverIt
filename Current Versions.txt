@@ -67,9 +67,9 @@
                                                                                v6.0.0 for targets net6.0
 
 
-  [11] AllOverIt.Aws.AppSync.Client             v1.1.0
+  [11] AllOverIt.Aws.AppSync.Client             v1.2.0
         - Targets                                           - netstandard2.1;netcoreapp3.1;net5.0;net6.0
-        - AllOverIt dependencies:                           - [1] v2.1.0
+        - AllOverIt dependencies:                           - [1] v2.2.0
                                                             - [8] v1.1.0
         - External dependencies:                            - System.Reactive v5.0.0
 

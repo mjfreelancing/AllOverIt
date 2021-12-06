@@ -4,16 +4,15 @@ using AllOverIt.Serialization.Abstractions;
 namespace AllOverIt.Aws.AppSync.Client.Configuration
 {
     /// <summary>Contains configuration details for AppSync Graphql query and mutation operations.</summary>
-    public sealed record GraphqlClientConfiguration
+    public sealed record GraphqlClientConfiguration : IGraphqlClientConfiguration
     {
-        /// <summary>The fully-qualified AppSync Graphql endpoint to perform query and mutation operations.</summary>
+        /// <inheritdoc />
         public string EndPoint { get; init; }
 
-        /// <summary>The serializer to be used for message processing.</summary>
-        /// <remarks>See 'AllOverIt.Serialization.NewtonsoftJson' and 'AllOverIt.Serialization.SystemTextJson' for suitable implementations.</remarks>
+        /// <inheritdoc />
         public IJsonSerializer Serializer { get; init; }
 
-        /// <summary>Provides the default authorization mode to use for all requests.</summary>
+        /// <inheritdoc />
         public IAppSyncAuthorization DefaultAuthorization { get; init; }
     }
 }
