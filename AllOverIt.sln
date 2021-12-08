@@ -141,6 +141,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommandDemo", "Demos\AllOve
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ValueObjectDemo", "Demos\AllOverIt\Patterns\ValueObjectDemo\ValueObjectDemo.csproj", "{94ADD2AF-0D36-4619-A71B-6D01E5CB7D5E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllOverIt.Serialization.NewtonsoftJson", "AllOverIt.Serialization.NewtonsoftJson", "{89A5CF22-C375-4673-A42F-B72F49695667}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InterfaceDeserialization", "Demos\AllOverIt.Serialization.NewtonsoftJson\InterfaceDeserialization\InterfaceDeserialization.csproj", "{1E3E7A53-27D6-4D9B-8CE7-835A1184698A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllOverIt.Serialization.SystemTextJson", "AllOverIt.Serialization.SystemTextJson", "{C4C80BCB-C982-4F13-B34D-2B3D61F6CD3D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterfaceDeserialization", "Demos\AllOverIt.Serialization.SystemTextJson\InterfaceDeserialization\InterfaceDeserialization.csproj", "{DE014032-6A46-40DE-8BA1-007E9CB59A97}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -331,6 +339,14 @@ Global
 		{94ADD2AF-0D36-4619-A71B-6D01E5CB7D5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94ADD2AF-0D36-4619-A71B-6D01E5CB7D5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94ADD2AF-0D36-4619-A71B-6D01E5CB7D5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E3E7A53-27D6-4D9B-8CE7-835A1184698A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E3E7A53-27D6-4D9B-8CE7-835A1184698A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E3E7A53-27D6-4D9B-8CE7-835A1184698A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E3E7A53-27D6-4D9B-8CE7-835A1184698A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE014032-6A46-40DE-8BA1-007E9CB59A97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE014032-6A46-40DE-8BA1-007E9CB59A97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE014032-6A46-40DE-8BA1-007E9CB59A97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE014032-6A46-40DE-8BA1-007E9CB59A97}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -398,6 +414,10 @@ Global
 		{2691BE45-E44C-4B4E-BDAD-8BD9F837BCBC} = {595F3EB1-3F3D-4942-9A5A-95CD8621607B}
 		{FF9BD9F1-96B3-4B52-B365-BCB167FD4878} = {595F3EB1-3F3D-4942-9A5A-95CD8621607B}
 		{94ADD2AF-0D36-4619-A71B-6D01E5CB7D5E} = {595F3EB1-3F3D-4942-9A5A-95CD8621607B}
+		{89A5CF22-C375-4673-A42F-B72F49695667} = {D9F6B8A1-4B01-4708-8851-741FC19F2440}
+		{1E3E7A53-27D6-4D9B-8CE7-835A1184698A} = {89A5CF22-C375-4673-A42F-B72F49695667}
+		{C4C80BCB-C982-4F13-B34D-2B3D61F6CD3D} = {D9F6B8A1-4B01-4708-8851-741FC19F2440}
+		{DE014032-6A46-40DE-8BA1-007E9CB59A97} = {C4C80BCB-C982-4F13-B34D-2B3D61F6CD3D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19DD11B3-596E-4862-B5C4-1FFFFB173106}

@@ -19,21 +19,25 @@ namespace AllOverIt.Serialization.SystemTextJson
             Options = options ?? CreateDefaultOptions();
         }
 
+        /// <inheritdoc />
         public string SerializeObject<TType>(TType value)
         {
             return JsonSerializer.Serialize(value, Options);
         }
 
+        /// <inheritdoc />
         public byte[] SerializeToUtf8Bytes<TType>(TType value)
         {
             return JsonSerializer.SerializeToUtf8Bytes(value, Options);
         }
 
+        /// <inheritdoc />
         public TType DeserializeObject<TType>(string value)
         {
             return JsonSerializer.Deserialize<TType>(value, Options);
         }
 
+        /// <inheritdoc />
         public Task<TType> DeserializeObjectAsync<TType>(Stream stream, CancellationToken cancellationToken)
         {
             return JsonSerializer

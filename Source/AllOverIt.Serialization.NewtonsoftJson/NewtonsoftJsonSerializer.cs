@@ -21,22 +21,26 @@ namespace AllOverIt.Serialization.NewtonsoftJson
             Settings = settings ?? CreateDefaultSettings();
         }
 
+        /// <inheritdoc />
         public string SerializeObject<TType>(TType value)
         {
             return JsonConvert.SerializeObject(value, Settings);
         }
 
+        /// <inheritdoc />
         public byte[] SerializeToUtf8Bytes<TType>(TType value)
         {
             var json = SerializeObject(value);
             return Encoding.UTF8.GetBytes(json);
         }
 
+        /// <inheritdoc />
         public TType DeserializeObject<TType>(string value)
         {
             return JsonConvert.DeserializeObject<TType>(value, Settings);
         }
 
+        /// <inheritdoc />
         public Task<TType> DeserializeObjectAsync<TType>(Stream stream, CancellationToken cancellationToken)
         {
             using (var sr = new StreamReader(stream))
