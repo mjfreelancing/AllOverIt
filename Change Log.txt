@@ -1,5 +1,13 @@
 ======================================================================================================================
 
+09 Dec 2021 
+======================================================================================================================
+AllOverIt.Serialization.NewtonsoftJson v1.2.0
+AllOverIt.Serialization.SystemTextJson v1.2.0
+  * Added support for registering a concrete type against an interface type for deserialization.
+    IEnumerable<TInterface> to IList<TConcrete> is also supported.
+
+
 07 Dec 2021 
 ======================================================================================================================
 AllOverIt.Aws.AppSync.Client v1.2.0

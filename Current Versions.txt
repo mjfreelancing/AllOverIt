@@ -53,14 +53,14 @@
         - External dependencies:                            - None
 
 
-  [9]  AllOverIt.Serialization.NewtonsoftJson   v1.1.0
+  [9]  AllOverIt.Serialization.NewtonsoftJson   v1.2.0
         - Targets                                           - netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0
         - AllOverIt dependencies:                           - [8] v1.1.0
         - External dependencies:                            - Newtonsoft.Json v13.0.1
 
 
 
-  [10] AllOverIt.Serialization.SystemTextJson   v1.1.0
+  [10] AllOverIt.Serialization.SystemTextJson   v1.2.0
         - Targets                                           - netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0
         - AllOverIt dependencies:                           - [8] v1.1.0
         - External dependencies:                            - System.Text.Json v5.0.2 for targets netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0
