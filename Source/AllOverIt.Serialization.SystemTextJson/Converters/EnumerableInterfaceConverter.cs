@@ -4,24 +4,31 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace AllOverIt.Serialization.SystemTextJson.Converters
-{  
-    public class EnumerableInterfaceConverter<TInterface, TConcrete> : JsonConverter<IEnumerable<TConcrete>>
+{
+    /// <summary>Deserializes an <see cref="IEnumerable{TInterface}"/> to an <see cref="IList{TConcrete}"/>.</summary>
+    /// <typeparam name="TInterface">The interface type to convert from.</typeparam>
+    /// <typeparam name="TConcrete">The concrete type to convert to.</typeparam>
+    public class EnumerableInterfaceConverter<TInterface, TConcrete> : JsonConverter<IList<TConcrete>>
         where TConcrete : class, TInterface
     {
         private static readonly Type InterfaceType = typeof(TInterface);
         private static readonly Type EnumerableInterfaceType = typeof(IEnumerable<>).MakeGenericType(typeof(TInterface));
 
+        /// <inheritdoc />
         public override bool CanConvert(Type typeToConvert)
         {
             return typeToConvert == EnumerableInterfaceType && typeToConvert.GenericTypeArguments[0] == InterfaceType;
         }
 
-        public override IEnumerable<TConcrete> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        /// <inheritdoc />
+        public override IList<TConcrete> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             return JsonSerializer.Deserialize<List<TConcrete>>(ref reader, options);
         }
 
-        public override void Write(Utf8JsonWriter writer, IEnumerable<TConcrete> value, JsonSerializerOptions options)
+        /// <inheritdoc />
+        /// <remarks>The converter only supports deserialization so this method will throw <exception cref="NotImplementedException" /> if called.</remarks>
+        public override void Write(Utf8JsonWriter writer, IList<TConcrete> value, JsonSerializerOptions options)
         {
             throw new NotImplementedException();
         }
