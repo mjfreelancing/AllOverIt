@@ -43,6 +43,8 @@ namespace AllOverIt.Serialization.NewtonsoftJson
         /// <inheritdoc />
         public Task<TType> DeserializeObjectAsync<TType>(Stream stream, CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             using (var sr = new StreamReader(stream))
             {
                 using (JsonReader reader = new JsonTextReader(sr))
