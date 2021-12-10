@@ -24,7 +24,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Extensions
         /// <param name="serializer">The serializer performing the deserialization.</param>
         /// <param name="includeEnumerable">If true, a second converter will be added that will convert <see cref="IEnumerable{TInterface}"/>
         /// to a <see cref="List{TConcrete}"/>.</param>
-        public static void AddInterfaceConverter<TInterface, TConcrete>(this NewtonsoftJsonSerializer serializer, bool includeEnumerable)
+        public static void AddInterfaceConverter<TInterface, TConcrete>(this NewtonsoftJsonSerializer serializer, bool includeEnumerable = false)
             where TConcrete : class, TInterface
         {
             serializer.Settings.Converters.Add(new InterfaceConverter<TInterface, TConcrete>());

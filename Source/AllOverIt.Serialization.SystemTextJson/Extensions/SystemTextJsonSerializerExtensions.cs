@@ -24,7 +24,7 @@ namespace AllOverIt.Serialization.SystemTextJson.Extensions
         /// <param name="serializer">The serializer performing the deserialization.</param>
         /// <param name="includeEnumerable">If true, a second converter will be added that will convert <see cref="IEnumerable{T}"/>
         /// to a <see cref="List{TConcrete}"/>.</param>
-        public static void AddInterfaceConverter<TInterface, TConcrete>(this SystemTextJsonSerializer serializer, bool includeEnumerable)
+        public static void AddInterfaceConverter<TInterface, TConcrete>(this SystemTextJsonSerializer serializer, bool includeEnumerable = false)
             where TConcrete : class, TInterface
         {
             serializer.Options.Converters.Add(new InterfaceConverter<TInterface, TConcrete>());
