@@ -47,13 +47,11 @@ namespace AllOverIt.Serialization.SystemTextJson
 
         private static JsonSerializerOptions CreateDefaultOptions()
         {
-            var options = new JsonSerializerOptions
+            return new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                 PropertyNameCaseInsensitive = true
             };
-
-            return options;
         }
     }
 }
