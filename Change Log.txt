@@ -1,5 +1,17 @@
 ======================================================================================================================
 
+11 Dec 2021 
+======================================================================================================================
+AllOverIt.Serialization.NewtonsoftJson v1.2.1
+  * Updated AddInterfaceConverter() default behaviour to not include an enumerable interface converter
+  * Updated DeserializeObjectAsync() to cancel if the CancellationToken is cancelled
+  * Added tests
+
+AllOverIt.Serialization.SystemTextJson v1.2.1
+  * Updated AddInterfaceConverter() default behaviour to not include an enumerable interface converter
+  * Added tests
+
+
 09 Dec 2021 
 ======================================================================================================================
 AllOverIt.Serialization.NewtonsoftJson v1.2.0
