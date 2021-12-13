@@ -1,5 +1,12 @@
 ======================================================================================================================
 
+13 Dec 2021 
+======================================================================================================================
+AllOverIt v2.3.0
+  * Added IEnumerable and IAsyncEnumerable overloads of WithIndex(), WithIndexAsync(), ForEach(), and ForEachAsync()
+    that iterate a sequence and provide each element's index.
+
+
 11 Dec 2021 
 ======================================================================================================================
 AllOverIt.Serialization.NewtonsoftJson v1.2.1

@@ -878,6 +878,15 @@
             <param name="cancellationToken">A cancellation token.</param>
             <returns>An enumerator that provides asynchronous iteration over a sequence of elements.</returns>
         </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.SelectAsync``2(System.Collections.Generic.IAsyncEnumerable{``0},System.Func{``0,System.Threading.Tasks.Task{``1}},System.Threading.CancellationToken)">
+            <summary>Asynchronously projects each item within a sequence.</summary>
+            <typeparam name="TType">The type of each element to be projected.</typeparam>
+            <typeparam name="TResult">The projected result type.</typeparam>
+            <param name="items">The sequence of elements to be projected.</param>
+            <param name="selector">The transform function to be applied to each element.</param>
+            <param name="cancellationToken">A cancellation token.</param>
+            <returns>An enumerator that provides asynchronous iteration over a sequence of elements.</returns>
+        </member>
         <member name="M:AllOverIt.Extensions.EnumerableExtensions.IsNullOrEmpty(System.Collections.IEnumerable)">
             <summary>
             Applicable to strings and collections, this method determines if the instance is null or empty.
@@ -889,10 +898,42 @@
             <summary>
             Partitions a collection into multiple batches of a maximum size. 
             </summary>
-            <typeparam name="TSource">The type stored in the source collection.</typeparam>
+            <typeparam name="TType">The type stored in the source collection.</typeparam>
             <param name="items">The source of items to be partitioned.</param>
             <param name="batchSize">The maximum number of items in each batch.</param>
             <returns>One or more batches containing the source items partitioned into a maximum batch size.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.WithIndex``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>Projects each element of a sequence into a new form that includes the element's zero-based index.</summary>
+            <typeparam name="TType">The element type.</typeparam>
+            <param name="items">The source sequence of elements.</param>
+            <returns>The projected sequence including the element's index.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.WithIndexAsync``1(System.Collections.Generic.IAsyncEnumerable{``0})">
+            <summary>Asynchronously projects each element of a sequence into a new form that includes the element's zero-based index.</summary>
+            <typeparam name="TType">The element type.</typeparam>
+            <param name="items">The source sequence of elements.</param>
+            <returns>The projected sequence including the element's index.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.ForEach``1(System.Collections.Generic.IEnumerable{``0},System.Action{``0,System.Int32})">
+            <summary>Iterates a sequence of elements and provides the zero-based index of the current item.</summary>
+            <typeparam name="TType">The element type.</typeparam>
+            <param name="items">The source sequence of elements.</param>
+            <param name="action">The action to invoke against each element in the sequence.</param>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.ForEachAsync``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Int32,System.Threading.Tasks.Task})">
+            <summary>Asynchronously iterates a sequence of elements and provides the zero-based index of the current item.</summary>
+            <typeparam name="TType">The element type.</typeparam>
+            <param name="items">The source sequence of elements.</param>
+            <param name="action">The asynchronous action to invoke against each element in the sequence.</param>
+            <returns>An awaitable task that completes when the iteration is complete.</returns>
+        </member>
+        <member name="M:AllOverIt.Extensions.EnumerableExtensions.ForEachAsync``1(System.Collections.Generic.IAsyncEnumerable{``0},System.Func{``0,System.Int32,System.Threading.Tasks.Task})">
+            <summary>Asynchronously iterates a sequence of elements and provides the zero-based index of the current item.</summary>
+            <typeparam name="TType">The element type.</typeparam>
+            <param name="items">The source sequence of elements.</param>
+            <param name="action">The asynchronous action to invoke against each element in the sequence.</param>
+            <returns>An awaitable task that completes when the iteration is complete.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.EnumerableExtensions.ForEachAsTaskAsync``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Threading.Tasks.Task},System.Int32,System.Threading.CancellationToken)">
             <summary>Creates a Task for each item in a collection and invokes an asynchronous function. The number of tasks is

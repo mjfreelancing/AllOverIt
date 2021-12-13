@@ -128,6 +128,28 @@ namespace AllOverIt.Extensions
                 yield return await selector.Invoke(item).ConfigureAwait(false);
             }
         }
+
+        /// <summary>Asynchronously projects each item within a sequence.</summary>
+        /// <typeparam name="TType">The type of each element to be projected.</typeparam>
+        /// <typeparam name="TResult">The projected result type.</typeparam>
+        /// <param name="items">The sequence of elements to be projected.</param>
+        /// <param name="selector">The transform function to be applied to each element.</param>
+        /// <param name="cancellationToken">A cancellation token.</param>
+        /// <returns>An enumerator that provides asynchronous iteration over a sequence of elements.</returns>
+        public static async IAsyncEnumerable<TResult> SelectAsync<TType, TResult>(this IAsyncEnumerable<TType> items, Func<TType, Task<TResult>> selector,
+            [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        {
+            // ReSharper disable once PossibleMultipleEnumeration
+            _ = items.WhenNotNull(nameof(items));
+
+            // ReSharper disable once PossibleMultipleEnumeration
+            await foreach (var item in items.WithCancellation(cancellationToken))
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                yield return await selector.Invoke(item).ConfigureAwait(false);
+            }
+        }
 #endif
 
         /// <summary>
@@ -143,16 +165,16 @@ namespace AllOverIt.Extensions
         /// <summary>
         /// Partitions a collection into multiple batches of a maximum size. 
         /// </summary>
-        /// <typeparam name="TSource">The type stored in the source collection.</typeparam>
+        /// <typeparam name="TType">The type stored in the source collection.</typeparam>
         /// <param name="items">The source of items to be partitioned.</param>
         /// <param name="batchSize">The maximum number of items in each batch.</param>
         /// <returns>One or more batches containing the source items partitioned into a maximum batch size.</returns>
-        public static IEnumerable<IEnumerable<TSource>> Batch<TSource>(this IEnumerable<TSource> items, int batchSize)
+        public static IEnumerable<IEnumerable<TType>> Batch<TType>(this IEnumerable<TType> items, int batchSize)
         {
             // ReSharper disable once PossibleMultipleEnumeration
             _ = items.WhenNotNull(nameof(items));
 
-            var batch = new List<TSource>(batchSize);
+            var batch = new List<TType>(batchSize);
 
             // ReSharper disable once PossibleMultipleEnumeration
             foreach (var item in items)
@@ -162,7 +184,7 @@ namespace AllOverIt.Extensions
                 if (batch.Count == batchSize)
                 {
                     yield return batch;
-                    batch = new List<TSource>(batchSize);
+                    batch = new List<TType>(batchSize);
                 }
             }
 
@@ -171,5 +193,96 @@ namespace AllOverIt.Extensions
                 yield return batch;
             }
         }
+
+        /// <summary>Projects each element of a sequence into a new form that includes the element's zero-based index.</summary>
+        /// <typeparam name="TType">The element type.</typeparam>
+        /// <param name="items">The source sequence of elements.</param>
+        /// <returns>The projected sequence including the element's index.</returns>
+        public static IEnumerable<(TType Item, int Index)> WithIndex<TType>(this IEnumerable<TType> items)
+        {
+            // ReSharper disable once PossibleMultipleEnumeration
+            _ = items.WhenNotNull(nameof(items));
+
+            // ReSharper disable once PossibleMultipleEnumeration
+            return items.Select((item, index) => (item, index));
+        }
+
+#if !NETSTANDARD2_0
+        /// <summary>Asynchronously projects each element of a sequence into a new form that includes the element's zero-based index.</summary>
+        /// <typeparam name="TType">The element type.</typeparam>
+        /// <param name="items">The source sequence of elements.</param>
+        /// <returns>The projected sequence including the element's index.</returns>
+        public static async IAsyncEnumerable<(TType Item, int Index)> WithIndexAsync<TType>(this IAsyncEnumerable<TType> items)
+        {
+            // ReSharper disable once PossibleMultipleEnumeration
+            _ = items.WhenNotNull(nameof(items));
+
+            var index = 0;
+
+            // ReSharper disable once PossibleMultipleEnumeration
+            await foreach (var item in items)
+            {
+                yield return (item, index++);
+            }
+        }
+#endif
+
+        /// <summary>Iterates a sequence of elements and provides the zero-based index of the current item.</summary>
+        /// <typeparam name="TType">The element type.</typeparam>
+        /// <param name="items">The source sequence of elements.</param>
+        /// <param name="action">The action to invoke against each element in the sequence.</param>
+        public static void ForEach<TType>(this IEnumerable<TType> items, Action<TType, int> action)
+        {
+            // ReSharper disable once PossibleMultipleEnumeration
+            _ = items.WhenNotNull(nameof(items));
+
+            var index = 0;
+
+            // ReSharper disable once PossibleMultipleEnumeration
+            foreach (var item in items)
+            {
+                action.Invoke(item, index++);
+            }
+        }
+
+        /// <summary>Asynchronously iterates a sequence of elements and provides the zero-based index of the current item.</summary>
+        /// <typeparam name="TType">The element type.</typeparam>
+        /// <param name="items">The source sequence of elements.</param>
+        /// <param name="action">The asynchronous action to invoke against each element in the sequence.</param>
+        /// <returns>An awaitable task that completes when the iteration is complete.</returns>
+        public static async Task ForEachAsync<TType>(this IEnumerable<TType> items, Func<TType, int, Task> action)
+        {
+            // ReSharper disable once PossibleMultipleEnumeration
+            _ = items.WhenNotNull(nameof(items));
+
+            var index = 0;
+
+            // ReSharper disable once PossibleMultipleEnumeration
+            foreach (var item in items)
+            {
+                await action.Invoke(item, index++).ConfigureAwait(false);
+            }
+        }
+
+#if !NETSTANDARD2_0
+        /// <summary>Asynchronously iterates a sequence of elements and provides the zero-based index of the current item.</summary>
+        /// <typeparam name="TType">The element type.</typeparam>
+        /// <param name="items">The source sequence of elements.</param>
+        /// <param name="action">The asynchronous action to invoke against each element in the sequence.</param>
+        /// <returns>An awaitable task that completes when the iteration is complete.</returns>
+        public static async Task ForEachAsync<TType>(this IAsyncEnumerable<TType> items, Func<TType, int, Task> action)
+        {
+            // ReSharper disable once PossibleMultipleEnumeration
+            _ = items.WhenNotNull(nameof(items));
+
+            var index = 0;
+
+            // ReSharper disable once PossibleMultipleEnumeration
+            await foreach (var item in items)
+            {
+                await action.Invoke(item, index++).ConfigureAwait(false);
+            }
+        }
+#endif
     }
 }
