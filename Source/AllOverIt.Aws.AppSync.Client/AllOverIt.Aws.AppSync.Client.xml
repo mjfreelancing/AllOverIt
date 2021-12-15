@@ -265,6 +265,15 @@
             <summary>Constructor.</summary>
             <param name="timeout">The timeout period.</param>
         </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Extensions.GraphqlHttpRequestExceptionExtensions">
+            <summary>Provides a variety of extension methods for <see cref="T:AllOverIt.Aws.AppSync.Client.Exceptions.GraphqlHttpRequestException"/>.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.Extensions.GraphqlHttpRequestExceptionExtensions.HasExecutionTimeoutError(AllOverIt.Aws.AppSync.Client.Exceptions.GraphqlHttpRequestException)">
+            <summary>Determines if the exception contains any errors with an error type of 'ExecutionTimeout",
+            as reported by AppSync.</summary>
+            <param name="exception">The exception containing errors.</param>
+            <returns>True if the exception contains any errors with an error type of 'ExecutionTimeout", otherwise false.</returns>
+        </member>
         <member name="T:AllOverIt.Aws.AppSync.Client.IAppSyncClient">
             <summary>Represents an AppSync query and mutation graphql client.</summary>
         </member>

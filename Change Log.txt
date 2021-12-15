@@ -2,6 +2,13 @@
 
 13 Dec 2021 
 ======================================================================================================================
+AllOverIt.Aws.AppSync.Client v1.3.0
+  * Added HasExecutionTimeoutError() extension method
+  * Updated to AllOverIt v2.3.0
+
+
+13 Dec 2021 
+======================================================================================================================
 AllOverIt v2.3.0
   * Added IEnumerable and IAsyncEnumerable overloads of WithIndex(), WithIndexAsync(), ForEach(), and ForEachAsync()
     that iterate a sequence and provide each element's index.
