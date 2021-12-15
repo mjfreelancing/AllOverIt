@@ -9,7 +9,7 @@ namespace AllOverIt.Tests.Extensions
 {
     public class StringFormatExtensionsFixture : FixtureBase
     {
-        private static readonly string _basicSourceString = @"{""key"":""value""}";
+        private const string BasicSourceString = @"{""key"":""value""}";
 
         [Fact]
         public void Should_Throw_When_Null()
@@ -30,7 +30,7 @@ namespace AllOverIt.Tests.Extensions
             Invoking(
                () =>
                {
-                   _ = StringFormatExtensions.FormatJsonString(_basicSourceString, -1);
+                   _ = StringFormatExtensions.FormatJsonString(BasicSourceString, -1);
                })
                .Should()
                .Throw<ArgumentOutOfRangeException>()
@@ -43,7 +43,7 @@ namespace AllOverIt.Tests.Extensions
             Invoking(
                () =>
                {
-                   _ = StringFormatExtensions.FormatJsonString(_basicSourceString, 0);
+                   _ = StringFormatExtensions.FormatJsonString(BasicSourceString, 0);
                })
                .Should()
                .NotThrow();
@@ -55,7 +55,7 @@ namespace AllOverIt.Tests.Extensions
             Invoking(
                () =>
                {
-                   _ = StringFormatExtensions.FormatJsonString(_basicSourceString, Create<int>());
+                   _ = StringFormatExtensions.FormatJsonString(BasicSourceString, Create<int>());
                })
                .Should()
                .NotThrow();
@@ -69,7 +69,7 @@ namespace AllOverIt.Tests.Extensions
   ""key"": ""value""
 }";
 
-            var actual = StringFormatExtensions.FormatJsonString(_basicSourceString);
+            var actual = StringFormatExtensions.FormatJsonString(BasicSourceString);
 
             actual.Should().Be(expected);
         }

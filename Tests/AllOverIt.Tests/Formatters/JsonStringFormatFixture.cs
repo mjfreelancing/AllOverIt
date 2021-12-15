@@ -9,7 +9,7 @@ namespace AllOverIt.Tests.Formatters
 {
     public class JsonStringFormatFixture : FixtureBase
     {
-        private static readonly string _basicSourceString = @"{""key"":""value""}";
+        private const string BasicSourceString = @"{""key"":""value""}";
 
         [Fact]
         public void Should_Throw_When_Null()
@@ -30,7 +30,7 @@ namespace AllOverIt.Tests.Formatters
             Invoking(
                () =>
                {
-                   _ = JsonString.Format(_basicSourceString, -1);
+                   _ = JsonString.Format(BasicSourceString, -1);
                })
                .Should()
                .Throw<ArgumentOutOfRangeException>()
@@ -43,7 +43,7 @@ namespace AllOverIt.Tests.Formatters
             Invoking(
                () =>
                {
-                   _ = JsonString.Format(_basicSourceString, 0);
+                   _ = JsonString.Format(BasicSourceString, 0);
                })
                .Should()
                .NotThrow();
@@ -55,7 +55,7 @@ namespace AllOverIt.Tests.Formatters
             Invoking(
                () =>
                {
-                   _ = JsonString.Format(_basicSourceString, Create<int>());
+                   _ = JsonString.Format(BasicSourceString, Create<int>());
                })
                .Should()
                .NotThrow();
@@ -69,7 +69,7 @@ namespace AllOverIt.Tests.Formatters
   ""key"": ""value""
 }";
 
-            var actual = JsonString.Format(_basicSourceString);
+            var actual = JsonString.Format(BasicSourceString);
 
             actual.Should().Be(expected);
         }
