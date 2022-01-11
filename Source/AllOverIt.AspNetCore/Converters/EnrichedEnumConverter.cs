@@ -10,8 +10,6 @@ namespace AllOverIt.AspNetCore.Converters
     public class EnrichedEnumConverter<TEnum> : JsonConverter<TEnum>
         where TEnum : EnrichedEnum<TEnum>
     {
-        private static readonly Type EnrichedEnumConverterType = typeof(EnrichedEnumConverter<>);
-
         /// <summary>Reads a string from the current JSON reader and converts it to the required <typeparamref name="TEnum"/> type.</summary>
         public override TEnum Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
@@ -28,7 +26,8 @@ namespace AllOverIt.AspNetCore.Converters
         /// <returns>A new JsonConverter instance.</returns>
         public static JsonConverter Create()
         {
-            var converterType = EnrichedEnumConverterType.MakeGenericType(typeof(TEnum));
+            // Can't cache typeof(EnrichedEnumConverter<>) in a static of EnrichedEnumConverter<TEnum> as it is a generic type
+            var converterType = typeof(EnrichedEnumConverter<>).MakeGenericType(typeof(TEnum));
             return (JsonConverter) Activator.CreateInstance(converterType);
         }
     }
