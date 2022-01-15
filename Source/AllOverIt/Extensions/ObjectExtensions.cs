@@ -2,6 +2,7 @@
 using AllOverIt.Reflection;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 
@@ -131,8 +132,7 @@ namespace AllOverIt.Extensions
         /// <returns>Returns <c>true</c> if the specified object is an integral type (signed or unsigned).</returns>
         public static bool IsIntegral(this object instance)
         {
-            return instance is byte || instance is sbyte || instance is short || instance is ushort
-                   || instance is int || instance is uint || instance is long || instance is ulong;
+            return instance is byte or sbyte or short or ushort or int or uint or long or ulong;
         }
 
         /// <summary>Converts the provided source <paramref name="instance"/> to a specified type.</summary>
@@ -147,20 +147,40 @@ namespace AllOverIt.Extensions
                 return defaultValue;
             }
 
-            // return same value if no conversion is required or the destination is a class reference
-            var isClassType = typeof(TType).IsClassType() && typeof(TType) != typeof(string);
+            var genericType = typeof(TType);
+            var instanceType = instance.GetType();
 
-            if (typeof(TType) == instance.GetType() || typeof(TType) == typeof(object) || isClassType)
+            // return the same value if no conversion is required
+            if (genericType == instanceType || genericType == typeof(object))
             {
-                return (TType)instance;
+                return (TType) instance;
+            }
+
+            if (genericType.IsClassType() && genericType != typeof(string))
+            {
+                // return the same value if the instance is a class inheriting `TType`
+                if (instanceType.IsDerivedFrom(genericType))
+                {
+                    return (TType) instance;
+                }
+
+                // expect a converter - or fail
+                var typeConverter = TypeDescriptor.GetConverter(genericType);
+
+                if (!typeConverter.IsValid(instance))
+                {
+                    throw new InvalidCastException($"Unable to cast object of type '{instanceType.Name}' to type '{genericType.Name}'.");
+                }
+
+                return (TType) typeConverter.ConvertFrom(instance);
             }
 
             // convert from integral to bool (conversion from a string is handled further below)
-            if (typeof(TType) == typeof(bool) && instance.IsIntegral())
+            if (genericType == typeof(bool) && instance.IsIntegral())
             {
                 var intValue = (int)Convert.ChangeType(instance, typeof(int));
 
-                if (intValue < 0 || intValue > 1)
+                if (intValue is < 0 or > 1)
                 {
                     throw new ArgumentOutOfRangeException(nameof(instance), $"Cannot convert integral '{intValue}' to a Boolean.");
                 }
@@ -172,32 +192,32 @@ namespace AllOverIt.Extensions
             }
 
             // converting from Enum to byte, sbyte, short, ushort, int, uint, long, or ulong
-            if (instance is Enum && typeof(TType).IsIntegralType())
+            if (instance is Enum && genericType.IsIntegralType())
             {
                 // cater for when Enum has an underlying type other than 'int'
-                instance = GetEnumAsUnderlyingValue(instance, instance.GetType());
+                instance = GetEnumAsUnderlyingValue(instance, instanceType);
 
                 // now attempt to perform the converted value to the required type
-                return (TType)Convert.ChangeType(instance, typeof(TType));
+                return (TType)Convert.ChangeType(instance, genericType);
             }
 
             // converting from byte, sbyte, short, ushort, int, uint, long, or ulong to Enum
-            if (typeof(TType).IsEnumType() && instance.IsIntegral())
+            if (genericType.IsEnumType() && instance.IsIntegral())
             {
                 // cater for when Enum has an underlying type other than 'int'
-                instance = GetEnumAsUnderlyingValue(instance, typeof(TType));
+                instance = GetEnumAsUnderlyingValue(instance, genericType);
 
-                if (!Enum.IsDefined(typeof(TType), instance))
+                if (!Enum.IsDefined(genericType, instance))
                 {
-                    throw new ArgumentOutOfRangeException(nameof(instance), $"Cannot cast '{instance}' to a '{typeof(TType)}' value.");
+                    throw new ArgumentOutOfRangeException(nameof(instance), $"Cannot cast '{instance}' to a '{genericType}' value.");
                 }
 
                 return (TType)instance;
             }
 
-            if (typeof(TType) == typeof(bool) || instance is bool || typeof(TType) == typeof(char) || instance is char)
+            if (genericType == typeof(bool) || instance is bool || genericType == typeof(char) || instance is char)
             {
-                return (TType)Convert.ChangeType(instance, typeof(TType));
+                return (TType)Convert.ChangeType(instance, genericType);
             }
 
             // all other cases
