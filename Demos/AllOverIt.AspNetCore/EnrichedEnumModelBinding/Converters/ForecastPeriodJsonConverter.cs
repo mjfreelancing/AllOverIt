@@ -3,7 +3,7 @@ using EnrichedEnumModelBinding.Models;
 
 namespace EnrichedEnumModelBinding.Converters
 {
-    internal sealed class ForecastPeriodConverter : EnrichedEnumConverter<ForecastPeriod>
+    internal sealed class ForecastPeriodJsonConverter : EnrichedEnumJsonConverter<ForecastPeriod>
     {
     }
 }

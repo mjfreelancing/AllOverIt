@@ -28,7 +28,7 @@ namespace EnrichedEnumModelBinding
                 })
                 .AddJsonOptions(options =>
                 {
-                    options.JsonSerializerOptions.Converters.Add(new ForecastPeriodConverter());
+                    options.JsonSerializerOptions.Converters.Add(new ForecastPeriodJsonConverter());
                     
                     // The controller uses the local time but, for testing, this converter changes the kind so it is treated as UTC.
                     options.JsonSerializerOptions.Converters.Add(new DateTimeAsUtcConverter());

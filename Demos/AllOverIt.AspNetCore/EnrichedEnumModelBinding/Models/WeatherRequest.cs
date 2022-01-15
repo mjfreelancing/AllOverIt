@@ -2,6 +2,6 @@
 {
     public sealed class WeatherRequest
     {
-        public ForecastPeriod Period { get; set; }
+        public ForecastPeriod Period { get; init; }
     }
 }

@@ -7,10 +7,10 @@ namespace AllOverIt.AspNetCore.Converters
 {
     /// <summary>Converts JSON to and from an <see cref="EnrichedEnum{TEnum}"/> type.</summary>
     /// <typeparam name="TEnum">The concrete <see cref="EnrichedEnum{TEnum}"/> type.</typeparam>
-    public class EnrichedEnumConverter<TEnum> : JsonConverter<TEnum>
+    public class EnrichedEnumJsonConverter<TEnum> : JsonConverter<TEnum>
         where TEnum : EnrichedEnum<TEnum>
     {
-        private static readonly Type EnrichedEnumConverterType = typeof(EnrichedEnumConverter<TEnum>);
+        private static readonly Type EnrichedEnumJsonConverterType = typeof(EnrichedEnumJsonConverter<TEnum>);
 
         /// <summary>Reads a string from the current JSON reader and converts it to the required <typeparamref name="TEnum"/> type.</summary>
         public override TEnum Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
@@ -28,7 +28,7 @@ namespace AllOverIt.AspNetCore.Converters
         /// <returns>A new JsonConverter instance.</returns>
         public static JsonConverter Create()
         {
-            return (JsonConverter) Activator.CreateInstance(EnrichedEnumConverterType);
+            return (JsonConverter) Activator.CreateInstance(EnrichedEnumJsonConverterType);
         }
     }
 }
