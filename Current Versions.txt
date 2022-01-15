@@ -1,6 +1,6 @@
 ======================================================================================================================
 
-  [1]  AllOverIt                                v2.3.0
+  [1]  AllOverIt                                v2.4.0
         - Targets                                           - netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0
         - AllOverIt dependencies:                           - None
         - External dependencies:                            - None

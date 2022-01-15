@@ -468,6 +468,22 @@
             <typeparam name="TType">The type associated with the list.</typeparam>
             <returns>A static empty list as an <see cref="T:System.Collections.Generic.IReadOnlyList`1"/>.</returns>
         </member>
+        <member name="T:AllOverIt.Converters.EnrichedEnumTypeConverter`1">
+            <summary>A type converter that converts an <seealso cref="T:AllOverIt.Patterns.Enumeration.EnrichedEnum`1"/> to and from string or integral values.</summary>
+            <typeparam name="TEnum">The <seealso cref="T:AllOverIt.Patterns.Enumeration.EnrichedEnum`1"/> type.</typeparam>
+        </member>
+        <member name="M:AllOverIt.Converters.EnrichedEnumTypeConverter`1.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+            <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Converters.EnrichedEnumTypeConverter`1.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Converters.EnrichedEnumTypeConverter`1.CanConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+            <inheritdoc />
+        </member>
+        <member name="M:AllOverIt.Converters.EnrichedEnumTypeConverter`1.ConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)">
+            <inheritdoc />
+        </member>
         <member name="T:AllOverIt.Events.EventAggregator">
             <summary>Provides support for produces to publish messages and consumers to subscribe for notification of those messages.</summary>
         </member>
