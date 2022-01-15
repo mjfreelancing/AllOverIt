@@ -39,30 +39,33 @@ namespace AllOverIt.Extensions
                 return defaultValue;
             }
 
-            if (typeof(TType).IsEnum)
+            var genericType = typeof(TType);
+
+            if (genericType.IsEnum)
             {
-                return (TType)Enum.Parse(typeof(TType), value, true);
+                return (TType)Enum.Parse(genericType, value, true);
             }
 
-            if (typeof(TType) == typeof(bool))
+            if (genericType == typeof(bool))
             {
                 switch (value)
                 {
-                    case "0": return (TType)Convert.ChangeType(false, typeof(TType));
-                    case "1": return (TType)Convert.ChangeType(true, typeof(TType));
-
-                        // fall through - true / false values will be converted via the type converter
+                    case "0": return (TType)Convert.ChangeType(false, genericType);
+                    case "1": return (TType)Convert.ChangeType(true, genericType);
+                    // fall through - true / false values will be converted via the type converter
                 }
             }
 
             // perform this after the enum conversion attempt
-            if (!TypeDescriptor.GetConverter(typeof(TType)).IsValid(value))
+            var typeConverter = TypeDescriptor.GetConverter(genericType);
+
+            if (!typeConverter.IsValid(value))
             {
-                throw new ArgumentException($"No converter exists for type '{typeof(TType).Name}' when value = '{value}'.");
+                throw new ArgumentException($"No converter exists for type '{genericType.Name}' when value = '{value}'.");
             }
 
             // will throw NotSupportedException if the conversion cannot be performed
-            var converted = TypeDescriptor.GetConverter(typeof(TType)).ConvertFromString(value);
+            var converted = typeConverter.ConvertFromString(value);
 
             return (TType)converted;
         }
