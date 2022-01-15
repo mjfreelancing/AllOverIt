@@ -1,4 +1,5 @@
-﻿using AllOverIt.Extensions;
+﻿using AllOverIt.AspNetCore.ValueArray;
+using AllOverIt.Extensions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Text.RegularExpressions;
@@ -10,8 +11,8 @@ namespace AllOverIt.AspNetCore.ModelBinders
     /// <typeparam name="TArray">The <see cref="ValuesArray{TType}"/> type to bind.</typeparam>
     /// <typeparam name="TType">The type within the array.</typeparam>
     /// <remarks>Only supports arrays of values within a QueryString. The expected format is [Value1,Value2,Value3], with each value quoted if required.</remarks>
-    public class ValuesArrayModelBinder<TArray, TType> : IModelBinder
-        where TArray : ValuesArray<TType>, new()
+    public class ValueArrayModelBinder<TArray, TType> : IModelBinder
+        where TArray : ValueArray<TType>, new()
     {
         private static readonly Regex _regex = new(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))", RegexOptions.Compiled);
 
