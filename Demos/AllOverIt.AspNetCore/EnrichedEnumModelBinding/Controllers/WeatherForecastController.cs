@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Extensions;
 using EnrichedEnumModelBinding.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 
@@ -16,13 +15,8 @@ namespace EnrichedEnumModelBinding.Controllers
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        private readonly ILogger<WeatherForecastController> _logger;
-
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
-        {
-            _logger = logger;
-        }
-
+        // Sample requests: http://localhost:12365/weatherforecast?period=1
+        //                : http://localhost:12365/weatherforecast?period=nextweek
         [HttpGet]
         public WeatherReport Get([FromQuery] WeatherRequest request)
         {
