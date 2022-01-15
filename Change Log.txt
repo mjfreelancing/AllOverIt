@@ -5,6 +5,7 @@
 AllOverIt.AspNetCore v1.2.0
   * Built against AllOverIt v2.4.0
   * Renamed EnrichedEnumConverter to EnrichedEnumJsonConverter
+  * Added value array types (inherit ValueArray<T>) that can be bound from a query string
   * ValueArrayModelBinder<T> now supports arrays of EnrichedEnum on query strings (thanks to EnrichedEnumTypeConverter
     in AllOverIt v2.4.0)
   * Minor tweaks

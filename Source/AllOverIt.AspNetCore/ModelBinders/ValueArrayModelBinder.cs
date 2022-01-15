@@ -11,17 +11,18 @@ namespace AllOverIt.AspNetCore.ModelBinders
     /// <remarks>Required so a static Regex can be defined in a non-generic class.</remarks>
     public abstract class ValueArrayModelBinderBase
     {
-        // Splits all values by comma, taking into account quoted values
+        /// <summary>Splits all values by comma, taking into account quoted values.</summary>
         protected static readonly Regex SplitRegex = new(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))", RegexOptions.Compiled);
     }
 
     /// <summary>Provides a model binder for any <see cref="ValueArray{TType}"/>.</summary>
     /// <typeparam name="TArray">The <see cref="ValueArray{TType}"/> type to bind.</typeparam>
     /// <typeparam name="TType">The type within the array. Must be convertible from a string via <seealso cref="StringExtensions.As{TType}"/>.</typeparam>
-    /// <remarks>Only supports arrays of values within a QueryString. The expected format is [Value1,Value2,Value3], with each value quoted if required.</remarks>
+    /// <remarks>Only supports arrays of values within a QueryString. The expected format is paramName=Value1,Value2,Value3 with each value quoted if required.</remarks>
     public class ValueArrayModelBinder<TArray, TType> : ValueArrayModelBinderBase, IModelBinder
         where TArray : ValueArray<TType>, new()
     {
+        /// <inheritdoc />
         public Task BindModelAsync(ModelBindingContext bindingContext)
         {
             var request = bindingContext.HttpContext.Request;

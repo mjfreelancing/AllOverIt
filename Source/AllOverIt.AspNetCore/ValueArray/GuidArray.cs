@@ -4,7 +4,7 @@ using System;
 
 namespace AllOverIt.AspNetCore.ValueArray
 {
-    // Only applicable for models used to bind from a query string
+    /// <summary>Represents an array of GUIDs that can be bound to a model from a query string.</summary>
     [ModelBinder(typeof(ValueArrayModelBinder<GuidArray, Guid>))]
     public sealed record GuidArray : ValueArray<Guid>
     {

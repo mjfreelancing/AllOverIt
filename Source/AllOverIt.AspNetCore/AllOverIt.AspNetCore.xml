@@ -4,6 +4,23 @@
         <name>AllOverIt.AspNetCore</name>
     </assembly>
     <members>
+        <member name="T:AllOverIt.AspNetCore.Converters.DateTimeAsUtcConverter">
+            <summary>A JsonConverter that treats <seealso cref="T:System.DateTime"/> values as kind <seealso cref="F:System.DateTimeKind.Utc"/>.</summary>
+            <remarks>The converter does not perform any DateTime conversions; it only sets the kind so it is treated as if it is a UTC DateTime.</remarks>
+        </member>
+        <member name="M:AllOverIt.AspNetCore.Converters.DateTimeAsUtcConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>Reads a <seealso cref="T:System.DateTime"/> value as a UTC based <seealso cref="T:System.DateTime"/>.</summary>
+            <param name="reader">The Json reader.</param>
+            <param name="typeToConvert">Ignored.</param>
+            <param name="options">Ignored.</param>
+            <returns>A <seealso cref="T:System.DateTime"/> value of kind <seealso cref="F:System.DateTimeKind.Utc"/>.</returns>
+        </member>
+        <member name="M:AllOverIt.AspNetCore.Converters.DateTimeAsUtcConverter.Write(System.Text.Json.Utf8JsonWriter,System.DateTime,System.Text.Json.JsonSerializerOptions)">
+            <summary>Writes a <seealso cref="T:System.DateTime"/> value as kind <seealso cref="F:System.DateTimeKind.Utc"/>.</summary>
+            <param name="writer">The Json writer.</param>
+            <param name="value">The value to be written.</param>
+            <param name="options">Ignored.</param>
+        </member>
         <member name="T:AllOverIt.AspNetCore.Converters.EnrichedEnumJsonConverter`1">
             <summary>Converts JSON to and from an <see cref="T:AllOverIt.Patterns.Enumeration.EnrichedEnum`1"/> type.</summary>
             <typeparam name="TEnum">The concrete <see cref="T:AllOverIt.Patterns.Enumeration.EnrichedEnum`1"/> type.</typeparam>
@@ -36,6 +53,38 @@
         </member>
         <member name="M:AllOverIt.AspNetCore.ModelBinders.EnrichedEnumModelBinderProvider.GetBinder(Microsoft.AspNetCore.Mvc.ModelBinding.ModelBinderProviderContext)">
             <inheritdoc />
+        </member>
+        <member name="T:AllOverIt.AspNetCore.ModelBinders.ValueArrayModelBinderBase">
+            <summary>Base class for ValueArrayModelBinder.</summary>
+            <remarks>Required so a static Regex can be defined in a non-generic class.</remarks>
+        </member>
+        <member name="F:AllOverIt.AspNetCore.ModelBinders.ValueArrayModelBinderBase.SplitRegex">
+            <summary>Splits all values by comma, taking into account quoted values.</summary>
+        </member>
+        <member name="T:AllOverIt.AspNetCore.ModelBinders.ValueArrayModelBinder`2">
+            <summary>Provides a model binder for any <see cref="T:AllOverIt.AspNetCore.ValueArray.ValueArray`1"/>.</summary>
+            <typeparam name="TArray">The <see cref="T:AllOverIt.AspNetCore.ValueArray.ValueArray`1"/> type to bind.</typeparam>
+            <typeparam name="TType">The type within the array. Must be convertible from a string via <seealso cref="M:AllOverIt.Extensions.StringExtensions.As``1(System.String,``0)"/>.</typeparam>
+            <remarks>Only supports arrays of values within a QueryString. The expected format is paramName=Value1,Value2,Value3 with each value quoted if required.</remarks>
+        </member>
+        <member name="M:AllOverIt.AspNetCore.ModelBinders.ValueArrayModelBinder`2.BindModelAsync(Microsoft.AspNetCore.Mvc.ModelBinding.ModelBindingContext)">
+            <inheritdoc />
+        </member>
+        <member name="T:AllOverIt.AspNetCore.ValueArray.GuidArray">
+            <summary>Represents an array of GUIDs that can be bound to a model from a query string.</summary>
+        </member>
+        <member name="T:AllOverIt.AspNetCore.ValueArray.IntegerArray">
+            <summary>Represents an array of strings that can be bound to a model from a query string.</summary>
+        </member>
+        <member name="T:AllOverIt.AspNetCore.ValueArray.StringArray">
+            <summary>Represents an array of strings that can be bound to a model from a query string.</summary>
+        </member>
+        <member name="T:AllOverIt.AspNetCore.ValueArray.ValueArray`1">
+            <summary>Represents an array of values that can be bound to a model from a query string.</summary>
+            <remarks>The expected format is paramName=Value1,Value2,Value3 with each value quoted if required.</remarks>
+        </member>
+        <member name="P:AllOverIt.AspNetCore.ValueArray.ValueArray`1.Values">
+            <summary>The values converted from the query string.</summary>
         </member>
     </members>
 </doc>
