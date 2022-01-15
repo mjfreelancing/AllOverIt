@@ -9,12 +9,14 @@ using AllOverIt.Aws.AppSync.Client.Response;
 using AllOverIt.Aws.AppSync.Client.Subscription;
 using AllOverIt.Extensions;
 using AllOverIt.GenericHost;
+using AllOverIt.Serialization.Abstractions;
 using AllOverIt.Serialization.NewtonsoftJson;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -36,16 +38,24 @@ namespace AppSyncSubscription
     public sealed class SubscriptionWorker : ConsoleWorker
     {
         private readonly AppSyncSubscriptionClient _subscriptionClient;
+        private readonly IAppSyncClient _appSyncClient;
         private readonly IWorkerReady _workerReady;
+        private readonly IJsonSerializer _jsonSerializer;
         private readonly ILogger<SubscriptionWorker> _logger;
         private CompositeAsyncDisposable _compositeSubscriptions = new();
 
+        // The demo can be configured to register a client explicitly, or use a named client - determine which was setup
+        private IAppSyncClient AppSyncClient => _appSyncClient;
+
         public SubscriptionWorker(IHostApplicationLifetime applicationLifetime, AppSyncSubscriptionClient subscriptionClient,
-            IWorkerReady workerReady, ILogger<SubscriptionWorker> logger)
+            IAppSyncClient appSyncClient,
+            IWorkerReady workerReady, IJsonSerializer jsonSerializer, ILogger<SubscriptionWorker> logger)
             : base(applicationLifetime)
         {
             _subscriptionClient = subscriptionClient.WhenNotNull(nameof(subscriptionClient));
+            _appSyncClient = appSyncClient.WhenNotNull(nameof(appSyncClient));
             _workerReady = workerReady.WhenNotNull(nameof(workerReady));
+            _jsonSerializer = jsonSerializer.WhenNotNull(nameof(jsonSerializer));
             _logger = logger.WhenNotNull(nameof(logger));
         }
 
@@ -367,17 +377,8 @@ namespace AppSyncSubscription
             Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}");
         }
 
-        private static void SendMutations(CancellationToken cancellationToken)
+        private void SendMutations(CancellationToken cancellationToken)
         {
-            var options = new GraphqlClientConfiguration
-            {
-                EndPoint = "https://<...>.appsync-api.ap-southeast-2.amazonaws.com/graphql",
-                Serializer = new NewtonsoftJsonSerializer(),
-                DefaultAuthorization = new AppSyncApiKeyAuthorization("api_key")
-            };
-
-            var client = new AppSyncClient(options);
-
             var mutation = new GraphqlQuery
             {
                 //Query = "query MyQuery { defaultLanguage { code name } }"
@@ -402,14 +403,22 @@ namespace AppSyncSubscription
                     Name = $"{Guid.NewGuid()}"
                 };
 
-                // Queries are identical; just call SendQueryAsync()
-                // SendQueryAsync() and SendMutationAsync() are identical - the two methods exist for readability
-                var response = await client
-                    .SendMutationAsync<AddLanguageResponse>(mutation, cancellationToken)
-                    .ConfigureAwait(false);
+                try
+                {
+                    // Queries are identical; just call SendQueryAsync()
+                    // SendQueryAsync() and SendMutationAsync() are identical - the two methods exist for readability
+                    var response = await AppSyncClient
+                        .SendMutationAsync<AddLanguageResponse>(mutation, cancellationToken)
+                        .ConfigureAwait(false);
 
-                LogMessage($"Sent mutation: {options.Serializer.SerializeObject(mutation.Variables)}");
-                LogMessage($"Response: {options.Serializer.SerializeObject(response.Data)}");
+                    LogMessage($"Sent mutation: {_jsonSerializer.SerializeObject(mutation.Variables)}");
+                    LogMessage($"Response: {_jsonSerializer.SerializeObject(response.Data)}");
+                }
+                catch (Exception exception)
+                {
+                    LogMessage($"Error sending mutation: {exception.Message}");
+                    throw;
+                }
             }, 3000, cancellationToken);
         }
     }

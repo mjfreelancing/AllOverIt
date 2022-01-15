@@ -2,6 +2,7 @@
 using AllOverIt.Aws.AppSync.Client.Authorization;
 using AllOverIt.Aws.AppSync.Client.Configuration;
 using AllOverIt.GenericHost;
+using AllOverIt.Serialization.Abstractions;
 using AllOverIt.Serialization.NewtonsoftJson;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,33 +24,12 @@ namespace AppSyncSubscription
                 {
                     services.AddSingleton<IWorkerReady, WorkerReady>();
 
-                    // registers SubscriptionClientConfiguration and populates properties via IOptions<AppSyncOptions>
-                    services.AddSingleton(provider =>
-                    {
-                        var options = provider.GetRequiredService<IOptions<AppSyncOptions>>().Value;
-                        
-                        return new SubscriptionClientConfiguration
-                        {
-                            Host = options.Host,
+                    // take your pick...
+                    services.AddSingleton<IJsonSerializer, NewtonsoftJsonSerializer>();
+                    //services.AddSingleton<IJsonSerializer, SystemTextJsonSerializer>();
 
-                            // RealTimeUrl will be derived from Host when not provided by replacing 'appsync-api' with 'appsync-realtime-api'
-                            RealTimeUrl = options.RealTimeUrl,
-
-                            DefaultAuthorization = new AppSyncApiKeyAuthorization(options.ApiKey),
-
-                            // take your pick between Newtonsoft and System.Text
-                            Serializer = new NewtonsoftJsonSerializer()
-                            //Serializer = new SystemTextJsonSerializer()
-                        };
-                    });
-
-                    // AppSyncSubscriptionClient has several constructors so register a factory method to construct it
-                    // using a SubscriptionClientConfiguration
-                    services.AddSingleton(provider =>
-                    {
-                        var configuration = provider.GetRequiredService<SubscriptionClientConfiguration>();
-                        return new AppSyncSubscriptionClient(configuration);
-                    });
+                    AddAppSyncClient(services);
+                    AddSubscriptionClient(services);
 
                     // This performs the graphql subscription and logging of errors and responses received
                     services.AddHostedService<SubscriptionWorker>();
@@ -74,6 +54,58 @@ namespace AppSyncSubscription
                         .Configure<AppSyncOptions>(hostContext.Configuration.GetSection(nameof(AppSyncOptions)))
                         .AddScoped<IConsoleApp, SubscriptionConsole>();
                 });
+        }
+
+        private static void AddAppSyncClient(IServiceCollection services)
+        {
+            services.AddSingleton(provider =>
+            {
+                var options = provider.GetRequiredService<IOptions<AppSyncOptions>>().Value;
+                var serializer = provider.GetRequiredService<IJsonSerializer>();
+
+                return new GraphqlClientConfiguration
+                {
+                    EndPoint = $"https://{options.Host}/graphql",
+
+                    DefaultAuthorization = new AppSyncApiKeyAuthorization(options.ApiKey),
+                    Serializer = serializer
+                };
+            });
+
+            services.AddSingleton<IAppSyncClient>(provider => 
+            {
+                var configuration = provider.GetRequiredService<GraphqlClientConfiguration>();
+                return new AppSyncClient(configuration);
+            });
+        }
+
+        private static void AddSubscriptionClient(IServiceCollection services)
+        {
+            // registers SubscriptionClientConfiguration and populates properties via IOptions<AppSyncOptions>
+            services.AddSingleton(provider =>
+            {
+                var options = provider.GetRequiredService<IOptions<AppSyncOptions>>().Value;
+                var serializer = provider.GetRequiredService<IJsonSerializer>();
+
+                return new SubscriptionClientConfiguration
+                {
+                    Host = options.Host,
+
+                    // RealTimeUrl will be derived from Host when not provided by replacing 'appsync-api' with 'appsync-realtime-api'
+                    RealTimeUrl = options.RealTimeUrl,
+
+                    DefaultAuthorization = new AppSyncApiKeyAuthorization(options.ApiKey),
+                    Serializer = serializer
+                };
+            });
+
+            // AppSyncSubscriptionClient has several constructors so register a factory method to construct it
+            // using a SubscriptionClientConfiguration
+            services.AddSingleton(provider =>
+            {
+                var configuration = provider.GetRequiredService<SubscriptionClientConfiguration>();
+                return new AppSyncSubscriptionClient(configuration);
+            });
         }
     }
 }
