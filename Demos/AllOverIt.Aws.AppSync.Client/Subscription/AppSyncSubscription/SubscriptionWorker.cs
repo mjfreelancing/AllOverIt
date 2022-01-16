@@ -37,7 +37,7 @@ namespace AppSyncSubscription
 
     public sealed class SubscriptionWorker : ConsoleWorker
     {
-        private readonly AppSyncSubscriptionClient _subscriptionClient;
+        private readonly IAppSyncSubscriptionClient _subscriptionClient;
         private readonly IAppSyncClient _appSyncClient;
         private readonly IWorkerReady _workerReady;
         private readonly IJsonSerializer _jsonSerializer;
@@ -47,7 +47,7 @@ namespace AppSyncSubscription
         // The demo can be configured to register a client explicitly, or use a named client - determine which was setup
         private IAppSyncClient AppSyncClient => _appSyncClient;
 
-        public SubscriptionWorker(IHostApplicationLifetime applicationLifetime, AppSyncSubscriptionClient subscriptionClient,
+        public SubscriptionWorker(IHostApplicationLifetime applicationLifetime, IAppSyncSubscriptionClient subscriptionClient,
             IAppSyncClient appSyncClient,
             IWorkerReady workerReady, IJsonSerializer jsonSerializer, ILogger<SubscriptionWorker> logger)
             : base(applicationLifetime)
@@ -246,7 +246,7 @@ namespace AppSyncSubscription
         }
 
         // Explicitly subscribes to the addLanguage("LNG1") mutation
-        private static async Task<IAppSyncSubscriptionRegistration> GetSubscription1(AppSyncSubscriptionClient client)
+        private static async Task<IAppSyncSubscriptionRegistration> GetSubscription1(IAppSyncSubscriptionClient client)
         {
             // try this for an unsupported operation error
             // var badQuery = "query MyQuery { defaultLanguage { code name } }";
@@ -269,7 +269,7 @@ namespace AppSyncSubscription
         }
 
         // Subscribes to ALL addLanguage() mutations
-        private static async Task<IAppSyncSubscriptionRegistration> GetSubscription2(AppSyncSubscriptionClient client)
+        private static async Task<IAppSyncSubscriptionRegistration> GetSubscription2(IAppSyncSubscriptionClient client)
         {
             var subscription = await GetSubscription(
                 client,
@@ -290,7 +290,7 @@ namespace AppSyncSubscription
         }
 
         // Explicitly subscribes to the addLanguage("LNG1") mutation using a variable
-        private static async Task<IAppSyncSubscriptionRegistration> GetSubscription3(AppSyncSubscriptionClient client)
+        private static async Task<IAppSyncSubscriptionRegistration> GetSubscription3(IAppSyncSubscriptionClient client)
         {
             var langCode = "LNG3";
 
@@ -313,7 +313,7 @@ namespace AppSyncSubscription
             return subscription;
         }
 
-        private static async Task<IAppSyncSubscriptionRegistration> GetSubscription(AppSyncSubscriptionClient client, string name, string query, object variables = null)
+        private static async Task<IAppSyncSubscriptionRegistration> GetSubscription(IAppSyncSubscriptionClient client, string name, string query, object variables = null)
         {
             var subscriptionQuery = new SubscriptionQuery
             {

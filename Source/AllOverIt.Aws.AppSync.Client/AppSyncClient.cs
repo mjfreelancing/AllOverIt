@@ -15,11 +15,11 @@ namespace AllOverIt.Aws.AppSync.Client
     public sealed class AppSyncClient : IAppSyncClient
     {
         private static readonly HttpClient HttpClient = new();
-        private readonly IGraphqlClientConfiguration _configuration;
+        private readonly IAppSyncClientConfiguration _configuration;
 
         /// <summary>Constructor.</summary>
         /// <param name="configuration">Contains configuration details for AppSync Graphql query and mutation operations.</param>
-        public AppSyncClient(IGraphqlClientConfiguration configuration)
+        public AppSyncClient(IAppSyncClientConfiguration configuration)
         {
             _configuration = configuration.WhenNotNull(nameof(configuration));
         }

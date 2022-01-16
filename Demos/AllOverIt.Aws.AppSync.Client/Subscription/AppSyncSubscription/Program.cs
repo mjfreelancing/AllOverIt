@@ -1,6 +1,6 @@
-﻿using AllOverIt.Aws.AppSync.Client;
-using AllOverIt.Aws.AppSync.Client.Authorization;
+﻿using AllOverIt.Aws.AppSync.Client.Authorization;
 using AllOverIt.Aws.AppSync.Client.Configuration;
+using AllOverIt.Aws.AppSync.Client.Extensions;
 using AllOverIt.GenericHost;
 using AllOverIt.Serialization.Abstractions;
 using AllOverIt.Serialization.NewtonsoftJson;
@@ -58,12 +58,12 @@ namespace AppSyncSubscription
 
         private static void AddAppSyncClient(IServiceCollection services)
         {
-            services.AddSingleton(provider =>
+            services.AddAppSyncClient(provider => 
             {
                 var options = provider.GetRequiredService<IOptions<AppSyncOptions>>().Value;
                 var serializer = provider.GetRequiredService<IJsonSerializer>();
 
-                return new GraphqlClientConfiguration
+                return new AppSyncClientConfiguration
                 {
                     EndPoint = $"https://{options.Host}/graphql",
 
@@ -71,18 +71,12 @@ namespace AppSyncSubscription
                     Serializer = serializer
                 };
             });
-
-            services.AddSingleton<IAppSyncClient>(provider => 
-            {
-                var configuration = provider.GetRequiredService<GraphqlClientConfiguration>();
-                return new AppSyncClient(configuration);
-            });
         }
 
         private static void AddSubscriptionClient(IServiceCollection services)
         {
             // registers SubscriptionClientConfiguration and populates properties via IOptions<AppSyncOptions>
-            services.AddSingleton(provider =>
+            services.AddAppSyncSubscriptionClient(provider =>
             {
                 var options = provider.GetRequiredService<IOptions<AppSyncOptions>>().Value;
                 var serializer = provider.GetRequiredService<IJsonSerializer>();
@@ -97,14 +91,6 @@ namespace AppSyncSubscription
                     DefaultAuthorization = new AppSyncApiKeyAuthorization(options.ApiKey),
                     Serializer = serializer
                 };
-            });
-
-            // AppSyncSubscriptionClient has several constructors so register a factory method to construct it
-            // using a SubscriptionClientConfiguration
-            services.AddSingleton(provider =>
-            {
-                var configuration = provider.GetRequiredService<SubscriptionClientConfiguration>();
-                return new AppSyncSubscriptionClient(configuration);
             });
         }
     }

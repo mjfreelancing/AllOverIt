@@ -4,7 +4,7 @@ using AllOverIt.Serialization.Abstractions;
 namespace AllOverIt.Aws.AppSync.Client.Configuration
 {
     /// <summary>Represents configuration details for AppSync Graphql query and mutation operations.</summary>
-    public interface IGraphqlClientConfiguration
+    public interface IAppSyncClientConfiguration
     {
         /// <summary>The fully-qualified AppSync Graphql endpoint to perform query and mutation operations.</summary>
         string EndPoint { get; }
