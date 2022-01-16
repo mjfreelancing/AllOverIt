@@ -34,8 +34,12 @@ namespace AppSyncSubscription
     public sealed class SubscriptionWorker : ConsoleWorker
     {
         private readonly IAppSyncSubscriptionClient _subscriptionClient;
+
+#pragma warning disable CS0649      // readonly is never assigned
         private readonly IAppSyncClient _appSyncClient;
         private readonly INamedAppSyncClientProvider _namedAppSyncClientProvider;
+#pragma warning restore CS0649
+
         private readonly IWorkerReady _workerReady;
         private readonly IJsonSerializer _jsonSerializer;
         private readonly ILogger<SubscriptionWorker> _logger;

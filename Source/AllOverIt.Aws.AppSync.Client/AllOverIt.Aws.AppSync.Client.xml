@@ -7,7 +7,7 @@
         <member name="T:AllOverIt.Aws.AppSync.Client.AppSyncClient">
             <summary>An AppSync query and mutation graphql client.</summary>
         </member>
-        <member name="M:AllOverIt.Aws.AppSync.Client.AppSyncClient.#ctor(AllOverIt.Aws.AppSync.Client.Configuration.IGraphqlClientConfiguration)">
+        <member name="M:AllOverIt.Aws.AppSync.Client.AppSyncClient.#ctor(AllOverIt.Aws.AppSync.Client.Configuration.IAppSyncClientConfiguration)">
             <summary>Constructor.</summary>
             <param name="configuration">Contains configuration details for AppSync Graphql query and mutation operations.</param>
         </member>
@@ -87,29 +87,29 @@
         <member name="P:AllOverIt.Aws.AppSync.Client.Authorization.IAppSyncAuthorization.KeyValues">
             <summary>Contains authorization header key-value pairs.</summary>
         </member>
-        <member name="T:AllOverIt.Aws.AppSync.Client.Configuration.GraphqlClientConfiguration">
+        <member name="T:AllOverIt.Aws.AppSync.Client.Configuration.AppSyncClientConfiguration">
             <summary>Contains configuration details for AppSync Graphql query and mutation operations.</summary>
         </member>
-        <member name="P:AllOverIt.Aws.AppSync.Client.Configuration.GraphqlClientConfiguration.EndPoint">
+        <member name="P:AllOverIt.Aws.AppSync.Client.Configuration.AppSyncClientConfiguration.EndPoint">
             <inheritdoc />
         </member>
-        <member name="P:AllOverIt.Aws.AppSync.Client.Configuration.GraphqlClientConfiguration.Serializer">
+        <member name="P:AllOverIt.Aws.AppSync.Client.Configuration.AppSyncClientConfiguration.Serializer">
             <inheritdoc />
         </member>
-        <member name="P:AllOverIt.Aws.AppSync.Client.Configuration.GraphqlClientConfiguration.DefaultAuthorization">
+        <member name="P:AllOverIt.Aws.AppSync.Client.Configuration.AppSyncClientConfiguration.DefaultAuthorization">
             <inheritdoc />
         </member>
-        <member name="T:AllOverIt.Aws.AppSync.Client.Configuration.IGraphqlClientConfiguration">
+        <member name="T:AllOverIt.Aws.AppSync.Client.Configuration.IAppSyncClientConfiguration">
             <summary>Represents configuration details for AppSync Graphql query and mutation operations.</summary>
         </member>
-        <member name="P:AllOverIt.Aws.AppSync.Client.Configuration.IGraphqlClientConfiguration.EndPoint">
+        <member name="P:AllOverIt.Aws.AppSync.Client.Configuration.IAppSyncClientConfiguration.EndPoint">
             <summary>The fully-qualified AppSync Graphql endpoint to perform query and mutation operations.</summary>
         </member>
-        <member name="P:AllOverIt.Aws.AppSync.Client.Configuration.IGraphqlClientConfiguration.Serializer">
+        <member name="P:AllOverIt.Aws.AppSync.Client.Configuration.IAppSyncClientConfiguration.Serializer">
             <summary>The serializer to be used for message processing.</summary>
             <remarks>See 'AllOverIt.Serialization.NewtonsoftJson' and 'AllOverIt.Serialization.SystemTextJson' for suitable implementations.</remarks>
         </member>
-        <member name="P:AllOverIt.Aws.AppSync.Client.Configuration.IGraphqlClientConfiguration.DefaultAuthorization">
+        <member name="P:AllOverIt.Aws.AppSync.Client.Configuration.IAppSyncClientConfiguration.DefaultAuthorization">
             <summary>Provides the default authorization mode to use for all requests.</summary>
         </member>
         <member name="T:AllOverIt.Aws.AppSync.Client.Configuration.ISubscriptionClientConfiguration">
@@ -274,6 +274,39 @@
             <param name="exception">The exception containing errors.</param>
             <returns>True if the exception contains any errors with an error type of 'ExecutionTimeout", otherwise false.</returns>
         </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.Extensions.ServiceCollectionExtensions">
+            <summary>Provides a variety of extension methods for <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/>.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.Extensions.ServiceCollectionExtensions.AddAppSyncClient(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Func{System.IServiceProvider,AllOverIt.Aws.AppSync.Client.Configuration.IAppSyncClientConfiguration})">
+            <summary>Registers an <see cref="T:AllOverIt.Aws.AppSync.Client.IAppSyncClient"/> using the configuration provided by the configuration resolver.</summary>
+            <param name="services">The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> being extended.</param>
+            <param name="configurationResolver">Provides the configuration required by the <see cref="T:AllOverIt.Aws.AppSync.Client.IAppSyncClient"/> instance.</param>
+            <returns>An <see cref="T:AllOverIt.Aws.AppSync.Client.AppSyncClient"/> instance, configured with the resolved configuration.</returns>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.Extensions.ServiceCollectionExtensions.AddAppSyncClient(Microsoft.Extensions.DependencyInjection.IServiceCollection,AllOverIt.Aws.AppSync.Client.Configuration.IAppSyncClientConfiguration)">
+            <summary>Registers an <see cref="T:AllOverIt.Aws.AppSync.Client.IAppSyncClient"/> using the provided configuration.</summary>
+            <param name="services">The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> being extended.</param>
+            <param name="configuration">The configuration required by the <see cref="T:AllOverIt.Aws.AppSync.Client.IAppSyncClient"/> instance.</param>
+            <returns>An <see cref="T:AllOverIt.Aws.AppSync.Client.AppSyncClient"/> instance, configured with the provided configuration.</returns>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.Extensions.ServiceCollectionExtensions.AddAppSyncSubscriptionClient(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Func{System.IServiceProvider,AllOverIt.Aws.AppSync.Client.Configuration.ISubscriptionClientConfiguration})">
+            <summary>Registers an <see cref="T:AllOverIt.Aws.AppSync.Client.IAppSyncSubscriptionClient"/> using the configuration provided by the configuration resolver.</summary>
+            <param name="services">The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> being extended.</param>
+            <param name="configurationResolver">Provides the configuration required by the <see cref="T:AllOverIt.Aws.AppSync.Client.IAppSyncSubscriptionClient"/> instance.</param>
+            <returns>An <see cref="T:AllOverIt.Aws.AppSync.Client.AppSyncSubscriptionClient"/> instance, configured with the resolved configuration.</returns>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.Extensions.ServiceCollectionExtensions.AddAppSyncSubscriptionClient(Microsoft.Extensions.DependencyInjection.IServiceCollection,AllOverIt.Aws.AppSync.Client.Configuration.ISubscriptionClientConfiguration)">
+            <summary>Registers an <see cref="T:AllOverIt.Aws.AppSync.Client.IAppSyncSubscriptionClient"/> using the provided configuration.</summary>
+            <param name="services">The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> being extended.</param>
+            <param name="configuration">The configuration required by the <see cref="T:AllOverIt.Aws.AppSync.Client.IAppSyncSubscriptionClient"/> instance.</param>
+            <returns>An <see cref="T:AllOverIt.Aws.AppSync.Client.AppSyncSubscriptionClient"/> instance, configured with the resolved configuration.</returns>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.Extensions.ServiceCollectionExtensions.AddNamedAppSyncClient(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Func{System.IServiceProvider,System.String,AllOverIt.Aws.AppSync.Client.Configuration.IAppSyncClientConfiguration})">
+            <summary>Registers an <see cref="T:AllOverIt.Aws.AppSync.Client.INamedAppSyncClientProvider"/> for the purpose of requesting <see cref="T:AllOverIt.Aws.AppSync.Client.IAppSyncClient"/> instances by name.</summary>
+            <param name="services">The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> being extended.</param>
+            <param name="configResolver">Provides the configuration required by the named <see cref="T:AllOverIt.Aws.AppSync.Client.IAppSyncClient"/> instance.</param>
+            <returns>An <see cref="T:AllOverIt.Aws.AppSync.Client.AppSyncClient"/> instance, per name, configured with the provided configuration.</returns>
+        </member>
         <member name="T:AllOverIt.Aws.AppSync.Client.IAppSyncClient">
             <summary>Represents an AppSync query and mutation graphql client.</summary>
         </member>
@@ -344,6 +377,21 @@
             <param name="authorization">The authorization to use for the request. If null is provided then the default authorization provided
             on the client configuration during construction will be used.</param>
             <returns>A subscription registration. The subscription will be closed when this registration is disposed of.</returns>
+        </member>
+        <member name="T:AllOverIt.Aws.AppSync.Client.INamedAppSyncClientProvider">
+            <summary>Represents a provider that returns an implementation of <see cref="T:AllOverIt.Aws.AppSync.Client.IAppSyncClient"/> for a specified name.</summary>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.INamedAppSyncClientProvider.GetClient(System.String)">
+            <summary>Gets an <see cref="T:AllOverIt.Aws.AppSync.Client.IAppSyncClient"/> instance specific to the provided name.</summary>
+            <param name="name">The name of the client instance to retrieve.</param>
+            <returns>An <see cref="T:AllOverIt.Aws.AppSync.Client.IAppSyncClient"/> instance specific to the provided name.</returns>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.NamedAppSyncClientProvider.#ctor(AllOverIt.Aws.AppSync.Client.NamedAppSyncClientDelegate)">
+            <summary>Constructor.</summary>
+            <param name="namedClientDelegate">A delegate responsible for obtaining an AppSync client by name.</param>
+        </member>
+        <member name="M:AllOverIt.Aws.AppSync.Client.NamedAppSyncClientProvider.GetClient(System.String)">
+            <inheritdoc />
         </member>
         <member name="T:AllOverIt.Aws.AppSync.Client.Request.GraphqlQuery">
             <summary>A graphql query with optional variables associated with the query.</summary>

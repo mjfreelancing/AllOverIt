@@ -1,8 +1,8 @@
 ======================================================================================================================
 
-XX Jan 2022
+16 Jan 2022
 ======================================================================================================================
-AllOverIt.Aws.AppSync.Client v1.X.0
+AllOverIt.Aws.AppSync.Client v1.4.0
   * Built against AllOverIt v2.4.0
   * Added extension methods to register clients with dependency injection
   * Renamed IGraphqlClientConfiguration IAppSyncClientConfiguration
