@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using System;
 using System.Threading.Tasks;
 
 namespace AppSyncSubscription
@@ -28,7 +29,12 @@ namespace AppSyncSubscription
                     services.AddSingleton<IJsonSerializer, NewtonsoftJsonSerializer>();
                     //services.AddSingleton<IJsonSerializer, SystemTextJsonSerializer>();
 
-                    AddAppSyncClient(services);
+                    // Only use one of the these:
+                    //   If you use AddAppSyncClient() then SubscriptionWorker requires IAppSyncClient
+                    //   If you use AddNamedAppSyncClient() then SubscriptionWorker requires INamedAppSyncClientProvider
+                    //AddAppSyncClient(services);
+                    AddNamedAppSyncClient(services);
+
                     AddSubscriptionClient(services);
 
                     // This performs the graphql subscription and logging of errors and responses received
@@ -70,6 +76,29 @@ namespace AppSyncSubscription
                     DefaultAuthorization = new AppSyncApiKeyAuthorization(options.ApiKey),
                     Serializer = serializer
                 };
+            });
+        }
+
+        private static void AddNamedAppSyncClient(IServiceCollection services)
+        {
+            services.AddNamedAppSyncClient((provider, name) =>
+            {
+                // demo code just to show that the configuration is named based (change the name used in SubscriptionWorker and this call will throw)
+                if( name == "Public")
+                {
+                    var options = provider.GetRequiredService<IOptions<AppSyncOptions>>().Value;
+                    var serializer = provider.GetRequiredService<IJsonSerializer>();
+
+                    return new AppSyncClientConfiguration
+                    {
+                        EndPoint = $"https://{options.Host}/graphql",
+
+                        DefaultAuthorization = new AppSyncApiKeyAuthorization(options.ApiKey),
+                        Serializer = serializer
+                    };
+                }
+
+                throw new InvalidOperationException($"Unknown client name '{name}'");
             });
         }
 

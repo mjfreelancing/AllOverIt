@@ -1,8 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Async;
 using AllOverIt.Aws.AppSync.Client;
-using AllOverIt.Aws.AppSync.Client.Authorization;
-using AllOverIt.Aws.AppSync.Client.Configuration;
 using AllOverIt.Aws.AppSync.Client.Exceptions;
 using AllOverIt.Aws.AppSync.Client.Request;
 using AllOverIt.Aws.AppSync.Client.Response;
@@ -10,13 +8,11 @@ using AllOverIt.Aws.AppSync.Client.Subscription;
 using AllOverIt.Extensions;
 using AllOverIt.GenericHost;
 using AllOverIt.Serialization.Abstractions;
-using AllOverIt.Serialization.NewtonsoftJson;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -39,21 +35,31 @@ namespace AppSyncSubscription
     {
         private readonly IAppSyncSubscriptionClient _subscriptionClient;
         private readonly IAppSyncClient _appSyncClient;
+        private readonly INamedAppSyncClientProvider _namedAppSyncClientProvider;
         private readonly IWorkerReady _workerReady;
         private readonly IJsonSerializer _jsonSerializer;
         private readonly ILogger<SubscriptionWorker> _logger;
         private CompositeAsyncDisposable _compositeSubscriptions = new();
 
-        // The demo can be configured to register a client explicitly, or use a named client - determine which was setup
-        private IAppSyncClient AppSyncClient => _appSyncClient;
+        // The demo can be configured to register a client explicitly, or use a named client - determine which approach was configured.
+        // Note: The DI setup has configured the name as "Public". As many named clients can be configured as required.
+        private IAppSyncClient AppSyncClient => _appSyncClient ?? _namedAppSyncClientProvider.GetClient("Public");
 
         public SubscriptionWorker(IHostApplicationLifetime applicationLifetime, IAppSyncSubscriptionClient subscriptionClient,
-            IAppSyncClient appSyncClient,
+
+            // Program.cs can be setup to use a named, or unnamed, client - hence only one of these can be injected - comment out as required 
+            //IAppSyncClient appSyncClient,
+            INamedAppSyncClientProvider namedAppSyncClientProvider,
+
             IWorkerReady workerReady, IJsonSerializer jsonSerializer, ILogger<SubscriptionWorker> logger)
             : base(applicationLifetime)
         {
             _subscriptionClient = subscriptionClient.WhenNotNull(nameof(subscriptionClient));
-            _appSyncClient = appSyncClient.WhenNotNull(nameof(appSyncClient));
+
+            // Program.cs can be setup to use a named, or unnamed, client - comment out as required 
+            //_appSyncClient = appSyncClient.WhenNotNull(nameof(appSyncClient));
+            _namedAppSyncClientProvider = namedAppSyncClientProvider.WhenNotNull(nameof(namedAppSyncClientProvider));
+
             _workerReady = workerReady.WhenNotNull(nameof(workerReady));
             _jsonSerializer = jsonSerializer.WhenNotNull(nameof(jsonSerializer));
             _logger = logger.WhenNotNull(nameof(logger));
