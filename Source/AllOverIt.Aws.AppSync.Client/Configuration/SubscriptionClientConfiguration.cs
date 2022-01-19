@@ -30,6 +30,6 @@ namespace AllOverIt.Aws.AppSync.Client.Configuration
         public IAppSyncAuthorization DefaultAuthorization { get; init; }
 
         /// <inheritdoc />
-        public SubscriptionClientConnectionOptions ConnectionOptions { get; } = new();
+        public SubscriptionClientConnectionOptions ConnectionOptions { get; init; } = new();
     }
 }
