@@ -1,4 +1,4 @@
-﻿using AllOverIt.AspNetCore.Converters;
+﻿using AllOverIt.Serialization.SystemTextJson.Converters;
 using EnrichedEnumModelBinding.Models;
 
 namespace EnrichedEnumModelBinding.Converters

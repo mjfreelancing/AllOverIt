@@ -25,6 +25,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\AllOverIt.Serialization.Abstractions\AllOverIt.Serialization.Abstractions.csproj" />
+        <ProjectReference Include="..\AllOverIt\AllOverIt.csproj" />
     </ItemGroup>
 
 </Project>

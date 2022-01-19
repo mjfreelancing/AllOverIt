@@ -1,5 +1,5 @@
-using AllOverIt.AspNetCore.Converters;
 using AllOverIt.AspNetCore.ModelBinders;
+using AllOverIt.Serialization.SystemTextJson.Converters;
 using EnrichedEnumModelBinding.Converters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
