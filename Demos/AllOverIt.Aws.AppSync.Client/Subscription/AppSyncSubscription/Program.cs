@@ -118,7 +118,14 @@ namespace AppSyncSubscription
                     RealTimeUrl = options.RealTimeUrl,
 
                     DefaultAuthorization = new AppSyncApiKeyAuthorization(options.ApiKey),
-                    Serializer = serializer
+                    Serializer = serializer,
+
+                    // Just to show this can be changed
+                    ConnectionOptions = new SubscriptionClientConnectionOptions
+                    {
+                        ConnectionTimeout = TimeSpan.FromSeconds(10),
+                        SubscriptionTimeout = TimeSpan.FromSeconds(10)
+                    }
                 };
             });
         }

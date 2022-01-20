@@ -24,6 +24,5 @@ namespace AllOverIt.Aws.AppSync.Client.Configuration
 
         /// <summary>Provides subscription connection options.</summary>
         SubscriptionClientConnectionOptions ConnectionOptions { get; }
-
     }
 }
