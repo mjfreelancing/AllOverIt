@@ -106,7 +106,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 var actual1 = _variable.Value;
                 var actual2 = _variable.Value;
 
-                actual1.Should().Equals(actual2);
+                actual1.Should().Be(actual2);
                 count.Should().Be(1);
             }
         }

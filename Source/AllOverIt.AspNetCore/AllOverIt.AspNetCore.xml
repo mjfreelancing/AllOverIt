@@ -4,37 +4,6 @@
         <name>AllOverIt.AspNetCore</name>
     </assembly>
     <members>
-        <member name="T:AllOverIt.AspNetCore.Converters.DateTimeAsUtcConverter">
-            <summary>A JsonConverter that treats <seealso cref="T:System.DateTime"/> values as kind <seealso cref="F:System.DateTimeKind.Utc"/>.</summary>
-            <remarks>The converter does not perform any DateTime conversions; it only sets the kind so it is treated as if it is a UTC DateTime.</remarks>
-        </member>
-        <member name="M:AllOverIt.AspNetCore.Converters.DateTimeAsUtcConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
-            <summary>Reads a <seealso cref="T:System.DateTime"/> value as a UTC based <seealso cref="T:System.DateTime"/>.</summary>
-            <param name="reader">The Json reader.</param>
-            <param name="typeToConvert">Ignored.</param>
-            <param name="options">Ignored.</param>
-            <returns>A <seealso cref="T:System.DateTime"/> value of kind <seealso cref="F:System.DateTimeKind.Utc"/>.</returns>
-        </member>
-        <member name="M:AllOverIt.AspNetCore.Converters.DateTimeAsUtcConverter.Write(System.Text.Json.Utf8JsonWriter,System.DateTime,System.Text.Json.JsonSerializerOptions)">
-            <summary>Writes a <seealso cref="T:System.DateTime"/> value as kind <seealso cref="F:System.DateTimeKind.Utc"/>.</summary>
-            <param name="writer">The Json writer.</param>
-            <param name="value">The value to be written.</param>
-            <param name="options">Ignored.</param>
-        </member>
-        <member name="T:AllOverIt.AspNetCore.Converters.EnrichedEnumJsonConverter`1">
-            <summary>Converts JSON to and from an <see cref="T:AllOverIt.Patterns.Enumeration.EnrichedEnum`1"/> type.</summary>
-            <typeparam name="TEnum">The concrete <see cref="T:AllOverIt.Patterns.Enumeration.EnrichedEnum`1"/> type.</typeparam>
-        </member>
-        <member name="M:AllOverIt.AspNetCore.Converters.EnrichedEnumJsonConverter`1.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
-            <summary>Reads a string from the current JSON reader and converts it to the required <typeparamref name="TEnum"/> type.</summary>
-        </member>
-        <member name="M:AllOverIt.AspNetCore.Converters.EnrichedEnumJsonConverter`1.Write(System.Text.Json.Utf8JsonWriter,`0,System.Text.Json.JsonSerializerOptions)">
-            <summary>Writes the value of a <typeparamref name="TEnum"/> instance to the current JSON writer.</summary>
-        </member>
-        <member name="M:AllOverIt.AspNetCore.Converters.EnrichedEnumJsonConverter`1.Create">
-            <summary>Creates a <see cref="T:System.Text.Json.Serialization.JsonConverter"/> for an <see cref="T:AllOverIt.Patterns.Enumeration.EnrichedEnum`1"/> type.</summary>
-            <returns>A new JsonConverter instance.</returns>
-        </member>
         <member name="T:AllOverIt.AspNetCore.ModelBinders.EnrichedEnumModelBinder">
             <summary>A factory for creating an <see cref="T:AllOverIt.Patterns.Enumeration.EnrichedEnum`1"/> specific model binder.</summary>
         </member>

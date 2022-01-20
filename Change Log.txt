@@ -1,16 +1,41 @@
 ======================================================================================================================
 
+
+20 Jan 2022
+======================================================================================================================
+AllOverIt.Aws.AppSync.Client v1.4.1
+  * Fixed issue with not being able to set SubscriptionClientConnectionOptions on SubscriptionClientConfiguration
+
+AllOverIt.Fixture v1.8.0
+  * Updated to FluentAssertions v6.3.0
+
+AllOverIt.Fixture.FakeItEasy v1.6.0
+  * Updated to AllOverIt.Fixture v1.8.0
+  * Updated to FakeItEasy v7.3.0
+  * Updated to FluentAssertions v6.3.0
+
+AllOverIt.AspNetCore v1.3.0
+  * Moved DateTimeAsUtcConverter and EnrichedEnumJsonConverter to AllOverIt.Serialization.SystemTextJson and
+    AllOverIt.Serialization.NewtonsoftJson so the consumer can choose which version is preferable.
+
+AllOverIt.Serialization.NewtonsoftJson v1.3.0
+  * Added DateTimeAsUtcConverter and EnrichedEnumJsonConverter
+
+AllOverIt.Serialization.SystemTextJson v1.3.0
+  * Added DateTimeAsUtcConverter and EnrichedEnumJsonConverter
+
+
 17 Jan 2022
 ======================================================================================================================
 AllOverIt.Aws.Cdk.AppSync v1.2.3
   * Updated to Amazon.CDK.AWS.AppSync v1.139.0
-  * Built against AllOverIt v2.4.0
+  * Updated to AllOverIt v2.4.0
 
 
 16 Jan 2022
 ======================================================================================================================
 AllOverIt.Aws.AppSync.Client v1.4.0
-  * Built against AllOverIt v2.4.0
+  * Updated to AllOverIt v2.4.0
   * Added extension methods to register clients with dependency injection
   * Renamed IGraphqlClientConfiguration IAppSyncClientConfiguration
   * Added support for named AppSyncClient via INamedAppSyncClientProvider
@@ -19,7 +44,7 @@ AllOverIt.Aws.AppSync.Client v1.4.0
 15 Jan 2022
 ======================================================================================================================
 AllOverIt.AspNetCore v1.2.0
-  * Built against AllOverIt v2.4.0
+  * Updated to AllOverIt v2.4.0
   * Renamed EnrichedEnumConverter to EnrichedEnumJsonConverter
   * Added value array types (inherit ValueArray<T>) that can be bound from a query string
   * ValueArrayModelBinder<T> now supports arrays of EnrichedEnum on query strings (thanks to EnrichedEnumTypeConverter
@@ -37,7 +62,7 @@ AllOverIt v2.4.0
 ======================================================================================================================
 AllOverIt.Aws.Cdk.AppSync v1.2.2
   * Updated to Amazon.CDK.AWS.AppSync v1.138.2
-  * Built against AllOverIt v2.3.0
+  * Updated to AllOverIt v2.3.0
 
 
 13 Dec 2021 
@@ -78,7 +103,7 @@ AllOverIt.Serialization.SystemTextJson v1.2.0
 ======================================================================================================================
 AllOverIt.Aws.AppSync.Client v1.2.0
   * Updated to allow the clients to be mockable
-  * Built against AllOverIt v2.2.0
+  * Updated to AllOverIt v2.2.0
 
 
 03 Dec 2021 
@@ -86,13 +111,13 @@ AllOverIt.Aws.AppSync.Client v1.2.0
 AllOverIt.Aws.Cdk.AppSync v1.2.1
   * Minor improvement to an exception message
   * Updated to Amazon.CDK.AWS.AppSync v1.134.0
-  * Built against AllOverIt v2.2.0
+  * Updated to AllOverIt v2.2.0
 
 
 30 Nov 2021 
 ======================================================================================================================
 AllOverIt.AspNetCore v1.1.1
-  * Built against AllOverIt v2.2.0
+  * Updated to AllOverIt v2.2.0
   * Updated EnrichedEnumModelBinder to remove leading/trailing quotes in case they are provided on a query string
 
 
@@ -124,50 +149,50 @@ AllOverIt - v2.1.0
 
 AllOverIt.Validation v2.1.0
   * Added .NET 6 target
-  * Built against AllOverIt v2.1.0
+  * Updated to AllOverIt v2.1.0
 
 AllOverIt.Aws.Cdk.AppSync v1.1.0
   * Added .NET 6 target
-  * Built against AllOverIt v2.1.0
+  * Updated to AllOverIt v2.1.0
 
 AllOverIt.Evaluator v4.1.0
   * Added .NET 6 target
-  * Built against AllOverIt v2.1.0
+  * Updated to AllOverIt v2.1.0
 
 AllOverIt.GenericHost v2.1.0
   * Added .NET 6 target
-  * Built against AllOverIt v2.1.0
+  * Updated to AllOverIt v2.1.0
 
 AllOverIt.Fixture v1.7.0
   * Added .NET 6 target
 
 AllOverIt.Fixture.FakeItEasy v1.5.0
   * Added .NET 6 target
-  * Built against AllOverIt.Fixture.FakeItEasy v1.7.0
+  * Updated to AllOverIt.Fixture.FakeItEasy v1.7.0
 
 AllOverIt.Serialization.Abstractions v1.1.0
   * Added .NET 6 target
 
 AllOverIt.Serialization.NewtonsoftJson v1.1.0
   * Added .NET 6 target
-  * Built against AllOverIt.Serialization.Abstractions v1.1.0
+  * Updated to AllOverIt.Serialization.Abstractions v1.1.0
 
 AllOverIt.Serialization.SystemTextJson v1.1.0
   * Added .NET 6 target
-  * Built against AllOverIt.Serialization.Abstractions v1.1.0
+  * Updated to AllOverIt.Serialization.Abstractions v1.1.0
 
 AllOverIt.Aws.AppSync.Client v1.1.0
   * Added .NET 6 target
-  * Built against AllOverIt v2.1.0
-  * Built against AllOverIt.Serialization.Abstractions v1.1.0
+  * Updated to AllOverIt v2.1.0
+  * Updated to AllOverIt.Serialization.Abstractions v1.1.0
 
 AllOverIt.AspNetCore v1.1.0
   * Added .NET 6 target
-  * Built against AllOverIt v2.1.0
+  * Updated to AllOverIt v2.1.0
 
 AllOverIt.EntityFrameworkCore v1.1.0
   * Added .NET 6 target
-  * Built against AllOverIt v2.1.0
+  * Updated to AllOverIt v2.1.0
 
 
 
@@ -188,24 +213,24 @@ AllOverIt - v2.0.0
   * Removed IsAssignableFromType() since Type.IsAssignableFrom() and TypeInfo.IsAssignableFrom() already exist.
 
 AllOverIt.Validation - v2.0.0
-  * Rebuilt against AllOverIt v2.0.0 due to breaking changes
+  * ReUpdated to AllOverIt v2.0.0 due to breaking changes
   # Renamed IsNotNullOrEmpty to IsNotEmpty - bring it into alignment with FluentValidation's NotEmpty()
 
 AllOverIt.Aws.Cdk.AppSync - v1.0.0 (only targeting netcoreapp3.1)
-  * Rebuilt against AllOverIt v2.0.0 due to breaking changes
+  * ReUpdated to AllOverIt v2.0.0 due to breaking changes
   * Updated to Amazon.CDK.AWS.AppSync v1.132.0
   * Renamed namespace Datasources to DataSources
 
 AllOverIt.Evaluator - v4.0.0
-  * Rebuilt against AllOverIt v2.0.0 due to breaking changes
+  * ReUpdated to AllOverIt v2.0.0 due to breaking changes
   * Internal improvements to reduce memory allocations
   * Added conditional and comparison methods: IF, EQ, NE, LT, LTE, GT, GTE
 
 AllOverIt.GenericHost - v2.0.0
-  * Rebuilt against AllOverIt v2.0.0 due to breaking changes
+  * ReUpdated to AllOverIt v2.0.0 due to breaking changes
 
 AllOverIt.Aws.AppSync.Client - v1.0.0
-  * Rebuilt against AllOverIt v2.0.0 due to breaking changes
+  * ReUpdated to AllOverIt v2.0.0 due to breaking changes
 
 AllOverIt.AspNetCore - v1.0.0
   * New project
@@ -460,7 +485,7 @@ AllOverIt - v1.16.0
 
 AllOverIt.Aws.Cdk.AppSync - v0.7.0
   * Updated the demo app to format the request/response mapping using Formatter.FormatJsonString().
-  * Built against AllOverIt v1.16.0 so Formatter.FormatJsonString() is available for use.
+  * Updated to AllOverIt v1.16.0 so Formatter.FormatJsonString() is available for use.
 
 
 
@@ -542,10 +567,10 @@ AllOverIt - v1.11.0
   * Fixed issue where GetFriendlyName() failed when generic type did not have a backtick in the underlying type name
 
 AllOverIt.Aws.Cdk.AppSync - as v0.3.0
-  * Rebuilt against AllOverIt v1.11.0 to ensure no issues
+  * ReUpdated to AllOverIt v1.11.0 to ensure no issues
  
 AllOverIt.Evaluator       - as v2.1.0
-  * Rebuilt against AllOverIt v1.11.0 to ensure no issues
+  * ReUpdated to AllOverIt v1.11.0 to ensure no issues
 
 
 
