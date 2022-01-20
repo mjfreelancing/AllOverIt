@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace AllOverIt.Serialization.SystemTextJson.Converters
 {
-    /// <summary>A JsonConverter that treats <see cref="DateTime"/> values as kind <see cref="DateTimeKind.Utc"/>.</summary>
+    /// <summary>Converts a <see cref="DateTime"/> to or from JSON while treating it's <seealso cref="DateTimeKind"/> as <see cref="DateTimeKind.Utc"/>.</summary>
     /// <remarks>The converter does not perform any DateTime conversions; it only sets the kind so it is treated as if it is a UTC DateTime.</remarks>
     public sealed class DateTimeAsUtcConverter : JsonConverter<DateTime>
     {

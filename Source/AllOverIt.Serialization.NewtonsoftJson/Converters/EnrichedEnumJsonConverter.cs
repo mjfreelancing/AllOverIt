@@ -9,18 +9,20 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Converters
     public class EnrichedEnumJsonConverter<TEnum> : JsonConverter
         where TEnum : EnrichedEnum<TEnum>
     {
-        /// <summary>Returns true if the value to be converted is a string.</summary>
+        private static readonly Type EnrichedEnumJsonConverterType = typeof(EnrichedEnumJsonConverter<TEnum>);
+
+        /// <summary>Returns true if the value to be converted is a <see cref="EnrichedEnum{TEnum}"/>.</summary>
         /// <param name="objectType">The object type</param>
-        /// <returns>True if the value to be converted is a string.</returns>
+        /// <returns>True if the value to be converted is a <see cref="EnrichedEnum{TEnum}"/>.</returns>
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(string);
+            return objectType == typeof(TEnum);
         }
 
         /// <inheritdoc />
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            var strValue = reader.ReadAsString();
+            var strValue = (string)reader.Value;
 
             return strValue == null
                 ? null
@@ -32,6 +34,13 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Converters
         {
             var enumValue = ((EnrichedEnum<TEnum>) value).Name;
             writer.WriteValue(enumValue);
+        }
+
+        /// <summary>Creates a <see cref="JsonConverter"/> for an <see cref="EnrichedEnum{TEnum}"/> type.</summary>
+        /// <returns>A new JsonConverter instance.</returns>
+        public static JsonConverter Create()
+        {
+            return (JsonConverter) Activator.CreateInstance(EnrichedEnumJsonConverterType);
         }
     }
 }

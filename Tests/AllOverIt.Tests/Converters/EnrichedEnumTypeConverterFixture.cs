@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
-using AllOverIt.Extensions;
 using Xunit;
 
 namespace AllOverIt.Tests.Converters
@@ -17,7 +16,7 @@ namespace AllOverIt.Tests.Converters
     public class EnrichedEnumTypeConverterFixture : FixtureBase
     {
         [TypeConverter(typeof(EnrichedEnumTypeConverter<EnrichedEnumDummy>))]
-        public class EnrichedEnumDummy : EnrichedEnum<EnrichedEnumDummy>
+        private class EnrichedEnumDummy : EnrichedEnum<EnrichedEnumDummy>
         {
             public static readonly EnrichedEnumDummy Value1 = new(1);
 

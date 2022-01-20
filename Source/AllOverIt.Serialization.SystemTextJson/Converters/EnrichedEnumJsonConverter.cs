@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace AllOverIt.Serialization.SystemTextJson.Converters
 {
-    /// <summary>Converts JSON to and from an <see cref="EnrichedEnum{TEnum}"/> type.</summary>
+    /// <summary>Converts a <see cref="EnrichedEnum{TEnum}"/> to or from JSON.</summary>
     /// <typeparam name="TEnum">The concrete <see cref="EnrichedEnum{TEnum}"/> type.</typeparam>
     public class EnrichedEnumJsonConverter<TEnum> : JsonConverter<TEnum>
         where TEnum : EnrichedEnum<TEnum>
@@ -15,7 +15,8 @@ namespace AllOverIt.Serialization.SystemTextJson.Converters
         /// <summary>Reads a string from the current JSON reader and converts it to the required <typeparamref name="TEnum"/> type.</summary>
         public override TEnum Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            return EnrichedEnum<TEnum>.From(reader.GetString());
+            var value = reader.GetString();
+            return EnrichedEnum<TEnum>.From(value);
         }
 
         /// <summary>Writes the value of a <typeparamref name="TEnum"/> instance to the current JSON writer.</summary>
