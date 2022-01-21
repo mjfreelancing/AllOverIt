@@ -1,6 +1,7 @@
 ﻿using AllOverIt.Aws.AppSync.Client.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using AllOverIt.Serialization.Abstractions;
 
 namespace AllOverIt.Aws.AppSync.Client.Extensions
 {
@@ -16,6 +17,8 @@ namespace AllOverIt.Aws.AppSync.Client.Extensions
             services.AddSingleton<IAppSyncClient>(provider =>
             {
                 var configuration = configurationResolver.Invoke(provider);
+                ConfigureJsonSerializer(configuration.Serializer);
+
                 return new AppSyncClient(configuration);
             });
 
@@ -40,6 +43,8 @@ namespace AllOverIt.Aws.AppSync.Client.Extensions
             services.AddSingleton<IAppSyncSubscriptionClient>(provider =>
             {
                 var configuration = configurationResolver.Invoke(provider);
+                ConfigureJsonSerializer(configuration.Serializer);
+
                 return new AppSyncSubscriptionClient(configuration);
             });
 
@@ -69,8 +74,8 @@ namespace AllOverIt.Aws.AppSync.Client.Extensions
             // The INamedAppSyncClientProvider ensures a client (and it's configuration) is only ever requested once per name.
             services.AddSingleton<NamedAppSyncClientDelegate>(provider => name =>
             {
-                var configuration = provider.GetService<NamedAppSyncClientConfigurationDelegate>();
-                var namedConfig = configuration(name);
+                var configuration = provider.GetRequiredService<NamedAppSyncClientConfigurationDelegate>();
+                var namedConfig = configuration.Invoke(name);
 
                 return new AppSyncClient(namedConfig);
             });
@@ -79,6 +84,16 @@ namespace AllOverIt.Aws.AppSync.Client.Extensions
             services.AddSingleton<INamedAppSyncClientProvider, NamedAppSyncClientProvider>();
 
             return services;
+        }
+
+        private static void ConfigureJsonSerializer(IJsonSerializer serializer)
+        {
+            serializer.Configure(new JsonSerializerConfiguration
+            {
+                UseCamelCase = true,
+                CaseSensitive = false,          // For clarity
+                SupportEnrichedEnums = null     // For clarity, the consumer should set this if required
+            });
         }
     }
 }

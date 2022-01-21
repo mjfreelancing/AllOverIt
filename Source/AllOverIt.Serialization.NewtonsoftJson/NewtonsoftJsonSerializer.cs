@@ -1,10 +1,14 @@
-﻿using AllOverIt.Serialization.Abstractions;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Serialization.Abstractions;
+using AllOverIt.Serialization.Abstractions.Exceptions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using AllOverIt.Serialization.NewtonsoftJson.Converters;
 
 namespace AllOverIt.Serialization.NewtonsoftJson
 {
@@ -14,11 +18,19 @@ namespace AllOverIt.Serialization.NewtonsoftJson
         /// <summary>The serialization options. If no settings are provided then a default set will be applied.</summary>
         public JsonSerializerSettings Settings { get; }
 
-        /// <summary>Constructor.</summary>
-        /// <param name="settings">The serialization settings to use. If no settings are provided then a default set will be applied.</param>
         public NewtonsoftJsonSerializer(JsonSerializerSettings settings = default)
         {
-            Settings = settings ?? CreateDefaultSettings();
+            Settings = settings ?? new JsonSerializerSettings();
+        }
+
+        /// <inheritdoc />
+        public void Configure(JsonSerializerConfiguration configuration)
+        {
+            _ = configuration.WhenNotNull(nameof(configuration));
+
+            ApplyOptionUseCamelCase(configuration);
+            ApplyOptionCaseSensitive(configuration);
+            ApplyOptionSupportEnrichedEnums(configuration);
         }
 
         /// <inheritdoc />
@@ -51,20 +63,60 @@ namespace AllOverIt.Serialization.NewtonsoftJson
                 {
                     var serializer = JsonSerializer.Create(Settings);
                     var result = serializer.Deserialize<TType>(reader);
+
                     return Task.FromResult(result);
                 }
             }
         }
 
-        private static JsonSerializerSettings CreateDefaultSettings()
+        private void ApplyOptionUseCamelCase(JsonSerializerConfiguration configuration)
         {
-            return new JsonSerializerSettings
+            if (!configuration.UseCamelCase.HasValue)
             {
-                ContractResolver = new DefaultContractResolver
+                return;
+            }
+
+            Settings.ContractResolver = configuration.UseCamelCase.Value
+                ? new CamelCasePropertyNamesContractResolver()
+                : null;     // default back to PascalCase
+        }
+
+        private static void ApplyOptionCaseSensitive(JsonSerializerConfiguration configuration)
+        {
+            if (!configuration.CaseSensitive.HasValue)
+            {
+                return;
+            }
+
+            if (configuration.CaseSensitive.Value)
+            {
+                throw new SerializerConfigurationException("Newtonsoft requires a custom converter to support case sensitivity.");
+            }
+        }
+
+        private void ApplyOptionSupportEnrichedEnums(JsonSerializerConfiguration configuration)
+        {
+            if (!configuration.SupportEnrichedEnums.HasValue)
+            {
+                return;
+            }
+
+            var enrichedEnumConverterFactory = Settings.Converters.SingleOrDefault(item => item.GetType() == typeof(EnrichedEnumJsonConverterFactory));
+
+            if (configuration.SupportEnrichedEnums.Value)
+            {
+                if (enrichedEnumConverterFactory == null)
                 {
-                    NamingStrategy = new CamelCaseNamingStrategy()
+                    Settings.Converters.Add(new EnrichedEnumJsonConverterFactory());
                 }
-            };
+            }
+            else
+            {
+                if (enrichedEnumConverterFactory != null)
+                {
+                    Settings.Converters.Remove(enrichedEnumConverterFactory);
+                }
+            }
         }
     }
 }

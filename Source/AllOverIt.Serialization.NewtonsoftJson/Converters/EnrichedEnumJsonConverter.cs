@@ -11,9 +11,9 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Converters
     {
         private static readonly Type EnrichedEnumJsonConverterType = typeof(EnrichedEnumJsonConverter<TEnum>);
 
-        /// <summary>Returns true if the value to be converted is a <see cref="EnrichedEnum{TEnum}"/>.</summary>
-        /// <param name="objectType">The object type</param>
-        /// <returns>True if the value to be converted is a <see cref="EnrichedEnum{TEnum}"/>.</returns>
+        /// <summary>Returns true if the object to be converted is a <see cref="EnrichedEnum{TEnum}"/>.</summary>
+        /// <param name="objectType">The object type.</param>
+        /// <returns>True if the object to be converted is a <see cref="EnrichedEnum{TEnum}"/>.</returns>
         public override bool CanConvert(Type objectType)
         {
             return objectType == typeof(TEnum);

@@ -5,7 +5,10 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
+using AllOverIt.Serialization.Abstractions;
 using FluentAssertions;
+using Newtonsoft.Json.Serialization;
 using Xunit;
 
 namespace AllOverIt.Serialization.SystemTextJson.Tests
@@ -26,6 +29,13 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests
             public DummyChildType Child2 { get; set; }
         }
 
+        private readonly SystemTextJsonSerializer _serializer;
+
+        protected SystemTextJsonSerializerFixture()
+        {
+            _serializer = new SystemTextJsonSerializer();
+        }
+
         public class Constructor : SystemTextJsonSerializerFixture
         {
             [Fact]
@@ -35,11 +45,7 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests
 
                 serializer.Options
                     .Should()
-                    .BeEquivalentTo(new JsonSerializerOptions
-                    {
-                        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                        PropertyNameCaseInsensitive = true
-                    });
+                    .BeEquivalentTo(new JsonSerializerOptions());
             }
 
             [Fact]
@@ -54,6 +60,63 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests
             }
         }
 
+        public class Configure : SystemTextJsonSerializerFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Configuration_Null()
+            {
+                Invoking(() =>
+                    {
+                        _serializer.Configure(null);
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("configuration");
+            }
+
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_Apply_CamelCase(bool useCamelCase)
+            {
+                var config = new JsonSerializerConfiguration
+                {
+                    UseCamelCase = useCamelCase
+                };
+
+                _serializer.Configure(config);
+
+                if (useCamelCase)
+                {
+                    _serializer.Options
+                        .PropertyNamingPolicy
+                        .Should()
+                        .BeSameAs(JsonNamingPolicy.CamelCase);
+                }
+                else
+                {
+                    _serializer.Options.PropertyNamingPolicy.Should().BeNull();
+                }
+            }
+
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_Apply_CaseSensitive(bool useCaseSensitive)
+            {
+                var config = new JsonSerializerConfiguration
+                {
+                    CaseSensitive = useCaseSensitive
+                };
+
+                _serializer.Configure(config);
+
+                _serializer.Options.PropertyNameCaseInsensitive
+                    .Should()
+                    .Be(!useCaseSensitive);
+            }
+        }
+
         public class SerializeObject : SystemTextJsonSerializerFixture
         {
             [Fact]
@@ -62,10 +125,8 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests
                 var value = Create<DummyType>();
                 value.Child2 = null;
 
-                var serializer = new SystemTextJsonSerializer();
-
                 // Child2 will be included by default
-                var actual = serializer.SerializeObject(value);
+                var actual = _serializer.SerializeObject(value);
 
                 var expected = $@"{{""prop1"":{value.Prop1},""prop2"":""{value.Prop2}"",""child1"":{{""prop1"":{value.Child1.Prop1},""prop2"":""{value.Child1.Prop2}""}},""child2"":null}}";
                 
@@ -100,11 +161,10 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests
             public void Should_Serialize()
             {
                 var value = Create<DummyType>();
-                var serializer = new SystemTextJsonSerializer();
 
-                var actual = serializer.SerializeToUtf8Bytes(value);
+                var actual = _serializer.SerializeToUtf8Bytes(value);
 
-                var expected = Encoding.UTF8.GetBytes(serializer.SerializeObject(value));
+                var expected = Encoding.UTF8.GetBytes(_serializer.SerializeObject(value));
 
                 actual.Should().BeEquivalentTo(expected);
             }
@@ -118,11 +178,9 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests
                 var expected = Create<DummyType>();
                 expected.Child2 = null;
 
-                var value = $@"{{""prop1"":{expected.Prop1},""prop2"":""{expected.Prop2}"",""child1"":{{""prop1"":{expected.Child1.Prop1},""prop2"":""{expected.Child1.Prop2}""}},""child2"":null}}";
-
-                var serializer = new SystemTextJsonSerializer();
-
-                var actual = serializer.DeserializeObject<DummyType>(value);
+                var value = $@"{{""Prop1"":{expected.Prop1},""Prop2"":""{expected.Prop2}"",""Child1"":{{""Prop1"":{expected.Child1.Prop1},""Prop2"":""{expected.Child1.Prop2}""}},""Child2"":null}}";
+                
+                var actual = _serializer.DeserializeObject<DummyType>(value);
 
                 actual.Should().BeEquivalentTo(expected);
             }
@@ -133,8 +191,8 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests
                 var expected = Create<DummyType>();
                 expected.Child2 = null;
 
-                // Prop1 should be prop1
-                var value = $@"{{""Prop1"":{expected.Prop1},""prop2"":""{expected.Prop2}"",""child1"":{{""prop1"":{expected.Child1.Prop1},""prop2"":""{expected.Child1.Prop2}""}},""child2"":null}}";
+                // prop1 should be Prop1
+                var value = $@"{{""prop1"":{expected.Prop1},""Prop2"":""{expected.Prop2}"",""Child1"":{{""Prop1"":{expected.Child1.Prop1},""Prop2"":""{expected.Child1.Prop2}""}},""Child2"":null}}";
 
                 var serializer = new SystemTextJsonSerializer
                 {
@@ -159,13 +217,11 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests
                 var expected = Create<DummyType>();
                 expected.Child2 = null;
 
-                var value = $@"{{""prop1"":{expected.Prop1},""prop2"":""{expected.Prop2}"",""child1"":{{""prop1"":{expected.Child1.Prop1},""prop2"":""{expected.Child1.Prop2}""}},""child2"":null}}";
+                var value = $@"{{""Prop1"":{expected.Prop1},""Prop2"":""{expected.Prop2}"",""Child1"":{{""Prop1"":{expected.Child1.Prop1},""Prop2"":""{expected.Child1.Prop2}""}},""Child2"":null}}";
 
                 using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(value)))
                 {
-                    var serializer = new SystemTextJsonSerializer();
-
-                    var actual = await serializer.DeserializeObjectAsync<DummyType>(stream, CancellationToken.None);
+                    var actual = await _serializer.DeserializeObjectAsync<DummyType>(stream, CancellationToken.None);
 
                     actual.Should().BeEquivalentTo(expected);
                 }
@@ -177,8 +233,8 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests
                 var expected = Create<DummyType>();
                 expected.Child2 = null;
 
-                // Prop1 should be prop1
-                var value = $@"{{""Prop1"":{expected.Prop1},""prop2"":""{expected.Prop2}"",""child1"":{{""prop1"":{expected.Child1.Prop1},""prop2"":""{expected.Child1.Prop2}""}},""child2"":null}}";
+                // prop1 should be Prop1
+                var value = $@"{{""prop1"":{expected.Prop1},""Prop2"":""{expected.Prop2}"",""Child1"":{{""Prop1"":{expected.Child1.Prop1},""Prop2"":""{expected.Child1.Prop2}""}},""Child2"":null}}";
 
                 using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(value)))
                 {
@@ -203,18 +259,16 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests
                 var expected = Create<DummyType>();
                 expected.Child2 = null;
 
-                var value = $@"{{""propOne"":{expected.Prop1},""prop2"":""{expected.Prop2}"",""child1"":{{""prop1"":{expected.Child1.Prop1},""prop2"":""{expected.Child1.Prop2}""}},""child2"":null}}";
+                var value = $@"{{""PropOne"":{expected.Prop1},""Prop2"":""{expected.Prop2}"",""Child1"":{{""Prop1"":{expected.Child1.Prop1},""Prop2"":""{expected.Child1.Prop2}""}},""Child2"":null}}";
 
                 using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(value)))
                 {
-                    var serializer = new SystemTextJsonSerializer();
-
                     var cts = new CancellationTokenSource();
                     cts.Cancel();
 
                     await Invoking(async () =>
                         {
-                            _ = await serializer.DeserializeObjectAsync<DummyType>(stream, cts.Token);
+                            _ = await _serializer.DeserializeObjectAsync<DummyType>(stream, cts.Token);
                         })
                         .Should()
                         .ThrowAsync<OperationCanceledException>();

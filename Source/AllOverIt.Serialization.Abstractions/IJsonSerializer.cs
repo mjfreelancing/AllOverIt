@@ -6,6 +6,10 @@ namespace AllOverIt.Serialization.Abstractions
 {
     public interface IJsonSerializer
     {
+        /// <summary>Provides options to configure a <see cref="IJsonSerializer"/> instance via the abstraction layer.</summary>
+        /// <param name="configuration">The configuration to apply.</param>
+        void Configure(JsonSerializerConfiguration configuration);
+
         /// <summary>Serializes the provided object to a JSON string.</summary>
         /// <typeparam name="TType">The object type to serialize.</typeparam>
         /// <param name="value">The value to be serialized.</param>

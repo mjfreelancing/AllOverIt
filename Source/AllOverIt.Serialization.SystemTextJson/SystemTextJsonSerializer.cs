@@ -1,8 +1,11 @@
-﻿using AllOverIt.Serialization.Abstractions;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Serialization.Abstractions;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using AllOverIt.Serialization.SystemTextJson.Converters;
 
 namespace AllOverIt.Serialization.SystemTextJson
 {
@@ -16,7 +19,17 @@ namespace AllOverIt.Serialization.SystemTextJson
         /// <param name="options">The serialization options to use. If no options are provided then a default set will be applied.</param>
         public SystemTextJsonSerializer(JsonSerializerOptions options = default)
         {
-            Options = options ?? CreateDefaultOptions();
+            Options = options ?? new JsonSerializerOptions();
+        }
+
+        /// <inheritdoc />
+        public void Configure(JsonSerializerConfiguration configuration)
+        {
+            _ = configuration.WhenNotNull(nameof(configuration));
+
+            ApplyOptionUseCamelCase(configuration);
+            ApplyOptionCaseSensitive(configuration);
+            ApplyOptionSupportEnrichedEnums(configuration);
         }
 
         /// <inheritdoc />
@@ -45,13 +58,51 @@ namespace AllOverIt.Serialization.SystemTextJson
                 .AsTask();
         }
 
-        private static JsonSerializerOptions CreateDefaultOptions()
+        private void ApplyOptionUseCamelCase(JsonSerializerConfiguration configuration)
         {
-            return new JsonSerializerOptions
+            if (!configuration.UseCamelCase.HasValue)
             {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                PropertyNameCaseInsensitive = true
-            };
+                return;
+            }
+
+            Options.PropertyNamingPolicy = configuration.UseCamelCase.Value 
+                ? JsonNamingPolicy.CamelCase
+                : null;     // default back to PascalCase
+        }
+
+        private void ApplyOptionCaseSensitive(JsonSerializerConfiguration configuration)
+        {
+            if (!configuration.CaseSensitive.HasValue)
+            {
+                return;
+            }
+
+            Options.PropertyNameCaseInsensitive = !configuration.CaseSensitive.Value;
+        }
+
+        private void ApplyOptionSupportEnrichedEnums(JsonSerializerConfiguration configuration)
+        {
+            if (!configuration.SupportEnrichedEnums.HasValue)
+            {
+                return;
+            }
+
+            var enrichedEnumConverterFactory = Options.Converters.SingleOrDefault(item => item.GetType() == typeof(EnrichedEnumJsonConverterFactory));
+
+            if (configuration.SupportEnrichedEnums.Value)
+            {
+                if (enrichedEnumConverterFactory == null)
+                {
+                    Options.Converters.Add(new EnrichedEnumJsonConverterFactory());
+                }
+            }
+            else
+            {
+                if (enrichedEnumConverterFactory != null)
+                {
+                    Options.Converters.Remove(enrichedEnumConverterFactory);
+                }
+            }
         }
     }
 }

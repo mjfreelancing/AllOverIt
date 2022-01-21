@@ -1,18 +1,23 @@
+using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
+using AllOverIt.Serialization.Abstractions;
+using AllOverIt.Serialization.Abstractions.Exceptions;
+using FluentAssertions;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using AllOverIt.Fixture;
-using FluentAssertions;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using Xunit;
 
 namespace AllOverIt.Serialization.NewtonsoftJson.Tests
 {
     public class NewtonsoftJsonSerializerFixture : FixtureBase
     {
+        private readonly NewtonsoftJsonSerializer _serializer;
+
         private class DummyChildType
         {
             public int Prop1 { get; set; }
@@ -27,6 +32,11 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
             public DummyChildType Child2 { get; set; }
         }
 
+        protected NewtonsoftJsonSerializerFixture()
+        {
+            _serializer = new NewtonsoftJsonSerializer();
+        }
+
         public class Constructor : NewtonsoftJsonSerializerFixture
         {
             [Fact]
@@ -36,13 +46,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
 
                 serializer.Settings
                     .Should()
-                    .BeEquivalentTo(new JsonSerializerSettings
-                    {
-                        ContractResolver = new DefaultContractResolver
-                        {
-                            NamingStrategy = new CamelCaseNamingStrategy()
-                        }
-                    });
+                    .BeEquivalentTo(new JsonSerializerSettings());
             }
 
             [Fact]
@@ -57,6 +61,63 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
             }
         }
 
+        public class Configure : NewtonsoftJsonSerializerFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Configuration_Null()
+            {
+                Invoking(() =>
+                    {
+                        _serializer.Configure(null);
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("configuration");
+            }
+
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_Apply_CamelCase(bool useCamelCase)
+            {
+                var config = new JsonSerializerConfiguration
+                {
+                    UseCamelCase = useCamelCase
+                };
+
+                _serializer.Configure(config);
+
+                if (useCamelCase)
+                {
+                    _serializer.Settings
+                        .ContractResolver
+                        .Should()
+                        .BeEquivalentTo(new CamelCasePropertyNamesContractResolver());
+                }
+                else
+                {
+                    _serializer.Settings.ContractResolver.Should().BeNull();
+                }
+            }
+
+            [Fact]
+            public void Should_Throw_When_Apply_CaseSensitive()
+            {
+                Invoking(() =>
+                    {
+                        var config = new JsonSerializerConfiguration
+                        {
+                            CaseSensitive = true
+                        };
+
+                        _serializer.Configure(config);
+                    })
+                    .Should()
+                    .Throw<SerializerConfigurationException>()
+                    .WithMessage("Newtonsoft requires a custom converter to support case sensitivity.");
+            }
+        }
+
         public class SerializeObject : NewtonsoftJsonSerializerFixture
         {
             [Fact]
@@ -65,10 +126,8 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
                 var value = Create<DummyType>();
                 value.Child2 = null;
 
-                var serializer = new NewtonsoftJsonSerializer();
-
                 // Child2 will be included by default
-                var actual = serializer.SerializeObject(value);
+                var actual = _serializer.SerializeObject(value);
 
                 var expected = $@"{{""propOne"":{value.PropOne},""prop2"":""{value.Prop2}"",""child1"":{{""prop1"":{value.Child1.Prop1},""prop2"":""{value.Child1.Prop2}""}},""child2"":null}}";
 
@@ -103,11 +162,10 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
             public void Should_Serialize()
             {
                 var value = Create<DummyType>();
-                var serializer = new NewtonsoftJsonSerializer();
 
-                var actual = serializer.SerializeToUtf8Bytes(value);
+                var actual = _serializer.SerializeToUtf8Bytes(value);
 
-                var expected = Encoding.UTF8.GetBytes(serializer.SerializeObject(value));
+                var expected = Encoding.UTF8.GetBytes(_serializer.SerializeObject(value));
 
                 actual.Should().BeEquivalentTo(expected);
             }
@@ -122,10 +180,8 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
                 expected.Child2 = null;
 
                 var value = $@"{{""propOne"":{expected.PropOne},""prop2"":""{expected.Prop2}"",""child1"":{{""prop1"":{expected.Child1.Prop1},""prop2"":""{expected.Child1.Prop2}""}},""child2"":null}}";
-
-                var serializer = new NewtonsoftJsonSerializer();
-
-                var actual = serializer.DeserializeObject<DummyType>(value);
+                
+                var actual = _serializer.DeserializeObject<DummyType>(value);
 
                 actual.Should().BeEquivalentTo(expected);
             }
@@ -139,7 +195,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
                 // PropOne should be prop_one
                 var value = $@"{{""PropOne"":{expected.PropOne},""prop2"":""{expected.Prop2}"",""child1"":{{""prop1"":{expected.Child1.Prop1},""prop2"":""{expected.Child1.Prop2}""}},""child2"":null}}";
 
-                var serializer = new NewtonsoftJsonSerializer
+                var serializer = new NewtonsoftJsonSerializer()
                 {
                     Settings =
                     {
@@ -169,9 +225,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
 
                 using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(value)))
                 {
-                    var serializer = new NewtonsoftJsonSerializer();
-
-                    var actual = await serializer.DeserializeObjectAsync<DummyType>(stream, CancellationToken.None);
+                    var actual = await _serializer.DeserializeObjectAsync<DummyType>(stream, CancellationToken.None);
 
                     actual.Should().BeEquivalentTo(expected);
                 }
@@ -183,8 +237,8 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
                 var expected = Create<DummyType>();
                 expected.Child2 = null;
 
-                // PropOne should be prop_one
-                var value = $@"{{""PropOne"":{expected.PropOne},""prop2"":""{expected.Prop2}"",""child1"":{{""prop1"":{expected.Child1.Prop1},""prop2"":""{expected.Child1.Prop2}""}},""child2"":null}}";
+                // PropOne should be Prop_One
+                var value = $@"{{""PropOne"":{expected.PropOne},""Prop2"":""{expected.Prop2}"",""Child1"":{{""Prop1"":{expected.Child1.Prop1},""Prop2"":""{expected.Child1.Prop2}""}},""Child2"":null}}";
 
                 using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(value)))
                 {
@@ -216,14 +270,12 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
 
                 using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(value)))
                 {
-                    var serializer = new NewtonsoftJsonSerializer();
-
                     var cts = new CancellationTokenSource();
                     cts.Cancel();
 
                     await Invoking(async () =>
                         {
-                            _ = await serializer.DeserializeObjectAsync<DummyType>(stream, cts.Token);
+                            _ = await _serializer.DeserializeObjectAsync<DummyType>(stream, cts.Token);
                         })
                         .Should()
                         .ThrowAsync<OperationCanceledException>();

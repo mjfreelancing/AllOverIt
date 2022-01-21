@@ -69,6 +69,11 @@ namespace AppSyncSubscription
                 var options = provider.GetRequiredService<IOptions<AppSyncOptions>>().Value;
                 var serializer = provider.GetRequiredService<IJsonSerializer>();
 
+                serializer.Configure(new JsonSerializerConfiguration
+                {
+                    SupportEnrichedEnums = true
+                });
+
                 return new AppSyncClientConfiguration
                 {
                     EndPoint = $"https://{options.Host}/graphql",
@@ -88,6 +93,11 @@ namespace AppSyncSubscription
                 {
                     var options = provider.GetRequiredService<IOptions<AppSyncOptions>>().Value;
                     var serializer = provider.GetRequiredService<IJsonSerializer>();
+
+                    serializer.Configure(new JsonSerializerConfiguration
+                    {
+                        SupportEnrichedEnums = true
+                    });
 
                     return new AppSyncClientConfiguration
                     {

@@ -19,6 +19,14 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests.Converters
         }
 
         [Fact]
+        public void Should_Have_CanWrite_False()
+        {
+            var converter = new InterfaceConverter<IDummyType, DummyType>();
+
+            converter.CanWrite.Should().BeFalse();
+        }
+
+        [Fact]
         public void Should_Convert_Interface()
         {
             var converter = new InterfaceConverter<IDummyType, DummyType>();

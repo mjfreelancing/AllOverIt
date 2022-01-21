@@ -77,9 +77,9 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests.Converters
             [Fact]
             public void Should_Write_EnrichedEnum_Name()
             {
-                var actual = _serializer.SerializeObject(_dummyValue);
-
                 var expected = $@"{{""Prop1"":""{_dummyValue.Prop1.Name}""}}";
+
+                var actual = _serializer.SerializeObject(_dummyValue);
 
                 actual.Should().Be(expected);
             }

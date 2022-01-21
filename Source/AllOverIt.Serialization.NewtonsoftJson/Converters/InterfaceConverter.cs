@@ -11,6 +11,9 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Converters
     {
         private static readonly Type InterfaceType = typeof(TInterface);
 
+        /// <summary>This converter cannot write JSON.</summary>
+        public override bool CanWrite => false;
+
         /// <inheritdoc />
         public override bool CanConvert(Type objectType)
         {

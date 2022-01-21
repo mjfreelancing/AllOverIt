@@ -7,9 +7,9 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Converters
     /// <remarks>The converter does not perform any DateTime conversions; it only sets the kind so it is treated as if it is a UTC DateTime.</remarks>
     public sealed class DateTimeAsUtcConverter : JsonConverter
     {
-        /// <summary>Returns true if the value to be converted is a <see cref="DateTime"/>.</summary>
-        /// <param name="objectType">The object type</param>
-        /// <returns>True if the value to be converted is a <see cref="DateTime"/>.</returns>
+        /// <summary>Returns true if the object to be converted is a <see cref="DateTime"/>.</summary>
+        /// <param name="objectType">The object type.</param>
+        /// <returns>True if the object to be converted is a <see cref="DateTime"/>.</returns>
         public override bool CanConvert(Type objectType)
         {
             return typeof(DateTime) == objectType;
