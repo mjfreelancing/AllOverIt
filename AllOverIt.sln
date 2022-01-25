@@ -149,9 +149,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllOverIt.Serialization.Sys
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterfaceDeserialization", "Demos\AllOverIt.Serialization.SystemTextJson\InterfaceDeserialization\InterfaceDeserialization.csproj", "{DE014032-6A46-40DE-8BA1-007E9CB59A97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllOverIt.Serialization.NewtonsoftJson.Tests", "Tests\AllOverIt.Serialization.NewtonsoftJson.Tests\AllOverIt.Serialization.NewtonsoftJson.Tests.csproj", "{CB961D0A-0751-427E-A408-13C542BFC9EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.Serialization.NewtonsoftJson.Tests", "Tests\AllOverIt.Serialization.NewtonsoftJson.Tests\AllOverIt.Serialization.NewtonsoftJson.Tests.csproj", "{CB961D0A-0751-427E-A408-13C542BFC9EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllOverIt.Serialization.SystemTextJson.Tests", "Tests\AllOverIt.Serialization.SystemTextJson.Tests\AllOverIt.Serialization.SystemTextJson.Tests.csproj", "{FC149C75-680B-4DCD-8A84-DA57F4750EB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.Serialization.SystemTextJson.Tests", "Tests\AllOverIt.Serialization.SystemTextJson.Tests\AllOverIt.Serialization.SystemTextJson.Tests.csproj", "{FC149C75-680B-4DCD-8A84-DA57F4750EB9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.Csv", "Source\AllOverIt.Csv\AllOverIt.Csv.csproj", "{446692DF-6B68-4983-A8C0-204CAD8F7910}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllOverIt.Csv", "AllOverIt.Csv", "{CE8FDC96-11E9-4FA9-9F9D-351738D817D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsvExport", "Demos\AllOverIt.Csv\CsvExport\CsvExport.csproj", "{1A82062D-B06B-45C0-8100-3BB62A579973}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -359,6 +365,14 @@ Global
 		{FC149C75-680B-4DCD-8A84-DA57F4750EB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC149C75-680B-4DCD-8A84-DA57F4750EB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC149C75-680B-4DCD-8A84-DA57F4750EB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{446692DF-6B68-4983-A8C0-204CAD8F7910}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{446692DF-6B68-4983-A8C0-204CAD8F7910}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{446692DF-6B68-4983-A8C0-204CAD8F7910}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{446692DF-6B68-4983-A8C0-204CAD8F7910}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A82062D-B06B-45C0-8100-3BB62A579973}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A82062D-B06B-45C0-8100-3BB62A579973}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A82062D-B06B-45C0-8100-3BB62A579973}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A82062D-B06B-45C0-8100-3BB62A579973}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -432,6 +446,9 @@ Global
 		{DE014032-6A46-40DE-8BA1-007E9CB59A97} = {C4C80BCB-C982-4F13-B34D-2B3D61F6CD3D}
 		{CB961D0A-0751-427E-A408-13C542BFC9EC} = {0C08FAE6-4CD9-4C7B-A849-EB0DB9BD1451}
 		{FC149C75-680B-4DCD-8A84-DA57F4750EB9} = {0C08FAE6-4CD9-4C7B-A849-EB0DB9BD1451}
+		{446692DF-6B68-4983-A8C0-204CAD8F7910} = {FC8E8DB2-1299-44F4-A233-0EDCE225BB8C}
+		{CE8FDC96-11E9-4FA9-9F9D-351738D817D4} = {D9F6B8A1-4B01-4708-8851-741FC19F2440}
+		{1A82062D-B06B-45C0-8100-3BB62A579973} = {CE8FDC96-11E9-4FA9-9F9D-351738D817D4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19DD11B3-596E-4862-B5C4-1FFFFB173106}
