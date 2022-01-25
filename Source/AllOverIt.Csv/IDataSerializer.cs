@@ -13,7 +13,8 @@ namespace AllOverIt.Csv
             Func<TField, IEnumerable<string>> headerName, Func<TField, string, object> valueResolver);
 
         void AddDynamicFields<TField, THeaderId>(IEnumerable<TCsvData> data, Func<TCsvData, TField> fieldSelector,
-            Func<TField, IEnumerable<(THeaderId, string)>> headerIdentifier, Func<TField, (THeaderId, string), object> valueResolver);
+            Func<TField, IEnumerable<HeaderIdentifier<THeaderId>>> headerIdentifier,
+            Func<TField, HeaderIdentifier<THeaderId>, object> valueResolver);
 
         Task Serialize(TextWriter writer, IEnumerable<TCsvData> data, bool includeHeader = true);
     }

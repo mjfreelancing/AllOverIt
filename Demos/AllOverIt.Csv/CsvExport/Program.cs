@@ -112,12 +112,17 @@ namespace CsvExport
             serializer.AddDynamicFields(
                 sampleData,
                 item => item.Coordinates,
-                item => Enumerable.Range(0, item.Count).Select(idx => (idx, $"Coordinate {idx + 1}")),        // using the index to identify the header
+                item => Enumerable.Range(0, item.Count)
+                            .Select(idx => new HeaderIdentifier<int>
+                            {
+                                Id = idx,
+                                Name = $"Coordinate {idx + 1}"
+                            }),        // using the index to identify the header
                 (item, headerId) =>
                 {
-                    if (headerId.Item1 < item.Count)
+                    if (headerId.Id < item.Count)
                     {
-                        var coordinates = item.ElementAt(headerId.Item1);
+                        var coordinates = item.ElementAt(headerId.Id);
 
                         return $"({coordinates.Latitude} {coordinates.Longitude})";
                     }
