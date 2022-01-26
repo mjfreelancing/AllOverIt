@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Csv;
+using AllOverIt.Csv.Extensions;
 using CsvExport.Data;
 using System;
 using System.Collections.Generic;
@@ -96,8 +97,8 @@ namespace CsvExport
         private static void ConfigureSerializer(IDataSerializer<SampleData> serializer, IReadOnlyCollection<SampleData> sampleData)
         {
             // Add fixed, known, columns
-            serializer.AddFixedField(nameof(SampleData.Name), item => item.Name);
-            serializer.AddFixedField(nameof(SampleData.Count), item => item.Count);
+            serializer.AddField(nameof(SampleData.Name), item => item.Name);
+            serializer.AddField(nameof(SampleData.Count), item => item.Count);
 
             serializer.AddDynamicFields(
                 sampleData,                         // The source data to be processed
@@ -106,25 +107,46 @@ namespace CsvExport
                 (item, name) =>
                 {
                     // Get the value to be exported for the column with the provided name
-                    return item.TryGetValue(name, out var value) ? value : (int?) null;
+                    return item.TryGetValue(name, out var value)
+                        ? value
+                        : (int?) null;
                 });
 
             serializer.AddDynamicFields(
                 sampleData,
                 item => item.Coordinates,
-                item => Enumerable.Range(0, item.Count)
-                            .Select(idx => new HeaderIdentifier<int>
+                item => Enumerable.Range(0, item.Count * 2)
+                            .Select(idx => 
                             {
-                                Id = idx,
-                                Name = $"Coordinate {idx + 1}"
+                                var itemOrdinal = (int)Math.Floor(idx / 2.0d) + 1;
+
+                                if (idx % 2 == 0)
+                                {
+                                    return new HeaderIdentifier<int>
+                                    {
+                                        Id = idx,
+                                        Name = $"Latitude {itemOrdinal}"
+                                    };
+                                }
+                                else
+                                {
+                                    return new HeaderIdentifier<int>
+                                    {
+                                        Id = idx,
+                                        Name = $"Longitude {itemOrdinal}"
+                                    };
+                                }
                             }),        // using the index to identify the header
                 (item, headerId) =>
                 {
-                    if (headerId.Id < item.Count)
+                    if (headerId.Id < item.Count * 2)
                     {
-                        var coordinates = item.ElementAt(headerId.Id);
+                        var itemOrdinal = (int) Math.Floor(headerId.Id / 2.0d);
+                        var coordinates = item.ElementAt(itemOrdinal);
 
-                        return $"({coordinates.Latitude} {coordinates.Longitude})";
+                        return headerId.Id % 2 == 0
+                            ? $"{coordinates.Latitude}"
+                            : $"{coordinates.Longitude}";
                     }
 
                     return null;
