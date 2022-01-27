@@ -136,8 +136,8 @@ namespace CsvExport
                         var coordinates = item.ElementAt(itemOrdinal);
 
                         return headerId.Id % 2 == 0
-                            ? $"{coordinates.Latitude}"
-                            : $"{coordinates.Longitude}";
+                            ? coordinates.Latitude
+                            : coordinates.Longitude;
                     }
 
                     return null;
