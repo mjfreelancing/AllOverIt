@@ -102,41 +102,31 @@ namespace CsvExport
             serializer.AddField(nameof(SampleData.Count), item => item.Count);
 
             serializer.AddDynamicFields(
-                sampleData,                         // The source data to be processed
-                item => item.Values,                // The property to be export across one or more columns
-                item => item.Keys,                  // Anything that uniquely identifies each row - this will be the name in the next Func
-                (item, name) =>
-                {
-                    // Get the value to be exported for the column with the provided name
-                    return item.TryGetValue(name, out var value)
-                        ? value
-                        : (int?) null;
-                });
-
+                sampleData,                                                             // The source data to be processed
+                item => item.Values,                                                    // The property to be export across one or more columns
+                item => item.Keys,                                                      // Anything that uniquely identifies each row - this will be the name in the next Func
+                (item, name) => item.TryGetValue(name, out var value) ? value : null    // Get the value to be exported for the column with the provided name
+            );
+               
             serializer.AddDynamicFields(
                 sampleData,
                 item => item.Coordinates,
-                item => Enumerable.Range(0, item.Count * 2)
+                item => Enumerable
+                            .Range(0, item.Count * 2)       // *2 because we need to export the latitude and longitude
                             .Select(idx => 
                             {
                                 var itemOrdinal = (int)Math.Floor(idx / 2.0d) + 1;
 
-                                if (idx % 2 == 0)
+                                var name = idx % 2 == 0
+                                    ? $"Latitude {itemOrdinal}"
+                                    : $"Longitude {itemOrdinal}";
+
+                                // The int generic means the 'Id' can be used to identify the index being processed
+                                return new HeaderIdentifier<int>
                                 {
-                                    return new HeaderIdentifier<int>
-                                    {
-                                        Id = idx,
-                                        Name = $"Latitude {itemOrdinal}"
-                                    };
-                                }
-                                else
-                                {
-                                    return new HeaderIdentifier<int>
-                                    {
-                                        Id = idx,
-                                        Name = $"Longitude {itemOrdinal}"
-                                    };
-                                }
+                                    Id = idx,
+                                    Name = name
+                                };
                             }),        // using the index to identify the header
                 (item, headerId) =>
                 {
