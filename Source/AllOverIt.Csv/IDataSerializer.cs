@@ -7,14 +7,7 @@ namespace AllOverIt.Csv
 {
     public interface IDataSerializer<TCsvData>
     {
-        void AddFixedField(string headerName, Func<TCsvData, object> valueResolver);
-
-        void AddDynamicFields<TField>(IEnumerable<TCsvData> data, Func<TCsvData, TField> fieldSelector,
-            Func<TField, IEnumerable<string>> headerName, Func<TField, string, object> valueResolver);
-
-        void AddDynamicFields<TField, THeaderId>(IEnumerable<TCsvData> data, Func<TCsvData, TField> fieldSelector,
-            Func<TField, IEnumerable<HeaderIdentifier<THeaderId>>> headerIdentifier,
-            Func<TField, HeaderIdentifier<THeaderId>, object> valueResolver);
+        void AddField(string headerName, Func<TCsvData, object> valueResolver);
 
         Task Serialize(TextWriter writer, IEnumerable<TCsvData> data, bool includeHeader = true);
     }
