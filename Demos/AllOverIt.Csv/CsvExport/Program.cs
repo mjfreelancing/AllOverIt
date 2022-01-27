@@ -118,8 +118,8 @@ namespace CsvExport
                                 var itemOrdinal = (int)Math.Floor(idx / 2.0d) + 1;
 
                                 var name = idx % 2 == 0
-                                    ? $"Latitude {itemOrdinal}"
-                                    : $"Longitude {itemOrdinal}";
+                                    ? $"{nameof(Coordinates.Latitude)} {itemOrdinal}"
+                                    : $"{nameof(Coordinates.Longitude)} {itemOrdinal}";
 
                                 // The int generic means the 'Id' can be used to identify the index being processed
                                 return new HeaderIdentifier<int>
