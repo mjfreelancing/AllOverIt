@@ -14,6 +14,7 @@
         <RepositoryUrl>https://github.com/mjfreelancing/AllOverIt.Fixture</RepositoryUrl>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <IsPackable>true</IsPackable>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>

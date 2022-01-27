@@ -13,10 +13,7 @@
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/mjfreelancing/AllOverIt</RepositoryUrl>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp3.1|AnyCPU'">
-        <DocumentationFile>C:\Data\GitHub\mjfreelancing\Projects\AllOverIt\Source\AllOverIt\AllOverIt.xml</DocumentationFile>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
     </PropertyGroup>
 
 </Project>

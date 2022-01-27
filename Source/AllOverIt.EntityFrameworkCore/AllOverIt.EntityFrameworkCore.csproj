@@ -13,10 +13,7 @@
       <RepositoryType>git</RepositoryType>
       <RepositoryUrl>https://github.com/mjfreelancing/AllOverIt</RepositoryUrl>
       <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>C:\Data\GitHub\mjfreelancing\Projects\AllOverIt\Source\AllOverIt.EntityFrameworkCore\AllOverIt.EntityFrameworkCore.xml</DocumentationFile>
+      <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' != 'net6.0' ">
