@@ -9,6 +9,6 @@ namespace AllOverIt.Csv
     {
         void AddField(string headerName, Func<TCsvData, object> valueResolver);
 
-        Task Serialize(TextWriter writer, IEnumerable<TCsvData> data, bool includeHeader = true);
+        Task SerializeAsync(TextWriter writer, IEnumerable<TCsvData> data, bool includeHeader = true);
     }
 }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using CsvHelper;
 
 namespace CsvExport
 {
@@ -22,7 +23,7 @@ namespace CsvExport
             // Replace StringWriter() with StreamWriter("filename.csv") to write to a file instead
             using (var writer = new StringWriter())
             {
-                await serializer.Serialize(writer, sampleData);
+                await serializer.SerializeAsync(writer, sampleData);
 
                 Console.WriteLine(writer.ToString());
             }

@@ -29,7 +29,7 @@ namespace AllOverIt.Csv
             _fieldResolvers.Add(new CsvFieldResolver(headerName, valueResolver));
         }
 
-        public async Task Serialize(TextWriter writer, IEnumerable<TCsvData> data, bool includeHeader = true)
+        public async Task SerializeAsync(TextWriter writer, IEnumerable<TCsvData> data, bool includeHeader = true)
         {
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
             {
