@@ -36,7 +36,7 @@ namespace AllOverIt.Patterns.Enumeration
             Value = value;
             Name = name.WhenNotNullOrEmpty(nameof(name));
         }
-        
+
         /// <summary>Returns a string representation of the enumeration. This will be the name value.</summary>
         public override string ToString() => Name;
 
@@ -113,6 +113,24 @@ namespace AllOverIt.Patterns.Enumeration
         }
 
         /// <summary>Attempts to convert the provided value to an enumeration instance.</summary>
+        /// <param name="value">The integer value to convert to an equivalent enumeration instance.</param>
+        /// <param name="enumeration">The matching enumeration instance if a match is found.</param>
+        /// <returns>True if the conversion was successful, otherwise false.</returns>
+        public static bool TryFromValue(int value, out TEnum enumeration)
+        {
+            return TryParse(item => item.Value == value, out enumeration);
+        }
+
+        /// <summary>Attempts to convert the provided value to an enumeration instance.</summary>
+        /// <param name="name">The name to convert to an equivalent enumeration instance.</param>
+        /// <param name="enumeration">The matching enumeration instance if a match is found.</param>
+        /// <returns>True if the conversion was successful, otherwise false.</returns>
+        public static bool TryFromName(string name, out TEnum enumeration)
+        {
+            return TryParse(item => item.Name.Equals(name, StringComparison.OrdinalIgnoreCase), out enumeration);
+        }
+
+        /// <summary>Attempts to convert the provided value to an enumeration instance.</summary>
         /// <param name="nameOrValue">The string name, or integer value (as a string), to convert to an equivalent enumeration instance.</param>
         /// <param name="enumeration">The matching enumeration instance if a match is found.</param>
         /// <returns>True if the conversion was successful, otherwise false.</returns>
@@ -126,6 +144,30 @@ namespace AllOverIt.Patterns.Enumeration
 
             // fall back to a number as a string
             return int.TryParse(nameOrValue, out var intValue) && TryParse(item => item.Value == intValue, out enumeration);
+        }
+
+        /// <summary>Indicates if the value matches one of the defined enumeration instances.</summary>
+        /// <param name="value">The value to compare.</param>
+        /// <returns>True if the value matches one of the defined enumeration instances, otherwise false.</returns>
+        public static bool HasValue(int value)
+        {
+            return TryFromValue(value, out _);
+        }
+
+        /// <summary>Indicates if the name matches one of the defined enumeration instances.</summary>
+        /// <param name="name">The value to compare.</param>
+        /// <returns>True if the name matches one of the defined enumeration instances, otherwise false.</returns>
+        public static bool HasName(string name)
+        {
+            return TryFromName(name, out _);
+        }
+
+        /// <summary>Indicates if the name or value (as a string) matches one of the defined enumeration instances.</summary>
+        /// <param name="nameOrValue">The name or value to compare.</param>
+        /// <returns>True if the name or value matches one of the defined enumeration instances, otherwise false.</returns>
+        public static bool HasNameOrValue(string nameOrValue)
+        {
+            return TryFromNameOrValue(nameOrValue, out _);
         }
 
         // <summary>Operator that determines if two enumerations are equal.</summary>

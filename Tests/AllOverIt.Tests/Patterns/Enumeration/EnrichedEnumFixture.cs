@@ -267,6 +267,48 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             }
         }
 
+        public class TryFromValue : EnrichedEnumFixture
+        {
+            [Fact]
+            public void Should_Get_From_Value()
+            {
+                var tryResult = EnrichedEnumDummy.TryFromValue(1, out var actual);
+
+                tryResult.Should().BeTrue();
+                actual.Should().Be(EnrichedEnumDummy.Value1);
+            }
+
+            [Fact]
+            public void Should_Not_Get_From_Value()
+            {
+                var tryResult = EnrichedEnumDummy.TryFromValue(-1, out var actual);
+
+                tryResult.Should().BeFalse();
+                actual.Should().BeNull();
+            }
+        }
+
+        public class TryFromName : EnrichedEnumFixture
+        {
+            [Fact]
+            public void Should_Get_From_Name()
+            {
+                var tryResult = EnrichedEnumDummy.TryFromName("VALUE 2", out var actual);
+
+                tryResult.Should().BeTrue();
+                actual.Should().Be(EnrichedEnumDummy.Value2);
+            }
+
+            [Fact]
+            public void Should_Not_Get_From_Name()
+            {
+                var tryResult = EnrichedEnumDummy.TryFromName(Create<string>(), out var actual);
+
+                tryResult.Should().BeFalse();
+                actual.Should().BeNull();
+            }
+        }
+
         public class TryFromNameOrValue : EnrichedEnumFixture
         {
             [Fact]
@@ -303,6 +345,76 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             public void Should_Not_Convert_From_Name()
             {
                 EnrichedEnumDummy.TryFromNameOrValue("Value 1", out var _).Should().BeFalse();
+            }
+        }
+
+        public class HasValue : EnrichedEnumFixture
+        {
+            [Theory]
+            [InlineData(1)]
+            [InlineData(2)]
+            public void Should_Find_Value(int value)
+            {
+                var actual = EnrichedEnumDummy.HasValue(value);
+
+                actual.Should().BeTrue();
+            }
+
+            [Theory]
+            [InlineData(-1)]
+            [InlineData(0)]
+            public void Should_Not_Find_Value(int value)
+            {
+                var actual = EnrichedEnumDummy.HasValue(value);
+
+                actual.Should().BeFalse();
+            }
+        }
+
+        public class HasName : EnrichedEnumFixture
+        {
+            [Theory]
+            [InlineData("Value1")]
+            [InlineData("VALUE1")]
+            [InlineData("Value 2")]
+            [InlineData("VALUE 2")]
+            public void Should_Find_Name(string name)
+            {
+                var actual = EnrichedEnumDummy.HasName(name);
+
+                actual.Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Not_Find_Name()
+            {
+                var actual = EnrichedEnumDummy.HasName(Create<string>());
+
+                actual.Should().BeFalse();
+            }
+        }
+
+        public class HasNameOrValue : EnrichedEnumFixture
+        {
+            [Theory]
+            [InlineData("1")]
+            [InlineData("Value1")]
+            [InlineData("VALUE1")]
+            [InlineData("2")]
+            [InlineData("Value 2")]
+            [InlineData("VALUE 2")]
+            public void Should_Find_Name_Or_Value(string name)
+            {
+                var actual = EnrichedEnumDummy.HasNameOrValue(name);
+
+                actual.Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Not_Find_Name_Or_Value()
+            {
+                EnrichedEnumDummy.HasNameOrValue("-1").Should().BeFalse();
+                EnrichedEnumDummy.HasNameOrValue(Create<string>()).Should().BeFalse();
             }
         }
 
