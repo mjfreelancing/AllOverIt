@@ -1,10 +1,10 @@
-﻿using System;
+﻿using System.Collections.Generic;
 
 namespace AllOverIt.Csv
 {
     public interface IExportFieldResolver<in TCsvData>
     {
-        string HeaderName { get; }
-        Func<TCsvData, object> ValueResolver { get; }
+        IEnumerable<string> HeaderNames { get; }
+        IEnumerable<object> GetValues(TCsvData data);
     }
 }

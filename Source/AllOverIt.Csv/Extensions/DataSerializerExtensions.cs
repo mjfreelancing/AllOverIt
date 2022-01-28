@@ -30,20 +30,24 @@ namespace AllOverIt.Csv.Extensions
         // Typically used with IEnumerable<T> properties where THeaderId is 'int' (for the index)
         public static void AddDynamicFields<TCsvData, TField, THeaderId>(this IDataSerializer<TCsvData> serializer, IEnumerable<TCsvData> data,
             Func<TCsvData, TField> fieldSelector, Func<TField, IEnumerable<HeaderIdentifier<THeaderId>>> headerIdentifier,
-            Func<TField, HeaderIdentifier<THeaderId>, object> valueResolver)
+            Func<TField, HeaderIdentifier<THeaderId>, IEnumerable<object>> valuesResolver)
         {
+            var comparer = new HeaderIdentifierComparer<THeaderId>();
+
             var uniqueIdentifiers = data                    // From the source data
                 .Select(fieldSelector)                      // Select the IEnumerable property to obtain header names for
                 .SelectMany(headerIdentifier.Invoke)        // Get all possible identifier / names for the current row (such as the collection index and a name)
-                .Distinct();                                // Reduce to a distinct list
+                .Distinct(comparer);                        // Reduce to a distinct list
 
             foreach (var identifier in uniqueIdentifiers)
             {
-                serializer.AddField(identifier.Name, item =>
+                serializer.AddFields(identifier.Names, item =>
                 {
                     var field = fieldSelector.Invoke(item);
 
-                    return valueResolver.Invoke(field, identifier);
+                    var values = valuesResolver.Invoke(field, identifier);
+
+                    return values ?? Enumerable.Repeat((object)null, identifier.Names.Count);
                 });
             }
         }

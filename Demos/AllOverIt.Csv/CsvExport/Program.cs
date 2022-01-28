@@ -14,7 +14,7 @@ namespace CsvExport
     {      
         static async Task Main(string[] args)
         {
-            var sampleData = CreateSampledata();
+            var sampleData = CreateSampleData();
 
             var serializer = new DataSerializer<SampleData>();
 
@@ -33,7 +33,7 @@ namespace CsvExport
             Console.ReadKey();
         }
 
-        private static IReadOnlyCollection<SampleData> CreateSampledata()
+        private static IReadOnlyCollection<SampleData> CreateSampleData()
         {
             return new List<SampleData>
             {
@@ -107,37 +107,38 @@ namespace CsvExport
                 item => item.Keys,                                                      // Anything that uniquely identifies each row - this will be the name in the next Func
                 (item, name) => item.TryGetValue(name, out var value) ? value : null    // Get the value to be exported for the column with the provided name
             );
-               
+
             serializer.AddDynamicFields(
                 sampleData,
                 item => item.Coordinates,
-                item => Enumerable
-                            .Range(0, item.Count * 2)       // *2 because we need to export the latitude and longitude
-                            .Select(idx => 
+                item =>
+                {
+                    return Enumerable
+                        .Range(0, item.Count)
+                        .Select(idx =>
+                        {
+                            return new HeaderIdentifier<int>
                             {
-                                var itemOrdinal = (int)Math.Floor(idx / 2.0d) + 1;
-
-                                var name = idx % 2 == 0
-                                    ? $"{nameof(Coordinates.Latitude)} {itemOrdinal}"
-                                    : $"{nameof(Coordinates.Longitude)} {itemOrdinal}";
-
-                                // The int generic means the 'Id' can be used to identify the index being processed
-                                return new HeaderIdentifier<int>
+                                Id = idx,
+                                Names = new[]
                                 {
-                                    Id = idx,
-                                    Name = name
-                                };
-                            }),        // using the index to identify the header
+                                    $"{nameof(Coordinates.Latitude)} {idx + 1}",
+                                    $"{nameof(Coordinates.Longitude)} {idx + 1}"
+                                }
+                            };
+                        });
+                },
                 (item, headerId) =>
                 {
-                    if (headerId.Id < item.Count * 2)
+                    if (headerId.Id < item.Count)
                     {
-                        var itemOrdinal = (int) Math.Floor(headerId.Id / 2.0d);
-                        var coordinates = item.ElementAt(itemOrdinal);
+                        var coordinate = item.ElementAt(headerId.Id);
 
-                        return headerId.Id % 2 == 0
-                            ? coordinates.Latitude
-                            : coordinates.Longitude;
+                        return new object[]
+                        {
+                            coordinate.Latitude,
+                            coordinate.Longitude
+                        };
                     }
 
                     return null;

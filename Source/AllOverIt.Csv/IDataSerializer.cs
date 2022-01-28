@@ -8,6 +8,7 @@ namespace AllOverIt.Csv
     public interface IDataSerializer<TCsvData>
     {
         void AddField(string headerName, Func<TCsvData, object> valueResolver);
+        void AddFields(IEnumerable<string> headerNames, Func<TCsvData, IEnumerable<object>> valuesResolver);
 
         Task SerializeAsync(TextWriter writer, IEnumerable<TCsvData> data, bool includeHeader = true);
     }
