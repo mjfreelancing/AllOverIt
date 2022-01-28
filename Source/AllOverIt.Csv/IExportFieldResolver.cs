@@ -2,9 +2,9 @@
 
 namespace AllOverIt.Csv
 {
-    public interface IExportFieldResolver<in TExportData>
+    public interface IExportFieldResolver<in TCsvData>
     {
-        public string HeaderName { get; }
-        public Func<TExportData, object> ValueResolver { get; }
+        string HeaderName { get; }
+        Func<TCsvData, object> ValueResolver { get; }
     }
 }
