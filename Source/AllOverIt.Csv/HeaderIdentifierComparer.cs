@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using AllOverIt.Helpers;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace AllOverIt.Csv
@@ -12,12 +13,7 @@ namespace AllOverIt.Csv
                 return true;
             }
 
-            if (ReferenceEquals(lhs, null))
-            {
-                return false;
-            }
-            
-            if (ReferenceEquals(rhs, null))
+            if (lhs == null || rhs == null)
             {
                 return false;
             }
@@ -39,18 +35,8 @@ namespace AllOverIt.Csv
 
         public int GetHashCode(HeaderIdentifier<THeaderId> obj)
         {
-            var objects = obj.Names
-                .Select(item => (object)item)
-                .Concat(new []{(object)obj.Id})
-                .ToArray();
-
-            return AggregateHashCode(objects);
-        }
-
-        // TODO: Add something that can be re-used
-        private static int AggregateHashCode(IEnumerable<object> properties)
-        {
-            return properties.Aggregate(17, (current, property) => current * 23 + (property?.GetHashCode() ?? 0));
+            var hash = HashCodeHelper.CalculateHashCode(obj.Id);
+            return HashCodeHelper.CalculateHashCode(hash, obj.Names);
         }
     }
 }

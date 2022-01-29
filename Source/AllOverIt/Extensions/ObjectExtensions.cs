@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using AllOverIt.Helpers;
 
 namespace AllOverIt.Extensions
 {
@@ -265,7 +266,7 @@ namespace AllOverIt.Extensions
                              orderby property.Name
                              select property.GetValue(instance);
 
-            return AggregateHashCode(properties);
+            return HashCodeHelper.CalculateHashCode(properties);
         }
 
         /// <summary>Calculates the hash code based on explicitly specified properties, fields, or the return result from a method call.</summary>
@@ -277,7 +278,7 @@ namespace AllOverIt.Extensions
         {
             var properties = resolvers.Select(resolver => resolver.Invoke(instance));
 
-            return AggregateHashCode(properties);
+            return HashCodeHelper.CalculateHashCode(properties);
         }
 
         private static PropertyInfo GetPropertyInfo(object instance, string propertyName, BindingFlags bindingFlags)
@@ -298,11 +299,6 @@ namespace AllOverIt.Extensions
             }
 
             return null;
-        }
-
-        private static int AggregateHashCode(IEnumerable<object> properties)
-        {
-            return properties.Aggregate(17, (current, property) => current * 23 + (property?.GetHashCode() ?? 0));
         }
 
         // gets the enum value as its underlying type (such as short)
