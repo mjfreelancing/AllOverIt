@@ -27,17 +27,15 @@ namespace AllOverIt.Csv.Extensions
             }
         }
 
-        // Typically used with IEnumerable<T> properties where THeaderId is 'int' (for the index)
-        public static void AddDynamicFields<TCsvData, TField, THeaderId>(this IDataSerializer<TCsvData> serializer, IEnumerable<TCsvData> data,
-            Func<TCsvData, TField> fieldSelector, Func<TField, IEnumerable<HeaderIdentifier<THeaderId>>> headerIdentifier,
-            Func<TField, HeaderIdentifier<THeaderId>, IEnumerable<object>> valuesResolver)
+        // Typically used with IEnumerable<T> properties where TFieldId is 'int' (for the index)
+        public static void AddDynamicFields<TCsvData, TField, TFieldId>(this IDataSerializer<TCsvData> serializer, IEnumerable<TCsvData> data,
+            Func<TCsvData, TField> fieldSelector, Func<TField, IEnumerable<FieldIdentifier<TFieldId>>> fieldIdentifiers,
+            Func<TField, FieldIdentifier<TFieldId>, IEnumerable<object>> valuesResolver)
         {
-            var comparer = new HeaderIdentifierComparer<THeaderId>();
-
-            var uniqueIdentifiers = data                    // From the source data
-                .Select(fieldSelector)                      // Select the IEnumerable property to obtain header names for
-                .SelectMany(headerIdentifier.Invoke)        // Get all possible identifier / names for the current row (such as the collection index and a name)
-                .Distinct(comparer);                        // Reduce to a distinct list
+            var uniqueIdentifiers = data                        // From the source data
+                .Select(fieldSelector)                          // Select the IEnumerable property to obtain header names for
+                .SelectMany(fieldIdentifiers.Invoke)            // Get all possible identifier / names for the current row (such as the collection index and a name)
+                .Distinct(FieldIdentifier<TFieldId>.Comparer);  // Reduce to a distinct list based on the 'Id' property (must be unique for each set of headers)
 
             foreach (var identifier in uniqueIdentifiers)
             {

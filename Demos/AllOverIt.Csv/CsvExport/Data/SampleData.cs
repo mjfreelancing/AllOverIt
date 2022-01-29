@@ -10,7 +10,11 @@ namespace CsvExport.Data
         // The key is the field heading
         public IDictionary<string, int> Values { get; set; }
 
-        // The serializer will be configured to identify each value by index and the header name will be in the format "Coordinate #"
+        // The serializer will be configured to identify each item by index and the header name will
+        // be in the format "Latitude #" and "Longitude #" (both properties exported individually)
         public IReadOnlyCollection<Coordinates> Coordinates { get; set; }
+
+        // Each item will be exported as 'Type-Name' for the header and the Value is what will be exported
+        public IReadOnlyCollection<SampleMetadata> Metadata { get; set; }
     }
 }
