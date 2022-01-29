@@ -21,8 +21,8 @@ class Program
             .CreateConsoleHostBuilder(args)
             .ConfigureServices((hostContext, services) =>
             {
-                services.AddDbContext<BloggingContext>();
-                services.AddScoped<IConsoleApp, App>();
+                services.AddDbContextFactory<BloggingContext>();
+                services.AddSingleton<IConsoleApp, App>();
             });
     }
 }
