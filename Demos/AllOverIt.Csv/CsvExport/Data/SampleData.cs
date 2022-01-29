@@ -2,7 +2,7 @@
 
 namespace CsvExport.Data
 {
-    internal sealed class SampleData
+    public sealed class SampleData
     {
         public string Name { get; set; }
         public int Count { get; set; }

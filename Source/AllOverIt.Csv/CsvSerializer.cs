@@ -8,13 +8,15 @@ using AllOverIt.Extensions;
 
 namespace AllOverIt.Csv
 {
-    public class DataSerializer<TCsvData> : IDataSerializer<TCsvData>
+    /// <summary>Exports complex objects to CSV format.</summary>
+    /// <typeparam name="TCsvData">The complex object type to be exported.</typeparam>
+    public class CsvSerializer<TCsvData> : ICsvSerializer<TCsvData>
     {
-        private sealed class CsvFieldResolver : IExportFieldResolver<TCsvData>
+        private sealed class CsvFieldResolver : IFieldResolver<TCsvData>
         {
             private readonly Func<TCsvData, IEnumerable<object>> _valuesResolver;
 
-            public IEnumerable<string> HeaderNames { get; }
+            public IReadOnlyCollection<string> HeaderNames { get; }
 
             public CsvFieldResolver(string headerName, Func<TCsvData, object> valueResolver)
             {
@@ -28,36 +30,41 @@ namespace AllOverIt.Csv
                 _valuesResolver = valuesResolver;
             }
 
-            public IEnumerable<object> GetValues(TCsvData data)
+            public IReadOnlyCollection<object> GetValues(TCsvData data)
             {
-                return _valuesResolver.Invoke(data);
+                return _valuesResolver
+                    .Invoke(data)
+                    .AsReadOnlyCollection();
             }
         }
 
-        private readonly IList<IExportFieldResolver<TCsvData>> _fieldResolvers = new List<IExportFieldResolver<TCsvData>>();
+        private readonly IList<IFieldResolver<TCsvData>> _fieldResolvers = new List<IFieldResolver<TCsvData>>();
 
+        /// <inheritdoc />
         public void AddField(string headerName, Func<TCsvData, object> valueResolver)
         {
             _fieldResolvers.Add(new CsvFieldResolver(headerName, valueResolver));
         }
 
+        /// <inheritdoc />
         public void AddFields(IEnumerable<string> headerNames, Func<TCsvData, IEnumerable<object>> valuesResolver)
         {
             _fieldResolvers.Add(new CsvFieldResolver(headerNames, valuesResolver));
         }
 
+        /// <inheritdoc />
         public async Task SerializeAsync(TextWriter writer, IEnumerable<TCsvData> data, bool includeHeader = true)
         {
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
             {
                 if (includeHeader)
                 {
-                    await WriteHeaderAsync(csv);
+                    await WriteHeaderAsync(csv).ConfigureAwait(false);
                 }
 
                 foreach (var row in data)
                 {
-                    await WriteRowAsync(row, csv);
+                    await WriteRowAsync(row, csv).ConfigureAwait(false);
                 }
             }
         }

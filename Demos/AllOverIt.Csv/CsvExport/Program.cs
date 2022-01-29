@@ -1,11 +1,10 @@
 ﻿using AllOverIt.Csv;
-using AllOverIt.Csv.Extensions;
 using CsvExport.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
+using CsvExport.Extensions;
 
 namespace CsvExport
 {
@@ -25,9 +24,9 @@ namespace CsvExport
         {
             var sampleData = CreateSampleData();
 
-            var serializer = new DataSerializer<SampleData>();
+            var serializer = new CsvSerializer<SampleData>();
 
-            ConfigureSerializer(serializer, sampleData);
+            sampleData.ConfigureCsvExport(serializer);
 
             // Write to the console
             using (var writer = new StringWriter())
@@ -172,91 +171,6 @@ namespace CsvExport
                     }
                 }
             };
-        }
-
-        private static void ConfigureSerializer(IDataSerializer<SampleData> serializer, IReadOnlyCollection<SampleData> sampleData)
-        {
-            // Add fixed, known, columns
-            serializer.AddField(nameof(SampleData.Name), item => item.Name);
-            serializer.AddField(nameof(SampleData.Count), item => item.Count);
-
-            serializer.AddDynamicFields(
-                sampleData,                                                             // The source data to be processed
-                item => item.Values,                                                    // The property to be export across one or more columns
-                item => item.Keys,                                                      // Anything that uniquely identifies each row - this will be the name in the next Func
-                (item, name) => item.TryGetValue(name, out var value) ? value : null    // Get the value to be exported for the column with the provided name
-            );
-
-            serializer.AddDynamicFields(
-                sampleData,
-                item => item.Coordinates,
-                item =>
-                {
-                    return Enumerable
-                        .Range(0, item.Count)
-                        .Select(idx =>
-                        {
-                            return new FieldIdentifier<int>
-                            {
-                                Id = idx,
-                                Names = new[]
-                                {
-                                    $"{nameof(Coordinates.Latitude)} {idx + 1}",
-                                    $"{nameof(Coordinates.Longitude)} {idx + 1}"
-                                }
-                            };
-                        });
-                },
-                (item, headerId) =>
-                {
-                    if (headerId.Id < item.Count)
-                    {
-                        var coordinate = item.ElementAt(headerId.Id);
-
-                        return new object[]
-                        {
-                            coordinate.Latitude,
-                            coordinate.Longitude
-                        };
-                    }
-
-                    return null;
-                });
-
-            serializer.AddDynamicFields(
-                sampleData,
-                item => item.Metadata,
-                item =>
-                {
-                    return item
-                        .Select(metadata =>
-                        {
-                            return new FieldIdentifier<KeyValuePair<MetadataType, string>>
-                            {
-                                Id = new KeyValuePair<MetadataType, string>(metadata.Type, metadata.Name),
-                                Names = new[]
-                                {
-                                    $"{metadata.Type}-{metadata.Name}"
-                                }
-                            };
-                        });
-                },
-                (item, headerId) =>
-                {
-                    var id = headerId.Id;
-
-                    var dataType = id.Key;
-                    var typeName = id.Value;
-
-                    var metadata = item.SingleOrDefault(data => data.Type == dataType && data.Name == typeName);
-
-                    return metadata == null
-                        ? null
-                        : new object[]
-                        {
-                            metadata.Value
-                        };
-                });
         }
     }
 }

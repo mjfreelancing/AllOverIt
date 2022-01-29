@@ -1,6 +1,6 @@
 ﻿namespace CsvExport.Data
 {
-    internal enum MetadataType
+    public enum MetadataType
     {
         Environment,
         Quality
