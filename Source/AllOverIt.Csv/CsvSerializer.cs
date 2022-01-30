@@ -38,7 +38,7 @@ namespace AllOverIt.Csv
             }
         }
 
-        private readonly IList<IFieldResolver<TCsvData>> _fieldResolvers = new List<IFieldResolver<TCsvData>>();
+        private readonly ICollection<IFieldResolver<TCsvData>> _fieldResolvers = new List<IFieldResolver<TCsvData>>();
 
         /// <inheritdoc />
         public void AddField(string headerName, Func<TCsvData, object> valueResolver)
