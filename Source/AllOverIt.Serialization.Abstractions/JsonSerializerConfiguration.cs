@@ -11,6 +11,7 @@
         /// <remarks>The default is False. Pascal case naming convention is the default.</remarks>
         public bool? UseCamelCase { get; set; }
 
+        /// <summary>If True, the serializer will support the serialization and deserialization of enriched enum types (available in the AllOverIt package).</summary>
         public bool? SupportEnrichedEnums { get; set; }
     }
 }

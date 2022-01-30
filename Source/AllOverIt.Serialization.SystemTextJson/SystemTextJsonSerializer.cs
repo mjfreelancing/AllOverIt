@@ -16,7 +16,7 @@ namespace AllOverIt.Serialization.SystemTextJson
         public JsonSerializerOptions Options { get; }
 
         /// <summary>Constructor.</summary>
-        /// <param name="options">The serialization options to use. If no options are provided then a default set will be applied.</param>
+        /// <param name="options">The System.Text serialization options to use. If no options are provided then a default set will be applied.</param>
         public SystemTextJsonSerializer(JsonSerializerOptions options = default)
         {
             Options = options ?? new JsonSerializerOptions();

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 namespace AllOverIt.Serialization.Abstractions
 {
+    /// <summary>Represents a JSON serializer and deserializer.</summary>
     public interface IJsonSerializer
     {
         /// <summary>Provides options to configure a <see cref="IJsonSerializer"/> instance via the abstraction layer.</summary>
