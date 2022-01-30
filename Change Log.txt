@@ -1,5 +1,59 @@
 ======================================================================================================================
 
+30 Jan 2022
+======================================================================================================================
+AllOverIt v2.6.0
+  * Added HashCodeHelper to support calculating a hash code from one or more values
+
+AllOverIt.Validation v2.2.0
+  * Updated to AllOverIt v2.6.0
+
+AllOverIt.Aws.Cdk.AppSync v1.3.0
+  * Updated to AllOverIt v2.6.0
+  * Upated to Amazon.CDK.AWS.AppSync v1.142.0
+
+AllOverIt.Evaluator v4.3.0
+  * Updated to AllOverIt v2.6.0
+
+AllOverIt.GenericHost v3.0.0
+  * Updated to AllOverIt v2.6.0
+  * Added an overload for GenericHost.CreateConsoleHostBuilder() that allows an IConsoleApp type to be provided
+    for registration as a Singleton.
+  * Renamed ConsoleWorker to BackgroundWorker and added an OnStarted() lifetime event
+
+AllOverIt.Fixture v1.8.2
+  * XML documentation updated
+
+AllOverIt.Fixture.FakeItEasy v1.6.2
+  * XML documentation updated
+
+AllOverIt.Serialization.Abstractions v1.2.1
+  * XML documentation updated
+
+AllOverIt.Serialization.NewtonsoftJson v1.5.0
+  * Updated to AllOverIt v2.6.0
+  * Updated to AllOverIt.Serialization.Abstractions v1.2.1
+
+AllOverIt.Serialization.SystemTextJson v1.5.0
+  * Updated to AllOverIt v2.6.0
+  * Updated to AllOverIt.Serialization.Abstractions v1.2.1
+  * Updated to System.Text.Json v6.0.1 for .NET 6
+
+AllOverIt.Aws.AppSync.Client v1.6.0
+  * Updated to AllOverIt v2.6.0
+  * Updated to AllOverIt.Serialization.Abstractions v1.2.1
+
+AllOverIt.AspNetCore v1.4.0
+  * Updated to AllOverIt v2.6.0
+
+AllOverIt.EntityFrameworkCore v1.2.0
+  * Updated to AllOverIt v2.6.0
+
+AllOverIt.Csv v2.0.0
+  * Updated to AllOverIt v2.6.0
+  * Redesign / simplify the configuration of collection types with added performance improvement
+
+
 28 Jan 2022
 ======================================================================================================================
 AllOverIt v2.5.0
@@ -8,7 +62,7 @@ AllOverIt v2.5.0
 
 27 Jan 2022
 ======================================================================================================================
-AllOverIt.Csv - v1.0.1
+AllOverIt.Csv v1.0.1
   * Initial implementation of DataSerializer
   ** v1.0.0 had an incorrect method name, re-released as v1.0.1
 
