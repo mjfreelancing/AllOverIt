@@ -15,7 +15,7 @@ namespace HostedConsoleApp
                 // an additional worker background service just to demonstrate it is possible.
                 .ConfigureServices(services =>
                 {
-                    services.AddHostedService<BackgroundWorker>();
+                    services.AddHostedService<ConsoleBackgroundWorker>();
                 })
 
                 .RunConsoleAsync(options => options.SuppressStatusMessages = true);
@@ -28,10 +28,10 @@ namespace HostedConsoleApp
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
             return GenericHost
-                .CreateConsoleHostBuilder(args)
+                .CreateConsoleHostBuilder<App>(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddScoped<IConsoleApp, App>();
+                    // if 'App' requires anything to be injected, set it up here
                 });
         }
     }

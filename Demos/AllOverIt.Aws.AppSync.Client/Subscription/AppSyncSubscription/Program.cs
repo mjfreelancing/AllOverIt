@@ -53,15 +53,17 @@ namespace AppSyncSubscription
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
             return GenericHost
-                .CreateConsoleHostBuilder(args)
+                .CreateConsoleHostBuilder<SubscriptionConsole>(args)
                 .ConfigureHostConfiguration(configBuilder => configBuilder.AddUserSecrets<AppSyncOptions>())
                 .ConfigureServices((hostContext, services) =>
                 {
                     // AppSyncOptions is loaded from user secrets
                     services
                         .AddOptions()
-                        .Configure<AppSyncOptions>(hostContext.Configuration.GetSection(nameof(AppSyncOptions)))
-                        .AddScoped<IConsoleApp, SubscriptionConsole>();
+                        .Configure<AppSyncOptions>(hostContext.Configuration.GetSection(nameof(AppSyncOptions)));
+
+                    // If not using the generic version of CreateConsoleHostBuilder(), then this must be manually called
+                    // .AddSingleton<IConsoleApp, SubscriptionConsole>();
                 });
         }
 

@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace HostedConsoleApp
 {
-    public sealed class BackgroundWorker : ConsoleWorker
+    public sealed class ConsoleBackgroundWorker : BackgroundWorker
     {
-        private readonly ILogger<BackgroundWorker> _logger;
+        private readonly ILogger<ConsoleBackgroundWorker> _logger;
 
-        public BackgroundWorker(IHostApplicationLifetime applicationLifetime, ILogger<BackgroundWorker> logger)
+        public ConsoleBackgroundWorker(IHostApplicationLifetime applicationLifetime, ILogger<ConsoleBackgroundWorker> logger)
             : base(applicationLifetime)
         {
             _logger = logger.WhenNotNull(nameof(logger));
@@ -29,6 +29,11 @@ namespace HostedConsoleApp
                 _logger.LogInformation($"Background Worker: {DateTimeOffset.Now}");
                 await Task.Delay(1000, cancellationToken);
             }
+        }
+
+        protected override void OnStarted()
+        {
+            _logger.LogInformation("The background worker has started");
         }
 
         protected override void OnStopping()

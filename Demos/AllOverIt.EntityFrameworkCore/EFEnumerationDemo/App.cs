@@ -29,6 +29,8 @@ namespace EFEnumerationDemo
 
             using (var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken))
             {
+                //await dbContext.Database.EnsureDeletedAsync(cancellationToken);
+
                 await dbContext.Database.MigrateAsync(cancellationToken);
 
                 await CreateDataIfRequired();

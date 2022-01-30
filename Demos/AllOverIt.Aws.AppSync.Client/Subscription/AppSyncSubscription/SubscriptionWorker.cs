@@ -31,7 +31,7 @@ namespace AppSyncSubscription
 
     */
 
-    public sealed class SubscriptionWorker : ConsoleWorker
+    public sealed class SubscriptionWorker : BackgroundWorker
     {
         private readonly IAppSyncSubscriptionClient _subscriptionClient;
 
