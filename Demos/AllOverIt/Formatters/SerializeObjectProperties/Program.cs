@@ -21,6 +21,9 @@ namespace SerializeObjectProperties
                 SerializeFilteredObject(serializer);
 
                 Console.WriteLine();
+                SerializeFilteredItemDataViaRegistry();
+
+                Console.WriteLine();
                 SerializeDictionary1(serializer);
 
                 Console.WriteLine();
@@ -190,6 +193,62 @@ namespace SerializeObjectProperties
             finally
             {
                 serializer.Options.Filter = null;
+            }
+        }
+
+        private static void SerializeFilteredItemDataViaRegistry()
+        {
+            var complexObject = new ComplexObject
+            {
+                Items = new ComplexObject.Item[]
+                {
+                    new()
+                    {
+                        Name = "Name 1",
+                        Factor = 1.1,
+                        Data = new ComplexObject.Item.ItemData
+                        {
+                            Timestamp = DateTime.Now,
+                            Values = Enumerable.Range(1, 5).SelectAsReadOnlyCollection(value => value)
+                        }
+                    },
+                    new()
+                    {
+                        Name = "Name 2",
+                        Factor = 2.2,
+                        Data = new ComplexObject.Item.ItemData
+                        {
+                            Timestamp = DateTime.Now,
+                            Values = Enumerable.Range(11, 5).SelectAsReadOnlyCollection(value => value)
+                        }
+                    },
+                    new()
+                    {
+                        Name = "Name 3",
+                        Factor = 3.3,
+                        Data = new ComplexObject.Item.ItemData
+                        {
+                            Timestamp = DateTime.Now,
+                            Values = Enumerable.Range(21, 5).SelectAsReadOnlyCollection(value => value)
+                        }
+                    },
+                }
+            };
+
+            // You would normally register multiple filters (for different object types) and then request a filter on demand
+            var registry = new ObjectPropertyFilterRegistry();
+            registry.Register<ComplexObjectItemDataFilter>();
+
+            Console.WriteLine("Complex Object serialization values via a registry:");
+            Console.WriteLine("===================================================");
+
+            _ = registry.GetObjectPropertySerializer(complexObject, out var serializer);
+
+            var items = serializer.SerializeToDictionary(complexObject).Select(kvp => $"{kvp.Key} = {kvp.Value}");
+
+            foreach (var item in items)
+            {
+                Console.WriteLine($"  {item}");
             }
         }
 

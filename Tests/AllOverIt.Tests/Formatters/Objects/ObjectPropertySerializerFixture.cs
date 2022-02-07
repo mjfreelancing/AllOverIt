@@ -13,7 +13,6 @@ using Xunit;
 
 namespace AllOverIt.Tests.Formatters.Objects
 {
-
     public class ObjectPropertySerializerFixture : FixtureBase
     {
         private class DummyType

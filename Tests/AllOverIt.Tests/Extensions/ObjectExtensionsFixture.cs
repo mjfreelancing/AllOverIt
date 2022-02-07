@@ -255,7 +255,24 @@ namespace AllOverIt.Tests.Extensions
                 }
             }
 
-            private class DummyTypePropertyValueFilter : ObjectPropertyFilter, IFormattableObjectPropertyFilter
+            private class DummyTypePropertyValueFilter : ObjectPropertyFilter
+            {
+                private readonly string _expectedPath;
+                private readonly object _expectedValue;
+
+                public DummyTypePropertyValueFilter(string expectedPath, object expectedValue)
+                {
+                    _expectedPath = expectedPath;
+                    _expectedValue = expectedValue;
+                }
+
+                public override bool OnIncludeProperty()
+                {
+                    return Path == _expectedPath && Value == _expectedValue;
+                }
+            }
+
+            private class DummyTypePropertyPathFilter : ObjectPropertyFilter, IFormattableObjectPropertyFilter
             {
                 public override bool OnIncludeValue()
                 {
@@ -844,7 +861,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var options = new ObjectPropertySerializerOptions
                 {
-                    Filter = new DummyTypePropertyValueFilter()
+                    Filter = new DummyTypePropertyPathFilter()
                 };
 
                 var actual = dummy.ToSerializedDictionary(options);
@@ -854,6 +871,26 @@ namespace AllOverIt.Tests.Extensions
                     .BeEquivalentTo(new Dictionary<string, string>
                     {
                         { "Prop1", "Included" }
+                    });
+            }
+
+            [Fact]
+            public void Should_Filter_To_Property_With_Given_Change_Value()
+            {
+                var dummy = Create<DummyType>();
+
+                var options = new ObjectPropertySerializerOptions
+                {
+                    Filter = new DummyTypePropertyValueFilter(nameof(dummy.Prop14), dummy.Prop14)
+                };
+
+                var actual = dummy.ToSerializedDictionary(options);
+
+                actual
+                    .Should()
+                    .BeEquivalentTo(new Dictionary<string, string>
+                    {
+                        { "Prop14", dummy.Prop14 }
                     });
             }
 

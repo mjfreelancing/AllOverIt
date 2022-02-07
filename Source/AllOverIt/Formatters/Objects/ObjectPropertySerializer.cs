@@ -8,11 +8,10 @@ using System.Linq;
 
 namespace AllOverIt.Formatters.Objects
 {
-
-    /// <summary>Converts an object to an IDictionary{string, string} using a dot notation for nested members.</summary>
-    public sealed class ObjectPropertySerializer
+    /// <summary>Converts an object to an IDictionary&lt;string, string&gt; using a dot notation for nested members.</summary>
+    public sealed class ObjectPropertySerializer : IObjectPropertySerializer
     {
-        /// <summary>Provides options that determine how serialization of properties and their values are handled.</summary>
+        /// <inheritdoc />
         public ObjectPropertySerializerOptions Options { get; }
 
         /// <summary>Constructor.</summary>
@@ -23,9 +22,7 @@ namespace AllOverIt.Formatters.Objects
             Options = options ?? new ObjectPropertySerializerOptions();
         }
 
-        /// <summary>Serializes an object to an IDictionary{string, string}.</summary>
-        /// <param name="instance">The object to be serialized.</param>
-        /// <returns>A flat IDictionary{string, string} of all properties using a dot notation for nested members.</returns>
+        /// <inheritdoc />
         public IDictionary<string, string> SerializeToDictionary(object instance)
         {
             _ = instance.WhenNotNull(nameof(instance));
@@ -189,7 +186,7 @@ namespace AllOverIt.Formatters.Objects
 
                     if (Options.Filter != null)
                     {
-                        if (!IncludePropertyValue(type, path, name, index, references))
+                        if (!IncludePropertyValue(type, value, path, name, index, references))
                         {
                             return;
                         }
@@ -216,7 +213,7 @@ namespace AllOverIt.Formatters.Objects
 
                     if (Options.Filter != null)
                     {
-                        if (ExcludeValueType(value) || !IncludeProperty(type, path, name, index, references))
+                        if (ExcludeValueType(value) || !IncludeProperty(type, value, path, name, index, references))
                         {
                             return;
                         }
@@ -285,25 +282,26 @@ namespace AllOverIt.Formatters.Objects
             return args.Any() && IgnoreType(args[0]);
         }
 
-        private void SetFilterAttributes(Type type, string path, string name, int? index, IDictionary<object, ObjectPropertyParent> references)
+        private void SetFilterAttributes(Type type, object value, string path, string name, int? index, IDictionary<object, ObjectPropertyParent> references)
         {
             Options.Filter.Type = type;
+            Options.Filter.Value = value;
             Options.Filter.Path = path;
             Options.Filter.Name = name;
             Options.Filter.Index = index;
             Options.Filter.Parents = references.Values.AsReadOnlyCollection();
         }
 
-        private bool IncludeProperty(Type type, string path, string name, int? index, IDictionary<object, ObjectPropertyParent> references)
+        private bool IncludeProperty(Type type, object value, string path, string name, int? index, IDictionary<object, ObjectPropertyParent> references)
         {
-            SetFilterAttributes(type, path, name, index, references);
+            SetFilterAttributes(type, value, path, name, index, references);
 
             return Options.Filter.OnIncludeProperty();
         }
 
-        private bool IncludePropertyValue(Type type, string path, string name, int? index, IDictionary<object, ObjectPropertyParent> references)
+        private bool IncludePropertyValue(Type type, object value, string path, string name, int? index, IDictionary<object, ObjectPropertyParent> references)
         {
-            return IncludeProperty(type, path, name, index, references) && Options.Filter.OnIncludeValue();
+            return IncludeProperty(type, value, path, name, index, references) && Options.Filter.OnIncludeValue();
         }
     }
 }

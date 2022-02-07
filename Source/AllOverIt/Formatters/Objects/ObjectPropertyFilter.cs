@@ -10,6 +10,9 @@ namespace AllOverIt.Formatters.Objects
         /// <summary>The type of the current value.</summary>
         public Type Type { get; internal set; }
 
+        /// <summary>The value of the current value.</summary>
+        public object Value { get; internal set; }
+
         /// <summary>The full path within the object graph where the current value sits.</summary>
         public string Path { get; internal set; }
 

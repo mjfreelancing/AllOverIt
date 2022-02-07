@@ -1,5 +1,16 @@
 ======================================================================================================================
 
+07 Feb 2022
+======================================================================================================================
+AllOverIt v2.7.0
+  * Add visibility to the current value being filtered on ObjectPropertyFilter.
+  * Added a registry for ObjectPropertyFilters that can be used to retrieve a serializer configured with a filter
+    suitable for a given object instance.
+  * Added support for [CallerArgumentExpression] on Guard extensions in .NET Core 3.1 and above.
+    BREAKING CHANGE: The 'WhenXXX' overloads taking 'bool ensureIsCollection' have had their argument list adjusted to
+                     allow for a default name to be applied.
+
+
 30 Jan 2022
 ======================================================================================================================
 AllOverIt v2.6.0
