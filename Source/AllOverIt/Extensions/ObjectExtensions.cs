@@ -1,11 +1,11 @@
 ﻿using AllOverIt.Formatters.Objects;
+using AllOverIt.Helpers;
 using AllOverIt.Reflection;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using AllOverIt.Helpers;
 
 namespace AllOverIt.Extensions
 {
@@ -279,6 +279,14 @@ namespace AllOverIt.Extensions
             var properties = resolvers.Select(resolver => resolver.Invoke(instance));
 
             return HashCodeHelper.CalculateHashCode(properties);
+        }
+        
+        /// <summary>Determines if the provided object inherits from EnrichedEnum&lt;&gt;.</summary>
+        /// <param name="object">The instance to be checked.</param>
+        /// <returns>True if the object inherits from EnrichedEnum&lt;&gt;, otherwise False.</returns>
+        public static bool IsEnrichedEnum(this object @object)
+        {
+            return @object.GetType().IsEnrichedEnum();
         }
 
         private static PropertyInfo GetPropertyInfo(object instance, string propertyName, BindingFlags bindingFlags)

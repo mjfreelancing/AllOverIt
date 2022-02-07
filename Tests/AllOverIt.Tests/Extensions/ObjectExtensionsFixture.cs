@@ -2,6 +2,7 @@
 using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Formatters.Objects;
+using AllOverIt.Patterns.Enumeration;
 using AllOverIt.Reflection;
 using FluentAssertions;
 using System;
@@ -9,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -60,6 +62,16 @@ namespace AllOverIt.Tests.Extensions
             public IList<RootItem> Items { get; } = new List<RootItem>();
 
             public IDictionary<int, IEnumerable<RootItem>> Maps { get; } = new Dictionary<int, IEnumerable<RootItem>>();
+        }
+
+        private class EnrichedEnumDummy : EnrichedEnum<EnrichedEnumDummy>
+        {
+            public static readonly EnrichedEnumDummy Value1 = new(1);
+
+            private EnrichedEnumDummy(int value, [CallerMemberName] string name = null)
+                : base(value, name)
+            {
+            }
         }
 
         public ObjectExtensionsFixture()
@@ -1795,6 +1807,29 @@ namespace AllOverIt.Tests.Extensions
                 var actual = ObjectExtensions.CalculateHashCode(subject, model => model.Prop1, model => model.GetProp2(), model => model.Prop5);
 
                 actual.Should().Be(expected);
+            }
+        }
+
+        public class IsEnrichedEnum : ObjectExtensionsFixture
+        {
+            [Fact]
+            public void Should_Return_False()
+            {
+                var dummy = Create<DummyClass>();
+
+                var actual = dummy.IsEnrichedEnum();
+
+                actual.Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Return_True()
+            {
+                var dummy = EnrichedEnumDummy.Value1;
+
+                var actual = dummy.IsEnrichedEnum();
+
+                actual.Should().BeTrue();
             }
         }
 

@@ -5,6 +5,8 @@ using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using AllOverIt.Patterns.Enumeration;
 using Xunit;
 
 namespace AllOverIt.Tests.Extensions
@@ -62,6 +64,16 @@ namespace AllOverIt.Tests.Extensions
 
         private class DummyComposite<T1, T2>
         {
+        }
+
+        private class EnrichedEnumDummy : EnrichedEnum<EnrichedEnumDummy>
+        {
+            public static readonly EnrichedEnumDummy Value1 = new(1);
+
+            private EnrichedEnumDummy(int value, [CallerMemberName] string name = null)
+                : base(value, name)
+            {
+            }
         }
 
         public enum DummyEnum { One, Two, Three }
@@ -560,6 +572,25 @@ namespace AllOverIt.Tests.Extensions
                 var actual = AllOverIt.Extensions.TypeExtensions.GetFriendlyName(type);
 
                 actual.Should().Be(expected);
+            }
+        }
+
+        public class IsEnrichedEnum : TypeExtensionsFixture
+        {
+            [Fact]
+            public void Should_Return_False()
+            {
+                var actual = typeof(DummySuperClass).IsEnrichedEnum();
+
+                actual.Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Return_True()
+            {
+                var actual = typeof(EnrichedEnumDummy).IsEnrichedEnum();
+
+                actual.Should().BeTrue();
             }
         }
     }

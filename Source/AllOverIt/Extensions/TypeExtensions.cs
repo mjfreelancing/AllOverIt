@@ -5,12 +5,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using AllOverIt.Patterns.Enumeration;
 
 namespace AllOverIt.Extensions
 {
     /// <summary>Provides a variety of extension methods for <see cref="Type"/> types.</summary>
     public static class TypeExtensions
     {
+        private static readonly Type EnrichedEnumType = typeof(EnrichedEnum<>);
+
         /// <summary>Gets the <see cref="PropertyInfo"/> (property metadata) for a given public or protected property on a <see cref="Type"/>.</summary>
         /// <param name="type">The <see cref="Type"/> to obtain the property metadata from.</param>
         /// <param name="propertyName">The name of the property to obtain metadata for.</param>
@@ -255,6 +258,17 @@ namespace AllOverIt.Extensions
             return type.IsGenericNullableType()
               ? $"{type.GetGenericArguments().Single().Name}?"
               : type.Name;
+        }
+
+        /// <summary>Determines if the provided type inherits from EnrichedEnum&lt;&gt;.</summary>
+        /// <param name="type">The type to be checked.</param>
+        /// <returns>True if the type inherits from EnrichedEnum&lt;&gt;, otherwise False.</returns>
+        public static bool IsEnrichedEnum(this Type type)
+        {
+            var baseType = type.BaseType;
+
+            return baseType is { IsGenericType: true } &&
+                   baseType.GetGenericTypeDefinition() == EnrichedEnumType;
         }
     }
 }
