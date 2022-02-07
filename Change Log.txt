@@ -1,5 +1,41 @@
 ======================================================================================================================
 
+08 Feb 2022
+======================================================================================================================
+AllOverIt v2.7.2
+  * Correction to usage of [CallerArgumentExpression] so the name is not defaulted for .NET Standard 2 and 2.1
+
+AllOverIt.Validation v2.3.0
+  * Updated to AllOverIt v2.7.2
+
+AllOverIt.Aws.Cdk.AppSync v1.5.0
+  * Updated to AllOverIt v2.7.2
+
+AllOverIt.Evaluator v4.4.0
+  * Updated to AllOverIt v2.7.2
+
+AllOverIt.GenericHost v3.1.0
+  * Updated to AllOverIt v2.7.2
+
+AllOverIt.Serialization.NewtonsoftJson v1.6.0
+  * Updated to AllOverIt v2.7.2
+
+AllOverIt.Serialization.SystemTextJson v1.6.0
+  * Updated to AllOverIt v2.7.2
+
+AllOverIt.Aws.AppSync.Client v1.7.0
+  * Updated to AllOverIt v2.7.2
+
+AllOverIt.AspNetCore v1.5.0
+  * Updated to AllOverIt v2.7.2
+
+AllOverIt.EntityFrameworkCore v1.3.0
+  * Updated to AllOverIt v2.7.2
+
+AllOverIt.Csv v2.1.0
+  * Updated to AllOverIt v2.7.2
+
+
 07 Feb 2022
 ======================================================================================================================
 AllOverIt v2.7.1

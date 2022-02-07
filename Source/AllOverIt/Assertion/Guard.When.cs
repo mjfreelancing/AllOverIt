@@ -152,9 +152,10 @@ namespace AllOverIt.Assertion
         /// <returns>The original object instance when not null.</returns>
         public static TType WhenNotNull<TType>(this TType @object,
 #if NETCOREAPP3_1_OR_GREATER
-            [CallerArgumentExpression("object")]
+            [CallerArgumentExpression("object")] string name = "",
+#else
+            string name,
 #endif
-            string name = "",
             string errorMessage = default)
             where TType : class
         {
@@ -171,9 +172,10 @@ namespace AllOverIt.Assertion
         /// <remarks>This method also validates that the enumerable is an array or ICollection&lt;TType&gt; to prevent multiple enumeration of the IEnumerable.</remarks>
         public static IEnumerable<TType> WhenNotNullOrEmpty<TType>(this IEnumerable<TType> @object,
 #if NETCOREAPP3_1_OR_GREATER
-            [CallerArgumentExpression("object")]
+            [CallerArgumentExpression("object")] string name = "",
+#else
+            string name,
 #endif
-            string name = "",
             string errorMessage = default)
         {
             return WhenNotNullOrEmpty(@object, true, name, errorMessage);
@@ -190,9 +192,10 @@ namespace AllOverIt.Assertion
         /// <returns>The original object instance when not null and not empty.</returns>
         public static IEnumerable<TType> WhenNotNullOrEmpty<TType>(this IEnumerable<TType> @object, bool ensureIsCollection,
 #if NETCOREAPP3_1_OR_GREATER
-            [CallerArgumentExpression("object")]
+            [CallerArgumentExpression("object")] string name = "",
+#else
+            string name,
 #endif
-            string name = "",
             string errorMessage = default)
         {
             _ = @object ?? ThrowArgumentNullException<IEnumerable<TType>>(name, errorMessage);
@@ -210,9 +213,10 @@ namespace AllOverIt.Assertion
         /// <remarks>This method also validates that the enumerable is an array or ICollection&lt;TType&gt; to prevent multiple enumeration of the IEnumerable.</remarks>
         public static IEnumerable<TType> WhenNotEmpty<TType>(this IEnumerable<TType> @object,
 #if NETCOREAPP3_1_OR_GREATER
-            [CallerArgumentExpression("object")]
+            [CallerArgumentExpression("object")] string name = "",
+#else
+            string name,
 #endif
-            string name = "",
             string errorMessage = default)
         {
             return WhenNotEmpty<TType>(@object, true, name, errorMessage);
@@ -228,9 +232,10 @@ namespace AllOverIt.Assertion
         /// <returns>The original collection instance when not empty. If the instance was null then null will be returned.</returns>
         public static IEnumerable<TType> WhenNotEmpty<TType>(this IEnumerable<TType> @object, bool ensureIsCollection,
 #if NETCOREAPP3_1_OR_GREATER
-            [CallerArgumentExpression("object")]
+            [CallerArgumentExpression("object")] string name = "",
+#else
+            string name,
 #endif
-            string name = "",
             string errorMessage = default)
         {
             if (@object != null)
@@ -266,9 +271,10 @@ namespace AllOverIt.Assertion
         /// <returns>The original string instance when not null and not empty.</returns>
         public static string WhenNotNullOrEmpty(this string @object,
 #if NETCOREAPP3_1_OR_GREATER
-            [CallerArgumentExpression("object")]
+            [CallerArgumentExpression("object")] string name = "",
+#else
+            string name,
 #endif
-            string name = "",
             string errorMessage = default)
         {
             _ = @object ?? ThrowArgumentNullException(name, errorMessage);
@@ -283,9 +289,10 @@ namespace AllOverIt.Assertion
         /// <returns>The original string instance when not empty.</returns>
         public static string WhenNotEmpty(this string @object,
 #if NETCOREAPP3_1_OR_GREATER
-            [CallerArgumentExpression("object")]
+            [CallerArgumentExpression("object")] string name = "",
+#else
+            string name,
 #endif
-            string name = "",
             string errorMessage = default)
         {
             if (@object == null || !string.IsNullOrWhiteSpace(@object))

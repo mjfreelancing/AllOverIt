@@ -15,9 +15,10 @@ namespace AllOverIt.Assertion
         /// <exception cref="InvalidOperationException"/>
         public static void CheckNotNull<TType>(this TType @object,
 #if NETCOREAPP3_1_OR_GREATER
-            [CallerArgumentExpression("object")]
+            [CallerArgumentExpression("object")] string name = "",
+#else
+            string name,
 #endif
-            string name = "",
             string errorMessage = default)
             where TType : class
         {
@@ -35,9 +36,10 @@ namespace AllOverIt.Assertion
         /// <exception cref="InvalidOperationException"/>
         public static void CheckNotNullOrEmpty<TType>(this IEnumerable<TType> @object,
 #if NETCOREAPP3_1_OR_GREATER
-            [CallerArgumentExpression("object")]
+            [CallerArgumentExpression("object")] string name = "",
+#else
+            string name,
 #endif
-            string name = "",
             string errorMessage = default)
         {
             // ReSharper disable once PossibleMultipleEnumeration
@@ -57,9 +59,10 @@ namespace AllOverIt.Assertion
         /// <exception cref="InvalidOperationException"/>
         public static void CheckNotEmpty<TType>(this IEnumerable<TType> @object,
 #if NETCOREAPP3_1_OR_GREATER
-            [CallerArgumentExpression("object")]
+            [CallerArgumentExpression("object")] string name = "",
+#else
+            string name,
 #endif
-            string name = "",
             string errorMessage = default)
         {
             if (@object != null && !@object.Any())
@@ -76,9 +79,10 @@ namespace AllOverIt.Assertion
         /// <exception cref="InvalidOperationException"/>
         public static void CheckNotNullOrEmpty(this string @object,
 #if NETCOREAPP3_1_OR_GREATER
-            [CallerArgumentExpression("object")]
+            [CallerArgumentExpression("object")] string name = "",
+#else
+            string name,
 #endif
-            string name = "",
             string errorMessage = default)
         {
             CheckNotNull(@object, name, errorMessage);
@@ -92,9 +96,10 @@ namespace AllOverIt.Assertion
         /// <exception cref="InvalidOperationException"/>
         public static void CheckNotEmpty(this string @object,
 #if NETCOREAPP3_1_OR_GREATER
-            [CallerArgumentExpression("object")]
+            [CallerArgumentExpression("object")] string name = "",
+#else
+            string name,
 #endif
-            string name = "",
             string errorMessage = default)
         {
             if (@object != null && string.IsNullOrWhiteSpace(@object))
