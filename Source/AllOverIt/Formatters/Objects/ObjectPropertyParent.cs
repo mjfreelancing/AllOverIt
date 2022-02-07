@@ -1,4 +1,6 @@
-﻿namespace AllOverIt.Formatters.Objects
+﻿using AllOverIt.Assertion;
+
+namespace AllOverIt.Formatters.Objects
 {
     /// <summary>Contains serialization information for the parent of an object property.</summary>
     public sealed class ObjectPropertyParent
@@ -18,7 +20,7 @@
         /// <param name="index">When an element within a collection, this is the index of the item.</param>
         public ObjectPropertyParent(string name, object value, int? index)
         {
-            Name = name;
+            Name = name?.WhenNotEmpty(nameof(name));        // Can be null but should not be empty
             Value = value;
             Index = index;
         }
