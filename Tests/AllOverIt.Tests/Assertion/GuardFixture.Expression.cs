@@ -10,14 +10,14 @@ namespace AllOverIt.Tests.Assertion
 {
     public partial class GuardFixture
     {
-        public class WhenNotNull_Expression : Assertion.GuardFixture
+        public class WhenNotNull_Expression : GuardFixture
         {
             [Fact]
             public void Should_Throw_When_Expression_Null()
             {
                 Invoking(() =>
                     {
-                        Guard.WhenNotNull((Expression<Func<DummyClass>>)null);
+                        Guard.WhenNotNull((Expression<Func<DummyClass>>)null, null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()

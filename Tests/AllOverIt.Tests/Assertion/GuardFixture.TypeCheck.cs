@@ -9,8 +9,22 @@ namespace AllOverIt.Tests.Assertion
 {
     public partial class GuardFixture
     {
-        public class CheckNotNull_Type : Assertion.GuardFixture
+        public class CheckNotNull_Type : GuardFixture
         {
+            [Fact]
+            public void Should_Throw_With_Expected_Name()
+            {
+                DummyClass dummy = null;
+
+                Invoking(() =>
+                    {
+                        Guard.CheckNotNull(dummy);
+                    })
+                    .Should()
+                    .Throw<InvalidOperationException>()
+                    .WithNamedMessageWhenNull(nameof(dummy));
+            }
+
             [Fact]
             public void Should_Throw_When_Null()
             {
@@ -74,8 +88,22 @@ namespace AllOverIt.Tests.Assertion
             }
         }
 
-        public class CheckNotNullOrEmpty_Type : Assertion.GuardFixture
+        public class CheckNotNullOrEmpty_Type : GuardFixture
         {
+            [Fact]
+            public void Should_Throw_With_Expected_Name()
+            {
+                IEnumerable<DummyClass> dummy = null;
+
+                Invoking(() =>
+                    {
+                        Guard.CheckNotNullOrEmpty(dummy);
+                    })
+                    .Should()
+                    .Throw<InvalidOperationException>()
+                    .WithNamedMessageWhenNull(nameof(dummy));
+            }
+
             [Fact]
             public void Should_Throw_When_Null()
             {
@@ -171,7 +199,7 @@ namespace AllOverIt.Tests.Assertion
             }
         }
 
-        public class CheckNotEmpty_Type : Assertion.GuardFixture
+        public class CheckNotEmpty_Type : GuardFixture
         {
             [Fact]
             public void Should_Not_Throw_When_Null()
@@ -186,6 +214,20 @@ namespace AllOverIt.Tests.Assertion
                     })
                     .Should()
                     .NotThrow();
+            }
+
+            [Fact]
+            public void Should_Throw_With_Expected_Name()
+            {
+                var expected = new List<DummyClass>();
+
+                Invoking(() =>
+                    {
+                        Guard.CheckNotEmpty(expected);
+                    })
+                    .Should()
+                    .Throw<InvalidOperationException>()
+                    .WithNamedMessageWhenEmpty(nameof(expected));
             }
 
             [Fact]
@@ -249,8 +291,22 @@ namespace AllOverIt.Tests.Assertion
             }
         }
 
-        public class CheckNotNullOrEmpty_String : Assertion.GuardFixture
+        public class CheckNotNullOrEmpty_String : GuardFixture
         {
+            [Fact]
+            public void Should_Throw_With_Expected_Name()
+            {
+                string dummy = null;
+
+                Invoking(() =>
+                    {
+                        Guard.CheckNotNullOrEmpty(dummy);
+                    })
+                    .Should()
+                    .Throw<InvalidOperationException>()
+                    .WithNamedMessageWhenNull(nameof(dummy));
+            }
+
             [Fact]
             public void Should_Throw_When_Null()
             {
@@ -346,7 +402,7 @@ namespace AllOverIt.Tests.Assertion
             }
         }
 
-        public class CheckNotEmpty_String : Assertion.GuardFixture
+        public class CheckNotEmpty_String : GuardFixture
         {
             [Fact]
             public void Should_Not_Throw_When_Null()
@@ -361,6 +417,20 @@ namespace AllOverIt.Tests.Assertion
                     })
                     .Should()
                     .NotThrow();
+            }
+
+            [Fact]
+            public void Should_Throw_With_Expected_Name()
+            {
+                var expected = string.Empty;
+
+                Invoking(() =>
+                    {
+                        Guard.CheckNotEmpty(expected);
+                    })
+                    .Should()
+                    .Throw<InvalidOperationException>()
+                    .WithNamedMessageWhenEmpty(nameof(expected));
             }
 
             [Fact]

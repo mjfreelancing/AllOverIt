@@ -9,7 +9,7 @@ namespace AllOverIt.Tests.Assertion
 {
     public partial class GuardFixture
     {
-        public class InvalidWhenNull_Type : Assertion.GuardFixture
+        public class InvalidWhenNull_Type : GuardFixture
         {
             [Fact]
             public void Should_Throw_When_Null()
@@ -80,7 +80,7 @@ namespace AllOverIt.Tests.Assertion
             }
         }
 
-        public class InvalidWhenNullOrEmpty_Type : Assertion.GuardFixture
+        public class InvalidWhenNullOrEmpty_Type : GuardFixture
         {
             [Fact]
             public void Should_Throw_When_Null()
@@ -181,7 +181,7 @@ namespace AllOverIt.Tests.Assertion
             }
         }
 
-        public class InvalidWhenEmpty_Type : Assertion.GuardFixture
+        public class InvalidWhenEmpty_Type : GuardFixture
         {
             [Fact]
             public void Should_Not_Throw_When_Null()

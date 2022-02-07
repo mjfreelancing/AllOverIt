@@ -11,8 +11,22 @@ namespace AllOverIt.Tests.Assertion
 {
     public partial class GuardFixture
     {
-        public class WhenNotNull_Type : Assertion.GuardFixture
+        public class WhenNotNull_Type : GuardFixture
         {
+            [Fact]
+            public void Should_Throw_With_Expected_Name()
+            {
+                DummyClass dummy = null;
+
+                Invoking(() =>
+                    {
+                        Guard.WhenNotNull(dummy);
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull(nameof(dummy));
+            }
+
             [Fact]
             public void Should_Throw_When_Null()
             {
@@ -86,8 +100,22 @@ namespace AllOverIt.Tests.Assertion
             }
         }
 
-        public class WhenNotNullOrEmpty_Type : Assertion.GuardFixture
+        public class WhenNotNullOrEmpty_Type : GuardFixture
         {
+            [Fact]
+            public void Should_Throw_With_Expected_Name()
+            {
+                IEnumerable<DummyClass> dummy = null;
+
+                Invoking(() =>
+                    {
+                        Guard.WhenNotNullOrEmpty(dummy);
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull(nameof(dummy));
+            }
+
             [Fact]
             public void Should_Throw_When_Null()
             {
@@ -132,7 +160,7 @@ namespace AllOverIt.Tests.Assertion
 
                 Invoking(() =>
                     {
-                        Guard.WhenNotNullOrEmpty(expected, name, ensureIsConcrete);
+                        Guard.WhenNotNullOrEmpty(expected, ensureIsConcrete, name);
                     })
                     .Should()
                     .Throw<ArgumentException>()
@@ -147,7 +175,7 @@ namespace AllOverIt.Tests.Assertion
                 Invoking(
                     () =>
                     {
-                        Guard.WhenNotNullOrEmpty(range, nameof(range), true);
+                        Guard.WhenNotNullOrEmpty(range, true, nameof(range));
                     })
                     .Should()
                     .Throw<InvalidOperationException>()
@@ -161,7 +189,7 @@ namespace AllOverIt.Tests.Assertion
                    () =>
                    {
                        var items = new[] { 1, 2, 3 };
-                       Guard.WhenNotNullOrEmpty(items, nameof(items), true);
+                       Guard.WhenNotNullOrEmpty(items, true, nameof(items));
                    })
                    .Should()
                    .NotThrow();
@@ -174,7 +202,7 @@ namespace AllOverIt.Tests.Assertion
                    () =>
                    {
                        var items = new List<int>(new[] { 1, 2, 3 });
-                       Guard.WhenNotNullOrEmpty(items, nameof(items), true);
+                       Guard.WhenNotNullOrEmpty(items, true, nameof(items));
                    })
                    .Should()
                    .NotThrow();
@@ -187,7 +215,7 @@ namespace AllOverIt.Tests.Assertion
                    () =>
                    {
                        var items = new ReadOnlyCollection<int>(new List<int>(new[] { 1, 2, 3 }));
-                       Guard.WhenNotNullOrEmpty(items, nameof(items), true);
+                       Guard.WhenNotNullOrEmpty(items, true, nameof(items));
                    })
                    .Should()
                    .NotThrow();
@@ -200,7 +228,7 @@ namespace AllOverIt.Tests.Assertion
                    () =>
                    {
                        var items = new HashSet<int>(new[] { 1, 2, 3 });
-                       Guard.WhenNotNullOrEmpty(items, nameof(items), true);
+                       Guard.WhenNotNullOrEmpty(items, true, nameof(items));
                    })
                    .Should()
                    .NotThrow();
@@ -213,7 +241,7 @@ namespace AllOverIt.Tests.Assertion
                    () =>
                    {
                        var items = new Dictionary<int, int> { { 1, 1 }, { 2, 1 } };
-                       Guard.WhenNotNullOrEmpty(items, nameof(items), true);
+                       Guard.WhenNotNullOrEmpty(items, true, nameof(items));
                    })
                    .Should()
                    .NotThrow();
@@ -237,7 +265,7 @@ namespace AllOverIt.Tests.Assertion
                     {
                         // never do this - the Enumerable will be re-evaluated
                         // see the count below
-                        Guard.WhenNotNullOrEmpty(range, nameof(range), false);
+                        Guard.WhenNotNullOrEmpty(range, false, nameof(range));
                     })
                     .Should()
                     .NotThrow();
@@ -306,7 +334,7 @@ namespace AllOverIt.Tests.Assertion
             }
         }
 
-        public class WhenNotEmpty_Type : Assertion.GuardFixture
+        public class WhenNotEmpty_Type : GuardFixture
         {
             [Fact]
             public void Should_Not_Throw_When_Null()
@@ -321,6 +349,20 @@ namespace AllOverIt.Tests.Assertion
                     })
                     .Should()
                     .NotThrow();
+            }
+
+            [Fact]
+            public void Should_Throw_With_Expected_Name()
+            {
+                var expected = new List<DummyClass>();
+
+                Invoking(() =>
+                    {
+                        Guard.WhenNotEmpty(expected);
+                    })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty(nameof(expected));
             }
 
             [Fact]
@@ -363,7 +405,7 @@ namespace AllOverIt.Tests.Assertion
                 Invoking(
                     () =>
                     {
-                        Guard.WhenNotEmpty(range, nameof(range), true);
+                        Guard.WhenNotEmpty(range, true, nameof(range));
                     })
                     .Should()
                     .Throw<InvalidOperationException>()
@@ -377,7 +419,7 @@ namespace AllOverIt.Tests.Assertion
                    () =>
                    {
                        var items = new[] { 1, 2, 3 };
-                       Guard.WhenNotEmpty(items, nameof(items), true);
+                       Guard.WhenNotEmpty(items, true, nameof(items));
                    })
                    .Should()
                    .NotThrow();
@@ -390,7 +432,7 @@ namespace AllOverIt.Tests.Assertion
                    () =>
                    {
                        var items = new List<int>(new[] { 1, 2, 3 });
-                       Guard.WhenNotEmpty(items, nameof(items), true);
+                       Guard.WhenNotEmpty(items, true, nameof(items));
                    })
                    .Should()
                    .NotThrow();
@@ -403,7 +445,7 @@ namespace AllOverIt.Tests.Assertion
                    () =>
                    {
                        var items = new ReadOnlyCollection<int>(new List<int>(new[] { 1, 2, 3 }));
-                       Guard.WhenNotEmpty(items, nameof(items), true);
+                       Guard.WhenNotEmpty(items, true, nameof(items));
                    })
                    .Should()
                    .NotThrow();
@@ -416,7 +458,7 @@ namespace AllOverIt.Tests.Assertion
                    () =>
                    {
                        var items = new HashSet<int>(new[] { 1, 2, 3 });
-                       Guard.WhenNotEmpty(items, nameof(items), true);
+                       Guard.WhenNotEmpty(items, true, nameof(items));
                    })
                    .Should()
                    .NotThrow();
@@ -429,7 +471,7 @@ namespace AllOverIt.Tests.Assertion
                    () =>
                    {
                        var items = new Dictionary<int, int> { { 1, 1 }, { 2, 1 } };
-                       Guard.WhenNotEmpty(items, nameof(items), true);
+                       Guard.WhenNotEmpty(items, true, nameof(items));
                    })
                    .Should()
                    .NotThrow();
@@ -453,7 +495,7 @@ namespace AllOverIt.Tests.Assertion
                     {
                         // never do this - the Enumerable will be re-evaluated
                         // see the count below
-                        Guard.WhenNotEmpty(range, nameof(range), false);
+                        Guard.WhenNotEmpty(range, false, nameof(range));
                     })
                     .Should()
                     .NotThrow();

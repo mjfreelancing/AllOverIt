@@ -64,7 +64,8 @@ namespace AllOverIt.Assertion
         /// <returns>The same source string instance.</returns>
         public static string InvalidWhenNullOrEmpty(this string @object, string errorMessage = default)
         {
-            Assertion.Guard.CheckNotNull(@object, errorMessage);
+            CheckNotNull(@object, errorMessage);
+
             return InvalidWhenEmpty(@object, errorMessage);
         }
 
