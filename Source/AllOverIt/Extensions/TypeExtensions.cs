@@ -260,15 +260,12 @@ namespace AllOverIt.Extensions
               : type.Name;
         }
 
-        /// <summary>Determines if the provided type inherits from EnrichedEnum&lt;&gt;.</summary>
+        /// <summary>Determines if the provided type inherits from EnrichedEnum&lt;TEnum&gt;.</summary>
         /// <param name="type">The type to be checked.</param>
         /// <returns>True if the type inherits from EnrichedEnum&lt;&gt;, otherwise False.</returns>
         public static bool IsEnrichedEnum(this Type type)
         {
-            var baseType = type.BaseType;
-
-            return baseType is { IsGenericType: true } &&
-                   baseType.GetGenericTypeDefinition() == EnrichedEnumType;
+            return type.IsDerivedFrom(EnrichedEnumType);
         }
     }
 }

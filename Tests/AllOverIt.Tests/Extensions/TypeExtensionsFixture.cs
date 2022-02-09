@@ -66,11 +66,20 @@ namespace AllOverIt.Tests.Extensions
         {
         }
 
-        private class EnrichedEnumDummy : EnrichedEnum<EnrichedEnumDummy>
+        private abstract class EnrichedEnumDummy : EnrichedEnum<EnrichedEnumDummy>
         {
-            public static readonly EnrichedEnumDummy Value1 = new(1);
+            protected EnrichedEnumDummy(int value, [CallerMemberName] string name = null)
+                : base(value, name)
+            {
+            }
+        }
 
-            private EnrichedEnumDummy(int value, [CallerMemberName] string name = null)
+        private class SuperEnrichedEnumDummy : EnrichedEnumDummy
+        {
+            public static readonly SuperEnrichedEnumDummy Value1 = new(1);
+            public static readonly SuperEnrichedEnumDummy Value2 = new(2);
+
+            private SuperEnrichedEnumDummy(int value, [CallerMemberName] string name = null)
                 : base(value, name)
             {
             }
@@ -589,6 +598,14 @@ namespace AllOverIt.Tests.Extensions
             public void Should_Return_True()
             {
                 var actual = typeof(EnrichedEnumDummy).IsEnrichedEnum();
+
+                actual.Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Return_True_For_Derived_Enum()
+            {
+                var actual = typeof(SuperEnrichedEnumDummy).IsEnrichedEnum();
 
                 actual.Should().BeTrue();
             }
