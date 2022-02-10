@@ -40,7 +40,7 @@ namespace AllOverIt.Formatters.Objects
 
         private void Populate(string prefix, object instance, IDictionary<string, string> values, IDictionary<object, ObjectPropertyParent> references)
         {
-            var collateArrayValues = (Options.Filter?.ArrayOptions ?? Options.ArrayOptions).CollateValues;
+            var collateValues = (Options.Filter?.EnumerableOptions ?? Options.EnumerableOptions).CollateValues;
 
             switch (instance)
             {
@@ -49,15 +49,15 @@ namespace AllOverIt.Formatters.Objects
                     break;
 
                 case IEnumerable enumerable:
-                    var arrayValues = collateArrayValues
+                    var arrayValues = collateValues
                         ? new Dictionary<string, string>()
                         : values;
 
                     AppendEnumerableAsPropertyValues(prefix, enumerable, arrayValues, references);
 
-                    if (collateArrayValues)
+                    if (collateValues)
                     {
-                        values.Add(prefix, string.Join(Options.ArrayOptions.Separator, arrayValues.Values));
+                        values.Add(prefix, string.Join(Options.EnumerableOptions.Separator, arrayValues.Values));
                     }
                     break;
 

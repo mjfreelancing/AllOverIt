@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AllOverIt.Fixture;
+﻿using AllOverIt.Fixture;
 using AllOverIt.Formatters.Objects;
 using FluentAssertions;
+using System;
 using Xunit;
 
 namespace AllOverIt.Tests.Formatters.Objects
@@ -51,7 +49,92 @@ namespace AllOverIt.Tests.Formatters.Objects
 
                 serializer.Options.Should().BeSameAs(options);
             }
+
+            [Fact]
+            public void Should_Throw_If_Options_Registered_With_Filter()
+            {
+                var options = new ObjectPropertySerializerOptions
+                {
+                    Filter = new ObjectDummyFilter()
+                };
+
+                Invoking(() =>
+                    {
+                        _registry.Register<ObjectDummyFilter>(options);
+                    })
+                    .Should()
+                    .Throw<InvalidOperationException>()
+                    .WithMessage($"The {nameof(ObjectPropertyFilterRegistry)} expects the provided options to not include a filter. ({nameof(options.Filter)})");
+            }
         }
+
+
+
+
+
+
+
+        public class Register_Action : ObjectPropertyFilterRegistryFixture
+        {
+            private readonly ObjectPropertyFilterRegistry _registry;
+
+            public Register_Action()
+            {
+                _registry = new ObjectPropertyFilterRegistry();
+            }
+
+            [Fact]
+            public void Should_Register_Filter()
+            {
+                _registry.Register<ObjectDummyFilter>(options => { });
+
+                var actual = _registry.GetObjectPropertySerializer(Create<ObjectDummy>(), out _);
+
+                actual.Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Register_With_Options()
+            {
+                var expectedOptions = new ObjectPropertySerializerOptions
+                {
+                    IncludeNulls = Create<bool>(),
+                    IncludeEmptyCollections = Create<bool>(),
+                    NullValueOutput = Create<string>(),
+                    EmptyValueOutput = Create<string>()
+                };
+
+                _registry.Register<ObjectDummyFilter>(options =>
+                {
+                    options.IncludeNulls = expectedOptions.IncludeNulls;
+                    options.IncludeEmptyCollections = expectedOptions.IncludeEmptyCollections;
+                    options.NullValueOutput = expectedOptions.NullValueOutput;
+                    options.EmptyValueOutput = expectedOptions.EmptyValueOutput;
+                });
+
+                _ = _registry.GetObjectPropertySerializer(Create<ObjectDummy>(), out var serializer);
+
+                serializer.Options.Filter.Should().BeOfType<ObjectDummyFilter>();
+                serializer.Options.Should().BeEquivalentTo(expectedOptions, config => config.Excluding(options => options.Filter));
+            }
+
+            [Fact]
+            public void Should_Throw_If_Options_Registered_With_Filter()
+            {
+                Invoking(() =>
+                    {
+                        _registry.Register<ObjectDummyFilter>(options =>
+                        {
+                            options.Filter = new ObjectDummyFilter();
+                        });
+                    })
+                    .Should()
+                    .Throw<InvalidOperationException>()
+                    .WithMessage($"The {nameof(ObjectPropertyFilterRegistry)} expects the provided options to not include a filter. ({nameof(ObjectPropertySerializerOptions.Filter)})");
+            }
+        }
+
+
 
         public class GetObjectPropertySerializer : ObjectPropertyFilterRegistryFixture
         {

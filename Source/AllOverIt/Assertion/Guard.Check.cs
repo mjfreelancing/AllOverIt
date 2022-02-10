@@ -25,6 +25,27 @@ namespace AllOverIt.Assertion
             _ = @object ?? ThrowInvalidOperationException<TType>(name, errorMessage ?? "Value cannot be null");
         }
 
+        /// <summary>Checks the specified object is null.</summary>
+        /// <typeparam name="TType">The object type.</typeparam>
+        /// <param name="object">The object instance.</param>
+        /// <param name="name">The name of the instance.</param>
+        /// <param name="errorMessage">The error message to report. If not provided, the default message is "Value must be null".</param>
+        /// <exception cref="InvalidOperationException"/>
+        public static void CheckIsNull<TType>(this TType @object,
+#if NETCOREAPP3_1_OR_GREATER
+            [CallerArgumentExpression("object")] string name = "",
+#else
+            string name,
+#endif
+            string errorMessage = default)
+            where TType : class
+        {
+            if (@object != null)
+            {
+                ThrowInvalidOperationException<TType>(name, errorMessage ?? "Value must be null");
+            }
+        }
+
         /// <summary>Checks the specified enumerable is not null or empty.</summary>
         /// <typeparam name="TType">The element type.</typeparam>
         /// <param name="object">The enumerable instance</param>

@@ -25,12 +25,13 @@ namespace AllOverIt.Formatters.Objects
         {
             var filter = new TFilter();
 
+            serializerOptions
+                ?.Filter
+                .CheckIsNull(nameof(serializerOptions.Filter), $"The {nameof(ObjectPropertyFilterRegistry)} expects the provided options to not include a filter.");
+
             var lazySerializer = new Lazy<IObjectPropertySerializer>(() =>
             {
                 var options = serializerOptions ?? new ObjectPropertySerializerOptions();
-
-                options.Filter.InvalidWhenNull($"The {nameof(ObjectPropertyFilterRegistry)} expects the provided options to not include a filter.");
-
                 options.Filter = filter;
 
                 return new ObjectPropertySerializer(options);

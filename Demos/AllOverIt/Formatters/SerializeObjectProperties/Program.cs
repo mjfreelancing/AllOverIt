@@ -132,7 +132,7 @@ namespace SerializeObjectProperties
 
             try
             {
-                serializer.Options.ArrayOptions.CollateValues = collateArrayValues;
+                serializer.Options.EnumerableOptions.CollateValues = collateArrayValues;
 
                 var items = serializer.SerializeToDictionary(metadataRoot).Select(kvp => $"{kvp.Key} = {kvp.Value}");
 
@@ -143,7 +143,7 @@ namespace SerializeObjectProperties
             }
             finally
             {
-                serializer.Options.ArrayOptions.CollateValues = false;
+                serializer.Options.EnumerableOptions.CollateValues = false;
             }
         }
 

@@ -55,20 +55,55 @@ namespace AllOverIt.Tests.Assertion
             }
 
             [Fact]
-            public void Should_Not_Throw_Message()
+            public void Should_Return_Object()
+            {
+                var expected = new DummyClass();
+
+                var actual = Guard.InvalidWhenNull(expected, Create<string>());
+
+                actual.Should().BeSameAs(expected);
+            }
+        }
+
+        public class InvalidWhenNotNull_Type : GuardFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Not_Null()
+            {
+                Invoking(() =>
+                {
+                    Guard.InvalidWhenNotNull(Create<DummyClass>());
+                })
+                    .Should()
+                    .Throw<InvalidOperationException>()
+                    .WithMessageWhenNotNull();
+            }
+
+            [Fact]
+            public void Should_Throw_Message_When_Not_Null()
             {
                 var errorMessage = Create<string>();
 
                 Invoking(() =>
-                    {
-                        var dummy = new DummyClass();
+                {
+                    Guard.InvalidWhenNotNull(Create<DummyClass>(), errorMessage);
+                })
+                    .Should()
+                    .Throw<InvalidOperationException>()
+                    .WithMessageWhenNotNull(errorMessage);
+            }
 
-                        Guard.InvalidWhenNull(dummy, errorMessage);
-                    })
+            [Fact]
+            public void Should_Not_Throw()
+            {
+                Invoking(() =>
+                {
+                    Guard.InvalidWhenNotNull((DummyClass)null, Create<string>());
+                })
                     .Should()
                     .NotThrow();
             }
-
+            
             [Fact]
             public void Should_Return_Object()
             {

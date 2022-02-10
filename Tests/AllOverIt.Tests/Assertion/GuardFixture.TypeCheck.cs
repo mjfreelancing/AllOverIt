@@ -71,17 +71,64 @@ namespace AllOverIt.Tests.Assertion
                     .Should()
                     .NotThrow();
             }
+        }
 
+        public class CheckIsNull_Type : GuardFixture
+        {
             [Fact]
-            public void Should_Not_Throw_Message()
+            public void Should_Throw_With_Expected_Name()
             {
-                var errorMessage = Create<string>();
+                var dummy = Create<DummyClass>();
 
                 Invoking(() =>
                     {
-                        var dummy = new DummyClass();
+                        Guard.CheckIsNull(dummy);
+                    })
+                    .Should()
+                    .Throw<InvalidOperationException>()
+                    .WithNamedMessageWhenNotNull(nameof(dummy));
+            }
 
-                        Guard.CheckNotNull(dummy, Create<string>(), errorMessage);
+            [Fact]
+            public void Should_Throw_When_Not_Null()
+            {
+                var name = Create<string>();
+
+                Invoking(() =>
+                    {
+                        var dummy = Create<DummyClass>();
+
+                        Guard.CheckIsNull(dummy, name);
+                    })
+                    .Should()
+                    .Throw<InvalidOperationException>()
+                    .WithNamedMessageWhenNotNull(name);
+            }
+
+            [Fact]
+            public void Should_Throw_Message_When_Not_Null()
+            {
+                var errorMessage = Create<string>();
+
+                var name = Create<string>();
+
+                Invoking(() =>
+                    {
+                        var dummy = Create<DummyClass>();
+
+                        Guard.CheckIsNull(dummy, name, errorMessage);
+                    })
+                    .Should()
+                    .Throw<InvalidOperationException>()
+                    .WithNamedMessageWhenNotNull(name, errorMessage);
+            }
+
+            [Fact]
+            public void Should_Not_Throw()
+            {
+                Invoking(() =>
+                    {
+                        Guard.CheckIsNull((DummyClass)null, Create<string>());
                     })
                     .Should()
                     .NotThrow();

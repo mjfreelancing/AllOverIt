@@ -37,6 +37,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                             BindingOptions = BindingOptions.Default,
                             NullValueOutput= "<null>",
                             EmptyValueOutput = "<empty>",
+                            EnumerableOptions = new ObjectPropertyEnumerableOptions(),
                             Filter = (ObjectPropertyFilter) null
                         }
                     );

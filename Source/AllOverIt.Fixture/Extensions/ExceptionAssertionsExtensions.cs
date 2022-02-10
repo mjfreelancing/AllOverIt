@@ -30,6 +30,26 @@ namespace AllOverIt.Fixture.Extensions
 
         /// <summary>Asserts the message of the thrown <see cref="InvalidOperationException"/> matches <paramref name="errorMessage"/>.</summary>
         /// <param name="assertion">The exception assertion.</param>
+        /// <param name="errorMessage">The expected exception message. If null then 'Value must be null' is assumed.</param>
+        /// <returns>The original assertion.</returns>
+        public static ExceptionAssertions<InvalidOperationException> WithMessageWhenNotNull(
+            this ExceptionAssertions<InvalidOperationException> assertion, string errorMessage = default)
+        {
+            return assertion.WithMessage(errorMessage ?? "Value must be null");
+        }
+
+        /// <summary>Asserts the message of the thrown <see cref="InvalidOperationException"/> matches <paramref name="errorMessage"/>.</summary>
+        /// <param name="assertion">The exception assertion.</param>
+        /// <param name="errorMessage">The expected exception message. If null then 'Value must be null' is assumed.</param>
+        /// <returns>The original assertion.</returns>
+        public static Task<ExceptionAssertions<InvalidOperationException>> WithMessageWhenNotNull(
+            this Task<ExceptionAssertions<InvalidOperationException>> assertion, string errorMessage = default)
+        {
+            return assertion.WithMessage(errorMessage ?? "Value must be null");
+        }
+
+        /// <summary>Asserts the message of the thrown <see cref="InvalidOperationException"/> matches <paramref name="errorMessage"/>.</summary>
+        /// <param name="assertion">The exception assertion.</param>
         /// <param name="errorMessage">The expected exception message. If null then 'Value cannot be empty' is assumed.</param>
         /// <returns>The original assertion.</returns>
         public static ExceptionAssertions<InvalidOperationException> WithMessageWhenEmpty(
@@ -71,6 +91,32 @@ namespace AllOverIt.Fixture.Extensions
             this Task<ExceptionAssertions<InvalidOperationException>> assertion, string name, string errorMessage = default)
         {
             var message = errorMessage ?? "Value cannot be null";
+            return WithMessageWhenNull(assertion, $"{message} ({name})");
+        }
+
+        /// <summary>Asserts the message of the thrown <see cref="InvalidOperationException"/> matches <paramref name="errorMessage"/> and
+        /// contains the named parameter.</summary>
+        /// <param name="assertion">The exception assertion.</param>
+        /// <param name="name">The name of the parameter that caused the exception to be thrown.</param>
+        /// <param name="errorMessage">The expected exception message. If null then 'Value must be null (<paramref name="name"/>)' is assumed.</param>
+        /// <returns>The original assertion.</returns>
+        public static ExceptionAssertions<InvalidOperationException> WithNamedMessageWhenNotNull(
+            this ExceptionAssertions<InvalidOperationException> assertion, string name, string errorMessage = default)
+        {
+            var message = errorMessage ?? "Value must be null";
+            return WithMessageWhenNull(assertion, $"{message} ({name})");
+        }
+
+        /// <summary>Asserts the message of the thrown <see cref="InvalidOperationException"/> matches <paramref name="errorMessage"/> and
+        /// contains the named parameter.</summary>
+        /// <param name="assertion">The exception assertion.</param>
+        /// <param name="name">The name of the parameter that caused the exception to be thrown.</param>
+        /// <param name="errorMessage">The expected exception message. If null then 'Value must be null (<paramref name="name"/>)' is assumed.</param>
+        /// <returns>The original assertion.</returns>
+        public static Task<ExceptionAssertions<InvalidOperationException>> WithNamedMessageWhenNotNull(
+            this Task<ExceptionAssertions<InvalidOperationException>> assertion, string name, string errorMessage = default)
+        {
+            var message = errorMessage ?? "Value must be null";
             return WithMessageWhenNull(assertion, $"{message} ({name})");
         }
 

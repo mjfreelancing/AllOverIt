@@ -18,6 +18,23 @@ namespace AllOverIt.Assertion
             return @object ?? ThrowInvalidOperationException<TType>(errorMessage ?? "Value cannot be null");
         }
 
+        /// <summary>Throws an exception if the object instance is not null, otherwise it returns the same instance.</summary>
+        /// <typeparam name="TType">The object type.</typeparam>
+        /// <param name="object">The object instance.</param>
+        /// <param name="errorMessage">The error message to throw if the instance is not null. If not provided, the default message
+        /// is "Value must be null".</param>
+        /// <returns>The same source object instance.</returns>
+        public static TType InvalidWhenNotNull<TType>(this TType @object, string errorMessage = default)
+            where TType : class
+        {
+            if (@object != null)
+            {
+                ThrowInvalidOperationException<TType>(errorMessage ?? "Value must be null");
+            }
+
+            return @object;
+        }
+
         /// <summary>Throws an exception if the specified enumerable is null or empty, otherwise it returns the same instance.</summary>
         /// <typeparam name="TType">The element type.</typeparam>
         /// <param name="object">The enumerable instance</param>

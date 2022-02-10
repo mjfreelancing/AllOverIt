@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Formatters.Objects;
 using System.Collections.Generic;
 using System.Linq;
-using AllOverIt.Extensions;
 
 namespace SerializeObjectProperties
 {
@@ -16,9 +15,9 @@ namespace SerializeObjectProperties
 
         public override bool OnIncludeProperty()
         {
-            ArrayOptions.CollateValues = Parents.Any() &&
-                                         Parents.Count >= 3 &&
-                                         Parents.ElementAt(2).Name == "Data";
+            EnumerableOptions.CollateValues = Parents.Any() &&
+                                              Parents.Count >= 3 &&
+                                              Parents.ElementAt(2).Name == "Data";
 
             return true;
         }
