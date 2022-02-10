@@ -1,5 +1,50 @@
 ======================================================================================================================
 
+10 Feb 2022
+======================================================================================================================
+AllOverIt v2.8.0
+  * Added support to ObjectPropertySerializer and ObjectPropertyFilter for collating enumerable values
+  * Added overload to ObjectPropertyFilterRegistry to support options initialization when filters are created
+  * Added assertions CheckIsNull() and InvalidWhenNotNull()
+
+AllOverIt.Validation v2.4.0
+  * Updated to AllOverIt v2.8.0
+
+AllOverIt.Aws.Cdk.AppSync v1.6.0
+  * Updated to AllOverIt v2.8.0
+
+AllOverIt.Evaluator v4.5.0
+  * Updated to AllOverIt v2.8.0
+
+AllOverIt.GenericHost v3.2.0
+  * Updated to AllOverIt v2.8.0
+
+AllOverIt.Fixture v1.9.0
+  * Added more guard related extensions for expected messages
+
+AllOverIt.Fixture.FakeItEasy v1.7.0
+  * Updated to AllOverIt.Fixture v1.9.0
+
+AllOverIt.Serialization.NewtonsoftJson v1.7.0
+  * Updated to AllOverIt v2.8.0
+
+AllOverIt.Serialization.SystemTextJson v1.7.0
+  * Updated to AllOverIt v2.8.0
+  * Updated to System.Text.Json v6.0.2 (.NET 6)
+
+AllOverIt.Aws.AppSync.Client v1.8.0
+  * Updated to AllOverIt v2.8.0
+
+AllOverIt.AspNetCore v1.6.0
+  * Updated to AllOverIt v2.8.0
+
+AllOverIt.EntityFrameworkCore v1.4.0
+  * Updated to AllOverIt v2.8.0
+
+AllOverIt.Csv v2.2.0
+  * Updated to AllOverIt v2.8.0
+
+
 09 Feb 2022
 ======================================================================================================================
 AllOverIt v2.7.3
