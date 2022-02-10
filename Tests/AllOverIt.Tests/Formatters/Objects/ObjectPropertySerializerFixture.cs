@@ -110,6 +110,31 @@ namespace AllOverIt.Tests.Formatters.Objects
             }
         }
 
+        private class DummyNestedChildInfo
+        {
+            public IEnumerable<int> TopNumbers { get; set; }
+        }
+
+        private class DummyNestedChild
+        {
+            public IEnumerable<DummyNestedChildInfo> Info { get; set; }
+        }
+
+        private class DummyNestedParent
+        {
+            public IEnumerable<DummyNestedChild> Children { get; set; }
+        }
+
+        private class DummyNestedParentFilter : ObjectPropertyFilter
+        {
+            public override bool OnIncludeProperty()
+            {
+                EnumerableOptions.CollateValues = Parents.Any() && Parents.Count >= 3;
+
+                return true;
+            }
+        }
+
         protected ObjectPropertySerializerFixture()
         {
             // prevent self-references
@@ -242,6 +267,144 @@ namespace AllOverIt.Tests.Formatters.Objects
                     .Should()
                     .Throw<SelfReferenceException>()
                     .WithMessage("Self referencing detected at 'Prop2.Prop2.Prop2' of type 'DummyType'");
+            }
+
+            [Fact]
+            public void Should_Not_Collate_Arrays()
+            {
+                var dummy = new DummyType
+                {
+                    Prop4 = CreateMany<string>(3)
+                };
+
+                var serializer = GetSerializer();
+
+                serializer.Options.IncludeNulls = false;
+                serializer.Options.IncludeEmptyCollections = false;
+
+                //serializer.Options.EnumerableOptions.CollateValues = true;
+
+                var actual = serializer.SerializeToDictionary(dummy);
+
+                actual
+                    .Should()
+                    .BeEquivalentTo(new Dictionary<string, string>
+                    {
+                        { "Prop1", $"{dummy.Prop1}" },
+                        { "Prop4[0]", $"{dummy.Prop4.ElementAt(0)}" },
+                        { "Prop4[1]", $"{dummy.Prop4.ElementAt(1)}" },
+                        { "Prop4[2]", $"{dummy.Prop4.ElementAt(2)}" }
+                    });
+            }
+
+            [Fact]
+            public void Should_Collate_Arrays()
+            {
+                var dummy = new DummyType
+                {
+                    Prop4 = CreateMany<string>(3)
+                };
+
+                var serializer = GetSerializer();
+
+                serializer.Options.IncludeNulls = false;
+                serializer.Options.IncludeEmptyCollections = false;
+                serializer.Options.EnumerableOptions.CollateValues = true;
+
+                var actual = serializer.SerializeToDictionary(dummy);
+
+                actual
+                    .Should()
+                    .BeEquivalentTo(new Dictionary<string, string>
+                    {
+                        { "Prop1", $"{dummy.Prop1}" },
+                        { "Prop4", $"{dummy.Prop4.ElementAt(0)}, {dummy.Prop4.ElementAt(1)}, {dummy.Prop4.ElementAt(2)}" }
+                    });
+            }
+
+            [Fact]
+            public void Should_Not_Collate_Arrays_When_Filtered()
+            {
+                var dummy = Create<DummyType>();
+                dummy.Prop2 = Create<DummyType>();
+
+                var serializer = GetSerializer();
+
+                // Will be ignored because the filter's options is not set to collate enumerables
+                serializer.Options.EnumerableOptions.CollateValues = true;
+
+                // Prop2 is a class type so to include all values we need to check for "Prop2" as well as "Prop2.XXX"
+                // Checking for Prop2 is required to ensure the sub-properties are not filtered out.
+                serializer.Options.Filter = new DummyTypePropertyNameFilter(name =>
+                    name is nameof(DummyType.Prop1) or nameof(DummyType.Prop2) ||
+                    name.StartsWith("Prop2.Prop4"));
+
+                var actual = serializer.SerializeToDictionary(dummy);
+
+                actual
+                    .Should()
+                    .BeEquivalentTo(new Dictionary<string, string>
+                    {
+                        { "Prop1", $"{dummy.Prop1}" },
+                        { "Prop2.Prop4[0]", $"{dummy.Prop2.Prop4.ElementAt(0)}" },
+                        { "Prop2.Prop4[1]", $"{dummy.Prop2.Prop4.ElementAt(1)}" },
+                        { "Prop2.Prop4[2]", $"{dummy.Prop2.Prop4.ElementAt(2)}" }
+                    });
+            }
+
+            [Fact]
+            public void Should_Collate_Arrays_Using_Filter_Options()
+            {
+                var dummy = Create<DummyType>();
+                dummy.Prop2 = Create<DummyType>();
+
+                var serializer = GetSerializer();
+
+
+                // Prop2 is a class type so to include all values we need to check for "Prop2" as well as "Prop2.XXX"
+                // Checking for Prop2 is required to ensure the sub-properties are not filtered out.
+                serializer.Options.Filter = new DummyTypePropertyNameFilter(name =>
+                    name is nameof(DummyType.Prop1) or nameof(DummyType.Prop2) ||
+                    name.StartsWith("Prop2.Prop4"));
+
+                serializer.Options.Filter.EnumerableOptions.CollateValues = true;
+
+                var actual = serializer.SerializeToDictionary(dummy);
+
+                actual
+                    .Should()
+                    .BeEquivalentTo(new Dictionary<string, string>
+                    {
+                        { "Prop1", $"{dummy.Prop1}" },
+                        { "Prop2.Prop4", $"{dummy.Prop2.Prop4.ElementAt(0)}, {dummy.Prop2.Prop4.ElementAt(1)}, {dummy.Prop2.Prop4.ElementAt(2)}" }
+                    });
+            }
+
+            [Fact]
+            public void Should_Collate_Child_Nodes_Using_Filter()
+            {
+                var dummy = Create<DummyNestedParent>();
+
+                var serializer = GetSerializer();
+
+                serializer.Options.Filter = new DummyNestedParentFilter();
+
+                var actual = serializer.SerializeToDictionary(dummy);
+
+                actual
+                    .Should()
+                    .BeEquivalentTo(new Dictionary<string, string>
+                    {
+                        {"Children[0].Info[0].TopNumbers", string.Join(", ", dummy.Children.ElementAt(0).Info.ElementAt(0).TopNumbers)},
+                        {"Children[0].Info[1].TopNumbers", string.Join(", ", dummy.Children.ElementAt(0).Info.ElementAt(1).TopNumbers)},
+                        {"Children[0].Info[2].TopNumbers", string.Join(", ", dummy.Children.ElementAt(0).Info.ElementAt(2).TopNumbers)},
+                        {"Children[1].Info[0].TopNumbers", string.Join(", ", dummy.Children.ElementAt(1).Info.ElementAt(0).TopNumbers)},
+                        {"Children[1].Info[1].TopNumbers", string.Join(", ", dummy.Children.ElementAt(1).Info.ElementAt(1).TopNumbers)},
+                        {"Children[1].Info[2].TopNumbers", string.Join(", ", dummy.Children.ElementAt(1).Info.ElementAt(2).TopNumbers)},
+                        {"Children[2].Info[0].TopNumbers", string.Join(", ", dummy.Children.ElementAt(2).Info.ElementAt(0).TopNumbers)},
+                        {"Children[2].Info[1].TopNumbers", string.Join(", ", dummy.Children.ElementAt(2).Info.ElementAt(1).TopNumbers)},
+                        {"Children[2].Info[2].TopNumbers", string.Join(", ", dummy.Children.ElementAt(2).Info.ElementAt(2).TopNumbers)}
+                    });
             }
 
             [Fact]
