@@ -45,8 +45,8 @@ namespace AllOverIt.Extensions
             return expression switch
             {
                 MemberExpression memberExpression => memberExpression,
-                LambdaExpression lambdaExpression when lambdaExpression.Body is MemberExpression memberExpression => memberExpression,
-                LambdaExpression lambdaExpression when lambdaExpression.Body is UnaryExpression unaryExpression => (unaryExpression.Operand as MemberExpression),
+                LambdaExpression {Body: MemberExpression memberExpression} => memberExpression,
+                LambdaExpression {Body: UnaryExpression unaryExpression} => (unaryExpression.Operand as MemberExpression),
                 _ => null
             };
         }
