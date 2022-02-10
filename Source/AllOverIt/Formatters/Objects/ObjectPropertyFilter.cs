@@ -13,8 +13,11 @@ namespace AllOverIt.Formatters.Objects
         /// <summary>The value of the current value.</summary>
         public object Value { get; internal set; }
 
-        /// <summary>The full path within the object graph where the current value sits.</summary>
+        /// <summary>The full path, with index notation for enumerable types, within the object graph where the current value sits.</summary>
         public string Path { get; internal set; }
+
+        /// <summary>The full path, without index notation for enumerable types, within the object graph where the current value sits.</summary>
+        public string PropertyPath { get; internal set; }
 
         /// <summary>The name of the property associated with the current value. This will be null for values within a collection.</summary>
         public string Name { get; internal set; }

@@ -16,6 +16,8 @@ namespace SerializeObjectProperties
                 var serializer = new ObjectPropertySerializer();
 
                 SerializeObject(serializer, false);
+
+                Console.WriteLine();
                 SerializeObject(serializer, true);
 
                 Console.WriteLine();
@@ -71,7 +73,34 @@ namespace SerializeObjectProperties
                         Task = Task.FromResult(true)            // will be excluded
                     }
                 },
-                Prop12 = new List<int> { -1, -2, -3 }
+                Prop12 = new List<int> { -1, -2, -3 },
+                Prop13 = new[]
+                {
+                    new Dummy
+                    {
+                        Prop7 = "1",
+                        Prop10 = true,
+                        Prop8 = 2,
+                        Prop9 = 3.3,
+                        Prop12 = new[] { 10, 20, 30 }
+                    },
+                    new Dummy
+                    {
+                        Prop7 = "2",
+                        Prop10 = false,
+                        Prop8 = 3,
+                        Prop9 = 4.4,
+                        Prop12 = new[] { 11, 22, 33 }
+                    },
+                    new Dummy
+                    {
+                        Prop7 = "3",
+                        Prop10 = true,
+                        Prop8 = 4,
+                        Prop9 = 5.5,
+                        Prop12 = new[] { 1, 2, 3 }
+                    }
+                }
             };
 
             var metadataRoot = new
@@ -124,7 +153,8 @@ namespace SerializeObjectProperties
                 Prop26 = (Func<bool, bool>)(_ => true),
                 Prop27 = new Dictionary<string, Task>(),        // will be excluded
                 Prop28 = new Dictionary<int, string>(),
-                Prop29 = new Dictionary<Task, string>()         // will be excluded
+                Prop29 = new Dictionary<Task, string>(),         // will be excluded
+                Prop30 = metadataChild
             };
 
             Console.WriteLine($"Object serialization values (collate array values = {collateArrayValues}):");
@@ -133,6 +163,15 @@ namespace SerializeObjectProperties
             try
             {
                 serializer.Options.EnumerableOptions.CollateValues = collateArrayValues;
+
+                if (!collateArrayValues)
+                {
+                    serializer.Options.EnumerableOptions.AutoCollatedPaths = new[]
+                    {
+                        "Prop30.Prop12",
+                        "Prop30.Prop13.Prop12"
+                    };
+                }
 
                 var items = serializer.SerializeToDictionary(metadataRoot).Select(kvp => $"{kvp.Key} = {kvp.Value}");
 
@@ -144,6 +183,7 @@ namespace SerializeObjectProperties
             finally
             {
                 serializer.Options.EnumerableOptions.CollateValues = false;
+                serializer.Options.EnumerableOptions.AutoCollatedPaths = null;
             }
         }
 
@@ -245,9 +285,16 @@ namespace SerializeObjectProperties
                 }
             };
 
-            // You would normally register multiple filters (for different object types) and then request a filter on demand
+            var options = new ObjectPropertySerializerOptions
+            {
+                EnumerableOptions =
+                {
+                    AutoCollatedPaths = new[] {"Items.Data.Values"}
+                }
+            };
+
             var registry = new ObjectPropertyFilterRegistry();
-            registry.Register<ComplexObjectItemDataFilter>();
+            registry.Register<ComplexObjectItemDataFilter>(options);
 
             Console.WriteLine("Complex Object serialization values via a registry:");
             Console.WriteLine("===================================================");

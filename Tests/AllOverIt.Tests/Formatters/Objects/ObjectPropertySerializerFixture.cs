@@ -282,8 +282,6 @@ namespace AllOverIt.Tests.Formatters.Objects
                 serializer.Options.IncludeNulls = false;
                 serializer.Options.IncludeEmptyCollections = false;
 
-                //serializer.Options.EnumerableOptions.CollateValues = true;
-
                 var actual = serializer.SerializeToDictionary(dummy);
 
                 actual
@@ -404,6 +402,140 @@ namespace AllOverIt.Tests.Formatters.Objects
                         {"Children[2].Info[0].TopNumbers", string.Join(", ", dummy.Children.ElementAt(2).Info.ElementAt(0).TopNumbers)},
                         {"Children[2].Info[1].TopNumbers", string.Join(", ", dummy.Children.ElementAt(2).Info.ElementAt(1).TopNumbers)},
                         {"Children[2].Info[2].TopNumbers", string.Join(", ", dummy.Children.ElementAt(2).Info.ElementAt(2).TopNumbers)}
+                    });
+            }
+
+            [Fact]
+            public void Should_Collate_With_Custom_Separator()
+            {
+                var dummy = new DummyNestedChildInfo
+                {
+                    TopNumbers = CreateMany<int>()
+                };
+
+                var separator = Create<string>();
+
+                var serializer = GetSerializer();
+                serializer.Options.EnumerableOptions.CollateValues = true;
+                serializer.Options.EnumerableOptions.Separator = separator;
+
+                var actual = serializer.SerializeToDictionary(dummy);
+
+                actual
+                    .Should()
+                    .BeEquivalentTo(new Dictionary<string, string>
+                    {
+                        { "TopNumbers", string.Join(separator, dummy.TopNumbers) }
+                    });
+            }
+
+            [Fact]
+            public void Should_Auto_Collate()
+            {
+                var dummy = new DummyNestedParent
+                {
+                    Children = new List<DummyNestedChild>
+                    {
+                        new DummyNestedChild
+                        {
+                            Info = new List<DummyNestedChildInfo>
+                            {
+                                new DummyNestedChildInfo
+                                {
+                                    TopNumbers = CreateMany<int>()
+                                },
+                                new DummyNestedChildInfo
+                                {
+                                    TopNumbers = CreateMany<int>()
+                                }
+                            }
+                        },
+                        new DummyNestedChild
+                        {
+                            Info = new List<DummyNestedChildInfo>
+                            {
+                                new DummyNestedChildInfo
+                                {
+                                    TopNumbers = CreateMany<int>()
+                                },
+                                new DummyNestedChildInfo
+                                {
+                                    TopNumbers = CreateMany<int>()
+                                }
+                            }
+                        }
+                    }
+                };
+
+                var serializer = GetSerializer();
+                serializer.Options.EnumerableOptions.AutoCollatedPaths = new[] { "Children.Info.TopNumbers" };
+
+                var actual = serializer.SerializeToDictionary(dummy);
+
+                actual
+                    .Should()
+                    .BeEquivalentTo(new Dictionary<string, string>
+                    {
+                        {"Children[0].Info[0].TopNumbers", string.Join(", ", dummy.Children.ElementAt(0).Info.ElementAt(0).TopNumbers)},
+                        {"Children[0].Info[1].TopNumbers", string.Join(", ", dummy.Children.ElementAt(0).Info.ElementAt(1).TopNumbers)},
+                        {"Children[1].Info[0].TopNumbers", string.Join(", ", dummy.Children.ElementAt(1).Info.ElementAt(0).TopNumbers)},
+                        {"Children[1].Info[1].TopNumbers", string.Join(", ", dummy.Children.ElementAt(1).Info.ElementAt(1).TopNumbers)}
+                    });
+            }
+
+            [Fact]
+            public void Should_Auto_Collate_Multiple_Paths()
+            {
+                var data = new
+                {
+                    Prop1 = new[]{1, 2, 3},
+                    Prop2 = new[]{"A", "B", "C"},
+                    Prop3 = Create<string>(),
+                    Prop4 = new[] { "A", "B", "C" },
+                };
+
+                var serializer = GetSerializer();
+                serializer.Options.EnumerableOptions.AutoCollatedPaths = new[] { "Prop1", "Prop4" };
+
+                var actual = serializer.SerializeToDictionary(data);
+
+                actual
+                    .Should()
+                    .BeEquivalentTo(new Dictionary<string, string>
+                    {
+                        {"Prop1", "1, 2, 3"},
+                        {"Prop2[0]", "A"},
+                        {"Prop2[1]", "B"},
+                        {"Prop2[2]", "C"},
+                        {"Prop3", data.Prop3},
+                        {"Prop4", "A, B, C"}
+                    });
+            }
+
+            [Fact]
+            public void Should_Ignore_Auto_Collate_When_Non_Primitive_Array()
+            {
+                var data = new
+                {
+                    Root = new[]
+                    {
+                        new
+                        {
+                            Prop1 = Create<string>(),
+                        }
+                    }
+                };
+
+                var serializer = GetSerializer();
+                serializer.Options.EnumerableOptions.AutoCollatedPaths = new[] { "Root" };
+
+                var actual = serializer.SerializeToDictionary(data);
+
+                actual
+                    .Should()
+                    .BeEquivalentTo(new Dictionary<string, string>
+                    {
+                        {"Root[0].Prop1", data.Root.ElementAt(0).Prop1}
                     });
             }
 
@@ -942,6 +1074,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                 {
                     public List<Type> Types { get; } = new();
                     public List<string> Paths { get; } = new();
+                    public List<string> PropertyPaths { get; } = new();
                     public List<string> Names { get; } = new();
                     public List<int?> Indexes { get; } = new();
                     public List<IReadOnlyCollection<ObjectPropertyParent>> ParentChains { get; } = new();
@@ -950,6 +1083,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {
                         Types.Add(Type);
                         Paths.Add(Path);
+                        PropertyPaths.Add(PropertyPath);
                         Names.Add(Name);
                         Indexes.Add(Index);
                         ParentChains.Add(Parents);
@@ -1075,6 +1209,41 @@ namespace AllOverIt.Tests.Formatters.Objects
                             "Prop2.Prop8", "Prop2.Prop14", "Prop4", "Prop4[0]", "Prop4[1]", "Prop4[2]", "Prop5",
                             $"Prop5.{dummy.Prop5.ElementAt(0).Key}", $"Prop5.{dummy.Prop5.ElementAt(1).Key}",
                             $"Prop5.{dummy.Prop5.ElementAt(2).Key}", "Prop8", "Prop12", "Prop12", "Prop14"
+                        });
+                }
+
+                [Fact]
+                public void Should_Track_PropertyPaths()
+                {
+                    var dummy = Create<DummyType>();
+
+                    dummy.Prop11 = new Dictionary<string, Task>();      // will be ignored because of Task
+                    dummy.Prop12 = new Dictionary<int, DummyType>();    // will include an empty value in the output
+
+                    var dummy2 = Create<DummyType>();
+                    dummy.Prop2 = dummy2;
+
+                    var filter = new DummyTypeTrackingFilter();
+
+                    var serializer = GetSerializer();
+
+                    serializer.Options.IncludeEmptyCollections = true;
+                    serializer.Options.Filter = filter;
+
+                    _ = serializer.SerializeToDictionary(dummy);
+
+                    filter.PropertyPaths.Should().HaveCount(25);
+
+                    // Prop12 is listed twice because it includes the root property as well as an <empty> value.
+                    // The multiples of several paths is due to iterating over a collection or dictionary.
+                    filter.PropertyPaths
+                        .Should()
+                        .BeEquivalentTo(new string[]
+                        {
+                            "Prop1", "Prop2", "Prop2.Prop1", "Prop2.Prop4", "Prop2.Prop4", "Prop2.Prop4", "Prop2.Prop4",
+                            "Prop2.Prop5", "Prop2.Prop5", "Prop2.Prop5", "Prop2.Prop5", "Prop2.Prop8", "Prop2.Prop14",
+                            "Prop4", "Prop4", "Prop4", "Prop4", "Prop5", "Prop5", "Prop5", "Prop5", "Prop8", "Prop12",
+                            "Prop12", "Prop14"
                         });
                 }
 

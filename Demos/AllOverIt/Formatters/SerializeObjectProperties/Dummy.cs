@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SerializeObjectProperties
 {
@@ -10,5 +11,6 @@ namespace SerializeObjectProperties
         public bool Prop10 { get; set; }
         public Dummy Prop11 { get; set; }
         public Task<bool> Task { get; set; }
+        public IEnumerable<int> Prop12 { get; set; }
     }
 }

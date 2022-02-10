@@ -5,7 +5,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using AllOverIt.Patterns.ResourceInitialization;
 
 namespace AllOverIt.Formatters.Objects
 {
@@ -40,8 +39,6 @@ namespace AllOverIt.Formatters.Objects
 
         private void Populate(string prefix, object instance, IDictionary<string, string> values, IDictionary<object, ObjectPropertyParent> references)
         {
-            var collateValues = (Options.Filter?.EnumerableOptions ?? Options.EnumerableOptions).CollateValues;
-
             switch (instance)
             {
                 case IDictionary dictionary:
@@ -49,10 +46,14 @@ namespace AllOverIt.Formatters.Objects
                     break;
 
                 case IEnumerable enumerable:
+                    // ReSharper disable once PossibleMultipleEnumeration
+                    var collateValues = CanCollateEnumerableValues(enumerable, references);
+
                     var arrayValues = collateValues
                         ? new Dictionary<string, string>()
                         : values;
 
+                    // ReSharper disable once PossibleMultipleEnumeration
                     AppendEnumerableAsPropertyValues(prefix, enumerable, arrayValues, references);
 
                     if (collateValues)
@@ -296,10 +297,20 @@ namespace AllOverIt.Formatters.Objects
 
         private void SetFilterAttributes(Type type, object value, string path, string name, int? index, IDictionary<object, ObjectPropertyParent> references)
         {
+            var propertyPath = GetPropertyPath(references);
+
+            if (!name.IsNullOrEmpty())
+            {
+                propertyPath = propertyPath.IsNullOrEmpty()
+                    ? name
+                    : $"{propertyPath}.{name}";
+            }
+
             Options.Filter.Type = type;
             Options.Filter.Value = value;
             Options.Filter.Path = path;
-            Options.Filter.Name = name;
+            Options.Filter.PropertyPath = propertyPath;
+            Options.Filter.Name = name;     // Is null when iterating over a collection (Index will be non-null)
             Options.Filter.Index = index;
             Options.Filter.Parents = references.Values.AsReadOnlyCollection();
         }
@@ -314,6 +325,50 @@ namespace AllOverIt.Formatters.Objects
         private bool IncludePropertyValue(Type type, object value, string path, string name, int? index, IDictionary<object, ObjectPropertyParent> references)
         {
             return IncludeProperty(type, value, path, name, index, references) && Options.Filter.OnIncludeValue();
+        }
+
+        private static string GetPropertyPath(IDictionary<object, ObjectPropertyParent> references)
+        {
+            return string.Join(".", references.Values.Where(item => item.Name != null).Select(item => item.Name));
+        }
+
+        private static Type GetEnumerableElementType(IEnumerable enumerable)
+        {
+            var enumerableType = enumerable.GetType();
+
+            // See if it's an array
+            var elementType = enumerableType.GetElementType();
+
+            // Otherwise a generic collection
+            if (elementType == null && enumerableType.IsGenericType)
+            {
+                elementType = enumerableType.GetGenericArguments()[0];
+            }
+
+            return elementType;
+        }
+
+        private bool CanCollateEnumerableValues(IEnumerable enumerable, IDictionary<object, ObjectPropertyParent> references)
+        {
+            // Only allowing the collation of primitive types - collating complex types is not very helpful / readable
+            var elementType = GetEnumerableElementType(enumerable);
+
+            if (!elementType.IsIntegralType() && elementType != typeof(string))
+            {
+                return false;
+            }
+
+            // Check if the filter indicates collation is required
+            var collateValues = (Options.Filter?.EnumerableOptions ?? Options.EnumerableOptions).CollateValues;
+
+            if (!collateValues && !Options.EnumerableOptions.AutoCollatedPaths.IsNullOrEmpty())
+            {
+                // Check if the current path is registered for auto-collation
+                var flatPath = GetPropertyPath(references);
+                collateValues = Options.EnumerableOptions.AutoCollatedPaths.Contains(flatPath);
+            }
+
+            return collateValues;
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace SerializeObjectProperties
 {
+    // The example using this filter configures the serializer to auto-collate the Path 'Items.Data.Values'
     internal sealed class ComplexObjectItemDataFilter : ObjectPropertyFilter, IRegisteredObjectPropertyFilter, IFormattableObjectPropertyFilter
     {
         private const int MaxItemCount = 3;
@@ -11,15 +12,6 @@ namespace SerializeObjectProperties
         public bool CanFilter(object @object)
         {
             return @object is ComplexObject;
-        }
-
-        public override bool OnIncludeProperty()
-        {
-            EnumerableOptions.CollateValues = Parents.Any() &&
-                                              Parents.Count >= 3 &&
-                                              Parents.ElementAt(2).Name == "Data";
-
-            return true;
         }
 
         public override bool OnIncludeValue()
@@ -30,12 +22,15 @@ namespace SerializeObjectProperties
 
         public string OnFormatValue(string value)
         {
-            // Reformat the values of ComplexObject.Item.ItemData if the max. limit is reached
+            // Reformat the remainder of the values
             if (AtValuesNode(out var lastParent) && Index == MaxItemCount - 1)
             {
                 var itemCount = ((IEnumerable<int>) lastParent.Value).Count();
-
-                return $"{value} and {itemCount - MaxItemCount} additional values";
+                var remainder = itemCount - MaxItemCount;
+                
+                return remainder == 0
+                    ? value
+                    : $"{value} and {remainder} additional values";
             }
 
             return value;
