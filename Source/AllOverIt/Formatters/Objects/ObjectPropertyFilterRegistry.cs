@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AllOverIt.Assertion;
 
 namespace AllOverIt.Formatters.Objects
 {
@@ -27,6 +28,9 @@ namespace AllOverIt.Formatters.Objects
             var lazySerializer = new Lazy<IObjectPropertySerializer>(() =>
             {
                 var options = serializerOptions ?? new ObjectPropertySerializerOptions();
+
+                options.Filter.InvalidWhenNull($"The {nameof(ObjectPropertyFilterRegistry)} expects the provided options to not include a filter.");
+
                 options.Filter = filter;
 
                 return new ObjectPropertySerializer(options);
@@ -42,7 +46,18 @@ namespace AllOverIt.Formatters.Objects
         }
 
         /// <inheritdoc />
-        public bool GetObjectPropertySerializer(object @object, out IObjectPropertySerializer serializer)
+        public void Register<TFilter>(Action<ObjectPropertySerializerOptions> serializerOptions)
+            where TFilter : ObjectPropertyFilter, IRegisteredObjectPropertyFilter, new()
+        {
+            var options = new ObjectPropertySerializerOptions();
+
+            serializerOptions.Invoke(options);
+
+            Register<TFilter>(options);
+        }
+
+        /// <inheritdoc />
+            public bool GetObjectPropertySerializer(object @object, out IObjectPropertySerializer serializer)
         {
             foreach (var filterSerializer in _filters)
             {
