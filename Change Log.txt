@@ -2,6 +2,45 @@
 
 10 Feb 2022
 ======================================================================================================================
+AllOverIt v2.9.0
+  * Added support for AutoCollatedPaths when using the ObjectPropertySerializer.
+
+AllOverIt.Validation v2.5.0
+  * Updated to AllOverIt v2.9.0
+
+AllOverIt.Aws.Cdk.AppSync v1.7.0
+  * Updated to AllOverIt v2.9.0
+  * Upated to Amazon.CDK.AWS.AppSync v1.144.0
+
+AllOverIt.Evaluator v4.6.0
+  * Updated to AllOverIt v2.9.0
+
+AllOverIt.GenericHost v3.3.0
+  * Updated to AllOverIt v2.9.0
+  * Updated to Microsoft.Extensions.Hosting v6.0.1 for net6.0
+
+AllOverIt.Serialization.NewtonsoftJson v1.8.0
+  * Updated to AllOverIt v2.9.0
+
+AllOverIt.Serialization.SystemTextJson v1.8.0
+  * Updated to AllOverIt v2.9.0
+
+AllOverIt.Aws.AppSync.Client v1.9.0
+  * Updated to AllOverIt v2.9.0
+
+AllOverIt.AspNetCore v1.7.0
+  * Updated to AllOverIt v2.9.0
+
+AllOverIt.EntityFrameworkCore v1.5.0
+  * Updated to AllOverIt v2.9.0
+  * Updated Microsoft.EntityFrameworkCore.Relational v6.0.2 for net6.0
+
+AllOverIt.Csv v2.3.0
+  * Updated to AllOverIt v2.9.0
+
+
+10 Feb 2022
+======================================================================================================================
 AllOverIt v2.8.0
   * Added support to ObjectPropertySerializer and ObjectPropertyFilter for collating enumerable values
   * Added overload to ObjectPropertyFilterRegistry to support options initialization when filters are created
