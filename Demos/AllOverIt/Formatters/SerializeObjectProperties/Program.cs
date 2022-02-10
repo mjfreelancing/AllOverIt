@@ -15,7 +15,8 @@ namespace SerializeObjectProperties
             {
                 var serializer = new ObjectPropertySerializer();
 
-                SerializeObject(serializer);
+                SerializeObject(serializer, false);
+                SerializeObject(serializer, true);
 
                 Console.WriteLine();
                 SerializeFilteredObject(serializer);
@@ -42,7 +43,7 @@ namespace SerializeObjectProperties
             Console.ReadKey();
         }
 
-        private static void SerializeObject(ObjectPropertySerializer serializer)
+        private static void SerializeObject(IObjectPropertySerializer serializer, bool collateArrayValues)
         {
             var dummy1 = new Dummy();
             var dummy2 = new Dummy { Prop11 = dummy1 };
@@ -126,18 +127,27 @@ namespace SerializeObjectProperties
                 Prop29 = new Dictionary<Task, string>()         // will be excluded
             };
 
-            Console.WriteLine("Object serialization values:");
-            Console.WriteLine("============================");
+            Console.WriteLine($"Object serialization values (collate array values = {collateArrayValues}):");
+            Console.WriteLine("===========================================================");
 
-            var items = serializer.SerializeToDictionary(metadataRoot).Select(kvp => $"{kvp.Key} = {kvp.Value}");
-
-            foreach (var item in items)
+            try
             {
-                Console.WriteLine($"  {item}");
+                serializer.Options.ArrayOptions.CollateValues = collateArrayValues;
+
+                var items = serializer.SerializeToDictionary(metadataRoot).Select(kvp => $"{kvp.Key} = {kvp.Value}");
+
+                foreach (var item in items)
+                {
+                    Console.WriteLine($"  {item}");
+                }
+            }
+            finally
+            {
+                serializer.Options.ArrayOptions.CollateValues = false;
             }
         }
 
-        private static void SerializeFilteredObject(ObjectPropertySerializer serializer)
+        private static void SerializeFilteredObject(IObjectPropertySerializer serializer)
         {
             var complexObject = new ComplexObject
             {
@@ -180,7 +190,7 @@ namespace SerializeObjectProperties
 
             try
             {
-                Console.WriteLine("Complex Object serialization values:");
+                Console.WriteLine("Filtered Object serialization values:");
                 Console.WriteLine("====================================");
 
                 var items = serializer.SerializeToDictionary(complexObject).Select(kvp => $"{kvp.Key} = {kvp.Value}");
@@ -252,7 +262,7 @@ namespace SerializeObjectProperties
             }
         }
 
-        private static void SerializeDictionary1(ObjectPropertySerializer serializer)
+        private static void SerializeDictionary1(IObjectPropertySerializer serializer)
         {
             var dictionary = new Dictionary<string, int>
             {
@@ -273,7 +283,7 @@ namespace SerializeObjectProperties
             }
         }
 
-        private static void SerializeDictionary2(ObjectPropertySerializer serializer)
+        private static void SerializeDictionary2(IObjectPropertySerializer serializer)
         {
             var dictionary = new Dictionary<TypedDummy<bool>, int>
             {
@@ -295,7 +305,7 @@ namespace SerializeObjectProperties
             }
         }
 
-        private static void SerializeList(ObjectPropertySerializer serializer)
+        private static void SerializeList(IObjectPropertySerializer serializer)
         {
             var list = Enumerable.Range(1, 4).Select(value => $"Value {value}").ToList();
 

@@ -5,6 +5,12 @@ using System.Threading.Tasks;
 
 namespace AllOverIt.Formatters.Objects
 {
+    public sealed class ObjectPropertyArrayOptions
+    {
+        public bool CollateValues { get; set; }
+        public string Separator { get; set; } = ", ";
+    }
+
     /// <summary>Provides options that determine how serialization of properties and their values are handled by <see cref="ObjectPropertySerializer"/>.</summary>
     public sealed class ObjectPropertySerializerOptions
     {
@@ -35,7 +41,12 @@ namespace AllOverIt.Formatters.Objects
         /// <summary>Specifies an alternative output for empty string and collection values.</summary>
         public string EmptyValueOutput { get; set; } = "<empty>";
 
-        /// <summary>An optional filter that can be implemented to exclude properties by name or value. Values can also be modified.</summary>
+        /// <summary>Provides options that allow array values to be collated to a single value.</summary>
+        /// <remarks>If a <see cref="Filter"/> has been assigned then its array options will override these settings.</remarks>
+        public ObjectPropertyArrayOptions ArrayOptions { get; } = new();
+
+        /// <summary>An optional filter that can be implemented to exclude properties by name or value. Values can be
+        /// modified, or formatted if the filter implements <see cref="IFormattableObjectPropertyFilter"/>.</summary>
         public ObjectPropertyFilter Filter { get; set; }
 
         /// <summary>Clears the current list of ignored types.</summary>
