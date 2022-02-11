@@ -2,6 +2,12 @@
 
 10 Feb 2022
 ======================================================================================================================
+AllOverIt v2.10.0
+  * Added support to provide filter instances to ObjectPropertyFilterRegistry.
+
+
+10 Feb 2022
+======================================================================================================================
 AllOverIt v2.9.1
   * Updated ObjectPropertySerializer to correctly handle primitive arrays. Can also now use the combined
     AutoCollationPaths on the global and filter specific options.

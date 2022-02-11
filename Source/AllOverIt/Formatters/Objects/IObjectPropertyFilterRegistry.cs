@@ -27,12 +27,42 @@ namespace AllOverIt.Formatters.Objects
         /// for it to be used. If multiple filters can potentially process a given object type, then the first registered filter will
         /// be used.</summary>
         /// <typeparam name="TFilter">The filter type.</typeparam>
+        /// <param name="filter">The filter instance.</param>
+        /// <param name="serializerOptions">Options to be used by each constructed serializer (one per filter type). If no options are
+        /// provided then a default <see cref="ObjectPropertySerializerOptions"/> instance will be used.</param>
+        /// <remarks>
+        ///   <para>The <paramref name="serializerOptions"/> must not include a filter.</para>
+        ///   <para>The serializer options cannot be shared across filters since the created filter is assigned to the options when
+        ///         used. If you need to guarantee each filter is assigned to a unique options instance then use the
+        ///         <see cref="Register{TFilter}(Action{ObjectPropertySerializerOptions})"/> overload.</para>
+        /// </remarks>
+        void Register<TFilter>(TFilter filter, ObjectPropertySerializerOptions serializerOptions = null)
+            where TFilter : ObjectPropertyFilter, IRegisteredObjectPropertyFilter;
+
+        /// <summary>Registers a filter than can be later associated with an <see cref="IObjectPropertySerializer"/> to process the
+        /// properties of a given object. The filter's <see cref="IRegisteredObjectPropertyFilter.CanFilter"/> method must return True
+        /// for it to be used. If multiple filters can potentially process a given object type, then the first registered filter will
+        /// be used.</summary>
+        /// <typeparam name="TFilter">The filter type.</typeparam>
         /// <param name="serializerOptions">Provides the ability to configure the serializer options when the filter is created. The
         /// options must not include a Filter as the registered filter will be used.</param>
         /// <remarks>Use this overload when you must guarantee that a unique instance of the options is used per filter, such as
         /// in a multi-threaded scenario.</remarks>
         void Register<TFilter>(Action<ObjectPropertySerializerOptions> serializerOptions)
             where TFilter : ObjectPropertyFilter, IRegisteredObjectPropertyFilter, new();
+
+        /// <summary>Registers a filter than can be later associated with an <see cref="IObjectPropertySerializer"/> to process the
+        /// properties of a given object. The filter's <see cref="IRegisteredObjectPropertyFilter.CanFilter"/> method must return True
+        /// for it to be used. If multiple filters can potentially process a given object type, then the first registered filter will
+        /// be used.</summary>
+        /// <typeparam name="TFilter">The filter type.</typeparam>
+        /// <param name="filter">The filter instance.</param>
+        /// <param name="serializerOptions">Provides the ability to configure the serializer options when the filter is created. The
+        /// options must not include a Filter as the registered filter will be used.</param>
+        /// <remarks>Use this overload when you must guarantee that a unique instance of the options is used per filter, such as
+        /// in a multi-threaded scenario.</remarks>
+        void Register<TFilter>(TFilter filter, Action<ObjectPropertySerializerOptions> serializerOptions)
+            where TFilter : ObjectPropertyFilter, IRegisteredObjectPropertyFilter;
 
         /// <summary>Finds a registered filter that can process the properties of the provided object and returns a suitably configured serializer.</summary>
         /// <param name="object">The object to find an <see cref="ObjectPropertyFilter"/> that can process its properties.</param>

@@ -24,7 +24,13 @@ namespace AllOverIt.Formatters.Objects
             where TFilter : ObjectPropertyFilter, IRegisteredObjectPropertyFilter, new()
         {
             var filter = new TFilter();
+            Register(filter, serializerOptions);
+        }
 
+        /// <inheritdoc />
+        public void Register<TFilter>(TFilter filter, ObjectPropertySerializerOptions serializerOptions = null)
+            where TFilter : ObjectPropertyFilter, IRegisteredObjectPropertyFilter
+        {
             serializerOptions
                 ?.Filter
                 .CheckIsNull(nameof(serializerOptions.Filter), $"The {nameof(ObjectPropertyFilterRegistry)} expects the provided options to not include a filter.");
@@ -51,14 +57,23 @@ namespace AllOverIt.Formatters.Objects
             where TFilter : ObjectPropertyFilter, IRegisteredObjectPropertyFilter, new()
         {
             var options = new ObjectPropertySerializerOptions();
-
             serializerOptions.Invoke(options);
 
             Register<TFilter>(options);
         }
 
         /// <inheritdoc />
-            public bool GetObjectPropertySerializer(object @object, out IObjectPropertySerializer serializer)
+        public void Register<TFilter>(TFilter filter, Action<ObjectPropertySerializerOptions> serializerOptions)
+            where TFilter : ObjectPropertyFilter, IRegisteredObjectPropertyFilter
+        {
+            var options = new ObjectPropertySerializerOptions();
+            serializerOptions.Invoke(options);
+
+            Register(filter, options);
+        }
+
+        /// <inheritdoc />
+        public bool GetObjectPropertySerializer(object @object, out IObjectPropertySerializer serializer)
         {
             foreach (var filterSerializer in _filters)
             {
