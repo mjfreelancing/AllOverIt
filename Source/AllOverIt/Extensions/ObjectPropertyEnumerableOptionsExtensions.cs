@@ -1,0 +1,59 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using AllOverIt.Exceptions;
+using AllOverIt.Formatters.Objects;
+using AllOverIt.Helpers.PropertyNavigation;
+using AllOverIt.Helpers.PropertyNavigation.Extensions;
+
+namespace AllOverIt.Extensions
+{
+    /// <summary>Provides a variety of extension methods for <see cref="ObjectPropertyEnumerableOptions"/> types.</summary>
+    public static class ObjectPropertyEnumerableOptionsExtensions
+    {
+        /// <summary>Provides the ability to set <see cref="ObjectPropertyEnumerableOptions.AutoCollatedPaths"/> using property nodes via
+        /// <see cref="PropertyNavigator"/>.</summary>
+        /// <param name="options">The enumerable options associated with an <see cref="ObjectPropertyFilter"/>.</param>
+        /// <param name="propertyNodes">The property node information provided via <see cref="PropertyNavigator"/>.</param>
+        /// <remarks>This method also validates the property to be collated is not a class type (the <see cref="ObjectPropertyFilter"/> does not support collating class types).</remarks>
+        public static void SetAutoCollatedPaths(this ObjectPropertyEnumerableOptions options, params IPropertyNodes[] propertyNodes)
+        {
+            var fullPaths = propertyNodes.Select(item =>
+            {
+                var fullNodePath = item.GetFullNodePath();
+
+                var member = item.Nodes.Last().Expression;
+
+                var leafNodeType = member.Member.GetMemberType();
+
+                Type elementType = null;
+
+                if (leafNodeType.IsArray)
+                {
+                    elementType = leafNodeType.GetElementType();
+                }
+
+                if (typeof(IEnumerable).IsAssignableFrom(leafNodeType))
+                {
+                    if (leafNodeType.IsGenericType)
+                    {
+                        elementType = leafNodeType.GetGenericArguments()[0];
+                    }
+                }
+
+                // elementType is null when not an array or IEnumerable
+                var typeToCheck = elementType ?? leafNodeType;
+
+                if (typeToCheck.IsClassType() && typeToCheck != typeof(string))
+                {
+                    throw new ObjectPropertyFilterException($"The leaf property on the path '{fullNodePath}' for type '{item.ObjectType.GetFriendlyName()}' cannot be a class type.");
+                }
+
+                return fullNodePath;
+            });
+
+            options.AutoCollatedPaths = new List<string>(fullPaths);
+        }
+    }
+}

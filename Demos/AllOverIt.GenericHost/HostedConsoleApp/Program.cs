@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace HostedConsoleApp
 {
@@ -31,6 +32,8 @@ namespace HostedConsoleApp
                 .CreateConsoleHostBuilder<App>(args)
                 .ConfigureServices((hostContext, services) =>
                 {
+                    services.AddLogging(configure => configure.AddConsole());
+
                     // if 'App' requires anything to be injected, set it up here
                 });
         }

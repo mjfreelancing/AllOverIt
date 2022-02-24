@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AllOverIt.Helpers.PropertyNavigation;
+using AllOverIt.Helpers.PropertyNavigation.Extensions;
 
 namespace SerializeObjectProperties
 {
@@ -191,13 +193,13 @@ namespace SerializeObjectProperties
         {
             var complexObject = new ComplexObject
             {
-                Items = new ComplexObject.Item[]
+                Items = new ComplexObject.ComplexItem[]
                 {
                     new()
                     {
                         Name = "Name 1",
                         Factor = 1.1,
-                        Data = new ComplexObject.Item.ItemData
+                        Data = new ComplexObject.ComplexItem.ComplexItemData
                         {
                             Timestamp = DateTime.Now,
                             Values = Enumerable.Range(1, 5).SelectAsReadOnlyCollection(value => value)
@@ -207,7 +209,7 @@ namespace SerializeObjectProperties
                     {
                         Name = "Name 2",
                         Factor = 2.2,
-                        Data = new ComplexObject.Item.ItemData
+                        Data = new ComplexObject.ComplexItem.ComplexItemData
                         {
                             Timestamp = DateTime.Now,
                             Values = Enumerable.Range(11, 5).SelectAsReadOnlyCollection(value => value)
@@ -217,7 +219,7 @@ namespace SerializeObjectProperties
                     {
                         Name = "Name 3",
                         Factor = 3.3,
-                        Data = new ComplexObject.Item.ItemData
+                        Data = new ComplexObject.ComplexItem.ComplexItemData
                         {
                             Timestamp = DateTime.Now,
                             Values = Enumerable.Range(21, 5).SelectAsReadOnlyCollection(value => value)
@@ -250,13 +252,13 @@ namespace SerializeObjectProperties
         {
             var complexObject = new ComplexObject
             {
-                Items = new ComplexObject.Item[]
+                Items = new ComplexObject.ComplexItem[]
                 {
                     new()
                     {
                         Name = "Name 1",
                         Factor = 1.1,
-                        Data = new ComplexObject.Item.ItemData
+                        Data = new ComplexObject.ComplexItem.ComplexItemData
                         {
                             Timestamp = DateTime.Now,
                             Values = Enumerable.Range(1, 5).SelectAsReadOnlyCollection(value => value)
@@ -266,7 +268,7 @@ namespace SerializeObjectProperties
                     {
                         Name = "Name 2",
                         Factor = 2.2,
-                        Data = new ComplexObject.Item.ItemData
+                        Data = new ComplexObject.ComplexItem.ComplexItemData
                         {
                             Timestamp = DateTime.Now,
                             Values = Enumerable.Range(11, 5).SelectAsReadOnlyCollection(value => value)
@@ -276,7 +278,7 @@ namespace SerializeObjectProperties
                     {
                         Name = "Name 3",
                         Factor = 3.3,
-                        Data = new ComplexObject.Item.ItemData
+                        Data = new ComplexObject.ComplexItem.ComplexItemData
                         {
                             Timestamp = DateTime.Now,
                             Values = Enumerable.Range(21, 5).SelectAsReadOnlyCollection(value => value)
@@ -287,11 +289,25 @@ namespace SerializeObjectProperties
 
             var options = new ObjectPropertySerializerOptions
             {
-                EnumerableOptions =
-                {
-                    AutoCollatedPaths = new[] {"Items.Data.Values"}
-                }
+                // Approach #1
+                // See below for a type-safe way that also checks the leaf node is not a class type
+                //
+                // EnumerableOptions =
+                // {
+                //     AutoCollatedPaths = new[] {"Items.Data.Values"}
+                // }
             };
+
+            // Approach #2
+            var propertyNodes = PropertyNavigator
+                .For<ComplexObject>()
+                .Navigate(item => item.Items)           // each call to Navigate can only go as far as an IEnumerable<T>
+                .Navigate(item => item.Data.Values);
+
+            // This would throw since item.Items is an enumerable class type
+            // var propertyNodes = PropertyNavigator.For<ComplexObject>().Navigate(item => item.Items);
+
+            options.EnumerableOptions.SetAutoCollatedPaths(propertyNodes);
 
             var registry = new ObjectPropertyFilterRegistry();
             registry.Register<ComplexObjectItemDataFilter>(options);

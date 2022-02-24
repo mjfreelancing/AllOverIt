@@ -6,12 +6,12 @@ namespace SerializeObjectProperties
     {
         public override bool OnIncludeProperty()
         {
-            return Name != nameof(ComplexObject.Item.ItemData.Values);
+            return Name != nameof(ComplexObject.ComplexItem.ComplexItemData.Values);
         }
 
         public string OnFormatValue(string value)
 {
-            return Name == nameof(ComplexObject.Item.ItemData.Timestamp)
+            return Name == nameof(ComplexObject.ComplexItem.ComplexItemData.Timestamp)
                 ? $"[{value}]"
                 : value;
         }

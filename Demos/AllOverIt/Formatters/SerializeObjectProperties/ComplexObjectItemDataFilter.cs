@@ -42,7 +42,7 @@ namespace SerializeObjectProperties
             {
                 lastParent = Parents.Last();
 
-                return lastParent.Name == nameof(ComplexObject.Item.ItemData.Values);
+                return lastParent.Name == nameof(ComplexObject.ComplexItem.ComplexItemData.Values);
             }
 
             lastParent = null;

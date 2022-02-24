@@ -20,6 +20,20 @@ namespace HostedConsoleApp
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
+            _logger.LogInformation("Waiting for everything to start");
+
+            // ExecuteAsync() starts before OnStarted() fires, so this shows how to wait. The result indicates if the app has started
+            // or not (gone into the Stopping state).
+            var started = await WaitForStartup();
+
+            if (!started)
+            {
+                _logger.LogInformation("Failed to start");
+                return;
+            }
+
+            _logger.LogInformation("Now running");
+
             // if anything needs to run after the while block then the code would need to catch and ignore
             // TaskCanceledException exceptions. This is not required when using IHostApplicationLifetime
             // as shown in this class (the exception is caught elsewhere and the notifications are still made).

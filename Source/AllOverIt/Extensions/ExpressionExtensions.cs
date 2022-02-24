@@ -23,7 +23,6 @@ namespace AllOverIt.Extensions
                 {
                     yield return expression;
 
-                    //expression = expression.Expression as MemberExpression;
                     expression = expression.Expression.UnwrapMemberExpression();
                 }
             }
@@ -36,7 +35,7 @@ namespace AllOverIt.Extensions
         /// <returns>
         /// If <paramref name="expression"/> is a <see cref="MemberExpression"/> then the same expression is returned.
         /// If <paramref name="expression"/> is a <see cref="LambdaExpression"/> then its Body is returned if it is a
-        /// <see cref="MemberExpression"/>, or a <see cref="UnaryExpression"/> whos' Operand is a <see cref="MemberExpression"/>.
+        /// <see cref="MemberExpression"/>, or a <see cref="UnaryExpression"/> who's Operand is a <see cref="MemberExpression"/>.
         /// In all other cases, null is returned.</returns>
         public static MemberExpression UnwrapMemberExpression(this Expression expression)
         {
@@ -82,9 +81,7 @@ namespace AllOverIt.Extensions
                 {
                     var value = GetValue(memberExpression.Expression);
 
-                    var member = memberExpression.Member;
-
-                    return ReflectionHelper.GetMemberValue(member, value);
+                    return memberExpression.Member.GetValue(value);
                 }
 
                 static object EvalMethodCallExpression(MethodCallExpression methodCallExpression)

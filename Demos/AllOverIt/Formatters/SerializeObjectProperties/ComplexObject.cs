@@ -5,9 +5,9 @@ namespace SerializeObjectProperties
 {
     internal sealed class ComplexObject
     {
-        public sealed class Item
+        public sealed class ComplexItem
         {
-            public sealed class ItemData
+            public sealed class ComplexItemData
             {
                 public DateTime Timestamp { get; set; }
                 public IEnumerable<int> Values { get; set; }
@@ -15,9 +15,9 @@ namespace SerializeObjectProperties
 
             public string Name { get; set; }
             public double Factor { get; set; }
-            public ItemData Data { get; set; }
+            public ComplexItemData Data { get; set; }
         }
 
-        public IEnumerable<Item> Items { get; set; }
+        public IEnumerable<ComplexItem> Items { get; set; }
     }
 }

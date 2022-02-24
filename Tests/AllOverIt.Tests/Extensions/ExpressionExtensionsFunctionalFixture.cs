@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
-using AllOverIt.Reflection;
 using FluentAssertions;
 using System;
 using System.Linq;
@@ -104,7 +103,7 @@ namespace AllOverIt.Tests.Extensions
             var memberInfo = expression.GetFieldOrProperty();
 
             var name = memberInfo.Name;
-            var value = ReflectionHelper.GetMemberValue(memberInfo, parent.Child);
+            var value = memberInfo.GetValue(parent.Child);
 
             name.Should().Be(nameof(ChildClass.Property));
             value.Should().Be(parent.Child.Property);
@@ -120,7 +119,7 @@ namespace AllOverIt.Tests.Extensions
             var memberInfo = expression.GetFieldOrProperty();
 
             var name = memberInfo.Name;
-            var value = ReflectionHelper.GetMemberValue(memberInfo, parent.Child);
+            var value = memberInfo.GetValue(parent.Child);
 
             name.Should().Be(nameof(ChildClass.Field));
             value.Should().Be(parent.Child.Field);
