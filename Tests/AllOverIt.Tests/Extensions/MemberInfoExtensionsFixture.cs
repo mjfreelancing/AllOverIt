@@ -18,7 +18,10 @@ namespace AllOverIt.Tests.Extensions
         private class DummySuperClass : DummyBaseClass
         {
             public override double Prop3 { get; set; }
+
+#pragma warning disable CS0649
             public int Field5;
+#pragma warning restore CS0649
 
             public DummySuperClass()
             {

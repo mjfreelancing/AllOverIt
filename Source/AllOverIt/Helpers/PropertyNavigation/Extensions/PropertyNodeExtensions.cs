@@ -1,4 +1,6 @@
-﻿namespace AllOverIt.Helpers.PropertyNavigation.Extensions
+﻿using AllOverIt.Assertion;
+
+namespace AllOverIt.Helpers.PropertyNavigation.Extensions
 {
     /// <summary>Contains extension methods for use with <see cref="PropertyNode"/> instances.</summary>
     public static class PropertyNodeExtensions
@@ -8,6 +10,8 @@
         /// <returns>The name of the property node.</returns>
         public static string Name(this PropertyNode node)
         {
+            _ = node.WhenNotNull(nameof(node));
+
             return node.Expression.Member.Name;
         }
     }
