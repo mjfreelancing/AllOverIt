@@ -22,7 +22,6 @@ namespace AllOverIt.Tests.Formatters.Objects.Extensions
             }
 
             public bool Prop1 { get; }
-            public IEnumerable<string> Prop2 { get; }
             public IEnumerable<ChildObject> Prop3 { get; }
             public ChildObject Prop5 { get; }
         }
@@ -99,7 +98,6 @@ namespace AllOverIt.Tests.Formatters.Objects.Extensions
                 ObjectPropertyEnumerableOptionsExtensions.SetAutoCollatedPaths(_options, nodes);
 
                 _options.AutoCollatedPaths.Should().BeEquivalentTo(new[] {"Prop3.Prop4"});
-
             }
 
             [Fact]
