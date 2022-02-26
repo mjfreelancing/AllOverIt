@@ -3,7 +3,7 @@ using AllOverIt.Evaluator.Variables;
 
 namespace AllOverIt.Evaluator.Extensions
 {
-    /// <summary>Provides extension methods for IFormulaCompiler.</summary>
+    /// <summary>Provides extension methods for <see cref="FormulaCompiler"/>.</summary>
     public static class FormulaCompilerExtensions
     {
         /// <summary>Compiles a formula and returns the invoked result.</summary>
