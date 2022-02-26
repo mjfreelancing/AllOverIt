@@ -7,7 +7,7 @@
         <Authors>Malcolm Smith</Authors>
         <Company></Company>
         <Copyright>Copyright © 2022</Copyright>
-        <Description>Provides utility extensions for use with ReactiveUI.</Description>
+        <Description>Provides utility extensions for use with System.Reactive.</Description>
         <PackageTags>utilities</PackageTags>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <RepositoryType>git</RepositoryType>

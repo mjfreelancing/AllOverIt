@@ -180,6 +180,21 @@ Provides an AWS AppSync Graphql Subscription client.
 | net6.0         |    Yes    |
 
 
+# AllOverIt.Reactive
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Reactive?style=for-the-badge)](https://www.nuget.org/packages/AllOverIt.Reactive/)
+[![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Reactive?style=for-the-badge)](https://www.nuget.org/packages/AllOverIt.Reactive/)
+
+Provides utility extensions for use with System.Reactive.
+
+| Target         | Supported |
+|----------------|-----------|
+| netstandard2.0 |    Yes     |
+| netstandard2.1 |    Yes    |
+| netcoreapp3.1  |    Yes    |
+| net5.0         |    Yes    |
+| net6.0         |    Yes    |
+
+
 # AllOverIt.Fixture
 [![NuGet](https://img.shields.io/nuget/v/AllOverIt.Fixture?style=for-the-badge)](https://www.nuget.org/packages/AllOverIt.Fixture/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Fixture?style=for-the-badge)](https://www.nuget.org/packages/AllOverIt.Fixture/)
