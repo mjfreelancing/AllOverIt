@@ -3,8 +3,8 @@
 NEXT
 ====
 AllOverIt
-  * BREAKING: Moved ReflectionHelper methods SetMemberValue(), GetMemberValue(), and GetMemberType() to MemberInfoExtensions
-    as extension methods.
+  * BREAKING: Moved ReflectionHelper methods SetMemberValue(), GetMemberValue(), and GetMemberType() to
+    MemberInfoExtensions as extension methods.
   * Added PropertyNavigator to get expression details for all nodes in a property chain.
   * Added extension on ObjectPropertyEnumerableOptions called SetAutoCollatedPaths() which takes property node
     information via a PropertyNavigator to build full property paths and assert all leaf nodes are not a class type.

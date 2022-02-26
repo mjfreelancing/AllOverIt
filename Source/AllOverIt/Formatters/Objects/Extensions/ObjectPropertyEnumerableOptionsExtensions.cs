@@ -2,12 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using AllOverIt.Assertion;
 using AllOverIt.Exceptions;
-using AllOverIt.Formatters.Objects;
+using AllOverIt.Extensions;
 using AllOverIt.Helpers.PropertyNavigation;
 using AllOverIt.Helpers.PropertyNavigation.Extensions;
 
-namespace AllOverIt.Extensions
+namespace AllOverIt.Formatters.Objects.Extensions
 {
     /// <summary>Provides a variety of extension methods for <see cref="ObjectPropertyEnumerableOptions"/> types.</summary>
     public static class ObjectPropertyEnumerableOptionsExtensions
@@ -19,6 +20,9 @@ namespace AllOverIt.Extensions
         /// <remarks>This method also validates the property to be collated is not a class type (the <see cref="ObjectPropertyFilter"/> does not support collating class types).</remarks>
         public static void SetAutoCollatedPaths(this ObjectPropertyEnumerableOptions options, params IPropertyNodes[] propertyNodes)
         {
+            _ = options.WhenNotNull(nameof(options));
+            _ = propertyNodes.WhenNotNullOrEmpty(nameof(propertyNodes));
+
             var fullPaths = propertyNodes.Select(item =>
             {
                 var fullNodePath = item.GetFullNodePath();
@@ -47,7 +51,7 @@ namespace AllOverIt.Extensions
 
                 if (typeToCheck.IsClassType() && typeToCheck != typeof(string))
                 {
-                    throw new ObjectPropertyFilterException($"The leaf property on the path '{fullNodePath}' for type '{item.ObjectType.GetFriendlyName()}' cannot be a class type.");
+                    throw new ObjectPropertyFilterException($"The leaf property on path '{fullNodePath}' cannot be a class type ({item.ObjectType.GetFriendlyName()}).");
                 }
 
                 return fullNodePath;
