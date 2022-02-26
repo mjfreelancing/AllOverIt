@@ -96,4 +96,9 @@
         - AllOverIt dependencies:                           - [1] v2.9.0
 
 
+  [15] AllOverIt.Reactive                       v1.0.0
+        - Targets                                           - netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0
+        - AllOverIt dependencies:                           - [1] vx.x.x
+        - External dependencies:                            - System.Reactive v5.0.0
+
 ======================================================================================================================
