@@ -3,7 +3,6 @@ using AllOverIt.Aws.Cdk.AppSync.Attributes.Types;
 using AllOverIt.Aws.Cdk.AppSync.Exceptions;
 using AllOverIt.Extensions;
 using Amazon.CDK.AWS.AppSync;
-using System;
 using System.Linq;
 using System.Reflection;
 using SystemType = System.Type;

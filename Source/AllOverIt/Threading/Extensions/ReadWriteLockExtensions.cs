@@ -1,9 +1,8 @@
-﻿using AllOverIt.Patterns.ResourceInitialization;
-using AllOverIt.Threading;
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using AllOverIt.Patterns.ResourceInitialization;
 
-namespace AllOverIt.Extensions
+namespace AllOverIt.Threading.Extensions
 {
     /// <summary>Provides a variety of extension methods for <see cref="IReadWriteLock"/> types.</summary>
     [ExcludeFromCodeCoverage]

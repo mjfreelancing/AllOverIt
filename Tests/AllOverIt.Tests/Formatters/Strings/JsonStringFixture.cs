@@ -1,13 +1,13 @@
-﻿using AllOverIt.Extensions;
-using AllOverIt.Fixture;
+﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
+using AllOverIt.Formatters.Strings;
 using FluentAssertions;
 using System;
 using Xunit;
 
-namespace AllOverIt.Tests.Extensions
+namespace AllOverIt.Tests.Formatters.Strings
 {
-    public class StringFormatExtensionsFixture : FixtureBase
+    public class JsonStringFixture : FixtureBase
     {
         private const string BasicSourceString = @"{""key"":""value""}";
 
@@ -17,7 +17,7 @@ namespace AllOverIt.Tests.Extensions
             Invoking(
                 () =>
                 {
-                    _ = StringFormatExtensions.FormatJsonString(null);
+                    _ = JsonString.Format(null);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -30,7 +30,7 @@ namespace AllOverIt.Tests.Extensions
             Invoking(
                () =>
                {
-                   _ = StringFormatExtensions.FormatJsonString(BasicSourceString, -1);
+                   _ = JsonString.Format(BasicSourceString, -1);
                })
                .Should()
                .Throw<ArgumentOutOfRangeException>()
@@ -43,7 +43,7 @@ namespace AllOverIt.Tests.Extensions
             Invoking(
                () =>
                {
-                   _ = StringFormatExtensions.FormatJsonString(BasicSourceString, 0);
+                   _ = JsonString.Format(BasicSourceString, 0);
                })
                .Should()
                .NotThrow();
@@ -55,7 +55,7 @@ namespace AllOverIt.Tests.Extensions
             Invoking(
                () =>
                {
-                   _ = StringFormatExtensions.FormatJsonString(BasicSourceString, Create<int>());
+                   _ = JsonString.Format(BasicSourceString, Create<int>());
                })
                .Should()
                .NotThrow();
@@ -69,7 +69,7 @@ namespace AllOverIt.Tests.Extensions
   ""key"": ""value""
 }";
 
-            var actual = StringFormatExtensions.FormatJsonString(BasicSourceString);
+            var actual = JsonString.Format(BasicSourceString);
 
             actual.Should().Be(expected);
         }
@@ -78,16 +78,15 @@ namespace AllOverIt.Tests.Extensions
         public void Should_Return_Bad_Output_For_Bad_Input()
         {
             var stringValue = Create<string>();
-            var expected =
-                $@"{stringValue}{{
+            var expected = 
+$@"{stringValue}{{
   ab: cd
 }}";
 
-            var actual = StringFormatExtensions.FormatJsonString($"{stringValue}{{ab:cd}}");
+            var actual = JsonString.Format($"{stringValue}{{ab:cd}}");
 
             actual.Should().Be(expected);
         }
-
 
         [Fact]
         public void Should_Ignore_Unquoted_Whitespace()
@@ -98,7 +97,7 @@ namespace AllOverIt.Tests.Extensions
   ""key"": ""value""
 }";
 
-            var actual = StringFormatExtensions.FormatJsonString(source);
+            var actual = JsonString.Format(source);
 
             actual.Should().Be(expected);
         }
@@ -112,7 +111,7 @@ namespace AllOverIt.Tests.Extensions
   ""key"": ""val ue""
 }";
 
-            var actual = StringFormatExtensions.FormatJsonString(source);
+            var actual = JsonString.Format(source);
 
             actual.Should().Be(expected);
         }
@@ -126,7 +125,7 @@ namespace AllOverIt.Tests.Extensions
   ""key"": ""val,ue""
 }";
 
-            var actual = StringFormatExtensions.FormatJsonString(source);
+            var actual = JsonString.Format(source);
 
             actual.Should().Be(expected);
         }
@@ -141,7 +140,7 @@ namespace AllOverIt.Tests.Extensions
   ""key2"": ""value2""
 }";
 
-            var actual = StringFormatExtensions.FormatJsonString(source);
+            var actual = JsonString.Format(source);
 
             actual.Should().Be(expected);
         }
@@ -157,7 +156,7 @@ namespace AllOverIt.Tests.Extensions
   }
 }";
 
-            var actual = StringFormatExtensions.FormatJsonString(source);
+            var actual = JsonString.Format(source);
 
             actual.Should().Be(expected);
         }
@@ -175,7 +174,7 @@ namespace AllOverIt.Tests.Extensions
   ]
 }";
 
-            var actual = StringFormatExtensions.FormatJsonString(source);
+            var actual = JsonString.Format(source);
 
             actual.Should().Be(expected);
         }
@@ -191,7 +190,7 @@ namespace AllOverIt.Tests.Extensions
   ]
 }";
 
-            var actual = StringFormatExtensions.FormatJsonString(source);
+            var actual = JsonString.Format(source);
 
             actual.Should().Be(expected);
         }
@@ -204,7 +203,7 @@ namespace AllOverIt.Tests.Extensions
 @"{
 }";
 
-            var actual = StringFormatExtensions.FormatJsonString(source);
+            var actual = JsonString.Format(source);
 
             actual.Should().Be(expected);
         }
@@ -220,7 +219,7 @@ namespace AllOverIt.Tests.Extensions
   ]
 }";
 
-            var actual = StringFormatExtensions.FormatJsonString(source);
+            var actual = JsonString.Format(source);
 
             actual.Should().Be(expected);
         }
@@ -236,7 +235,7 @@ namespace AllOverIt.Tests.Extensions
   ]
 }";
 
-            var actual = StringFormatExtensions.FormatJsonString(source);
+            var actual = JsonString.Format(source);
 
             actual.Should().Be(expected);
         }
@@ -251,7 +250,7 @@ namespace AllOverIt.Tests.Extensions
   ]
 }";
 
-            var actual = StringFormatExtensions.FormatJsonString(source);
+            var actual = JsonString.Format(source);
 
             actual.Should().Be(expected);
         }
@@ -272,7 +271,7 @@ namespace AllOverIt.Tests.Extensions
   ""key2"": ""value2""
 }";
 
-            var actual = StringFormatExtensions.FormatJsonString(source);
+            var actual = JsonString.Format(source);
 
             actual.Should().Be(expected);
         }

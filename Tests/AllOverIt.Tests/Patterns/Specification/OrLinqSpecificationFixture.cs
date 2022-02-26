@@ -1,4 +1,4 @@
-using AllOverIt.Extensions;
+using AllOverIt.Patterns.Specification.Extensions;
 using FluentAssertions;
 using Xunit;
 

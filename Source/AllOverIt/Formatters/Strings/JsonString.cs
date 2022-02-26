@@ -1,9 +1,9 @@
-﻿using AllOverIt.Assertion;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using AllOverIt.Assertion;
 
-namespace AllOverIt.Formatters
+namespace AllOverIt.Formatters.Strings
 {
     internal static class JsonString
     {

@@ -3,6 +3,7 @@
 NEXT
 ====
 AllOverIt
+  * BREAKING: Moved a number of extension methods to be closer to their associated classes (hence a namespace change)
   * BREAKING: Moved ReflectionHelper methods SetMemberValue(), GetMemberValue(), and GetMemberType() to
     MemberInfoExtensions as extension methods.
   * Added PropertyNavigator to get expression details for all nodes in a property chain.

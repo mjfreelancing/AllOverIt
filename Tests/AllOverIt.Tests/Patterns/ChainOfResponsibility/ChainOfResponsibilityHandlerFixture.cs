@@ -1,7 +1,7 @@
-﻿using AllOverIt.Extensions;
-using AllOverIt.Fixture;
+﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.ChainOfResponsibility;
+using AllOverIt.Patterns.ChainOfResponsibility.Extensions;
 using FluentAssertions;
 using System;
 using Xunit;

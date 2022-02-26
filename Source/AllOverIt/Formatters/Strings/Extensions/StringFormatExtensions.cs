@@ -1,6 +1,4 @@
-﻿using AllOverIt.Formatters;
-
-namespace AllOverIt.Extensions
+﻿namespace AllOverIt.Formatters.Strings.Extensions
 {
     /// <summary>Provides extensions for formatting strings in a known format.</summary>
     public static class StringFormatExtensions

@@ -1,6 +1,4 @@
-﻿using AllOverIt.Patterns.Specification;
-
-namespace AllOverIt.Extensions
+﻿namespace AllOverIt.Patterns.Specification.Extensions
 {
     /// <summary>Provides extensions methods that simplify the composition of LINQ compatible specifications.</summary>
     public static class LinqSpecificationExtensions

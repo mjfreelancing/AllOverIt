@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Assertion;
-using AllOverIt.Aws.Cdk.AppSync.Attributes.Types;
 using AllOverIt.Aws.Cdk.AppSync.Extensions;
 using AllOverIt.Aws.Cdk.AppSync.Factories;
 using AllOverIt.Aws.Cdk.AppSync.Mapping;
@@ -9,7 +8,6 @@ using Amazon.CDK.AWS.AppSync;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using EnumType = Amazon.CDK.AWS.AppSync.EnumType;
 using SystemType = System.Type;
 

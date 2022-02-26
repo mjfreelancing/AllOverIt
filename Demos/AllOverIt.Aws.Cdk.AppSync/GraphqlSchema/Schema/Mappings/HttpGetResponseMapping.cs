@@ -1,4 +1,4 @@
-﻿using AllOverIt.Extensions;
+﻿using AllOverIt.Formatters.Strings.Extensions;
 
 namespace GraphqlSchema.Schema.Mappings
 {

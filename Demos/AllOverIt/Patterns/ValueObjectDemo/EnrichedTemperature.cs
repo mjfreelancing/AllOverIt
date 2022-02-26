@@ -1,5 +1,4 @@
-﻿using AllOverIt.Extensions;
-using System;
+﻿using System;
 using ValueObjectDemo.Extensions;
 
 namespace ValueObjectDemo

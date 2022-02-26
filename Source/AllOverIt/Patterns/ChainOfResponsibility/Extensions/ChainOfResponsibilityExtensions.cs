@@ -1,9 +1,9 @@
-using AllOverIt.Assertion;
-using AllOverIt.Patterns.ChainOfResponsibility;
 using System.Collections.Generic;
 using System.Linq;
+using AllOverIt.Assertion;
+using AllOverIt.Extensions;
 
-namespace AllOverIt.Extensions
+namespace AllOverIt.Patterns.ChainOfResponsibility.Extensions
 {
     /// <summary>Provides a variety of extension methods for <see cref="IChainOfResponsibilityHandler{TInput, TOutput}"/> types.</summary>
     public static class ChainOfResponsibilityExtensions

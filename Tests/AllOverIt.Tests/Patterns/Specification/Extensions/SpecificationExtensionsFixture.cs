@@ -1,9 +1,8 @@
-﻿using AllOverIt.Extensions;
-using AllOverIt.Tests.Patterns.Specification;
+﻿using AllOverIt.Patterns.Specification.Extensions;
 using FluentAssertions;
 using Xunit;
 
-namespace AllOverIt.Tests.Extensions
+namespace AllOverIt.Tests.Patterns.Specification.Extensions
 {
     public class SpecificationExtensionsFixture : SpecificationFixtureBase
     {

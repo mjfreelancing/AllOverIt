@@ -2,6 +2,7 @@
 using AllOverIt.Patterns.Specification;
 using System;
 using System.Linq;
+using AllOverIt.Patterns.Specification.Extensions;
 
 namespace SpecificationDemo
 {

@@ -1,13 +1,13 @@
-﻿using AllOverIt.Extensions;
+﻿using System;
+using System.Collections.Generic;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.ChainOfResponsibility;
+using AllOverIt.Patterns.ChainOfResponsibility.Extensions;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
 using Xunit;
 
-namespace AllOverIt.Tests.Extensions
+namespace AllOverIt.Tests.Patterns.ChainOfResponsibility.Extensions
 {
     public class ChainOfResponsibilityExtensionsFixture : FixtureBase
     {

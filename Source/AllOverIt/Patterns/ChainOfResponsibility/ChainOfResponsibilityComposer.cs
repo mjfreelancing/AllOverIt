@@ -1,5 +1,5 @@
 using AllOverIt.Assertion;
-using AllOverIt.Extensions;
+using AllOverIt.Patterns.ChainOfResponsibility.Extensions;
 using System.Collections.Generic;
 
 namespace AllOverIt.Patterns.ChainOfResponsibility

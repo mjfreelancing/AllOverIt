@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Exceptions;
-using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.ValueObject;
