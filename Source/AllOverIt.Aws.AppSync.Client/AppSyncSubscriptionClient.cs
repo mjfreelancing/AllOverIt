@@ -10,6 +10,7 @@ using AllOverIt.Aws.AppSync.Client.Utils;
 using AllOverIt.Extensions;
 using AllOverIt.Helpers;
 using AllOverIt.Patterns.ResourceInitialization;
+using AllOverIt.Reactive.Extensions;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;

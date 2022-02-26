@@ -10,9 +10,16 @@ AllOverIt
   * Added extension on ObjectPropertyEnumerableOptions called SetAutoCollatedPaths() which takes property node
     information via a PropertyNavigator to build full property paths and assert all leaf nodes are not a class type.
 
-
 AllOverIt.GenericHost
   * Added WaitForStartup() to BackgroundWorker
+
+AllOverIt.Aws.Cdk.AppSync
+  * Now using reactive extensions in AllOverIt.Reactive
+  * Upated to Amazon.CDK.AWS.AppSync v1.146.0
+
+
+AllOverIt.Reactive
+  * New package
 
 
 10 Feb 2022

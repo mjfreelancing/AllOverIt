@@ -2,19 +2,19 @@
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 
-namespace AllOverIt.Aws.AppSync.Client.Extensions
+namespace AllOverIt.Reactive.Extensions
 {
-    internal static class ObservableExtensions
+    public static class ObservableExtensions
     {
-        internal static Task<TResult> WaitUntilAsync<TResult>(
+        public static Task<TResult> WaitUntilAsync<TResult>(
             this IObservable<TResult> observable,
             Func<TResult, bool> predicate,
             Func<TResult, Task<TResult>> action)
         {
-            return WaitUntilAsync<TResult, TResult>(observable, predicate, action);
+            return observable.WaitUntilAsync<TResult, TResult>(predicate, action);
         }
 
-        internal static async Task<TResult> WaitUntilAsync<TType, TResult>(
+        public static async Task<TResult> WaitUntilAsync<TType, TResult>(
             this IObservable<TType> observable,
             Func<TType, bool> predicate,
             Func<TType, Task<TResult>> action)
