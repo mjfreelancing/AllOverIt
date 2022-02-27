@@ -2,7 +2,7 @@
 using AllOverIt.Serialization.SystemTextJson;
 using System;
 using System.Collections.Generic;
-using AllOverIt.ObjectMapping;
+using AllOverIt.Mapping;
 using AllOverIt.Reflection;
 
 namespace DtoMapping
@@ -21,32 +21,39 @@ namespace DtoMapping
             };
 
             // Private values are copied even though not serialized
-            var bindingOptions = BindingOptions.DefaultScope | BindingOptions.Private | BindingOptions.DefaultAccessor | BindingOptions.DefaultVisibility;
+            var binding = BindingOptions.DefaultScope | BindingOptions.Private | BindingOptions.DefaultAccessor | BindingOptions.DefaultVisibility;
 
             // method 1 - maps source onto a newly constructed target
-            var target = source.MapTo<TargetType>(bindingOptions);
+            var target = source.MapTo<TargetType>(binding);
 
             PrintMapping(source, target, serializer);
 
 
             // method 2 - maps source onto the provided target
             target = new TargetType();
-            _ = source.MapTo(target, bindingOptions);
+            _ = source.MapTo(target, binding);
 
             PrintMapping(source, target, serializer);
 
 
 
 
-            var mapperCache = new MapperCache();
+            var objectMapper = new ObjectMapper();
+            objectMapper.DefaultOptions.Binding = binding;
 
-            target = mapperCache.Map<TargetType>(source, bindingOptions);
-            target = mapperCache.Map<TargetType>(source);
-            target = mapperCache.Map<TargetType>(source, bindingOptions);     // will use the cached mapper
+            // Will copy the private property
+            target = objectMapper.Map<TargetType>(source);
 
+            // Will NOT copy the private property
+            target = objectMapper.Map<TargetType>(source, config => { config.Binding = BindingOptions.Default; });
 
+            // Will copy the private property
+            // Will use the cached mapper
+            target = objectMapper.Map<TargetType>(source);
+
+            // Will copy the private property
             target = new TargetType();
-            target = mapperCache.Map(source, target, bindingOptions);
+            target = objectMapper.Map(source, target);
 
 
 
