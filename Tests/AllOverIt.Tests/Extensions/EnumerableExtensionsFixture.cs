@@ -725,6 +725,90 @@ namespace AllOverIt.Tests.Extensions
         }
 #endif
 
+        public class FindMatches : EnumerableExtensionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_First_Null()
+            {
+                Invoking(() =>
+                    {
+                        EnumerableExtensions.FindMatches<int, int, int>(null, Enumerable.Empty<int>(), item => item, item => item);
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("first");
+            }
+
+            [Fact]
+            public void Should_Not_Throw_When_First_Empty()
+            {
+                Invoking(() =>
+                    {
+                        EnumerableExtensions.FindMatches(Enumerable.Empty<int>(), CreateMany<int>(), item => item, item => item);
+                    })
+                    .Should()
+                    .NotThrow();
+            }
+
+            [Fact]
+            public void Should_Throw_When_Second_Null()
+            {
+                Invoking(() =>
+                    {
+                        EnumerableExtensions.FindMatches<int, int, int>(Enumerable.Empty<int>(), null, item => item, item => item);
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("second");
+            }
+
+            [Fact]
+            public void Should_Not_Throw_When_Second_Empty()
+            {
+                Invoking(() =>
+                    {
+                        EnumerableExtensions.FindMatches(CreateMany<int>(), Enumerable.Empty<int>(), item => item, item => item);
+                    })
+                    .Should()
+                    .NotThrow();
+            }
+
+            [Fact]
+            public void Should_Find_No_Matches()
+            {
+                var first = CreateManyDistinct<int>();
+                var firstMax = first.Max();
+
+                var second = first.Select(value => value + firstMax);
+
+                var matches = EnumerableExtensions.FindMatches(first, second, item => item, item => item);
+
+                matches.Should().BeEmpty();
+            }
+
+            [Fact]
+            public void Should_Find_All_Matches()
+            {
+                var first = CreateManyDistinct<int>();
+                var second = new List<int>(first);
+
+                var matches = EnumerableExtensions.FindMatches(first, second, item => item, item => item);
+
+                matches.Should().BeEquivalentTo(first);
+            }
+
+            [Fact]
+            public void Should_Find_Some_Matches()
+            {
+                var first = new[] {1, 2, 3, 4, 5};
+                var second = new[] { 7, 8, 3, 4, 5 };
+
+                var matches = EnumerableExtensions.FindMatches(first, second, item => item, item => item);
+
+                matches.Should().BeEquivalentTo(new[] {3, 4, 5});
+            }
+        }
+
 #if !NETSTANDARD2_0
         private static async IAsyncEnumerable<TType> AsAsyncEnumerable<TType>(IEnumerable<TType> items)
         {

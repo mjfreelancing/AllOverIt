@@ -284,5 +284,34 @@ namespace AllOverIt.Extensions
             }
         }
 #endif
+
+        /// <summary>Finds elements in a collection that match elements in a second collection based on key selectors.</summary>
+        /// <typeparam name="TFirst">The element type of the first collection.</typeparam>
+        /// <typeparam name="TSecond">The element type of the second collection.</typeparam>
+        /// <typeparam name="TKey">The key type used for comparing elements. Each element must have a unique key.</typeparam>
+        /// <param name="first">The first collection.</param>
+        /// <param name="second">The second collection.</param>
+        /// <param name="firstSelector">The key selector for each element in the first collection.</param>
+        /// <param name="secondSelector">The key selector for each element in the second collection.</param>
+        /// <returns>Elements from the first collection that have a key matching elements in the second collection.</returns>
+        public static IEnumerable<TFirst> FindMatches<TFirst, TSecond, TKey>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second,
+            Func<TFirst, TKey> firstSelector, Func<TSecond, TKey> secondSelector)
+        {
+            var firstItems = first
+                .WhenNotNull(nameof(first))
+                .AsReadOnlyCollection();
+
+            var secondItems = second
+                .WhenNotNull(nameof(second))
+                .AsReadOnlyCollection();
+
+            _ = firstSelector.WhenNotNull(nameof(firstSelector));
+            _ = secondSelector.WhenNotNull(nameof(secondSelector));
+
+            // This method is faster than using LINQ queries to find the matches
+            var firstMap = firstItems.ToDictionary(firstSelector);
+            var matchingKeys = firstMap.Keys.Intersect(secondItems.Select(secondSelector));
+            return matchingKeys.Select(key => firstMap[key]);
+        }
     }
 }

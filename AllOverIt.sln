@@ -171,6 +171,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllOverIt.Reactive", "AllOv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubscribedEvents", "Demos\AllOverIt.Reactive\SubscribedEvents\SubscribedEvents.csproj", "{1F1D3D52-FA45-4D0A-A589-7EDBC3BEFE42}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mapping", "Mapping", "{BB28601E-3521-42E9-8FDC-D050601E2071}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DtoMapping", "Demos\AllOverIt\Mapping\DtoMapping\DtoMapping.csproj", "{8D0CAC40-6787-4808-96F9-83C20864A33D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -401,6 +405,10 @@ Global
 		{1F1D3D52-FA45-4D0A-A589-7EDBC3BEFE42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F1D3D52-FA45-4D0A-A589-7EDBC3BEFE42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F1D3D52-FA45-4D0A-A589-7EDBC3BEFE42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D0CAC40-6787-4808-96F9-83C20864A33D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D0CAC40-6787-4808-96F9-83C20864A33D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D0CAC40-6787-4808-96F9-83C20864A33D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D0CAC40-6787-4808-96F9-83C20864A33D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -483,6 +491,8 @@ Global
 		{012359CF-083F-4814-B2DE-084648CBB709} = {0C08FAE6-4CD9-4C7B-A849-EB0DB9BD1451}
 		{5CBF91E4-7BC4-40C4-A68C-55726C4D0E1B} = {D9F6B8A1-4B01-4708-8851-741FC19F2440}
 		{1F1D3D52-FA45-4D0A-A589-7EDBC3BEFE42} = {5CBF91E4-7BC4-40C4-A68C-55726C4D0E1B}
+		{BB28601E-3521-42E9-8FDC-D050601E2071} = {0DC79E13-DE7A-417D-8A7B-64ABA3F4E1C8}
+		{8D0CAC40-6787-4808-96F9-83C20864A33D} = {BB28601E-3521-42E9-8FDC-D050601E2071}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19DD11B3-596E-4862-B5C4-1FFFFB173106}
