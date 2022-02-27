@@ -2,7 +2,7 @@
 
 NEXT
 ====
-AllOverIt
+AllOverIt v3.0.0
   * BREAKING: Moved a number of extension methods to be closer to their associated classes (hence a namespace change)
   * BREAKING: Moved ReflectionHelper methods SetMemberValue(), GetMemberValue(), and GetMemberType() to
     MemberInfoExtensions as extension methods.
@@ -10,16 +10,41 @@ AllOverIt
   * Added extension on ObjectPropertyEnumerableOptions called SetAutoCollatedPaths() which takes property node
     information via a PropertyNavigator to build full property paths and assert all leaf nodes are not a class type.
 
-AllOverIt.GenericHost
-  * Added WaitForStartup() to BackgroundWorker
+AllOverIt.Validation v3.0.0
+  * Updated to AllOverIt v3.0.0
 
-AllOverIt.Aws.Cdk.AppSync
-  * Now using reactive extensions in AllOverIt.Reactive
+AllOverIt.Aws.Cdk.AppSync v2.0.0
+  * Updated to AllOverIt v3.0.0
+  * Now using reactive extensions in AllOverIt.Reactive v1.0.0
   * Upated to Amazon.CDK.AWS.AppSync v1.146.0
 
+AllOverIt.Evaluator v5.0.0
+  * Updated to AllOverIt v3.0.0
 
-AllOverIt.Reactive
-  * New package
+AllOverIt.GenericHost v4.0.0
+  * Updated to AllOverIt v3.0.0
+  * Added WaitForStartup() to BackgroundWorker
+
+AllOverIt.Serialization.NewtonsoftJson v2.0.0
+  * Updated to AllOverIt v3.0.0
+
+AllOverIt.Serialization.SystemTextJson v2.0.0
+  * Updated to AllOverIt v3.0.0
+
+AllOverIt.Aws.AppSync.Client v2.0.0
+  * Updated to AllOverIt v3.0.0
+
+AllOverIt.AspNetCore v2.0.0
+  * Updated to AllOverIt v3.0.0
+
+AllOverIt.EntityFrameworkCore v2.0.0
+  * Updated to AllOverIt v3.0.0
+
+AllOverIt.Csv v3.0.0
+  * Updated to AllOverIt v3.0.0
+
+AllOverIt.Reactive v1.0.0
+  * New package, adding an event bus and observable extensions
 
 
 10 Feb 2022
