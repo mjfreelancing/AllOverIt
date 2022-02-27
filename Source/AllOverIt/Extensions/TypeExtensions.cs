@@ -27,15 +27,15 @@ namespace AllOverIt.Extensions
 
         /// <summary>Gets <see cref="PropertyInfo"/> (property metadata) for all properties on a given <see cref="Type"/> satisfying a given binding option.</summary>
         /// <param name="type">The type to obtain property metadata for.</param>
-        /// <param name="binding">The binding option that determines the scope, access, and visibility rules to apply when searching for the metadata.</param>
-        /// <param name="declaredOnly">If true, the metadata of properties in the declared class as well as base class(es) are returned.
-        /// If false, only property metadata of the declared type is returned.</param>
+        /// <param name="bindingOptions">The binding option that determines the scope, access, and visibility rules to apply when searching for the metadata.</param>
+        /// <param name="declaredOnly">If False, the metadata of properties in the declared class as well as base class(es) are returned.
+        /// If True, only property metadata of the declared type is returned.</param>
         /// <returns>The property metadata, as <see cref="PropertyInfo"/>, of a provided <see cref="Type"/>.</returns>
         /// <remarks>When class inheritance is involved, this method returns the first property found, starting at the type represented
         /// by <paramref name="type"/>.</remarks>
-        public static IEnumerable<PropertyInfo> GetPropertyInfo(this Type type, BindingOptions binding = BindingOptions.Default, bool declaredOnly = false)
+        public static IEnumerable<PropertyInfo> GetPropertyInfo(this Type type, BindingOptions bindingOptions = BindingOptions.Default, bool declaredOnly = false)
         {
-            var predicate = BindingOptionsHelper.BuildBindingPredicate(binding);
+            var predicate = BindingOptionsHelper.BuildBindingPredicate(bindingOptions);
             var typeInfo = type.GetTypeInfo();
 
             return from propInfo in typeInfo.GetPropertyInfo(declaredOnly)
@@ -46,15 +46,15 @@ namespace AllOverIt.Extensions
 
         /// <summary>Gets <see cref="MethodInfo"/> (method metadata) for a given <see cref="Type"/> and binding option.</summary>
         /// <param name="type">The type to obtain method metadata for.</param>
-        /// <param name="binding">The binding option that determines the scope, access, and visibility rules to apply when searching for the metadata.</param>
-        /// <param name="declaredOnly">If true, the metadata of properties in the declared class as well as base class(es) are returned.
-        /// If false, only method metadata of the declared type is returned.</param>
+        /// <param name="bindingOptions">The binding option that determines the scope, access, and visibility rules to apply when searching for the metadata.</param>
+        /// <param name="declaredOnly">If False, the metadata of properties in the declared class as well as base class(es) are returned.
+        /// If True, only method metadata of the declared type is returned.</param>
         /// <returns>The method metadata, as <see cref="MethodInfo"/>, of a provided <see cref="Type"/>.</returns>
         /// <remarks>When class inheritance is involved, this method returns the first method found, starting at the type represented
         /// by <paramref name="type"/>.</remarks>
-        public static IEnumerable<MethodInfo> GetMethodInfo(this Type type, BindingOptions binding = BindingOptions.Default, bool declaredOnly = false)
+        public static IEnumerable<MethodInfo> GetMethodInfo(this Type type, BindingOptions bindingOptions = BindingOptions.Default, bool declaredOnly = false)
         {
-            var predicate = BindingOptionsHelper.BuildBindingPredicate(binding);
+            var predicate = BindingOptionsHelper.BuildBindingPredicate(bindingOptions);
             var currentType = type;
 
             while (currentType != null)
