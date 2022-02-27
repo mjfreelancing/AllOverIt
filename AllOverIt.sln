@@ -165,6 +165,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Helpers", "Helpers", "{643B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.Reactive", "Source\AllOverIt.Reactive\AllOverIt.Reactive.csproj", "{DADCB028-A3B4-4C1D-BBCF-849C2FE99030}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllOverIt.Reactive.Tests", "Tests\AllOverIt.Reactive.Tests\AllOverIt.Reactive.Tests.csproj", "{012359CF-083F-4814-B2DE-084648CBB709}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -387,6 +389,10 @@ Global
 		{DADCB028-A3B4-4C1D-BBCF-849C2FE99030}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DADCB028-A3B4-4C1D-BBCF-849C2FE99030}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DADCB028-A3B4-4C1D-BBCF-849C2FE99030}.Release|Any CPU.Build.0 = Release|Any CPU
+		{012359CF-083F-4814-B2DE-084648CBB709}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{012359CF-083F-4814-B2DE-084648CBB709}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{012359CF-083F-4814-B2DE-084648CBB709}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{012359CF-083F-4814-B2DE-084648CBB709}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -466,6 +472,7 @@ Global
 		{7BBD8B1A-3D74-4F36-BF0E-5B2E5AA133CD} = {643B62BB-CF51-4D34-B899-636273B91123}
 		{643B62BB-CF51-4D34-B899-636273B91123} = {0DC79E13-DE7A-417D-8A7B-64ABA3F4E1C8}
 		{DADCB028-A3B4-4C1D-BBCF-849C2FE99030} = {FC8E8DB2-1299-44F4-A233-0EDCE225BB8C}
+		{012359CF-083F-4814-B2DE-084648CBB709} = {0C08FAE6-4CD9-4C7B-A849-EB0DB9BD1451}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19DD11B3-596E-4862-B5C4-1FFFFB173106}
