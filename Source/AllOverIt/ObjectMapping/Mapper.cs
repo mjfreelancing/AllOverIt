@@ -10,7 +10,7 @@ namespace AllOverIt.ObjectMapping
 {
     public static class Mapper
     {
-        public static TTarget MapToType<TTarget>(this object source, BindingOptions bindingOptions = BindingOptions.Default) where TTarget : new()
+        public static TTarget MapTo<TTarget>(this object source, BindingOptions bindingOptions = BindingOptions.Default) where TTarget : new()
         {
             var target = new TTarget();
             return MapSourceToTarget(source, target, bindingOptions);
@@ -48,10 +48,16 @@ namespace AllOverIt.ObjectMapping
         }
     }
 
+
+
     public interface IMapperCache
     {
-        TTarget MapToType<TTarget>(object source, BindingOptions bindingOptions = BindingOptions.Default) where TTarget : new();
+        TTarget Map<TTarget>(object source, BindingOptions bindingOptions = BindingOptions.Default) where TTarget : new();
+
+        TTarget Map<TSource, TTarget>(TSource source, TTarget target, BindingOptions bindingOptions = BindingOptions.Default);
     }
+
+
 
     public sealed class MapperCache : IMapperCache
     {
@@ -83,11 +89,26 @@ namespace AllOverIt.ObjectMapping
         // Not thread safe
         private readonly IDictionary<(Type, Type, BindingOptions), MatchingPropertyMapper> _mapperCache = new Dictionary<(Type, Type, BindingOptions), MatchingPropertyMapper>();
 
-        public TTarget MapToType<TTarget>(object source, BindingOptions bindingOptions = BindingOptions.Default)
+        public TTarget Map<TTarget>(object source, BindingOptions bindingOptions = BindingOptions.Default)
             where TTarget : new()
         {
             var sourceType = source.GetType();
             var targetType = typeof(TTarget);
+            var target = new TTarget();
+
+            return MapSourceToTarget(sourceType, source, targetType, target, bindingOptions);
+        }
+
+        public TTarget Map<TSource, TTarget>(TSource source, TTarget target, BindingOptions bindingOptions = BindingOptions.Default)
+        {
+            var sourceType = typeof(TSource);
+            var targetType = typeof(TTarget);
+
+            return MapSourceToTarget(sourceType, source, targetType, target, bindingOptions);
+        }
+
+        private TTarget MapSourceToTarget<TTarget>(Type sourceType, object source, Type targetType, TTarget target, BindingOptions bindingOptions)
+        {
             var mappingKey = (sourceType, targetType, bindingOptions);
 
             if (!_mapperCache.TryGetValue(mappingKey, out var mapper))
@@ -96,7 +117,6 @@ namespace AllOverIt.ObjectMapping
                 _mapperCache.Add(mappingKey, mapper);
             }
 
-            var target = new TTarget();
             mapper.MapPropertyValues(source, target);
 
             return target;

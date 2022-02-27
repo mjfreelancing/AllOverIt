@@ -24,7 +24,7 @@ namespace DtoMapping
             var bindingOptions = BindingOptions.DefaultScope | BindingOptions.Private | BindingOptions.DefaultAccessor | BindingOptions.DefaultVisibility;
 
             // method 1 - maps source onto a newly constructed target
-            var target = source.MapToType<TargetType>(bindingOptions);
+            var target = source.MapTo<TargetType>(bindingOptions);
 
             PrintMapping(source, target, serializer);
 
@@ -40,11 +40,13 @@ namespace DtoMapping
 
             var mapperCache = new MapperCache();
 
-            target = mapperCache.MapToType<TargetType>(source, bindingOptions);
-            target = mapperCache.MapToType<TargetType>(source);
-            target = mapperCache.MapToType<TargetType>(source, bindingOptions);     // will use the cached mapper
+            target = mapperCache.Map<TargetType>(source, bindingOptions);
+            target = mapperCache.Map<TargetType>(source);
+            target = mapperCache.Map<TargetType>(source, bindingOptions);     // will use the cached mapper
 
 
+            target = new TargetType();
+            target = mapperCache.Map(source, target, bindingOptions);
 
 
 
