@@ -36,6 +36,23 @@ namespace DtoMapping
             PrintMapping(source, target, serializer);
 
 
+
+
+            var mapperCache = new MapperCache();
+
+            target = mapperCache.MapToType<TargetType>(source, bindingOptions);
+            target = mapperCache.MapToType<TargetType>(source);
+            target = mapperCache.MapToType<TargetType>(source, bindingOptions);     // will use the cached mapper
+
+
+
+
+
+
+
+
+
+
             Console.WriteLine();
             Console.WriteLine("All Over It.");
             Console.ReadKey();
@@ -43,7 +60,7 @@ namespace DtoMapping
 
         private static void PrintMapping(SourceType source, TargetType target, IJsonSerializer serializer)
         {
-            Console.WriteLine($"Source = {serializer.SerializeObject(source)}");
+            Console.WriteLine($"Source = {serializer.SerializeObject(source)} (Prop4 = {source.GetProp4()})");
             Console.WriteLine($"Target = {serializer.SerializeObject(target)}");
             Console.WriteLine();
         }

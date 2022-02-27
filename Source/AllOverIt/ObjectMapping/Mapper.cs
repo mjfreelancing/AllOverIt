@@ -1,4 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using AllOverIt.Extensions;
 using AllOverIt.Reflection;
 
@@ -22,12 +26,7 @@ namespace AllOverIt.ObjectMapping
             var sourceType = source.GetType();
             var targetType = typeof(TTarget);
 
-            var sourceProps = sourceType.GetPropertyInfo(bindingOptions).Where(prop => prop.CanRead);
-            var destProps = targetType.GetPropertyInfo(bindingOptions).Where(prop => prop.CanWrite);
-
-            var matching = sourceProps
-                .FindMatches(destProps, src => src.Name, dest => dest.Name)
-                .AsReadOnlyCollection();
+            var matching = GetMatchingProperties(sourceType, targetType, bindingOptions);
 
             foreach (var match in matching)
             {
@@ -37,15 +36,70 @@ namespace AllOverIt.ObjectMapping
 
             return target;
         }
+
+        internal static IReadOnlyCollection<PropertyInfo> GetMatchingProperties(Type sourceType, Type targetType, BindingOptions bindingOptions)
+        {
+            var sourceProps = sourceType.GetPropertyInfo(bindingOptions).Where(prop => prop.CanRead);
+            var destProps = targetType.GetPropertyInfo(bindingOptions).Where(prop => prop.CanWrite);
+
+            return sourceProps
+                .FindMatches(destProps, src => src.Name, dest => dest.Name)
+                .AsReadOnlyCollection();
+        }
     }
 
     public interface IMapperCache
     {
-
+        TTarget MapToType<TTarget>(object source, BindingOptions bindingOptions = BindingOptions.Default) where TTarget : new();
     }
 
     public sealed class MapperCache : IMapperCache
     {
+        private class MatchingPropertyMapper
+        {
+            private readonly Type _sourceType;
+            private readonly Type _targetType;
+            private readonly BindingOptions _bindingOptions;
+            private readonly IReadOnlyCollection<PropertyInfo> _matching;
 
+            public MatchingPropertyMapper(Type sourceType, Type targetType, BindingOptions bindingOptions)
+            {
+                _sourceType = sourceType;
+                _targetType = targetType;
+                _bindingOptions = bindingOptions;
+                _matching = Mapper.GetMatchingProperties(_sourceType, _targetType, bindingOptions);
+            }
+
+            public void MapPropertyValues(object source, object target)
+            {
+                foreach (var match in _matching)
+                {
+                    var value = source.GetPropertyValue(_sourceType, match.Name, _bindingOptions);
+                    target.SetPropertyValue(_targetType, match.Name, value, _bindingOptions);
+                }
+            }
+        }
+
+        // Not thread safe
+        private readonly IDictionary<(Type, Type, BindingOptions), MatchingPropertyMapper> _mapperCache = new Dictionary<(Type, Type, BindingOptions), MatchingPropertyMapper>();
+
+        public TTarget MapToType<TTarget>(object source, BindingOptions bindingOptions = BindingOptions.Default)
+            where TTarget : new()
+        {
+            var sourceType = source.GetType();
+            var targetType = typeof(TTarget);
+            var mappingKey = (sourceType, targetType, bindingOptions);
+
+            if (!_mapperCache.TryGetValue(mappingKey, out var mapper))
+            {
+                mapper = new MatchingPropertyMapper(sourceType, targetType, bindingOptions);
+                _mapperCache.Add(mappingKey, mapper);
+            }
+
+            var target = new TTarget();
+            mapper.MapPropertyValues(source, target);
+
+            return target;
+        }
     }
 }
