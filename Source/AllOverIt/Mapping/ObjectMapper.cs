@@ -2,71 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using AllOverIt.Assertion;
 using AllOverIt.Extensions;
 using AllOverIt.Reflection;
 
 namespace AllOverIt.Mapping
 {
-    public static class ObjectExtensions
-    {
-        public static TTarget MapTo<TTarget>(this object source, BindingOptions bindingOptions = BindingOptions.Default) where TTarget : new()
-        {
-            var target = new TTarget();
-            return MapSourceToTarget(source, target, bindingOptions);
-        }
-
-        public static TTarget MapTo<TSource, TTarget>(this TSource source, TTarget target, BindingOptions bindingOptions = BindingOptions.Default)
-        {
-            return MapSourceToTarget(source, target, bindingOptions);
-        }
-
-        private static TTarget MapSourceToTarget<TTarget>(object source, TTarget target, BindingOptions bindingOptions)
-        {
-            var sourceType = source.GetType();
-            var targetType = typeof(TTarget);
-
-            var matching = ObjectMapperHelper.GetMappableProperties(sourceType, targetType, bindingOptions);
-
-            foreach (var match in matching)
-            {
-                var value = source.GetPropertyValue(sourceType, match.Name, bindingOptions);
-                target.SetPropertyValue(targetType, match.Name, value, bindingOptions);
-            }
-
-            return target;
-        }
-    }
-
-
-    public static class ObjectMapperHelper
-    {
-        public static IReadOnlyCollection<PropertyInfo> GetMappableProperties(Type sourceType, Type targetType, BindingOptions bindingOptions)
-        {
-            var sourceProps = sourceType.GetPropertyInfo(bindingOptions).Where(prop => prop.CanRead);
-            var destProps = targetType.GetPropertyInfo(bindingOptions).Where(prop => prop.CanWrite);
-
-            return sourceProps
-                .FindMatches(destProps, src => $"{src.Name}.{src.PropertyType.GetFriendlyName()}", target => $"{target.Name}.{target.PropertyType.GetFriendlyName()}")
-                .AsReadOnlyCollection();
-        }
-    }
-
-
-
-    public interface IObjectMapper
-    {
-        void Configure<TSource, TTarget>(Action<ObjectMapperOptions> configure = default);
-        TTarget Map<TTarget>(object source, Action<ObjectMapperOptions> configure = default) where TTarget : new();
-        TTarget Map<TSource, TTarget>(TSource source, TTarget target, Action<ObjectMapperOptions> configure = default);
-    }
-
-
-    public sealed class ObjectMapperOptions
-    {
-        public BindingOptions Binding { get; set; } = BindingOptions.Default;
-    }
-
-
+    /// <summary>Implements an object mapper that will copy property values from a source onto a target.</summary>
     public sealed class ObjectMapper : IObjectMapper
     {
         private class MatchingPropertyMapper
@@ -97,16 +39,21 @@ namespace AllOverIt.Mapping
         // Not thread safe - if to be used across multiple threads then configure the mappings in advance
         private readonly IDictionary<(Type, Type, BindingOptions), MatchingPropertyMapper> _mapperCache = new Dictionary<(Type, Type, BindingOptions), MatchingPropertyMapper>();
 
+        /// <summary>Provides options that control how source properties are copied onto a target instance.</summary>
         public ObjectMapperOptions DefaultOptions { get; } = new();
 
-        public void Configure<TSource, TTarget>(Action<ObjectMapperOptions> configure = default)
+        /// <inheritdoc />
+        public void Configure<TSource, TTarget>(Action<ObjectMapperOptions> configure)
         {
+            _ = configure.WhenNotNull(nameof(configure));
+
             var sourceType = typeof(TSource);
             var targetType = typeof(TTarget);
 
             _ = TryCacheMapper(sourceType, targetType, configure);
         }
 
+        /// <inheritdoc />
         public TTarget Map<TTarget>(object source, Action<ObjectMapperOptions> configure = default)
             where TTarget : new()
         {
@@ -117,6 +64,7 @@ namespace AllOverIt.Mapping
             return MapSourceToTarget(sourceType, source, targetType, target, configure);
         }
 
+        /// <inheritdoc />
         public TTarget Map<TSource, TTarget>(TSource source, TTarget target, Action<ObjectMapperOptions> configure = default)
         {
             var sourceType = typeof(TSource);

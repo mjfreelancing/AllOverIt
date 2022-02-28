@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using AllOverIt.Mapping;
 using AllOverIt.Reflection;
+using AllOverIt.Mapping.Extensions;
 
 namespace DtoMapping
 {
