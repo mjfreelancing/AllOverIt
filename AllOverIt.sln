@@ -169,11 +169,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.Reactive.Tests", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllOverIt.Reactive", "AllOverIt.Reactive", "{5CBF91E4-7BC4-40C4-A68C-55726C4D0E1B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubscribedEvents", "Demos\AllOverIt.Reactive\SubscribedEvents\SubscribedEvents.csproj", "{1F1D3D52-FA45-4D0A-A589-7EDBC3BEFE42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SubscribedEvents", "Demos\AllOverIt.Reactive\SubscribedEvents\SubscribedEvents.csproj", "{1F1D3D52-FA45-4D0A-A589-7EDBC3BEFE42}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mapping", "Mapping", "{BB28601E-3521-42E9-8FDC-D050601E2071}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DtoMapping", "Demos\AllOverIt\Mapping\DtoMapping\DtoMapping.csproj", "{8D0CAC40-6787-4808-96F9-83C20864A33D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DtoMapping", "Demos\AllOverIt\Mapping\DtoMapping\DtoMapping.csproj", "{8D0CAC40-6787-4808-96F9-83C20864A33D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectMappingBenchmarking", "Demos\AllOverIt\Benchmarking\ObjectMappingBenchmarking\ObjectMappingBenchmarking.csproj", "{8DC2BDA3-203B-426B-826A-B832FF5F496D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -409,6 +411,10 @@ Global
 		{8D0CAC40-6787-4808-96F9-83C20864A33D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D0CAC40-6787-4808-96F9-83C20864A33D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D0CAC40-6787-4808-96F9-83C20864A33D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DC2BDA3-203B-426B-826A-B832FF5F496D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DC2BDA3-203B-426B-826A-B832FF5F496D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DC2BDA3-203B-426B-826A-B832FF5F496D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DC2BDA3-203B-426B-826A-B832FF5F496D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -493,6 +499,7 @@ Global
 		{1F1D3D52-FA45-4D0A-A589-7EDBC3BEFE42} = {5CBF91E4-7BC4-40C4-A68C-55726C4D0E1B}
 		{BB28601E-3521-42E9-8FDC-D050601E2071} = {0DC79E13-DE7A-417D-8A7B-64ABA3F4E1C8}
 		{8D0CAC40-6787-4808-96F9-83C20864A33D} = {BB28601E-3521-42E9-8FDC-D050601E2071}
+		{8DC2BDA3-203B-426B-826A-B832FF5F496D} = {17CD389D-25DF-4075-980B-96C1A77C779E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19DD11B3-596E-4862-B5C4-1FFFFB173106}

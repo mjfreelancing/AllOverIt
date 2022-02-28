@@ -75,7 +75,7 @@ namespace AllOverIt.Mapping.Extensions
             var sourceType = source.GetType();
             var targetType = typeof(TTarget);
 
-            var matches = ObjectMapperHelper.GetMappableProperties(sourceType, targetType, options.Binding);
+            var matches = ObjectMapperHelper.GetMappableProperties(sourceType, targetType, options.Binding, null);
 
             ObjectMapperHelper.MapPropertyValues(sourceType, source, targetType, target, matches, options);
 
@@ -87,7 +87,7 @@ namespace AllOverIt.Mapping.Extensions
             var sourceType = source.GetType();
             var targetType = typeof(TTarget);
 
-            var matches = ObjectMapperHelper.GetMappableProperties(sourceType, targetType, bindingOptions);
+            var matches = ObjectMapperHelper.GetMappableProperties(sourceType, targetType, bindingOptions, null);
 
             ObjectMapperHelper.MapPropertyValues(sourceType, source, targetType, target, matches, bindingOptions);
 

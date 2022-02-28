@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ForEachAsyncBenchmarking
 {
+    [MemoryDiagnoser]
     public class AsyncCalculations
     {
         private static readonly IEnumerable<(int input1, int input2)> Inputs = GetInputs();

@@ -11,7 +11,7 @@ namespace AllOverIt.Mapping
         /// <typeparam name="TTarget">The target type.</typeparam>
         /// <param name="configure">The action that allows the mapper options to be configured. Configuration is cached
         /// based on the source type, target type, and binding options used.</param>
-        void Configure<TSource, TTarget>(Action<ObjectMapperOptions> configure)
+        void Configure<TSource, TTarget>(Action<TypedObjectMapperOptions<TSource, TTarget>> configure = default)
             where TSource : class
             where TTarget : class;
 
@@ -32,7 +32,7 @@ namespace AllOverIt.Mapping
         /// <param name="configure">The action that allows the mapper options to be configured. Configuration is cached
         /// based on the source type, target type, and binding options used.</param>
         /// <returns>The same target instance after all source properties have been copied.</returns>
-        TTarget Map<TSource, TTarget>(TSource source, TTarget target, Action<ObjectMapperOptions> configure = default)
+        TTarget Map<TSource, TTarget>(TSource source, TTarget target, Action<TypedObjectMapperOptions<TSource, TTarget>> configure = default)
             where TSource : class
             where TTarget : class;
     }
