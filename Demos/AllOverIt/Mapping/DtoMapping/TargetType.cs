@@ -7,5 +7,6 @@ namespace DtoMapping
         public int Prop1 { get; set; }
         public IEnumerable<string> Prop3 { get; set; }
         public int Prop4 { get; private set; }      // Is private on the source
+        public int Prop5b { get; set; }
     }
 }

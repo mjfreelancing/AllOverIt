@@ -11,7 +11,9 @@ namespace AllOverIt.Mapping
         /// <typeparam name="TTarget">The target type.</typeparam>
         /// <param name="configure">The action that allows the mapper options to be configured. Configuration is cached
         /// based on the source type, target type, and binding options used.</param>
-        void Configure<TSource, TTarget>(Action<ObjectMapperOptions> configure);
+        void Configure<TSource, TTarget>(Action<ObjectMapperOptions> configure)
+            where TSource : class
+            where TTarget : class;
 
         /// <summary>Default constructs the target type and copies properties from the provided source type.</summary>
         /// <typeparam name="TTarget">The target type.</typeparam>
@@ -19,7 +21,8 @@ namespace AllOverIt.Mapping
         /// <param name="configure">The action that allows the mapper options to be configured. Configuration is cached
         /// based on the source type, target type, and binding options used.</param>
         /// <returns>The same target instance after all source properties have been copied.</returns>
-        TTarget Map<TTarget>(object source, Action<ObjectMapperOptions> configure = default) where TTarget : new();
+        TTarget Map<TTarget>(object source, Action<ObjectMapperOptions> configure = default) 
+            where TTarget : class, new();
 
         /// <summary>Maps properties from a source object onto a provided target instance.</summary>
         /// <typeparam name="TSource">The source type to copy property values from.</typeparam>
@@ -29,6 +32,8 @@ namespace AllOverIt.Mapping
         /// <param name="configure">The action that allows the mapper options to be configured. Configuration is cached
         /// based on the source type, target type, and binding options used.</param>
         /// <returns>The same target instance after all source properties have been copied.</returns>
-        TTarget Map<TSource, TTarget>(TSource source, TTarget target, Action<ObjectMapperOptions> configure = default);
+        TTarget Map<TSource, TTarget>(TSource source, TTarget target, Action<ObjectMapperOptions> configure = default)
+            where TSource : class
+            where TTarget : class;
     }
 }

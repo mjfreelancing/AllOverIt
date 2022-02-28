@@ -18,29 +18,38 @@ namespace DtoMapping
             {
                 Prop1 = 10,
                 Prop2 = true,
-                Prop3 = new List<string>(new[] { "1", "2", "3" })
+                Prop3 = new List<string>(new[] { "1", "2", "3" }),
+                Prop5a = 20
             };
 
             // Private values are copied even though not serialized
-            var binding = BindingOptions.DefaultScope | BindingOptions.Private | BindingOptions.DefaultAccessor | BindingOptions.DefaultVisibility;
+            var options = new ObjectMapperOptions
+            {
+                Binding = BindingOptions.DefaultScope | BindingOptions.Private | BindingOptions.DefaultAccessor |BindingOptions.DefaultVisibility
+            };
 
             // method 1 - maps source onto a newly constructed target
-            var target = source.MapTo<TargetType>(binding);
+            var target = source.MapTo<TargetType>(options);
 
             PrintMapping(source, target, serializer);
 
 
             // method 2 - maps source onto the provided target
             target = new TargetType();
-            _ = source.MapTo(target, binding);
+            _ = source.MapTo(target, options);
 
             PrintMapping(source, target, serializer);
 
 
 
 
-            var objectMapper = new ObjectMapper();
-            objectMapper.DefaultOptions.Binding = binding;
+            var objectMapper = new ObjectMapper
+            {
+                DefaultOptions =
+                {
+                    Binding = BindingOptions.DefaultScope | BindingOptions.Private | BindingOptions.DefaultAccessor |BindingOptions.DefaultVisibility
+                }
+            };
 
             // Will copy the private property
             target = objectMapper.Map<TargetType>(source);
@@ -52,9 +61,13 @@ namespace DtoMapping
             // Will use the cached mapper
             target = objectMapper.Map<TargetType>(source);
 
-            // Will copy the private property
+            // Will copy the private property but exclude Prop1
             target = new TargetType();
-            target = objectMapper.Map(source, target);
+            target = objectMapper.Map(source, target, opt =>
+            {
+                opt.Binding = BindingOptions.DefaultScope | BindingOptions.Private | BindingOptions.DefaultAccessor | BindingOptions.DefaultVisibility;
+                opt.Filter = propInfo => propInfo.Name != nameof(SourceType.Prop1);
+            });
 
 
 

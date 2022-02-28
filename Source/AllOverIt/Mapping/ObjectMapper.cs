@@ -1,10 +1,10 @@
-﻿using System;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Extensions;
+using AllOverIt.Reflection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using AllOverIt.Assertion;
-using AllOverIt.Extensions;
-using AllOverIt.Reflection;
 
 namespace AllOverIt.Mapping
 {
@@ -16,19 +16,24 @@ namespace AllOverIt.Mapping
             private readonly Type _sourceType;
             private readonly Type _targetType;
             private readonly BindingOptions _bindingOptions;
-            private readonly IReadOnlyCollection<PropertyInfo> _matching;
+            private readonly IReadOnlyCollection<PropertyInfo> _matches;
 
-            internal MatchingPropertyMapper(Type sourceType, Type targetType, BindingOptions bindingOptions)
+            internal MatchingPropertyMapper(Type sourceType, Type targetType, BindingOptions options)
             {
                 _sourceType = sourceType;
                 _targetType = targetType;
-                _bindingOptions = bindingOptions;
-                _matching = ObjectMapperHelper.GetMappableProperties(_sourceType, _targetType, bindingOptions);
+                _bindingOptions = options;
+                _matches = ObjectMapperHelper.GetMappableProperties(_sourceType, _targetType, options);
             }
 
-            internal void MapPropertyValues(object source, object target)
+            internal void MapPropertyValues(object source, object target, ObjectMapperOptions options)
             {
-                foreach (var match in _matching)
+                // see if any properties need filtering out
+                var matches = options?.Filter != null
+                    ? _matches.Where(options.Filter).AsReadOnlyCollection()
+                    : _matches;
+
+                foreach (var match in matches)
                 {
                     var value = source.GetPropertyValue(_sourceType, match.Name, _bindingOptions);
                     target.SetPropertyValue(_targetType, match.Name, value, _bindingOptions);
@@ -44,19 +49,24 @@ namespace AllOverIt.Mapping
 
         /// <inheritdoc />
         public void Configure<TSource, TTarget>(Action<ObjectMapperOptions> configure)
+            where TSource : class
+            where TTarget : class
         {
             _ = configure.WhenNotNull(nameof(configure));
 
             var sourceType = typeof(TSource);
             var targetType = typeof(TTarget);
+            var mapperOptions = GetConfiguredOptions(configure);
 
-            _ = TryCacheMapper(sourceType, targetType, configure);
+            _ = TryCacheMapper(sourceType, targetType, mapperOptions);
         }
 
         /// <inheritdoc />
         public TTarget Map<TTarget>(object source, Action<ObjectMapperOptions> configure = default)
-            where TTarget : new()
+            where TTarget : class, new()
         {
+            _ = source.WhenNotNull(nameof(source));
+
             var sourceType = source.GetType();
             var targetType = typeof(TTarget);
             var target = new TTarget();
@@ -66,6 +76,8 @@ namespace AllOverIt.Mapping
 
         /// <inheritdoc />
         public TTarget Map<TSource, TTarget>(TSource source, TTarget target, Action<ObjectMapperOptions> configure = default)
+            where TSource : class
+            where TTarget : class
         {
             var sourceType = typeof(TSource);
             var targetType = typeof(TTarget);
@@ -73,17 +85,22 @@ namespace AllOverIt.Mapping
             return MapSourceToTarget(sourceType, source, targetType, target, configure);
         }
 
-        private TTarget MapSourceToTarget<TTarget>(Type sourceType, object source, Type targetType, TTarget target, Action<ObjectMapperOptions> configure = default)
+        private TTarget MapSourceToTarget<TTarget>(Type sourceType, object source, Type targetType, TTarget target, Action<ObjectMapperOptions> configure)
+            where TTarget : class
         {
-            var mapper = TryCacheMapper(sourceType, targetType, configure);
-            mapper.MapPropertyValues(source, target);
+            _ = source.WhenNotNull(nameof(source));
+            _ = target.WhenNotNull(nameof(source));
+
+            var mapperOptions = GetConfiguredOptions(configure);
+            var mapper = TryCacheMapper(sourceType, targetType, mapperOptions);
+            mapper.MapPropertyValues(source, target, mapperOptions);
 
             return target;
         }
 
-        private MatchingPropertyMapper TryCacheMapper(Type sourceType, Type targetType, Action<ObjectMapperOptions> configure)
+        private MatchingPropertyMapper TryCacheMapper(Type sourceType, Type targetType, ObjectMapperOptions mapperOptions)
         {
-            var mapperOptions = GetConfiguredOptions(configure);
+            _ = mapperOptions.WhenNotNull(nameof(mapperOptions));
 
             var mappingKey = (sourceType, targetType, mapperOptions.Binding);
 
