@@ -33,7 +33,8 @@ namespace AllOverIt.Mapping
         }
 
         // Not thread safe - if to be used across multiple threads then configure the mappings in advance
-        private readonly IDictionary<(Type, Type, BindingOptions), MatchingPropertyMapper> _mapperCache = new Dictionary<(Type, Type, BindingOptions), MatchingPropertyMapper>();
+        private readonly IDictionary<(Type, Type, BindingOptions), MatchingPropertyMapper> _mapperCache
+            = new Dictionary<(Type, Type, BindingOptions), MatchingPropertyMapper>();
 
         /// <summary>Provides options that control how source properties are copied onto a target instance.</summary>
         public ObjectMapperOptions DefaultOptions { get; } = new();
@@ -92,7 +93,8 @@ namespace AllOverIt.Mapping
             return target;
         }
 
-        private TTarget MapSourceToTarget<TSource, TTarget>(Type sourceType, object source, Type targetType, TTarget target, Action<TypedObjectMapperOptions<TSource, TTarget>> configure)
+        private TTarget MapSourceToTarget<TSource, TTarget>(Type sourceType, object source, Type targetType, TTarget target,
+            Action<TypedObjectMapperOptions<TSource, TTarget>> configure)
             where TSource : class
             where TTarget : class
         {
@@ -110,21 +112,6 @@ namespace AllOverIt.Mapping
 
             return target;
         }
-
-        // mapperOptions will be null if not used as an override
-        //private TTarget MapSourceToTarget<TTarget>(Type sourceType, object source, Type targetType, TTarget target, ObjectMapperOptions optionsOverride)
-        //    where TTarget : class
-        //{
-        //    var mapper = GetMapper(sourceType, targetType, mapperOptions);
-
-        //    //var optionsOverride = configure != null
-        //    //    ? mapperOptions
-        //    //    : null;
-
-        //    mapper.MapPropertyValues(source, target, optionsOverride);
-
-        //    return target;
-        //}
 
         private MatchingPropertyMapper GetMapper(Type sourceType, Type targetType, ObjectMapperOptions mapperOptions)
         {

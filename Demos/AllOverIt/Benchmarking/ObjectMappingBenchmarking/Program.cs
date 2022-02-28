@@ -9,6 +9,9 @@ namespace ObjectMappingBenchmarking
         {
             BenchmarkRunner.Run<MappingTests>();
 
+            //var tests = new MappingTests();
+            //tests.StaticMethod_SimpleSource_Create_SimpleTarget();
+
             Console.WriteLine("");
             Console.WriteLine("All Over It.");
         }

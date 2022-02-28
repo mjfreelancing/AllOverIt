@@ -2,12 +2,14 @@
 
 namespace AllOverIt.Collections
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     /// <summary>Provides static methods related to dictionary types.</summary>
     public sealed class Dictionary
     {
+        // ReSharper disable once ClassNeverInstantiated.Local
         private sealed class EmptyReadOnlyDictionary<TKey, TValue>
         {
-            internal static IReadOnlyDictionary<TKey, TValue> Instance = new Dictionary<TKey, TValue>();
+            internal static readonly IReadOnlyDictionary<TKey, TValue> Instance = new Dictionary<TKey, TValue>();
         }
 
         /// <summary>Gets a static instance of a <see cref="IReadOnlyDictionary{TKey, TValue}"/>.</summary>

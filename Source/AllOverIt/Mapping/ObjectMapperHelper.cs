@@ -11,19 +11,19 @@ namespace AllOverIt.Mapping
     internal static class ObjectMapperHelper
     {
         internal static IReadOnlyCollection<PropertyInfo> GetMappableProperties(Type sourceType, Type targetType, BindingOptions bindingOptions,
-            IReadOnlyCollection<ObjectPropertyAlias> aliases)
+            IDictionary<string, string> aliases)
         {
+            //_ = aliases.WhenNotNull(nameof(aliases));       // allow empty
+
             var sourceProps = sourceType.GetPropertyInfo(bindingOptions).Where(prop => prop.CanRead);
             var destProps = targetType.GetPropertyInfo(bindingOptions).Where(prop => prop.CanWrite);
-
-            var aliasLookup = CreateAliasLookup(aliases);
 
             return sourceProps
                 .FindMatches(
                     destProps,
                     src =>
                     {
-                        var aliasName = GetTargetName(src.Name, aliasLookup);
+                        var aliasName = GetTargetAliasName(src.Name, aliases);
                         return $"{aliasName}.{src.PropertyType.GetFriendlyName()}";
                     },
                     target => $"{target.Name}.{target.PropertyType.GetFriendlyName()}")
@@ -48,36 +48,23 @@ namespace AllOverIt.Mapping
         }
 
         internal static void MapPropertyValues(Type sourceType, object source, Type targetType, object target, IReadOnlyCollection<PropertyInfo> matches,
-            BindingOptions bindingOptions, IReadOnlyCollection<ObjectPropertyAlias> aliases = default)
+            BindingOptions bindingOptions, IDictionary<string, string> aliases = default)
         {
             _ = source.WhenNotNull(nameof(source));
             _ = target.WhenNotNull(nameof(source));
             _ = matches.WhenNotNull(nameof(matches));       // allow empty
 
-            var aliasLookup = CreateAliasLookup(aliases);
-
             foreach (var match in matches)
             {
                 var value = source.GetPropertyValue(sourceType, match.Name, bindingOptions);
-                var targetName = GetTargetName(match.Name, aliasLookup);
+                var targetName = GetTargetAliasName(match.Name, aliases);
                 target.SetPropertyValue(targetType, targetName, value, bindingOptions);
             }
         }
 
-        private static IDictionary<string, string> CreateAliasLookup(IReadOnlyCollection<ObjectPropertyAlias> aliases)
+        private static string GetTargetAliasName(string sourceName, IDictionary<string, string> aliasLookup)
         {
-            aliases ??= Collections.Collection.EmptyReadOnly<ObjectPropertyAlias>();
-            return aliases.ToDictionary(item => item.SourceName, item => item.TargetName);
-        }
-
-        private static string GetTargetName(string sourceName, IDictionary<string, string> aliasLookup)
-{
-            if (aliasLookup.TryGetValue(sourceName, out var targetName))
-{
-                return targetName;
-            }
-
-            return sourceName;
+            return aliasLookup?.GetValueOrDefault(sourceName, sourceName) ?? sourceName;
         }
     }
 }
