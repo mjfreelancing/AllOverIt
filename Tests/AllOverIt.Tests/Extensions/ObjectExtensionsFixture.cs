@@ -1175,7 +1175,7 @@ namespace AllOverIt.Tests.Extensions
                 var subject = Create<DummyClass>();
                 var expected = subject.Prop1;
 
-                var actual = subject.GetPropertyValue(typeof(int), nameof(DummyClass.Prop1), BindingFlags.Instance | BindingFlags.Public);
+                var actual = subject.GetPropertyValue(typeof(DummyClass), nameof(DummyClass.Prop1), BindingFlags.Instance | BindingFlags.Public);
 
                 actual.Should().Be(expected);
             }
@@ -1186,7 +1186,7 @@ namespace AllOverIt.Tests.Extensions
                 var subject = Create<DummyClass>();
                 var expected = subject.GetProp2();
 
-                var actual = subject.GetPropertyValue(typeof(int), "Prop2", BindingFlags.Instance | BindingFlags.NonPublic);
+                var actual = subject.GetPropertyValue(typeof(DummyClass), "Prop2", BindingFlags.Instance | BindingFlags.NonPublic);
 
                 actual.Should().Be(expected);
             }
@@ -1200,7 +1200,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         var subject = Create<DummyClass>();
 
-                        subject.GetPropertyValue(typeof(int), propertyName, BindingFlags.Instance | BindingFlags.NonPublic);
+                        subject.GetPropertyValue(typeof(DummyClass), propertyName, BindingFlags.Instance | BindingFlags.NonPublic);
                     })
                     .Should()
                     .Throw<MemberAccessException>()
@@ -1257,7 +1257,7 @@ namespace AllOverIt.Tests.Extensions
                 var subject = Create<DummyClass>();
                 var expected = subject.Prop1;
 
-                var actual = subject.GetPropertyValue(typeof(int), nameof(DummyClass.Prop1));
+                var actual = subject.GetPropertyValue(typeof(DummyClass), nameof(DummyClass.Prop1));
 
                 actual.Should().Be(expected);
             }
@@ -1268,7 +1268,7 @@ namespace AllOverIt.Tests.Extensions
                 var subject = Create<DummyClass>();
                 var expected = subject.GetProp2();
 
-                var actual = subject.GetPropertyValue(typeof(int), "Prop2", BindingOptions.Instance | BindingOptions.Private);
+                var actual = subject.GetPropertyValue(typeof(DummyClass), "Prop2", BindingOptions.Instance | BindingOptions.Private);
 
                 actual.Should().Be(expected);
             }
@@ -1282,7 +1282,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         var subject = Create<DummyClass>();
 
-                        subject.GetPropertyValue(typeof(int), propertyName, BindingOptions.Instance | BindingOptions.Private);
+                        subject.GetPropertyValue(typeof(DummyClass), propertyName, BindingOptions.Instance | BindingOptions.Private);
                     })
                     .Should()
                     .Throw<MemberAccessException>()
@@ -1343,7 +1343,7 @@ namespace AllOverIt.Tests.Extensions
                 var subject = new DummyClass();
                 var expected = Create<int>();
 
-                subject.SetPropertyValue(typeof(int), nameof(DummyClass.Prop1), expected, BindingFlags.Instance | BindingFlags.Public);
+                subject.SetPropertyValue(typeof(DummyClass), nameof(DummyClass.Prop1), expected, BindingFlags.Instance | BindingFlags.Public);
 
                 var actual = subject.Prop1;
 
@@ -1356,7 +1356,7 @@ namespace AllOverIt.Tests.Extensions
                 var subject = new DummyClass();
                 var expected = Create<int>();
 
-                subject.SetPropertyValue(typeof(int), "Prop2", expected, BindingFlags.Instance | BindingFlags.NonPublic);
+                subject.SetPropertyValue(typeof(DummyClass), "Prop2", expected, BindingFlags.Instance | BindingFlags.NonPublic);
 
                 var actual = subject.GetProp2();
 
@@ -1372,7 +1372,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         var subject = new DummyClass();
 
-                        subject.SetPropertyValue(typeof(int), propertyName, Create<int>(), BindingFlags.Instance | BindingFlags.NonPublic);
+                        subject.SetPropertyValue(typeof(DummyClass), propertyName, Create<int>(), BindingFlags.Instance | BindingFlags.NonPublic);
                     })
                     .Should()
                     .Throw<MemberAccessException>()
@@ -1433,7 +1433,7 @@ namespace AllOverIt.Tests.Extensions
                 var subject = new DummyClass();
                 var expected = Create<int>();
 
-                subject.SetPropertyValue(typeof(int), nameof(DummyClass.Prop1), expected);
+                subject.SetPropertyValue(typeof(DummyClass), nameof(DummyClass.Prop1), expected);
 
                 var actual = subject.Prop1;
 
@@ -1446,7 +1446,7 @@ namespace AllOverIt.Tests.Extensions
                 var subject = new DummyClass();
                 var expected = Create<int>();
 
-                subject.SetPropertyValue(typeof(int), "Prop2", expected, BindingOptions.Instance | BindingOptions.Private);
+                subject.SetPropertyValue(typeof(DummyClass), "Prop2", expected, BindingOptions.Instance | BindingOptions.Private);
 
                 var actual = subject.GetProp2();
 
@@ -1462,7 +1462,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         var subject = new DummyClass();
 
-                        subject.SetPropertyValue(typeof(int), propertyName, Create<int>(), BindingOptions.Instance | BindingOptions.Private);
+                        subject.SetPropertyValue(typeof(DummyClass), propertyName, Create<int>(), BindingOptions.Instance | BindingOptions.Private);
                     })
                     .Should()
                     .Throw<MemberAccessException>()
