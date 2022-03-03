@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using AllOverIt.Reflection;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -7,9 +8,7 @@ namespace AllOverIt.Extensions
     /// <summary>Provides a variety of extension methods for <see cref="TypeInfo"/> types.</summary>
     public static class TypeInfoExtensions
     {
-        /// <summary>
-        /// Gets all <see cref="PropertyInfo"/> (property metadata) for a given <see cref="TypeInfo"/>.
-        /// </summary>
+        /// <summary>Gets all <see cref="PropertyInfo"/> (property metadata) for a given <see cref="TypeInfo"/>.</summary>
         /// <param name="typeInfo">The <see cref="TypeInfo"/> to obtain all property metadata.</param>
         /// <param name="declaredOnly">If true, the metadata of properties in the declared class as well as base class(es) are returned
         /// (if a property is overriden then only the base class <see cref="PropertyInfo"/> is returned).
@@ -19,34 +18,42 @@ namespace AllOverIt.Extensions
         /// by <paramref name="typeInfo"/>.</remarks>
         public static IEnumerable<PropertyInfo> GetPropertyInfo(this TypeInfo typeInfo, bool declaredOnly = false)
         {
-            var propInfoList = new List<PropertyInfo>();
+            return ReflectionCache.Instance.GetPropertyInfo(typeInfo, declaredOnly, key =>
+            {
+                var (ti, d) = (ReflectionCacheKey<TypeInfo, bool>) key;
 
-            GetPropertyInfo(typeInfo, declaredOnly, propInfoList);
+                var propInfoList = new List<PropertyInfo>();
 
-            return propInfoList;
+                GetPropertyInfo(ti, d, propInfoList);
+
+                return propInfoList;
+            });
         }
 
-        /// <summary>
-        /// Gets the <see cref="PropertyInfo"/> (property metadata) for a given public or protected property on a <see cref="TypeInfo"/>.
-        /// </summary>
+        /// <summary>Gets the <see cref="PropertyInfo"/> (property metadata) for a given public or protected property on a <see cref="TypeInfo"/>.</summary>
         /// <param name="typeInfo">The <see cref="TypeInfo"/> to obtain the property metadata from.</param>
         /// <param name="propertyName">The name of the property to obtain metadata for.</param>
         /// <returns>The property metadata, as <see cref="PropertyInfo"/>, of a specified property on the provided <paramref name="typeInfo"/>.</returns>
         /// <remarks>When class inheritance is involved, this method returns the first property found, starting at the type represented
         /// by <paramref name="typeInfo"/>. If the property is overriden, this means the base class <see cref="PropertyInfo"/> will not be
-        /// returned. If you require the base class <see cref="PropertyInfo"/> then use the <see cref="GetPropertyInfo(System.Reflection.TypeInfo,bool)"/>
+        /// returned. If you require the base class <see cref="PropertyInfo"/> then use the <see cref="GetPropertyInfo(TypeInfo,bool)"/>
         /// method.</remarks>
         public static PropertyInfo GetPropertyInfo(this TypeInfo typeInfo, string propertyName)
         {
-            var propertyInfo = typeInfo.GetDeclaredProperty(propertyName);
-
-            if (propertyInfo == null && typeInfo.BaseType != null)
+            return ReflectionCache.Instance.GetPropertyInfo(typeInfo, propertyName, key =>
             {
-                var baseTypeInfo = typeInfo.BaseType.GetTypeInfo();
-                propertyInfo = GetPropertyInfo(baseTypeInfo, propertyName);
-            }
+                var (ti, p) = (ReflectionCacheKey<TypeInfo, string>) key;
 
-            return propertyInfo;
+                var propertyInfo = ti.GetDeclaredProperty(p);
+
+                if (propertyInfo == null && ti.BaseType != null)
+                {
+                    var baseTypeInfo = ti.BaseType.GetTypeInfo();
+                    propertyInfo = GetPropertyInfo(baseTypeInfo, p);
+                }
+
+                return propertyInfo;
+            });
         }
 
         private static void GetPropertyInfo(TypeInfo typeInfo, bool declaredOnly, ICollection<PropertyInfo> propInfoList)

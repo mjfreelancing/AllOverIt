@@ -15,8 +15,14 @@ namespace AllOverIt.Mapping
         {
             //_ = aliases.WhenNotNull(nameof(aliases));       // allow empty
 
-            var sourceProps = sourceType.GetPropertyInfo(bindingOptions).Where(prop => prop.CanRead);
-            var destProps = targetType.GetPropertyInfo(bindingOptions).Where(prop => prop.CanWrite);
+            static IReadOnlyCollection<PropertyInfo> GetMappablePropertyInfo(ReflectionCacheKeyBase key)
+            {
+                var (t, b, d) = (ReflectionCacheKey<Type, BindingOptions, bool>) key;
+                return t.GetPropertyInfo(b, d).AsReadOnlyCollection();
+            }
+
+            var sourceProps = ReflectionCache.Instance.GetPropertyInfo(sourceType, bindingOptions, false, GetMappablePropertyInfo).Where(prop => prop.CanRead);
+            var destProps = ReflectionCache.Instance.GetPropertyInfo(targetType, bindingOptions, false, GetMappablePropertyInfo).Where(prop => prop.CanWrite);
 
             return sourceProps
                 .FindMatches(
@@ -24,9 +30,9 @@ namespace AllOverIt.Mapping
                     src =>
                     {
                         var aliasName = GetTargetAliasName(src.Name, aliases);
-                        return $"{aliasName}.{src.PropertyType.GetFriendlyName()}";
+                        return (aliasName, src.PropertyType);               // $"{aliasName}.{src.PropertyType.GetFriendlyName()}"
                     },
-                    target => $"{target.Name}.{target.PropertyType.GetFriendlyName()}")
+                    target => (target.Name, target.PropertyType))           // $"{target.Name}.{target.PropertyType.GetFriendlyName()}"
                 .AsReadOnlyCollection();
         }
 

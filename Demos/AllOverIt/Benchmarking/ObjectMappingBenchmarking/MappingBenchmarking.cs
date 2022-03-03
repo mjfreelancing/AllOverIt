@@ -24,7 +24,7 @@ namespace ObjectMappingBenchmarking
     [MemoryDiagnoser]
     public class MappingTests
     {
-        private const int _loopCount = 10;
+        private const int _loopCount = 1;
 
         // AutoMapper
         private readonly IMapper _autoMapper;
