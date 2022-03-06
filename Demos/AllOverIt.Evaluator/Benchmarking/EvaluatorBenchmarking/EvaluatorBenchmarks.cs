@@ -11,7 +11,7 @@ namespace EvaluatorBenchmarking
 {
     // all benchmarks are purely for comparison with an updated implementation
     [MemoryDiagnoser]
-    public class Evaluator
+    public class EvaluatorBenchmarks
     {
         private static readonly string[] Formula = new[]
         {
@@ -36,7 +36,7 @@ namespace EvaluatorBenchmarking
         private readonly FormulaCompiler _compiler;
         private readonly VariableRegistry _variableRegistry;
 
-        public Evaluator()
+        public EvaluatorBenchmarks()
         {
             var rnd = new Random((int) DateTime.Now.Ticks);
 

@@ -26,8 +26,9 @@ namespace AllOverIt.Extensions
         public static IDictionary<string, object> ToPropertyDictionary(this object instance, bool includeNulls = false, BindingOptions bindingOptions = BindingOptions.Default)
         {
             var type = instance.GetType();
-            var propertyInfo = type.GetPropertyInfo(bindingOptions, false);
+            var propertyInfo = type.GetPropertyInfo(bindingOptions, false);     // Uses cached property info
 
+            // TODO: Re-implement without LINQ
             var propInfos = from propInfo in propertyInfo
                             where propInfo.CanRead && !propInfo.IsIndexer()
                             let value = propInfo.GetValue(instance)
@@ -304,6 +305,8 @@ namespace AllOverIt.Extensions
             var exclusions = excludeProperties?.AsReadOnlyList();
 
             var objType = typeof(TType);
+
+            // TODO: Re-implement without LINQ
 
             // uses declaredOnly = false so base class properties are included
             // ordering by name to make the calculations predictable

@@ -29,13 +29,35 @@ namespace AllOverIt.Evaluator.Variables
         /// <inheritdoc />
         public IEnumerable<IVariable> GetReferencingVariables(IVariable variable, VariableLookupMode lookupMode)
         {
-            return (from keyValue in _variableRegistry.Variables
-                    let registryVariable = keyValue.Value
-                    let referencedVariables = GetReferencedVariables(registryVariable, lookupMode)
-                    from referenced in referencedVariables
-                    where ReferenceEquals(variable, referenced)
-                    select registryVariable)
-              .AsReadOnlyList();
+            var variables = new List<IVariable>();
+
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            foreach (var keyValue in _variableRegistry.Variables)
+            {
+                var registryVariable = keyValue.Value;
+                var referencedVariables = GetReferencedVariables(registryVariable, lookupMode);
+
+                // ReSharper disable once LoopCanBeConvertedToQuery
+                foreach (var referenced in referencedVariables)
+                {
+                    if (ReferenceEquals(variable, referenced))
+                    {
+                        variables.Add(registryVariable);
+                    }
+                }
+            }
+
+            return variables;
+
+            // LINQ version is less performing
+
+            //return (from keyValue in _variableRegistry.Variables
+            //        let registryVariable = keyValue.Value
+            //        let referencedVariables = GetReferencedVariables(registryVariable, lookupMode)
+            //        from referenced in referencedVariables
+            //        where ReferenceEquals(variable, referenced)
+            //        select registryVariable)
+            //  .AsReadOnlyList();
         }
     }
 }

@@ -6,7 +6,8 @@ namespace EvaluatorBenchmarking
     {
         static void Main()
         {
-            BenchmarkRunner.Run<Evaluator>();
+            BenchmarkRunner.Run<EvaluatorBenchmarks>();
+            //BenchmarkRunner.Run<LookupBenchmarks>();
         }
     }
 }

@@ -42,20 +42,7 @@ namespace AllOverIt.Extensions
                 var predicate = BindingOptionsHelper.BuildBindingPredicate(b);
                 var typeInfo = t.GetTypeInfo();
 
-                // faster than using method/query LINQ queries - MOVE TO A PRIVATE METHOD
-                var propInfos = new List<PropertyInfo>();
-
-                foreach (var propInfo in typeInfo.GetPropertyInfo(d))
-                {
-                    var methodInfo = propInfo.GetMethod;
-
-                    if (predicate.Invoke(methodInfo))
-                    {
-                        propInfos.Add(propInfo);
-                    }
-                }
-
-                return propInfos;
+                return GetFilteredPropertyInfo(typeInfo, d, predicate);
             });
         }
 
@@ -257,9 +244,7 @@ namespace AllOverIt.Extensions
                     typeName = typeName.Remove(backtickIndex);
                 }
 
-                var genericTypeNames = from genericArgument in type.GetGenericArguments()
-                                       select GetFriendlyName(genericArgument);
-
+                var genericTypeNames = type.GetGenericArguments().Select(GetFriendlyName);
                 var stringBuilder = new StringBuilder();
 
                 stringBuilder.Append(typeName);
@@ -281,6 +266,27 @@ namespace AllOverIt.Extensions
         public static bool IsEnrichedEnum(this Type type)
         {
             return type.IsDerivedFrom(EnrichedEnumType);
+        }
+
+        // ReSharper disable once ReturnTypeCanBeEnumerable.Local
+        private static IReadOnlyCollection<PropertyInfo> GetFilteredPropertyInfo(TypeInfo typeInfo, bool declaredOnly, Func<MethodBase, bool> predicate)
+        {
+            // This implementation is better performing than using method/query LINQ queries
+
+            var propInfos = new List<PropertyInfo>();
+
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            foreach (var propInfo in typeInfo.GetPropertyInfo(declaredOnly))
+            {
+                var methodInfo = propInfo.GetMethod;
+
+                if (predicate.Invoke(methodInfo))
+                {
+                    propInfos.Add(propInfo);
+                }
+            }
+
+            return propInfos;
         }
     }
 }

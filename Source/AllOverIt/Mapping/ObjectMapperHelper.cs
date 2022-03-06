@@ -40,7 +40,7 @@ namespace AllOverIt.Mapping
             ObjectMapperOptions options)
         {
             _ = source.WhenNotNull(nameof(source));
-            _ = target.WhenNotNull(nameof(source));
+            _ = target.WhenNotNull(nameof(target));
             _ = matches.WhenNotNull(nameof(matches));       // allow empty
             _ = options.WhenNotNull(nameof(options));
 
@@ -57,7 +57,7 @@ namespace AllOverIt.Mapping
             BindingOptions bindingOptions, IDictionary<string, string> aliases = default)
         {
             _ = source.WhenNotNull(nameof(source));
-            _ = target.WhenNotNull(nameof(source));
+            _ = target.WhenNotNull(nameof(target));
             _ = matches.WhenNotNull(nameof(matches));       // allow empty
 
             foreach (var match in matches)
