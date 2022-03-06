@@ -10,10 +10,10 @@ namespace ObjectMappingBenchmarking
     /*
     |                                        Method |      Mean |    Error |   StdDev |   Gen 0 | Allocated |
     |---------------------------------------------- |----------:|---------:|---------:|--------:|----------:|
-    |          AutoMapper_SimpleSource_SimpleTarget |  11.77 us | 0.108 us | 0.084 us |  0.9460 |      4 KB |
-    | StaticMethod_SimpleSource_Create_SimpleTarget | 486.34 us | 7.561 us | 7.073 us | 81.5430 |    334 KB |
-    | ObjectMapper_SimpleSource_Create_SimpleTarget | 248.86 us | 4.238 us | 3.964 us | 37.3535 |    153 KB |
-    | ObjectMapper_SimpleSource_CopyTo_SimpleTarget | 241.13 us | 3.766 us | 3.338 us | 36.3770 |    149 KB |
+    |          AutoMapper_SimpleSource_SimpleTarget |  11.88 us | 0.158 us | 0.148 us |  0.9460 |      4 KB |
+    | StaticMethod_SimpleSource_Create_SimpleTarget | 479.94 us | 7.457 us | 6.976 us | 81.5430 |    334 KB |
+    | ObjectMapper_SimpleSource_Create_SimpleTarget | 106.30 us | 1.861 us | 1.650 us |  7.8125 |     32 KB |
+    | ObjectMapper_SimpleSource_CopyTo_SimpleTarget | 102.02 us | 1.819 us | 1.786 us |  6.8359 |     28 KB |
     */
 
 

@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
-using AllOverIt.Reflection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,28 +12,51 @@ namespace AllOverIt.Mapping
     {
         private class MatchingPropertyMapper
         {
-            private readonly Type _sourceType;
-            private readonly Type _targetType;
-            private readonly ObjectMapperOptions _mapperOptions;
-            private readonly IReadOnlyCollection<PropertyInfo> _matches;
+            private readonly IReadOnlyCollection<(PropertyInfo, PropertyInfo)> _matches;
 
             internal MatchingPropertyMapper(Type sourceType, Type targetType, ObjectMapperOptions mapperOptions)
             {
-                _sourceType = sourceType;
-                _targetType = targetType;
-                _mapperOptions = mapperOptions.WhenNotNull(nameof(mapperOptions));
-                _matches = ObjectMapperHelper.GetMappableProperties(_sourceType, _targetType, _mapperOptions.Binding, mapperOptions.Aliases);
+                _ = mapperOptions.WhenNotNull(nameof(mapperOptions));
+                
+                var matches = ObjectMapperHelper.GetMappableProperties(sourceType, targetType, mapperOptions.Binding, mapperOptions.Aliases);
+
+                if (mapperOptions.Filter != null)
+                {
+                    matches = matches.Where(mapperOptions.Filter).AsReadOnlyCollection();
+                }
+
+                var matchedProps = new List<(PropertyInfo, PropertyInfo)>();
+
+                foreach (var match in matches)
+                {
+                    var sourcePropInfo = sourceType
+                        .GetPropertyInfo(mapperOptions.Binding, false)
+                        .SingleOrDefault(item => item.Name == match.Name);
+
+                    var targetName = ObjectMapperHelper.GetTargetAliasName(match.Name, mapperOptions.Aliases);
+
+                    var targetPropInfo = targetType
+                        .GetPropertyInfo(mapperOptions.Binding, false)
+                        .SingleOrDefault(item => item.Name == targetName);
+
+                    matchedProps.Add((sourcePropInfo, targetPropInfo));
+                }
+
+                _matches = matchedProps;
             }
 
-            internal void MapPropertyValues(object source, object target, ObjectMapperOptions mapperOptionsOverride)
+            internal void MapPropertyValues(object source, object target)
             {
-                ObjectMapperHelper.MapPropertyValues(_sourceType, source, _targetType, target, _matches, mapperOptionsOverride ?? _mapperOptions);
+                foreach (var (sourcePropInfo, targetPropInfo) in _matches)
+                {
+                    var value = sourcePropInfo.GetValue(source);
+                    targetPropInfo.SetValue(target, value);
+                }
             }
         }
 
         // Not thread safe - if to be used across multiple threads then configure the mappings in advance
-        private readonly IDictionary<(Type, Type, BindingOptions), MatchingPropertyMapper> _mapperCache
-            = new Dictionary<(Type, Type, BindingOptions), MatchingPropertyMapper>();
+        private readonly IDictionary<(Type, Type), MatchingPropertyMapper> _mapperCache = new Dictionary<(Type, Type), MatchingPropertyMapper>();
 
         /// <summary>Provides options that control how source properties are copied onto a target instance.</summary>
         public ObjectMapperOptions DefaultOptions { get; } = new();
@@ -48,11 +70,11 @@ namespace AllOverIt.Mapping
             var targetType = typeof(TTarget);
             var mapperOptions = GetConfiguredOptions(configure);
 
-            _ = GetMapper(sourceType, targetType, mapperOptions);
+            CreateMapper(sourceType, targetType, mapperOptions);
         }
 
         /// <inheritdoc />
-        public TTarget Map<TTarget>(object source, Action<ObjectMapperOptions> configure = default)
+        public TTarget Map<TTarget>(object source)
             where TTarget : class, new()
         {
             _ = source.WhenNotNull(nameof(source));
@@ -61,84 +83,57 @@ namespace AllOverIt.Mapping
             var targetType = typeof(TTarget);
             var target = new TTarget();
 
-            return MapSourceToTarget(sourceType, source, targetType, target, configure);
+            return MapSourceToTarget(sourceType, source, targetType, target);
         }
 
         /// <inheritdoc />
-        public TTarget Map<TSource, TTarget>(TSource source, TTarget target, Action<TypedObjectMapperOptions<TSource, TTarget>> configure = default)
+        public TTarget Map<TSource, TTarget>(TSource source, TTarget target)
             where TSource : class
             where TTarget : class
         {
             var sourceType = typeof(TSource);
             var targetType = typeof(TTarget);
 
-            return MapSourceToTarget(sourceType, source, targetType, target, configure);
+            return MapSourceToTarget(sourceType, source, targetType, target);
         }
 
-        private TTarget MapSourceToTarget<TTarget>(Type sourceType, object source, Type targetType, TTarget target, Action<ObjectMapperOptions> configure)
+        private TTarget MapSourceToTarget<TTarget>(Type sourceType, object source, Type targetType, TTarget target)
             where TTarget : class
         {
             _ = source.WhenNotNull(nameof(source));
             _ = target.WhenNotNull(nameof(source));
 
-            var mapperOptions = GetConfiguredOptions(configure);
-            var mapper = GetMapper(sourceType, targetType, mapperOptions);
-
-            var optionsOverride = configure != null
-                ? mapperOptions
-                : null;
-
-            mapper.MapPropertyValues(source, target, optionsOverride);
+            var mapper = GetMapper(sourceType, targetType);
+            mapper.MapPropertyValues(source, target);
 
             return target;
         }
 
-        private TTarget MapSourceToTarget<TSource, TTarget>(Type sourceType, object source, Type targetType, TTarget target,
-            Action<TypedObjectMapperOptions<TSource, TTarget>> configure)
-            where TSource : class
-            where TTarget : class
-        {
-            _ = source.WhenNotNull(nameof(source));
-            _ = target.WhenNotNull(nameof(source));
-
-            var mapperOptions = GetConfiguredOptions(configure);
-            var mapper = GetMapper(sourceType, targetType, mapperOptions);
-
-            var optionsOverride = configure != null
-                ? mapperOptions
-                : null;
-
-            mapper.MapPropertyValues(source, target, optionsOverride);
-
-            return target;
-        }
-
-        private MatchingPropertyMapper GetMapper(Type sourceType, Type targetType, ObjectMapperOptions mapperOptions)
+        private void CreateMapper(Type sourceType, Type targetType, ObjectMapperOptions mapperOptions)
         {
             _ = mapperOptions.WhenNotNull(nameof(mapperOptions));
 
-            var mappingKey = (sourceType, targetType, mapperOptions.Binding);
+            var mappingKey = (sourceType, targetType);
+
+            if (_mapperCache.TryGetValue(mappingKey, out var mapper))
+            {
+                throw new Exception($"Mapping already exists between {sourceType.GetFriendlyName()} and {targetType.GetFriendlyName()}");    // TODO: Needs a custom exception
+            }
+
+            mapper = new MatchingPropertyMapper(sourceType, targetType, mapperOptions);
+            _mapperCache.Add(mappingKey, mapper);
+        }
+
+        private MatchingPropertyMapper GetMapper(Type sourceType, Type targetType)
+        {
+            var mappingKey = (sourceType, targetType);
 
             if (!_mapperCache.TryGetValue(mappingKey, out var mapper))
             {
-                mapper = new MatchingPropertyMapper(sourceType, targetType, mapperOptions);
-                _mapperCache.Add(mappingKey, mapper);
+                throw new Exception($"Mapping not defined for {sourceType.GetFriendlyName()} and {targetType.GetFriendlyName()}");    // TODO: Needs a custom exception
             }
 
             return mapper;
-        }
-
-        private ObjectMapperOptions GetConfiguredOptions(Action<ObjectMapperOptions> configure)
-        {
-            if (configure == null)
-            {
-                return DefaultOptions;
-            }
-
-            var mapperOptions = new ObjectMapperOptions();
-            configure.Invoke(mapperOptions);
-
-            return mapperOptions;
         }
 
         private ObjectMapperOptions GetConfiguredOptions<TSource, TTarget>(Action<TypedObjectMapperOptions<TSource, TTarget>> configure)

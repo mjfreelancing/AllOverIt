@@ -29,10 +29,11 @@ namespace AllOverIt.Mapping
                     destProps,
                     src =>
                     {
+                        // returns src.Name is there's no matching alias, or aliases is null
                         var aliasName = GetTargetAliasName(src.Name, aliases);
-                        return (aliasName, src.PropertyType);               // $"{aliasName}.{src.PropertyType.GetFriendlyName()}"
+                        return (aliasName, src.PropertyType);
                     },
-                    target => (target.Name, target.PropertyType))           // $"{target.Name}.{target.PropertyType.GetFriendlyName()}"
+                    target => (target.Name, target.PropertyType))
                 .AsReadOnlyCollection();
         }
 
@@ -68,7 +69,7 @@ namespace AllOverIt.Mapping
             }
         }
 
-        private static string GetTargetAliasName(string sourceName, IDictionary<string, string> aliasLookup)
+        internal static string GetTargetAliasName(string sourceName, IDictionary<string, string> aliasLookup)
         {
             return aliasLookup?.GetValueOrDefault(sourceName, sourceName) ?? sourceName;
         }

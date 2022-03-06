@@ -51,33 +51,28 @@ namespace DtoMapping
                 }
             };
 
+            objectMapper.Configure<SourceType, TargetType>();
+
             // Will copy the private property
             target = objectMapper.Map<TargetType>(source);
 
-            // Will NOT copy the private property
-            target = objectMapper.Map<TargetType>(source, config => { config.Binding = BindingOptions.Default; });
 
-            // Will copy the private property
-            // Will use the cached mapper
-            target = objectMapper.Map<TargetType>(source);
+            objectMapper = new ObjectMapper
+            {
+                DefaultOptions =
+                {
+                    Filter = propInfo => propInfo.Name != nameof(SourceType.Prop1)
+                }
+            };
+            objectMapper.Configure<SourceType, TargetType>();
 
             // Will copy the private property but exclude Prop1 - approach #1 (apply to all mappings)
             target = new TargetType();
-            objectMapper.DefaultOptions.Filter = propInfo => propInfo.Name != nameof(SourceType.Prop1);
-            target = objectMapper.Map(source, target);
-
-            // Will copy the private property but exclude Prop1 - approach #2 (apply to this mapping only)
-            // Will use the cached mapper since the binding is the same as used previously
-            target = new TargetType();
-            target = objectMapper.Map(source, target, opt =>
-            {
-                opt.Binding = BindingOptions.DefaultScope | BindingOptions.Private | BindingOptions.DefaultAccessor | BindingOptions.DefaultVisibility;
-                opt.Filter = propInfo => propInfo.Name != nameof(SourceType.Prop1);
-            });
+            _ = objectMapper.Map(source, target);
 
 
 
-            // Showing how to configure in advance
+
             objectMapper = new ObjectMapper();
             target = new TargetType();
 
@@ -96,20 +91,6 @@ namespace DtoMapping
 
             objectMapper.Map(source, target);
 
-            // Will use the provided options as an override of what has been configured. The mapper will be a cached instance though
-            // as the binding options are the same
-            target = objectMapper.Map(source, target, opt =>
-            {
-                opt.Filter = propInfo => propInfo.Name == nameof(SourceType.Prop3);
-            });
-
-            // Will use the provided options as an override of what has been configured. The mapper will not be a cached instance
-            // though because this binding configuration has not been previously cached.
-            target = objectMapper.Map(source, target, opt =>
-            {
-                opt.Binding = BindingOptions.DefaultScope | BindingOptions.Private | BindingOptions.DefaultAccessor | BindingOptions.DefaultVisibility;
-                opt.Filter = propInfo => propInfo.Name != nameof(SourceType.Prop1);
-            });
 
 
             Console.WriteLine();
