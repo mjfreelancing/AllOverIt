@@ -18,7 +18,7 @@ namespace AllOverIt.Mapping
             {
                 _ = mapperOptions.WhenNotNull(nameof(mapperOptions));
                 
-                var matches = ObjectMapperHelper.GetMappableProperties(sourceType, targetType, mapperOptions.Binding, mapperOptions.Aliases);
+                var matches = ObjectMapperHelper.GetMappableProperties(sourceType, targetType, mapperOptions);
 
                 if (mapperOptions.Filter != null)
                 {
@@ -33,7 +33,7 @@ namespace AllOverIt.Mapping
                         .GetPropertyInfo(mapperOptions.Binding, false)
                         .SingleOrDefault(item => item.Name == match.Name);
 
-                    var targetName = ObjectMapperHelper.GetTargetAliasName(match.Name, mapperOptions.Aliases);
+                    var targetName = ObjectMapperHelper.GetTargetAliasName(match.Name, mapperOptions);
 
                     var targetPropInfo = targetType
                         .GetPropertyInfo(mapperOptions.Binding, false)
