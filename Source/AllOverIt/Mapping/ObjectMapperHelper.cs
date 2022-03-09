@@ -20,19 +20,14 @@ namespace AllOverIt.Mapping
                 return t.GetPropertyInfo(b, d).AsReadOnlyCollection();
             }
 
-            var sourceProps = ReflectionCache.Instance.GetPropertyInfo(sourceType, options.Binding, false, GetMappablePropertyInfo).Where(prop => prop.CanRead);
+            var sourceProps = ReflectionCache.Instance.GetPropertyInfo(sourceType, options.Binding, false, GetMappablePropertyInfo).Where(prop => prop.CanRead && !options.IsExcluded(prop.Name));
             var destProps = ReflectionCache.Instance.GetPropertyInfo(targetType, options.Binding, false, GetMappablePropertyInfo).Where(prop => prop.CanWrite);
 
             return sourceProps
                 .FindMatches(
                     destProps,
-                    src =>
-                    {
-                        // returns src.Name is there's no matching alias, or aliases is null
-                        var aliasName = GetTargetAliasName(src.Name, options);
-                        return (aliasName, GetUnderlyingPropertyType(src));
-                    },
-                    target => (target.Name, GetUnderlyingPropertyType(target))
+                    src => GetTargetAliasName(src.Name, options),       // returns src.Name if there's no matching alias, or aliases is null
+                    target => target.Name
                 )
                 .AsReadOnlyCollection();
         }
@@ -42,7 +37,7 @@ namespace AllOverIt.Mapping
         {
             _ = source.WhenNotNull(nameof(source));
             _ = target.WhenNotNull(nameof(target));
-            _ = matches.WhenNotNull(nameof(matches));       // allow empty
+            _ = matches.WhenNotNull(nameof(matches));                   // allow empty
             _ = options.WhenNotNull(nameof(options));
 
             // see if any properties need filtering out
@@ -55,18 +50,14 @@ namespace AllOverIt.Mapping
             {
                 var value = source.GetPropertyValue(sourceType, match.Name, options.Binding);
                 var targetName = GetTargetAliasName(match.Name, options);
-                target.SetPropertyValue(targetType, targetName, value, options.Binding);
+                var targetValue = options.GetConvertedValue(match.Name, value);
+                target.SetPropertyValue(targetType, targetName, targetValue, options.Binding);
             }
         }
 
         internal static string GetTargetAliasName(string sourceName, ObjectMapperOptions options)
         {
-            return options.GetAlias(sourceName) ?? sourceName;
-        }
-
-        private static Type GetUnderlyingPropertyType(PropertyInfo propInfo)
-        {
-            return Nullable.GetUnderlyingType(propInfo.PropertyType) ?? propInfo.PropertyType;
+            return options.GetAliasName(sourceName) ?? sourceName;
         }
     }
 }
