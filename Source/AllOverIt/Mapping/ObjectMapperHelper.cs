@@ -27,8 +27,7 @@ namespace AllOverIt.Mapping
             var matches = sourceProps
                 .FindMatches(
                     destProps,
-                    src => GetTargetAliasName(src.Name,
-                        options), // returns src.Name if there's no matching alias, or aliases is null
+                    src => GetTargetAliasName(src.Name, options),       // returns src.Name if there's no matching alias, or aliases is null
                     target => target.Name
                 );
 
