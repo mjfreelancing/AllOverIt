@@ -10,12 +10,11 @@ namespace ObjectMappingBenchmarking
     /*
     |                                        Method |      Mean |    Error |   StdDev |   Gen 0 | Allocated |
     |---------------------------------------------- |----------:|---------:|---------:|--------:|----------:|
-    |          AutoMapper_SimpleSource_SimpleTarget |  11.88 us | 0.158 us | 0.148 us |  0.9460 |      4 KB |
-    | StaticMethod_SimpleSource_Create_SimpleTarget | 479.94 us | 7.457 us | 6.976 us | 81.5430 |    334 KB |
-    | ObjectMapper_SimpleSource_Create_SimpleTarget | 106.30 us | 1.861 us | 1.650 us |  7.8125 |     32 KB |
-    | ObjectMapper_SimpleSource_CopyTo_SimpleTarget | 102.02 us | 1.819 us | 1.786 us |  6.8359 |     28 KB |
+    |          AutoMapper_SimpleSource_SimpleTarget |  10.39 us | 0.206 us | 0.193 us |  0.9460 |      4 KB |
+    | StaticMethod_SimpleSource_Create_SimpleTarget | 393.43 us | 6.919 us | 6.134 us | 83.4961 |    342 KB |
+    | ObjectMapper_SimpleSource_Create_SimpleTarget |  98.55 us | 1.128 us | 1.000 us |  7.8125 |     32 KB |
+    | ObjectMapper_SimpleSource_CopyTo_SimpleTarget |  92.93 us | 1.530 us | 1.278 us |  6.8359 |     28 KB |
     */
-
 
     [MemoryDiagnoser]
     public class MappingTests
@@ -26,7 +25,6 @@ namespace ObjectMappingBenchmarking
         private readonly IMapper _autoMapper;
 #endif
 
-        // ObjectMapper
         private readonly IObjectMapper _objectMapper;
 
         private readonly SimpleSource _simpleSource;
@@ -43,7 +41,6 @@ namespace ObjectMappingBenchmarking
             _autoMapper = new Mapper(autoMapperConfig);
 #endif
 
-            // ObjectMapper
             _objectMapper = new ObjectMapper();
 
             _objectMapper.Configure<SimpleSource, SimpleTarget>();

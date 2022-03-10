@@ -51,11 +51,9 @@ namespace AllOverIt.Mapping
             }
         }
 
-        // Not thread safe - if to be used across multiple threads then configure the mappings in advance
-        private readonly IDictionary<(Type, Type), MatchingPropertyMapper> _mapperCache = new Dictionary<(Type, Type), MatchingPropertyMapper>();
+        private static ObjectMapperOptions DefaultOptions { get; } = new();
 
-        /// <summary>Provides options that control how source properties are copied onto a target instance.</summary>
-        public ObjectMapperOptions DefaultOptions { get; } = new();
+        private readonly IDictionary<(Type, Type), MatchingPropertyMapper> _mapperCache = new Dictionary<(Type, Type), MatchingPropertyMapper>();
 
         /// <inheritdoc />
         public void Configure<TSource, TTarget>(Action<TypedObjectMapperOptions<TSource, TTarget>> configure = default)
@@ -111,12 +109,12 @@ namespace AllOverIt.Mapping
 
             var mappingKey = (sourceType, targetType);
 
-            if (_mapperCache.TryGetValue(mappingKey, out var mapper))
+            if (_mapperCache.TryGetValue(mappingKey, out _))
             {
                 throw new Exception($"Mapping already exists between {sourceType.GetFriendlyName()} and {targetType.GetFriendlyName()}");    // TODO: Needs a custom exception
             }
 
-            mapper = new MatchingPropertyMapper(sourceType, targetType, mapperOptions);
+            var mapper = new MatchingPropertyMapper(sourceType, targetType, mapperOptions);
             _mapperCache.Add(mappingKey, mapper);
         }
 

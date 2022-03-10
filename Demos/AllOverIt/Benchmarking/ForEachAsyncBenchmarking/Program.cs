@@ -8,9 +8,6 @@ namespace ForEachAsyncBenchmarking
         static void Main(string[] args)
         {
             BenchmarkRunner.Run<AsyncCalculations>();
-
-            Console.WriteLine("");
-            Console.WriteLine("All Over It.");
         }
     }
 }
