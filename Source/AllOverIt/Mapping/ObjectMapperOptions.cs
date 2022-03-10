@@ -52,20 +52,23 @@ namespace AllOverIt.Mapping
                 : sourceValue;
         }
 
-        public ObjectMapperOptions Exclude(string sourceName)
+        public ObjectMapperOptions Exclude(params string[] sourceNames)
         {
-            if (_targetOptions.TryGetValue(sourceName, out var targetOptions))
+            foreach (var sourceName in sourceNames)
             {
-                targetOptions.Excluded = true;
-            }
-            else
-            {
-                targetOptions = new TargetOptions
+                if (_targetOptions.TryGetValue(sourceName, out var targetOptions))
                 {
-                    Excluded = true
-                };
+                    targetOptions.Excluded = true;
+                }
+                else
+                {
+                    targetOptions = new TargetOptions
+                    {
+                        Excluded = true
+                    };
 
-                _targetOptions.Add(sourceName, targetOptions);
+                    _targetOptions.Add(sourceName, targetOptions);
+                }
             }
 
             return this;
