@@ -15,7 +15,7 @@ namespace AllOverIt.Mapping
             public Func<object, object> Converter { get; set; }
         }
 
-        // Source property to target options
+        // Source property to target options - updated via extension methods
         internal readonly IDictionary<string, TargetOptions> SourceTargetOptions = new Dictionary<string, TargetOptions>();
 
         /// <summary>The binding options used to determine how properties on the source object are discovered.</summary>

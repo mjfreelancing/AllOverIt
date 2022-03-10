@@ -51,9 +51,10 @@ namespace AllOverIt.Mapping
             }
         }
 
-        private static ObjectMapperOptions DefaultOptions { get; } = new();
-
         private readonly IDictionary<(Type, Type), MatchingPropertyMapper> _mapperCache = new Dictionary<(Type, Type), MatchingPropertyMapper>();
+
+        /// <summary>Defines the default mapper options to apply when explicit options are not setup at the time of mapping configuration.</summary>
+        public ObjectMapperOptions DefaultOptions { get; } = new();
 
         /// <inheritdoc />
         public void Configure<TSource, TTarget>(Action<TypedObjectMapperOptions<TSource, TTarget>> configure = default)
