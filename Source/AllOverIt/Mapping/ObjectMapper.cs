@@ -18,13 +18,9 @@ namespace AllOverIt.Mapping
             {
                 _ = mapperOptions.WhenNotNull(nameof(mapperOptions));
                 
+                // Find properties that match between the source and target (or have an alias) and meet any filter criteria.
                 var matches = ObjectMapperHelper.GetMappableProperties(sourceType, targetType, mapperOptions);
-
-                if (mapperOptions.Filter != null)
-                {
-                    matches = matches.Where(mapperOptions.Filter).AsReadOnlyCollection();
-                }
-
+                
                 var matchedProps = new List<(PropertyInfo, PropertyInfo)>();
 
                 foreach (var match in matches)

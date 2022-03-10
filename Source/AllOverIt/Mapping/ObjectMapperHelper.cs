@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using AllOverIt.Mapping.Extensions;
 
 namespace AllOverIt.Mapping
 {
@@ -23,13 +24,20 @@ namespace AllOverIt.Mapping
             var sourceProps = ReflectionCache.Instance.GetPropertyInfo(sourceType, options.Binding, false, GetMappablePropertyInfo).Where(prop => prop.CanRead && !options.IsExcluded(prop.Name));
             var destProps = ReflectionCache.Instance.GetPropertyInfo(targetType, options.Binding, false, GetMappablePropertyInfo).Where(prop => prop.CanWrite);
 
-            return sourceProps
+            var matches = sourceProps
                 .FindMatches(
                     destProps,
-                    src => GetTargetAliasName(src.Name, options),       // returns src.Name if there's no matching alias, or aliases is null
+                    src => GetTargetAliasName(src.Name,
+                        options), // returns src.Name if there's no matching alias, or aliases is null
                     target => target.Name
-                )
-                .AsReadOnlyCollection();
+                );
+
+            if (options.Filter != null)
+            {
+                matches = matches.Where(options.Filter);
+            }
+
+            return matches.AsReadOnlyCollection();
         }
 
         internal static void MapPropertyValues(Type sourceType, object source, Type targetType, object target, IReadOnlyCollection<PropertyInfo> matches,
@@ -40,17 +48,12 @@ namespace AllOverIt.Mapping
             _ = matches.WhenNotNull(nameof(matches));                   // allow empty
             _ = options.WhenNotNull(nameof(options));
 
-            // see if any properties need filtering out
-            if (options.Filter != null)
-            {
-                matches = matches.Where(options.Filter).AsReadOnlyCollection();
-            }
-
             foreach (var match in matches)
             {
                 var value = source.GetPropertyValue(sourceType, match.Name, options.Binding);
                 var targetName = GetTargetAliasName(match.Name, options);
                 var targetValue = options.GetConvertedValue(match.Name, value);
+
                 target.SetPropertyValue(targetType, targetName, targetValue, options.Binding);
             }
         }

@@ -3,7 +3,7 @@ using AllOverIt.Reflection;
 
 namespace AllOverIt.Mapping.Extensions
 {
-    /// <summary>Provides extension methods for mapping a source object to a target type.</summary>
+    /// <summary>Provides extension methods for mapping a source type to a target type.</summary>
     public static class ObjectExtensions
     {
         /// <summary>Maps properties from a source object onto a default constructed target type.</summary>

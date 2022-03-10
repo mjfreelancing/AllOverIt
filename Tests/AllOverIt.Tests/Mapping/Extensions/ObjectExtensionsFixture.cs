@@ -5,6 +5,7 @@ using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Mapping;
+using AllOverIt.Mapping.Extensions;
 using AllOverIt.Reflection;
 using FluentAssertions;
 using Xunit;
