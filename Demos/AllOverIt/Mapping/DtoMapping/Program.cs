@@ -43,6 +43,9 @@ namespace DtoMapping
             MapperMapOntoExistingTargetUsingConversionDuringConfigure(source, serializer);
             Console.WriteLine();
 
+            MapperMapOntoExistingTargetUsingExcludeDuringConfigure(source, serializer);
+            Console.WriteLine();
+
             Console.WriteLine("All Over It.");
             Console.ReadKey();
         }
@@ -148,6 +151,23 @@ namespace DtoMapping
             objectMapper.Map(source, target);
 
             PrintMapping("Existing target, convert IEnumerable to IReadOnlyCollection, default binding", source, target, serializer);
+        }
+
+        private static void MapperMapOntoExistingTargetUsingExcludeDuringConfigure(SourceType source, IJsonSerializer serializer)
+        {
+            var objectMapper = new ObjectMapper();
+            var target = new TargetType();
+
+            source.Prop7 = new[] { "Val1", "Val2", "Val3" };
+
+            objectMapper.Configure<SourceType, TargetType>(opt =>
+            {
+                opt.Exclude(src => src.Prop7);
+            });
+
+            objectMapper.Map(source, target);
+
+            PrintMapping("Existing target, exclude a non-mappable, default binding", source, target, serializer);
         }
 
         private static void PrintMapping(string message, SourceType source, TargetType target, IJsonSerializer serializer)
