@@ -13,8 +13,14 @@ namespace AllOverIt.Mapping
     {
         private class MatchingPropertyMapper
         {
+            private sealed class PropertyMatchInfo
+            {   
+                public PropertyInfo SourceInfo { get; init; }
+                public PropertyInfo TargetInfo { get; init; }
+            }
+
             private readonly ObjectMapperOptions _mapperOptions;
-            private readonly IReadOnlyCollection<(PropertyInfo, PropertyInfo)> _matches;
+            private readonly PropertyMatchInfo[] _matches;
 
             internal MatchingPropertyMapper(Type sourceType, Type targetType, ObjectMapperOptions mapperOptions)
             {
@@ -23,8 +29,9 @@ namespace AllOverIt.Mapping
                 // Find properties that match between the source and target (or have an alias) and meet any filter criteria.
                 var matches = ObjectMapperHelper.GetMappableProperties(sourceType, targetType, mapperOptions);
                 
-                var matchedProps = new List<(PropertyInfo, PropertyInfo)>();
+                var matchedProps = new List<PropertyMatchInfo>();
 
+                // ReSharper disable once LoopCanBeConvertedToQuery
                 foreach (var match in matches)
                 {
                     var sourcePropInfo = sourceType
@@ -37,20 +44,26 @@ namespace AllOverIt.Mapping
                         .GetPropertyInfo(mapperOptions.Binding, false)
                         .SingleOrDefault(item => item.Name == targetName);
 
-                    matchedProps.Add((sourcePropInfo, targetPropInfo));
+                    var matchInfo = new PropertyMatchInfo
+                    {
+                        SourceInfo = sourcePropInfo,
+                        TargetInfo = targetPropInfo
+                    };
+
+                    matchedProps.Add(matchInfo);
                 }
 
-                _matches = matchedProps;
+                _matches = matchedProps.ToArray();
             }
 
             internal void MapPropertyValues(object source, object target)
             {
-                foreach (var (sourcePropInfo, targetPropInfo) in _matches)
+                foreach (var match in _matches)
                 {
-                    var value = sourcePropInfo.GetValue(source);
-                    var targetValue = _mapperOptions.GetConvertedValue(sourcePropInfo.Name, value);
+                    var value = match.SourceInfo.GetValue(source);
+                    var targetValue = _mapperOptions.GetConvertedValue(match.SourceInfo.Name, value);
 
-                    targetPropInfo.SetValue(target, targetValue);
+                    match.TargetInfo.SetValue(target, targetValue);
                 }
             }
         }
