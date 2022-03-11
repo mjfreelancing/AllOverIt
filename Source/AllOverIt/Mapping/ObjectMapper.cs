@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using AllOverIt.Mapping.Extensions;
 
 namespace AllOverIt.Mapping
 {
@@ -12,11 +13,12 @@ namespace AllOverIt.Mapping
     {
         private class MatchingPropertyMapper
         {
+            private readonly ObjectMapperOptions _mapperOptions;
             private readonly IReadOnlyCollection<(PropertyInfo, PropertyInfo)> _matches;
 
             internal MatchingPropertyMapper(Type sourceType, Type targetType, ObjectMapperOptions mapperOptions)
             {
-                _ = mapperOptions.WhenNotNull(nameof(mapperOptions));
+                _mapperOptions = mapperOptions.WhenNotNull(nameof(mapperOptions));
                 
                 // Find properties that match between the source and target (or have an alias) and meet any filter criteria.
                 var matches = ObjectMapperHelper.GetMappableProperties(sourceType, targetType, mapperOptions);
@@ -46,7 +48,9 @@ namespace AllOverIt.Mapping
                 foreach (var (sourcePropInfo, targetPropInfo) in _matches)
                 {
                     var value = sourcePropInfo.GetValue(source);
-                    targetPropInfo.SetValue(target, value);
+                    var targetValue = _mapperOptions.GetConvertedValue(sourcePropInfo.Name, value);
+
+                    targetPropInfo.SetValue(target, targetValue);
                 }
             }
         }

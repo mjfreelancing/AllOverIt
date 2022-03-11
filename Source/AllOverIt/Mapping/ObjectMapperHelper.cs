@@ -39,6 +39,7 @@ namespace AllOverIt.Mapping
             return matches.AsReadOnlyCollection();
         }
 
+        // Only to be used when property values need to be get/set based on binding options (ie., static methods, never ObjectMapper)
         internal static void MapPropertyValues(Type sourceType, object source, Type targetType, object target, IReadOnlyCollection<PropertyInfo> matches,
             ObjectMapperOptions options)
         {
