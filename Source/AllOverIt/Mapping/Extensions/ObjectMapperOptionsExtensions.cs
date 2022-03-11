@@ -1,4 +1,5 @@
 ﻿using System;
+using AllOverIt.Assertion;
 
 namespace AllOverIt.Mapping.Extensions
 {
@@ -11,6 +12,8 @@ namespace AllOverIt.Mapping.Extensions
         /// <returns>The same <see cref="ObjectMapperOptions"/> instance so a fluent syntax can be used.</returns>
         public static ObjectMapperOptions Exclude(this ObjectMapperOptions mapperOptions, params string[] sourceNames)
         {
+            _ = mapperOptions.WhenNotNull(nameof(mapperOptions));
+
             foreach (var sourceName in sourceNames)
             {
                 _ = UpdateTargetOptions(mapperOptions, sourceName, targetOptions => targetOptions.Excluded = true);
@@ -28,6 +31,10 @@ namespace AllOverIt.Mapping.Extensions
         /// <returns>The same <see cref="ObjectMapperOptions"/> instance so a fluent syntax can be used.</returns>
         public static ObjectMapperOptions WithAlias(this ObjectMapperOptions mapperOptions, string sourceName, string targetName)
         {
+            _ = mapperOptions.WhenNotNull(nameof(mapperOptions));
+            _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
+            _ = targetName.WhenNotNullOrEmpty(nameof(targetName));
+
             return UpdateTargetOptions(mapperOptions, sourceName, targetOptions => targetOptions.Alias = targetName);
         }
 
@@ -39,16 +46,26 @@ namespace AllOverIt.Mapping.Extensions
         /// <returns>The same <see cref="ObjectMapperOptions"/> instance so a fluent syntax can be used.</returns>
         public static ObjectMapperOptions WithConversion(this ObjectMapperOptions mapperOptions, string sourceName, Func<object, object> converter)
         {
+            _ = mapperOptions.WhenNotNull(nameof(mapperOptions));
+            _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
+            _ = converter.WhenNotNull(nameof(converter));
+
             return UpdateTargetOptions(mapperOptions, sourceName, targetOptions => targetOptions.Converter = converter);
         }
 
         internal static bool IsExcluded(this ObjectMapperOptions mapperOptions, string sourceName)
         {
+            _ = mapperOptions.WhenNotNull(nameof(mapperOptions));
+            _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
+
             return mapperOptions.SourceTargetOptions.TryGetValue(sourceName, out var targetOptions) && targetOptions.Excluded;
         }
 
         internal static string GetAliasName(this ObjectMapperOptions mapperOptions, string sourceName)
         {
+            _ = mapperOptions.WhenNotNull(nameof(mapperOptions));
+            _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
+
             return mapperOptions.SourceTargetOptions.TryGetValue(sourceName, out var targetOptions)
                 ? targetOptions.Alias
                 : sourceName;
@@ -56,6 +73,9 @@ namespace AllOverIt.Mapping.Extensions
 
         internal static object GetConvertedValue(this ObjectMapperOptions mapperOptions, string sourceName, object sourceValue)
         {
+            _ = mapperOptions.WhenNotNull(nameof(mapperOptions));
+            _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
+
             var converter = mapperOptions.SourceTargetOptions.TryGetValue(sourceName, out var targetOptions)
                 ? targetOptions.Converter
                 : null;
