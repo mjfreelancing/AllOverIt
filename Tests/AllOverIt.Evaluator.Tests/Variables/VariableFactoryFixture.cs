@@ -78,12 +78,14 @@ namespace AllOverIt.Evaluator.Tests.Variables
             {
                 var variable = _variableFactory.CreateMutableVariable(_name, _value);
 
-                variable.Should().BeEquivalentTo(new
+                var expected = new
                 {
                     Name = _name,
                     Value = _value,
-                    ReferencedVariables = default(IEnumerable<string>)
-                }, option => option.Excluding(prop => prop.ReferencedVariables));
+                    ReferencedVariables = Enumerable.Empty<string>()
+                };
+
+                expected.Should().BeEquivalentTo(variable);
             }
         }
 
@@ -129,12 +131,14 @@ namespace AllOverIt.Evaluator.Tests.Variables
             {
                 var variable = _variableFactory.CreateConstantVariable(_name, _value);
 
-                variable.Should().BeEquivalentTo(new
+                var expected = new
                 {
                     Name = _name,
                     Value = _value,
-                    ReferencedVariables = default(IEnumerable<string>)
-                }, option => option.Excluding(prop => prop.ReferencedVariables));
+                    ReferencedVariables = Enumerable.Empty<string>()
+                };
+
+                expected.Should().BeEquivalentTo(variable);
             }
         }
 
@@ -172,12 +176,14 @@ namespace AllOverIt.Evaluator.Tests.Variables
             {
                 var variable = _variableFactory.CreateDelegateVariable(_name, () => _value);
 
-                variable.Should().BeEquivalentTo(new
+                var expected = new
                 {
                     Name = _name,
                     Value = _value,
-                    ReferencedVariables = default(IEnumerable<string>)
-                }, option => option.Excluding(prop => prop.ReferencedVariables));
+                    ReferencedVariables = Enumerable.Empty<string>()
+                };
+
+                expected.Should().BeEquivalentTo(variable);
             }
         }
 
@@ -215,12 +221,14 @@ namespace AllOverIt.Evaluator.Tests.Variables
             {
                 var variable = _variableFactory.CreateLazyVariable(_name, () => _value, Create<bool>());
 
-                variable.Should().BeEquivalentTo(new
+                var expected = new
                 {
                     Name = _name,
                     Value = _value,
-                    ReferencedVariables = default(IEnumerable<string>)
-                }, option => option.Excluding(prop => prop.ReferencedVariables));
+                    ReferencedVariables = Enumerable.Empty<string>()
+                };
+
+                expected.Should().BeEquivalentTo(variable);
             }
         }
 

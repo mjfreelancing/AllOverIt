@@ -92,11 +92,11 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Get_Property_In_Super()
             {
-                var actual = (object)AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(DummySuperClass), "Prop3");
+                var actual = (object) AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(DummySuperClass), "Prop3");
 
-                actual.Should().BeEquivalentTo(
-                    new {Name = "Prop3", PropertyType = typeof(double)}
-                );
+                var expected = new {Name = "Prop3", PropertyType = typeof(double)};
+
+                actual.Should().BeEquivalentTo(expected);
             }
 
             [Fact]
@@ -104,9 +104,9 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = (object)AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(DummySuperClass), "Prop1");
 
-                actual.Should().BeEquivalentTo(
-                    new {Name = "Prop1", PropertyType = typeof(int)}
-                );
+                var expected = new {Name = "Prop1", PropertyType = typeof(int)};
+
+                actual.Should().BeEquivalentTo(expected);
             }
 
             [Fact]
@@ -123,25 +123,30 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Use_Default_Binding_Not_Declared_Only()
             {
-                var actual = AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(DummySuperClass));
+                var actual = AllOverIt.Extensions.TypeExtensions
+                    .GetPropertyInfo(typeof(DummySuperClass))
+                    .Select(item => new { item.Name, item.PropertyType });
 
-                actual.Should().BeEquivalentTo(new[]
+                var expected = new[]
                 {
                     new {Name = "Prop1", PropertyType = typeof(int)},
                     new {Name = "Prop2", PropertyType = typeof(string)},
                     new {Name = "Prop3", PropertyType = typeof(double)}
-                });
+                };
+
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
             public void Should_Use_Default_Binding_Declared_Only()
             {
-                var actual = AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(DummySuperClass), BindingOptions.Default, true);
+                var actual = AllOverIt.Extensions.TypeExtensions
+                    .GetPropertyInfo(typeof(DummySuperClass), BindingOptions.Default, true)
+                    .Select(item => new {item.Name, item.PropertyType});
 
-                actual.Should().BeEquivalentTo(new[]
-                {
-                    new {Name = "Prop3", PropertyType = typeof(double)}
-                });
+                var expected = new[] {new {Name = "Prop3", PropertyType = typeof(double)}};
+
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -161,9 +166,11 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(DummySuperClass), binding, false);
 
-                actual.Select(item => item.Name)
+                var expected = new[]{ "Prop1", "Prop2", "Prop3", "Prop4" };
+
+                expected
                   .Should()
-                  .BeEquivalentTo("Prop1", "Prop2", "Prop3", "Prop4");
+                  .BeEquivalentTo(actual.Select(item => item.Name));
             }
         }
 
@@ -185,11 +192,13 @@ namespace AllOverIt.Tests.Extensions
                       item.DeclaringType
                   });
 
-                actual.Should().BeEquivalentTo(new[]
+                var expected = new[]
                 {
                     new {Name = "Method1", DeclaringType = typeof(DummyBaseClass)},
                     new {Name = "Method3", DeclaringType = typeof(DummySuperClass)}
-                });
+                };
+
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -204,10 +213,12 @@ namespace AllOverIt.Tests.Extensions
                       item.DeclaringType
                   });
 
-                actual.Should().BeEquivalentTo(new[]
+                var expected = new[]
                 {
                     new {Name = "Method3", DeclaringType = typeof(DummySuperClass)}
-                });
+                };
+
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -222,11 +233,13 @@ namespace AllOverIt.Tests.Extensions
                       item.DeclaringType
                   });
 
-                actual.Should().BeEquivalentTo(new[]
+                var expected = new[]
                 {
                     new {Name = "Method1", DeclaringType = typeof(DummyBaseClass)},
                     new {Name = "Method2", DeclaringType = typeof(DummyBaseClass)}
-                });
+                };
+
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -242,13 +255,15 @@ namespace AllOverIt.Tests.Extensions
                   }).ToList();
 
                 // there are 3 overloads of Method4
-                actual.Should().BeEquivalentTo(new[]
+                var expected = new[]
                 {
                     new {Name = "Method3", DeclaringType = typeof(DummySuperClass)},
                     new {Name = "Method4", DeclaringType = typeof(DummySuperClass)},
                     new {Name = "Method4", DeclaringType = typeof(DummySuperClass)},
                     new {Name = "Method4", DeclaringType = typeof(DummySuperClass)}
-                });
+                };
+
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -264,13 +279,15 @@ namespace AllOverIt.Tests.Extensions
                   });
 
                 // there are 3 overloads of Method4
-                actual.Should().BeEquivalentTo(new[]
+                var expected = new[]
                 {
                     new {Name = "Method2", DeclaringType = typeof(DummyBaseClass)},
                     new {Name = "Method4", DeclaringType = typeof(DummySuperClass)},
                     new {Name = "Method4", DeclaringType = typeof(DummySuperClass)},
                     new {Name = "Method4", DeclaringType = typeof(DummySuperClass)}
-                });
+                };
+
+                expected.Should().BeEquivalentTo(actual);
             }
         }
 
@@ -501,7 +518,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.GetGenericArguments(type);
 
-                actual.Should().BeEquivalentTo(expected);
+                expected.Should().BeEquivalentTo(actual);
             }
         }
 

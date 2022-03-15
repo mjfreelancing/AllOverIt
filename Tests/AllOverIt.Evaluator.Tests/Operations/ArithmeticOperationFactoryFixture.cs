@@ -26,7 +26,7 @@ namespace AllOverIt.Evaluator.Tests.Operations
             public void Should_Register_Default_Operations()
             {
                 var expected = new[] { "+", "-", "*", "/", "%", "^" };
-                _operationFactory.RegisteredOperations.Should().BeEquivalentTo(expected);
+                expected.Should().BeEquivalentTo(_operationFactory.RegisteredOperations);
             }
         }
 
@@ -127,12 +127,14 @@ namespace AllOverIt.Evaluator.Tests.Operations
 
                 var actual = _operationFactory.GetOperation(symbol);
 
-                actual.Should().BeEquivalentTo(new
+                var expected = new
                 {
                     ArgumentCount = arguments,
                     Precedence = precedence,
                     Creator = (Func<Expression[], IOperator>) Creator
-                });
+                };
+
+                expected.Should().BeEquivalentTo(actual);
             }
         }
 

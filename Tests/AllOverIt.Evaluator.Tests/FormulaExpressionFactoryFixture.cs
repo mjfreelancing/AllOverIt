@@ -88,7 +88,7 @@ namespace AllOverIt.Evaluator.Tests
 
                 FormulaExpressionFactory.CreateExpression(_operationFake.FakedObject, _stack);
 
-                actualExpressions.Should().BeEquivalentTo(_expectedExpressions);
+                _expectedExpressions.Should().BeEquivalentTo(actualExpressions);
             }
 
             [Fact]

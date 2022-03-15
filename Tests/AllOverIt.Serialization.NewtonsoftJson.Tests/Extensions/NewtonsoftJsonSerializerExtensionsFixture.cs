@@ -31,9 +31,11 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests.Extensions
 
                 serializer.AddConverters(converter1, converter2);
 
-                serializer.Settings.Converters
+                var expected = new[] {converter1, converter2};
+
+                expected
                     .Should()
-                    .BeEquivalentTo(new[] {converter1, converter2});
+                    .BeEquivalentTo(serializer.Settings.Converters);
             }
         }
 

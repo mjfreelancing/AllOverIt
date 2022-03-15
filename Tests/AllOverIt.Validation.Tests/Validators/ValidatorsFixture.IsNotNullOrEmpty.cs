@@ -49,37 +49,39 @@ namespace AllOverIt.Validation.Tests.Validators
 
                 result.IsValid.Should().BeFalse();
 
-                result.Errors.Should().BeEquivalentTo(new[]
+                var expected = new[]
                 {
                     new
                     {
                         PropertyName = nameof(DummyComparisonModel.Value1),
                         ErrorCode = nameof(ValidationErrorCode.NotEmpty),
-                        AttemptedValue = (object)model.Value1,
+                        AttemptedValue = (object) model.Value1,
                         ErrorMessage = $"'{nameof(DummyComparisonModel.Value1)}' should not be empty."
                     },
                     new
                     {
                         PropertyName = nameof(DummyComparisonModel.Value2),
                         ErrorCode = nameof(ValidationErrorCode.NotEmpty),
-                        AttemptedValue = (object)model.Value2,
+                        AttemptedValue = (object) model.Value2,
                         ErrorMessage = $"'{nameof(DummyComparisonModel.Value2)}' should not be empty."
                     },
                     new
                     {
                         PropertyName = nameof(DummyComparisonModel.Value3),
                         ErrorCode = nameof(ValidationErrorCode.NotEmpty),
-                        AttemptedValue = (object)model.Value3,
+                        AttemptedValue = (object) model.Value3,
                         ErrorMessage = $"'{nameof(DummyComparisonModel.Value3)}' should not be empty."
                     },
                     new
                     {
                         PropertyName = nameof(DummyComparisonModel.Value7),
                         ErrorCode = nameof(ValidationErrorCode.NotEmpty),
-                        AttemptedValue = (object)model.Value7,
+                        AttemptedValue = (object) model.Value7,
                         ErrorMessage = $"'{nameof(DummyComparisonModel.Value7)}' should not be empty."
                     }
-                }, options => options.ExcludingMissingMembers());
+                };
+
+                expected.Should().BeEquivalentTo(result.Errors, options => options.ExcludingMissingMembers());
             }
         }
     }

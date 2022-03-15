@@ -23,7 +23,7 @@ namespace AllOverIt.Tests.Extensions
                     .AsListAsync()
                     .ConfigureAwait(false);
 
-                actual.Should().BeEquivalentTo(expected);
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -67,7 +67,7 @@ namespace AllOverIt.Tests.Extensions
                     .SelectAsListAsync(item => Task.FromResult(expected[item]))
                     .ConfigureAwait(false);
 
-                actual.Should().BeEquivalentTo(expected.Values);
+                expected.Values.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -112,7 +112,7 @@ namespace AllOverIt.Tests.Extensions
                     .SelectAsReadOnlyCollectionAsync(item => Task.FromResult(expected[item]))
                     .ConfigureAwait(false);
 
-                actual.Should().BeEquivalentTo(expected.Values);
+                expected.Values.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -157,7 +157,7 @@ namespace AllOverIt.Tests.Extensions
                     .SelectAsReadOnlyListAsync(item => Task.FromResult(expected[item]))
                     .ConfigureAwait(false);
 
-                actual.Should().BeEquivalentTo(expected.Values);
+                expected.Values.Should().BeEquivalentTo(actual);
             }
 
             [Fact]

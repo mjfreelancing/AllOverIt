@@ -100,7 +100,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
 
                 var expected = new[] { _expression1, _expression2 };
 
-                expressions.Should().BeEquivalentTo(expected);
+                expected.Should().BeEquivalentTo(expressions);
             }
 
             [Fact]

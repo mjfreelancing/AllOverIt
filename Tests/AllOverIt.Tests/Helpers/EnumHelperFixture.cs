@@ -7,7 +7,7 @@ namespace AllOverIt.Tests.Helpers
 {
     public class EnumHelperFixture : FixtureBase
     {
-        public enum DummyEnum
+        private enum DummyEnum
         {
             Value1,
             Value2,
@@ -21,7 +21,9 @@ namespace AllOverIt.Tests.Helpers
             {
                 var actual = AllOverIt.Helpers.EnumHelper.GetEnumValues<DummyEnum>();
 
-                actual.Should().BeEquivalentTo(new[]{ DummyEnum.Value1, DummyEnum.Value2, DummyEnum.Value3 });
+                var expected = new[] {DummyEnum.Value1, DummyEnum.Value2, DummyEnum.Value3};
+
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]

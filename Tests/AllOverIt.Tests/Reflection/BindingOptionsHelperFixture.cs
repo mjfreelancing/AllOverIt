@@ -119,7 +119,7 @@ namespace AllOverIt.Tests.Reflection
                 var actual = GetBindingDummyPropertyNames(actualOptions);
                 var expected = GetExpectedNames(expectedOptions ?? actualOptions);
 
-                actual.Should().BeEquivalentTo(expected);
+                expected.Should().BeEquivalentTo(actual);
             }
 
             private static IReadOnlyList<string> GetBindingDummyPropertyNames(BindingOptions options)

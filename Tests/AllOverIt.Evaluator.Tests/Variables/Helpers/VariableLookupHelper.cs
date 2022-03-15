@@ -131,7 +131,7 @@ namespace AllOverIt.Evaluator.Tests.Variables.Helpers
                 var actual = actualResults.Invoke(variable);
                 var expected = testCases[variable];
 
-                actual.Should().BeEquivalentTo(expected);
+                expected.Should().BeEquivalentTo(actual);
             }
         }
     }

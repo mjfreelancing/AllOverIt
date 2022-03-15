@@ -94,12 +94,13 @@ namespace AllOverIt.Evaluator.Tests
 
                 negateOperator.Should().NotBeNull();
 
-                negateOperator.Should().BeEquivalentTo(new
+                var expected = new
                 {
                     Operand = expression,
                     OperatorType = default(Func<Expression, Expression>)
-                },
-                opt => opt.Excluding(s => s.OperatorType));
+                };
+
+                negateOperator.Should().BeEquivalentTo(expected, opt => opt.Excluding(s => s.OperatorType));
             }
         }
 

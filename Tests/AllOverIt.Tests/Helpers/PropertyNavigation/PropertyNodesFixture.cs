@@ -35,11 +35,11 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation
             [Fact]
             public void Should_Return_Nodes()
             {
-                var nodes = new[] {new PropertyNode(), new PropertyNode(), new PropertyNode()};
+                var expected = new[] {new PropertyNode(), new PropertyNode(), new PropertyNode()};
 
-                var actual = new PropertyNodes<DummyObject>(nodes);
+                var actual = new PropertyNodes<DummyObject>(expected);
 
-                actual.Nodes.Should().BeEquivalentTo(nodes);
+                expected.Should().BeEquivalentTo(actual.Nodes);
             }
         }
     }

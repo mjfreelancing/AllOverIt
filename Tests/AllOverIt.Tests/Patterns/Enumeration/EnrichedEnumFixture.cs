@@ -187,7 +187,9 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 var actual = EnrichedEnumDummy.GetAllValues();
 
-                actual.Should().BeEquivalentTo(new[] { EnrichedEnumDummy.Value1.Value, EnrichedEnumDummy.Value2.Value });
+                var expected = new[] {EnrichedEnumDummy.Value1.Value, EnrichedEnumDummy.Value2.Value};
+
+                expected.Should().BeEquivalentTo(actual);
             }
         }
 
@@ -198,7 +200,9 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 var actual = EnrichedEnumDummy.GetAllNames();
 
-                actual.Should().BeEquivalentTo(EnrichedEnumDummy.Value1.Name, EnrichedEnumDummy.Value2.Name);
+                var expected = new[] {EnrichedEnumDummy.Value1.Name, EnrichedEnumDummy.Value2.Name};
+
+                expected.Should().BeEquivalentTo(actual);
             }
         }
 
@@ -209,7 +213,9 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 var actual = EnrichedEnumDummy.GetAll();
 
-                actual.Should().BeEquivalentTo(new[] { EnrichedEnumDummy.Value1, EnrichedEnumDummy.Value2 });
+                var expected = new[] {EnrichedEnumDummy.Value1, EnrichedEnumDummy.Value2};
+
+                expected.Should().BeEquivalentTo(actual);
             }
         }
 

@@ -104,7 +104,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.ToPropertyDictionary(source, true, BindingOptions.Instance | BindingOptions.Public);
 
-                actual.Should().BeEquivalentTo(expected);
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -116,7 +116,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.ToPropertyDictionary(source, true, BindingOptions.Instance | BindingOptions.Private);
 
-                actual.Should().BeEquivalentTo(expected);
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -130,7 +130,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.ToPropertyDictionary(source, true, BindingOptions.Instance | BindingOptions.Protected);
 
-                actual.Should().BeEquivalentTo(expected);
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -143,7 +143,7 @@ namespace AllOverIt.Tests.Extensions
                 var actual = ObjectExtensions.ToPropertyDictionary(source, true,
                   BindingOptions.Static | BindingOptions.AllAccessor | BindingOptions.AllVisibility);
 
-                actual.Should().BeEquivalentTo(expected);
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -162,7 +162,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.ToPropertyDictionary(source, true /*, BindingOptions.Default*/);
 
-                actual.Should().BeEquivalentTo(expected);
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -184,7 +184,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.ToPropertyDictionary(source, true, BindingOptions.All);
 
-                actual.Should().BeEquivalentTo(expected);
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -196,7 +196,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.ToPropertyDictionary(source, true, BindingOptions.Instance | BindingOptions.Public);
 
-                actual.Should().BeEquivalentTo(expected);
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -208,7 +208,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.ToPropertyDictionary(source, false, BindingOptions.Instance | BindingOptions.Public);
 
-                actual.Should().BeEquivalentTo(expected);
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -227,9 +227,9 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.ToPropertyDictionary(source);
 
-                actual
+                expected
                     .Should()
-                    .BeEquivalentTo(expected);
+                    .BeEquivalentTo(actual);
             }
         }
 
@@ -342,20 +342,22 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = dummy.ToSerializedDictionary();
 
-                actual
+                var expected = new Dictionary<string, string>
+                {
+                    {"Prop1", $"{dummy.Prop1}"},
+                    {"Prop4[0]", $"{dummy.Prop4.ElementAt(0)}"},
+                    {"Prop4[1]", $"{dummy.Prop4.ElementAt(1)}"},
+                    {"Prop4[2]", $"{dummy.Prop4.ElementAt(2)}"},
+                    {$"Prop5.{dummy.Prop5.ElementAt(0).Key}", $"{dummy.Prop5.ElementAt(0).Value}"},
+                    {$"Prop5.{dummy.Prop5.ElementAt(1).Key}", $"{dummy.Prop5.ElementAt(1).Value}"},
+                    {$"Prop5.{dummy.Prop5.ElementAt(2).Key}", $"{dummy.Prop5.ElementAt(2).Value}"},
+                    {"Prop8", $"{dummy.Prop8}"},
+                    {"Prop14", $"{dummy.Prop14}"}
+                };
+
+                expected
                     .Should()
-                    .BeEquivalentTo(new Dictionary<string, string>
-                    {
-                        { "Prop1", $"{dummy.Prop1}" },
-                        { "Prop4[0]", $"{dummy.Prop4.ElementAt(0)}" },
-                        { "Prop4[1]", $"{dummy.Prop4.ElementAt(1)}" },
-                        { "Prop4[2]", $"{dummy.Prop4.ElementAt(2)}" },
-                        { $"Prop5.{dummy.Prop5.ElementAt(0).Key}", $"{dummy.Prop5.ElementAt(0).Value}" },
-                        { $"Prop5.{dummy.Prop5.ElementAt(1).Key}", $"{dummy.Prop5.ElementAt(1).Value}" },
-                        { $"Prop5.{dummy.Prop5.ElementAt(2).Key}", $"{dummy.Prop5.ElementAt(2).Value}" },
-                        { "Prop8", $"{dummy.Prop8}" },
-                        { "Prop14", $"{dummy.Prop14}" }
-                    });
+                    .BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -370,12 +372,14 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = dummy.ToSerializedDictionary(options);
 
-                actual
+                var expected = new Dictionary<string, string>
+                {
+                    {"Prop13", "13"}
+                };
+
+                expected
                     .Should()
-                    .BeEquivalentTo(new Dictionary<string, string>
-                    {
-                        { "Prop13", "13" }
-                    });
+                    .BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -408,40 +412,42 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = dummy1.ToSerializedDictionary();
 
-                actual
+                var expected = new Dictionary<string, string>
+                {
+                    {"Prop1", $"{dummy1.Prop1}"},
+                    {"Prop4[0]", $"{dummy1.Prop4.ElementAt(0)}"},
+                    {"Prop4[1]", $"{dummy1.Prop4.ElementAt(1)}"},
+                    {"Prop4[2]", $"{dummy1.Prop4.ElementAt(2)}"},
+                    {$"Prop5.{dummy1.Prop5.ElementAt(0).Key}", $"{dummy1.Prop5.ElementAt(0).Value}"},
+                    {$"Prop5.{dummy1.Prop5.ElementAt(1).Key}", $"{dummy1.Prop5.ElementAt(1).Value}"},
+                    {$"Prop5.{dummy1.Prop5.ElementAt(2).Key}", $"{dummy1.Prop5.ElementAt(2).Value}"},
+                    {"Prop8", $"{dummy1.Prop8}"},
+                    {"Prop14", $"{dummy1.Prop14}"},
+
+                    {"Prop2.Prop1", $"{dummy2.Prop1}"},
+                    {"Prop2.Prop4[0]", $"{dummy2.Prop4.ElementAt(0)}"},
+                    {"Prop2.Prop4[1]", $"{dummy2.Prop4.ElementAt(1)}"},
+                    {"Prop2.Prop4[2]", $"{dummy2.Prop4.ElementAt(2)}"},
+                    {$"Prop2.Prop5.{dummy2.Prop5.ElementAt(0).Key}", $"{dummy2.Prop5.ElementAt(0).Value}"},
+                    {$"Prop2.Prop5.{dummy2.Prop5.ElementAt(1).Key}", $"{dummy2.Prop5.ElementAt(1).Value}"},
+                    {$"Prop2.Prop5.{dummy2.Prop5.ElementAt(2).Key}", $"{dummy2.Prop5.ElementAt(2).Value}"},
+                    {"Prop2.Prop8", $"{dummy2.Prop8}"},
+                    {"Prop2.Prop14", $"{dummy2.Prop14}"},
+
+                    {"Prop2.Prop2.Prop1", $"{dummy3.Prop1}"},
+                    {"Prop2.Prop2.Prop4[0]", $"{dummy3.Prop4.ElementAt(0)}"},
+                    {"Prop2.Prop2.Prop4[1]", $"{dummy3.Prop4.ElementAt(1)}"},
+                    {"Prop2.Prop2.Prop4[2]", $"{dummy3.Prop4.ElementAt(2)}"},
+                    {$"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(0).Key}", $"{dummy3.Prop5.ElementAt(0).Value}"},
+                    {$"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(1).Key}", $"{dummy3.Prop5.ElementAt(1).Value}"},
+                    {$"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(2).Key}", $"{dummy3.Prop5.ElementAt(2).Value}"},
+                    {"Prop2.Prop2.Prop8", $"{dummy3.Prop8}"},
+                    {"Prop2.Prop2.Prop14", $"{dummy3.Prop14}"}
+                };
+
+                expected
                     .Should()
-                    .BeEquivalentTo(new Dictionary<string, string>
-                    {
-                        { "Prop1", $"{dummy1.Prop1}" },
-                        { "Prop4[0]", $"{dummy1.Prop4.ElementAt(0)}" },
-                        { "Prop4[1]", $"{dummy1.Prop4.ElementAt(1)}" },
-                        { "Prop4[2]", $"{dummy1.Prop4.ElementAt(2)}" },
-                        { $"Prop5.{dummy1.Prop5.ElementAt(0).Key}", $"{dummy1.Prop5.ElementAt(0).Value}" },
-                        { $"Prop5.{dummy1.Prop5.ElementAt(1).Key}", $"{dummy1.Prop5.ElementAt(1).Value}" },
-                        { $"Prop5.{dummy1.Prop5.ElementAt(2).Key}", $"{dummy1.Prop5.ElementAt(2).Value}" },
-                        { "Prop8", $"{dummy1.Prop8}" },
-                        { "Prop14", $"{dummy1.Prop14}" },
-
-                        { "Prop2.Prop1", $"{dummy2.Prop1}" },
-                        { "Prop2.Prop4[0]", $"{dummy2.Prop4.ElementAt(0)}" },
-                        { "Prop2.Prop4[1]", $"{dummy2.Prop4.ElementAt(1)}" },
-                        { "Prop2.Prop4[2]", $"{dummy2.Prop4.ElementAt(2)}" },
-                        { $"Prop2.Prop5.{dummy2.Prop5.ElementAt(0).Key}", $"{dummy2.Prop5.ElementAt(0).Value}" },
-                        { $"Prop2.Prop5.{dummy2.Prop5.ElementAt(1).Key}", $"{dummy2.Prop5.ElementAt(1).Value}" },
-                        { $"Prop2.Prop5.{dummy2.Prop5.ElementAt(2).Key}", $"{dummy2.Prop5.ElementAt(2).Value}" },
-                        { "Prop2.Prop8", $"{dummy2.Prop8}" },
-                        { "Prop2.Prop14", $"{dummy2.Prop14}" },
-
-                        { "Prop2.Prop2.Prop1", $"{dummy3.Prop1}" },
-                        { "Prop2.Prop2.Prop4[0]", $"{dummy3.Prop4.ElementAt(0)}" },
-                        { "Prop2.Prop2.Prop4[1]", $"{dummy3.Prop4.ElementAt(1)}" },
-                        { "Prop2.Prop2.Prop4[2]", $"{dummy3.Prop4.ElementAt(2)}" },
-                        { $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(0).Key}", $"{dummy3.Prop5.ElementAt(0).Value}" },
-                        { $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(1).Key}", $"{dummy3.Prop5.ElementAt(1).Value}" },
-                        { $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(2).Key}", $"{dummy3.Prop5.ElementAt(2).Value}" },
-                        { "Prop2.Prop2.Prop8", $"{dummy3.Prop8}" },
-                        { "Prop2.Prop2.Prop14", $"{dummy3.Prop14}" }
-                    });
+                    .BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -456,21 +462,23 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = dummy.ToSerializedDictionary(options);
 
-                actual
+                var expected = new Dictionary<string, string>
+                {
+                    {"Prop1", "0"},
+                    {"Prop2", "<null>"},
+                    {"Prop4", "<null>"},
+                    {"Prop5", "<null>"},
+                    {"Prop6", "<null>"},
+                    {"Prop7", "<null>"},
+                    {"Prop8", "<null>"},
+                    {"Prop11", "<null>"},
+                    {"Prop12", "<null>"},
+                    {"Prop14", "<null>"}
+                };
+
+                expected
                    .Should()
-                   .BeEquivalentTo(new Dictionary<string, string>
-                   {
-                        { "Prop1", "0" },
-                        { "Prop2", "<null>" },
-                        { "Prop4", "<null>" },
-                        { "Prop5", "<null>" },
-                        { "Prop6", "<null>" },
-                        { "Prop7", "<null>" },
-                        { "Prop8", "<null>" },
-                        { "Prop11", "<null>" },
-                        { "Prop12", "<null>" },
-                        { "Prop14", "<null>" }
-                   });
+                   .BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -493,17 +501,19 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = dummy.ToSerializedDictionary(options);
 
-                actual
+                var expected = new Dictionary<string, string>
+                {
+                    {"Prop1", "0"},
+                    {"Prop4", "<empty>"},
+                    {"Prop5", "<empty>"},
+                    {"Prop6", "<empty>"},
+                    {"Prop7", "<empty>"},
+                    {"Prop12", "<empty>"}
+                };
+
+                expected
                     .Should()
-                    .BeEquivalentTo(new Dictionary<string, string>
-                    {
-                        { "Prop1", "0" },
-                        { "Prop4", "<empty>" },
-                        { "Prop5", "<empty>" },
-                        { "Prop6", "<empty>" },
-                        { "Prop7", "<empty>" },
-                        { "Prop12", "<empty>" }
-                    });
+                    .BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -527,20 +537,22 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = dummy.ToSerializedDictionary(options);
 
-                actual
+                var expected = new Dictionary<string, string>
+                {
+                    {"Prop1", "0"},
+                    {"Prop2", "<null>"},
+                    {"Prop4", "<empty>"},
+                    {"Prop5", "<empty>"},
+                    {"Prop6", "<empty>"},
+                    {"Prop7", "<empty>"},
+                    {"Prop8", "<null>"},
+                    {"Prop12", "<empty>"},
+                    {"Prop14", "<null>"}
+                };
+
+                expected
                     .Should()
-                    .BeEquivalentTo(new Dictionary<string, string>
-                    {
-                        { "Prop1", "0" },
-                        { "Prop2", "<null>" },
-                        { "Prop4", "<empty>" },
-                        { "Prop5", "<empty>" },
-                        { "Prop6", "<empty>" },
-                        { "Prop7", "<empty>" },
-                        { "Prop8", "<null>" },
-                        { "Prop12", "<empty>" },
-                        { "Prop14", "<null>" }
-                    });
+                    .BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -552,14 +564,16 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = dictionary.ToSerializedDictionary();
 
-                actual
+                var expected = new Dictionary<string, string>
+                {
+                    {keys[0], values[0]},
+                    {keys[1], values[1]},
+                    {keys[2], values[2]}
+                };
+
+                expected
                     .Should()
-                    .BeEquivalentTo(new Dictionary<string, string>
-                    {
-                        { keys[0], values[0] },
-                        { keys[1], values[1] },
-                        { keys[2], values[2] }
-                    });
+                    .BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -570,19 +584,21 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = dictionary.ToSerializedDictionary();
 
-                actual
+                var expected = new Dictionary<string, string>
+                {
+                    { $"{keys[0]}.{dictionary[keys[0]].Keys.ElementAt(0)}", $"{dictionary[keys[0]].Values.ElementAt(0)}" },
+                    { $"{keys[0]}.{dictionary[keys[0]].Keys.ElementAt(1)}", $"{dictionary[keys[0]].Values.ElementAt(1)}" },
+
+                    { $"{keys[1]}.{dictionary[keys[1]].Keys.ElementAt(0)}", $"{dictionary[keys[1]].Values.ElementAt(0)}" },
+                    { $"{keys[1]}.{dictionary[keys[1]].Keys.ElementAt(1)}", $"{dictionary[keys[1]].Values.ElementAt(1)}" },
+
+                    { $"{keys[2]}.{dictionary[keys[2]].Keys.ElementAt(0)}", $"{dictionary[keys[2]].Values.ElementAt(0)}" },
+                    { $"{keys[2]}.{dictionary[keys[2]].Keys.ElementAt(1)}", $"{dictionary[keys[2]].Values.ElementAt(1)}" }
+                };
+
+                expected
                     .Should()
-                    .BeEquivalentTo(new Dictionary<string, string>
-                    {
-                        { $"{keys[0]}.{dictionary[keys[0]].Keys.ElementAt(0)}", $"{dictionary[keys[0]].Values.ElementAt(0)}" },
-                        { $"{keys[0]}.{dictionary[keys[0]].Keys.ElementAt(1)}", $"{dictionary[keys[0]].Values.ElementAt(1)}" },
-
-                        { $"{keys[1]}.{dictionary[keys[1]].Keys.ElementAt(0)}", $"{dictionary[keys[1]].Values.ElementAt(0)}" },
-                        { $"{keys[1]}.{dictionary[keys[1]].Keys.ElementAt(1)}", $"{dictionary[keys[1]].Values.ElementAt(1)}" },
-
-                        { $"{keys[2]}.{dictionary[keys[2]].Keys.ElementAt(0)}", $"{dictionary[keys[2]].Values.ElementAt(0)}" },
-                        { $"{keys[2]}.{dictionary[keys[2]].Keys.ElementAt(1)}", $"{dictionary[keys[2]].Values.ElementAt(1)}" }
-                    });
+                    .BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -592,16 +608,18 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = list.ToSerializedDictionary();
 
-                actual
+                var expected = new Dictionary<string, string>
+                {
+                    {"[0]", list[0]},
+                    {"[1]", list[1]},
+                    {"[2]", list[2]},
+                    {"[3]", list[3]},
+                    {"[4]", list[4]}
+                };
+
+                expected
                     .Should()
-                    .BeEquivalentTo(new Dictionary<string, string>
-                    {
-                        { "[0]", list[0] },
-                        { "[1]", list[1] },
-                        { "[2]", list[2] },
-                        { "[3]", list[3] },
-                        { "[4]", list[4] }
-                    });
+                    .BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -618,14 +636,16 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = dummy.ToSerializedDictionary();
 
-                actual
+                var expected = new Dictionary<string, string>
+                {
+                    {"Prop1", "0"},
+                    {$"Prop6.{nameof(DummyType)}`0", "one"},
+                    {$"Prop6.{nameof(DummyType)}`1", "two"}
+                };
+
+                expected
                     .Should()
-                    .BeEquivalentTo(new Dictionary<string, string>
-                    {
-                        { "Prop1", "0" },
-                        { $"Prop6.{nameof(DummyType)}`0", "one" },
-                        { $"Prop6.{nameof(DummyType)}`1", "two" }
-                    });
+                    .BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -640,13 +660,15 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = dummy.ToSerializedDictionary();
 
-                actual
+                var expected = new Dictionary<string, string>
+                {
+                    {$"{typeof(Typed<DummyType>).GetFriendlyName()}`0", "True"},
+                    {$"{typeof(Typed<DummyType>).GetFriendlyName()}`1", "False"}
+                };
+
+                expected
                     .Should()
-                    .BeEquivalentTo(new Dictionary<string, string>
-                    {
-                        { $"{typeof(Typed<DummyType>).GetFriendlyName()}`0", "True" },
-                        { $"{typeof(Typed<DummyType>).GetFriendlyName()}`1", "False" }
-                    });
+                    .BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -660,12 +682,14 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = dummy.ToSerializedDictionary();
 
-                actual
+                var expected = new Dictionary<string, string>
+                {
+                    {"Prop1", "0"}
+                };
+
+                expected
                     .Should()
-                    .BeEquivalentTo(new Dictionary<string, string>
-                    {
-                        { "Prop1", "0" }
-                    });
+                    .BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -675,12 +699,14 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = dummy.ToSerializedDictionary();
 
-                actual
+                var expected = new Dictionary<string, string>
+                {
+                    {"That", "0"}
+                };
+
+                expected
                     .Should()
-                    .BeEquivalentTo(new Dictionary<string, string>
-                    {
-                        { "That", "0" }
-                    });
+                    .BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -697,16 +723,18 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = table.ToSerializedDictionary();
 
-                actual
+                var expected = new Dictionary<string, string>
+                {
+                    {"1", "1"},
+                    //{ "null", string.Empty },
+                    {"True", "1"},
+                    {"10", "ten"}
+                    //{ "list", "System.Collections.Generic.List`1[System.Int32]" }
+                };
+
+                expected
                     .Should()
-                    .BeEquivalentTo(new Dictionary<string, string>
-                    {
-                        { "1", "1" },
-                        //{ "null", string.Empty },
-                        { "True", "1" },
-                        { "10", "ten" }
-                        //{ "list", "System.Collections.Generic.List`1[System.Int32]" }
-                    });
+                    .BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -754,15 +782,17 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = dummy.ToSerializedDictionary(options);
 
-                actual
+                var expected = new Dictionary<string, string>
+                {
+                    {"Prop1", $"{dummy.Prop1}"},
+                    {"Prop2.Prop4[0]", $"{dummy.Prop2.Prop4.ElementAt(0)}"},
+                    {"Prop2.Prop4[1]", $"{dummy.Prop2.Prop4.ElementAt(1)}"},
+                    {"Prop2.Prop4[2]", $"{dummy.Prop2.Prop4.ElementAt(2)}"}
+                };
+
+                expected
                     .Should()
-                    .BeEquivalentTo(new Dictionary<string, string>
-                    {
-                        { "Prop1", $"{dummy.Prop1}" },
-                        { "Prop2.Prop4[0]", $"{dummy.Prop2.Prop4.ElementAt(0)}" },
-                        { "Prop2.Prop4[1]", $"{dummy.Prop2.Prop4.ElementAt(1)}" },
-                        { "Prop2.Prop4[2]", $"{dummy.Prop2.Prop4.ElementAt(2)}" }
-                    });
+                    .BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -782,42 +812,44 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = dummy1.ToSerializedDictionary(options);
 
-                actual
+                var expected = new Dictionary<string, string>
+                {
+                    {"Prop1", $"{dummy1.Prop1}"},
+                    {"Prop4[0]", $"{dummy1.Prop4.ElementAt(0)}"},
+                    {"Prop4[1]", $"{dummy1.Prop4.ElementAt(1)}"},
+                    {"Prop4[2]", $"{dummy1.Prop4.ElementAt(2)}"},
+                    {$"Prop5.{dummy1.Prop5.ElementAt(0).Key}", $"{dummy1.Prop5.ElementAt(0).Value}"},
+                    {$"Prop5.{dummy1.Prop5.ElementAt(1).Key}", $"{dummy1.Prop5.ElementAt(1).Value}"},
+                    {$"Prop5.{dummy1.Prop5.ElementAt(2).Key}", $"{dummy1.Prop5.ElementAt(2).Value}"},
+                    {"Prop8", $"{dummy1.Prop8}"},
+                    {"Prop14", $"{dummy1.Prop14}"},
+
+                    // the applied filter will result in the following being excluded:
+                    //
+                    //{ "Prop2.Prop1", $"{dummy2.Prop1}" },
+                    //{ "Prop2.Prop4[0]", $"{dummy2.Prop4.ElementAt(0)}" },
+                    //{ "Prop2.Prop4[1]", $"{dummy2.Prop4.ElementAt(1)}" },
+                    //{ "Prop2.Prop4[2]", $"{dummy2.Prop4.ElementAt(2)}" },
+                    //{ $"Prop2.Prop5.{dummy2.Prop5.ElementAt(0).Key}", $"{dummy2.Prop5.ElementAt(0).Value}" },
+                    //{ $"Prop2.Prop5.{dummy2.Prop5.ElementAt(1).Key}", $"{dummy2.Prop5.ElementAt(1).Value}" },
+                    //{ $"Prop2.Prop5.{dummy2.Prop5.ElementAt(2).Key}", $"{dummy2.Prop5.ElementAt(2).Value}" },
+                    //{ "Prop2.Prop8", $"{dummy2.Prop8}" },
+                    //{ "Prop2.Prop14", $"{dummy2.Prop14}" },
+
+                    //{ "Prop2.Prop2.Prop1", $"{dummy3.Prop1}" },
+                    //{ "Prop2.Prop2.Prop4[0]", $"{dummy3.Prop4.ElementAt(0)}" },
+                    //{ "Prop2.Prop2.Prop4[1]", $"{dummy3.Prop4.ElementAt(1)}" },
+                    //{ "Prop2.Prop2.Prop4[2]", $"{dummy3.Prop4.ElementAt(2)}" },
+                    //{ $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(0).Key}", $"{dummy3.Prop5.ElementAt(0).Value}" },
+                    //{ $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(1).Key}", $"{dummy3.Prop5.ElementAt(1).Value}" },
+                    //{ $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(2).Key}", $"{dummy3.Prop5.ElementAt(2).Value}" },
+                    //{ "Prop2.Prop2.Prop8", $"{dummy3.Prop8}" },
+                    //{ "Prop2.Prop2.Prop14", $"{dummy3.Prop14}" }
+                };
+
+                expected
                     .Should()
-                    .BeEquivalentTo(new Dictionary<string, string>
-                    {
-                            { "Prop1", $"{dummy1.Prop1}" },
-                            { "Prop4[0]", $"{dummy1.Prop4.ElementAt(0)}" },
-                            { "Prop4[1]", $"{dummy1.Prop4.ElementAt(1)}" },
-                            { "Prop4[2]", $"{dummy1.Prop4.ElementAt(2)}" },
-                            { $"Prop5.{dummy1.Prop5.ElementAt(0).Key}", $"{dummy1.Prop5.ElementAt(0).Value}" },
-                            { $"Prop5.{dummy1.Prop5.ElementAt(1).Key}", $"{dummy1.Prop5.ElementAt(1).Value}" },
-                            { $"Prop5.{dummy1.Prop5.ElementAt(2).Key}", $"{dummy1.Prop5.ElementAt(2).Value}" },
-                            { "Prop8", $"{dummy1.Prop8}" },
-                            { "Prop14", $"{dummy1.Prop14}" },
-
-                        // the applied filter will result in the following being excluded:
-                        //
-                        //{ "Prop2.Prop1", $"{dummy2.Prop1}" },
-                        //{ "Prop2.Prop4[0]", $"{dummy2.Prop4.ElementAt(0)}" },
-                        //{ "Prop2.Prop4[1]", $"{dummy2.Prop4.ElementAt(1)}" },
-                        //{ "Prop2.Prop4[2]", $"{dummy2.Prop4.ElementAt(2)}" },
-                        //{ $"Prop2.Prop5.{dummy2.Prop5.ElementAt(0).Key}", $"{dummy2.Prop5.ElementAt(0).Value}" },
-                        //{ $"Prop2.Prop5.{dummy2.Prop5.ElementAt(1).Key}", $"{dummy2.Prop5.ElementAt(1).Value}" },
-                        //{ $"Prop2.Prop5.{dummy2.Prop5.ElementAt(2).Key}", $"{dummy2.Prop5.ElementAt(2).Value}" },
-                        //{ "Prop2.Prop8", $"{dummy2.Prop8}" },
-                        //{ "Prop2.Prop14", $"{dummy2.Prop14}" },
-
-                        //{ "Prop2.Prop2.Prop1", $"{dummy3.Prop1}" },
-                        //{ "Prop2.Prop2.Prop4[0]", $"{dummy3.Prop4.ElementAt(0)}" },
-                        //{ "Prop2.Prop2.Prop4[1]", $"{dummy3.Prop4.ElementAt(1)}" },
-                        //{ "Prop2.Prop2.Prop4[2]", $"{dummy3.Prop4.ElementAt(2)}" },
-                        //{ $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(0).Key}", $"{dummy3.Prop5.ElementAt(0).Value}" },
-                        //{ $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(1).Key}", $"{dummy3.Prop5.ElementAt(1).Value}" },
-                        //{ $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(2).Key}", $"{dummy3.Prop5.ElementAt(2).Value}" },
-                        //{ "Prop2.Prop2.Prop8", $"{dummy3.Prop8}" },
-                        //{ "Prop2.Prop2.Prop14", $"{dummy3.Prop14}" }
-                    });
+                    .BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -839,41 +871,43 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = dummy1.ToSerializedDictionary(options);
 
-                actual
-                    .Should()
-                    .BeEquivalentTo(new Dictionary<string, string>
-                    {
-                            { "Prop1", $"{dummy1.Prop1}" },
-                            { "Prop4[0]", $"{dummy1.Prop4.ElementAt(0)}" },
-                            { "Prop4[1]", $"{dummy1.Prop4.ElementAt(1)}" },
-                            { "Prop4[2]", $"{dummy1.Prop4.ElementAt(2)}" },
-                            { $"Prop5.{dummy1.Prop5.ElementAt(0).Key}", $"{dummy1.Prop5.ElementAt(0).Value}" },
-                            { $"Prop5.{dummy1.Prop5.ElementAt(1).Key}", $"{dummy1.Prop5.ElementAt(1).Value}" },
-                            { $"Prop5.{dummy1.Prop5.ElementAt(2).Key}", $"{dummy1.Prop5.ElementAt(2).Value}" },
-                            { "Prop8", $"{dummy1.Prop8}" },
-                            { "Prop14", $"{dummy1.Prop14}" },
-                            { "Prop2.Prop1", $"{dummy2.Prop1}" },
-                            { "Prop2.Prop4[0]", $"{dummy2.Prop4.ElementAt(0)}" },
-                            { "Prop2.Prop4[1]", $"{dummy2.Prop4.ElementAt(1)}" },
-                            { "Prop2.Prop4[2]", $"{dummy2.Prop4.ElementAt(2)}" },
-                            { $"Prop2.Prop5.{dummy2.Prop5.ElementAt(0).Key}", $"{dummy2.Prop5.ElementAt(0).Value}" },
-                            
-                            // the applied filter will result in the following being excluded:
-                            // { $"Prop2.Prop5.{dummy2.Prop5.ElementAt(1).Key}", $"{dummy2.Prop5.ElementAt(1).Value}" },
+                var expected = new Dictionary<string, string>
+                {
+                    {"Prop1", $"{dummy1.Prop1}"},
+                    {"Prop4[0]", $"{dummy1.Prop4.ElementAt(0)}"},
+                    {"Prop4[1]", $"{dummy1.Prop4.ElementAt(1)}"},
+                    {"Prop4[2]", $"{dummy1.Prop4.ElementAt(2)}"},
+                    {$"Prop5.{dummy1.Prop5.ElementAt(0).Key}", $"{dummy1.Prop5.ElementAt(0).Value}"},
+                    {$"Prop5.{dummy1.Prop5.ElementAt(1).Key}", $"{dummy1.Prop5.ElementAt(1).Value}"},
+                    {$"Prop5.{dummy1.Prop5.ElementAt(2).Key}", $"{dummy1.Prop5.ElementAt(2).Value}"},
+                    {"Prop8", $"{dummy1.Prop8}"},
+                    {"Prop14", $"{dummy1.Prop14}"},
+                    {"Prop2.Prop1", $"{dummy2.Prop1}"},
+                    {"Prop2.Prop4[0]", $"{dummy2.Prop4.ElementAt(0)}"},
+                    {"Prop2.Prop4[1]", $"{dummy2.Prop4.ElementAt(1)}"},
+                    {"Prop2.Prop4[2]", $"{dummy2.Prop4.ElementAt(2)}"},
+                    {$"Prop2.Prop5.{dummy2.Prop5.ElementAt(0).Key}", $"{dummy2.Prop5.ElementAt(0).Value}"},
 
-                            { $"Prop2.Prop5.{dummy2.Prop5.ElementAt(2).Key}", $"{dummy2.Prop5.ElementAt(2).Value}" },
-                            { "Prop2.Prop8", $"{dummy2.Prop8}" },
-                            { "Prop2.Prop14", $"{dummy2.Prop14}" },
-                            { "Prop2.Prop2.Prop1", $"{dummy3.Prop1}" },
-                            { "Prop2.Prop2.Prop4[0]", $"{dummy3.Prop4.ElementAt(0)}" },
-                            { "Prop2.Prop2.Prop4[1]", $"{dummy3.Prop4.ElementAt(1)}" },
-                            { "Prop2.Prop2.Prop4[2]", $"{dummy3.Prop4.ElementAt(2)}" },
-                            { $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(0).Key}", $"{dummy3.Prop5.ElementAt(0).Value}" },
-                            { $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(1).Key}", $"{dummy3.Prop5.ElementAt(1).Value}" },
-                            { $"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(2).Key}", $"{dummy3.Prop5.ElementAt(2).Value}" },
-                            { "Prop2.Prop2.Prop8", $"{dummy3.Prop8}" },
-                            { "Prop2.Prop2.Prop14", $"{dummy3.Prop14}" }
-                    });
+                    // the applied filter will result in the following being excluded:
+                    // { $"Prop2.Prop5.{dummy2.Prop5.ElementAt(1).Key}", $"{dummy2.Prop5.ElementAt(1).Value}" },
+
+                    {$"Prop2.Prop5.{dummy2.Prop5.ElementAt(2).Key}", $"{dummy2.Prop5.ElementAt(2).Value}"},
+                    {"Prop2.Prop8", $"{dummy2.Prop8}"},
+                    {"Prop2.Prop14", $"{dummy2.Prop14}"},
+                    {"Prop2.Prop2.Prop1", $"{dummy3.Prop1}"},
+                    {"Prop2.Prop2.Prop4[0]", $"{dummy3.Prop4.ElementAt(0)}"},
+                    {"Prop2.Prop2.Prop4[1]", $"{dummy3.Prop4.ElementAt(1)}"},
+                    {"Prop2.Prop2.Prop4[2]", $"{dummy3.Prop4.ElementAt(2)}"},
+                    {$"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(0).Key}", $"{dummy3.Prop5.ElementAt(0).Value}"},
+                    {$"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(1).Key}", $"{dummy3.Prop5.ElementAt(1).Value}"},
+                    {$"Prop2.Prop2.Prop5.{dummy3.Prop5.ElementAt(2).Key}", $"{dummy3.Prop5.ElementAt(2).Value}"},
+                    {"Prop2.Prop2.Prop8", $"{dummy3.Prop8}"},
+                    {"Prop2.Prop2.Prop14", $"{dummy3.Prop14}"}
+                };
+
+                expected
+                    .Should()
+                    .BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -888,12 +922,14 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = dummy.ToSerializedDictionary(options);
 
-                actual
+                var expected = new Dictionary<string, string>
+                {
+                    {"Prop1", "Included"}
+                };
+
+                expected
                     .Should()
-                    .BeEquivalentTo(new Dictionary<string, string>
-                    {
-                        { "Prop1", "Included" }
-                    });
+                    .BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -908,12 +944,14 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = dummy.ToSerializedDictionary(options);
 
-                actual
+                var expected = new Dictionary<string, string>
+                {
+                    {"Prop14", dummy.Prop14}
+                };
+
+                expected
                     .Should()
-                    .BeEquivalentTo(new Dictionary<string, string>
-                    {
-                        { "Prop14", dummy.Prop14 }
-                    });
+                    .BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -930,21 +968,23 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = dummy.ToSerializedDictionary(options);
 
-                actual
+                var expected = new Dictionary<string, string>
+                {
+                    {"Prop1", "Included"},
+                    {"Prop2.Prop1", $"{dummy2.Prop1}"},
+                    {"Prop2.Prop4[0]", $"{dummy2.Prop4.ElementAt(0)}"},
+                    {"Prop2.Prop4[1]", $"{dummy2.Prop4.ElementAt(1)}"},
+                    {"Prop2.Prop4[2]", $"{dummy2.Prop4.ElementAt(2)}"},
+                    {$"Prop2.Prop5.{dummy2.Prop5.ElementAt(0).Key}", $"{dummy2.Prop5.ElementAt(0).Value}"},
+                    {$"Prop2.Prop5.{dummy2.Prop5.ElementAt(1).Key}", $"{dummy2.Prop5.ElementAt(1).Value}"},
+                    {$"Prop2.Prop5.{dummy2.Prop5.ElementAt(2).Key}", $"{dummy2.Prop5.ElementAt(2).Value}"},
+                    {"Prop2.Prop8", $"{dummy2.Prop8}"},
+                    {"Prop2.Prop14", $"{dummy2.Prop14}"},
+                };
+
+                expected
                     .Should()
-                    .BeEquivalentTo(new Dictionary<string, string>
-                    {
-                        {"Prop1", "Included"},
-                        { "Prop2.Prop1", $"{dummy2.Prop1}" },
-                        {"Prop2.Prop4[0]", $"{dummy2.Prop4.ElementAt(0)}"},
-                        {"Prop2.Prop4[1]", $"{dummy2.Prop4.ElementAt(1)}"},
-                        {"Prop2.Prop4[2]", $"{dummy2.Prop4.ElementAt(2)}"},
-                        {$"Prop2.Prop5.{dummy2.Prop5.ElementAt(0).Key}", $"{dummy2.Prop5.ElementAt(0).Value}"},
-                        {$"Prop2.Prop5.{dummy2.Prop5.ElementAt(1).Key}", $"{dummy2.Prop5.ElementAt(1).Value}"},
-                        {$"Prop2.Prop5.{dummy2.Prop5.ElementAt(2).Key}", $"{dummy2.Prop5.ElementAt(2).Value}"},
-                        {"Prop2.Prop8", $"{dummy2.Prop8}"},
-                        {"Prop2.Prop14", $"{dummy2.Prop14}"},
-                    });
+                    .BeEquivalentTo(actual);
             }
 
             public class SerializeObjectPropertyFilter : ToSerializedDictionary
@@ -998,28 +1038,30 @@ namespace AllOverIt.Tests.Extensions
 
                     // Prop1, Prop2, Prop1, Prop4, , , , Prop5, , , , Prop8, Prop14, Prop4, , , , Prop5, , , , Prop8, Prop12, , Prop14
 
-                    filter.Types
+                    var expected = new[]
+                    {
+                        typeof(int),                                    // Prop1
+                        typeof(DummyType),                              // Prop2
+                        typeof(int),                                    // Prop2.Prop1
+                        typeof(List<string>),                           // Prop2.Prop4
+                        typeof(string), typeof(string), typeof(string), // Prop2.Prop4 elements
+                        typeof(Dictionary<int, bool>),                  // Prop2.Prop5
+                        typeof(bool), typeof(bool), typeof(bool),       // Prop2.Prop5 elements
+                        typeof(double),                                 // Prop2.Prop8
+                        typeof(string),                                 // Prop2.Prop14
+                        typeof(List<string>),                           // Prop4
+                        typeof(string), typeof(string), typeof(string), // Prop4 elements
+                        typeof(Dictionary<int, bool>),                  // Prop5
+                        typeof(bool), typeof(bool), typeof(bool),       // Prop5 elements
+                        typeof(double),                                 // Prop8
+                        typeof(Dictionary<int, DummyType>),             // Prop12
+                        typeof(string),                                 // Empty value for Prop12
+                        typeof(string)                                  // Prop14
+                    };
+
+                    expected
                         .Should()
-                        .BeEquivalentTo(new[]
-                        {
-                            typeof(int),                                        // Prop1
-                            typeof(DummyType),                                  // Prop2
-                            typeof(int),                                        // Prop2.Prop1
-                            typeof(List<string>),                               // Prop2.Prop4
-                            typeof(string), typeof(string), typeof(string),     // Prop2.Prop4 elements
-                            typeof(Dictionary<int, bool>),                      // Prop2.Prop5
-                            typeof(bool), typeof(bool), typeof(bool),           // Prop2.Prop5 elements
-                            typeof(double),                                     // Prop2.Prop8
-                            typeof(string),                                     // Prop2.Prop14
-                            typeof(List<string>),                               // Prop4
-                            typeof(string), typeof(string), typeof(string),     // Prop4 elements
-                            typeof(Dictionary<int, bool>),                      // Prop5
-                            typeof(bool), typeof(bool), typeof(bool),           // Prop5 elements
-                            typeof(double),                                     // Prop8
-                            typeof(Dictionary<int, DummyType>),                 // Prop12
-                            typeof(string),                                     // Empty value for Prop12
-                            typeof(string)                                      // Prop14
-                        });
+                        .BeEquivalentTo(filter.Types);
                 }
 
                 [Fact]
@@ -1045,14 +1087,16 @@ namespace AllOverIt.Tests.Extensions
 
                     filter.Names.Should().HaveCount(25);
 
-                    filter.Names
+                    var expected = new[]
+                    {
+                        "Prop1", "Prop2", "Prop1", "Prop4", null, null, null, "Prop5", null, null, null,
+                        "Prop8", "Prop14", "Prop4", null, null, null, "Prop5", null, null, null, "Prop8",
+                        "Prop12", null, "Prop14"
+                    };
+
+                    expected
                         .Should()
-                        .BeEquivalentTo(new string[]
-                        {
-                           "Prop1", "Prop2", "Prop1", "Prop4", null, null, null, "Prop5", null, null, null,
-                            "Prop8", "Prop14", "Prop4", null, null, null, "Prop5", null, null, null, "Prop8",
-                            "Prop12", null, "Prop14"
-                        });
+                        .BeEquivalentTo(filter.Names);
                 }
 
                 [Fact]
@@ -1079,17 +1123,21 @@ namespace AllOverIt.Tests.Extensions
                     filter.Paths.Should().HaveCount(25);
 
                     // Prop12 is listed twice because it includes the root property as well as an <empty> value
-                    filter.Paths
+                    var expected = new[]
+                    {
+                        "Prop1", "Prop2", "Prop2.Prop1", "Prop2.Prop4", "Prop2.Prop4[0]", "Prop2.Prop4[1]",
+                        "Prop2.Prop4[2]",
+                        "Prop2.Prop5", $"Prop2.Prop5.{dummy.Prop2.Prop5.ElementAt(0).Key}",
+                        $"Prop2.Prop5.{dummy.Prop2.Prop5.ElementAt(1).Key}",
+                        $"Prop2.Prop5.{dummy.Prop2.Prop5.ElementAt(2).Key}",
+                        "Prop2.Prop8", "Prop2.Prop14", "Prop4", "Prop4[0]", "Prop4[1]", "Prop4[2]", "Prop5",
+                        $"Prop5.{dummy.Prop5.ElementAt(0).Key}", $"Prop5.{dummy.Prop5.ElementAt(1).Key}",
+                        $"Prop5.{dummy.Prop5.ElementAt(2).Key}", "Prop8", "Prop12", "Prop12", "Prop14"
+                    };
+
+                    expected
                         .Should()
-                        .BeEquivalentTo(new string[]
-                        {
-                            "Prop1", "Prop2", "Prop2.Prop1", "Prop2.Prop4", "Prop2.Prop4[0]", "Prop2.Prop4[1]", "Prop2.Prop4[2]",
-                            "Prop2.Prop5", $"Prop2.Prop5.{dummy.Prop2.Prop5.ElementAt(0).Key}",
-                            $"Prop2.Prop5.{dummy.Prop2.Prop5.ElementAt(1).Key}", $"Prop2.Prop5.{dummy.Prop2.Prop5.ElementAt(2).Key}",
-                            "Prop2.Prop8", "Prop2.Prop14", "Prop4", "Prop4[0]", "Prop4[1]", "Prop4[2]", "Prop5",
-                            $"Prop5.{dummy.Prop5.ElementAt(0).Key}", $"Prop5.{dummy.Prop5.ElementAt(1).Key}",
-                            $"Prop5.{dummy.Prop5.ElementAt(2).Key}", "Prop8", "Prop12", "Prop12", "Prop14"
-                        });
+                        .BeEquivalentTo(filter.Paths);
                 }
 
                 [Fact]
@@ -1115,13 +1163,15 @@ namespace AllOverIt.Tests.Extensions
 
                     filter.Indexes.Should().HaveCount(25);
 
-                    filter.Indexes
+                    var expected = new int?[]
+                    {
+                        null, null, null, null, 0, 1, 2, null, 0, 1, 2, null, null, null,
+                        0, 1, 2, null, 0, 1, 2, null, null, null, null
+                    };
+
+                    expected
                         .Should()
-                        .BeEquivalentTo(new int?[]
-                        {
-                            null, null, null, null, 0, 1, 2, null, 0, 1, 2, null, null, null,
-                            0, 1, 2, null, 0, 1, 2, null, null, null, null
-                        });
+                        .BeEquivalentTo(filter.Indexes);
                 }
             }
         }

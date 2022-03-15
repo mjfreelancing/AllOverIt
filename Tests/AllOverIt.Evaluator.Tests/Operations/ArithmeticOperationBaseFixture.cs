@@ -37,11 +37,13 @@ namespace AllOverIt.Evaluator.Tests.Operations
 
                 _operation = new ArithmeticOperationDummy(argumentCount, Creator);
 
-                _operation.Should().BeEquivalentTo(new
+                var expected = new
                 {
                     ArgumentCount = argumentCount,
                     Creator = (Func<Expression[], IOperator>) Creator
-                });
+                };
+
+                expected.Should().BeEquivalentTo(_operation);
             }
         }
 

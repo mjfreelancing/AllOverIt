@@ -60,12 +60,14 @@ namespace AllOverIt.Evaluator.Tests.Operators
             [Fact]
             public void Should_Set_Members()
             {
-                _operator.Should().BeEquivalentTo(new
+                var expected = new
                 {
                     LeftOperand = _leftOperand,
                     RightOperand = _rightOperand,
                     OperatorType = _operatorType
-                });
+                };
+
+                _operator.Should().BeEquivalentTo(expected);
             }
         }
 

@@ -22,25 +22,25 @@ namespace AllOverIt.Tests.Formatters.Objects
             [Fact]
             public void Should_Contain_Defaults()
             {
-                _options
+                var expected = new
+                {
+                    IgnoredTypes = new[]
+                    {
+                        typeof(Task),
+                        typeof(Task<>)
+                    },
+                    BindingOptions = BindingOptions.Default,
+                    EnumerableOptions = new ObjectPropertyEnumerableOptions(),
+                    Filter = (ObjectPropertyFilter) null,
+                    IncludeNulls = false,
+                    IncludeEmptyCollections = false,
+                    NullValueOutput = "<null>",
+                    EmptyValueOutput = "<empty>"
+                };
+
+                expected
                     .Should()
-                    .BeEquivalentTo(
-                        new
-                        {
-                            IgnoredTypes = new[]
-                            {
-                                typeof(Task),
-                                typeof(Task<>)
-                            },
-                            IncludeNulls = false,
-                            IncludeEmptyCollections = false,
-                            BindingOptions = BindingOptions.Default,
-                            NullValueOutput= "<null>",
-                            EmptyValueOutput = "<empty>",
-                            EnumerableOptions = new ObjectPropertyEnumerableOptions(),
-                            Filter = (ObjectPropertyFilter) null
-                        }
-                    );
+                    .BeEquivalentTo(_options);
             }
         }
 
@@ -66,12 +66,14 @@ namespace AllOverIt.Tests.Formatters.Objects
 
                 _options.AddIgnoredTypes(typeof(string), typeof(int));
 
-                _options.IgnoredTypes
+                var expected = new[]
+                {
+                    typeof(Task), typeof(Task<>), typeof(string), typeof(int)
+                };
+
+                expected
                     .Should()
-                    .BeEquivalentTo(new[]
-                    {
-                        typeof(Task), typeof(Task<>), typeof(string), typeof(int)
-                    });
+                    .BeEquivalentTo(_options.IgnoredTypes);
             }
         }
     }

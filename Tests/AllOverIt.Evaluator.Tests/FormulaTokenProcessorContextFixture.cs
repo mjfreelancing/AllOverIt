@@ -36,11 +36,13 @@ namespace AllOverIt.Evaluator.Tests
 
             _context = new FormulaTokenProcessorContext(func1, func2);
 
-            _context.Should().BeEquivalentTo(new
+            var expected = new
             {
                 Predicate = func1,
                 Processor = func2
-            });
+            };
+
+            expected.Should().BeEquivalentTo(_context);
         }
     }
 }

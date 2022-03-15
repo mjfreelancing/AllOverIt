@@ -36,13 +36,14 @@ namespace AllOverIt.Evaluator.Tests.Operations
 
                 _operation = new ArithmeticOperation(precedence, argumentCount, Creator);
 
-                _operation.Should().BeEquivalentTo(
-                    new
-                    {
-                        Precedence = precedence,
-                        ArgumentCount = argumentCount,
-                        Creator = (Func<Expression[], IOperator>) Creator
-                    });
+                var expected = new
+                {
+                    Precedence = precedence,
+                    ArgumentCount = argumentCount,
+                    Creator = (Func<Expression[], IOperator>) Creator
+                };
+
+                expected.Should().BeEquivalentTo(_operation);
             }
         }
     }

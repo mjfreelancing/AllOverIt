@@ -123,7 +123,7 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests.Converters
 
                 var actual = _serializer.DeserializeObject<DummyValue>(value);
 
-                actual.Should().BeEquivalentTo(_dummyValue);
+                _dummyValue.Should().BeEquivalentTo(actual);
             }
         }
     }

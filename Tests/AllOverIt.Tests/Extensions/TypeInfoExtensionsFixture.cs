@@ -30,13 +30,15 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = TypeInfoExtensions.GetPropertyInfo(typeInfo, false);
 
-                actual.Should().BeEquivalentTo(new[]
+                var expected = new[]
                 {
                     new {Name = "Prop1", PropertyType = typeof(int)},
                     new {Name = "Prop2", PropertyType = typeof(string)},
                     new {Name = "Prop3", PropertyType = typeof(double)},
                     new {Name = "Prop4", PropertyType = typeof(long)}
-                });
+                };
+
+                actual.Should().BeEquivalentTo(expected);
             }
 
             [Fact]
@@ -46,12 +48,14 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = TypeInfoExtensions.GetPropertyInfo(typeInfo, false);
 
-                actual.Should().BeEquivalentTo(new[]
+                var expected = new[]
                 {
                     new {Name = "Prop1", PropertyType = typeof(int)},
                     new {Name = "Prop2", PropertyType = typeof(string)},
                     new {Name = "Prop3", PropertyType = typeof(double)}
-                });
+                };
+
+                actual.Should().BeEquivalentTo(expected);
             }
 
             [Fact]
@@ -61,11 +65,13 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = TypeInfoExtensions.GetPropertyInfo(typeInfo, true);
 
-                actual.Should().BeEquivalentTo(new[]
+                var expected = new[]
                 {
                     new {Name = "Prop3", PropertyType = typeof(double)},
                     new {Name = "Prop4", PropertyType = typeof(long)}
-                });
+                };
+
+                actual.Should().BeEquivalentTo(expected);
             }
         }
 
@@ -79,8 +85,9 @@ namespace AllOverIt.Tests.Extensions
                 // cast is required for BeEquivalentTo()
                 var actual = (object)TypeInfoExtensions.GetPropertyInfo(typeInfo, "Prop4");
 
-                actual.Should().BeEquivalentTo(
-                    new {Name = "Prop4", PropertyType = typeof(long)});
+                var expected = new {Name = "Prop4", PropertyType = typeof(long)};
+
+                actual.Should().BeEquivalentTo(expected);
             }
 
             [Fact]
@@ -90,8 +97,9 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = (object)TypeInfoExtensions.GetPropertyInfo(typeInfo, "Prop1");
 
-                actual.Should().BeEquivalentTo(
-                    new {Name = "Prop1", PropertyType = typeof(int)});
+                var expected = new {Name = "Prop1", PropertyType = typeof(int)};
+
+                actual.Should().BeEquivalentTo(expected);
             }
 
             [Fact]

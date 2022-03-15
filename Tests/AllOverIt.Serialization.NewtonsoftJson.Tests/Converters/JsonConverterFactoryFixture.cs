@@ -118,7 +118,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests.Converters
                     Prop2 = _dummyValue.Prop2 == EnrichedEnumDummy2.Value3 ? EnrichedEnumDummy2.Value3 : EnrichedEnumDummy2.Value4,
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                expected.Should().BeEquivalentTo(actual);
             }
         }
 

@@ -70,23 +70,25 @@ namespace AllOverIt.Validation.Tests.Validators
 
                 result.IsValid.Should().BeFalse();
 
-                result.Errors.Should().BeEquivalentTo(new[]
+                var expected = new[]
                 {
                     new
                     {
                         PropertyName = nameof(DummyComparisonModel.Value3),
                         ErrorCode = nameof(ValidationErrorCode.OutOfRange),
-                        AttemptedValue = (object)model.Value3,
+                        AttemptedValue = (object) model.Value3,
                         ErrorMessage = $"'{nameof(DummyComparisonModel.Value3)}' must be between 0 and 10 (exclusive)."
                     },
                     new
                     {
                         PropertyName = nameof(DummyComparisonModel.Value4),
                         ErrorCode = nameof(ValidationErrorCode.OutOfRange),
-                        AttemptedValue = (object)model.Value4,
+                        AttemptedValue = (object) model.Value4,
                         ErrorMessage = $"'{nameof(DummyComparisonModel.Value4)}' must be between 0 and 10 (exclusive)."
                     }
-                }, options => options.ExcludingMissingMembers());
+                };
+
+                expected.Should().BeEquivalentTo(result.Errors, options => options.ExcludingMissingMembers());
             }
 
             [Fact]
@@ -140,23 +142,25 @@ namespace AllOverIt.Validation.Tests.Validators
 
                 result.IsValid.Should().BeFalse();
 
-                result.Errors.Should().BeEquivalentTo(new[]
+                var expected = new[]
                 {
                     new
                     {
                         PropertyName = nameof(DummyComparisonModel.Value5),
                         ErrorCode = nameof(ValidationErrorCode.OutOfRange),
-                        AttemptedValue = (object)model.Value5,
+                        AttemptedValue = (object) model.Value5,
                         ErrorMessage = $"'{nameof(DummyComparisonModel.Value5)}' must be between {comparison.CompareFrom} and {comparison.CompareTo} (exclusive)."
                     },
                     new
                     {
                         PropertyName = nameof(DummyComparisonModel.Value6),
                         ErrorCode = nameof(ValidationErrorCode.OutOfRange),
-                        AttemptedValue = (object)model.Value6,
+                        AttemptedValue = (object) model.Value6,
                         ErrorMessage = $"'{nameof(DummyComparisonModel.Value6)}' must be between {comparison.CompareFrom} and {comparison.CompareTo} (exclusive)."
                     }
-                }, options => options.ExcludingMissingMembers());
+                };
+
+                expected.Should().BeEquivalentTo(result.Errors, options => options.ExcludingMissingMembers());
             }
         }
     }

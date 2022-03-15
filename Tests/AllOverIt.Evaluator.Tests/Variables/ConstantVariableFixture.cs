@@ -53,13 +53,15 @@ namespace AllOverIt.Evaluator.Tests.Variables
             [Fact]
             public void Should_Set_Members()
             {
-                _variable.Should().BeEquivalentTo(new
+                var expected = new
                 {
                     Name = _name,
                     Value = _value,
                     VariableRegistry = default(IVariableRegistry),
                     ReferencedVariables = default(IEnumerable<string>)
-                }, option => option.Excluding(prop => prop.ReferencedVariables));
+                };
+
+                expected.Should().BeEquivalentTo(_variable, option => option.Excluding(prop => prop.ReferencedVariables));
             }
 
             [Fact]
@@ -69,13 +71,15 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 _variable = new ConstantVariable(name);
 
-                _variable.Should().BeEquivalentTo(new
+                var expected = new
                 {
                     Name = name,
                     Value = default(double),
                     VariableRegistry = default(IVariableRegistry),
                     ReferencedVariables = default(IEnumerable<string>)
-                }, option => option.Excluding(prop => prop.ReferencedVariables));
+                };
+
+                expected.Should().BeEquivalentTo(_variable, option => option.Excluding(prop => prop.ReferencedVariables));
             }
         }
     }

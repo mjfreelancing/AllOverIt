@@ -16,14 +16,16 @@ namespace AllOverIt.Tests.Reflection
             {
                 var enumValues = EnumHelper.GetEnumValues<BindingOptions>();
 
-                enumValues.Should().BeEquivalentTo(new[]
+                var expected = new[]
                 {
                     BindingOptions.Static, BindingOptions.Instance, BindingOptions.Abstract,
                     BindingOptions.Virtual, BindingOptions.NonVirtual, BindingOptions.Internal, BindingOptions.Private,
                     BindingOptions.Protected, BindingOptions.Public, BindingOptions.DefaultScope,
                     BindingOptions.DefaultAccessor, BindingOptions.DefaultVisibility, BindingOptions.AllScope,
                     BindingOptions.AllAccessor, BindingOptions.AllVisibility, BindingOptions.Default, BindingOptions.All
-                });
+                };
+
+                expected.Should().BeEquivalentTo(enumValues);
             }
 
             [Theory]

@@ -46,7 +46,7 @@ namespace AllOverIt.Tests.Extensions
 
             var expected = Enumerable.Range(51, 50).AsReadOnlyList();
 
-            actual.Should().BeEquivalentTo(expected);
+            expected.Should().BeEquivalentTo(actual);
         }
 
         [Fact]
@@ -60,7 +60,7 @@ namespace AllOverIt.Tests.Extensions
 
             var filtered = numbers.AsQueryable().Where(inRange).AsReadOnlyList();
 
-            filtered.Should().BeEquivalentTo(expected);
+            expected.Should().BeEquivalentTo(filtered);
         }
 
         [Fact]
@@ -86,11 +86,13 @@ namespace AllOverIt.Tests.Extensions
                 .Where(item => item.LessThan(comparisonPerson))
                 .AsReadOnlyList();
 
-            actual.Should().BeEquivalentTo(new[]
+            var expected = new[]
             {
                 new Person("Adam", "Baker"),
                 new Person("Adam", "Murphy")
-            });
+            };
+
+            expected.Should().BeEquivalentTo(actual);
         }
 
         [Fact]
@@ -113,12 +115,14 @@ namespace AllOverIt.Tests.Extensions
                         item.GreaterThan(comparisonPerson2))
                 .AsReadOnlyList();
 
-            actual.Should().BeEquivalentTo(new[]
-                {
+            var expected = new[]
+            {
 
-                    new Person("Adam", "Baker"),
-                    new Person("Paul", "Nielson")
-                });
+                new Person("Adam", "Baker"),
+                new Person("Paul", "Nielson")
+            };
+
+            expected.Should().BeEquivalentTo(actual);
         }
     }
 }

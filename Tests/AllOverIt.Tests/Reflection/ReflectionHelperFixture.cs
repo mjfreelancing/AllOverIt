@@ -87,13 +87,13 @@ namespace AllOverIt.Tests.Reflection
             {
                 var actual = (object)ReflectionHelper.GetPropertyInfo<DummySuperClass>("Prop3");
 
-                actual.Should().BeEquivalentTo(
-                  new
-                  {
-                      Name = "Prop3",
-                      PropertyType = typeof(double)
-                  }
-                );
+                var expected = new
+                {
+                    Name = "Prop3",
+                    PropertyType = typeof(double)
+                };
+
+                actual.Should().BeEquivalentTo(expected);
             }
 
             [Fact]
@@ -101,13 +101,13 @@ namespace AllOverIt.Tests.Reflection
             {
                 var actual = (object)ReflectionHelper.GetPropertyInfo<DummySuperClass>("Prop1");
 
-                actual.Should().BeEquivalentTo(
-                  new
-                  {
-                      Name = "Prop1",
-                      PropertyType = typeof(int)
-                  }
-                );
+                var expected = new
+                {
+                    Name = "Prop1",
+                    PropertyType = typeof(int)
+                };
+
+                actual.Should().BeEquivalentTo(expected);
             }
 
             [Fact]
@@ -126,7 +126,7 @@ namespace AllOverIt.Tests.Reflection
             {
                 var actual = ReflectionHelper.GetPropertyInfo<DummySuperClass>();
 
-                actual.Should().BeEquivalentTo(new[]
+                var expected = new[]
                 {
                     new
                     {
@@ -143,7 +143,9 @@ namespace AllOverIt.Tests.Reflection
                         Name = "Prop3",
                         PropertyType = typeof(double)
                     }
-                });
+                };
+
+                actual.Should().BeEquivalentTo(expected);
             }
 
             [Fact]
@@ -151,14 +153,16 @@ namespace AllOverIt.Tests.Reflection
             {
                 var actual = ReflectionHelper.GetPropertyInfo<DummySuperClass>(BindingOptions.Default, true);
 
-                actual.Should().BeEquivalentTo(new[]
+                var expected = new[]
                 {
                     new
                     {
                         Name = "Prop3",
                         PropertyType = typeof(double)
                     }
-                });
+                };
+
+                actual.Should().BeEquivalentTo(expected);
             }
 
             [Fact]
@@ -189,7 +193,7 @@ namespace AllOverIt.Tests.Reflection
                       item.DeclaringType
                   });
 
-                actual.Should().BeEquivalentTo(new[]
+                var expected = new[]
                 {
                     new
                     {
@@ -201,7 +205,9 @@ namespace AllOverIt.Tests.Reflection
                         Name = "Method3",
                         DeclaringType = typeof(DummySuperClass)
                     }
-                });
+                };
+
+                actual.Should().BeEquivalentTo(expected);
             }
 
             [Fact]
@@ -215,14 +221,16 @@ namespace AllOverIt.Tests.Reflection
                       item.DeclaringType
                   });
 
-                actual.Should().BeEquivalentTo(new[]
+                var expected = new[]
                 {
                     new
                     {
                         Name = "Method3",
                         DeclaringType = typeof(DummySuperClass)
                     }
-                });
+                };
+
+                actual.Should().BeEquivalentTo(expected);
             }
 
             [Fact]
@@ -236,7 +244,7 @@ namespace AllOverIt.Tests.Reflection
                       item.DeclaringType
                   });
 
-                actual.Should().BeEquivalentTo(new[]
+                var expected = new[]
                 {
                     new
                     {
@@ -248,7 +256,9 @@ namespace AllOverIt.Tests.Reflection
                         Name = "Method2",
                         DeclaringType = typeof(DummyBaseClass)
                     }
-                });
+                };
+
+                actual.Should().BeEquivalentTo(expected);
             }
 
             [Fact]
@@ -262,7 +272,7 @@ namespace AllOverIt.Tests.Reflection
                       item.DeclaringType
                   });
 
-                actual.Should().BeEquivalentTo(new[]
+                var expected = new[]
                 {
                     new
                     {
@@ -274,7 +284,9 @@ namespace AllOverIt.Tests.Reflection
                         Name = "Method4",
                         DeclaringType = typeof(DummySuperClass)
                     }
-                });
+                };
+
+                actual.Should().BeEquivalentTo(expected);
             }
 
             [Fact]
@@ -288,7 +300,7 @@ namespace AllOverIt.Tests.Reflection
                       item.DeclaringType
                   });
 
-                actual.Should().BeEquivalentTo(new[]
+                var expected = new[]
                 {
                     new
                     {
@@ -300,7 +312,9 @@ namespace AllOverIt.Tests.Reflection
                         Name = "Method4",
                         DeclaringType = typeof(DummySuperClass)
                     }
-                });
+                };
+
+                actual.Should().BeEquivalentTo(expected);
             }
         }
     }

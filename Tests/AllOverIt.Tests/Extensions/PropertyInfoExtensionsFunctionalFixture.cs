@@ -36,14 +36,16 @@ namespace AllOverIt.Tests.Extensions
 
             // just to make sure the loop executes - the default binding used by ToPropertyDictionary() excludes private, protected and internal
             // and the GetPropertyInfo() method below does the same.
-            valueLookup.Keys.Should().BeEquivalentTo(nameof(Person.FirstName), nameof(Person.Surname), nameof(Person.Age), nameof(Person.FullName));
+            var expectedValues = new[]{ nameof(Person.FirstName), nameof(Person.Surname), nameof(Person.Age), nameof(Person.FullName) };
+
+            expectedValues.Should().BeEquivalentTo(valueLookup.Keys);
 
             foreach (var propertyName in valueLookup.Keys)
             {
                 var actual = typeof(Person).GetPropertyInfo(propertyName).GetValue(subject);
                 var expected = valueLookup[propertyName];
 
-                actual.Should().Be(expected);
+                expected.Should().Be(actual);
             }
         }
 

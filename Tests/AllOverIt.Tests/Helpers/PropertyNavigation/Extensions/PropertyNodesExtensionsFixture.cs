@@ -85,8 +85,8 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation.Extensions
 
                 actual.Nodes.Should().HaveCount(2);
 
-                actual.Nodes.ElementAt(0).Expression.Member.Name.Should().BeEquivalentTo(expected0.Member.Name);
-                actual.Nodes.ElementAt(1).Expression.Member.Name.Should().BeSameAs(expected1.Member.Name);
+                expected0.Member.Name.Should().BeEquivalentTo(actual.Nodes.ElementAt(0).Expression.Member.Name);
+                expected1.Member.Name.Should().BeSameAs(actual.Nodes.ElementAt(1).Expression.Member.Name);
             }
         }
 
@@ -194,7 +194,9 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation.Extensions
 
                 var actual = PropertyNodesExtensions.GetFullNodePath(nodes).Split(".");
 
-                actual.Should().BeEquivalentTo(new[] {nameof(DummyObject.Prop3), nameof(DummyObject.ChildObject.Prop4)});
+                var expected = new[] {nameof(DummyObject.Prop3), nameof(DummyObject.ChildObject.Prop4)};
+
+                expected.Should().BeEquivalentTo(actual);
             }
         }
     }

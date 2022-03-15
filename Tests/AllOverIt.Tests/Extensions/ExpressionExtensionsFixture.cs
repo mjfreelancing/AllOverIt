@@ -43,7 +43,9 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ExpressionExtensions.GetMemberExpressions(memberExpression);
 
-                actual.Select(item => item.Member.Name).Should().BeEquivalentTo("Value", "subject");
+                var expected = new[]{ "Value", "subject" };
+
+                expected.Should().BeEquivalentTo(actual.Select(item => item.Member.Name));
             }
 
             [Fact]

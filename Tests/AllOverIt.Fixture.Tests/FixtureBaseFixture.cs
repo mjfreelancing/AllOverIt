@@ -433,7 +433,7 @@ namespace AllOverIt.Fixture.Tests
 
                 var value = CreateExcluding(excludedValue);
 
-                value.Should().NotBeEquivalentTo(excludedValue);
+                excludedValue.Should().NotBeEquivalentTo(value);
             }
 
             [Fact]
@@ -445,7 +445,7 @@ namespace AllOverIt.Fixture.Tests
 
                 foreach (var excludedValue in excludedValues)
                 {
-                    value.Should().NotBeEquivalentTo(excludedValue);
+                    excludedValue.Should().NotBeEquivalentTo(value);
                 }
             }
         }

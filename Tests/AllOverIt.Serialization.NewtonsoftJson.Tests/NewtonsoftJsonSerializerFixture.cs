@@ -44,9 +44,11 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
             {
                 var serializer = new NewtonsoftJsonSerializer(null);
 
-                serializer.Settings
+                var expected = new JsonSerializerSettings();
+
+                expected
                     .Should()
-                    .BeEquivalentTo(new JsonSerializerSettings());
+                    .BeEquivalentTo(serializer.Settings);
             }
 
             [Fact]
@@ -89,8 +91,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
 
                 if (useCamelCase)
                 {
-                    _serializer.Settings
-                        .ContractResolver
+                    _serializer.Settings.ContractResolver
                         .Should()
                         .BeEquivalentTo(new CamelCasePropertyNamesContractResolver());
                 }
@@ -131,7 +132,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
 
                 var expected = $@"{{""propOne"":{value.PropOne},""prop2"":""{value.Prop2}"",""child1"":{{""prop1"":{value.Child1.Prop1},""prop2"":""{value.Child1.Prop2}""}},""child2"":null}}";
 
-                actual.Should().BeEquivalentTo(expected);
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -152,7 +153,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
 
                 var expected = $@"{{""propOne"":{value.PropOne},""prop2"":""{value.Prop2}""}}";
 
-                actual.Should().BeEquivalentTo(expected);
+                expected.Should().BeEquivalentTo(actual);
             }
         }
 
@@ -167,7 +168,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
 
                 var expected = Encoding.UTF8.GetBytes(_serializer.SerializeObject(value));
 
-                actual.Should().BeEquivalentTo(expected);
+                expected.Should().BeEquivalentTo(actual);
             }
         }
 
@@ -183,7 +184,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
                 
                 var actual = _serializer.DeserializeObject<DummyType>(value);
 
-                actual.Should().BeEquivalentTo(expected);
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -227,7 +228,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
                 {
                     var actual = await _serializer.DeserializeObjectAsync<DummyType>(stream, CancellationToken.None);
 
-                    actual.Should().BeEquivalentTo(expected);
+                    expected.Should().BeEquivalentTo(actual);
                 }
             }
 

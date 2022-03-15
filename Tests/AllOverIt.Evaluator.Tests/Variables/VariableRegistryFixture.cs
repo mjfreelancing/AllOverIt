@@ -59,7 +59,9 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 _registry = new VariableRegistry();
                 _registry.AddVariable(variable.FakedObject);
 
-                _registry.Variables.Should().BeEquivalentTo(new Dictionary<string, IVariable> { [name] = variable.FakedObject });
+                var expected = new Dictionary<string, IVariable> { [name] = variable.FakedObject };
+
+                expected.Should().BeEquivalentTo(_registry.Variables);
             }
 
             [Fact]

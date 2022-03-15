@@ -4,6 +4,7 @@ using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Variables
@@ -65,14 +66,16 @@ namespace AllOverIt.Evaluator.Tests.Variables
             [Fact]
             public void Should_Set_Members()
             {
-                _variable.Should().BeEquivalentTo(new
+                var expected = new
                 {
                     Name = _name,
                     Value = _value,
                     VariableRegistry = default(IVariableRegistry),
                     //ThreadSafe = _threadSafe,
-                    ReferencedVariables = default(IEnumerable<string>)
-                }, option => option.Excluding(prop => prop.ReferencedVariables));
+                    ReferencedVariables = Enumerable.Empty<string>()
+                };
+
+                expected.Should().BeEquivalentTo(_variable);
             }
 
             [Fact]

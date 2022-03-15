@@ -106,30 +106,32 @@ namespace AllOverIt.Validation.Tests
 
                 result.IsValid.Should().BeFalse();
 
-                result.Errors.Should().BeEquivalentTo(new[]
+                var expected = new[]
                 {
                     new
                     {
                         PropertyName = nameof(DummyModel.ValueOne),
                         ErrorCode = nameof(ValidationErrorCode.Required),
-                        AttemptedValue = (object)model.ValueOne,
+                        AttemptedValue = (object) model.ValueOne,
                         ErrorMessage = $"'{nameof(DummyModel.ValueOne)}' requires a valid value."
                     },
                     new
                     {
                         PropertyName = nameof(DummyModel.ValueTwo),
                         ErrorCode = nameof(ValidationErrorCode.NotEmpty),
-                        AttemptedValue = (object)model.ValueTwo,
+                        AttemptedValue = (object) model.ValueTwo,
                         ErrorMessage = $"'{nameof(DummyModel.ValueTwo)}' should not be empty."
                     },
                     new
                     {
                         PropertyName = nameof(DummyModel.ValueThree),
                         ErrorCode = nameof(ValidationErrorCode.NotEmpty),
-                        AttemptedValue = (object)model.ValueThree,
+                        AttemptedValue = (object) model.ValueThree,
                         ErrorMessage = $"'{nameof(DummyModel.ValueThree)}' should not be empty."
                     }
-                }, options => options.ExcludingMissingMembers());
+                };
+
+                expected.Should().BeEquivalentTo(result.Errors, options => options.ExcludingMissingMembers());
             }
         }
 
@@ -150,15 +152,18 @@ namespace AllOverIt.Validation.Tests
 
                 result.IsValid.Should().BeFalse();
 
-                result.Errors.Should().BeEquivalentTo(new[]
+                var expected = new[]
                 {
                     new
                     {
                         PropertyName = nameof(DummyModel.ValueFour),
-                        AttemptedValue = (object)comparisonContext,
-                        ErrorMessage = $"'ValueFour' has a value of {model.ValueFour} when expecting {comparisonContext}."
+                        AttemptedValue = (object) comparisonContext,
+                        ErrorMessage =
+                            $"'ValueFour' has a value of {model.ValueFour} when expecting {comparisonContext}."
                     }
-                }, options => options.ExcludingMissingMembers());
+                };
+
+                expected.Should().BeEquivalentTo(result.Errors, options => options.ExcludingMissingMembers());
             }
         }
 

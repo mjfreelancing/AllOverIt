@@ -9,16 +9,17 @@ namespace AllOverIt.Validation.Tests
         [Fact]
         public void Should_Have_Expected_Error_Codes()
         {
+            var expected = new[]
+            {
+                nameof(ValidationErrorCode.Required),
+                nameof(ValidationErrorCode.NotEmpty),
+                nameof(ValidationErrorCode.OutOfRange)
+            };
+
             // If this test fails then other tests may need to be added to check all error codes are returned
-            typeof(ValidationErrorCode)
-                .GetEnumNames()
+            expected
                 .Should()
-                .BeEquivalentTo(new[]
-                {
-                    nameof(ValidationErrorCode.Required),
-                    nameof(ValidationErrorCode.NotEmpty),
-                    nameof(ValidationErrorCode.OutOfRange)
-                });
+                .BeEquivalentTo(typeof(ValidationErrorCode).GetEnumNames());
         }
     }
 }
