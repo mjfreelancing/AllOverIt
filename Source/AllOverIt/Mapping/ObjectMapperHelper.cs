@@ -17,26 +17,28 @@ namespace AllOverIt.Mapping
 
             static IReadOnlyCollection<PropertyInfo> GetMappablePropertyInfo(ReflectionCacheKeyBase key)
             {
-                var (t, b, d) = (ReflectionCacheKey<Type, BindingOptions, bool>) key;
-                return t.GetPropertyInfo(b, d).AsReadOnlyCollection();
+                var (type, binding, declaredOnly) = (ReflectionCacheKey<Type, BindingOptions, bool>) key;
+                return type.GetPropertyInfo(binding, declaredOnly).AsReadOnlyCollection();
             }
 
             var sourceProps = ReflectionCache.Instance.GetPropertyInfo(sourceType, options.Binding, false, GetMappablePropertyInfo).Where(prop => prop.CanRead && !options.IsExcluded(prop.Name));
             var destProps = ReflectionCache.Instance.GetPropertyInfo(targetType, options.Binding, false, GetMappablePropertyInfo).Where(prop => prop.CanWrite);
 
-            var matches = sourceProps
-                .FindMatches(
-                    destProps,
-                    src => GetTargetAliasName(src.Name, options),       // returns src.Name if there's no matching alias, or aliases is null
-                    target => target.Name
-                );
-
+            // Apart from a performance benefit, the source properties must be filtered before looking for matches just in case the source
+            // contains a property name that is not required (excluded via the Filter) but is mapped to a target property of the same name.
+            // Without the pre-filtering, the source selector used in FindMatches() would result in that property name being added twice,
+            // resulting in a duplicate key error.
             if (options.Filter != null)
             {
-                matches = matches.Where(options.Filter);
+                sourceProps = sourceProps.Where(options.Filter);
             }
 
-            return matches.AsReadOnlyCollection();
+            return sourceProps
+                .FindMatches(
+                    destProps,
+                    src => GetTargetAliasName(src.Name, options),
+                    target => target.Name)
+                .AsReadOnlyCollection();
         }
 
         // Only to be used when property values need to be get/set based on binding options (ie., static methods, never ObjectMapper)

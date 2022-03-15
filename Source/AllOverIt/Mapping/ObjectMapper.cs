@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using AllOverIt.Mapping.Exceptions;
 using AllOverIt.Mapping.Extensions;
 
 namespace AllOverIt.Mapping
@@ -11,20 +12,26 @@ namespace AllOverIt.Mapping
     /// <summary>Implements an object mapper that will copy property values from a source onto a target.</summary>
     public sealed class ObjectMapper : IObjectMapper
     {
-        private class MatchingPropertyMapper
+        internal class MatchingPropertyMapper
         {
-            private sealed class PropertyMatchInfo
+            internal sealed class PropertyMatchInfo
             {   
-                public PropertyInfo SourceInfo { get; init; }
-                public PropertyInfo TargetInfo { get; init; }
+                public PropertyInfo SourceInfo { get; }
+                public PropertyInfo TargetInfo { get; }
+
+                public PropertyMatchInfo(PropertyInfo sourceInfo, PropertyInfo targetInfo)
+                {
+                    SourceInfo = sourceInfo;
+                    TargetInfo = targetInfo;
+                }
             }
 
-            private readonly ObjectMapperOptions _mapperOptions;
-            private readonly PropertyMatchInfo[] _matches;
+            internal readonly ObjectMapperOptions MapperOptions;
+            internal readonly PropertyMatchInfo[] Matches;
 
             internal MatchingPropertyMapper(Type sourceType, Type targetType, ObjectMapperOptions mapperOptions)
             {
-                _mapperOptions = mapperOptions.WhenNotNull(nameof(mapperOptions));
+                MapperOptions = mapperOptions.WhenNotNull(nameof(mapperOptions));
                 
                 // Find properties that match between the source and target (or have an alias) and meet any filter criteria.
                 var matches = ObjectMapperHelper.GetMappableProperties(sourceType, targetType, mapperOptions);
@@ -44,24 +51,20 @@ namespace AllOverIt.Mapping
                         .GetPropertyInfo(mapperOptions.Binding, false)
                         .SingleOrDefault(item => item.Name == targetName);
 
-                    var matchInfo = new PropertyMatchInfo
-                    {
-                        SourceInfo = sourcePropInfo,
-                        TargetInfo = targetPropInfo
-                    };
+                    var matchInfo = new PropertyMatchInfo(sourcePropInfo, targetPropInfo);
 
                     matchedProps.Add(matchInfo);
                 }
 
-                _matches = matchedProps.ToArray();
+                Matches = matchedProps.ToArray();
             }
 
             internal void MapPropertyValues(object source, object target)
             {
-                foreach (var match in _matches)
+                foreach (var match in Matches)
                 {
                     var value = match.SourceInfo.GetValue(source);
-                    var targetValue = _mapperOptions.GetConvertedValue(match.SourceInfo.Name, value);
+                    var targetValue = MapperOptions.GetConvertedValue(match.SourceInfo.Name, value);
 
                     match.TargetInfo.SetValue(target, targetValue);
                 }
@@ -80,7 +83,7 @@ namespace AllOverIt.Mapping
         {
             var sourceType = typeof(TSource);
             var targetType = typeof(TTarget);
-            var mapperOptions = GetConfiguredOptions(configure);
+            var mapperOptions = GetConfiguredOptionsOrDefault(configure);
 
             CreateMapper(sourceType, targetType, mapperOptions);
         }
@@ -129,26 +132,26 @@ namespace AllOverIt.Mapping
 
             if (_mapperCache.TryGetValue(mappingKey, out _))
             {
-                throw new Exception($"Mapping already exists between {sourceType.GetFriendlyName()} and {targetType.GetFriendlyName()}");    // TODO: Needs a custom exception
+                throw new ObjectMapperException($"Mapping already exists between {sourceType.GetFriendlyName()} and {targetType.GetFriendlyName()}");
             }
 
             var mapper = new MatchingPropertyMapper(sourceType, targetType, mapperOptions);
             _mapperCache.Add(mappingKey, mapper);
         }
 
-        private MatchingPropertyMapper GetMapper(Type sourceType, Type targetType)
+        internal MatchingPropertyMapper GetMapper(Type sourceType, Type targetType)
         {
             var mappingKey = (sourceType, targetType);
 
             if (!_mapperCache.TryGetValue(mappingKey, out var mapper))
             {
-                throw new Exception($"Mapping not defined for {sourceType.GetFriendlyName()} and {targetType.GetFriendlyName()}");    // TODO: Needs a custom exception
+                throw new ObjectMapperException($"Mapping not defined for {sourceType.GetFriendlyName()} and {targetType.GetFriendlyName()}");
             }
 
             return mapper;
         }
 
-        private ObjectMapperOptions GetConfiguredOptions<TSource, TTarget>(Action<TypedObjectMapperOptions<TSource, TTarget>> configure)
+        private ObjectMapperOptions GetConfiguredOptionsOrDefault<TSource, TTarget>(Action<TypedObjectMapperOptions<TSource, TTarget>> configure)
             where TSource : class
             where TTarget : class
         {

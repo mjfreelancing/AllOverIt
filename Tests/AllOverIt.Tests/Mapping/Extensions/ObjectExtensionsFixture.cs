@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AllOverIt.Extensions;
+﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Mapping;
-using AllOverIt.Mapping.Extensions;
 using AllOverIt.Reflection;
 using FluentAssertions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 using ObjectExtensions = AllOverIt.Mapping.Extensions.ObjectExtensions;
 
@@ -125,7 +124,7 @@ namespace AllOverIt.Tests.Mapping.Extensions
             {
                 var actual = ObjectExtensions.MapTo<DummyTarget>(_source2, _options);
 
-                actual.Should().BeEquivalentTo(new
+                var expected = new
                 {
                     _source2.Prop1,
                     Prop2 = default(int),
@@ -140,7 +139,9 @@ namespace AllOverIt.Tests.Mapping.Extensions
                     Prop11 = default(IReadOnlyCollection<string>),
                     Prop12 = (int) _source2.Prop12,
                     Prop13 = (DummyEnum) _source2.Prop13
-                });
+                };
+
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -150,7 +151,7 @@ namespace AllOverIt.Tests.Mapping.Extensions
 
                 var actual = ObjectExtensions.MapTo<DummyTarget>(_source2, _options);
 
-                actual.Should().BeEquivalentTo(new
+                var expected = new
                 {
                     Prop1 = default(int),
                     Prop2 = default(int),
@@ -165,7 +166,9 @@ namespace AllOverIt.Tests.Mapping.Extensions
                     Prop11 = default(IReadOnlyCollection<string>),
                     Prop12 = (int) _source2.Prop12,
                     Prop13 = (DummyEnum) _source2.Prop13
-                });
+                };
+
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -175,7 +178,7 @@ namespace AllOverIt.Tests.Mapping.Extensions
 
                 var actual = ObjectExtensions.MapTo<DummyTarget>(_source2, _options);
 
-                actual.Should().BeEquivalentTo(new
+                var expected = new
                 {
                     _source2.Prop1,
                     Prop2 = _source2.GetProp2(),
@@ -190,7 +193,9 @@ namespace AllOverIt.Tests.Mapping.Extensions
                     Prop11 = default(IReadOnlyCollection<string>),
                     Prop12 = (int) _source2.Prop12,
                     Prop13 = (DummyEnum) _source2.Prop13
-                });
+                };
+
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -200,7 +205,7 @@ namespace AllOverIt.Tests.Mapping.Extensions
 
                 var actual = ObjectExtensions.MapTo<DummyTarget>(_source2, _options);
 
-                actual.Should().BeEquivalentTo(new
+                var expected = new
                 {
                     _source2.Prop1,
                     Prop2 = default(int),
@@ -215,7 +220,9 @@ namespace AllOverIt.Tests.Mapping.Extensions
                     Prop11 = default(IReadOnlyCollection<string>),
                     Prop12 = (int) _source2.Prop12,
                     Prop13 = (DummyEnum) _source2.Prop13
-                });
+                };
+
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -225,7 +232,7 @@ namespace AllOverIt.Tests.Mapping.Extensions
 
                 var actual = ObjectExtensions.MapTo<DummyTarget>(_source2, _options);
 
-                actual.Should().BeEquivalentTo(new
+                var expected = new
                 {
                     _source2.Prop1,
                     Prop2 = default(int),
@@ -240,7 +247,9 @@ namespace AllOverIt.Tests.Mapping.Extensions
                     Prop11 = default(IReadOnlyCollection<string>),
                     Prop12 = (int) _source2.Prop12,
                     Prop13 = (DummyEnum) _source2.Prop13
-                });
+                };
+
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -252,7 +261,7 @@ namespace AllOverIt.Tests.Mapping.Extensions
 
                 var actual = ObjectExtensions.MapTo<DummyTarget>(_source2, options);
 
-                actual.Should().BeEquivalentTo(new
+                var expected = new
                 {
                     _source2.Prop1,
                     Prop2 = default(int),
@@ -267,7 +276,9 @@ namespace AllOverIt.Tests.Mapping.Extensions
                     Prop11 = default(IReadOnlyCollection<string>),
                     Prop12 = (int) _source2.Prop12,
                     Prop13 = (DummyEnum) _source2.Prop13
-                });
+                };
+
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -278,7 +289,7 @@ namespace AllOverIt.Tests.Mapping.Extensions
 
                 var actual = ObjectExtensions.MapTo<DummyTarget>(_source2, options);
 
-                actual.Should().BeEquivalentTo(new
+                var expected = new
                 {
                     _source2.Prop1,
                     Prop2 = default(int),
@@ -293,7 +304,9 @@ namespace AllOverIt.Tests.Mapping.Extensions
                     Prop11 = _source2.Prop11.Reverse(),
                     Prop12 = (int) _source2.Prop12,
                     Prop13 = (DummyEnum) _source2.Prop13
-                });
+                };
+
+                expected.Should().BeEquivalentTo(actual);
             }
         }
 
@@ -324,7 +337,7 @@ namespace AllOverIt.Tests.Mapping.Extensions
             {
                 var actual = ObjectExtensions.MapTo<DummyTarget>(_source1);
 
-                actual.Should().BeEquivalentTo(new
+                var expected = new
                 {
                     _source1.Prop1,
                     Prop2 = default(int),
@@ -339,7 +352,9 @@ namespace AllOverIt.Tests.Mapping.Extensions
                     Prop11 = default(IReadOnlyCollection<string>),
                     Prop12 = (int) _source1.Prop12,
                     Prop13 = (DummyEnum) _source1.Prop13
-                });
+                };
+
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -349,7 +364,7 @@ namespace AllOverIt.Tests.Mapping.Extensions
 
                 var actual = ObjectExtensions.MapTo<DummyTarget>(_source1, binding);
 
-                actual.Should().BeEquivalentTo(new
+                var expected = new
                 {
                     _source1.Prop1,
                     Prop2 = _source1.GetProp2(),
@@ -364,7 +379,9 @@ namespace AllOverIt.Tests.Mapping.Extensions
                     Prop11 = default(IReadOnlyCollection<string>),
                     Prop12 = (int) _source1.Prop12,
                     Prop13 = (DummyEnum) _source1.Prop13
-                });
+                };
+
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -374,7 +391,7 @@ namespace AllOverIt.Tests.Mapping.Extensions
 
                 var actual = ObjectExtensions.MapTo<DummyTarget>(_source1, binding);
 
-                actual.Should().BeEquivalentTo(new
+                var expected = new
                 {
                     _source1.Prop1,
                     Prop2 = default(int),
@@ -389,7 +406,9 @@ namespace AllOverIt.Tests.Mapping.Extensions
                     Prop11 = default(IReadOnlyCollection<string>),
                     Prop12 = (int) _source1.Prop12,
                     Prop13 = (DummyEnum) _source1.Prop13
-                });
+                };
+
+                expected.Should().BeEquivalentTo(actual);
             }
         }
 
@@ -461,7 +480,7 @@ namespace AllOverIt.Tests.Mapping.Extensions
             {
                 var actual = ObjectExtensions.MapTo<DummySource2, DummyTarget>(_source2, _target, _options);
 
-                actual.Should().BeEquivalentTo(new
+                var expected = new
                 {
                     _source2.Prop1,
                     Prop2 = default(int),
@@ -476,7 +495,9 @@ namespace AllOverIt.Tests.Mapping.Extensions
                     Prop11 = default(IReadOnlyCollection<string>),
                     Prop12 = (int) _source2.Prop12,
                     Prop13 = (DummyEnum) _source2.Prop13
-                });
+                };
+
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -486,7 +507,7 @@ namespace AllOverIt.Tests.Mapping.Extensions
 
                 var actual = ObjectExtensions.MapTo<DummySource2, DummyTarget>(_source2, _target, _options);
 
-                actual.Should().BeEquivalentTo(new
+                var expected = new
                 {
                     Prop1 = default(int),
                     Prop2 = default(int),
@@ -501,7 +522,9 @@ namespace AllOverIt.Tests.Mapping.Extensions
                     Prop11 = default(IReadOnlyCollection<string>),
                     Prop12 = (int) _source2.Prop12,
                     Prop13 = (DummyEnum) _source2.Prop13
-                });
+                };
+
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -511,7 +534,7 @@ namespace AllOverIt.Tests.Mapping.Extensions
 
                 var actual = ObjectExtensions.MapTo<DummySource2, DummyTarget>(_source2, _target, _options);
 
-                actual.Should().BeEquivalentTo(new
+                var expected = new
                 {
                     _source2.Prop1,
                     Prop2 = _source2.GetProp2(),
@@ -526,7 +549,9 @@ namespace AllOverIt.Tests.Mapping.Extensions
                     Prop11 = default(IReadOnlyCollection<string>),
                     Prop12 = (int) _source2.Prop12,
                     Prop13 = (DummyEnum) _source2.Prop13
-                });
+                };
+
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -536,7 +561,7 @@ namespace AllOverIt.Tests.Mapping.Extensions
 
                 var actual = ObjectExtensions.MapTo<DummySource2, DummyTarget>(_source2, _target, _options);
 
-                actual.Should().BeEquivalentTo(new
+                var expected = new
                 {
                     _source2.Prop1,
                     Prop2 = default(int),
@@ -551,7 +576,9 @@ namespace AllOverIt.Tests.Mapping.Extensions
                     Prop11 = default(IReadOnlyCollection<string>),
                     Prop12 = (int) _source2.Prop12,
                     Prop13 = (DummyEnum) _source2.Prop13
-                });
+                };
+
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -561,7 +588,7 @@ namespace AllOverIt.Tests.Mapping.Extensions
 
                 var actual = ObjectExtensions.MapTo<DummySource2, DummyTarget>(_source2, _target, _options);
 
-                actual.Should().BeEquivalentTo(new
+                var expected = new
                 {
                     _source2.Prop1,
                     Prop2 = default(int),
@@ -576,7 +603,9 @@ namespace AllOverIt.Tests.Mapping.Extensions
                     Prop11 = default(IReadOnlyCollection<string>),
                     Prop12 = (int) _source2.Prop12,
                     Prop13 = (DummyEnum) _source2.Prop13
-                });
+                };
+
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -588,7 +617,7 @@ namespace AllOverIt.Tests.Mapping.Extensions
 
                 var actual = ObjectExtensions.MapTo<DummySource2, DummyTarget>(_source2, _target, options);
 
-                actual.Should().BeEquivalentTo(new
+                var expected = new
                 {
                     _source2.Prop1,
                     Prop2 = default(int),
@@ -603,7 +632,9 @@ namespace AllOverIt.Tests.Mapping.Extensions
                     Prop11 = default(IReadOnlyCollection<string>),
                     Prop12 = (int) _source2.Prop12,
                     Prop13 = (DummyEnum) _source2.Prop13
-                });
+                };
+
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -614,7 +645,7 @@ namespace AllOverIt.Tests.Mapping.Extensions
 
                 var actual = ObjectExtensions.MapTo<DummySource2, DummyTarget>(_source2, _target, options);
 
-                actual.Should().BeEquivalentTo(new
+                var expected = new
                 {
                     _source2.Prop1,
                     Prop2 = default(int),
@@ -629,7 +660,9 @@ namespace AllOverIt.Tests.Mapping.Extensions
                     Prop11 = _source2.Prop11.Reverse(),
                     Prop12 = (int) _source2.Prop12,
                     Prop13 = (DummyEnum) _source2.Prop13
-                });
+                };
+
+                expected.Should().BeEquivalentTo(actual);
             }
         }
 
@@ -686,7 +719,7 @@ namespace AllOverIt.Tests.Mapping.Extensions
             {
                 var actual = ObjectExtensions.MapTo<DummySource1, DummyTarget>(_source1, _target);
 
-                actual.Should().BeEquivalentTo(new
+                var expected = new
                 {
                     _source1.Prop1,
                     Prop2 = default(int),
@@ -701,7 +734,9 @@ namespace AllOverIt.Tests.Mapping.Extensions
                     Prop11 = default(IReadOnlyCollection<string>),
                     Prop12 = (int) _source1.Prop12,
                     Prop13 = (DummyEnum) _source1.Prop13
-                });
+                };
+
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -711,7 +746,7 @@ namespace AllOverIt.Tests.Mapping.Extensions
 
                 var actual = ObjectExtensions.MapTo<DummySource1, DummyTarget>(_source1, _target, binding);
 
-                actual.Should().BeEquivalentTo(new
+                var expected = new
                 {
                     _source1.Prop1,
                     Prop2 = _source1.GetProp2(),
@@ -726,7 +761,9 @@ namespace AllOverIt.Tests.Mapping.Extensions
                     Prop11 = default(IReadOnlyCollection<string>),
                     Prop12 = (int) _source1.Prop12,
                     Prop13 = (DummyEnum) _source1.Prop13
-                });
+                };
+
+                expected.Should().BeEquivalentTo(actual);
             }
 
             [Fact]
@@ -736,7 +773,7 @@ namespace AllOverIt.Tests.Mapping.Extensions
 
                 var actual = ObjectExtensions.MapTo<DummySource1, DummyTarget>(_source1, _target, binding);
 
-                actual.Should().BeEquivalentTo(new
+                var expected = new
                 {
                     _source1.Prop1,
                     Prop2 = default(int),
@@ -751,7 +788,9 @@ namespace AllOverIt.Tests.Mapping.Extensions
                     Prop11 = default(IReadOnlyCollection<string>),
                     Prop12 = (int) _source1.Prop12,
                     Prop13 = (DummyEnum) _source1.Prop13
-                });
+                };
+
+                expected.Should().BeEquivalentTo(actual);
             }
         }
     }
