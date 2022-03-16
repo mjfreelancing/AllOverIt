@@ -28,14 +28,25 @@ namespace AllOverIt.Extensions
             var type = instance.GetType();
             var propertyInfo = type.GetPropertyInfo(bindingOptions, false);     // Uses cached property info
 
-            // TODO: Re-implement without LINQ
-            var propInfos = from propInfo in propertyInfo
-                            where propInfo.CanRead && !propInfo.IsIndexer()
-                            let value = propInfo.GetValue(instance)
-                            where includeNulls || value != null
-                            select new KeyValuePair<string, object>(propInfo.Name, value);
+            var propInfos = new Dictionary<string, object>();
 
-            return propInfos.ToDictionary(item => item.Key, item => item.Value);
+            // More efficient than LINQ
+            foreach (var propInfo in propertyInfo)
+            {
+                if (!propInfo.CanRead || propInfo.IsIndexer())
+                {
+                    continue;
+                }
+
+                var value = propInfo.GetValue(instance);
+
+                if (includeNulls || value != null)
+                {
+                    propInfos.Add(propInfo.Name, value);
+                }
+            }
+
+            return propInfos;
         }
 
         /// <summary>Converts an object to an IDictionary{string, string} using a dot notation for nested members.</summary>
@@ -305,8 +316,6 @@ namespace AllOverIt.Extensions
             var exclusions = excludeProperties?.AsReadOnlyList();
 
             var objType = typeof(TType);
-
-            // TODO: Re-implement without LINQ
 
             // uses declaredOnly = false so base class properties are included
             // ordering by name to make the calculations predictable
