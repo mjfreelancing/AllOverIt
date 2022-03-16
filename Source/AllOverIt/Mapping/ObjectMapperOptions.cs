@@ -9,7 +9,7 @@ namespace AllOverIt.Mapping
     /// <summary>Provides options that control how source properties are copied onto a target instance.</summary>
     public class ObjectMapperOptions
     {
-        internal sealed class TargetOptions
+        private sealed class TargetOptions
         {
             public bool Excluded { get; set; }
             public string Alias { get; set; }
@@ -17,7 +17,7 @@ namespace AllOverIt.Mapping
         }
 
         // Source property to target options - updated via extension methods
-        private readonly IDictionary<string, TargetOptions> SourceTargetOptions = new Dictionary<string, TargetOptions>();
+        private readonly IDictionary<string, TargetOptions> _sourceTargetOptions = new Dictionary<string, TargetOptions>();
 
         /// <summary>The binding options used to determine how properties on the source object are discovered.</summary>
         public BindingOptions Binding { get; set; } = BindingOptions.Default;
@@ -75,14 +75,14 @@ namespace AllOverIt.Mapping
         {
             _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
 
-            return SourceTargetOptions.TryGetValue(sourceName, out var targetOptions) && targetOptions.Excluded;
+            return _sourceTargetOptions.TryGetValue(sourceName, out var targetOptions) && targetOptions.Excluded;
         }
 
         internal string GetAliasName(string sourceName)
         {
             _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
 
-            return SourceTargetOptions.TryGetValue(sourceName, out var targetOptions)
+            return _sourceTargetOptions.TryGetValue(sourceName, out var targetOptions)
                 ? targetOptions.Alias
                 : sourceName;
         }
@@ -91,7 +91,7 @@ namespace AllOverIt.Mapping
         {
             _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
 
-            var converter = SourceTargetOptions.TryGetValue(sourceName, out var targetOptions)
+            var converter = _sourceTargetOptions.TryGetValue(sourceName, out var targetOptions)
                 ? targetOptions.Converter
                 : null;
 
@@ -102,7 +102,7 @@ namespace AllOverIt.Mapping
 
         private void UpdateTargetOptions(string sourceName, Action<ObjectMapperOptions.TargetOptions> optionsAction)
         {
-            var hasOptions = SourceTargetOptions.TryGetValue(sourceName, out var targetOptions);
+            var hasOptions = _sourceTargetOptions.TryGetValue(sourceName, out var targetOptions);
 
             if (!hasOptions)
             {
@@ -113,7 +113,7 @@ namespace AllOverIt.Mapping
 
             if (!hasOptions)
             {
-                SourceTargetOptions.Add(sourceName, targetOptions);
+                _sourceTargetOptions.Add(sourceName, targetOptions);
             }
         }
     }

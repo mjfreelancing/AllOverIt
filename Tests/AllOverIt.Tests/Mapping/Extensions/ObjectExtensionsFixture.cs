@@ -7,6 +7,7 @@ using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AllOverIt.Tests.Extensions;
 using Xunit;
 using ObjectExtensions = AllOverIt.Mapping.Extensions.ObjectExtensions;
 
@@ -255,9 +256,9 @@ namespace AllOverIt.Tests.Mapping.Extensions
             [Fact]
             public void Should_Map_Alias_Properties_By_Expression()
             {
-                var options = new ObjectMapperOptions()
-                    .Exclude(nameof(DummySource2.Prop11))
-                    .WithAlias(nameof(DummySource2.Prop7a), nameof(DummyTarget.Prop7b));
+                var options = new TypedObjectMapperOptions<DummySource2, DummyTarget>()
+                        .WithAlias(source => source.Prop7a, target => target.Prop7b)
+                        .Exclude(nameof(DummySource2.Prop11));
 
                 var actual = ObjectExtensions.MapTo<DummyTarget>(_source2, options);
 

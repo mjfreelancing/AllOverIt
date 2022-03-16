@@ -1,7 +1,7 @@
-﻿using System;
+﻿using AllOverIt.Extensions;
+using System;
 using System.Linq.Expressions;
-using AllOverIt.Extensions;
-using AllOverIt.Mapping.Extensions;
+using AllOverIt.Assertion;
 
 namespace AllOverIt.Mapping
 {
@@ -20,6 +20,8 @@ namespace AllOverIt.Mapping
         /// <returns>The same <see cref="TypedObjectMapperOptions{TSource, TTarget}"/> instance so a fluent syntax can be used.</returns>
         public TypedObjectMapperOptions<TSource, TTarget> Exclude<TProperty>(Expression<Func<TSource, TProperty>> sourceExpression)
         {
+            _ = sourceExpression.WhenNotNull(nameof(sourceExpression));
+
             // TODO: Validate the expressions are only one property deep
             var sourceName = sourceExpression.UnwrapMemberExpression().Member.Name;
 
@@ -36,6 +38,9 @@ namespace AllOverIt.Mapping
         public TypedObjectMapperOptions<TSource, TTarget> WithAlias<TProperty>(Expression<Func<TSource, TProperty>> sourceExpression,
             Expression<Func<TTarget, TProperty>> targetExpression)
         {
+            _ = sourceExpression.WhenNotNull(nameof(sourceExpression));
+            _ = targetExpression.WhenNotNull(nameof(targetExpression));
+
             // TODO: Validate the expressions are only one property deep
             var sourceName = sourceExpression.UnwrapMemberExpression().Member.Name;
             var targetName = targetExpression.UnwrapMemberExpression().Member.Name;
@@ -54,6 +59,9 @@ namespace AllOverIt.Mapping
         public TypedObjectMapperOptions<TSource, TTarget> WithConversion<TProperty>(Expression<Func<TSource, TProperty>> sourceExpression,
             Func<TProperty, object> converter)
         {
+            _ = sourceExpression.WhenNotNull(nameof(sourceExpression));
+            _ = converter.WhenNotNull(nameof(converter));
+
             // TODO: Validate the expressions are only one property deep
             var sourceName = sourceExpression.UnwrapMemberExpression().Member.Name;
 

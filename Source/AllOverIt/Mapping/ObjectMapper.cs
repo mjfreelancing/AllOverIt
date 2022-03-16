@@ -85,10 +85,12 @@ namespace AllOverIt.Mapping
             var targetType = typeof(TTarget);
             var mapperOptions = GetConfiguredOptionsOrDefault(configure);
 
-            CreateMapper(sourceType, targetType, mapperOptions);
+            _ = CreateMapper(sourceType, targetType, mapperOptions);
         }
 
         /// <inheritdoc />
+        /// <remarks>If mapping configuration is not performed in advance then default configuration will be applied. The configuration
+        /// cannot be changed later.</remarks>
         public TTarget Map<TTarget>(object source)
             where TTarget : class, new()
         {
@@ -102,6 +104,8 @@ namespace AllOverIt.Mapping
         }
 
         /// <inheritdoc />
+        /// <remarks>If mapping configuration is not performed in advance then default configuration will be applied. The configuration
+        /// cannot be changed later.</remarks>
         public TTarget Map<TSource, TTarget>(TSource source, TTarget target)
             where TSource : class
             where TTarget : class
@@ -116,7 +120,7 @@ namespace AllOverIt.Mapping
             where TTarget : class
         {
             _ = source.WhenNotNull(nameof(source));
-            _ = target.WhenNotNull(nameof(source));
+            _ = target.WhenNotNull(nameof(target));
 
             var mapper = GetMapper(sourceType, targetType);
             mapper.MapPropertyValues(source, target);
@@ -124,7 +128,7 @@ namespace AllOverIt.Mapping
             return target;
         }
 
-        private void CreateMapper(Type sourceType, Type targetType, ObjectMapperOptions mapperOptions)
+        private MatchingPropertyMapper CreateMapper(Type sourceType, Type targetType, ObjectMapperOptions mapperOptions)
         {
             _ = mapperOptions.WhenNotNull(nameof(mapperOptions));
 
@@ -137,18 +141,17 @@ namespace AllOverIt.Mapping
 
             var mapper = new MatchingPropertyMapper(sourceType, targetType, mapperOptions);
             _mapperCache.Add(mappingKey, mapper);
+
+            return mapper;
         }
 
         internal MatchingPropertyMapper GetMapper(Type sourceType, Type targetType)
         {
             var mappingKey = (sourceType, targetType);
-
-            if (!_mapperCache.TryGetValue(mappingKey, out var mapper))
-            {
-                throw new ObjectMapperException($"Mapping not defined for {sourceType.GetFriendlyName()} and {targetType.GetFriendlyName()}");
-            }
-
-            return mapper;
+            
+            return _mapperCache.TryGetValue(mappingKey, out var mapper)
+                ? mapper
+                : CreateMapper(sourceType, targetType, DefaultOptions);
         }
 
         private ObjectMapperOptions GetConfiguredOptionsOrDefault<TSource, TTarget>(Action<TypedObjectMapperOptions<TSource, TTarget>> configure)
