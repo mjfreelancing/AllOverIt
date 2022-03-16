@@ -1,7 +1,11 @@
 ﻿using AllOverIt.Extensions;
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using AllOverIt.Assertion;
+using AllOverIt.Helpers.PropertyNavigation;
+using AllOverIt.Helpers.PropertyNavigation.Extensions;
+using AllOverIt.Mapping.Exceptions;
 
 namespace AllOverIt.Mapping
 {
@@ -22,8 +26,7 @@ namespace AllOverIt.Mapping
         {
             _ = sourceExpression.WhenNotNull(nameof(sourceExpression));
 
-            // TODO: Validate the expressions are only one property deep
-            var sourceName = sourceExpression.UnwrapMemberExpression().Member.Name;
+            var sourceName = GetPropertyName(sourceExpression);
 
             Options.Exclude(sourceName);
 
@@ -41,9 +44,8 @@ namespace AllOverIt.Mapping
             _ = sourceExpression.WhenNotNull(nameof(sourceExpression));
             _ = targetExpression.WhenNotNull(nameof(targetExpression));
 
-            // TODO: Validate the expressions are only one property deep
-            var sourceName = sourceExpression.UnwrapMemberExpression().Member.Name;
-            var targetName = targetExpression.UnwrapMemberExpression().Member.Name;
+            var sourceName = GetPropertyName(sourceExpression);
+            var targetName = GetPropertyName(targetExpression);
 
             Options.WithAlias(sourceName, targetName);
 
@@ -62,12 +64,26 @@ namespace AllOverIt.Mapping
             _ = sourceExpression.WhenNotNull(nameof(sourceExpression));
             _ = converter.WhenNotNull(nameof(converter));
 
-            // TODO: Validate the expressions are only one property deep
-            var sourceName = sourceExpression.UnwrapMemberExpression().Member.Name;
+            var sourceName = GetPropertyName(sourceExpression);
 
             Options.WithConversion(sourceName, source => converter.Invoke((TProperty) source));
 
             return this;
+        }
+
+        private static string GetPropertyName<TType, TProperty>(Expression<Func<TType, TProperty>> sourceExpression)
+            where TType : class
+        {
+            var propertyNodes = PropertyNavigator
+                .For<TType>()
+                .Navigate(sourceExpression);
+
+            if (propertyNodes.Nodes.Count > 1)
+            {
+                throw new ObjectMapperException($"ObjectMapper do not support nested mappings ({sourceExpression})");
+            }
+
+            return propertyNodes.Nodes.Single().Name();
         }
     }
 }

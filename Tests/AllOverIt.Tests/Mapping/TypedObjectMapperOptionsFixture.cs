@@ -2,6 +2,7 @@
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Mapping;
+using AllOverIt.Mapping.Exceptions;
 using FluentAssertions;
 using Xunit;
 
@@ -9,17 +10,24 @@ namespace AllOverIt.Tests.Mapping
 {
     public class TypedObjectMapperOptionsFixture : FixtureBase
     {
+        private class DummyChild
+        {
+            public int Prop1 { get; set; }
+        }
+
         private class DummySource
         {
             public int Prop1 { get; set; }
             public int Prop2 { get; set; }
             public int Prop3 { get; set; }
+            public DummyChild Child { get; set; }
         }
 
         private class DummyTarget
         {
             public int Prop1 { get; set; }
             public int Prop2 { get; set; }
+            public DummyChild Child { get; set; }
         }
 
         private readonly TypedObjectMapperOptions<DummySource, DummyTarget> _options = new();
@@ -36,6 +44,18 @@ namespace AllOverIt.Tests.Mapping
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("sourceExpression");
+            }
+
+            [Fact]
+            public void Should_Not_Allow_Nested_Properties()
+            {
+                Invoking(() =>
+                    {
+                        _options.Exclude(source => source.Child.Prop1);
+                    })
+                    .Should()
+                    .Throw<ObjectMapperException>()
+                    .WithMessage("ObjectMapper do not support nested mappings (source => source.Child.Prop1)");
             }
 
             [Fact]
@@ -82,6 +102,30 @@ namespace AllOverIt.Tests.Mapping
             }
 
             [Fact]
+            public void Should_Not_Allow_Source_Nested_Properties()
+            {
+                Invoking(() =>
+                    {
+                        _options.WithAlias(source => source.Child.Prop1, target => target.Prop2);
+                    })
+                    .Should()
+                    .Throw<ObjectMapperException>()
+                    .WithMessage("ObjectMapper do not support nested mappings (source => source.Child.Prop1)");
+            }
+
+            [Fact]
+            public void Should_Not_Allow_Target_Nested_Properties()
+            {
+                Invoking(() =>
+                    {
+                        _options.WithAlias(source => source.Prop1, target => target.Child.Prop1);
+                    })
+                    .Should()
+                    .Throw<ObjectMapperException>()
+                    .WithMessage("ObjectMapper do not support nested mappings (target => target.Child.Prop1)");
+            }
+
+            [Fact]
             public void Should_Set_Alias()
             {
                 _ = _options.WithAlias(source => source.Prop3, target => target.Prop2);
@@ -110,6 +154,18 @@ namespace AllOverIt.Tests.Mapping
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("sourceExpression");
+            }
+
+            [Fact]
+            public void Should_Not_Allow_Source_Nested_Properties()
+            {
+                Invoking(() =>
+                    {
+                        _options.WithConversion(source => source.Child.Prop1, val => val);
+                    })
+                    .Should()
+                    .Throw<ObjectMapperException>()
+                    .WithMessage("ObjectMapper do not support nested mappings (source => source.Child.Prop1)");
             }
 
             [Fact]
