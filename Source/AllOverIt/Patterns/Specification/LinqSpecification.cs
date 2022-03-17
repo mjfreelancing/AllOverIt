@@ -9,16 +9,9 @@ namespace AllOverIt.Patterns.Specification
     {
         private sealed class AdHocSpecification : LinqSpecification<TType>
         {
-            private readonly Expression<Func<TType, bool>> _predicate;
-
-            public AdHocSpecification(Expression<Func<TType, bool>> predicate)
+            public AdHocSpecification(Expression<Func<TType, bool>> predicateExpression)
+                : base(() => predicateExpression)
             {
-                _predicate = predicate.WhenNotNull(nameof(predicate));
-            }
-
-            public override Expression<Func<TType, bool>> AsExpression()
-            {
-                return _predicate;
             }
         }
 
@@ -33,7 +26,16 @@ namespace AllOverIt.Patterns.Specification
         }
 
         /// <inheritdoc />
-        public abstract Expression<Func<TType, bool>> AsExpression();
+        public Expression<Func<TType, bool>> Expression { get; }
+
+        /// <summary>Constructor.</summary>
+        /// <param name="expressionResolver"></param>
+        protected LinqSpecification(Func<Expression<Func<TType, bool>>> expressionResolver)
+        {
+            _ = expressionResolver.WhenNotNull(nameof(expressionResolver));
+
+            Expression = expressionResolver.Invoke();
+        }
 
         /// <summary>An implicit operator to return the specification as an Expression&lt;Func&lt;TType, bool&gt;&gt; so it can be used with
         /// <see cref="System.Linq.IQueryable{T}"/> based LINQ queries.</summary>
@@ -42,7 +44,7 @@ namespace AllOverIt.Patterns.Specification
         {
             _ = specification.WhenNotNull(nameof(specification));
 
-            return specification.AsExpression();
+            return specification.Expression;
         }
 
         /// <summary>An explicit operator to return the specification as a Func&lt;TType, bool&gt; so it can be used with
@@ -58,7 +60,7 @@ namespace AllOverIt.Patterns.Specification
         /// <summary>Provides support for operator &amp;&amp;.</summary>
         /// <param name="leftSpecification">The left operand applied to the operator.</param>
         /// <param name="rightSpecification">The right operand applied to the operator.</param>
-        /// <returns>A new specification that AND's the provided specifications.</returns>
+        /// <returns>A new specification that ANDs the provided specifications.</returns>
         public static LinqSpecification<TType> operator &(LinqSpecification<TType> leftSpecification, LinqSpecification<TType> rightSpecification)
         {
             return new AndLinqSpecification<TType>(leftSpecification, rightSpecification);
@@ -67,7 +69,7 @@ namespace AllOverIt.Patterns.Specification
         /// <summary>Provides support for operator ||.</summary>
         /// <param name="leftSpecification">The left operand applied to the operator.</param>
         /// <param name="rightSpecification">The right operand applied to the operator.</param>
-        /// <returns>A new specification that OR's the provided specifications.</returns>
+        /// <returns>A new specification that ORs the provided specifications.</returns>
         public static LinqSpecification<TType> operator |(LinqSpecification<TType> leftSpecification, LinqSpecification<TType> rightSpecification)
         {
             return new OrLinqSpecification<TType>(leftSpecification, rightSpecification);
@@ -89,7 +91,9 @@ namespace AllOverIt.Patterns.Specification
 
         private Func<TType, bool> GetCompiledExpression()
         {
-            return _compiled ??= AsExpression().Compile();
+            _compiled ??= Expression.Compile();
+
+            return _compiled;
         }
     }
 }

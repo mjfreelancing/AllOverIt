@@ -1,4 +1,4 @@
-using AllOverIt.Expressions;
+using AllOverIt.Patterns.Specification.Extensions;
 using System;
 using System.Linq.Expressions;
 
@@ -12,17 +12,18 @@ namespace AllOverIt.Patterns.Specification
         /// <param name="leftSpecification">The left specification applied against a candidate.</param>
         /// <param name="rightSpecification">The right specification applied against a candidate.</param>
         public OrLinqSpecification(ILinqSpecification<TType> leftSpecification, ILinqSpecification<TType> rightSpecification)
-            : base(leftSpecification, rightSpecification)
+            : base(() => GetExpression(leftSpecification, rightSpecification))
         {
         }
 
-        /// <inheritdoc />
-        public override Expression<Func<TType, bool>> AsExpression()
+        private static Expression<Func<TType, bool>> GetExpression(ILinqSpecification<TType> leftSpecification, ILinqSpecification<TType> rightSpecification)
         {
-            var leftExpression = LeftSpecification.AsExpression();
-            var rightExpression = RightSpecification.AsExpression();
+            //var leftExpression = leftSpecification.Expression;
+            //var rightExpression = rightSpecification.Expression;
 
-            return leftExpression.Or(rightExpression);
+            //return leftExpression.Or(rightExpression);
+
+            return leftSpecification.Or(rightSpecification).Expression;
         }
     }
 }

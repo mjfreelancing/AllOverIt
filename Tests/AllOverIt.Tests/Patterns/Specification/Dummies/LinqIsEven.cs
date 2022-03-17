@@ -1,14 +1,12 @@
-﻿using System;
-using System.Linq.Expressions;
-using AllOverIt.Patterns.Specification;
+﻿using AllOverIt.Patterns.Specification;
 
 namespace AllOverIt.Tests.Patterns.Specification.Dummies
 {
     internal sealed class LinqIsEven : LinqSpecification<int>
     {
-        public override Expression<Func<int, bool>> AsExpression()
+        public LinqIsEven()
+            : base(() => candidate => candidate % 2 == 0)
         {
-            return candidate => candidate % 2 == 0;
         }
     }
 }

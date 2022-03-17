@@ -1,4 +1,5 @@
-using AllOverIt.Assertion;
+using System;
+using System.Linq.Expressions;
 
 namespace AllOverIt.Patterns.Specification
 {
@@ -6,14 +7,11 @@ namespace AllOverIt.Patterns.Specification
     /// <typeparam name="TType">The candidate type the specification applies to.</typeparam>
     public abstract class UnaryLinqSpecification<TType> : LinqSpecification<TType>
     {
-        /// <summary>The specification of the unary operation to apply to a candidate.</summary>
-        protected ILinqSpecification<TType> Specification { get; }
-
         /// <summary>Constructor.</summary>
-        /// <param name="specification">The unary specification to apply to a candidate.</param>
-        protected UnaryLinqSpecification(ILinqSpecification<TType> specification)
+        /// <param name="expressionResolver">A resolver that returns an expression that represents the unary specification.</param>
+        protected UnaryLinqSpecification(Func<Expression<Func<TType, bool>>> expressionResolver)
+            : base(expressionResolver)
         {
-            Specification = specification.WhenNotNull(nameof(specification));
         }
     }
 }

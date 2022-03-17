@@ -19,25 +19,25 @@ namespace SpecificationBenchmarking
     [MemoryDiagnoser]
     public class SpecificationTest
     {
-        private static readonly Person Candidate;
-        private static readonly Specification<Person> Criteria;
-        private static readonly LinqSpecification<Person> CriteriaLinq;
+        private readonly Person _candidate;
+        private readonly Specification<Person> _criteria;
+        private readonly LinqSpecification<Person> _criteriaLinq;
 
-        static SpecificationTest()
+        public SpecificationTest()
         {
-            Candidate = new Person(20, Sex.Male, "WE");
+            _candidate = new Person(20, Sex.Male, "WE");
 
             var isMale = new IsOfSex(Sex.Male);
             var isFemale = new IsOfSex(Sex.Female);
             var minimumAge = new IsOfMinimumAge(20);
 
-            Criteria = isMale && minimumAge || isFemale && !minimumAge;
+            _criteria = isMale && minimumAge || isFemale && !minimumAge;
 
             var isMaleLinq = new IsOfSexLinq(Sex.Male);
             var isFemaleLinq = new IsOfSexLinq(Sex.Female);
             var minimumAgeLinq = new IsOfMinimumAgeLinq(20);
 
-            CriteriaLinq = isMaleLinq && minimumAgeLinq || isFemaleLinq && !minimumAgeLinq;
+            _criteriaLinq = isMaleLinq && minimumAgeLinq || isFemaleLinq && !minimumAgeLinq;
         }
 
         // ================
@@ -45,14 +45,14 @@ namespace SpecificationBenchmarking
         [Benchmark]
         public void Using_Specification_IsSatisfied_Once()
         {
-            Criteria.IsSatisfiedBy(Candidate);
+            _criteria.IsSatisfiedBy(_candidate);
         }
 
         [Benchmark]
         public void Using_Specification_IsSatisfied_Twice()
         {
-            Criteria.IsSatisfiedBy(Candidate);
-            Criteria.IsSatisfiedBy(Candidate);
+            _criteria.IsSatisfiedBy(_candidate);
+            _criteria.IsSatisfiedBy(_candidate);
         }
 
         // ================
@@ -60,14 +60,22 @@ namespace SpecificationBenchmarking
         [Benchmark]
         public void Using_LinqSpecification_IsSatisfied_Once()
         {
-            CriteriaLinq.IsSatisfiedBy(Candidate);
+            _criteriaLinq.IsSatisfiedBy(_candidate);
         }
 
         [Benchmark]
         public void Using_LinqSpecification_IsSatisfied_Twice()
         {
-            CriteriaLinq.IsSatisfiedBy(Candidate);
-            CriteriaLinq.IsSatisfiedBy(Candidate);
+            _criteriaLinq.IsSatisfiedBy(_candidate);
+            _criteriaLinq.IsSatisfiedBy(_candidate);
+        }
+
+        [Benchmark]
+        public void Using_LinqSpecification_IsSatisfied_Thrice()
+        {
+            _criteriaLinq.IsSatisfiedBy(_candidate);
+            _criteriaLinq.IsSatisfiedBy(_candidate);
+            _criteriaLinq.IsSatisfiedBy(_candidate);
         }
 
         // ================

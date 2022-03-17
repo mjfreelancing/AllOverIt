@@ -1,6 +1,4 @@
 using AllOverIt.Patterns.Specification;
-using System;
-using System.Linq.Expressions;
 
 namespace AllOverIt.Tests.Patterns.Specification.Dummies
 {
@@ -9,14 +7,9 @@ namespace AllOverIt.Tests.Patterns.Specification.Dummies
         public ILinqSpecification<int> Spec { get; }
 
         public UnaryLinqSpecificationDummy(ILinqSpecification<int> specification)
-            : base(specification)
+            : base(() => _ => true)
         {
             Spec = specification;
-        }
-
-        public override Expression<Func<int, bool>> AsExpression()
-        {
-            return _ => true;
         }
     }
 }

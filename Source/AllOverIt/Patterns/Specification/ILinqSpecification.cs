@@ -9,6 +9,6 @@ namespace AllOverIt.Patterns.Specification
     {
         /// <summary>Gets an Expression that describes the specification.</summary>
         /// <returns>An Expression that describes the specification.</returns>
-        Expression<Func<TType, bool>> AsExpression();
+        Expression<Func<TType, bool>> Expression { get; }
     }
 }

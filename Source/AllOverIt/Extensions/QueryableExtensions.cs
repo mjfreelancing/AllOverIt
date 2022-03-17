@@ -13,7 +13,7 @@ namespace AllOverIt.Extensions
         /// <returns>The candidates that meet the criteria of the provided specification.</returns>
         public static IQueryable<TType> Where<TType>(this IQueryable<TType> candidates, ILinqSpecification<TType> specification)
         {
-            return candidates.Where(specification.AsExpression());
+            return candidates.Where(specification.Expression);
         }
 
         /// <summary>Determines if any candidates meet the criteria of a provided specification.</summary>
@@ -23,7 +23,7 @@ namespace AllOverIt.Extensions
         /// <returns>True if any of the candidates meet the criteria of the provided specification.</returns>
         public static bool Any<TType>(this IQueryable<TType> candidates, ILinqSpecification<TType> specification)
         {
-            return candidates.Any(specification.AsExpression());
+            return candidates.Any(specification.Expression);
         }
 
         /// <summary>Determines if all candidates meet the criteria of a provided specification.</summary>
@@ -33,7 +33,7 @@ namespace AllOverIt.Extensions
         /// <returns>True if all of the candidates meet the criteria of the provided specification.</returns>
         public static bool All<TType>(this IQueryable<TType> candidates, ILinqSpecification<TType> specification)
         {
-            return candidates.All(specification.AsExpression());
+            return candidates.All(specification.Expression);
         }
 
         /// <summary>Counts the number of candidates that meet the criteria of a provided specification.</summary>
@@ -43,7 +43,7 @@ namespace AllOverIt.Extensions
         /// <returns>The count of candidates that meet the criteria of a provided specification.</returns>
         public static int Count<TType>(this IQueryable<TType> candidates, ILinqSpecification<TType> specification)
         {
-            return candidates.Count(specification.AsExpression());
+            return candidates.Count(specification.Expression);
         }
 
         /// <summary>Gets the first candidate that meets the criteria of a provided specification.</summary>
@@ -53,7 +53,7 @@ namespace AllOverIt.Extensions
         /// <returns>The first candidate that meets the criteria of a provided specification.</returns>
         public static TType First<TType>(this IQueryable<TType> candidates, ILinqSpecification<TType> specification)
         {
-            return candidates.First(specification.AsExpression());
+            return candidates.First(specification.Expression);
         }
 
         /// <summary>Gets the first candidate that meets the criteria of a provided specification or the type's
@@ -65,7 +65,7 @@ namespace AllOverIt.Extensions
         /// default if there are no matches.</returns>
         public static TType FirstOrDefault<TType>(this IQueryable<TType> candidates, ILinqSpecification<TType> specification)
         {
-            return candidates.FirstOrDefault(specification.AsExpression());
+            return candidates.FirstOrDefault(specification.Expression);
         }
 
         /// <summary>Gets the last candidate that meets the criteria of a provided specification.</summary>
@@ -75,7 +75,7 @@ namespace AllOverIt.Extensions
         /// <returns>The last candidate that meets the criteria of a provided specification.</returns>
         public static TType Last<TType>(this IQueryable<TType> candidates, ILinqSpecification<TType> specification)
         {
-            return candidates.Last(specification.AsExpression());
+            return candidates.Last(specification.Expression);
         }
 
         /// <summary>Gets the last candidate that meets the criteria of a provided specification or the type's
@@ -87,7 +87,7 @@ namespace AllOverIt.Extensions
         /// default if there are no matches.</returns>
         public static TType LastOrDefault<TType>(this IQueryable<TType> candidates, ILinqSpecification<TType> specification)
         {
-            return candidates.LastOrDefault(specification.AsExpression());
+            return candidates.LastOrDefault(specification.Expression);
         }
 
         /// <summary>Gets the elements from the first element of the input candidates that meets the criteria of a provided
@@ -99,7 +99,7 @@ namespace AllOverIt.Extensions
         /// the criteria of a provided specification.</returns>
         public static IQueryable<TType> SkipWhile<TType>(this IQueryable<TType> candidates, ILinqSpecification<TType> specification)
         {
-            return candidates.SkipWhile(specification.AsExpression());
+            return candidates.SkipWhile(specification.Expression);
         }
 
         /// <summary>Gets the elements from the input candidates while they meet the criteria of a provided specification.</summary>
@@ -110,7 +110,7 @@ namespace AllOverIt.Extensions
         /// specification.</returns>
         public static IQueryable<TType> TakeWhile<TType>(this IQueryable<TType> candidates, ILinqSpecification<TType> specification)
         {
-            return candidates.TakeWhile(specification.AsExpression());
+            return candidates.TakeWhile(specification.Expression);
         }
     }
 }
