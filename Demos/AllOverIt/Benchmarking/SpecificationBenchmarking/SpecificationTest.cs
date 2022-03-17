@@ -7,12 +7,14 @@ namespace SpecificationBenchmarking
 
     /*
 
-    |                                    Method |      Mean |     Error |    StdDev | Allocated |
-    |------------------------------------------ |----------:|----------:|----------:|----------:|
-    |      Using_Specification_IsSatisfied_Once |  9.737 ns | 0.2270 ns | 0.4207 ns |         - |
-    |     Using_Specification_IsSatisfied_Twice | 18.806 ns | 0.3978 ns | 0.6968 ns |         - |
-    |  Using_LinqSpecification_IsSatisfied_Once |  5.620 ns | 0.1392 ns | 0.1429 ns |         - |
-    | Using_LinqSpecification_IsSatisfied_Twice | 12.189 ns | 0.2529 ns | 0.3198 ns |         - |
+    |                                  Method |       Mean |     Error |    StdDev |     Median | Allocated |
+    |---------------------------------------- |-----------:|----------:|----------:|-----------:|----------:|
+    |     Using_Specification_IsSatisfied_One |  11.446 ns | 0.2415 ns | 0.2016 ns |  11.352 ns |         - |
+    |     Using_Specification_IsSatisfied_Two |  22.988 ns | 0.4898 ns | 0.9554 ns |  22.629 ns |         - |
+    |     Using_Specification_IsSatisfied_Ten | 122.344 ns | 3.2704 ns | 9.6428 ns | 118.632 ns |         - |
+    | Using_LinqSpecification_IsSatisfied_One |   6.557 ns | 0.1562 ns | 0.1462 ns |   6.525 ns |         - |
+    | Using_LinqSpecification_IsSatisfied_Two |  13.144 ns | 0.2891 ns | 0.3860 ns |  13.091 ns |         - |
+    | Using_LinqSpecification_IsSatisfied_Ten |  75.657 ns | 1.4839 ns | 1.5878 ns |  75.864 ns |         - |
 
     */
 
@@ -43,39 +45,53 @@ namespace SpecificationBenchmarking
         // ================
 
         [Benchmark]
-        public void Using_Specification_IsSatisfied_Once()
+        public void Using_Specification_IsSatisfied_One()
         {
             _criteria.IsSatisfiedBy(_candidate);
         }
 
         [Benchmark]
-        public void Using_Specification_IsSatisfied_Twice()
+        public void Using_Specification_IsSatisfied_Two()
         {
-            _criteria.IsSatisfiedBy(_candidate);
-            _criteria.IsSatisfiedBy(_candidate);
+            for (var i = 0; i < 2; i++)
+            {
+                _criteria.IsSatisfiedBy(_candidate);
+            }
+        }
+
+        [Benchmark]
+        public void Using_Specification_IsSatisfied_Ten()
+        {
+            for (var i = 0; i < 10; i++)
+            {
+                _criteria.IsSatisfiedBy(_candidate);
+            }
         }
 
         // ================
 
         [Benchmark]
-        public void Using_LinqSpecification_IsSatisfied_Once()
+        public void Using_LinqSpecification_IsSatisfied_One()
         {
             _criteriaLinq.IsSatisfiedBy(_candidate);
         }
 
         [Benchmark]
-        public void Using_LinqSpecification_IsSatisfied_Twice()
+        public void Using_LinqSpecification_IsSatisfied_Two()
         {
-            _criteriaLinq.IsSatisfiedBy(_candidate);
-            _criteriaLinq.IsSatisfiedBy(_candidate);
+            for (var i = 0; i < 2; i++)
+            {
+                _criteriaLinq.IsSatisfiedBy(_candidate);
+            }
         }
 
         [Benchmark]
-        public void Using_LinqSpecification_IsSatisfied_Thrice()
+        public void Using_LinqSpecification_IsSatisfied_Ten()
         {
-            _criteriaLinq.IsSatisfiedBy(_candidate);
-            _criteriaLinq.IsSatisfiedBy(_candidate);
-            _criteriaLinq.IsSatisfiedBy(_candidate);
+            for (var i = 0; i < 10; i++)
+            {
+                _criteriaLinq.IsSatisfiedBy(_candidate);
+            }
         }
 
         // ================
