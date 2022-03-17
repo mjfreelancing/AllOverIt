@@ -1,4 +1,4 @@
-﻿using AllOverIt.Patterns.Specification.Extensions;
+﻿using AllOverIt.Expressions;
 using System;
 using System.Linq.Expressions;
 
@@ -6,7 +6,7 @@ namespace AllOverIt.Patterns.Specification
 {
     /// <summary>A specification that performs a logical AND operation between two expressions after negating the result of the right operand.</summary>
     /// <typeparam name="TType">The candidate type the specification applies to.</typeparam>
-    public sealed class AndNotLinqSpecification<TType> : BinaryLinqSpecification<TType>
+    public sealed class AndNotLinqSpecification<TType> : LinqSpecification<TType>
     {
         /// <summary>Constructor.</summary>
         /// <param name="leftSpecification">The left specification applied against a candidate.</param>
@@ -18,12 +18,10 @@ namespace AllOverIt.Patterns.Specification
 
         private static Expression<Func<TType, bool>> GetExpression(ILinqSpecification<TType> leftSpecification, ILinqSpecification<TType> rightSpecification)
         {
-            //var leftExpression = leftSpecification.Expression;
-            //var rightExpression = rightSpecification.Expression;
+            var leftExpression = leftSpecification.Expression;
+            var rightExpression = rightSpecification.Expression;
 
-            //return leftExpression.And(rightExpression.Not());
-
-            return leftSpecification.And(rightSpecification.Not()).Expression;
+            return leftExpression.And(rightExpression.Not());
         }
     }
 }

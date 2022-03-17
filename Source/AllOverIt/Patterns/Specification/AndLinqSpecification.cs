@@ -1,12 +1,12 @@
-﻿using System;
+﻿using AllOverIt.Expressions;
+using System;
 using System.Linq.Expressions;
-using AllOverIt.Patterns.Specification.Extensions;
 
 namespace AllOverIt.Patterns.Specification
 {
     /// <summary>A specification that performs a logical AND operation between two expressions.</summary>
     /// <typeparam name="TType">The candidate type the specification applies to.</typeparam>
-    public sealed class AndLinqSpecification<TType> : BinaryLinqSpecification<TType>
+    public sealed class AndLinqSpecification<TType> : LinqSpecification<TType>
     {
         /// <summary>Constructor.</summary>
         /// <param name="leftSpecification">The left specification applied against a candidate.</param>
@@ -18,12 +18,10 @@ namespace AllOverIt.Patterns.Specification
 
         private static Expression<Func<TType, bool>> GetExpression(ILinqSpecification<TType> leftSpecification, ILinqSpecification<TType> rightSpecification)
         {
-            //var leftExpression = leftSpecification.Expression;
-            //var rightExpression = rightSpecification.Expression;
+            var leftExpression = leftSpecification.Expression;
+            var rightExpression = rightSpecification.Expression;
 
-            //return leftExpression.And(rightExpression);
-
-            return leftSpecification.And(rightSpecification).Expression;
+            return leftExpression.And(rightExpression);
         }
     }
 }
