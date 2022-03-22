@@ -11,6 +11,7 @@ AllOverIt v3.0.0
     information via a PropertyNavigator to build full property paths and assert all leaf nodes are not a class type.
   * Added FindMatches() to find elements in one collection that have keys matching elements in another collection.
   * Added additional GetPropertyValue() and SetPropertyValue() overloads on EnumerableExtensions that accept a Type.
+  * Added TextStreamer to support writing character data to an internal memory stream.
 
 AllOverIt.Validation v3.0.0
   * Updated to AllOverIt v3.0.0
