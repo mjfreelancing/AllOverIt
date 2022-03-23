@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using AllOverIt.Reflection;
 
 namespace AllOverIt.Mapping
 {
@@ -35,20 +36,22 @@ namespace AllOverIt.Mapping
                 // Find properties that match between the source and target (or have an alias) and meet any filter criteria.
                 var matches = ObjectMapperHelper.GetMappableProperties(sourceType, targetType, mapperOptions);
                 
+                var sourcePropertyInfo = ReflectionCache
+                    .GetPropertyInfo(sourceType, mapperOptions.Binding)
+                    .ToDictionary(prop => prop.Name);
+
+                var targetPropertyInfo = ReflectionCache
+                    .GetPropertyInfo(targetType, mapperOptions.Binding)
+                    .ToDictionary(prop => prop.Name);
+
                 var matchedProps = new List<PropertyMatchInfo>();
 
                 // ReSharper disable once LoopCanBeConvertedToQuery
                 foreach (var match in matches)
                 {
-                    var sourcePropInfo = sourceType
-                        .GetPropertyInfo(mapperOptions.Binding, false)
-                        .SingleOrDefault(item => item.Name == match.Name);
-
+                    var sourcePropInfo = sourcePropertyInfo[match.Name];
                     var targetName = ObjectMapperHelper.GetTargetAliasName(match.Name, mapperOptions);
-
-                    var targetPropInfo = targetType
-                        .GetPropertyInfo(mapperOptions.Binding, false)
-                        .SingleOrDefault(item => item.Name == targetName);
+                    var targetPropInfo = targetPropertyInfo[targetName];
 
                     var matchInfo = new PropertyMatchInfo(sourcePropInfo, targetPropInfo);
 

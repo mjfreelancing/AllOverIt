@@ -37,20 +37,28 @@ namespace AllOverIt.Mapping
 
         // Only to be used when property values need to be get/set based on binding options (ie., static methods, never ObjectMapper)
         internal static void MapPropertyValues(Type sourceType, object source, Type targetType, object target, IReadOnlyCollection<PropertyInfo> matches,
-            ObjectMapperOptions options)
+            ObjectMapperOptions mapperOptions)
         {
             _ = source.WhenNotNull(nameof(source));
             _ = target.WhenNotNull(nameof(target));
             _ = matches.WhenNotNull(nameof(matches));                   // allow empty
-            _ = options.WhenNotNull(nameof(options));
+            _ = mapperOptions.WhenNotNull(nameof(mapperOptions));
+
+            var sourcePropertyInfo = ReflectionCache
+                .GetPropertyInfo(sourceType, mapperOptions.Binding)
+                .ToDictionary(prop => prop.Name);
+
+            var targetPropertyInfo = ReflectionCache
+                .GetPropertyInfo(targetType, mapperOptions.Binding)
+                .ToDictionary(prop => prop.Name);
 
             foreach (var match in matches)
             {
-                var value = source.GetPropertyValue(sourceType, match.Name, options.Binding);
-                var targetName = GetTargetAliasName(match.Name, options);
-                var targetValue = options.GetConvertedValue(match.Name, value);
+                var value = sourcePropertyInfo[match.Name].GetValue(source);
+                var targetName = GetTargetAliasName(match.Name, mapperOptions);
+                var targetValue = mapperOptions.GetConvertedValue(match.Name, value);
 
-                target.SetPropertyValue(targetType, targetName, targetValue, options.Binding);
+                targetPropertyInfo[targetName].SetValue(target, targetValue);
             }
         }
 
