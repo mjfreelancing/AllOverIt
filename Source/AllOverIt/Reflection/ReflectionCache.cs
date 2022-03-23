@@ -12,44 +12,53 @@ namespace AllOverIt.Reflection
         public static IEnumerable<PropertyInfo> GetPropertyInfo(Type type, BindingOptions bindingOptions, bool declaredOnly = false,
             Func<GenericCacheKeyBase, IEnumerable<PropertyInfo>> valueResolver = default)
         {
-            valueResolver ??= key =>
-            {
-                var (keyType, keyBinding, keyDeclaredOnly) = (GenericCacheKey<Type, BindingOptions, bool>) key;
-
-                return keyType
-                    .GetPropertyInfo(keyBinding, keyDeclaredOnly)
-                    .AsReadOnlyCollection();
-            };
-
-            return GenericCache.Default.GetPropertyInfo(type, bindingOptions, declaredOnly, valueResolver);
+            return GenericCache.Default.GetPropertyInfo(type, bindingOptions, declaredOnly, valueResolver ?? GetPropertyInfoFromTypeBindingDeclaredOnly());
         }
 
         public static IEnumerable<PropertyInfo> GetPropertyInfo(TypeInfo typeInfo, bool declaredOnly = false,
             Func<GenericCacheKeyBase, IEnumerable<PropertyInfo>> valueResolver = default)
         {
-            valueResolver ??= key =>
-            {
-                var (keyTypeInfo, keyDeclaredOnly) = (GenericCacheKey<TypeInfo, bool>) key;
-
-                return keyTypeInfo
-                    .GetPropertyInfo(keyDeclaredOnly)
-                    .AsReadOnlyCollection();
-            };
-
-            return GenericCache.Default.GetPropertyInfo(typeInfo, declaredOnly, valueResolver);
+            return GenericCache.Default.GetPropertyInfo(typeInfo, declaredOnly, valueResolver ?? GetPropertyInfoFromTypeInfoDeclaredOnly());
         }
 
         public static PropertyInfo GetPropertyInfo(TypeInfo typeInfo, string propertyName,
             Func<GenericCacheKeyBase, PropertyInfo> valueResolver = default)
         {
-            valueResolver ??= key =>
+            return GenericCache.Default.GetPropertyInfo(typeInfo, propertyName, valueResolver ?? GetPropertyInfoFromTypeInfoPropertyName());
+        }
+
+        private static Func<GenericCacheKeyBase, IEnumerable<PropertyInfo>> GetPropertyInfoFromTypeBindingDeclaredOnly()
+        {
+            return key =>
             {
-                var (keyTypeInfo, keyPropertyName) = (GenericCacheKey<TypeInfo, string>) key;
+                var (type, bindingOptions, declaredOnly) = (GenericCacheKey<Type, BindingOptions, bool>) key;
 
-                return keyTypeInfo.GetPropertyInfo(keyPropertyName);
+                return type
+                    .GetPropertyInfo(bindingOptions, declaredOnly)
+                    .AsReadOnlyCollection();
             };
+        }
 
-            return GenericCache.Default.GetPropertyInfo(typeInfo, propertyName, valueResolver);
+        private static Func<GenericCacheKeyBase, IEnumerable<PropertyInfo>> GetPropertyInfoFromTypeInfoDeclaredOnly()
+        {
+            return key =>
+            {
+                var (typeInfo, declaredOnly) = (GenericCacheKey<TypeInfo, bool>) key;
+
+                return typeInfo
+                    .GetPropertyInfo(declaredOnly)
+                    .AsReadOnlyCollection();
+            };
+        }
+
+        private static Func<GenericCacheKeyBase, PropertyInfo> GetPropertyInfoFromTypeInfoPropertyName()
+        {
+            return key =>
+            {
+                var (typeInfo, propertyName) = (GenericCacheKey<TypeInfo, string>) key;
+
+                return typeInfo.GetPropertyInfo(propertyName);
+            };
         }
     }
 }

@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 namespace AllOverIt.Cache
 {
-    public class GenericCache
+    public class GenericCache : IGenericCache
     {
         private class GenericCacheKeyComparer : IEqualityComparer<GenericCacheKeyBase>
         {
-            public static GenericCacheKeyComparer Instance = new();
+            public static readonly GenericCacheKeyComparer Instance = new();
 
             public bool Equals(GenericCacheKeyBase x, GenericCacheKeyBase y)
             {
