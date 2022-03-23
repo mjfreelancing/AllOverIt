@@ -35,15 +35,10 @@ namespace AllOverIt.Extensions
         /// by <paramref name="type"/>.</remarks>
         public static IEnumerable<PropertyInfo> GetPropertyInfo(this Type type, BindingOptions bindingOptions = BindingOptions.Default, bool declaredOnly = false)
         {
-            return ReflectionCache.Instance.GetPropertyInfo(type, bindingOptions, declaredOnly, key =>
-            {
-                var (t, b, d) = (ReflectionCacheKey<Type, BindingOptions, bool>) key;
+            var predicate = BindingOptionsHelper.BuildBindingPredicate(bindingOptions);
+            var typeInfo = type.GetTypeInfo();
 
-                var predicate = BindingOptionsHelper.BuildBindingPredicate(b);
-                var typeInfo = t.GetTypeInfo();
-
-                return GetFilteredPropertyInfo(typeInfo, d, predicate);
-            });
+            return GetFilteredPropertyInfo(typeInfo, declaredOnly, predicate);
         }
 
         /// <summary>Gets <see cref="MethodInfo"/> (method metadata) for a given <see cref="Type"/> and binding option.</summary>

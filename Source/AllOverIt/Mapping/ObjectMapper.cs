@@ -1,11 +1,10 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
+using AllOverIt.Mapping.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using AllOverIt.Mapping.Exceptions;
-using AllOverIt.Mapping.Extensions;
 
 namespace AllOverIt.Mapping
 {

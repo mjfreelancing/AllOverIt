@@ -1,10 +1,11 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
-using AllOverIt.Reflection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using AllOverIt.Reflection;
+using AllOverIt.Cache;
 
 namespace AllOverIt.Mapping
 {
@@ -15,14 +16,10 @@ namespace AllOverIt.Mapping
         {
             _ = options.WhenNotNull(nameof(options));
 
-            static IReadOnlyCollection<PropertyInfo> GetMappablePropertyInfo(ReflectionCacheKeyBase key)
-            {
-                var (type, binding, declaredOnly) = (ReflectionCacheKey<Type, BindingOptions, bool>) key;
-                return type.GetPropertyInfo(binding, declaredOnly).AsReadOnlyCollection();
-            }
+            var sourceProps = GetCachedPropertyInfo(sourceType, options.Binding, prop => prop.CanRead);
+            var targetProps = GetCachedPropertyInfo(targetType, options.Binding, prop => prop.CanWrite);
 
-            var sourceProps = ReflectionCache.Instance.GetPropertyInfo(sourceType, options.Binding, false, GetMappablePropertyInfo).Where(prop => prop.CanRead && !options.IsExcluded(prop.Name));
-            var destProps = ReflectionCache.Instance.GetPropertyInfo(targetType, options.Binding, false, GetMappablePropertyInfo).Where(prop => prop.CanWrite);
+            sourceProps = sourceProps.Where(prop => !options.IsExcluded(prop.Name));
 
             // Apart from a performance benefit, the source properties must be filtered before looking for matches just in case the source
             // contains a property name that is not required (excluded via the Filter) but is mapped to a target property of the same name.
@@ -35,7 +32,7 @@ namespace AllOverIt.Mapping
 
             return sourceProps
                 .FindMatches(
-                    destProps,
+                    targetProps,
                     src => GetTargetAliasName(src.Name, options),
                     target => target.Name)
                 .AsReadOnlyCollection();
@@ -63,6 +60,20 @@ namespace AllOverIt.Mapping
         internal static string GetTargetAliasName(string sourceName, ObjectMapperOptions options)
         {
             return options.GetAliasName(sourceName) ?? sourceName;
+        }
+
+        private static IEnumerable<PropertyInfo> GetCachedPropertyInfo(Type objectType, BindingOptions bindingOptions, Func<PropertyInfo, bool> predicate)
+        {
+            return ReflectionCache
+                .GetPropertyInfo(objectType, bindingOptions, false, key =>
+                {
+                    var (type, binding, declaredOnly) = (GenericCacheKey<Type, BindingOptions, bool>) key;
+
+                    return type
+                        .GetPropertyInfo(binding, declaredOnly)
+                        .Where(predicate)
+                        .AsReadOnlyCollection();
+                });
         }
     }
 }

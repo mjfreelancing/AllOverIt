@@ -24,7 +24,7 @@ namespace DtoMapping
                 Prop5a = 20,
                 Prop7 = null
             };
-            
+
             StaticCreateTargetUsingBindingOnOptions(source, serializer);
             Console.WriteLine();
 
