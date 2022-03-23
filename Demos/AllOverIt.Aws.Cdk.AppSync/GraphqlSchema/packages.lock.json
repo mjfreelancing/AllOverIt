@@ -668,12 +668,18 @@
         "contentHash": "/iUeP3tq1S0XdNNoMz5C9twLSrM/TH+qElHkXWaPvuNOt+99G75NrV0OS2EqHx5wMN7popYjpc8oTjC1y16DLg=="
       },
       "alloverit": {
+        "type": "Project",
+        "dependencies": {
+          "AllOverIt.Assertion": "1.0.0"
+        }
+      },
+      "alloverit.assertion": {
         "type": "Project"
       },
       "alloverit.aws.cdk.appsync": {
         "type": "Project",
         "dependencies": {
-          "AllOverIt": "2.10.0",
+          "AllOverIt": "3.0.0",
           "Amazon.CDK.AWS.AppSync": "1.146.0"
         }
       }

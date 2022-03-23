@@ -49,6 +49,9 @@ AllOverIt.Csv v3.0.0
 AllOverIt.Reactive v1.0.0
   * New package, adding an event bus and observable extensions
 
+AllOverIt.Assertion v1.0.0
+  * New package, moved code out of AllOverIt
+
 
 10 Feb 2022
 ======================================================================================================================

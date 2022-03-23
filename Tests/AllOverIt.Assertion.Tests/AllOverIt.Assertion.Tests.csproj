@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -20,9 +20,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\Source\AllOverIt.Fixture.FakeItEasy\AllOverIt.Fixture.FakeItEasy.csproj" />
+        <ProjectReference Include="..\..\Source\AllOverIt.Assertion\AllOverIt.Assertion.csproj" />
         <ProjectReference Include="..\..\Source\AllOverIt.Fixture\AllOverIt.Fixture.csproj" />
-        <ProjectReference Include="..\..\Source\AllOverIt.Reactive\AllOverIt.Reactive.csproj" />
     </ItemGroup>
 
 </Project>
