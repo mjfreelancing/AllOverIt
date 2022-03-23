@@ -9,7 +9,7 @@ namespace AllOverIt.Reflection
 {
     public static class ReflectionCache
     {
-        public static IEnumerable<PropertyInfo> GetPropertyInfo(Type type, BindingOptions bindingOptions, bool declaredOnly,
+        public static IEnumerable<PropertyInfo> GetPropertyInfo(Type type, BindingOptions bindingOptions, bool declaredOnly = false,
             Func<GenericCacheKeyBase, IEnumerable<PropertyInfo>> valueResolver = default)
         {
             valueResolver ??= key =>
@@ -24,7 +24,7 @@ namespace AllOverIt.Reflection
             return GenericCache.Default.GetPropertyInfo(type, bindingOptions, declaredOnly, valueResolver);
         }
 
-        public static IEnumerable<PropertyInfo> GetPropertyInfo(TypeInfo typeInfo, bool declaredOnly,
+        public static IEnumerable<PropertyInfo> GetPropertyInfo(TypeInfo typeInfo, bool declaredOnly = false,
             Func<GenericCacheKeyBase, IEnumerable<PropertyInfo>> valueResolver = default)
         {
             valueResolver ??= key =>
