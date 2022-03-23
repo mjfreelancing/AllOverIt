@@ -24,7 +24,8 @@ namespace AllOverIt.Reflection
             return GenericCache.Default.GetPropertyInfo(type, bindingOptions, declaredOnly, valueResolver);
         }
 
-        public static IEnumerable<PropertyInfo> GetPropertyInfo(TypeInfo typeInfo, bool declaredOnly, Func<GenericCacheKeyBase, IEnumerable<PropertyInfo>> valueResolver)
+        public static IEnumerable<PropertyInfo> GetPropertyInfo(TypeInfo typeInfo, bool declaredOnly,
+            Func<GenericCacheKeyBase, IEnumerable<PropertyInfo>> valueResolver = default)
         {
             valueResolver ??= key =>
             {
@@ -38,7 +39,8 @@ namespace AllOverIt.Reflection
             return GenericCache.Default.GetPropertyInfo(typeInfo, declaredOnly, valueResolver);
         }
 
-        public static PropertyInfo GetPropertyInfo(TypeInfo typeInfo, string propertyName, Func<GenericCacheKeyBase, PropertyInfo> valueResolver)
+        public static PropertyInfo GetPropertyInfo(TypeInfo typeInfo, string propertyName,
+            Func<GenericCacheKeyBase, PropertyInfo> valueResolver = default)
         {
             valueResolver ??= key =>
             {
