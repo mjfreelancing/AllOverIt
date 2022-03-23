@@ -15,13 +15,13 @@ namespace StringStreamDemo
             // Write the remaining content using the underlying writer
             var writer = stream.GetWriter();
 
-            writer.WriteLine();
+            await writer.WriteLineAsync();
 
-            writer.Write("Bool=");
+            await writer.WriteAsync("Bool=");
             writer.Write(true);
-            writer.WriteLine();
+            await writer.WriteLineAsync();
 
-            writer.WriteLine("Value=100");
+            await writer.WriteLineAsync("Value=100");
 
             var sb = new StringBuilder();
             sb.Append(1);
@@ -31,6 +31,7 @@ namespace StringStreamDemo
             await writer.WriteLineAsync(sb);
 
             var output = stream.ToString();
+
             Console.WriteLine("Streamed:");
             Console.WriteLine($"{output}");
             Console.WriteLine();
