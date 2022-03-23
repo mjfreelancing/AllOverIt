@@ -12,6 +12,7 @@ AllOverIt v3.0.0
   * Added FindMatches() to find elements in one collection that have keys matching elements in another collection.
   * Added additional GetPropertyValue() and SetPropertyValue() overloads on EnumerableExtensions that accept a Type.
   * Added TextStreamer to support writing character data to an internal memory stream.
+  * Added a GenericCache and ReflectionCache
 
 AllOverIt.Validation v3.0.0
   * Updated to AllOverIt v3.0.0
