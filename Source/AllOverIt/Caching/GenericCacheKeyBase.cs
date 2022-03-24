@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AllOverIt.Cache
+namespace AllOverIt.Caching
 {
     public abstract class GenericCacheKeyBase
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using AllOverIt.Cache;
+using AllOverIt.Caching;
 using AllOverIt.Extensions;
 using AllOverIt.Reflection.Extensions;
 
