@@ -1,4 +1,6 @@
-﻿namespace AllOverIt.Caching
+﻿using AllOverIt.Helpers;
+
+namespace AllOverIt.Caching
 {
     public class GenericCacheKey<TKey1> : GenericCacheKeyBase
     {

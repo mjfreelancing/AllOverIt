@@ -23,7 +23,7 @@ namespace AllOverIt.Caching
                     return false;
                 }
 
-                return x.KeyType == y.KeyType && x.Key.Equals(y.Key);
+                return x.Key.GetType() == y.Key.GetType() && x.Key.Equals(y.Key);
             }
 
             public int GetHashCode(GenericCacheKeyBase obj)
@@ -77,6 +77,12 @@ namespace AllOverIt.Caching
         public bool TryAdd<TValue>(GenericCacheKeyBase key, TValue value)
         {
             return _cache.TryAdd(key, value);
+        }
+
+        /// <inheritdoc />
+        public bool TryGetValue(GenericCacheKeyBase key, out object value)
+        {
+            return _cache.TryGetValue(key, out value);
         }
 
         /// <inheritdoc />

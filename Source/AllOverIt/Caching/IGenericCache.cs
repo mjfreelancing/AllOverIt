@@ -6,6 +6,17 @@ namespace AllOverIt.Caching
     /// <summary>Represents a generic cache for storing any object type based on a custom key.</summary>
     public interface IGenericCache : IDictionary<GenericCacheKeyBase, object>, IReadOnlyDictionary<GenericCacheKeyBase, object>
     {
+        #region Required to avoid ambiguity between IDictionary and IReadOnlyDictionary
+
+        int Count { get; }
+        ICollection<GenericCacheKeyBase> Keys { get; }
+        ICollection<object> Values { get; }
+        bool ContainsKey(GenericCacheKeyBase key);
+        bool TryGetValue(GenericCacheKeyBase key, out object value);
+        object this[GenericCacheKeyBase key] { get; }
+
+        #endregion
+
         void Add<TValue>(GenericCacheKeyBase key, TValue value);
 
         bool TryAdd<TValue>(GenericCacheKeyBase key, TValue value);
