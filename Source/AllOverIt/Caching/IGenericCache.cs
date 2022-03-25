@@ -4,25 +4,13 @@ using System.Collections.Generic;
 namespace AllOverIt.Caching
 {
     /// <summary>Represents a generic cache for storing any object type based on a custom key.</summary>
-    public interface IGenericCache : IEnumerable<KeyValuePair<GenericCacheKeyBase, object>>
+    public interface IGenericCache : IDictionary<GenericCacheKeyBase, object>, IReadOnlyDictionary<GenericCacheKeyBase, object>
     {
-#if NET6_0_OR_GREATER
-        IEqualityComparer<GenericCacheKeyBase> Comparer { get; }
-#endif
-
-        int Count { get; }
-
-        bool IsEmpty { get; }
-
-        ICollection<GenericCacheKeyBase> Keys { get; }
-
-        ICollection<object> Values { get; }
-
-        object this[GenericCacheKeyBase key] { get; }
+        void Add<TValue>(GenericCacheKeyBase key, TValue value);
 
         bool TryAdd<TValue>(GenericCacheKeyBase key, TValue value);
 
-        bool ContainsKey(GenericCacheKeyBase key);
+        bool TryGetValue<TValue>(GenericCacheKeyBase key, out TValue value);
 
         bool TryRemove<TValue>(GenericCacheKeyBase key, out TValue value);
 
@@ -30,11 +18,7 @@ namespace AllOverIt.Caching
         bool TryRemove<TValue>(KeyValuePair<GenericCacheKeyBase, TValue> item);
 #endif
 
-        bool TryGetValue<TValue>(GenericCacheKeyBase key, out TValue value);
-
         bool TryUpdate<TValue>(GenericCacheKeyBase key, TValue newValue, TValue comparisonValue);
-
-        void Clear();
 
         KeyValuePair<GenericCacheKeyBase, object>[] ToArray();
 
@@ -45,20 +29,12 @@ namespace AllOverIt.Caching
         /// <returns>The existing value of a key if it exists, otherwise a newly added value.</returns>
         TValue GetOrAdd<TValue>(GenericCacheKeyBase key, Func<GenericCacheKeyBase, TValue> resolver);
 
+        TValue GetOrAdd<TValue>(GenericCacheKeyBase key, TValue value);
+
 #if !NETSTANDARD2_0
         TValue GetOrAdd<TArg, TValue>(
             GenericCacheKeyBase key,
             Func<GenericCacheKeyBase, TArg, TValue> resolver,
-            TArg resolverArgument);
-#endif
-
-        TValue GetOrAdd<TValue>(GenericCacheKeyBase key, TValue value);
-
-#if !NETSTANDARD2_0
-        TValue AddOrUpdate<TArg, TValue>(
-            GenericCacheKeyBase key,
-            Func<GenericCacheKeyBase, TArg, TValue> addResolver,
-            Func<GenericCacheKeyBase, TValue, TArg, TValue> updateResolver,
             TArg resolverArgument);
 #endif
 
@@ -71,5 +47,13 @@ namespace AllOverIt.Caching
             GenericCacheKeyBase key,
             TValue addValue,
             Func<GenericCacheKeyBase, TValue, TValue> updateResolver);
+
+#if !NETSTANDARD2_0
+        TValue AddOrUpdate<TArg, TValue>(
+            GenericCacheKeyBase key,
+            Func<GenericCacheKeyBase, TArg, TValue> addResolver,
+            Func<GenericCacheKeyBase, TValue, TArg, TValue> updateResolver,
+            TArg resolverArgument);
+#endif
     }
 }
