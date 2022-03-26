@@ -136,6 +136,8 @@ namespace AllOverIt.Caching
         /// <inheritdoc />
         public bool TryUpdate<TValue>(GenericCacheKeyBase key, TValue newValue, TValue comparisonValue)
         {
+            _ = key.WhenNotNull(nameof(key));
+
             return _cache.TryUpdate(key, newValue, comparisonValue);
         }
 
@@ -148,12 +150,16 @@ namespace AllOverIt.Caching
         /// <inheritdoc />
         public TValue GetOrAdd<TValue>(GenericCacheKeyBase key, Func<GenericCacheKeyBase, TValue> resolver)
         {
+            _ = key.WhenNotNull(nameof(key));
+
             return (TValue) _cache.GetOrAdd(key, valueKey => resolver.Invoke(valueKey));
         }
 
         /// <inheritdoc />
         public TValue GetOrAdd<TValue>(GenericCacheKeyBase key, TValue value)
         {
+            _ = key.WhenNotNull(nameof(key));
+
             return (TValue) _cache.GetOrAdd(key, value);
         }
 
