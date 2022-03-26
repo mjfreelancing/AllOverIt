@@ -263,7 +263,7 @@ namespace AllOverIt.Tests.Assertion
                 Invoking(
                     () =>
                     {
-                        // never do this - the Enumerable will be re-evaluated
+                        // never do this - the Enumerable will be re-evaluated (prior to .NET 5)
                         // see the count below
                         Guard.WhenNotNullOrEmpty(range, false, nameof(range));
                     })
@@ -272,10 +272,15 @@ namespace AllOverIt.Tests.Assertion
 
                 _ = range.ToList();
 
+#if NET5_0_OR_GREATER
+                // Any() in .NET 5 and above avoids enumeration
+                count.Should().Be(2);
+#else
                 // This is why the check argument should never be false
                 // The Select() call has been called 3 times, instead of 2
                 // It only exists for backward compatibility
                 count.Should().Be(3);
+#endif
             }
 
             [Fact]
@@ -493,7 +498,7 @@ namespace AllOverIt.Tests.Assertion
                 Invoking(
                     () =>
                     {
-                        // never do this - the Enumerable will be re-evaluated
+                        // never do this - the Enumerable will be re-evaluated (prior to .NET 5)
                         // see the count below
                         Guard.WhenNotEmpty(range, false, nameof(range));
                     })
@@ -502,10 +507,15 @@ namespace AllOverIt.Tests.Assertion
 
                 _ = range.ToList();
 
+#if NET5_0_OR_GREATER
+                // Any() in .NET 5 and above avoids enumeration
+                count.Should().Be(2);
+#else
                 // This is why the check argument should never be false
                 // The Select() call has been called 3 times, instead of 2
                 // It only exists for backward compatibility
                 count.Should().Be(3);
+#endif
             }
 
             [Fact]

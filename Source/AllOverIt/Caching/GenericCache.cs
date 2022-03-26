@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using AllOverIt.Assertion;
 
 namespace AllOverIt.Caching
 {
@@ -55,6 +56,8 @@ namespace AllOverIt.Caching
 
         public bool ContainsKey(GenericCacheKeyBase key)
         {
+            _ = key.WhenNotNull(nameof(key));
+
             return _cache.ContainsKey(key);
         }
 
@@ -65,29 +68,32 @@ namespace AllOverIt.Caching
 
         public void Add<TValue>(GenericCacheKeyBase key, TValue value)
         {
-            ((IDictionary<GenericCacheKeyBase, object>) _cache).Add(key, value);
-        }
+            _ = key.WhenNotNull(nameof(key));
 
-        public bool Remove(KeyValuePair<GenericCacheKeyBase, object> item)
-        {
-            return ((IDictionary<GenericCacheKeyBase, object>) _cache).Remove(item);
+            ((IDictionary<GenericCacheKeyBase, object>) _cache).Add(key, value);
         }
 
         /// <inheritdoc />
         public bool TryAdd<TValue>(GenericCacheKeyBase key, TValue value)
         {
+            _ = key.WhenNotNull(nameof(key));
+
             return _cache.TryAdd(key, value);
         }
 
         /// <inheritdoc />
         public bool TryGetValue(GenericCacheKeyBase key, out object value)
         {
+            _ = key.WhenNotNull(nameof(key));
+
             return _cache.TryGetValue(key, out value);
         }
 
         /// <inheritdoc />
         public bool TryGetValue<TValue>(GenericCacheKeyBase key, out TValue value)
         {
+            _ = key.WhenNotNull(nameof(key));
+
             var success = _cache.TryGetValue(key, out var keyValue);
 
             value = success
@@ -97,9 +103,16 @@ namespace AllOverIt.Caching
             return success;
         }
 
+        public bool Remove(KeyValuePair<GenericCacheKeyBase, object> item)
+        {
+            return ((IDictionary<GenericCacheKeyBase, object>) _cache).Remove(item);
+        }
+
         /// <inheritdoc />
         public bool TryRemove<TValue>(GenericCacheKeyBase key, out TValue value)
         {
+            _ = key.WhenNotNull(nameof(key));
+
             var success = _cache.TryRemove(key, out var keyValue);
 
             value = success

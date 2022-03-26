@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -178,7 +179,12 @@ namespace AllOverIt.Assertion
 #endif
             string errorMessage = default)
         {
+#if NET5_0_OR_GREATER
+            // .NET 5 and above implement Any() so it avoids enumeration - passing false for 'ensureIsCollection' as the check is not required
+            return WhenNotNullOrEmpty(@object, false, name, errorMessage);
+#else
             return WhenNotNullOrEmpty(@object, true, name, errorMessage);
+#endif
         }
 
         /// <summary>Checks that the provided collection is not null and not empty.</summary>
@@ -219,7 +225,12 @@ namespace AllOverIt.Assertion
 #endif
             string errorMessage = default)
         {
+#if NET5_0_OR_GREATER
+            // .NET 5 and above implement Any() so it avoids enumeration - passing false for 'ensureIsCollection' as the check is not required
+            return WhenNotEmpty<TType>(@object, false, name, errorMessage);
+#else
             return WhenNotEmpty<TType>(@object, true, name, errorMessage);
+#endif
         }
 
         /// <summary>Checks that the provided collection is not empty.</summary>
@@ -303,6 +314,6 @@ namespace AllOverIt.Assertion
             throw new ArgumentException(errorMessage ?? "The argument cannot be empty", name);
         }
 
-        #endregion
+#endregion
     }
 }

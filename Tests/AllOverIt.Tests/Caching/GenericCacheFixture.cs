@@ -5,6 +5,7 @@ using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using FluentAssertions;
 using System.Linq;
+using AllOverIt.Fixture.Extensions;
 using Xunit;
 
 namespace AllOverIt.Tests.Caching
@@ -135,6 +136,18 @@ namespace AllOverIt.Tests.Caching
         public class ContainsKey : GenericCacheFixture
         {
             [Fact]
+            public void Should_Throw_When_Key_Null()
+            {
+                Invoking(() =>
+                    {
+                        _ = _cache.ContainsKey(null);
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("key");
+            }
+
+            [Fact]
             public void Should_Find_Key()
             {
                 var index = GetWithinRange(1, 99);
@@ -183,9 +196,267 @@ namespace AllOverIt.Tests.Caching
 
         public class Add_TValue : GenericCacheFixture
         {
+            [Fact]
+            public void Should_Throw_When_Key_Null()
+            {
+                Invoking(() =>
+                    {
+                        _cache.Add(null, Create<string>());
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("key");
+            }
 
+            [Fact]
+            public void Should_Add_Key_Value()
+            {
+                var key = new KeyType1(Create<int>(), Create<string>());
+                var value = CreateMany<string>();
+
+                _cache.Add(key, value);
+
+                _ = _cache.TryGetValue<IReadOnlyCollection<string>>(key, out var actual);
+
+                value.Should().BeEquivalentTo(actual);
+            }
+
+            [Fact]
+            public void Should_Throw_When_Key_Exists()
+            {
+                var key = new KeyType1(Create<int>(), Create<string>());
+
+                _cache.Add(key, CreateMany<string>());
+
+                Invoking(() =>
+                    {
+                        _cache.Add(key, CreateMany<string>());
+                    })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithMessage("The key already existed in the dictionary.");
+            }
         }
 
+        public class TryAdd_TValue : GenericCacheFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Key_Null()
+            {
+                Invoking(() =>
+                    {
+                        _ = _cache.TryAdd(null, Create<string>());
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("key");
+            }
+
+            [Fact]
+            public void Should_Add_Key_Value()
+            {
+                var key = new KeyType1(Create<int>(), Create<string>());
+                var value = CreateMany<string>();
+
+                var success = _cache.TryAdd(key, value);
+
+                success.Should().BeTrue();
+
+                _ = _cache.TryGetValue<IReadOnlyCollection<string>>(key, out var actual);
+
+                value.Should().BeEquivalentTo(actual);
+            }
+
+            [Fact]
+            public void Should_Fail_To_Add_When_Key_Exists()
+            {
+                var key = new KeyType1(Create<int>(), Create<string>());
+
+                _cache.Add(key, CreateMany<string>());
+
+                var success = _cache.TryAdd(key, CreateMany<string>());
+
+                success.Should().BeFalse();
+            }
+        }
+
+        public class TryGetValue_Object : GenericCacheFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Key_Null()
+            {
+                Invoking(() =>
+                    {
+                        _ = _cache.TryGetValue(null, out var _);
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("key");
+            }
+
+            [Fact]
+            public void Should_Get_Value()
+            {
+                var key = new KeyType1(Create<int>(), Create<string>());
+                var value = CreateMany<string>();
+
+                _cache[key] = value;
+
+                var success = _cache.TryGetValue(key, out var actual);
+
+                success.Should().BeTrue();
+
+                value.Should().BeEquivalentTo((IReadOnlyCollection<string>)actual);
+            }
+
+            [Fact]
+            public void Should_Fail_To_Get_When_Key_Does_Not_Exist()
+            {
+                var key = new KeyType1(Create<int>(), Create<string>());
+
+                var success = _cache.TryGetValue(key, out var _);
+
+                success.Should().BeFalse();
+            }
+        }
+
+        public class TryGetValue_TValue : GenericCacheFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Key_Null()
+            {
+                Invoking(() =>
+                    {
+                        _ = _cache.TryGetValue<string>(null, out var _);
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("key");
+            }
+
+            [Fact]
+            public void Should_Get_Value()
+            {
+                var key = new KeyType1(Create<int>(), Create<string>());
+                var value = CreateMany<string>();
+
+                _cache[key] = value;
+
+                var success = _cache.TryGetValue<IReadOnlyCollection<string>>(key, out var actual);
+
+                success.Should().BeTrue();
+
+                value.Should().BeEquivalentTo(actual);
+            }
+
+            [Fact]
+            public void Should_Fail_To_Get_When_Key_Does_Not_Exist()
+            {
+                var key = new KeyType1(Create<int>(), Create<string>());
+
+                var success = _cache.TryGetValue<IReadOnlyCollection<string>>(key, out var _);
+
+                success.Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Return_Default_Value_When_Key_Does_Not_Exist()
+            {
+                var key = new KeyType1(Create<int>(), Create<string>());
+
+                _ = _cache.TryGetValue<double>(key, out var actual1);
+                actual1.Should().Be(default);
+
+                _ = _cache.TryGetValue<string>(key, out var actual2);
+                actual2.Should().Be(default);
+            }
+        }
+
+        public class Remove : GenericCacheFixture
+        {
+            [Fact]
+            public void Should_Remove_From_Cache()
+            {
+                var key = new KeyType1(Create<int>(), Create<string>());
+                var value = CreateMany<string>();
+
+                _cache[key] = value;
+
+                // Confirm the key is in the cache
+                value.Should().BeEquivalentTo((IReadOnlyCollection<string>) _cache[key]);
+
+                var success = _cache.Remove(new KeyValuePair<GenericCacheKeyBase, object>(key, value));
+
+                success.Should().BeTrue();
+
+                _cache.TryGetValue(key, out var _).Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Not_Remove_From_Cache_When_Key_Does_Not_Exist()
+            {
+                var key = new KeyType1(Create<int>(), Create<string>());
+
+                var actual = _cache.Remove(new KeyValuePair<GenericCacheKeyBase, object>(key, Create<string>()));
+
+                actual.Should().BeFalse();
+            }
+        }
+
+        public class TryRemove_TValue : GenericCacheFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Key_Null()
+            {
+                Invoking(() =>
+                    {
+                        _ = _cache.TryRemove<string>(null, out var _);
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("key");
+            }
+
+            [Fact]
+            public void Should_Remove_From_Cache()
+            {
+                var key = new KeyType1(Create<int>(), Create<string>());
+                var value = CreateMany<string>();
+
+                _cache[key] = value;
+
+                // Confirm the key is in the cache
+                value.Should().BeEquivalentTo((IReadOnlyCollection<string>) _cache[key]);
+
+                var success = _cache.TryRemove<IReadOnlyCollection<string>>(key, out var actual);
+
+                success.Should().BeTrue();
+
+                value.Should().BeEquivalentTo(actual);
+            }
+
+            [Fact]
+            public void Should_Not_Remove_From_Cache_When_Key_Does_Not_Exist()
+            {
+                var key = new KeyType1(Create<int>(), Create<string>());
+
+                var actual = _cache.TryRemove<string>(key, out var _);
+
+                actual.Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Return_Default_Value_When_Key_Does_Not_Exist()
+            {
+                var key = new KeyType1(Create<int>(), Create<string>());
+
+                _ = _cache.TryRemove<double>(key, out var actual1);
+                actual1.Should().Be(default);
+
+                _ = _cache.TryRemove<string>(key, out var actual2);
+                actual2.Should().Be(default);
+            }
+        }
 
 
 
