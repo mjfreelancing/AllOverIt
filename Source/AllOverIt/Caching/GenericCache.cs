@@ -148,11 +148,12 @@ namespace AllOverIt.Caching
         }
 
         /// <inheritdoc />
-        public TValue GetOrAdd<TValue>(GenericCacheKeyBase key, Func<GenericCacheKeyBase, TValue> resolver)
+        public TValue GetOrAdd<TValue>(GenericCacheKeyBase key, Func<GenericCacheKeyBase, TValue> addResolver)
         {
             _ = key.WhenNotNull(nameof(key));
+            _ = addResolver.WhenNotNull(nameof(addResolver));
 
-            return (TValue) _cache.GetOrAdd(key, valueKey => resolver.Invoke(valueKey));
+            return (TValue) _cache.GetOrAdd(key, valueKey => addResolver.Invoke(valueKey));
         }
 
         /// <inheritdoc />
@@ -163,12 +164,35 @@ namespace AllOverIt.Caching
             return (TValue) _cache.GetOrAdd(key, value);
         }
 
+#if !NETSTANDARD2_0
+        /// <inheritdoc />
+        public TValue GetOrAdd<TArg, TValue>(
+            GenericCacheKeyBase key,
+            Func<GenericCacheKeyBase, TArg, TValue> addResolver,
+            TArg resolverArgument)
+        {
+            _ = key.WhenNotNull(nameof(key));
+            _ = addResolver.WhenNotNull(nameof(addResolver));
+
+            Func<GenericCacheKeyBase, TArg, object> objectResolver = (valueKey, arg) => addResolver.Invoke(valueKey, arg);
+
+            return (TValue) _cache.GetOrAdd(
+                key,
+                objectResolver,
+                resolverArgument);
+        }
+#endif
+
         /// <inheritdoc />
         public TValue AddOrUpdate<TValue>(
             GenericCacheKeyBase key,
             Func<GenericCacheKeyBase, TValue> addResolver,
             Func<GenericCacheKeyBase, TValue, TValue> updateResolver)
         {
+            _ = key.WhenNotNull(nameof(key));
+            _ = addResolver.WhenNotNull(nameof(addResolver));
+            _ = updateResolver.WhenNotNull(nameof(updateResolver));
+
             Func<GenericCacheKeyBase, object> objectAddResolver = valueKey => addResolver.Invoke(valueKey);
             Func<GenericCacheKeyBase, object, object> objectUpdateResolver = (valueKey, value) => updateResolver.Invoke(valueKey, (TValue) value);
 
@@ -184,6 +208,9 @@ namespace AllOverIt.Caching
             TValue addValue,
             Func<GenericCacheKeyBase, TValue, TValue> updateResolver)
         {
+            _ = key.WhenNotNull(nameof(key));
+            _ = updateResolver.WhenNotNull(nameof(updateResolver));
+
             Func<GenericCacheKeyBase, object, object> objectUpdateResolver = (valueKey, value) => updateResolver.Invoke(valueKey, (TValue) value);
 
             return (TValue) _cache.AddOrUpdate(
@@ -194,26 +221,16 @@ namespace AllOverIt.Caching
 
 #if !NETSTANDARD2_0
         /// <inheritdoc />
-        public TValue GetOrAdd<TArg, TValue>(
-            GenericCacheKeyBase key,
-            Func<GenericCacheKeyBase, TArg, TValue> resolver,
-            TArg resolverArgument)
-        {
-            Func<GenericCacheKeyBase, TArg, object> objectResolver = (valueKey, arg) => resolver.Invoke(valueKey, arg);
-
-            return (TValue) _cache.GetOrAdd(
-                key,
-                objectResolver,
-                resolverArgument);
-        }
-
-        /// <inheritdoc />
         public TValue AddOrUpdate<TArg, TValue>(
             GenericCacheKeyBase key,
             Func<GenericCacheKeyBase, TArg, TValue> addResolver,
             Func<GenericCacheKeyBase, TValue, TArg, TValue> updateResolver,
             TArg resolverArgument)
         {
+            _ = key.WhenNotNull(nameof(key));
+            _ = addResolver.WhenNotNull(nameof(addResolver));
+            _ = updateResolver.WhenNotNull(nameof(updateResolver));
+
             Func<GenericCacheKeyBase, TArg, object> objectAddResolver = (valueKey, arg) => addResolver.Invoke(valueKey, arg);
             Func<GenericCacheKeyBase, object, TArg, object> objectUpdateResolver = (valueKey, value, arg) => updateResolver.Invoke(valueKey, (TValue) value, arg);
 

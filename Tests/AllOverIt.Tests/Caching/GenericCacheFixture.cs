@@ -591,6 +591,19 @@ namespace AllOverIt.Tests.Caching
             }
 
             [Fact]
+            public void Should_Throw_When_Resolver_Null()
+            {
+                Invoking(() =>
+                    {
+                        var key = new KeyType1(Create<int>(), Create<string>());
+                        _ = _cache.GetOrAdd(key, (Func<GenericCacheKeyBase, string>)null);
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("addResolver");
+            }
+
+            [Fact]
             public void Should_Provide_Key_When_Key_Not_Present()
             {
                 var key = new KeyType1(Create<int>(), Create<string>());
@@ -677,10 +690,339 @@ namespace AllOverIt.Tests.Caching
             }
         }
 
+
+
+
+
+        public class GetOrAdd_Arg_Resolver : GenericCacheFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Key_Null()
+            {
+                Invoking(() =>
+                    {
+                        _ = _cache.GetOrAdd(null, (_, _) => Create<string>(), Create<double>());
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("key");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Resolver_Null()
+            {
+                Invoking(() =>
+                    {
+                        var key = new KeyType1(Create<int>(), Create<string>());
+                        _ = _cache.GetOrAdd(key, (Func<GenericCacheKeyBase, double, string>) null, Create<double>());
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("addResolver");
+            }
+
+            [Fact]
+            public void Should_Add_When_Key_Not_Present()
+            {
+                var key = new KeyType1(Create<int>(), Create<string>());
+                var expected = Create<double>();
+
+                _cache.ContainsKey(key).Should().BeFalse();
+
+                var actual = _cache.GetOrAdd(key, (addKey, arg) => expected, Create<int>());
+
+                expected.Should().Be(actual);
+            }
+
+            [Fact]
+            public void Should_Provide_AddKey()
+            {
+                var key = new KeyType1(Create<int>(), Create<string>());
+                GenericCacheKeyBase actualAddKey = null;
+
+                _cache.ContainsKey(key).Should().BeFalse();
+
+                _ = _cache.GetOrAdd(key, (addKey, arg) =>
+                {
+                    actualAddKey = addKey;
+                    return Create<double>();
+                }, Create<int>());
+
+                key.Should().Be(actualAddKey);
+            }
+
+            [Fact]
+            public void Should_Get_Current_Value_When_Key_Present()
+            {
+                var key = new KeyType1(Create<int>(), Create<string>());
+                var expected = Create<double>();
+
+                _cache[key] = expected;
+
+                _cache.ContainsKey(key).Should().BeTrue();
+
+                var actual = _cache.GetOrAdd(key, (addKey, arg) => Create<double>(), Create<double>());
+
+                expected.Should().Be(actual);
+            }
+
+            [Fact]
+            public void Should_Provider_Arg_When_Adding()
+            {
+                var key = new KeyType1(Create<int>(), Create<string>());
+                var argValue = Create<int>();
+                var actualArgValue = 0;
+
+                _cache.ContainsKey(key).Should().BeFalse();
+
+                _ = _cache.GetOrAdd(key, (addKey, arg) =>
+                {
+                    actualArgValue = arg;
+                    return Create<double>();
+                }, argValue);
+
+                argValue.Should().Be(actualArgValue);
+            }
+        }
+
         public class AddOrUpdate_AddResolver_Update_Resolver : GenericCacheFixture
         {
+            [Fact]
+            public void Should_Throw_When_Key_Null()
+            {
+                Invoking(() =>
+                    {
+                        _ = _cache.AddOrUpdate(null, _ => Create<string>(), (_, _) => Create<string>());
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("key");
+            }
 
+            [Fact]
+            public void Should_Throw_When_AddResolver_Null()
+            {
+                Invoking(() =>
+                    {
+                        var key = new KeyType1(Create<int>(), Create<string>());
+                        _ = _cache.AddOrUpdate(key, (Func<GenericCacheKeyBase, string>) null, (_, _) => Create<string>());
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("addResolver");
+            }
+
+            [Fact]
+            public void Should_Throw_When_UpdateResolver_Null()
+            {
+                Invoking(() =>
+                    {
+                        var key = new KeyType1(Create<int>(), Create<string>());
+                        _ = _cache.AddOrUpdate(key, _ => Create<string>(), (Func<GenericCacheKeyBase, string, string>) null);
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("updateResolver");
+            }
+
+            [Fact]
+            public void Should_Add_When_Key_Not_Present()
+            {
+                var key = new KeyType1(Create<int>(), Create<string>());
+                var expected = Create<double>();
+
+                _cache.ContainsKey(key).Should().BeFalse();
+
+                var actual = _cache.AddOrUpdate(key, addKey => expected, (updateKey, value) => Create<double>());
+
+                expected.Should().Be(actual);
+            }
+
+            [Fact]
+            public void Should_Provide_AddKey()
+            {
+                var key = new KeyType1(Create<int>(), Create<string>());
+                GenericCacheKeyBase actualAddKey = null; 
+
+                _cache.ContainsKey(key).Should().BeFalse();
+
+                _ = _cache.AddOrUpdate(key, addKey =>
+                    {
+                        actualAddKey = addKey;
+                        return Create<double>();
+                    },
+                    (updateKey, value) => Create<double>());
+
+                key.Should().Be(actualAddKey);
+            }
+
+            [Fact]
+            public void Should_Update_When_Key_Present()
+            {
+                var key = new KeyType1(Create<int>(), Create<string>());
+                var value = Create<double>();
+                var factor = GetWithinRange(2, 5);
+                var expected = value * factor;
+
+                _cache[key] = value;
+
+                _cache.ContainsKey(key).Should().BeTrue();
+
+                var actual = _cache.AddOrUpdate(key, addKey => value, (updateKey, currentValue) => currentValue * factor);
+
+                actual.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Provide_UpdateKey()
+            {
+                var key = new KeyType1(Create<int>(), Create<string>());
+                GenericCacheKeyBase actualUpdateKey = null;
+
+                _cache[key] = Create<double>();
+
+                _cache.ContainsKey(key).Should().BeTrue();
+
+                var actual = _cache.AddOrUpdate(key,
+                    addKey => Create<double>(),
+                    (updateKey, currentValue) =>
+                    {
+                        actualUpdateKey = updateKey;
+                        return Create<double>();
+                    });
+
+                key.Should().Be(actualUpdateKey);
+            }
+
+            [Fact]
+            public void Should_Provide_Current_Value_When_Updating()
+            {
+                var key = new KeyType1(Create<int>(), Create<string>());
+                var value = Create<double>();
+                var actualCurrentValue = value;
+
+                _cache[key] = value;
+
+                _cache.ContainsKey(key).Should().BeTrue();
+
+                var actual = _cache.AddOrUpdate(key,
+                    addKey => Create<double>(),
+                    (updateKey, currentValue) =>
+                    {
+                        actualCurrentValue = currentValue;
+                        return Create<double>();
+                    });
+
+                value.Should().Be(actualCurrentValue);
+            }
         }
+
+        public class AddOrUpdate_AddValue_Update_Resolver : GenericCacheFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Key_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = _cache.AddOrUpdate(null, Create<string>(), (_, _) => Create<string>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("key");
+            }
+
+            [Fact]
+            public void Should_Throw_When_UpdateResolver_Null()
+            {
+                Invoking(() =>
+                {
+                    var key = new KeyType1(Create<int>(), Create<string>());
+                    _ = _cache.AddOrUpdate(key, Create<string>(), (Func<GenericCacheKeyBase, string, string>) null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("updateResolver");
+            }
+
+            [Fact]
+            public void Should_Add_When_Key_Not_Present()
+            {
+                var key = new KeyType1(Create<int>(), Create<string>());
+                var expected = Create<double>();
+
+                _cache.ContainsKey(key).Should().BeFalse();
+
+                var actual = _cache.AddOrUpdate(key, expected, (updateKey, value) => Create<double>());
+
+                expected.Should().Be(actual);
+            }
+
+            [Fact]
+            public void Should_Update_When_Key_Present()
+            {
+                var key = new KeyType1(Create<int>(), Create<string>());
+                var value = Create<double>();
+                var factor = GetWithinRange(2, 5);
+                var expected = value * factor;
+
+                _cache[key] = value;
+
+                _cache.ContainsKey(key).Should().BeTrue();
+
+                var actual = _cache.AddOrUpdate(key, value, (updateKey, currentValue) => currentValue * factor);
+
+                actual.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Provide_UpdateKey()
+            {
+                var key = new KeyType1(Create<int>(), Create<string>());
+                GenericCacheKeyBase actualUpdateKey = null;
+
+                _cache[key] = Create<double>();
+
+                _cache.ContainsKey(key).Should().BeTrue();
+
+                var actual = _cache.AddOrUpdate(key,
+                    Create<double>(),
+                    (updateKey, currentValue) =>
+                    {
+                        actualUpdateKey = updateKey;
+                        return Create<double>();
+                    });
+
+                key.Should().Be(actualUpdateKey);
+            }
+
+            [Fact]
+            public void Should_Provide_Current_Value_When_Updating()
+            {
+                var key = new KeyType1(Create<int>(), Create<string>());
+                var value = Create<double>();
+                var actualCurrentValue = value;
+
+                _cache[key] = value;
+
+                _cache.ContainsKey(key).Should().BeTrue();
+
+                var actual = _cache.AddOrUpdate(key,
+                    Create<double>(),
+                    (updateKey, currentValue) =>
+                    {
+                        actualCurrentValue = currentValue;
+                        return Create<double>();
+                    });
+
+                value.Should().Be(actualCurrentValue);
+            }
+        }
+
+        public class AddOrUpdate_Arg_AddResolver_Update_Resolver : GenericCacheFixture
+        {
+        }
+
+
 
 
 

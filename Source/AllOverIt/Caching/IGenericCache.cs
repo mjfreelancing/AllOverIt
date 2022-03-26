@@ -6,13 +6,18 @@ namespace AllOverIt.Caching
     /// <summary>Represents a generic cache for storing any object type based on a custom key.</summary>
     public interface IGenericCache : IDictionary<GenericCacheKeyBase, object>, IReadOnlyDictionary<GenericCacheKeyBase, object>
     {
-        #region Required to avoid ambiguity between IDictionary and IReadOnlyDictionary
+        #region Properties and methods required to avoid ambiguity between IDictionary and IReadOnlyDictionary
 
         int Count { get; }
+
         ICollection<GenericCacheKeyBase> Keys { get; }
+
         ICollection<object> Values { get; }
+
         bool ContainsKey(GenericCacheKeyBase key);
+
         bool TryGetValue(GenericCacheKeyBase key, out object value);
+
         object this[GenericCacheKeyBase key] { get; }
 
         #endregion
@@ -36,16 +41,16 @@ namespace AllOverIt.Caching
         /// <summary>Gets the existing value of a key if it exists, otherwise adds a new value based on a provided resolver.</summary>
         /// <typeparam name="TValue">The value type associated with the key.</typeparam>
         /// <param name="key">The custom key.</param>
-        /// <param name="resolver">The value factory for the provided key when the key does not exist.</param>
+        /// <param name="addResolver">The value factory for the provided key when the key does not exist.</param>
         /// <returns>The existing value of a key if it exists, otherwise a newly added value.</returns>
-        TValue GetOrAdd<TValue>(GenericCacheKeyBase key, Func<GenericCacheKeyBase, TValue> resolver);
+        TValue GetOrAdd<TValue>(GenericCacheKeyBase key, Func<GenericCacheKeyBase, TValue> addResolver);
 
         TValue GetOrAdd<TValue>(GenericCacheKeyBase key, TValue value);
 
 #if !NETSTANDARD2_0
         TValue GetOrAdd<TArg, TValue>(
             GenericCacheKeyBase key,
-            Func<GenericCacheKeyBase, TArg, TValue> resolver,
+            Func<GenericCacheKeyBase, TArg, TValue> addResolver,
             TArg resolverArgument);
 #endif
 
