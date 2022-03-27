@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using AllOverIt.Caching;
 using AllOverIt.Extensions;
@@ -1224,11 +1225,272 @@ namespace AllOverIt.Tests.Caching
             }
         }
 
+        public class Explicit : GenericCacheFixture
+        {
+            public class IsReadOnly : Explicit
+            {
+                [Fact]
+                public void Should_Be_False()
+                {
+                    ((ICollection<KeyValuePair<GenericCacheKeyBase, object>>)_cache).IsReadOnly.Should().BeFalse();
+                }
+            }
 
+            public class Keys : Explicit
+            {
+                [Fact]
+                public void Should_Return_Keys()
+                {
+                    var expected = _cache.Keys;
 
+                    expected.Should().BeEquivalentTo(((IReadOnlyDictionary<GenericCacheKeyBase, object>) _cache).Keys);
+                }
+            }
 
+            public class Values : Explicit
+            {
+                [Fact]
+                public void Should_Return_Values()
+                {
+                    var expected = _cache.Values;
 
+                    expected.Should().BeEquivalentTo(((IReadOnlyDictionary<GenericCacheKeyBase, object>) _cache).Values);
+                }
+            }
 
+            public class Add_KeyValuePair : Explicit
+            {
+                [Fact]
+                public void Should_Add_Key_Value()
+                {
+                    var key = new KeyType1(Create<int>(), Create<string>());
+                    var value = Create<string>();
+
+                    _cache.ContainsKey(key).Should().BeFalse();
+
+                    var kvp = new KeyValuePair<GenericCacheKeyBase, object>(key, value);
+
+                    ((ICollection<KeyValuePair<GenericCacheKeyBase, object>>) _cache).Add(kvp);
+
+                    _cache[key].Should().Be(value);
+                }
+            }
+
+            public class Add_Key : Explicit
+            {
+                [Fact]
+                public void Should_Throw_When_Key_Null()
+                {
+                    Invoking(() =>
+                        {
+                            ((IDictionary<GenericCacheKeyBase, object>) _cache).Add(null, Create<string>());
+                        })
+                        .Should()
+                        .Throw<ArgumentNullException>()
+                        .WithNamedMessageWhenNull("key");
+                }
+
+                [Fact]
+                public void Should_Add_Key_Value()
+                {
+                    var key = new KeyType1(Create<int>(), Create<string>());
+                    var value = Create<string>();
+
+                    _cache.ContainsKey(key).Should().BeFalse();
+
+                    ((IDictionary<GenericCacheKeyBase, object>) _cache).Add(key, value);
+
+                    _cache[key].Should().Be(value);
+                }
+            }
+
+            public class Contains : Explicit
+            {
+                [Fact]
+                public void Should_Not_Contain_Key()
+                {
+                    var key = new KeyType1(Create<int>(), Create<string>());
+                    var value = Create<string>();
+                    var kvp = new KeyValuePair<GenericCacheKeyBase, object>(key, value);
+
+                    var actual = ((ICollection<KeyValuePair<GenericCacheKeyBase, object>>) _cache).Contains(kvp);
+
+                    actual.Should().BeFalse();
+                }
+
+                [Fact]
+                public void Should_Contain_Key()
+                {
+                    var key = new KeyType1(Create<int>(), Create<string>());
+                    var value = Create<string>();
+                    var kvp = new KeyValuePair<GenericCacheKeyBase, object>(key, value);
+
+                    _cache.ContainsKey(key).Should().BeFalse();
+                    _cache[key] = value;
+
+                    var actual = ((ICollection<KeyValuePair<GenericCacheKeyBase, object>>) _cache).Contains(kvp);
+
+                    actual.Should().BeTrue();
+                }
+            }
+
+            public class CopyTo : Explicit
+            {
+                [Fact]
+                public void Should_Copy_To_Array_At_Index()
+                {
+                    var array = new KeyValuePair<GenericCacheKeyBase, object>[PerKeyCount * 2 + 100];
+                    var index = GetWithinRange(0, 99);
+
+                    ((ICollection<KeyValuePair<GenericCacheKeyBase, object>>) _cache).CopyTo(array, index);
+
+                    var actual = array.Skip(index).Take(PerKeyCount * 2);
+
+                    _cache.ToArray().Should().BeEquivalentTo(actual);
+                }
+            }
+
+            public class Remove : Explicit
+            {
+                [Fact]
+                public void Should_Throw_When_Key_Null()
+                {
+                    Invoking(() =>
+                        {
+                            ((IDictionary<GenericCacheKeyBase, object>) _cache).Remove(null);
+                        })
+                        .Should()
+                        .Throw<ArgumentNullException>()
+                        .WithNamedMessageWhenNull("key");
+                }
+
+                [Fact]
+                public void Should_Not_Remove_Key()
+                {
+                    var key = new KeyType1(Create<int>(), Create<string>());
+
+                    _cache.ContainsKey(key).Should().BeFalse();
+
+                    var actual = ((IDictionary<GenericCacheKeyBase, object>) _cache).Remove(key);
+
+                    actual.Should().BeFalse();
+                }
+
+                [Fact]
+                public void Should_Remove_Key()
+                {
+                    var key = new KeyType1(Create<int>(), Create<string>());
+
+                    _cache.ContainsKey(key).Should().BeFalse();
+
+                    _cache[key] = Create<string>();
+                    _cache.ContainsKey(key).Should().BeTrue();
+
+                    var actual = ((IDictionary<GenericCacheKeyBase, object>) _cache).Remove(key);
+
+                    actual.Should().BeTrue();
+                }
+            }
+
+            public class TryGetValue_Dictionary : Explicit
+            {
+                [Fact]
+                public void Should_Throw_When_Key_Null()
+                {
+                    Invoking(() =>
+                        {
+                            ((IDictionary<GenericCacheKeyBase, object>) _cache).TryGetValue(null, out var _);
+                        })
+                        .Should()
+                        .Throw<ArgumentNullException>()
+                        .WithNamedMessageWhenNull("key");
+                }
+
+                [Fact]
+                public void Should_Not_Get_Value()
+                {
+                    var key = new KeyType1(Create<int>(), Create<string>());
+
+                    _cache.ContainsKey(key).Should().BeFalse();
+
+                    var actual = ((IDictionary<GenericCacheKeyBase, object>) _cache).TryGetValue(key, out var _);
+
+                    actual.Should().BeFalse();
+                }
+
+                [Fact]
+                public void Should_Get_Value()
+                {
+                    var key = new KeyType1(Create<int>(), Create<string>());
+                    var value = Create<double>();
+
+                    _cache.ContainsKey(key).Should().BeFalse();
+
+                    _cache[key] = value;
+
+                    var success = ((IDictionary<GenericCacheKeyBase, object>) _cache).TryGetValue(key, out var actual);
+
+                    success.Should().BeTrue();
+                    value.Should().Be((double) actual);
+                }
+            }
+
+            public class TryGetValue_ReadOnlyDictionary : Explicit
+            {
+                [Fact]
+                public void Should_Throw_When_Key_Null()
+                {
+                    Invoking(() =>
+                        {
+                            ((IReadOnlyDictionary<GenericCacheKeyBase, object>) _cache).TryGetValue(null, out var _);
+                        })
+                        .Should()
+                        .Throw<ArgumentNullException>()
+                        .WithNamedMessageWhenNull("key");
+                }
+
+                [Fact]
+                public void Should_Not_Get_Value()
+                {
+                    var key = new KeyType1(Create<int>(), Create<string>());
+
+                    _cache.ContainsKey(key).Should().BeFalse();
+
+                    var actual = ((IReadOnlyDictionary<GenericCacheKeyBase, object>) _cache).TryGetValue(key, out var _);
+
+                    actual.Should().BeFalse();
+                }
+
+                [Fact]
+                public void Should_Get_Value()
+                {
+                    var key = new KeyType1(Create<int>(), Create<string>());
+                    var value = Create<double>();
+
+                    _cache.ContainsKey(key).Should().BeFalse();
+
+                    _cache[key] = value;
+
+                    var success = ((IReadOnlyDictionary<GenericCacheKeyBase, object>) _cache).TryGetValue(key, out var actual);
+
+                    success.Should().BeTrue();
+                    value.Should().Be((double) actual);
+                }
+            }
+
+            public class GetEnumerator : Explicit
+            {
+                [Fact]
+                public void Should_Enumerate()
+                {
+                    var enumerator = ((IEnumerable) _cache).GetEnumerator();
+
+                    enumerator.MoveNext().Should().BeTrue();
+
+                    enumerator.Current.Should().BeEquivalentTo(_cache.Take(1).Single());
+                }
+            }
+        }
 
         private static void PopulateCache(IGenericCache cache)
         {

@@ -254,6 +254,8 @@ namespace AllOverIt.Caching
 
         void IDictionary<GenericCacheKeyBase, object>.Add(GenericCacheKeyBase key, object value)
         {
+            _ = key.WhenNotNull(nameof(key));
+
             ((IDictionary<GenericCacheKeyBase, object>) _cache).Add(key, value);
         }
 
@@ -269,16 +271,22 @@ namespace AllOverIt.Caching
 
         bool IDictionary<GenericCacheKeyBase, object>.Remove(GenericCacheKeyBase key)
         {
+            _ = key.WhenNotNull(nameof(key));
+
             return ((IDictionary<GenericCacheKeyBase, object>) _cache).Remove(key);
         }
 
         bool IDictionary<GenericCacheKeyBase, object>.TryGetValue(GenericCacheKeyBase key, out object value)
         {
+            _ = key.WhenNotNull(nameof(key));
+
             return ((IDictionary<GenericCacheKeyBase, object>) _cache).TryGetValue(key, out value);
         }
 
         bool IReadOnlyDictionary<GenericCacheKeyBase, object>.TryGetValue(GenericCacheKeyBase key, out object value)
         {
+            _ = key.WhenNotNull(nameof(key));
+
             return ((IReadOnlyDictionary<GenericCacheKeyBase, object>) _cache).TryGetValue(key, out value);
         }
 
