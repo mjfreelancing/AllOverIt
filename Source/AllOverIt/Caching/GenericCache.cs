@@ -35,25 +35,36 @@ namespace AllOverIt.Caching
 
         private readonly ConcurrentDictionary<GenericCacheKeyBase, object> _cache = new (GenericCacheKeyComparer.Instance);
 
-        public static GenericCache Default = new();
+        /// <summary>A static instance of a <see cref="GenericCache"/>.</summary>
+        public static readonly GenericCache Default = new();
 
+        /// <summary>The number of elements in the cache.</summary>
         public int Count => _cache.Count;
 
+        /// <inheritdoc />
         public ICollection<GenericCacheKeyBase> Keys => _cache.Keys;
 
+        /// <inheritdoc />
         public ICollection<object> Values => _cache.Values;
 
+        /// <summary>Gets or sets an item in the cache.</summary>
+        /// <param name="key">The key to get or set a value.</param>
+        /// <returns>When reading, the value associated with the key.</returns>
         public object this[GenericCacheKeyBase key]
         {
             get => _cache[key];
             set => _cache[key] = value;
         }
 
+        /// <inheritdoc />
         public IEnumerator<KeyValuePair<GenericCacheKeyBase, object>> GetEnumerator()
         {
             return _cache.GetEnumerator();
         }
 
+        /// <summary>Determines if the cache contains the provided key.</summary>
+        /// <param name="key">The key to lookup.</param>
+        /// <returns>True if the cache contains the key, otherwise false.</returns>
         public bool ContainsKey(GenericCacheKeyBase key)
         {
             _ = key.WhenNotNull(nameof(key));
@@ -61,11 +72,13 @@ namespace AllOverIt.Caching
             return _cache.ContainsKey(key);
         }
 
+        /// <inheritdoc />
         public void Clear()
         {
             _cache.Clear();
         }
 
+        /// <inheritdoc />
         public void Add<TValue>(GenericCacheKeyBase key, TValue value)
         {
             _ = key.WhenNotNull(nameof(key));
@@ -81,7 +94,10 @@ namespace AllOverIt.Caching
             return _cache.TryAdd(key, value);
         }
 
-        /// <inheritdoc />
+        /// <summary>Attempts to get the value associated with a key in the cache.</summary>
+        /// <param name="key">The custom key associated with the value.</param>
+        /// <param name="value">The value associated with the key.</param>
+        /// <returns>True if the key was found in the cache, otherwise false.</returns>
         public bool TryGetValue(GenericCacheKeyBase key, out object value)
         {
             _ = key.WhenNotNull(nameof(key));
@@ -103,6 +119,9 @@ namespace AllOverIt.Caching
             return success;
         }
 
+        /// <summary>Removes a key from the cache if it was found.</summary>
+        /// <param name="item">The custom key and associated value.</param>
+        /// <returns>True if the key was found in the cache, otherwise false.</returns>
         public bool Remove(KeyValuePair<GenericCacheKeyBase, object> item)
         {
             return ((IDictionary<GenericCacheKeyBase, object>) _cache).Remove(item);
