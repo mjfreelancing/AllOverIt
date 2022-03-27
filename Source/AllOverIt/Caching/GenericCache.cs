@@ -6,6 +6,8 @@ using AllOverIt.Assertion;
 
 namespace AllOverIt.Caching
 {
+    /// <summary>A cache capable of storing different key/value types. Each key type must inherit <see cref="GenericCacheKeyBase"/> and each
+    /// of the key elements must support equality comparison.</summary>
     public class GenericCache : IGenericCache
     {
         private class GenericCacheKeyComparer : IEqualityComparer<GenericCacheKeyBase>

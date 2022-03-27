@@ -237,6 +237,25 @@ namespace AllOverIt.Tests.Caching
                     .Throw<ArgumentException>()
                     .WithMessage("The key already existed in the dictionary.");
             }
+
+            [Fact]
+            public void Should_Not_Throw_When_Key_Element_Null()
+            {
+                var key = new KeyType1(Create<int>(), null);
+                var value = CreateMany<string>();
+
+                key.Key2.Should().BeNull();
+                _cache.ContainsKey(key).Should().BeFalse();
+
+                Invoking(() =>
+                    {
+                        _cache.Add(key, value);
+                    })
+                    .Should()
+                    .NotThrow();
+
+                value.Should().BeEquivalentTo((IReadOnlyCollection<string>)_cache[key]);
+            }
         }
 
         public class TryAdd_TValue : GenericCacheFixture

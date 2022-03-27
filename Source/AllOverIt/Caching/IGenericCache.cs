@@ -69,29 +69,65 @@ namespace AllOverIt.Caching
         /// <typeparam name="TValue">The value type associated with the key.</typeparam>
         /// <param name="key">The custom key.</param>
         /// <param name="addResolver">The value factory for the provided key when the key does not exist.</param>
-        /// <returns>The existing value of a key if it exists, otherwise a newly added value.</returns>
+        /// <returns>The existing value of a key if it exists, otherwise the newly added value.</returns>
         TValue GetOrAdd<TValue>(GenericCacheKeyBase key, Func<GenericCacheKeyBase, TValue> addResolver);
 
+        /// <summary>Gets the existing value of a key if it exists, otherwise adds a new value.</summary>
+        /// <typeparam name="TValue">The value type associated with the key.</typeparam>
+        /// <param name="key">The custom key.</param>
+        /// <param name="value">The value to add if the cache does not contain the key.</param>
+        /// <returns>The existing value of a key if it exists, otherwise the newly added value.</returns>
         TValue GetOrAdd<TValue>(GenericCacheKeyBase key, TValue value);
 
 #if !NETSTANDARD2_0
+        /// <summary>Adds a key/value pair to the cache using a specified resolver and an argument when the key does not exist,
+        /// otherwise returns the existing value.</summary>
+        /// <typeparam name="TArg">The argument type.</typeparam>
+        /// <typeparam name="TValue">The value type associated with the key.</typeparam>
+        /// <param name="key">The custom key.</param>
+        /// <param name="addResolver">The value factory for the provided key when the key does not exist.</param>
+        /// <param name="resolverArgument">The argument factory for the provided key when the key does not exist.</param>
+        /// <returns>The existing value of a key if it exists, otherwise the newly added value.</returns>
         TValue GetOrAdd<TArg, TValue>(
             GenericCacheKeyBase key,
             Func<GenericCacheKeyBase, TArg, TValue> addResolver,
             TArg resolverArgument);
 #endif
 
+        /// <summary>Adds a key/value pair to the cache using a specified resolver and an argument when the key does not exist,
+        /// otherwise updates the existing value.</summary>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="key">The custom key.</param>
+        /// <param name="addResolver">The add value factory for the provided key when the key does not exist.</param>
+        /// <param name="updateResolver">The update value factory for the provided key when the key already exist.</param>
+        /// <returns>The existing value of a key if it exists, otherwise the newly updated value.</returns>
         TValue AddOrUpdate<TValue>(
             GenericCacheKeyBase key,
             Func<GenericCacheKeyBase, TValue> addResolver,
             Func<GenericCacheKeyBase, TValue, TValue> updateResolver);
 
+        /// <summary>Adds a key/value pair to the cache when the key does not exist, otherwise updates the existing value using a
+        /// specified value factory.</summary>
+        /// <typeparam name="TValue">The value type associated with the key.</typeparam>
+        /// <param name="key">The custom key.</param>
+        /// <param name="addValue">The value to add when the key does not exist.</param>
+        /// <param name="updateResolver">The update value factory for the provided key when the key already exist.</param>
+        /// <returns>The existing value of a key if it exists, otherwise the newly updated value.</returns>
         TValue AddOrUpdate<TValue>(
             GenericCacheKeyBase key,
             TValue addValue,
             Func<GenericCacheKeyBase, TValue, TValue> updateResolver);
 
 #if !NETSTANDARD2_0
+        /// <summary>Adds a key/value pair to the cache using a specified resolver and an argument when the key does not exist,
+        /// updates the existing value using a specified value factory and an argument.</summary>
+        /// <typeparam name="TArg">The argument type.</typeparam>
+        /// <typeparam name="TValue">The value type associated with the key.</typeparam>
+        /// <param name="key">The custom key.</param>
+        /// <param name="addResolver">The value factory for the provided key when the key does not exist.</param>
+        /// <param name="updateResolver">The update value factory for the provided key when the key already exist.</param>
+        /// <param name="resolverArgument">The argument factory for the provided key when the key does not exist.</param>
+        /// <returns>The existing value of a key if it exists, otherwise the newly updated value.</returns>
         TValue AddOrUpdate<TArg, TValue>(
             GenericCacheKeyBase key,
             Func<GenericCacheKeyBase, TArg, TValue> addResolver,
