@@ -4,23 +4,18 @@ using System.Collections.Generic;
 namespace AllOverIt.Caching
 {
     /// <summary>Represents a generic cache for storing any object type based on a custom key.</summary>
+    // ReSharper disable once PossibleInterfaceMemberAmbiguity
     public interface IGenericCache : IDictionary<GenericCacheKeyBase, object>, IReadOnlyDictionary<GenericCacheKeyBase, object>
     {
-        #region Properties and methods required to avoid ambiguity between IDictionary and IReadOnlyDictionary
-
-        int Count { get; }
-
-        ICollection<GenericCacheKeyBase> Keys { get; }
-
-        ICollection<object> Values { get; }
-
-        bool ContainsKey(GenericCacheKeyBase key);
-
-        bool TryGetValue(GenericCacheKeyBase key, out object value);
-
-        object this[GenericCacheKeyBase key] { get; }
-
-        #endregion
+        // Properties and methods defined on both ICollection<KeyValuePair<GenericCacheKeyBase, object>> and IReadOnlyCollection<KeyValuePair<GenericCacheKeyBase, object>>  or
+        // IDictionary<GenericCacheKeyBase, object> and IReadOnlyDictionary<GenericCacheKeyBase, object>
+        //
+        // int Count { get; }
+        // ICollection<GenericCacheKeyBase> Keys { get; }
+        // ICollection<object> Values { get; }
+        // bool ContainsKey(GenericCacheKeyBase key);
+        // bool TryGetValue(GenericCacheKeyBase key, out object value);
+        // object this[GenericCacheKeyBase key] { get; }
 
         void Add<TValue>(GenericCacheKeyBase key, TValue value);
 

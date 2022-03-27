@@ -1505,7 +1505,7 @@ namespace AllOverIt.Tests.Caching
             }
         }
 
-        private static IReadOnlyCollection<GenericCacheKeyBase> GetAllKeyType1(IGenericCache cache)
+        private static IReadOnlyCollection<GenericCacheKeyBase> GetAllKeyType1(IDictionary<GenericCacheKeyBase, object> cache)
         {
             return GetSortedKeyType1(cache.Keys);
         }
@@ -1515,7 +1515,7 @@ namespace AllOverIt.Tests.Caching
             return keys.Where(item => item.GetType() == typeof(KeyType1)).OrderBy(item => item.Key).AsReadOnlyCollection();
         }
 
-        private static IReadOnlyCollection<GenericCacheKeyBase> GetAllKeyType2(IGenericCache cache)
+        private static IReadOnlyCollection<GenericCacheKeyBase> GetAllKeyType2(IDictionary<GenericCacheKeyBase, object> cache)
         {
             return GetSortedKeyType2(cache.Keys);
         }
