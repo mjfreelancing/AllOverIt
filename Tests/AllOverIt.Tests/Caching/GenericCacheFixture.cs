@@ -710,10 +710,6 @@ namespace AllOverIt.Tests.Caching
             }
         }
 
-
-
-
-
         public class GetOrAdd_Arg_Resolver : GenericCacheFixture
         {
             [Fact]
@@ -1246,7 +1242,7 @@ namespace AllOverIt.Tests.Caching
 
         public class Explicit : GenericCacheFixture
         {
-            public class IsReadOnly : Explicit
+            public class Explicit_IsReadOnly : Explicit
             {
                 [Fact]
                 public void Should_Be_False()
@@ -1255,7 +1251,7 @@ namespace AllOverIt.Tests.Caching
                 }
             }
 
-            public class Keys : Explicit
+            public class Explicit_Keys : Explicit
             {
                 [Fact]
                 public void Should_Return_Keys()
@@ -1266,7 +1262,7 @@ namespace AllOverIt.Tests.Caching
                 }
             }
 
-            public class Values : Explicit
+            public class Explicit_Values : Explicit
             {
                 [Fact]
                 public void Should_Return_Values()
@@ -1277,7 +1273,7 @@ namespace AllOverIt.Tests.Caching
                 }
             }
 
-            public class Add_KeyValuePair : Explicit
+            public class Explicit_Add_KeyValuePair : Explicit
             {
                 [Fact]
                 public void Should_Add_Key_Value()
@@ -1295,7 +1291,7 @@ namespace AllOverIt.Tests.Caching
                 }
             }
 
-            public class Add_Key : Explicit
+            public class Explicit_Add_Key : Explicit
             {
                 [Fact]
                 public void Should_Throw_When_Key_Null()
@@ -1323,7 +1319,7 @@ namespace AllOverIt.Tests.Caching
                 }
             }
 
-            public class Contains : Explicit
+            public class Explicit_Contains : Explicit
             {
                 [Fact]
                 public void Should_Not_Contain_Key()
@@ -1353,7 +1349,7 @@ namespace AllOverIt.Tests.Caching
                 }
             }
 
-            public class CopyTo : Explicit
+            public class Explicit_CopyTo : Explicit
             {
                 [Fact]
                 public void Should_Copy_To_Array_At_Index()
@@ -1369,7 +1365,7 @@ namespace AllOverIt.Tests.Caching
                 }
             }
 
-            public class Remove : Explicit
+            public class Explicit_Remove : Explicit
             {
                 [Fact]
                 public void Should_Throw_When_Key_Null()
@@ -1411,7 +1407,7 @@ namespace AllOverIt.Tests.Caching
                 }
             }
 
-            public class TryGetValue_Dictionary : Explicit
+            public class Explicit_TryGetValue_Dictionary : Explicit
             {
                 [Fact]
                 public void Should_Throw_When_Key_Null()
@@ -1454,7 +1450,7 @@ namespace AllOverIt.Tests.Caching
                 }
             }
 
-            public class TryGetValue_ReadOnlyDictionary : Explicit
+            public class Explicit_TryGetValue_ReadOnlyDictionary : Explicit
             {
                 [Fact]
                 public void Should_Throw_When_Key_Null()
@@ -1497,7 +1493,7 @@ namespace AllOverIt.Tests.Caching
                 }
             }
 
-            public class GetEnumerator : Explicit
+            public class Explicit_GetEnumerator : Explicit
             {
                 [Fact]
                 public void Should_Enumerate()

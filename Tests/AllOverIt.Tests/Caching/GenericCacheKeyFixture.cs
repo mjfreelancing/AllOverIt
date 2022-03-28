@@ -39,9 +39,9 @@ namespace AllOverIt.Tests.Caching
             }
         }
 
-        public class GenericCacheKey_One : GenericCacheKeyBaseFixture
+        public class GenericCacheKey_One : GenericCacheKeyFixture
         {
-            public class Constructor : GenericCacheKeyBaseFixture
+            public class Constructor : GenericCacheKey_One
             {
                 [Fact]
                 public void Should_Not_Throw_When_Key_Null()
@@ -53,9 +53,9 @@ namespace AllOverIt.Tests.Caching
             }
         }
 
-        public class GenericCacheKey_Two : GenericCacheKeyBaseFixture
+        public class GenericCacheKey_Two : GenericCacheKeyFixture
         {
-            public class Constructor : GenericCacheKeyBaseFixture
+            public class Constructor : GenericCacheKey_Two
             {
                 [Fact]
                 public void Should_Not_Throw_When_Key1_Null()
@@ -75,9 +75,9 @@ namespace AllOverIt.Tests.Caching
             }
         }
 
-        public class GenericCacheKey_Three : GenericCacheKeyBaseFixture
+        public class GenericCacheKey_Three : GenericCacheKeyFixture
         {
-            public class Constructor : GenericCacheKeyBaseFixture
+            public class Constructor : GenericCacheKey_Three
             {
                 [Fact]
                 public void Should_Not_Throw_When_Key1_Null()
@@ -105,9 +105,9 @@ namespace AllOverIt.Tests.Caching
             }
         }
 
-        public class GenericCacheKey_Four : GenericCacheKeyBaseFixture
+        public class GenericCacheKey_Four : GenericCacheKeyFixture
         {
-            public class Constructor : GenericCacheKeyBaseFixture
+            public class Constructor : GenericCacheKey_Four
             {
                 [Fact]
                 public void Should_Not_Throw_When_Key1_Null()

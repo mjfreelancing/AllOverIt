@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using AllOverIt.Fixture;
@@ -142,7 +143,8 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests
 
                 var settings = new JsonSerializerOptions
                 {
-                    IgnoreNullValues = true
+                    // IgnoreNullValues = true (now obsolete)
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
                 };
 
                 var serializer = new SystemTextJsonSerializer(settings);

@@ -96,7 +96,7 @@ namespace AllOverIt.Tests.Io
             }
         }
 
-        public class ToString : TextStreamerFixture
+        public class ToStringMethod : TextStreamerFixture
         {
             [Fact]
             public void Should_Return_Text()
