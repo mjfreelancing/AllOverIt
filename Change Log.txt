@@ -31,12 +31,15 @@ AllOverIt.GenericHost v4.0.0
 
 AllOverIt.Serialization.NewtonsoftJson v2.0.0
   * Updated to AllOverIt v3.0.0
+  * Unsealed NewtonsoftJsonSerializer
 
 AllOverIt.Serialization.SystemTextJson v2.0.0
   * Updated to AllOverIt v3.0.0
+  * Unsealed SystemTextJsonSerializer
 
 AllOverIt.Aws.AppSync.Client v2.0.0
   * Updated to AllOverIt v3.0.0
+  * Renamed RealTimeUrl to RealtimeUrl on SubscriptionClientConfiguration
 
 AllOverIt.AspNetCore v2.0.0
   * Updated to AllOverIt v3.0.0
