@@ -7,6 +7,7 @@ using AllOverIt.Reflection.Extensions;
 
 namespace AllOverIt.Reflection
 {
+    /// <summary>Provides a default, static, cache to help improve performance where reflection is used extensively.</summary>
     public static class ReflectionCache
     {
         /// <summary>Gets all <see cref="PropertyInfo"/> for a given <see cref="Type"/> and options from the default cache. If the <see cref="PropertyInfo"/>
