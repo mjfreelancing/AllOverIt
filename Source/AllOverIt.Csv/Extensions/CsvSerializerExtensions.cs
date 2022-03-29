@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AllOverIt.Assertion;
 using AllOverIt.Csv.Exceptions;
 using AllOverIt.Extensions;
 
@@ -15,17 +16,23 @@ namespace AllOverIt.Csv.Extensions
         /// <param name="serializer">The serializer performing the CSV export.</param>
         /// <param name="data">The collection of data to be exported.</param>
         /// <param name="fieldSelector">Gets the field instance to be configured and exported during serialization.</param>
-        /// <param name="headerNames">Based on the field instance, returns a list of header names to be exported. These names are usually derived
+        /// <param name="headerNameResolver">Based on the field instance, returns a list of header names to be exported. These names are usually derived
         /// from other properties on the field. A typical use-case when <typeparamref name="TField"/> is an IDictionary&lt;U, V&gt; and the
         /// dictionary's Keys are used as the header names.</param>
         /// <param name="valueResolver">This resolver is called during the export process for each field instance and its associated header name.
         /// If <typeparamref name="TField"/> is an IDictionary&lt;U, V&gt; then the header name is typically used to look up the value based on this key.</param>
         public static void AddDynamicFields<TCsvData, TField>(this ICsvSerializer<TCsvData> serializer, IEnumerable<TCsvData> data,
-            Func<TCsvData, TField> fieldSelector, Func<TField, IEnumerable<string>> headerNames, Func<TField, string, object> valueResolver)
+            Func<TCsvData, TField> fieldSelector, Func<TField, IEnumerable<string>> headerNameResolver, Func<TField, string, object> valueResolver)
         {
-            var uniqueNames = data                          // From the source data
+            _ = serializer.WhenNotNull(nameof(serializer));
+            var csvData = data.WhenNotNull(nameof(data));
+            _ = fieldSelector.WhenNotNull(nameof(fieldSelector));
+            _ = headerNameResolver.WhenNotNull(nameof(headerNameResolver));
+            _ = valueResolver.WhenNotNull(nameof(valueResolver));
+
+            var uniqueNames = csvData                          // From the source data
                 .Select(fieldSelector)                      // Select the IEnumerable property to obtain header names for
-                .SelectMany(headerNames.Invoke)             // Get all possible names for the current row
+                .SelectMany(headerNameResolver.Invoke)             // Get all possible names for the current row
                 .Distinct();                                // Reduce to a distinct list
 
             foreach (var valueName in uniqueNames)
@@ -59,7 +66,13 @@ namespace AllOverIt.Csv.Extensions
             Func<TCsvData, TField> fieldSelector, Func<TField, IEnumerable<FieldIdentifier<TFieldId>>> fieldIdentifiers,
             Func<TField, FieldIdentifier<TFieldId>, IEnumerable<object>> valuesResolver)
         {
-            var uniqueIdentifiers = data                        // From the source data
+            _ = serializer.WhenNotNull(nameof(serializer));
+            var csvData = data.WhenNotNull(nameof(data));
+            _ = fieldSelector.WhenNotNull(nameof(fieldSelector));
+            _ = fieldIdentifiers.WhenNotNull(nameof(fieldIdentifiers));
+            _ = valuesResolver.WhenNotNull(nameof(valuesResolver));
+
+            var uniqueIdentifiers = csvData                     // From the source data
                 .Select(fieldSelector)                          // Select the IEnumerable property to obtain header names for
                 .SelectMany(fieldIdentifiers.Invoke)            // Get all possible identifier / names for the current row (such as the collection index and a name)
                 .Distinct(FieldIdentifier<TFieldId>.Comparer);  // Reduce to a distinct list based on the 'Id' property (must be unique for each set of headers)
@@ -68,9 +81,9 @@ namespace AllOverIt.Csv.Extensions
             {
                 var columnCount = identifier.Names.Count;
 
-                serializer.AddFields(identifier.Names, item =>
+                serializer.AddFields(identifier.Names, row =>
                 {
-                    var field = fieldSelector.Invoke(item);
+                    var field = fieldSelector.Invoke(row);
 
                     var values = valuesResolver
                         .Invoke(field, identifier)

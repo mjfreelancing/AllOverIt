@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
+using AllOverIt.Assertion;
 using AllOverIt.Extensions;
 
 namespace AllOverIt.Csv
@@ -43,18 +44,29 @@ namespace AllOverIt.Csv
         /// <inheritdoc />
         public void AddField(string headerName, Func<TCsvData, object> valueResolver)
         {
+            _ = headerName.WhenNotNullOrEmpty(nameof(headerName));
+            _ = valueResolver.WhenNotNull(nameof(valueResolver));
+
             _fieldResolvers.Add(new CsvFieldResolver(headerName, valueResolver));
         }
 
         /// <inheritdoc />
         public void AddFields(IEnumerable<string> headerNames, Func<TCsvData, IEnumerable<object>> valuesResolver)
         {
+            // ReSharper disable once PossibleMultipleEnumeration
+            _ = headerNames.WhenNotNull(nameof(headerNames));
+            _ = valuesResolver.WhenNotNull(nameof(valuesResolver));
+
+            // ReSharper disable once PossibleMultipleEnumeration
             _fieldResolvers.Add(new CsvFieldResolver(headerNames, valuesResolver));
         }
 
         /// <inheritdoc />
         public async Task SerializeAsync(TextWriter writer, IEnumerable<TCsvData> data, bool includeHeader = true)
         {
+            _ = writer.WhenNotNull(nameof(writer));
+            var csvData = data.WhenNotNull(nameof(data)).AsReadOnlyCollection();
+
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
             {
                 if (includeHeader)
@@ -62,7 +74,7 @@ namespace AllOverIt.Csv
                     await WriteHeaderAsync(csv).ConfigureAwait(false);
                 }
 
-                foreach (var row in data)
+                foreach (var row in csvData)
                 {
                     await WriteRowAsync(row, csv).ConfigureAwait(false);
                 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AllOverIt.Csv.Extensions;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -17,6 +18,9 @@ namespace AllOverIt.Csv
         /// <summary>Configures a field to export multiple property values with associated column header names.</summary>
         /// <param name="headerNames">The header names to export.</param>
         /// <param name="valuesResolver">A Func to return a value for each of the configured header names.</param>
+        /// <remarks>Also refer to <see cref="CsvSerializerExtensions.AddDynamicFields{TCsvData, TField}"/> and
+        /// <see cref="CsvSerializerExtensions.AddDynamicFields{TCsvData, TField, TFieldId}"/> for an alternative, and
+        /// potentially easier, approach to adding multiple columns from a complex property.</remarks>
         void AddFields(IEnumerable<string> headerNames, Func<TCsvData, IEnumerable<object>> valuesResolver);
 
         /// <summary>Serializes data to CSV format.</summary>
