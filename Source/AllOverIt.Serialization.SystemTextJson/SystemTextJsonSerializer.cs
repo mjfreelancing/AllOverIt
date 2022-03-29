@@ -10,7 +10,7 @@ using AllOverIt.Serialization.SystemTextJson.Converters;
 namespace AllOverIt.Serialization.SystemTextJson
 {
     /// <summary>An implementation of <see cref="IJsonSerializer"/> using System.Text.Json.</summary>
-    public sealed class SystemTextJsonSerializer : IJsonSerializer
+    public class SystemTextJsonSerializer : IJsonSerializer
     {
         /// <summary>The serialization options. If no options are provided then a default set will be applied.</summary>
         public JsonSerializerOptions Options { get; }

@@ -13,7 +13,7 @@ using AllOverIt.Serialization.NewtonsoftJson.Converters;
 namespace AllOverIt.Serialization.NewtonsoftJson
 {
     /// <summary>An implementation of <see cref="IJsonSerializer"/> using Newtonsoft.Json.</summary>
-    public sealed class NewtonsoftJsonSerializer : IJsonSerializer
+    public class NewtonsoftJsonSerializer : IJsonSerializer
     {
         /// <summary>The serialization options. If no settings are provided then a default set will be applied.</summary>
         public JsonSerializerSettings Settings { get; }
