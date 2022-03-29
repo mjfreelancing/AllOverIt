@@ -75,7 +75,7 @@ namespace AllOverIt.Aws.AppSync.Client
         public AppSyncSubscriptionClient(ISubscriptionClientConfiguration configuration)
         {
             _configuration = configuration.WhenNotNull(nameof(configuration));
-            _ = configuration.RealTimeUrl.WhenNotNullOrEmpty(nameof(configuration.RealTimeUrl));
+            _ = configuration.RealtimeUrl.WhenNotNullOrEmpty(nameof(configuration.RealtimeUrl));
         }
 
         /// <inheritdoc />
@@ -346,7 +346,7 @@ namespace AllOverIt.Aws.AppSync.Client
             var headerValues = string.Join(",", hostAuth.KeyValues.Select(kvp => $@"""{kvp.Key}"":""{kvp.Value}"""));
             var encodedHeader = $@"{{{headerValues}}}".ToBase64();
 
-            var uri = new Uri($"wss://{_configuration.RealTimeUrl}?header={encodedHeader}&payload=e30=");
+            var uri = new Uri($"wss://{_configuration.RealtimeUrl}?header={encodedHeader}&payload=e30=");
 
             _webSocket = new ClientWebSocket();
             _webSocket.Options.AddSubProtocol("graphql-ws");

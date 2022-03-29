@@ -9,11 +9,11 @@ namespace AllOverIt.Aws.AppSync.Client.Configuration
         /// <summary>AppSync's graphql host Url without the https:// prefix or /graphql suffix.</summary>
         string Host { get; }
 
-        /// <summary>The realtime url used for subscriptions without the https:// prefix.</summary>
+        /// <summary>The real-time url used for subscriptions without the https:// prefix.</summary>
         /// <remarks>If not set, this Url is derived from the Host by replacing 'appsync-api' with 'appsync-realtime-api' and
-        /// appending '/graphql'. If a value is provided then it must be the full custom domain realtime Url without the
+        /// appending '/graphql'. If a value is provided then it must be the full custom domain real-time Url without the
         /// https:// prefix.</remarks>
-        string RealTimeUrl { get; }
+        string RealtimeUrl { get; }
 
         /// <summary>The serializer to be used for message processing.</summary>
         /// <remarks>See 'AllOverIt.Serialization.NewtonsoftJson' and 'AllOverIt.Serialization.SystemTextJson' for suitable implementations.</remarks>

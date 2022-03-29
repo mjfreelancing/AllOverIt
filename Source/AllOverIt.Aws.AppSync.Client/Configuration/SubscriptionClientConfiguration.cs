@@ -12,7 +12,7 @@ namespace AllOverIt.Aws.AppSync.Client.Configuration
         public string Host { get; init; }
 
         /// <inheritdoc />
-        public string RealTimeUrl
+        public string RealtimeUrl
         {
             get
             {

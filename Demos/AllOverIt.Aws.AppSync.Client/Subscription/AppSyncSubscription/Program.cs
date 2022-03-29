@@ -119,8 +119,8 @@ namespace AppSyncSubscription
                 {
                     Host = options.Host,
 
-                    // RealTimeUrl will be derived from Host when not provided by replacing 'appsync-api' with 'appsync-realtime-api'
-                    RealTimeUrl = options.RealTimeUrl,
+                    // RealtimeUrl will be derived from Host when not provided by replacing 'appsync-api' with 'appsync-realtime-api'
+                    RealtimeUrl = options.RealtimeUrl,
 
                     DefaultAuthorization = new AppSyncApiKeyAuthorization(options.ApiKey),
                     Serializer = serializer,

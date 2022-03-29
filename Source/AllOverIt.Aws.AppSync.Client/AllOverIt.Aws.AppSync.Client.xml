@@ -118,7 +118,7 @@
         <member name="P:AllOverIt.Aws.AppSync.Client.Configuration.ISubscriptionClientConfiguration.Host">
             <summary>AppSync's graphql host Url without the https:// prefix or /graphql suffix.</summary>
         </member>
-        <member name="P:AllOverIt.Aws.AppSync.Client.Configuration.ISubscriptionClientConfiguration.RealTimeUrl">
+        <member name="P:AllOverIt.Aws.AppSync.Client.Configuration.ISubscriptionClientConfiguration.RealtimeUrl">
             <summary>The realtime url used for subscriptions without the https:// prefix.</summary>
             <remarks>If not set, this Url is derived from the Host by replacing 'appsync-api' with 'appsync-realtime-api' and
             appending '/graphql'. If a value is provided then it must be the full custom domain realtime Url without the
@@ -140,7 +140,7 @@
         <member name="P:AllOverIt.Aws.AppSync.Client.Configuration.SubscriptionClientConfiguration.Host">
             <inheritdoc />
         </member>
-        <member name="P:AllOverIt.Aws.AppSync.Client.Configuration.SubscriptionClientConfiguration.RealTimeUrl">
+        <member name="P:AllOverIt.Aws.AppSync.Client.Configuration.SubscriptionClientConfiguration.RealtimeUrl">
             <inheritdoc />
         </member>
         <member name="P:AllOverIt.Aws.AppSync.Client.Configuration.SubscriptionClientConfiguration.Serializer">
