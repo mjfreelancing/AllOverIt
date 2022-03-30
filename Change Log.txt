@@ -1,8 +1,13 @@
 ======================================================================================================================
 
-NEXT
-====
-AllOverIt v3.0.0
+10 Feb 2022
+======================================================================================================================
+MAJOR UPDATE - Due to the number of packages and time spent managing dependencies / versioning all packages will now
+               be assigned the same version number. This also helps to establish compatible packages are used together.
+
+Version 5.0.0
+
+AllOverIt
   * BREAKING: Moved a number of extension methods to be closer to their associated classes (hence a namespace change)
   * BREAKING: Moved ReflectionHelper methods SetMemberValue(), GetMemberValue(), and GetMemberType() to
     MemberInfoExtensions as extension methods.
@@ -14,47 +19,35 @@ AllOverIt v3.0.0
   * Added TextStreamer to support writing character data to an internal memory stream.
   * Added a GenericCache and ReflectionCache
 
-AllOverIt.Validation v3.0.0
-  * Updated to AllOverIt v3.0.0
+AllOverIt.Validation
+  * Updated to FluentValidation v10.4.0
 
-AllOverIt.Aws.Cdk.AppSync v2.0.0
-  * Updated to AllOverIt v3.0.0
-  * Now using reactive extensions in AllOverIt.Reactive v1.0.0
-  * Upated to Amazon.CDK.AWS.AppSync v1.146.0
+AllOverIt.Aws.Cdk.AppSync
+  * Now using reactive extensions in AllOverIt.Reactive
+  * Upated to Amazon.CDK.AWS.AppSync v1.150.0
 
-AllOverIt.Evaluator v5.0.0
-  * Updated to AllOverIt v3.0.0
+AllOverIt.Evaluator
 
-AllOverIt.GenericHost v4.0.0
-  * Updated to AllOverIt v3.0.0
+AllOverIt.GenericHost
   * Added WaitForStartup() to BackgroundWorker
 
-AllOverIt.Serialization.NewtonsoftJson v2.0.0
-  * Updated to AllOverIt v3.0.0
+AllOverIt.Serialization.NewtonsoftJson
   * Unsealed NewtonsoftJsonSerializer
 
-AllOverIt.Serialization.SystemTextJson v2.0.0
-  * Updated to AllOverIt v3.0.0
+AllOverIt.Serialization.SystemTextJson
   * Unsealed SystemTextJsonSerializer
 
-AllOverIt.Aws.AppSync.Client v2.0.0
-  * Updated to AllOverIt v3.0.0
+AllOverIt.Aws.AppSync.Client
   * Renamed RealTimeUrl to RealtimeUrl on SubscriptionClientConfiguration
 
-AllOverIt.AspNetCore v2.0.0
-  * Updated to AllOverIt v3.0.0
-
-AllOverIt.EntityFrameworkCore v2.0.0
-  * Updated to AllOverIt v3.0.0
-
-AllOverIt.Csv v3.0.0
-  * Updated to AllOverIt v3.0.0
-
-AllOverIt.Reactive v1.0.0
+AllOverIt.Reactive
   * New package, adding an event bus and observable extensions
 
-AllOverIt.Assertion v1.0.0
+AllOverIt.Assertion
   * New package, moved code out of AllOverIt
+
+AllOverIt.Fixture
+  * Updated to FluentAssertions v6.5.1
 
 
 10 Feb 2022

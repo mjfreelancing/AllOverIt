@@ -16,20 +16,20 @@ namespace GenericCacheDemo
     {
         static async Task Main()
         {
-            await PrePopulateAndRead();
+            await PrePopulateAndReadAsync();
             Console.WriteLine();
 
-            await PopulateAndReadInParallel();
+            await PopulateAndReadInParallelAsync();
             Console.WriteLine();
 
-            await PopulateUsingDifferentKeyTypes();
+            PopulateUsingDifferentKeyTypes();
             Console.WriteLine();
 
             Console.WriteLine("All Over It.");
             Console.ReadKey();
         }
 
-        private static async Task PrePopulateAndRead()
+        private static async Task PrePopulateAndReadAsync()
         {
             var cache = GenericCache.Default;
 
@@ -63,7 +63,7 @@ namespace GenericCacheDemo
             cache.Clear();
         }
 
-        private static async Task PopulateAndReadInParallel()
+        private static async Task PopulateAndReadInParallelAsync()
         {
             const int count = 1000;
 
@@ -113,7 +113,7 @@ namespace GenericCacheDemo
             cache.Clear();
         }
 
-        private static async Task PopulateUsingDifferentKeyTypes()
+        private static void PopulateUsingDifferentKeyTypes()
         {
             var cache = GenericCache.Default;
 
