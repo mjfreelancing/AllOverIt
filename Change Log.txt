@@ -1,5 +1,13 @@
 ======================================================================================================================
 
+XX XXX XXXX
+Version 5.1.0
+======================================================================================================================
+AllOverIt.Aws.AppSync.Client
+  * Renamed INamedAppSyncClientProvider => IAppSyncNamedClientProvider
+  * Renamed extension method AddNamedAppSyncClient() => AddAppSyncNamedClient
+
+
 10 Feb 2022
 ======================================================================================================================
 MAJOR UPDATE - Due to the number of packages and time spent managing dependencies / versioning all packages will now

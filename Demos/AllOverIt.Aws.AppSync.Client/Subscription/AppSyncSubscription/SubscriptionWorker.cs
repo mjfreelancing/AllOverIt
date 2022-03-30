@@ -37,7 +37,7 @@ namespace AppSyncSubscription
 
 #pragma warning disable CS0649      // readonly is never assigned
         private readonly IAppSyncClient _appSyncClient;
-        private readonly INamedAppSyncClientProvider _namedAppSyncClientProvider;
+        private readonly IAppSyncNamedClientProvider _appSyncNamedClientProvider;
 #pragma warning restore CS0649
 
         private readonly IWorkerReady _workerReady;
@@ -47,13 +47,13 @@ namespace AppSyncSubscription
 
         // The demo can be configured to register a client explicitly, or use a named client - determine which approach was configured.
         // Note: The DI setup has configured the name as "Public". As many named clients can be configured as required.
-        private IAppSyncClient AppSyncClient => _appSyncClient ?? _namedAppSyncClientProvider.GetClient("Public");
+        private IAppSyncClient AppSyncClient => _appSyncClient ?? _appSyncNamedClientProvider.GetClient("Public");
 
         public SubscriptionWorker(IHostApplicationLifetime applicationLifetime, IAppSyncSubscriptionClient subscriptionClient,
 
             // Program.cs can be setup to use a named, or unnamed, client - hence only one of these can be injected - comment out as required 
             //IAppSyncClient appSyncClient,
-            INamedAppSyncClientProvider namedAppSyncClientProvider,
+            IAppSyncNamedClientProvider appSyncNamedClientProvider,
 
             IWorkerReady workerReady, IJsonSerializer jsonSerializer, ILogger<SubscriptionWorker> logger)
             : base(applicationLifetime)
@@ -62,7 +62,7 @@ namespace AppSyncSubscription
 
             // Program.cs can be setup to use a named, or unnamed, client - comment out as required 
             //_appSyncClient = appSyncClient.WhenNotNull(nameof(appSyncClient));
-            _namedAppSyncClientProvider = namedAppSyncClientProvider.WhenNotNull(nameof(namedAppSyncClientProvider));
+            _appSyncNamedClientProvider = appSyncNamedClientProvider.WhenNotNull(nameof(appSyncNamedClientProvider));
 
             _workerReady = workerReady.WhenNotNull(nameof(workerReady));
             _jsonSerializer = jsonSerializer.WhenNotNull(nameof(jsonSerializer));

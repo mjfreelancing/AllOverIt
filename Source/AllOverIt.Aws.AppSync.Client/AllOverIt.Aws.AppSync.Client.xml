@@ -301,8 +301,8 @@
             <param name="configuration">The configuration required by the <see cref="T:AllOverIt.Aws.AppSync.Client.IAppSyncSubscriptionClient"/> instance.</param>
             <returns>An <see cref="T:AllOverIt.Aws.AppSync.Client.AppSyncSubscriptionClient"/> instance, configured with the resolved configuration.</returns>
         </member>
-        <member name="M:AllOverIt.Aws.AppSync.Client.Extensions.ServiceCollectionExtensions.AddNamedAppSyncClient(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Func{System.IServiceProvider,System.String,AllOverIt.Aws.AppSync.Client.Configuration.IAppSyncClientConfiguration})">
-            <summary>Registers an <see cref="T:AllOverIt.Aws.AppSync.Client.INamedAppSyncClientProvider"/> for the purpose of requesting <see cref="T:AllOverIt.Aws.AppSync.Client.IAppSyncClient"/> instances by name.</summary>
+        <member name="M:AllOverIt.Aws.AppSync.Client.Extensions.ServiceCollectionExtensions.AddAppSyncNamedClient(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Func{System.IServiceProvider,System.String,AllOverIt.Aws.AppSync.Client.Configuration.IAppSyncClientConfiguration})">
+            <summary>Registers an <see cref="T:AllOverIt.Aws.AppSync.Client.IAppSyncNamedClientProvider"/> for the purpose of requesting <see cref="T:AllOverIt.Aws.AppSync.Client.IAppSyncClient"/> instances by name.</summary>
             <param name="services">The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> being extended.</param>
             <param name="configResolver">Provides the configuration required by the named <see cref="T:AllOverIt.Aws.AppSync.Client.IAppSyncClient"/> instance.</param>
             <returns>An <see cref="T:AllOverIt.Aws.AppSync.Client.AppSyncClient"/> instance, per name, configured with the provided configuration.</returns>
@@ -378,19 +378,19 @@
             on the client configuration during construction will be used.</param>
             <returns>A subscription registration. The subscription will be closed when this registration is disposed of.</returns>
         </member>
-        <member name="T:AllOverIt.Aws.AppSync.Client.INamedAppSyncClientProvider">
+        <member name="T:AllOverIt.Aws.AppSync.Client.IAppSyncNamedClientProvider">
             <summary>Represents a provider that returns an implementation of <see cref="T:AllOverIt.Aws.AppSync.Client.IAppSyncClient"/> for a specified name.</summary>
         </member>
-        <member name="M:AllOverIt.Aws.AppSync.Client.INamedAppSyncClientProvider.GetClient(System.String)">
+        <member name="M:AllOverIt.Aws.AppSync.Client.IAppSyncNamedClientProvider.GetClient(System.String)">
             <summary>Gets an <see cref="T:AllOverIt.Aws.AppSync.Client.IAppSyncClient"/> instance specific to the provided name.</summary>
             <param name="name">The name of the client instance to retrieve.</param>
             <returns>An <see cref="T:AllOverIt.Aws.AppSync.Client.IAppSyncClient"/> instance specific to the provided name.</returns>
         </member>
-        <member name="M:AllOverIt.Aws.AppSync.Client.NamedAppSyncClientProvider.#ctor(AllOverIt.Aws.AppSync.Client.NamedAppSyncClientDelegate)">
+        <member name="M:AllOverIt.Aws.AppSync.Client.AppSyncNamedClientProvider.#ctor(AllOverIt.Aws.AppSync.Client.NamedAppSyncClientDelegate)">
             <summary>Constructor.</summary>
             <param name="namedClientDelegate">A delegate responsible for obtaining an AppSync client by name.</param>
         </member>
-        <member name="M:AllOverIt.Aws.AppSync.Client.NamedAppSyncClientProvider.GetClient(System.String)">
+        <member name="M:AllOverIt.Aws.AppSync.Client.AppSyncNamedClientProvider.GetClient(System.String)">
             <inheritdoc />
         </member>
         <member name="T:AllOverIt.Aws.AppSync.Client.Request.GraphqlQuery">
