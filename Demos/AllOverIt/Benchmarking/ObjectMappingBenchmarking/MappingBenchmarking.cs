@@ -4,6 +4,7 @@ using AllOverIt.Mapping.Extensions;
 using AutoMapper;
 using BenchmarkDotNet.Attributes;
 using System;
+using BenchmarkDotNet.Jobs;
 
 namespace ObjectMappingBenchmarking
 {
@@ -17,9 +18,13 @@ namespace ObjectMappingBenchmarking
     */
 
     [MemoryDiagnoser]
+    [SimpleJob(RuntimeMoniker.NetCoreApp31)]
+    [SimpleJob(RuntimeMoniker.Net50)]
+    [SimpleJob(RuntimeMoniker.Net60)]
     public class MappingTests
     {
-        private const int LoopCount = 100;
+        [Params(10, 100)]
+        public int LoopCount { get; set; }
 
 #if AUTOMAPPER
         private readonly IMapper _autoMapper;
