@@ -4,13 +4,13 @@ using AllOverIt.Aws.AppSync.Client.Extensions;
 using AllOverIt.GenericHost;
 using AllOverIt.Serialization.Abstractions;
 using AllOverIt.Serialization.NewtonsoftJson;
+using AllOverIt.Serialization.SystemTextJson;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using System;
 using System.Threading.Tasks;
-using AllOverIt.Serialization.SystemTextJson;
 
 namespace AppSyncSubscription
 {
