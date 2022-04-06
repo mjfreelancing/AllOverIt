@@ -1,4 +1,4 @@
-======================================================================================================================
+=====================================================================================================================================================================
 
   [1]  AllOverIt                                
         - Targets                                - netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0
@@ -120,4 +120,11 @@
         - AllOverIt dependencies:                - None
         - External dependencies:                 - None
 
-===========================================================================================================
+
+  [17] AllOverIt.DependencyInjection     
+        - Targets                                - netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0
+        - AllOverIt dependencies:                - [16]
+        - External dependencies:                 - Microsoft.Extensions.DependencyInjection v5.0.2 for targets netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0
+                                                                                            v6.0.0 for targets net6.0
+
+=====================================================================================================================================================================

@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>netcoreapp3.1;netstandard2.0;netstandard2.1;net5.0;net6.0</TargetFrameworks>
+        <LangVersion>Latest</LangVersion>
+        <Version>5.0.0</Version>
+        <Authors>Malcolm Smith</Authors>
+        <Company></Company>
+        <Copyright>Copyright © 2022</Copyright>
+        <Description>A library containing useful dependency injection related utilities.</Description>
+        <PackageTags>utilities</PackageTags>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/mjfreelancing/AllOverIt</RepositoryUrl>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup Condition=" '$(TargetFramework)' != 'net6.0' ">
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
+    </ItemGroup>
+
+    <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\AllOverIt\AllOverIt.csproj" />
+    </ItemGroup>
+
+</Project>

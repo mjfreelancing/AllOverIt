@@ -7,6 +7,9 @@ AllOverIt.Aws.AppSync.Client
   * Renamed INamedAppSyncClientProvider => IAppSyncNamedClientProvider
   * Renamed extension method AddNamedAppSyncClient() => AddAppSyncNamedClient
 
+AllOverIt.DependencyInjection
+  * New package
+
 
 10 Feb 2022
 ======================================================================================================================
