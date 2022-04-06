@@ -31,6 +31,8 @@ namespace AutoRegistration
                 {
                     services.AddLogging(configure => configure.AddConsole());
 
+                    services.AutoRegisterSingleton(new ExternalDependenciesRegistrar(Console.WriteLine), new[] { typeof(RepositoryBase) }, true);
+
                     // Note: There are overloads that take a generic for the 'Registrar' (requires a default ctor)
 
                     // ILocalRepository => LocalRepository
