@@ -38,7 +38,7 @@ namespace AllOverIt.DependencyInjection.Extensions
         public static IServiceCollection AutoRegisterSingleton(this IServiceCollection services, IServiceRegistrar serviceRegistrar, IEnumerable<Type> serviceTypes,
             bool includeMatchingInterface = false)
         {
-            serviceRegistrar.AutoRegisterTypes(
+            serviceRegistrar.AutoRegisterServices(
                 serviceTypes,
                 includeMatchingInterface,
                 (serviceType, implementationType) => services.AddSingleton(serviceType, implementationType));
@@ -49,7 +49,7 @@ namespace AllOverIt.DependencyInjection.Extensions
         public static IServiceCollection AutoRegisterSingleton(this IServiceCollection services, IServiceRegistrar serviceRegistrar, IEnumerable<Type> serviceTypes,
             Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, bool includeMatchingInterface = false)
         {
-            serviceRegistrar.AutoRegisterTypes(
+            serviceRegistrar.AutoRegisterServices(
                 serviceTypes,
                 includeMatchingInterface,
                 (serviceType, implementationType) => services.AddSingleton(serviceType, provider =>
@@ -94,7 +94,7 @@ namespace AllOverIt.DependencyInjection.Extensions
         public static IServiceCollection AutoRegisterScoped(this IServiceCollection services, IServiceRegistrar serviceRegistrar, IEnumerable<Type> serviceTypes,
             bool includeMatchingInterface = false)
         {
-            serviceRegistrar.AutoRegisterTypes(
+            serviceRegistrar.AutoRegisterServices(
                 serviceTypes,
                 includeMatchingInterface,
                 (serviceType, implementationType) => services.AddScoped(serviceType, implementationType));
@@ -105,7 +105,7 @@ namespace AllOverIt.DependencyInjection.Extensions
         public static IServiceCollection AutoRegisterScoped(this IServiceCollection services, IServiceRegistrar serviceRegistrar, IEnumerable<Type> serviceTypes,
             Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, bool includeMatchingInterface = false)
         {
-            serviceRegistrar.AutoRegisterTypes(
+            serviceRegistrar.AutoRegisterServices(
                 serviceTypes,
                 includeMatchingInterface,
                 (serviceType, implementationType) => services.AddScoped(serviceType, provider =>
@@ -150,7 +150,7 @@ namespace AllOverIt.DependencyInjection.Extensions
         public static IServiceCollection AutoRegisterTransient(this IServiceCollection services, IServiceRegistrar serviceRegistrar, IEnumerable<Type> serviceTypes,
             bool includeMatchingInterface = false)
         {
-            serviceRegistrar.AutoRegisterTypes(
+            serviceRegistrar.AutoRegisterServices(
                 serviceTypes,
                 includeMatchingInterface,
                 (serviceType, implementationType) => services.AddTransient(serviceType, implementationType));
@@ -161,7 +161,7 @@ namespace AllOverIt.DependencyInjection.Extensions
         public static IServiceCollection AutoRegisterTransient(this IServiceCollection services, IServiceRegistrar serviceRegistrar, IEnumerable<Type> serviceTypes,
             Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, bool includeMatchingInterface = false)
         {
-            serviceRegistrar.AutoRegisterTypes(
+            serviceRegistrar.AutoRegisterServices(
                 serviceTypes,
                 includeMatchingInterface,
                 (serviceType, implementationType) => services.AddTransient(serviceType, provider =>
