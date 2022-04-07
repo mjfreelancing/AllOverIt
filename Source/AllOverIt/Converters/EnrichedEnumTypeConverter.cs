@@ -11,6 +11,8 @@ namespace AllOverIt.Converters
     public class EnrichedEnumTypeConverter<TEnum> : TypeConverter
         where TEnum : EnrichedEnum<TEnum>
     {
+        private static readonly Type EnrichedEnumTypeConverterType = typeof(EnrichedEnumTypeConverter<TEnum>);
+
         /// <inheritdoc />
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
@@ -47,6 +49,13 @@ namespace AllOverIt.Converters
             return destinationType == typeof(string)
                 ? ((EnrichedEnum<TEnum>) value).Name
                 : Convert.ChangeType(((EnrichedEnum<TEnum>) value).Value, destinationType);
+        }
+
+        /// <summary>Creates a <see cref="TypeConverter"/> for an <see cref="EnrichedEnum{TEnum}"/> type.</summary>
+        /// <returns>A new TypeConverter instance.</returns>
+        public static TypeConverter Create()
+        {
+            return (TypeConverter) Activator.CreateInstance(EnrichedEnumTypeConverterType);
         }
     }
 }

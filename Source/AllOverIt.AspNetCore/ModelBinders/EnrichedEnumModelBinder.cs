@@ -29,13 +29,16 @@ namespace AllOverIt.AspNetCore.ModelBinders
                 throw new ArgumentNullException(nameof(bindingContext));
             }
 
-            var enumerationName = bindingContext.ValueProvider.GetValue(bindingContext.FieldName);
+            var valueProviderResult = bindingContext.ValueProvider.GetValue(bindingContext.FieldName);
 
-            var enumerationValue = enumerationName.FirstValue;
+            if (valueProviderResult == ValueProviderResult.None)
+            {
+                return Task.CompletedTask;
+            }
 
-            TEnum result = null;
+            var enumerationValue = valueProviderResult.FirstValue;
 
-            if (enumerationValue == null || TryGetEnrichedEnum(enumerationName.FirstValue, out result))
+            if (TryGetEnrichedEnum(enumerationValue, out var result))
             {
                 bindingContext.Result = ModelBindingResult.Success(result);
             }
@@ -43,7 +46,7 @@ namespace AllOverIt.AspNetCore.ModelBinders
             {
                 bindingContext.Result = ModelBindingResult.Failed();
 
-                bindingContext.ModelState.AddModelError(bindingContext.FieldName, $"The value '{enumerationName.FirstValue}' is not supported.");
+                bindingContext.ModelState.AddModelError(bindingContext.FieldName, $"The value '{valueProviderResult.FirstValue}' is not supported.");
             }
 
             return Task.CompletedTask;

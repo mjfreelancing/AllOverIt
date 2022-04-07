@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Assertion;
+using AllOverIt.Extensions;
 using AllOverIt.Patterns.Enumeration;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
@@ -25,9 +26,7 @@ namespace AllOverIt.AspNetCore.ModelBinders
 
             var enumType = context.Metadata.ModelType.Assembly.GetType(fullyQualifiedName, false);
 
-            var baseType = enumType?.BaseType;
-
-            if (baseType is {IsGenericType: true} && baseType.GetGenericTypeDefinition() == EnrichedEnumType)
+            if (enumType.IsDerivedFrom(EnrichedEnumType))
             {
                 var methodInfo = typeof(EnrichedEnumModelBinder).GetMethod("CreateInstance", BindingFlags.Static | BindingFlags.Public);
 

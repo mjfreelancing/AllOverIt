@@ -3,6 +3,13 @@
 XX XXX XXXX
 Version 5.1.0
 ======================================================================================================================
+AllOverIt
+  * Added static Create() factory method to EnrichedEnumTypeConverter
+
+AllOverIt.AspNetCore
+  * Corrected EnrichedEnumModelBinder to consider all base classes to find EnrichedEnum<>
+  * Added extension method AddEnrichedEnumModelBinder()
+  
 AllOverIt.Aws.AppSync.Client
   * Renamed INamedAppSyncClientProvider => IAppSyncNamedClientProvider
   * Renamed extension method AddNamedAppSyncClient() => AddAppSyncNamedClient

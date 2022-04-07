@@ -6,8 +6,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.23" />
+    </ItemGroup>
+
+    <ItemGroup>
         <ProjectReference Include="..\..\..\Source\AllOverIt.AspNetCore\AllOverIt.AspNetCore.csproj" />
-        <ProjectReference Include="..\..\..\Source\AllOverIt.Serialization.SystemTextJson\AllOverIt.Serialization.SystemTextJson.csproj" />
+        <ProjectReference Include="..\..\..\Source\AllOverIt.Serialization.NewtonsoftJson\AllOverIt.Serialization.NewtonsoftJson.csproj" />
     </ItemGroup>
 
 
