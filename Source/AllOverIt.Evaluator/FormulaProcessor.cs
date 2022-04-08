@@ -50,8 +50,8 @@ namespace AllOverIt.Evaluator
             }
         }
 
-        private string _formula;
         private int _currentIndex;
+        private ReadOnlyMemory<char> _formula;
 
         // tracks whether the last processed token was an operator or an expression so unary plus and unary minus can be handled.
         private bool _lastPushIsOperator;
@@ -84,11 +84,12 @@ namespace AllOverIt.Evaluator
         /// registry before the compiled expression is evaluated.</remarks>
         public FormulaProcessorResult Process(string formula, IVariableRegistry variableRegistry)
         {
-            _formula = formula.WhenNotNullOrEmpty(nameof(formula));
+            _ = formula.WhenNotNullOrEmpty(nameof(formula));
 
             _variableRegistry = variableRegistry;   // can be null
             _lastPushIsOperator = true;             // first token cannot be an operator (unary plus/minus is handled)
             _currentIndex = 0;
+            _formula = formula.AsMemory();
 
             try
             {
@@ -114,8 +115,7 @@ namespace AllOverIt.Evaluator
             }
             catch (Exception exception)
             {
-                var span = _formula.AsSpan();
-                var processed = span[.._currentIndex].ToString();
+                var processed = formula[.._currentIndex];
 
                 throw new FormulaException($"Invalid expression. See index {_currentIndex}, near '{processed}'.", exception);
             }
@@ -340,11 +340,9 @@ namespace AllOverIt.Evaluator
 
         private void ParseContent(bool isUserMethod)
         {
-            var span = _formula.AsSpan();
-
-            while (_currentIndex != span.Length)
+            while (_currentIndex != _formula.Length)
             {
-                var next = span[_currentIndex];
+                var next = _formula.Span[_currentIndex];
 
                 if (char.IsWhiteSpace(next))
                 {
@@ -364,11 +362,9 @@ namespace AllOverIt.Evaluator
             // continue to scan until we get a full word (which may include the full stop character)
             var namedOperand = ReadNamedOperand();
 
-            var span = _formula.AsSpan();
-
             // In the case of a method, we need to peek ahead to see if the next character is a '('.
             // We need to also make sure we are not at the end of a formula (the named operand will be a variable)
-            if (_currentIndex < span.Length && span[_currentIndex] == '(')
+            if (_currentIndex < _formula.Length && _formula.Span[_currentIndex] == '(')
             {
                 // the current 'word' represents the name of a method
                 if (_userDefinedMethodFactory.IsRegistered(namedOperand))
@@ -451,9 +447,7 @@ namespace AllOverIt.Evaluator
         {
             var previousTokenWasExponent = false;
 
-            var span = _formula.AsSpan();
-
-            if (_currentIndex == span.Length)
+            if (_currentIndex == _formula.Length)
             {
                 throw new FormulaException("Nothing to read.");
             }
@@ -461,9 +455,9 @@ namespace AllOverIt.Evaluator
             var startIndex = _currentIndex;
 
             // begin by reading tokens that could make up a numerical value, including support for exponent values
-            while (_currentIndex != span.Length)
+            while (_currentIndex != _formula.Length)
             {
-                var next = span[_currentIndex];
+                var next = _formula.Span[_currentIndex];
 
                 var isExponent = next is 'e' or 'E';
 
@@ -485,7 +479,7 @@ namespace AllOverIt.Evaluator
                 throw new FormulaException("Unexpected non-numerical token.");
             }
 
-            var operand = span[startIndex.._currentIndex];
+            var operand = _formula[startIndex.._currentIndex].Span;
 
             double value;
 
@@ -505,18 +499,16 @@ namespace AllOverIt.Evaluator
 
         private string ReadNamedOperand()
         {
-            var span = _formula.AsSpan();
-
-            if (_currentIndex == span.Length)
+            if (_currentIndex == _formula.Length)
             {
                 throw new FormulaException("Nothing to read");
             }
 
             var startIndex = _currentIndex;
 
-            while (_currentIndex != span.Length)
+            while (_currentIndex != _formula.Length)
             {
-                var next = span[_currentIndex];
+                var next = _formula.Span[_currentIndex];
 
                 // numerical characters are not checked since variables can contain numbers
                 if (next != '(' &&
@@ -538,23 +530,21 @@ namespace AllOverIt.Evaluator
                 throw new FormulaException("Unexpected empty named operand.");
             }
 
-            return span[startIndex.._currentIndex].ToString();
+            return _formula[startIndex.._currentIndex].ToString();
         }
 
         private string ReadOperator()
         {
-            var span = _formula.AsSpan();
-
-            if (_currentIndex == span.Length)
+            if (_currentIndex == _formula.Length)
             {
                 throw new FormulaException("Nothing to read");
             }
 
             var startIndex = _currentIndex;
 
-            while (_currentIndex != span.Length)
+            while (_currentIndex != _formula.Length)
             {
-                var next = span[_currentIndex];
+                var next = _formula.Span[_currentIndex];
 
                 // check for unary plus/minus
                 if (_currentIndex > startIndex && IsUnaryPlusOrMinus(next))
@@ -566,8 +556,8 @@ namespace AllOverIt.Evaluator
                 // keep reading while ever the characters read are part of a registered operator
                 // (almost always a single character, but supports multi-character)
                 var isCandidate = startIndex == _currentIndex
-                    ? IsCandidateOperation(span[_currentIndex])
-                    : IsCandidateOperation(span.Slice(startIndex, _currentIndex - startIndex + 1));
+                    ? IsCandidateOperation(_formula.Span[_currentIndex])
+                    : IsCandidateOperation(_formula.Span.Slice(startIndex, _currentIndex - startIndex + 1));
 
                 if (isCandidate)
                 {
@@ -584,7 +574,7 @@ namespace AllOverIt.Evaluator
                 throw new FormulaException("Unexpected empty operation.");
             }
 
-            return span[startIndex.._currentIndex].ToString();
+            return _formula[startIndex.._currentIndex].ToString();
         }
 
         private static bool IsNumericalCandidate(char token)
