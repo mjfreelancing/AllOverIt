@@ -2,54 +2,65 @@
 using System.Collections.Generic;
 using System.Linq;
 using AllOverIt.Assertion;
+using AllOverIt.DependencyInjection.Exceptions;
 using AllOverIt.Extensions;
 
 namespace AllOverIt.DependencyInjection
 {
-    public abstract class ServiceRegistrarBase : IServiceRegistrar
+    public abstract class ServiceRegistrarBase : IServiceRegistrar, IServiceRegistrarOptions
     {
+        private Func<Type, Type, bool> _registrationFilter;
+        private IEnumerable<Type> _excludedTypes;
+
         /// <inheritdoc />
-        public void AutoRegisterServices(IEnumerable<Type> serviceTypes, bool includeMatchingInterface, Action<Type, Type> registrationAction)
+        public void AutoRegisterServices(IEnumerable<Type> serviceTypes, Action<Type, Type> registrationAction, Action<IServiceRegistrarOptions> configure = default)
         {
+            configure?.Invoke(this);
+
             var allServiceTypes = serviceTypes
                 .WhenNotNullOrEmpty(nameof(serviceTypes))
                 .AsReadOnlyCollection();
 
+            ValidateServiceTypes(allServiceTypes);
+
+            var implementationCandidates = GetType().Assembly
+                .GetTypes()
+                .Where(type => type.IsClass && !type.IsGenericType && !type.IsNested && !type.IsAbstract && !type.IsInterface)
+                .Where(type => _excludedTypes == null || !_excludedTypes.Contains(type));
+
+            foreach (var implementationCandidate in implementationCandidates)
+            {
+                ProcessImplementationCandidate(implementationCandidate, allServiceTypes, registrationAction);
+            }
+        }
+
+        void IServiceRegistrarOptions.ExcludeTypes(params Type[] types)
+        {
+            _excludedTypes = types
+                .WhenNotNullOrEmpty(nameof(types))
+                .AsReadOnlyCollection();
+        }
+
+        void IServiceRegistrarOptions.Filter(Func<Type, Type, bool> filter)
+        {
+            _registrationFilter = filter.WhenNotNull(nameof(filter));
+        }
+
+        private static void ValidateServiceTypes(IEnumerable<Type> allServiceTypes)
+        {
             var invalidServiceTypes = allServiceTypes
                 .Where(serviceType => !serviceType.IsInterface && !serviceType.IsAbstract)
                 .AsReadOnlyCollection();
 
             if (invalidServiceTypes.Any())
             {
-                // TODO: Create a custom exception
                 var invalidTypes = string.Join(", ", invalidServiceTypes.Select(serviceType => serviceType.GetFriendlyName()));
-                throw new InvalidOperationException($"Cannot register {invalidTypes}. All service types must be an interface or abstract type.");
-            }
-
-            var implementationCandidates = GetType().Assembly
-                .GetTypes()
-                .Where(type => type.IsClass && !type.IsGenericType && !type.IsNested && !type.IsAbstract && !type.IsInterface);
-
-            foreach (var implementationCandidate in implementationCandidates)
-            {
-                ProcessImplementationCandidate(implementationCandidate, allServiceTypes, includeMatchingInterface, registrationAction);
+                throw new DependencyRegistrationException($"Cannot register {invalidTypes}. All service types must be an interface or abstract type.");
             }
         }
 
-        protected virtual bool IncludeRegistration(Type serviceType, Type implementationType)
+        private void ProcessImplementationCandidate(Type implementationCandidate, IEnumerable<Type> allServiceTypes, Action<Type, Type> registrationAction)
         {
-            return true;
-        }
-
-        private void ProcessImplementationCandidate(Type implementationCandidate, IEnumerable<Type> allServiceTypes, bool includeMatchingInterface,
-            Action<Type, Type> registrationAction)
-        {
-            // Intentions:
-            //
-            // If a serviceType is an abstract class then register it against any concrete implementations against that type;
-            // When 'includeMatchingInterface' == true, if a serviceType is an interface then register all concrete implementations against that interface;
-            // When 'includeMatchingInterface' == false, if a serviceType is an interface then register all concrete implementations against all inheriting interfaces;
-
             var candidateInterfaces = implementationCandidate
                 .GetInterfaces()
                 .AsReadOnlyCollection();
@@ -60,9 +71,7 @@ namespace AllOverIt.DependencyInjection
             {
                 if (serviceType.IsInterface)
                 {
-                    var interfaces = candidateInterfaces
-                        .Where(@interface => @interface == serviceType && includeMatchingInterface ||
-                                             @interface.IsDerivedFrom(serviceType));
+                    var interfaces = candidateInterfaces.Where(@interface => @interface == serviceType || @interface.IsDerivedFrom(serviceType));
 
                     foreach (var @interface in interfaces)
                     {
@@ -78,7 +87,9 @@ namespace AllOverIt.DependencyInjection
 
         private void TryRegisterType(Type serviceType, Type implementationCandidate, Action<Type, Type> registrationAction)
         {
-            if (IncludeRegistration(serviceType, implementationCandidate))
+            var canRegister = _registrationFilter?.Invoke(serviceType, implementationCandidate) ?? true;
+
+            if (canRegister)
             {
                 registrationAction.Invoke(serviceType, implementationCandidate);
             }

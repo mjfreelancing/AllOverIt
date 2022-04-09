@@ -10,8 +10,16 @@ namespace AllOverIt.DependencyInjection
         /// 
         /// </summary>
         /// <param name="serviceTypes"></param>
-        /// <param name="includeMatchingInterface"></param>
         /// <param name="registrationAction"></param>
-        void AutoRegisterServices(IEnumerable<Type> serviceTypes, bool includeMatchingInterface, Action<Type, Type> registrationAction);
+        /// <param name="configure"></param>
+        void AutoRegisterServices(IEnumerable<Type> serviceTypes, Action<Type, Type> registrationAction, Action<IServiceRegistrarOptions> configure = default);
+    }
+
+    public interface IServiceRegistrarOptions
+    {
+        void ExcludeTypes(params Type[] types);
+
+        // ServiceType, ImplementationType
+        void Filter(Func<Type, Type, bool> filter);
     }
 }

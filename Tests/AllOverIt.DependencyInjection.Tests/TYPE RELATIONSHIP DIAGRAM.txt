@@ -1,0 +1,29 @@
+﻿Assembly 1: AllOverIt.DependencyInjection.Tests.Types
+Assembly 2: AllOverIt.DependencyInjection.Tests
+
+============================================================
+
+Assembly 1
+----------
+            IBaseInterface1                IBaseInterface2
+                    |                              |
+                    |-- ConcreteClassA             |
+                    |                              |
+                    |-- ConcreteClassB             |
+                    |                              |
+                    |             ConcreteClassC --|
+                    |                              |
+                    |-- AbstractClassA             |
+                    |         |                    |
+                    |         |-- ConcreteClassD   |
+                    |         |                    |
+                    |         +-- ConcreteClassE --+
+                    |                              |
+                    |                              |
+                    |------------------+           |
+Assembly 2         |                  |           |
+----------         |                  |           |
+                IInterface3         IInterface4     |
+                    |                  |           |
+                    |                  |           |
+                ConcreteClassF      ConcreteClassG --+
