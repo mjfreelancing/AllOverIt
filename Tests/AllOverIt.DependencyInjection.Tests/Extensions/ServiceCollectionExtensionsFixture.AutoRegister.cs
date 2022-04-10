@@ -24,10 +24,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
         public class AutoRegister_TServiceRegistrar_TServiceType : ServiceCollectionExtensionsFixture
         {
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Throw_When_Services_Null(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_Services_Null(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -39,10 +39,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Not_Throw_When_Configure_Null(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Not_Throw_When_Configure_Null(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -53,10 +53,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Register_No_Exclude_Or_Filter(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Register_No_Exclude_Or_Filter(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -70,10 +70,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Register_With_Exclude(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Register_With_Exclude(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
                     
@@ -87,10 +87,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Register_With_Filter(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Register_With_Filter(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -105,10 +105,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton, true)]
-            [InlineData(RegistrationMode.Scoped, true)]
-            [InlineData(RegistrationMode.Transient, false)]
-            public void Should_Resolve_When_In_Same_Scope(RegistrationMode mode, bool expected)
+            [InlineData(ServiceLifetime.Singleton, true)]
+            [InlineData(ServiceLifetime.Scoped, true)]
+            [InlineData(ServiceLifetime.Transient, false)]
+            public void Should_Resolve_When_In_Same_Scope(ServiceLifetime mode, bool expected)
             {
                 var provider = DependencyHelper
 
@@ -127,10 +127,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton, true)]
-            [InlineData(RegistrationMode.Scoped, false)]
-            [InlineData(RegistrationMode.Transient, false)]
-            public void Should_Resolve_When_In_Different_Scope(RegistrationMode mode, bool expected)
+            [InlineData(ServiceLifetime.Singleton, true)]
+            [InlineData(ServiceLifetime.Scoped, false)]
+            [InlineData(ServiceLifetime.Transient, false)]
+            public void Should_Resolve_When_In_Different_Scope(ServiceLifetime mode, bool expected)
             {
                 var provider = DependencyHelper
 
@@ -153,10 +153,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Resolve_All_Interfaces(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Resolve_All_Interfaces(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -185,10 +185,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Resolve_All_Interfaces_Except_Registered_Service(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Resolve_All_Interfaces_Except_Registered_Service(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -215,10 +215,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Not_Resolve_Abstract_Class_When_Register_Interface(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Not_Resolve_Abstract_Class_When_Register_Interface(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -240,10 +240,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
         public class AutoRegister_TServiceRegistrar_ServiceTypes : ServiceCollectionExtensionsFixture
         {
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Throw_When_Services_Null(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_Services_Null(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -255,10 +255,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Throw_When_ServiceTypes_Null(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_ServiceTypes_Null(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -270,10 +270,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Throw_When_ServiceTypes_Empty(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_ServiceTypes_Empty(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -285,10 +285,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Not_Throw_When_Configure_Null(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Not_Throw_When_Configure_Null(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -300,10 +300,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Register_No_Exclude_Or_Filter(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Register_No_Exclude_Or_Filter(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
                     
@@ -318,10 +318,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Register_With_Exclude(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Register_With_Exclude(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -337,10 +337,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Register_With_Filter(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Register_With_Filter(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -356,10 +356,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton, true)]
-            [InlineData(RegistrationMode.Scoped, true)]
-            [InlineData(RegistrationMode.Transient, false)]
-            public void Should_Resolve_When_In_Same_Scope(RegistrationMode mode, bool expected)
+            [InlineData(ServiceLifetime.Singleton, true)]
+            [InlineData(ServiceLifetime.Scoped, true)]
+            [InlineData(ServiceLifetime.Transient, false)]
+            public void Should_Resolve_When_In_Same_Scope(ServiceLifetime mode, bool expected)
             {
                 var provider = DependencyHelper
 
@@ -384,10 +384,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton, true)]
-            [InlineData(RegistrationMode.Scoped, false)]
-            [InlineData(RegistrationMode.Transient, false)]
-            public void Should_Resolve_When_In_Different_Scope(RegistrationMode mode, bool expected)
+            [InlineData(ServiceLifetime.Singleton, true)]
+            [InlineData(ServiceLifetime.Scoped, false)]
+            [InlineData(ServiceLifetime.Transient, false)]
+            public void Should_Resolve_When_In_Different_Scope(ServiceLifetime mode, bool expected)
             {
                 var provider = DependencyHelper
 
@@ -414,10 +414,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Resolve_All_Interfaces(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Resolve_All_Interfaces(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -445,10 +445,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Resolve_All_Interfaces_Except_Registered_Service(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Resolve_All_Interfaces_Except_Registered_Service(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -479,10 +479,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Not_Resolve_Abstract_Class_When_Register_Interface(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Not_Resolve_Abstract_Class_When_Register_Interface(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -507,10 +507,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             private readonly ExternalDependenciesRegistrar _externalRegistrar = new();
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Throw_When_Services_Null(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_Services_Null(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -522,10 +522,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Throw_When_ServiceRegistrar_Null(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_ServiceRegistrar_Null(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -537,10 +537,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Not_Throw_When_Configure_Null(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Not_Throw_When_Configure_Null(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -551,10 +551,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Register_No_Exclude_Or_Filter(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Register_No_Exclude_Or_Filter(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -568,10 +568,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Register_With_Exclude(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Register_With_Exclude(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -585,10 +585,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Register_With_Filter(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Register_With_Filter(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -603,10 +603,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton, true)]
-            [InlineData(RegistrationMode.Scoped, true)]
-            [InlineData(RegistrationMode.Transient, false)]
-            public void Should_Resolve_When_In_Same_Scope(RegistrationMode mode, bool expected)
+            [InlineData(ServiceLifetime.Singleton, true)]
+            [InlineData(ServiceLifetime.Scoped, true)]
+            [InlineData(ServiceLifetime.Transient, false)]
+            public void Should_Resolve_When_In_Same_Scope(ServiceLifetime mode, bool expected)
             {
                 var provider = DependencyHelper
 
@@ -625,10 +625,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton, true)]
-            [InlineData(RegistrationMode.Scoped, false)]
-            [InlineData(RegistrationMode.Transient, false)]
-            public void Should_Resolve_When_In_Different_Scope(RegistrationMode mode, bool expected)
+            [InlineData(ServiceLifetime.Singleton, true)]
+            [InlineData(ServiceLifetime.Scoped, false)]
+            [InlineData(ServiceLifetime.Transient, false)]
+            public void Should_Resolve_When_In_Different_Scope(ServiceLifetime mode, bool expected)
             {
                 var provider = DependencyHelper
 
@@ -651,10 +651,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Resolve_All_Interfaces(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Resolve_All_Interfaces(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -683,10 +683,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Resolve_All_Interfaces_Except_Registered_Service(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Resolve_All_Interfaces_Except_Registered_Service(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -713,10 +713,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Not_Resolve_Abstract_Class_When_Register_Interface(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Not_Resolve_Abstract_Class_When_Register_Interface(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -741,10 +741,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             private readonly ExternalDependenciesRegistrar _externalRegistrar = new();
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Throw_When_Services_Null(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_Services_Null(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -756,10 +756,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Throw_When_ServiceRegistrar_Null(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_ServiceRegistrar_Null(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -771,10 +771,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Throw_When_ServiceTypes_Null(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_ServiceTypes_Null(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -786,10 +786,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Throw_When_ServiceTypes_Empty(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_ServiceTypes_Empty(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -801,10 +801,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Not_Throw_When_Configure_Null(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Not_Throw_When_Configure_Null(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -816,10 +816,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Register_No_Exclude_Or_Filter(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Register_No_Exclude_Or_Filter(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -834,10 +834,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Register_With_Exclude(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Register_With_Exclude(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -853,10 +853,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Register_With_Filter(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Register_With_Filter(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -872,10 +872,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton, true)]
-            [InlineData(RegistrationMode.Scoped, true)]
-            [InlineData(RegistrationMode.Transient, false)]
-            public void Should_Resolve_When_In_Same_Scope(RegistrationMode mode, bool expected)
+            [InlineData(ServiceLifetime.Singleton, true)]
+            [InlineData(ServiceLifetime.Scoped, true)]
+            [InlineData(ServiceLifetime.Transient, false)]
+            public void Should_Resolve_When_In_Same_Scope(ServiceLifetime mode, bool expected)
             {
                 var provider = DependencyHelper
 
@@ -900,10 +900,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton, true)]
-            [InlineData(RegistrationMode.Scoped, false)]
-            [InlineData(RegistrationMode.Transient, false)]
-            public void Should_Resolve_When_In_Different_Scope(RegistrationMode mode, bool expected)
+            [InlineData(ServiceLifetime.Singleton, true)]
+            [InlineData(ServiceLifetime.Scoped, false)]
+            [InlineData(ServiceLifetime.Transient, false)]
+            public void Should_Resolve_When_In_Different_Scope(ServiceLifetime mode, bool expected)
             {
                 var provider = DependencyHelper
 
@@ -930,10 +930,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Resolve_All_Interfaces(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Resolve_All_Interfaces(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -961,10 +961,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Resolve_All_Interfaces_Except_Registered_Service(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Resolve_All_Interfaces_Except_Registered_Service(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -995,10 +995,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Not_Resolve_Abstract_Class_When_Register_Interface(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Not_Resolve_Abstract_Class_When_Register_Interface(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -1022,10 +1022,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             private readonly IServiceRegistrar[] _registrars = new IServiceRegistrar[] { new LocalDependenciesRegistrar(), new ExternalDependenciesRegistrar()};
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Throw_When_Services_Null(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_Services_Null(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -1037,10 +1037,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Throw_When_ServiceRegistrars_Null(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_ServiceRegistrars_Null(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -1052,10 +1052,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Throw_When_ServiceRegistrars_Empty(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_ServiceRegistrars_Empty(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -1067,10 +1067,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Throw_When_ServiceTypes_Null(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_ServiceTypes_Null(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -1082,10 +1082,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Throw_When_ServiceTypes_Empty(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_ServiceTypes_Empty(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -1097,10 +1097,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Not_Throw_When_Configure_Null(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Not_Throw_When_Configure_Null(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -1112,10 +1112,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Register_No_Exclude_Or_Filter(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Register_No_Exclude_Or_Filter(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -1128,10 +1128,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Register_With_Exclude(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Register_With_Exclude(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
                     
@@ -1145,10 +1145,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Register_With_Filter(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Register_With_Filter(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -1162,10 +1162,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton, true)]
-            [InlineData(RegistrationMode.Scoped, true)]
-            [InlineData(RegistrationMode.Transient, false)]
-            public void Should_Resolve_When_In_Same_Scope(RegistrationMode mode, bool expected)
+            [InlineData(ServiceLifetime.Singleton, true)]
+            [InlineData(ServiceLifetime.Scoped, true)]
+            [InlineData(ServiceLifetime.Transient, false)]
+            public void Should_Resolve_When_In_Same_Scope(ServiceLifetime mode, bool expected)
             {
                 var provider = DependencyHelper
 
@@ -1188,10 +1188,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton, true)]
-            [InlineData(RegistrationMode.Scoped, false)]
-            [InlineData(RegistrationMode.Transient, false)]
-            public void Should_Resolve_When_In_Different_Scope(RegistrationMode mode, bool expected)
+            [InlineData(ServiceLifetime.Singleton, true)]
+            [InlineData(ServiceLifetime.Scoped, false)]
+            [InlineData(ServiceLifetime.Transient, false)]
+            public void Should_Resolve_When_In_Different_Scope(ServiceLifetime mode, bool expected)
             {
                 var provider = DependencyHelper
 
@@ -1216,10 +1216,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Resolve_All_Interfaces(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Resolve_All_Interfaces(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -1245,10 +1245,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Resolve_All_Interfaces_Except_Registered_Service(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Resolve_All_Interfaces_Except_Registered_Service(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -1276,10 +1276,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Not_Resolve_Abstract_Class_When_Register_Interface(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Not_Resolve_Abstract_Class_When_Register_Interface(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -1299,10 +1299,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
         public class AutoRegister_TServiceRegistrar_ServiceTypes_ConstructorArgs : ServiceCollectionExtensionsFixture
         {
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Throw_When_Services_Null(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_Services_Null(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -1315,10 +1315,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Throw_When_ServiceTypes_Null(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_ServiceTypes_Null(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -1331,10 +1331,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Throw_When_ServiceTypes_Empty(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_ServiceTypes_Empty(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -1347,10 +1347,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Throw_When_ConstructorArgs_Null(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_ConstructorArgs_Null(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -1362,10 +1362,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Not_Throw_When_Configure_Null(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Not_Throw_When_Configure_Null(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -1377,10 +1377,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Register_No_Exclude_Or_Filter(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Register_No_Exclude_Or_Filter(ServiceLifetime mode)
             {
                 var value = Create<int>();
 
@@ -1407,10 +1407,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Register_With_Exclude(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Register_With_Exclude(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -1424,10 +1424,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Register_With_Filter(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Register_With_Filter(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -1441,10 +1441,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton, true)]
-            [InlineData(RegistrationMode.Scoped, true)]
-            [InlineData(RegistrationMode.Transient, false)]
-            public void Should_Resolve_When_In_Same_Scope(RegistrationMode mode, bool expected)
+            [InlineData(ServiceLifetime.Singleton, true)]
+            [InlineData(ServiceLifetime.Scoped, true)]
+            [InlineData(ServiceLifetime.Transient, false)]
+            public void Should_Resolve_When_In_Same_Scope(ServiceLifetime mode, bool expected)
             {
                 var provider = DependencyHelper
 
@@ -1462,10 +1462,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton, true)]
-            [InlineData(RegistrationMode.Scoped, false)]
-            [InlineData(RegistrationMode.Transient, false)]
-            public void Should_Resolve_When_In_Different_Scope(RegistrationMode mode, bool expected)
+            [InlineData(ServiceLifetime.Singleton, true)]
+            [InlineData(ServiceLifetime.Scoped, false)]
+            [InlineData(ServiceLifetime.Transient, false)]
+            public void Should_Resolve_When_In_Different_Scope(ServiceLifetime mode, bool expected)
             {
                 var provider = DependencyHelper
 
@@ -1492,10 +1492,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             private readonly ExternalDependenciesRegistrar _registrar = new ();
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Throw_When_Services_Null(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_Services_Null(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -1508,10 +1508,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Throw_When_ServiceRegistrar_Null(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_ServiceRegistrar_Null(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -1524,10 +1524,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Throw_When_ServiceTypes_Null(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_ServiceTypes_Null(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -1540,10 +1540,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Throw_When_ServiceTypes_Empty(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_ServiceTypes_Empty(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -1556,10 +1556,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Throw_When_ConstructorArgs_Null(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_ConstructorArgs_Null(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -1571,10 +1571,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Not_Throw_When_Configure_Null(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Not_Throw_When_Configure_Null(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -1586,10 +1586,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Register_No_Exclude_Or_Filter(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Register_No_Exclude_Or_Filter(ServiceLifetime mode)
             {
                 var value = Create<int>();
 
@@ -1616,10 +1616,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Register_With_Exclude(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Register_With_Exclude(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -1633,10 +1633,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Register_With_Filter(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Register_With_Filter(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -1650,10 +1650,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton, true)]
-            [InlineData(RegistrationMode.Scoped, true)]
-            [InlineData(RegistrationMode.Transient, false)]
-            public void Should_Resolve_When_In_Same_Scope(RegistrationMode mode, bool expected)
+            [InlineData(ServiceLifetime.Singleton, true)]
+            [InlineData(ServiceLifetime.Scoped, true)]
+            [InlineData(ServiceLifetime.Transient, false)]
+            public void Should_Resolve_When_In_Same_Scope(ServiceLifetime mode, bool expected)
             {
                 var provider = DependencyHelper
 
@@ -1671,10 +1671,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton, true)]
-            [InlineData(RegistrationMode.Scoped, false)]
-            [InlineData(RegistrationMode.Transient, false)]
-            public void Should_Resolve_When_In_Different_Scope(RegistrationMode mode, bool expected)
+            [InlineData(ServiceLifetime.Singleton, true)]
+            [InlineData(ServiceLifetime.Scoped, false)]
+            [InlineData(ServiceLifetime.Transient, false)]
+            public void Should_Resolve_When_In_Different_Scope(ServiceLifetime mode, bool expected)
             {
                 var provider = DependencyHelper
 
@@ -1701,10 +1701,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             private readonly IServiceRegistrar[] _registrars = new[] {(IServiceRegistrar) new LocalDependenciesRegistrar(), new ExternalDependenciesRegistrar()};
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Throw_When_Services_Null(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_Services_Null(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -1717,10 +1717,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Throw_When_ServiceRegistrars_Null(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_ServiceRegistrars_Null(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -1733,10 +1733,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Throw_When_ServiceRegistrars_Empty(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_ServiceRegistrars_Empty(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -1749,10 +1749,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Throw_When_ServiceTypes_Null(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_ServiceTypes_Null(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -1765,10 +1765,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Throw_When_ServiceTypes_Empty(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_ServiceTypes_Empty(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -1781,10 +1781,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Throw_When_ConstructorArgs_Null(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_ConstructorArgs_Null(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -1796,10 +1796,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Not_Throw_When_Configure_Null(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Not_Throw_When_Configure_Null(ServiceLifetime mode)
             {
                 Invoking(() =>
                     {
@@ -1811,10 +1811,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Register_No_Exclude_Or_Filter(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Register_No_Exclude_Or_Filter(ServiceLifetime mode)
             {
                 var value = Create<int>();
 
@@ -1846,10 +1846,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Register_With_Exclude(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Register_With_Exclude(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -1863,10 +1863,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton)]
-            [InlineData(RegistrationMode.Scoped)]
-            [InlineData(RegistrationMode.Transient)]
-            public void Should_Register_With_Filter(RegistrationMode mode)
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Register_With_Filter(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
 
@@ -1880,10 +1880,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton, true)]
-            [InlineData(RegistrationMode.Scoped, true)]
-            [InlineData(RegistrationMode.Transient, false)]
-            public void Should_Resolve_When_In_Same_Scope(RegistrationMode mode, bool expected)
+            [InlineData(ServiceLifetime.Singleton, true)]
+            [InlineData(ServiceLifetime.Scoped, true)]
+            [InlineData(ServiceLifetime.Transient, false)]
+            public void Should_Resolve_When_In_Same_Scope(ServiceLifetime mode, bool expected)
             {
                 var provider = DependencyHelper
 
@@ -1901,10 +1901,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Theory]
-            [InlineData(RegistrationMode.Singleton, true)]
-            [InlineData(RegistrationMode.Scoped, false)]
-            [InlineData(RegistrationMode.Transient, false)]
-            public void Should_Resolve_When_In_Different_Scope(RegistrationMode mode, bool expected)
+            [InlineData(ServiceLifetime.Singleton, true)]
+            [InlineData(ServiceLifetime.Scoped, false)]
+            [InlineData(ServiceLifetime.Transient, false)]
+            public void Should_Resolve_When_In_Different_Scope(ServiceLifetime mode, bool expected)
             {
                 var provider = DependencyHelper
 
