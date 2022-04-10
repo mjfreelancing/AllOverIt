@@ -115,5 +115,33 @@ namespace AllOverIt.DependencyInjection.Tests.Helpers
         {
             return AutoRegisterUsingMode(mode, services, serviceRegistrars, serviceTypes, configure);
         }
+
+
+        public static IServiceCollection AutoRegisterUsingMode<TServiceRegistrar>(RegistrationMode mode, IServiceCollection services, IEnumerable<Type> serviceTypes,
+            Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions> configure = default)
+            where TServiceRegistrar : IServiceRegistrar, new()
+        {
+            return mode switch
+            {
+                RegistrationMode.Singleton => ServiceCollectionExtensions.AutoRegisterSingleton<TServiceRegistrar>(services, serviceTypes, constructorArgsResolver, configure),
+
+                RegistrationMode.Scoped => ServiceCollectionExtensions.AutoRegisterScoped<TServiceRegistrar>(services, serviceTypes, constructorArgsResolver, configure),
+
+                RegistrationMode.Transient => ServiceCollectionExtensions.AutoRegisterTransient<TServiceRegistrar>(services, serviceTypes, constructorArgsResolver, configure),
+
+                _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
+            };
+        }
+
+        public static IServiceCollection AutoRegisterUsingMode<TServiceRegistrar>(this IServiceCollection services, RegistrationMode mode, IEnumerable<Type> serviceTypes,
+            Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions> configure = default)
+            where TServiceRegistrar : IServiceRegistrar, new()
+        {
+            return AutoRegisterUsingMode<TServiceRegistrar>(mode, services, serviceTypes, constructorArgsResolver,
+                configure);
+        }
+
+
+
     }
 }
