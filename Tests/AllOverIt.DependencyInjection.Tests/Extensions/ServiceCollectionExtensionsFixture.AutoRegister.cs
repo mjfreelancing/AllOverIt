@@ -73,23 +73,6 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Register_With_Exclude(ServiceLifetime mode)
-            {
-                var provider = DependencyHelper
-                    
-                    .AutoRegisterUsingMode<LocalDependenciesRegistrar, AbstractClassA>(mode, _serviceCollection)
-
-                    .AutoRegisterUsingMode<ExternalDependenciesRegistrar, AbstractClassA>(mode, config => config.ExcludeTypes(typeof(ConcreteClassE)))
-
-                    .BuildServiceProvider();
-
-                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassG) });
-            }
-
-            [Theory]
-            [InlineData(ServiceLifetime.Singleton)]
-            [InlineData(ServiceLifetime.Scoped)]
-            [InlineData(ServiceLifetime.Transient)]
             public void Should_Register_With_Filter(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
@@ -321,25 +304,6 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Register_With_Exclude(ServiceLifetime mode)
-            {
-                var provider = DependencyHelper
-
-                    .AutoRegisterUsingMode<LocalDependenciesRegistrar>(mode, _serviceCollection, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
-
-                    .AutoRegisterUsingMode<ExternalDependenciesRegistrar>(mode, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) },
-                        config => config.ExcludeTypes(typeof(ConcreteClassE)))
-
-                    .BuildServiceProvider();
-
-                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassG) });
-                AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassG) });
-            }
-
-            [Theory]
-            [InlineData(ServiceLifetime.Singleton)]
-            [InlineData(ServiceLifetime.Scoped)]
-            [InlineData(ServiceLifetime.Transient)]
             public void Should_Register_With_Filter(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
@@ -565,23 +529,6 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                     .BuildServiceProvider();
 
                 AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
-            }
-
-            [Theory]
-            [InlineData(ServiceLifetime.Singleton)]
-            [InlineData(ServiceLifetime.Scoped)]
-            [InlineData(ServiceLifetime.Transient)]
-            public void Should_Register_With_Exclude(ServiceLifetime mode)
-            {
-                var provider = DependencyHelper
-
-                    .AutoRegisterUsingMode<AbstractClassA>(mode, _serviceCollection, _localRegistrar)
-
-                    .AutoRegisterUsingMode<AbstractClassA>(mode, _externalRegistrar, config => config.ExcludeTypes(typeof(ConcreteClassE)))
-
-                    .BuildServiceProvider();
-
-                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassG) });
             }
 
             [Theory]
@@ -831,25 +778,6 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
 
                 AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
                 AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
-            }
-
-            [Theory]
-            [InlineData(ServiceLifetime.Singleton)]
-            [InlineData(ServiceLifetime.Scoped)]
-            [InlineData(ServiceLifetime.Transient)]
-            public void Should_Register_With_Exclude(ServiceLifetime mode)
-            {
-                var provider = DependencyHelper
-
-                    .AutoRegisterUsingMode(mode, _serviceCollection, _localRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
-
-                    .AutoRegisterUsingMode(mode, _externalRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) },
-                        config => config.ExcludeTypes(typeof(ConcreteClassE)))
-
-                    .BuildServiceProvider();
-
-                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassG) });
-                AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassG) });
             }
 
             [Theory]
@@ -1131,23 +1059,6 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Register_With_Exclude(ServiceLifetime mode)
-            {
-                var provider = DependencyHelper
-                    
-                    .AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) },
-                        config => config.ExcludeTypes(typeof(ConcreteClassE)))
-
-                    .BuildServiceProvider();
-
-                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassG) });
-                AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassG) });
-            }
-
-            [Theory]
-            [InlineData(ServiceLifetime.Singleton)]
-            [InlineData(ServiceLifetime.Scoped)]
-            [InlineData(ServiceLifetime.Transient)]
             public void Should_Register_With_Filter(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
@@ -1410,23 +1321,6 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Register_With_Exclude(ServiceLifetime mode)
-            {
-                var provider = DependencyHelper
-
-                    .AutoRegisterUsingMode<ExternalDependenciesRegistrar>(mode, _serviceCollection, new[] { typeof(IBaseInterface3) },
-                        (provider, serviceType) => new object[] { Create<int>() },
-                        config => config.ExcludeTypes(typeof(ConcreteClassH)))
-
-                    .BuildServiceProvider();
-
-                AssertExpectation<IBaseInterface3>(provider, new[] { typeof(ConcreteClassI) });
-            }
-
-            [Theory]
-            [InlineData(ServiceLifetime.Singleton)]
-            [InlineData(ServiceLifetime.Scoped)]
-            [InlineData(ServiceLifetime.Transient)]
             public void Should_Register_With_Filter(ServiceLifetime mode)
             {
                 var provider = DependencyHelper
@@ -1613,23 +1507,6 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                     .Single(instance => instance is ConcreteClassI)
                     .Value
                     .Should().Be(value * 100);
-            }
-
-            [Theory]
-            [InlineData(ServiceLifetime.Singleton)]
-            [InlineData(ServiceLifetime.Scoped)]
-            [InlineData(ServiceLifetime.Transient)]
-            public void Should_Register_With_Exclude(ServiceLifetime mode)
-            {
-                var provider = DependencyHelper
-
-                    .AutoRegisterUsingMode(mode, _serviceCollection, _registrar, new[] { typeof(IBaseInterface3) },
-                        (provider, serviceType) => new object[] { Create<int>() },
-                        config => config.ExcludeTypes(typeof(ConcreteClassH)))
-
-                    .BuildServiceProvider();
-
-                AssertExpectation<IBaseInterface3>(provider, new[] { typeof(ConcreteClassI) });
             }
 
             [Theory]
@@ -1843,23 +1720,6 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                     .Single(instance => instance is ConcreteClassJ)
                     .Value
                     .Should().Be(value - 100);
-            }
-
-            [Theory]
-            [InlineData(ServiceLifetime.Singleton)]
-            [InlineData(ServiceLifetime.Scoped)]
-            [InlineData(ServiceLifetime.Transient)]
-            public void Should_Register_With_Exclude(ServiceLifetime mode)
-            {
-                var provider = DependencyHelper
-
-                    .AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new[] { typeof(IBaseInterface3) },
-                        (provider, serviceType) => new object[] { Create<int>() },
-                        config => config.ExcludeTypes(typeof(ConcreteClassH)))
-
-                    .BuildServiceProvider();
-
-                AssertExpectation<IBaseInterface3>(provider, new[] { typeof(ConcreteClassI), typeof(ConcreteClassJ) });
             }
 
             [Theory]

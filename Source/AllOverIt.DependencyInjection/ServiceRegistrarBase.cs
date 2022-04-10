@@ -10,7 +10,6 @@ namespace AllOverIt.DependencyInjection
     public abstract class ServiceRegistrarBase : IServiceRegistrar, IServiceRegistrarOptions
     {
         private Func<Type, Type, bool> _registrationFilter;
-        private IEnumerable<Type> _excludedTypes;
 
         /// <inheritdoc />
         public void AutoRegisterServices(IEnumerable<Type> serviceTypes, Action<Type, Type> registrationAction, Action<IServiceRegistrarOptions> configure = default)
@@ -25,20 +24,12 @@ namespace AllOverIt.DependencyInjection
 
             var implementationCandidates = GetType().Assembly
                 .GetTypes()
-                .Where(type => type.IsClass && !type.IsGenericType && !type.IsNested && !type.IsAbstract && !type.IsInterface)
-                .Where(type => _excludedTypes == null || !_excludedTypes.Contains(type));
+                .Where(type => type.IsClass && !type.IsGenericType && !type.IsNested && !type.IsAbstract && !type.IsInterface);
 
             foreach (var implementationCandidate in implementationCandidates)
             {
                 ProcessImplementationCandidate(implementationCandidate, allServiceTypes, registrationAction);
             }
-        }
-
-        void IServiceRegistrarOptions.ExcludeTypes(params Type[] types)
-        {
-            _excludedTypes = types
-                .WhenNotNullOrEmpty(nameof(types))
-                .AsReadOnlyCollection();
         }
 
         void IServiceRegistrarOptions.Filter(Func<Type, Type, bool> filter)
