@@ -1,6 +1,6 @@
 ﻿namespace AllOverIt.DependencyInjection.Tests
 {
-    internal sealed class ConcreteClassF : IInterface3
+    internal sealed class ConcreteClassF : IBaseInterface5
     {
     }
 }

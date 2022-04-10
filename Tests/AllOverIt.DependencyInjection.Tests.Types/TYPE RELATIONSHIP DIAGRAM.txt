@@ -23,7 +23,7 @@ Assembly 1
                     |------------------+             |                          |
 Assembly 2          |                  |             |                          |
 ----------          |                  |             |                          |
-                 IInterface3      IInterface4        |                          |
-                     |                   |           |                          |
-                     |                   |           |                          |
+              IBaseInterface5     IInterface4        |                          |
+                     |                 |             |                          |
+                     |                 |             |                          |
                ConcreteClassF    ConcreteClassG ----+         ConcreteClassJ ---+

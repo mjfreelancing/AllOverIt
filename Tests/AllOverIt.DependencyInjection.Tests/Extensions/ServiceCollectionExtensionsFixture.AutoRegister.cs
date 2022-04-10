@@ -27,11 +27,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Throw_When_Services_Null(ServiceLifetime mode)
+            public void Should_Throw_When_Services_Null(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode<ExternalDependenciesRegistrar, AbstractClassA>(mode, null);
+                        DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar, AbstractClassA>(lifetime, null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -42,11 +42,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Not_Throw_When_Configure_Null(ServiceLifetime mode)
+            public void Should_Not_Throw_When_Configure_Null(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode<ExternalDependenciesRegistrar, AbstractClassA>(mode, _serviceCollection, null);
+                        DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar, AbstractClassA>(lifetime, _serviceCollection, null);
                     })
                     .Should()
                     .NotThrow();
@@ -56,74 +56,74 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Register_No_Exclude_Or_Filter(ServiceLifetime mode)
+            public void Should_Register_No_Exclude_Or_Filter(ServiceLifetime lifetime)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode<LocalDependenciesRegistrar, AbstractClassA>(mode, _serviceCollection)
+                    .AutoRegisterUsingServiceLifetime<LocalDependenciesRegistrar, AbstractClassA>(lifetime, _serviceCollection)
 
-                    .AutoRegisterUsingMode<ExternalDependenciesRegistrar, AbstractClassA>(mode)
+                    .AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar, AbstractClassA>(lifetime)
 
                     .BuildServiceProvider();
 
-                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+                DependencyHelper.AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
             }
 
             [Theory]
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Register_With_Filter(ServiceLifetime mode)
+            public void Should_Register_With_Filter(ServiceLifetime lifetime)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode<LocalDependenciesRegistrar, AbstractClassA>(mode, _serviceCollection)
+                    .AutoRegisterUsingServiceLifetime<LocalDependenciesRegistrar, AbstractClassA>(lifetime, _serviceCollection)
 
-                    .AutoRegisterUsingMode<ExternalDependenciesRegistrar, AbstractClassA>(mode, config =>
+                    .AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar, AbstractClassA>(lifetime, config =>
                         config.Filter((service, implementation) => implementation != typeof(ConcreteClassE)))
 
                     .BuildServiceProvider();
 
-                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassG) });
+                DependencyHelper.AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassG) });
             }
 
             [Theory]
             [InlineData(ServiceLifetime.Singleton, true)]
             [InlineData(ServiceLifetime.Scoped, true)]
             [InlineData(ServiceLifetime.Transient, false)]
-            public void Should_Resolve_When_In_Same_Scope(ServiceLifetime mode, bool expected)
+            public void Should_Resolve_When_In_Same_Scope(ServiceLifetime lifetime, bool expected)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode<LocalDependenciesRegistrar, AbstractClassA>(mode, _serviceCollection)
+                    .AutoRegisterUsingServiceLifetime<LocalDependenciesRegistrar, AbstractClassA>(lifetime, _serviceCollection)
 
-                    .AutoRegisterUsingMode<ExternalDependenciesRegistrar, AbstractClassA>(mode)
+                    .AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar, AbstractClassA>(lifetime)
 
                     .BuildServiceProvider();
 
-                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+                DependencyHelper.AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
 
                 var instances1 = provider.GetRequiredService<IEnumerable<AbstractClassA>>();
                 var instances2 = provider.GetRequiredService<IEnumerable<AbstractClassA>>();
 
-                AssertInstanceEquality(instances1, instances2, expected);
+                DependencyHelper.AssertInstanceEquality(instances1, instances2, expected);
             }
 
             [Theory]
             [InlineData(ServiceLifetime.Singleton, true)]
             [InlineData(ServiceLifetime.Scoped, false)]
             [InlineData(ServiceLifetime.Transient, false)]
-            public void Should_Resolve_When_In_Different_Scope(ServiceLifetime mode, bool expected)
+            public void Should_Resolve_When_In_Different_Scope(ServiceLifetime lifetime, bool expected)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode<LocalDependenciesRegistrar, AbstractClassA>(mode, _serviceCollection)
+                    .AutoRegisterUsingServiceLifetime<LocalDependenciesRegistrar, AbstractClassA>(lifetime, _serviceCollection)
 
-                    .AutoRegisterUsingMode<ExternalDependenciesRegistrar, AbstractClassA>(mode)
+                    .AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar, AbstractClassA>(lifetime)
 
                     .BuildServiceProvider();
 
-                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+                DependencyHelper.AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
 
                 var instances1 = provider.GetRequiredService<IEnumerable<AbstractClassA>>();
 
@@ -131,7 +131,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                 {
                     var instances2 = scopedProvider.ServiceProvider.GetRequiredService<IEnumerable<AbstractClassA>>();
 
-                    AssertInstanceEquality(instances1, instances2, expected);
+                    DependencyHelper.AssertInstanceEquality(instances1, instances2, expected);
                 }
             }
 
@@ -139,30 +139,30 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Resolve_All_Interfaces(ServiceLifetime mode)
+            public void Should_Resolve_All_Interfaces(ServiceLifetime lifetime)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode<LocalDependenciesRegistrar, IBaseInterface1>(mode, _serviceCollection)
+                    .AutoRegisterUsingServiceLifetime<LocalDependenciesRegistrar, IBaseInterface1>(lifetime, _serviceCollection)
 
-                    .AutoRegisterUsingMode<ExternalDependenciesRegistrar, IBaseInterface1>(mode)
+                    .AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar, IBaseInterface1>(lifetime)
 
                     .BuildServiceProvider();
 
-                AssertExpectation<IBaseInterface1>(
+                DependencyHelper.AssertExpectation<IBaseInterface1>(
                     provider,
                     new[] { typeof(ConcreteClassA), typeof(ConcreteClassB), typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassF), typeof(ConcreteClassG) });
 
                 // ConcreteClassE implements IBaseInterface2 BUT it is not registered because it does not inherit IBaseInterface1
-                AssertExpectation<IBaseInterface2>(
+                DependencyHelper.AssertExpectation<IBaseInterface2>(
                     provider,
                     Enumerable.Empty<Type>());
 
-                AssertExpectation<IInterface3>(
+                DependencyHelper.AssertExpectation<IBaseInterface5>(
                     provider,
                     new[] { typeof(ConcreteClassF) });
 
-                AssertExpectation<IInterface4>(
+                DependencyHelper.AssertExpectation<IBaseInterface4>(
                     provider,
                     new[] { typeof(ConcreteClassG) });
             }
@@ -171,28 +171,28 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Resolve_All_Interfaces_Except_Registered_Service(ServiceLifetime mode)
+            public void Should_Resolve_All_Interfaces_Except_Registered_Service(ServiceLifetime lifetime)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode<LocalDependenciesRegistrar, IBaseInterface1>(mode, _serviceCollection,
+                    .AutoRegisterUsingServiceLifetime<LocalDependenciesRegistrar, IBaseInterface1>(lifetime, _serviceCollection,
                         config => config.Filter((service, implementation) => service != typeof(IBaseInterface1)))
 
-                    .AutoRegisterUsingMode<ExternalDependenciesRegistrar, IBaseInterface1>(mode,
+                    .AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar, IBaseInterface1>(lifetime,
                         config => config.Filter((service, implementation) => service != typeof(IBaseInterface1)))
 
                     .BuildServiceProvider();
 
                 // IBaseInterface1 has been filtered out
-                AssertExpectation<IBaseInterface1>(
+                DependencyHelper.AssertExpectation<IBaseInterface1>(
                     provider,
                     Enumerable.Empty<Type>());
 
-                AssertExpectation<IInterface3>(
+                DependencyHelper.AssertExpectation<IBaseInterface5>(
                     provider,
                     new[] { typeof(ConcreteClassF) });
 
-                AssertExpectation<IInterface4>(
+                DependencyHelper.AssertExpectation<IBaseInterface4>(
                     provider,
                     new[] { typeof(ConcreteClassG) });
             }
@@ -201,20 +201,20 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Not_Resolve_Abstract_Class_When_Register_Interface(ServiceLifetime mode)
+            public void Should_Not_Resolve_Abstract_Class_When_Register_Interface(ServiceLifetime lifetime)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode<LocalDependenciesRegistrar, IBaseInterface1>(mode, _serviceCollection)
+                    .AutoRegisterUsingServiceLifetime<LocalDependenciesRegistrar, IBaseInterface1>(lifetime, _serviceCollection)
 
-                    .AutoRegisterUsingMode<ExternalDependenciesRegistrar, IBaseInterface1>(mode)
+                    .AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar, IBaseInterface1>(lifetime)
 
                     .BuildServiceProvider();
 
                 // Not currently supporting the ability to do this - it could be extended to resolve ConcreteClassD, ConcreteClassE, ConcreteClassG
                 // on the basis they all inherit AbstractClassA which inherits IBaseInterface1 but at this time you either register an abstract
                 // class or an interface.
-                AssertExpectation<AbstractClassA>(
+                DependencyHelper.AssertExpectation<AbstractClassA>(
                     provider,
                     Enumerable.Empty<Type>());
             }
@@ -226,11 +226,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Throw_When_Services_Null(ServiceLifetime mode)
+            public void Should_Throw_When_Services_Null(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode<ExternalDependenciesRegistrar>(mode, null, new[] {typeof(AbstractClassA), typeof(IBaseInterface2)});
+                        DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, null, new[] {typeof(AbstractClassA), typeof(IBaseInterface2)});
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -241,11 +241,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Throw_When_ServiceTypes_Null(ServiceLifetime mode)
+            public void Should_Throw_When_ServiceTypes_Null(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode<ExternalDependenciesRegistrar>(mode, _serviceCollection, (IEnumerable<Type>)null);
+                        DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, _serviceCollection, (IEnumerable<Type>)null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -256,11 +256,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Throw_When_ServiceTypes_Empty(ServiceLifetime mode)
+            public void Should_Throw_When_ServiceTypes_Empty(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode<ExternalDependenciesRegistrar>(mode, _serviceCollection, new List<Type>());
+                        DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, _serviceCollection, new List<Type>());
                     })
                     .Should()
                     .Throw<ArgumentException>()
@@ -271,11 +271,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Not_Throw_When_Configure_Null(ServiceLifetime mode)
+            public void Should_Not_Throw_When_Configure_Null(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode<ExternalDependenciesRegistrar>(mode, _serviceCollection,
+                        DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, _serviceCollection,
                             new[] {typeof(AbstractClassA), typeof(IBaseInterface2)});
                     })
                     .Should()
@@ -286,83 +286,83 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Register_No_Exclude_Or_Filter(ServiceLifetime mode)
+            public void Should_Register_No_Exclude_Or_Filter(ServiceLifetime lifetime)
             {
                 var provider = DependencyHelper
                     
-                    .AutoRegisterUsingMode<LocalDependenciesRegistrar>(mode, _serviceCollection, new[] {typeof(AbstractClassA), typeof(IBaseInterface2) })
+                    .AutoRegisterUsingServiceLifetime<LocalDependenciesRegistrar>(lifetime, _serviceCollection, new[] {typeof(AbstractClassA), typeof(IBaseInterface2) })
 
-                    .AutoRegisterUsingMode<ExternalDependenciesRegistrar>(mode, new[] {typeof(AbstractClassA), typeof(IBaseInterface2) })
+                    .AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, new[] {typeof(AbstractClassA), typeof(IBaseInterface2) })
 
                     .BuildServiceProvider();
 
-                AssertExpectation<AbstractClassA>(provider, new[] {typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG)});
-                AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+                DependencyHelper.AssertExpectation<AbstractClassA>(provider, new[] {typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG)});
+                DependencyHelper.AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
             }
 
             [Theory]
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Register_With_Filter(ServiceLifetime mode)
+            public void Should_Register_With_Filter(ServiceLifetime lifetime)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode<LocalDependenciesRegistrar>(mode, _serviceCollection, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
+                    .AutoRegisterUsingServiceLifetime<LocalDependenciesRegistrar>(lifetime, _serviceCollection, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
 
-                    .AutoRegisterUsingMode<ExternalDependenciesRegistrar>(mode, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) }, config =>
+                    .AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) }, config =>
                         config.Filter((service, implementation) => implementation != typeof(ConcreteClassE)))
 
                     .BuildServiceProvider();
 
-                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassG) });
-                AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassG) });
+                DependencyHelper.AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassG) });
+                DependencyHelper.AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassG) });
             }
 
             [Theory]
             [InlineData(ServiceLifetime.Singleton, true)]
             [InlineData(ServiceLifetime.Scoped, true)]
             [InlineData(ServiceLifetime.Transient, false)]
-            public void Should_Resolve_When_In_Same_Scope(ServiceLifetime mode, bool expected)
+            public void Should_Resolve_When_In_Same_Scope(ServiceLifetime lifetime, bool expected)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode<LocalDependenciesRegistrar>(mode, _serviceCollection, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
+                    .AutoRegisterUsingServiceLifetime<LocalDependenciesRegistrar>(lifetime, _serviceCollection, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
 
-                    .AutoRegisterUsingMode<ExternalDependenciesRegistrar>(mode, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
+                    .AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
 
                     .BuildServiceProvider();
 
-                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
-                AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+                DependencyHelper.AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+                DependencyHelper.AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
 
                 var instances1a = provider.GetRequiredService<IEnumerable<AbstractClassA>>();
                 var instances1b = provider.GetRequiredService<IEnumerable<AbstractClassA>>();
 
-                AssertInstanceEquality(instances1a, instances1b, expected);
+                DependencyHelper.AssertInstanceEquality(instances1a, instances1b, expected);
 
                 var instances2a = provider.GetRequiredService<IEnumerable<IBaseInterface2>>();
                 var instances2b = provider.GetRequiredService<IEnumerable<IBaseInterface2>>();
 
-                AssertInstanceEquality(instances2a, instances2b, expected);
+                DependencyHelper.AssertInstanceEquality(instances2a, instances2b, expected);
             }
 
             [Theory]
             [InlineData(ServiceLifetime.Singleton, true)]
             [InlineData(ServiceLifetime.Scoped, false)]
             [InlineData(ServiceLifetime.Transient, false)]
-            public void Should_Resolve_When_In_Different_Scope(ServiceLifetime mode, bool expected)
+            public void Should_Resolve_When_In_Different_Scope(ServiceLifetime lifetime, bool expected)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode<LocalDependenciesRegistrar>(mode, _serviceCollection, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
+                    .AutoRegisterUsingServiceLifetime<LocalDependenciesRegistrar>(lifetime, _serviceCollection, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
 
-                    .AutoRegisterUsingMode<ExternalDependenciesRegistrar>(mode, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
+                    .AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
 
                     .BuildServiceProvider();
 
-                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
-                AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+                DependencyHelper.AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+                DependencyHelper.AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
 
                 var instances1a = provider.GetRequiredService<IEnumerable<AbstractClassA>>();
                 var instances2a = provider.GetRequiredService<IEnumerable<IBaseInterface2>>();
@@ -372,8 +372,8 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                     var instances1b = scopedProvider.ServiceProvider.GetRequiredService<IEnumerable<AbstractClassA>>();
                     var instances2b = scopedProvider.ServiceProvider.GetRequiredService<IEnumerable<IBaseInterface2>>();
 
-                    AssertInstanceEquality(instances1a, instances1b, expected);
-                    AssertInstanceEquality(instances2a, instances2b, expected);
+                    DependencyHelper.AssertInstanceEquality(instances1a, instances1b, expected);
+                    DependencyHelper.AssertInstanceEquality(instances2a, instances2b, expected);
                 }
             }
 
@@ -381,29 +381,29 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Resolve_All_Interfaces(ServiceLifetime mode)
+            public void Should_Resolve_All_Interfaces(ServiceLifetime lifetime)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode<LocalDependenciesRegistrar>(mode, _serviceCollection, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) })
+                    .AutoRegisterUsingServiceLifetime<LocalDependenciesRegistrar>(lifetime, _serviceCollection, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) })
 
-                    .AutoRegisterUsingMode<ExternalDependenciesRegistrar>(mode, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) })
+                    .AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) })
 
                     .BuildServiceProvider();
 
-                AssertExpectation<IBaseInterface1>(
+                DependencyHelper.AssertExpectation<IBaseInterface1>(
                     provider,
                     new[] { typeof(ConcreteClassA), typeof(ConcreteClassB), typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassF), typeof(ConcreteClassG) });
 
-                AssertExpectation<IBaseInterface2>(
+                DependencyHelper.AssertExpectation<IBaseInterface2>(
                     provider,
                     new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
 
-                AssertExpectation<IInterface3>(
+                DependencyHelper.AssertExpectation<IBaseInterface5>(
                     provider,
                     new[] { typeof(ConcreteClassF) });
 
-                AssertExpectation<IInterface4>(
+                DependencyHelper.AssertExpectation<IBaseInterface4>(
                     provider,
                     new[] { typeof(ConcreteClassG) });
             }
@@ -412,32 +412,32 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Resolve_All_Interfaces_Except_Registered_Service(ServiceLifetime mode)
+            public void Should_Resolve_All_Interfaces_Except_Registered_Service(ServiceLifetime lifetime)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode<LocalDependenciesRegistrar>(mode, _serviceCollection, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) },
+                    .AutoRegisterUsingServiceLifetime<LocalDependenciesRegistrar>(lifetime, _serviceCollection, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) },
                         config => config.Filter((service, implementation) => service != typeof(IBaseInterface1)))
 
-                    .AutoRegisterUsingMode<ExternalDependenciesRegistrar>(mode, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) },
+                    .AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) },
                         config => config.Filter((service, implementation) => service != typeof(IBaseInterface1)))
 
                     .BuildServiceProvider();
 
                 // IBaseInterface1 has been filtered out
-                AssertExpectation<IBaseInterface1>(
+                DependencyHelper.AssertExpectation<IBaseInterface1>(
                     provider,
                     Enumerable.Empty<Type>());
 
-                AssertExpectation<IBaseInterface2>(
+                DependencyHelper.AssertExpectation<IBaseInterface2>(
                     provider,
                     new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
 
-                AssertExpectation<IInterface3>(
+                DependencyHelper.AssertExpectation<IBaseInterface5>(
                     provider,
                     new[] { typeof(ConcreteClassF) });
 
-                AssertExpectation<IInterface4>(
+                DependencyHelper.AssertExpectation<IBaseInterface4>(
                     provider,
                     new[] { typeof(ConcreteClassG) });
             }
@@ -446,20 +446,20 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Not_Resolve_Abstract_Class_When_Register_Interface(ServiceLifetime mode)
+            public void Should_Not_Resolve_Abstract_Class_When_Register_Interface(ServiceLifetime lifetime)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode<LocalDependenciesRegistrar>(mode, _serviceCollection, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) })
+                    .AutoRegisterUsingServiceLifetime<LocalDependenciesRegistrar>(lifetime, _serviceCollection, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) })
 
-                    .AutoRegisterUsingMode<ExternalDependenciesRegistrar>(mode, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) })
+                    .AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) })
 
                     .BuildServiceProvider();
 
                 // Not currently supporting the ability to do this - it could be extended to resolve ConcreteClassD, ConcreteClassE, ConcreteClassG
                 // on the basis they all inherit AbstractClassA which inherits IBaseInterface1 but at this time you either register an abstract
                 // class or an interface.
-                AssertExpectation<AbstractClassA>(
+                DependencyHelper.AssertExpectation<AbstractClassA>(
                     provider,
                     Enumerable.Empty<Type>());
             }
@@ -474,11 +474,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Throw_When_Services_Null(ServiceLifetime mode)
+            public void Should_Throw_When_Services_Null(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode<AbstractClassA>(mode, null, _localRegistrar);
+                        DependencyHelper.AutoRegisterUsingServiceLifetime<AbstractClassA>(lifetime, null, _localRegistrar);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -489,11 +489,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Throw_When_ServiceRegistrar_Null(ServiceLifetime mode)
+            public void Should_Throw_When_ServiceRegistrar_Null(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode<AbstractClassA>(mode, _serviceCollection, null);
+                        DependencyHelper.AutoRegisterUsingServiceLifetime<AbstractClassA>(lifetime, _serviceCollection, null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -504,11 +504,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Not_Throw_When_Configure_Null(ServiceLifetime mode)
+            public void Should_Not_Throw_When_Configure_Null(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode<AbstractClassA>(mode, _serviceCollection, _localRegistrar, null);
+                        DependencyHelper.AutoRegisterUsingServiceLifetime<AbstractClassA>(lifetime, _serviceCollection, _localRegistrar, null);
                     })
                     .Should()
                     .NotThrow();
@@ -518,74 +518,74 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Register_No_Exclude_Or_Filter(ServiceLifetime mode)
+            public void Should_Register_No_Exclude_Or_Filter(ServiceLifetime lifetime)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode<AbstractClassA>(mode, _serviceCollection, _localRegistrar)
+                    .AutoRegisterUsingServiceLifetime<AbstractClassA>(lifetime, _serviceCollection, _localRegistrar)
 
-                    .AutoRegisterUsingMode<AbstractClassA>(mode, _externalRegistrar)
+                    .AutoRegisterUsingServiceLifetime<AbstractClassA>(lifetime, _externalRegistrar)
 
                     .BuildServiceProvider();
 
-                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+                DependencyHelper.AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
             }
 
             [Theory]
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Register_With_Filter(ServiceLifetime mode)
+            public void Should_Register_With_Filter(ServiceLifetime lifetime)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode<AbstractClassA>(mode, _serviceCollection, _localRegistrar)
+                    .AutoRegisterUsingServiceLifetime<AbstractClassA>(lifetime, _serviceCollection, _localRegistrar)
 
-                    .AutoRegisterUsingMode<AbstractClassA>(mode, _externalRegistrar, config =>
+                    .AutoRegisterUsingServiceLifetime<AbstractClassA>(lifetime, _externalRegistrar, config =>
                         config.Filter((service, implementation) => implementation != typeof(ConcreteClassE)))
 
                     .BuildServiceProvider();
 
-                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassG) });
+                DependencyHelper.AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassG) });
             }
 
             [Theory]
             [InlineData(ServiceLifetime.Singleton, true)]
             [InlineData(ServiceLifetime.Scoped, true)]
             [InlineData(ServiceLifetime.Transient, false)]
-            public void Should_Resolve_When_In_Same_Scope(ServiceLifetime mode, bool expected)
+            public void Should_Resolve_When_In_Same_Scope(ServiceLifetime lifetime, bool expected)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode<AbstractClassA>(mode, _serviceCollection, _localRegistrar)
+                    .AutoRegisterUsingServiceLifetime<AbstractClassA>(lifetime, _serviceCollection, _localRegistrar)
 
-                    .AutoRegisterUsingMode<AbstractClassA>(mode, _externalRegistrar)
+                    .AutoRegisterUsingServiceLifetime<AbstractClassA>(lifetime, _externalRegistrar)
 
                     .BuildServiceProvider();
 
-                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+                DependencyHelper.AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
 
                 var instances1 = provider.GetRequiredService<IEnumerable<AbstractClassA>>();
                 var instances2 = provider.GetRequiredService<IEnumerable<AbstractClassA>>();
 
-                AssertInstanceEquality(instances1, instances2, expected);
+                DependencyHelper.AssertInstanceEquality(instances1, instances2, expected);
             }
 
             [Theory]
             [InlineData(ServiceLifetime.Singleton, true)]
             [InlineData(ServiceLifetime.Scoped, false)]
             [InlineData(ServiceLifetime.Transient, false)]
-            public void Should_Resolve_When_In_Different_Scope(ServiceLifetime mode, bool expected)
+            public void Should_Resolve_When_In_Different_Scope(ServiceLifetime lifetime, bool expected)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode<AbstractClassA>(mode, _serviceCollection, _localRegistrar)
+                    .AutoRegisterUsingServiceLifetime<AbstractClassA>(lifetime, _serviceCollection, _localRegistrar)
 
-                    .AutoRegisterUsingMode<AbstractClassA>(mode, _externalRegistrar)
+                    .AutoRegisterUsingServiceLifetime<AbstractClassA>(lifetime, _externalRegistrar)
 
                     .BuildServiceProvider();
 
-                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+                DependencyHelper.AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
 
                 var instances1 = provider.GetRequiredService<IEnumerable<AbstractClassA>>();
 
@@ -593,7 +593,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                 {
                     var instances2 = scopedProvider.ServiceProvider.GetRequiredService<IEnumerable<AbstractClassA>>();
 
-                    AssertInstanceEquality(instances1, instances2, expected);
+                    DependencyHelper.AssertInstanceEquality(instances1, instances2, expected);
                 }
             }
 
@@ -601,30 +601,30 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Resolve_All_Interfaces(ServiceLifetime mode)
+            public void Should_Resolve_All_Interfaces(ServiceLifetime lifetime)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode<IBaseInterface1>(mode, _serviceCollection, _localRegistrar)
+                    .AutoRegisterUsingServiceLifetime<IBaseInterface1>(lifetime, _serviceCollection, _localRegistrar)
 
-                    .AutoRegisterUsingMode<IBaseInterface1>(mode, _externalRegistrar)
+                    .AutoRegisterUsingServiceLifetime<IBaseInterface1>(lifetime, _externalRegistrar)
 
                     .BuildServiceProvider();
 
-                AssertExpectation<IBaseInterface1>(
+                DependencyHelper.AssertExpectation<IBaseInterface1>(
                     provider,
                     new[] { typeof(ConcreteClassA), typeof(ConcreteClassB), typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassF), typeof(ConcreteClassG) });
 
                 // ConcreteClassE implements IBaseInterface2 BUT it is not registered because it does not inherit IBaseInterface1
-                AssertExpectation<IBaseInterface2>(
+                DependencyHelper.AssertExpectation<IBaseInterface2>(
                     provider,
                     Enumerable.Empty<Type>());
 
-                AssertExpectation<IInterface3>(
+                DependencyHelper.AssertExpectation<IBaseInterface5>(
                     provider,
                     new[] { typeof(ConcreteClassF) });
 
-                AssertExpectation<IInterface4>(
+                DependencyHelper.AssertExpectation<IBaseInterface4>(
                     provider,
                     new[] { typeof(ConcreteClassG) });
             }
@@ -633,28 +633,28 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Resolve_All_Interfaces_Except_Registered_Service(ServiceLifetime mode)
+            public void Should_Resolve_All_Interfaces_Except_Registered_Service(ServiceLifetime lifetime)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode<IBaseInterface1>(mode, _serviceCollection, _localRegistrar,
+                    .AutoRegisterUsingServiceLifetime<IBaseInterface1>(lifetime, _serviceCollection, _localRegistrar,
                         config => config.Filter((service, implementation) => service != typeof(IBaseInterface1)))
 
-                    .AutoRegisterUsingMode<IBaseInterface1>(mode, _externalRegistrar,
+                    .AutoRegisterUsingServiceLifetime<IBaseInterface1>(lifetime, _externalRegistrar,
                         config => config.Filter((service, implementation) => service != typeof(IBaseInterface1)))
 
                     .BuildServiceProvider();
 
                 // IBaseInterface1 has been filtered out
-                AssertExpectation<IBaseInterface1>(
+                DependencyHelper.AssertExpectation<IBaseInterface1>(
                     provider,
                     Enumerable.Empty<Type>());
 
-                AssertExpectation<IInterface3>(
+                DependencyHelper.AssertExpectation<IBaseInterface5>(
                     provider,
                     new[] { typeof(ConcreteClassF) });
 
-                AssertExpectation<IInterface4>(
+                DependencyHelper.AssertExpectation<IBaseInterface4>(
                     provider,
                     new[] { typeof(ConcreteClassG) });
             }
@@ -663,20 +663,20 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Not_Resolve_Abstract_Class_When_Register_Interface(ServiceLifetime mode)
+            public void Should_Not_Resolve_Abstract_Class_When_Register_Interface(ServiceLifetime lifetime)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode<IBaseInterface1>(mode, _serviceCollection, _localRegistrar)
+                    .AutoRegisterUsingServiceLifetime<IBaseInterface1>(lifetime, _serviceCollection, _localRegistrar)
 
-                    .AutoRegisterUsingMode<IBaseInterface1>(mode, _externalRegistrar)
+                    .AutoRegisterUsingServiceLifetime<IBaseInterface1>(lifetime, _externalRegistrar)
 
                     .BuildServiceProvider();
 
                 // Not currently supporting the ability to do this - it could be extended to resolve ConcreteClassD, ConcreteClassE, ConcreteClassG
                 // on the basis they all inherit AbstractClassA which inherits IBaseInterface1 but at this time you either register an abstract
                 // class or an interface.
-                AssertExpectation<AbstractClassA>(
+                DependencyHelper.AssertExpectation<AbstractClassA>(
                     provider,
                     Enumerable.Empty<Type>());
             }
@@ -691,11 +691,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Throw_When_Services_Null(ServiceLifetime mode)
+            public void Should_Throw_When_Services_Null(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode(mode, null, _externalRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
+                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, null, _externalRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -706,11 +706,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Throw_When_ServiceRegistrar_Null(ServiceLifetime mode)
+            public void Should_Throw_When_ServiceRegistrar_Null(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, (IServiceRegistrar)null, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
+                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, (IServiceRegistrar)null, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -721,11 +721,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Throw_When_ServiceTypes_Null(ServiceLifetime mode)
+            public void Should_Throw_When_ServiceTypes_Null(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _externalRegistrar, (IEnumerable<Type>) null);
+                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _externalRegistrar, (IEnumerable<Type>) null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -736,11 +736,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Throw_When_ServiceTypes_Empty(ServiceLifetime mode)
+            public void Should_Throw_When_ServiceTypes_Empty(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _externalRegistrar, new List<Type>());
+                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _externalRegistrar, new List<Type>());
                     })
                     .Should()
                     .Throw<ArgumentException>()
@@ -751,11 +751,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Not_Throw_When_Configure_Null(ServiceLifetime mode)
+            public void Should_Not_Throw_When_Configure_Null(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _externalRegistrar,
+                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _externalRegistrar,
                             new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
                     })
                     .Should()
@@ -766,83 +766,83 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Register_No_Exclude_Or_Filter(ServiceLifetime mode)
+            public void Should_Register_No_Exclude_Or_Filter(ServiceLifetime lifetime)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode(mode, _serviceCollection, _localRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
+                    .AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _localRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
 
-                    .AutoRegisterUsingMode(mode, _externalRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
+                    .AutoRegisterUsingServiceLifetime(lifetime, _externalRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
 
                     .BuildServiceProvider();
 
-                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
-                AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+                DependencyHelper.AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+                DependencyHelper.AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
             }
 
             [Theory]
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Register_With_Filter(ServiceLifetime mode)
+            public void Should_Register_With_Filter(ServiceLifetime lifetime)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode(mode, _serviceCollection, _localRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
+                    .AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _localRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
 
-                    .AutoRegisterUsingMode(mode, _externalRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) }, config =>
+                    .AutoRegisterUsingServiceLifetime(lifetime, _externalRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) }, config =>
                         config.Filter((service, implementation) => implementation != typeof(ConcreteClassE)))
 
                     .BuildServiceProvider();
 
-                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassG) });
-                AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassG) });
+                DependencyHelper.AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassG) });
+                DependencyHelper.AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassG) });
             }
 
             [Theory]
             [InlineData(ServiceLifetime.Singleton, true)]
             [InlineData(ServiceLifetime.Scoped, true)]
             [InlineData(ServiceLifetime.Transient, false)]
-            public void Should_Resolve_When_In_Same_Scope(ServiceLifetime mode, bool expected)
+            public void Should_Resolve_When_In_Same_Scope(ServiceLifetime lifetime, bool expected)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode(mode, _serviceCollection, _localRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
+                    .AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _localRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
 
-                    .AutoRegisterUsingMode(mode, _externalRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
+                    .AutoRegisterUsingServiceLifetime(lifetime, _externalRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
 
                     .BuildServiceProvider();
 
-                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
-                AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+                DependencyHelper.AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+                DependencyHelper.AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
 
                 var instances1a = provider.GetRequiredService<IEnumerable<AbstractClassA>>();
                 var instances1b = provider.GetRequiredService<IEnumerable<AbstractClassA>>();
 
-                AssertInstanceEquality(instances1a, instances1b, expected);
+                DependencyHelper.AssertInstanceEquality(instances1a, instances1b, expected);
 
                 var instances2a = provider.GetRequiredService<IEnumerable<IBaseInterface2>>();
                 var instances2b = provider.GetRequiredService<IEnumerable<IBaseInterface2>>();
 
-                AssertInstanceEquality(instances2a, instances2b, expected);
+                DependencyHelper.AssertInstanceEquality(instances2a, instances2b, expected);
             }
 
             [Theory]
             [InlineData(ServiceLifetime.Singleton, true)]
             [InlineData(ServiceLifetime.Scoped, false)]
             [InlineData(ServiceLifetime.Transient, false)]
-            public void Should_Resolve_When_In_Different_Scope(ServiceLifetime mode, bool expected)
+            public void Should_Resolve_When_In_Different_Scope(ServiceLifetime lifetime, bool expected)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode(mode, _serviceCollection, _localRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
+                    .AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _localRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
 
-                    .AutoRegisterUsingMode(mode, _externalRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
+                    .AutoRegisterUsingServiceLifetime(lifetime, _externalRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
 
                     .BuildServiceProvider();
 
-                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
-                AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+                DependencyHelper.AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+                DependencyHelper.AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
 
                 var instances1a = provider.GetRequiredService<IEnumerable<AbstractClassA>>();
                 var instances2a = provider.GetRequiredService<IEnumerable<IBaseInterface2>>();
@@ -852,8 +852,8 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                     var instances1b = scopedProvider.ServiceProvider.GetRequiredService<IEnumerable<AbstractClassA>>();
                     var instances2b = scopedProvider.ServiceProvider.GetRequiredService<IEnumerable<IBaseInterface2>>();
 
-                    AssertInstanceEquality(instances1a, instances1b, expected);
-                    AssertInstanceEquality(instances2a, instances2b, expected);
+                    DependencyHelper.AssertInstanceEquality(instances1a, instances1b, expected);
+                    DependencyHelper.AssertInstanceEquality(instances2a, instances2b, expected);
                 }
             }
 
@@ -861,29 +861,29 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Resolve_All_Interfaces(ServiceLifetime mode)
+            public void Should_Resolve_All_Interfaces(ServiceLifetime lifetime)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode(mode, _serviceCollection, _localRegistrar, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) })
+                    .AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _localRegistrar, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) })
 
-                    .AutoRegisterUsingMode(mode, _externalRegistrar, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) })
+                    .AutoRegisterUsingServiceLifetime(lifetime, _externalRegistrar, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) })
 
                     .BuildServiceProvider();
 
-                AssertExpectation<IBaseInterface1>(
+                DependencyHelper.AssertExpectation<IBaseInterface1>(
                     provider,
                     new[] { typeof(ConcreteClassA), typeof(ConcreteClassB), typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassF), typeof(ConcreteClassG) });
 
-                AssertExpectation<IBaseInterface2>(
+                DependencyHelper.AssertExpectation<IBaseInterface2>(
                     provider,
                     new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
 
-                AssertExpectation<IInterface3>(
+                DependencyHelper.AssertExpectation<IBaseInterface5>(
                     provider,
                     new[] { typeof(ConcreteClassF) });
 
-                AssertExpectation<IInterface4>(
+                DependencyHelper.AssertExpectation<IBaseInterface4>(
                     provider,
                     new[] { typeof(ConcreteClassG) });
             }
@@ -892,32 +892,32 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Resolve_All_Interfaces_Except_Registered_Service(ServiceLifetime mode)
+            public void Should_Resolve_All_Interfaces_Except_Registered_Service(ServiceLifetime lifetime)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode(mode, _serviceCollection, _localRegistrar, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) },
+                    .AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _localRegistrar, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) },
                         config => config.Filter((service, implementation) => service != typeof(IBaseInterface1)))
 
-                    .AutoRegisterUsingMode(mode, _externalRegistrar, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) },
+                    .AutoRegisterUsingServiceLifetime(lifetime, _externalRegistrar, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) },
                         config => config.Filter((service, implementation) => service != typeof(IBaseInterface1)))
 
                     .BuildServiceProvider();
 
                 // IBaseInterface1 has been filtered out
-                AssertExpectation<IBaseInterface1>(
+                DependencyHelper.AssertExpectation<IBaseInterface1>(
                     provider,
                     Enumerable.Empty<Type>());
 
-                AssertExpectation<IBaseInterface2>(
+                DependencyHelper.AssertExpectation<IBaseInterface2>(
                     provider,
                     new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
 
-                AssertExpectation<IInterface3>(
+                DependencyHelper.AssertExpectation<IBaseInterface5>(
                     provider,
                     new[] { typeof(ConcreteClassF) });
 
-                AssertExpectation<IInterface4>(
+                DependencyHelper.AssertExpectation<IBaseInterface4>(
                     provider,
                     new[] { typeof(ConcreteClassG) });
             }
@@ -926,20 +926,20 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Not_Resolve_Abstract_Class_When_Register_Interface(ServiceLifetime mode)
+            public void Should_Not_Resolve_Abstract_Class_When_Register_Interface(ServiceLifetime lifetime)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode(mode, _serviceCollection, _localRegistrar, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) })
+                    .AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _localRegistrar, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) })
 
-                    .AutoRegisterUsingMode(mode, _externalRegistrar, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) })
+                    .AutoRegisterUsingServiceLifetime(lifetime, _externalRegistrar, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) })
 
                     .BuildServiceProvider();
 
                 // Not currently supporting the ability to do this - it could be extended to resolve ConcreteClassD, ConcreteClassE, ConcreteClassG
                 // on the basis they all inherit AbstractClassA which inherits IBaseInterface1 but at this time you either register an abstract
                 // class or an interface.
-                AssertExpectation<AbstractClassA>(
+                DependencyHelper.AssertExpectation<AbstractClassA>(
                     provider,
                     Enumerable.Empty<Type>());
             }
@@ -953,11 +953,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Throw_When_Services_Null(ServiceLifetime mode)
+            public void Should_Throw_When_Services_Null(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode(mode, null, _registrars, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
+                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, null, _registrars, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -968,11 +968,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Throw_When_ServiceRegistrars_Null(ServiceLifetime mode)
+            public void Should_Throw_When_ServiceRegistrars_Null(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, (IServiceRegistrar[]) null, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
+                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, (IServiceRegistrar[]) null, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -983,11 +983,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Throw_When_ServiceRegistrars_Empty(ServiceLifetime mode)
+            public void Should_Throw_When_ServiceRegistrars_Empty(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, new List<IServiceRegistrar>(), new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
+                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, new List<IServiceRegistrar>(), new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
                     })
                     .Should()
                     .Throw<ArgumentException>()
@@ -998,11 +998,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Throw_When_ServiceTypes_Null(ServiceLifetime mode)
+            public void Should_Throw_When_ServiceTypes_Null(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _registrars, (IEnumerable<Type>) null);
+                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars, (IEnumerable<Type>) null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -1013,11 +1013,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Throw_When_ServiceTypes_Empty(ServiceLifetime mode)
+            public void Should_Throw_When_ServiceTypes_Empty(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new List<Type>());
+                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars, new List<Type>());
                     })
                     .Should()
                     .Throw<ArgumentException>()
@@ -1028,11 +1028,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Not_Throw_When_Configure_Null(ServiceLifetime mode)
+            public void Should_Not_Throw_When_Configure_Null(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _registrars,
+                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars,
                             new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
                     })
                     .Should()
@@ -1043,75 +1043,75 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Register_No_Exclude_Or_Filter(ServiceLifetime mode)
+            public void Should_Register_No_Exclude_Or_Filter(ServiceLifetime lifetime)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
+                    .AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
                     
                     .BuildServiceProvider();
 
-                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
-                AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+                DependencyHelper.AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+                DependencyHelper.AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
             }
 
             [Theory]
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Register_With_Filter(ServiceLifetime mode)
+            public void Should_Register_With_Filter(ServiceLifetime lifetime)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) }, config =>
+                    .AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) }, config =>
                         config.Filter((service, implementation) => implementation != typeof(ConcreteClassE)))
 
                     .BuildServiceProvider();
 
-                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassG) });
-                AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassG) });
+                DependencyHelper.AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassG) });
+                DependencyHelper.AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassG) });
             }
 
             [Theory]
             [InlineData(ServiceLifetime.Singleton, true)]
             [InlineData(ServiceLifetime.Scoped, true)]
             [InlineData(ServiceLifetime.Transient, false)]
-            public void Should_Resolve_When_In_Same_Scope(ServiceLifetime mode, bool expected)
+            public void Should_Resolve_When_In_Same_Scope(ServiceLifetime lifetime, bool expected)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
+                    .AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
 
                     .BuildServiceProvider();
 
-                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
-                AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+                DependencyHelper.AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+                DependencyHelper.AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
 
                 var instances1a = provider.GetRequiredService<IEnumerable<AbstractClassA>>();
                 var instances1b = provider.GetRequiredService<IEnumerable<AbstractClassA>>();
 
-                AssertInstanceEquality(instances1a, instances1b, expected);
+                DependencyHelper.AssertInstanceEquality(instances1a, instances1b, expected);
 
                 var instances2a = provider.GetRequiredService<IEnumerable<IBaseInterface2>>();
                 var instances2b = provider.GetRequiredService<IEnumerable<IBaseInterface2>>();
 
-                AssertInstanceEquality(instances2a, instances2b, expected);
+                DependencyHelper.AssertInstanceEquality(instances2a, instances2b, expected);
             }
 
             [Theory]
             [InlineData(ServiceLifetime.Singleton, true)]
             [InlineData(ServiceLifetime.Scoped, false)]
             [InlineData(ServiceLifetime.Transient, false)]
-            public void Should_Resolve_When_In_Different_Scope(ServiceLifetime mode, bool expected)
+            public void Should_Resolve_When_In_Different_Scope(ServiceLifetime lifetime, bool expected)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
+                    .AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
 
                     .BuildServiceProvider();
 
-                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
-                AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+                DependencyHelper.AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+                DependencyHelper.AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
 
                 var instances1a = provider.GetRequiredService<IEnumerable<AbstractClassA>>();
                 var instances2a = provider.GetRequiredService<IEnumerable<IBaseInterface2>>();
@@ -1121,8 +1121,8 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                     var instances1b = scopedProvider.ServiceProvider.GetRequiredService<IEnumerable<AbstractClassA>>();
                     var instances2b = scopedProvider.ServiceProvider.GetRequiredService<IEnumerable<IBaseInterface2>>();
 
-                    AssertInstanceEquality(instances1a, instances1b, expected);
-                    AssertInstanceEquality(instances2a, instances2b, expected);
+                    DependencyHelper.AssertInstanceEquality(instances1a, instances1b, expected);
+                    DependencyHelper.AssertInstanceEquality(instances2a, instances2b, expected);
                 }
             }
 
@@ -1130,27 +1130,27 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Resolve_All_Interfaces(ServiceLifetime mode)
+            public void Should_Resolve_All_Interfaces(ServiceLifetime lifetime)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) })
+                    .AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) })
 
                     .BuildServiceProvider();
 
-                AssertExpectation<IBaseInterface1>(
+                DependencyHelper.AssertExpectation<IBaseInterface1>(
                     provider,
                     new[] { typeof(ConcreteClassA), typeof(ConcreteClassB), typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassF), typeof(ConcreteClassG) });
 
-                AssertExpectation<IBaseInterface2>(
+                DependencyHelper.AssertExpectation<IBaseInterface2>(
                     provider,
                     new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
 
-                AssertExpectation<IInterface3>(
+                DependencyHelper.AssertExpectation<IBaseInterface5>(
                     provider,
                     new[] { typeof(ConcreteClassF) });
 
-                AssertExpectation<IInterface4>(
+                DependencyHelper.AssertExpectation<IBaseInterface4>(
                     provider,
                     new[] { typeof(ConcreteClassG) });
             }
@@ -1159,29 +1159,29 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Resolve_All_Interfaces_Except_Registered_Service(ServiceLifetime mode)
+            public void Should_Resolve_All_Interfaces_Except_Registered_Service(ServiceLifetime lifetime)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) },
+                    .AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) },
                         config => config.Filter((service, implementation) => service != typeof(IBaseInterface1)))
 
                     .BuildServiceProvider();
 
                 // IBaseInterface1 has been filtered out
-                AssertExpectation<IBaseInterface1>(
+                DependencyHelper.AssertExpectation<IBaseInterface1>(
                     provider,
                     Enumerable.Empty<Type>());
 
-                AssertExpectation<IBaseInterface2>(
+                DependencyHelper.AssertExpectation<IBaseInterface2>(
                     provider,
                     new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
 
-                AssertExpectation<IInterface3>(
+                DependencyHelper.AssertExpectation<IBaseInterface5>(
                     provider,
                     new[] { typeof(ConcreteClassF) });
 
-                AssertExpectation<IInterface4>(
+                DependencyHelper.AssertExpectation<IBaseInterface4>(
                     provider,
                     new[] { typeof(ConcreteClassG) });
             }
@@ -1190,18 +1190,18 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Not_Resolve_Abstract_Class_When_Register_Interface(ServiceLifetime mode)
+            public void Should_Not_Resolve_Abstract_Class_When_Register_Interface(ServiceLifetime lifetime)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) })
+                    .AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) })
 
                     .BuildServiceProvider();
 
                 // Not currently supporting the ability to do this - it could be extended to resolve ConcreteClassD, ConcreteClassE, ConcreteClassG
                 // on the basis they all inherit AbstractClassA which inherits IBaseInterface1 but at this time you either register an abstract
                 // class or an interface.
-                AssertExpectation<AbstractClassA>(
+                DependencyHelper.AssertExpectation<AbstractClassA>(
                     provider,
                     Enumerable.Empty<Type>());
             }
@@ -1213,11 +1213,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Throw_When_Services_Null(ServiceLifetime mode)
+            public void Should_Throw_When_Services_Null(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode<ExternalDependenciesRegistrar>(mode, null, new[] { typeof(IBaseInterface3) },
+                        DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, null, new[] { typeof(IBaseInterface3) },
                             (provider, serviceType) => new object[]{Create<int>()});
                     })
                     .Should()
@@ -1229,11 +1229,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Throw_When_ServiceTypes_Null(ServiceLifetime mode)
+            public void Should_Throw_When_ServiceTypes_Null(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode<ExternalDependenciesRegistrar>(mode, _serviceCollection,
+                        DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, _serviceCollection,
                             (IEnumerable<Type>) null, (provider, serviceType) => new object[] {Create<int>()});
                     })
                     .Should()
@@ -1245,11 +1245,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Throw_When_ServiceTypes_Empty(ServiceLifetime mode)
+            public void Should_Throw_When_ServiceTypes_Empty(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode<ExternalDependenciesRegistrar>(mode, _serviceCollection,
+                        DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, _serviceCollection,
                             new List<Type>(), (provider, serviceType) => new object[] {Create<int>()});
                     })
                     .Should()
@@ -1261,11 +1261,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Throw_When_ConstructorArgs_Null(ServiceLifetime mode)
+            public void Should_Throw_When_ConstructorArgs_Null(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode<ExternalDependenciesRegistrar>(mode, _serviceCollection, new[] { typeof(IBaseInterface3) }, null, null);
+                        DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, _serviceCollection, new[] { typeof(IBaseInterface3) }, null, null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -1276,11 +1276,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Not_Throw_When_Configure_Null(ServiceLifetime mode)
+            public void Should_Not_Throw_When_Configure_Null(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode<ExternalDependenciesRegistrar>(mode, _serviceCollection,
+                        DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, _serviceCollection,
                             new[] {typeof(IBaseInterface3)}, (provider, serviceType) => new object[] {Create<int>()}, null);
                     })
                     .Should()
@@ -1291,18 +1291,18 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Register_No_Exclude_Or_Filter(ServiceLifetime mode)
+            public void Should_Register_No_Exclude_Or_Filter(ServiceLifetime lifetime)
             {
                 var value = Create<int>();
 
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode<ExternalDependenciesRegistrar>(mode, _serviceCollection, new[] { typeof(IBaseInterface3) },
+                    .AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, _serviceCollection, new[] { typeof(IBaseInterface3) },
                         (provider, serviceType) => new object[] { value })
 
                     .BuildServiceProvider();
 
-                AssertExpectation<IBaseInterface3>(provider, new[] { typeof(ConcreteClassH), typeof(ConcreteClassI) });
+                DependencyHelper.AssertExpectation<IBaseInterface3>(provider, new[] { typeof(ConcreteClassH), typeof(ConcreteClassI) });
 
                 var instances = provider.GetService<IEnumerable<IBaseInterface3>>().AsReadOnlyCollection();
 
@@ -1321,54 +1321,54 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Register_With_Filter(ServiceLifetime mode)
+            public void Should_Register_With_Filter(ServiceLifetime lifetime)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode<ExternalDependenciesRegistrar>(mode, _serviceCollection, new[] { typeof(IBaseInterface3) },
+                    .AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, _serviceCollection, new[] { typeof(IBaseInterface3) },
                         (provider, serviceType) => new object[] { Create<int>() },
                         config => config.Filter((service, implementation) => implementation != typeof(ConcreteClassH)))
 
                     .BuildServiceProvider();
 
-                AssertExpectation<IBaseInterface3>(provider, new[] { typeof(ConcreteClassI) });
+                DependencyHelper.AssertExpectation<IBaseInterface3>(provider, new[] { typeof(ConcreteClassI) });
             }
 
             [Theory]
             [InlineData(ServiceLifetime.Singleton, true)]
             [InlineData(ServiceLifetime.Scoped, true)]
             [InlineData(ServiceLifetime.Transient, false)]
-            public void Should_Resolve_When_In_Same_Scope(ServiceLifetime mode, bool expected)
+            public void Should_Resolve_When_In_Same_Scope(ServiceLifetime lifetime, bool expected)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode<ExternalDependenciesRegistrar>(mode, _serviceCollection, new[] { typeof(IBaseInterface3) },
+                    .AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, _serviceCollection, new[] { typeof(IBaseInterface3) },
                         (provider, serviceType) => new object[] { Create<int>() })
 
                     .BuildServiceProvider();
 
-                AssertExpectation<IBaseInterface3>(provider, new[] { typeof(ConcreteClassH), typeof(ConcreteClassI) });
+                DependencyHelper.AssertExpectation<IBaseInterface3>(provider, new[] { typeof(ConcreteClassH), typeof(ConcreteClassI) });
 
                 var instances1a = provider.GetRequiredService<IEnumerable<IBaseInterface3>>();
                 var instances1b = provider.GetRequiredService<IEnumerable<IBaseInterface3>>();
 
-                AssertInstanceEquality(instances1a, instances1b, expected);
+                DependencyHelper.AssertInstanceEquality(instances1a, instances1b, expected);
             }
 
             [Theory]
             [InlineData(ServiceLifetime.Singleton, true)]
             [InlineData(ServiceLifetime.Scoped, false)]
             [InlineData(ServiceLifetime.Transient, false)]
-            public void Should_Resolve_When_In_Different_Scope(ServiceLifetime mode, bool expected)
+            public void Should_Resolve_When_In_Different_Scope(ServiceLifetime lifetime, bool expected)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode<ExternalDependenciesRegistrar>(mode, _serviceCollection, new[] { typeof(IBaseInterface3) },
+                    .AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, _serviceCollection, new[] { typeof(IBaseInterface3) },
                         (provider, serviceType) => new object[] { Create<int>() })
 
                     .BuildServiceProvider();
 
-                AssertExpectation<IBaseInterface3>(provider, new[] { typeof(ConcreteClassH), typeof(ConcreteClassI) });
+                DependencyHelper.AssertExpectation<IBaseInterface3>(provider, new[] { typeof(ConcreteClassH), typeof(ConcreteClassI) });
 
                 var instances1a = provider.GetRequiredService<IEnumerable<IBaseInterface3>>();
 
@@ -1376,7 +1376,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                 {
                     var instances1b = scopedProvider.ServiceProvider.GetRequiredService<IEnumerable<IBaseInterface3>>();
 
-                    AssertInstanceEquality(instances1a, instances1b, expected);
+                    DependencyHelper.AssertInstanceEquality(instances1a, instances1b, expected);
                 }
             }
         }
@@ -1389,11 +1389,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Throw_When_Services_Null(ServiceLifetime mode)
+            public void Should_Throw_When_Services_Null(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode(mode, null, _registrar, new[] { typeof(IBaseInterface3) },
+                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, null, _registrar, new[] { typeof(IBaseInterface3) },
                             (provider, serviceType) => new object[] { Create<int>() });
                     })
                     .Should()
@@ -1405,11 +1405,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Throw_When_ServiceRegistrar_Null(ServiceLifetime mode)
+            public void Should_Throw_When_ServiceRegistrar_Null(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, (IServiceRegistrar)null, new[] { typeof(IBaseInterface3) },
+                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, (IServiceRegistrar)null, new[] { typeof(IBaseInterface3) },
                             (provider, serviceType) => new object[] { Create<int>() });
                     })
                     .Should()
@@ -1421,11 +1421,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Throw_When_ServiceTypes_Null(ServiceLifetime mode)
+            public void Should_Throw_When_ServiceTypes_Null(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _registrar, (IEnumerable<Type>) null,
+                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrar, (IEnumerable<Type>) null,
                             (provider, serviceType) => new object[] { Create<int>() });
                     })
                     .Should()
@@ -1437,11 +1437,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Throw_When_ServiceTypes_Empty(ServiceLifetime mode)
+            public void Should_Throw_When_ServiceTypes_Empty(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _registrar, new List<Type>(),
+                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrar, new List<Type>(),
                             (provider, serviceType) => new object[] { Create<int>() });
                     })
                     .Should()
@@ -1453,11 +1453,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Throw_When_ConstructorArgs_Null(ServiceLifetime mode)
+            public void Should_Throw_When_ConstructorArgs_Null(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _registrar, new[] { typeof(IBaseInterface3) }, null, null);
+                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrar, new[] { typeof(IBaseInterface3) }, null, null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -1468,11 +1468,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Not_Throw_When_Configure_Null(ServiceLifetime mode)
+            public void Should_Not_Throw_When_Configure_Null(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _registrar, new[] { typeof(IBaseInterface3) },
+                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrar, new[] { typeof(IBaseInterface3) },
                             (provider, serviceType) => new object[] { Create<int>() }, null);
                     })
                     .Should()
@@ -1483,18 +1483,18 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Register_No_Exclude_Or_Filter(ServiceLifetime mode)
+            public void Should_Register_No_Exclude_Or_Filter(ServiceLifetime lifetime)
             {
                 var value = Create<int>();
 
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode(mode, _serviceCollection, _registrar, new[] { typeof(IBaseInterface3) },
+                    .AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrar, new[] { typeof(IBaseInterface3) },
                         (provider, serviceType) => new object[] { value })
 
                     .BuildServiceProvider();
 
-                AssertExpectation<IBaseInterface3>(provider, new[] { typeof(ConcreteClassH), typeof(ConcreteClassI) });
+                DependencyHelper.AssertExpectation<IBaseInterface3>(provider, new[] { typeof(ConcreteClassH), typeof(ConcreteClassI) });
 
                 var instances = provider.GetService<IEnumerable<IBaseInterface3>>().AsReadOnlyCollection();
 
@@ -1513,54 +1513,54 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Register_With_Filter(ServiceLifetime mode)
+            public void Should_Register_With_Filter(ServiceLifetime lifetime)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode(mode, _serviceCollection, _registrar, new[] { typeof(IBaseInterface3) },
+                    .AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrar, new[] { typeof(IBaseInterface3) },
                         (provider, serviceType) => new object[] { Create<int>() },
                         config => config.Filter((service, implementation) => implementation != typeof(ConcreteClassH)))
 
                     .BuildServiceProvider();
 
-                AssertExpectation<IBaseInterface3>(provider, new[] { typeof(ConcreteClassI) });
+                DependencyHelper.AssertExpectation<IBaseInterface3>(provider, new[] { typeof(ConcreteClassI) });
             }
 
             [Theory]
             [InlineData(ServiceLifetime.Singleton, true)]
             [InlineData(ServiceLifetime.Scoped, true)]
             [InlineData(ServiceLifetime.Transient, false)]
-            public void Should_Resolve_When_In_Same_Scope(ServiceLifetime mode, bool expected)
+            public void Should_Resolve_When_In_Same_Scope(ServiceLifetime lifetime, bool expected)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode(mode, _serviceCollection, _registrar, new[] { typeof(IBaseInterface3) },
+                    .AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrar, new[] { typeof(IBaseInterface3) },
                         (provider, serviceType) => new object[] { Create<int>() })
 
                     .BuildServiceProvider();
 
-                AssertExpectation<IBaseInterface3>(provider, new[] { typeof(ConcreteClassH), typeof(ConcreteClassI) });
+                DependencyHelper.AssertExpectation<IBaseInterface3>(provider, new[] { typeof(ConcreteClassH), typeof(ConcreteClassI) });
 
                 var instances1a = provider.GetRequiredService<IEnumerable<IBaseInterface3>>();
                 var instances1b = provider.GetRequiredService<IEnumerable<IBaseInterface3>>();
 
-                AssertInstanceEquality(instances1a, instances1b, expected);
+                DependencyHelper.AssertInstanceEquality(instances1a, instances1b, expected);
             }
 
             [Theory]
             [InlineData(ServiceLifetime.Singleton, true)]
             [InlineData(ServiceLifetime.Scoped, false)]
             [InlineData(ServiceLifetime.Transient, false)]
-            public void Should_Resolve_When_In_Different_Scope(ServiceLifetime mode, bool expected)
+            public void Should_Resolve_When_In_Different_Scope(ServiceLifetime lifetime, bool expected)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode(mode, _serviceCollection, _registrar, new[] { typeof(IBaseInterface3) },
+                    .AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrar, new[] { typeof(IBaseInterface3) },
                         (provider, serviceType) => new object[] { Create<int>() })
 
                     .BuildServiceProvider();
 
-                AssertExpectation<IBaseInterface3>(provider, new[] { typeof(ConcreteClassH), typeof(ConcreteClassI) });
+                DependencyHelper.AssertExpectation<IBaseInterface3>(provider, new[] { typeof(ConcreteClassH), typeof(ConcreteClassI) });
 
                 var instances1a = provider.GetRequiredService<IEnumerable<IBaseInterface3>>();
 
@@ -1568,7 +1568,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                 {
                     var instances1b = scopedProvider.ServiceProvider.GetRequiredService<IEnumerable<IBaseInterface3>>();
 
-                    AssertInstanceEquality(instances1a, instances1b, expected);
+                    DependencyHelper.AssertInstanceEquality(instances1a, instances1b, expected);
                 }
             }
         }
@@ -1581,11 +1581,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Throw_When_Services_Null(ServiceLifetime mode)
+            public void Should_Throw_When_Services_Null(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode(mode, null, _registrars, new[] { typeof(IBaseInterface3) },
+                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, null, _registrars, new[] { typeof(IBaseInterface3) },
                             (provider, serviceType) => new object[] { Create<int>() });
                     })
                     .Should()
@@ -1597,11 +1597,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Throw_When_ServiceRegistrars_Null(ServiceLifetime mode)
+            public void Should_Throw_When_ServiceRegistrars_Null(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, (IServiceRegistrar[]) null, new[] { typeof(IBaseInterface3) },
+                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, (IServiceRegistrar[]) null, new[] { typeof(IBaseInterface3) },
                             (provider, serviceType) => new object[] { Create<int>() });
                     })
                     .Should()
@@ -1613,11 +1613,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Throw_When_ServiceRegistrars_Empty(ServiceLifetime mode)
+            public void Should_Throw_When_ServiceRegistrars_Empty(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, new List<IServiceRegistrar>(), new[] { typeof(IBaseInterface3) },
+                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, new List<IServiceRegistrar>(), new[] { typeof(IBaseInterface3) },
                             (provider, serviceType) => new object[] { Create<int>() });
                     })
                     .Should()
@@ -1629,11 +1629,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Throw_When_ServiceTypes_Null(ServiceLifetime mode)
+            public void Should_Throw_When_ServiceTypes_Null(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _registrars, (IEnumerable<Type>) null,
+                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars, (IEnumerable<Type>) null,
                             (provider, serviceType) => new object[] { Create<int>() });
                     })
                     .Should()
@@ -1645,11 +1645,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Throw_When_ServiceTypes_Empty(ServiceLifetime mode)
+            public void Should_Throw_When_ServiceTypes_Empty(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new List<Type>(),
+                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars, new List<Type>(),
                             (provider, serviceType) => new object[] { Create<int>() });
                     })
                     .Should()
@@ -1661,11 +1661,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Throw_When_ConstructorArgs_Null(ServiceLifetime mode)
+            public void Should_Throw_When_ConstructorArgs_Null(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new[] { typeof(IBaseInterface3) }, null, null);
+                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars, new[] { typeof(IBaseInterface3) }, null, null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -1676,11 +1676,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Not_Throw_When_Configure_Null(ServiceLifetime mode)
+            public void Should_Not_Throw_When_Configure_Null(ServiceLifetime lifetime)
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new[] { typeof(IBaseInterface3) },
+                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars, new[] { typeof(IBaseInterface3) },
                             (provider, serviceType) => new object[] { Create<int>() }, null);
                     })
                     .Should()
@@ -1691,18 +1691,18 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Register_No_Exclude_Or_Filter(ServiceLifetime mode)
+            public void Should_Register_No_Exclude_Or_Filter(ServiceLifetime lifetime)
             {
                 var value = Create<int>();
 
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new[] { typeof(IBaseInterface3) },
+                    .AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars, new[] { typeof(IBaseInterface3) },
                         (provider, serviceType) => new object[] { value })
 
                     .BuildServiceProvider();
 
-                AssertExpectation<IBaseInterface3>(provider, new[] { typeof(ConcreteClassH), typeof(ConcreteClassI), typeof(ConcreteClassJ) });
+                DependencyHelper.AssertExpectation<IBaseInterface3>(provider, new[] { typeof(ConcreteClassH), typeof(ConcreteClassI), typeof(ConcreteClassJ) });
 
                 var instances = provider.GetService<IEnumerable<IBaseInterface3>>().AsReadOnlyCollection();
 
@@ -1726,54 +1726,54 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Singleton)]
             [InlineData(ServiceLifetime.Scoped)]
             [InlineData(ServiceLifetime.Transient)]
-            public void Should_Register_With_Filter(ServiceLifetime mode)
+            public void Should_Register_With_Filter(ServiceLifetime lifetime)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new[] { typeof(IBaseInterface3) },
+                    .AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars, new[] { typeof(IBaseInterface3) },
                         (provider, serviceType) => new object[] { Create<int>() },
                         config => config.Filter((service, implementation) => implementation != typeof(ConcreteClassH)))
 
                     .BuildServiceProvider();
 
-                AssertExpectation<IBaseInterface3>(provider, new[] { typeof(ConcreteClassI), typeof(ConcreteClassJ) });
+                DependencyHelper.AssertExpectation<IBaseInterface3>(provider, new[] { typeof(ConcreteClassI), typeof(ConcreteClassJ) });
             }
 
             [Theory]
             [InlineData(ServiceLifetime.Singleton, true)]
             [InlineData(ServiceLifetime.Scoped, true)]
             [InlineData(ServiceLifetime.Transient, false)]
-            public void Should_Resolve_When_In_Same_Scope(ServiceLifetime mode, bool expected)
+            public void Should_Resolve_When_In_Same_Scope(ServiceLifetime lifetime, bool expected)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new[] { typeof(IBaseInterface3) },
+                    .AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars, new[] { typeof(IBaseInterface3) },
                         (provider, serviceType) => new object[] { Create<int>() })
 
                     .BuildServiceProvider();
 
-                AssertExpectation<IBaseInterface3>(provider, new[] { typeof(ConcreteClassH), typeof(ConcreteClassI), typeof(ConcreteClassJ) });
+                DependencyHelper.AssertExpectation<IBaseInterface3>(provider, new[] { typeof(ConcreteClassH), typeof(ConcreteClassI), typeof(ConcreteClassJ) });
 
                 var instances1a = provider.GetRequiredService<IEnumerable<IBaseInterface3>>();
                 var instances1b = provider.GetRequiredService<IEnumerable<IBaseInterface3>>();
 
-                AssertInstanceEquality(instances1a, instances1b, expected);
+                DependencyHelper.AssertInstanceEquality(instances1a, instances1b, expected);
             }
 
             [Theory]
             [InlineData(ServiceLifetime.Singleton, true)]
             [InlineData(ServiceLifetime.Scoped, false)]
             [InlineData(ServiceLifetime.Transient, false)]
-            public void Should_Resolve_When_In_Different_Scope(ServiceLifetime mode, bool expected)
+            public void Should_Resolve_When_In_Different_Scope(ServiceLifetime lifetime, bool expected)
             {
                 var provider = DependencyHelper
 
-                    .AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new[] { typeof(IBaseInterface3) },
+                    .AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars, new[] { typeof(IBaseInterface3) },
                         (provider, serviceType) => new object[] { Create<int>() })
 
                     .BuildServiceProvider();
 
-                AssertExpectation<IBaseInterface3>(provider, new[] { typeof(ConcreteClassH), typeof(ConcreteClassI), typeof(ConcreteClassJ) });
+                DependencyHelper.AssertExpectation<IBaseInterface3>(provider, new[] { typeof(ConcreteClassH), typeof(ConcreteClassI), typeof(ConcreteClassJ) });
 
                 var instances1a = provider.GetRequiredService<IEnumerable<IBaseInterface3>>();
 
@@ -1781,33 +1781,9 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                 {
                     var instances1b = scopedProvider.ServiceProvider.GetRequiredService<IEnumerable<IBaseInterface3>>();
 
-                    AssertInstanceEquality(instances1a, instances1b, expected);
+                    DependencyHelper.AssertInstanceEquality(instances1a, instances1b, expected);
                 }
             }
-        }
-
-        private static void AssertInstanceEquality<TType>(IEnumerable<TType> items1, IEnumerable<TType> items2, bool expected)
-        {
-            var instances1 = items1.OrderBy(item => item.GetType().AssemblyQualifiedName);
-            var instances2 = items2.OrderBy(item => item.GetType().AssemblyQualifiedName);
-
-            instances1
-                .Zip(instances2)
-                .ForEach((instance, _) =>
-                {
-                    instance.First
-                        .Should()
-                        .BeOfType(instance.Second.GetType());
-
-                    ReferenceEquals(instance.First, instance.Second).Should().Be(expected);
-                });
-        }
-
-        private static void AssertExpectation<TServiceType>(IServiceProvider provider, IEnumerable<Type> expectedTypes)
-        {
-            var actual = provider.GetService<IEnumerable<TServiceType>>()!.Select(item => item.GetType());
-
-            expectedTypes.Should().BeEquivalentTo(actual);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace AllOverIt.DependencyInjection.Tests
 {
-    internal sealed class ConcreteClassG : AbstractClassA, IBaseInterface2, IInterface4
+    internal sealed class ConcreteClassG : AbstractClassA, IBaseInterface2, IBaseInterface4
     {
     }
 }

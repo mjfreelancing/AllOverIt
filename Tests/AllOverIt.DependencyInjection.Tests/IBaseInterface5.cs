@@ -2,7 +2,7 @@
 
 namespace AllOverIt.DependencyInjection.Tests
 {
-    public interface IInterface4 : IBaseInterface1
+    public interface IBaseInterface5 : IBaseInterface1
     {
     }
 }

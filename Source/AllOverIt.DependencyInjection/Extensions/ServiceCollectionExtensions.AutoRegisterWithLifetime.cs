@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AllOverIt.DependencyInjection.Exceptions;
 
 namespace AllOverIt.DependencyInjection.Extensions
 {
@@ -48,6 +49,22 @@ namespace AllOverIt.DependencyInjection.Extensions
                 allServiceTypes,
                 (serviceType, implementationType) =>
                 {
+                    var descriptors = serviceCollection
+                        .Where(service => service.ServiceType == serviceType && service.ImplementationType == implementationType)
+                        .AsReadOnlyList();
+
+                    if (descriptors.Any())
+                    {
+                        var firstMismatch = descriptors.FirstOrDefault(item => item.Lifetime != lifetime);
+
+                        if (firstMismatch != null)
+                        {
+                            throw new DependencyRegistrationException($"The service type {serviceType.GetFriendlyName()} is already registered to the implementation type {implementationType.GetFriendlyName()} but has a different lifetime ({firstMismatch.Lifetime}).");
+                        }
+
+                        return;
+                    }
+
                     switch (lifetime)
                     {
                         case ServiceLifetime.Scoped:

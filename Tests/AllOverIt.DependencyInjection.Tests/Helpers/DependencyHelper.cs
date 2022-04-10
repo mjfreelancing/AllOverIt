@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AllOverIt.DependencyInjection.Extensions;
+using AllOverIt.Extensions;
+using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AllOverIt.DependencyInjection.Tests.Helpers
 {
     internal static class DependencyHelper
     {
-        internal static IServiceCollection AutoRegisterUsingMode<TServiceRegistrar, TServiceType>(ServiceLifetime mode, IServiceCollection services,
+        internal static IServiceCollection AutoRegisterUsingServiceLifetime<TServiceRegistrar, TServiceType>(ServiceLifetime mode, IServiceCollection services,
             Action<IServiceRegistrarOptions> configure = default)
             where TServiceRegistrar : IServiceRegistrar, new()
         {
@@ -23,14 +26,14 @@ namespace AllOverIt.DependencyInjection.Tests.Helpers
             };
         }
 
-        internal static IServiceCollection AutoRegisterUsingMode<TServiceRegistrar, TServiceType>(this IServiceCollection services, ServiceLifetime mode,
+        internal static IServiceCollection AutoRegisterUsingServiceLifetime<TServiceRegistrar, TServiceType>(this IServiceCollection services, ServiceLifetime mode,
             Action<IServiceRegistrarOptions> configure = default)
             where TServiceRegistrar : IServiceRegistrar, new()
         {
-            return AutoRegisterUsingMode<TServiceRegistrar, TServiceType>(mode, services, configure);
+            return AutoRegisterUsingServiceLifetime<TServiceRegistrar, TServiceType>(mode, services, configure);
         }
 
-        internal static IServiceCollection AutoRegisterUsingMode<TServiceRegistrar>(ServiceLifetime mode, IServiceCollection services,
+        internal static IServiceCollection AutoRegisterUsingServiceLifetime<TServiceRegistrar>(ServiceLifetime mode, IServiceCollection services,
             IEnumerable<Type> serviceTypes, Action<IServiceRegistrarOptions> configure = default)
             where TServiceRegistrar : IServiceRegistrar, new()
         {
@@ -46,14 +49,14 @@ namespace AllOverIt.DependencyInjection.Tests.Helpers
             };
         }
 
-        internal static IServiceCollection AutoRegisterUsingMode<TServiceRegistrar>(this IServiceCollection services, ServiceLifetime mode,
+        internal static IServiceCollection AutoRegisterUsingServiceLifetime<TServiceRegistrar>(this IServiceCollection services, ServiceLifetime mode,
             IEnumerable<Type> serviceTypes, Action<IServiceRegistrarOptions> configure = default)
             where TServiceRegistrar : IServiceRegistrar, new()
         {
-            return AutoRegisterUsingMode<TServiceRegistrar>(mode, services, serviceTypes, configure);
+            return AutoRegisterUsingServiceLifetime<TServiceRegistrar>(mode, services, serviceTypes, configure);
         }
 
-        internal static IServiceCollection AutoRegisterUsingMode<TServiceType>(ServiceLifetime mode, IServiceCollection services,
+        internal static IServiceCollection AutoRegisterUsingServiceLifetime<TServiceType>(ServiceLifetime mode, IServiceCollection services,
             IServiceRegistrar serviceRegistrar, Action<IServiceRegistrarOptions> configure = default)
         {
             return mode switch
@@ -68,13 +71,13 @@ namespace AllOverIt.DependencyInjection.Tests.Helpers
             };
         }
 
-        internal static IServiceCollection AutoRegisterUsingMode<TServiceType>(this IServiceCollection services, ServiceLifetime mode,
+        internal static IServiceCollection AutoRegisterUsingServiceLifetime<TServiceType>(this IServiceCollection services, ServiceLifetime mode,
             IServiceRegistrar serviceRegistrar, Action<IServiceRegistrarOptions> configure = default)
         {
-            return AutoRegisterUsingMode<TServiceType>(mode, services, serviceRegistrar, configure);
+            return AutoRegisterUsingServiceLifetime<TServiceType>(mode, services, serviceRegistrar, configure);
         }
 
-        internal static IServiceCollection AutoRegisterUsingMode(ServiceLifetime mode, IServiceCollection services, IServiceRegistrar serviceRegistrar,
+        internal static IServiceCollection AutoRegisterUsingServiceLifetime(ServiceLifetime mode, IServiceCollection services, IServiceRegistrar serviceRegistrar,
             IEnumerable<Type> serviceTypes, Action<IServiceRegistrarOptions> configure = default)
         {
             return mode switch
@@ -89,13 +92,13 @@ namespace AllOverIt.DependencyInjection.Tests.Helpers
             };
         }
 
-        internal static IServiceCollection AutoRegisterUsingMode(this IServiceCollection services, ServiceLifetime mode, IServiceRegistrar serviceRegistrar,
+        internal static IServiceCollection AutoRegisterUsingServiceLifetime(this IServiceCollection services, ServiceLifetime mode, IServiceRegistrar serviceRegistrar,
             IEnumerable<Type> serviceTypes, Action<IServiceRegistrarOptions> configure = default)
         {
-            return AutoRegisterUsingMode(mode, services, serviceRegistrar, serviceTypes, configure);
+            return AutoRegisterUsingServiceLifetime(mode, services, serviceRegistrar, serviceTypes, configure);
         }
 
-        internal static IServiceCollection AutoRegisterUsingMode(ServiceLifetime mode, IServiceCollection services, IEnumerable<IServiceRegistrar> serviceRegistrars,
+        internal static IServiceCollection AutoRegisterUsingServiceLifetime(ServiceLifetime mode, IServiceCollection services, IEnumerable<IServiceRegistrar> serviceRegistrars,
             IEnumerable<Type> serviceTypes, Action<IServiceRegistrarOptions> configure = default)
         {
             return mode switch
@@ -110,13 +113,13 @@ namespace AllOverIt.DependencyInjection.Tests.Helpers
             };
         }
 
-        internal static IServiceCollection AutoRegisterUsingMode(this IServiceCollection services, ServiceLifetime mode, IEnumerable<IServiceRegistrar> serviceRegistrars,
+        internal static IServiceCollection AutoRegisterUsingServiceLifetime(this IServiceCollection services, ServiceLifetime mode, IEnumerable<IServiceRegistrar> serviceRegistrars,
             IEnumerable<Type> serviceTypes, Action<IServiceRegistrarOptions> configure = default)
         {
-            return AutoRegisterUsingMode(mode, services, serviceRegistrars, serviceTypes, configure);
+            return AutoRegisterUsingServiceLifetime(mode, services, serviceRegistrars, serviceTypes, configure);
         }
 
-        internal static IServiceCollection AutoRegisterUsingMode<TServiceRegistrar>(ServiceLifetime mode, IServiceCollection services, IEnumerable<Type> serviceTypes,
+        internal static IServiceCollection AutoRegisterUsingServiceLifetime<TServiceRegistrar>(ServiceLifetime mode, IServiceCollection services, IEnumerable<Type> serviceTypes,
             Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions> configure = default)
             where TServiceRegistrar : IServiceRegistrar, new()
         {
@@ -132,14 +135,14 @@ namespace AllOverIt.DependencyInjection.Tests.Helpers
             };
         }
 
-        internal static IServiceCollection AutoRegisterUsingMode<TServiceRegistrar>(this IServiceCollection services, ServiceLifetime mode, IEnumerable<Type> serviceTypes,
+        internal static IServiceCollection AutoRegisterUsingServiceLifetime<TServiceRegistrar>(this IServiceCollection services, ServiceLifetime mode, IEnumerable<Type> serviceTypes,
             Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions> configure = default)
             where TServiceRegistrar : IServiceRegistrar, new()
         {
-            return AutoRegisterUsingMode<TServiceRegistrar>(mode, services, serviceTypes, constructorArgsResolver, configure);
+            return AutoRegisterUsingServiceLifetime<TServiceRegistrar>(mode, services, serviceTypes, constructorArgsResolver, configure);
         }
 
-        internal static IServiceCollection AutoRegisterUsingMode(ServiceLifetime mode, IServiceCollection services, IServiceRegistrar serviceRegistrar, IEnumerable<Type> serviceTypes,
+        internal static IServiceCollection AutoRegisterUsingServiceLifetime(ServiceLifetime mode, IServiceCollection services, IServiceRegistrar serviceRegistrar, IEnumerable<Type> serviceTypes,
             Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions> configure = default)
         {
             return mode switch
@@ -154,13 +157,13 @@ namespace AllOverIt.DependencyInjection.Tests.Helpers
             };
         }
 
-        internal static IServiceCollection AutoRegisterUsingMode(this IServiceCollection services, ServiceLifetime mode, IServiceRegistrar serviceRegistrar, IEnumerable<Type> serviceTypes,
+        internal static IServiceCollection AutoRegisterUsingServiceLifetime(this IServiceCollection services, ServiceLifetime mode, IServiceRegistrar serviceRegistrar, IEnumerable<Type> serviceTypes,
             Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions> configure = default)
         {
-            return AutoRegisterUsingMode(mode, services, serviceRegistrar, serviceTypes, constructorArgsResolver, configure);
+            return AutoRegisterUsingServiceLifetime(mode, services, serviceRegistrar, serviceTypes, constructorArgsResolver, configure);
         }
 
-        internal static IServiceCollection AutoRegisterUsingMode(ServiceLifetime mode, IServiceCollection services, IEnumerable<IServiceRegistrar> serviceRegistrars, IEnumerable<Type> serviceTypes,
+        internal static IServiceCollection AutoRegisterUsingServiceLifetime(ServiceLifetime mode, IServiceCollection services, IEnumerable<IServiceRegistrar> serviceRegistrars, IEnumerable<Type> serviceTypes,
             Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions> configure = default)
         {
             return mode switch
@@ -175,10 +178,34 @@ namespace AllOverIt.DependencyInjection.Tests.Helpers
             };
         }
 
-        internal static IServiceCollection AutoRegisterUsingMode(this IServiceCollection services, ServiceLifetime mode, IEnumerable<IServiceRegistrar> serviceRegistrars, IEnumerable<Type> serviceTypes,
+        internal static IServiceCollection AutoRegisterUsingServiceLifetime(this IServiceCollection services, ServiceLifetime mode, IEnumerable<IServiceRegistrar> serviceRegistrars, IEnumerable<Type> serviceTypes,
             Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions> configure = default)
         {
-            return AutoRegisterUsingMode(mode, services, serviceRegistrars, serviceTypes, constructorArgsResolver, configure);
+            return AutoRegisterUsingServiceLifetime(mode, services, serviceRegistrars, serviceTypes, constructorArgsResolver, configure);
+        }
+
+        internal static void AssertInstanceEquality<TType>(IEnumerable<TType> items1, IEnumerable<TType> items2, bool expected)
+        {
+            var instances1 = items1.OrderBy(item => item.GetType().AssemblyQualifiedName);
+            var instances2 = items2.OrderBy(item => item.GetType().AssemblyQualifiedName);
+
+            instances1
+                .Zip(instances2)
+                .ForEach((instance, _) =>
+                {
+                    instance.First
+                        .Should()
+                        .BeOfType(instance.Second.GetType());
+
+                    ReferenceEquals(instance.First, instance.Second).Should().Be(expected);
+                });
+        }
+
+        internal static void AssertExpectation<TServiceType>(IServiceProvider provider, IEnumerable<Type> expectedTypes)
+        {
+            var actual = provider.GetService<IEnumerable<TServiceType>>()!.SelectAsReadOnlyCollection(item => item.GetType());
+
+            expectedTypes.Should().BeEquivalentTo(actual);
         }
     }
 }
