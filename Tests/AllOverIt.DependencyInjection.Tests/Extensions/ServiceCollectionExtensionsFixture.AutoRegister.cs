@@ -35,7 +35,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("services");
+                    .WithNamedMessageWhenNull("serviceCollection");
             }
 
             [Theory]
@@ -251,7 +251,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("services");
+                    .WithNamedMessageWhenNull("serviceCollection");
             }
 
             [Theory]
@@ -518,7 +518,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("services");
+                    .WithNamedMessageWhenNull("serviceCollection");
             }
 
             [Theory]
@@ -752,7 +752,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("services");
+                    .WithNamedMessageWhenNull("serviceCollection");
             }
 
             [Theory]
@@ -1033,7 +1033,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("services");
+                    .WithNamedMessageWhenNull("serviceCollection");
             }
 
             [Theory]
@@ -1311,7 +1311,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("services");
+                    .WithNamedMessageWhenNull("serviceCollection");
             }
 
             [Theory]
@@ -1504,7 +1504,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("services");
+                    .WithNamedMessageWhenNull("serviceCollection");
             }
 
             [Theory]
@@ -1713,7 +1713,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("services");
+                    .WithNamedMessageWhenNull("serviceCollection");
             }
 
             [Theory]

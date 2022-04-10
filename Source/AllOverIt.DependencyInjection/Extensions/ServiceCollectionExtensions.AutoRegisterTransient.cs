@@ -1,9 +1,6 @@
-﻿using AllOverIt.Assertion;
-using AllOverIt.Extensions;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AllOverIt.DependencyInjection.Extensions
 {
@@ -20,9 +17,7 @@ namespace AllOverIt.DependencyInjection.Extensions
         public static IServiceCollection AutoRegisterTransient<TServiceRegistrar, TServiceType>(this IServiceCollection serviceCollection, Action<IServiceRegistrarOptions> configure = default)
             where TServiceRegistrar : IServiceRegistrar, new()
         {
-            _ = serviceCollection.WhenNotNull(nameof(serviceCollection));
-
-            return AutoRegisterTransient(serviceCollection, new TServiceRegistrar(), new[] { typeof(TServiceType) }, configure);
+            return AutoRegisterWithLifetime<TServiceRegistrar, TServiceType>(serviceCollection, configure, ServiceLifetime.Transient);
         }
 
         /// <summary>Auto registers one or more service types with a lifetime of transient by scanning for inherited types within the assembly containing the
@@ -37,10 +32,7 @@ namespace AllOverIt.DependencyInjection.Extensions
             Action<IServiceRegistrarOptions> configure = default)
             where TServiceRegistrar : IServiceRegistrar, new()
         {
-            _ = serviceCollection.WhenNotNull(nameof(serviceCollection));
-            var allServiceTypes = serviceTypes.WhenNotNullOrEmpty(nameof(serviceTypes)).AsReadOnlyCollection();
-
-            return AutoRegisterTransient(serviceCollection, new TServiceRegistrar(), allServiceTypes, configure);
+            return AutoRegisterWithLifetime<TServiceRegistrar>(serviceCollection, serviceTypes, configure, ServiceLifetime.Transient);
         }
 
         /// <summary>Auto registers a <typeparamref name="TServiceType" /> type with a lifetime of transient by scanning for inherited types within the assembly containing the
@@ -54,10 +46,7 @@ namespace AllOverIt.DependencyInjection.Extensions
         public static IServiceCollection AutoRegisterTransient<TServiceType>(this IServiceCollection serviceCollection, IServiceRegistrar serviceRegistrar,
             Action<IServiceRegistrarOptions> configure = default)
         {
-            _ = serviceCollection.WhenNotNull(nameof(serviceCollection));
-            _ = serviceRegistrar.WhenNotNull(nameof(serviceRegistrar));
-
-            return AutoRegisterTransient(serviceCollection, serviceRegistrar, new[] { typeof(TServiceType) }, configure);
+            return AutoRegisterWithLifetime<TServiceType>(serviceCollection, serviceRegistrar, configure, ServiceLifetime.Transient);
         }
 
         /// <summary>Auto registers one or more service types with a lifetime of transient by scanning for inherited types within the assembly containing the
@@ -71,16 +60,7 @@ namespace AllOverIt.DependencyInjection.Extensions
         public static IServiceCollection AutoRegisterTransient(this IServiceCollection serviceCollection, IServiceRegistrar serviceRegistrar, IEnumerable<Type> serviceTypes,
             Action<IServiceRegistrarOptions> configure = default)
         {
-            _ = serviceCollection.WhenNotNull(nameof(serviceCollection));
-            _ = serviceRegistrar.WhenNotNull(nameof(serviceRegistrar));
-            var allServiceTypes = serviceTypes.WhenNotNullOrEmpty(nameof(serviceTypes)).AsReadOnlyCollection();
-
-            serviceRegistrar.AutoRegisterServices(
-                allServiceTypes,
-                (serviceType, implementationType) => serviceCollection.AddTransient(serviceType, implementationType),
-                configure);
-
-            return serviceCollection;
+            return AutoRegisterWithLifetime(serviceCollection, serviceRegistrar, serviceTypes, configure, ServiceLifetime.Transient);
         }
 
         /// <summary>Auto registers one or more service types with a lifetime of transient by scanning for inherited types within the assembly containing the
@@ -94,16 +74,7 @@ namespace AllOverIt.DependencyInjection.Extensions
         public static IServiceCollection AutoRegisterTransient(this IServiceCollection serviceCollection, IEnumerable<IServiceRegistrar> serviceRegistrars, IEnumerable<Type> serviceTypes,
             Action<IServiceRegistrarOptions> configure = default)
         {
-            _ = serviceCollection.WhenNotNull(nameof(serviceCollection));
-            var allServiceRegistrars = serviceRegistrars.WhenNotNullOrEmpty(nameof(serviceRegistrars)).AsReadOnlyCollection();
-            var allServiceTypes = serviceTypes.WhenNotNullOrEmpty(nameof(serviceTypes)).AsReadOnlyCollection();
-
-            foreach (var serviceRegistrar in allServiceRegistrars)
-            {
-                AutoRegisterTransient(serviceCollection, serviceRegistrar, allServiceTypes, configure);
-            }
-
-            return serviceCollection;
+            return AutoRegisterWithLifetime(serviceCollection, serviceRegistrars, serviceTypes, configure, ServiceLifetime.Transient);
         }
 
         /// <summary>Auto registers one or more service types with a lifetime of transient by scanning for inherited types within the assembly containing the
@@ -119,11 +90,7 @@ namespace AllOverIt.DependencyInjection.Extensions
             Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions> configure = default)
             where TServiceRegistrar : IServiceRegistrar, new()
         {
-            _ = serviceCollection.WhenNotNull(nameof(serviceCollection));
-            var allServiceTypes = serviceTypes.WhenNotNullOrEmpty(nameof(serviceTypes)).AsReadOnlyCollection();
-            _ = constructorArgsResolver.WhenNotNull(nameof(constructorArgsResolver));
-
-            return AutoRegisterTransient(serviceCollection, new TServiceRegistrar(), allServiceTypes, constructorArgsResolver, configure);
+            return AutoRegisterWithLifetime<TServiceRegistrar>(serviceCollection, serviceTypes, constructorArgsResolver, configure, ServiceLifetime.Transient);
         }
 
         /// <summary>Auto registers one or more service types with a lifetime of transient by scanning for inherited types within the assembly containing the
@@ -138,21 +105,7 @@ namespace AllOverIt.DependencyInjection.Extensions
         public static IServiceCollection AutoRegisterTransient(this IServiceCollection serviceCollection, IServiceRegistrar serviceRegistrar, IEnumerable<Type> serviceTypes,
             Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions> configure = default)
         {
-            _ = serviceCollection.WhenNotNull(nameof(serviceCollection));
-            _ = serviceRegistrar.WhenNotNull(nameof(serviceRegistrar));
-            var allServiceTypes = serviceTypes.WhenNotNullOrEmpty(nameof(serviceTypes)).AsReadOnlyCollection();
-            _ = constructorArgsResolver.WhenNotNull(nameof(constructorArgsResolver));
-
-            serviceRegistrar.AutoRegisterServices(
-                allServiceTypes,
-                (serviceType, implementationType) => serviceCollection.AddTransient(serviceType, provider =>
-                {
-                    var args = constructorArgsResolver.Invoke(provider, implementationType);
-                    return Activator.CreateInstance(implementationType, args.ToArray());
-                }),
-                configure);
-
-            return serviceCollection;
+            return AutoRegisterWithLifetime(serviceCollection, serviceRegistrar, serviceTypes, constructorArgsResolver, configure, ServiceLifetime.Transient);
         }
 
         /// <summary>Auto registers one or more service types with a lifetime of transient by scanning for inherited types within the assembly containing the
@@ -167,17 +120,7 @@ namespace AllOverIt.DependencyInjection.Extensions
         public static IServiceCollection AutoRegisterTransient(this IServiceCollection serviceCollection, IEnumerable<IServiceRegistrar> serviceRegistrars, IEnumerable<Type> serviceTypes,
             Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions> configure = default)
         {
-            _ = serviceCollection.WhenNotNull(nameof(serviceCollection));
-            var allServiceRegistrars = serviceRegistrars.WhenNotNullOrEmpty(nameof(serviceRegistrars));
-            var allServiceTypes = serviceTypes.WhenNotNullOrEmpty(nameof(serviceTypes)).AsReadOnlyCollection();
-            _ = constructorArgsResolver.WhenNotNull(nameof(constructorArgsResolver));
-
-            foreach (var serviceRegistrar in allServiceRegistrars)
-            {
-                AutoRegisterTransient(serviceCollection, serviceRegistrar, allServiceTypes, constructorArgsResolver, configure);
-            }
-
-            return serviceCollection;
+            return AutoRegisterWithLifetime(serviceCollection, serviceRegistrars, serviceTypes, constructorArgsResolver, configure, ServiceLifetime.Transient);
         }
     }
 }
