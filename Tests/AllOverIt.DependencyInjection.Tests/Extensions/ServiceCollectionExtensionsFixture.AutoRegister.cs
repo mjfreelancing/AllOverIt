@@ -1,94 +1,17 @@
-﻿using AllOverIt.DependencyInjection.Extensions;
-using AllOverIt.DependencyInjection.Tests.Types;
+﻿using AllOverIt.DependencyInjection.Tests.Types;
 using AllOverIt.Fixture;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AllOverIt.DependencyInjection.Tests.Helpers;
 using AllOverIt.Extensions;
 using AllOverIt.Fixture.Extensions;
 using Xunit;
 
 namespace AllOverIt.DependencyInjection.Tests.Extensions
 {
-    public enum RegistrationMode
-    {
-        Singleton,
-        Scoped,
-        Transient
-    }
-
-    internal static class FixtureHelper
-    {
-        public static IServiceCollection AutoRegisterUsingMode<TServiceRegistrar, TServiceType>(RegistrationMode mode, IServiceCollection services,
-            Action<IServiceRegistrarOptions> configure = default)
-            where TServiceRegistrar : IServiceRegistrar, new()
-        {
-            return mode switch
-            {
-                RegistrationMode.Singleton => ServiceCollectionExtensions.AutoRegisterSingleton<TServiceRegistrar, TServiceType>(services, configure),
-                
-                RegistrationMode.Scoped => ServiceCollectionExtensions.AutoRegisterScoped<TServiceRegistrar, TServiceType>(services, configure),
-
-                RegistrationMode.Transient => ServiceCollectionExtensions.AutoRegisterTransient<TServiceRegistrar, TServiceType>(services, configure),
-
-                _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
-            };
-        }
-
-        public static IServiceCollection AutoRegisterUsingMode<TServiceRegistrar, TServiceType>(this IServiceCollection services, RegistrationMode mode,
-            Action<IServiceRegistrarOptions> configure = default)
-            where TServiceRegistrar : IServiceRegistrar, new()
-        {
-            return AutoRegisterUsingMode<TServiceRegistrar, TServiceType>(mode, services, configure);
-        }
-
-        public static IServiceCollection AutoRegisterUsingMode<TServiceRegistrar>(RegistrationMode mode, IServiceCollection services,
-            IEnumerable<Type> serviceTypes, Action<IServiceRegistrarOptions> configure = default)
-            where TServiceRegistrar : IServiceRegistrar, new()
-        {
-            return mode switch
-            {
-                RegistrationMode.Singleton => ServiceCollectionExtensions.AutoRegisterSingleton<TServiceRegistrar>(services, serviceTypes, configure),
-
-                RegistrationMode.Scoped => ServiceCollectionExtensions.AutoRegisterScoped<TServiceRegistrar>(services, serviceTypes, configure),
-
-                RegistrationMode.Transient => ServiceCollectionExtensions.AutoRegisterTransient<TServiceRegistrar>(services, serviceTypes, configure),
-
-                _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
-            };
-        }
-
-        public static IServiceCollection AutoRegisterUsingMode<TServiceRegistrar>(this IServiceCollection services, RegistrationMode mode,
-            IEnumerable<Type> serviceTypes, Action<IServiceRegistrarOptions> configure = default)
-            where TServiceRegistrar : IServiceRegistrar, new()
-        {
-            return AutoRegisterUsingMode<TServiceRegistrar>(mode, services, serviceTypes, configure);
-        }
-
-        public static IServiceCollection AutoRegisterUsingMode<TServiceType>(RegistrationMode mode, IServiceCollection services,
-            IServiceRegistrar serviceRegistrar, Action<IServiceRegistrarOptions> configure = default)
-        {
-            return mode switch
-            {
-                RegistrationMode.Singleton => ServiceCollectionExtensions.AutoRegisterSingleton<TServiceType>(services, serviceRegistrar, configure),
-
-                RegistrationMode.Scoped => ServiceCollectionExtensions.AutoRegisterScoped<TServiceType>(services, serviceRegistrar, configure),
-
-                RegistrationMode.Transient => ServiceCollectionExtensions.AutoRegisterTransient<TServiceType>(services, serviceRegistrar, configure),
-
-                _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
-            };
-        }
-
-        public static IServiceCollection AutoRegisterUsingMode<TServiceType>(this IServiceCollection services, RegistrationMode mode,
-            IServiceRegistrar serviceRegistrar, Action<IServiceRegistrarOptions> configure = default)
-        {
-            return AutoRegisterUsingMode<TServiceType>(mode, services, serviceRegistrar, configure);
-        }
-    }
-    
     public class ServiceCollectionExtensionsFixture : FixtureBase
     {
         private readonly IServiceCollection _serviceCollection;
@@ -108,7 +31,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        FixtureHelper.AutoRegisterUsingMode<ExternalDependenciesRegistrar, AbstractClassA>(mode, null);
+                        DependencyHelper.AutoRegisterUsingMode<ExternalDependenciesRegistrar, AbstractClassA>(mode, null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -123,7 +46,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        FixtureHelper.AutoRegisterUsingMode<ExternalDependenciesRegistrar, AbstractClassA>(mode, _serviceCollection, null);
+                        DependencyHelper.AutoRegisterUsingMode<ExternalDependenciesRegistrar, AbstractClassA>(mode, _serviceCollection, null);
                     })
                     .Should()
                     .NotThrow();
@@ -135,7 +58,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(RegistrationMode.Transient)]
             public void Should_Register_No_Exclude_Or_Filter(RegistrationMode mode)
             {
-                var provider = FixtureHelper
+                var provider = DependencyHelper
 
                     .AutoRegisterUsingMode<LocalDependenciesRegistrar, AbstractClassA>(mode, _serviceCollection)
 
@@ -152,7 +75,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(RegistrationMode.Transient)]
             public void Should_Register_With_Exclude(RegistrationMode mode)
             {
-                var provider = FixtureHelper
+                var provider = DependencyHelper
                     
                     .AutoRegisterUsingMode<LocalDependenciesRegistrar, AbstractClassA>(mode, _serviceCollection)
 
@@ -169,7 +92,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(RegistrationMode.Transient)]
             public void Should_Register_With_Filter(RegistrationMode mode)
             {
-                var provider = FixtureHelper
+                var provider = DependencyHelper
 
                     .AutoRegisterUsingMode<LocalDependenciesRegistrar, AbstractClassA>(mode, _serviceCollection)
 
@@ -187,7 +110,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(RegistrationMode.Transient, false)]
             public void Should_Resolve_When_In_Same_Scope(RegistrationMode mode, bool expected)
             {
-                var provider = FixtureHelper
+                var provider = DependencyHelper
 
                     .AutoRegisterUsingMode<LocalDependenciesRegistrar, AbstractClassA>(mode, _serviceCollection)
 
@@ -209,7 +132,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(RegistrationMode.Transient, false)]
             public void Should_Resolve_When_In_Different_Scope(RegistrationMode mode, bool expected)
             {
-                var provider = FixtureHelper
+                var provider = DependencyHelper
 
                     .AutoRegisterUsingMode<LocalDependenciesRegistrar, AbstractClassA>(mode, _serviceCollection)
 
@@ -235,7 +158,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(RegistrationMode.Transient)]
             public void Should_Resolve_All_Interfaces(RegistrationMode mode)
             {
-                var provider = FixtureHelper
+                var provider = DependencyHelper
 
                     .AutoRegisterUsingMode<LocalDependenciesRegistrar, IBaseInterface1>(mode, _serviceCollection)
 
@@ -267,7 +190,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(RegistrationMode.Transient)]
             public void Should_Resolve_All_Interfaces_Except_Registered_Service(RegistrationMode mode)
             {
-                var provider = FixtureHelper
+                var provider = DependencyHelper
 
                     .AutoRegisterUsingMode<LocalDependenciesRegistrar, IBaseInterface1>(mode, _serviceCollection,
                         config => config.Filter((service, implementation) => service != typeof(IBaseInterface1)))
@@ -297,7 +220,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(RegistrationMode.Transient)]
             public void Should_Not_Resolve_Abstract_Class_When_Register_Interface(RegistrationMode mode)
             {
-                var provider = FixtureHelper
+                var provider = DependencyHelper
 
                     .AutoRegisterUsingMode<LocalDependenciesRegistrar, IBaseInterface1>(mode, _serviceCollection)
 
@@ -324,7 +247,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        FixtureHelper.AutoRegisterUsingMode<ExternalDependenciesRegistrar>(mode, null, new[] {typeof(AbstractClassA), typeof(IBaseInterface2)});
+                        DependencyHelper.AutoRegisterUsingMode<ExternalDependenciesRegistrar>(mode, null, new[] {typeof(AbstractClassA), typeof(IBaseInterface2)});
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -339,7 +262,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        FixtureHelper.AutoRegisterUsingMode<ExternalDependenciesRegistrar>(mode, _serviceCollection, (IEnumerable<Type>)null);
+                        DependencyHelper.AutoRegisterUsingMode<ExternalDependenciesRegistrar>(mode, _serviceCollection, (IEnumerable<Type>)null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -354,7 +277,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        FixtureHelper.AutoRegisterUsingMode<ExternalDependenciesRegistrar>(mode, _serviceCollection, new List<Type>());
+                        DependencyHelper.AutoRegisterUsingMode<ExternalDependenciesRegistrar>(mode, _serviceCollection, new List<Type>());
                     })
                     .Should()
                     .Throw<ArgumentException>()
@@ -369,7 +292,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        FixtureHelper.AutoRegisterUsingMode<ExternalDependenciesRegistrar>(mode, _serviceCollection,
+                        DependencyHelper.AutoRegisterUsingMode<ExternalDependenciesRegistrar>(mode, _serviceCollection,
                             new[] {typeof(AbstractClassA), typeof(IBaseInterface2)});
                     })
                     .Should()
@@ -382,7 +305,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(RegistrationMode.Transient)]
             public void Should_Register_No_Exclude_Or_Filter(RegistrationMode mode)
             {
-                var provider = FixtureHelper
+                var provider = DependencyHelper
                     
                     .AutoRegisterUsingMode<LocalDependenciesRegistrar>(mode, _serviceCollection, new[] {typeof(AbstractClassA), typeof(IBaseInterface2) })
 
@@ -400,7 +323,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(RegistrationMode.Transient)]
             public void Should_Register_With_Exclude(RegistrationMode mode)
             {
-                var provider = FixtureHelper
+                var provider = DependencyHelper
 
                     .AutoRegisterUsingMode<LocalDependenciesRegistrar>(mode, _serviceCollection, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
 
@@ -419,7 +342,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(RegistrationMode.Transient)]
             public void Should_Register_With_Filter(RegistrationMode mode)
             {
-                var provider = FixtureHelper
+                var provider = DependencyHelper
 
                     .AutoRegisterUsingMode<LocalDependenciesRegistrar>(mode, _serviceCollection, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
 
@@ -438,7 +361,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(RegistrationMode.Transient, false)]
             public void Should_Resolve_When_In_Same_Scope(RegistrationMode mode, bool expected)
             {
-                var provider = FixtureHelper
+                var provider = DependencyHelper
 
                     .AutoRegisterUsingMode<LocalDependenciesRegistrar>(mode, _serviceCollection, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
 
@@ -466,7 +389,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(RegistrationMode.Transient, false)]
             public void Should_Resolve_When_In_Different_Scope(RegistrationMode mode, bool expected)
             {
-                var provider = FixtureHelper
+                var provider = DependencyHelper
 
                     .AutoRegisterUsingMode<LocalDependenciesRegistrar>(mode, _serviceCollection, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
 
@@ -496,7 +419,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(RegistrationMode.Transient)]
             public void Should_Resolve_All_Interfaces(RegistrationMode mode)
             {
-                var provider = FixtureHelper
+                var provider = DependencyHelper
 
                     .AutoRegisterUsingMode<LocalDependenciesRegistrar>(mode, _serviceCollection, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) })
 
@@ -527,7 +450,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(RegistrationMode.Transient)]
             public void Should_Resolve_All_Interfaces_Except_Registered_Service(RegistrationMode mode)
             {
-                var provider = FixtureHelper
+                var provider = DependencyHelper
 
                     .AutoRegisterUsingMode<LocalDependenciesRegistrar>(mode, _serviceCollection, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) },
                         config => config.Filter((service, implementation) => service != typeof(IBaseInterface1)))
@@ -561,7 +484,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(RegistrationMode.Transient)]
             public void Should_Not_Resolve_Abstract_Class_When_Register_Interface(RegistrationMode mode)
             {
-                var provider = FixtureHelper
+                var provider = DependencyHelper
 
                     .AutoRegisterUsingMode<LocalDependenciesRegistrar>(mode, _serviceCollection, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) })
 
@@ -591,7 +514,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             {
                 Invoking(() =>
                 {
-                    FixtureHelper.AutoRegisterUsingMode<AbstractClassA>(mode, null, _localRegistrar);
+                    DependencyHelper.AutoRegisterUsingMode<AbstractClassA>(mode, null, _localRegistrar);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -606,7 +529,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        FixtureHelper.AutoRegisterUsingMode<AbstractClassA>(mode, _serviceCollection, null);
+                        DependencyHelper.AutoRegisterUsingMode<AbstractClassA>(mode, _serviceCollection, null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -621,7 +544,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        FixtureHelper.AutoRegisterUsingMode<AbstractClassA>(mode, _serviceCollection, _localRegistrar, null);
+                        DependencyHelper.AutoRegisterUsingMode<AbstractClassA>(mode, _serviceCollection, _localRegistrar, null);
                     })
                     .Should()
                     .NotThrow();
@@ -633,7 +556,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(RegistrationMode.Transient)]
             public void Should_Register_No_Exclude_Or_Filter(RegistrationMode mode)
             {
-                var provider = FixtureHelper
+                var provider = DependencyHelper
 
                     .AutoRegisterUsingMode<AbstractClassA>(mode, _serviceCollection, _localRegistrar)
 
@@ -650,7 +573,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(RegistrationMode.Transient)]
             public void Should_Register_With_Exclude(RegistrationMode mode)
             {
-                var provider = FixtureHelper
+                var provider = DependencyHelper
 
                     .AutoRegisterUsingMode<AbstractClassA>(mode, _serviceCollection, _localRegistrar)
 
@@ -667,7 +590,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(RegistrationMode.Transient)]
             public void Should_Register_With_Filter(RegistrationMode mode)
             {
-                var provider = FixtureHelper
+                var provider = DependencyHelper
 
                     .AutoRegisterUsingMode<AbstractClassA>(mode, _serviceCollection, _localRegistrar)
 
@@ -685,7 +608,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(RegistrationMode.Transient, false)]
             public void Should_Resolve_When_In_Same_Scope(RegistrationMode mode, bool expected)
             {
-                var provider = FixtureHelper
+                var provider = DependencyHelper
 
                     .AutoRegisterUsingMode<AbstractClassA>(mode, _serviceCollection, _localRegistrar)
 
@@ -707,7 +630,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(RegistrationMode.Transient, false)]
             public void Should_Resolve_When_In_Different_Scope(RegistrationMode mode, bool expected)
             {
-                var provider = FixtureHelper
+                var provider = DependencyHelper
 
                     .AutoRegisterUsingMode<AbstractClassA>(mode, _serviceCollection, _localRegistrar)
 
@@ -733,7 +656,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(RegistrationMode.Transient)]
             public void Should_Resolve_All_Interfaces(RegistrationMode mode)
             {
-                var provider = FixtureHelper
+                var provider = DependencyHelper
 
                     .AutoRegisterUsingMode<IBaseInterface1>(mode, _serviceCollection, _localRegistrar)
 
@@ -765,7 +688,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(RegistrationMode.Transient)]
             public void Should_Resolve_All_Interfaces_Except_Registered_Service(RegistrationMode mode)
             {
-                var provider = FixtureHelper
+                var provider = DependencyHelper
 
                     .AutoRegisterUsingMode<IBaseInterface1>(mode, _serviceCollection, _localRegistrar,
                         config => config.Filter((service, implementation) => service != typeof(IBaseInterface1)))
@@ -795,7 +718,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(RegistrationMode.Transient)]
             public void Should_Not_Resolve_Abstract_Class_When_Register_Interface(RegistrationMode mode)
             {
-                var provider = FixtureHelper
+                var provider = DependencyHelper
 
                     .AutoRegisterUsingMode<IBaseInterface1>(mode, _serviceCollection, _localRegistrar)
 
@@ -812,6 +735,566 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
         }
 
+        public class AutoRegister_ServiceRegistrar_ServiceTypes : ServiceCollectionExtensionsFixture
+        {
+            private readonly LocalDependenciesRegistrar _localRegistrar = new();
+            private readonly ExternalDependenciesRegistrar _externalRegistrar = new();
+
+            [Theory]
+            [InlineData(RegistrationMode.Singleton)]
+            [InlineData(RegistrationMode.Scoped)]
+            [InlineData(RegistrationMode.Transient)]
+            public void Should_Throw_When_Services_Null(RegistrationMode mode)
+            {
+                Invoking(() =>
+                {
+                    DependencyHelper.AutoRegisterUsingMode(mode, null, _externalRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("services");
+            }
+
+            [Theory]
+            [InlineData(RegistrationMode.Singleton)]
+            [InlineData(RegistrationMode.Scoped)]
+            [InlineData(RegistrationMode.Transient)]
+            public void Should_Throw_When_ServiceRegistrar_Null(RegistrationMode mode)
+            {
+                Invoking(() =>
+                    {
+                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, (IServiceRegistrar)null, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("serviceRegistrar");
+            }
+
+            [Theory]
+            [InlineData(RegistrationMode.Singleton)]
+            [InlineData(RegistrationMode.Scoped)]
+            [InlineData(RegistrationMode.Transient)]
+            public void Should_Throw_When_ServiceTypes_Null(RegistrationMode mode)
+            {
+                Invoking(() =>
+                {
+                    DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _externalRegistrar, (IEnumerable<Type>) null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("serviceTypes");
+            }
+
+            [Theory]
+            [InlineData(RegistrationMode.Singleton)]
+            [InlineData(RegistrationMode.Scoped)]
+            [InlineData(RegistrationMode.Transient)]
+            public void Should_Throw_When_ServiceTypes_Empty(RegistrationMode mode)
+            {
+                Invoking(() =>
+                {
+                    DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _externalRegistrar, new List<Type>());
+                })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("serviceTypes");
+            }
+
+            [Theory]
+            [InlineData(RegistrationMode.Singleton)]
+            [InlineData(RegistrationMode.Scoped)]
+            [InlineData(RegistrationMode.Transient)]
+            public void Should_Not_Throw_When_Configure_Null(RegistrationMode mode)
+            {
+                Invoking(() =>
+                {
+                    DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _externalRegistrar,
+                        new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
+                })
+                    .Should()
+                    .NotThrow();
+            }
+
+            [Theory]
+            [InlineData(RegistrationMode.Singleton)]
+            [InlineData(RegistrationMode.Scoped)]
+            [InlineData(RegistrationMode.Transient)]
+            public void Should_Register_No_Exclude_Or_Filter(RegistrationMode mode)
+            {
+                var provider = DependencyHelper
+
+                    .AutoRegisterUsingMode(mode, _serviceCollection, _localRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
+
+                    .AutoRegisterUsingMode(mode, _externalRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
+
+                    .BuildServiceProvider();
+
+                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+                AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+            }
+
+            [Theory]
+            [InlineData(RegistrationMode.Singleton)]
+            [InlineData(RegistrationMode.Scoped)]
+            [InlineData(RegistrationMode.Transient)]
+            public void Should_Register_With_Exclude(RegistrationMode mode)
+            {
+                var provider = DependencyHelper
+
+                    .AutoRegisterUsingMode(mode, _serviceCollection, _localRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
+
+                    .AutoRegisterUsingMode(mode, _externalRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) },
+                        config => config.ExcludeTypes(typeof(ConcreteClassE)))
+
+                    .BuildServiceProvider();
+
+                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassG) });
+                AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassG) });
+            }
+
+            [Theory]
+            [InlineData(RegistrationMode.Singleton)]
+            [InlineData(RegistrationMode.Scoped)]
+            [InlineData(RegistrationMode.Transient)]
+            public void Should_Register_With_Filter(RegistrationMode mode)
+            {
+                var provider = DependencyHelper
+
+                    .AutoRegisterUsingMode(mode, _serviceCollection, _localRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
+
+                    .AutoRegisterUsingMode(mode, _externalRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) }, config =>
+                        config.Filter((service, implementation) => implementation != typeof(ConcreteClassE)))
+
+                    .BuildServiceProvider();
+
+                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassG) });
+                AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassG) });
+            }
+
+            [Theory]
+            [InlineData(RegistrationMode.Singleton, true)]
+            [InlineData(RegistrationMode.Scoped, true)]
+            [InlineData(RegistrationMode.Transient, false)]
+            public void Should_Resolve_When_In_Same_Scope(RegistrationMode mode, bool expected)
+            {
+                var provider = DependencyHelper
+
+                    .AutoRegisterUsingMode(mode, _serviceCollection, _localRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
+
+                    .AutoRegisterUsingMode(mode, _externalRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
+
+                    .BuildServiceProvider();
+
+                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+                AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+
+                var instances1a = provider.GetRequiredService<IEnumerable<AbstractClassA>>();
+                var instances1b = provider.GetRequiredService<IEnumerable<AbstractClassA>>();
+
+                AssertInstanceEquality(instances1a, instances1b, expected);
+
+                var instances2a = provider.GetRequiredService<IEnumerable<IBaseInterface2>>();
+                var instances2b = provider.GetRequiredService<IEnumerable<IBaseInterface2>>();
+
+                AssertInstanceEquality(instances2a, instances2b, expected);
+            }
+
+            [Theory]
+            [InlineData(RegistrationMode.Singleton, true)]
+            [InlineData(RegistrationMode.Scoped, false)]
+            [InlineData(RegistrationMode.Transient, false)]
+            public void Should_Resolve_When_In_Different_Scope(RegistrationMode mode, bool expected)
+            {
+                var provider = DependencyHelper
+
+                    .AutoRegisterUsingMode(mode, _serviceCollection, _localRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
+
+                    .AutoRegisterUsingMode(mode, _externalRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
+
+                    .BuildServiceProvider();
+
+                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+                AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+
+                var instances1a = provider.GetRequiredService<IEnumerable<AbstractClassA>>();
+                var instances2a = provider.GetRequiredService<IEnumerable<IBaseInterface2>>();
+
+                using (var scopedProvider = provider.CreateScope())
+                {
+                    var instances1b = scopedProvider.ServiceProvider.GetRequiredService<IEnumerable<AbstractClassA>>();
+                    var instances2b = scopedProvider.ServiceProvider.GetRequiredService<IEnumerable<IBaseInterface2>>();
+
+                    AssertInstanceEquality(instances1a, instances1b, expected);
+                    AssertInstanceEquality(instances2a, instances2b, expected);
+                }
+            }
+
+            [Theory]
+            [InlineData(RegistrationMode.Singleton)]
+            [InlineData(RegistrationMode.Scoped)]
+            [InlineData(RegistrationMode.Transient)]
+            public void Should_Resolve_All_Interfaces(RegistrationMode mode)
+            {
+                var provider = DependencyHelper
+
+                    .AutoRegisterUsingMode(mode, _serviceCollection, _localRegistrar, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) })
+
+                    .AutoRegisterUsingMode(mode, _externalRegistrar, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) })
+
+                    .BuildServiceProvider();
+
+                AssertExpectation<IBaseInterface1>(
+                    provider,
+                    new[] { typeof(ConcreteClassA), typeof(ConcreteClassB), typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassF), typeof(ConcreteClassG) });
+
+                AssertExpectation<IBaseInterface2>(
+                    provider,
+                    new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+
+                AssertExpectation<IInterface3>(
+                    provider,
+                    new[] { typeof(ConcreteClassF) });
+
+                AssertExpectation<IInterface4>(
+                    provider,
+                    new[] { typeof(ConcreteClassG) });
+            }
+
+            [Theory]
+            [InlineData(RegistrationMode.Singleton)]
+            [InlineData(RegistrationMode.Scoped)]
+            [InlineData(RegistrationMode.Transient)]
+            public void Should_Resolve_All_Interfaces_Except_Registered_Service(RegistrationMode mode)
+            {
+                var provider = DependencyHelper
+
+                    .AutoRegisterUsingMode(mode, _serviceCollection, _localRegistrar, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) },
+                        config => config.Filter((service, implementation) => service != typeof(IBaseInterface1)))
+
+                    .AutoRegisterUsingMode(mode, _externalRegistrar, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) },
+                        config => config.Filter((service, implementation) => service != typeof(IBaseInterface1)))
+
+                    .BuildServiceProvider();
+
+                // IBaseInterface1 has been filtered out
+                AssertExpectation<IBaseInterface1>(
+                    provider,
+                    Enumerable.Empty<Type>());
+
+                AssertExpectation<IBaseInterface2>(
+                    provider,
+                    new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+
+                AssertExpectation<IInterface3>(
+                    provider,
+                    new[] { typeof(ConcreteClassF) });
+
+                AssertExpectation<IInterface4>(
+                    provider,
+                    new[] { typeof(ConcreteClassG) });
+            }
+
+            [Theory]
+            [InlineData(RegistrationMode.Singleton)]
+            [InlineData(RegistrationMode.Scoped)]
+            [InlineData(RegistrationMode.Transient)]
+            public void Should_Not_Resolve_Abstract_Class_When_Register_Interface(RegistrationMode mode)
+            {
+                var provider = DependencyHelper
+
+                    .AutoRegisterUsingMode(mode, _serviceCollection, _localRegistrar, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) })
+
+                    .AutoRegisterUsingMode(mode, _externalRegistrar, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) })
+
+                    .BuildServiceProvider();
+
+                // Not currently supporting the ability to do this - it could be extended to resolve ConcreteClassD, ConcreteClassE, ConcreteClassG
+                // on the basis they all inherit AbstractClassA which inherits IBaseInterface1 but at this time you either register an abstract
+                // class or an interface.
+                AssertExpectation<AbstractClassA>(
+                    provider,
+                    Enumerable.Empty<Type>());
+            }
+        }
+
+        public class AutoRegister_ServiceRegistrars_ServiceTypes : ServiceCollectionExtensionsFixture
+        {
+            private readonly IServiceRegistrar[] _registrars = new IServiceRegistrar[] { new LocalDependenciesRegistrar(), new ExternalDependenciesRegistrar()};
+
+            [Theory]
+            [InlineData(RegistrationMode.Singleton)]
+            [InlineData(RegistrationMode.Scoped)]
+            [InlineData(RegistrationMode.Transient)]
+            public void Should_Throw_When_Services_Null(RegistrationMode mode)
+            {
+                Invoking(() =>
+                {
+                    DependencyHelper.AutoRegisterUsingMode(mode, null, _registrars, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("services");
+            }
+
+            [Theory]
+            [InlineData(RegistrationMode.Singleton)]
+            [InlineData(RegistrationMode.Scoped)]
+            [InlineData(RegistrationMode.Transient)]
+            public void Should_Throw_When_ServiceRegistrars_Null(RegistrationMode mode)
+            {
+                Invoking(() =>
+                {
+                    DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, (IServiceRegistrar[]) null, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("serviceRegistrars");
+            }
+
+            [Theory]
+            [InlineData(RegistrationMode.Singleton)]
+            [InlineData(RegistrationMode.Scoped)]
+            [InlineData(RegistrationMode.Transient)]
+            public void Should_Throw_When_ServiceRegistrars_Empty(RegistrationMode mode)
+            {
+                Invoking(() =>
+                    {
+                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, new List<IServiceRegistrar>(), new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
+                    })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("serviceRegistrars");
+            }
+
+            [Theory]
+            [InlineData(RegistrationMode.Singleton)]
+            [InlineData(RegistrationMode.Scoped)]
+            [InlineData(RegistrationMode.Transient)]
+            public void Should_Throw_When_ServiceTypes_Null(RegistrationMode mode)
+            {
+                Invoking(() =>
+                {
+                    DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _registrars, (IEnumerable<Type>) null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("serviceTypes");
+            }
+
+            [Theory]
+            [InlineData(RegistrationMode.Singleton)]
+            [InlineData(RegistrationMode.Scoped)]
+            [InlineData(RegistrationMode.Transient)]
+            public void Should_Throw_When_ServiceTypes_Empty(RegistrationMode mode)
+            {
+                Invoking(() =>
+                {
+                    DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new List<Type>());
+                })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("serviceTypes");
+            }
+
+            [Theory]
+            [InlineData(RegistrationMode.Singleton)]
+            [InlineData(RegistrationMode.Scoped)]
+            [InlineData(RegistrationMode.Transient)]
+            public void Should_Not_Throw_When_Configure_Null(RegistrationMode mode)
+            {
+                Invoking(() =>
+                {
+                    DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _registrars,
+                        new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
+                })
+                    .Should()
+                    .NotThrow();
+            }
+
+            [Theory]
+            [InlineData(RegistrationMode.Singleton)]
+            [InlineData(RegistrationMode.Scoped)]
+            [InlineData(RegistrationMode.Transient)]
+            public void Should_Register_No_Exclude_Or_Filter(RegistrationMode mode)
+            {
+                var provider = DependencyHelper
+
+                    .AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
+                    
+                    .BuildServiceProvider();
+
+                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+                AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+            }
+
+            [Theory]
+            [InlineData(RegistrationMode.Singleton)]
+            [InlineData(RegistrationMode.Scoped)]
+            [InlineData(RegistrationMode.Transient)]
+            public void Should_Register_With_Exclude(RegistrationMode mode)
+            {
+                var provider = DependencyHelper
+                    
+                    .AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) },
+                        config => config.ExcludeTypes(typeof(ConcreteClassE)))
+
+                    .BuildServiceProvider();
+
+                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassG) });
+                AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassG) });
+            }
+
+            [Theory]
+            [InlineData(RegistrationMode.Singleton)]
+            [InlineData(RegistrationMode.Scoped)]
+            [InlineData(RegistrationMode.Transient)]
+            public void Should_Register_With_Filter(RegistrationMode mode)
+            {
+                var provider = DependencyHelper
+
+                    .AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) }, config =>
+                        config.Filter((service, implementation) => implementation != typeof(ConcreteClassE)))
+
+                    .BuildServiceProvider();
+
+                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassG) });
+                AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassG) });
+            }
+
+            [Theory]
+            [InlineData(RegistrationMode.Singleton, true)]
+            [InlineData(RegistrationMode.Scoped, true)]
+            [InlineData(RegistrationMode.Transient, false)]
+            public void Should_Resolve_When_In_Same_Scope(RegistrationMode mode, bool expected)
+            {
+                var provider = DependencyHelper
+
+                    .AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
+
+                    .BuildServiceProvider();
+
+                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+                AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+
+                var instances1a = provider.GetRequiredService<IEnumerable<AbstractClassA>>();
+                var instances1b = provider.GetRequiredService<IEnumerable<AbstractClassA>>();
+
+                AssertInstanceEquality(instances1a, instances1b, expected);
+
+                var instances2a = provider.GetRequiredService<IEnumerable<IBaseInterface2>>();
+                var instances2b = provider.GetRequiredService<IEnumerable<IBaseInterface2>>();
+
+                AssertInstanceEquality(instances2a, instances2b, expected);
+            }
+
+            [Theory]
+            [InlineData(RegistrationMode.Singleton, true)]
+            [InlineData(RegistrationMode.Scoped, false)]
+            [InlineData(RegistrationMode.Transient, false)]
+            public void Should_Resolve_When_In_Different_Scope(RegistrationMode mode, bool expected)
+            {
+                var provider = DependencyHelper
+
+                    .AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
+
+                    .BuildServiceProvider();
+
+                AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+                AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+
+                var instances1a = provider.GetRequiredService<IEnumerable<AbstractClassA>>();
+                var instances2a = provider.GetRequiredService<IEnumerable<IBaseInterface2>>();
+
+                using (var scopedProvider = provider.CreateScope())
+                {
+                    var instances1b = scopedProvider.ServiceProvider.GetRequiredService<IEnumerable<AbstractClassA>>();
+                    var instances2b = scopedProvider.ServiceProvider.GetRequiredService<IEnumerable<IBaseInterface2>>();
+
+                    AssertInstanceEquality(instances1a, instances1b, expected);
+                    AssertInstanceEquality(instances2a, instances2b, expected);
+                }
+            }
+
+            [Theory]
+            [InlineData(RegistrationMode.Singleton)]
+            [InlineData(RegistrationMode.Scoped)]
+            [InlineData(RegistrationMode.Transient)]
+            public void Should_Resolve_All_Interfaces(RegistrationMode mode)
+            {
+                var provider = DependencyHelper
+
+                    .AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) })
+
+                    .BuildServiceProvider();
+
+                AssertExpectation<IBaseInterface1>(
+                    provider,
+                    new[] { typeof(ConcreteClassA), typeof(ConcreteClassB), typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassF), typeof(ConcreteClassG) });
+
+                AssertExpectation<IBaseInterface2>(
+                    provider,
+                    new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+
+                AssertExpectation<IInterface3>(
+                    provider,
+                    new[] { typeof(ConcreteClassF) });
+
+                AssertExpectation<IInterface4>(
+                    provider,
+                    new[] { typeof(ConcreteClassG) });
+            }
+
+            [Theory]
+            [InlineData(RegistrationMode.Singleton)]
+            [InlineData(RegistrationMode.Scoped)]
+            [InlineData(RegistrationMode.Transient)]
+            public void Should_Resolve_All_Interfaces_Except_Registered_Service(RegistrationMode mode)
+            {
+                var provider = DependencyHelper
+
+                    .AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) },
+                        config => config.Filter((service, implementation) => service != typeof(IBaseInterface1)))
+
+                    .BuildServiceProvider();
+
+                // IBaseInterface1 has been filtered out
+                AssertExpectation<IBaseInterface1>(
+                    provider,
+                    Enumerable.Empty<Type>());
+
+                AssertExpectation<IBaseInterface2>(
+                    provider,
+                    new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+
+                AssertExpectation<IInterface3>(
+                    provider,
+                    new[] { typeof(ConcreteClassF) });
+
+                AssertExpectation<IInterface4>(
+                    provider,
+                    new[] { typeof(ConcreteClassG) });
+            }
+
+            [Theory]
+            [InlineData(RegistrationMode.Singleton)]
+            [InlineData(RegistrationMode.Scoped)]
+            [InlineData(RegistrationMode.Transient)]
+            public void Should_Not_Resolve_Abstract_Class_When_Register_Interface(RegistrationMode mode)
+            {
+                var provider = DependencyHelper
+
+                    .AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new[] { typeof(IBaseInterface1), typeof(IBaseInterface2) })
+
+                    .BuildServiceProvider();
+
+                // Not currently supporting the ability to do this - it could be extended to resolve ConcreteClassD, ConcreteClassE, ConcreteClassG
+                // on the basis they all inherit AbstractClassA which inherits IBaseInterface1 but at this time you either register an abstract
+                // class or an interface.
+                AssertExpectation<AbstractClassA>(
+                    provider,
+                    Enumerable.Empty<Type>());
+            }
+        }
 
 
 

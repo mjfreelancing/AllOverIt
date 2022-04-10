@@ -39,6 +39,7 @@ namespace AllOverIt.DependencyInjection.Extensions
             return AutoRegisterSingleton(services, serviceRegistrar, new[] {typeof(TServiceType)}, configure);
         }
 
+        // done
         public static IServiceCollection AutoRegisterSingleton(this IServiceCollection services, IServiceRegistrar serviceRegistrar, IEnumerable<Type> serviceTypes,
             Action<IServiceRegistrarOptions> configure = default)
         {
@@ -54,6 +55,7 @@ namespace AllOverIt.DependencyInjection.Extensions
             return services;
         }
 
+        // done
         public static IServiceCollection AutoRegisterSingleton(this IServiceCollection services, IEnumerable<IServiceRegistrar> serviceRegistrars, IEnumerable<Type> serviceTypes,
             Action<IServiceRegistrarOptions> configure = default)
         {
