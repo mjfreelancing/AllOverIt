@@ -11,7 +11,8 @@ namespace AllOverIt.DependencyInjection.Extensions
         /// <summary>Decorates all registered <typeparamref name="TServiceType"/> types with <typeparamref name="TDecoratorType"/> types. Decoration is only applied
         /// to services already registered at the time of making the call.</summary>
         /// <typeparam name="TServiceType">The service type to be decorated.</typeparam>
-        /// <typeparam name="TDecoratorType">The type decorating the service type. This type is expected to have a constructor that takes the <typeparamref name="TServiceType"/> as an argument.</typeparam>
+        /// <typeparam name="TDecoratorType">The type decorating the service type. This type's constructor is expected to accept an argument of type <typeparamref name="TServiceType"/>
+        /// in addition to any other dependencies it requires.</typeparam>
         /// <param name="services">The service collection.</param>
         /// <returns>The original service collection to allow for a fluent syntax.</returns>
         public static IServiceCollection Decorate<TServiceType, TDecoratorType>(this IServiceCollection services)

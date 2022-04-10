@@ -1,27 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using AllOverIt.Assertion;
-using AllOverIt.Extensions;
+﻿using AllOverIt.Assertion;
 using AllOverIt.GenericHost;
 using ExternalDependencies;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace AutoRegistration
 {
     public sealed class App : ConsoleAppBase
     {
         private readonly ILogger<App> _logger;
-
-        public App(ILogger<App> logger, IEnumerable<IAppProvider> consoleLoggers)
+        private readonly IRepository _repository;
+        public App(IRepository repository, ILogger<App> logger)
         {
             _logger = logger.WhenNotNull(nameof(logger));
-
-            foreach (var consoleLogger in consoleLoggers)
-            {
-                Console.WriteLine($"{consoleLogger.GetType().GetFriendlyName()} has been injected into {nameof(App)}");
-            }
+            _repository = repository.WhenNotNull(nameof(repository));
 
             Console.WriteLine();
         }
@@ -29,6 +24,12 @@ namespace AutoRegistration
         public override Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("StartAsync");
+
+            foreach (var _ in Enumerable.Range(1, 10))
+            {
+                // The repository is decorated with a logger - so this will do all of the logging
+                _repository.GetRandomName();
+            }
 
             ExitCode = 0;
 

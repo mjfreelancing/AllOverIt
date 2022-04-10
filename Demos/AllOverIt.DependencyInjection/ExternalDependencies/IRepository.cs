@@ -2,5 +2,6 @@
 {
     public interface IRepository
     {
+        string GetRandomName();
     }
 }

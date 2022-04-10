@@ -16,6 +16,7 @@ AllOverIt.Aws.AppSync.Client
 
 AllOverIt.DependencyInjection
   * New package
+  * Includes a service decorator and support for auto service registation
 
 
 10 Feb 2022

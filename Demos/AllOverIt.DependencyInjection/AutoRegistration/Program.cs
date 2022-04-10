@@ -31,29 +31,9 @@ namespace AutoRegistration
                 {
                     services.AddLogging(configure => configure.AddConsole());
 
-                    //services.AutoRegisterSingleton<ExternalDependenciesRegistrar>(new[] { typeof(RepositoryBase) }, true);
-
-                    //// Note: There are overloads that take a generic for the 'Registrar' (requires a default ctor)
-
-                    //// ILocalRepository => LocalRepository
-                    //services.AutoRegisterSingleton(new DemoAppRegistrar(Console.WriteLine), typeof(IRepository));
-
-                    //// IExternalInternalRepository => ExternalInternalRepository
-                    //// IExternalPublicRepository => ExternalPublicRepository
-                    //services.AutoRegisterSingleton(new ExternalDependenciesRegistrar(Console.WriteLine), typeof(IRepository));
-
-                    //// IAppProvider => PublicSealedAppProvider
-                    //// IAppProvider => InternalSealedAppProvider
-                    //services.AutoRegisterSingleton(
-                    //    new ExternalDependenciesRegistrar(Console.WriteLine),
-                    //    new[] { typeof(IAppProvider) },
-                    //    (provider, implementationType) =>
-                    //    {
-                    //        // This callback provides the arguments to be passed to the object's constructor.
-                    //        var logger = provider.GetService<ILogger<Program>>();
-                    //        return new object[] {DateTime.Now, logger};
-                    //    },
-                    //    true);
+                    services
+                        .AutoRegisterSingleton<ExternalRegistrar, IRepository>()    // Will find the internal NameRepository (in the external assembly)
+                        .Decorate<IRepository, DecoratedRepository>();              // Will replace the IRepository registration with a decorated implementation
 
                     Console.WriteLine();
                 });
