@@ -7,6 +7,7 @@ using AllOverIt.Extensions;
 
 namespace AllOverIt.DependencyInjection
 {
+    /// <summary>Base class for service registrars that scan for, and register, service and implementation types located in the containing assembly.</summary>
     public abstract class ServiceRegistrarBase : IServiceRegistrar, IServiceRegistrarOptions
     {
         private Func<Type, Type, bool> _registrationFilter;
