@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AllOverIt.DependencyInjection.Extensions
 {
+    /// <summary>Provides dependency injection extension methods for <see cref="IServiceCollection"/>.</summary>
     public static partial class ServiceCollectionExtensions
     {
         public static IServiceCollection Decorate<TService, TDecorator>(this IServiceCollection services)
