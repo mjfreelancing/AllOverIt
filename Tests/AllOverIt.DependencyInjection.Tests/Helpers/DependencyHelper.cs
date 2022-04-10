@@ -116,7 +116,6 @@ namespace AllOverIt.DependencyInjection.Tests.Helpers
             return AutoRegisterUsingMode(mode, services, serviceRegistrars, serviceTypes, configure);
         }
 
-
         public static IServiceCollection AutoRegisterUsingMode<TServiceRegistrar>(RegistrationMode mode, IServiceCollection services, IEnumerable<Type> serviceTypes,
             Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions> configure = default)
             where TServiceRegistrar : IServiceRegistrar, new()
@@ -137,11 +136,49 @@ namespace AllOverIt.DependencyInjection.Tests.Helpers
             Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions> configure = default)
             where TServiceRegistrar : IServiceRegistrar, new()
         {
-            return AutoRegisterUsingMode<TServiceRegistrar>(mode, services, serviceTypes, constructorArgsResolver,
-                configure);
+            return AutoRegisterUsingMode<TServiceRegistrar>(mode, services, serviceTypes, constructorArgsResolver, configure);
         }
 
+        public static IServiceCollection AutoRegisterUsingMode(RegistrationMode mode, IServiceCollection services, IServiceRegistrar serviceRegistrar, IEnumerable<Type> serviceTypes,
+            Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions> configure = default)
+        {
+            return mode switch
+            {
+                RegistrationMode.Singleton => ServiceCollectionExtensions.AutoRegisterSingleton(services, serviceRegistrar, serviceTypes, constructorArgsResolver, configure),
 
+                RegistrationMode.Scoped => ServiceCollectionExtensions.AutoRegisterScoped(services, serviceRegistrar, serviceTypes, constructorArgsResolver, configure),
 
+                RegistrationMode.Transient => ServiceCollectionExtensions.AutoRegisterTransient(services, serviceRegistrar, serviceTypes, constructorArgsResolver, configure),
+
+                _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
+            };
+        }
+
+        public static IServiceCollection AutoRegisterUsingMode(this IServiceCollection services, RegistrationMode mode, IServiceRegistrar serviceRegistrar, IEnumerable<Type> serviceTypes,
+            Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions> configure = default)
+        {
+            return AutoRegisterUsingMode(mode, services, serviceRegistrar, serviceTypes, constructorArgsResolver, configure);
+        }
+
+        public static IServiceCollection AutoRegisterUsingMode(RegistrationMode mode, IServiceCollection services, IEnumerable<IServiceRegistrar> serviceRegistrars, IEnumerable<Type> serviceTypes,
+            Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions> configure = default)
+        {
+            return mode switch
+            {
+                RegistrationMode.Singleton => ServiceCollectionExtensions.AutoRegisterSingleton(services, serviceRegistrars, serviceTypes, constructorArgsResolver, configure),
+
+                RegistrationMode.Scoped => ServiceCollectionExtensions.AutoRegisterScoped(services, serviceRegistrars, serviceTypes, constructorArgsResolver, configure),
+
+                RegistrationMode.Transient => ServiceCollectionExtensions.AutoRegisterTransient(services, serviceRegistrars, serviceTypes, constructorArgsResolver, configure),
+
+                _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
+            };
+        }
+
+        public static IServiceCollection AutoRegisterUsingMode(this IServiceCollection services, RegistrationMode mode, IEnumerable<IServiceRegistrar> serviceRegistrars, IEnumerable<Type> serviceTypes,
+            Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions> configure = default)
+        {
+            return AutoRegisterUsingMode(mode, services, serviceRegistrars, serviceTypes, constructorArgsResolver, configure);
+        }
     }
 }

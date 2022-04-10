@@ -5,25 +5,25 @@ Assembly 2: AllOverIt.DependencyInjection.Tests
 
 Assembly 1
 ----------
-            IBaseInterface1                    IBaseInterface2                IBaseInterface3
-                    |                                 |                              |
-                    |-- ConcreteClassA                |                              |
-                    |                                 |                              |
-                    |-- ConcreteClassB                |                              |--- ConcreteClassH
-                    |                                 |                              |
-                    |             ConcreteClassC -----|                              |
-                    |                                 |                              |--- ConcreteClassI
-                    |-- AbstractClassA                |
-                    |         |                       |
-                    |         |-- ConcreteClassD      |
-                    |         |                       |
-                    |         +-- ConcreteClassE -----|
-                    |                                 |
-                    |                                 |
-                    |------------------+              |
-Assembly 2          |                  |              |
-----------          |                  |              |
-                 IInterface3         IInterface4      |
-                     |                  |             |
-                     |                  |             |
-                 ConcreteClassF      ConcreteClassG --+
+            IBaseInterface1                    IBaseInterface2            IBaseInterface3
+                    |                                |                          |
+                    |-- ConcreteClassA               |                          |
+                    |                                |                          |
+                    |-- ConcreteClassB               |                          |--- ConcreteClassH
+                    |                                |                          |
+                    |             ConcreteClassC ----|                          |
+                    |                                |                          |--- ConcreteClassI
+                    |-- AbstractClassA               |                          |
+                    |         |                      |                          |
+                    |         |-- ConcreteClassD     |                          |
+                    |         |                      |                          |
+                    |         +-- ConcreteClassE ----|                          |
+                    |                                |                          |
+                    |                                |                          |
+                    |------------------+             |                          |
+Assembly 2          |                  |             |                          |
+----------          |                  |             |                          |
+                 IInterface3      IInterface4        |                          |
+                     |                   |           |                          |
+                     |                   |           |                          |
+               ConcreteClassF    ConcreteClassG ----+         ConcreteClassJ ---+
