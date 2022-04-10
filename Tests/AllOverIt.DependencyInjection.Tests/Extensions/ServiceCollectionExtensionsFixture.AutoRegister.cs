@@ -12,7 +12,7 @@ using Xunit;
 
 namespace AllOverIt.DependencyInjection.Tests.Extensions
 {
-    public class ServiceCollectionExtensionsFixture : FixtureBase
+    public partial class ServiceCollectionExtensionsFixture : FixtureBase
     {
         private readonly IServiceCollection _serviceCollection;
 

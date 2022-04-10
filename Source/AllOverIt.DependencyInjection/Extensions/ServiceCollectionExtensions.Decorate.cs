@@ -6,13 +6,18 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AllOverIt.DependencyInjection.Extensions
 {
-    /// <summary>Provides dependency injection extension methods for <see cref="IServiceCollection"/>.</summary>
     public static partial class ServiceCollectionExtensions
     {
-        public static IServiceCollection Decorate<TService, TDecorator>(this IServiceCollection services)
-            where TDecorator : TService
+        /// <summary>Decorates all registered <typeparamref name="TServiceType"/> types with <typeparamref name="TDecoratorType"/> types. Decoration is only applied
+        /// to services already registered at the time of making the call.</summary>
+        /// <typeparam name="TServiceType">The service type to be decorated.</typeparam>
+        /// <typeparam name="TDecoratorType">The type decorating the service type. This type is expected to have a constructor that takes the <typeparamref name="TServiceType"/> as an argument.</typeparam>
+        /// <param name="services">The service collection.</param>
+        /// <returns>The original service collection to allow for a fluent syntax.</returns>
+        public static IServiceCollection Decorate<TServiceType, TDecoratorType>(this IServiceCollection services)
+            where TDecoratorType : TServiceType
         {
-            var serviceType = typeof(TService);
+            var serviceType = typeof(TServiceType);
             var descriptors = services.Where(service => service.ServiceType == serviceType).AsReadOnlyList();
 
             if (!descriptors.Any())
@@ -23,7 +28,7 @@ namespace AllOverIt.DependencyInjection.Extensions
             foreach (var descriptor in descriptors)
             {
                 var index = services.IndexOf(descriptor);
-                services[index] = Decorate(descriptor, typeof(TDecorator));
+                services[index] = Decorate(descriptor, typeof(TDecoratorType));
             }
 
             return services;
