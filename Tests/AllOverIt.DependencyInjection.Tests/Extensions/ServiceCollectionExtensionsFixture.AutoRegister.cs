@@ -513,9 +513,9 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             public void Should_Throw_When_Services_Null(RegistrationMode mode)
             {
                 Invoking(() =>
-                {
-                    DependencyHelper.AutoRegisterUsingMode<AbstractClassA>(mode, null, _localRegistrar);
-                })
+                    {
+                        DependencyHelper.AutoRegisterUsingMode<AbstractClassA>(mode, null, _localRegistrar);
+                    })
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("services");
@@ -747,9 +747,9 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             public void Should_Throw_When_Services_Null(RegistrationMode mode)
             {
                 Invoking(() =>
-                {
-                    DependencyHelper.AutoRegisterUsingMode(mode, null, _externalRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
-                })
+                    {
+                        DependencyHelper.AutoRegisterUsingMode(mode, null, _externalRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
+                    })
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("services");
@@ -777,9 +777,9 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             public void Should_Throw_When_ServiceTypes_Null(RegistrationMode mode)
             {
                 Invoking(() =>
-                {
-                    DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _externalRegistrar, (IEnumerable<Type>) null);
-                })
+                    {
+                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _externalRegistrar, (IEnumerable<Type>) null);
+                    })
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("serviceTypes");
@@ -792,9 +792,9 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             public void Should_Throw_When_ServiceTypes_Empty(RegistrationMode mode)
             {
                 Invoking(() =>
-                {
-                    DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _externalRegistrar, new List<Type>());
-                })
+                    {
+                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _externalRegistrar, new List<Type>());
+                    })
                     .Should()
                     .Throw<ArgumentException>()
                     .WithNamedMessageWhenEmpty("serviceTypes");
@@ -807,10 +807,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             public void Should_Not_Throw_When_Configure_Null(RegistrationMode mode)
             {
                 Invoking(() =>
-                {
-                    DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _externalRegistrar,
-                        new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
-                })
+                    {
+                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _externalRegistrar,
+                            new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
+                    })
                     .Should()
                     .NotThrow();
             }
@@ -1028,9 +1028,9 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             public void Should_Throw_When_Services_Null(RegistrationMode mode)
             {
                 Invoking(() =>
-                {
-                    DependencyHelper.AutoRegisterUsingMode(mode, null, _registrars, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
-                })
+                    {
+                        DependencyHelper.AutoRegisterUsingMode(mode, null, _registrars, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
+                    })
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("services");
@@ -1043,9 +1043,9 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             public void Should_Throw_When_ServiceRegistrars_Null(RegistrationMode mode)
             {
                 Invoking(() =>
-                {
-                    DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, (IServiceRegistrar[]) null, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
-                })
+                    {
+                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, (IServiceRegistrar[]) null, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
+                    })
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("serviceRegistrars");
@@ -1073,9 +1073,9 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             public void Should_Throw_When_ServiceTypes_Null(RegistrationMode mode)
             {
                 Invoking(() =>
-                {
-                    DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _registrars, (IEnumerable<Type>) null);
-                })
+                    {
+                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _registrars, (IEnumerable<Type>) null);
+                    })
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("serviceTypes");
@@ -1088,9 +1088,9 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             public void Should_Throw_When_ServiceTypes_Empty(RegistrationMode mode)
             {
                 Invoking(() =>
-                {
-                    DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new List<Type>());
-                })
+                    {
+                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new List<Type>());
+                    })
                     .Should()
                     .Throw<ArgumentException>()
                     .WithNamedMessageWhenEmpty("serviceTypes");
@@ -1103,10 +1103,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             public void Should_Not_Throw_When_Configure_Null(RegistrationMode mode)
             {
                 Invoking(() =>
-                {
-                    DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _registrars,
-                        new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
-                })
+                    {
+                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _registrars,
+                            new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
+                    })
                     .Should()
                     .NotThrow();
             }
@@ -1707,10 +1707,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             public void Should_Throw_When_Services_Null(RegistrationMode mode)
             {
                 Invoking(() =>
-                {
-                    DependencyHelper.AutoRegisterUsingMode(mode, null, _registrars, new[] { typeof(IBaseInterface3) },
-                        (provider, serviceType) => new object[] { Create<int>() });
-                })
+                    {
+                        DependencyHelper.AutoRegisterUsingMode(mode, null, _registrars, new[] { typeof(IBaseInterface3) },
+                            (provider, serviceType) => new object[] { Create<int>() });
+                    })
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("services");
@@ -1723,10 +1723,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             public void Should_Throw_When_ServiceRegistrars_Null(RegistrationMode mode)
             {
                 Invoking(() =>
-                {
-                    DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, (IServiceRegistrar[]) null, new[] { typeof(IBaseInterface3) },
-                        (provider, serviceType) => new object[] { Create<int>() });
-                })
+                    {
+                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, (IServiceRegistrar[]) null, new[] { typeof(IBaseInterface3) },
+                            (provider, serviceType) => new object[] { Create<int>() });
+                    })
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("serviceRegistrars");
@@ -1755,10 +1755,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             public void Should_Throw_When_ServiceTypes_Null(RegistrationMode mode)
             {
                 Invoking(() =>
-                {
-                    DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _registrars, (IEnumerable<Type>) null,
-                        (provider, serviceType) => new object[] { Create<int>() });
-                })
+                    {
+                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _registrars, (IEnumerable<Type>) null,
+                            (provider, serviceType) => new object[] { Create<int>() });
+                    })
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("serviceTypes");
@@ -1771,10 +1771,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             public void Should_Throw_When_ServiceTypes_Empty(RegistrationMode mode)
             {
                 Invoking(() =>
-                {
-                    DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new List<Type>(),
-                        (provider, serviceType) => new object[] { Create<int>() });
-                })
+                    {
+                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new List<Type>(),
+                            (provider, serviceType) => new object[] { Create<int>() });
+                    })
                     .Should()
                     .Throw<ArgumentException>()
                     .WithNamedMessageWhenEmpty("serviceTypes");
@@ -1787,9 +1787,9 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             public void Should_Throw_When_ConstructorArgs_Null(RegistrationMode mode)
             {
                 Invoking(() =>
-                {
-                    DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new[] { typeof(IBaseInterface3) }, null, null);
-                })
+                    {
+                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new[] { typeof(IBaseInterface3) }, null, null);
+                    })
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("constructorArgsResolver");
@@ -1802,10 +1802,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             public void Should_Not_Throw_When_Configure_Null(RegistrationMode mode)
             {
                 Invoking(() =>
-                {
-                    DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new[] { typeof(IBaseInterface3) },
-                        (provider, serviceType) => new object[] { Create<int>() }, null);
-                })
+                    {
+                        DependencyHelper.AutoRegisterUsingMode(mode, _serviceCollection, _registrars, new[] { typeof(IBaseInterface3) },
+                            (provider, serviceType) => new object[] { Create<int>() }, null);
+                    })
                     .Should()
                     .NotThrow();
             }
