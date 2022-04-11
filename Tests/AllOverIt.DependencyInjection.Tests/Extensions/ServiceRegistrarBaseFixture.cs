@@ -57,7 +57,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                 })
                 .Should()
                 .Throw<DependencyRegistrationException>()
-                .WithMessage($"The service type {typeof(IBaseInterface4).GetFriendlyName()} is already registered to the implementation type {typeof(ConcreteClassG).GetFriendlyName()} but has a different lifetime (Singleton).");
+                .WithMessage($"The service type {typeof(IBaseInterface4).GetFriendlyName()} is already registered to the implementation type {typeof(ConcreteClassG).GetFriendlyName()} but has a different lifetime ({ServiceLifetime.Singleton}).");
         }
 
         [Fact]

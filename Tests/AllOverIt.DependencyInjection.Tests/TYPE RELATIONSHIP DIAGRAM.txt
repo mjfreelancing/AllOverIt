@@ -26,4 +26,4 @@ Assembly 2          |                  |             |                          
               IBaseInterface5     IInterface4        |                          |
                      |                 |             |                          |
                      |                 |             |                          |
-               ConcreteClassF    ConcreteClassG ----+         ConcreteClassJ ---+
+               ConcreteClassF    ConcreteClassG -----+        ConcreteClassJ ---+

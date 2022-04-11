@@ -11,7 +11,8 @@ namespace AllOverIt.DependencyInjection.Extensions
     // Helper methods for use by AutoRegisterScoped(), AutoRegisterSingleton(), and AutoRegisterTransient()
     public static partial class ServiceCollectionExtensions
     {
-        private static IServiceCollection AutoRegisterWithLifetime<TServiceRegistrar, TServiceType>(IServiceCollection serviceCollection, Action<IServiceRegistrarOptions> configure, ServiceLifetime lifetime)
+        private static IServiceCollection AutoRegisterWithLifetime<TServiceRegistrar, TServiceType>(IServiceCollection serviceCollection, Action<IServiceRegistrarOptions> configure,
+            ServiceLifetime lifetime)
             where TServiceRegistrar : IServiceRegistrar, new()
         {
             _ = serviceCollection.WhenNotNull(nameof(serviceCollection));

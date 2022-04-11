@@ -10,11 +10,11 @@ namespace AllOverIt.DependencyInjection.Tests.Helpers
 {
     internal static class DependencyHelper
     {
-        internal static IServiceCollection AutoRegisterUsingServiceLifetime<TServiceRegistrar, TServiceType>(ServiceLifetime mode, IServiceCollection services,
+        internal static IServiceCollection AutoRegisterUsingServiceLifetime<TServiceRegistrar, TServiceType>(ServiceLifetime lifetime, IServiceCollection services,
             Action<IServiceRegistrarOptions> configure = default)
             where TServiceRegistrar : IServiceRegistrar, new()
         {
-            return mode switch
+            return lifetime switch
             {
                 ServiceLifetime.Singleton => ServiceCollectionExtensions.AutoRegisterSingleton<TServiceRegistrar, TServiceType>(services, configure),
                 
@@ -22,7 +22,7 @@ namespace AllOverIt.DependencyInjection.Tests.Helpers
 
                 ServiceLifetime.Transient => ServiceCollectionExtensions.AutoRegisterTransient<TServiceRegistrar, TServiceType>(services, configure),
 
-                _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
+                _ => throw new ArgumentOutOfRangeException(nameof(lifetime), lifetime, null)
             };
         }
 
@@ -33,11 +33,11 @@ namespace AllOverIt.DependencyInjection.Tests.Helpers
             return AutoRegisterUsingServiceLifetime<TServiceRegistrar, TServiceType>(mode, services, configure);
         }
 
-        internal static IServiceCollection AutoRegisterUsingServiceLifetime<TServiceRegistrar>(ServiceLifetime mode, IServiceCollection services,
+        internal static IServiceCollection AutoRegisterUsingServiceLifetime<TServiceRegistrar>(ServiceLifetime lifetime, IServiceCollection services,
             IEnumerable<Type> serviceTypes, Action<IServiceRegistrarOptions> configure = default)
             where TServiceRegistrar : IServiceRegistrar, new()
         {
-            return mode switch
+            return lifetime switch
             {
                 ServiceLifetime.Singleton => ServiceCollectionExtensions.AutoRegisterSingleton<TServiceRegistrar>(services, serviceTypes, configure),
 
@@ -45,7 +45,7 @@ namespace AllOverIt.DependencyInjection.Tests.Helpers
 
                 ServiceLifetime.Transient => ServiceCollectionExtensions.AutoRegisterTransient<TServiceRegistrar>(services, serviceTypes, configure),
 
-                _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
+                _ => throw new ArgumentOutOfRangeException(nameof(lifetime), lifetime, null)
             };
         }
 
@@ -56,10 +56,10 @@ namespace AllOverIt.DependencyInjection.Tests.Helpers
             return AutoRegisterUsingServiceLifetime<TServiceRegistrar>(mode, services, serviceTypes, configure);
         }
 
-        internal static IServiceCollection AutoRegisterUsingServiceLifetime<TServiceType>(ServiceLifetime mode, IServiceCollection services,
+        internal static IServiceCollection AutoRegisterUsingServiceLifetime<TServiceType>(ServiceLifetime lifetime, IServiceCollection services,
             IServiceRegistrar serviceRegistrar, Action<IServiceRegistrarOptions> configure = default)
         {
-            return mode switch
+            return lifetime switch
             {
                 ServiceLifetime.Singleton => ServiceCollectionExtensions.AutoRegisterSingleton<TServiceType>(services, serviceRegistrar, configure),
 
@@ -67,7 +67,7 @@ namespace AllOverIt.DependencyInjection.Tests.Helpers
 
                 ServiceLifetime.Transient => ServiceCollectionExtensions.AutoRegisterTransient<TServiceType>(services, serviceRegistrar, configure),
 
-                _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
+                _ => throw new ArgumentOutOfRangeException(nameof(lifetime), lifetime, null)
             };
         }
 
@@ -77,10 +77,10 @@ namespace AllOverIt.DependencyInjection.Tests.Helpers
             return AutoRegisterUsingServiceLifetime<TServiceType>(mode, services, serviceRegistrar, configure);
         }
 
-        internal static IServiceCollection AutoRegisterUsingServiceLifetime(ServiceLifetime mode, IServiceCollection services, IServiceRegistrar serviceRegistrar,
+        internal static IServiceCollection AutoRegisterUsingServiceLifetime(ServiceLifetime lifetime, IServiceCollection services, IServiceRegistrar serviceRegistrar,
             IEnumerable<Type> serviceTypes, Action<IServiceRegistrarOptions> configure = default)
         {
-            return mode switch
+            return lifetime switch
             {
                 ServiceLifetime.Singleton => ServiceCollectionExtensions.AutoRegisterSingleton(services, serviceRegistrar, serviceTypes, configure),
 
@@ -88,7 +88,7 @@ namespace AllOverIt.DependencyInjection.Tests.Helpers
 
                 ServiceLifetime.Transient => ServiceCollectionExtensions.AutoRegisterTransient(services, serviceRegistrar, serviceTypes, configure),
 
-                _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
+                _ => throw new ArgumentOutOfRangeException(nameof(lifetime), lifetime, null)
             };
         }
 
@@ -98,10 +98,10 @@ namespace AllOverIt.DependencyInjection.Tests.Helpers
             return AutoRegisterUsingServiceLifetime(mode, services, serviceRegistrar, serviceTypes, configure);
         }
 
-        internal static IServiceCollection AutoRegisterUsingServiceLifetime(ServiceLifetime mode, IServiceCollection services, IEnumerable<IServiceRegistrar> serviceRegistrars,
+        internal static IServiceCollection AutoRegisterUsingServiceLifetime(ServiceLifetime lifetime, IServiceCollection services, IEnumerable<IServiceRegistrar> serviceRegistrars,
             IEnumerable<Type> serviceTypes, Action<IServiceRegistrarOptions> configure = default)
         {
-            return mode switch
+            return lifetime switch
             {
                 ServiceLifetime.Singleton => ServiceCollectionExtensions.AutoRegisterSingleton(services, serviceRegistrars, serviceTypes, configure),
 
@@ -109,7 +109,7 @@ namespace AllOverIt.DependencyInjection.Tests.Helpers
 
                 ServiceLifetime.Transient => ServiceCollectionExtensions.AutoRegisterTransient(services, serviceRegistrars, serviceTypes, configure),
 
-                _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
+                _ => throw new ArgumentOutOfRangeException(nameof(lifetime), lifetime, null)
             };
         }
 
@@ -119,11 +119,11 @@ namespace AllOverIt.DependencyInjection.Tests.Helpers
             return AutoRegisterUsingServiceLifetime(mode, services, serviceRegistrars, serviceTypes, configure);
         }
 
-        internal static IServiceCollection AutoRegisterUsingServiceLifetime<TServiceRegistrar>(ServiceLifetime mode, IServiceCollection services, IEnumerable<Type> serviceTypes,
+        internal static IServiceCollection AutoRegisterUsingServiceLifetime<TServiceRegistrar>(ServiceLifetime lifetime, IServiceCollection services, IEnumerable<Type> serviceTypes,
             Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions> configure = default)
             where TServiceRegistrar : IServiceRegistrar, new()
         {
-            return mode switch
+            return lifetime switch
             {
                 ServiceLifetime.Singleton => ServiceCollectionExtensions.AutoRegisterSingleton<TServiceRegistrar>(services, serviceTypes, constructorArgsResolver, configure),
 
@@ -131,7 +131,7 @@ namespace AllOverIt.DependencyInjection.Tests.Helpers
 
                 ServiceLifetime.Transient => ServiceCollectionExtensions.AutoRegisterTransient<TServiceRegistrar>(services, serviceTypes, constructorArgsResolver, configure),
 
-                _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
+                _ => throw new ArgumentOutOfRangeException(nameof(lifetime), lifetime, null)
             };
         }
 
@@ -142,10 +142,10 @@ namespace AllOverIt.DependencyInjection.Tests.Helpers
             return AutoRegisterUsingServiceLifetime<TServiceRegistrar>(mode, services, serviceTypes, constructorArgsResolver, configure);
         }
 
-        internal static IServiceCollection AutoRegisterUsingServiceLifetime(ServiceLifetime mode, IServiceCollection services, IServiceRegistrar serviceRegistrar, IEnumerable<Type> serviceTypes,
+        internal static IServiceCollection AutoRegisterUsingServiceLifetime(ServiceLifetime lifetime, IServiceCollection services, IServiceRegistrar serviceRegistrar, IEnumerable<Type> serviceTypes,
             Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions> configure = default)
         {
-            return mode switch
+            return lifetime switch
             {
                 ServiceLifetime.Singleton => ServiceCollectionExtensions.AutoRegisterSingleton(services, serviceRegistrar, serviceTypes, constructorArgsResolver, configure),
 
@@ -153,7 +153,7 @@ namespace AllOverIt.DependencyInjection.Tests.Helpers
 
                 ServiceLifetime.Transient => ServiceCollectionExtensions.AutoRegisterTransient(services, serviceRegistrar, serviceTypes, constructorArgsResolver, configure),
 
-                _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
+                _ => throw new ArgumentOutOfRangeException(nameof(lifetime), lifetime, null)
             };
         }
 
@@ -163,10 +163,10 @@ namespace AllOverIt.DependencyInjection.Tests.Helpers
             return AutoRegisterUsingServiceLifetime(mode, services, serviceRegistrar, serviceTypes, constructorArgsResolver, configure);
         }
 
-        internal static IServiceCollection AutoRegisterUsingServiceLifetime(ServiceLifetime mode, IServiceCollection services, IEnumerable<IServiceRegistrar> serviceRegistrars, IEnumerable<Type> serviceTypes,
+        internal static IServiceCollection AutoRegisterUsingServiceLifetime(ServiceLifetime lifetime, IServiceCollection services, IEnumerable<IServiceRegistrar> serviceRegistrars, IEnumerable<Type> serviceTypes,
             Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions> configure = default)
         {
-            return mode switch
+            return lifetime switch
             {
                 ServiceLifetime.Singleton => ServiceCollectionExtensions.AutoRegisterSingleton(services, serviceRegistrars, serviceTypes, constructorArgsResolver, configure),
 
@@ -174,7 +174,7 @@ namespace AllOverIt.DependencyInjection.Tests.Helpers
 
                 ServiceLifetime.Transient => ServiceCollectionExtensions.AutoRegisterTransient(services, serviceRegistrars, serviceTypes, constructorArgsResolver, configure),
 
-                _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
+                _ => throw new ArgumentOutOfRangeException(nameof(lifetime), lifetime, null)
             };
         }
 
