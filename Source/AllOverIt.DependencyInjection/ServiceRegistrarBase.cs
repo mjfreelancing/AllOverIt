@@ -51,15 +51,15 @@ namespace AllOverIt.DependencyInjection
             }
         }
 
-        private void ProcessImplementationCandidate(Type implementationCandidate, IEnumerable<Type> allServiceTypes, Action<Type, Type> registrationAction)
+        private void ProcessImplementationCandidate(Type implementationCandidate, IEnumerable<Type> serviceTypes, Action<Type, Type> registrationAction)
         {
             var candidateInterfaces = implementationCandidate
                 .GetInterfaces()
                 .AsReadOnlyCollection();
 
-            var serviceTypes = allServiceTypes.Where(implementationCandidate.IsDerivedFrom);
+            var candidateServiceTypes = serviceTypes.Where(implementationCandidate.IsDerivedFrom);
 
-            foreach (var serviceType in serviceTypes)
+            foreach (var serviceType in candidateServiceTypes)
             {
                 if (serviceType.IsInterface)
                 {

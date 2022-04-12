@@ -342,7 +342,7 @@ namespace AllOverIt.Extensions
         
         /// <summary>Determines if the provided object inherits from EnrichedEnum&lt;&gt;.</summary>
         /// <param name="object">The instance to be checked.</param>
-        /// <returns>True if the object inherits from EnrichedEnum&lt;&gt;, otherwise False.</returns>
+        /// <returns>True if the object inherits from EnrichedEnum&lt;>, otherwise False.</returns>
         public static bool IsEnrichedEnum(this object @object)
         {
             return @object.GetType().IsEnrichedEnum();

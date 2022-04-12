@@ -5,6 +5,7 @@ Version 5.1.0
 ======================================================================================================================
 AllOverIt
   * Added static Create() factory method to EnrichedEnumTypeConverter
+  * Added IsSubClassOfRawGeneric() and improved IsDerivedFrom() to consider open/unbound generics
 
 AllOverIt.AspNetCore
   * Corrected EnrichedEnumModelBinder to consider all base classes to find EnrichedEnum<>

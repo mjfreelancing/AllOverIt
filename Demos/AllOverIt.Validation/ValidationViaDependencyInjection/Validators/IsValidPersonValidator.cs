@@ -1,8 +1,8 @@
 ﻿using AllOverIt.Validation;
 using AllOverIt.Validation.Extensions;
-using BasicValidation.Models;
+using ValidationViaDependencyInjection.Models;
 
-namespace BasicValidation.Validators
+namespace ValidationViaDependencyInjection.Validators
 {
     // Validates using explicit rules (no context)
     public sealed class IsValidPersonValidator : ValidatorBase<Person>

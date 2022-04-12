@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using AllOverIt.Assertion;
 using AllOverIt.Patterns.Enumeration;
 
 namespace AllOverIt.Extensions
@@ -172,46 +173,79 @@ namespace AllOverIt.Extensions
             return type.GetTypeInfo().GenericTypeArguments;
         }
 
-        /// <summary>Determines if a type (or interface) inherits from another type (or interface).</summary>
-        /// <param name="type">The type to be tested.</param>
-        /// <param name="fromType">The generic type, such as typeof(List&lt;T&gt;).</param>
-        /// <returns>True if <paramref name="type"/> inherits from <paramref name="fromType"/>, otherwise false.</returns>
-        public static bool IsDerivedFrom(this Type type, Type fromType)
+
+
+        public static bool IsSubclassOfRawGeneric(this Type type, Type fromType)
         {
-            if (fromType.IsInterface)
-            {
-                var typeInterfaces = type
-                    .GetInterfaces()
-                    .Where(item => item.IsGenericType == fromType.IsGenericType);
-
-                return typeInterfaces.Any(typeInterface => typeInterface == fromType);
-            }
-
-            if (type.IsInterface)
+            if (type == fromType)
             {
                 return false;
             }
 
-            var currentType = type.BaseType;
-
-            while (currentType != null && currentType != typeof(object))
+            while (type != null && type != typeof(object))
             {
-                if (currentType.IsGenericType)
-                {
-                    if (currentType.GetGenericTypeDefinition() == fromType)
-                    {
-                        return true;
-                    }
-                }
-                else if (currentType == fromType)
+                var currentType = type.IsGenericType
+                    ? type.GetGenericTypeDefinition()
+                    : type;
+
+                if (currentType == fromType)
                 {
                     return true;
                 }
 
-                currentType = currentType.BaseType;
+                type = type.BaseType;
             }
 
             return false;
+        }
+
+        /// <summary>Determines if a type (not an interface) is derived from another base type (not an interface), including unbound generic
+        /// types such as List&lt;>.</summary>
+        /// <param name="type">The type to be tested.</param>
+        /// <param name="fromType">The base type to compare against, including unbound generics, such as typeof(List&lt;>).</param>
+        /// <returns>True if <paramref name="type"/> inherits from <paramref name="fromType"/>, otherwise false.</returns>
+        /// <remarks>Use the <seealso cref="IsDerivedFrom"/> method when class and interface support is required.</remarks>
+        public static bool IsSubClassOfRawGeneric(this Type type, Type fromType)
+        {
+            _ = type.WhenNotNull(nameof(type));
+            _ = fromType.WhenNotNull(nameof(fromType));
+
+            while (type != null && type != typeof(object))
+            {
+                if (fromType.IsRawGenericType(type))
+                {
+                    return true;
+                }
+
+                // Will be null when the type is an interface
+                type = type.BaseType;
+            }
+
+            return false;
+        }
+
+        /// <summary>Determines if a type (or interface) inherits from another type (or interface), including open/unbound generics.</summary>
+        /// <param name="type">The type to be tested.</param>
+        /// <param name="fromType">The base type to compare against, including open/unbound generics, such as typeof(IList&lt;>).</param>
+        /// <returns>True if <paramref name="type"/> inherits from <paramref name="fromType"/>, otherwise false.</returns>
+        public static bool IsDerivedFrom(this Type type, Type fromType)
+        {
+            _ = type.WhenNotNull(nameof(type));
+            _ = fromType.WhenNotNull(nameof(fromType));
+
+            // Tests any type/interface (including unbound such as IDerived2<,>) against another interface (such as IBase or IBase<int>)
+            if (type.GetInterfaces().Any(item => item == fromType))
+            {
+                return true;
+            }
+
+            // Tests any type/interface (including unbound such as IDerived2<,>) against another unbound interface
+            if (type.GetInterfaces().Any(fromType.IsRawGenericType))
+            {
+                return true;
+            }
+
+            return type.IsSubClassOfRawGeneric(fromType);
         }
 
         /// <summary>Indicates if the <see cref="Type"/> represents a generic nullable type.</summary>
@@ -257,10 +291,19 @@ namespace AllOverIt.Extensions
 
         /// <summary>Determines if the provided type inherits from EnrichedEnum&lt;TEnum&gt;.</summary>
         /// <param name="type">The type to be checked.</param>
-        /// <returns>True if the type inherits from EnrichedEnum&lt;&gt;, otherwise False.</returns>
+        /// <returns>True if the type inherits from EnrichedEnum&lt;>, otherwise False.</returns>
         public static bool IsEnrichedEnum(this Type type)
         {
             return type.IsDerivedFrom(EnrichedEnumType);
+        }
+
+        private static bool IsRawGenericType(this Type type, Type generic)
+        {
+            var toCompare = generic.IsGenericType
+                ? generic.GetGenericTypeDefinition()
+                : generic;
+
+            return type == toCompare;
         }
 
         // ReSharper disable once ReturnTypeCanBeEnumerable.Local

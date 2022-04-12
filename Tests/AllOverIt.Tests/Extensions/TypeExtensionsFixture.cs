@@ -522,6 +522,26 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
+        public class IsSubClassOfRawGeneric : TypeExtensionsFixture
+        {
+            private interface IDerived { }
+            private interface IDerived2<TType1, TType2> : IDerived { }
+            private class Derived<TType1, TType2> : IDerived2<TType1, TType2> { }
+            private class Derived2 : IDerived2<int, double> { }
+            private class Derived3 : Derived<int, double> { }
+
+            [Theory]
+            [InlineData(typeof(Derived2), typeof(IDerived2<,>), false)]             // Testing against an interface, not a type
+            [InlineData(typeof(IDerived), typeof(IDerived), true)]                  // Non-generic
+            [InlineData(typeof(Derived2), typeof(Derived2), true)]                  // Non-generic
+            [InlineData(typeof(Derived3), typeof(Derived<,>), true)]                // Unbound generic
+            [InlineData(typeof(Derived3), typeof(Derived<int, double>), false)]     // Bound generic
+            public void Should_Return_Expected_Result(Type type, Type generic, bool expected)
+            {
+                type.IsSubClassOfRawGeneric(generic).Should().Be(expected);
+            }
+        }
+
         public class IsDerivedFrom : TypeExtensionsFixture
         {
             private interface IBase { }
@@ -551,7 +571,8 @@ namespace AllOverIt.Tests.Extensions
             [InlineData(typeof(Derived2), typeof(IDerived2<string, double>), true)]
             [InlineData(typeof(IDerived2<string, double>), typeof(Derived2), false)]
             [InlineData(typeof(Derived2), typeof(IDerived2<double, string>), false)]
-            [InlineData(typeof(Derived2), typeof(IDerived2<,>), false)]
+            [InlineData(typeof(Derived2), typeof(IDerived2<,>), true)]
+            [InlineData(typeof(IDerived3<,>), typeof(IDerived2<,>), true)]
             [InlineData(typeof(Derived<>), typeof(Derived), true)]
             [InlineData(typeof(Derived3), typeof(Derived<>), true)]
             [InlineData(typeof(Derived3), typeof(Derived<bool>), false)]

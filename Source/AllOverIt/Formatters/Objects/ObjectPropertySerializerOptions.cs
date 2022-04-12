@@ -15,7 +15,7 @@ namespace AllOverIt.Formatters.Objects
         };
 
         /// <summary>Includes types that will be explicitly excluded during serialization.</summary>
-        /// <remarks>Excludes {Task} and {Task&lt;&gt;} by default.</remarks>
+        /// <remarks>Excludes {Task} and {Task&lt;>} by default.</remarks>
         public IEnumerable<Type> IgnoredTypes => _ignoredTypes;
 
         /// <summary>If true then null value properties will be included, otherwise they will be omitted.</summary>

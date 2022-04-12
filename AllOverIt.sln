@@ -199,7 +199,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalDependencies", "Dem
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.DependencyInjection.Tests", "Tests\AllOverIt.DependencyInjection.Tests\AllOverIt.DependencyInjection.Tests.csproj", "{7DE85B5F-B5F0-4418-9E60-367FF9759DB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllOverIt.DependencyInjection.Tests.Types", "Tests\AllOverIt.DependencyInjection.Tests.Types\AllOverIt.DependencyInjection.Tests.Types.csproj", "{0F213191-E87F-4C95-AE94-7B8916DA1BBE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.DependencyInjection.Tests.Types", "Tests\AllOverIt.DependencyInjection.Tests.Types\AllOverIt.DependencyInjection.Tests.Types.csproj", "{0F213191-E87F-4C95-AE94-7B8916DA1BBE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValidationViaDependencyInjection", "Demos\AllOverIt.Validation\ValidationViaDependencyInjection\ValidationViaDependencyInjection.csproj", "{762F0F62-54D3-4F70-868D-3A1BD523C98A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -479,6 +481,10 @@ Global
 		{0F213191-E87F-4C95-AE94-7B8916DA1BBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F213191-E87F-4C95-AE94-7B8916DA1BBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F213191-E87F-4C95-AE94-7B8916DA1BBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{762F0F62-54D3-4F70-868D-3A1BD523C98A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{762F0F62-54D3-4F70-868D-3A1BD523C98A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{762F0F62-54D3-4F70-868D-3A1BD523C98A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{762F0F62-54D3-4F70-868D-3A1BD523C98A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -576,6 +582,7 @@ Global
 		{CC517F6C-29CA-4557-9256-B3241058A23B} = {1A6904EB-3859-4901-803A-903DE27F6D60}
 		{7DE85B5F-B5F0-4418-9E60-367FF9759DB7} = {0C08FAE6-4CD9-4C7B-A849-EB0DB9BD1451}
 		{0F213191-E87F-4C95-AE94-7B8916DA1BBE} = {0C08FAE6-4CD9-4C7B-A849-EB0DB9BD1451}
+		{762F0F62-54D3-4F70-868D-3A1BD523C98A} = {736417D6-56B0-46F7-9717-5C8E7A2327EA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19DD11B3-596E-4862-B5C4-1FFFFB173106}
