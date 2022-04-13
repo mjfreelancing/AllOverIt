@@ -199,8 +199,8 @@ namespace AllOverIt.Extensions
             return false;
         }
 
-        /// <summary>Determines if a type (not an interface) is derived from another base type (not an interface), including unbound generic
-        /// types such as List&lt;>.</summary>
+        /// <summary>Determines if a type is derived from another base type, including unbound generic types such as List&lt;>. Similar to
+        /// IsSubClassOf(), this method does not support looking for inherited interfaces.</summary>
         /// <param name="type">The type to be tested.</param>
         /// <param name="fromType">The base type to compare against, including unbound generics, such as typeof(List&lt;>).</param>
         /// <returns>True if <paramref name="type"/> inherits from <paramref name="fromType"/>, otherwise false.</returns>

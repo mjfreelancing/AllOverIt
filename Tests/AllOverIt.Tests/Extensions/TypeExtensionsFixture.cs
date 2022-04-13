@@ -6,8 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.Enumeration;
 using Xunit;
+using ArgumentNullException = System.ArgumentNullException;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -530,6 +532,30 @@ namespace AllOverIt.Tests.Extensions
             private class Derived2 : IDerived2<int, double> { }
             private class Derived3 : Derived<int, double> { }
 
+            [Fact]
+            public void Should_Throw_When_Type_Null()
+            {
+                Invoking(() =>
+                    {
+                        AllOverIt.Extensions.TypeExtensions.IsSubClassOfRawGeneric(null, typeof(object));
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("type");
+            }
+
+            [Fact]
+            public void Should_Throw_When_FromType_Null()
+            {
+                Invoking(() =>
+                    {
+                        AllOverIt.Extensions.TypeExtensions.IsSubClassOfRawGeneric(typeof(object), null);
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("fromType");
+            }
+
             [Theory]
             [InlineData(typeof(Derived2), typeof(IDerived2<,>), false)]             // Testing against an interface, not a type
             [InlineData(typeof(IDerived), typeof(IDerived), true)]                  // Non-generic
@@ -556,6 +582,30 @@ namespace AllOverIt.Tests.Extensions
             private class Derived<TType> : Derived { }
             private class Derived3 : Derived<Derived3> { }
 
+            [Fact]
+            public void Should_Throw_When_Type_Null()
+            {
+                Invoking(() =>
+                    {
+                        AllOverIt.Extensions.TypeExtensions.IsDerivedFrom(null, typeof(object));
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("type");
+            }
+
+            [Fact]
+            public void Should_Throw_When_FromType_Null()
+            {
+                Invoking(() =>
+                    {
+                        AllOverIt.Extensions.TypeExtensions.IsDerivedFrom(typeof(object), null);
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("fromType");
+            }
+
             [Theory]
             [InlineData(typeof(IDerived2<,>), typeof(IBase), true)]
             [InlineData(typeof(IDerived2<int, double>), typeof(IBase), true)]
@@ -578,7 +628,9 @@ namespace AllOverIt.Tests.Extensions
             [InlineData(typeof(Derived3), typeof(Derived<bool>), false)]
             public void Should_Return_Expected_Result(Type derivedType, Type baseType, bool expected)
             {
-                derivedType.IsDerivedFrom(baseType).Should().Be(expected);
+                AllOverIt.Extensions.TypeExtensions.IsDerivedFrom(derivedType, baseType)
+                    .Should()
+                    .Be(expected);
             }
         }
 
