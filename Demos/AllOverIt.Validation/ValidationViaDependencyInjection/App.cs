@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AllOverIt.Assertion;
+using AllOverIt.Extensions;
 using AllOverIt.GenericHost;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
@@ -18,6 +20,8 @@ namespace ValidationViaDependencyInjection
             _personValidator = personValidator.WhenNotNull(nameof(personValidator));
             _logger = logger.WhenNotNull(nameof(logger));
 
+            _logger.LogInformation($"The {personValidator.GetType().GetFriendlyName()} validator has been injected");
+
             Console.WriteLine();
         }
 
@@ -28,6 +32,11 @@ namespace ValidationViaDependencyInjection
             var person = new Person();
             var validationResult = _personValidator.Validate(person);
 
+            _logger.LogInformation($"A default constructed {nameof(Person)} has the following validation errors:");
+
+            var errors = validationResult.Errors.Select(item => item.ErrorMessage);
+
+            _logger.LogError(string.Join($"  {Environment.NewLine}", errors));
 
             ExitCode = 0;
 

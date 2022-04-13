@@ -32,9 +32,12 @@ namespace ValidationViaDependencyInjection
                 {
                     services.AddLogging(configure => configure.AddConsole());
 
+                    // Registration could be performed like this with a filter:
+                    //
                     //services.AutoRegisterSingleton<ValidationServiceRegistrar, IValidator>(
                     //    config => config.Filter((serviceType, implementationType) => serviceType != typeof(IValidator)));
 
+                    // Or registered like this using an open/unbound generic
                     services.AutoRegisterSingleton<ValidationServiceRegistrar>(new[] {typeof(IValidator<>)});
 
                     Console.WriteLine();
