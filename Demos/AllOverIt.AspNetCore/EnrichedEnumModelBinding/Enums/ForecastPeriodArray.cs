@@ -2,7 +2,7 @@
 using AllOverIt.AspNetCore.ValueArray;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EnrichedEnumModelBinding.Models
+namespace EnrichedEnumModelBinding.Enums
 {
     // Only applicable for models used to bind from a query string
     [ModelBinder(typeof(ValueArrayModelBinder<ForecastPeriodArray, ForecastPeriod>))]

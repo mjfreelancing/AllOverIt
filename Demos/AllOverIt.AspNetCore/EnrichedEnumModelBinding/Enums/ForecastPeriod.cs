@@ -1,9 +1,9 @@
-﻿using AllOverIt.Converters;
-using AllOverIt.Patterns.Enumeration;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using AllOverIt.Converters;
+using AllOverIt.Patterns.Enumeration;
 
-namespace EnrichedEnumModelBinding.Models
+namespace EnrichedEnumModelBinding.Enums
 {
     // Can apply a JsonConverter like this, or as per this demo within Startup.cs
     //[JsonConverter(typeof(ForecastPeriodConverter))]

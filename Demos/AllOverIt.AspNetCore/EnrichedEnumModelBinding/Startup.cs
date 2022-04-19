@@ -1,5 +1,6 @@
 using AllOverIt.AspNetCore.Extensions;
 using AllOverIt.Serialization.NewtonsoftJson.Converters;
+using EnrichedEnumModelBinding.Enums;
 using EnrichedEnumModelBinding.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,8 +32,11 @@ namespace EnrichedEnumModelBinding
                 // When using NewtonsoftJson via Microsoft.AspNetCore.Mvc.NewtonsoftJson
                 .AddNewtonsoftJson(options =>
                 {
-                    // alternative to creating a class inherited from EnrichedEnumJsonConverter<>
-                    options.SerializerSettings.Converters.Add(EnrichedEnumJsonConverter<ForecastPeriod>.Create());
+                    // Can register converters explicitly:
+                    // options.SerializerSettings.Converters.Add(EnrichedEnumJsonConverter<ForecastPeriod>.Create());
+
+                    // Or add a factory that will create suitable converters as they are needed
+                    options.SerializerSettings.Converters.Add(new EnrichedEnumJsonConverterFactory());
 
                     // The controller uses the local time but, for testing, this converter changes the kind so it is treated as UTC.
                     options.SerializerSettings.Converters.Add(new DateTimeAsUtcConverter());

@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using EnrichedEnumModelBinding.Enums;
+using EnrichedEnumModelBinding.Requests;
 
 namespace EnrichedEnumModelBinding.Controllers
 {
