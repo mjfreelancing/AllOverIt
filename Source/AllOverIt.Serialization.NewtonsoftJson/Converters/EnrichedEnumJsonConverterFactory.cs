@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using AllOverIt.Extensions;
 using AllOverIt.Patterns.Enumeration;
 using Newtonsoft.Json;
@@ -8,6 +9,18 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Converters
     /// <summary>Supports creating JsonConverter instances for <see cref="EnrichedEnum{TEnum}"/> types.</summary>
     public class EnrichedEnumJsonConverterFactory : JsonConverterFactory
     {
+        private static readonly ConcurrentDictionary<Type, JsonConverter> Converters = new();
+
+        /// <summary>When enabled, caches converters created for concrete EnrichedEnum types.</summary>
+        /// <remarks>Caching is enabled by default and can only be disabled at the time of construction.</remarks>
+        public bool EnableCaching { get; init; }
+
+        /// <summary>Constructor.</summary>
+        public EnrichedEnumJsonConverterFactory()
+        {
+            EnableCaching = true;
+        }
+
         /// <summary>Returns true if the object to be converted is a <see cref="EnrichedEnum{TEnum}"/>.</summary>
         /// <param name="objectType">The object type.</param>
         /// <returns>True if the object to be converted is a <see cref="EnrichedEnum{TEnum}"/>.</returns>
@@ -22,6 +35,13 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Converters
         /// <param name="objectType">The <see cref="EnrichedEnum{TEnum}"/> type to convert.</param>
         /// <returns>A JsonConverter for a specific <see cref="EnrichedEnum{TEnum}"/> type.</returns>
         public override JsonConverter CreateConverter(Type objectType)
+        {
+            return EnableCaching
+                ? Converters.GetOrAdd(objectType, CreateEnrichedEnumJsonConverter)
+                : CreateEnrichedEnumJsonConverter(objectType);
+        }
+
+        private static JsonConverter CreateEnrichedEnumJsonConverter(Type objectType)
         {
             var genericArg = objectType.BaseType!.GenericTypeArguments[0];
             var genericType = typeof(EnrichedEnumJsonConverter<>).MakeGenericType(genericArg);

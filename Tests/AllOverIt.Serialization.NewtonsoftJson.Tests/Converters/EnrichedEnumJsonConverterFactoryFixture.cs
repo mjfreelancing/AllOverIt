@@ -60,6 +60,16 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests.Converters
             _serializer = new NewtonsoftJsonSerializer(settings);
         }
 
+        public class Constructor : EnrichedEnumJsonConverterFactoryFixture
+        {
+            // There's no way to test caching without abstracting the internal cache
+            [Fact]
+            public void Should_Enable_Caching_As_Default()
+            {
+                _converterFactory.EnableCaching.Should().BeTrue();
+            }
+        }
+
         public class CanConvert : EnrichedEnumJsonConverterFactoryFixture
         {
             [Theory]
