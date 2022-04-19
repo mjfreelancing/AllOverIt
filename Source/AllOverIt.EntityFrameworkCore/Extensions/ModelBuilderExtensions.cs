@@ -18,11 +18,13 @@ namespace AllOverIt.EntityFrameworkCore.Extensions
         /// <summary>Configures the model builder to store entity properties that inherit <see cref="EnrichedEnum{TENum}"/> as integer or string values.</summary>
         /// <param name="modelBuilder">The model builder being configured.</param>
         /// <param name="configure">The configuration action to invoke. If null then the model builder will be configured to store all values as integers.</param>
-        public static void UseEnrichedEnum(this ModelBuilder modelBuilder, Action<EnrichedEnumModelBuilderOptions> configure = default)
+        public static ModelBuilder UseEnrichedEnum(this ModelBuilder modelBuilder, Action<EnrichedEnumModelBuilderOptions> configure = default)
         {
             var options = new EnrichedEnumModelBuilderOptions();
             configure?.Invoke(options);
             UseEnrichedEnum(modelBuilder, options);
+
+            return modelBuilder;
         }
 
         private static void UseEnrichedEnum(ModelBuilder modelBuilder, EnrichedEnumModelBuilderOptions options)
