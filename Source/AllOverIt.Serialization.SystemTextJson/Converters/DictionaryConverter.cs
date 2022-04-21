@@ -133,14 +133,10 @@ namespace AllOverIt.Serialization.SystemTextJson.Converters
             switch (reader.TokenType)
             {
                 case JsonTokenType.String:
+                    // Newtonsoft includes a Date token, try and interpret similarly
                     if (reader.TryGetDateTime(out var date))
                     {
                         return date;
-                    }
-
-                    if (reader.TryGetGuid(out var guid))
-                    {
-                        return guid;
                     }
 
                     return reader.GetString();
@@ -155,28 +151,13 @@ namespace AllOverIt.Serialization.SystemTextJson.Converters
                     return null;
 
                 case JsonTokenType.Number:
-                    // TODO: See if there is a way we can read types better (such as double instead of decimal etc) while not being inefficient
-                    if (reader.TryGetInt16(out var shortValue))
-                    {
-                        return shortValue;
-                    }
-
+                    // Newtonsoft includes a float / integer token, try and interpret similarly
                     if (reader.TryGetInt32(out var intValue))
                     {
                         return intValue;
                     }
 
-                    if (reader.TryGetInt64(out var longValue))
-                    {
-                        return longValue;
-                    }
-
-                    if (reader.TryGetDouble(out var doubleValue))
-                    {
-                        return doubleValue;
-                    }
-
-                    return reader.GetDecimal();
+                    return reader.GetDouble();
 
                 case JsonTokenType.StartObject:
                     return Read(ref reader, null, options);

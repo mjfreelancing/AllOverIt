@@ -11,5 +11,13 @@ namespace AllOverIt.Serialization.JsonHelper.Exceptions
             : base(message)
         {
         }
+
+        /// <summary>Constructor.</summary>
+        /// <param name="message">The exception message.</param>
+        /// <param name="innerException">The inner exception.</param>
+        public JsonHelperException(string message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
     }
 }

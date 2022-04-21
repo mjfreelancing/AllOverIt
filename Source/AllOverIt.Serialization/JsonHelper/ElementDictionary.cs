@@ -1,5 +1,7 @@
-﻿using AllOverIt.Assertion;
+﻿using System;
+using AllOverIt.Assertion;
 using System.Collections.Generic;
+using AllOverIt.Serialization.JsonHelper.Exceptions;
 
 namespace AllOverIt.Serialization.JsonHelper
 {
@@ -24,7 +26,14 @@ namespace AllOverIt.Serialization.JsonHelper
 
         public object GetValue(string propertyName)
         {
-            return _element[propertyName];
+            try
+            {
+                return _element[propertyName];
+            }
+            catch (KeyNotFoundException)
+            {
+                throw new JsonHelperException($"The property {propertyName} was not found.");
+            }
         }
     }
 }

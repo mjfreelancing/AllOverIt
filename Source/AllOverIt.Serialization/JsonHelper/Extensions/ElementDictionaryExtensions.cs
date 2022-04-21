@@ -1,4 +1,6 @@
-﻿using AllOverIt.Extensions;
+﻿using System;
+using System.Collections;
+using AllOverIt.Extensions;
 using AllOverIt.Serialization.JsonHelper.Exceptions;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +20,7 @@ namespace AllOverIt.Serialization.JsonHelper.Extensions
         {
             if (element.TryGetValue(propertyName, out var @object))
             {
-                value = (TValue) @object;
+                value = @object.As<TValue>();
                 return true;
             }
 
@@ -46,15 +48,28 @@ namespace AllOverIt.Serialization.JsonHelper.Extensions
         /// <param name="arrayPropertyName">The property name of the array element.</param>
         /// <param name="array">The array of elements for the specified property.</param>
         /// <returns>True if the property exists, otherwise false.</returns>
+        /// <remarks>A <seealso cref="JsonHelperException"/> exception will be thrown if the property is present but it is not a list of JSON objects.</remarks>
         public static bool TryGetArray(this IElementDictionary element, string arrayPropertyName, out IEnumerable<IElementDictionary> array)
         {
-            if (element.TryGetValue<IList<object>>(arrayPropertyName, out var list))
+            if (element.TryGetValue(arrayPropertyName, out var list))
             {
-                array = list
-                    .Cast<Dictionary<string, object>>()
-                    .Select(item => new ElementDictionary(item));
+                if (list is IList items)
+                {
+                    try
+                    {
+                        array = items
+                            .Cast<Dictionary<string, object>>()
+                            .SelectAsReadOnlyCollection(item => new ElementDictionary(item));
 
-                return true;
+                        return true;
+                    }
+                    catch (InvalidCastException exception)
+                    {
+                        throw new JsonHelperException($"The property {arrayPropertyName} is not an array of JSON objects.", exception);
+                    }
+                }
+
+                throw new JsonHelperException($"The property {arrayPropertyName} is not an array type.");
             }
 
             array = Enumerable.Empty<IElementDictionary>();
@@ -86,7 +101,7 @@ namespace AllOverIt.Serialization.JsonHelper.Extensions
         {
             if (element.TryGetArray(arrayPropertyName, out var array))
             {
-                return TryGetManyArrayValues(array, propertyName, out arrayValues);
+                return TryGetManyArrayValues<TValue>(array, propertyName, out arrayValues);
             }
 
             arrayValues = Enumerable.Empty<TValue>();
@@ -210,7 +225,7 @@ namespace AllOverIt.Serialization.JsonHelper.Extensions
         {
             if (elements.TryGetChildArray(arrayPropertyNames, out var childArray))
             {
-                return TryGetManyArrayValues(childArray, childPropertyName, out childArrayValues);
+                return TryGetManyArrayValues<TValue>(childArray, childPropertyName, out childArrayValues);
             }
 
             childArrayValues = Enumerable.Empty<TValue>();
@@ -244,7 +259,7 @@ namespace AllOverIt.Serialization.JsonHelper.Extensions
         public static bool TryGetChildArrayValues<TValue>(this IElementDictionary element, IEnumerable<string> arrayPropertyNames, string childPropertyName,
             out IEnumerable<TValue> childArrayValues)
         {
-            return new[] { element }.TryGetChildArrayValues(arrayPropertyNames, childPropertyName, out childArrayValues);
+            return new[] { element }.TryGetChildArrayValues<TValue>(arrayPropertyNames, childPropertyName, out childArrayValues);
         }
 
         /// <summary>Get the value of a property from each element of a specified child array property.</summary>
