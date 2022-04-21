@@ -1,6 +1,12 @@
 ﻿#define USE_NEWTSONSOFT                 // Comment out to use System.Text
 using System;
 
+#if USE_NEWTSONSOFT
+using AllOverIt.Serialization.NewtonsoftJson;
+#else
+using AllOverIt.Serialization.SystemTextJson;
+#endif
+
 namespace DeserializeToDictionary
 {
     internal class Program
@@ -9,11 +15,7 @@ namespace DeserializeToDictionary
         {
             var anonymousObject = GetObjectToProcess();
 
-#if USE_NEWTSONSOFT
-            var jsonHelper = new AllOverIt.Serialization.NewtonsoftJson.JsonHelper(anonymousObject);
-#else
-            var jsonHelper = new AllOverIt.Serialization.SystemTextJson.JsonHelper(anonymousObject);
-#endif
+            var jsonHelper = new JsonHelper(anonymousObject);
 
             // Each of the queries below return the same result
 
