@@ -5,6 +5,8 @@ using System.Text.Json.Serialization;
 
 namespace AllOverIt.Serialization.SystemTextJson.Converters
 {
+    // TODO: review exception messages
+
     /// <summary>Implements a JSON Converter that converts to and from a Dictionary&lt;string, object>.</summary>
     public sealed class DictionaryConverter : JsonConverter<Dictionary<string, object>>
     {
@@ -178,5 +180,4 @@ namespace AllOverIt.Serialization.SystemTextJson.Converters
             }
         }
     }
-
 }
