@@ -7,15 +7,18 @@ using System.Text.Json;
 
 namespace AllOverIt.Serialization.SystemTextJson
 {
+    /// <inheritdoc />
     public sealed class JsonHelper : JsonHelperBase
     {
-        private static Type DictionaryConverterType = typeof(DictionaryConverter);
+        private static readonly Type DictionaryConverterType = typeof(DictionaryConverter);
 
+        /// <inheritdoc />
         public JsonHelper(object value, JsonSerializerOptions options = null)
             : base(value, CreateJsonSerializer(options))
         {
         }
 
+        /// <inheritdoc />
         public JsonHelper(string value, JsonSerializerOptions options = null)
             : base(value, CreateJsonSerializer(options))
         {
@@ -25,7 +28,7 @@ namespace AllOverIt.Serialization.SystemTextJson
         {
             options ??= new JsonSerializerOptions();
 
-            if (!options.Converters.Any(converter => converter.GetType() == DictionaryConverterType))
+            if (options.Converters.All(converter => converter.GetType() != DictionaryConverterType))
             {
                 options.Converters.Add(new DictionaryConverter());
             }

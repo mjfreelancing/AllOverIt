@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 namespace AllOverIt.Serialization.NewtonsoftJson.Converters
 {
+    /// <summary>Implements a JSON Converter that converts to and from a Dictionary&lt;string, object>.</summary>
     public sealed class DictionaryConverter : JsonConverter
     {
         /// <inheritdoc />

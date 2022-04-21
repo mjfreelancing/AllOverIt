@@ -173,32 +173,6 @@ namespace AllOverIt.Extensions
             return type.GetTypeInfo().GenericTypeArguments;
         }
 
-
-
-        public static bool IsSubclassOfRawGeneric(this Type type, Type fromType)
-        {
-            if (type == fromType)
-            {
-                return false;
-            }
-
-            while (type != null && type != typeof(object))
-            {
-                var currentType = type.IsGenericType
-                    ? type.GetGenericTypeDefinition()
-                    : type;
-
-                if (currentType == fromType)
-                {
-                    return true;
-                }
-
-                type = type.BaseType;
-            }
-
-            return false;
-        }
-
         /// <summary>Determines if a type is derived from another base type, including unbound generic types such as List&lt;>. Similar to
         /// IsSubClassOf(), this method does not support looking for inherited interfaces.</summary>
         /// <param name="type">The type to be tested.</param>

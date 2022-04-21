@@ -7,15 +7,18 @@ using System.Linq;
 
 namespace AllOverIt.Serialization.NewtonsoftJson
 {
+    /// <inheritdoc />
     public sealed class JsonHelper : JsonHelperBase
     {
-        private static Type DictionaryConverterType = typeof(DictionaryConverter);
+        private static readonly Type DictionaryConverterType = typeof(DictionaryConverter);
 
+        /// <inheritdoc />
         public JsonHelper(object value, JsonSerializerSettings settings = null)
             : base(value, CreateJsonSerializer(settings))
         {
         }
 
+        /// <inheritdoc />
         public JsonHelper(string value, JsonSerializerSettings settings = null)
             : base(value, CreateJsonSerializer(settings))
         {
@@ -25,7 +28,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson
         {
             settings ??= new JsonSerializerSettings();
 
-            if (!settings.Converters.Any(converter => converter.GetType() == DictionaryConverterType))
+            if (settings.Converters.All(converter => converter.GetType() != DictionaryConverterType))
             {
                 settings.Converters.Add(new DictionaryConverter());
             }

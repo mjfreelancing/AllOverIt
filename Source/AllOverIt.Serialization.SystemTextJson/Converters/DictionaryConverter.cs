@@ -5,7 +5,8 @@ using System.Text.Json.Serialization;
 
 namespace AllOverIt.Serialization.SystemTextJson.Converters
 {
-    public class DictionaryConverter : JsonConverter<Dictionary<string, object>>
+    /// <summary>Implements a JSON Converter that converts to and from a Dictionary&lt;string, object>.</summary>
+    public sealed class DictionaryConverter : JsonConverter<Dictionary<string, object>>
     {
         /// <inheritdoc />
         public override Dictionary<string, object> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
