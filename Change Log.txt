@@ -7,6 +7,20 @@ AllOverIt
   * Added static Create() factory method to EnrichedEnumTypeConverter
   * Added IsSubClassOfRawGeneric() and improved IsDerivedFrom() to consider open/unbound generics
 
+AllOverIt.EntityFramework
+  * Updated ModelBuilderExtensions() to return ModelBuilder to allow for a fluent syntax
+
+AllOverIt.Serialization
+  * New package
+
+AllOverIt.Serialization.NewtonsoftJson
+  * Moved caching from JsonConverterFactory to EnrichedEnumJsonConverterFactory. Now optional, on by default.
+  * Added JsonHelper to support extracting property values from a JSON string (or object)
+
+AllOverIt.Serialization.SystemTextJson
+  * Added caching to EnrichedEnumJsonConverterFactory. Optional, on by default.
+  * Added JsonHelper to support extracting property values from a JSON string (or object)
+
 AllOverIt.AspNetCore
   * Corrected EnrichedEnumModelBinder to consider all base classes to find EnrichedEnum<>
   * Added extension method AddEnrichedEnumModelBinder()
@@ -18,14 +32,6 @@ AllOverIt.Aws.AppSync.Client
 AllOverIt.DependencyInjection
   * New package
   * Includes a service decorator and support for auto service registation
-
-AllOverIt.Serialization.Abstractions
-AllOverIt.Serialization
-AllOverIt.Serialization.NewtsonSoftJson
-AllOverIt.Serialization.SystemTextJson
-  * New: AllOverIt.Serialization
-  * Added JsonHelper to support extracting property values from a JSON string (or object)
-
 
 
 10 Feb 2022
