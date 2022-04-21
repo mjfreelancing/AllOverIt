@@ -7,7 +7,7 @@
         <Authors>Malcolm Smith</Authors>
         <Company></Company>
         <Copyright>Copyright © 2021</Copyright>
-        <Description>A wrapper for Newtonsoft.Json serialization.</Description>
+        <Description>Provides common serialization helpers.</Description>
         <PackageTags>utilities</PackageTags>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <RepositoryType>git</RepositoryType>
@@ -17,13 +17,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\AllOverIt.Serialization\AllOverIt.Serialization.csproj" />
-      <ProjectReference Include="..\AllOverIt\AllOverIt.csproj" />
+      <ProjectReference Include="..\AllOverIt.Assertion\AllOverIt.Assertion.csproj" />
       <ProjectReference Include="..\AllOverIt.Serialization.Abstractions\AllOverIt.Serialization.Abstractions.csproj" />
+      <ProjectReference Include="..\AllOverIt\AllOverIt.csproj" />
     </ItemGroup>
 
 </Project>

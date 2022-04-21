@@ -1,11 +1,11 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Serialization.Abstractions;
+using AllOverIt.Serialization.SystemTextJson.Converters;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using AllOverIt.Serialization.SystemTextJson.Converters;
 
 namespace AllOverIt.Serialization.SystemTextJson
 {

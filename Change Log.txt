@@ -19,6 +19,14 @@ AllOverIt.DependencyInjection
   * New package
   * Includes a service decorator and support for auto service registation
 
+AllOverIt.Serialization.Abstractions
+AllOverIt.Serialization
+AllOverIt.Serialization.NewtsonSoftJson
+AllOverIt.Serialization.SystemTextJson
+  * New: AllOverIt.Serialization
+  * Added JsonHelper to support extracting property values from a JSON string (or object)
+
+
 
 10 Feb 2022
 ======================================================================================================================

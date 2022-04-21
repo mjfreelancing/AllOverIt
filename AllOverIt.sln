@@ -201,7 +201,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.DependencyInjecti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.DependencyInjection.Tests.Types", "Tests\AllOverIt.DependencyInjection.Tests.Types\AllOverIt.DependencyInjection.Tests.Types.csproj", "{0F213191-E87F-4C95-AE94-7B8916DA1BBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValidationViaDependencyInjection", "Demos\AllOverIt.Validation\ValidationViaDependencyInjection\ValidationViaDependencyInjection.csproj", "{762F0F62-54D3-4F70-868D-3A1BD523C98A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ValidationViaDependencyInjection", "Demos\AllOverIt.Validation\ValidationViaDependencyInjection\ValidationViaDependencyInjection.csproj", "{762F0F62-54D3-4F70-868D-3A1BD523C98A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllOverIt.Serialization", "Source\AllOverIt.Serialization\AllOverIt.Serialization.csproj", "{A6619F08-4002-4121-A27D-64DC91340FD8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllOverIt.Serialization", "AllOverIt.Serialization", "{11BE607F-1784-438D-AF93-F6A253CD1FE9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeserializeToDictionary", "Demos\AllOverIt.Serialization\DeserializeToDictionary\DeserializeToDictionary.csproj", "{BD487EB7-8F80-4E41-B0A9-F2333EFECA84}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -485,6 +491,14 @@ Global
 		{762F0F62-54D3-4F70-868D-3A1BD523C98A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{762F0F62-54D3-4F70-868D-3A1BD523C98A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{762F0F62-54D3-4F70-868D-3A1BD523C98A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6619F08-4002-4121-A27D-64DC91340FD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6619F08-4002-4121-A27D-64DC91340FD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6619F08-4002-4121-A27D-64DC91340FD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6619F08-4002-4121-A27D-64DC91340FD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD487EB7-8F80-4E41-B0A9-F2333EFECA84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD487EB7-8F80-4E41-B0A9-F2333EFECA84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD487EB7-8F80-4E41-B0A9-F2333EFECA84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD487EB7-8F80-4E41-B0A9-F2333EFECA84}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -583,6 +597,9 @@ Global
 		{7DE85B5F-B5F0-4418-9E60-367FF9759DB7} = {0C08FAE6-4CD9-4C7B-A849-EB0DB9BD1451}
 		{0F213191-E87F-4C95-AE94-7B8916DA1BBE} = {0C08FAE6-4CD9-4C7B-A849-EB0DB9BD1451}
 		{762F0F62-54D3-4F70-868D-3A1BD523C98A} = {736417D6-56B0-46F7-9717-5C8E7A2327EA}
+		{A6619F08-4002-4121-A27D-64DC91340FD8} = {FC8E8DB2-1299-44F4-A233-0EDCE225BB8C}
+		{11BE607F-1784-438D-AF93-F6A253CD1FE9} = {D9F6B8A1-4B01-4708-8851-741FC19F2440}
+		{BD487EB7-8F80-4E41-B0A9-F2333EFECA84} = {11BE607F-1784-438D-AF93-F6A253CD1FE9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19DD11B3-596E-4862-B5C4-1FFFFB173106}
