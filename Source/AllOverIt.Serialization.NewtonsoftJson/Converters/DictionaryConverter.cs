@@ -28,55 +28,6 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Converters
             WriteValue(writer, value);
         }
 
-        private void WriteValue(JsonWriter writer, object value)
-        {
-            var token = JToken.FromObject(value);
-
-            switch (token.Type)
-            {
-                case JTokenType.Object:
-                    WriteObject(writer, value);
-                    break;
-
-                case JTokenType.Array:
-                    WriteArray(writer, value);
-                    break;
-
-                default:
-                    writer.WriteValue(value);
-                    break;
-            }
-        }
-
-        private void WriteObject(JsonWriter writer, object value)
-        {
-            writer.WriteStartObject();
-
-            var element = value as IDictionary<string, object>;
-
-            foreach (var kvp in element)
-            {
-                writer.WritePropertyName(kvp.Key);
-                WriteValue(writer, kvp.Value);
-            }
-
-            writer.WriteEndObject();
-        }
-
-        private void WriteArray(JsonWriter writer, object value)
-        {
-            writer.WriteStartArray();
-
-            var array = value as IEnumerable<object>;
-
-            foreach (var element in array)
-            {
-                WriteValue(writer, element);
-            }
-
-            writer.WriteEndArray();
-        }
-
         private object ReadValue(JsonReader reader)
         {
             while (reader.TokenType == JsonToken.Comment)
@@ -152,6 +103,55 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Converters
             }
 
             throw new JsonSerializationException("Unexpected end when reading IDictionary<string, object>");
+        }
+
+        private void WriteValue(JsonWriter writer, object value)
+        {
+            var token = JToken.FromObject(value);
+
+            switch (token.Type)
+            {
+                case JTokenType.Object:
+                    WriteObject(writer, value);
+                    break;
+
+                case JTokenType.Array:
+                    WriteArray(writer, value);
+                    break;
+
+                default:
+                    writer.WriteValue(value);
+                    break;
+            }
+        }
+
+        private void WriteObject(JsonWriter writer, object value)
+        {
+            writer.WriteStartObject();
+
+            var element = value as IDictionary<string, object>;
+
+            foreach (var kvp in element)
+            {
+                writer.WritePropertyName(kvp.Key);
+                WriteValue(writer, kvp.Value);
+            }
+
+            writer.WriteEndObject();
+        }
+
+        private void WriteArray(JsonWriter writer, object value)
+        {
+            writer.WriteStartArray();
+
+            var array = value as IEnumerable<object>;
+
+            foreach (var element in array)
+            {
+                WriteValue(writer, element);
+            }
+
+            writer.WriteEndArray();
         }
     }
 }

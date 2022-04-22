@@ -55,79 +55,10 @@ namespace AllOverIt.Serialization.SystemTextJson.Converters
 
             foreach (var key in value.Keys)
             {
-                HandleValue(writer, key, value[key]);
+                WriteValue(writer, key, value[key]);
             }
 
             writer.WriteEndObject();
-        }
-
-        private static void HandleValue(Utf8JsonWriter writer, string key, object objectValue)
-        {
-            if (key != null)
-            {
-                writer.WritePropertyName(key);
-            }
-
-            switch (objectValue)
-            {
-                case string stringValue:
-                    writer.WriteStringValue(stringValue);
-                    break;
-
-                case DateTime dateTime:
-                    writer.WriteStringValue(dateTime);
-                    break;
-
-                case long longValue:
-                    writer.WriteNumberValue(longValue);
-                    break;
-
-                case int intValue:
-                    writer.WriteNumberValue(intValue);
-                    break;
-
-                case float floatValue:
-                    writer.WriteNumberValue(floatValue);
-                    break;
-
-                case double doubleValue:
-                    writer.WriteNumberValue(doubleValue);
-                    break;
-
-                case decimal decimalValue:
-                    writer.WriteNumberValue(decimalValue);
-                    break;
-
-                case bool boolValue:
-                    writer.WriteBooleanValue(boolValue);
-                    break;
-
-                case Dictionary<string, object> dict:
-                    writer.WriteStartObject();
-
-                    foreach (var item in dict)
-                    {
-                        HandleValue(writer, item.Key, item.Value);
-                    }
-
-                    writer.WriteEndObject();
-                    break;
-
-                case object[] array:
-                    writer.WriteStartArray();
-
-                    foreach (var item in array)
-                    {
-                        HandleValue(writer, null, item);
-                    }
-
-                    writer.WriteEndArray();
-                    break;
-
-                default:
-                    writer.WriteNullValue();
-                    break;
-            }
         }
 
         private object ReadValue(ref Utf8JsonReader reader, JsonSerializerOptions options)
@@ -177,6 +108,75 @@ namespace AllOverIt.Serialization.SystemTextJson.Converters
 
                 default:
                     throw new JsonException($"'{reader.TokenType}' is not supported");
+            }
+        }
+
+        private static void WriteValue(Utf8JsonWriter writer, string key, object objectValue)
+        {
+            if (key != null)
+            {
+                writer.WritePropertyName(key);
+            }
+
+            switch (objectValue)
+            {
+                case string stringValue:
+                    writer.WriteStringValue(stringValue);
+                    break;
+
+                case DateTime dateTime:
+                    writer.WriteStringValue(dateTime);
+                    break;
+
+                case long longValue:
+                    writer.WriteNumberValue(longValue);
+                    break;
+
+                case int intValue:
+                    writer.WriteNumberValue(intValue);
+                    break;
+
+                case float floatValue:
+                    writer.WriteNumberValue(floatValue);
+                    break;
+
+                case double doubleValue:
+                    writer.WriteNumberValue(doubleValue);
+                    break;
+
+                case decimal decimalValue:
+                    writer.WriteNumberValue(decimalValue);
+                    break;
+
+                case bool boolValue:
+                    writer.WriteBooleanValue(boolValue);
+                    break;
+
+                case Dictionary<string, object> dict:
+                    writer.WriteStartObject();
+
+                    foreach (var item in dict)
+                    {
+                        WriteValue(writer, item.Key, item.Value);
+                    }
+
+                    writer.WriteEndObject();
+                    break;
+
+                case object[] array:
+                    writer.WriteStartArray();
+
+                    foreach (var item in array)
+                    {
+                        WriteValue(writer, null, item);
+                    }
+
+                    writer.WriteEndArray();
+                    break;
+
+                default:
+                    writer.WriteNullValue();
+                    break;
             }
         }
     }
