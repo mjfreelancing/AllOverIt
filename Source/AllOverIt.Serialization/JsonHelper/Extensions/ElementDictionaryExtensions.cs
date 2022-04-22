@@ -57,7 +57,7 @@ namespace AllOverIt.Serialization.JsonHelper.Extensions
         /// <param name="array">The array of elements for the specified property.</param>
         /// <returns>True if the property exists, otherwise false.</returns>
         /// <remarks>A <seealso cref="JsonHelperException"/> exception will be thrown if the property is present but it is not a list of JSON objects.</remarks>
-        public static bool TryGetArray(this IElementDictionary element, string arrayPropertyName, out IEnumerable<IElementDictionary> array)
+        public static bool TryGetObjectArray(this IElementDictionary element, string arrayPropertyName, out IEnumerable<IElementDictionary> array)
         {
             if (element.TryGetValue(arrayPropertyName, out var list))
             {
@@ -88,9 +88,9 @@ namespace AllOverIt.Serialization.JsonHelper.Extensions
         /// <param name="element">The element to get the value from.</param>
         /// <param name="arrayPropertyName">The property name of the array element.</param>
         /// <returns>The array of elements for the specified property.</returns>
-        public static IEnumerable<IElementDictionary> GetArray(this IElementDictionary element, string arrayPropertyName)
+        public static IEnumerable<IElementDictionary> GetObjectArray(this IElementDictionary element, string arrayPropertyName)
         {
-            if (element.TryGetArray(arrayPropertyName, out var array))
+            if (element.TryGetObjectArray(arrayPropertyName, out var array))
             {
                 return array;
             }
@@ -105,11 +105,11 @@ namespace AllOverIt.Serialization.JsonHelper.Extensions
         /// <param name="propertyName">The property name to get the value of.</param>
         /// <param name="arrayValues">The value of each element in the specified array property.</param>
         /// <returns>True if the array and property exists, otherwise false.</returns>
-        public static bool TryGetArrayValues<TValue>(this IElementDictionary element, string arrayPropertyName, string propertyName, out IEnumerable<TValue> arrayValues)
+        public static bool TryGetObjectArrayValues<TValue>(this IElementDictionary element, string arrayPropertyName, string propertyName, out IEnumerable<TValue> arrayValues)
         {
-            if (element.TryGetArray(arrayPropertyName, out var array))
+            if (element.TryGetObjectArray(arrayPropertyName, out var array))
             {
-                return TryGetManyArrayValues<TValue>(array, propertyName, out arrayValues);
+                return TryGetManyObjectArrayValues<TValue>(array, propertyName, out arrayValues);
             }
 
             arrayValues = Enumerable.Empty<TValue>();
@@ -122,7 +122,7 @@ namespace AllOverIt.Serialization.JsonHelper.Extensions
         /// <param name="arrayPropertyName">The property name of the array element.</param>
         /// <param name="arrayValues">The value of each element in the specified array property.</param>
         /// <returns>True if the property exists, otherwise false.</returns>
-        public static bool TryGetManyArrayValues<TValue>(IEnumerable<IElementDictionary> elements, string arrayPropertyName, out IEnumerable<TValue> arrayValues)
+        public static bool TryGetManyObjectArrayValues<TValue>(IEnumerable<IElementDictionary> elements, string arrayPropertyName, out IEnumerable<TValue> arrayValues)
         {
             var values = new List<TValue>();
 
@@ -147,9 +147,9 @@ namespace AllOverIt.Serialization.JsonHelper.Extensions
         /// <param name="arrayPropertyName">The property name of the array element.</param>
         /// <param name="propertyName">The property name of the child element to get the value of.</param>
         /// <returns>The value of each element in the specified array property.</returns>
-        public static IEnumerable<TValue> GetArrayValues<TValue>(this IElementDictionary element, string arrayPropertyName, string propertyName)
+        public static IEnumerable<TValue> GetObjectArrayValues<TValue>(this IElementDictionary element, string arrayPropertyName, string propertyName)
         {
-            if (element.TryGetArrayValues<TValue>(arrayPropertyName, propertyName, out var arrayValues))
+            if (element.TryGetObjectArrayValues<TValue>(arrayPropertyName, propertyName, out var arrayValues))
             {
                 return arrayValues;
             }
@@ -162,7 +162,7 @@ namespace AllOverIt.Serialization.JsonHelper.Extensions
         /// <param name="arrayPropertyNames">One or more nested child array property names.</param>
         /// <param name="childArray">The deepest child array of elements.</param>
         /// <returns>A child array of elements for a specified property.</returns>
-        public static bool TryGetChildArray(this IEnumerable<IElementDictionary> elements, IEnumerable<string> arrayPropertyNames, out IEnumerable<IElementDictionary> childArray)
+        public static bool TryGetDescendantObjectArray(this IEnumerable<IElementDictionary> elements, IEnumerable<string> arrayPropertyNames, out IEnumerable<IElementDictionary> childArray)
         {
             var childElements = elements;
 
@@ -172,7 +172,7 @@ namespace AllOverIt.Serialization.JsonHelper.Extensions
 
                 foreach (var element in childElements)
                 {
-                    if (!element.TryGetArray(propertyName, out var array))
+                    if (!element.TryGetObjectArray(propertyName, out var array))
                     {
                         childArray = Enumerable.Empty<IElementDictionary>();
                         return false;
@@ -192,9 +192,9 @@ namespace AllOverIt.Serialization.JsonHelper.Extensions
         /// <param name="elements">The elements to get the value from.</param>
         /// <param name="arrayPropertyNames">One or more nested child array property names.</param>
         /// <returns>The deepest child array of elements.</returns>
-        public static IEnumerable<IElementDictionary> GetChildArray(this IEnumerable<IElementDictionary> elements, IEnumerable<string> arrayPropertyNames)
+        public static IEnumerable<IElementDictionary> GetDescendantObjectArray(this IEnumerable<IElementDictionary> elements, IEnumerable<string> arrayPropertyNames)
         {
-            if (elements.TryGetChildArray(arrayPropertyNames, out var childArray))
+            if (elements.TryGetDescendantObjectArray(arrayPropertyNames, out var childArray))
             {
                 return childArray;
             }
@@ -207,18 +207,18 @@ namespace AllOverIt.Serialization.JsonHelper.Extensions
         /// <param name="arrayPropertyNames">One or more nested child array property names.</param>
         /// <param name="childArray">The deepest child array of elements.</param>
         /// <returns>A child array of elements for a specified property.</returns>
-        public static bool TryGetChildArray(this IElementDictionary element, IEnumerable<string> arrayPropertyNames, out IEnumerable<IElementDictionary> childArray)
+        public static bool TryGetDescendantObjectArray(this IElementDictionary element, IEnumerable<string> arrayPropertyNames, out IEnumerable<IElementDictionary> childArray)
         {
-            return new[] { element }.TryGetChildArray(arrayPropertyNames, out childArray);
+            return new[] { element }.TryGetDescendantObjectArray(arrayPropertyNames, out childArray);
         }
 
         /// <summary>Get a child array of elements for a specified property.</summary>
         /// <param name="element">The element to get the value from.</param>
         /// <param name="arrayPropertyNames">One or more nested child array property names.</param>
         /// <returns>The deepest child array of elements.</returns>
-        public static IEnumerable<IElementDictionary> GetChildArray(this IElementDictionary element, IEnumerable<string> arrayPropertyNames)
+        public static IEnumerable<IElementDictionary> GetDescendantObjectArray(this IElementDictionary element, IEnumerable<string> arrayPropertyNames)
         {
-            return (new[] { element }).GetChildArray(arrayPropertyNames);
+            return (new[] { element }).GetDescendantObjectArray(arrayPropertyNames);
         }
 
         /// <summary>Tries to get the value of a property from each element of a specified child array property.</summary>
@@ -228,12 +228,12 @@ namespace AllOverIt.Serialization.JsonHelper.Extensions
         /// <param name="childPropertyName">The property name of the child element to get the value of.</param>
         /// <param name="childArrayValues">The value of each element in the specified child array property.</param>
         /// <returns>True if the arrays and property exists, otherwise false.</returns>
-        public static bool TryGetChildArrayValues<TValue>(this IEnumerable<IElementDictionary> elements, IEnumerable<string> arrayPropertyNames, string childPropertyName,
+        public static bool TryGetDescendantObjectArrayValues<TValue>(this IEnumerable<IElementDictionary> elements, IEnumerable<string> arrayPropertyNames, string childPropertyName,
             out IEnumerable<TValue> childArrayValues)
         {
-            if (elements.TryGetChildArray(arrayPropertyNames, out var childArray))
+            if (elements.TryGetDescendantObjectArray(arrayPropertyNames, out var childArray))
             {
-                return TryGetManyArrayValues<TValue>(childArray, childPropertyName, out childArrayValues);
+                return TryGetManyObjectArrayValues<TValue>(childArray, childPropertyName, out childArrayValues);
             }
 
             childArrayValues = Enumerable.Empty<TValue>();
@@ -246,10 +246,10 @@ namespace AllOverIt.Serialization.JsonHelper.Extensions
         /// <param name="arrayPropertyNames">One or more nested child array property names.</param>
         /// <param name="childPropertyName">The property name of the child element to get the value of.</param>
         /// <returns>The value of each element in the specified child array property.</returns>
-        public static IEnumerable<TValue> GetChildArrayValues<TValue>(this IEnumerable<IElementDictionary> elements, IEnumerable<string> arrayPropertyNames,
+        public static IEnumerable<TValue> GetDescendantObjectArrayValues<TValue>(this IEnumerable<IElementDictionary> elements, IEnumerable<string> arrayPropertyNames,
             string childPropertyName)
         {
-            if (elements.TryGetChildArrayValues<TValue>(arrayPropertyNames, childPropertyName, out var childArrayValues))
+            if (elements.TryGetDescendantObjectArrayValues<TValue>(arrayPropertyNames, childPropertyName, out var childArrayValues))
             {
                 return childArrayValues;
             }
@@ -264,10 +264,10 @@ namespace AllOverIt.Serialization.JsonHelper.Extensions
         /// <param name="childPropertyName">The property name of the child element to get the value of.</param>
         /// <param name="childArrayValues">The value of each element in the specified child array property.</param>
         /// <returns>True if the arrays and property exists, otherwise false.</returns>
-        public static bool TryGetChildArrayValues<TValue>(this IElementDictionary element, IEnumerable<string> arrayPropertyNames, string childPropertyName,
+        public static bool TryGetDescendantObjectArrayValues<TValue>(this IElementDictionary element, IEnumerable<string> arrayPropertyNames, string childPropertyName,
             out IEnumerable<TValue> childArrayValues)
         {
-            return new[] { element }.TryGetChildArrayValues<TValue>(arrayPropertyNames, childPropertyName, out childArrayValues);
+            return new[] { element }.TryGetDescendantObjectArrayValues<TValue>(arrayPropertyNames, childPropertyName, out childArrayValues);
         }
 
         /// <summary>Get the value of a property from each element of a specified child array property.</summary>
@@ -276,9 +276,9 @@ namespace AllOverIt.Serialization.JsonHelper.Extensions
         /// <param name="arrayPropertyNames">One or more nested child array property names.</param>
         /// <param name="childPropertyName">The property name of the child element to get the value of.</param>
         /// <returns>The value of each element in the specified child array property.</returns>
-        public static IEnumerable<TValue> GetChildArrayValues<TValue>(this IElementDictionary element, IEnumerable<string> arrayPropertyNames, string childPropertyName)
+        public static IEnumerable<TValue> GetDescendantObjectArrayValues<TValue>(this IElementDictionary element, IEnumerable<string> arrayPropertyNames, string childPropertyName)
         {
-            return (new[] { element }).GetChildArrayValues<TValue>(arrayPropertyNames, childPropertyName);
+            return (new[] { element }).GetDescendantObjectArrayValues<TValue>(arrayPropertyNames, childPropertyName);
         }
 
         private static JsonHelperException CreateJsonHelperException(string propertyName)

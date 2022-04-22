@@ -80,9 +80,9 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
             public void Should_Throw_When_Value_Null()
             {
                 Invoking(() =>
-                    {
-                        _ = new JsonHelper((object) null);
-                    })
+                {
+                    _ = new JsonHelper((object) null);
+                })
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("value");
@@ -92,9 +92,9 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
             public void Should_Not_Throw_When_Options_Null()
             {
                 Invoking(() =>
-                    {
-                        _ = new JsonHelper(_value, null);
-                    })
+                {
+                    _ = new JsonHelper(_value, null);
+                })
                     .Should()
                     .NotThrow();
             }
@@ -106,9 +106,9 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
             public void Should_Throw_When_Value_Null()
             {
                 Invoking(() =>
-                    {
-                        _ = new JsonHelper((string) null);
-                    })
+                {
+                    _ = new JsonHelper((string) null);
+                })
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("value");
@@ -118,9 +118,9 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
             public void Should_Throw_When_Value_Empty()
             {
                 Invoking(() =>
-                    {
-                        _ = new JsonHelper(string.Empty);
-                    })
+                {
+                    _ = new JsonHelper(string.Empty);
+                })
                     .Should()
                     .Throw<ArgumentException>()
                     .WithNamedMessageWhenEmpty("value");
@@ -130,9 +130,9 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
             public void Should_Throw_When_Value_Whitespace()
             {
                 Invoking(() =>
-                    {
-                        _ = new JsonHelper("  ");
-                    })
+                {
+                    _ = new JsonHelper("  ");
+                })
                     .Should()
                     .Throw<ArgumentException>()
                     .WithNamedMessageWhenEmpty("value");
@@ -142,9 +142,9 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
             public void Should_Not_Throw_When_Settings_Null()
             {
                 Invoking(() =>
-                    {
-                        _ = new JsonHelper("{}", null);
-                    })
+                {
+                    _ = new JsonHelper("{}", null);
+                })
                     .Should()
                     .NotThrow();
             }
@@ -384,7 +384,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
             [Theory]
             [InlineData(true)]
             [InlineData(false)]
-            public void Should_Get_Guid(bool useObject)
+            public void Should_Get_Guid_As_Guid(bool useObject)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
@@ -514,7 +514,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
             [Theory]
             [InlineData(true)]
             [InlineData(false)]
-            public void Should_Get_Guid(bool useObject)
+            public void Should_Get_Guid_As_Guid(bool useObject)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
@@ -577,7 +577,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
             }
         }
 
-        public class TryGetArray : JsonHelperFixture
+        public class TryGetObjectArray : JsonHelperFixture
         {
             [Fact]
             public void Should_Throw_When_ArrayPropertyName_Null()
@@ -585,7 +585,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
                 Invoking(() =>
                 {
                     var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.TryGetArray(null, out _);
+                    _ = jsonHelper.TryGetObjectArray(null, out _);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -598,7 +598,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
                 Invoking(() =>
                 {
                     var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.TryGetArray(string.Empty, out _);
+                    _ = jsonHelper.TryGetObjectArray(string.Empty, out _);
                 })
                     .Should()
                     .Throw<ArgumentException>()
@@ -611,7 +611,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
                 Invoking(() =>
                 {
                     var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.TryGetArray("  ", out _);
+                    _ = jsonHelper.TryGetObjectArray("  ", out _);
                 })
                     .Should()
                     .Throw<ArgumentException>()
@@ -625,7 +625,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                var actual = jsonHelper.TryGetArray(Create<string>(), out _);
+                var actual = jsonHelper.TryGetObjectArray(Create<string>(), out _);
 
                 actual.Should().BeFalse();
             }
@@ -637,7 +637,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                _ = jsonHelper.TryGetArray(Create<string>(), out var array);
+                _ = jsonHelper.TryGetObjectArray(Create<string>(), out var array);
 
                 array.Should().BeEmpty();
             }
@@ -651,7 +651,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
 
                 Invoking(() =>
                 {
-                    _ = jsonHelper.TryGetArray("Prop1", out _);
+                    _ = jsonHelper.TryGetObjectArray("Prop1", out _);
                 })
                     .Should()
                     .Throw<JsonHelperException>()
@@ -667,7 +667,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
 
                 Invoking(() =>
                 {
-                    _ = jsonHelper.TryGetArray("Prop3", out _);
+                    _ = jsonHelper.TryGetObjectArray("Prop3", out _);
                 })
                     .Should()
                     .Throw<JsonHelperException>()
@@ -681,9 +681,122 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                var actual = jsonHelper.TryGetArray("Prop10", out var array);
+                var actual = jsonHelper.TryGetObjectArray("Prop10", out var array);
 
                 actual.Should().BeTrue();
+
+                var arrayItems = array.ToList();
+
+                arrayItems.Should().HaveCount(3);
+
+                for (var idx = 0; idx < 3; idx++)
+                {
+                    var item = arrayItems.ElementAt(idx);
+                    var expectedValue = _prop6.ElementAt(idx);
+
+                    item.GetValue("Prop11").Should().Be(expectedValue);
+                }
+            }
+        }
+
+        public class GetObjectArray : JsonHelperFixture
+        {
+            [Fact]
+            public void Should_Throw_When_ArrayPropertyName_Null()
+            {
+                Invoking(() =>
+                {
+                    var jsonHelper = CreateJsonHelper(true);
+                    _ = jsonHelper.GetObjectArray(null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("arrayPropertyName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_ArrayPropertyName_Empty()
+            {
+                Invoking(() =>
+                {
+                    var jsonHelper = CreateJsonHelper(true);
+                    _ = jsonHelper.GetObjectArray(string.Empty);
+                })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("arrayPropertyName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_ArrayPropertyName_WhiteSpace()
+            {
+                Invoking(() =>
+                {
+                    var jsonHelper = CreateJsonHelper(true);
+                    _ = jsonHelper.GetObjectArray("  ");
+                })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("arrayPropertyName");
+            }
+
+            [Theory]
+            [InlineData(true)]
+            [InlineData(false)]
+            public void Should_Throw_When_Not_Found(bool useObject)
+            {
+                var jsonHelper = CreateJsonHelper(useObject);
+                var propName = Create<string>();
+
+                Invoking(() =>
+                {
+                    _ = jsonHelper.GetObjectArray(propName);
+                })
+                    .Should()
+                    .Throw<JsonHelperException>()
+                    .WithMessage($"The property {propName} was not found.");
+            }
+
+            [Theory]
+            [InlineData(true)]
+            [InlineData(false)]
+            public void Should_Throw_When_Not_An_Array_Type(bool useObject)
+            {
+                var jsonHelper = CreateJsonHelper(useObject);
+
+                Invoking(() =>
+                {
+                    _ = jsonHelper.GetObjectArray("Prop1");
+                })
+                    .Should()
+                    .Throw<JsonHelperException>()
+                    .WithMessage("The property Prop1 is not an array type.");
+            }
+
+            [Theory]
+            [InlineData(true)]
+            [InlineData(false)]
+            public void Should_Throw_When_Not_Json_Objects(bool useObject)
+            {
+                var jsonHelper = CreateJsonHelper(useObject);
+
+                Invoking(() =>
+                {
+                    _ = jsonHelper.GetObjectArray("Prop3");
+                })
+                    .Should()
+                    .Throw<JsonHelperException>()
+                    .WithMessage("The property Prop3 is not an array of JSON objects.");
+            }
+
+            [Theory]
+            [InlineData(true)]
+            [InlineData(false)]
+            public void Should_Get_Array(bool useObject)
+            {
+                var jsonHelper = CreateJsonHelper(useObject);
+
+                var array = jsonHelper.GetObjectArray("Prop10");
 
                 var arrayItems = array.ToList();
 

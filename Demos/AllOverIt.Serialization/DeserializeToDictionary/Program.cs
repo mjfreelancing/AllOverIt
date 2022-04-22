@@ -43,7 +43,7 @@ namespace DeserializeToDictionary
             //    .GetChildArray("errors", "errorInfo")
             //    .SelectAsReadOnlyCollection(errorInfo => errorInfo.GetValue<string>("errorMessage"));
 
-            var errorMessages = jsonHelper.GetChildArrayValues<string>(new[] { "errors", "errorInfo" }, "errorMessage");
+            var errorMessages = jsonHelper.GetDescendantObjectArrayValues<string>(new[] { "errors", "errorInfo" }, "errorMessage");
 
             foreach (var error in errorMessages)
             {
