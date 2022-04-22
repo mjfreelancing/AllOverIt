@@ -20,7 +20,15 @@ namespace AllOverIt.Serialization.JsonHelper.Extensions
         {
             if (element.TryGetValue(propertyName, out var @object))
             {
-                value = @object.As<TValue>();
+                if (@object is TValue objectValue)
+                {
+                    value = objectValue;
+                }
+                else
+                {
+                    value = @object.As<TValue>();
+                }
+
                 return true;
             }
 
