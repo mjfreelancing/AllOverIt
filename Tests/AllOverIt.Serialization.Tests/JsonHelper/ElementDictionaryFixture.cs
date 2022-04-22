@@ -1,14 +1,14 @@
-using AllOverIt.Fixture;
-using AllOverIt.Fixture.Extensions;
-using AllOverIt.Serialization.JsonHelper.Exceptions;
-using AllOverIt.Serialization.JsonHelper.Extensions;
-using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
+using AllOverIt.Serialization.JsonHelper;
+using AllOverIt.Serialization.JsonHelper.Exceptions;
+using FluentAssertions;
 using Xunit;
 
-namespace AllOverIt.Serialization.JsonHelper
+namespace AllOverIt.Serialization.Tests.JsonHelper
 {
     public class ElementDictionaryFixture : FixtureBase
     {
