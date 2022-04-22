@@ -100,7 +100,6 @@ namespace AllOverIt.Serialization.JsonHelper
         {
             _ = arrayPropertyName.WhenNotNullOrEmpty(nameof(arrayPropertyName));
 
-            // TODO: tests
             return _element.GetObjectArray(arrayPropertyName);
         }
 
@@ -115,7 +114,6 @@ namespace AllOverIt.Serialization.JsonHelper
             _ = arrayPropertyName.WhenNotNullOrEmpty(nameof(arrayPropertyName));
             _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
 
-            // TODO: tests
             return _element.TryGetObjectArrayValues<TValue>(arrayPropertyName, propertyName, out arrayValues);
         }
 
@@ -129,7 +127,6 @@ namespace AllOverIt.Serialization.JsonHelper
             _ = arrayPropertyName.WhenNotNullOrEmpty(nameof(arrayPropertyName));
             _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
 
-            // TODO: tests
             return _element.GetObjectArrayValues<TValue>(arrayPropertyName, propertyName);
         }
 
@@ -141,7 +138,6 @@ namespace AllOverIt.Serialization.JsonHelper
         {
             _ = arrayPropertyNames.WhenNotNullOrEmpty(nameof(arrayPropertyNames));
 
-            // TODO: tests
             return _element.TryGetDescendantObjectArray(arrayPropertyNames, out childArray);
         }
 
@@ -152,7 +148,6 @@ namespace AllOverIt.Serialization.JsonHelper
         {
             _ = arrayPropertyNames.WhenNotNullOrEmpty(nameof(arrayPropertyNames));
 
-            // TODO: tests
             return _element.GetDescendantObjectArray(arrayPropertyNames);
         }
 
@@ -167,7 +162,6 @@ namespace AllOverIt.Serialization.JsonHelper
             _ = arrayPropertyNames.WhenNotNullOrEmpty(nameof(arrayPropertyNames));
             _ = childPropertyName.WhenNotNullOrEmpty(nameof(childPropertyName));
 
-            // TODO: tests
             return _element.TryGetDescendantObjectArrayValues<TValue>(arrayPropertyNames, childPropertyName, out childArrayValues);
         }
 
@@ -181,7 +175,6 @@ namespace AllOverIt.Serialization.JsonHelper
             _ = arrayPropertyNames.WhenNotNullOrEmpty(nameof(arrayPropertyNames));
             _ = childPropertyName.WhenNotNullOrEmpty(nameof(childPropertyName));
 
-            // TODO: tests
             return _element.GetDescendantObjectArrayValues<TValue>(arrayPropertyNames, childPropertyName);
         }
 
