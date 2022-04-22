@@ -29,6 +29,7 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests
             _prop6 = CreateMany<string>(3);
             _prop7 = $"{Create<double>()}";
             _prop8 = Create<double>();
+            _prop9 = DateTime.Now;
 
             _value = new
             {

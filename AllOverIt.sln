@@ -203,11 +203,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.DependencyInjecti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ValidationViaDependencyInjection", "Demos\AllOverIt.Validation\ValidationViaDependencyInjection\ValidationViaDependencyInjection.csproj", "{762F0F62-54D3-4F70-868D-3A1BD523C98A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllOverIt.Serialization", "Source\AllOverIt.Serialization\AllOverIt.Serialization.csproj", "{A6619F08-4002-4121-A27D-64DC91340FD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.Serialization", "Source\AllOverIt.Serialization\AllOverIt.Serialization.csproj", "{A6619F08-4002-4121-A27D-64DC91340FD8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllOverIt.Serialization", "AllOverIt.Serialization", "{11BE607F-1784-438D-AF93-F6A253CD1FE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeserializeToDictionary", "Demos\AllOverIt.Serialization\DeserializeToDictionary\DeserializeToDictionary.csproj", "{BD487EB7-8F80-4E41-B0A9-F2333EFECA84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeserializeToDictionary", "Demos\AllOverIt.Serialization\DeserializeToDictionary\DeserializeToDictionary.csproj", "{BD487EB7-8F80-4E41-B0A9-F2333EFECA84}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllOverIt.Serialization.Tests", "Tests\AllOverIt.Serialization.Tests\AllOverIt.Serialization.Tests.csproj", "{F3D571BA-CDEC-4850-A14B-A4BCB13B878E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -499,6 +501,10 @@ Global
 		{BD487EB7-8F80-4E41-B0A9-F2333EFECA84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD487EB7-8F80-4E41-B0A9-F2333EFECA84}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD487EB7-8F80-4E41-B0A9-F2333EFECA84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3D571BA-CDEC-4850-A14B-A4BCB13B878E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3D571BA-CDEC-4850-A14B-A4BCB13B878E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3D571BA-CDEC-4850-A14B-A4BCB13B878E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3D571BA-CDEC-4850-A14B-A4BCB13B878E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -600,6 +606,7 @@ Global
 		{A6619F08-4002-4121-A27D-64DC91340FD8} = {FC8E8DB2-1299-44F4-A233-0EDCE225BB8C}
 		{11BE607F-1784-438D-AF93-F6A253CD1FE9} = {D9F6B8A1-4B01-4708-8851-741FC19F2440}
 		{BD487EB7-8F80-4E41-B0A9-F2333EFECA84} = {11BE607F-1784-438D-AF93-F6A253CD1FE9}
+		{F3D571BA-CDEC-4850-A14B-A4BCB13B878E} = {0C08FAE6-4CD9-4C7B-A849-EB0DB9BD1451}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19DD11B3-596E-4862-B5C4-1FFFFB173106}

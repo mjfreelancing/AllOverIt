@@ -1,21 +1,22 @@
-﻿using System;
-using AllOverIt.Assertion;
-using System.Collections.Generic;
+﻿using AllOverIt.Assertion;
 using AllOverIt.Serialization.JsonHelper.Exceptions;
+using System.Collections.Generic;
 
 namespace AllOverIt.Serialization.JsonHelper
 {
     internal sealed class ElementDictionary : IElementDictionary
     {
-        private readonly IReadOnlyDictionary<string, object> _element;
+        private readonly IDictionary<string, object> _element;
 
-        public ElementDictionary(IReadOnlyDictionary<string, object> value)
+        public ElementDictionary(IDictionary<string, object> element)
         {
-            _element = value.WhenNotNull(nameof(value));
+            _element = element.WhenNotNull(nameof(element));
         }
 
         public bool TryGetValue(string propertyName, out object value)
         {
+            _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
+
             if (_element.TryGetValue(propertyName, out value))
             {
                 return true;
@@ -26,13 +27,15 @@ namespace AllOverIt.Serialization.JsonHelper
 
         public object GetValue(string propertyName)
         {
+            _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
+
             try
             {
                 return _element[propertyName];
             }
-            catch (KeyNotFoundException)
+            catch (KeyNotFoundException exception)
             {
-                throw new JsonHelperException($"The property {propertyName} was not found.");
+                throw new JsonHelperException($"The property {propertyName} was not found.", exception);
             }
         }
     }

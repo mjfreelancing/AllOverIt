@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 namespace AllOverIt.Serialization.JsonHelper
 {
+    // TODO: Currently tested indirectly via JsonHelper (SystemTextJson and NewtonsoftJson)
+
     /// <summary>Provides functionality to extract values from a JSON string or anonymous object.</summary>
     public abstract class JsonHelperBase
     {
