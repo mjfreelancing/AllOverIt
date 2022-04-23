@@ -2,18 +2,19 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using AllOverIt.Extensions;
 
 namespace AllOverIt.Serialization.NewtonsoftJson.Converters
 {
-    // TODO: review exception messages
-
     /// <summary>Implements a JSON Converter that converts to and from a Dictionary&lt;string, object>.</summary>
     public sealed class DictionaryConverter : JsonConverter
     {
+        private static readonly Type DictionaryType = typeof(IDictionary<string, object>);
+
         /// <inheritdoc />
         public override bool CanConvert(Type objectType)
         {
-            return typeof(IDictionary<string, object>).IsAssignableFrom(objectType);
+            return DictionaryType.IsAssignableFrom(objectType);
         }
 
         /// <inheritdoc />
@@ -34,20 +35,19 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Converters
             {
                 if (!reader.Read())
                 {
-                    throw new JsonSerializationException("Unexpected Token when converting IDictionary<string, object>");
+                    throw CreateReadJsonSerializationException();
                 }
             }
 
             return reader.TokenType switch
             {
                 JsonToken.StartObject => ReadObject(reader),
-
                 JsonToken.StartArray => ReadArray(reader),
 
                 JsonToken.Integer or JsonToken.Float or JsonToken.String or JsonToken.Boolean or
                 JsonToken.Undefined or JsonToken.Null or JsonToken.Date or JsonToken.Bytes => reader.Value,
 
-                _ => throw new JsonSerializationException($"Unexpected token when converting IDictionary<string, object>: {reader.TokenType}"),
+                _ => throw CreateReadJsonSerializationException(reader.TokenType)
             };
         }
 
@@ -72,12 +72,12 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Converters
                 }
             }
 
-            throw new JsonSerializationException("Unexpected end when reading IDictionary<string, object>");
+            throw CreateReadJsonSerializationException();
         }
 
         private object ReadObject(JsonReader reader)
         {
-            var obj = new Dictionary<string, object>();
+            var dictionary = new Dictionary<string, object>();
 
             while (reader.Read())
             {
@@ -89,20 +89,21 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Converters
                     case JsonToken.PropertyName:
                         var propertyName = $"{reader.Value}";
 
-                        if (!reader.Read())
+                        if (propertyName.IsNullOrEmpty() || !reader.Read())
                         {
-                            throw new JsonSerializationException("Unexpected end when reading IDictionary<string, object>");
+                            throw CreateReadJsonSerializationException();
                         }
 
-                        obj[propertyName] = ReadValue(reader);
+                        var value = ReadValue(reader);
+                        dictionary.Add(propertyName, value); 
                         break;
 
                     case JsonToken.EndObject:
-                        return obj;
+                        return dictionary;
                 }
             }
 
-            throw new JsonSerializationException("Unexpected end when reading IDictionary<string, object>");
+            throw CreateReadJsonSerializationException();
         }
 
         private void WriteValue(JsonWriter writer, object value)
@@ -131,7 +132,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Converters
 
             var element = value as IDictionary<string, object>;
 
-            foreach (var kvp in element)
+            foreach (var kvp in element!)
             {
                 writer.WritePropertyName(kvp.Key);
                 WriteValue(writer, kvp.Value);
@@ -146,12 +147,21 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Converters
 
             var array = value as IEnumerable<object>;
 
-            foreach (var element in array)
+            foreach (var element in array!)
             {
                 WriteValue(writer, element);
             }
 
             writer.WriteEndArray();
+        }
+
+        private static Exception CreateReadJsonSerializationException(JsonToken? tokenType = default)
+        {
+            var message = tokenType.HasValue
+                ? $"Unexpected token '{tokenType}' when converting {DictionaryType.GetFriendlyName()}."
+                : $"Unexpected error when converting {DictionaryType.GetFriendlyName()}.";
+
+            return new JsonSerializationException(message);
         }
     }
 }

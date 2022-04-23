@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using AllOverIt.Extensions;
 
 namespace AllOverIt.Serialization.SystemTextJson.Converters
 {
@@ -10,39 +11,40 @@ namespace AllOverIt.Serialization.SystemTextJson.Converters
     /// <summary>Implements a JSON Converter that converts to and from a Dictionary&lt;string, object>.</summary>
     public sealed class DictionaryConverter : JsonConverter<Dictionary<string, object>>
     {
+        private static readonly Type DictionaryType = typeof(IDictionary<string, object>);
+
         /// <inheritdoc />
         public override Dictionary<string, object> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             if (reader.TokenType != JsonTokenType.StartObject)
             {
-                throw new JsonException($"JsonTokenType was of type {reader.TokenType}, only objects are supported");
+                throw CreateReadJsonSerializationException(reader.TokenType);
             }
 
             var dictionary = new Dictionary<string, object>();
 
             while (reader.Read())
             {
-                if (reader.TokenType == JsonTokenType.EndObject)
+                switch (reader.TokenType)
                 {
-                    return dictionary;
+                    case JsonTokenType.Comment:
+                        break;
+
+                    case JsonTokenType.PropertyName:
+                        var propertyName = reader.GetString();
+
+                        if (propertyName.IsNullOrEmpty() || !reader.Read())
+                        {
+                            throw CreateReadJsonSerializationException(reader.TokenType);
+                        }
+
+                        var value = ReadValue(ref reader, options);
+                        dictionary.Add(propertyName!, value);
+                        break;
+
+                    case JsonTokenType.EndObject:
+                        return dictionary;
                 }
-
-                if (reader.TokenType != JsonTokenType.PropertyName)
-                {
-                    throw new JsonException("JsonTokenType was not PropertyName");
-                }
-
-                var propertyName = reader.GetString();
-
-                if (string.IsNullOrWhiteSpace(propertyName))
-                {
-                    throw new JsonException("Failed to get property name");
-                }
-
-                reader.Read();
-
-                var value = ReadValue(ref reader, options);
-                dictionary.Add(propertyName, value);
             }
 
             return dictionary;
@@ -63,52 +65,30 @@ namespace AllOverIt.Serialization.SystemTextJson.Converters
 
         private object ReadValue(ref Utf8JsonReader reader, JsonSerializerOptions options)
         {
-            switch (reader.TokenType)
+            return reader.TokenType switch
             {
-                case JsonTokenType.String:
-                    // Newtonsoft includes a Date token, try and interpret similarly
-                    if (reader.TryGetDateTime(out var date))
-                    {
-                        return date;
-                    }
+                JsonTokenType.Number => reader.TryGetInt32(out var intValue) ? intValue : reader.GetDouble(),
+                JsonTokenType.StartObject => Read(ref reader, null, options),
+                JsonTokenType.StartArray => ReadArray(ref reader, options),
+                JsonTokenType.String => reader.TryGetDateTime(out var date) ? date : reader.GetString(),
+                JsonTokenType.True => true,
+                JsonTokenType.False => false,
+                JsonTokenType.Null => null,
+                _ => throw CreateReadJsonSerializationException(reader.TokenType)
+            };
+        }
 
-                    return reader.GetString();
+        private object ReadArray(ref Utf8JsonReader reader, JsonSerializerOptions options)
+        {
+            var list = new List<object>();
 
-                case JsonTokenType.False:
-                    return false;
-
-                case JsonTokenType.True:
-                    return true;
-
-                case JsonTokenType.Null:
-                    return null;
-
-                case JsonTokenType.Number:
-                    // Newtonsoft includes a float / integer token, try and interpret similarly
-                    if (reader.TryGetInt32(out var intValue))
-                    {
-                        return intValue;
-                    }
-
-                    return reader.GetDouble();
-
-                case JsonTokenType.StartObject:
-                    return Read(ref reader, null, options);
-
-                case JsonTokenType.StartArray:
-                    var list = new List<object>();
-
-                    while (reader.Read() && reader.TokenType != JsonTokenType.EndArray)
-                    {
-                        var value = ReadValue(ref reader, options);
-                        list.Add(value);
-                    }
-
-                    return list;
-
-                default:
-                    throw new JsonException($"'{reader.TokenType}' is not supported");
+            while (reader.Read() && reader.TokenType != JsonTokenType.EndArray)
+            {
+                var value = ReadValue(ref reader, options);
+                list.Add(value);
             }
+
+            return list;
         }
 
         private static void WriteValue(Utf8JsonWriter writer, string key, object objectValue)
@@ -152,10 +132,10 @@ namespace AllOverIt.Serialization.SystemTextJson.Converters
                     writer.WriteBooleanValue(boolValue);
                     break;
 
-                case Dictionary<string, object> dict:
+                case Dictionary<string, object> dictionary:
                     writer.WriteStartObject();
 
-                    foreach (var item in dict)
+                    foreach (var item in dictionary)
                     {
                         WriteValue(writer, item.Key, item.Value);
                     }
@@ -178,6 +158,15 @@ namespace AllOverIt.Serialization.SystemTextJson.Converters
                     writer.WriteNullValue();
                     break;
             }
+        }
+
+        private static Exception CreateReadJsonSerializationException(JsonTokenType? tokenType = default)
+        {
+            var message = tokenType.HasValue
+                ? $"Unexpected token '{tokenType}' when converting {DictionaryType.GetFriendlyName()}."
+                : $"Unexpected error when converting {DictionaryType.GetFriendlyName()}.";
+
+            return new JsonException(message);
         }
     }
 }
