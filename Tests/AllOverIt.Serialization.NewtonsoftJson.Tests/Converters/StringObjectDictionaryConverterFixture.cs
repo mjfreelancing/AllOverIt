@@ -12,7 +12,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests.Converters
     {
         private class DummyDictionary
         {
-            public IDictionary<string, object> Prop { get; set; }
+            public Dictionary<string, object> Prop { get; set; }
         }
 
         private readonly StringObjectDictionaryConverter _converter;
@@ -31,10 +31,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests.Converters
         public class CanConvert : StringObjectDictionaryConverterFixture
         {
             [Theory]
-            [InlineData(typeof(string), false)]
-            [InlineData(typeof(IDictionary<object, string>), false)]
-            [InlineData(typeof(IDictionary<object, object>), false)]
-            [InlineData(typeof(IDictionary<string, object>), true)]
+            [InlineData(typeof(IDictionary<string, object>), false)]
             [InlineData(typeof(Dictionary<string, object>), true)]
             public void Should_Return_Expected_CanConvert_Result(Type type, bool expected)
             {
@@ -63,7 +60,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests.Converters
                 };
 
                 var prop2Dictionary = new Dictionary<string, object> {{"Value", prop2.Value}};
-                var prop3Dictionary = new Dictionary<string, object> {{"Value1", prop2Dictionary}, {"Value2", prop1}};
+                var prop3Dictionary = new Dictionary<string, object> {{"Value1", prop2Dictionary }, {"Value2", prop1}};
 
                 var expected = new Dictionary<string, object>
                 {

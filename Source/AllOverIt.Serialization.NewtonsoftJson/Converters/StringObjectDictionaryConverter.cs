@@ -10,7 +10,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Converters
     /// expected to also be of type Dictionary&lt;string, object>.</summary>
     public sealed class StringObjectDictionaryConverter : JsonConverter
     {
-        private static readonly Type DictionaryType = typeof(IDictionary<string, object>);
+        private static readonly Type DictionaryType = typeof(Dictionary<string, object>);
 
         /// <inheritdoc />
         public override bool CanConvert(Type objectType)

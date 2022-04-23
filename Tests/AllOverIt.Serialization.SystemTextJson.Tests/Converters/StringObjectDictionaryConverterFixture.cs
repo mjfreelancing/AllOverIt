@@ -11,7 +11,7 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests.Converters
     {
         private class DummyDictionary
         {
-            public IDictionary<string, object> Prop { get; set; }
+            public Dictionary<string, object> Prop { get; set; }
         }
 
         private readonly SystemTextJsonSerializer _serializer;
