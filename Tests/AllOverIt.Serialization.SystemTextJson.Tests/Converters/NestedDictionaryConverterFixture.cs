@@ -1,47 +1,32 @@
 using AllOverIt.Fixture;
-using AllOverIt.Serialization.NewtonsoftJson.Converters;
+using AllOverIt.Serialization.SystemTextJson.Converters;
 using FluentAssertions;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using Xunit;
 
-namespace AllOverIt.Serialization.NewtonsoftJson.Tests.Converters
+namespace AllOverIt.Serialization.SystemTextJson.Tests.Converters
 {
-    public class StringObjectDictionaryConverterFixture : FixtureBase
+    public class NestedDictionaryConverterFixture : FixtureBase
     {
         private class DummyDictionary
         {
             public Dictionary<string, object> Prop { get; set; }
         }
 
-        private readonly StringObjectDictionaryConverter _converter;
-        private readonly NewtonsoftJsonSerializer _serializer;
+        private readonly SystemTextJsonSerializer _serializer;
 
-        protected StringObjectDictionaryConverterFixture()
+        protected NestedDictionaryConverterFixture()
         {
-            _converter = new StringObjectDictionaryConverter();
+            var converter = new NestedDictionaryConverter();
 
-            var settings = new JsonSerializerSettings();
-            settings.Converters.Add(_converter);
+            var options = new JsonSerializerOptions();
+            options.Converters.Add(converter);
 
-            _serializer = new NewtonsoftJsonSerializer(settings);
+            _serializer = new SystemTextJsonSerializer(options);
         }
 
-        public class CanConvert : StringObjectDictionaryConverterFixture
-        {
-            [Theory]
-            [InlineData(typeof(IDictionary<string, object>), false)]
-            [InlineData(typeof(Dictionary<string, object>), true)]
-            public void Should_Return_Expected_CanConvert_Result(Type type, bool expected)
-            {
-                var actual = _converter.CanConvert(type);
-
-                actual.Should().Be(expected);
-            }
-        }
-
-        public class ReadJson : StringObjectDictionaryConverterFixture
+        public class Read : NestedDictionaryConverterFixture
         {
             [Fact]
             public void Should_Read_As_Dictionary()
@@ -60,7 +45,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests.Converters
                 };
 
                 var prop2Dictionary = new Dictionary<string, object> {{"Value", prop2.Value}};
-                var prop3Dictionary = new Dictionary<string, object> {{"Value1", prop2Dictionary }, {"Value2", prop1}};
+                var prop3Dictionary = new Dictionary<string, object> {{"Value1", prop2Dictionary}, {"Value2", prop1}};
 
                 var expected = new Dictionary<string, object>
                 {
@@ -76,7 +61,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests.Converters
                 expected.Should().BeEquivalentTo(actual.Prop);
             }
 
-            public class WriteJson : StringObjectDictionaryConverterFixture
+            public class Write : NestedDictionaryConverterFixture
             {
                 [Fact]
                 public void Should_Write_Dictionary()

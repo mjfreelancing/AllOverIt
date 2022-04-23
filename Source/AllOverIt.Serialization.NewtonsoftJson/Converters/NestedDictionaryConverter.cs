@@ -6,9 +6,9 @@ using AllOverIt.Extensions;
 
 namespace AllOverIt.Serialization.NewtonsoftJson.Converters
 {
-    /// <summary>Implements a JSON Converter that converts to and from a Dictionary&lt;string, object>. All object and array properties are
-    /// expected to also be of type Dictionary&lt;string, object>.</summary>
-    public sealed class StringObjectDictionaryConverter : JsonConverter
+    /// <summary>Implements a JSON Converter that converts to and from a Dictionary&lt;string, object>. All object and array
+    /// properties are also converted to and from a Dictionary&lt;string, object>.</summary>
+    public sealed class NestedDictionaryConverter : JsonConverter
     {
         private static readonly Type DictionaryType = typeof(Dictionary<string, object>);
 

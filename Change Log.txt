@@ -14,12 +14,14 @@ AllOverIt.Serialization
   * New package
 
 AllOverIt.Serialization.NewtonsoftJson
-  * Moved caching from JsonConverterFactory to EnrichedEnumJsonConverterFactory. Now optional, on by default.
+  * Moved caching from JsonConverterFactory to EnrichedEnumJsonConverterFactory. Now optional, on by default
   * Added JsonHelper to support extracting property values from a JSON string (or object)
+  * Added a NestedDictionaryConverter to convert to and from Dictionary<string, object> recursively
 
 AllOverIt.Serialization.SystemTextJson
   * Added caching to EnrichedEnumJsonConverterFactory. Optional, on by default.
   * Added JsonHelper to support extracting property values from a JSON string (or object)
+  * Added a NestedDictionaryConverter to convert to and from Dictionary<string, object> recursively
 
 AllOverIt.AspNetCore
   * Corrected EnrichedEnumModelBinder to consider all base classes to find EnrichedEnum<>

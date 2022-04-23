@@ -10,7 +10,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson
     /// <inheritdoc />
     public sealed class JsonHelper : JsonHelperBase
     {
-        private static readonly Type DictionaryConverterType = typeof(StringObjectDictionaryConverter);
+        private static readonly Type DictionaryConverterType = typeof(NestedDictionaryConverter);
 
         /// <inheritdoc />
         public JsonHelper(object value, JsonSerializerSettings settings = null)
@@ -30,7 +30,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson
 
             if (settings.Converters.All(converter => converter.GetType() != DictionaryConverterType))
             {
-                settings.Converters.Add(new StringObjectDictionaryConverter());
+                settings.Converters.Add(new NestedDictionaryConverter());
             }
 
             return new NewtonsoftJsonSerializer(settings);
