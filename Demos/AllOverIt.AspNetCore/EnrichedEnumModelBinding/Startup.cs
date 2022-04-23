@@ -1,7 +1,5 @@
 using AllOverIt.AspNetCore.Extensions;
 using AllOverIt.Serialization.NewtonsoftJson.Converters;
-using EnrichedEnumModelBinding.Enums;
-using EnrichedEnumModelBinding.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -34,7 +32,7 @@ namespace EnrichedEnumModelBinding
                 {
                     // Can register converters explicitly:
                     // options.SerializerSettings.Converters.Add(EnrichedEnumJsonConverter<ForecastPeriod>.Create());
-
+                    //
                     // Or add a factory that will create suitable converters as they are needed
                     options.SerializerSettings.Converters.Add(new EnrichedEnumJsonConverterFactory());
 
