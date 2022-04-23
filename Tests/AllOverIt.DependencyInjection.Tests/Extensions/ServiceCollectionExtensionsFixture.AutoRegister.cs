@@ -9,6 +9,7 @@ using AllOverIt.DependencyInjection.Tests.Helpers;
 using AllOverIt.Extensions;
 using AllOverIt.Fixture.Extensions;
 using Xunit;
+using AllOverIt.DependencyInjection.Tests.TestTypes;
 
 namespace AllOverIt.DependencyInjection.Tests.Extensions
 {

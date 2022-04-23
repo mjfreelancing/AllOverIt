@@ -2,6 +2,7 @@
 using System.Linq;
 using AllOverIt.DependencyInjection.Exceptions;
 using AllOverIt.DependencyInjection.Tests.Helpers;
+using AllOverIt.DependencyInjection.Tests.TestTypes;
 using AllOverIt.DependencyInjection.Tests.Types;
 using AllOverIt.Extensions;
 using AllOverIt.Fixture;

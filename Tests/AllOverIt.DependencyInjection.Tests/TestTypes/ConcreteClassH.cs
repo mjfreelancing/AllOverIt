@@ -1,6 +1,6 @@
 ﻿using AllOverIt.DependencyInjection.Tests.Types;
 
-namespace AllOverIt.DependencyInjection.Tests
+namespace AllOverIt.DependencyInjection.Tests.TestTypes
 {
     public sealed class ConcreteClassJ : IBaseInterface3
     {

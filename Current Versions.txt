@@ -18,7 +18,7 @@
         - AllOverIt dependencies:                - [1]
                                                  - [15]
                                                  - [16]
-        - External dependencies:                 - Amazon.CDK.AWS.AppSync v1.152.0
+        - External dependencies:                 - Amazon.CDK.AWS.AppSync v1.153.1
 
 
   [4]  AllOverIt.Evaluator                      
@@ -73,7 +73,7 @@
                                                  - [8]
                                                  - [16]
         - External dependencies:                 - System.Text.Json v5.0.2 for targets netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0
-                                                                    v6.0.2 for targets net6.0
+                                                                    v6.0.3 for targets net6.0
 
 
   [11] AllOverIt.Aws.AppSync.Client             
