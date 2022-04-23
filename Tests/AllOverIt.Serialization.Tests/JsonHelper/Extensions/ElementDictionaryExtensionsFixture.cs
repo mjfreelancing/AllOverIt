@@ -1079,5 +1079,111 @@ namespace AllOverIt.Serialization.Tests.JsonHelper.Extensions
                 element3.GetValue("Prop3").Should().Be(_prop3a["Prop3"]);
             }
         }
+
+        public class GetDescendantObjectArray : ElementDictionaryExtensionsFixture
+        {
+            private readonly IEnumerable<IElementDictionary> _elements;
+
+            public GetDescendantObjectArray()
+            {
+                _elements = _elementDictionary.GetObjectArray("Prop2").AsReadOnlyCollection();
+            }
+
+            [Fact]
+            public void Should_Throw_When_Elements_Null()
+            {
+                Invoking(() =>
+                    {
+                        _ = ElementDictionaryExtensions.GetDescendantObjectArray((IEnumerable<IElementDictionary>) null, CreateMany<string>());
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("elements");
+            }
+
+            [Fact]
+            public void Should_Throw_When_ArrayPropertyName_Null()
+            {
+                Invoking(() =>
+                    {
+                        _ = ElementDictionaryExtensions.GetDescendantObjectArray(new[] {_elementDictionary}, null);
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("arrayPropertyNames");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Property_Not_found()
+            {
+                var propertyNames = CreateMany<string>();
+
+                Invoking(() =>
+                    {
+                        _ = ElementDictionaryExtensions.GetDescendantObjectArray(_elements, propertyNames);
+                    })
+                    .Should()
+                    .Throw<JsonHelperException>()
+                    .WithMessage($"The property {string.Join(".", propertyNames)} was not found.");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Not_Array_Type()
+            {
+                Invoking(() =>
+                    {
+                        _ = ElementDictionaryExtensions.GetDescendantObjectArray(_elements, new[] {"Prop1"});
+                    })
+                    .Should()
+                    .Throw<JsonHelperException>()
+                    .WithMessage("The property Prop1 is not an array type.");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Not_Array_Of_Objects()
+            {
+                Invoking(() =>
+                    {
+                        _ = ElementDictionaryExtensions.GetDescendantObjectArray(_elements, new[] {"Prop2", "Prop2", "Prop2"});
+                    })
+                    .Should()
+                    .Throw<JsonHelperException>()
+                    .WithMessage("The property Prop2 is not an array of objects.");
+            }
+
+            [Fact]
+            public void Should_Get_Array()
+            {
+                var elements = ElementDictionaryExtensions.GetDescendantObjectArray(_elements, new[] { "Prop2" });
+
+                var array = elements.ToList();
+
+                array.Should().HaveCount(4);
+
+                var element0 = array.ElementAt(0);
+
+                element0.GetValue("Prop1").Should().Be(_prop3a["Prop1"]);
+                element0.GetValue("Prop2").Should().Be(_prop3a["Prop2"]);
+                element0.GetValue("Prop3").Should().Be(_prop3a["Prop3"]);
+
+                var element1 = array.ElementAt(1);
+
+                element1.GetValue("Prop1").Should().Be(_prop3b["Prop1"]);
+                element1.GetValue("Prop2").Should().Be(_prop3b["Prop2"]);
+                element1.GetValue("Prop3").Should().Be(_prop3b["Prop3"]);
+
+                var element2 = array.ElementAt(2);
+
+                element2.GetValue("Prop1").Should().Be(_prop3b["Prop1"]);
+                element2.GetValue("Prop2").Should().Be(_prop3b["Prop2"]);
+                element2.GetValue("Prop3").Should().Be(_prop3b["Prop3"]);
+
+                var element3 = array.ElementAt(3);
+
+                element3.GetValue("Prop1").Should().Be(_prop3a["Prop1"]);
+                element3.GetValue("Prop2").Should().Be(_prop3a["Prop2"]);
+                element3.GetValue("Prop3").Should().Be(_prop3a["Prop3"]);
+            }
+        }
     }
 }
