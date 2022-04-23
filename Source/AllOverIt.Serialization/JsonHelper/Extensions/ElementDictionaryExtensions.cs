@@ -136,6 +136,26 @@ namespace AllOverIt.Serialization.JsonHelper.Extensions
             return false;
         }
 
+        /// <summary>Gets the value of a property from each element of a specified array property.</summary>
+        /// <typeparam name="TValue">The value type.</typeparam>
+        /// <param name="element">The element to get the value from.</param>
+        /// <param name="arrayPropertyName">The property name of the array element.</param>
+        /// <param name="propertyName">The property name of the child element to get the value of.</param>
+        /// <returns>The value of each element in the specified array property.</returns>
+        public static IEnumerable<TValue> GetObjectArrayValues<TValue>(this IElementDictionary element, string arrayPropertyName, string propertyName)
+        {
+            _ = element.WhenNotNull(nameof(element));
+            _ = arrayPropertyName.WhenNotNullOrEmpty(nameof(arrayPropertyName));
+            _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
+
+            if (element.TryGetObjectArrayValues<TValue>(arrayPropertyName, propertyName, out var arrayValues))
+            {
+                return arrayValues;
+            }
+
+            throw CreateJsonHelperException(new[] { arrayPropertyName, propertyName });
+        }
+
         /// <summary>Tries to get the value of a property from each element of a specified array property.</summary>
         /// <typeparam name="TValue">The value type.</typeparam>
         /// <param name="elements">The elements to get the value from.</param>
@@ -165,25 +185,10 @@ namespace AllOverIt.Serialization.JsonHelper.Extensions
             return true;
         }
 
-        /// <summary>Gets the value of a property from each element of a specified array property.</summary>
-        /// <typeparam name="TValue">The value type.</typeparam>
-        /// <param name="element">The element to get the value from.</param>
-        /// <param name="arrayPropertyName">The property name of the array element.</param>
-        /// <param name="propertyName">The property name of the child element to get the value of.</param>
-        /// <returns>The value of each element in the specified array property.</returns>
-        public static IEnumerable<TValue> GetObjectArrayValues<TValue>(this IElementDictionary element, string arrayPropertyName, string propertyName)
-        {
-            _ = element.WhenNotNull(nameof(element));
-            _ = arrayPropertyName.WhenNotNullOrEmpty(nameof(arrayPropertyName));
-            _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
 
-            if (element.TryGetObjectArrayValues<TValue>(arrayPropertyName, propertyName, out var arrayValues))
-            {
-                return arrayValues;
-            }
+        // GetManyObjectArrayValues
 
-            throw CreateJsonHelperException(new[] { arrayPropertyName, propertyName });
-        }
+
 
         /// <summary>Try to get a child array of elements for a specified property.</summary>
         /// <param name="elements">The elements to get the value from.</param>
