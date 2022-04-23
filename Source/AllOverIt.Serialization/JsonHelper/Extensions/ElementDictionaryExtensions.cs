@@ -69,7 +69,7 @@ namespace AllOverIt.Serialization.JsonHelper.Extensions
         public static bool TryGetObjectArray(this IElementDictionary element, string arrayPropertyName, out IEnumerable<IElementDictionary> array)
         {
             _ = element.WhenNotNull(nameof(element));
-            _ = arrayPropertyName.WhenNotNull(nameof(arrayPropertyName));
+            _ = arrayPropertyName.WhenNotNullOrEmpty(nameof(arrayPropertyName));
 
             if (element.TryGetValue(arrayPropertyName, out var list))
             {
@@ -85,7 +85,7 @@ namespace AllOverIt.Serialization.JsonHelper.Extensions
                     }
                     catch (InvalidCastException exception)
                     {
-                        throw new JsonHelperException($"The property {arrayPropertyName} is not an array of JSON objects.", exception);
+                        throw new JsonHelperException($"The property {arrayPropertyName} is not an array of objects.", exception);
                     }
                 }
 
@@ -103,7 +103,7 @@ namespace AllOverIt.Serialization.JsonHelper.Extensions
         public static IEnumerable<IElementDictionary> GetObjectArray(this IElementDictionary element, string arrayPropertyName)
         {
             _ = element.WhenNotNull(nameof(element));
-            _ = arrayPropertyName.WhenNotNull(nameof(arrayPropertyName));
+            _ = arrayPropertyName.WhenNotNullOrEmpty(nameof(arrayPropertyName));
 
             if (element.TryGetObjectArray(arrayPropertyName, out var array))
             {
@@ -124,8 +124,8 @@ namespace AllOverIt.Serialization.JsonHelper.Extensions
             out IEnumerable<TValue> arrayValues)
         {
             _ = element.WhenNotNull(nameof(element));
-            _ = arrayPropertyName.WhenNotNull(nameof(arrayPropertyName));
-            _ = propertyName.WhenNotNull(nameof(propertyName));
+            _ = arrayPropertyName.WhenNotNullOrEmpty(nameof(arrayPropertyName));
+            _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
 
             if (element.TryGetObjectArray(arrayPropertyName, out var array))
             {
@@ -146,7 +146,7 @@ namespace AllOverIt.Serialization.JsonHelper.Extensions
             out IEnumerable<TValue> arrayValues)
         {
             var allElements = elements.WhenNotNull(nameof(elements)).AsReadOnlyCollection();
-            _ = arrayPropertyName.WhenNotNull(nameof(arrayPropertyName));
+            _ = arrayPropertyName.WhenNotNullOrEmpty(nameof(arrayPropertyName));
 
             var values = new List<TValue>();
 
@@ -174,8 +174,8 @@ namespace AllOverIt.Serialization.JsonHelper.Extensions
         public static IEnumerable<TValue> GetObjectArrayValues<TValue>(this IElementDictionary element, string arrayPropertyName, string propertyName)
         {
             _ = element.WhenNotNull(nameof(element));
-            _ = arrayPropertyName.WhenNotNull(nameof(arrayPropertyName));
-            _ = propertyName.WhenNotNull(nameof(propertyName));
+            _ = arrayPropertyName.WhenNotNullOrEmpty(nameof(arrayPropertyName));
+            _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
 
             if (element.TryGetObjectArrayValues<TValue>(arrayPropertyName, propertyName, out var arrayValues))
             {

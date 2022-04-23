@@ -746,7 +746,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
                 })
                     .Should()
                     .Throw<JsonHelperException>()
-                    .WithMessage("The property Prop3 is not an array of JSON objects.");
+                    .WithMessage("The property Prop3 is not an array of objects.");
             }
 
             [Theory]
@@ -861,7 +861,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
                 })
                     .Should()
                     .Throw<JsonHelperException>()
-                    .WithMessage("The property Prop3 is not an array of JSON objects.");
+                    .WithMessage("The property Prop3 is not an array of objects.");
             }
 
             [Theory]
