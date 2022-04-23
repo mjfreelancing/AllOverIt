@@ -6,15 +6,14 @@ using AllOverIt.Extensions;
 
 namespace AllOverIt.Serialization.SystemTextJson.Converters
 {
-    // TODO: review exception messages
-
-    /// <summary>Implements a JSON Converter that converts to and from a Dictionary&lt;string, object>.</summary>
-    public sealed class DictionaryConverter : JsonConverter<Dictionary<string, object>>
+    /// <summary>Implements a JSON Converter that converts to and from a Dictionary&lt;string, object>. All object and array properties are
+    /// expected to also be of type Dictionary&lt;string, object>.</summary>
+    public sealed class StringObjectDictionaryConverter : JsonConverter<IDictionary<string, object>>
     {
         private static readonly Type DictionaryType = typeof(IDictionary<string, object>);
 
         /// <inheritdoc />
-        public override Dictionary<string, object> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override IDictionary<string, object> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             if (reader.TokenType != JsonTokenType.StartObject)
             {
@@ -51,7 +50,7 @@ namespace AllOverIt.Serialization.SystemTextJson.Converters
         }
 
         /// <inheritdoc />
-        public override void Write(Utf8JsonWriter writer, Dictionary<string, object> value, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, IDictionary<string, object> value, JsonSerializerOptions options)
         {
             writer.WriteStartObject();
 

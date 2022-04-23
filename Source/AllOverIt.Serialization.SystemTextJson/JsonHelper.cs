@@ -10,7 +10,7 @@ namespace AllOverIt.Serialization.SystemTextJson
     /// <inheritdoc />
     public sealed class JsonHelper : JsonHelperBase
     {
-        private static readonly Type DictionaryConverterType = typeof(DictionaryConverter);
+        private static readonly Type DictionaryConverterType = typeof(StringObjectDictionaryConverter);
 
         /// <inheritdoc />
         public JsonHelper(object value, JsonSerializerOptions options = null)
@@ -30,7 +30,7 @@ namespace AllOverIt.Serialization.SystemTextJson
 
             if (options.Converters.All(converter => converter.GetType() != DictionaryConverterType))
             {
-                options.Converters.Add(new DictionaryConverter());
+                options.Converters.Add(new StringObjectDictionaryConverter());
             }
 
             return new SystemTextJsonSerializer(options);
