@@ -162,7 +162,7 @@ namespace AllOverIt.Serialization.JsonHelper.Extensions
         /// <param name="arrayPropertyName">The property name of the array element.</param>
         /// <param name="arrayValues">The value of each element in the specified array property.</param>
         /// <returns>True if the property exists, otherwise false.</returns>
-        public static bool TryGetManyObjectArrayValues<TValue>(IEnumerable<IElementDictionary> elements, string arrayPropertyName,
+        public static bool TryGetManyObjectArrayValues<TValue>(this IEnumerable<IElementDictionary> elements, string arrayPropertyName,
             out IEnumerable<TValue> arrayValues)
         {
             var allElements = elements.WhenNotNull(nameof(elements)).AsReadOnlyCollection();
@@ -185,10 +185,23 @@ namespace AllOverIt.Serialization.JsonHelper.Extensions
             return true;
         }
 
+        /// <summary>Gets the value of a property from each element of a specified array property.</summary>
+        /// <typeparam name="TValue">The value type.</typeparam>
+        /// <param name="elements">The elements to get the value from.</param>
+        /// <param name="arrayPropertyName">The property name of the array element.</param>
+        /// <returns>The value of each element in the specified array property.</returns>
+        public static IEnumerable<TValue> GetManyObjectArrayValues<TValue>(IEnumerable<IElementDictionary> elements, string arrayPropertyName)
+        {
+            var allElements = elements.WhenNotNull(nameof(elements)).AsReadOnlyCollection();
+            _ = arrayPropertyName.WhenNotNullOrEmpty(nameof(arrayPropertyName));
 
-        // GetManyObjectArrayValues
+            if (allElements.TryGetManyObjectArrayValues<TValue>(arrayPropertyName, out var arrayValues))
+            {
+                return arrayValues;
+            }
 
-
+            throw CreateJsonHelperException(new[] { arrayPropertyName });
+        }
 
         /// <summary>Try to get a child array of elements for a specified property.</summary>
         /// <param name="elements">The elements to get the value from.</param>

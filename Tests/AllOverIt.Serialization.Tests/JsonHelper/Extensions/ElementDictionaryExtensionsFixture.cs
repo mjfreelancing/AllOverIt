@@ -828,6 +828,18 @@ namespace AllOverIt.Serialization.Tests.JsonHelper.Extensions
             }
 
             [Fact]
+            public void Should_Throw_When_ArrayPropertyName_Whitespace()
+            {
+                Invoking(() =>
+                    {
+                        _ = ElementDictionaryExtensions.TryGetManyObjectArrayValues<int>(new[] { _elementDictionary }, "  ", out _);
+                    })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("arrayPropertyName");
+            }
+
+            [Fact]
             public void Should_Return_False_When_Property_Not_found()
             {
                 var actual = ElementDictionaryExtensions.TryGetManyObjectArrayValues<int>(_elements, Create<string>(), out _);
@@ -867,6 +879,204 @@ namespace AllOverIt.Serialization.Tests.JsonHelper.Extensions
                     .Should()
                     .Throw<InvalidCastException>()
                     .WithMessage("Unable to cast object of type 'string' to type 'double[]'.");
+            }
+        }
+
+        public class GetManyObjectArrayValues : ElementDictionaryExtensionsFixture
+        {
+            private readonly IEnumerable<IElementDictionary> _elements;
+
+            public GetManyObjectArrayValues()
+            {
+                _elements = _elementDictionary.GetObjectArray("Prop2").AsReadOnlyCollection();
+            }
+
+            [Fact]
+            public void Should_Throw_When_Elements_Null()
+            {
+                Invoking(() =>
+                    {
+                        _ = ElementDictionaryExtensions.GetManyObjectArrayValues<int>(null, Create<string>());
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("elements");
+            }
+
+            [Fact]
+            public void Should_Throw_When_ArrayPropertyName_Null()
+            {
+                Invoking(() =>
+                    {
+                        _ = ElementDictionaryExtensions.GetManyObjectArrayValues<int>(new[] {_elementDictionary}, null);
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("arrayPropertyName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_ArrayPropertyName_Empty()
+            {
+                Invoking(() =>
+                    {
+                        _ = ElementDictionaryExtensions.GetManyObjectArrayValues<int>(new[] {_elementDictionary}, string.Empty);
+                    })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("arrayPropertyName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_ArrayPropertyName_Whitespace()
+            {
+                Invoking(() =>
+                    {
+                        _ = ElementDictionaryExtensions.GetManyObjectArrayValues<int>(new[] { _elementDictionary }, "  ");
+                    })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("arrayPropertyName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Property_Not_found()
+            {
+                var propertyName = Create<string>();
+
+                Invoking(() =>
+                    {
+                        _ = ElementDictionaryExtensions.GetManyObjectArrayValues<int>(_elements, propertyName);
+                    })
+                    .Should()
+                    .Throw<JsonHelperException>()
+                    .WithMessage($"The property {propertyName} was not found.");
+            }
+
+            [Fact]
+            public void Should_Get_Object_Array_Values()
+            {
+                var elements = ElementDictionaryExtensions.GetManyObjectArrayValues<string>(_elements, "Prop1");
+
+                var array = elements.ToList();
+
+                array.Should().BeEquivalentTo(new[]
+                {
+                    (string) _prop2a["Prop1"],
+                    (string) _prop2b["Prop1"],
+                });
+            }
+
+            [Fact]
+            public void Should_Throw_When_Cannot_Convert_Value()
+            {
+                Invoking(() =>
+                {
+                    _ = ElementDictionaryExtensions.GetManyObjectArrayValues<double[]>(_elements, "Prop1");
+                })
+                    .Should()
+                    .Throw<InvalidCastException>()
+                    .WithMessage("Unable to cast object of type 'string' to type 'double[]'.");
+            }
+        }
+
+        public class TryGetDescendantObjectArray : ElementDictionaryExtensionsFixture
+        {
+            private readonly IEnumerable<IElementDictionary> _elements;
+
+            public TryGetDescendantObjectArray()
+            {
+                _elements = _elementDictionary.GetObjectArray("Prop2").AsReadOnlyCollection();
+            }
+
+            [Fact]
+            public void Should_Throw_When_Elements_Null()
+            {
+                Invoking(() =>
+                    {
+                        _ = ElementDictionaryExtensions.TryGetDescendantObjectArray((IEnumerable<IElementDictionary>)null, CreateMany<string>(), out _);
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("elements");
+            }
+
+            [Fact]
+            public void Should_Throw_When_ArrayPropertyName_Null()
+            {
+                Invoking(() =>
+                    {
+                        _ = ElementDictionaryExtensions.TryGetDescendantObjectArray(new[] { _elementDictionary }, null, out _);
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("arrayPropertyNames");
+            }
+
+            [Fact]
+            public void Should_Return_Empty_Collection_When_Property_Not_found()
+            {
+                _ = ElementDictionaryExtensions.TryGetDescendantObjectArray(_elements, CreateMany<string>(), out var array);
+
+                array.Should().BeEmpty();
+            }
+
+            [Fact]
+            public void Should_Throw_When_Not_Array_Type()
+            {
+                Invoking(() =>
+                    {
+                        _ = ElementDictionaryExtensions.TryGetDescendantObjectArray(_elements, new []{ "Prop1" }, out _);
+                    })
+                    .Should()
+                    .Throw<JsonHelperException>()
+                    .WithMessage("The property Prop1 is not an array type.");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Not_Array_Of_Objects()
+            {
+                Invoking(() =>
+                    {
+                        _ = ElementDictionaryExtensions.TryGetDescendantObjectArray(_elements, new[] { "Prop2", "Prop2", "Prop2" }, out _);
+                    })
+                    .Should()
+                    .Throw<JsonHelperException>()
+                    .WithMessage("The property Prop2 is not an array of objects.");
+            }
+
+            [Fact]
+            public void Should_Get_Array()
+            {
+                _ = ElementDictionaryExtensions.TryGetDescendantObjectArray(_elements, new[] { "Prop2" }, out var elements);
+
+                var array = elements.ToList();
+
+                array.Should().HaveCount(4);
+
+                var element0 = array.ElementAt(0);
+
+                element0.GetValue("Prop1").Should().Be(_prop3a["Prop1"]);
+                element0.GetValue("Prop2").Should().Be(_prop3a["Prop2"]);
+                element0.GetValue("Prop3").Should().Be(_prop3a["Prop3"]);
+
+                var element1 = array.ElementAt(1);
+
+                element1.GetValue("Prop1").Should().Be(_prop3b["Prop1"]);
+                element1.GetValue("Prop2").Should().Be(_prop3b["Prop2"]);
+                element1.GetValue("Prop3").Should().Be(_prop3b["Prop3"]);
+
+                var element2 = array.ElementAt(2);
+
+                element2.GetValue("Prop1").Should().Be(_prop3b["Prop1"]);
+                element2.GetValue("Prop2").Should().Be(_prop3b["Prop2"]);
+                element2.GetValue("Prop3").Should().Be(_prop3b["Prop3"]);
+
+                var element3 = array.ElementAt(3);
+
+                element3.GetValue("Prop1").Should().Be(_prop3a["Prop1"]);
+                element3.GetValue("Prop2").Should().Be(_prop3a["Prop2"]);
+                element3.GetValue("Prop3").Should().Be(_prop3a["Prop3"]);
             }
         }
     }
