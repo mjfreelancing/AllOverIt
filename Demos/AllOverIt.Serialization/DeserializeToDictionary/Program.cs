@@ -10,6 +10,8 @@ using AllOverIt.Serialization.NewtonsoftJson;
 using AllOverIt.Serialization.SystemTextJson;
 #endif
 
+// Uses JsonHelper to deserialize a string or object to a nested Dictionary<string, object>() that can be queried
+
 namespace DeserializeToDictionary
 {
     internal class Program
