@@ -4,9 +4,10 @@ using AllOverIt.Aws.Cdk.AppSync.Attributes.Directives;
 using AllOverIt.Aws.Cdk.AppSync.Attributes.Types;
 using GraphqlSchema.Schema.Mappings.Query;
 
-namespace GraphqlSchema.Schema.Types
+namespace GraphqlSchema.Schema.Types.Globe
 {
-    [SchemaType("Continent")]
+    // Testing the use of namespaces => should produce 'GlobeContinent' (the last argument can be null/empty)
+    [SchemaType("GraphqlSchema.Schema.Types", "Continent")]
     [AuthCognitoDirective("group1", "group2")]
     [AuthApiKeyDirective]
     [AuthIamDirective]

@@ -46,7 +46,23 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
                 }
 
                 var schemaTypeAttribute = schemaTypeAttributes.Single();
-                return new GraphqlSchemaTypeDescriptor(elementType, schemaTypeAttribute.GraphqlSchemaType, schemaTypeAttribute.Name ?? typeInfo.Name);
+
+                string schemaTypeName;
+
+                if (!schemaTypeAttribute.ExcludeNamespacePrefix.IsNullOrEmpty())
+                {
+                    var namePrefix = type.Namespace
+                        .Replace(schemaTypeAttribute.ExcludeNamespacePrefix, string.Empty)
+                        .Replace(".", string.Empty);
+
+                    schemaTypeName = $"{namePrefix}{schemaTypeAttribute.Name ?? string.Empty}";
+                }
+                else
+                {
+                    schemaTypeName = schemaTypeAttribute.Name;
+                }
+
+                return new GraphqlSchemaTypeDescriptor(elementType, schemaTypeAttribute.GraphqlSchemaType, schemaTypeName ?? typeInfo.Name);
             }
 
             // not expecting class types to be used, but check anyway

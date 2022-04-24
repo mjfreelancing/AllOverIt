@@ -14,7 +14,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Attributes.Types
         /// <param name="name">The name of the schema enum type to apply to the Graphql schema.</param>
         public SchemaEnumAttribute(string name)
         {
-            Name = name.WhenNotNullOrEmpty(nameof(name));
+            Name = name.WhenNotNullOrEmpty();
         }
     }
 }

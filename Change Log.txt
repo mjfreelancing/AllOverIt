@@ -7,8 +7,8 @@ AllOverIt.Serialization.NewtonsoftJson
 AllOverIt.Serialization.SystemTextJson
   * Improvements to JsonHelper and NestedDictionaryConverter to allow for strict / lower-camel case property naming
 
-Pending
-  * Auto name GQL schema objects
+AllOverIt.Aws.Cdk.AppSync
+  * Support automatic naming of GQL schema types and inputs.
 
 
 23 Apr 2022

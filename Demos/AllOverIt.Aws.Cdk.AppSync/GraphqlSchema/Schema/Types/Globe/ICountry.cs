@@ -1,8 +1,9 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync.Attributes.Types;
 
-namespace GraphqlSchema.Schema.Types
+namespace GraphqlSchema.Schema.Types.Globe
 {
-    [SchemaType("Country")]
+    // Testing the use of namespaces => should produce 'GlobeCountry' (the last argument can be null/empty)
+    [SchemaType("GraphqlSchema.Schema.Types", "Country")]
     internal interface ICountry : ISchemaTypeBase
     {
         public string Name();

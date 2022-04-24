@@ -5,8 +5,10 @@ using AllOverIt.Aws.Cdk.AppSync.Attributes.Types;
 using AllOverIt.Aws.Cdk.AppSync.Schema;
 using AllOverIt.Aws.Cdk.AppSync.Schema.Types;
 using GraphqlSchema.Schema.Inputs;
+using GraphqlSchema.Schema.Inputs.Globe;
 using GraphqlSchema.Schema.Mappings.Query;
 using GraphqlSchema.Schema.Types;
+using GraphqlSchema.Schema.Types.Globe;
 
 namespace GraphqlSchema.Schema
 {
@@ -50,7 +52,10 @@ namespace GraphqlSchema.Schema
         [LambdaDataSource(Constants.Function.GetLanguages, typeof(LanguagesMapping))]
         ILanguage[] Languages(ILanguageFilterInput filter);     // optional filter in this case, implies all languages will be returned if omitted
 
-#region Date, Time, DateTime, Timestamp responses
+        [NoneDataSource(nameof(Globe), typeof(GlobeMapping))]
+        IGlobe Globe();
+
+        #region Date, Time, DateTime, Timestamp responses
 
         [NoneDataSource(nameof(CountryDate), typeof(CountryDateMapping))]
         AwsTypeDate CountryDate([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType);

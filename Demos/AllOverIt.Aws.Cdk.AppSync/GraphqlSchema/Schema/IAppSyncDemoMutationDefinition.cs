@@ -2,8 +2,10 @@
 using AllOverIt.Aws.Cdk.AppSync.Attributes.Types;
 using AllOverIt.Aws.Cdk.AppSync.Schema;
 using GraphqlSchema.Schema.Inputs;
+using GraphqlSchema.Schema.Inputs.Globe;
 using GraphqlSchema.Schema.Mappings.Mutation;
 using GraphqlSchema.Schema.Types;
+using GraphqlSchema.Schema.Types.Globe;
 
 namespace GraphqlSchema.Schema
 {
