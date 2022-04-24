@@ -8,18 +8,21 @@ using System.Text.Json;
 namespace AllOverIt.Serialization.SystemTextJson
 {
     /// <inheritdoc />
+    /// <remarks>If serialization settings are not provided then a default constructed <see cref="NestedDictionaryConverter"/> will be added
+    /// to the list of converters. You can change the behaviour of this converter type by adding a suitably configured converter to the
+    /// <see cref="JsonSerializerOptions"/> instance.</remarks>
     public sealed class JsonHelper : JsonHelperBase
     {
         private static readonly Type ConverterType = typeof(NestedDictionaryConverter);
 
         /// <inheritdoc />
-        public JsonHelper(object value, JsonSerializerOptions options = null)
+        public JsonHelper(object value, JsonSerializerOptions options = default)
             : base(value, CreateJsonSerializer(options))
         {
         }
 
         /// <inheritdoc />
-        public JsonHelper(string value, JsonSerializerOptions options = null)
+        public JsonHelper(string value, JsonSerializerOptions options = default)
             : base(value, CreateJsonSerializer(options))
         {
         }

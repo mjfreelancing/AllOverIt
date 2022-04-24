@@ -12,6 +12,16 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Converters
     {
         private static readonly Type DictionaryType = typeof(Dictionary<string, object>);
 
+        private readonly NestedDictionaryConverterOptions _options;
+
+        public NestedDictionaryConverter(NestedDictionaryConverterOptions options = default)
+        {
+            _options = options ?? new NestedDictionaryConverterOptions
+            {
+                StrictPropertyNames = false
+            };
+        }
+
         /// <inheritdoc />
         public override bool CanConvert(Type objectType)
         {
@@ -88,7 +98,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Converters
                         break;
 
                     case JsonToken.PropertyName:
-                        var propertyName = $"{reader.Value}";
+                        var propertyName = GetPropertyName($"{reader.Value}");
 
                         if (propertyName.IsNullOrEmpty() || !reader.Read())
                         {
@@ -135,7 +145,8 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Converters
 
             foreach (var kvp in element!)
             {
-                writer.WritePropertyName(kvp.Key);
+                var propertyName = GetPropertyName(kvp.Key);
+                writer.WritePropertyName(propertyName);
                 WriteValue(writer, kvp.Value);
             }
 
@@ -154,6 +165,20 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Converters
             }
 
             writer.WriteEndArray();
+        }
+
+        private string GetPropertyName(string propertyName)
+        {
+            if (_options.StrictPropertyNames || propertyName.IsNullOrEmpty() || char.IsLower(propertyName[0]))
+            {
+                return propertyName;
+            }
+
+#if NETSTANDARD2_0
+            return $"{char.ToLower(propertyName[0])}{propertyName.Substring(1)}";
+#else
+            return string.Concat(propertyName[..1].ToLower(), propertyName[1..]);
+#endif
         }
 
         private static Exception CreateReadJsonSerializationException(JsonToken? tokenType = default)

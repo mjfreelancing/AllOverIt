@@ -1,11 +1,13 @@
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Serialization.JsonHelper.Exceptions;
+using AllOverIt.Serialization.SystemTextJson.Converters;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text.Json;
 using Xunit;
 
 namespace AllOverIt.Serialization.SystemTextJson.Tests
@@ -1605,15 +1607,26 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests
 
         private JsonHelper CreateJsonHelper(bool useObject)
         {
+            // testing with strict property names (not the default)
+            var converterOptions = new NestedDictionaryConverterOptions
+            {
+                StrictPropertyNames = true
+            };
+
+            var converter = new NestedDictionaryConverter(converterOptions);
+
+            var settings = new JsonSerializerOptions();
+            settings.Converters.Add(converter);
+
             if (useObject)
             {
-                return new JsonHelper(_value);
+                return new JsonHelper(_value, settings);
             }
 
             var serializer = new SystemTextJsonSerializer();
             var strValue = serializer.SerializeObject(_value);
 
-            return new JsonHelper(strValue);
+            return new JsonHelper(strValue, settings);
         }
     }
 }

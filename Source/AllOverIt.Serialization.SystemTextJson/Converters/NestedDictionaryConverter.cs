@@ -12,6 +12,18 @@ namespace AllOverIt.Serialization.SystemTextJson.Converters
     {
         private static readonly Type DictionaryType = typeof(Dictionary<string, object>);
 
+        private readonly NestedDictionaryConverterOptions _options;
+
+        /// <summary>Constructor.</summary>
+        /// <param name="options">Options that control how the converter behaves.</param>
+        public NestedDictionaryConverter(NestedDictionaryConverterOptions options = default)
+        {
+            _options = options ?? new NestedDictionaryConverterOptions
+            {
+                StrictPropertyNames = false
+            };
+        }
+
         /// <inheritdoc />
         public override Dictionary<string, object> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
@@ -30,7 +42,8 @@ namespace AllOverIt.Serialization.SystemTextJson.Converters
                         break;
 
                     case JsonTokenType.PropertyName:
-                        var propertyName = reader.GetString();
+                        var name = reader.GetString();
+                        var propertyName = GetPropertyName(name);
 
                         if (propertyName.IsNullOrEmpty() || !reader.Read())
                         {
@@ -90,11 +103,12 @@ namespace AllOverIt.Serialization.SystemTextJson.Converters
             return list;
         }
 
-        private static void WriteValue(Utf8JsonWriter writer, string key, object objectValue)
+        private void WriteValue(Utf8JsonWriter writer, string key, object objectValue)
         {
             if (key != null)
             {
-                writer.WritePropertyName(key);
+                var propertyName = GetPropertyName(key);
+                writer.WritePropertyName(propertyName);
             }
 
             switch (objectValue)
@@ -157,6 +171,20 @@ namespace AllOverIt.Serialization.SystemTextJson.Converters
                     writer.WriteNullValue();
                     break;
             }
+        }
+
+        private string GetPropertyName(string propertyName)
+        {
+            if (_options.StrictPropertyNames || propertyName.IsNullOrEmpty() || char.IsLower(propertyName[0]))
+            {
+                return propertyName;
+            }
+
+#if NETSTANDARD2_0
+            return $"{char.ToLower(propertyName[0])}{propertyName.Substring(1)}";
+#else
+            return string.Concat(propertyName[..1].ToLower(), propertyName[1..]);
+#endif
         }
 
         private static Exception CreateReadJsonSerializationException(JsonTokenType? tokenType = default)

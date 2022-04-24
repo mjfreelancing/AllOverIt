@@ -1,5 +1,16 @@
 ======================================================================================================================
 
+## ### ####
+Version 5.1.0
+======================================================================================================================
+AllOverIt.Serialization.NewtonsoftJson
+AllOverIt.Serialization.SystemTextJson
+  * Improvements to JsonHelper and NestedDictionaryConverter to allow for strict / lower-camel case property naming
+
+Pending
+  * Auto name GQL schema objects
+
+
 23 Apr 2022
 Version 5.1.0
 ======================================================================================================================

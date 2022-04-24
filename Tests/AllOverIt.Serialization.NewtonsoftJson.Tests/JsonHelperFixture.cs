@@ -5,7 +5,9 @@ using System.Linq;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Serialization.JsonHelper.Exceptions;
+using AllOverIt.Serialization.NewtonsoftJson.Converters;
 using FluentAssertions;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace AllOverIt.Serialization.NewtonsoftJson.Tests
@@ -1605,15 +1607,26 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
 
         private JsonHelper CreateJsonHelper(bool useObject)
         {
+            // testing with strict property names (not the default)
+            var converterOptions = new NestedDictionaryConverterOptions
+            {
+                StrictPropertyNames = true
+            };
+
+            var converter = new NestedDictionaryConverter(converterOptions);
+
+            var settings = new JsonSerializerSettings();
+            settings.Converters.Add(converter);
+
             if (useObject)
             {
-                return new JsonHelper(_value);
+                return new JsonHelper(_value, settings);
             }
 
             var serializer = new NewtonsoftJsonSerializer();
             var strValue = serializer.SerializeObject(_value);
 
-            return new JsonHelper(strValue);
+            return new JsonHelper(strValue, settings);
         }
     }
 }
