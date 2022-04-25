@@ -1,6 +1,14 @@
 ======================================================================================================================
 
 24 Apr 2022
+Version 5.3.0
+======================================================================================================================
+AllOverIt.Validation
+  * Added support to auto-discover and register validators with a ValidationInvoker, via an IValidationRegistry
+    extension method and registrar classes inheriting ValidationRegistrarBase.
+
+
+24 Apr 2022
 Version 5.2.0
 ======================================================================================================================
 AllOverIt.Serialization.NewtonsoftJson
