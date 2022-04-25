@@ -10,7 +10,21 @@ namespace AllOverIt.DependencyInjection
     /// <summary>Base class for service registrars that scan for, and register, service and implementation types located in the containing assembly.</summary>
     public abstract class ServiceRegistrarBase : IServiceRegistrar, IServiceRegistrarOptions
     {
+        private readonly Lazy<IReadOnlyCollection<Type>> _implementationCandidates;        
         private Func<Type, Type, bool> _registrationFilter;
+
+        private IReadOnlyCollection<Type> ImplementationCandidates => _implementationCandidates.Value;
+
+        public ServiceRegistrarBase()
+        {
+            _implementationCandidates = new Lazy<IReadOnlyCollection<Type>>(() =>
+            {
+                return GetType().Assembly
+                    .GetTypes()
+                    .Where(type => type.IsClass && !type.IsGenericType && !type.IsNested && !type.IsAbstract && !type.IsInterface)
+                    .AsReadOnlyCollection();
+            });
+        }
 
         /// <inheritdoc />
         public void AutoRegisterServices(IEnumerable<Type> serviceTypes, Action<Type, Type> registrationAction, Action<IServiceRegistrarOptions> configure = default)
@@ -23,11 +37,7 @@ namespace AllOverIt.DependencyInjection
 
             ValidateServiceTypes(allServiceTypes);
 
-            var implementationCandidates = GetType().Assembly
-                .GetTypes()
-                .Where(type => type.IsClass && !type.IsGenericType && !type.IsNested && !type.IsAbstract && !type.IsInterface);
-
-            foreach (var implementationCandidate in implementationCandidates)
+            foreach (var implementationCandidate in ImplementationCandidates)
             {
                 ProcessImplementationCandidate(implementationCandidate, allServiceTypes, registrationAction);
             }
