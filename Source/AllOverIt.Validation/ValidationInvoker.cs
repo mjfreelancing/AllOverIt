@@ -32,6 +32,11 @@ namespace AllOverIt.Validation
                 throw new ValidationRegistryException($"The {validatorType.GetFriendlyName()} type is not a validator.");
             }
 
+            if (validatorType.GetConstructor(Type.EmptyTypes) == null)
+            {
+                throw new ValidationRegistryException($"The {validatorType.GetFriendlyName()} type must have a default constructor.");
+            }
+
             var validatorArgType = validatorType.BaseType!.GenericTypeArguments[0];
 
             if (modelType != validatorArgType)

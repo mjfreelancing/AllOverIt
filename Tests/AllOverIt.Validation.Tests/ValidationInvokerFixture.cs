@@ -54,6 +54,14 @@ namespace AllOverIt.Validation.Tests
             }
         }
 
+
+        private class DummyModelValidator2 : ValidatorBase<DummyModel>
+        {
+            public DummyModelValidator2(int dummy)
+            {
+            }
+        }
+        
         private readonly ValidationInvoker _validationInvoker;
 
         public ValidationInvokerFixture()
@@ -118,6 +126,18 @@ namespace AllOverIt.Validation.Tests
                    .Should()
                    .Throw<ValidationRegistryException>()
                    .WithMessage($"The {nameof(DummyModelValidator)} type cannot validate a System.String type.");
+            }
+
+            [Fact]
+            public void Should_Throw_When_No_Default_Constructor()
+            {
+                Invoking(() =>
+                {
+                    _validationInvoker.Register(typeof(DummyModel), typeof(DummyModelValidator2));
+                })
+                   .Should()
+                   .Throw<ValidationRegistryException>()
+                   .WithMessage($"The {nameof(DummyModelValidator2)} type must have a default constructor.");
             }
 
             [Fact]
