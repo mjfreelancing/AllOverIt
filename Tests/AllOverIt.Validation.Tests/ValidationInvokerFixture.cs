@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Fixture;
+using AllOverIt.Validation.Exceptions;
 using AllOverIt.Validation.Extensions;
 using FluentAssertions;
 using FluentValidation;
@@ -53,6 +54,24 @@ namespace AllOverIt.Validation.Tests
             }
         }
 
+        private class DummyModel2
+        {
+            public int ValueOne { get; set; }
+        }
+
+        private class DummyModel2Validator : ValidatorBase<DummyModel2>
+        {
+            static DummyModel2Validator()
+            {
+                DisablePropertyNameSplitting();
+            }
+
+            public DummyModel2Validator(int value)
+            {
+                RuleFor(model => model.ValueOne).LessThan(value);
+            }
+        }
+
         private readonly ValidationInvoker _validationInvoker;
 
         public ValidationInvokerFixture()
@@ -63,43 +82,87 @@ namespace AllOverIt.Validation.Tests
         public class Register : ValidationInvokerFixture
         {
             [Fact]
-            public void Should_Register_Validator()
-            {
-                _validationInvoker.Register<DummyModel, DummyModelValidator>();
-
-                // registering a second time will fail
-                Invoking(() =>
-                {
-                    _validationInvoker.Register<DummyModel, DummyModelValidator>();
-                })
-               .Should()
-               .Throw<ArgumentException>()
-               .WithMessage($"An item with the same key has already been added. Key: {typeof(DummyModel).FullName}");
-            }
-
-            [Fact]
             public void Should_Throw_When_Validator_Not_Registered()
             {
                 Invoking(() =>
                 {
                     _validationInvoker.AssertValidation(Create<DummyModel>());
                 })
-                .Should()
-                .Throw<InvalidOperationException>()
-                .WithMessage("The type 'DummyModel' does not have a registered validator.");
+                    .Should()
+                    .Throw<InvalidOperationException>()
+                    .WithMessage("The type 'DummyModel' does not have a registered validator.");
+            }
+        }
+
+        public class Register_Strongly_Typed : ValidationInvokerFixture
+        {
+            [Fact]
+            public void Should_Register_Validator()
+            {
+                _validationInvoker.Register<DummyModel, DummyModelValidator>();
+
+                // registering a second time will fail
+                Invoking(() =>
+                    {
+                        _validationInvoker.Register<DummyModel, DummyModelValidator>();
+                    })
+                   .Should()
+                   .Throw<ArgumentException>()
+                   .WithMessage($"An item with the same key has already been added. Key: {typeof(DummyModel).FullName}");
+            }
+        }
+
+        public class Register_By_Type : ValidationInvokerFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Not_A_Validator()
+            {
+                Invoking(() =>
+                    {
+                        _validationInvoker.Register(typeof(DummyModel), typeof(DummyModel));
+                    })
+                   .Should()
+                   .Throw<ValidationRegistryException>()
+                   .WithMessage($"The {nameof(DummyModel)} type is not a validator.");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Cannot_Validate_Model_Type()
+            {
+                Invoking(() =>
+                    {
+                        _validationInvoker.Register(typeof(string), typeof(DummyModelValidator));
+                    })
+                   .Should()
+                   .Throw<ValidationRegistryException>()
+                   .WithMessage($"The {nameof(DummyModelValidator)} type cannot validate a System.String type.");
+            }
+
+            [Fact]
+            public void Should_Register_Validator()
+            {
+                _validationInvoker.Register(typeof(DummyModel), typeof(DummyModelValidator));
+
+                // registering a second time will fail
+                Invoking(() =>
+                    {
+                        _validationInvoker.Register(typeof(DummyModel), typeof(DummyModelValidator));
+                    })
+                   .Should()
+                   .Throw<ArgumentException>()
+                   .WithMessage($"An item with the same key has already been added. Key: {typeof(DummyModel).FullName}");
             }
         }
 
         public class Validate_Type : ValidationInvokerFixture
         {
-            public Validate_Type()
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_Throw_When_Invoke_Validator(bool useStrongTyping)
             {
-                _validationInvoker.Register<DummyModel, DummyModelValidator>();
-            }
+                RegisterValidator(useStrongTyping);
 
-            [Fact]
-            public void Should_Throw_When_Invoke_Validator()
-            {
                 var model = new DummyModel();
 
                 var result = _validationInvoker.Validate(model);
@@ -133,18 +196,35 @@ namespace AllOverIt.Validation.Tests
 
                 expected.Should().BeEquivalentTo(result.Errors, options => options.ExcludingMissingMembers());
             }
+
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_Validate_Using_Custom_Constructor(bool shouldValidate)
+            {
+                var limit = Create<int>();
+                _validationInvoker.Register(typeof(DummyModel2), typeof(DummyModel2Validator), () => new object[] { limit });
+
+                var model = new DummyModel2
+                {
+                    ValueOne = shouldValidate ? limit - 1 : limit + 1
+                };
+
+                var result = _validationInvoker.Validate(model);
+
+                result.IsValid.Should().Be(shouldValidate);
+            }
         }
 
         public class Validate_Type_Context : ValidationInvokerFixture
         {
-            public Validate_Type_Context()
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_Throw_When_Invoke_Validator(bool useStrongTyping)
             {
-                _validationInvoker.Register<DummyModel, DummyModelValidator>();
-            }
+                RegisterValidator(useStrongTyping);
 
-            [Fact]
-            public void Should_Throw_When_Invoke_Validator()
-            {
                 var model = Create<DummyModel>();
                 var comparisonContext = !model.ValueFour;
 
@@ -169,14 +249,13 @@ namespace AllOverIt.Validation.Tests
 
         public class AssertValidation_Type : ValidationInvokerFixture
         {
-            public AssertValidation_Type()
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_Throw_When_Invoke_Validator(bool useStrongTyping)
             {
-                _validationInvoker.Register<DummyModel, DummyModelValidator>();
-            }
+                RegisterValidator(useStrongTyping);
 
-            [Fact]
-            public void Should_Throw_When_Invoke_Validator()
-            {
                 var model = new DummyModel();
 
                 Invoking(() =>
@@ -191,9 +270,13 @@ namespace AllOverIt.Validation.Tests
                               " -- ValueThree: 'ValueThree' should not be empty. Severity: Error");
             }
 
-            [Fact]
-            public void Should_Not_Throw_When_Invoke_Validator()
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_Not_Throw_When_Invoke_Validator(bool useStrongTyping)
             {
+                RegisterValidator(useStrongTyping);
+
                 var model = Create<DummyModel>();
 
                 Invoking(() =>
@@ -207,14 +290,13 @@ namespace AllOverIt.Validation.Tests
 
         public class AssertValidation_Type_Context : ValidationInvokerFixture
         {
-            public AssertValidation_Type_Context()
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_Throw_When_Invoke_Validator(bool useStrongTyping)
             {
-                _validationInvoker.Register<DummyModel, DummyModelValidator>();
-            }
+                RegisterValidator(useStrongTyping);
 
-            [Fact]
-            public void Should_Throw_When_Invoke_Validator()
-            {
                 var model = new DummyModel();
                 var context = Create<bool>();
                 model.ValueFour = !context;
@@ -232,9 +314,13 @@ namespace AllOverIt.Validation.Tests
                             $" -- ValueFour: 'ValueFour' has a value of {model.ValueFour} when expecting {context}. Severity: Error");
             }
 
-            [Fact]
-            public void Should_Not_Throw_When_Invoke_Validator()
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_Not_Throw_When_Invoke_Validator(bool useStrongTyping)
             {
+                RegisterValidator(useStrongTyping);
+
                 var model = Create<DummyModel>();
                 var context = Create<bool>();
                 model.ValueFour = context;
@@ -245,6 +331,18 @@ namespace AllOverIt.Validation.Tests
                 })
                .Should()
                .NotThrow();
+            }
+        }
+
+        private void RegisterValidator(bool useStrongTyping)
+        {
+            if (useStrongTyping)
+            {
+                _validationInvoker.Register<DummyModel, DummyModelValidator>();
+            }
+            else
+            {
+                _validationInvoker.Register(typeof(DummyModel), typeof(DummyModelValidator));
             }
         }
     }
