@@ -25,7 +25,7 @@ namespace AllOverIt.Validation
 
         /// <inheritdoc />
         /// <remarks>The validator must implement <see cref="ValidatorBase{TType}"/> where TType is the model type.</remarks>
-        public IValidationRegistry Register(Type modelType, Type validatorType, Func<object[]> validatorArgsResolver = default)
+        public IValidationRegistry Register(Type modelType, Type validatorType)
         {
             if (!validatorType.IsDerivedFrom(typeof(ValidatorBase<>)))
             {
@@ -39,18 +39,7 @@ namespace AllOverIt.Validation
                 throw new ValidationRegistryException($"The {validatorType.GetFriendlyName()} type cannot validate a {modelType} type.");
             }
 
-            _validatorCache.Add(modelType, new Lazy<IValidator>(() =>
-            {
-                if (validatorArgsResolver != null)
-                {
-                    var args = validatorArgsResolver.Invoke();
-                    return (IValidator) Activator.CreateInstance(validatorType, args);
-                }
-                else
-                {
-                    return (IValidator) Activator.CreateInstance(validatorType);
-                }
-            }));
+            _validatorCache.Add(modelType, new Lazy<IValidator>(() => (IValidator) Activator.CreateInstance(validatorType)));
 
             return this;
         }

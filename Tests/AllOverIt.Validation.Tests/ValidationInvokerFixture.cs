@@ -54,24 +54,6 @@ namespace AllOverIt.Validation.Tests
             }
         }
 
-        private class DummyModel2
-        {
-            public int ValueOne { get; set; }
-        }
-
-        private class DummyModel2Validator : ValidatorBase<DummyModel2>
-        {
-            static DummyModel2Validator()
-            {
-                DisablePropertyNameSplitting();
-            }
-
-            public DummyModel2Validator(int value)
-            {
-                RuleFor(model => model.ValueOne).LessThan(value);
-            }
-        }
-
         private readonly ValidationInvoker _validationInvoker;
 
         public ValidationInvokerFixture()
@@ -195,24 +177,6 @@ namespace AllOverIt.Validation.Tests
                 };
 
                 expected.Should().BeEquivalentTo(result.Errors, options => options.ExcludingMissingMembers());
-            }
-
-            [Theory]
-            [InlineData(false)]
-            [InlineData(true)]
-            public void Should_Validate_Using_Custom_Constructor(bool shouldValidate)
-            {
-                var limit = Create<int>();
-                _validationInvoker.Register(typeof(DummyModel2), typeof(DummyModel2Validator), () => new object[] { limit });
-
-                var model = new DummyModel2
-                {
-                    ValueOne = shouldValidate ? limit - 1 : limit + 1
-                };
-
-                var result = _validationInvoker.Validate(model);
-
-                result.IsValid.Should().Be(shouldValidate);
             }
         }
 

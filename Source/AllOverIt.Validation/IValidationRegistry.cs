@@ -14,9 +14,7 @@ namespace AllOverIt.Validation
         /// <summary>Registers a model type with an associated validator type.</summary>
         /// <param name="modelType">The model type.</param>
         /// <param name="validatorType">The validator type.</param>
-        /// <param name="validatorArgsResolver">When used, this provides the arguments to be passed to the validator constructor
-        /// when it is instantiated. When not used it is assumed the default constructor will be used.</param>
         /// <returns>The registry, allowing for a fluent syntax.</returns>
-        IValidationRegistry Register(Type modelType, Type validatorType, Func<object[]> validatorArgsResolver = default);
+        IValidationRegistry Register(Type modelType, Type validatorType);
     }
 }

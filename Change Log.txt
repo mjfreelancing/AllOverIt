@@ -1,6 +1,6 @@
 ======================================================================================================================
 
-## ### ####
+24 Apr 2022
 Version 5.2.0
 ======================================================================================================================
 AllOverIt.Serialization.NewtonsoftJson
@@ -12,6 +12,9 @@ AllOverIt.Aws.Cdk.AppSync
 
 AllOverIt.DependencyInjection
   * Implementation candidates in the registrar are now cached
+
+AllOverIt.Validation
+  * Added support to register validators based on their runtime type.
 
 
 23 Apr 2022
