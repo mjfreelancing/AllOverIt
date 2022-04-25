@@ -51,7 +51,9 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
 
                 if (!schemaTypeAttribute.ExcludeNamespacePrefix.IsNullOrEmpty())
                 {
-                    var namePrefix = type.Namespace ?? string.Empty
+                    var typeNamespace = type.Namespace ?? string.Empty;
+
+                    var namePrefix = typeNamespace
                         .Replace(schemaTypeAttribute.ExcludeNamespacePrefix, string.Empty)
                         .Replace(".", string.Empty);
 
