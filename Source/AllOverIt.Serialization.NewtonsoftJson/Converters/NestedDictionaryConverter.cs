@@ -14,6 +14,8 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Converters
 
         private readonly NestedDictionaryConverterOptions _options;
 
+        /// <summary>Constructor.</summary>
+        /// <param name="options">Options that control how the converter behaves.</param>
         public NestedDictionaryConverter(NestedDictionaryConverterOptions options = default)
         {
             _options = options ?? new NestedDictionaryConverterOptions

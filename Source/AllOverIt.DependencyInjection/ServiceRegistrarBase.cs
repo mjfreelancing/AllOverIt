@@ -15,13 +15,14 @@ namespace AllOverIt.DependencyInjection
 
         private IReadOnlyCollection<Type> ImplementationCandidates => _implementationCandidates.Value;
 
+        /// <summary>Constructor.</summary>
         public ServiceRegistrarBase()
         {
             _implementationCandidates = new Lazy<IReadOnlyCollection<Type>>(() =>
             {
                 return GetType().Assembly
                     .GetTypes()
-                    .Where(type => type.IsClass && !type.IsGenericType && !type.IsNested && !type.IsAbstract && !type.IsInterface)
+                    .Where(type => type.IsClass && !type.IsGenericType && !type.IsNested && !type.IsAbstract)
                     .AsReadOnlyCollection();
             });
         }
