@@ -18,24 +18,11 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
                 : type;
         }
 
-        public static GraphqlSchemaTypeDescriptor GetGraphqlTypeDescriptor(this SystemType type)
+        private static bool TryGetSchemaAttribute<TType>(TypeInfo typeInfo, out SchemaTypeBaseAttribute attribute)
+            where TType : SchemaTypeBaseAttribute
         {
-            var elementType = type.GetElementTypeIfArray();
-            var typeInfo = elementType!.GetTypeInfo();
-
-            // Is the type an enum
-            if (type.IsEnum)
-            {
-                var attribute = type.GetCustomAttribute<SchemaEnumAttribute>();
-
-                return attribute == null
-                    ? new GraphqlSchemaTypeDescriptor(elementType, GraphqlSchemaType.Enum, type.Name)
-                    : new GraphqlSchemaTypeDescriptor(elementType, GraphqlSchemaType.Enum, attribute.Name);
-            }
-
-            // SchemaTypeAttribute indicates if this is a scalar, interface, or input type (cannot be on an array)
             var schemaTypeAttributes = typeInfo
-                .GetCustomAttributes<SchemaTypeBaseAttribute>(true)
+                .GetCustomAttributes<TType>(true)
                 .AsReadOnlyCollection();
 
             if (schemaTypeAttributes.Any())
@@ -45,26 +32,36 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
                     throw new SchemaException($"'{typeInfo.Name}' contains more than one schema type attribute");
                 }
 
-                var schemaTypeAttribute = schemaTypeAttributes.Single();
+                attribute = schemaTypeAttributes.Single();
+                return true;
+            }
 
-                string schemaTypeName;
+            attribute = default;
+            return false;
+        }
 
-                if (!schemaTypeAttribute.ExcludeNamespacePrefix.IsNullOrEmpty())
+        public static GraphqlSchemaTypeDescriptor GetGraphqlTypeDescriptor(this SystemType type)
+        {
+            var elementType = type.GetElementTypeIfArray();
+            var typeInfo = elementType!.GetTypeInfo();
+
+            // If the type is an enum explicitly look for the lack of an attribute
+            if (type.IsEnum && !TryGetSchemaAttribute<SchemaTypeBaseAttribute>(typeInfo, out _))
+            {
+                return new GraphqlSchemaTypeDescriptor(elementType, GraphqlSchemaType.Enum, type.Name);
+            }
+
+            // SchemaTypeAttribute indicates if this is a scalar, enum, interface, or input type (cannot be on an array)
+            if (TryGetSchemaAttribute<SchemaTypeBaseAttribute>(typeInfo, out var schemaTypeAttribute))
+            {
+                var schemaTypeName = GetNamespaceBasedName(type.Namespace, schemaTypeAttribute.ExcludeNamespacePrefix, schemaTypeAttribute.Name);
+
+                if (schemaTypeName.IsNullOrEmpty())
                 {
-                    var typeNamespace = type.Namespace ?? string.Empty;
-
-                    var namePrefix = typeNamespace
-                        .Replace(schemaTypeAttribute.ExcludeNamespacePrefix, string.Empty)
-                        .Replace(".", string.Empty);
-
-                    schemaTypeName = $"{namePrefix}{schemaTypeAttribute.Name ?? string.Empty}";
-                }
-                else
-                {
-                    schemaTypeName = schemaTypeAttribute.Name;
+                    schemaTypeName = typeInfo.Name;
                 }
 
-                return new GraphqlSchemaTypeDescriptor(elementType, schemaTypeAttribute.GraphqlSchemaType, schemaTypeName ?? typeInfo.Name);
+                return new GraphqlSchemaTypeDescriptor(elementType, schemaTypeAttribute.GraphqlSchemaType, schemaTypeName);
             }
 
             // not expecting class types to be used, but check anyway
@@ -85,6 +82,23 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
                 .AsReadOnlyCollection();
 
             return attributes.GetAuthDirectivesOrDefault();
+        }
+        
+        private static string GetNamespaceBasedName(string typeNamespace, string excludeNamespacePrefix, string name)
+        {
+            typeNamespace ??= string.Empty;
+            excludeNamespacePrefix ??= string.Empty;
+
+            if (excludeNamespacePrefix.IsNullOrEmpty())
+            {
+                return name;
+            }
+
+            var namePrefix = typeNamespace
+                .Replace(excludeNamespacePrefix, string.Empty)
+                .Replace(".", string.Empty);
+
+            return $"{namePrefix}{name ?? string.Empty}";
         }
     }
 }
