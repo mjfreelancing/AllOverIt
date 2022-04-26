@@ -3,6 +3,10 @@
 26 Apr 2022
 Version 5.4.0
 ======================================================================================================================
+AllOverIt
+  * Added support to concat dictionaries
+
+
 AllOverIt.Aws.Cdk.AppSync
   * Updated SchemaScalarAttribute to support namespace-based name creation
   * Added support to SchemaEnumAttribute to support namespace-based name creation

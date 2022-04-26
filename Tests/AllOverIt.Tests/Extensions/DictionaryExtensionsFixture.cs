@@ -77,5 +77,31 @@ namespace AllOverIt.Tests.Extensions
                 actual.Should().Be(_value);
             }
         }
+
+        public class Concat : DictionaryExtensionsFixture
+        {
+            [Fact]
+            public void Should_Merge_Two_Dictionaries()
+            {
+                var first = Create<Dictionary<string, string>>();
+                var second = Create<Dictionary<string, string>>();
+
+                var expected = new Dictionary<string, string>();
+
+                foreach (var kvp in first)
+                {
+                    expected.Add(kvp.Key, kvp.Value);
+                }
+
+                foreach (var kvp in second)
+                {
+                    expected.Add(kvp.Key, kvp.Value);
+                }
+
+                var actual = first.Concat(second);
+
+                actual.Should().BeEquivalentTo(expected);
+            }
+        }
     }
 }
