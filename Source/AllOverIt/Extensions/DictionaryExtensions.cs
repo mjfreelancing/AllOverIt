@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AllOverIt.Extensions
 {
@@ -36,6 +37,19 @@ namespace AllOverIt.Extensions
             dictionary.Add(key, value);
 
             return value;
+        }
+
+        /// <summary>Concatenates two dictionaries.</summary>
+        /// <typeparam name="TKey">The dictionary key type.</typeparam>
+        /// <typeparam name="TValue">The dictionary value type.</typeparam>
+        /// <param name="first">The first dictionary.</param>
+        /// <param name="second">The second dictionary.</param>
+        /// <returns>A new dictionary that contains elements from two source dictionaries.</returns>
+        public static IDictionary<TKey, TValue> Concat<TKey, TValue>(this IDictionary<TKey, TValue> first, IDictionary<TKey, TValue> second)
+        {
+            return Enumerable
+                .Concat(first, second)
+                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
     }
 }
