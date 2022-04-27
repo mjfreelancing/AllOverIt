@@ -54,7 +54,6 @@ namespace AllOverIt.Validation.Tests
             }
         }
 
-
         private class DummyModelValidator2 : ValidatorBase<DummyModel>
         {
             public DummyModelValidator2(int dummy)
@@ -69,7 +68,49 @@ namespace AllOverIt.Validation.Tests
             _validationInvoker = new ValidationInvoker();
         }
 
-        public class Register : ValidationInvokerFixture
+        public class ContainsModelRegistration_Type : ValidationInvokerFixture
+        {
+            [Fact]
+            public void Should_Return_True_For_Registered_Model()
+            {
+                _validationInvoker.Register<DummyModel, DummyModelValidator>();
+
+                _validationInvoker.ContainsModelRegistration(typeof(DummyModel))
+                    .Should()
+                    .BeTrue();
+            }
+
+            [Fact]
+            public void Should_Return_False_For_Registered_Model()
+            {
+                _validationInvoker.ContainsModelRegistration(typeof(DummyModel))
+                    .Should()
+                    .BeFalse();
+            }
+        }
+
+        public class ContainsModelRegistration_Strongly_Type : ValidationInvokerFixture
+        {
+            [Fact]
+            public void Should_Return_True_For_Registered_Model()
+            {
+                _validationInvoker.Register<DummyModel, DummyModelValidator>();
+
+                _validationInvoker.ContainsModelRegistration<DummyModel>()
+                    .Should()
+                    .BeTrue();
+            }
+
+            [Fact]
+            public void Should_Return_False_For_Registered_Model()
+            {
+                _validationInvoker.ContainsModelRegistration<DummyModel>()
+                    .Should()
+                    .BeFalse();
+            }
+        }
+
+        public class Register_Type : ValidationInvokerFixture
         {
             [Fact]
             public void Should_Throw_When_Validator_Not_Registered()

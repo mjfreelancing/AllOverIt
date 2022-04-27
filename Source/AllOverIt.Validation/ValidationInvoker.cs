@@ -24,6 +24,18 @@ namespace AllOverIt.Validation
         }
 
         /// <inheritdoc />
+        public bool ContainsModelRegistration(Type modelType)
+        {
+            return _validatorCache.ContainsKey(modelType);
+        }
+
+        /// <inheritdoc />
+        public bool ContainsModelRegistration<TType>()
+        {
+            return ContainsModelRegistration(typeof(TType));
+        }
+
+        /// <inheritdoc />
         /// <remarks>The validator must implement <see cref="ValidatorBase{TType}"/> where TType is the model type.</remarks>
         public IValidationRegistry Register(Type modelType, Type validatorType)
         {
