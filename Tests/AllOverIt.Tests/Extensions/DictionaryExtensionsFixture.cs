@@ -1,8 +1,10 @@
-﻿using AllOverIt.Extensions;
+﻿using System;
+using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using FluentAssertions;
 using System.Collections.Generic;
 using Xunit;
+using System.Linq;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -101,6 +103,20 @@ namespace AllOverIt.Tests.Extensions
                 var actual = first.Concat(second);
 
                 actual.Should().BeEquivalentTo(expected);
+            }
+
+            [Fact]
+            public void Should_Throw_When_Duplicate_Key()
+            {
+                var values = Create<Dictionary<string, string>>();
+
+                Invoking(() =>
+                    {
+                        values.Concat(values);
+                    })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithMessage($"An item with the same key has already been added. Key: {values.First().Key}");
             }
         }
     }
