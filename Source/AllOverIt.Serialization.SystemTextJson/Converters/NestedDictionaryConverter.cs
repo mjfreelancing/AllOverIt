@@ -90,7 +90,7 @@ namespace AllOverIt.Serialization.SystemTextJson.Converters
             return list;
         }
 
-        private void WriteValue(Utf8JsonWriter writer, string key, object objectValue)
+        private static void WriteValue(Utf8JsonWriter writer, string key, object objectValue)
         {
             if (key != null)
             {

@@ -17,7 +17,7 @@ namespace AllOverIt.Serialization.JsonHelper
         /// <summary>Constructor.</summary>
         /// <param name="value">An object, typically anonymous, that is to be queried for property values.</param>
         /// <param name="jsonSerializer">The serializer to use for processing.</param>
-        public JsonHelperBase(object value, IJsonSerializer jsonSerializer)
+        protected JsonHelperBase(object value, IJsonSerializer jsonSerializer)
             : this(jsonSerializer)
         {
             _ = value.WhenNotNull(nameof(value));
@@ -28,7 +28,7 @@ namespace AllOverIt.Serialization.JsonHelper
         /// <summary>Constructor.</summary>
         /// <param name="value">A JSON string that is to be queried for property values.</param>
         /// <param name="jsonSerializer">The serializer to use for processing.</param>
-        public JsonHelperBase(string value, IJsonSerializer jsonSerializer)
+        protected JsonHelperBase(string value, IJsonSerializer jsonSerializer)
             : this(jsonSerializer)
         {
             _ = value.WhenNotNullOrEmpty(nameof(value));
