@@ -5,6 +5,8 @@ using FluentValidation;
 using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace AllOverIt.Validation
 {
@@ -70,6 +72,14 @@ namespace AllOverIt.Validation
         }
 
         /// <inheritdoc />
+        public Task<ValidationResult> ValidateAsync<TType>(TType instance, CancellationToken cancellationToken = default)
+        {
+            var validator = GetValidator<TType>();
+
+            return validator.ValidateAsync(instance, cancellationToken);
+        }
+
+        /// <inheritdoc />
         public ValidationResult Validate<TType, TContext>(TType instance, TContext context)
         {
             var validator = GetValidator<TType>();
@@ -78,12 +88,27 @@ namespace AllOverIt.Validation
         }
 
         /// <inheritdoc />
+        public Task<ValidationResult> ValidateAsync<TType, TContext>(TType instance, TContext context, CancellationToken cancellationToken = default)
+        {
+            var validator = GetValidator<TType>();
+
+            return validator.ValidateAsync(instance, context, cancellationToken);
+        }
+
+        /// <inheritdoc />
         public void AssertValidation<TType>(TType instance)
         {
             var validator = GetValidator<TType>();
 
-            // Throws a ValidationException if any rules are violated.
             validator.ValidateAndThrow(instance);
+        }
+
+        /// <inheritdoc />
+        public Task AssertValidationAsync<TType>(TType instance, CancellationToken cancellationToken = default)
+        {
+            var validator = GetValidator<TType>();
+
+            return validator.ValidateAndThrowAsync(instance, cancellationToken);
         }
 
         /// <inheritdoc />
@@ -91,13 +116,22 @@ namespace AllOverIt.Validation
         {
             var validator = GetValidator<TType>();
 
-            // Throws a ValidationException if any rules are violated.
             validator.ValidateAndThrow(instance, context);
+        }
+
+        /// <inheritdoc />
+        public Task AssertValidationAsync<TType, TContext>(TType instance, TContext context, CancellationToken cancellationToken = default)
+        {
+            var validator = GetValidator<TType>();
+
+            return validator.ValidateAndThrowAsync(instance, context, cancellationToken);
         }
 
         private ValidatorBase<TType> GetValidator<TType>()
         {
-            if (!_validatorCache.TryGetValue(typeof(TType), out var resolver))
+            var modelType = typeof(TType);
+
+            if (!_validatorCache.TryGetValue(modelType, out var resolver))
             {
                 ThrowValidatorNotRegistered<TType>();
             }

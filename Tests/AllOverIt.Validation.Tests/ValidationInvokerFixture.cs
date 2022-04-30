@@ -5,6 +5,7 @@ using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace AllOverIt.Validation.Tests
@@ -241,6 +242,50 @@ namespace AllOverIt.Validation.Tests
             }
         }
 
+        public class ValidateAsync_Type : ValidationInvokerFixture
+        {
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public async Task Should_Throw_When_Invoke_Validator(bool useStrongTyping)
+            {
+                RegisterValidator(useStrongTyping);
+
+                var model = new DummyModel();
+
+                var result = await _validationInvoker.ValidateAsync(model);
+
+                result.IsValid.Should().BeFalse();
+
+                var expected = new[]
+                {
+                    new
+                    {
+                        PropertyName = nameof(DummyModel.ValueOne),
+                        ErrorCode = nameof(ValidationErrorCode.Required),
+                        AttemptedValue = (object) model.ValueOne,
+                        ErrorMessage = $"'{nameof(DummyModel.ValueOne)}' requires a valid value."
+                    },
+                    new
+                    {
+                        PropertyName = nameof(DummyModel.ValueTwo),
+                        ErrorCode = nameof(ValidationErrorCode.NotEmpty),
+                        AttemptedValue = (object) model.ValueTwo,
+                        ErrorMessage = $"'{nameof(DummyModel.ValueTwo)}' should not be empty."
+                    },
+                    new
+                    {
+                        PropertyName = nameof(DummyModel.ValueThree),
+                        ErrorCode = nameof(ValidationErrorCode.NotEmpty),
+                        AttemptedValue = (object) model.ValueThree,
+                        ErrorMessage = $"'{nameof(DummyModel.ValueThree)}' should not be empty."
+                    }
+                };
+
+                expected.Should().BeEquivalentTo(result.Errors, options => options.ExcludingMissingMembers());
+            }
+        }
+
         public class Validate_Type_Context : ValidationInvokerFixture
         {
             [Theory]
@@ -254,6 +299,37 @@ namespace AllOverIt.Validation.Tests
                 var comparisonContext = !model.ValueFour;
 
                 var result = _validationInvoker.Validate(model, comparisonContext);
+
+                result.IsValid.Should().BeFalse();
+
+                var expected = new[]
+                {
+                    new
+                    {
+                        PropertyName = nameof(DummyModel.ValueFour),
+                        AttemptedValue = (object) comparisonContext,
+                        ErrorMessage =
+                            $"'ValueFour' has a value of {model.ValueFour} when expecting {comparisonContext}."
+                    }
+                };
+
+                expected.Should().BeEquivalentTo(result.Errors, options => options.ExcludingMissingMembers());
+            }
+        }
+
+        public class ValidateAsync_Type_Context : ValidationInvokerFixture
+        {
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public async Task Should_Throw_When_Invoke_Validator(bool useStrongTyping)
+            {
+                RegisterValidator(useStrongTyping);
+
+                var model = Create<DummyModel>();
+                var comparisonContext = !model.ValueFour;
+
+                var result = await _validationInvoker.ValidateAsync(model, comparisonContext);
 
                 result.IsValid.Should().BeFalse();
 
@@ -313,6 +389,47 @@ namespace AllOverIt.Validation.Tests
             }
         }
 
+        public class AssertValidationAsync_Type : ValidationInvokerFixture
+        {
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public async Task Should_Throw_When_Invoke_Validator(bool useStrongTyping)
+            {
+                RegisterValidator(useStrongTyping);
+
+                var model = new DummyModel();
+
+                await Invoking(async () =>
+                    {
+                        await _validationInvoker.AssertValidationAsync(model);
+                    })
+                    .Should()
+                    .ThrowAsync<ValidationException>()
+                    .WithMessage($"Validation failed: {Environment.NewLine}" +
+                                 $" -- ValueOne: 'ValueOne' requires a valid value. Severity: Error{Environment.NewLine}" +
+                                 $" -- ValueTwo: 'ValueTwo' should not be empty. Severity: Error{Environment.NewLine}" +
+                                 " -- ValueThree: 'ValueThree' should not be empty. Severity: Error");
+            }
+
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public async Task Should_Not_Throw_When_Invoke_Validator(bool useStrongTyping)
+            {
+                RegisterValidator(useStrongTyping);
+
+                var model = Create<DummyModel>();
+
+                await Invoking(async () =>
+                    {
+                        await _validationInvoker.AssertValidationAsync(model);
+                    })
+                    .Should()
+                    .NotThrowAsync();
+            }
+        }
+
         public class AssertValidation_Type_Context : ValidationInvokerFixture
         {
             [Theory]
@@ -356,6 +473,52 @@ namespace AllOverIt.Validation.Tests
                 })
                .Should()
                .NotThrow();
+            }
+        }
+
+        public class AssertValidationAsync_Type_Context : ValidationInvokerFixture
+        {
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public async Task Should_Throw_When_Invoke_Validator(bool useStrongTyping)
+            {
+                RegisterValidator(useStrongTyping);
+
+                var model = new DummyModel();
+                var context = Create<bool>();
+                model.ValueFour = !context;
+
+                await Invoking(async () =>
+                    {
+                        await _validationInvoker.AssertValidationAsync(model, context);
+                    })
+                    .Should()
+                    .ThrowAsync<ValidationException>()
+                    .WithMessage($"Validation failed: {Environment.NewLine}" +
+                                 $" -- ValueOne: 'ValueOne' requires a valid value. Severity: Error{Environment.NewLine}" +
+                                 $" -- ValueTwo: 'ValueTwo' should not be empty. Severity: Error{Environment.NewLine}" +
+                                 $" -- ValueThree: 'ValueThree' should not be empty. Severity: Error{Environment.NewLine}" +
+                                 $" -- ValueFour: 'ValueFour' has a value of {model.ValueFour} when expecting {context}. Severity: Error");
+            }
+
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public async Task Should_Not_Throw_When_Invoke_Validator(bool useStrongTyping)
+            {
+                RegisterValidator(useStrongTyping);
+
+                var model = Create<DummyModel>();
+                var context = Create<bool>();
+                model.ValueFour = context;
+
+                await Invoking(async () =>
+                    {
+                        await _validationInvoker.AssertValidationAsync(model, context);
+                    })
+                    .Should()
+                    .NotThrowAsync();
             }
         }
 

@@ -1,4 +1,6 @@
-﻿using AllOverIt.Validation.Extensions;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using AllOverIt.Validation.Extensions;
 using FluentValidation;
 using FluentValidation.Results;
 
@@ -26,6 +28,20 @@ namespace AllOverIt.Validation
             validationContext.SetContextData(context);
 
             return Validate(validationContext);
+        }
+
+        /// <summary>Validates a model instance. Additional context data is associated with the request that
+        /// can be utilized in the validation rules.</summary>
+        /// <typeparam name="TContext"></typeparam>
+        /// <param name="instance">The model instance.</param>
+        /// <param name="context">The context type.</param>
+        /// <returns>The validation result.</returns>
+        public Task<ValidationResult> ValidateAsync<TContext>(TType instance, TContext context, CancellationToken cancellationToken)
+        {
+            var validationContext = new ValidationContext<TType>(instance);
+            validationContext.SetContextData(context);
+
+            return ValidateAsync(validationContext, cancellationToken);
         }
     }
 }
