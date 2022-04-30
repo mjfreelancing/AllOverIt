@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AllOverIt.Validation;
 using EnrichedEnumModelBinding.Enums;
 using EnrichedEnumModelBinding.Requests;
 
@@ -18,8 +19,8 @@ namespace EnrichedEnumModelBinding.Controllers
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        // Sample requests: http://localhost:12365/weatherforecast?period=1
-        //                : http://localhost:12365/weatherforecast?period=nextweek
+        // Sample requests: http://localhost:5000/weatherforecast?period=1
+        //                : http://localhost:5000/weatherforecast?period=nextweek
         [HttpGet]
         public WeatherReport Get([FromQuery] WeatherRequest request)
         {
@@ -27,14 +28,13 @@ namespace EnrichedEnumModelBinding.Controllers
         }
 
         // Tests model binding on query string of ForecastPeriodArray which is a ValueArray<ForecastPeriod>, where ForecastPeriod is an EnrichedEnum
-        // Sample requests: http://localhost:12365/weatherforecast/multi?periods=today,tomorrow,nextweek
+        // Sample requests: http://localhost:5000/weatherforecast/multi?periods=today,tomorrow,nextweek
         [HttpGet("multi")]
-        public IReadOnlyCollection<WeatherReport> GetMulti([FromQuery] WeatherRequestMulti request)
+        public IReadOnlyCollection<WeatherReport> GetMulti([FromQuery] WeatherRequestMulti request, [FromServices] IValidationInvoker validationInvoker)
         {
-            var periodArray = request.Periods ?? new ForecastPeriodArray();
-            var periods = periodArray.Values ?? new List<ForecastPeriod>();
+            validationInvoker.AssertValidation(request);
 
-            return periods.SelectAsReadOnlyCollection(GetWeatherReport);
+            return request.Periods.Values.SelectAsReadOnlyCollection(GetWeatherReport);
         }
 
         // Test this by sending a Postman request with a body like this:

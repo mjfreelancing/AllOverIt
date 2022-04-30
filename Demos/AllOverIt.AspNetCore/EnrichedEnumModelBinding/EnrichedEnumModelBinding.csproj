@@ -6,12 +6,14 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="6.4.1" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.23" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\..\..\Source\AllOverIt.AspNetCore\AllOverIt.AspNetCore.csproj" />
         <ProjectReference Include="..\..\..\Source\AllOverIt.Serialization.NewtonsoftJson\AllOverIt.Serialization.NewtonsoftJson.csproj" />
+        <ProjectReference Include="..\..\..\Source\AllOverIt.Validation\AllOverIt.Validation.csproj" />
     </ItemGroup>
 
 

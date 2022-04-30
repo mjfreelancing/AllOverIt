@@ -1,5 +1,8 @@
 using AllOverIt.AspNetCore.Extensions;
 using AllOverIt.Serialization.NewtonsoftJson.Converters;
+using AllOverIt.Validation;
+using EnrichedEnumModelBinding.Requests;
+using EnrichedEnumModelBinding.Validators;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -50,6 +53,10 @@ namespace EnrichedEnumModelBinding
                 //     // The controller uses the local time but, for testing, this converter changes the kind so it is treated as UTC.
                 //     options.JsonSerializerOptions.Converters.Add(new DateTimeAsUtcConverter());
                 // });
+
+            var validationInvoker = new ValidationInvoker();
+            validationInvoker.Register<WeatherRequestMulti, WeatherRequestMultiValidator>();
+            services.AddSingleton<IValidationInvoker>(validationInvoker);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

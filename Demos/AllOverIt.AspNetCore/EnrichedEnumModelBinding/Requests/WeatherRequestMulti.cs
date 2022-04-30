@@ -1,5 +1,4 @@
 ﻿using EnrichedEnumModelBinding.Enums;
-using EnrichedEnumModelBinding.Models;
 
 namespace EnrichedEnumModelBinding.Requests
 {
