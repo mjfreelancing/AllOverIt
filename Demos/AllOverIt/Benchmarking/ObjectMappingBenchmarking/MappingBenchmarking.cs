@@ -18,14 +18,11 @@ namespace ObjectMappingBenchmarking
     */
 
     [MemoryDiagnoser]
-    [SimpleJob(RuntimeMoniker.NetCoreApp31)]
-    [SimpleJob(RuntimeMoniker.Net50)]
+    //[SimpleJob(RuntimeMoniker.NetCoreApp31)]
+    //[SimpleJob(RuntimeMoniker.Net50)]
     [SimpleJob(RuntimeMoniker.Net60)]
     public class MappingTests
     {
-        [Params(10, 100)]
-        public int LoopCount { get; set; }
-
 #if AUTOMAPPER
         private readonly IMapper _autoMapper;
 #endif
@@ -64,38 +61,26 @@ namespace ObjectMappingBenchmarking
         [Benchmark]
         public void AutoMapper_SimpleSource_SimpleTarget()
         {
-            for (var i = 0; i < LoopCount; i++)
-            {
-                _ = _autoMapper.Map<SimpleTarget>(_simpleSource);
-            }
+            _ = _autoMapper.Map<SimpleTarget>(_simpleSource);
         }
 #endif
 
         [Benchmark]
         public void StaticMethod_SimpleSource_Create_SimpleTarget()
         {
-            for (var i = 0; i < LoopCount; i++)
-            {
-                _ = _simpleSource.MapTo<SimpleTarget>();
-            }
+            _ = _simpleSource.MapTo<SimpleTarget>();
         }
 
         [Benchmark]
         public void ObjectMapper_SimpleSource_Create_SimpleTarget()
         {
-            for (var i = 0; i < LoopCount; i++)
-            {
-                _ = _objectMapper.Map<SimpleTarget>(_simpleSource);
-            }
+            _ = _objectMapper.Map<SimpleTarget>(_simpleSource);
         }
 
         [Benchmark]
         public void ObjectMapper_SimpleSource_CopyTo_SimpleTarget()
         {
-            for (var i = 0; i < LoopCount; i++)
-            {
-                _ = _objectMapper.Map(_simpleSource, _simpleTarget);
-            }
+            _ = _objectMapper.Map(_simpleSource, _simpleTarget);
         }
     }
 }
