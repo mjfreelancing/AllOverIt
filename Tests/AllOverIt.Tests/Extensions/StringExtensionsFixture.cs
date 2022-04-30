@@ -266,6 +266,36 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
+        public class IsNotNullOrEmpty : StringExtensionsFixture
+        {
+            private sealed class EmptyStrings : IEnumerable<object[]>
+            {
+                public IEnumerator<object[]> GetEnumerator()
+                {
+                    yield return new object[] { null };
+                    yield return new object[] { string.Empty };
+                    yield return new object[] { "   " };
+                }
+
+                IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+            }
+
+            [Fact]
+            public void Should_Return_True()
+            {
+                var actual = Create<string>();
+
+                actual.IsNotNullOrEmpty().Should().BeTrue();
+            }
+
+            [Theory]
+            [ClassData(typeof(EmptyStrings))]
+            public void Should_Return_False(string actual)
+            {
+                actual.IsNotNullOrEmpty().Should().BeFalse();
+            }
+        }
+
         public class ToBase64 : StringExtensionsFixture
         {
             [Fact]
