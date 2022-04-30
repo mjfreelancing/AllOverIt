@@ -17,12 +17,7 @@ namespace AllOverIt.Serialization.JsonHelper
         {
             _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
 
-            if (_element.TryGetValue(propertyName, out value))
-            {
-                return true;
-            }
-
-            return false;
+            return _element.TryGetValue(propertyName, out value);
         }
 
         public object GetValue(string propertyName)

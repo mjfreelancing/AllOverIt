@@ -1,8 +1,26 @@
 ======================================================================================================================
 
+XX XXX 2022
+Version 5.5.0
+======================================================================================================================
+AllOverIt
+  * Added IsNotNullOrEmpty() to string extensions
+
+AllOverIt.Validation
+  * Added ContainsModelRegistration() to IValidationRegistry
+  * Added support for async validation and assertion
+
+AllOverIt.Serialization
+AllOverIt.Serialization.NewtonsoftJson
+AllOverIt.Serialization.SystemTextJson
+  * Improvements to JsonHelper and NestedDictionaryConverter to better handle case-insenstive property querying
+    (NestedDictionaryConverter is now internal)
+
+
 26 Apr 2022
 Version 5.4.1
 ======================================================================================================================
+AllOverIt.Aws.Cdk.AppSync
   * Unsealed SchemaTypeAttribute and SchemaInputAttribute
 
 
@@ -11,7 +29,6 @@ Version 5.4.0
 ======================================================================================================================
 AllOverIt
   * Added support to concat dictionaries
-
 
 AllOverIt.Aws.Cdk.AppSync
   * Updated SchemaScalarAttribute to support namespace-based name creation

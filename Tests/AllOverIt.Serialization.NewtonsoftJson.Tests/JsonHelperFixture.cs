@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
+using AllOverIt.Serialization.JsonHelper;
 using AllOverIt.Serialization.JsonHelper.Exceptions;
 using AllOverIt.Serialization.NewtonsoftJson.Converters;
 using FluentAssertions;
@@ -269,19 +270,27 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
             }
 
             [Theory]
-            [InlineData(true, "Prop1")]
-            [InlineData(true, "Prop7")]
-            [InlineData(true, "Prop8")]
-            [InlineData(true, "Prop9")]
-            [InlineData(false, "Prop1")]
-            [InlineData(false, "Prop7")]
-            [InlineData(false, "Prop8")]
-            [InlineData(false, "Prop9")]
-            public void Should_Get_Value(bool useObject, string propName)
+            [InlineData(true, "Prop1", true)]
+            [InlineData(true, "Prop7", true)]
+            [InlineData(true, "Prop8", true)]
+            [InlineData(true, "Prop9", true)]
+            [InlineData(false, "Prop1", true)]
+            [InlineData(false, "Prop7", true)]
+            [InlineData(false, "Prop8", true)]
+            [InlineData(false, "Prop9", true)]
+            [InlineData(true, "Prop1", false)]
+            [InlineData(true, "Prop7", false)]
+            [InlineData(true, "Prop8", false)]
+            [InlineData(true, "Prop9", false)]
+            [InlineData(false, "Prop1", false)]
+            [InlineData(false, "Prop7", false)]
+            [InlineData(false, "Prop8", false)]
+            [InlineData(false, "Prop9", false)]
+            public void Should_Get_Value(bool useObject, string propName, bool caseSensitive)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                var actual = jsonHelper.TryGetValue(propName, out var value);
+                var actual = jsonHelper.TryGetValue(caseSensitive ? propName : propName.ToLower(), out var value);
 
                 var expected = propName switch
                 {
@@ -363,17 +372,23 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
             }
 
             [Theory]
-            [InlineData(true, "Prop1")]
-            [InlineData(true, "Prop7")]
-            [InlineData(true, "Prop8")]
-            [InlineData(false, "Prop1")]
-            [InlineData(false, "Prop7")]
-            [InlineData(false, "Prop8")]
-            public void Should_Get_Value(bool useObject, string propName)
+            [InlineData(true, "Prop1", true)]
+            [InlineData(true, "Prop7", true)]
+            [InlineData(true, "Prop8", true)]
+            [InlineData(false, "Prop1", true)]
+            [InlineData(false, "Prop7", true)]
+            [InlineData(false, "Prop8", true)]
+            [InlineData(true, "Prop1", false)]
+            [InlineData(true, "Prop7", false)]
+            [InlineData(true, "Prop8", false)]
+            [InlineData(false, "Prop1", false)]
+            [InlineData(false, "Prop7", false)]
+            [InlineData(false, "Prop8", false)]
+            public void Should_Get_Value(bool useObject, string propName, bool caseSensitive)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                var actual = jsonHelper.GetValue(propName);
+                var actual = jsonHelper.GetValue(caseSensitive ? propName : propName.ToLower());
 
                 var expected = propName switch
                 {
@@ -446,65 +461,95 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
             }
 
             [Theory]
-            [InlineData(true)]
-            [InlineData(false)]
-            public void Should_Get_Guid_As_String(bool useObject)
+            [InlineData(true, true)]
+            [InlineData(false, true)]
+            [InlineData(true, false)]
+            [InlineData(false, false)]
+            public void Should_Get_Guid_As_String(bool useObject, bool caseSensitive)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                var actual = jsonHelper.TryGetValue<string>("Prop1", out var value);
+                string value;
+
+                var actual = caseSensitive
+                    ? jsonHelper.TryGetValue<string>("Prop1", out value)
+                    : jsonHelper.TryGetValue<string>("Prop1", out value);
 
                 actual.Should().BeTrue();
                 value.Should().Be($"{_prop1}");
             }
 
             [Theory]
-            [InlineData(true)]
-            [InlineData(false)]
-            public void Should_Get_Guid_As_Guid(bool useObject)
+            [InlineData(true, true)]
+            [InlineData(false, true)]
+            [InlineData(true, false)]
+            [InlineData(false, false)]
+            public void Should_Get_Guid_As_Guid(bool useObject, bool caseSensitive)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                var actual = jsonHelper.TryGetValue<Guid>("Prop1", out var value);
+                Guid value;
+
+                var actual = caseSensitive
+                    ? jsonHelper.TryGetValue<Guid>("Prop1", out value)
+                    : jsonHelper.TryGetValue<Guid>("prop1", out value);
 
                 actual.Should().BeTrue();
                 value.Should().Be(_prop1);
             }
 
             [Theory]
-            [InlineData(true)]
-            [InlineData(false)]
-            public void Should_Get_String_Looking_As_Double_As_String(bool useObject)
+            [InlineData(true, true)]
+            [InlineData(false, true)]
+            [InlineData(true, false)]
+            [InlineData(false, false)]
+            public void Should_Get_String_Looking_As_Double_As_String(bool useObject, bool caseSensitive)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                var actual = jsonHelper.TryGetValue<string>("Prop7", out var value);
+                string value;
+
+                var actual = caseSensitive
+                    ? jsonHelper.TryGetValue<string>("Prop7", out value)
+                    : jsonHelper.TryGetValue<string>("prop7", out value);
 
                 actual.Should().BeTrue();
                 value.Should().Be(_prop7);
             }
 
             [Theory]
-            [InlineData(true)]
-            [InlineData(false)]
-            public void Should_Get_Double(bool useObject)
+            [InlineData(true, true)]
+            [InlineData(false, true)]
+            [InlineData(true, false)]
+            [InlineData(false, false)]
+            public void Should_Get_Double(bool useObject, bool caseSensitive)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                var actual = jsonHelper.TryGetValue<double>("Prop8", out var value);
+                double value;
+
+                var actual = caseSensitive
+                    ? jsonHelper.TryGetValue<double>("Prop8", out value)
+                    : jsonHelper.TryGetValue<double>("prop8", out value);
 
                 actual.Should().BeTrue();
                 value.Should().Be(_prop8);
             }
 
             [Theory]
-            [InlineData(true)]
-            [InlineData(false)]
-            public void Should_Get_DateTime(bool useObject)
+            [InlineData(true, true)]
+            [InlineData(false, true)]
+            [InlineData(true, false)]
+            [InlineData(false, false)]
+            public void Should_Get_DateTime(bool useObject, bool caseSensitive)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                var actual = jsonHelper.TryGetValue<DateTime>("Prop9", out var value);
+                DateTime value;
+
+                var actual = caseSensitive
+                    ? jsonHelper.TryGetValue<DateTime>("Prop9", out value)
+                    : jsonHelper.TryGetValue<DateTime>("prop9", out value);
 
                 actual.Should().BeTrue();
                 value.Should().Be(_prop9);
@@ -577,61 +622,81 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
             }
 
             [Theory]
-            [InlineData(true)]
-            [InlineData(false)]
-            public void Should_Get_Guid_As_String(bool useObject)
+            [InlineData(true, true)]
+            [InlineData(false, true)]
+            [InlineData(true, false)]
+            [InlineData(false, false)]
+            public void Should_Get_Guid_As_String(bool useObject, bool caseSensitive)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                var actual = jsonHelper.GetValue<string>("Prop1");
+                var actual = caseSensitive
+                    ? jsonHelper.GetValue<string>("Prop1")
+                    : jsonHelper.GetValue<string>("prop1");
 
                 actual.Should().Be($"{_prop1}");
             }
 
             [Theory]
-            [InlineData(true)]
-            [InlineData(false)]
-            public void Should_Get_Guid_As_Guid(bool useObject)
+            [InlineData(true, true)]
+            [InlineData(false, true)]
+            [InlineData(true, false)]
+            [InlineData(false, false)]
+            public void Should_Get_Guid_As_Guid(bool useObject, bool caseSensitive)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                var actual = jsonHelper.GetValue<Guid>("Prop1");
+                var actual = caseSensitive
+                    ? jsonHelper.GetValue<Guid>("Prop1")
+                    : jsonHelper.GetValue<Guid>("prop1");
 
                 actual.Should().Be(_prop1);
             }
 
             [Theory]
-            [InlineData(true)]
-            [InlineData(false)]
-            public void Should_Get_String_Looking_As_Double_As_String(bool useObject)
+            [InlineData(true, true)]
+            [InlineData(false, true)]
+            [InlineData(true, false)]
+            [InlineData(false, false)]
+            public void Should_Get_String_Looking_As_Double_As_String(bool useObject, bool caseSensitive)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                var actual = jsonHelper.GetValue<string>("Prop7");
+                var actual = caseSensitive
+                    ? jsonHelper.GetValue<string>("Prop7")
+                    : jsonHelper.GetValue<string>("prop7");
 
                 actual.Should().Be(_prop7);
             }
 
             [Theory]
-            [InlineData(true)]
-            [InlineData(false)]
-            public void Should_Get_Double(bool useObject)
+            [InlineData(true, true)]
+            [InlineData(false, true)]
+            [InlineData(true, false)]
+            [InlineData(false, false)]
+            public void Should_Get_Double(bool useObject, bool caseSensitive)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                var actual = jsonHelper.GetValue<double>("Prop8");
+                var actual = caseSensitive
+                    ? jsonHelper.GetValue<double>("Prop8")
+                    : jsonHelper.GetValue<double>("prop8");
 
                 actual.Should().Be(_prop8);
             }
 
             [Theory]
-            [InlineData(true)]
-            [InlineData(false)]
-            public void Should_Get_DateTime(bool useObject)
+            [InlineData(true, true)]
+            [InlineData(false, true)]
+            [InlineData(true, false)]
+            [InlineData(false, false)]
+            public void Should_Get_DateTime(bool useObject, bool caseSensitive)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                var actual = jsonHelper.GetValue<DateTime>("Prop9");
+                var actual = caseSensitive
+                    ? jsonHelper.GetValue<DateTime>("Prop9")
+                    : jsonHelper.GetValue<DateTime>("prop9");
 
                 actual.Should().Be(_prop9);
             }
@@ -752,13 +817,19 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
             }
 
             [Theory]
-            [InlineData(true)]
-            [InlineData(false)]
-            public void Should_Get_Array(bool useObject)
+            [InlineData(true, true)]
+            [InlineData(false, true)]
+            [InlineData(true, false)]
+            [InlineData(false, false)]
+            public void Should_Get_Array(bool useObject, bool caseSensitive)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                var actual = jsonHelper.TryGetObjectArray("Prop10", out var array);
+                IEnumerable<IElementDictionary> array;
+
+                var actual = caseSensitive
+                    ? jsonHelper.TryGetObjectArray("Prop10", out array)
+                    : jsonHelper.TryGetObjectArray("prop10", out array);
 
                 actual.Should().BeTrue();
 
@@ -867,13 +938,17 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
             }
 
             [Theory]
-            [InlineData(true)]
-            [InlineData(false)]
-            public void Should_Get_Array(bool useObject)
+            [InlineData(true, true)]
+            [InlineData(false, true)]
+            [InlineData(true, false)]
+            [InlineData(false, false)]
+            public void Should_Get_Array(bool useObject, bool caseSensitive)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                var array = jsonHelper.GetObjectArray("Prop10");
+                var array = caseSensitive
+                    ? jsonHelper.GetObjectArray("Prop10")
+                    : jsonHelper.GetObjectArray("prop10");
 
                 var arrayItems = array.ToList();
 
@@ -970,13 +1045,17 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
             }
 
             [Theory]
-            [InlineData(true)]
-            [InlineData(false)]
-            public void Should_Find_Object_Array_Property(bool useObject)
+            [InlineData(true, true)]
+            [InlineData(false, true)]
+            [InlineData(true, false)]
+            [InlineData(false, false)]
+            public void Should_Find_Object_Array_Property(bool useObject, bool caseSensitive)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                var actual = jsonHelper.TryGetObjectArrayValues<string>("Prop10", "Prop11", out _);
+                var actual = caseSensitive
+                    ? jsonHelper.TryGetObjectArrayValues<string>("Prop10", "Prop11", out _)
+                    : jsonHelper.TryGetObjectArrayValues<string>("prop10", "prop11", out _);
 
                 actual.Should().BeTrue();
             }
@@ -998,13 +1077,19 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
             }
 
             [Theory]
-            [InlineData(true)]
-            [InlineData(false)]
-            public void Should_Get_Object_Array_Property_Value(bool useObject)
+            [InlineData(true, true)]
+            [InlineData(false, true)]
+            [InlineData(true, false)]
+            [InlineData(false, false)]
+            public void Should_Get_Object_Array_Property_Value(bool useObject, bool caseSensitive)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                _ = jsonHelper.TryGetObjectArrayValues<string>("Prop10", "Prop11", out var arrayValues);
+                IEnumerable<string> arrayValues;
+
+                _ = caseSensitive
+                    ? jsonHelper.TryGetObjectArrayValues<string>("Prop10", "Prop11", out arrayValues)
+                    : jsonHelper.TryGetObjectArrayValues<string>("prop10", "prop11", out arrayValues);
 
                 arrayValues.Should().BeEquivalentTo(_prop6);
             }
@@ -1135,13 +1220,17 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
             }
 
             [Theory]
-            [InlineData(true)]
-            [InlineData(false)]
-            public void Should_Get_Object_Array_Property_Value(bool useObject)
+            [InlineData(true, true)]
+            [InlineData(false, true)]
+            [InlineData(true, false)]
+            [InlineData(false, false)]
+            public void Should_Get_Object_Array_Property_Value(bool useObject, bool caseSensitive)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                var arrayValues = jsonHelper.GetObjectArrayValues<string>("Prop10", "Prop11");
+                var arrayValues = caseSensitive
+                    ? jsonHelper.GetObjectArrayValues<string>("Prop10", "Prop11")
+                    : jsonHelper.GetObjectArrayValues<string>("prop10", "prop11");
 
                 arrayValues.Should().BeEquivalentTo(_prop6);
             }
@@ -1176,13 +1265,17 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
             }
 
             [Theory]
-            [InlineData(true)]
-            [InlineData(false)]
-            public void Should_Find_Descendant_Object_Array_Property(bool useObject)
+            [InlineData(true, true)]
+            [InlineData(false, true)]
+            [InlineData(true, false)]
+            [InlineData(false, false)]
+            public void Should_Find_Descendant_Object_Array_Property(bool useObject, bool caseSensitive)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                var actual = jsonHelper.TryGetDescendantObjectArray(new[] { "Prop10" }, out _);
+                var actual = caseSensitive
+                    ? jsonHelper.TryGetDescendantObjectArray(new[] { "Prop10" }, out _)
+                    : jsonHelper.TryGetDescendantObjectArray(new[] { "prop10" }, out _);
 
                 actual.Should().BeTrue();
             }
@@ -1204,13 +1297,19 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
             }
 
             [Theory]
-            [InlineData(true)]
-            [InlineData(false)]
-            public void Should_Get_Descendant_Object_Array_Property(bool useObject)
+            [InlineData(true, true)]
+            [InlineData(false, true)]
+            [InlineData(true, false)]
+            [InlineData(false, false)]
+            public void Should_Get_Descendant_Object_Array_Property(bool useObject, bool caseSensitive)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                _ = jsonHelper.TryGetDescendantObjectArray(new[] { "Prop2", "Prop2a" }, out var array);
+                IEnumerable<IElementDictionary> array;
+
+                _ = caseSensitive
+                    ? jsonHelper.TryGetDescendantObjectArray(new[] { "Prop2", "Prop2a" }, out array)
+                    : jsonHelper.TryGetDescendantObjectArray(new[] { "prop2", "prop2a" }, out array);
 
                 var arrayItems = array.ToList();
 
@@ -1310,13 +1409,17 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
             }
 
             [Theory]
-            [InlineData(true)]
-            [InlineData(false)]
-            public void Should_Get_Descendant_Object_Array_Property(bool useObject)
+            [InlineData(true, true)]
+            [InlineData(false, true)]
+            [InlineData(true, false)]
+            [InlineData(false, false)]
+            public void Should_Get_Descendant_Object_Array_Property(bool useObject, bool caseSensitive)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                var array = jsonHelper.GetDescendantObjectArray(new[] { "Prop2", "Prop2a" });
+                var array = caseSensitive
+                    ? jsonHelper.GetDescendantObjectArray(new[] { "Prop2", "Prop2a" })
+                    : jsonHelper.GetDescendantObjectArray(new[] { "prop2", "prop2a" });
 
                 var arrayItems = array.ToList();
 
@@ -1447,13 +1550,19 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
             }
 
             [Theory]
-            [InlineData(true)]
-            [InlineData(false)]
-            public void Should_Get_Descendant_Object_Array_Values(bool useObject)
+            [InlineData(true, true)]
+            [InlineData(false, true)]
+            [InlineData(true, false)]
+            [InlineData(false, false)]
+            public void Should_Get_Descendant_Object_Array_Values(bool useObject, bool caseSensitive)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                _ = jsonHelper.TryGetDescendantObjectArrayValues<int>(new[] { "Prop2", "Prop2a", "Prop2b" }, "Value", out var array);
+                IEnumerable<int> array;
+
+                _ = caseSensitive
+                    ? jsonHelper.TryGetDescendantObjectArrayValues<int>(new[] {"Prop2", "Prop2a", "Prop2b"}, "Value", out array)
+                    : jsonHelper.TryGetDescendantObjectArrayValues<int>(new[] {"prop2", "prop2a", "prop2b"}, "value", out array);
 
                 var arrayItems = array.ToList();
 
@@ -1571,13 +1680,17 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
             }
 
             [Theory]
-            [InlineData(true)]
-            [InlineData(false)]
-            public void Should_Get_Descendant_Object_Array_Values(bool useObject)
+            [InlineData(true, true)]
+            [InlineData(false, true)]
+            [InlineData(true, false)]
+            [InlineData(false, false)]
+            public void Should_Get_Descendant_Object_Array_Values(bool useObject, bool caseSensitive)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                var array = jsonHelper.GetDescendantObjectArrayValues<int>(new[] { "Prop2", "Prop2a", "Prop2b" }, "Value");
+                var array = caseSensitive
+                    ? jsonHelper.GetDescendantObjectArrayValues<int>(new[] {"Prop2", "Prop2a", "Prop2b"}, "Value")
+                    : jsonHelper.GetDescendantObjectArrayValues<int>(new[] {"prop2", "prop2a", "prop2b"}, "value");
 
                 var arrayItems = array.ToList();
 
@@ -1607,13 +1720,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
 
         private JsonHelper CreateJsonHelper(bool useObject)
         {
-            // testing with strict property names (not the default)
-            var converterOptions = new NestedDictionaryConverterOptions
-            {
-                StrictPropertyNames = true
-            };
-
-            var converter = new NestedDictionaryConverter(converterOptions);
+            var converter = new NestedDictionaryConverter();
 
             var settings = new JsonSerializerSettings();
             settings.Converters.Add(converter);

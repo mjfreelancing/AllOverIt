@@ -21,9 +21,9 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests.Converters
             [Theory]
             [InlineData(false)]
             [InlineData(true)]
-            public void Should_Read_As_Dictionary(bool useStrictPropertyName)
+            public void Should_Read_As_Dictionary(bool includeUppercase)
             {
-                InitializeSerializerAndConverter(useStrictPropertyName);
+                InitializeSerializerAndConverter();
 
                 var prop1 = Create<int>();
 
@@ -32,21 +32,21 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests.Converters
                     Value = Create<string>()
                 };
 
-                var prop3 = new
-                {
-                    Value1 = prop2,
-                    Value2 = prop1
-                };
+                //var prop3 = new
+                //{
+                //    Value1 = prop2,
+                //    Value2 = prop1
+                //};
 
-                var prop2Dictionary = useStrictPropertyName
-                    ? new Dictionary<string, object> { { "Value", prop2.Value } }
-                    : new Dictionary<string, object> { { "value", prop2.Value } };
+                var prop2Dictionary = includeUppercase
+                    ? new Dictionary<string, object> {{"Value", prop2.Value}}
+                    : new Dictionary<string, object> {{"value", prop2.Value}};
 
-                var prop3Dictionary = useStrictPropertyName
-                    ? new Dictionary<string, object> { { "Value1", prop2Dictionary }, { "Value2", prop1 } }
-                    : new Dictionary<string, object> { { "value1", prop2Dictionary }, { "value2", prop1 } };
+                var prop3Dictionary = includeUppercase
+                    ? new Dictionary<string, object> {{"Value1", prop2Dictionary}, {"Value2", prop1}}
+                    : new Dictionary<string, object> {{"value1", prop2Dictionary}, {"value2", prop1}};
 
-                var expected = useStrictPropertyName
+                var expected = includeUppercase
                     ? new Dictionary<string, object>
                     {
                         {"Prop1", prop1},
@@ -60,7 +60,9 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests.Converters
                         {"prop3", prop3Dictionary}
                     };
 
-                var value = $@"{{""Prop"":{{""Prop1"":{prop1},""Prop2"":{{""Value"":""{prop2.Value}""}},""Prop3"":{{""Value1"":{{""Value"":""{prop2.Value}""}},""Value2"":{prop1}}}}}}}";
+                var value = includeUppercase
+                    ? $@"{{""Prop"":{{""Prop1"":{prop1},""Prop2"":{{""Value"":""{prop2.Value}""}},""Prop3"":{{""Value1"":{{""Value"":""{prop2.Value}""}},""Value2"":{prop1}}}}}}}"
+                    : $@"{{""Prop"":{{""prop1"":{prop1},""prop2"":{{""value"":""{prop2.Value}""}},""prop3"":{{""value1"":{{""value"":""{prop2.Value}""}},""value2"":{prop1}}}}}}}";
 
                 var actual = _serializer.DeserializeObject<DummyDictionary>(value);
 
@@ -73,9 +75,9 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests.Converters
             [Theory]
             [InlineData(false)]
             [InlineData(true)]
-            public void Should_Write_Dictionary(bool useStrictPropertyName)
+            public void Should_Write_Dictionary(bool includeUppercase)
             {
-                InitializeSerializerAndConverter(useStrictPropertyName);
+                InitializeSerializerAndConverter();
 
                 var prop1 = Create<int>();
 
@@ -84,43 +86,53 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests.Converters
                     Value = Create<string>()
                 };
 
-                var prop3 = new
-                {
-                    Value1 = prop2,
-                    Value2 = prop1
-                };
+                //var prop3 = new
+                //{
+                //    Value1 = prop2,
+                //    Value2 = prop1
+                //};
 
-                var prop2Dictionary = new Dictionary<string, object> { { "Value", prop2.Value } };
-                var prop3Dictionary = new Dictionary<string, object> { { "Value1", prop2Dictionary }, { "Value2", prop1 } };
+                var prop2Dictionary = includeUppercase
+                    ? new Dictionary<string, object> { { "Value", prop2.Value } }
+                    : new Dictionary<string, object> { { "value", prop2.Value } };
 
-                var dummyValue = new
-                {
-                    Prop = new Dictionary<string, object>
+                var prop3Dictionary = includeUppercase
+                    ? new Dictionary<string, object> { { "Value1", prop2Dictionary }, { "Value2", prop1 } }
+                    : new Dictionary<string, object> { { "value1", prop2Dictionary }, { "value2", prop1 } };
+
+                var dummyValue = includeUppercase
+                    ? (object) new
                     {
-                        {"Prop1", prop1},
-                        {"Prop2", prop2Dictionary},
-                        {"Prop3", prop3Dictionary}
+                        Prop = new Dictionary<string, object>
+                        {
+                            {"Prop1", prop1},
+                            {"Prop2", prop2Dictionary},
+                            {"Prop3", prop3Dictionary}
+                        }
                     }
-                };
+                    : new
+                    {
+                        prop = new Dictionary<string, object>
+                        {
+                            {"prop1", prop1},
+                            {"prop2", prop2Dictionary},
+                            {"prop3", prop3Dictionary}
+                        }
+                    };
 
                 var actual = _serializer.SerializeObject(dummyValue);
 
-                var expected = useStrictPropertyName
+                var expected = includeUppercase
                     ? $@"{{""Prop"":{{""Prop1"":{prop1},""Prop2"":{{""Value"":""{prop2.Value}""}},""Prop3"":{{""Value1"":{{""Value"":""{prop2.Value}""}},""Value2"":{prop1}}}}}}}"
-                    : $@"{{""Prop"":{{""prop1"":{prop1},""prop2"":{{""value"":""{prop2.Value}""}},""prop3"":{{""value1"":{{""value"":""{prop2.Value}""}},""value2"":{prop1}}}}}}}";
+                    : $@"{{""prop"":{{""prop1"":{prop1},""prop2"":{{""value"":""{prop2.Value}""}},""prop3"":{{""value1"":{{""value"":""{prop2.Value}""}},""value2"":{prop1}}}}}}}";
 
                 actual.Should().Be(expected);
             }
         }
 
-        private void InitializeSerializerAndConverter(bool useStrictPropertyName)
+        private void InitializeSerializerAndConverter()
         {
-            var converterOptions = new NestedDictionaryConverterOptions
-            {
-                StrictPropertyNames = useStrictPropertyName
-            };
-
-            var converter = new NestedDictionaryConverter(converterOptions);
+            var converter = new NestedDictionaryConverter();
 
             var options = new JsonSerializerOptions();
             options.Converters.Add(converter);
