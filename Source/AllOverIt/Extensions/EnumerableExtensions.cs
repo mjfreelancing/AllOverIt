@@ -24,9 +24,7 @@ namespace AllOverIt.Extensions
             _ = items.WhenNotNull(nameof(items));
 
             // ReSharper disable once PossibleMultipleEnumeration
-            return items is IList<TType> list
-              ? list
-              : items.ToList();
+            return items as IList<TType> ?? items.ToList();
         }
 
         /// <summary>Returns the source items as an IReadOnlyList.</summary>
@@ -40,9 +38,7 @@ namespace AllOverIt.Extensions
             _ = items.WhenNotNull(nameof(items));
 
             // ReSharper disable once PossibleMultipleEnumeration
-            return items is IReadOnlyList<TType> list
-              ? list
-              : items.ToList();
+            return items as IReadOnlyList<TType> ?? items.ToList();
         }
 
         /// <summary>Returns the source items as an IReadOnlyCollection.</summary>
@@ -56,9 +52,7 @@ namespace AllOverIt.Extensions
             _ = items.WhenNotNull(nameof(items));
 
             // ReSharper disable once PossibleMultipleEnumeration
-            return items is IReadOnlyCollection<TType> list
-              ? list
-              : new ReadOnlyCollection<TType>(items.AsList());
+            return items as IReadOnlyCollection<TType> ?? new ReadOnlyCollection<TType>(items.AsList());
         }
 
         /// <summary>Projects each element into another form and returns the result as an IList{TResult}.</summary>
