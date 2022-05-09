@@ -35,6 +35,7 @@ namespace AllOverIt.Validation
         /// <typeparam name="TContext"></typeparam>
         /// <param name="instance">The model instance.</param>
         /// <param name="context">The context type.</param>
+        /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns>The validation result.</returns>
         public Task<ValidationResult> ValidateAsync<TContext>(TType instance, TContext context, CancellationToken cancellationToken)
         {
