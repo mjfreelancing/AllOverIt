@@ -1,6 +1,6 @@
 ======================================================================================================================
 
-XX XXX 2022
+09 May 2022
 Version 5.5.0
 ======================================================================================================================
 AllOverIt
@@ -13,6 +13,7 @@ AllOverIt.Validation
 AllOverIt.Serialization
 AllOverIt.Serialization.NewtonsoftJson
 AllOverIt.Serialization.SystemTextJson
+  * Added TryGetValues() and GetValues() to JsonHelper
   * Improvements to JsonHelper and NestedDictionaryConverter to better handle case-insenstive property querying
     (NestedDictionaryConverter is now internal)
 

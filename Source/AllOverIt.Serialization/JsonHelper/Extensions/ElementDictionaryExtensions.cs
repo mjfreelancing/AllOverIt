@@ -60,6 +60,59 @@ namespace AllOverIt.Serialization.JsonHelper.Extensions
             throw CreateJsonHelperException(propertyName);
         }
 
+        /// <summary>Tries to get the array of values for a specified property.</summary>
+        /// <typeparam name="TValue">The value type.</typeparam>
+        /// <param name="element">The element to get the value from.</param>
+        /// <param name="propertyName">The property name to get the values of.</param>
+        /// <param name="values">The array values of the property, if the property exists.</param>
+        /// <returns>True if the property exists, otherwise false.</returns>
+        public static bool TryGetValues<TValue>(this IElementDictionary element, string propertyName, out IReadOnlyCollection<TValue> values)
+        {
+            _ = element.WhenNotNull(nameof(element));
+            _ = propertyName.WhenNotNull(nameof(propertyName));
+
+            if (element.TryGetValue(propertyName, out var array))
+            {
+                if (array is List<TValue> typedValues)
+                {
+                    values = typedValues;
+                    return true;
+                }
+
+                var castValues = new List<TValue>();
+
+                foreach (var arrayItem in (IEnumerable) array)
+                {
+                    var value = arrayItem.As<TValue>();
+                    castValues.Add(value);
+                }
+
+                values = castValues;
+                return true;
+            }
+
+            values = default;
+            return false;
+        }
+
+        /// <summary>Gets the array of values for a specified property.</summary>
+        /// <typeparam name="TValue">The value type.</typeparam>
+        /// <param name="element">The element to get the value from.</param>
+        /// <param name="propertyName">The property name to get the values of.</param>
+        /// <returns>The array of values for a specified property.</returns>
+        public static IReadOnlyCollection<TValue> GetValues<TValue>(this IElementDictionary element, string propertyName)
+        {
+            _ = element.WhenNotNull(nameof(element));
+            _ = propertyName.WhenNotNull(nameof(propertyName));
+
+            if (element.TryGetValues<TValue>(propertyName, out var values))
+            {
+                return values;
+            }
+
+            throw CreateJsonHelperException(propertyName);
+        }
+
         /// <summary>Tries to get an array of elements for a specified property.</summary>
         /// <param name="element">The element to get the value from.</param>
         /// <param name="arrayPropertyName">The property name of the array element.</param>

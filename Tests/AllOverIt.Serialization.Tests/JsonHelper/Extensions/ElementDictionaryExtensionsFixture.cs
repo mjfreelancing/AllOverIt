@@ -14,12 +14,16 @@ namespace AllOverIt.Serialization.Tests.JsonHelper.Extensions
 {
     public class ElementDictionaryExtensionsFixture : FixtureBase
     {
+        private sealed class ElementItem
+        {
+        }
+
         private readonly IDictionary<string, object> _prop1;
         private readonly IDictionary<string, object> _prop2a;
         private readonly IDictionary<string, object> _prop2b;
         private readonly IDictionary<string, object> _prop3a;
         private readonly IDictionary<string, object> _prop3b;
-        private IElementDictionary _elementDictionary;
+        private readonly IElementDictionary _elementDictionary;
 
         public ElementDictionaryExtensionsFixture()
         {
@@ -53,7 +57,8 @@ namespace AllOverIt.Serialization.Tests.JsonHelper.Extensions
             {
                 {"Prop1", Create<double>()},
                 {"Prop2", new[] {_prop2a, _prop2b}},
-                {"Prop3", CreateMany<int>()}
+                {"Prop3", CreateMany<int>()},
+                {"Prop4", new[]{new ElementItem()}}
             };
 
             _elementDictionary = new ElementDictionary(_prop1);
@@ -256,6 +261,224 @@ namespace AllOverIt.Serialization.Tests.JsonHelper.Extensions
                     .Should()
                     .Throw<InvalidCastException>()
                     .WithMessage("Unable to cast object of type 'double' to type 'double[]'.");
+            }
+        }
+
+        public class TryGetValues : ElementDictionaryExtensionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Element_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = ElementDictionaryExtensions.TryGetValues<int>(null, Create<string>(), out _);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("element");
+            }
+
+            [Fact]
+            public void Should_Throw_When_PropertyName_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = ElementDictionaryExtensions.TryGetValues<int>(_elementDictionary, null, out _);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("propertyName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_PropertyName_Empty()
+            {
+                Invoking(() =>
+                {
+                    _ = ElementDictionaryExtensions.TryGetValues<int>(_elementDictionary, string.Empty, out _);
+                })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("propertyName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_PropertyName_Whitespace()
+            {
+                Invoking(() =>
+                {
+                    _ = ElementDictionaryExtensions.TryGetValues<int>(_elementDictionary, "  ", out _);
+                })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("propertyName");
+            }
+
+            [Fact]
+            public void Should_Return_True_When_Property_Exists()
+            {
+                var actual = ElementDictionaryExtensions.TryGetValues<double>(_elementDictionary, "Prop3", out _);
+
+                actual.Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Return_Value_When_Property_Exists()
+            {
+                _ = ElementDictionaryExtensions.TryGetValues<int>(_elementDictionary, "Prop3", out var value);
+
+                value.Should().BeEquivalentTo((List<int>) _prop1["Prop3"]);
+            }
+
+            [Fact]
+            public void Should_Return_False_When_Property_Does_Not_Exist()
+            {
+                var actual = ElementDictionaryExtensions.TryGetValues<double>(_elementDictionary, Create<string>(), out _);
+
+                actual.Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Return_Default_Value_When_Property_Does_Not_Exist()
+            {
+                _ = ElementDictionaryExtensions.TryGetValues<double>(_elementDictionary, Create<string>(), out var value);
+
+                value.Should().BeNull();
+            }
+
+            [Fact]
+            public void Should_Convert_Value_When_Can_Convert()
+            {
+                _ = ElementDictionaryExtensions.TryGetValues<string>(_elementDictionary, "Prop3", out var value);
+
+                var prop3Values = (List<int>) _prop1["Prop3"];
+                var expected = prop3Values.Select(item => $"{item}");
+
+                value.Should().BeEquivalentTo(expected);
+            }
+
+            [Fact]
+            public void Should_Return_Value_When_Typed_Object()
+            {
+                _ = ElementDictionaryExtensions.TryGetValues<ElementItem>(_elementDictionary, "Prop4", out var value);
+
+                value.Should().BeEquivalentTo((ElementItem[]) _prop1["Prop4"]);
+            }
+
+            [Fact]
+            public void Should_Throw_When_Cannot_Convert_Value()
+            {
+                Invoking(() =>
+                {
+                    _ = ElementDictionaryExtensions.TryGetValues<double[]>(_elementDictionary, "Prop3", out _);
+                })
+                    .Should()
+                    .Throw<InvalidCastException>()
+                    .WithMessage("Unable to cast object of type 'Int32' to type 'Double[]'.");      // referring to each element
+            }
+        }
+
+        public class GetValues : ElementDictionaryExtensionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Element_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = ElementDictionaryExtensions.GetValues<int>(null, Create<string>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("element");
+            }
+
+            [Fact]
+            public void Should_Throw_When_PropertyName_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = ElementDictionaryExtensions.GetValues<int>(_elementDictionary, null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("propertyName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_PropertyName_Empty()
+            {
+                Invoking(() =>
+                {
+                    _ = ElementDictionaryExtensions.GetValues<int>(_elementDictionary, string.Empty);
+                })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("propertyName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_PropertyName_Whitespace()
+            {
+                Invoking(() =>
+                {
+                    _ = ElementDictionaryExtensions.GetValues<int>(_elementDictionary, "  ");
+                })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("propertyName");
+            }
+
+            [Fact]
+            public void Should_Return_Value_When_Property_Exists()
+            {
+                var value = ElementDictionaryExtensions.GetValues<int>(_elementDictionary, "Prop3");
+
+                value.Should().BeEquivalentTo((List<int>) _prop1["Prop3"]);
+            }
+
+            [Fact]
+            public void Should_Throw_When_Property_Does_Not_Exist()
+            {
+                var propertyName = Create<string>();
+
+                Invoking(() =>
+                {
+                    _ = ElementDictionaryExtensions.GetValues<double>(_elementDictionary, propertyName);
+                })
+                    .Should()
+                    .Throw<JsonHelperException>()
+                    .WithMessage($"The property {propertyName} was not found.");
+            }
+
+            [Fact]
+            public void Should_Convert_Value_When_Can_Convert()
+            {
+                var value = ElementDictionaryExtensions.GetValues<string>(_elementDictionary, "Prop3");
+
+                var prop3Values = (List<int>) _prop1["Prop3"];
+                var expected = prop3Values.Select(item => $"{item}");
+
+                value.Should().BeEquivalentTo(expected);
+            }
+
+            [Fact]
+            public void Should_Return_Value_When_Typed_Object()
+            {
+                var value = ElementDictionaryExtensions.GetValues<ElementItem>(_elementDictionary, "Prop4");
+
+                value.Should().BeEquivalentTo((ElementItem[]) _prop1["Prop4"]);
+            }
+
+            [Fact]
+            public void Should_Throw_When_Cannot_Convert_Value()
+            {
+                Invoking(() =>
+                {
+                    _ = ElementDictionaryExtensions.GetValues<double[]>(_elementDictionary, "Prop3");
+                })
+                    .Should()
+                    .Throw<InvalidCastException>()
+                    .WithMessage("Unable to cast object of type 'Int32' to type 'Double[]'.");      // referring to each element
             }
         }
 
