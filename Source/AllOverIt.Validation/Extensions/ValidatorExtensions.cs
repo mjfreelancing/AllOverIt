@@ -29,6 +29,7 @@ namespace AllOverIt.Validation.Extensions
         /// <param name="validator">The validator instance.</param>
         /// <param name="instance">The model instance to validate.</param>
         /// <param name="context">The context to associate with the validation request.</param>
+        /// <param name="cancellationToken">A cancellation token.</param>
         public static Task ValidateAndThrowAsync<TType, TContext>(this IValidator<TType> validator, TType instance, TContext context, CancellationToken cancellationToken)
         {
             var validationContext = ValidationContext<TType>.CreateWithOptions(instance, options => options.ThrowOnFailures());
