@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Serialization.JsonHelper;
@@ -23,6 +24,9 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
         private readonly double _prop8;
         private readonly DateTime _prop9;
         private readonly object _value;
+        private readonly IReadOnlyCollection<int> _prop11;
+        private readonly IReadOnlyCollection<string> _prop12;
+        private readonly IReadOnlyCollection<Guid> _prop13;
 
         protected JsonHelperFixture()
         {
@@ -33,6 +37,9 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
             _prop7 = $"{Create<double>()}";
             _prop8 = Create<double>();
             _prop9 = DateTime.Now;
+            _prop11 = CreateMany<int>(3);
+            _prop12 = _prop11.SelectAsReadOnlyCollection(item => $"{item}");
+            _prop13 = CreateMany<Guid>(3);
 
             _value = new
             {
@@ -57,20 +64,20 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
                             {
                                 Prop2b = new[]
                                 {
-                                     new
-                                     {
-                                         Value = _prop2.ElementAt(1)
-                                     }
+                                    new
+                                    {
+                                        Value = _prop2.ElementAt(1)
+                                    }
                                 }
                             },
                             new
                             {
                                 Prop2b = new[]
                                 {
-                                     new
-                                     {
-                                         Value = _prop2.ElementAt(2)
-                                     }
+                                    new
+                                    {
+                                        Value = _prop2.ElementAt(2)
+                                    }
                                 }
                             }
                         }
@@ -83,30 +90,30 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
                             {
                                 Prop2b = new[]
                                 {
-                                     new
-                                     {
-                                         Value = _prop2.ElementAt(0) * 2
-                                     }
+                                    new
+                                    {
+                                        Value = _prop2.ElementAt(0) * 2
+                                    }
                                 }
                             },
                             new
                             {
                                 Prop2b = new[]
                                 {
-                                     new
-                                     {
-                                         Value = _prop2.ElementAt(1) * 2
-                                     }
+                                    new
+                                    {
+                                        Value = _prop2.ElementAt(1) * 2
+                                    }
                                 }
                             },
                             new
                             {
                                 Prop2b = new[]
                                 {
-                                     new 
-                                     {
-                                         Value = _prop2.ElementAt(2) * 2 
-                                     }
+                                    new
+                                    {
+                                        Value = _prop2.ElementAt(2) * 2
+                                    }
                                 }
                             }
                         }
@@ -148,7 +155,10 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
                     {
                         Prop11 = _prop6.ElementAt(2)
                     },
-                }
+                },
+                Prop11 = _prop11,
+                Prop12 = _prop12,
+                Prop13 = _prop13
             };
         }
 
@@ -712,6 +722,263 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
                 {
                     var jsonHelper = CreateJsonHelper(useObject);
                     _ = jsonHelper.GetValue<int>(propName);
+                })
+                    .Should()
+                    .Throw<JsonHelperException>()
+                    .WithMessage($"The property {propName} was not found.");
+            }
+        }
+
+        public class TryGetValues_Typed : JsonHelperFixture
+        {
+            [Fact]
+            public void Should_Throw_When_PropertyName_Null()
+            {
+                Invoking(() =>
+                {
+                    var jsonHelper = CreateJsonHelper(true);
+                    _ = jsonHelper.TryGetValues<int>(null, out _);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("propertyName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_PropertyName_Empty()
+            {
+                Invoking(() =>
+                {
+                    var jsonHelper = CreateJsonHelper(true);
+                    _ = jsonHelper.TryGetValues<int>(string.Empty, out _);
+                })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("propertyName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_PropertyName_WhiteSpace()
+            {
+                Invoking(() =>
+                {
+                    var jsonHelper = CreateJsonHelper(true);
+                    _ = jsonHelper.TryGetValues<int>("  ", out _);
+                })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("propertyName");
+            }
+
+            [Theory]
+            [InlineData(true, true)]
+            [InlineData(false, true)]
+            [InlineData(true, false)]
+            [InlineData(false, false)]
+            public void Should_Get_Guid_As_String(bool useObject, bool caseSensitive)
+            {
+                var jsonHelper = CreateJsonHelper(useObject);
+
+                var actual = caseSensitive
+                    ? jsonHelper.TryGetValues<string>("Prop13", out var values)
+                    : jsonHelper.TryGetValues<string>("Prop13", out values);
+
+                actual.Should().BeTrue();
+                values.Should().BeEquivalentTo(_prop13.Select(item => $"{item}"));
+            }
+
+            [Theory]
+            [InlineData(true, true)]
+            [InlineData(false, true)]
+            [InlineData(true, false)]
+            [InlineData(false, false)]
+            public void Should_Get_Guid_As_Guid(bool useObject, bool caseSensitive)
+            {
+                var jsonHelper = CreateJsonHelper(useObject);
+
+                var actual = caseSensitive
+                    ? jsonHelper.TryGetValues<Guid>("Prop13", out var value)
+                    : jsonHelper.TryGetValues<Guid>("prop13", out value);
+
+                actual.Should().BeTrue();
+                value.Should().BeEquivalentTo(_prop13);
+            }
+
+            [Theory]
+            [InlineData(true, true)]
+            [InlineData(false, true)]
+            [InlineData(true, false)]
+            [InlineData(false, false)]
+            public void Should_Get_String_Looking_As_Double_As_String(bool useObject, bool caseSensitive)
+            {
+                var jsonHelper = CreateJsonHelper(useObject);
+
+                var actual = caseSensitive
+                    ? jsonHelper.TryGetValues<string>("Prop12", out var values)
+                    : jsonHelper.TryGetValues<string>("prop12", out values);
+
+                actual.Should().BeTrue();
+                values.Should().BeEquivalentTo(_prop12);
+            }
+
+            [Theory]
+            [InlineData(true, true)]
+            [InlineData(false, true)]
+            [InlineData(true, false)]
+            [InlineData(false, false)]
+            public void Should_Get_Int(bool useObject, bool caseSensitive)
+            {
+                var jsonHelper = CreateJsonHelper(useObject);
+
+                var actual = caseSensitive
+                    ? jsonHelper.TryGetValues<int>("Prop11", out var value)
+                    : jsonHelper.TryGetValues<int>("prop11", out value);
+
+                actual.Should().BeTrue();
+                value.Should().BeEquivalentTo(_prop11);
+            }
+
+            [Theory]
+            [InlineData(true)]
+            [InlineData(false)]
+            public void Should_Not_Get_Value(bool useObject)
+            {
+                var jsonHelper = CreateJsonHelper(useObject);
+
+                var actual = jsonHelper.TryGetValues<int>(Create<string>(), out var value);
+
+                actual.Should().BeFalse();
+            }
+
+            [Theory]
+            [InlineData(true)]
+            [InlineData(false)]
+            public void Should_Return_Default_When_Cannot_Get_Value(bool useObject)
+            {
+                var jsonHelper = CreateJsonHelper(useObject);
+
+                _ = jsonHelper.TryGetValues<int>(Create<string>(), out var value);
+
+                value.Should().BeNull();
+            }
+        }
+
+        public class GetValues_Typed : JsonHelperFixture
+        {
+            [Fact]
+            public void Should_Throw_When_PropertyName_Null()
+            {
+                Invoking(() =>
+                {
+                    var jsonHelper = CreateJsonHelper(true);
+                    _ = jsonHelper.GetValues<int>(null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("propertyName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_PropertyName_Empty()
+            {
+                Invoking(() =>
+                {
+                    var jsonHelper = CreateJsonHelper(true);
+                    _ = jsonHelper.GetValues<int>(string.Empty);
+                })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("propertyName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_PropertyName_WhiteSpace()
+            {
+                Invoking(() =>
+                {
+                    var jsonHelper = CreateJsonHelper(true);
+                    _ = jsonHelper.GetValues<int>("  ");
+                })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("propertyName");
+            }
+
+            [Theory]
+            [InlineData(true, true)]
+            [InlineData(false, true)]
+            [InlineData(true, false)]
+            [InlineData(false, false)]
+            public void Should_Get_Guid_As_String(bool useObject, bool caseSensitive)
+            {
+                var jsonHelper = CreateJsonHelper(useObject);
+
+                var actual = caseSensitive
+                    ? jsonHelper.GetValues<string>("Prop13")
+                    : jsonHelper.GetValues<string>("prop13");
+
+                actual.Should().BeEquivalentTo(_prop13.Select(item => $"{item}"));
+            }
+
+            [Theory]
+            [InlineData(true, true)]
+            [InlineData(false, true)]
+            [InlineData(true, false)]
+            [InlineData(false, false)]
+            public void Should_Get_Guid_As_Guid(bool useObject, bool caseSensitive)
+            {
+                var jsonHelper = CreateJsonHelper(useObject);
+
+                var actual = caseSensitive
+                    ? jsonHelper.GetValues<Guid>("Prop13")
+                    : jsonHelper.GetValues<Guid>("prop13");
+
+                actual.Should().BeEquivalentTo(_prop13);
+            }
+
+            [Theory]
+            [InlineData(true, true)]
+            [InlineData(false, true)]
+            [InlineData(true, false)]
+            [InlineData(false, false)]
+            public void Should_Get_String_Looking_As_Double_As_String(bool useObject, bool caseSensitive)
+            {
+                var jsonHelper = CreateJsonHelper(useObject);
+
+                var actual = caseSensitive
+                    ? jsonHelper.GetValues<string>("Prop12")
+                    : jsonHelper.GetValues<string>("prop12");
+
+                actual.Should().BeEquivalentTo(_prop12);
+            }
+
+            [Theory]
+            [InlineData(true, true)]
+            [InlineData(false, true)]
+            [InlineData(true, false)]
+            [InlineData(false, false)]
+            public void Should_Get_Int(bool useObject, bool caseSensitive)
+            {
+                var jsonHelper = CreateJsonHelper(useObject);
+
+                var actual = caseSensitive
+                    ? jsonHelper.GetValues<int>("Prop11")
+                    : jsonHelper.GetValues<int>("prop11");
+
+                actual.Should().BeEquivalentTo(_prop11);
+            }
+
+            [Theory]
+            [InlineData(true)]
+            [InlineData(false)]
+            public void Should_Throw_When_Cannot_Get_Value(bool useObject)
+            {
+                var propName = Create<string>();
+
+                Invoking(() =>
+                {
+                    var jsonHelper = CreateJsonHelper(useObject);
+                    _ = jsonHelper.GetValues<int>(propName);
                 })
                     .Should()
                     .Throw<JsonHelperException>()

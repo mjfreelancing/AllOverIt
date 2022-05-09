@@ -1,6 +1,13 @@
 ======================================================================================================================
 
 09 May 2022
+Version 5.5.0 / 5.5.1
+======================================================================================================================
+AllOverIt.Serialization
+  * Added missing TryGetValues() and GetValues() on JsonHelperBase
+
+
+09 May 2022
 Version 5.5.0
 ======================================================================================================================
 AllOverIt
@@ -13,7 +20,7 @@ AllOverIt.Validation
 AllOverIt.Serialization
 AllOverIt.Serialization.NewtonsoftJson
 AllOverIt.Serialization.SystemTextJson
-  * Added TryGetValues() and GetValues() to JsonHelper
+  * Added TryGetValues() and GetValues() to ElementDictionaryExtensions
   * Improvements to JsonHelper and NestedDictionaryConverter to better handle case-insenstive property querying
     (NestedDictionaryConverter is now internal)
 

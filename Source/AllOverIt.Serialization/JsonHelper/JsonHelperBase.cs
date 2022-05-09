@@ -85,6 +85,29 @@ namespace AllOverIt.Serialization.JsonHelper
             return _element.GetValue<TValue>(propertyName);
         }
 
+        /// <summary>Tries to get the value of a specified property.</summary>
+        /// <typeparam name="TValue">The value type.</typeparam>
+        /// <param name="propertyName">The property name to get the value of.</param>
+        /// <param name="values">The values of the property, if the property exists.</param>
+        /// <returns>True if the property exists, otherwise false.</returns>
+        public bool TryGetValues<TValue>(string propertyName, out IReadOnlyCollection<TValue> values)
+        {
+            _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
+
+            return _element.TryGetValues<TValue>(propertyName, out values);
+        }
+
+        /// <summary>Gets the value of a specified property.</summary>
+        /// <typeparam name="TValue">The value type.</typeparam>
+        /// <param name="propertyName">The property name to get the values of.</param>
+        /// <returns>The value of a specified property.</returns>
+        public IReadOnlyCollection<TValue> GetValues<TValue>(string propertyName)
+        {
+            _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
+
+            return _element.GetValues<TValue>(propertyName);
+        }
+
         /// <summary>Tries to get an array of elements for a specified property.</summary>
         /// <param name="arrayPropertyName">The property name of the array element.</param>
         /// <param name="array">The array of elements for the specified property.</param>
