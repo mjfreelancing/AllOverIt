@@ -9,17 +9,17 @@ using BenchmarkDotNet.Jobs;
 namespace ObjectMappingBenchmarking
 {
     /*
-    |                                        Method |      Mean |    Error |   StdDev |   Gen 0 | Allocated |
-    |---------------------------------------------- |----------:|---------:|---------:|--------:|----------:|
-    |          AutoMapper_SimpleSource_SimpleTarget |  10.74 us | 0.098 us | 0.087 us |  0.9460 |      4 KB |
-    | StaticMethod_SimpleSource_Create_SimpleTarget | 367.74 us | 7.249 us | 9.167 us | 59.0820 |    242 KB |
-    | ObjectMapper_SimpleSource_Create_SimpleTarget | 101.96 us | 1.585 us | 1.482 us |  6.5918 |     27 KB |
-    | ObjectMapper_SimpleSource_CopyTo_SimpleTarget |  98.61 us | 1.407 us | 1.247 us |  5.7373 |     23 KB |
+    |                                        Method |       Mean |    Error |   StdDev | Allocated |
+    |---------------------------------------------- |-----------:|---------:|---------:|----------:|
+    |          AutoMapper_SimpleSource_SimpleTarget |   222.2 ns | 19.19 ns | 54.14 ns |      40 B |
+    | StaticMethod_SimpleSource_Create_SimpleTarget | 4,272.8 ns | 75.40 ns | 66.84 ns |   2,544 B |
+    | ObjectMapper_SimpleSource_Create_SimpleTarget |   961.1 ns | 18.63 ns | 23.57 ns |      88 B |
+    | ObjectMapper_SimpleSource_CopyTo_SimpleTarget |   908.2 ns | 11.79 ns | 10.45 ns |      48 B |
     */
 
-    [MemoryDiagnoser]
-    //[SimpleJob(RuntimeMoniker.NetCoreApp31)]
-    //[SimpleJob(RuntimeMoniker.Net50)]
+    [MemoryDiagnoser(false)]
+    [SimpleJob(RuntimeMoniker.NetCoreApp31)]
+    [SimpleJob(RuntimeMoniker.Net50)]
     [SimpleJob(RuntimeMoniker.Net60)]
     public class MappingTests
     {
