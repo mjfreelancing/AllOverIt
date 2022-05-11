@@ -1,13 +1,13 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Formatters.Objects;
+using AllOverIt.Formatters.Objects.Exceptions;
+using AllOverIt.Formatters.Objects.Extensions;
 using AllOverIt.Helpers.PropertyNavigation;
+using AllOverIt.Helpers.PropertyNavigation.Extensions;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
-using AllOverIt.Exceptions;
-using AllOverIt.Formatters.Objects.Extensions;
-using AllOverIt.Helpers.PropertyNavigation.Extensions;
 using Xunit;
 
 namespace AllOverIt.Tests.Formatters.Objects.Extensions

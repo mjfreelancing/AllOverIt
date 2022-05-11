@@ -1,12 +1,12 @@
-﻿using System;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Extensions;
+using AllOverIt.Formatters.Objects.Exceptions;
+using AllOverIt.Helpers.PropertyNavigation;
+using AllOverIt.Helpers.PropertyNavigation.Extensions;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using AllOverIt.Assertion;
-using AllOverIt.Exceptions;
-using AllOverIt.Extensions;
-using AllOverIt.Helpers.PropertyNavigation;
-using AllOverIt.Helpers.PropertyNavigation.Extensions;
 
 namespace AllOverIt.Formatters.Objects.Extensions
 {

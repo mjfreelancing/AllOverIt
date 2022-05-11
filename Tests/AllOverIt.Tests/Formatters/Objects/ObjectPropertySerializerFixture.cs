@@ -1,7 +1,9 @@
 ﻿using AllOverIt.Exceptions;
 using AllOverIt.Extensions;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Formatters.Objects;
+using AllOverIt.Formatters.Objects.Exceptions;
 using AllOverIt.Reflection;
 using FluentAssertions;
 using System;
@@ -248,6 +250,48 @@ namespace AllOverIt.Tests.Formatters.Objects
 
         public class SerializeToDictionary : ObjectPropertySerializerFixture
         {
+            [Fact]
+            public void Should_Throw_When_Instance_Null()
+            {
+                var serializer = GetSerializer();
+
+                Invoking(() =>
+                {
+                    _ = serializer.SerializeToDictionary(null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("instance");
+            }
+
+            [Theory]
+            [InlineData("abc")]
+            [InlineData(123)]
+            public void Should_Throw_When_Serializing_Not_Object_Or_Enumerable(object instance)
+            {
+                var serializer = GetSerializer();
+
+                Invoking(() =>
+                {
+                    _ = serializer.SerializeToDictionary(instance);
+                })
+                    .Should()
+                    .Throw<ObjectPropertySerializerException>()
+                    .WithMessage("Object property serialization requires a class instance.");
+            }
+
+            [Fact]
+            public void Should_Return_Same_Dictionary_When_Dictionary()
+            {
+                var expected = Create<Dictionary<string, string>>();
+
+                var serializer = GetSerializer();
+
+                var actual = serializer.SerializeToDictionary(expected);
+
+                actual.Should().BeSameAs(expected);
+            }
+
             [Fact]
             public void Should_Serialize_Type_Using_Default_Settings()
             {
@@ -930,6 +974,29 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {"[2]", list[2]},
                     {"[3]", list[3]},
                     {"[4]", list[4]}
+                };
+
+                expected
+                    .Should()
+                    .BeEquivalentTo(actual);
+            }
+
+            [Fact]
+            public void Should_Serialize_List_With_Collation()
+            {
+                var list = CreateMany<string>();
+
+                var options = new ObjectPropertySerializerOptions();
+                options.EnumerableOptions.Separator = "-";
+                options.EnumerableOptions.CollateValues = true;
+
+                var serializer = new ObjectPropertySerializer(options);
+
+                var actual = serializer.SerializeToDictionary(list);
+
+                var expected = new Dictionary<string, string>
+                {
+                    {"[]", String.Join("-", list)}
                 };
 
                 expected

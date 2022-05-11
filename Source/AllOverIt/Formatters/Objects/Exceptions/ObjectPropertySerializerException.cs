@@ -1,19 +1,18 @@
 ﻿using System;
-using AllOverIt.Formatters.Objects;
 
-namespace AllOverIt.Exceptions
+namespace AllOverIt.Formatters.Objects.Exceptions
 {
-    /// <summary>Represents an error raised by an <see cref="ObjectPropertyFilter"/>.</summary>
-    public class ObjectPropertyFilterException : Exception
+    /// <summary>Represents an error raised during object property serialization.</summary>
+    public class ObjectPropertySerializerException : Exception
     {
         /// <summary>Default constructor.</summary>
-        public ObjectPropertyFilterException()
+        public ObjectPropertySerializerException()
         {
         }
 
         /// <summary>Constructor.</summary>
         /// <param name="message">The exception message.</param>
-        public ObjectPropertyFilterException(string message)
+        public ObjectPropertySerializerException(string message)
             : base(message)
         {
         }
@@ -21,7 +20,7 @@ namespace AllOverIt.Exceptions
         /// <summary>Constructor.</summary>
         /// <param name="message">The exception message.</param>
         /// <param name="innerException">The inner exception.</param>
-        public ObjectPropertyFilterException(string message, Exception innerException)
+        public ObjectPropertySerializerException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
