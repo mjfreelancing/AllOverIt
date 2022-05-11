@@ -39,6 +39,10 @@ namespace AllOverIt.Formatters.Objects
         /// <remarks>If a <see cref="Filter"/> has been assigned then its array options will override these settings.</remarks>
         public ObjectPropertyEnumerableOptions EnumerableOptions { get; } = new();
 
+        /// <summary>Provides options that define root level value key names for objects that cannot be serialized due
+        /// to the lack of properties.</summary>
+        public ObjectPropertyRootValueOptions RootValueOptions { get; set; } = new();
+
         /// <summary>An optional filter that can be implemented to exclude properties by name or value. Values can be
         /// modified, or formatted if the filter implements <see cref="IFormattableObjectPropertyFilter"/>.</summary>
         public ObjectPropertyFilter Filter { get; set; }

@@ -9,7 +9,10 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
         public DateTime TimestampUtc => Timestamp.ToUniversalTime();
 
         /// <summary>The breadcrumb timestamp.</summary>
-        public DateTime Timestamp { get; init; }
+        public DateTime Timestamp { get; } = DateTime.Now;
+
+        /// <summary>The name of the calling method (if provided).</summary>
+        public string CallerName { get; init; }
 
         /// <summary>The breadcrumb message.</summary>
         public string Message { get; init; }

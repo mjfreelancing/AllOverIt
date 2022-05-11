@@ -10,6 +10,9 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
     {
         private readonly IList<BreadcrumbData> _breadcrumbs = new List<BreadcrumbData>();
 
+        /// <summary>The timestamp when breadcrumb collection begins.</summary>
+        public DateTime StartTimestamp { get; } = DateTime.Now;
+
         /// <inheritdoc />
         public IEnumerator<BreadcrumbData> GetEnumerator()
         {
@@ -22,27 +25,13 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
         }
 
         /// <inheritdoc />
-        public void Add(string message)
+        public IBreadcrumbs Add(BreadcrumbData breadcrumb)
         {
-            _ = message.WhenNotNullOrEmpty(nameof(message));
-
-            Add(message, null);
-        }
-
-        /// <inheritdoc />
-        public void Add(string message, object metadata)
-        {
-            _ = message.WhenNotNullOrEmpty(nameof(message));
-
-            var breadcrumb = new BreadcrumbData
-            {
-
-                Timestamp = DateTime.Now,
-                Message = message,
-                Metadata = metadata
-            };
+            _ = breadcrumb.WhenNotNull(nameof(breadcrumb));
 
             _breadcrumbs.Add(breadcrumb);
+
+            return this;
         }
     }
 }

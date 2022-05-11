@@ -31,6 +31,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     },
                     BindingOptions = BindingOptions.Default,
                     EnumerableOptions = new ObjectPropertyEnumerableOptions(),
+                    RootValueOptions = new ObjectPropertyRootValueOptions(),
                     Filter = (ObjectPropertyFilter) null,
                     IncludeNulls = false,
                     IncludeEmptyCollections = false,

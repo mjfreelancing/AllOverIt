@@ -67,7 +67,7 @@ namespace AllOverIt.Formatters.Objects
                         if (prefix == null)
                         {
                             // The array must have been a root object (not a property value) so use "[]" as the prefix
-                            prefix = "[]";
+                            prefix = Options.RootValueOptions.ArrayKeyName;
                         }
 
                         values.Add(prefix, string.Join(Options.EnumerableOptions.Separator, arrayValues.Values));
@@ -165,7 +165,9 @@ namespace AllOverIt.Formatters.Objects
 
             if (!instanceType.IsClass || instanceType == typeof(string))
             {
-                throw new ObjectPropertySerializerException("Object property serialization requires a class instance.");
+                // The value doesn't have properties....only option is to ToString() it
+                values.Add(Options.RootValueOptions.ScalarKeyName, $"{instance}");
+                return;
             }
 
             var properties = instance
