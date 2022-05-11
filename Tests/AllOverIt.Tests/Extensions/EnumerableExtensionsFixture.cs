@@ -15,6 +15,40 @@ namespace AllOverIt.Tests.Extensions
 {
     public partial class EnumerableExtensionsFixture : FixtureBase
     {
+        public class NotAny : EnumerableExtensionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Null()
+            {
+                IEnumerable<object> items = null;
+
+                Invoking(() => items.NotAny())
+                  .Should()
+                  .Throw<ArgumentNullException>()
+                  .WithNamedMessageWhenNull("items");
+            }
+
+            [Fact]
+            public void Should_Return_True_When_Empty()
+            {
+                var items = Enumerable.Empty<object>();
+
+                var actual = items.NotAny();
+
+                actual.Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Return_False_When_Not_Empty()
+            {
+                var items = CreateMany<int>();
+
+                var actual = items.NotAny();
+
+                actual.Should().BeFalse();
+            }
+        }
+
         public class AsList : EnumerableExtensionsFixture
         {
             [Fact]

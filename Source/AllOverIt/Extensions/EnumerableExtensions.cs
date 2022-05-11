@@ -13,6 +13,18 @@ namespace AllOverIt.Extensions
     /// <summary>Provides a variety of extension methods for <see cref="IEnumerable{T}"/>.</summary>
     public static partial class EnumerableExtensions
     {
+        /// <summary>Indicates if the source items contains no elements.</summary>
+        /// <typeparam name="TType">The type stored in the source collection.</typeparam>
+        /// <param name="items">The source of elements.</param>
+        /// <returns>True if the source items contains no elements, otherwise false.</returns>
+        public static bool NotAny<TType>(this IEnumerable<TType> items)
+        {
+            // ReSharper disable once PossibleMultipleEnumeration
+            _ = items.WhenNotNull(nameof(items));
+
+            return !items.Any();
+        }
+
         /// <summary>Returns the source items as an IList.</summary>
         /// <typeparam name="TType">The type stored in the source collection.</typeparam>
         /// <param name="items">The source of items to be returned as an IList.</param>
