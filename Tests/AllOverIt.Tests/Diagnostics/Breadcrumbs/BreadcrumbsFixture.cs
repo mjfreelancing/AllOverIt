@@ -12,6 +12,19 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
     {
         private readonly AllOverIt.Diagnostics.Breadcrumbs.Breadcrumbs _breadcrumbs = new();
 
+        public class Constructor : BreadcrumbsFixture
+        {
+            [Fact]
+            public void Should_Create_Default_Options()
+            {
+                var actual = _breadcrumbs.Options;
+
+                var expected = new BreadcrumbsOptions();
+
+                expected.Should().BeEquivalentTo(actual);
+            }
+        }
+
         public class GetEnumerable : BreadcrumbsFixture
         {
             [Fact]
@@ -117,6 +130,32 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                 var actual = _breadcrumbs.ToList();
 
                 actual.Single().Should().BeSameAs(breadcrumb);
+            }
+
+            [Fact]
+            public void Should_Limit_Number_Of_Breadcrumbs()
+            {
+                var options = new BreadcrumbsOptions
+                {
+                    MaxCapacity = 5
+                };
+
+                var breadcrumbs = new AllOverIt.Diagnostics.Breadcrumbs.Breadcrumbs(options);
+
+                var items = CreateMany<BreadcrumbData>(10);
+
+                foreach (var item in items)
+                {
+                    breadcrumbs.Add(item);
+                }
+
+                var actual = breadcrumbs.ToList();
+
+                actual.Should().HaveCount(5);
+
+                var expected = items.Skip(5).Take(5);
+
+                actual.Should().Contain(expected);
             }
         }
     }
