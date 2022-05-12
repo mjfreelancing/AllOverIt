@@ -10,6 +10,7 @@ AllOverIt
   * ObjectPropertySerializer now supports serialization of a root-level collection of primitives (not a property)
     when value collation is enabled ("[]" is used as the dictionary key).
   * Added a Breadcrumbs collection that can be used to capture diagnostic/trace information.
+  * Added a BreadcrumbsFactory to conveniently create new instances on demand to emulate scoping.
 
 
 09 May 2022
