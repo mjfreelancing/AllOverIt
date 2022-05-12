@@ -7,49 +7,49 @@ namespace DiagnosticsDemo
 {
     public sealed class App : ConsoleAppBase
     {
+        private readonly IBreadcrumbs _breadcrumbs;
         private readonly ILogger<App> _logger;
 
         public App(IBreadcrumbs breadcrumbs, ILogger<App> logger)
         {
+            _breadcrumbs = breadcrumbs.WhenNotNull(nameof(breadcrumbs));
             _logger = logger.WhenNotNull(nameof(logger));
         }
 
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("StartAsync");
-
-
-
-            //// providing an initial delay so the background worker can show it is alive
-            //await Task.Delay(3000, cancellationToken);
-
-            //Console.WriteLine();
-            //Console.WriteLine("ENVIRONMENT VARIABLES");
-            //Console.WriteLine("=====================");
-
-            //var variables = Environment.GetEnvironmentVariables().ToSerializedDictionary();
-
-            //foreach (var (key, value) in variables)
-            //{
-            //    Console.WriteLine($"{key} = {value}");
-            //}
+            _logger.LogInformation("Starting...");
 
             Console.WriteLine();
-
-            // providing another delay so the background worker can show it is still alive
-            await Task.Delay(3000, cancellationToken);
-
-            ExitCode = 0;
-
-            Console.WriteLine();
-            Console.WriteLine("All Over It (the background worker will continue until a key is pressed).");
+            Console.WriteLine("All Over It (the background worker will finish shortly, or when a key is pressed).");
             Console.WriteLine();
             Console.ReadKey();
+
+            ExitCode = 0;
         }
 
         public override void OnStopping()
         {
             _logger.LogInformation("App is stopping");
+
+            var allBreadcrumbs = _breadcrumbs.ToList();
+
+            Console.WriteLine();
+            _logger.LogInformation("Breadcrumbs captured...");
+
+            foreach (var breadcrumb in allBreadcrumbs)
+            {
+                if (breadcrumb.Metadata != null)
+                {
+                    _logger.LogInformation($"{breadcrumb.Message} : {(DateTime) breadcrumb.Metadata}");
+                }
+                else
+                {
+                    _logger.LogInformation(breadcrumb.Message);
+                }
+
+                Console.WriteLine();
+            }
         }
 
         public override void OnStopped()

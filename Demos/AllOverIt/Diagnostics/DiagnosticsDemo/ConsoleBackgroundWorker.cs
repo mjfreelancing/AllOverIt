@@ -10,21 +10,18 @@ namespace DiagnosticsDemo
 {
     public sealed class ConsoleBackgroundWorker : BackgroundWorker
     {
-        private readonly ILogger<ConsoleBackgroundWorker> _logger;
         private readonly IBreadcrumbs _breadcrumbs;
 
-        public ConsoleBackgroundWorker(IBreadcrumbs breadcrumbs, IHostApplicationLifetime applicationLifetime, ILogger<ConsoleBackgroundWorker> logger)
+        // Demo using IBreadcrumbs instead of ILogger (which can be printed on demand, such as in the case of an error)
+        public ConsoleBackgroundWorker(IBreadcrumbs breadcrumbs, IHostApplicationLifetime applicationLifetime)
             : base(applicationLifetime)
         {
             _breadcrumbs = breadcrumbs.WhenNotNull(nameof(breadcrumbs));
-            _logger = logger.WhenNotNull(nameof(logger));
         }
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
             _breadcrumbs.Add("Waiting for everything to start");
-
-            _logger.LogInformation("Waiting for everything to start");
 
             // ExecuteAsync() starts before OnStarted() fires, so this shows how to wait. The result indicates if the app has started
             // or not (gone into the Stopping state).
@@ -32,16 +29,13 @@ namespace DiagnosticsDemo
 
             if (!started)
             {
-                _logger.LogInformation("Failed to start");
+                _breadcrumbs.Add("Failed to start");
                 return;
             }
 
             _breadcrumbs.Add("Now running");
 
-            _logger.LogInformation("Now running");
-
-
-
+            _breadcrumbs.Add("Now running");
 
             var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
             var linkedTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cts.Token, cancellationToken);
@@ -65,39 +59,26 @@ namespace DiagnosticsDemo
 
             await Task.WhenAll(tasks);
         
-            var allBreadcrumbs = _breadcrumbs.ToList();
-
-            Console.WriteLine("Breadcrumbs...");
-
-            foreach (var breadcrumb in allBreadcrumbs)
-            {
-                if (breadcrumb.Metadata != null)
-                {
-                    Console.WriteLine($"{breadcrumb.Message} : {(DateTime) breadcrumb.Metadata}");
-                }
-                else
-                {
-                    Console.WriteLine(breadcrumb.Message);
-                }
-            }
+            // The breadcrumbs will be logged by the main app after the user presses a key
 
             Console.WriteLine();
             Console.WriteLine("Background worker is done. Press a key to end the process.");
+            Console.WriteLine();
         }
 
         protected override void OnStarted()
         {
-            _logger.LogInformation("The background worker has started");
+            _breadcrumbs.Add("The background worker has started");
         }
 
         protected override void OnStopping()
         {
-            _logger.LogInformation("The background worker is stopping");
+            _breadcrumbs.Add("The background worker is stopping");
         }
 
         protected override void OnStopped()
         {
-            _logger.LogInformation("The background worker is done");
+            _breadcrumbs.Add("The background worker is done");
         }
     }
 }
