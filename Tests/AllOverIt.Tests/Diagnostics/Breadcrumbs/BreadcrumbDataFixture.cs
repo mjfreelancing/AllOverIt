@@ -38,11 +38,9 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 
             var data = indexes.SelectAsReadOnlyCollection(_ => new BreadcrumbData());
 
-            var minValue = data.Min(item => item.Counter);
+            var values = data.Select(item => item.Counter).Distinct();
 
-            data.Select(item => item.Counter - minValue + 1)
-                .Should()
-                .BeEquivalentTo(indexes);
+            values.Should().HaveCount(100);
         }
 
         [Fact]
@@ -57,11 +55,9 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 
             var data = await Task.WhenAll(tasks);
 
-            var minValue = data.Min(item => item.Counter);
+            var values = data.Select(item => item.Counter).Distinct();
 
-            data.Select(item => item.Counter - minValue + 1)
-                .Should()
-                .BeEquivalentTo(indexes);
+            values.Should().HaveCount(100);
         }
     }
 }

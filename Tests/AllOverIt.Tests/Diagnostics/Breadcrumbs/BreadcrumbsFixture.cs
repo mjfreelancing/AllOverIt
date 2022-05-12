@@ -41,6 +41,8 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                 var breadcrumb1 = new BreadcrumbData
                 {
                     CallerName = string.Empty,
+                    FilePath = string.Empty,
+                    LineNumber = 0,
                     Message = Create<string>(),
                     Metadata = new { Value = Create<int>() }
                 };
@@ -48,12 +50,16 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                 var breadcrumb2 = new BreadcrumbData
                 {
                     CallerName = null,
+                    FilePath = null,
+                    LineNumber = 0,
                     Message = Create<string>()
                 };
 
                 var breadcrumb3 = new BreadcrumbData
                 {
                     CallerName = Create<string>(),
+                    FilePath = Create<string>(),
+                    LineNumber = Create<int>(),
                     Message = Create<string>(),
                     Metadata = Create<int>()
                 };
@@ -69,18 +75,24 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                     new
                     {
                         breadcrumb1.CallerName,
+                        breadcrumb1.FilePath,
+                        breadcrumb1.LineNumber,
                         breadcrumb1.Message,
                         breadcrumb1.Metadata
                     },
                     new
                     {
                         breadcrumb2.CallerName,
+                        breadcrumb2.FilePath,
+                        breadcrumb2.LineNumber,
                         breadcrumb2.Message,
                         breadcrumb2.Metadata
                     },
                     new
                     {
                         breadcrumb3.CallerName,
+                        breadcrumb3.FilePath,
+                        breadcrumb3.LineNumber,
                         breadcrumb3.Message,
                         breadcrumb3.Metadata
                     }

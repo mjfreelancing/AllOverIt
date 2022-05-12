@@ -24,6 +24,12 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
         /// <summary>The name of the calling method (if provided).</summary>
         public string CallerName { get; init; }
 
+        /// <summary>The file path of the calling method.</summary>
+        public string FilePath { get; init; }
+
+        /// <summary>The line number of the calling method file path.</summary>
+        public int LineNumber { get; init; }
+
         /// <summary>The breadcrumb message.</summary>
         public string Message { get; init; }
 

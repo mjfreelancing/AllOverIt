@@ -64,6 +64,8 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                     new
                     {
                         CallerName = (string)null,
+                        FilePath = (string)null,
+                        LineNumber = 0,
                         Message = message,
                         Metadata = (object)null
                     }
@@ -151,6 +153,8 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                     new
                     {
                         CallerName = (string)null,
+                        FilePath = (string)null,
+                        LineNumber = 0,
                         Message = message,
                         Metadata = metadata
                     }
@@ -243,11 +247,16 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                     }
                 };
 
+                actual.First().FilePath.Should().NotBeNullOrEmpty();
+                actual.First().LineNumber.Should().BeGreaterThan(0);
+
                 expected
                     .Should()
                     .BeEquivalentTo(
                         actual,
                         options => options
+                            .Excluding(model => model.FilePath)
+                            .Excluding(model => model.LineNumber)
                             .Excluding(model => model.Timestamp)
                             .Excluding(model => model.TimestampUtc));
             }
@@ -271,11 +280,16 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                     }
                 };
 
+                actual.First().FilePath.Should().NotBeNullOrEmpty();
+                actual.First().LineNumber.Should().BeGreaterThan(0);
+
                 expected
                     .Should()
                     .BeEquivalentTo(
                         actual,
                         options => options
+                            .Excluding(model => model.FilePath)
+                            .Excluding(model => model.LineNumber)
                             .Excluding(model => model.Timestamp)
                             .Excluding(model => model.TimestampUtc));
             }
@@ -300,11 +314,16 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                     }
                 };
 
+                actual.First().FilePath.Should().NotBeNullOrEmpty();
+                actual.First().LineNumber.Should().BeGreaterThan(0);
+
                 expected
                     .Should()
                     .BeEquivalentTo(
                         actual,
                         options => options
+                            .Excluding(model => model.FilePath)
+                            .Excluding(model => model.LineNumber)
                             .Excluding(model => model.Timestamp)
                             .Excluding(model => model.TimestampUtc));
             }

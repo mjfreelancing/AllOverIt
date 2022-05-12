@@ -21,7 +21,7 @@ namespace DiagnosticsDemo
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            _breadcrumbs.Add("Waiting for everything to start");
+            _breadcrumbs.Add(this, "Waiting for everything to start");
 
             // ExecuteAsync() starts before OnStarted() fires, so this shows how to wait. The result indicates if the app has started
             // or not (gone into the Stopping state).
@@ -29,13 +29,13 @@ namespace DiagnosticsDemo
 
             if (!started)
             {
-                _breadcrumbs.Add("Failed to start");
+                _breadcrumbs.Add(this, "Failed to start");
                 return;
             }
 
-            _breadcrumbs.Add("Now running");
+            _breadcrumbs.Add(this, "Now running");
 
-            _breadcrumbs.Add("Now running");
+            _breadcrumbs.Add(this, "Now running");
 
             var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
             var linkedTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cts.Token, cancellationToken);
@@ -46,13 +46,19 @@ namespace DiagnosticsDemo
                 {
                     return Task.Run(async () =>
                     {
-                        var threadId = Task.CurrentId;
-
-                        while (!linkedTokenSource.IsCancellationRequested)
+                        try
                         {
-                            _breadcrumbs.Add($"Thread {threadId} is running", DateTime.Now);
+                            var threadId = Task.CurrentId;
 
-                            await Task.Delay(500);
+                            while (!linkedTokenSource.IsCancellationRequested)
+                            {
+                                _breadcrumbs.Add(this, $"Thread {threadId} is running", DateTime.Now);
+
+                                await Task.Delay(500, cancellationToken).ConfigureAwait(false);
+                            }
+                        }
+                        catch (TaskCanceledException)
+                        {
                         }
                     }, linkedTokenSource.Token);
                 });

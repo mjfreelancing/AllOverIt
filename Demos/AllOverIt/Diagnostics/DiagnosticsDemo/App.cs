@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Diagnostics.Breadcrumbs;
+using AllOverIt.Extensions;
 using AllOverIt.GenericHost;
 using Microsoft.Extensions.Logging;
 
@@ -44,6 +45,11 @@ namespace DiagnosticsDemo
                 _logger.LogInformation(breadcrumb.Metadata != null
                     ? $"({timeOffset}ms) {breadcrumb.Message} : {(DateTime) breadcrumb.Metadata}"
                     : $"({timeOffset}ms) {breadcrumb.Message}");
+
+                if (breadcrumb.CallerName.IsNotNullOrEmpty())
+                {
+                    _logger.LogInformation($"Called from {breadcrumb.CallerName} at {breadcrumb.FilePath}:{breadcrumb.LineNumber}");
+                }
 
                 Console.WriteLine();
             }
