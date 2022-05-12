@@ -17,7 +17,7 @@ namespace DiagnosticsDemo
             _logger = logger.WhenNotNull(nameof(logger));
         }
 
-        public override async Task StartAsync(CancellationToken cancellationToken)
+        public override Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Starting...");
 
@@ -27,6 +27,8 @@ namespace DiagnosticsDemo
             Console.ReadKey();
 
             ExitCode = 0;
+
+            return Task.CompletedTask;
         }
 
         public override void OnStopping()
