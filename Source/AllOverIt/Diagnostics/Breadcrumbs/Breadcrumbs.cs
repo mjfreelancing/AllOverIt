@@ -108,11 +108,6 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
             return _breadcrumbs.GetEnumerator();
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
         /// <inheritdoc />
         public IBreadcrumbs Add(BreadcrumbData breadcrumb)
         {
@@ -121,6 +116,11 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
             _breadcrumbs.Add(breadcrumb);
 
             return this;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }
