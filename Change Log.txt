@@ -1,7 +1,7 @@
 ======================================================================================================================
 
 XX XXX XXXXX
-Version 5.5.0
+Version 5.6.0
 ======================================================================================================================
 AllOverIt
   * Added NotAny() as an IEnumerable extension
@@ -9,7 +9,8 @@ AllOverIt
     dictionary<string, string>.
   * ObjectPropertySerializer now supports serialization of a root-level collection of primitives (not a property)
     when value collation is enabled ("[]" is used as the dictionary key).
-  * Added a Breadcrumbs collection that can be used to capture diagnostic/trace information.
+  * Added a Breadcrumbs collection that can be used to capture diagnostic/trace information. Can be configured for
+    multi-thread access if required.
   * Added a BreadcrumbsFactory to conveniently create new instances on demand to emulate scoping.
 
 

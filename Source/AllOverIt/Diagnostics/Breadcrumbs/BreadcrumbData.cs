@@ -1,10 +1,20 @@
 ﻿using System;
+using System.Threading;
 
 namespace AllOverIt.Diagnostics.Breadcrumbs
 {
     /// <summary>Contains breadcrumb information at a point in time.</summary>
     public sealed class BreadcrumbData
     {
+        internal static long _counter = 0;
+        internal long Counter { get; }
+
+        /// <summary>Constructor.</summary>
+        public BreadcrumbData()
+        {
+            Counter = Interlocked.Increment(ref _counter);
+        }
+
         /// <summary>The breadcrumb timestamp, as UTC.</summary>
         public DateTime TimestampUtc => Timestamp.ToUniversalTime();
 

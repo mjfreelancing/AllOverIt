@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using System;
 using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace AllOverIt.Diagnostics.Breadcrumbs
@@ -9,8 +8,82 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
     /// <summary>Stores a collection of breadcrumb messages and metadata.</summary>
     public sealed class Breadcrumbs : IBreadcrumbs
     {
-        private readonly IEnumerable<BreadcrumbData> _breadcrumbs;
-        private Action<BreadcrumbData> _appender;
+        private interface IEnumerableWrapper
+        {
+            void Add(BreadcrumbData breadcrumb);
+            IEnumerator<BreadcrumbData> GetEnumerator();
+        }
+
+        private sealed class SingleThreadListWrapper : IEnumerableWrapper
+        {
+            private readonly List<BreadcrumbData> _breadcrumbs = new();
+            private readonly int _maxCapactiy;
+
+            public SingleThreadListWrapper(BreadcrumbsOptions options)
+            {
+                _maxCapactiy = options.MaxCapacity;
+            }
+
+            public void Add(BreadcrumbData breadcrumb)
+            {
+                _breadcrumbs.Add(breadcrumb);
+
+                if (_maxCapactiy > 0 && _breadcrumbs.Count > _maxCapactiy)
+                {
+                    _breadcrumbs.RemoveRange(0, _breadcrumbs.Count - _maxCapactiy);
+                }
+            }
+
+            public IEnumerator<BreadcrumbData> GetEnumerator()
+            {
+                return _breadcrumbs.GetEnumerator();
+            }
+        }
+
+        private sealed class MultiThreadListWrapper : IEnumerableWrapper
+        {
+            private readonly SortedList<long, BreadcrumbData> _breadcrumbs;
+            private readonly object _syncRoot;
+            private readonly int _maxCapactiy;
+
+            public MultiThreadListWrapper(BreadcrumbsOptions options)
+            {
+                _maxCapactiy = options.MaxCapacity;
+                _breadcrumbs = new SortedList<long, BreadcrumbData>();
+                _syncRoot = ((ICollection) _breadcrumbs).SyncRoot;
+            }
+
+            public void Add(BreadcrumbData breadcrumb)
+            {
+                lock (_syncRoot)
+                {
+                    _breadcrumbs.Add(breadcrumb.Counter, breadcrumb);
+
+                    if (_maxCapactiy > 0)
+                    {
+                        while (_breadcrumbs.Count > _maxCapactiy)
+                        {
+                            _breadcrumbs.RemoveAt(0);
+                        }
+                    }
+                }
+            }
+
+            public IEnumerator<BreadcrumbData> GetEnumerator()
+            {
+                lock (_syncRoot)
+                {
+                    var iterator = _breadcrumbs.GetEnumerator();
+
+                    while (iterator.MoveNext())
+                    {
+                        yield return iterator.Current.Value;
+                    }
+                }
+            }
+        }
+
+        private readonly IEnumerableWrapper _breadcrumbs;
 
         /// <summary>Provides options that control how breadcrumb items are inserted and cached.</summary>
         public BreadcrumbsOptions Options { get; }
@@ -25,8 +98,8 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
             Options = options ?? new BreadcrumbsOptions();
 
             _breadcrumbs = Options.ThreadSafe
-                ? InitializeAsMultiThreadSafe()
-                : InitializeAsMultiThreadUnsafe();
+                ? new MultiThreadListWrapper(Options)
+                : new SingleThreadListWrapper(Options);
         }
 
         /// <inheritdoc />
@@ -45,46 +118,9 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
         {
             _ = breadcrumb.WhenNotNull(nameof(breadcrumb));
 
-            _appender.Invoke(breadcrumb);
+            _breadcrumbs.Add(breadcrumb);
 
             return this;
-        }
-
-        private IEnumerable<BreadcrumbData> InitializeAsMultiThreadSafe()
-        {
-            var queue = new ConcurrentQueue<BreadcrumbData>();
-
-            _appender = breadcrumb => 
-            {
-                queue.Enqueue(breadcrumb);
-
-                if (Options.MaxCapacity > 0)
-                {
-                    while (queue.Count > Options.MaxCapacity)
-                    {
-                        queue.TryDequeue(out _);
-                    }
-                }
-            };
-
-            return queue;
-        }
-
-        private IEnumerable<BreadcrumbData> InitializeAsMultiThreadUnsafe()
-        {
-            var list = new List<BreadcrumbData>();
-
-            _appender = breadcrumb => 
-            {
-                list.Add(breadcrumb);
-
-                if (Options.MaxCapacity > 0 && list.Count > Options.MaxCapacity)
-                {
-                    list.RemoveRange(0, list.Count - Options.MaxCapacity);
-                }
-            };
-
-            return list;
         }
     }
 }
