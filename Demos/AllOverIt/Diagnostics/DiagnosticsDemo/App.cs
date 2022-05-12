@@ -39,14 +39,11 @@ namespace DiagnosticsDemo
 
             foreach (var breadcrumb in allBreadcrumbs)
             {
-                if (breadcrumb.Metadata != null)
-                {
-                    _logger.LogInformation($"{breadcrumb.Message} : {(DateTime) breadcrumb.Metadata}");
-                }
-                else
-                {
-                    _logger.LogInformation(breadcrumb.Message);
-                }
+                var timeOffset = (breadcrumb.Timestamp - _breadcrumbs.StartTimestamp).TotalMilliseconds;
+
+                _logger.LogInformation(breadcrumb.Metadata != null
+                    ? $"({timeOffset}ms) {breadcrumb.Message} : {(DateTime) breadcrumb.Metadata}"
+                    : $"({timeOffset}ms) {breadcrumb.Message}");
 
                 Console.WriteLine();
             }

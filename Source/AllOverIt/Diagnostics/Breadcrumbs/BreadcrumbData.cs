@@ -6,7 +6,7 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
     /// <summary>Contains breadcrumb information at a point in time.</summary>
     public sealed class BreadcrumbData
     {
-        internal static long _counter = 0;
+        private static long _counter;
         internal long Counter { get; }
 
         /// <summary>Constructor.</summary>
