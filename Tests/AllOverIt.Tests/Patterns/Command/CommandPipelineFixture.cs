@@ -1,12 +1,12 @@
-﻿using AllOverIt.Exceptions;
+﻿using System;
+using AllOverIt.Exceptions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.Command;
 using FluentAssertions;
-using System;
 using Xunit;
 
-namespace AllOverIt.Tests.Patterns.Enumeration
+namespace AllOverIt.Tests.Patterns.Command
 {
     public class CommandPipelineFixture : FixtureBase
     {
@@ -155,7 +155,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             }
         }
 
-        public class Execute : CommandPipelineFixture
+        public class Execute_Method : CommandPipelineFixture
         {
             private class SequenceCommand : ICommand<int, int>
             {
