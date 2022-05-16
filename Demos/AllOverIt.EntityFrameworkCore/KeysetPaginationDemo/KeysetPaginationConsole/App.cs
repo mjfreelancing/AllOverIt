@@ -37,12 +37,15 @@ namespace KeysetPaginationConsole
 
                 await dbContext.Database.MigrateAsync(cancellationToken);
 
-                await CreateDataIfRequired(100_000);
+                await CreateDataIfRequired(10_000_000);
 
                 Console.WriteLine("Starting...");
                 Console.WriteLine();
 
-                // Initial query
+                var rowsToRead = 1000;
+                var pageSize = 25;
+
+                // Base query
                 var query =
                     from blog in dbContext.Blogs
                     select new
@@ -53,53 +56,143 @@ namespace KeysetPaginationConsole
                         blog.AnotherId
                     };
 
+                var offsetQuery =
+                   from blog in dbContext.Blogs
+                   orderby blog.Description, blog.Id
+                   select new
+                   {
+                       BlogId = blog.Id,
+                       blog.Description,
+                       blog.Reference,
+                       blog.AnotherId
+                   };
+
+                var paginationBuilder = query
+                    .KeysetPaginate(PaginationDirection.Forward, pageSize)
+                    .ColumnAscending(item => item.Description)
+                    .ColumnAscending(item => item.BlogId);
+                    //.Build()
+
                 var continuationToken = string.Empty;
-                var totalRead = 0;
 
                 var stopwatch = Stopwatch.StartNew();
-                var lastCheckpoint = stopwatch.ElapsedMilliseconds;
+
+                void LogCheckpoint(int recordsRead, double elapsed, string queryString, int firstId, int lastId, bool newline)
+                {
+                    if (queryString != null)
+                    {
+                        Console.WriteLine(queryString);
+                    }
+
+                    Console.WriteLine($"Checkpoint after {recordsRead} rows, first Id={firstId}, last Id={lastId} ({elapsed}ms)");
+
+                    if (newline)
+                    {
+                        Console.WriteLine();
+                    }
+                }
+
+                // Keyset paginated, with the overhead of creating a continuation token
+                async Task<bool> ReadKeysetPaginated(int readSoFar)
+                {
+                    var lastCheckpoint = stopwatch.ElapsedMilliseconds;
+                    double elapsed;
+                    var firstId = 0;
+                    var lastId = 0;
+
+                    do
+                    {
+                        var paginatedQuery = paginationBuilder.BuildUsing(continuationToken);
+
+                        //var paginatedQueryString = paginatedQuery.ToQueryString();
+
+                        var paginatedResults = await paginatedQuery.ToListAsync(cancellationToken);
+
+                        if (!paginatedResults.Any())
+                        {
+                            return false;
+                        }
+
+                        readSoFar += pageSize;
+                        continuationToken = paginationBuilder.CreateContinuationToken(paginatedResults);
+
+                        if (readSoFar % rowsToRead == 0)
+                        {
+                            firstId = paginatedResults.First().BlogId;
+                            lastId = paginatedResults.Last().BlogId;
+                        }
+                    } while (readSoFar % rowsToRead != 0);
+
+                    elapsed = stopwatch.ElapsedMilliseconds - lastCheckpoint;
+
+                    // paginatedQueryString
+                    LogCheckpoint(readSoFar, elapsed, null, firstId, lastId, false);
+
+                    return true;
+                }
+
+                async Task<bool> ReadOffsetPaginated(int readSoFar)
+                {
+                    var lastCheckpoint = stopwatch.ElapsedMilliseconds;
+                    double elapsed;
+                    var firstId = 0;
+                    var lastId = 0;
+
+                    do
+                    {
+                        var pagedOffsetQuery = offsetQuery.Skip(readSoFar).Take(pageSize);
+
+                        //var pagedOffsetQueryString = pagedOffsetQuery.ToQueryString();
+
+                        var paginatedResults = await pagedOffsetQuery.ToListAsync(cancellationToken);
+
+                        if (!paginatedResults.Any())
+                        {
+                            return false;
+                        }
+
+                        readSoFar += pageSize;
+
+                        if (readSoFar % rowsToRead == 0)
+                        {
+                            firstId = paginatedResults.First().BlogId;
+                            lastId = paginatedResults.Last().BlogId;
+                        }
+                    } while (readSoFar % rowsToRead != 0);
+
+                    elapsed = stopwatch.ElapsedMilliseconds - lastCheckpoint;
+
+                    // pagedOffsetQueryString
+                    LogCheckpoint(readSoFar, elapsed, null, firstId, lastId, false);
+
+                    return true;
+                }
+
+                var totalRead = 0;
 
                 while (true)
                 {
-                    // pagination builder - can call Build() just to get the modified query or, as shown below, build to get the query
-                    // and then use the builder to create a continuation token after the results are obtained.
-
-                    var paginationBuilder = query
-                        .KeysetPaginate(PaginationDirection.Forward, 25, continuationToken)         // There is an overload that defaults to forward
-                        .ColumnAscending(item => item.Description)
-                        .ColumnAscending(item => item.BlogId);
-
-                    var paginatedQuery = paginationBuilder.Build();     // **** If we pass the continuationToken here then the above could be cached ****
-
-                    //var queryString = paginatedQuery.ToQueryString();
-
-                    var paginatedResults = await paginatedQuery.ToListAsync(cancellationToken);
-
-                    if (!paginatedResults.Any())
+                    if (! await ReadKeysetPaginated(totalRead))
                     {
                         break;
                     }
 
-                    totalRead += paginatedResults.Count;
+                    await ReadOffsetPaginated(totalRead);
 
-                    continuationToken = paginationBuilder.CreateContinuationToken(paginatedResults);
+                    totalRead += rowsToRead;
 
-                    if (totalRead % 1000 == 0)
-                    {
-                        var elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
-                        Console.WriteLine($"Checkpoint at {stopwatch.Elapsed} ({elapsedMilliseconds - lastCheckpoint})");
-                        lastCheckpoint = elapsedMilliseconds;
+                    Console.WriteLine();
 
-                        //foreach (var result in paginatedResults)
-                        //{
-                        //    Console.WriteLine($"{result.BlogId} - {result.AnotherId} - {result.Description} - {result.Reference}");
-                        //}
 
-                        //Console.WriteLine();
+                    //foreach (var result in paginatedResults)
+                    //{
+                    //    Console.WriteLine($"{result.BlogId} - {result.AnotherId} - {result.Description} - {result.Reference}");
+                    //}
 
-                        //Console.WriteLine(continuationToken);
-                        //Console.WriteLine();
-                    }
+                    //Console.WriteLine();
+
+                    //Console.WriteLine(continuationToken);
+                    //Console.WriteLine();
 
                     //Console.WriteLine($"TOTAL: {totalRead}");
                     //Console.WriteLine();

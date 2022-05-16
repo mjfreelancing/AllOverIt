@@ -25,15 +25,24 @@ namespace KeysetPaginationConsole.KeysetPagination
             public IReadOnlyCollection<ValueType> BackwardValues { get; init; }
         }
 
-        private readonly List<ColumnItem<TEntity>> _columns = new();
+        private sealed class FirstExpression
+        {
+            public bool IsPending => MemberAccess == null;
+            public MemberExpression MemberAccess { get; set; }
+            public ConstantExpression ReferenceValue { get; set; }
+        }
 
+        private readonly List<ColumnItem<TEntity>> _columns = new();
         private readonly IJsonSerializer _jsonSerializer;
         private readonly IQueryable<TEntity> _query;
         private readonly PaginationDirection _direction;
         private readonly int _pageSize;
         private readonly string _continuationToken;
+        private IOrderedQueryable<TEntity> _orderedQuery;
+
 
         // TODO: Introduce a factory so the jsonSerializer can be passed down
+
 
         public PaginationQueryBuilder(IJsonSerializer jsonSerializer, IQueryable<TEntity> query, PaginationDirection direction,
             int pageSize, string continuationToken)
@@ -70,23 +79,58 @@ namespace KeysetPaginationConsole.KeysetPagination
             _columns.Add(paginationItem);
         }
 
+
+
+        //public IQueryable<TEntity> Build()
+        //{
+        //    if (!_columns.Any())
+        //    {
+        //        throw new InvalidOperationException("At least one column must be defined for pagination.");
+        //    }
+
+        //    var orderedQuery = _columns.Aggregate(
+        //        (IOrderedQueryable<TEntity>) default, 
+        //        (current, next) => current == null
+        //            ? next.ApplyOrderBy(_query, _direction)
+        //            : next.ApplyThenOrderBy(current, _direction));
+
+        //    _orderedQuery = orderedQuery;
+
+        //    var filteredQuery = ApplyContinuationToken(orderedQuery, _continuationToken);
+
+        //    return filteredQuery.Take(_pageSize);
+        //}
+
         public IQueryable<TEntity> Build()
         {
-            if (!_columns.Any())
+            return BuildUsing(null);
+        }
+
+        public IQueryable<TEntity> BuildUsing(string continuationToken)
+        {
+            if (_orderedQuery == null)
             {
-                throw new InvalidOperationException("At least one column must be defined for pagination.");
+                if (!_columns.Any())
+                {
+                    throw new InvalidOperationException("At least one column must be defined for pagination.");
+                }
+
+                var orderedQuery = _columns.Aggregate(
+                    (IOrderedQueryable<TEntity>) default,
+                    (current, next) => current == null
+                        ? next.ApplyOrderBy(_query, _direction)
+                        : next.ApplyThenOrderBy(current, _direction));
+
+                _orderedQuery = orderedQuery;
             }
 
-            var orderedQuery = _columns.Aggregate(
-                (IOrderedQueryable<TEntity>) default, 
-                (current, next) => current == null
-                    ? next.ApplyOrderBy(_query, _direction)
-                    : next.ApplyThenOrderBy(current, _direction));
-
-            var filteredQuery = ApplyContinuationToken(orderedQuery, _continuationToken);
+            var filteredQuery = ApplyContinuationToken(_orderedQuery, continuationToken);
 
             return filteredQuery.Take(_pageSize);
         }
+
+
+
 
         public string CreateContinuationToken(IReadOnlyCollection<TEntity> results)
         {
@@ -114,6 +158,11 @@ namespace KeysetPaginationConsole.KeysetPagination
             return _jsonSerializer.SerializeObject(proxy).ToBase64();
         }
 
+
+
+
+
+
         // TODO: This can be static if we don't store the continuation
         private IQueryable<TEntity> ApplyContinuationToken(IOrderedQueryable<TEntity> orderedQuery, string _continuationToken)
         {
@@ -131,121 +180,142 @@ namespace KeysetPaginationConsole.KeysetPagination
                 : proxy.BackwardValues;
 
             // Decode, ensuring to set the correct value type otherwise the expression comparisons may fail
-            var referenceValues = valueTypes.SelectAsReadOnlyCollection(valueType => Convert.ChangeType(valueType.Value, valueType.TypeCode));
+            var referenceValues = valueTypes.SelectAsReadOnlyList(valueType => Convert.ChangeType(valueType.Value, valueType.TypeCode));
 
             var predicate = CreateFilterPredicate(referenceValues);
             return filteredQuery.Where(predicate);
         }
 
-        private Expression<Func<TEntity, bool>> CreateFilterPredicate(IReadOnlyCollection<object> referenceValues)
+
+
+
+
+        private Expression<Func<TEntity, bool>> CreateFilterPredicate(IReadOnlyList<object> referenceValues)
         {
-            // A composite keyset pagination in sql looks something like this:
-            //   (x, y, ...) > (a, b, ...)
-            // Where, x/y/... represent the column and a/b/... represent the reference's respective values.
+            // Fully explained at https://use-the-index-luke.com/sql/partial-results/fetch-next-page
             //
-            // In sql standard this syntax is called "row value". Check here: https://use-the-index-luke.com/sql/partial-results/fetch-next-page#sb-row-values
-            // Unfortunately, not all databases support this properly.
-            // Further, if we were to use this we would somehow need EF Core to recognise it and translate it
-            // perhaps by using a new DbFunction (https://docs.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.dbfunctions).
-            // There's an ongoing issue for this here: https://github.com/dotnet/efcore/issues/26822
+            // row-value syntax is part of the SQL standard and looks like this:
             //
-            // In addition, row value won't work for mixed ordered columns. i.e if x > a but y < b.
-            // So even if we can use it we'll still have to fallback to this logic in these cases.
+            //    (x, y, ...) > (a, b, ...)
             //
-            // The generalized expression for this in pseudocode is:
+            // But is isn't supported by all databases. Also, row-value does not work for mixed column ordering, such as this pseudocode:
+            //
+            //    (x > a) AND (y < b)
+            //
+            // The alternative is a variant that looks like this pseudocode:
+            //
             //   (x > a) OR
             //   (x = a AND y > b) OR
-            //   (x = a AND y = b AND z > c) OR...
+            //   (x = a AND y = b AND z > c)
             //
-            // Of course, this will be a bit more complex when ASC and DESC are mixed.
-            // Assume x is ASC, y is DESC, and z is ASC:
-            //   (x > a) OR
-            //   (x = a AND y < b) OR
-            //   (x = a AND y = b AND z > c) OR...
+            // With additional consideration for when columns are ascending vs descending (< vs >).
             //
-            // An optimization is to include an additional redundant wrapping clause for the 1st column when there are
-            // more than one column we're acting on, which would allow the db to use it as an access predicate on the 1st column.
-            // See here: https://use-the-index-luke.com/sql/partial-results/fetch-next-page#sb-equivalent-logic
+            // A further optimization is to include the first column in an additional leading predicate that allows the database to
+            // more efficiently apply an access predicate (typically when the column is indexed), such as this pseudocode:
+            //
+            //   (x >= a) AND (
+            //       (x > a) OR
+            //       (x = a AND y > b) OR
+            //       (x = a AND y = b AND z > c)
+            //   )
 
-            var firstMemberAccessExpression = default(MemberExpression);
-            var firstReferenceValueExpression = default(ConstantExpression);
+            var firstExpression = new FirstExpression();
+            
+            var param = Expression.Parameter(typeof(TEntity), "entity");    // Represents entity =>
 
-            // entity =>
-            var param = Expression.Parameter(typeof(TEntity), "entity");
-
-            var orExpression = default(BinaryExpression)!;
-            var innerLimit = 1;
-            // This loop compounds the outer OR expressions.
-            for (var i = 0; i < _columns.Count; i++)
-            {
-                var andExpression = default(BinaryExpression)!;
-
-                // This loop compounds the inner AND expressions.
-                // innerLimit implicitly grows from 1 to columns.Count by each iteration.
-                for (var j = 0; j < innerLimit; j++)
-                {
-                    var isInnerLastOperation = j + 1 == innerLimit;
-                    var item = _columns.ElementAt(j);
-                    var memberAccess = Expression.MakeMemberAccess(param, item.Property);
-                    var referenceValueExpression = Expression.Constant(referenceValues.ElementAt(j));
-
-                    if (firstMemberAccessExpression == null)
-                    {
-                        // This might be used later on in an optimization.
-                        firstMemberAccessExpression = memberAccess;
-                        firstReferenceValueExpression = referenceValueExpression;
-                    }
-
-                    BinaryExpression innerExpression;
-
-                    if (!isInnerLastOperation)
-                    {
-                        innerExpression = Expression.Equal(
-                            memberAccess,
-                            EnsureMatchingType(memberAccess, referenceValueExpression));
-                    }
-                    else
-                    {
-                        var compare = GetComparisonExpression(item, false);
-
-                        innerExpression = MakeComparisonExpression(
-                            item,
-                            memberAccess, referenceValueExpression,
-                            compare);
-                    }
-
-                    andExpression = andExpression == null ? innerExpression : Expression.And(andExpression, innerExpression);
-                }
-
-                orExpression = orExpression == null ? andExpression : Expression.Or(orExpression, andExpression);
-
-                innerLimit++;
-            }
-
-            var finalExpression = orExpression;
+            var finalExpression = CompoundOuterColumnExpressions(param, referenceValues, firstExpression);
 
             if (_columns.Count > 1)
             {
-                // Implement the optimization that allows an access predicate on the 1st column.
-                // This is done by generating the following expression:
-                //   (x >=|<= a) AND (previous generated expression)
+                // Apply the optimization that converts this pseudocode:
                 //
-                // This effectively adds a redundant clause on the 1st column, but it's a clause all dbs
-                // understand and can use as an access predicate (most commonly when the column is indexed).
+                // (X < a) OR (X = a AND Y < b)
+                //
+                // To:
+                // (X <= a) AND ((X < a) OR (X = a AND Y < b))
+                //
+                var firstColumn = _columns.First();
 
-                var firstItem = _columns.First();
+                var comparison = GetComparisonExpression(firstColumn, true);
 
-                var compare = GetComparisonExpression(firstItem, true);
-
-                var accessPredicateClause = MakeComparisonExpression(
-                    firstItem,
-                    firstMemberAccessExpression!, firstReferenceValueExpression!,
-                    compare);
+                var accessPredicateClause = CreateCompareToExpression(
+                    firstColumn,
+                    firstExpression.MemberAccess,
+                    firstExpression.ReferenceValue,
+                    comparison);
 
                 finalExpression = Expression.And(accessPredicateClause, finalExpression);
             }
 
             return Expression.Lambda<Func<TEntity, bool>>(finalExpression, param);
+        }
+
+        private BinaryExpression CompoundOuterColumnExpressions(ParameterExpression param, IReadOnlyList<object> referenceValues,
+            FirstExpression firstExpression)
+        {
+            var outerExpression = default(BinaryExpression)!;
+
+            // Compound the outer OR expressions
+            for (var idx = 0; idx < _columns.Count; idx++)
+            {
+                // Compound the inner AND expressions
+                var innerExpression = CompoundInnerColumnExpressions(param, referenceValues, idx + 1, firstExpression);
+
+                outerExpression = outerExpression == null
+                    ? innerExpression
+                    : Expression.Or(outerExpression, innerExpression);
+            }
+
+            return outerExpression;
+        }
+
+        private BinaryExpression CompoundInnerColumnExpressions(ParameterExpression param, IReadOnlyList<object> referenceValues, int columnCount,
+            FirstExpression firstExpression)
+        {
+            var innerExpression = default(BinaryExpression)!;
+
+            // Compound the inner AND expressions
+            for (var idx = 0; idx < columnCount; idx++)
+            {
+                var column = _columns[idx];
+                var memberAccess = Expression.MakeMemberAccess(param, column.Property);
+                var referenceValue = Expression.Constant(referenceValues[idx]);
+
+                // May be used to apply a predicate optimization
+                if (firstExpression.IsPending)
+                {
+                    firstExpression.MemberAccess = memberAccess;
+                    firstExpression.ReferenceValue = referenceValue;
+                }
+
+                BinaryExpression columnExpression;
+
+                if (idx == columnCount - 1)
+                {
+                    // The last column is a 'greater than' or 'less than' comparison
+                    var comparison = GetComparisonExpression(column, false);
+
+                    columnExpression = CreateCompareToExpression(
+                        column,
+                        memberAccess,
+                        referenceValue,
+                        comparison);
+                }
+                else
+                {
+                    // Ensure the value used in the comparison matches the type of the 'memberAccess'
+                    var referenceValueExpression = EnsureMatchingType(memberAccess, referenceValue);
+
+                    // All columns, except the last, are 'equal' comparisons
+                    columnExpression = Expression.Equal(memberAccess, referenceValueExpression);
+                }
+
+                innerExpression = innerExpression == null
+                    ? columnExpression
+                    : Expression.And(innerExpression, columnExpression);
+            }
+
+            return innerExpression;
         }
 
         private static IEnumerable<object> GetColumnValues(IEnumerable<ColumnItem<TEntity>> columns, object result)
@@ -255,8 +325,8 @@ namespace KeysetPaginationConsole.KeysetPagination
             return columns.Select(item => ReflectionCache.GetPropertyInfo(referenceType, item.Property.Name).GetValue(result));
         }
 
-        private static BinaryExpression MakeComparisonExpression(ColumnItem<TEntity> entity, MemberExpression memberAccess, ConstantExpression comparisonValue,
-            Func<Expression, Expression, BinaryExpression> compareTo)
+        private static BinaryExpression CreateCompareToExpression(ColumnItem<TEntity> entity, MemberExpression memberAccess,
+            ConstantExpression comparisonValue, Func<Expression, Expression, BinaryExpression> compareTo)
         {
             var propertyType = entity.Property.PropertyType;
 
@@ -269,8 +339,9 @@ namespace KeysetPaginationConsole.KeysetPagination
             }
             else
             {
-                var comparisonExpression = EnsureMatchingType(memberAccess, comparisonValue);
-                return compareTo.Invoke(memberAccess, comparisonExpression);
+                // Ensure the value used in the comparison matches the type of the 'memberAccess'
+                var comparisonValueExpression = EnsureMatchingType(memberAccess, comparisonValue);
+                return compareTo.Invoke(memberAccess, comparisonValueExpression);
             }
         }
 
