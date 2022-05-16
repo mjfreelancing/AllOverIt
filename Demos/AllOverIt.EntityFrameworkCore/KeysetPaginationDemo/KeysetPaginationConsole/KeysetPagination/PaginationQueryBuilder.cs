@@ -37,7 +37,6 @@ namespace KeysetPaginationConsole.KeysetPagination
         private readonly IQueryable<TEntity> _query;
         private readonly PaginationDirection _direction;
         private readonly int _pageSize;
-        private readonly string _continuationToken;
         private IOrderedQueryable<TEntity> _orderedQuery;
 
 
@@ -45,13 +44,12 @@ namespace KeysetPaginationConsole.KeysetPagination
 
 
         public PaginationQueryBuilder(IJsonSerializer jsonSerializer, IQueryable<TEntity> query, PaginationDirection direction,
-            int pageSize, string continuationToken)
+            int pageSize)
         {
             _jsonSerializer = jsonSerializer.WhenNotNull(nameof(jsonSerializer));
             _query = query.WhenNotNull(nameof(query));
             _direction = direction;
             _pageSize = pageSize;
-            _continuationToken = continuationToken;     // can be null/empty
         }
 
         public PaginationQueryBuilder<TEntity> ColumnAscending<TProperty>(Expression<Func<TEntity, TProperty>> expression)
@@ -81,32 +79,9 @@ namespace KeysetPaginationConsole.KeysetPagination
 
 
 
-        //public IQueryable<TEntity> Build()
-        //{
-        //    if (!_columns.Any())
-        //    {
-        //        throw new InvalidOperationException("At least one column must be defined for pagination.");
-        //    }
 
-        //    var orderedQuery = _columns.Aggregate(
-        //        (IOrderedQueryable<TEntity>) default, 
-        //        (current, next) => current == null
-        //            ? next.ApplyOrderBy(_query, _direction)
-        //            : next.ApplyThenOrderBy(current, _direction));
 
-        //    _orderedQuery = orderedQuery;
-
-        //    var filteredQuery = ApplyContinuationToken(orderedQuery, _continuationToken);
-
-        //    return filteredQuery.Take(_pageSize);
-        //}
-
-        public IQueryable<TEntity> Build()
-        {
-            return BuildUsing(null);
-        }
-
-        public IQueryable<TEntity> BuildUsing(string continuationToken)
+        public IQueryable<TEntity> Build(string continuationToken = default)
         {
             if (_orderedQuery == null)
             {
@@ -163,17 +138,16 @@ namespace KeysetPaginationConsole.KeysetPagination
 
 
 
-        // TODO: This can be static if we don't store the continuation
-        private IQueryable<TEntity> ApplyContinuationToken(IOrderedQueryable<TEntity> orderedQuery, string _continuationToken)
+        private IQueryable<TEntity> ApplyContinuationToken(IOrderedQueryable<TEntity> orderedQuery, string continuationToken)
         {
             var filteredQuery = orderedQuery.AsQueryable();
 
-            if (_continuationToken.IsNullOrEmpty())
+            if (continuationToken.IsNullOrEmpty())
             {
                 return filteredQuery;
             }
 
-            var proxy = _jsonSerializer.DeserializeObject<ContinuationTokenProxy>(_continuationToken.FromBase64());
+            var proxy = _jsonSerializer.DeserializeObject<ContinuationTokenProxy>(continuationToken.FromBase64());
 
             var valueTypes = _direction == PaginationDirection.Forward
                 ? proxy.ForwardValues

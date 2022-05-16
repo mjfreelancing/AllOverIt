@@ -2,6 +2,7 @@
 using AllOverIt.Extensions;
 using AllOverIt.GenericHost;
 using KeysetPaginationConsole.Entities;
+using KeysetPaginationConsole.KeysetPagination;
 using KeysetPaginationConsole.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -11,8 +12,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AllOverIt.Serialization.NewtonsoftJson;
-using KeysetPaginationConsole.KeysetPagination;
 
 namespace KeysetPaginationConsole
 {
@@ -33,6 +32,8 @@ namespace KeysetPaginationConsole
 
             using (var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken))
             {
+                dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+
                 //await dbContext.Database.EnsureDeletedAsync(cancellationToken);
 
                 await dbContext.Database.MigrateAsync(cancellationToken);
@@ -43,7 +44,7 @@ namespace KeysetPaginationConsole
                 Console.WriteLine();
 
                 var rowsToRead = 1000;
-                var pageSize = 25;
+                var pageSize = 100;
 
                 // Base query
                 var query =
@@ -68,7 +69,7 @@ namespace KeysetPaginationConsole
                    };
 
                 var paginationBuilder = query
-                    .KeysetPaginate(PaginationDirection.Forward, pageSize)
+                    .KeysetPaginate(pageSize, PaginationDirection.Forward)
                     .ColumnAscending(item => item.Description)
                     .ColumnAscending(item => item.BlogId);
                     //.Build()
@@ -102,7 +103,7 @@ namespace KeysetPaginationConsole
 
                     do
                     {
-                        var paginatedQuery = paginationBuilder.BuildUsing(continuationToken);
+                        var paginatedQuery = paginationBuilder.Build(continuationToken);
 
                         //var paginatedQueryString = paginatedQuery.ToQueryString();
 
