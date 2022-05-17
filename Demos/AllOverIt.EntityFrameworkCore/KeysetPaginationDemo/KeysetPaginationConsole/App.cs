@@ -9,7 +9,9 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,6 +19,12 @@ namespace KeysetPaginationConsole
 {
     public sealed class App : ConsoleAppBase
     {
+        private class ContinuationTokens
+        {
+            public string Next { get; set; }
+            public string Previous { get; set; }
+        }
+
         private readonly IDbContextFactory<BloggingContext> _dbContextFactory;
         private readonly ILogger<App> _logger;
 
@@ -30,6 +38,20 @@ namespace KeysetPaginationConsole
         {
             _logger.LogInformation("StartAsync");
 
+            var doOffset = false;
+
+            var filename = @"C:\temp\paginated_results.txt";
+            var fs = File.Create(filename);
+
+            void WriteFileStreamLine(string description, int? id = default)
+            {
+                var bytes = id.HasValue
+                    ? Encoding.UTF8.GetBytes($"{description} : {id}{Environment.NewLine}")
+                    : Encoding.UTF8.GetBytes($"{description}");
+
+                fs.Write(bytes, 0, bytes.Length);
+            }
+
             using (var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken))
             {
                 dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
@@ -38,7 +60,7 @@ namespace KeysetPaginationConsole
 
                 await dbContext.Database.MigrateAsync(cancellationToken);
 
-                await CreateDataIfRequired(10_000_000);
+                await CreateDataIfRequired(2_000);
 
                 Console.WriteLine("Starting...");
                 Console.WriteLine();
@@ -74,9 +96,9 @@ namespace KeysetPaginationConsole
                     .ColumnAscending(item => item.BlogId);
                     //.Build()
 
-                var continuationToken = string.Empty;
-
                 var stopwatch = Stopwatch.StartNew();
+
+                var continuationTokens = new ContinuationTokens();
 
                 void LogCheckpoint(int recordsRead, double elapsed, string queryString, int firstId, int lastId, bool newline)
                 {
@@ -94,7 +116,7 @@ namespace KeysetPaginationConsole
                 }
 
                 // Keyset paginated, with the overhead of creating a continuation token
-                async Task<bool> ReadKeysetPaginated(int readSoFar)
+                async Task<bool> ReadKeysetPaginated(int readSoFar, bool forward)
                 {
                     var lastCheckpoint = stopwatch.ElapsedMilliseconds;
                     double elapsed;
@@ -103,6 +125,10 @@ namespace KeysetPaginationConsole
 
                     do
                     {
+                        var continuationToken = forward
+                            ? continuationTokens.Next
+                            : continuationTokens.Previous;
+
                         var paginatedQuery = paginationBuilder.Build(continuationToken);
 
                         //var paginatedQueryString = paginatedQuery.ToQueryString();
@@ -114,19 +140,30 @@ namespace KeysetPaginationConsole
                             return false;
                         }
 
+                        WriteFileStreamLine($"*** Page Start ***{Environment.NewLine}{Environment.NewLine}");
+
+                        foreach (var result in paginatedResults)
+                        {
+                            WriteFileStreamLine(result.Description, result.BlogId);
+                        }
+
+                        WriteFileStreamLine($"{Environment.NewLine}*** Page End ***{Environment.NewLine}");
+
                         readSoFar += pageSize;
-                        continuationToken = paginationBuilder.CreateContinuationToken(paginatedResults);
+
+                        continuationTokens.Next = paginationBuilder.CreateContinuationToken(ContinuationDirection.NextPage, paginatedResults);
+                        continuationTokens.Previous = paginationBuilder.CreateContinuationToken(ContinuationDirection.PreviousPage, paginatedResults);
 
                         if (readSoFar % rowsToRead == 0)
                         {
                             firstId = paginatedResults.First().BlogId;
                             lastId = paginatedResults.Last().BlogId;
                         }
+
                     } while (readSoFar % rowsToRead != 0);
 
                     elapsed = stopwatch.ElapsedMilliseconds - lastCheckpoint;
 
-                    // paginatedQueryString
                     LogCheckpoint(readSoFar, elapsed, null, firstId, lastId, false);
 
                     return true;
@@ -163,47 +200,65 @@ namespace KeysetPaginationConsole
 
                     elapsed = stopwatch.ElapsedMilliseconds - lastCheckpoint;
 
-                    // pagedOffsetQueryString
                     LogCheckpoint(readSoFar, elapsed, null, firstId, lastId, false);
 
                     return true;
                 }
 
                 var totalRead = 0;
+                var paginatedCount = 0;
+                var forward = true;
 
                 while (true)
                 {
-                    if (! await ReadKeysetPaginated(totalRead))
+                    if (! await ReadKeysetPaginated(totalRead, forward))
                     {
                         break;
                     }
 
-                    await ReadOffsetPaginated(totalRead);
+                    var wasForward = forward;
+
+                    if (forward)
+                    {
+                        paginatedCount += rowsToRead;
+
+                        forward = paginatedCount != rowsToRead * 2;
+
+                        if (!forward)
+                        {
+                            paginatedCount -= rowsToRead;
+                        }
+                    }
+                    else
+                    {
+                        paginatedCount -= rowsToRead;
+
+                        forward = paginatedCount != 0;
+                    }
+
+                    if (forward != wasForward)
+                    {
+                        Console.WriteLine($"{Environment.NewLine}Reversing{Environment.NewLine}{Environment.NewLine}");
+                        WriteFileStreamLine($"{Environment.NewLine}Reversing{Environment.NewLine}{Environment.NewLine}");
+                        await fs.FlushAsync();
+                    }
+
+                    if (doOffset)
+                    {
+                        await ReadOffsetPaginated(totalRead);
+                    }
 
                     totalRead += rowsToRead;
 
                     Console.WriteLine();
-
-
-                    //foreach (var result in paginatedResults)
-                    //{
-                    //    Console.WriteLine($"{result.BlogId} - {result.AnotherId} - {result.Description} - {result.Reference}");
-                    //}
-
-                    //Console.WriteLine();
-
-                    //Console.WriteLine(continuationToken);
-                    //Console.WriteLine();
-
-                    //Console.WriteLine($"TOTAL: {totalRead}");
-                    //Console.WriteLine();
-
-                    //Console.ReadKey(true);
                 }
             }
 
+            fs.Flush();
+
             ExitCode = 0;
 
+            Console.WriteLine("DONE");
             Console.WriteLine();
             Console.ReadKey();
         }

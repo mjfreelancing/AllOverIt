@@ -4,7 +4,12 @@ using System.Reflection;
 
 namespace KeysetPaginationConsole.KeysetPagination
 {
-    internal abstract class ColumnItem<TEntity> where TEntity : class
+    public interface IColumnItem
+    {
+        PropertyInfo Property { get; }
+    }
+
+    internal abstract class ColumnItem<TEntity> : IColumnItem where TEntity : class
     {
         public PropertyInfo Property { get; init; }
         public bool IsAscending { get; init; }

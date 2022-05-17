@@ -1,30 +1,18 @@
-﻿using System;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Extensions;
+using AllOverIt.Serialization.Abstractions;
+using KeysetPaginationConsole.KeysetPagination.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using AllOverIt.Assertion;
-using AllOverIt.Extensions;
-using AllOverIt.Reflection;
-using AllOverIt.Serialization.Abstractions;
 
 namespace KeysetPaginationConsole.KeysetPagination
 {
     public sealed class PaginationQueryBuilder<TEntity> : PaginationQueryBuilderBase
         where TEntity : class
     {
-        private sealed class ValueType
-        {
-            public TypeCode TypeCode { get; init; }
-            public object Value { get; init; }
-        }
-
-        private sealed class ContinuationTokenProxy
-        {
-            public IReadOnlyCollection<ValueType> ForwardValues { get; init; }
-            public IReadOnlyCollection<ValueType> BackwardValues { get; init; }
-        }
-
         private sealed class FirstExpression
         {
             public bool IsPending => MemberAccess == null;
@@ -37,20 +25,37 @@ namespace KeysetPaginationConsole.KeysetPagination
         private readonly IQueryable<TEntity> _query;
         private readonly PaginationDirection _direction;
         private readonly int _pageSize;
-        private IOrderedQueryable<TEntity> _orderedQuery;
+        
+        private ContinuationTokenEncoder _continuationTokenEncoder;
+        private ContinuationTokenEncoder ContinuationTokenEncoder => GetContinuationTokenEncoder();
+
+        // A cached query based on the _direction
+        private IOrderedQueryable<TEntity> _directionQuery;
+        private IOrderedQueryable<TEntity> DirectionQuery => GetDirectionQuery();
+
+        // A cached query based on the reverse _direction
+        private IOrderedQueryable<TEntity> _directionReverseQuery;
+        private IOrderedQueryable<TEntity> DirectionReverseQuery => GetDirectionReverseQuery();
+
 
 
         // TODO: Introduce a factory so the jsonSerializer can be passed down
 
 
-        public PaginationQueryBuilder(IJsonSerializer jsonSerializer, IQueryable<TEntity> query, PaginationDirection direction,
-            int pageSize)
+        public PaginationQueryBuilder(IJsonSerializer jsonSerializer, IQueryable<TEntity> query, PaginationDirection direction, int pageSize)
         {
             _jsonSerializer = jsonSerializer.WhenNotNull(nameof(jsonSerializer));
             _query = query.WhenNotNull(nameof(query));
             _direction = direction;
             _pageSize = pageSize;
+
         }
+
+        // **************** ?? Create static factory methods to build a suitable builder ?? ****************
+
+
+
+
 
         public PaginationQueryBuilder<TEntity> ColumnAscending<TProperty>(Expression<Func<TEntity, TProperty>> expression)
         {
@@ -77,94 +82,99 @@ namespace KeysetPaginationConsole.KeysetPagination
             _columns.Add(paginationItem);
         }
 
-
-
-
-
         public IQueryable<TEntity> Build(string continuationToken = default)
         {
-            if (_orderedQuery == null)
+            if (!_columns.Any())
             {
-                if (!_columns.Any())
-                {
-                    throw new InvalidOperationException("At least one column must be defined for pagination.");
-                }
-
-                var orderedQuery = _columns.Aggregate(
-                    (IOrderedQueryable<TEntity>) default,
-                    (current, next) => current == null
-                        ? next.ApplyOrderBy(_query, _direction)
-                        : next.ApplyThenOrderBy(current, _direction));
-
-                _orderedQuery = orderedQuery;
+                throw new InvalidOperationException("At least one column must be defined for pagination.");
             }
 
-            var filteredQuery = ApplyContinuationToken(_orderedQuery, continuationToken);
+            // Returns ContinuationToken.None if there is no token - which defaults to Forward
+            var continuationProxy = ContinuationTokenEncoder.Decode(continuationToken);
 
-            return filteredQuery.Take(_pageSize);
-        }
+            var requiredDirection = continuationProxy.Direction;
 
+            var orderedQuery = requiredDirection == _direction
+                ? DirectionQuery
+                : DirectionReverseQuery;
 
-
-
-        public string CreateContinuationToken(IReadOnlyCollection<TEntity> results)
-        {
-            _ = results.WhenNotNullOrEmpty(nameof(results));        // Can't create a token when there are no results
-
-            IReadOnlyCollection<ValueType> GetValueTypes(TEntity result)
-            {
-                return GetColumnValues(_columns, result)
-                    .SelectAsReadOnlyCollection(value => new ValueType
-                    {
-                        TypeCode = Type.GetTypeCode(value.GetType()),
-                        Value = value
-                    });
-            }
-
-            var forwardValues = GetValueTypes(results.Last());
-            var backwardValues = GetValueTypes(results.First());
-
-            var proxy = new ContinuationTokenProxy
-            {
-                ForwardValues = forwardValues,
-                BackwardValues = backwardValues,
-            };
-
-            return _jsonSerializer.SerializeObject(proxy).ToBase64();
-        }
-
-
-
-
-
-
-        private IQueryable<TEntity> ApplyContinuationToken(IOrderedQueryable<TEntity> orderedQuery, string continuationToken)
-        {
             var filteredQuery = orderedQuery.AsQueryable();
 
-            if (continuationToken.IsNullOrEmpty())
+            // There's no reference values when ContinuationToken.None so just get the first page
+            if (continuationProxy != ContinuationToken.None)
             {
-                return filteredQuery;
+                filteredQuery = ApplyContinuationToken(filteredQuery, continuationProxy);
             }
 
-            var proxy = _jsonSerializer.DeserializeObject<ContinuationTokenProxy>(continuationToken.FromBase64());
+            filteredQuery = filteredQuery.Take(_pageSize);
 
-            var valueTypes = _direction == PaginationDirection.Forward
-                ? proxy.ForwardValues
-                : proxy.BackwardValues;
+            if (requiredDirection == PaginationDirection.Backward)
+            {
+                // This does wrap the query within an outer select but it saves the caller having to (remember to)
+                // reverse the results after they are returned and it also means we don't need to be concerned with
+                // asynchronous yielding.
+                filteredQuery = filteredQuery.Reverse();
+            }
 
+            return filteredQuery;
+        }
+
+        // The caller can create a previous/next page token as desired - the first/last row is selected based on the direction
+        public string CreateContinuationToken(ContinuationDirection direction, IReadOnlyCollection<TEntity> references)
+        {
+            _ = references.WhenNotNullOrEmpty(nameof(references));        // Can't create a token when there are no results - TODO: Create a custom exception
+
+            return ContinuationTokenEncoder.Encode(direction, references);
+        }
+
+        // Allows a continuation token to be created based on an individual reference row
+        public string CreateContinuationToken(ContinuationDirection direction, TEntity reference)
+        {
+            _ = reference.WhenNotNull(nameof(reference));        // Can't create a token when there are no results - TODO: Create a custom exception
+
+            return ContinuationTokenEncoder.Encode(direction, reference);
+        }
+
+        private IOrderedQueryable<TEntity> GetDirectionQuery()
+        {
+            _directionQuery ??= GetDirectionBasedQuery(_direction);
+
+            return _directionQuery;
+        }
+
+        private IOrderedQueryable<TEntity> GetDirectionReverseQuery()
+        {
+            _directionReverseQuery ??= GetDirectionBasedQuery(_direction.Reverse());
+
+            return _directionReverseQuery;
+        }
+
+        private ContinuationTokenEncoder GetContinuationTokenEncoder()
+        {
+            _continuationTokenEncoder ??= new ContinuationTokenEncoder(_columns, _direction, _jsonSerializer);
+            return _continuationTokenEncoder;
+        }
+
+        private IOrderedQueryable<TEntity> GetDirectionBasedQuery(PaginationDirection direction)
+        {
+            return _columns.Aggregate(
+                (IOrderedQueryable<TEntity>) default,
+                (current, next) => current == null
+                    ? next.ApplyOrderBy(_query, direction)
+                    : next.ApplyThenOrderBy(current, direction));
+        }
+
+        private IQueryable<TEntity> ApplyContinuationToken(IQueryable<TEntity> filteredQuery, ContinuationToken continuationToken)
+        {
             // Decode, ensuring to set the correct value type otherwise the expression comparisons may fail
-            var referenceValues = valueTypes.SelectAsReadOnlyList(valueType => Convert.ChangeType(valueType.Value, valueType.TypeCode));
+            var referenceValues = continuationToken.ValueTypes.SelectAsReadOnlyList(valueType => Convert.ChangeType(valueType.Value, valueType.TypeCode));
 
-            var predicate = CreateFilterPredicate(referenceValues);
+            var predicate = CreateFilterPredicate(continuationToken.Direction, referenceValues);
+
             return filteredQuery.Where(predicate);
         }
 
-
-
-
-
-        private Expression<Func<TEntity, bool>> CreateFilterPredicate(IReadOnlyList<object> referenceValues)
+        private Expression<Func<TEntity, bool>> CreateFilterPredicate(PaginationDirection direction, IReadOnlyList<object> referenceValues)
         {
             // Fully explained at https://use-the-index-luke.com/sql/partial-results/fetch-next-page
             //
@@ -197,7 +207,7 @@ namespace KeysetPaginationConsole.KeysetPagination
             
             var param = Expression.Parameter(typeof(TEntity), "entity");    // Represents entity =>
 
-            var finalExpression = CompoundOuterColumnExpressions(param, referenceValues, firstExpression);
+            var finalExpression = CompoundOuterColumnExpressions(direction, param, referenceValues, firstExpression);
 
             if (_columns.Count > 1)
             {
@@ -210,7 +220,7 @@ namespace KeysetPaginationConsole.KeysetPagination
                 //
                 var firstColumn = _columns.First();
 
-                var comparison = GetComparisonExpression(firstColumn, true);
+                var comparison = GetComparisonExpression(direction, firstColumn, true);
 
                 var accessPredicateClause = CreateCompareToExpression(
                     firstColumn,
@@ -224,7 +234,7 @@ namespace KeysetPaginationConsole.KeysetPagination
             return Expression.Lambda<Func<TEntity, bool>>(finalExpression, param);
         }
 
-        private BinaryExpression CompoundOuterColumnExpressions(ParameterExpression param, IReadOnlyList<object> referenceValues,
+        private BinaryExpression CompoundOuterColumnExpressions(PaginationDirection direction, ParameterExpression param, IReadOnlyList<object> referenceValues,
             FirstExpression firstExpression)
         {
             var outerExpression = default(BinaryExpression)!;
@@ -233,7 +243,7 @@ namespace KeysetPaginationConsole.KeysetPagination
             for (var idx = 0; idx < _columns.Count; idx++)
             {
                 // Compound the inner AND expressions
-                var innerExpression = CompoundInnerColumnExpressions(param, referenceValues, idx + 1, firstExpression);
+                var innerExpression = CompoundInnerColumnExpressions(direction, param, referenceValues, idx + 1, firstExpression);
 
                 outerExpression = outerExpression == null
                     ? innerExpression
@@ -243,8 +253,8 @@ namespace KeysetPaginationConsole.KeysetPagination
             return outerExpression;
         }
 
-        private BinaryExpression CompoundInnerColumnExpressions(ParameterExpression param, IReadOnlyList<object> referenceValues, int columnCount,
-            FirstExpression firstExpression)
+        private BinaryExpression CompoundInnerColumnExpressions(PaginationDirection direction, ParameterExpression param, IReadOnlyList<object> referenceValues,
+            int columnCount, FirstExpression firstExpression)
         {
             var innerExpression = default(BinaryExpression)!;
 
@@ -267,7 +277,7 @@ namespace KeysetPaginationConsole.KeysetPagination
                 if (idx == columnCount - 1)
                 {
                     // The last column is a 'greater than' or 'less than' comparison
-                    var comparison = GetComparisonExpression(column, false);
+                    var comparison = GetComparisonExpression(direction, column, false);
 
                     columnExpression = CreateCompareToExpression(
                         column,
@@ -292,19 +302,19 @@ namespace KeysetPaginationConsole.KeysetPagination
             return innerExpression;
         }
 
-        private static IEnumerable<object> GetColumnValues(IEnumerable<ColumnItem<TEntity>> columns, object result)
-        {
-            var referenceType = result.GetType().GetTypeInfo();
+        //private static IEnumerable<object> GetColumnValues(IEnumerable<IColumnItem> columns, object reference)
+        //{
+        //    var referenceType = reference.GetType().GetTypeInfo();
 
-            return columns.Select(item => ReflectionCache.GetPropertyInfo(referenceType, item.Property.Name).GetValue(result));
-        }
+        //    return columns.Select(item => ReflectionCache.GetPropertyInfo(referenceType, item.Property.Name).GetValue(reference));
+        //}
 
         private static BinaryExpression CreateCompareToExpression(ColumnItem<TEntity> entity, MemberExpression memberAccess,
             ConstantExpression comparisonValue, Func<Expression, Expression, BinaryExpression> compareTo)
         {
             var propertyType = entity.Property.PropertyType;
 
-            // Some types, such as string/Guid, require the use of CompareTo() for < and > operations
+            // Some types require the use of CompareTo() for < and > operations
             if (TryGetComparisonMethodInfo(propertyType, out var compareToMethod))
             {
                 // entity.Property.CompareTo(comparisonValue)
@@ -330,13 +340,14 @@ namespace KeysetPaginationConsole.KeysetPagination
             return targetExpression;
         }
 
-        private Func<Expression, Expression, BinaryExpression> GetComparisonExpression(ColumnItem<TEntity> item, bool orEqual)
+        private static Func<Expression, Expression, BinaryExpression> GetComparisonExpression(PaginationDirection direction,
+            ColumnItem<TEntity> item, bool orEqual)
         {
-            var greaterThan = _direction switch
+            var greaterThan = direction switch
             {
                 PaginationDirection.Forward => item.IsAscending,
                 PaginationDirection.Backward => !item.IsAscending,
-                _ => throw new InvalidOperationException($"Unknown direction {_direction}."),
+                _ => throw new InvalidOperationException($"Unknown direction {direction}."),
             };
 
             return (greaterThan, orEqual) switch
