@@ -6,6 +6,7 @@ Version 5.7.0
 AllOverIt
   * Improvements to IAsyncCommand and AsyncCommandPipeline - now includes a cancellation token
   * Added PropertyInfo extension method CreateMemberAccessLambda()
+  * Added Clear() and Reset() to Breadcrumbs
 
 
 12 May 2022

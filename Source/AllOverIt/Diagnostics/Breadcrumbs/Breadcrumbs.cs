@@ -11,6 +11,7 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
         private interface IEnumerableWrapper
         {
             void Add(BreadcrumbData breadcrumb);
+            void Clear();
             IEnumerator<BreadcrumbData> GetEnumerator();
         }
 
@@ -22,6 +23,11 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
             public SingleThreadListWrapper(BreadcrumbsOptions options)
             {
                 _maxCapactiy = options.MaxCapacity;
+            }
+
+            public void Clear()
+            {
+                _breadcrumbs.Clear();
             }
 
             public void Add(BreadcrumbData breadcrumb)
@@ -69,6 +75,14 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
                 }
             }
 
+            public void Clear()
+            {
+                lock (_syncRoot)
+                {
+                    _breadcrumbs.Clear();
+                }
+            }
+
             public IEnumerator<BreadcrumbData> GetEnumerator()
             {
                 lock (_syncRoot)
@@ -85,11 +99,14 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
 
         private readonly IEnumerableWrapper _breadcrumbs;
 
-        /// <summary>Provides options that control how breadcrumb items are inserted and cached.</summary>
+        /// <inheritdoc />
+        public bool Enabled { get; set; } = true;
+
+        /// <inheritdoc />
         public BreadcrumbsOptions Options { get; }
 
-        /// <summary>The timestamp when breadcrumb collection begins.</summary>
-        public DateTime StartTimestamp { get; } = DateTime.Now;
+        /// <inheritdoc />
+        public DateTime StartTimestamp { get; private set; } = DateTime.Now;
 
         /// <summary>Constructor.</summary>
         /// <param name="options">Provides options that control how breadcrumb items are inserted and cached.</param>
@@ -113,9 +130,25 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
         {
             _ = breadcrumb.WhenNotNull(nameof(breadcrumb));
 
-            _breadcrumbs.Add(breadcrumb);
+            if (Enabled)
+            {
+                _breadcrumbs.Add(breadcrumb);
+            }
 
             return this;
+        }
+
+        /// <inheritdoc />
+        public void Clear()
+        {
+            _breadcrumbs.Clear();
+        }
+
+        /// <inheritdoc />
+        public void Reset()
+        {
+            Clear();
+            StartTimestamp = DateTime.Now;
         }
 
         IEnumerator IEnumerable.GetEnumerator()
