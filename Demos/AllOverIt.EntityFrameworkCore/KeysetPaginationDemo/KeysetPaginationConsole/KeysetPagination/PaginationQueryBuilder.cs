@@ -23,7 +23,7 @@ namespace KeysetPaginationConsole.KeysetPagination
         private readonly List<ColumnItem<TEntity>> _columns = new();
         private readonly IJsonSerializer _jsonSerializer;
         private readonly IQueryable<TEntity> _query;
-        private readonly PaginationDirection _direction;
+        private readonly PaginationDirection _paginationDirection;
         private readonly int _pageSize;
         
         private ContinuationTokenEncoder _continuationTokenEncoder;
@@ -46,7 +46,7 @@ namespace KeysetPaginationConsole.KeysetPagination
         {
             _jsonSerializer = jsonSerializer.WhenNotNull(nameof(jsonSerializer));
             _query = query.WhenNotNull(nameof(query));
-            _direction = direction;
+            _paginationDirection = direction;
             _pageSize = pageSize;
 
         }
@@ -92,9 +92,11 @@ namespace KeysetPaginationConsole.KeysetPagination
             // Returns ContinuationToken.None if there is no token - which defaults to Forward
             var continuationProxy = ContinuationTokenEncoder.Decode(continuationToken);
 
-            var requiredDirection = continuationProxy.Direction;
+            var requiredDirection = continuationProxy != ContinuationToken.None
+                ? continuationProxy.Direction
+                : _paginationDirection;
 
-            var orderedQuery = requiredDirection == _direction
+            var orderedQuery = requiredDirection == _paginationDirection
                 ? DirectionQuery
                 : DirectionReverseQuery;
 
@@ -137,21 +139,21 @@ namespace KeysetPaginationConsole.KeysetPagination
 
         private IOrderedQueryable<TEntity> GetDirectionQuery()
         {
-            _directionQuery ??= GetDirectionBasedQuery(_direction);
+            _directionQuery ??= GetDirectionBasedQuery(_paginationDirection);
 
             return _directionQuery;
         }
 
         private IOrderedQueryable<TEntity> GetDirectionReverseQuery()
         {
-            _directionReverseQuery ??= GetDirectionBasedQuery(_direction.Reverse());
+            _directionReverseQuery ??= GetDirectionBasedQuery(_paginationDirection.Reverse());
 
             return _directionReverseQuery;
         }
 
         private ContinuationTokenEncoder GetContinuationTokenEncoder()
         {
-            _continuationTokenEncoder ??= new ContinuationTokenEncoder(_columns, _direction, _jsonSerializer);
+            _continuationTokenEncoder ??= new ContinuationTokenEncoder(_columns, _paginationDirection, _jsonSerializer);
             return _continuationTokenEncoder;
         }
 

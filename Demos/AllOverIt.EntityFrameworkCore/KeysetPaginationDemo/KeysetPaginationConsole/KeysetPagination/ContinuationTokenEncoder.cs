@@ -29,10 +29,21 @@ namespace KeysetPaginationConsole.KeysetPagination
         {
             _ = references.WhenNotNullOrEmpty(nameof(references));        // Can't create a token when there are no results - TODO: Create a custom exception
 
-            // The first row will be the reference for the previous page and the last row will be the reference for the next page
-            var reference = continuationDirection == ContinuationDirection.PreviousPage
-               ? references.First()
-               : references.Last();
+            // Determine the required reference to use based on the pagination direction and the continuation direction
+            TEntity reference;
+
+            if (_paginationDirection == PaginationDirection.Forward)
+            {
+                reference = continuationDirection == ContinuationDirection.NextPage
+                   ? references.Last()
+                   : references.First();
+            }
+            else
+            {
+                reference = continuationDirection == ContinuationDirection.NextPage
+                   ? references.First()
+                   : references.Last();
+            }
 
             return Encode(continuationDirection, reference);
         }

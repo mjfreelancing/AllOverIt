@@ -1,5 +1,4 @@
-﻿using AllOverIt.Collections;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace KeysetPaginationConsole.KeysetPagination
@@ -18,6 +17,6 @@ namespace KeysetPaginationConsole.KeysetPagination
         public PaginationDirection Direction { get; init; } = PaginationDirection.Forward;
 
         // The reference values that identifies the row to traverse from
-        public IReadOnlyCollection<ValueType> ValueTypes { get; init; } = List.EmptyReadOnly<ValueType>();
+        public IReadOnlyCollection<ValueType> ValueTypes { get; init; } // Cannot default to List.EmptyReadOnly<ValueType>() as it affects deserialization
     }
 }

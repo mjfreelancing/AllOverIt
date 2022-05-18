@@ -21,6 +21,7 @@ namespace KeysetPaginationConsole
     {
         private class ContinuationTokens
         {
+            public string Current { get; set; }
             public string Next { get; set; }
             public string Previous { get; set; }
         }
@@ -37,8 +38,6 @@ namespace KeysetPaginationConsole
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("StartAsync");
-
-            var doOffset = false;
 
             var filename = @"C:\temp\paginated_results.txt";
             var fs = File.Create(filename);
@@ -65,8 +64,8 @@ namespace KeysetPaginationConsole
                 Console.WriteLine("Starting...");
                 Console.WriteLine();
 
-                var rowsToRead = 1000;
-                var pageSize = 100;
+                var rowsToRead = 50;
+                var pageSize = 25;
 
                 // Base query
                 var query =
@@ -78,17 +77,6 @@ namespace KeysetPaginationConsole
                         blog.Reference,
                         blog.AnotherId
                     };
-
-                var offsetQuery =
-                   from blog in dbContext.Blogs
-                   orderby blog.Description, blog.Id
-                   select new
-                   {
-                       BlogId = blog.Id,
-                       blog.Description,
-                       blog.Reference,
-                       blog.AnotherId
-                   };
 
                 var paginationBuilder = query
                     .KeysetPaginate(pageSize, PaginationDirection.Forward)
@@ -151,6 +139,7 @@ namespace KeysetPaginationConsole
 
                         readSoFar += pageSize;
 
+                        continuationTokens.Current = continuationToken;
                         continuationTokens.Next = paginationBuilder.CreateContinuationToken(ContinuationDirection.NextPage, paginatedResults);
                         continuationTokens.Previous = paginationBuilder.CreateContinuationToken(ContinuationDirection.PreviousPage, paginatedResults);
 
@@ -169,51 +158,20 @@ namespace KeysetPaginationConsole
                     return true;
                 }
 
-                async Task<bool> ReadOffsetPaginated(int readSoFar)
-                {
-                    var lastCheckpoint = stopwatch.ElapsedMilliseconds;
-                    double elapsed;
-                    var firstId = 0;
-                    var lastId = 0;
-
-                    do
-                    {
-                        var pagedOffsetQuery = offsetQuery.Skip(readSoFar).Take(pageSize);
-
-                        //var pagedOffsetQueryString = pagedOffsetQuery.ToQueryString();
-
-                        var paginatedResults = await pagedOffsetQuery.ToListAsync(cancellationToken);
-
-                        if (!paginatedResults.Any())
-                        {
-                            return false;
-                        }
-
-                        readSoFar += pageSize;
-
-                        if (readSoFar % rowsToRead == 0)
-                        {
-                            firstId = paginatedResults.First().BlogId;
-                            lastId = paginatedResults.Last().BlogId;
-                        }
-                    } while (readSoFar % rowsToRead != 0);
-
-                    elapsed = stopwatch.ElapsedMilliseconds - lastCheckpoint;
-
-                    LogCheckpoint(readSoFar, elapsed, null, firstId, lastId, false);
-
-                    return true;
-                }
-
                 var totalRead = 0;
                 var paginatedCount = 0;
                 var forward = true;
 
                 while (true)
                 {
+                    // TODO: How to know if I'm at the first page or if there is a next page - not sure it can be done without making another round trip to try and get a single row.
                     if (! await ReadKeysetPaginated(totalRead, forward))
                     {
-                        break;
+                        // for now....
+                        forward = true;
+                        continuationTokens.Next = null;
+
+                        //break;
                     }
 
                     var wasForward = forward;
@@ -223,17 +181,12 @@ namespace KeysetPaginationConsole
                         paginatedCount += rowsToRead;
 
                         forward = paginatedCount != rowsToRead * 2;
-
-                        if (!forward)
-                        {
-                            paginatedCount -= rowsToRead;
-                        }
                     }
                     else
                     {
                         paginatedCount -= rowsToRead;
 
-                        forward = paginatedCount != 0;
+                        forward = paginatedCount == 0;
                     }
 
                     if (forward != wasForward)
@@ -241,11 +194,6 @@ namespace KeysetPaginationConsole
                         Console.WriteLine($"{Environment.NewLine}Reversing{Environment.NewLine}{Environment.NewLine}");
                         WriteFileStreamLine($"{Environment.NewLine}Reversing{Environment.NewLine}{Environment.NewLine}");
                         await fs.FlushAsync();
-                    }
-
-                    if (doOffset)
-                    {
-                        await ReadOffsetPaginated(totalRead);
                     }
 
                     totalRead += rowsToRead;
