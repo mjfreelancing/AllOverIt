@@ -7,6 +7,8 @@ AllOverIt
   * Improvements to IAsyncCommand and AsyncCommandPipeline - now includes a cancellation token
   * Added PropertyInfo extension method CreateMemberAccessLambda()
   * Added Clear(), Reset(), AddCallSite(), and AddExtendedCallSite() to Breadcrumbs
+  * Added ReadOnlyCollection, ReadOnlyList, and ReadOnlyDictionary implementations that are  truly immutable
+  * Updated Collection/List/Dictionary EmptyReadOnly<T>() so the underlying collection is truly immutable
 
 
 12 May 2022

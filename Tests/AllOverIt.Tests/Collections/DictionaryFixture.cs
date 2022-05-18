@@ -2,6 +2,7 @@
 using AllOverIt.Fixture;
 using FluentAssertions;
 using System.Collections.Generic;
+using Xunit;
 
 namespace AllOverIt.Tests.Collections
 {
@@ -9,6 +10,7 @@ namespace AllOverIt.Tests.Collections
     {
         public class EmptyReadOnly : DictionaryFixture
         {
+            [Fact]
             public void Should_Return_Empty_List()
             {
                 var actual = Dictionary.EmptyReadOnly<int, string>();
@@ -16,11 +18,20 @@ namespace AllOverIt.Tests.Collections
                 actual.Should().BeEmpty();
             }
 
+            [Fact]
             public void Should_Return_As_ReadOnly()
             {
                 var actual = Dictionary.EmptyReadOnly<int, string>();
 
-                actual.Should().BeOfType<IReadOnlyDictionary<int, string>>();
+                actual.Should().BeAssignableTo<IReadOnlyDictionary<int, string>>();
+            }
+
+            [Fact]
+            public void Should_Be_Immutable()
+            {
+                var actual = Dictionary.EmptyReadOnly<int, string>();
+
+                actual.Should().NotBeAssignableTo<ICollection<KeyValuePair<int, string>>>();
             }
         }
     }
