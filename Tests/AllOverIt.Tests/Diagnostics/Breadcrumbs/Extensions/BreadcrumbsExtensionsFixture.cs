@@ -4,6 +4,7 @@ using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Xunit;
 
 namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
@@ -11,6 +12,175 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
     public class BreadcrumbsExtensionsFixture : FixtureBase
     {
         private readonly AllOverIt.Diagnostics.Breadcrumbs.Breadcrumbs _breadcrumbs = new();
+
+        public class AddCallSite : BreadcrumbsExtensionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Breadcrumbs_Null()
+            {
+                Invoking(() => BreadcrumbsExtensions.AddCallSite(null, this))
+                  .Should()
+                  .Throw<ArgumentNullException>()
+                  .WithNamedMessageWhenNull("breadcrumbs");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Caller_Null()
+            {
+                Invoking(() => BreadcrumbsExtensions.AddCallSite(_breadcrumbs, null))
+                  .Should()
+                  .Throw<ArgumentNullException>()
+                  .WithNamedMessageWhenNull("caller");
+            }
+
+            [Fact]
+            public void Should_Throw_When_CallerName_Null()
+            {
+                Invoking(() => BreadcrumbsExtensions.AddCallSite(_breadcrumbs, this, null, null))
+                  .Should()
+                  .Throw<ArgumentNullException>()
+                  .WithNamedMessageWhenNull("callerName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_CallerName_Empty()
+            {
+                Invoking(() => BreadcrumbsExtensions.AddCallSite(_breadcrumbs, this, null, string.Empty))
+                  .Should()
+                  .Throw<ArgumentException>()
+                  .WithNamedMessageWhenEmpty("callerName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_CallerName_Whitespace()
+            {
+                Invoking(() => BreadcrumbsExtensions.AddCallSite(_breadcrumbs, this, null, "  "))
+                  .Should()
+                  .Throw<ArgumentException>()
+                  .WithNamedMessageWhenEmpty("callerName");
+            }
+
+            [Fact]
+            public void Should_Not_Throw_When_Metadata_Null()
+            {
+                Invoking(() => BreadcrumbsExtensions.AddCallSite(_breadcrumbs, this, null))
+                  .Should()
+                  .NotThrow();
+            }
+
+            [Fact]
+            public void Should_Add_Breadcrumb_Message()
+            {
+                var _ = BreadcrumbsExtensions.AddCallSite(_breadcrumbs, this);
+
+                var actual = _breadcrumbs.ToList();
+
+                var expected = new[]
+                {
+                    new
+                    {
+                        CallerName = (string)null,
+                        FilePath = (string)null,
+                        LineNumber = 0,
+                        Message = "Call Site: AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions.BreadcrumbsExtensionsFixture+AddCallSite.Should_Add_Breadcrumb_Message()",
+                        Metadata = (object)null
+                    }
+                };
+
+                expected
+                    .Should()
+                    .BeEquivalentTo(
+                        actual,
+                        options => options
+                            .Excluding(model => model.Timestamp)
+                            .Excluding(model => model.TimestampUtc));
+            }
+
+        }
+
+        public class AddExtendedCallSite : BreadcrumbsExtensionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Breadcrumbs_Null()
+            {
+                Invoking(() => BreadcrumbsExtensions.AddExtendedCallSite(null, this))
+                  .Should()
+                  .Throw<ArgumentNullException>()
+                  .WithNamedMessageWhenNull("breadcrumbs");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Caller_Null()
+            {
+                Invoking(() => BreadcrumbsExtensions.AddExtendedCallSite(_breadcrumbs, null))
+                  .Should()
+                  .Throw<ArgumentNullException>()
+                  .WithNamedMessageWhenNull("caller");
+            }
+
+            [Fact]
+            public void Should_Throw_When_CallerName_Null()
+            {
+                Invoking(() => BreadcrumbsExtensions.AddExtendedCallSite(_breadcrumbs, this, null, null))
+                  .Should()
+                  .Throw<ArgumentNullException>()
+                  .WithNamedMessageWhenNull("callerName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_CallerName_Empty()
+            {
+                Invoking(() => BreadcrumbsExtensions.AddExtendedCallSite(_breadcrumbs, this, null, string.Empty))
+                  .Should()
+                  .Throw<ArgumentException>()
+                  .WithNamedMessageWhenEmpty("callerName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_CallerName_Whitespace()
+            {
+                Invoking(() => BreadcrumbsExtensions.AddExtendedCallSite(_breadcrumbs, this, null, "  "))
+                  .Should()
+                  .Throw<ArgumentException>()
+                  .WithNamedMessageWhenEmpty("callerName");
+            }
+
+            [Fact]
+            public void Should_Not_Throw_When_Metadata_Null()
+            {
+                Invoking(() => BreadcrumbsExtensions.AddExtendedCallSite(_breadcrumbs, this, null))
+                  .Should()
+                  .NotThrow();
+            }
+
+            [Fact]
+            public void Should_Add_Breadcrumb_Message()
+            {
+                var _ = BreadcrumbsExtensions.AddExtendedCallSite(_breadcrumbs, this);
+
+                var actual = _breadcrumbs.ToList();
+
+                var expected = new[]
+                {
+                    new
+                    {
+                        CallerName = (string)null,
+                        FilePath = (string)null,
+                        LineNumber = 0,
+                        Message = $@"Call Site: AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions.BreadcrumbsExtensionsFixture+AddExtendedCallSite.{nameof(Should_Add_Breadcrumb_Message)}(), at {GetCallerFilePath()}:{GetCallerLineNumber()-11}",
+                        Metadata = (object)null
+                    }
+                };
+
+                expected
+                    .Should()
+                    .BeEquivalentTo(
+                        actual,
+                        options => options
+                            .Excluding(model => model.Timestamp)
+                            .Excluding(model => model.TimestampUtc));
+            }
+        }
 
         public class Add_Message : BreadcrumbsExtensionsFixture
         {
@@ -242,6 +412,8 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                     new
                     {
                         CallerName = $"AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions.BreadcrumbsExtensionsFixture+{nameof(Add_Message_With_Caller)}.{nameof(Should_Add_Breadcrumb)}",
+                        FilePath = GetCallerFilePath(),
+                        LineNumber = GetCallerLineNumber() - 10,
                         Message = message,
                         Metadata = (object)null
                     }
@@ -255,8 +427,6 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                     .BeEquivalentTo(
                         actual,
                         options => options
-                            .Excluding(model => model.FilePath)
-                            .Excluding(model => model.LineNumber)
                             .Excluding(model => model.Timestamp)
                             .Excluding(model => model.TimestampUtc));
             }
@@ -275,6 +445,8 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                     new
                     {
                         CallerName = $"AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions.BreadcrumbsExtensionsFixture+{nameof(Add_Message_With_Caller)}",
+                        FilePath = GetCallerFilePath(),
+                        LineNumber = GetCallerLineNumber() - 10,
                         Message = message,
                         Metadata = (object)null
                     }
@@ -288,8 +460,6 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                     .BeEquivalentTo(
                         actual,
                         options => options
-                            .Excluding(model => model.FilePath)
-                            .Excluding(model => model.LineNumber)
                             .Excluding(model => model.Timestamp)
                             .Excluding(model => model.TimestampUtc));
             }
@@ -309,6 +479,8 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                     new
                     {
                         CallerName = $"AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions.BreadcrumbsExtensionsFixture+{nameof(Add_Message_With_Caller)}.{callerName}",
+                        FilePath = GetCallerFilePath(),
+                        LineNumber = GetCallerLineNumber() - 10,
                         Message = message,
                         Metadata = (object)null
                     }
@@ -322,8 +494,6 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                     .BeEquivalentTo(
                         actual,
                         options => options
-                            .Excluding(model => model.FilePath)
-                            .Excluding(model => model.LineNumber)
                             .Excluding(model => model.Timestamp)
                             .Excluding(model => model.TimestampUtc));
             }
@@ -337,6 +507,16 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
 
                 actual.Should().BeSameAs(_breadcrumbs);
             }
+        }
+
+        private static string GetCallerFilePath([CallerFilePath] string filePath = "")
+        {
+            return filePath;
+        }
+
+        private static int GetCallerLineNumber([CallerLineNumber] int lineNumber = 0)
+        {
+            return lineNumber;
         }
     }
 }
