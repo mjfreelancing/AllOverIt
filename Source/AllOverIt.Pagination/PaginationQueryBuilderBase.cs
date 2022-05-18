@@ -5,7 +5,7 @@ using System.Reflection;
 using AllOverIt.Assertion;
 using AllOverIt.Extensions;
 
-namespace KeysetPaginationConsole.KeysetPagination
+namespace AllOverIt.Pagination
 {
     public abstract class PaginationQueryBuilderBase
     {

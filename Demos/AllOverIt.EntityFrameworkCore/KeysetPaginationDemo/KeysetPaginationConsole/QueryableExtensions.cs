@@ -1,7 +1,8 @@
-﻿using AllOverIt.Serialization.NewtonsoftJson;
+﻿using AllOverIt.Pagination;
+using AllOverIt.Serialization.NewtonsoftJson;
 using System.Linq;
 
-namespace KeysetPaginationConsole.KeysetPagination
+namespace KeysetPaginationConsole
 {
     public static class QueryableExtensions
     {
@@ -11,7 +12,7 @@ namespace KeysetPaginationConsole.KeysetPagination
             // TODO: To be abstracted via a factory
             var serializer = new NewtonsoftJsonSerializer();
 
-            return new PaginationQueryBuilder<TEntity>(serializer, query, direction, pageSize);
+            return query.KeysetPaginate<TEntity>(serializer, pageSize, direction);
         }
     }
 }

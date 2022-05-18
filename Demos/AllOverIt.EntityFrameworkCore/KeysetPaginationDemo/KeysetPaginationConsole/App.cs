@@ -1,8 +1,8 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
 using AllOverIt.GenericHost;
+using AllOverIt.Pagination;
 using KeysetPaginationConsole.Entities;
-using KeysetPaginationConsole.KeysetPagination;
 using KeysetPaginationConsole.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -42,10 +42,10 @@ namespace KeysetPaginationConsole
             var filename = @"C:\temp\paginated_results.txt";
             var fs = File.Create(filename);
 
-            void WriteFileStreamLine(string description, int? id = default)
+            void WriteFileStreamLine(string description, int? blogId = default, int? postId = default)
             {
-                var bytes = id.HasValue
-                    ? Encoding.UTF8.GetBytes($"{description} : {id}{Environment.NewLine}")
+                var bytes = blogId.HasValue
+                    ? Encoding.UTF8.GetBytes($"{description} : {blogId} / {postId}{Environment.NewLine}")
                     : Encoding.UTF8.GetBytes($"{description}");
 
                 fs.Write(bytes, 0, bytes.Length);
@@ -55,33 +55,44 @@ namespace KeysetPaginationConsole
             {
                 dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
+                // MySql
                 //await dbContext.Database.EnsureDeletedAsync(cancellationToken);
+                //await dbContext.Database.MigrateAsync(cancellationToken);
 
-                await dbContext.Database.MigrateAsync(cancellationToken);
+                // Sqlite
+                //dbContext.Database.EnsureDeleted();
+                //dbContext.Database.EnsureCreated();
 
-                await CreateDataIfRequired(2_000);
+                await CreateDataIfRequired(1_010_101);
 
                 Console.WriteLine("Starting...");
                 Console.WriteLine();
 
-                var rowsToRead = 50;
-                var pageSize = 25;
+                var rowsToRead = 200;
+                var pageSize = 100;
+                var paginationIterations = 2;
+                var totalRead = 0;
+                var paginatedCount = 0;
+                var forward = true;
 
                 // Base query
                 var query =
                     from blog in dbContext.Blogs
+                    from post in blog.Posts
                     select new
                     {
                         BlogId = blog.Id,
                         blog.Description,
-                        blog.Reference,
-                        blog.AnotherId
+                        PostId = post.Id,
+                        post.Title
                     };
 
                 var paginationBuilder = query
                     .KeysetPaginate(pageSize, PaginationDirection.Forward)
-                    .ColumnAscending(item => item.Description)
-                    .ColumnAscending(item => item.BlogId);
+                    .ColumnDescending(item => item.Description)
+                    .ColumnDescending(item => item.BlogId)
+                    //.ColumnDescending(item => item.Title)
+                    ;
                     //.Build()
 
                 var stopwatch = Stopwatch.StartNew();
@@ -95,7 +106,8 @@ namespace KeysetPaginationConsole
                         Console.WriteLine(queryString);
                     }
 
-                    Console.WriteLine($"Checkpoint after {recordsRead} rows, first Id={firstId}, last Id={lastId} ({elapsed}ms)");
+                    var direction = forward ? "Forward" : "Backward";
+                    Console.WriteLine($"{direction} checkpoint after {recordsRead} rows, first Id={firstId}, last Id={lastId} ({elapsed}ms)");
 
                     if (newline)
                     {
@@ -132,7 +144,7 @@ namespace KeysetPaginationConsole
 
                         foreach (var result in paginatedResults)
                         {
-                            WriteFileStreamLine(result.Description, result.BlogId);
+                            WriteFileStreamLine(result.Description, result.BlogId, result.PostId);
                         }
 
                         WriteFileStreamLine($"{Environment.NewLine}*** Page End ***{Environment.NewLine}");
@@ -158,10 +170,6 @@ namespace KeysetPaginationConsole
                     return true;
                 }
 
-                var totalRead = 0;
-                var paginatedCount = 0;
-                var forward = true;
-
                 while (true)
                 {
                     // TODO: How to know if I'm at the first page or if there is a next page - not sure it can be done without making another round trip to try and get a single row.
@@ -180,7 +188,7 @@ namespace KeysetPaginationConsole
                     {
                         paginatedCount += rowsToRead;
 
-                        forward = paginatedCount != rowsToRead * 2;
+                        forward = paginatedCount != rowsToRead * paginationIterations;
                     }
                     else
                     {

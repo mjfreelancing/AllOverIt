@@ -1,4 +1,4 @@
-﻿namespace KeysetPaginationConsole.KeysetPagination.Extensions
+﻿namespace AllOverIt.Pagination.Extensions
 {
     public static class PaginationDirectionExtensions
     {

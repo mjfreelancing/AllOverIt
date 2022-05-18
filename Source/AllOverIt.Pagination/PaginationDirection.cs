@@ -1,4 +1,4 @@
-﻿namespace KeysetPaginationConsole.KeysetPagination
+﻿namespace AllOverIt.Pagination
 {
     public enum PaginationDirection
     {

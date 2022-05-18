@@ -10,6 +10,9 @@ AllOverIt
   * Added ReadOnlyCollection, ReadOnlyList, and ReadOnlyDictionary implementations that are  truly immutable
   * Updated Collection/List/Dictionary EmptyReadOnly<T>() so the underlying collection is truly immutable
 
+AllOverIt.Pagination
+  * New package to provide keyset based pagination for any IQueryable, including EF queries
+
 
 12 May 2022
 Version 5.6.0

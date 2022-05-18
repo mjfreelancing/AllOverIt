@@ -1,14 +1,14 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
+using AllOverIt.Pagination.Extensions;
 using AllOverIt.Reflection;
 using AllOverIt.Serialization.Abstractions;
-using KeysetPaginationConsole.KeysetPagination.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace KeysetPaginationConsole.KeysetPagination
+namespace AllOverIt.Pagination
 {
     internal sealed class ContinuationTokenEncoder
     {

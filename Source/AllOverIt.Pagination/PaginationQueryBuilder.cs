@@ -1,14 +1,14 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
+using AllOverIt.Pagination.Extensions;
 using AllOverIt.Serialization.Abstractions;
-using KeysetPaginationConsole.KeysetPagination.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace KeysetPaginationConsole.KeysetPagination
+namespace AllOverIt.Pagination
 {
     public sealed class PaginationQueryBuilder<TEntity> : PaginationQueryBuilderBase
         where TEntity : class
@@ -25,7 +25,7 @@ namespace KeysetPaginationConsole.KeysetPagination
         private readonly IQueryable<TEntity> _query;
         private readonly PaginationDirection _paginationDirection;
         private readonly int _pageSize;
-        
+
         private ContinuationTokenEncoder _continuationTokenEncoder;
         private ContinuationTokenEncoder ContinuationTokenEncoder => GetContinuationTokenEncoder();
 
@@ -206,7 +206,7 @@ namespace KeysetPaginationConsole.KeysetPagination
             //   )
 
             var firstExpression = new FirstExpression();
-            
+
             var param = Expression.Parameter(typeof(TEntity), "entity");    // Represents entity =>
 
             var finalExpression = CompoundOuterColumnExpressions(direction, param, referenceValues, firstExpression);

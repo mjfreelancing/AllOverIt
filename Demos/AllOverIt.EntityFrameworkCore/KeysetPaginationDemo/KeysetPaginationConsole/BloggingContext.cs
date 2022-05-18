@@ -2,7 +2,6 @@
 using KeysetPaginationConsole.Entities;
 using KeysetPaginationConsole.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using System;
 
 namespace KeysetPaginationConsole
@@ -16,13 +15,24 @@ namespace KeysetPaginationConsole
         {
             base.OnConfiguring(options);
 
-            var connectionString = "server=localhost;user=root;password=password;database=PaginatedBlogPosts";
-            var serverVersion = new MySqlServerVersion(new Version(8, 0, 26));
+            var connectionString =
+                // MySql
+                //"server=localhost;user=root;password=password;database=PaginatedBlogPosts";
+
+                // Sqlite
+                "Data Source=PaginatedBlogPosts.db";
+            
 
             options
-                .UseMySql(connectionString, serverVersion)
+                // MySql
+                //.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 26)))
+
+                // Sqlite
+                .UseSqlite(connectionString)
+
                 //.LogTo(Console.WriteLine, LogLevel.Information)
                 .EnableDetailedErrors();
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
