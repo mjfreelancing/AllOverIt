@@ -22,13 +22,19 @@ namespace AllOverIt.Pagination
         }
 
         private readonly List<ColumnDefinition<TEntity>> _columns = new();
-        private readonly IJsonSerializer _jsonSerializer;
         private readonly IQueryable<TEntity> _query;
-        private readonly PaginationDirection _paginationDirection;
-        private readonly int? _defaultPageSize;
+
+        private readonly QueryPaginatorOptions _options;
+
+
+
 
         private ContinuationTokenEncoder _continuationTokenEncoder;
         private ContinuationTokenEncoder ContinuationTokenEncoder => GetContinuationTokenEncoder();
+
+
+
+
 
         // A cached query based on the _direction
         private IOrderedQueryable<TEntity> _directionQuery;
@@ -38,23 +44,21 @@ namespace AllOverIt.Pagination
         private IOrderedQueryable<TEntity> _directionReverseQuery;
         private IOrderedQueryable<TEntity> DirectionReverseQuery => GetDirectionReverseQuery();
 
-        public QueryPaginator(IJsonSerializer jsonSerializer, IQueryable<TEntity> query, PaginationDirection direction, int? defaultPageSize)
+        public QueryPaginator(IQueryable<TEntity> query, QueryPaginatorOptions options)
         {
-            _jsonSerializer = jsonSerializer.WhenNotNull(nameof(jsonSerializer));
             _query = query.WhenNotNull(nameof(query));
-            _paginationDirection = direction;
-            _defaultPageSize = defaultPageSize;
+            _options = options.WhenNotNull(nameof(options));
         }
 
         public IQueryPaginator<TEntity> ColumnAscending<TProperty>(Expression<Func<TEntity, TProperty>> expression)
         {
-            AddColumnItem(expression, true);
+            AddColumnDefinition(expression, true);
             return this;
         }
 
         public IQueryPaginator<TEntity> ColumnDescending<TProperty>(Expression<Func<TEntity, TProperty>> expression)
         {
-            AddColumnItem(expression, false);
+            AddColumnDefinition(expression, false);
             return this;
         }
 
@@ -65,41 +69,40 @@ namespace AllOverIt.Pagination
                 throw new PaginationException("At least one column must be defined for pagination.");
             }
 
-            if (!pageSize.HasValue && !_defaultPageSize.HasValue)
+            if (!pageSize.HasValue && !_options.DefaultPageSize.HasValue)
             {
                 throw new PaginationException("A (default) page size must be provided to the constructor or this method.");
             }
 
             // Returns ContinuationToken.None if there is no token - which defaults to Forward
-            var continuationProxy = ContinuationTokenEncoder.Decode(continuationToken);
+            var decodedToken = ContinuationTokenEncoder.Decode(continuationToken);
 
-            var requiredDirection = continuationProxy != ContinuationToken.None
-                ? continuationProxy.Direction
-                : _paginationDirection;
+            var requiredDirection = decodedToken == ContinuationToken.None
+                ? _options.Direction
+                : decodedToken.Direction;
 
-            var orderedQuery = requiredDirection == _paginationDirection
+            var requiredQuery = requiredDirection == _options.Direction
                 ? DirectionQuery
                 : DirectionReverseQuery;
 
-            var filteredQuery = orderedQuery.AsQueryable();
+            var paginatedQuery = requiredQuery.AsQueryable();
 
             // There's no reference values when ContinuationToken.None so just get the first page
-            if (continuationProxy != ContinuationToken.None)
+            if (decodedToken != ContinuationToken.None)
             {
-                filteredQuery = ApplyContinuationToken(filteredQuery, continuationProxy);
+                paginatedQuery = ApplyContinuationToken(paginatedQuery, decodedToken);
             }
 
-            filteredQuery = filteredQuery.Take(pageSize ?? _defaultPageSize.Value);
+            paginatedQuery = paginatedQuery.Take(pageSize ?? _options.DefaultPageSize.Value);
 
             if (requiredDirection == PaginationDirection.Backward)
             {
                 // This does wrap the query within an outer select but it saves the caller having to (remember to)
-                // reverse the results after they are returned and it also means we don't need to be concerned with
-                // asynchronous yielding.
-                filteredQuery = filteredQuery.Reverse();
+                // reverse the results after they are returned.
+                paginatedQuery = paginatedQuery.Reverse();
             }
 
-            return filteredQuery;
+            return paginatedQuery;
         }
 
         // The caller can create a previous/next page token as desired - the first/last row is selected based on the direction
@@ -124,7 +127,7 @@ namespace AllOverIt.Pagination
             return ContinuationTokenEncoder.Encode(direction, reference);
         }
 
-        private void AddColumnItem<TProperty>(Expression<Func<TEntity, TProperty>> propertyExpression, bool isAscending)
+        private void AddColumnDefinition<TProperty>(Expression<Func<TEntity, TProperty>> propertyExpression, bool isAscending)
         {
             var fieldOrProperty = propertyExpression.GetFieldOrProperty();
 
@@ -147,21 +150,21 @@ namespace AllOverIt.Pagination
 
         private IOrderedQueryable<TEntity> GetDirectionQuery()
         {
-            _directionQuery ??= GetDirectionBasedQuery(_paginationDirection);
+            _directionQuery ??= GetDirectionBasedQuery(_options.Direction);
 
             return _directionQuery;
         }
 
         private IOrderedQueryable<TEntity> GetDirectionReverseQuery()
         {
-            _directionReverseQuery ??= GetDirectionBasedQuery(_paginationDirection.Reverse());
+            _directionReverseQuery ??= GetDirectionBasedQuery(_options.Direction.Reverse());
 
             return _directionReverseQuery;
         }
 
         private ContinuationTokenEncoder GetContinuationTokenEncoder()
         {
-            _continuationTokenEncoder ??= new ContinuationTokenEncoder(_columns, _paginationDirection, _jsonSerializer);
+            _continuationTokenEncoder ??= new ContinuationTokenEncoder(_columns, _options.Direction, _options.Serializer);
             return _continuationTokenEncoder;
         }
 
@@ -174,17 +177,17 @@ namespace AllOverIt.Pagination
                     : next.ThenOrderColumnBy(current, direction));
         }
 
-        private IQueryable<TEntity> ApplyContinuationToken(IQueryable<TEntity> filteredQuery, ContinuationToken continuationToken)
+        private IQueryable<TEntity> ApplyContinuationToken(IQueryable<TEntity> paginatedQuery, ContinuationToken continuationToken)
         {
             // Decode, ensuring to set the correct value type otherwise the expression comparisons may fail
             var referenceValues = continuationToken.Values.SelectAsReadOnlyList(valueType => Convert.ChangeType(valueType.Value, valueType.Type));
 
-            var predicate = CreateFilterPredicate(continuationToken.Direction, referenceValues);
+            var predicate = CreatePaginatedPredicate(continuationToken.Direction, referenceValues);
 
-            return filteredQuery.Where(predicate);
+            return paginatedQuery.Where(predicate);
         }
 
-        private Expression<Func<TEntity, bool>> CreateFilterPredicate(PaginationDirection direction, IReadOnlyList<object> referenceValues)
+        private Expression<Func<TEntity, bool>> CreatePaginatedPredicate(PaginationDirection direction, IReadOnlyList<object> referenceValues)
         {
             // Fully explained at https://use-the-index-luke.com/sql/partial-results/fetch-next-page
             //

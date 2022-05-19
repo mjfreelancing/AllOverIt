@@ -14,11 +14,10 @@ namespace AllOverIt.Pagination
             public object Value { get; init; }
         }
 
-        // Indicates the direction to move based on the reference Values in order to get
-        // the required previous or next page.
-        public PaginationDirection Direction { get; init; } = PaginationDirection.Forward;
+        // Indicates the direction to move based on the reference 'Values' in order to get the required previous or next page.
+        public PaginationDirection Direction { get; init; }
 
         // The reference values that identifies the row to traverse from.
-        public IReadOnlyCollection<ValueType> Values { get; init; } = List.EmptyReadOnly<ValueType>();
+        public IReadOnlyCollection<ValueType> Values { get; init; }
     }
 }

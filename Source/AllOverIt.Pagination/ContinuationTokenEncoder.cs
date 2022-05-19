@@ -30,21 +30,6 @@ namespace AllOverIt.Pagination
             // Should have been asserted by QueryPaginator
             _ = references.WhenNotNullOrEmpty(nameof(references));
 
-            //TEntity reference;
-
-            //if (_paginationDirection == PaginationDirection.Forward)
-            //{
-            //    reference = continuationDirection == ContinuationDirection.NextPage
-            //       ? references.Last()
-            //       : references.First();
-            //}
-            //else
-            //{
-            //    reference = continuationDirection == ContinuationDirection.NextPage
-            //       ? references.First()
-            //       : references.Last();
-            //}
-
             // Determine the required reference to use based on the pagination direction and the continuation direction
             var reference = (_paginationDirection, continuationDirection) switch
             {
@@ -65,32 +50,22 @@ namespace AllOverIt.Pagination
             // Should have been asserted by QueryPaginator
             _ = reference.WhenNotNull(nameof(reference));
 
-            IReadOnlyCollection<ContinuationToken.ValueType> GetValueTypes(TEntity result)
-            {
-                return GetColumnValues(_columns, result)
-                    .SelectAsReadOnlyCollection(value => new ContinuationToken.ValueType
-                    {
-                        Type = Type.GetTypeCode(value.GetType()),
-                        Value = value
-                    });
-            }
-
-            // Get the reference column values and their types
-            var tokenValues = GetValueTypes(reference);
-
             // Determine the page direction that needs to be used in order to get the required next/previous page
             var continuationPageDirection = direction == ContinuationDirection.PreviousPage
                 ? _paginationDirection.Reverse()
                 : _paginationDirection;
 
+            // Get the reference column values and their types
+            var tokenValues = GetColumnValueTypes(_columns, reference);
+
             // Serialize the resultant token information
-            var proxy = new ContinuationToken
+            var continuationToken = new ContinuationToken
             {
                 Direction = continuationPageDirection,
                 Values = tokenValues
             };
 
-            return _jsonSerializer.SerializeObject(proxy).ToBase64();
+            return _jsonSerializer.SerializeObject(continuationToken).ToBase64();
         }
 
         public ContinuationToken Decode(string continuationToken)
@@ -100,11 +75,23 @@ namespace AllOverIt.Pagination
                 : ContinuationToken.None;
         }
 
-        private static IEnumerable<object> GetColumnValues(IEnumerable<IColumnItem> columns, object reference)
+        private static IReadOnlyCollection<ContinuationToken.ValueType> GetColumnValueTypes(IEnumerable<IColumnItem> columns, object reference)
         {
-            var referenceType = reference.GetType().GetTypeInfo();
+            var referenceTypeInfo = reference.GetType().GetTypeInfo();
 
-            return columns.Select(column => ReflectionCache.GetPropertyInfo(referenceType, column.Property.Name).GetValue(reference));
+            return columns
+                .SelectAsReadOnlyCollection(column =>
+                {
+                    var propertyInfo = ReflectionCache.GetPropertyInfo(referenceTypeInfo, column.Property.Name);
+                    var value = propertyInfo.GetValue(reference);
+                    var valueType = value.GetType();
+
+                    return new ContinuationToken.ValueType
+                    {
+                        Type = Type.GetTypeCode(valueType),
+                        Value = value
+                    };
+                });
         }
     }
 }

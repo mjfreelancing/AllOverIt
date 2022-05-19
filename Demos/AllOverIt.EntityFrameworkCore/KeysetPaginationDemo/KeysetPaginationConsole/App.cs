@@ -91,9 +91,8 @@ namespace KeysetPaginationConsole
                         post.Title
                     };
 
-                // The pageSize can be provided here as the default page size and not given to the BuildQuery() method
                 var queryPaginator = _queryPaginatorFactory
-                    .CreatePaginator(query/*, PaginationDirection.Forward, pageSize*/)
+                    .CreatePaginator(query)
                     .ColumnDescending(item => item.Description, item => item.BlogId);
 
                 var stopwatch = Stopwatch.StartNew();

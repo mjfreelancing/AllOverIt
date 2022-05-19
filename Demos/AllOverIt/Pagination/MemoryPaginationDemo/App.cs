@@ -69,7 +69,7 @@ namespace MemoryPaginationDemo
                         select person;
 
             var queryPaginator = _queryPaginatorFactory
-                  .CreatePaginator(query /*, PaginationDirection.Forward, PageSize*/ )
+                  .CreatePaginator(query)
                   .ColumnAscending(person => person.LastName, item => item.FirstName);
 
             string continuationToken = default;

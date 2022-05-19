@@ -12,11 +12,9 @@ namespace AllOverIt.Pagination
             _options = options.WhenNotNull(nameof(options));
         }
 
-        public IQueryPaginator<TEntity> CreatePaginator<TEntity>(IQueryable<TEntity> query, 
-            PaginationDirection direction = PaginationDirection.Forward, int? defaultPageSize = default)
-            where TEntity : class
+        public IQueryPaginator<TEntity> CreatePaginator<TEntity>(IQueryable<TEntity> query) where TEntity : class
         {
-            return new QueryPaginator<TEntity>(_options.Serializer, query, direction, defaultPageSize);
+            return new QueryPaginator<TEntity>(query, _options);
         }
     }
 }
