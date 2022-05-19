@@ -1,8 +1,8 @@
-﻿using System;
+﻿using AllOverIt.Assertion;
+using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using AllOverIt.Assertion;
 
 namespace AllOverIt.Extensions
 {
@@ -89,14 +89,14 @@ namespace AllOverIt.Extensions
             return propertyInfo.GetIndexParameters().Any();
         }
 
-        /// <summary>Creates a lambda expression that represents accessing a field or property on an object of type <typeparamref name="TType"/>.
+        /// <summary>Creates a lambda expression that represents accessing a property on an object of type <typeparamref name="TType"/>.
         /// If the <paramref name="parameterName"/> is 'item' and the property info refers to a property named 'Age' then the expression will represent
         /// 'item => item.Age'.</summary>
         /// <typeparam name="TType">The object type containing the property.</typeparam>
         /// <typeparam name="TPropertyType">The property type.</typeparam>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> for a property.</param>
         /// <param name="parameterName">The parameter name to represent the object being accessed.</param>
-        /// <returns>A new lambda expression that represents accessing a field or property on an object.</returns>
+        /// <returns>A new lambda expression that represents accessing a property on an object.</returns>
         public static Expression<Func<TType, TPropertyType>> CreateMemberAccessLambda<TType, TPropertyType>(this PropertyInfo propertyInfo, string parameterName)
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));

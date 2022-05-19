@@ -9,13 +9,13 @@ namespace AllOverIt.Tests.Extensions
 {
     public class MemberInfoExtensionsFixture : FixtureBase
     {
-        private class DummyBaseClass
+        private class DummyClassBase
         {
             public string Prop2 { get; set; }
             public virtual double Prop3 { get; set; }
         }
 
-        private class DummySuperClass : DummyBaseClass
+        private class DummySuperClass : DummyClassBase
         {
             public override double Prop3 { get; set; }
 

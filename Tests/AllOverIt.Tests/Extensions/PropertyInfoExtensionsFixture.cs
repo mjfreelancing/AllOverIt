@@ -2,9 +2,10 @@
 using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using FluentAssertions;
-using System.Reflection;
 using AllOverIt.Fixture.Extensions;
 using Xunit;
+using System.Reflection;
+using PropertyInfoExtensions = AllOverIt.Extensions.PropertyInfoExtensions;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -33,7 +34,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        AllOverIt.Extensions.PropertyInfoExtensions.IsAbstract(null);
+                        PropertyInfoExtensions.IsAbstract(null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -80,7 +81,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        AllOverIt.Extensions.PropertyInfoExtensions.IsInternal(null);
+                        PropertyInfoExtensions.IsInternal(null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -118,7 +119,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        AllOverIt.Extensions.PropertyInfoExtensions.IsPrivate(null);
+                        PropertyInfoExtensions.IsPrivate(null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -156,7 +157,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        AllOverIt.Extensions.PropertyInfoExtensions.IsProtected(null);
+                        PropertyInfoExtensions.IsProtected(null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -194,7 +195,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        AllOverIt.Extensions.PropertyInfoExtensions.IsPublic(null);
+                        PropertyInfoExtensions.IsPublic(null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -232,7 +233,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        AllOverIt.Extensions.PropertyInfoExtensions.IsStatic(null);
+                        PropertyInfoExtensions.IsStatic(null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -270,7 +271,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        AllOverIt.Extensions.PropertyInfoExtensions.IsVirtual(null);
+                        PropertyInfoExtensions.IsVirtual(null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -314,7 +315,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        AllOverIt.Extensions.PropertyInfoExtensions.IsIndexer(null);
+                        PropertyInfoExtensions.IsIndexer(null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -345,7 +346,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        AllOverIt.Extensions.PropertyInfoExtensions.CreateMemberAccessLambda<DummyClass, string>(null, Create<string>());
+                        PropertyInfoExtensions.CreateMemberAccessLambda<DummyClass, string>(null, Create<string>());
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -359,7 +360,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         var propInfo = GetPropertyInfo<DummyClass>(nameof(DummyClass.Prop5));
 
-                        AllOverIt.Extensions.PropertyInfoExtensions.CreateMemberAccessLambda<DummyClass, string>(propInfo, null);
+                        PropertyInfoExtensions.CreateMemberAccessLambda<DummyClass, string>(propInfo, null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -373,7 +374,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         var propInfo = GetPropertyInfo<DummyClass>(nameof(DummyClass.Prop5));
 
-                        AllOverIt.Extensions.PropertyInfoExtensions.CreateMemberAccessLambda<DummyClass, string>(propInfo, string.Empty);
+                        PropertyInfoExtensions.CreateMemberAccessLambda<DummyClass, string>(propInfo, string.Empty);
                     })
                     .Should()
                     .Throw<ArgumentException>()
@@ -387,7 +388,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         var propInfo = GetPropertyInfo<DummyClass>(nameof(DummyClass.Prop5));
 
-                        AllOverIt.Extensions.PropertyInfoExtensions.CreateMemberAccessLambda<DummyClass, string>(propInfo, "  ");
+                        PropertyInfoExtensions.CreateMemberAccessLambda<DummyClass, string>(propInfo, "  ");
                     })
                     .Should()
                     .Throw<ArgumentException>()
@@ -399,7 +400,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var propInfo = GetPropertyInfo<DummyClass>(nameof(DummyClass.Prop5));
 
-                var lambda = AllOverIt.Extensions.PropertyInfoExtensions.CreateMemberAccessLambda<DummyClass, string>(propInfo, "item");
+                var lambda = PropertyInfoExtensions.CreateMemberAccessLambda<DummyClass, string>(propInfo, "item");
 
                 var actual = lambda.ToString();
 
@@ -411,7 +412,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var propInfo = GetPropertyInfo<DummyClass>(nameof(DummyClass.Prop5));
 
-                var lambda = AllOverIt.Extensions.PropertyInfoExtensions.CreateMemberAccessLambda<DummyClass, string>(propInfo, "item");
+                var lambda = PropertyInfoExtensions.CreateMemberAccessLambda<DummyClass, string>(propInfo, "item");
 
                 var dummy = Create<DummyClass>();
                 var expected = dummy.Prop5;
