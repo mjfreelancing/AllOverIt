@@ -2,6 +2,8 @@
 using AllOverIt.Extensions;
 using AllOverIt.GenericHost;
 using AllOverIt.Pagination;
+using AllOverIt.Pagination.Extensions;
+using AllOverIt.Serialization.NewtonsoftJson;
 using KeysetPaginationConsole.Entities;
 using KeysetPaginationConsole.Models;
 using Microsoft.EntityFrameworkCore;
@@ -27,11 +29,13 @@ namespace KeysetPaginationConsole
         }
 
         private readonly IDbContextFactory<BloggingContext> _dbContextFactory;
+        private readonly IQueryPaginatorFactory _queryPaginatorFactory;
         private readonly ILogger<App> _logger;
 
-        public App(IDbContextFactory<BloggingContext> dbContextFactory, ILogger<App> logger)
+        public App(IDbContextFactory<BloggingContext> dbContextFactory, IQueryPaginatorFactory queryPaginatorFactory, ILogger<App> logger)
         {
             _dbContextFactory = dbContextFactory.WhenNotNull(nameof(dbContextFactory));
+            _queryPaginatorFactory = queryPaginatorFactory.WhenNotNull(nameof(queryPaginatorFactory));
             _logger = logger.WhenNotNull(nameof(logger));
         }
 
@@ -87,13 +91,10 @@ namespace KeysetPaginationConsole
                         post.Title
                     };
 
-                var paginationBuilder = query
-                    .KeysetPaginate(pageSize, PaginationDirection.Forward)
-                    .ColumnDescending(item => item.Description)
-                    .ColumnDescending(item => item.BlogId)
-                    //.ColumnDescending(item => item.Title)
-                    ;
-                    //.Build()
+                // The pageSize can be provided here as the default page size and not given to the BuildQuery() method
+                var queryPaginator = _queryPaginatorFactory
+                    .CreatePaginator(query/*, PaginationDirection.Forward, pageSize*/)
+                    .ColumnDescending(item => item.Description, item => item.BlogId);
 
                 var stopwatch = Stopwatch.StartNew();
 
@@ -129,7 +130,7 @@ namespace KeysetPaginationConsole
                             ? continuationTokens.Next
                             : continuationTokens.Previous;
 
-                        var paginatedQuery = paginationBuilder.Build(continuationToken);
+                        var paginatedQuery = queryPaginator.BuildQuery(continuationToken, pageSize);
 
                         //var paginatedQueryString = paginatedQuery.ToQueryString();
 
@@ -152,8 +153,8 @@ namespace KeysetPaginationConsole
                         readSoFar += pageSize;
 
                         continuationTokens.Current = continuationToken;
-                        continuationTokens.Next = paginationBuilder.CreateContinuationToken(ContinuationDirection.NextPage, paginatedResults);
-                        continuationTokens.Previous = paginationBuilder.CreateContinuationToken(ContinuationDirection.PreviousPage, paginatedResults);
+                        continuationTokens.Next = queryPaginator.CreateContinuationToken(ContinuationDirection.NextPage, paginatedResults);
+                        continuationTokens.Previous = queryPaginator.CreateContinuationToken(ContinuationDirection.PreviousPage, paginatedResults);
 
                         if (readSoFar % rowsToRead == 0)
                         {
@@ -188,7 +189,7 @@ namespace KeysetPaginationConsole
                     {
                         paginatedCount += rowsToRead;
 
-                        forward = paginatedCount != rowsToRead * paginationIterations;
+                        forward = paginatedCount % (rowsToRead * paginationIterations) != 0;
                     }
                     else
                     {

@@ -21,4 +21,12 @@
       <ProjectReference Include="..\AllOverIt\AllOverIt.csproj" />
     </ItemGroup>
 
+    <ItemGroup Condition=" '$(TargetFramework)' != 'net6.0' ">
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.2" />
+    </ItemGroup>
+
+    <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+    </ItemGroup>
+
 </Project>

@@ -27,23 +27,33 @@ namespace AllOverIt.Pagination
         public string Encode<TEntity>(ContinuationDirection continuationDirection, IReadOnlyCollection<TEntity> references)
             where TEntity : class
         {
-            _ = references.WhenNotNullOrEmpty(nameof(references));        // Can't create a token when there are no results - TODO: Create a custom exception
+            // Should have been asserted by QueryPaginator
+            _ = references.WhenNotNullOrEmpty(nameof(references));
+
+            //TEntity reference;
+
+            //if (_paginationDirection == PaginationDirection.Forward)
+            //{
+            //    reference = continuationDirection == ContinuationDirection.NextPage
+            //       ? references.Last()
+            //       : references.First();
+            //}
+            //else
+            //{
+            //    reference = continuationDirection == ContinuationDirection.NextPage
+            //       ? references.First()
+            //       : references.Last();
+            //}
 
             // Determine the required reference to use based on the pagination direction and the continuation direction
-            TEntity reference;
-
-            if (_paginationDirection == PaginationDirection.Forward)
+            var reference = (_paginationDirection, continuationDirection) switch
             {
-                reference = continuationDirection == ContinuationDirection.NextPage
-                   ? references.Last()
-                   : references.First();
-            }
-            else
-            {
-                reference = continuationDirection == ContinuationDirection.NextPage
-                   ? references.First()
-                   : references.Last();
-            }
+                (PaginationDirection.Forward, ContinuationDirection.NextPage) => references.Last(),
+                (PaginationDirection.Forward, ContinuationDirection.PreviousPage) => references.First(),
+                (PaginationDirection.Backward, ContinuationDirection.NextPage) => references.First(),
+                (PaginationDirection.Backward, ContinuationDirection.PreviousPage) => references.Last(),
+                _ => throw new InvalidOperationException($"Unknown pagination / continuation combination: {_paginationDirection} / {continuationDirection}")
+            };
 
             return Encode(continuationDirection, reference);
         }
@@ -52,14 +62,15 @@ namespace AllOverIt.Pagination
         public string Encode<TEntity>(ContinuationDirection direction, TEntity reference)
             where TEntity : class
         {
-            _ = reference.WhenNotNull(nameof(reference));        // Can't create a token when there are no results - TODO: Create a custom exception
+            // Should have been asserted by QueryPaginator
+            _ = reference.WhenNotNull(nameof(reference));
 
             IReadOnlyCollection<ContinuationToken.ValueType> GetValueTypes(TEntity result)
             {
                 return GetColumnValues(_columns, result)
                     .SelectAsReadOnlyCollection(value => new ContinuationToken.ValueType
                     {
-                        TypeCode = Type.GetTypeCode(value.GetType()),
+                        Type = Type.GetTypeCode(value.GetType()),
                         Value = value
                     });
             }
@@ -76,7 +87,7 @@ namespace AllOverIt.Pagination
             var proxy = new ContinuationToken
             {
                 Direction = continuationPageDirection,
-                ValueTypes = tokenValues
+                Values = tokenValues
             };
 
             return _jsonSerializer.SerializeObject(proxy).ToBase64();
@@ -93,7 +104,7 @@ namespace AllOverIt.Pagination
         {
             var referenceType = reference.GetType().GetTypeInfo();
 
-            return columns.Select(item => ReflectionCache.GetPropertyInfo(referenceType, item.Property.Name).GetValue(reference));
+            return columns.Select(column => ReflectionCache.GetPropertyInfo(referenceType, column.Property.Name).GetValue(reference));
         }
     }
 }

@@ -7,13 +7,14 @@ using AllOverIt.Extensions;
 
 namespace AllOverIt.Pagination
 {
-    public abstract class PaginationQueryBuilderBase
+    public abstract class QueryPaginatorBase
     {
         // base class mainly exists to keep statics out of the generic implementations
         private static readonly IReadOnlyDictionary<Type, MethodInfo> _typeComparisonMethods;
+
         protected static readonly ConstantExpression ConstantZeroExpression = Expression.Constant(0);
 
-        static PaginationQueryBuilderBase()
+        static QueryPaginatorBase()
         {
             var comparableTypes = new[]
             {

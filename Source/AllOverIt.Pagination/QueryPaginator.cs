@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
+using AllOverIt.Pagination.Exceptions;
 using AllOverIt.Pagination.Extensions;
 using AllOverIt.Serialization.Abstractions;
 using System;
@@ -10,7 +11,7 @@ using System.Reflection;
 
 namespace AllOverIt.Pagination
 {
-    public sealed class PaginationQueryBuilder<TEntity> : PaginationQueryBuilderBase
+    public sealed class QueryPaginator<TEntity> : QueryPaginatorBase, IQueryPaginator<TEntity>
         where TEntity : class
     {
         private sealed class FirstExpression
@@ -20,11 +21,11 @@ namespace AllOverIt.Pagination
             public ConstantExpression ReferenceValue { get; set; }
         }
 
-        private readonly List<ColumnItem<TEntity>> _columns = new();
+        private readonly List<ColumnDefinition<TEntity>> _columns = new();
         private readonly IJsonSerializer _jsonSerializer;
         private readonly IQueryable<TEntity> _query;
         private readonly PaginationDirection _paginationDirection;
-        private readonly int _pageSize;
+        private readonly int? _defaultPageSize;
 
         private ContinuationTokenEncoder _continuationTokenEncoder;
         private ContinuationTokenEncoder ContinuationTokenEncoder => GetContinuationTokenEncoder();
@@ -37,56 +38,36 @@ namespace AllOverIt.Pagination
         private IOrderedQueryable<TEntity> _directionReverseQuery;
         private IOrderedQueryable<TEntity> DirectionReverseQuery => GetDirectionReverseQuery();
 
-
-
-        // TODO: Introduce a factory so the jsonSerializer can be passed down
-
-
-        public PaginationQueryBuilder(IJsonSerializer jsonSerializer, IQueryable<TEntity> query, PaginationDirection direction, int pageSize)
+        public QueryPaginator(IJsonSerializer jsonSerializer, IQueryable<TEntity> query, PaginationDirection direction, int? defaultPageSize)
         {
             _jsonSerializer = jsonSerializer.WhenNotNull(nameof(jsonSerializer));
             _query = query.WhenNotNull(nameof(query));
             _paginationDirection = direction;
-            _pageSize = pageSize;
-
+            _defaultPageSize = defaultPageSize;
         }
 
-        // **************** ?? Create static factory methods to build a suitable builder ?? ****************
-
-
-
-
-
-        public PaginationQueryBuilder<TEntity> ColumnAscending<TProperty>(Expression<Func<TEntity, TProperty>> expression)
+        public IQueryPaginator<TEntity> ColumnAscending<TProperty>(Expression<Func<TEntity, TProperty>> expression)
         {
             AddColumnItem(expression, true);
             return this;
         }
 
-        public PaginationQueryBuilder<TEntity> ColumnDescending<TProperty>(Expression<Func<TEntity, TProperty>> expression)
+        public IQueryPaginator<TEntity> ColumnDescending<TProperty>(Expression<Func<TEntity, TProperty>> expression)
         {
             AddColumnItem(expression, false);
             return this;
         }
 
-        private void AddColumnItem<TProperty>(Expression<Func<TEntity, TProperty>> propertyExpression, bool isAscending)
+        public IQueryable<TEntity> BuildQuery(string continuationToken = default, int? pageSize = default)
         {
-            var property = (PropertyInfo) propertyExpression.GetFieldOrProperty();
-
-            var paginationItem = new ColumnItem<TEntity, TProperty>
+            if (_columns.NotAny())
             {
-                Property = property,
-                IsAscending = isAscending
-            };
+                throw new PaginationException("At least one column must be defined for pagination.");
+            }
 
-            _columns.Add(paginationItem);
-        }
-
-        public IQueryable<TEntity> Build(string continuationToken = default)
-        {
-            if (!_columns.Any())
+            if (!pageSize.HasValue && !_defaultPageSize.HasValue)
             {
-                throw new InvalidOperationException("At least one column must be defined for pagination.");
+                throw new PaginationException("A (default) page size must be provided to the constructor or this method.");
             }
 
             // Returns ContinuationToken.None if there is no token - which defaults to Forward
@@ -108,7 +89,7 @@ namespace AllOverIt.Pagination
                 filteredQuery = ApplyContinuationToken(filteredQuery, continuationProxy);
             }
 
-            filteredQuery = filteredQuery.Take(_pageSize);
+            filteredQuery = filteredQuery.Take(pageSize ?? _defaultPageSize.Value);
 
             if (requiredDirection == PaginationDirection.Backward)
             {
@@ -124,7 +105,10 @@ namespace AllOverIt.Pagination
         // The caller can create a previous/next page token as desired - the first/last row is selected based on the direction
         public string CreateContinuationToken(ContinuationDirection direction, IReadOnlyCollection<TEntity> references)
         {
-            _ = references.WhenNotNullOrEmpty(nameof(references));        // Can't create a token when there are no results - TODO: Create a custom exception
+            if (references.IsNullOrEmpty())
+            {
+                throw new PaginationException("At least one reference is required to create a continuation token.");
+            }
 
             return ContinuationTokenEncoder.Encode(direction, references);
         }
@@ -132,9 +116,33 @@ namespace AllOverIt.Pagination
         // Allows a continuation token to be created based on an individual reference row
         public string CreateContinuationToken(ContinuationDirection direction, TEntity reference)
         {
-            _ = reference.WhenNotNull(nameof(reference));        // Can't create a token when there are no results - TODO: Create a custom exception
+            if (reference == null)
+            {
+                throw new PaginationException("A reference is required to create a continuation token.");
+            }
 
             return ContinuationTokenEncoder.Encode(direction, reference);
+        }
+
+        private void AddColumnItem<TProperty>(Expression<Func<TEntity, TProperty>> propertyExpression, bool isAscending)
+        {
+            var fieldOrProperty = propertyExpression.GetFieldOrProperty();
+
+            if (fieldOrProperty is FieldInfo _)
+            {
+                // EF cannot translate fields, and no should they be used for exposing the model.
+                throw new PaginationException($"Paginated queries using fields is not supported.");
+            }
+
+            var property = (PropertyInfo)fieldOrProperty;
+
+            var paginationItem = new ColumnDefinition<TEntity, TProperty>
+            {
+                Property = property,
+                IsAscending = isAscending
+            };
+
+            _columns.Add(paginationItem);
         }
 
         private IOrderedQueryable<TEntity> GetDirectionQuery()
@@ -162,14 +170,14 @@ namespace AllOverIt.Pagination
             return _columns.Aggregate(
                 (IOrderedQueryable<TEntity>) default,
                 (current, next) => current == null
-                    ? next.ApplyOrderBy(_query, direction)
-                    : next.ApplyThenOrderBy(current, direction));
+                    ? next.OrderColumnBy(_query, direction)
+                    : next.ThenOrderColumnBy(current, direction));
         }
 
         private IQueryable<TEntity> ApplyContinuationToken(IQueryable<TEntity> filteredQuery, ContinuationToken continuationToken)
         {
             // Decode, ensuring to set the correct value type otherwise the expression comparisons may fail
-            var referenceValues = continuationToken.ValueTypes.SelectAsReadOnlyList(valueType => Convert.ChangeType(valueType.Value, valueType.TypeCode));
+            var referenceValues = continuationToken.Values.SelectAsReadOnlyList(valueType => Convert.ChangeType(valueType.Value, valueType.Type));
 
             var predicate = CreateFilterPredicate(continuationToken.Direction, referenceValues);
 
@@ -304,18 +312,11 @@ namespace AllOverIt.Pagination
             return innerExpression;
         }
 
-        //private static IEnumerable<object> GetColumnValues(IEnumerable<IColumnItem> columns, object reference)
-        //{
-        //    var referenceType = reference.GetType().GetTypeInfo();
-
-        //    return columns.Select(item => ReflectionCache.GetPropertyInfo(referenceType, item.Property.Name).GetValue(reference));
-        //}
-
-        private static BinaryExpression CreateCompareToExpression(ColumnItem<TEntity> entity, MemberExpression memberAccess,
+        private static BinaryExpression CreateCompareToExpression(ColumnDefinition<TEntity> entity, MemberExpression memberAccess,
             ConstantExpression comparisonValue, Func<Expression, Expression, BinaryExpression> compareTo)
         {
             var propertyType = entity.Property.PropertyType;
-
+           
             // Some types require the use of CompareTo() for < and > operations
             if (TryGetComparisonMethodInfo(propertyType, out var compareToMethod))
             {
@@ -343,7 +344,7 @@ namespace AllOverIt.Pagination
         }
 
         private static Func<Expression, Expression, BinaryExpression> GetComparisonExpression(PaginationDirection direction,
-            ColumnItem<TEntity> item, bool orEqual)
+            ColumnDefinition<TEntity> item, bool orEqual)
         {
             var greaterThan = direction switch
             {
