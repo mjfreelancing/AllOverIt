@@ -10,48 +10,6 @@ using System.Reflection;
 
 namespace AllOverIt.Pagination
 {
-
-    //public sealed class QueryPaginatorExecutionOptions
-    //{
-    //    public bool HasPrevious { get; init; } = true;
-    //    public bool HasNext { get; init; } = true;
-    //    public bool TotalCount { get; init; } = true;
-    //    public bool PreviousContinuationToken { get; init; } = true;
-    //    public bool NextContinuationToken { get; init; } = true;
-    //}
-
-    //public sealed class QueryPaginatorResult
-    //{
-    //    bool HasPrevious { get; init; }
-    //    bool HasNext { get; init; }
-    //    int TotalCount { get; init; }
-    //    string PreviousContinuationToken { get; init; }
-    //    string NextContinuationToken { get; init; }
-    //}
-
-    //public interface IQueryPaginatorExecutor
-    //{
-    //    Task<QueryPaginatorResult> ExecuteAsync(QueryPaginatorExecutionOptions options);
-
-    //}
-
-    //internal sealed class QueryPaginatorExecutor : IQueryPaginatorExecutor
-    //{
-    //    private readonly QueryPaginatorExecutionOptions _options;
-
-    //    public QueryPaginatorExecutor(QueryPaginatorExecutionOptions options = default)
-    //    {
-    //        _options = options ?? new QueryPaginatorExecutionOptions();
-    //    }
-
-    //    public Task<QueryPaginatorResult> ExecuteAsync(QueryPaginatorExecutionOptions options)
-    //    {
-
-    //    }
-    //}
-
-
-
     public sealed class QueryPaginator<TEntity> : QueryPaginatorBase, IQueryPaginator<TEntity>
         where TEntity : class
     {
