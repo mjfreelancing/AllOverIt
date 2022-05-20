@@ -12,7 +12,7 @@ namespace AllOverIt.Pagination
         // base class mainly exists to keep statics out of the generic implementations
         private static readonly IReadOnlyDictionary<Type, MethodInfo> _typeComparisonMethods;
 
-        protected static readonly ConstantExpression ConstantZeroExpression = Expression.Constant(0);
+        internal static readonly ConstantExpression ConstantZero = Expression.Constant(0);
 
         static QueryPaginatorBase()
         {

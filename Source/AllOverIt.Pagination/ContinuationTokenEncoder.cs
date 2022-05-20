@@ -1,22 +1,20 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
 using AllOverIt.Pagination.Extensions;
-using AllOverIt.Reflection;
 using AllOverIt.Serialization.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace AllOverIt.Pagination
 {
     internal sealed class ContinuationTokenEncoder
     {
-        private readonly IReadOnlyCollection<IColumnItem> _columns;
+        private readonly IReadOnlyCollection<IColumnDefinition> _columns;
         private readonly PaginationDirection _paginationDirection;
         private readonly IJsonSerializer _jsonSerializer;
 
-        public ContinuationTokenEncoder(IEnumerable<IColumnItem> columns, PaginationDirection paginationDirection, IJsonSerializer jsonSerializer)
+        public ContinuationTokenEncoder(IEnumerable<IColumnDefinition> columns, PaginationDirection paginationDirection, IJsonSerializer jsonSerializer)
         {
             _columns = columns.WhenNotNullOrEmpty(nameof(columns)).AsReadOnlyCollection();
             _paginationDirection = paginationDirection;
@@ -56,13 +54,13 @@ namespace AllOverIt.Pagination
                 : _paginationDirection;
 
             // Get the reference column values and their types
-            var tokenValues = GetColumnValueTypes(_columns, reference);
+            var columnValues = _columns.GetColumnValueTypes(reference);
 
             // Serialize the resultant token information
             var continuationToken = new ContinuationToken
             {
                 Direction = continuationPageDirection,
-                Values = tokenValues
+                Values = columnValues
             };
 
             return _jsonSerializer.SerializeObject(continuationToken).ToBase64();
@@ -73,25 +71,6 @@ namespace AllOverIt.Pagination
             return continuationToken.IsNotNullOrEmpty()
                 ? _jsonSerializer.DeserializeObject<ContinuationToken>(continuationToken.FromBase64())
                 : ContinuationToken.None;
-        }
-
-        private static IReadOnlyCollection<ContinuationToken.ValueType> GetColumnValueTypes(IEnumerable<IColumnItem> columns, object reference)
-        {
-            var referenceTypeInfo = reference.GetType().GetTypeInfo();
-
-            return columns
-                .SelectAsReadOnlyCollection(column =>
-                {
-                    var propertyInfo = ReflectionCache.GetPropertyInfo(referenceTypeInfo, column.Property.Name);
-                    var value = propertyInfo.GetValue(reference);
-                    var valueType = value.GetType();
-
-                    return new ContinuationToken.ValueType
-                    {
-                        Type = Type.GetTypeCode(valueType),
-                        Value = value
-                    };
-                });
         }
     }
 }

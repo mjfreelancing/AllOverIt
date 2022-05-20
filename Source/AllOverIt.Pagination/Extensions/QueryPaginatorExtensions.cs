@@ -1,10 +1,25 @@
 ﻿using System;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Pagination.Extensions
 {
     public static class QueryPaginatorExtensions
     {
+        // todo: Build async method in EF
+        public static bool HasPreviousPage<TEntity>(this IQueryPaginator<TEntity> paginator, TEntity reference)
+            where TEntity : class
+        {
+            return paginator.BuildBackwardQuery(reference).Any();
+        }
+
+        // todo: Build async method in EF
+        public static bool HasNextPage<TEntity>(this IQueryPaginator<TEntity> paginator, TEntity reference)
+            where TEntity : class
+        {
+            return paginator.BuildForwardQuery(reference).Any();
+        }
+
         #region ColumnAscending
         public static IQueryPaginator<TEntity> ColumnAscending<TEntity, TProp1, TProp2>(this IQueryPaginator<TEntity> paginator,
             Expression<Func<TEntity, TProp1>> expression1, Expression<Func<TEntity, TProp2>> expression2)
@@ -66,7 +81,6 @@ namespace AllOverIt.Pagination.Extensions
         #endregion
 
         #region ColumnDescending
-        #endregion
         public static IQueryPaginator<TEntity> ColumnDescending<TEntity, TProp1, TProp2>(this IQueryPaginator<TEntity> paginator,
             Expression<Func<TEntity, TProp1>> expression1, Expression<Func<TEntity, TProp2>> expression2)
             where TEntity : class
@@ -124,5 +138,6 @@ namespace AllOverIt.Pagination.Extensions
                 .ColumnDescending(expression5)
                 .ColumnDescending(expression6);
         }
+        #endregion
     }
 }

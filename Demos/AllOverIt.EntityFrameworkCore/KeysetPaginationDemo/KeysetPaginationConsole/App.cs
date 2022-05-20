@@ -129,7 +129,7 @@ namespace KeysetPaginationConsole
                             ? continuationTokens.Next
                             : continuationTokens.Previous;
 
-                        var paginatedQuery = queryPaginator.BuildQuery(continuationToken, pageSize);
+                        var paginatedQuery = queryPaginator.BuildPageQuery(continuationToken, pageSize);
 
                         //var paginatedQueryString = paginatedQuery.ToQueryString();
 

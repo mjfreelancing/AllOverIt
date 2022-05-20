@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace AllOverIt.Pagination
 {
-    internal abstract class ColumnDefinition<TEntity> : IColumnItem where TEntity : class
+    internal abstract class ColumnDefinition<TEntity> : IColumnDefinition where TEntity : class
     {
         public PropertyInfo Property { get; init; }
         public bool IsAscending { get; init; }

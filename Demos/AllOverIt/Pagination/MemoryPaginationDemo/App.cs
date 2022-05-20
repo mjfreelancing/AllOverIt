@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -44,26 +45,12 @@ namespace MemoryPaginationDemo
             _logger = logger.WhenNotNull(nameof(logger));
         }
 
-        public override async Task StartAsync(CancellationToken cancellationToken)
+        public override Task StartAsync(CancellationToken cancellationToken)
         {
-            const int DataSize = 100_000;
-            const int PageSize = 25;
+            const int DataSize = 205;
+            const int PageSize = 20;
 
-            Console.WriteLine("Adding data...");
-
-            var faker = new Faker<Person>().CustomInstantiator(_ => new Person("en"));
-
-            var persons = new List<PersonModel>(DataSize);
-
-            for (var i = 1; i <= DataSize; i++)
-            {
-                var person = faker.Generate();
-                var personModel = new PersonModel(person);
-
-                persons.Add(personModel);
-            }
-            
-            Console.WriteLine("Querying...");
+            var persons = GetData(DataSize);
 
             var query = from person in persons.AsQueryable()
                         select person;
@@ -77,33 +64,38 @@ namespace MemoryPaginationDemo
 
             while (key != 'q')
             {
-                var pageQuery = queryPaginator.BuildQuery(continuationToken, PageSize);
+                Console.WriteLine();
+                Console.WriteLine("Querying...");
+                Console.WriteLine();
+
+                var pageQuery = queryPaginator.BuildPageQuery(continuationToken, PageSize);
+
                 var pageResults = pageQuery.ToList();
+
+                var hasPrevious = pageResults.Any() ? queryPaginator.HasPreviousPage(pageResults.First()) : false;
+                var hasNext = pageResults.Any() ? queryPaginator.HasNextPage(pageResults.Last()) : false;
 
                 pageResults.ForEach(person =>
                 {
                     Console.WriteLine($"{person.LastName}, {person.FirstName}");
                 });
 
-                Console.WriteLine();
-                Console.WriteLine("(N)ext, (P)revious, (Q)uit");
-                Console.WriteLine();
+                key = GetUserInput(hasPrevious, hasNext);
 
-                do
+                switch (key)
                 {
-                    key = Char.ToLower(Console.ReadKey(true).KeyChar);
-                } while (key != 'n' && key != 'p' && key != 'q');
-
-                if (pageResults.Any())
-                {
-                    if (key == 'n')
-                    {
+                    case 'n':
                         continuationToken = queryPaginator.CreateContinuationToken(ContinuationDirection.NextPage, pageResults);
-                    }
-                    else if (key == 'p')
-                    {
+                        break;
+
+                    case 'p':
                         continuationToken = queryPaginator.CreateContinuationToken(ContinuationDirection.PreviousPage, pageResults);
-                    }
+                        break;
+
+                    case 'q':
+                        Console.WriteLine();
+                        Console.WriteLine("Done");
+                        break;
                 }
             }
 
@@ -112,6 +104,61 @@ namespace MemoryPaginationDemo
             Console.WriteLine();
             Console.WriteLine("All Over It.");
             Console.ReadKey();
+
+            return Task.CompletedTask;
+        }
+
+        private static IReadOnlyCollection<PersonModel> GetData(int dataSize)
+        {
+            Console.WriteLine();
+            Console.WriteLine("Adding data...");
+            Console.WriteLine();
+
+            var faker = new Faker<Person>().CustomInstantiator(_ => new Person("en"));
+
+            var persons = new List<PersonModel>(dataSize);
+
+            for (var i = 1; i <= dataSize; i++)
+            {
+                var person = faker.Generate();
+                var personModel = new PersonModel(person);
+
+                persons.Add(personModel);
+            }
+
+            return persons;
+        }
+
+        private static char GetUserInput(bool hasPrevious, bool hasNext)
+        {
+            Console.WriteLine();
+
+            var sb = new StringBuilder();
+
+            if (hasPrevious)
+            {
+                sb.Append("(P)revious, ");
+            }
+
+            if (hasNext)
+            {
+                sb.Append("(N)ext, ");
+            }
+
+            sb.Append("(Q)uit");
+
+            Console.WriteLine();
+            Console.WriteLine($"{sb}");
+            Console.WriteLine();
+
+            char key;
+
+            do
+            {
+                key = char.ToLower(Console.ReadKey(true).KeyChar);
+            } while ((key != 'p' || !hasPrevious) && (key != 'n' || !hasNext) && key != 'q');
+
+            return key;
         }
     }
 }

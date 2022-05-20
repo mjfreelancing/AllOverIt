@@ -2,7 +2,7 @@
 
 namespace AllOverIt.Pagination
 {
-    public interface IColumnItem
+    public interface IColumnDefinition
     {
         PropertyInfo Property { get; }
     }

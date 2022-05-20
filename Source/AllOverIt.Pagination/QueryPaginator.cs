@@ -2,7 +2,6 @@
 using AllOverIt.Extensions;
 using AllOverIt.Pagination.Exceptions;
 using AllOverIt.Pagination.Extensions;
-using AllOverIt.Serialization.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +10,48 @@ using System.Reflection;
 
 namespace AllOverIt.Pagination
 {
+
+    //public sealed class QueryPaginatorExecutionOptions
+    //{
+    //    public bool HasPrevious { get; init; } = true;
+    //    public bool HasNext { get; init; } = true;
+    //    public bool TotalCount { get; init; } = true;
+    //    public bool PreviousContinuationToken { get; init; } = true;
+    //    public bool NextContinuationToken { get; init; } = true;
+    //}
+
+    //public sealed class QueryPaginatorResult
+    //{
+    //    bool HasPrevious { get; init; }
+    //    bool HasNext { get; init; }
+    //    int TotalCount { get; init; }
+    //    string PreviousContinuationToken { get; init; }
+    //    string NextContinuationToken { get; init; }
+    //}
+
+    //public interface IQueryPaginatorExecutor
+    //{
+    //    Task<QueryPaginatorResult> ExecuteAsync(QueryPaginatorExecutionOptions options);
+
+    //}
+
+    //internal sealed class QueryPaginatorExecutor : IQueryPaginatorExecutor
+    //{
+    //    private readonly QueryPaginatorExecutionOptions _options;
+
+    //    public QueryPaginatorExecutor(QueryPaginatorExecutionOptions options = default)
+    //    {
+    //        _options = options ?? new QueryPaginatorExecutionOptions();
+    //    }
+
+    //    public Task<QueryPaginatorResult> ExecuteAsync(QueryPaginatorExecutionOptions options)
+    //    {
+
+    //    }
+    //}
+
+
+
     public sealed class QueryPaginator<TEntity> : QueryPaginatorBase, IQueryPaginator<TEntity>
         where TEntity : class
     {
@@ -26,15 +67,8 @@ namespace AllOverIt.Pagination
 
         private readonly QueryPaginatorOptions _options;
 
-
-
-
         private ContinuationTokenEncoder _continuationTokenEncoder;
         private ContinuationTokenEncoder ContinuationTokenEncoder => GetContinuationTokenEncoder();
-
-
-
-
 
         // A cached query based on the _direction
         private IOrderedQueryable<TEntity> _directionQuery;
@@ -62,7 +96,7 @@ namespace AllOverIt.Pagination
             return this;
         }
 
-        public IQueryable<TEntity> BuildQuery(string continuationToken = default, int? pageSize = default)
+        public IQueryable<TEntity> BuildPageQuery(string continuationToken = default, int? pageSize = default)
         {
             if (_columns.NotAny())
             {
@@ -97,12 +131,44 @@ namespace AllOverIt.Pagination
 
             if (requiredDirection == PaginationDirection.Backward)
             {
-                // This does wrap the query within an outer select but it saves the caller having to (remember to)
-                // reverse the results after they are returned.
+                // This does wrap the query within an outer select but it saves the caller having to
+                // (remember to) reverse the results after they are returned.
                 paginatedQuery = paginatedQuery.Reverse();
             }
 
             return paginatedQuery;
+        }
+
+        public IQueryable<TEntity> BuildBackwardQuery(TEntity reference)
+        {
+            if (reference == null)
+            {
+                throw new PaginationException("A reference is required to create a previous query.");
+            }
+
+            var referenceValues = _columns
+                .GetColumnValueTypes(reference)
+                .SelectAsReadOnlyList(item => item.Value);
+
+            var predicate = CreatePaginatedPredicate(_options.Direction.Reverse(), referenceValues);
+
+            return DirectionReverseQuery.Where(predicate);
+        }
+
+        public IQueryable<TEntity> BuildForwardQuery(TEntity reference)
+        {
+            if (reference == null)
+            {
+                throw new PaginationException("A reference is required to create a next query.");
+            }
+
+            var referenceValues = _columns
+                .GetColumnValueTypes(reference)
+                .SelectAsReadOnlyList(item => item.Value);
+
+            var predicate = CreatePaginatedPredicate(_options.Direction, referenceValues);
+
+            return DirectionQuery.Where(predicate);
         }
 
         // The caller can create a previous/next page token as desired - the first/last row is selected based on the direction
@@ -165,6 +231,7 @@ namespace AllOverIt.Pagination
         private ContinuationTokenEncoder GetContinuationTokenEncoder()
         {
             _continuationTokenEncoder ??= new ContinuationTokenEncoder(_columns, _options.Direction, _options.Serializer);
+
             return _continuationTokenEncoder;
         }
 
@@ -325,7 +392,7 @@ namespace AllOverIt.Pagination
             {
                 // entity.Property.CompareTo(comparisonValue)
                 var methodCallExpression = Expression.Call(memberAccess, compareToMethod, comparisonValue);
-                return compareTo.Invoke(methodCallExpression, ConstantZeroExpression);
+                return compareTo.Invoke(methodCallExpression, ConstantZero);
             }
             else
             {
