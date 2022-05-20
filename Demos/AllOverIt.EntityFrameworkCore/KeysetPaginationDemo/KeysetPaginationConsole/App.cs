@@ -219,16 +219,6 @@ namespace KeysetPaginationConsole
             Console.ReadKey();
         }
 
-        public override void OnStopping()
-        {
-            _logger.LogInformation("App is stopping");
-        }
-
-        public override void OnStopped()
-        {
-            _logger.LogInformation("App is stopped");
-        }
-
         private async Task CreateDataIfRequired(int totalCount)
         {
             using (var dbContext = await _dbContextFactory.CreateDbContextAsync())
