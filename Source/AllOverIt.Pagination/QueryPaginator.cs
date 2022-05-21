@@ -57,10 +57,7 @@ namespace AllOverIt.Pagination
 
         public IQueryable<TEntity> GetPageQuery(string continuationToken = default)
         {
-            if (_columns.NotAny())
-            {
-                throw new PaginationException("At least one column must be defined for pagination.");
-            }
+            AssertColumnsDefined();
 
             // Returns ContinuationToken.None if there is no token - which defaults to Forward
             var decodedToken = GetContinuationTokenEncoder().Decode(continuationToken);
@@ -96,6 +93,8 @@ namespace AllOverIt.Pagination
 
         public IQueryable<TEntity> GetPreviousPageQuery(TEntity reference)
         {
+            AssertColumnsDefined();
+
             var backQuery = GetDirectionReverseQuery().AsQueryable();
 
             // When reference == null, returns the last page relative to the pagination direction
@@ -112,6 +111,8 @@ namespace AllOverIt.Pagination
 
         public IQueryable<TEntity> GetNextPageQuery(TEntity reference)
         {
+            AssertColumnsDefined();
+
             var forwardQuery = GetDirectionQuery().AsQueryable();
 
             // When reference == null, returns the first page relative to the pagination direction
@@ -126,6 +127,8 @@ namespace AllOverIt.Pagination
 
         public bool HasPreviousPage(TEntity reference)
         {
+            AssertColumnsDefined();
+
             var previousQuery = GetDirectionReverseQuery().AsQueryable();
             var predicate = CreatePreviousPagePredicate(reference);
 
@@ -135,6 +138,8 @@ namespace AllOverIt.Pagination
         public Task<bool> HasPreviousPageAsync(TEntity reference, Func<IQueryable<TEntity>, Expression<Func<TEntity, bool>>, CancellationToken, Task<bool>> anyResolver,
             CancellationToken cancellationToken)
         {
+            AssertColumnsDefined();
+
             var previousQuery = GetDirectionReverseQuery().AsQueryable();
             var predicate = CreatePreviousPagePredicate(reference);
 
@@ -143,6 +148,8 @@ namespace AllOverIt.Pagination
 
         public bool HasNextPage(TEntity reference)
         {
+            AssertColumnsDefined();
+
             var nextQuery = GetDirectionQuery().AsQueryable();
             var predicate = CreateNextPagePredicate(reference);
 
@@ -152,6 +159,8 @@ namespace AllOverIt.Pagination
         public Task<bool> HasNextPageAsync(TEntity reference, Func<IQueryable<TEntity>, Expression<Func<TEntity, bool>>, CancellationToken, Task<bool>> anyResolver,
             CancellationToken cancellationToken)
         {
+            AssertColumnsDefined();
+
             var nextQuery = GetDirectionQuery().AsQueryable();
             var predicate = CreateNextPagePredicate(reference);
 
@@ -160,6 +169,11 @@ namespace AllOverIt.Pagination
 
         private void AddColumnDefinition<TProperty>(Expression<Func<TEntity, TProperty>> propertyExpression, bool isAscending)
         {
+            if (_directionQuery != null)
+            {
+                throw new PaginationException("Additional columns cannot be added once pagination has begun.");
+            }
+
             var fieldOrProperty = propertyExpression.GetFieldOrProperty();
 
             if (fieldOrProperty is FieldInfo _)
@@ -195,6 +209,8 @@ namespace AllOverIt.Pagination
 
         private ContinuationTokenEncoder GetContinuationTokenEncoder()
         {
+            AssertColumnsDefined();
+
             _continuationTokenEncoder ??= new ContinuationTokenEncoder(_columns, _paginationDirection, _config.Serializer);
 
             return _continuationTokenEncoder;
@@ -423,6 +439,14 @@ namespace AllOverIt.Pagination
                 (false, true) => Expression.LessThanOrEqual,
                 (false, false) => Expression.LessThan,
             };
+        }
+
+        private void AssertColumnsDefined()
+        {
+            if (_columns.NotAny())
+            {
+                throw new PaginationException("At least one column must be defined for pagination.");
+            }
         }
     }
 }
