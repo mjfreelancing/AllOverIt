@@ -20,11 +20,15 @@ namespace MemoryPaginationDemo
         // Cannot use 'Person' as it contains fields - can only use properties in queries 
         private class PersonModel
         {
+            private static int _id;
+
+            public int Id { get; }
             public string FirstName { get; }
             public string LastName { get; }
 
             public PersonModel(Person person)
             {
+                Id = Interlocked.Increment(ref _id);
                 FirstName = person.FirstName;
                 LastName = person.LastName;
             }
@@ -56,9 +60,10 @@ namespace MemoryPaginationDemo
             var query = from person in persons.AsQueryable()
                         select person;
 
+            // Pagination requires a unique column on the end (Id in this example) just in case multiple records have the same lastname / firstname
             var queryPaginator = _queryPaginatorFactory
                   .CreatePaginator(query, pageSize)
-                  .ColumnAscending(person => person.LastName, item => item.FirstName);
+                  .ColumnAscending(person => person.LastName, item => item.FirstName, item => item.Id);
 
             string continuationToken = default;
             var key = 'n';
@@ -73,7 +78,7 @@ namespace MemoryPaginationDemo
 
                 var lastCheckpoint = stopwatch.ElapsedMilliseconds;
 
-                var pageQuery = queryPaginator.BuildPageQuery(continuationToken);
+                var pageQuery = queryPaginator.GetPageQuery(continuationToken);
 
                 var pageResults = pageQuery.ToList();
 
@@ -84,7 +89,7 @@ namespace MemoryPaginationDemo
 
                 pageResults.ForEach(person =>
                 {
-                    Console.WriteLine($"{person.LastName}, {person.FirstName}");
+                    Console.WriteLine($"{person.LastName}, {person.FirstName} ({person.Id})");
                 });
 
                 Console.WriteLine();
@@ -98,19 +103,19 @@ namespace MemoryPaginationDemo
                 switch (key)
                 {
                     case 'f':
-                        continuationToken = queryPaginator.CreateFirstPageContinuationToken();      // could also just set to null or string.Empty
+                        continuationToken = queryPaginator.ContinuationTokenEncoder.EncodeFirstPage();      // could also just set to null or string.Empty
                         break;
 
                     case 'p':
-                        continuationToken = queryPaginator.CreateContinuationToken(ContinuationDirection.PreviousPage, pageResults);
+                        continuationToken = queryPaginator.ContinuationTokenEncoder.EncodePreviousPage(pageResults);
                         break;
 
                     case 'n':
-                        continuationToken = queryPaginator.CreateContinuationToken(ContinuationDirection.NextPage, pageResults);
+                        continuationToken = queryPaginator.ContinuationTokenEncoder.EncodeNextPage(pageResults);
                         break;
 
                     case 'l':
-                        continuationToken = queryPaginator.CreateLastPageContinuationToken();
+                        continuationToken = queryPaginator.ContinuationTokenEncoder.EncodeLastPage();
                         break;
 
                     case 'q':

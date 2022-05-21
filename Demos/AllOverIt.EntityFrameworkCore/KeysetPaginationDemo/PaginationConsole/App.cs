@@ -81,7 +81,7 @@ namespace KeysetPaginationConsole
                     }
                 }
 
-                const int pageSize = 100;
+                const int pageSize = 25;
 
                 await CreateDataIfRequired();
 
@@ -100,9 +100,11 @@ namespace KeysetPaginationConsole
                         post.Title
                     };
 
+                // Paginated queries require the last column be a unique Id, hence including the PostId
+                // (could be BlogId if we were only querying the Blogs table)
                 var queryPaginator = _queryPaginatorFactory
                     .CreatePaginator(query, pageSize)
-                    .ColumnAscending(item => item.Description, item => item.BlogId);
+                    .ColumnAscending(item => item.Description, item => item.PostId);
 
                 string continuationToken = default;
                 var key = 'n';
@@ -120,30 +122,34 @@ namespace KeysetPaginationConsole
                     // Including this here for worst case scenario
                     var totalRecords = await query.CountAsync(cancellationToken);
 
-                            var countElapsed = stopwatch.ElapsedMilliseconds;
-                            stopwatch.Restart();
+                    var countElapsed = stopwatch.ElapsedMilliseconds;
+                    stopwatch.Restart();
 
-                    var pageQuery = queryPaginator.BuildPageQuery(continuationToken);
+                    var pageQuery = queryPaginator.GetPageQuery(continuationToken);
 
-                            var buildQueryElapsed = stopwatch.ElapsedMilliseconds;
-                            stopwatch.Restart();
+                    Console.WriteLine();
+                    Console.WriteLine($"{pageQuery.ToQueryString()}");
+                    Console.WriteLine();
+
+                    var buildQueryElapsed = stopwatch.ElapsedMilliseconds;
+                    stopwatch.Restart();
 
                     var pageResults = await pageQuery.ToListAsync(cancellationToken);
 
-                            var resultsElapsed = stopwatch.ElapsedMilliseconds;
-                            stopwatch.Restart();
+                    var resultsElapsed = stopwatch.ElapsedMilliseconds;
+                    stopwatch.Restart();
 
                     //var hasPrevious = pageResults.Any() && queryPaginator.HasPreviousPage(pageResults.First());
                     var hasPrevious = pageResults.Any() && await queryPaginator.HasPreviousPageAsync(pageResults.First(), cancellationToken);
 
-                            var previousElapsed = stopwatch.ElapsedMilliseconds;
-                            stopwatch.Restart();
+                    var previousElapsed = stopwatch.ElapsedMilliseconds;
+                    stopwatch.Restart();
 
                     //var hasNext = pageResults.Any() && queryPaginator.HasNextPage(pageResults.Last());
                     var hasNext = pageResults.Any() && await queryPaginator.HasNextPageAsync(pageResults.Last(), cancellationToken);
 
-                            var nextElapsed = stopwatch.ElapsedMilliseconds;
-                            stopwatch.Restart();
+                    var nextElapsed = stopwatch.ElapsedMilliseconds;
+                    stopwatch.Restart();
 
                     var totalElapsed = countElapsed + buildQueryElapsed + resultsElapsed + previousElapsed + nextElapsed;
 
@@ -169,19 +175,19 @@ namespace KeysetPaginationConsole
                     switch (key)
                     {
                         case 'f':
-                            continuationToken = queryPaginator.CreateFirstPageContinuationToken();      // could also just set to null or string.Empty
+                            continuationToken = queryPaginator.ContinuationTokenEncoder.EncodeFirstPage();      // could also just set to null or string.Empty
                             break;
 
                         case 'p':
-                            continuationToken = queryPaginator.CreateContinuationToken(ContinuationDirection.PreviousPage, pageResults);
+                            continuationToken = queryPaginator.ContinuationTokenEncoder.EncodePreviousPage(pageResults);
                             break;
 
                         case 'n':
-                            continuationToken = queryPaginator.CreateContinuationToken(ContinuationDirection.NextPage, pageResults);
+                            continuationToken = queryPaginator.ContinuationTokenEncoder.EncodeNextPage(pageResults);
                             break;
 
                         case 'l':
-                            continuationToken = queryPaginator.CreateLastPageContinuationToken();
+                            continuationToken = queryPaginator.ContinuationTokenEncoder.EncodeLastPage();
                             break;
 
                         case 'q':
@@ -213,7 +219,7 @@ namespace KeysetPaginationConsole
                 }
             }
 
-            var totalCount = 1_234_567;
+            var totalCount = 1_234;
             var batchSize = 100;
             var batchCount = (int)Math.Ceiling(totalCount / (double)batchSize);
 
@@ -247,7 +253,7 @@ namespace KeysetPaginationConsole
                 for (var blogIndex = 0; blogIndex < batchSize; blogIndex++)
                 {
                     var blog = blogFaker.Generate();
-                    var posts = postFaker.Generate(5);
+                    var posts = postFaker.Generate(6);
 
                     blog.Posts = posts;
                     blogs.Add(blog);

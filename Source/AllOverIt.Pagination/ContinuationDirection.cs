@@ -1,6 +1,6 @@
 ﻿namespace AllOverIt.Pagination
 {
-    public enum ContinuationDirection
+    internal enum ContinuationDirection
     {
         PreviousPage,
         NextPage

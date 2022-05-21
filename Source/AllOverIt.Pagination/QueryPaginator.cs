@@ -29,15 +29,10 @@ namespace AllOverIt.Pagination
         private readonly PaginationDirection _paginationDirection;
 
         private ContinuationTokenEncoder _continuationTokenEncoder;
-        private ContinuationTokenEncoder ContinuationTokenEncoder => GetContinuationTokenEncoder();
+        private IOrderedQueryable<TEntity> _directionQuery;                     // based on the _paginationDirection        
+        private IOrderedQueryable<TEntity> _directionReverseQuery;              // based on the reverse _direction
 
-        // A cached query based on the _direction
-        private IOrderedQueryable<TEntity> _directionQuery;
-        private IOrderedQueryable<TEntity> DirectionQuery => GetDirectionQuery();
-
-        // A cached query based on the reverse _direction
-        private IOrderedQueryable<TEntity> _directionReverseQuery;
-        private IOrderedQueryable<TEntity> DirectionReverseQuery => GetDirectionReverseQuery();
+        public IContinuationTokenEncoder ContinuationTokenEncoder => GetContinuationTokenEncoder();
 
         public QueryPaginator(IQueryable<TEntity> query, QueryPaginatorConfig config, int pageSize,
             PaginationDirection paginationDirection = PaginationDirection.Forward)
@@ -60,7 +55,7 @@ namespace AllOverIt.Pagination
             return this;
         }
 
-        public IQueryable<TEntity> BuildPageQuery(string continuationToken = default)
+        public IQueryable<TEntity> GetPageQuery(string continuationToken = default)
         {
             if (_columns.NotAny())
             {
@@ -68,15 +63,15 @@ namespace AllOverIt.Pagination
             }
 
             // Returns ContinuationToken.None if there is no token - which defaults to Forward
-            var decodedToken = ContinuationTokenEncoder.Decode(continuationToken);
+            var decodedToken = GetContinuationTokenEncoder().Decode(continuationToken);
 
             var requiredDirection = decodedToken == ContinuationToken.None
                 ? _paginationDirection
                 : decodedToken.Direction;
 
             var requiredQuery = requiredDirection == _paginationDirection
-                ? DirectionQuery
-                : DirectionReverseQuery;
+                ? GetDirectionQuery()
+                : GetDirectionReverseQuery();
 
             var paginatedQuery = requiredQuery.AsQueryable();
 
@@ -99,9 +94,9 @@ namespace AllOverIt.Pagination
             return paginatedQuery;
         }
 
-        public IQueryable<TEntity> BuildPreviousPageQuery(TEntity reference)
+        public IQueryable<TEntity> GetPreviousPageQuery(TEntity reference)
         {
-            var backQuery = DirectionReverseQuery.AsQueryable();
+            var backQuery = GetDirectionReverseQuery().AsQueryable();
 
             // When reference == null, returns the last page relative to the pagination direction
             if (reference != null)
@@ -115,9 +110,9 @@ namespace AllOverIt.Pagination
                 .Reverse();
         }
 
-        public IQueryable<TEntity> BuildNextPageQuery(TEntity reference)
+        public IQueryable<TEntity> GetNextPageQuery(TEntity reference)
         {
-            var forwardQuery = DirectionQuery.AsQueryable();
+            var forwardQuery = GetDirectionQuery().AsQueryable();
 
             // When reference == null, returns the first page relative to the pagination direction
             if (reference != null)
@@ -131,71 +126,36 @@ namespace AllOverIt.Pagination
 
         public bool HasPreviousPage(TEntity reference)
         {
-            var backQuery = DirectionReverseQuery.AsQueryable();
-
+            var previousQuery = GetDirectionReverseQuery().AsQueryable();
             var predicate = CreatePreviousPagePredicate(reference);
 
-            return backQuery.Any(predicate);
+            return previousQuery.Any(predicate);
         }
 
         public Task<bool> HasPreviousPageAsync(TEntity reference, Func<IQueryable<TEntity>, Expression<Func<TEntity, bool>>, CancellationToken, Task<bool>> anyResolver,
             CancellationToken cancellationToken)
         {
-            var backQuery = DirectionReverseQuery.AsQueryable();
-
+            var previousQuery = GetDirectionReverseQuery().AsQueryable();
             var predicate = CreatePreviousPagePredicate(reference);
 
-            return anyResolver.Invoke(backQuery, predicate, cancellationToken);
+            return anyResolver.Invoke(previousQuery, predicate, cancellationToken);
         }
 
         public bool HasNextPage(TEntity reference)
         {
-            var forwardQuery = DirectionQuery.AsQueryable();
+            var nextQuery = GetDirectionQuery().AsQueryable();
             var predicate = CreateNextPagePredicate(reference);
 
-            return forwardQuery.Any(predicate);
+            return nextQuery.Any(predicate);
         }
 
         public Task<bool> HasNextPageAsync(TEntity reference, Func<IQueryable<TEntity>, Expression<Func<TEntity, bool>>, CancellationToken, Task<bool>> anyResolver,
             CancellationToken cancellationToken)
         {
-            var forwardQuery = DirectionQuery.AsQueryable();
+            var nextQuery = GetDirectionQuery().AsQueryable();
             var predicate = CreateNextPagePredicate(reference);
 
-            return anyResolver.Invoke(forwardQuery, predicate, cancellationToken);
-        }
-
-        // The caller can create a previous/next page token as desired - the first/last row is selected based on the direction
-        public string CreateContinuationToken(ContinuationDirection direction, IReadOnlyCollection<TEntity> references)
-        {
-            if (references.IsNullOrEmpty())
-            {
-                throw new PaginationException("At least one reference is required to create a continuation token.");
-            }
-
-            return ContinuationTokenEncoder.Encode(direction, references);
-        }
-
-        // Allows a continuation token to be created based on an individual reference row
-        public string CreateContinuationToken(ContinuationDirection direction, TEntity reference)
-        {
-            if (reference == null)
-            {
-                throw new PaginationException("A reference is required to create a continuation token.");
-            }
-
-            return ContinuationTokenEncoder.Encode(direction, reference);
-        }
-
-        public string CreateFirstPageContinuationToken()
-        {
-            // Simply returns string.Empty
-            return ContinuationTokenEncoder.EncodeFirstPage();
-        }
-
-        public string CreateLastPageContinuationToken()
-        {
-            return ContinuationTokenEncoder.EncodeLastPage();
+            return anyResolver.Invoke(nextQuery, predicate, cancellationToken);
         }
 
         private void AddColumnDefinition<TProperty>(Expression<Func<TEntity, TProperty>> propertyExpression, bool isAscending)
@@ -204,7 +164,7 @@ namespace AllOverIt.Pagination
 
             if (fieldOrProperty is FieldInfo _)
             {
-                // EF cannot translate fields, and no should they be used for exposing the model.
+                // EF cannot translate fields, and nor should they be used for exposing the model.
                 throw new PaginationException($"Paginated queries using fields is not supported.");
             }
 
