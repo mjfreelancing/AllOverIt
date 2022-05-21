@@ -193,7 +193,7 @@ namespace PaginationConsole
                 }
             }
 
-            var totalCount = 1_234;
+            var totalCount = 100_001;
             var batchSize = 100;
             var batchCount = (int) Math.Ceiling(totalCount / (double) batchSize);
 
