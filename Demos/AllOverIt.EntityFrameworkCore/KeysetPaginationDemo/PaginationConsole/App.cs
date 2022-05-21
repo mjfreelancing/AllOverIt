@@ -112,13 +112,13 @@ namespace KeysetPaginationConsole
                     var resultsElapsed = stopwatch.ElapsedMilliseconds;
                     stopwatch.Restart();
 
-                    //var hasPrevious = pageResults.Any() && queryPaginator.HasPreviousPage(pageResults.First());
+                    // HasPreviousPageAsync() is EF specific - faster than using HasPreviousPage() as it won't need to return all rows
                     var hasPrevious = pageResults.Any() && await queryPaginator.HasPreviousPageAsync(pageResults.First(), cancellationToken);
 
                     var previousElapsed = stopwatch.ElapsedMilliseconds;
                     stopwatch.Restart();
 
-                    //var hasNext = pageResults.Any() && queryPaginator.HasNextPage(pageResults.Last());
+                    // HasNextPageAsync() is EF specific - faster than using HasNextPage() as it won't need to return all rows
                     var hasNext = pageResults.Any() && await queryPaginator.HasNextPageAsync(pageResults.Last(), cancellationToken);
 
                     var nextElapsed = stopwatch.ElapsedMilliseconds;
