@@ -37,21 +37,24 @@ namespace PaginationConsole
 
             using (var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken))
             {
+                dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+
                 if (DatabaseStartupOptions.RecreateData)
                 {
-                    if (DatabaseStartupOptions.Use == DatabaseChoice.Mysql)
+                    await dbContext.Database.EnsureDeletedAsync(cancellationToken);
+
+                    switch (DatabaseStartupOptions.Use)
                     {
-                        await dbContext.Database.EnsureDeletedAsync(cancellationToken);
-                        await dbContext.Database.MigrateAsync(cancellationToken);
-                    }
-                    else if (DatabaseStartupOptions.Use == DatabaseChoice.Sqlite)
-                    {
-                        dbContext.Database.EnsureDeleted();
-                        dbContext.Database.EnsureCreated();
-                    }
-                    else
-                    {
-                        throw new NotImplementedException($"Unknown database type {DatabaseStartupOptions.Use}");
+                        case DatabaseChoice.Mysql:
+                            await dbContext.Database.MigrateAsync(cancellationToken);
+                            break;
+
+                        case DatabaseChoice.Sqlite:
+                            await dbContext.Database.EnsureCreatedAsync(cancellationToken);
+                            break;
+
+                        default:
+                            throw new NotImplementedException($"Unknown database type {DatabaseStartupOptions.Use}");
                     }
                 }
 
@@ -193,7 +196,7 @@ namespace PaginationConsole
                 }
             }
 
-            var totalCount = 100_001;
+            var totalCount = 500_006;
             var batchSize = 100;
             var batchCount = (int) Math.Ceiling(totalCount / (double) batchSize);
 
