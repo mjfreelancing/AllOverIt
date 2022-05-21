@@ -1,4 +1,4 @@
-﻿namespace KeysetPaginationConsole
+﻿namespace PaginationConsole
 {
     public enum DatabaseChoice
     {

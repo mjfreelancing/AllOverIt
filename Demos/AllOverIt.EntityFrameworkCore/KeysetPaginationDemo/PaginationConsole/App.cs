@@ -4,9 +4,10 @@ using AllOverIt.GenericHost;
 using AllOverIt.Pagination;
 using AllOverIt.Pagination.Extensions;
 using Bogus;
-using KeysetPaginationConsole.Entities;
+using KeysetPaginationConsole;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PaginationConsole.Entities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,7 +16,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace KeysetPaginationConsole
+namespace PaginationConsole
 {
     public sealed class App : ConsoleAppBase
     {
@@ -194,14 +195,14 @@ namespace KeysetPaginationConsole
 
             var totalCount = 1_234;
             var batchSize = 100;
-            var batchCount = (int)Math.Ceiling(totalCount / (double)batchSize);
+            var batchCount = (int) Math.Ceiling(totalCount / (double) batchSize);
 
             await Enumerable
                 .Range(1, batchCount)
                 .ForEachAsParallelAsync(async index =>
                 {
                     var rows = index * batchSize > totalCount
-                        ? totalCount - (((index-1) * batchSize))
+                        ? totalCount - (index - 1) * batchSize
                         : batchSize;
 
                     await CreateDataBatch(index, rows);

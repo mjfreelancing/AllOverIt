@@ -2,9 +2,9 @@
 using AllOverIt.Pagination;
 using AllOverIt.Pagination.Extensions;
 using AllOverIt.Serialization.NewtonsoftJson;
-using KeysetPaginationConsole;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PaginationConsole;
 using System.Threading.Tasks;
 
 class Program

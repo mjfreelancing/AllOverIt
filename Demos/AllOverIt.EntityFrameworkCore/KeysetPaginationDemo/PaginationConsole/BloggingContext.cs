@@ -1,8 +1,8 @@
-﻿using KeysetPaginationConsole.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using PaginationConsole.Entities;
 using System;
 
-namespace KeysetPaginationConsole
+namespace PaginationConsole
 {
     public class BloggingContext : DbContext
     {

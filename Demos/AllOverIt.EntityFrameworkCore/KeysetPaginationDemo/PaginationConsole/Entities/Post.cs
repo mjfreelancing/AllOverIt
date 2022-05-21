@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace KeysetPaginationConsole.Entities
+namespace PaginationConsole.Entities
 {
     [Index(nameof(Title), nameof(Id))]
     public class Post
