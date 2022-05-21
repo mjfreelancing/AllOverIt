@@ -48,16 +48,16 @@ namespace MemoryPaginationDemo
 
         public override Task StartAsync(CancellationToken cancellationToken)
         {
-            const int DataSize = 20005;
-            const int PageSize = 20;
+            const int dataSize = 20005;
+            const int pageSize = 20;
 
-            var persons = GetData(DataSize);
+            var persons = GetData(dataSize);
 
             var query = from person in persons.AsQueryable()
                         select person;
 
             var queryPaginator = _queryPaginatorFactory
-                  .CreatePaginator(query, PageSize)
+                  .CreatePaginator(query, pageSize)
                   .ColumnAscending(person => person.LastName, item => item.FirstName);
 
             string continuationToken = default;

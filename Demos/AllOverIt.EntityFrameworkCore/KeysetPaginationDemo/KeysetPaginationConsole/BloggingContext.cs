@@ -1,5 +1,6 @@
 ﻿using KeysetPaginationConsole.Entities;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace KeysetPaginationConsole
 {
@@ -14,17 +15,17 @@ namespace KeysetPaginationConsole
 
             var connectionString =
                 // MySql
-                //"server=localhost;user=root;password=password;database=PaginatedBlogPosts";
+                "server=localhost;user=root;password=password;database=PaginatedBlogPosts";
 
                 // Sqlite
-                "Data Source=PaginatedBlogPosts.db";            
+                //"Data Source=PaginatedBlogPosts.db";            
 
             options
                 // MySql
-                //.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 26)))
+                .UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 26)))
 
                 // Sqlite
-                .UseSqlite(connectionString)
+                //.UseSqlite(connectionString)
 
                 //.LogTo(Console.WriteLine, LogLevel.Information)
                 .EnableDetailedErrors();

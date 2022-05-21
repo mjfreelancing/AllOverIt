@@ -9,27 +9,27 @@ namespace AllOverIt.Pagination.Extensions
         public static IQueryable<TEntity> BuildFirstPageQuery<TEntity>(this IQueryPaginator<TEntity> paginator)
             where TEntity : class
         {
-            return paginator.BuildForwardPageQuery(null);
+            return paginator.BuildNextPageQuery(null);
         }
 
         public static IQueryable<TEntity> BuildLastPageQuery<TEntity>(this IQueryPaginator<TEntity> paginator)
             where TEntity : class
         {
-            return paginator.BuildBackPageQuery(null);
+            return paginator.BuildPreviousPageQuery(null);
         }
 
         // todo: Build async method in EF
         public static bool HasPreviousPage<TEntity>(this IQueryPaginator<TEntity> paginator, TEntity reference)
             where TEntity : class
         {
-            return paginator.BuildBackPageQuery(reference).Any();
+            return paginator.BuildPreviousPageQuery(reference).Any();
         }
 
         // todo: Build async method in EF
         public static bool HasNextPage<TEntity>(this IQueryPaginator<TEntity> paginator, TEntity reference)
             where TEntity : class
         {
-            return paginator.BuildForwardPageQuery(reference).Any();
+            return paginator.BuildNextPageQuery(reference).Any();
         }
 
         #region ColumnAscending

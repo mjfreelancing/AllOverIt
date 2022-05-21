@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace AllOverIt.Pagination
 {
@@ -96,7 +98,86 @@ namespace AllOverIt.Pagination
             return paginatedQuery;
         }
 
-        public IQueryable<TEntity> BuildBackPageQuery(TEntity reference)
+        // ---------------------------------------------------------------------------------------------------------------
+
+
+
+
+        public bool HasPreviousPage(TEntity reference)
+        {
+            _ = reference.WhenNotNull(nameof(reference));
+
+            var backQuery = DirectionReverseQuery.AsQueryable();
+
+            var referenceValues = _columns
+                .GetColumnValueTypes(reference)
+                .SelectAsReadOnlyList(item => item.Value);
+
+            var predicate = CreatePaginatedPredicate(_paginationDirection.Reverse(), referenceValues);
+            return backQuery.Any(predicate);
+        }
+
+        public bool HasNextPage(TEntity reference)
+        {
+            _ = reference.WhenNotNull(nameof(reference));
+
+            var backQuery = DirectionQuery.AsQueryable();
+
+            var referenceValues = _columns
+                .GetColumnValueTypes(reference)
+                .SelectAsReadOnlyList(item => item.Value);
+
+            var predicate = CreatePaginatedPredicate(_paginationDirection, referenceValues);
+            return backQuery.Any(predicate);
+        }
+
+
+
+
+        // ---------------------------------------------------------------------------------------------------------------
+
+
+
+
+        public Task<bool> HasPreviousPageAsync(TEntity reference, Func<IQueryable<TEntity>, Expression<Func<TEntity, bool>>, CancellationToken, Task<bool>> anyResolver,
+            CancellationToken cancellationToken)
+        {
+            _ = reference.WhenNotNull(nameof(reference));
+
+            var backQuery = DirectionReverseQuery.AsQueryable();
+
+            var referenceValues = _columns
+                .GetColumnValueTypes(reference)
+                .SelectAsReadOnlyList(item => item.Value);
+
+            var predicate = CreatePaginatedPredicate(_paginationDirection.Reverse(), referenceValues);
+
+            return anyResolver.Invoke(backQuery, predicate, cancellationToken);
+        }
+
+        public Task<bool> HasNextPageAsync(TEntity reference, Func<IQueryable<TEntity>, Expression<Func<TEntity, bool>>, CancellationToken, Task<bool>> anyResolver,
+            CancellationToken cancellationToken)
+        {
+            _ = reference.WhenNotNull(nameof(reference));
+
+            var forwardQuery = DirectionQuery.AsQueryable();
+
+            var referenceValues = _columns
+                .GetColumnValueTypes(reference)
+                .SelectAsReadOnlyList(item => item.Value);
+
+            var predicate = CreatePaginatedPredicate(_paginationDirection, referenceValues);
+
+            return anyResolver.Invoke(forwardQuery, predicate, cancellationToken);
+        }
+
+
+
+
+
+        // ---------------------------------------------------------------------------------------------------------------
+
+        public IQueryable<TEntity> BuildPreviousPageQuery(TEntity reference)
         {
             var backQuery = DirectionReverseQuery.AsQueryable();
 
@@ -116,7 +197,7 @@ namespace AllOverIt.Pagination
                 .Reverse();
         }
 
-        public IQueryable<TEntity> BuildForwardPageQuery(TEntity reference)
+        public IQueryable<TEntity> BuildNextPageQuery(TEntity reference)
         {
             var forwardQuery = DirectionQuery.AsQueryable();
 

@@ -11,11 +11,38 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace KeysetPaginationConsole
 {
+    public static class QueryPaginatorExtensions
+    {
+
+        // EF Specific
+        public static Task<bool> HasPreviousPageAsync<TEntity>(this IQueryPaginator<TEntity> paginator, TEntity reference,
+            CancellationToken cancellation = default) where TEntity : class
+        {
+            return paginator.HasPreviousPageAsync(reference, async (queryable, predicate, token) =>
+            {
+                return await queryable.AnyAsync(predicate, token);
+            }, cancellation);
+        }
+
+        // EF Specific
+        public static Task<bool> HasNextPageAsync<TEntity>(this IQueryPaginator<TEntity> paginator, TEntity reference,
+            CancellationToken cancellation = default) where TEntity : class
+        {
+            return paginator.HasNextPageAsync(reference, async (queryable, predicate, token) =>
+            {
+                return await queryable.AnyAsync(predicate, token);
+            }, cancellation);
+        }
+    }
+
+
+
     public sealed class App : ConsoleAppBase
     {
         private readonly IDbContextFactory<BloggingContext> _dbContextFactory;
@@ -43,6 +70,8 @@ namespace KeysetPaginationConsole
                 //dbContext.Database.EnsureDeleted();
                 //dbContext.Database.EnsureCreated();
 
+                const int pageSize = 100;
+
                 await CreateDataIfRequired();
 
                 Console.WriteLine("Starting...");
@@ -60,50 +89,97 @@ namespace KeysetPaginationConsole
                         post.Title
                     };
 
-                const int pageSize = 100;
-                var totalRecords = await query.CountAsync(cancellationToken);
-
                 var queryPaginator = _queryPaginatorFactory
                     .CreatePaginator(query, pageSize)
                     .ColumnAscending(item => item.Description, item => item.BlogId);
 
+                string continuationToken = default;
+                var key = 'n';
+
                 var stopwatch = Stopwatch.StartNew();
 
-                var continuationToken = string.Empty;
-                var lastCheckpoint = 0L;
-                var totalRead = 0;
-
-                while (true)
+                while (key != 'q')
                 {
-                    var paginatedQuery = queryPaginator.BuildPageQuery(continuationToken);
-
-                    var paginatedResults = await paginatedQuery.ToListAsync(cancellationToken);
-
-                    var lastRow = paginatedResults.Last();
-
-                    var hasNext = await queryPaginator
-                        .BuildForwardPageQuery(lastRow)
-                        .AnyAsync(cancellationToken);
-
-                    if (hasNext)
-                    {
-                        continuationToken = queryPaginator.CreateContinuationToken(ContinuationDirection.NextPage, lastRow);
-                    }
-
-                    var checkpoint = stopwatch.ElapsedMilliseconds;
-                    var elapsed = checkpoint - lastCheckpoint;
-                    lastCheckpoint = checkpoint;
-
-                    totalRead += paginatedResults.Count;
-
                     Console.WriteLine();
-                    Console.WriteLine($"Read of {paginatedResults.Count} rows took {elapsed}ms. ({totalRead} of {totalRecords})");
+                    Console.WriteLine("Querying...");
                     Console.WriteLine();
 
-                    if (!hasNext)
+                    stopwatch.Restart();
+
+                    // Including this here for worst case scenario
+                    var totalRecords = await query.CountAsync(cancellationToken);
+
+                            var countElapsed = stopwatch.ElapsedMilliseconds;
+                            stopwatch.Restart();
+
+                    var pageQuery = queryPaginator.BuildPageQuery(continuationToken);
+
+                            var buildQueryElapsed = stopwatch.ElapsedMilliseconds;
+                            stopwatch.Restart();
+
+                    var pageResults = await pageQuery.ToListAsync(cancellationToken);
+
+                            var resultsElapsed = stopwatch.ElapsedMilliseconds;
+                            stopwatch.Restart();
+
+                    //var hasPrevious = pageResults.Any() && queryPaginator.HasPreviousPage(pageResults.First());
+                    var hasPrevious = pageResults.Any() && await queryPaginator.HasPreviousPageAsync(pageResults.First(), cancellationToken);
+
+                            var previousElapsed = stopwatch.ElapsedMilliseconds;
+                            stopwatch.Restart();
+
+                    //var hasNext = pageResults.Any() && queryPaginator.HasNextPage(pageResults.Last());
+                    var hasNext = pageResults.Any() && await queryPaginator.HasNextPageAsync(pageResults.Last(), cancellationToken);
+
+                            var nextElapsed = stopwatch.ElapsedMilliseconds;
+                            stopwatch.Restart();
+
+                    var totalElapsed = countElapsed + buildQueryElapsed + resultsElapsed + previousElapsed + nextElapsed;
+
+                    pageResults.ForEach(result =>
                     {
-                        break;
+                        Console.WriteLine($"{result.BlogId}, {result.Description}, {result.PostId}, {result.Title}");
+                    });
+
+                    Console.WriteLine();
+                    Console.WriteLine($"{pageSize} of {totalRecords} rows. Execution time: {totalElapsed}ms");
+                    Console.WriteLine($"  > Get Total Count: {countElapsed}ms");
+                    Console.WriteLine($"  > Build Query: {buildQueryElapsed}ms");
+                    Console.WriteLine($"  > Get Results: {resultsElapsed}ms");
+                    Console.WriteLine($"  > Has Previous: {previousElapsed}ms");
+                    Console.WriteLine($"  > Has Next: {nextElapsed}ms");
+                    Console.WriteLine($"    >> Total: {countElapsed + buildQueryElapsed + resultsElapsed + previousElapsed + nextElapsed}ms");
+                    Console.WriteLine();
+
+                    key = GetUserInput(hasPrevious, hasNext);
+
+                    stopwatch.Restart();
+
+                    switch (key)
+                    {
+                        case 'f':
+                            continuationToken = queryPaginator.CreateFirstPageContinuationToken();      // could also just set to null or string.Empty
+                            break;
+
+                        case 'p':
+                            continuationToken = queryPaginator.CreateContinuationToken(ContinuationDirection.PreviousPage, pageResults);
+                            break;
+
+                        case 'n':
+                            continuationToken = queryPaginator.CreateContinuationToken(ContinuationDirection.NextPage, pageResults);
+                            break;
+
+                        case 'l':
+                            continuationToken = queryPaginator.CreateLastPageContinuationToken();
+                            break;
+
+                        case 'q':
+                            Console.WriteLine();
+                            Console.WriteLine("Done");
+                            break;
                     }
+
+                    Console.WriteLine($"Continuation token generation time: {stopwatch.ElapsedMilliseconds}ms");
                 }
             }
 
@@ -126,7 +202,7 @@ namespace KeysetPaginationConsole
                 }
             }
 
-            var totalCount = 1_010_101;
+            var totalCount = 1_234_567;
             var batchSize = 100;
             var batchCount = (int)Math.Ceiling(totalCount / (double)batchSize);
 
@@ -169,6 +245,42 @@ namespace KeysetPaginationConsole
                 dbContext.Blogs.AddRange(blogs);
                 await dbContext.SaveChangesAsync();
             }
+        }
+
+        private static char GetUserInput(bool hasPrevious, bool hasNext)
+        {
+            Console.WriteLine();
+
+            var sb = new StringBuilder();
+
+            sb.Append("(F)irst, ");
+
+            if (hasPrevious)
+            {
+                sb.Append("(P)revious, ");
+            }
+
+            if (hasNext)
+            {
+                sb.Append("(N)ext, ");
+            }
+
+            sb.Append("(L)ast, ");
+
+            sb.Append("(Q)uit");
+
+            Console.WriteLine();
+            Console.WriteLine($"{sb}");
+            Console.WriteLine();
+
+            char key;
+
+            do
+            {
+                key = char.ToLower(Console.ReadKey(true).KeyChar);
+            } while ((key != 'p' || !hasPrevious) && (key != 'n' || !hasNext) && key != 'f' && key != 'l' && key != 'q');
+
+            return key;
         }
     }
 }
