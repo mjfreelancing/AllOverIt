@@ -47,7 +47,7 @@ namespace MemoryPaginationDemo
 
         public override Task StartAsync(CancellationToken cancellationToken)
         {
-            const int DataSize = 205;
+            const int DataSize = 20005;
             const int PageSize = 20;
 
             var persons = GetData(DataSize);
@@ -56,7 +56,7 @@ namespace MemoryPaginationDemo
                         select person;
 
             var queryPaginator = _queryPaginatorFactory
-                  .CreatePaginator(query)
+                  .CreatePaginator(query, PageSize)
                   .ColumnAscending(person => person.LastName, item => item.FirstName);
 
             string continuationToken = default;
@@ -68,12 +68,12 @@ namespace MemoryPaginationDemo
                 Console.WriteLine("Querying...");
                 Console.WriteLine();
 
-                var pageQuery = queryPaginator.BuildPageQuery(continuationToken, PageSize);
+                var pageQuery = queryPaginator.BuildPageQuery(continuationToken);
 
                 var pageResults = pageQuery.ToList();
 
-                var hasPrevious = pageResults.Any() ? queryPaginator.HasPreviousPage(pageResults.First()) : false;
-                var hasNext = pageResults.Any() ? queryPaginator.HasNextPage(pageResults.Last()) : false;
+                var hasPrevious = pageResults.Any() && queryPaginator.HasPreviousPage(pageResults.First());
+                var hasNext = pageResults.Any() && queryPaginator.HasNextPage(pageResults.Last());
 
                 pageResults.ForEach(person =>
                 {
@@ -84,12 +84,22 @@ namespace MemoryPaginationDemo
 
                 switch (key)
                 {
-                    case 'n':
-                        continuationToken = queryPaginator.CreateContinuationToken(ContinuationDirection.NextPage, pageResults);
+                    case 'f':
+                        continuationToken = default;
                         break;
 
                     case 'p':
                         continuationToken = queryPaginator.CreateContinuationToken(ContinuationDirection.PreviousPage, pageResults);
+                        break;
+
+                    case 'n':
+                        continuationToken = queryPaginator.CreateContinuationToken(ContinuationDirection.NextPage, pageResults);
+                        break;
+
+                    case 'l':
+                        continuationToken = queryPaginator.CreateLastPageContinuationToken();
+                        //pageQuery = queryPaginator.BuildLastPageQuery();        // Same as BuildBackPageQuery(null);
+                        //pageResults = pageQuery.ToList();
                         break;
 
                     case 'q':
@@ -135,6 +145,8 @@ namespace MemoryPaginationDemo
 
             var sb = new StringBuilder();
 
+            sb.Append("(F)irst, ");
+
             if (hasPrevious)
             {
                 sb.Append("(P)revious, ");
@@ -144,6 +156,8 @@ namespace MemoryPaginationDemo
             {
                 sb.Append("(N)ext, ");
             }
+
+            sb.Append("(L)ast, ");
 
             sb.Append("(Q)uit");
 
@@ -156,7 +170,7 @@ namespace MemoryPaginationDemo
             do
             {
                 key = char.ToLower(Console.ReadKey(true).KeyChar);
-            } while ((key != 'p' || !hasPrevious) && (key != 'n' || !hasNext) && key != 'q');
+            } while ((key != 'p' || !hasPrevious) && (key != 'n' || !hasNext) && key != 'f' && key != 'l' && key != 'q');
 
             return key;
         }

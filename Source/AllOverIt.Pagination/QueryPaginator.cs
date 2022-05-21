@@ -21,9 +21,10 @@ namespace AllOverIt.Pagination
         }
 
         private readonly List<ColumnDefinition<TEntity>> _columns = new();
+        private readonly QueryPaginatorConfig _config;
         private readonly IQueryable<TEntity> _query;
-
-        private readonly QueryPaginatorOptions _options;
+        private readonly int _pageSize;
+        private readonly PaginationDirection _paginationDirection;
 
         private ContinuationTokenEncoder _continuationTokenEncoder;
         private ContinuationTokenEncoder ContinuationTokenEncoder => GetContinuationTokenEncoder();
@@ -36,10 +37,13 @@ namespace AllOverIt.Pagination
         private IOrderedQueryable<TEntity> _directionReverseQuery;
         private IOrderedQueryable<TEntity> DirectionReverseQuery => GetDirectionReverseQuery();
 
-        public QueryPaginator(IQueryable<TEntity> query, QueryPaginatorOptions options)
+        public QueryPaginator(IQueryable<TEntity> query, QueryPaginatorConfig config, int pageSize,
+            PaginationDirection paginationDirection = PaginationDirection.Forward)
         {
             _query = query.WhenNotNull(nameof(query));
-            _options = options.WhenNotNull(nameof(options));
+            _config = config.WhenNotNull(nameof(config));
+            _pageSize = pageSize;
+            _paginationDirection = paginationDirection;
         }
 
         public IQueryPaginator<TEntity> ColumnAscending<TProperty>(Expression<Func<TEntity, TProperty>> expression)
@@ -54,26 +58,21 @@ namespace AllOverIt.Pagination
             return this;
         }
 
-        public IQueryable<TEntity> BuildPageQuery(string continuationToken = default, int? pageSize = default)
+        public IQueryable<TEntity> BuildPageQuery(string continuationToken = default)
         {
             if (_columns.NotAny())
             {
                 throw new PaginationException("At least one column must be defined for pagination.");
             }
 
-            if (!pageSize.HasValue && !_options.DefaultPageSize.HasValue)
-            {
-                throw new PaginationException("A (default) page size must be provided to the constructor or this method.");
-            }
-
             // Returns ContinuationToken.None if there is no token - which defaults to Forward
             var decodedToken = ContinuationTokenEncoder.Decode(continuationToken);
 
             var requiredDirection = decodedToken == ContinuationToken.None
-                ? _options.Direction
+                ? _paginationDirection
                 : decodedToken.Direction;
 
-            var requiredQuery = requiredDirection == _options.Direction
+            var requiredQuery = requiredDirection == _paginationDirection
                 ? DirectionQuery
                 : DirectionReverseQuery;
 
@@ -85,7 +84,7 @@ namespace AllOverIt.Pagination
                 paginatedQuery = ApplyContinuationToken(paginatedQuery, decodedToken);
             }
 
-            paginatedQuery = paginatedQuery.Take(pageSize ?? _options.DefaultPageSize.Value);
+            paginatedQuery = paginatedQuery.Take(_pageSize);
 
             if (requiredDirection == PaginationDirection.Backward)
             {
@@ -97,36 +96,42 @@ namespace AllOverIt.Pagination
             return paginatedQuery;
         }
 
-        public IQueryable<TEntity> BuildBackwardQuery(TEntity reference)
+        public IQueryable<TEntity> BuildBackPageQuery(TEntity reference)
         {
-            if (reference == null)
+            var backQuery = DirectionReverseQuery.AsQueryable();
+
+            // When reference == null, returns the last page relative to the pagination direction
+            if (reference != null)
             {
-                throw new PaginationException("A reference is required to create a previous query.");
+                var referenceValues = _columns
+                    .GetColumnValueTypes(reference)
+                    .SelectAsReadOnlyList(item => item.Value);
+
+                var predicate = CreatePaginatedPredicate(_paginationDirection.Reverse(), referenceValues);
+                backQuery = backQuery.Where(predicate);
             }
 
-            var referenceValues = _columns
-                .GetColumnValueTypes(reference)
-                .SelectAsReadOnlyList(item => item.Value);
-
-            var predicate = CreatePaginatedPredicate(_options.Direction.Reverse(), referenceValues);
-
-            return DirectionReverseQuery.Where(predicate);
+            return backQuery
+                .Take(_pageSize)
+                .Reverse();
         }
 
-        public IQueryable<TEntity> BuildForwardQuery(TEntity reference)
+        public IQueryable<TEntity> BuildForwardPageQuery(TEntity reference)
         {
-            if (reference == null)
+            var forwardQuery = DirectionQuery.AsQueryable();
+
+            // When reference == null, returns the first page relative to the pagination direction
+            if (reference != null)
             {
-                throw new PaginationException("A reference is required to create a next query.");
+                var referenceValues = _columns
+                    .GetColumnValueTypes(reference)
+                    .SelectAsReadOnlyList(item => item.Value);
+
+                var predicate = CreatePaginatedPredicate(_paginationDirection, referenceValues);
+                forwardQuery = forwardQuery.Where(predicate);
             }
 
-            var referenceValues = _columns
-                .GetColumnValueTypes(reference)
-                .SelectAsReadOnlyList(item => item.Value);
-
-            var predicate = CreatePaginatedPredicate(_options.Direction, referenceValues);
-
-            return DirectionQuery.Where(predicate);
+            return forwardQuery.Take(_pageSize);
         }
 
         // The caller can create a previous/next page token as desired - the first/last row is selected based on the direction
@@ -149,6 +154,17 @@ namespace AllOverIt.Pagination
             }
 
             return ContinuationTokenEncoder.Encode(direction, reference);
+        }
+
+        public string CreateFirstPageContinuationToken()
+        {
+            // Simply returns string.Empty
+            return ContinuationTokenEncoder.EncodeFirstPage();
+        }
+
+        public string CreateLastPageContinuationToken()
+        {
+            return ContinuationTokenEncoder.EncodeLastPage();
         }
 
         private void AddColumnDefinition<TProperty>(Expression<Func<TEntity, TProperty>> propertyExpression, bool isAscending)
@@ -174,21 +190,21 @@ namespace AllOverIt.Pagination
 
         private IOrderedQueryable<TEntity> GetDirectionQuery()
         {
-            _directionQuery ??= GetDirectionBasedQuery(_options.Direction);
+            _directionQuery ??= GetDirectionBasedQuery(_paginationDirection);
 
             return _directionQuery;
         }
 
         private IOrderedQueryable<TEntity> GetDirectionReverseQuery()
         {
-            _directionReverseQuery ??= GetDirectionBasedQuery(_options.Direction.Reverse());
+            _directionReverseQuery ??= GetDirectionBasedQuery(_paginationDirection.Reverse());
 
             return _directionReverseQuery;
         }
 
         private ContinuationTokenEncoder GetContinuationTokenEncoder()
         {
-            _continuationTokenEncoder ??= new ContinuationTokenEncoder(_columns, _options.Direction, _options.Serializer);
+            _continuationTokenEncoder ??= new ContinuationTokenEncoder(_columns, _paginationDirection, _config.Serializer);
 
             return _continuationTokenEncoder;
         }
@@ -204,6 +220,12 @@ namespace AllOverIt.Pagination
 
         private IQueryable<TEntity> ApplyContinuationToken(IQueryable<TEntity> paginatedQuery, ContinuationToken continuationToken)
         {
+            if (continuationToken.Values.IsNullOrEmpty())
+            {
+                // The token must be defining the first or last page
+                return paginatedQuery;
+            }
+
             // Decode, ensuring to set the correct value type otherwise the expression comparisons may fail
             var referenceValues = continuationToken.Values.SelectAsReadOnlyList(valueType => Convert.ChangeType(valueType.Value, valueType.Type));
 

@@ -16,14 +16,14 @@ class Program
             {
                 services.AddQueryPaginator(provider =>
                 {
-                    return new QueryPaginatorOptions
+                    return new QueryPaginatorConfig
                     {
                         // The pageSize can be provided here as the default page size and not given to the BuildQuery() method.
                         // The BuildQuery() method can be provided an override.
                         // DefaultPageSize = 25,
 
                         // This is the default so can be left off
-                        Direction = PaginationDirection.Forward,
+//                        Direction = PaginationDirection.Forward,
 
                         Serializer = new NewtonsoftJsonSerializer()
                     };

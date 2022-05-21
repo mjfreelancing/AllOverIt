@@ -5,16 +5,17 @@ namespace AllOverIt.Pagination
 {
     public sealed class QueryPaginatorFactory : IQueryPaginatorFactory
     {
-        private readonly QueryPaginatorOptions _options;
+        private readonly QueryPaginatorConfig _config;
 
-        public QueryPaginatorFactory(QueryPaginatorOptions options)
+        public QueryPaginatorFactory(QueryPaginatorConfig config)
         {
-            _options = options.WhenNotNull(nameof(options));
+            _config = config.WhenNotNull(nameof(config));
         }
 
-        public IQueryPaginator<TEntity> CreatePaginator<TEntity>(IQueryable<TEntity> query) where TEntity : class
+        public IQueryPaginator<TEntity> CreatePaginator<TEntity>(IQueryable<TEntity> query, int pageSize,
+            PaginationDirection paginationDirection = PaginationDirection.Forward) where TEntity : class
         {
-            return new QueryPaginator<TEntity>(query, _options);
+            return new QueryPaginator<TEntity>(query, _config, pageSize, paginationDirection);
         }
     }
 }

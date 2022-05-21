@@ -5,7 +5,7 @@ namespace AllOverIt.Pagination.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddQueryPaginator(this IServiceCollection serviceCollection, Func<IServiceProvider, QueryPaginatorOptions> optionsResolver)
+        public static IServiceCollection AddQueryPaginator(this IServiceCollection serviceCollection, Func<IServiceProvider, QueryPaginatorConfig> optionsResolver)
         {
             serviceCollection.AddSingleton<IQueryPaginatorFactory>(provider =>
             {

@@ -1,6 +1,5 @@
-﻿using KeysetPaginationConsole.Models;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
 
 namespace KeysetPaginationConsole.Entities
 {
@@ -12,25 +11,10 @@ namespace KeysetPaginationConsole.Entities
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(100)]
         public string Title { get; set; }
 
         [Required]
         public string Content { get; set; }
-
-        [Required]
-        [MaxLength(20)]
-        public PostRating Rating { get; set; }
-
-        // testing without any attributes
-        public PostRating RatingValue { get; set; }
-
-        [Required]
-        [MaxLength(20)]
-        public PublishedStatus Status { get; set; }
-
-        // testing without any attributes
-        public PublishedStatus StatusValue { get; set; }
 
         [Required]
         public Blog Blog { get; set; }
