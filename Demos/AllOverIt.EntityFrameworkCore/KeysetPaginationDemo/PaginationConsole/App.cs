@@ -7,7 +7,6 @@ using Bogus;
 using KeysetPaginationConsole.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,32 +17,6 @@ using System.Threading.Tasks;
 
 namespace KeysetPaginationConsole
 {
-    public static class QueryPaginatorExtensions
-    {
-
-        // EF Specific
-        public static Task<bool> HasPreviousPageAsync<TEntity>(this IQueryPaginator<TEntity> paginator, TEntity reference,
-            CancellationToken cancellation = default) where TEntity : class
-        {
-            return paginator.HasPreviousPageAsync(reference, async (queryable, predicate, token) =>
-            {
-                return await queryable.AnyAsync(predicate, token);
-            }, cancellation);
-        }
-
-        // EF Specific
-        public static Task<bool> HasNextPageAsync<TEntity>(this IQueryPaginator<TEntity> paginator, TEntity reference,
-            CancellationToken cancellation = default) where TEntity : class
-        {
-            return paginator.HasNextPageAsync(reference, async (queryable, predicate, token) =>
-            {
-                return await queryable.AnyAsync(predicate, token);
-            }, cancellation);
-        }
-    }
-
-
-
     public sealed class App : ConsoleAppBase
     {
         private readonly IDbContextFactory<BloggingContext> _dbContextFactory;
@@ -63,21 +36,21 @@ namespace KeysetPaginationConsole
 
             using (var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken))
             {
-                if (DatabaseProvider.RecreateData)
+                if (DatabaseStartupOptions.RecreateData)
                 {
-                    if (DatabaseProvider.Use == DatabaseChoice.Mysql)
+                    if (DatabaseStartupOptions.Use == DatabaseChoice.Mysql)
                     {
                         await dbContext.Database.EnsureDeletedAsync(cancellationToken);
                         await dbContext.Database.MigrateAsync(cancellationToken);
                     }
-                    else if (DatabaseProvider.Use == DatabaseChoice.Sqlite)
+                    else if (DatabaseStartupOptions.Use == DatabaseChoice.Sqlite)
                     {
                         dbContext.Database.EnsureDeleted();
                         dbContext.Database.EnsureCreated();
                     }
                     else
                     {
-                        throw new NotImplementedException($"Unknown database type {DatabaseProvider.Use}");
+                        throw new NotImplementedException($"Unknown database type {DatabaseStartupOptions.Use}");
                     }
                 }
 

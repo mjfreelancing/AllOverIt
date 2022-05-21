@@ -10,13 +10,16 @@ AllOverIt
   * Added ReadOnlyCollection, ReadOnlyList, and ReadOnlyDictionary implementations that are  truly immutable
   * Updated Collection/List/Dictionary EmptyReadOnly<T>() so the underlying collection is truly immutable
 
-
 AllOverIt.DependencyInjection
   * Updated to reference Microsoft.Extensions.DependencyInjection.Abstractions instead of Microsoft.Extensions.DependencyInjection
 
 
 AllOverIt.Pagination
   * New package to provide keyset based pagination for any IQueryable, including EF queries
+
+AllOverIt.EntityFrameworkCore.Pagination
+  * New package to provide keyset based pagination extensions for any EF
+
 
 AllOverIt.Fixture
 AllOverIt.Fixture.FakeItEasy

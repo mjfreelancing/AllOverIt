@@ -11,8 +11,8 @@ class Program
 {
     static async Task Main(string[] args)
     {
-        DatabaseProvider.RecreateData = false;
-        DatabaseProvider.Use = DatabaseChoice.Sqlite;
+        DatabaseStartupOptions.RecreateData = false;
+        DatabaseStartupOptions.Use = DatabaseChoice.Sqlite;
 
         await CreateHostBuilder(args).RunConsoleAsync(options => options.SuppressStatusMessages = true);
     }
