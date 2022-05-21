@@ -80,9 +80,10 @@ namespace AllOverIt.Pagination
 
             var paginatedQuery = requiredQuery.AsQueryable();
 
-            // There's no reference values when ContinuationToken.None so just get the first page
+            // ContinuationToken.None indicates to get the first page (no token was provided)
             if (decodedToken != ContinuationToken.None)
             {
+                // If decodedToken.Values is null/empty the original query is returned
                 paginatedQuery = ApplyContinuationToken(paginatedQuery, decodedToken);
             }
 
@@ -98,85 +99,6 @@ namespace AllOverIt.Pagination
             return paginatedQuery;
         }
 
-        // ---------------------------------------------------------------------------------------------------------------
-
-
-
-
-        public bool HasPreviousPage(TEntity reference)
-        {
-            _ = reference.WhenNotNull(nameof(reference));
-
-            var backQuery = DirectionReverseQuery.AsQueryable();
-
-            var referenceValues = _columns
-                .GetColumnValueTypes(reference)
-                .SelectAsReadOnlyList(item => item.Value);
-
-            var predicate = CreatePaginatedPredicate(_paginationDirection.Reverse(), referenceValues);
-            return backQuery.Any(predicate);
-        }
-
-        public bool HasNextPage(TEntity reference)
-        {
-            _ = reference.WhenNotNull(nameof(reference));
-
-            var backQuery = DirectionQuery.AsQueryable();
-
-            var referenceValues = _columns
-                .GetColumnValueTypes(reference)
-                .SelectAsReadOnlyList(item => item.Value);
-
-            var predicate = CreatePaginatedPredicate(_paginationDirection, referenceValues);
-            return backQuery.Any(predicate);
-        }
-
-
-
-
-        // ---------------------------------------------------------------------------------------------------------------
-
-
-
-
-        public Task<bool> HasPreviousPageAsync(TEntity reference, Func<IQueryable<TEntity>, Expression<Func<TEntity, bool>>, CancellationToken, Task<bool>> anyResolver,
-            CancellationToken cancellationToken)
-        {
-            _ = reference.WhenNotNull(nameof(reference));
-
-            var backQuery = DirectionReverseQuery.AsQueryable();
-
-            var referenceValues = _columns
-                .GetColumnValueTypes(reference)
-                .SelectAsReadOnlyList(item => item.Value);
-
-            var predicate = CreatePaginatedPredicate(_paginationDirection.Reverse(), referenceValues);
-
-            return anyResolver.Invoke(backQuery, predicate, cancellationToken);
-        }
-
-        public Task<bool> HasNextPageAsync(TEntity reference, Func<IQueryable<TEntity>, Expression<Func<TEntity, bool>>, CancellationToken, Task<bool>> anyResolver,
-            CancellationToken cancellationToken)
-        {
-            _ = reference.WhenNotNull(nameof(reference));
-
-            var forwardQuery = DirectionQuery.AsQueryable();
-
-            var referenceValues = _columns
-                .GetColumnValueTypes(reference)
-                .SelectAsReadOnlyList(item => item.Value);
-
-            var predicate = CreatePaginatedPredicate(_paginationDirection, referenceValues);
-
-            return anyResolver.Invoke(forwardQuery, predicate, cancellationToken);
-        }
-
-
-
-
-
-        // ---------------------------------------------------------------------------------------------------------------
-
         public IQueryable<TEntity> BuildPreviousPageQuery(TEntity reference)
         {
             var backQuery = DirectionReverseQuery.AsQueryable();
@@ -184,11 +106,7 @@ namespace AllOverIt.Pagination
             // When reference == null, returns the last page relative to the pagination direction
             if (reference != null)
             {
-                var referenceValues = _columns
-                    .GetColumnValueTypes(reference)
-                    .SelectAsReadOnlyList(item => item.Value);
-
-                var predicate = CreatePaginatedPredicate(_paginationDirection.Reverse(), referenceValues);
+                var predicate = CreatePreviousPagePredicate(reference);
                 backQuery = backQuery.Where(predicate);
             }
 
@@ -204,15 +122,47 @@ namespace AllOverIt.Pagination
             // When reference == null, returns the first page relative to the pagination direction
             if (reference != null)
             {
-                var referenceValues = _columns
-                    .GetColumnValueTypes(reference)
-                    .SelectAsReadOnlyList(item => item.Value);
-
-                var predicate = CreatePaginatedPredicate(_paginationDirection, referenceValues);
+                var predicate = CreateNextPagePredicate(reference);
                 forwardQuery = forwardQuery.Where(predicate);
             }
 
             return forwardQuery.Take(_pageSize);
+        }
+
+        public bool HasPreviousPage(TEntity reference)
+        {
+            var backQuery = DirectionReverseQuery.AsQueryable();
+
+            var predicate = CreatePreviousPagePredicate(reference);
+
+            return backQuery.Any(predicate);
+        }
+
+        public Task<bool> HasPreviousPageAsync(TEntity reference, Func<IQueryable<TEntity>, Expression<Func<TEntity, bool>>, CancellationToken, Task<bool>> anyResolver,
+            CancellationToken cancellationToken)
+        {
+            var backQuery = DirectionReverseQuery.AsQueryable();
+
+            var predicate = CreatePreviousPagePredicate(reference);
+
+            return anyResolver.Invoke(backQuery, predicate, cancellationToken);
+        }
+
+        public bool HasNextPage(TEntity reference)
+        {
+            var forwardQuery = DirectionQuery.AsQueryable();
+            var predicate = CreateNextPagePredicate(reference);
+
+            return forwardQuery.Any(predicate);
+        }
+
+        public Task<bool> HasNextPageAsync(TEntity reference, Func<IQueryable<TEntity>, Expression<Func<TEntity, bool>>, CancellationToken, Task<bool>> anyResolver,
+            CancellationToken cancellationToken)
+        {
+            var forwardQuery = DirectionQuery.AsQueryable();
+            var predicate = CreateNextPagePredicate(reference);
+
+            return anyResolver.Invoke(forwardQuery, predicate, cancellationToken);
         }
 
         // The caller can create a previous/next page token as desired - the first/last row is selected based on the direction
@@ -313,6 +263,28 @@ namespace AllOverIt.Pagination
             var predicate = CreatePaginatedPredicate(continuationToken.Direction, referenceValues);
 
             return paginatedQuery.Where(predicate);
+        }
+
+        private Expression<Func<TEntity, bool>> CreatePreviousPagePredicate(TEntity reference)
+        {
+            _ = reference.WhenNotNull(nameof(reference));
+
+            var referenceValues = _columns
+                .GetColumnValueTypes(reference)
+                .SelectAsReadOnlyList(item => item.Value);
+
+            return CreatePaginatedPredicate(_paginationDirection.Reverse(), referenceValues);
+        }
+
+        private Expression<Func<TEntity, bool>> CreateNextPagePredicate(TEntity reference)
+        {
+            _ = reference.WhenNotNull(nameof(reference));
+
+            var referenceValues = _columns
+                .GetColumnValueTypes(reference)
+                .SelectAsReadOnlyList(item => item.Value);
+
+            return CreatePaginatedPredicate(_paginationDirection, referenceValues);
         }
 
         private Expression<Func<TEntity, bool>> CreatePaginatedPredicate(PaginationDirection direction, IReadOnlyList<object> referenceValues)

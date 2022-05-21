@@ -9,25 +9,22 @@ namespace AllOverIt.Pagination
 {
     public interface IQueryPaginator<TEntity> where TEntity : class
     {
-        IQueryable<TEntity> BuildPageQuery(string continuationToken = default);
+        IQueryPaginator<TEntity> ColumnAscending<TProperty>(Expression<Func<TEntity, TProperty>> expression);
+        IQueryPaginator<TEntity> ColumnDescending<TProperty>(Expression<Func<TEntity, TProperty>> expression);
+
+        IQueryable<TEntity> BuildPageQuery(string continuationToken = default);     // Using the relative direction defined by the token
+        IQueryable<TEntity> BuildPreviousPageQuery(TEntity reference);              // relative to the pagination direction
+        IQueryable<TEntity> BuildNextPageQuery(TEntity reference);                  // relative to the pagination direction
+
+        bool HasPreviousPage(TEntity reference);
 
         Task<bool> HasPreviousPageAsync(TEntity reference, Func<IQueryable<TEntity>, Expression<Func<TEntity, bool>>, CancellationToken, Task<bool>> anyResolver,
             CancellationToken cancellationToken);
 
+        bool HasNextPage(TEntity reference);
+
         Task<bool> HasNextPageAsync(TEntity reference, Func<IQueryable<TEntity>, Expression<Func<TEntity, bool>>, CancellationToken, Task<bool>> anyResolver,
             CancellationToken cancellationToken);
-
-
-        // Provides a query that can be executed to retrieve rows from the provided reference without
-        // regard to any page size. Can also be used with Any() (or AnyAsync in EF) to determine if
-        // there's additional data in either direction.
-        IQueryable<TEntity> BuildPreviousPageQuery(TEntity reference);      // relative to the pagination direction
-        IQueryable<TEntity> BuildNextPageQuery(TEntity reference);       // relative to the pagination direction
-
-
-        IQueryPaginator<TEntity> ColumnAscending<TProperty>(Expression<Func<TEntity, TProperty>> expression);
-        IQueryPaginator<TEntity> ColumnDescending<TProperty>(Expression<Func<TEntity, TProperty>> expression);
-
 
         string CreateContinuationToken(ContinuationDirection direction, IReadOnlyCollection<TEntity> references);
         string CreateContinuationToken(ContinuationDirection direction, TEntity reference);

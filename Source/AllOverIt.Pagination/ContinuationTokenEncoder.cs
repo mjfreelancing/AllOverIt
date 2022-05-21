@@ -68,12 +68,19 @@ namespace AllOverIt.Pagination
 
         public string EncodeFirstPage()
         {
-            return Encode(ContinuationDirection.NextPage);
+            return string.Empty;        // Could also have been null
         }
 
         public string EncodeLastPage()
         {
-            return Encode(ContinuationDirection.PreviousPage);
+            // The decode process interprets null Values as requiring the last page
+            var continuationToken = new ContinuationToken
+            {
+                Direction = _paginationDirection.Reverse(),
+                //Values = 
+            };
+
+            return _jsonSerializer.SerializeObject(continuationToken).ToBase64();
         }
 
         public ContinuationToken Decode(string continuationToken)
@@ -81,29 +88,6 @@ namespace AllOverIt.Pagination
             return continuationToken.IsNotNullOrEmpty()
                 ? _jsonSerializer.DeserializeObject<ContinuationToken>(continuationToken.FromBase64())
                 : ContinuationToken.None;
-        }
-
-        // Allows a continuation token to be created that represents the first or last page, relative to the pagination direction
-        private string Encode(ContinuationDirection direction)
-        {
-            if (direction == ContinuationDirection.NextPage)
-            {
-                return string.Empty;        // Could also have been null
-            }
-
-            // Determine the page direction that needs to be used in order to get the required next/previous page
-            var continuationPageDirection = direction == ContinuationDirection.PreviousPage
-                ? _paginationDirection.Reverse()
-                : _paginationDirection;
-
-            // Serialize the resultant token information
-            var continuationToken = new ContinuationToken
-            {
-                Direction = continuationPageDirection,
-                //Values = 
-            };
-
-            return _jsonSerializer.SerializeObject(continuationToken).ToBase64();
         }
     }
 }
