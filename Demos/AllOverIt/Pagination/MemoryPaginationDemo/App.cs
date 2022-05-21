@@ -7,6 +7,7 @@ using Bogus;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -60,13 +61,17 @@ namespace MemoryPaginationDemo
                   .ColumnAscending(person => person.LastName, item => item.FirstName);
 
             string continuationToken = default;
-            char key = 'n';
+            var key = 'n';
+
+            var stopwatch = Stopwatch.StartNew();
 
             while (key != 'q')
             {
                 Console.WriteLine();
                 Console.WriteLine("Querying...");
                 Console.WriteLine();
+
+                var lastCheckpoint = stopwatch.ElapsedMilliseconds;
 
                 var pageQuery = queryPaginator.BuildPageQuery(continuationToken);
 
@@ -75,17 +80,25 @@ namespace MemoryPaginationDemo
                 var hasPrevious = pageResults.Any() && queryPaginator.HasPreviousPage(pageResults.First());
                 var hasNext = pageResults.Any() && queryPaginator.HasNextPage(pageResults.Last());
 
+                var elapsed = stopwatch.ElapsedMilliseconds;
+
                 pageResults.ForEach(person =>
                 {
                     Console.WriteLine($"{person.LastName}, {person.FirstName}");
                 });
 
+                Console.WriteLine();
+                Console.WriteLine($"Execution time: {elapsed - lastCheckpoint}ms");
+                Console.WriteLine();
+
                 key = GetUserInput(hasPrevious, hasNext);
+
+                lastCheckpoint = stopwatch.ElapsedMilliseconds;
 
                 switch (key)
                 {
                     case 'f':
-                        continuationToken = default;
+                        continuationToken = queryPaginator.CreateFirstPageContinuationToken();      // could also just set to null or string.Empty
                         break;
 
                     case 'p':
@@ -98,8 +111,6 @@ namespace MemoryPaginationDemo
 
                     case 'l':
                         continuationToken = queryPaginator.CreateLastPageContinuationToken();
-                        //pageQuery = queryPaginator.BuildLastPageQuery();        // Same as BuildBackPageQuery(null);
-                        //pageResults = pageQuery.ToList();
                         break;
 
                     case 'q':
@@ -107,6 +118,10 @@ namespace MemoryPaginationDemo
                         Console.WriteLine("Done");
                         break;
                 }
+
+                elapsed = stopwatch.ElapsedMilliseconds;
+
+                Console.WriteLine($"Continuation token generation time: {elapsed - lastCheckpoint}ms");
             }
 
             ExitCode = 0;
