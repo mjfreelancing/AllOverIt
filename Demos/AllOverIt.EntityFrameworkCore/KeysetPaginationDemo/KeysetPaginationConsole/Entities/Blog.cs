@@ -5,7 +5,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace KeysetPaginationConsole.Entities
 {
-    [Index(nameof(Description))]
     [Index(nameof(Description), nameof(Id))]
     public class Blog
     {

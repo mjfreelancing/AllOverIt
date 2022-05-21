@@ -7,6 +7,7 @@ using Bogus;
 using KeysetPaginationConsole.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -62,13 +63,23 @@ namespace KeysetPaginationConsole
 
             using (var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken))
             {
-                // MySql
-                //await dbContext.Database.EnsureDeletedAsync(cancellationToken);
-                //await dbContext.Database.MigrateAsync(cancellationToken);
-
-                // Sqlite
-                //dbContext.Database.EnsureDeleted();
-                //dbContext.Database.EnsureCreated();
+                if (DatabaseProvider.RecreateData)
+                {
+                    if (DatabaseProvider.Use == DatabaseChoice.Mysql)
+                    {
+                        await dbContext.Database.EnsureDeletedAsync(cancellationToken);
+                        await dbContext.Database.MigrateAsync(cancellationToken);
+                    }
+                    else if (DatabaseProvider.Use == DatabaseChoice.Sqlite)
+                    {
+                        dbContext.Database.EnsureDeleted();
+                        dbContext.Database.EnsureCreated();
+                    }
+                    else
+                    {
+                        throw new NotImplementedException($"Unknown database type {DatabaseProvider.Use}");
+                    }
+                }
 
                 const int pageSize = 100;
 

@@ -13,20 +13,20 @@ namespace KeysetPaginationConsole
         {
             base.OnConfiguring(options);
 
-            var connectionString =
-                // MySql
-                "server=localhost;user=root;password=password;database=PaginatedBlogPosts";
-
-                // Sqlite
-                //"Data Source=PaginatedBlogPosts.db";            
+            if (DatabaseProvider.Use == DatabaseChoice.Mysql)
+            {
+                options.UseMySql("server=localhost;user=root;password=password;database=PaginatedBlogPosts", new MySqlServerVersion(new Version(8, 0, 26)));
+            }
+            else if (DatabaseProvider.Use == DatabaseChoice.Sqlite)
+            {
+                options.UseSqlite("Data Source=PaginatedBlogPosts.db");
+            }
+            else
+            {
+                throw new NotImplementedException($"Unknown database type {DatabaseProvider.Use}");
+            }
 
             options
-                // MySql
-                .UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 26)))
-
-                // Sqlite
-                //.UseSqlite(connectionString)
-
                 //.LogTo(Console.WriteLine, LogLevel.Information)
                 .EnableDetailedErrors();
         }

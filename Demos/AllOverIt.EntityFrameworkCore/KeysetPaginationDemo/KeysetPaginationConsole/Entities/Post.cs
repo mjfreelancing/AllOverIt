@@ -3,9 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace KeysetPaginationConsole.Entities
 {
-    // Includes several EnrichedEnum types that use a value converter to read/write the name value
-    [Index(nameof(Id))]
-    [Index(nameof(Title))]
+    [Index(nameof(Title), nameof(Id))]
     public class Post
     {
         public int Id { get; set; }
