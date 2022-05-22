@@ -391,7 +391,7 @@ namespace AllOverIt.Pagination
             return innerExpression;
         }
 
-        private static BinaryExpression CreateCompareToExpression(ColumnDefinition<TEntity> entity, MemberExpression memberAccess,
+        private static BinaryExpression CreateCompareToExpression(IColumnDefinition entity, MemberExpression memberAccess,
             ConstantExpression comparisonValue, Func<Expression, Expression, BinaryExpression> compareTo)
         {
             var propertyType = entity.Property.PropertyType;
