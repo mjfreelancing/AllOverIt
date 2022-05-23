@@ -170,33 +170,7 @@ namespace AllOverIt.Assertion
         /// <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be null" for a null
         /// instance and "Value cannot be empty" for an empty collection.</param>
         /// <returns>The original object instance when not null and not empty.</returns>
-        /// <remarks>This method also validates that the enumerable is an array or ICollection&lt;TType&gt; to prevent multiple enumeration of the IEnumerable.</remarks>
         public static IEnumerable<TType> WhenNotNullOrEmpty<TType>(this IEnumerable<TType> @object,
-#if NETCOREAPP3_1_OR_GREATER
-            [CallerArgumentExpression("object")] string name = "",
-#else
-            string name,
-#endif
-            string errorMessage = default)
-        {
-#if NET5_0_OR_GREATER
-            // .NET 5 and above implement Any() so it avoids enumeration - passing false for 'ensureIsCollection' as the check is not required
-            return WhenNotNullOrEmpty(@object, false, name, errorMessage);
-#else
-            return WhenNotNullOrEmpty(@object, true, name, errorMessage);
-#endif
-        }
-
-        /// <summary>Checks that the provided collection is not null and not empty.</summary>
-        /// <typeparam name="TType">The element type.</typeparam>
-        /// <param name="object">The collection instance.</param>
-        /// <param name="ensureIsCollection">Indicates if the method should also validate that the enumerable is an array or ICollection&lt;TType&gt;
-        /// to prevent multiple enumeration of the IEnumerable.</param>
-        /// <param name="name">The name identifying the collection instance.</param>
-        /// <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be null" for a null
-        /// instance and "Value cannot be empty" for an empty collection.</param>
-        /// <returns>The original object instance when not null and not empty.</returns>
-        public static IEnumerable<TType> WhenNotNullOrEmpty<TType>(this IEnumerable<TType> @object, bool ensureIsCollection,
 #if NETCOREAPP3_1_OR_GREATER
             [CallerArgumentExpression("object")] string name = "",
 #else
@@ -206,42 +180,16 @@ namespace AllOverIt.Assertion
         {
             _ = @object ?? ThrowArgumentNullException<IEnumerable<TType>>(name, errorMessage);
 
-            return WhenNotEmpty(@object, ensureIsCollection, name, errorMessage);
+            return WhenNotEmpty(@object, name, errorMessage);
         }
 
         /// <summary>Checks that the provided collection is not empty.</summary>
         /// <typeparam name="TType">The element type.</typeparam>
         /// <param name="object">The collection instance.</param>
-        /// <param name="name">The name identifying the collection instance.</param>
-        /// <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be null" for a null
-        /// instance and "Value cannot be empty" for an empty collection.</param>
-        /// <returns>The original collection instance when not empty. If the instance was null then null will be returned.</returns>
-        /// <remarks>This method also validates that the enumerable is an array or ICollection&lt;TType&gt; to prevent multiple enumeration of the IEnumerable.</remarks>
-        public static IEnumerable<TType> WhenNotEmpty<TType>(this IEnumerable<TType> @object,
-#if NETCOREAPP3_1_OR_GREATER
-            [CallerArgumentExpression("object")] string name = "",
-#else
-            string name,
-#endif
-            string errorMessage = default)
-        {
-#if NET5_0_OR_GREATER
-            // .NET 5 and above implement Any() so it avoids enumeration - passing false for 'ensureIsCollection' as the check is not required
-            return WhenNotEmpty<TType>(@object, false, name, errorMessage);
-#else
-            return WhenNotEmpty<TType>(@object, true, name, errorMessage);
-#endif
-        }
-
-        /// <summary>Checks that the provided collection is not empty.</summary>
-        /// <typeparam name="TType">The element type.</typeparam>
-        /// <param name="object">The collection instance.</param>
-        /// <param name="ensureIsCollection">Indicates if the method should also validate that the enumerable is an array or ICollection&lt;TType&gt;
-        /// to prevent multiple enumeration of the IEnumerable.</param>
         /// <param name="name">The name identifying the collection instance.</param>
         /// <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be empty".</param>
         /// <returns>The original collection instance when not empty. If the instance was null then null will be returned.</returns>
-        public static IEnumerable<TType> WhenNotEmpty<TType>(this IEnumerable<TType> @object, bool ensureIsCollection,
+        public static IEnumerable<TType> WhenNotEmpty<TType>(this IEnumerable<TType> @object,
 #if NETCOREAPP3_1_OR_GREATER
             [CallerArgumentExpression("object")] string name = "",
 #else
@@ -251,20 +199,24 @@ namespace AllOverIt.Assertion
         {
             if (@object != null)
             {
-                if (ensureIsCollection)
-                {
-                    var isCollection = @object is ICollection<TType>;
-                    var isArray = @object.GetType().IsArray;
-
-                    if (!(isCollection || isArray))
-                    {
-                        throw new InvalidOperationException($"Expecting an array or ICollection<T> (Parameter '{name}')");
-                    }
-                }
-
+#if NET5_0_OR_GREATER
                 // ReSharper disable once PossibleMultipleEnumeration
-                if (!@object.Any())
+                var any = @object.Any();
+#else
+                // We don't have access to IListProvider<TType> so do the best we can to avoid multiple enumeration via Any()
+                var any = @object switch
+                {
+                    IList<TType> iList => iList.Count != 0,
+                    IReadOnlyCollection<TType> iReadOnlyCollection => iReadOnlyCollection.Count != 0,
+                    ICollection<TType> items => items.Count != 0,
+                    ICollection iCollection => iCollection.Count != 0,
+
                     // ReSharper disable once PossibleMultipleEnumeration
+                    _ => @object.Any()
+                };
+#endif
+
+                if (!any)
                 {
                     throw new ArgumentException(errorMessage ?? "The argument cannot be empty", name);
                 }
