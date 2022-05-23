@@ -1664,6 +1664,16 @@ namespace AllOverIt.Tests.Extensions
             }
 
             [Theory]
+            [InlineData(false, 0)]
+            [InlineData(true, 1)]
+            public void Should_Convert_Boolean_To_Integral(bool value, int expected)
+            {
+                var actual = ObjectExtensions.As<int>(value);
+
+                actual.Should().Be(expected);
+            }
+
+            [Theory]
             [InlineData(DummyEnum.Dummy1)]    // underyling type is a short
             [InlineData(DummyEnum.Dummy2)]
             [InlineData(DummyEnum.Dummy3)]
