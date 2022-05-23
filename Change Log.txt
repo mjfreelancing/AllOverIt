@@ -1,7 +1,7 @@
 ======================================================================================================================
 
 XX XXX XXXX
-Version 5.7.0
+Version 6.0.0
 ======================================================================================================================
 AllOverIt
   * Improvements to IAsyncCommand and AsyncCommandPipeline - now includes a cancellation token
@@ -9,6 +9,10 @@ AllOverIt
   * Added Clear(), Reset(), AddCallSite(), and AddExtendedCallSite() to Breadcrumbs
   * Added ReadOnlyCollection, ReadOnlyList, and ReadOnlyDictionary implementations that are  truly immutable
   * Updated Collection/List/Dictionary EmptyReadOnly<T>() so the underlying collection is truly immutable
+
+AllOverIt.Assertion
+  * Removed methods that asserted an enumerable was a concrete collection type and instead updated .NET Core 3.1
+    versions to check for different collection types before falling back to the default Any() Linq method.
 
 AllOverIt.DependencyInjection
   * Updated to reference Microsoft.Extensions.DependencyInjection.Abstractions instead of Microsoft.Extensions.DependencyInjection
