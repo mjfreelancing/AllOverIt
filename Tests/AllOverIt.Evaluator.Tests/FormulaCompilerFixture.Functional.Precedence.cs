@@ -77,7 +77,8 @@ namespace AllOverIt.Evaluator.Tests
         {
             AssertFormula(
               string.Format("3 * -{0}^3 * {1}^2 + {2}", Val1, Val2, _val3),
-              () => 3 * -Math.Pow(Val1, 3) * Math.Pow(Val2, 2) + _val3);
+              () => 3 * -Math.Pow(Val1, 3) * Math.Pow(Val2, 2) + _val3,
+              1E-3);
         }
 
         [Fact]
@@ -85,7 +86,8 @@ namespace AllOverIt.Evaluator.Tests
         {
             AssertFormula(
               string.Format("3 * -{0}^2 * -{1}^3 * {2}", Val1, Val2, _val3),
-              () => 3 * -Math.Pow(Val1, 2) * -Math.Pow(Val2, 3) * _val3);
+              () => 3 * -Math.Pow(Val1, 2) * -Math.Pow(Val2, 3) * _val3,
+              1E-3);
         }
 
         [Fact]
