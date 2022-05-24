@@ -30,7 +30,7 @@ namespace AllOverIt.Evaluator.Tests
             var expected = func.Invoke();
             var actual = FormulaCompiler.GetResult(formula, VariableRegistry);
 
-            actual.Should().Be(expected);
+            actual.Should().BeApproximately(expected, 1E-3);
         }
     }
 }

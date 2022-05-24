@@ -54,7 +54,7 @@ namespace AllOverIt.Evaluator.Tests
             // when sum1 and sum2 are resolved their delegates pull variable values from 'registry'
             var actual = compiler.GetResult("PERC(sum1, sum2)", sumRegistry);
 
-            actual.Should().Be(expected);
+            actual.Should().BeApproximately(expected, 1E-3);
         }
     }
 }

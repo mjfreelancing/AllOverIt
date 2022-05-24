@@ -71,7 +71,7 @@ namespace AllOverIt.Evaluator.Tests
             var c = Create<double>();
             var x = Val1;
             var y = Val2;
-            var expected = 2 * x - c * (-3.5 - Math.Pow(y, 2)) + Math.Round(x + y - c, MidpointRounding.AwayFromZero) - -5E-3;
+            var expected = 2 * x - c * (-3.5 - Math.Pow(y, 2)) + Math.Round(x + y - c, 3, MidpointRounding.AwayFromZero) - -5E-3;
 
             var compiled = FormulaCompiler.Compile("2*x-c*(-3.5-y^2)+ROUND(x+y-c, 3)--5E-3", VariableRegistry);
 
