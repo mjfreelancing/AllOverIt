@@ -21,6 +21,9 @@ namespace AllOverIt.Fixture
         /// </summary>
         protected FixtureBase()
         {
+            // Note: cannot used <double> for the factory as it will result in infinite recursion
+            var rnd = new Random();
+            Fixture.Customize<double>(composer => composer.FromFactory<int>(value => value * (0.5d + rnd.NextDouble())));
         }
 
         /// <summary>
@@ -28,6 +31,7 @@ namespace AllOverIt.Fixture
         /// </summary>
         /// <param name="customization">The customization instance.</param>
         protected FixtureBase(ICustomization customization)
+            : this()
         {
             Fixture.Customize(customization);
         }
