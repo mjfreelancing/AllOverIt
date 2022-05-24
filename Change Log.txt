@@ -28,6 +28,13 @@ AllOverIt.Fixture.FakeItEasy
   * Updated to FluentAssertions v6.7.0
 
 
+24 May 2022
+Version 5.6.1
+======================================================================================================================
+AllOverIt.Fixture
+  * Updated FixtureBase to customize generating double values
+
+
 12 May 2022
 Version 5.6.0
 ======================================================================================================================
