@@ -150,137 +150,19 @@ namespace AllOverIt.Tests.Assertion
                     .WithNamedMessageWhenNull(name, errorMessage);
             }
 
-            [Theory]
-            [InlineData(true)]
-            [InlineData(false)]
-            public void Should_Throw_When_Empty(bool ensureIsConcrete)
+            [Fact]
+            public void Should_Throw_When_Empty()
             {
                 var name = Create<string>();
                 var expected = new List<DummyClass>();
 
                 Invoking(() =>
                     {
-                        Guard.WhenNotNullOrEmpty(expected, ensureIsConcrete, name);
+                        Guard.WhenNotNullOrEmpty(expected, name);
                     })
                     .Should()
                     .Throw<ArgumentException>()
                     .WithNamedMessageWhenEmpty(name);
-            }
-
-            [Fact]
-            public void Should_Throw_When_Ensure_Collection_And_Items_Is_Not_A_Collection()
-            {
-                var range = Enumerable.Range(1, 2);
-
-                Invoking(
-                    () =>
-                    {
-                        Guard.WhenNotNullOrEmpty(range, true, nameof(range));
-                    })
-                    .Should()
-                    .Throw<InvalidOperationException>()
-                    .WithMessage($"Expecting an array or ICollection<T> (Parameter '{nameof(range)}')");
-            }
-
-            [Fact]
-            public void Should_Not_Throw_When_Items_Is_Array()
-            {
-                Invoking(
-                   () =>
-                   {
-                       var items = new[] { 1, 2, 3 };
-                       Guard.WhenNotNullOrEmpty(items, true, nameof(items));
-                   })
-                   .Should()
-                   .NotThrow();
-            }
-
-            [Fact]
-            public void Should_Not_Throw_When_Items_Is_List()
-            {
-                Invoking(
-                   () =>
-                   {
-                       var items = new List<int>(new[] { 1, 2, 3 });
-                       Guard.WhenNotNullOrEmpty(items, true, nameof(items));
-                   })
-                   .Should()
-                   .NotThrow();
-            }
-
-            [Fact]
-            public void Should_Not_Throw_When_Items_Is_ReadOnlyCollection()
-            {
-                Invoking(
-                   () =>
-                   {
-                       var items = new ReadOnlyCollection<int>(new List<int>(new[] { 1, 2, 3 }));
-                       Guard.WhenNotNullOrEmpty(items, true, nameof(items));
-                   })
-                   .Should()
-                   .NotThrow();
-            }
-
-            [Fact]
-            public void Should_Not_Throw_When_Items_Is_HashSet()
-            {
-                Invoking(
-                   () =>
-                   {
-                       var items = new HashSet<int>(new[] { 1, 2, 3 });
-                       Guard.WhenNotNullOrEmpty(items, true, nameof(items));
-                   })
-                   .Should()
-                   .NotThrow();
-            }
-
-            [Fact]
-            public void Should_Not_Throw_When_Items_Is_Dictionary()
-            {
-                Invoking(
-                   () =>
-                   {
-                       var items = new Dictionary<int, int> { { 1, 1 }, { 2, 1 } };
-                       Guard.WhenNotNullOrEmpty(items, true, nameof(items));
-                   })
-                   .Should()
-                   .NotThrow();
-            }
-
-            [Fact]
-            public void Should_Not_Throw_When_Not_Ensure_Collection()
-            {
-                var count = 0;
-
-                var range = Enumerable
-                    .Range(1, 2)
-                    .Select(item =>
-                    {
-                        count++;
-                        return item;
-                    });
-
-                Invoking(
-                    () =>
-                    {
-                        // never do this - the Enumerable will be re-evaluated (prior to .NET 5)
-                        // see the count below
-                        Guard.WhenNotNullOrEmpty(range, false, nameof(range));
-                    })
-                    .Should()
-                    .NotThrow();
-
-                _ = range.ToList();
-
-#if NET5_0_OR_GREATER
-                // Any() in .NET 5 and above avoids enumeration
-                count.Should().Be(2);
-#else
-                // This is why the check argument should never be false
-                // The Select() call has been called 3 times, instead of 2
-                // It only exists for backward compatibility
-                count.Should().Be(3);
-#endif
             }
 
             [Fact]
@@ -400,122 +282,6 @@ namespace AllOverIt.Tests.Assertion
                     .Should()
                     .Throw<ArgumentException>()
                     .WithNamedMessageWhenEmpty(name, errorMessage);
-            }
-
-            [Fact]
-            public void Should_Throw_When_Ensure_Collection_And_Items_Is_Not_A_Collection()
-            {
-                var range = Enumerable.Range(1, 2);
-
-                Invoking(
-                    () =>
-                    {
-                        Guard.WhenNotEmpty(range, true, nameof(range));
-                    })
-                    .Should()
-                    .Throw<InvalidOperationException>()
-                    .WithMessage($"Expecting an array or ICollection<T> (Parameter '{nameof(range)}')");
-            }
-
-            [Fact]
-            public void Should_Not_Throw_When_Items_Is_Array()
-            {
-                Invoking(
-                   () =>
-                   {
-                       var items = new[] { 1, 2, 3 };
-                       Guard.WhenNotEmpty(items, true, nameof(items));
-                   })
-                   .Should()
-                   .NotThrow();
-            }
-
-            [Fact]
-            public void Should_Not_Throw_When_Items_Is_List()
-            {
-                Invoking(
-                   () =>
-                   {
-                       var items = new List<int>(new[] { 1, 2, 3 });
-                       Guard.WhenNotEmpty(items, true, nameof(items));
-                   })
-                   .Should()
-                   .NotThrow();
-            }
-
-            [Fact]
-            public void Should_Not_Throw_When_Items_Is_ReadOnlyCollection()
-            {
-                Invoking(
-                   () =>
-                   {
-                       var items = new ReadOnlyCollection<int>(new List<int>(new[] { 1, 2, 3 }));
-                       Guard.WhenNotEmpty(items, true, nameof(items));
-                   })
-                   .Should()
-                   .NotThrow();
-            }
-
-            [Fact]
-            public void Should_Not_Throw_When_Items_Is_HashSet()
-            {
-                Invoking(
-                   () =>
-                   {
-                       var items = new HashSet<int>(new[] { 1, 2, 3 });
-                       Guard.WhenNotEmpty(items, true, nameof(items));
-                   })
-                   .Should()
-                   .NotThrow();
-            }
-
-            [Fact]
-            public void Should_Not_Throw_When_Items_Is_Dictionary()
-            {
-                Invoking(
-                   () =>
-                   {
-                       var items = new Dictionary<int, int> { { 1, 1 }, { 2, 1 } };
-                       Guard.WhenNotEmpty(items, true, nameof(items));
-                   })
-                   .Should()
-                   .NotThrow();
-            }
-
-            [Fact]
-            public void Should_Not_Throw_When_Not_Ensure_Collection()
-            {
-                var count = 0;
-
-                var range = Enumerable
-                    .Range(1, 2)
-                    .Select(item =>
-                    {
-                        count++;
-                        return item;
-                    });
-
-                Invoking(
-                    () =>
-                    {
-                        // never do this - the Enumerable will be re-evaluated (prior to .NET 5)
-                        // see the count below
-                        Guard.WhenNotEmpty(range, false, nameof(range));
-                    })
-                    .Should()
-                    .NotThrow();
-
-                _ = range.ToList();
-
-#if NET5_0_OR_GREATER
-                // Any() in .NET 5 and above avoids enumeration
-                count.Should().Be(2);
-#else
-                // This is why the check argument should never be false
-                // The Select() call has been called 3 times, instead of 2
-                // It only exists for backward compatibility
-                count.Should().Be(3);
-#endif
             }
 
             [Fact]
