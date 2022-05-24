@@ -46,6 +46,7 @@ namespace PaginationConsole
                     switch (DatabaseStartupOptions.Use)
                     {
                         case DatabaseChoice.Mysql:
+                        case DatabaseChoice.PostgreSql:
                             await dbContext.Database.MigrateAsync(cancellationToken);
                             break;
 
@@ -58,7 +59,7 @@ namespace PaginationConsole
                     }
                 }
 
-                const int pageSize = 25;
+                const int pageSize = 100;
 
                 await CreateDataIfRequired();
 
@@ -81,7 +82,7 @@ namespace PaginationConsole
                 // (could be BlogId if we were only querying the Blogs table)
                 var queryPaginator = _queryPaginatorFactory
                     .CreatePaginator(query, pageSize)
-                    .ColumnAscending(item => item.Description, item => item.PostId);
+                    .ColumnAscending(item => item.Description, item => item.BlogId, item => item.PostId);
 
                 string continuationToken = default;
                 var key = 'n';
@@ -196,7 +197,7 @@ namespace PaginationConsole
                 }
             }
 
-            var totalCount = 500_006;
+            var totalCount = 1_000_001;
             var batchSize = 100;
             var batchCount = (int) Math.Ceiling(totalCount / (double) batchSize);
 

@@ -2,11 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PaginationConsole;
 
 #nullable disable
 
-namespace KeysetPaginationConsole.Migrations
+namespace PaginationConsole.Migrations
 {
     [DbContext(typeof(BloggingContext))]
     partial class BloggingContextModelSnapshot : ModelSnapshot
@@ -16,60 +17,62 @@ namespace KeysetPaginationConsole.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "6.0.4")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            modelBuilder.Entity("KeysetPaginationConsole.Entities.Blog", b =>
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("PaginationConsole.Entities.Blog", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(500)
-                        .HasColumnType("varchar(500)");
+                        .HasColumnType("character varying(500)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Description");
 
                     b.HasIndex("Description", "Id");
 
                     b.ToTable("Blogs");
                 });
 
-            modelBuilder.Entity("KeysetPaginationConsole.Entities.Post", b =>
+            modelBuilder.Entity("PaginationConsole.Entities.Post", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("BlogId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(500)
-                        .HasColumnType("varchar(500)");
+                        .HasColumnType("character varying(500)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BlogId");
 
-                    b.HasIndex("Id");
-
-                    b.HasIndex("Title");
+                    b.HasIndex("Title", "Id");
 
                     b.ToTable("Posts");
                 });
 
-            modelBuilder.Entity("KeysetPaginationConsole.Entities.Post", b =>
+            modelBuilder.Entity("PaginationConsole.Entities.Post", b =>
                 {
-                    b.HasOne("KeysetPaginationConsole.Entities.Blog", "Blog")
+                    b.HasOne("PaginationConsole.Entities.Blog", "Blog")
                         .WithMany("Posts")
                         .HasForeignKey("BlogId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -78,7 +81,7 @@ namespace KeysetPaginationConsole.Migrations
                     b.Navigation("Blog");
                 });
 
-            modelBuilder.Entity("KeysetPaginationConsole.Entities.Blog", b =>
+            modelBuilder.Entity("PaginationConsole.Entities.Blog", b =>
                 {
                     b.Navigation("Posts");
                 });

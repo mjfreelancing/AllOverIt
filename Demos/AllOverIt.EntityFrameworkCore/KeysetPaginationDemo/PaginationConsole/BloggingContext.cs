@@ -21,6 +21,13 @@ namespace PaginationConsole
             {
                 options.UseSqlite("Data Source=PaginatedBlogPosts.db");
             }
+            else if (DatabaseStartupOptions.Use == DatabaseChoice.PostgreSql)
+            {
+                options.UseNpgsql("Host=localhost;Database=PaginatedBlogPosts;Username=postgres;Password=password", options =>
+                {
+                    options.SetPostgresVersion(new Version(13, 6));
+                });
+            }
             else
             {
                 throw new NotImplementedException($"Unknown database type {DatabaseStartupOptions.Use}");

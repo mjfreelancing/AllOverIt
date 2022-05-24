@@ -3,6 +3,7 @@
     public enum DatabaseChoice
     {
         Sqlite,
-        Mysql
+        Mysql,
+        PostgreSql
     }
 }

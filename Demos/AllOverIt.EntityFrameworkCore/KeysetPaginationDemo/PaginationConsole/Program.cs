@@ -11,9 +11,6 @@ class Program
 {
     static async Task Main(string[] args)
     {
-        DatabaseStartupOptions.RecreateData = false;
-        DatabaseStartupOptions.Use = DatabaseChoice.Sqlite;
-
         await CreateHostBuilder(args).RunConsoleAsync(options => options.SuppressStatusMessages = true);
     }
 
@@ -23,6 +20,9 @@ class Program
     // running the app. For more information, see https://docs.microsoft.com/en-us/ef/core/miscellaneous/cli/dbcontext-creation
     public static IHostBuilder CreateHostBuilder(string[] args)
     {
+        DatabaseStartupOptions.RecreateData = false;
+        DatabaseStartupOptions.Use = DatabaseChoice.PostgreSql;
+
         return GenericHost
             .CreateConsoleHostBuilder<App>(args)
             .ConfigureServices((hostContext, services) =>
