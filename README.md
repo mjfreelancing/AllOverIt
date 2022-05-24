@@ -120,6 +120,21 @@ Provides additional features for use in Entity Framework Core applications.
 | net6.0         |    Yes    |
 
 
+# AllOverIt.EntityFrameworkCore.Pagination
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.EntityFrameworkCore.Pagination?style=for-the-badge)](https://www.nuget.org/packages/AllOverIt.EntityFrameworkCore.Pagination/)
+[![NuGet](https://img.shields.io/nuget/dt/AllOverIt.EntityFrameworkCore.Pagination?style=for-the-badge)](https://www.nuget.org/packages/AllOverIt.EntityFrameworkCore.Pagination/)
+
+A library providing pagination utilities for use with Entity Framework Core.
+
+| Target         | Supported |
+|----------------|-----------|
+| netstandard2.0 |    No     |
+| netstandard2.1 |    Yes    |
+| netcoreapp3.1  |    Yes    |
+| net5.0         |    Yes    |
+| net6.0         |    Yes    |
+
+
 # AllOverIt.Evaluator
 [![NuGet](https://img.shields.io/nuget/v/AllOverIt.Evaluator?style=for-the-badge)](https://www.nuget.org/packages/AllOverIt.Evaluator/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Evaluator?style=for-the-badge)](https://www.nuget.org/packages/AllOverIt.Evaluator/)
@@ -170,6 +185,21 @@ Extends **AllOverIt.Fixture** to assist with the creation of single/multiple stu
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.GenericHost?style=for-the-badge)](https://www.nuget.org/packages/AllOverIt.GenericHost/)
 
 Provides the ability to quickly create console applications that support dependency injection without being concerned with all of the ceremony.
+
+| Target         | Supported |
+|----------------|-----------|
+| netstandard2.0 |    Yes    |
+| netstandard2.1 |    Yes    |
+| netcoreapp3.1  |    Yes    |
+| net5.0         |    Yes    |
+| net6.0         |    Yes    |
+
+
+# AllOverIt.Pagination
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Pagination?style=for-the-badge)](https://www.nuget.org/packages/AllOverIt.Pagination/)
+[![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Pagination?style=for-the-badge)](https://www.nuget.org/packages/AllOverIt.Pagination/)
+
+A library providing queryable pagination utilities.
 
 | Target         | Supported |
 |----------------|-----------|
