@@ -2,6 +2,7 @@
 
 namespace AllOverIt.Pagination
 {
+    [Serializable]
     internal sealed class ColumnValueType
     {
         public TypeCode Type { get; init; }

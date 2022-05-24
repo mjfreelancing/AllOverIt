@@ -2,24 +2,26 @@
 using AllOverIt.Extensions;
 using AllOverIt.Pagination.Exceptions;
 using AllOverIt.Pagination.Extensions;
-using AllOverIt.Serialization.Abstractions;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
+using AllOverIt.Collections;
 
 namespace AllOverIt.Pagination
 {
     internal sealed class ContinuationTokenEncoder : IContinuationTokenEncoder
     {
+        private readonly BinaryFormatter _formatter = new();
         private readonly IReadOnlyCollection<IColumnDefinition> _columns;
         private readonly PaginationDirection _paginationDirection;
-        private readonly IJsonSerializer _jsonSerializer;
 
-        public ContinuationTokenEncoder(IReadOnlyCollection<IColumnDefinition> columns, PaginationDirection paginationDirection, IJsonSerializer jsonSerializer)
+        public ContinuationTokenEncoder(IReadOnlyCollection<IColumnDefinition> columns, PaginationDirection paginationDirection)
         {
             _columns = columns.WhenNotNullOrEmpty(nameof(columns)).AsReadOnlyCollection();
             _paginationDirection = paginationDirection;
-            _jsonSerializer = jsonSerializer.WhenNotNull(nameof(jsonSerializer));
         }
 
         public string EncodePreviousPage<TEntity>(IReadOnlyCollection<TEntity> references) where TEntity : class
@@ -58,7 +60,7 @@ namespace AllOverIt.Pagination
                 //Values = 
             };
 
-            return _jsonSerializer.SerializeObject(continuationToken).ToBase64();
+            return SerializeToken(continuationToken);
         }
 
         private string Encode<TEntity>(ContinuationDirection continuationDirection, IReadOnlyCollection<TEntity> references)
@@ -104,16 +106,37 @@ namespace AllOverIt.Pagination
                 Values = columnValues
             };
 
-            return _jsonSerializer.SerializeObject(continuationToken).ToBase64();
+            return SerializeToken(continuationToken);
+        }
+
+        private string SerializeToken(ContinuationToken continuationToken)
+        {
+            using (var stream = new MemoryStream())
+            {
+                _formatter.Serialize(stream, continuationToken);
+
+                stream.Flush();
+                stream.Position = 0;
+
+                var array = stream.ToArray();
+
+                return Convert.ToBase64String(array);
+            }
         }
 
         internal ContinuationToken Decode(string continuationToken)
         {
-            var decoded = continuationToken.IsNotNullOrEmpty()
-                ? _jsonSerializer.DeserializeObject<ContinuationToken>(continuationToken.FromBase64())
-                : ContinuationToken.None;
+            if (continuationToken.IsNullOrEmpty())
+            {
+                return ContinuationToken.None;
+            }
 
-            return decoded;
+            var bytes = Convert.FromBase64String(continuationToken);
+
+            using (var stream = new MemoryStream(bytes))
+            {
+                return (ContinuationToken) _formatter.Deserialize(stream);
+            }
         }
     }
 }

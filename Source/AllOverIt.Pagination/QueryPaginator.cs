@@ -23,7 +23,6 @@ namespace AllOverIt.Pagination
         }
 
         private readonly List<ColumnDefinition<TEntity>> _columns = new();
-        private readonly QueryPaginatorConfig _config;
         private readonly IQueryable<TEntity> _query;
         private readonly int _pageSize;
         private readonly PaginationDirection _paginationDirection;
@@ -34,11 +33,9 @@ namespace AllOverIt.Pagination
 
         public IContinuationTokenEncoder ContinuationTokenEncoder => GetContinuationTokenEncoder();
 
-        public QueryPaginator(IQueryable<TEntity> query, QueryPaginatorConfig config, int pageSize,
-            PaginationDirection paginationDirection = PaginationDirection.Forward)
+        public QueryPaginator(IQueryable<TEntity> query, int pageSize,PaginationDirection paginationDirection = PaginationDirection.Forward)
         {
             _query = query.WhenNotNull(nameof(query));
-            _config = config.WhenNotNull(nameof(config));
             _pageSize = pageSize;
             _paginationDirection = paginationDirection;
         }
@@ -211,7 +208,7 @@ namespace AllOverIt.Pagination
         {
             AssertColumnsDefined();
 
-            _continuationTokenEncoder ??= new ContinuationTokenEncoder(_columns, _paginationDirection, _config.Serializer);
+            _continuationTokenEncoder ??= new ContinuationTokenEncoder(_columns, _paginationDirection);
 
             return _continuationTokenEncoder;
         }

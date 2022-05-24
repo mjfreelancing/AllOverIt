@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AllOverIt.Pagination
 {
+    [Serializable]
     internal sealed class ContinuationToken
     {
+        [field: NonSerialized]
         public static readonly ContinuationToken None = new();
 
         // Indicates the direction to move based on the reference 'Values' in order to get the required previous or next page.

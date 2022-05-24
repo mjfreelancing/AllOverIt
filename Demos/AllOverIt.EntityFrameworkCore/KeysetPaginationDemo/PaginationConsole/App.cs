@@ -103,6 +103,9 @@ namespace PaginationConsole
                     var countElapsed = stopwatch.ElapsedMilliseconds;
                     stopwatch.Restart();
 
+                    Console.WriteLine();
+                    Console.WriteLine($"ContinuationToken: {continuationToken}");
+                    Console.WriteLine();
                     var pageQuery = queryPaginator.GetPageQuery(continuationToken);
 
                     Console.WriteLine();

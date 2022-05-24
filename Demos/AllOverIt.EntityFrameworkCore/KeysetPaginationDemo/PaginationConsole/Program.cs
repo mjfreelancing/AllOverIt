@@ -1,7 +1,5 @@
 ﻿using AllOverIt.GenericHost;
-using AllOverIt.Pagination;
 using AllOverIt.Pagination.Extensions;
-using AllOverIt.Serialization.NewtonsoftJson;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PaginationConsole;
@@ -27,14 +25,7 @@ class Program
             .CreateConsoleHostBuilder<App>(args)
             .ConfigureServices((hostContext, services) =>
             {
-                services.AddQueryPaginator(provider =>
-                {
-                    return new QueryPaginatorConfig
-                    {                       
-                        Serializer = new NewtonsoftJsonSerializer()
-                    };
-                });
-
+                services.AddQueryPaginator();
                 services.AddDbContextFactory<BloggingContext>();
             });
     }

@@ -84,16 +84,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
                 from entity in _entities
                 select entity;
 
-            //var options = new JsonSerializerOptions();
-            //options.Converters.Add(new ObjectToInferredTypesConverter());
-
-            var config = new QueryPaginatorConfig
-            {
-                Serializer = new NewtonsoftJsonSerializer()
-                //Serializer = new SystemTextJsonSerializer(options)
-            };
-
-            _paginatorFactory = (pageSize, paginationDirection) => new QueryPaginator<EntityDummy>(query.AsQueryable(), config, pageSize, paginationDirection);
+            _paginatorFactory = (pageSize, paginationDirection) => new QueryPaginator<EntityDummy>(query.AsQueryable(), pageSize, paginationDirection);
         }
 
         public class ColumnAscending_2 : QueryPaginatorExtensionsFixture
