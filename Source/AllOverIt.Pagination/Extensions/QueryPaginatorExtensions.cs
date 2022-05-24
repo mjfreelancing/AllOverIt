@@ -1,37 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Pagination.Extensions
 {
     public static class QueryPaginatorExtensions
     {
-        public static IQueryable<TEntity> BuildFirstPageQuery<TEntity>(this IQueryPaginator<TEntity> paginator)
-            where TEntity : class
-        {
-            return paginator.GetNextPageQuery(null);
-        }
-
-        public static IQueryable<TEntity> BuildLastPageQuery<TEntity>(this IQueryPaginator<TEntity> paginator)
-            where TEntity : class
-        {
-            return paginator.GetPreviousPageQuery(null);
-        }
-
-        // todo: Build async method in EF
-        public static bool HasPreviousPage<TEntity>(this IQueryPaginator<TEntity> paginator, TEntity reference)
-            where TEntity : class
-        {
-            return paginator.GetPreviousPageQuery(reference).Any();
-        }
-
-        // todo: Build async method in EF
-        public static bool HasNextPage<TEntity>(this IQueryPaginator<TEntity> paginator, TEntity reference)
-            where TEntity : class
-        {
-            return paginator.GetNextPageQuery(reference).Any();
-        }
-
         #region ColumnAscending
         public static IQueryPaginator<TEntity> ColumnAscending<TEntity, TProp1, TProp2>(this IQueryPaginator<TEntity> paginator,
             Expression<Func<TEntity, TProp1>> expression1, Expression<Func<TEntity, TProp2>> expression2)

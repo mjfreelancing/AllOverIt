@@ -15,7 +15,7 @@ namespace AllOverIt.Pagination
         private readonly PaginationDirection _paginationDirection;
         private readonly IJsonSerializer _jsonSerializer;
 
-        public ContinuationTokenEncoder(IEnumerable<IColumnDefinition> columns, PaginationDirection paginationDirection, IJsonSerializer jsonSerializer)
+        public ContinuationTokenEncoder(IReadOnlyCollection<IColumnDefinition> columns, PaginationDirection paginationDirection, IJsonSerializer jsonSerializer)
         {
             _columns = columns.WhenNotNullOrEmpty(nameof(columns)).AsReadOnlyCollection();
             _paginationDirection = paginationDirection;
@@ -59,13 +59,6 @@ namespace AllOverIt.Pagination
             };
 
             return _jsonSerializer.SerializeObject(continuationToken).ToBase64();
-        }
-
-        internal ContinuationToken Decode(string continuationToken)
-        {
-            return continuationToken.IsNotNullOrEmpty()
-                ? _jsonSerializer.DeserializeObject<ContinuationToken>(continuationToken.FromBase64())
-                : ContinuationToken.None;
         }
 
         private string Encode<TEntity>(ContinuationDirection continuationDirection, IReadOnlyCollection<TEntity> references)
@@ -112,6 +105,15 @@ namespace AllOverIt.Pagination
             };
 
             return _jsonSerializer.SerializeObject(continuationToken).ToBase64();
+        }
+
+        internal ContinuationToken Decode(string continuationToken)
+        {
+            var decoded = continuationToken.IsNotNullOrEmpty()
+                ? _jsonSerializer.DeserializeObject<ContinuationToken>(continuationToken.FromBase64())
+                : ContinuationToken.None;
+
+            return decoded;
         }
     }
 }
