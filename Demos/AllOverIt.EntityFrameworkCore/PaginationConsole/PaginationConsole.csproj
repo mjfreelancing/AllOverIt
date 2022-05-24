@@ -19,12 +19,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\..\Source\AllOverIt.EntityFrameworkCore.Pagination\AllOverIt.EntityFrameworkCore.Pagination.csproj" />
-      <ProjectReference Include="..\..\..\..\Source\AllOverIt.EntityFrameworkCore\AllOverIt.EntityFrameworkCore.csproj" />
-      <ProjectReference Include="..\..\..\..\Source\AllOverIt.GenericHost\AllOverIt.GenericHost.csproj" />
-      <ProjectReference Include="..\..\..\..\Source\AllOverIt.Pagination\AllOverIt.Pagination.csproj" />
-      <ProjectReference Include="..\..\..\..\Source\AllOverIt.Serialization.Abstractions\AllOverIt.Serialization.Abstractions.csproj" />
-      <ProjectReference Include="..\..\..\..\Source\AllOverIt.Serialization.NewtonsoftJson\AllOverIt.Serialization.NewtonsoftJson.csproj" />
+      <ProjectReference Include="..\..\..\Source\AllOverIt.EntityFrameworkCore.Pagination\AllOverIt.EntityFrameworkCore.Pagination.csproj" />
+      <ProjectReference Include="..\..\..\Source\AllOverIt.GenericHost\AllOverIt.GenericHost.csproj" />
     </ItemGroup>
 
 </Project>
