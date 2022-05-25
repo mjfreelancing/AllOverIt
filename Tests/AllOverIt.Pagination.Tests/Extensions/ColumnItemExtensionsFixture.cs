@@ -80,19 +80,11 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
                 var actual = ColumnItemExtensions.GetColumnValues(columns, entity);
 
-                var expected = new[]
+                var expected = new object[]
                 {
-                new
-                {
-                    Type = Type.GetTypeCode(typeof(string)),
-                    Value = (object)entity.Name
-                },
-                new
-                {
-                    Type = Type.GetTypeCode(typeof(int)),
-                    Value = (object)entity.Id
-                }
-            };
+                    entity.Name,
+                    entity.Id
+                };
 
                 expected.Should().BeEquivalentTo(actual);
             }
