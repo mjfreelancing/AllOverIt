@@ -17,7 +17,7 @@ namespace AllOverIt.Reflection
         /// <param name="declaredOnly">If true, the metadata of properties in the declared class as well as base class(es) are returned (if a property is
         /// overriden then only the base class <see cref="PropertyInfo"/> is returned). If false, only property metadata of the declared type is returned.</param>
         /// <param name="valueResolver">The factory method to obtain the required <see cref="PropertyInfo"/>. If null, the information
-        /// will be obtained using <seealso cref="TypeExtensions.GetPropertyInfo(Type, BindingOptions, bool)"/>.</param>
+        /// will be obtained using <seealso cref="AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(Type, BindingOptions, bool)"/>.</param>
         /// <returns>The <see cref="PropertyInfo"/> for a given <see cref="Type"/> and options from the default cache.</returns>
         public static IEnumerable<PropertyInfo> GetPropertyInfo(Type type, BindingOptions bindingOptions, bool declaredOnly = false,
             Func<GenericCacheKeyBase, IEnumerable<PropertyInfo>> valueResolver = default)
