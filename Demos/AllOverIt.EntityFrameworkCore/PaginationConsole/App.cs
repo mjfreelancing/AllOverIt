@@ -88,6 +88,7 @@ namespace PaginationConsole
                 var key = 'n';
 
                 var stopwatch = Stopwatch.StartNew();
+                long? lastTokenGenerationTime = default;
 
                 while (key != 'q')
                 {
@@ -103,14 +104,7 @@ namespace PaginationConsole
                     var countElapsed = stopwatch.ElapsedMilliseconds;
                     stopwatch.Restart();
 
-                    Console.WriteLine();
-                    Console.WriteLine($"ContinuationToken: {continuationToken}");
-                    Console.WriteLine();
                     var pageQuery = queryPaginator.GetPageQuery(continuationToken);
-
-                    Console.WriteLine();
-                    Console.WriteLine($"{pageQuery.ToQueryString()}");
-                    Console.WriteLine();
 
                     var buildQueryElapsed = stopwatch.ElapsedMilliseconds;
                     stopwatch.Restart();
@@ -138,6 +132,21 @@ namespace PaginationConsole
                     {
                         Console.WriteLine($"{result.BlogId}, {result.Description}, {result.PostId}, {result.Title}");
                     });
+
+                    if (lastTokenGenerationTime.HasValue)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine($"ContinuationToken Generation time: {lastTokenGenerationTime}ms");
+                    }
+
+                    Console.WriteLine();
+                    Console.WriteLine($"Using ContinuationToken:");
+                    Console.WriteLine(continuationToken);
+                    Console.WriteLine();
+
+                    Console.WriteLine();
+                    Console.WriteLine($"{pageQuery.ToQueryString()}");
+                    Console.WriteLine();
 
                     Console.WriteLine();
                     Console.WriteLine($"{pageSize} of {totalRecords} rows. Execution time: {totalElapsed}ms");
@@ -177,7 +186,7 @@ namespace PaginationConsole
                             break;
                     }
 
-                    Console.WriteLine($"Continuation token generation time: {stopwatch.ElapsedMilliseconds}ms");
+                    lastTokenGenerationTime = stopwatch.ElapsedMilliseconds;
                 }
             }
 

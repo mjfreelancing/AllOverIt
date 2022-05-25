@@ -97,7 +97,7 @@ namespace AllOverIt.Pagination
                 : _paginationDirection;
 
             // Get the reference column values and their types
-            var columnValues = _columns.GetColumnValueTypes(reference);
+            var columnValues = _columns.GetColumnValues(reference);
 
             // Serialize the resultant token information
             var continuationToken = new ContinuationToken

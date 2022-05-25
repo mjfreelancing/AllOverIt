@@ -10,7 +10,7 @@ namespace AllOverIt.Pagination
     public abstract class QueryPaginatorBase
     {
         // base class mainly exists to keep statics out of the generic implementations
-        private static readonly IReadOnlyDictionary<Type, MethodInfo> _typeComparisonMethods;
+        private static readonly IDictionary<Type, MethodInfo> _comparisonMethods;
 
         internal static readonly ConstantExpression ConstantZero = Expression.Constant(0);
 
@@ -36,12 +36,24 @@ namespace AllOverIt.Pagination
                 registry.Add(type, compareTo);
             }
 
-            _typeComparisonMethods = registry;
+            _comparisonMethods = registry;
         }
 
         protected static bool TryGetComparisonMethodInfo(Type type, out MethodInfo methodInfo)
         {
-            return _typeComparisonMethods.TryGetValue(type, out methodInfo);
+            // Enum's are IComparable but we can't pre-register the types we don't know about - so register them as they arrive
+            if (type.IsEnum && !_comparisonMethods.TryGetValue(type, out methodInfo))
+            {
+                methodInfo = type
+                    .GetTypeInfo()
+                    .GetMethod(nameof(Enum.CompareTo), new[] { type });
+
+                _comparisonMethods.Add(type, methodInfo);
+
+                return true;
+            }
+
+            return _comparisonMethods.TryGetValue(type, out methodInfo);
         }
     }
 }

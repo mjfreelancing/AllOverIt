@@ -13,6 +13,6 @@ namespace AllOverIt.Pagination
         public PaginationDirection Direction { get; init; }
 
         // The reference values that identifies the row to traverse from.
-        public IReadOnlyCollection<ColumnValueType> Values { get; init; }
+        public IReadOnlyCollection<object> Values { get; init; }
     }
 }

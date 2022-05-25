@@ -231,7 +231,7 @@ namespace AllOverIt.Pagination
             }
 
             // Decode, ensuring to set the correct value type otherwise the expression comparisons may fail
-            var referenceValues = continuationToken.Values.SelectAsReadOnlyList(valueType => Convert.ChangeType(valueType.Value, valueType.Type));
+            var referenceValues = continuationToken.Values.AsReadOnlyList();
 
             var predicate = CreatePaginatedPredicate(continuationToken.Direction, referenceValues);
 
@@ -243,8 +243,8 @@ namespace AllOverIt.Pagination
             _ = reference.WhenNotNull(nameof(reference));
 
             var referenceValues = _columns
-                .GetColumnValueTypes(reference)
-                .SelectAsReadOnlyList(item => item.Value);
+                .GetColumnValues(reference)
+                .AsReadOnlyList();
 
             return CreatePaginatedPredicate(_paginationDirection.Reverse(), referenceValues);
         }
@@ -254,8 +254,8 @@ namespace AllOverIt.Pagination
             _ = reference.WhenNotNull(nameof(reference));
 
             var referenceValues = _columns
-                .GetColumnValueTypes(reference)
-                .SelectAsReadOnlyList(item => item.Value);
+                .GetColumnValues(reference)
+                .AsReadOnlyList();
 
             return CreatePaginatedPredicate(_paginationDirection, referenceValues);
         }
@@ -392,12 +392,26 @@ namespace AllOverIt.Pagination
             ConstantExpression comparisonValue, Func<Expression, Expression, BinaryExpression> compareTo)
         {
             var propertyType = entity.Property.PropertyType;
-           
+
             // Some types require the use of CompareTo() for < and > operations
             if (TryGetComparisonMethodInfo(propertyType, out var compareToMethod))
             {
-                // entity.Property.CompareTo(comparisonValue)
-                var methodCallExpression = Expression.Call(memberAccess, compareToMethod, comparisonValue);
+                MethodCallExpression methodCallExpression;
+
+                if (comparisonValue.Type.IsEnum)
+                {
+                    // Enum comparisons fail unless converted to an object
+                    var objValue = Expression.Convert(comparisonValue, typeof(object));
+
+                    // entity.Property => CompareTo() => objValue
+                    methodCallExpression = Expression.Call(memberAccess, compareToMethod, objValue);
+                }
+                else
+                {
+                    // entity.Property => CompareTo() => comparisonValue
+                    methodCallExpression = Expression.Call(memberAccess, compareToMethod, comparisonValue);
+                }
+
                 return compareTo.Invoke(methodCallExpression, ConstantZero);
             }
             else
