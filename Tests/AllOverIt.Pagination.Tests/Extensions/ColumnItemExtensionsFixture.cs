@@ -24,7 +24,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             {
                 Invoking(() =>
                 {
-                    _ = ColumnItemExtensions.GetColumnValueTypes(null, new { });
+                    _ = ColumnItemExtensions.GetColumnValues(null, new { });
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -38,7 +38,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
                 Invoking(() =>
                 {
-                    _ = ColumnItemExtensions.GetColumnValueTypes(columns, new { });
+                    _ = ColumnItemExtensions.GetColumnValues(columns, new { });
                 })
                     .Should()
                     .Throw<ArgumentException>()
@@ -55,7 +55,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
                 Invoking(() =>
                 {
-                    _ = ColumnItemExtensions.GetColumnValueTypes(columns, null);
+                    _ = ColumnItemExtensions.GetColumnValues(columns, null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -78,7 +78,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
                     Property = entity.GetType().GetPropertyInfo("Id")
                 });
 
-                var actual = ColumnItemExtensions.GetColumnValueTypes(columns, entity);
+                var actual = ColumnItemExtensions.GetColumnValues(columns, entity);
 
                 var expected = new[]
                 {
