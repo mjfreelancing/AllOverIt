@@ -227,6 +227,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.Pagination.Tests"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaginationConsole", "Demos\AllOverIt.EntityFrameworkCore\PaginationConsole\PaginationConsole.csproj", "{285107FC-9B74-4C31-BE5B-43662A4D8371}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompiledReflectionBenchmarking", "Demos\AllOverIt\Benchmarking\CompiledReflectionBenchmarking\CompiledReflectionBenchmarking.csproj", "{E605A939-0B55-4BEF-821A-D6A59C382232}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -545,6 +547,10 @@ Global
 		{285107FC-9B74-4C31-BE5B-43662A4D8371}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{285107FC-9B74-4C31-BE5B-43662A4D8371}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{285107FC-9B74-4C31-BE5B-43662A4D8371}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E605A939-0B55-4BEF-821A-D6A59C382232}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E605A939-0B55-4BEF-821A-D6A59C382232}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E605A939-0B55-4BEF-821A-D6A59C382232}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E605A939-0B55-4BEF-821A-D6A59C382232}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -655,6 +661,7 @@ Global
 		{F326CA08-F70C-4B87-8B33-56A86A1BBD8A} = {FC8E8DB2-1299-44F4-A233-0EDCE225BB8C}
 		{479A3A06-C90D-4FEB-8237-86D62B23CAA9} = {0C08FAE6-4CD9-4C7B-A849-EB0DB9BD1451}
 		{285107FC-9B74-4C31-BE5B-43662A4D8371} = {FF30E74E-0317-4439-9327-A0BB72B230D0}
+		{E605A939-0B55-4BEF-821A-D6A59C382232} = {17CD389D-25DF-4075-980B-96C1A77C779E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19DD11B3-596E-4862-B5C4-1FFFFB173106}

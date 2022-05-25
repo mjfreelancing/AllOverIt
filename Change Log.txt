@@ -9,6 +9,7 @@ AllOverIt
   * Added Clear(), Reset(), AddCallSite(), and AddExtendedCallSite() to Breadcrumbs
   * Added ReadOnlyCollection, ReadOnlyList, and ReadOnlyDictionary implementations that are  truly immutable
   * Updated Collection/List/Dictionary EmptyReadOnly<T>() so the underlying collection is truly immutable
+  * Added compiled property get/set methods GetCompiledPropertyGet() and GetCompiledPropertySet()                           *** TESTS PENDING ***
 
 AllOverIt.Assertion
   * Removed methods that asserted an enumerable was a concrete collection type and instead updated .NET Core 3.1

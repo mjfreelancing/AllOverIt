@@ -1,6 +1,7 @@
 ﻿using AllOverIt.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace AllOverIt.Reflection
@@ -64,6 +65,40 @@ namespace AllOverIt.Reflection
         public static MethodInfo GetMethodInfo<TType>(string name, Type[] types)
         {
             return typeof(TType).GetMethodInfo(name, types);
+        }
+
+        // TODO: Tests
+        public static Func<TType, TProp> GetCompiledPropertyGet<TType, TProp>(string name)
+        {
+            var sourceType = typeof(TType);
+            var instanceParam = Expression.Parameter(sourceType);
+            var getMethod = sourceType.GetProperty(name).GetGetMethod();
+            var getMethodCall = Expression.Call(instanceParam, getMethod);
+
+            return Expression
+                .Lambda<Func<TType, TProp>>(
+                    Expression.Convert(getMethodCall, typeof(TProp)),
+                    instanceParam)
+                .Compile();
+        }
+
+        // TODO: Tests
+        public static Action<TType, TProp> GetCompiledPropertySet<TType, TProp>(string name)
+        {
+            var sourceType = typeof(TType);
+            var instanceParam = Expression.Parameter(sourceType);
+            var argumentParam = Expression.Parameter(typeof(TProp));
+            var propertyInfo = sourceType.GetProperty(name);
+
+            return Expression
+                .Lambda<Action<TType, TProp>>(
+                    Expression.Call(
+                        instanceParam,
+                        propertyInfo.GetSetMethod(),
+                        Expression.Convert(argumentParam, propertyInfo.PropertyType)),
+                    instanceParam,
+                    argumentParam)
+                .Compile();
         }
     }
 }
