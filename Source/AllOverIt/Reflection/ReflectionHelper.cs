@@ -86,9 +86,15 @@ namespace AllOverIt.Reflection
         public static Action<TType, TProp> GetCompiledPropertySet<TType, TProp>(string name)
         {
             var sourceType = typeof(TType);
+            var propertyType = typeof(TProp);
             var instanceParam = Expression.Parameter(sourceType);
-            var argumentParam = Expression.Parameter(typeof(TProp));
+            var argumentParam = Expression.Parameter(propertyType);
             var propertyInfo = sourceType.GetProperty(name);
+
+            if (propertyType != propertyInfo.PropertyType)
+            {
+                throw new InvalidOperationException($"The property {name} has a type of {propertyInfo.PropertyType.GetFriendlyName()} but expected it to be of type {propertyType.GetFriendlyName()}.");
+            }
 
             return Expression
                 .Lambda<Action<TType, TProp>>(
