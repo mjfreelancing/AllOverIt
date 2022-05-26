@@ -67,8 +67,14 @@ namespace AllOverIt.Reflection
             return typeof(TType).GetMethodInfo(name, types);
         }
 
+
+        // =============
+        // ALL WIP
+        // =============
+
+
         // TODO: Tests
-        public static Func<TType, TProp> GetCompiledPropertyGet<TType, TProp>(string name)
+        public static Func<TType, TProp> GetCompiledPropertyGetter<TType, TProp>(string name)
         {
             var sourceType = typeof(TType);
             var instanceParam = Expression.Parameter(sourceType);
@@ -82,8 +88,66 @@ namespace AllOverIt.Reflection
                 .Compile();
         }
 
+
+
+        public static Func<object, object> GetCompiledPropertyGetter(Type sourceType, string name)
+        {
+            var propertyInfo = sourceType.GetProperty(name);
+
+            return GetExpressionLambda(propertyInfo).Compile();
+        }
+
+
+        //public static Expression<Func<T, object>> GetExpressionLambda<T>(PropertyInfo propertyInfo)
+        //{
+        //    var instance = Expression.Parameter(typeof(T), "i");
+        //    var property = typeof(T) != propertyInfo.DeclaringType
+        //        ? Expression.Property(Expression.TypeAs(instance, propertyInfo.DeclaringType), propertyInfo)
+        //        : Expression.Property(instance, propertyInfo);
+        //    var convertProperty = Expression.TypeAs(property, typeof(object));
+        //    return Expression.Lambda<Func<T, object>>(convertProperty, instance);
+        //}
+
+
+        //public static Expression<Func<T, P>> GetExpressionLambda<T, P>(PropertyInfo propertyInfo)
+        //{
+        //    var instance = Expression.Parameter(typeof(T), "i");
+        //    var property = typeof(T) != propertyInfo.DeclaringType
+        //        ? Expression.Property(Expression.TypeAs(instance, propertyInfo.DeclaringType), propertyInfo)
+        //        : Expression.Property(instance, propertyInfo);
+        //    var convertProperty = Expression.TypeAs(property, typeof(P));
+        //    return Expression.Lambda<Func<T, P>>(convertProperty, instance);
+        //}
+
+
+
+        //public delegate object GetMemberDelegate(object instance);
+
+        public static Expression<Func<object, object>> GetExpressionLambda(PropertyInfo propertyInfo)
+        {
+            var getMethodInfo = propertyInfo.GetGetMethod(nonPublic: true);
+
+            if (getMethodInfo == null)
+                return null;
+
+            var oInstanceParam = Expression.Parameter(typeof(object), "oInstanceParam");
+            var instanceParam = Expression.Convert(oInstanceParam, propertyInfo.ReflectedType); //propertyInfo.DeclaringType doesn't work on Proxy types
+
+            var exprCallPropertyGetFn = Expression.Call(instanceParam, getMethodInfo);
+            var oExprCallPropertyGetFn = Expression.Convert(exprCallPropertyGetFn, typeof(object));
+
+            return Expression.Lambda<Func<object, object>>
+            (
+                oExprCallPropertyGetFn,
+                oInstanceParam
+            );
+        }
+
+
+
+
         // TODO: Tests
-        public static Action<TType, TProp> GetCompiledPropertySet<TType, TProp>(string name)
+        public static Action<TType, TProp> GetCompiledPropertySetter<TType, TProp>(string name)
         {
             var sourceType = typeof(TType);
             var propertyType = typeof(TProp);
@@ -106,5 +170,7 @@ namespace AllOverIt.Reflection
                     argumentParam)
                 .Compile();
         }
+
+        // TODO: Write overloads that allow <object, object>
     }
 }

@@ -17,8 +17,9 @@ namespace CompiledReflectionBenchmarking
         private static PropertyInfo dummyPropInfo = typeof(DummyType).GetProperty(nameof(DummyType.Value));
 
         // Compiled
-        private static Func<DummyType, int> _compiledGet = ReflectionHelper.GetCompiledPropertyGet<DummyType, int>(nameof(DummyType.Value));
-        private static Action<DummyType, int> _compiledSet = ReflectionHelper.GetCompiledPropertySet<DummyType, int>(nameof(DummyType.Value));
+        private static Func<DummyType, int> _compiledGetTyped = ReflectionHelper.GetCompiledPropertyGetter<DummyType, int>(nameof(DummyType.Value));
+        //private static Func<object, object> _compiledGetObject = ReflectionHelper.GetCompiledPropertyGetter(typeof(DummyType), nameof(DummyType.Value));
+        private static Action<DummyType, int> _compiledSet = ReflectionHelper.GetCompiledPropertySetter<DummyType, int>(nameof(DummyType.Value));
 
         [Params(100)]
         public int IterationCount;
@@ -46,15 +47,26 @@ namespace CompiledReflectionBenchmarking
         }
 
         [Benchmark]
-        public void CompiledReflectionGet()
+        public void CompiledReflectionGetTyped()
         {
             var instance = GetDummyType();
 
             for (var i = 0; i < IterationCount; i++)
             {
-                _ = _compiledGet.Invoke(instance);
+                _ = _compiledGetTyped.Invoke(instance);
             }
         }
+
+        //[Benchmark]
+        //public void CompiledReflectionGetObject()
+        //{
+        //    var instance = GetDummyType();
+
+        //    for (var i = 0; i < IterationCount; i++)
+        //    {
+        //        _ = _compiledGetObject.Invoke(instance);
+        //    }
+        //}
 
         [Benchmark]
         public void CompiledReflectionSet()
