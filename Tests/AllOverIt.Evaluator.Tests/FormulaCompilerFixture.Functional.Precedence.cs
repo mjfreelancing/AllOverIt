@@ -75,19 +75,27 @@ namespace AllOverIt.Evaluator.Tests
         [Fact]
         public void Should_Calculate_Mixed_1()
         {
+            // Preventing overflow
+            var val1 = Val1 % 10 + 1;
+            var val2 = Val2 % 10 + 1;
+            var val3 = _val3 % 10 + 1;
+
             AssertFormula(
-              string.Format("3 * -{0}^3 * {1}^2 + {2}", Val1, Val2, _val3),
-              () => 3 * -Math.Pow(Val1, 3) * Math.Pow(Val2, 2) + _val3,
-              1E-2);
+              string.Format("3 * -{0}^3 * {1}^2 + {2}", val1, val2, val3),
+              () => 3 * -Math.Pow(val1, 3) * Math.Pow(val2, 2) + val3);
         }
 
         [Fact]
         public void Should_Calculate_Mixed_2()
         {
+            // Preventing overflow
+            var val1 = Val1 % 10 + 1;
+            var val2 = Val2 % 10 + 1;
+            var val3 = _val3 % 10 + 1;
+
             AssertFormula(
-              string.Format("3 * -{0}^2 * -{1}^3 * {2}", Val1, Val2, _val3),
-              () => 3 * -Math.Pow(Val1, 2) * -Math.Pow(Val2, 3) * _val3,
-              1E-2);
+              string.Format("3 * -{0}^2 * -{1}^3 * {2}", val1, val2, val3),
+              () => 3 * -Math.Pow(val1, 2) * -Math.Pow(val2, 3) * val3);
         }
 
         [Fact]
