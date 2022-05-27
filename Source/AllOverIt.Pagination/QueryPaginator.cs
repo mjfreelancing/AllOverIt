@@ -217,9 +217,9 @@ namespace AllOverIt.Pagination
         {
             return _columns.Aggregate(
                 (IOrderedQueryable<TEntity>) default,
-                (current, next) => current == null
-                    ? next.OrderColumnBy(_query, direction)
-                    : next.ThenOrderColumnBy(current, direction));
+                (currentQuery, nextColumn) => currentQuery == null
+                    ? nextColumn.ApplyColumnOrderTo(_query, direction)
+                    : nextColumn.ThenApplyColumnOrderTo(currentQuery, direction));
         }
 
         private IQueryable<TEntity> ApplyContinuationToken(IQueryable<TEntity> paginatedQuery, ContinuationToken continuationToken)
