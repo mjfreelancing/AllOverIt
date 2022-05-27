@@ -1,4 +1,5 @@
-﻿using AllOverIt.Extensions;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Extensions;
 using System.Linq;
 using System.Reflection;
 
@@ -9,24 +10,27 @@ namespace AllOverIt.Pagination
         public PropertyInfo Property { get; init; }
         public bool IsAscending { get; init; }
 
-        public abstract IOrderedQueryable<TEntity> OrderColumnBy(IQueryable<TEntity> queryable, PaginationDirection paginationDirection);
-        public abstract IOrderedQueryable<TEntity> ThenOrderColumnBy(IOrderedQueryable<TEntity> queryable, PaginationDirection paginationDirection);
+        public abstract IOrderedQueryable<TEntity> ApplyColumnOrderTo(IQueryable<TEntity> queryable, PaginationDirection paginationDirection);
+        public abstract IOrderedQueryable<TEntity> ThenApplyColumnOrderTo(IOrderedQueryable<TEntity> queryable, PaginationDirection paginationDirection);
     }
 
     internal class ColumnDefinition<TEntity, TProp> : ColumnDefinition<TEntity> where TEntity : class
     {
-        public override IOrderedQueryable<TEntity> OrderColumnBy(IQueryable<TEntity> queryable, PaginationDirection paginationDirection)
+        public override IOrderedQueryable<TEntity> ApplyColumnOrderTo(IQueryable<TEntity> queryable, PaginationDirection paginationDirection)
         {
             return OrderBy(queryable, paginationDirection);
         }
 
-        public override IOrderedQueryable<TEntity> ThenOrderColumnBy(IOrderedQueryable<TEntity> queryable, PaginationDirection paginationDirection)
+        public override IOrderedQueryable<TEntity> ThenApplyColumnOrderTo(IOrderedQueryable<TEntity> queryable, PaginationDirection paginationDirection)
         {
             return ThenOrderBy(queryable, paginationDirection);
         }
 
         private IOrderedQueryable<TEntity> OrderBy(IQueryable<TEntity> queryable, PaginationDirection paginationDirection)
         {
+            _ = queryable.WhenNotNull(nameof(queryable));
+            _ = Property.WhenNotNull(nameof(Property));
+
             var accessExpression = Property.CreateMemberAccessLambda<TEntity, TProp>("entity");
 
             return OrderAsAscending(paginationDirection)
@@ -36,6 +40,9 @@ namespace AllOverIt.Pagination
 
         private IOrderedQueryable<TEntity> ThenOrderBy(IOrderedQueryable<TEntity> queryable, PaginationDirection paginationDirection)
         {
+            _ = queryable.WhenNotNull(nameof(queryable));
+            _ = Property.WhenNotNull(nameof(Property));
+
             var accessExpression = Property.CreateMemberAccessLambda<TEntity, TProp>("entity");
 
             return OrderAsAscending(paginationDirection)
