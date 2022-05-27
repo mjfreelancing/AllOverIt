@@ -261,12 +261,42 @@ namespace AllOverIt.Pagination.Tests
 
         public class EncodeFirstPage : ContinuationTokenEncoderFixture
         {
+            [Theory]
+            [InlineData(PaginationDirection.Forward)]
+            [InlineData(PaginationDirection.Backward)]
+            public void Should_Encode_First_Page(PaginationDirection paginationDirection)
+            {
+                var encoder = new ContinuationTokenEncoder(_columns, paginationDirection);
 
+                var actual = encoder.EncodeFirstPage();
+
+                actual.Should().BeEmpty();
+            }
         }
 
         public class EncodeLastPage : ContinuationTokenEncoderFixture
         {
+            [Theory]
+            [InlineData(PaginationDirection.Forward)]
+            [InlineData(PaginationDirection.Backward)]
+            public void Should_Encode_Last_Page(PaginationDirection paginationDirection)
+            {
+                var expected = new
+                {
+                    Direction = paginationDirection.Reverse(),
+                    Values = (object[])null
+                };
 
+                var encoder = new ContinuationTokenEncoder(_columns, paginationDirection);
+
+                var actual = encoder.EncodeLastPage();
+
+                actual.Should().NotBeNullOrEmpty();
+
+                var decoded = encoder.Decode(actual);
+
+                expected.Should().BeEquivalentTo(decoded);
+            }
         }
     }
 }
