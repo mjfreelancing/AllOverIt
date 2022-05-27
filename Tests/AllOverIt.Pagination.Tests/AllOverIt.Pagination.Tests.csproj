@@ -25,10 +25,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Source\AllOverIt.Fixture\AllOverIt.Fixture.csproj" />
-      <ProjectReference Include="..\..\Source\AllOverIt.Pagination\AllOverIt.Pagination.csproj" />
-      <ProjectReference Include="..\..\Source\AllOverIt.Serialization.NewtonsoftJson\AllOverIt.Serialization.NewtonsoftJson.csproj" />
-      <ProjectReference Include="..\..\Source\AllOverIt.Serialization.SystemTextJson\AllOverIt.Serialization.SystemTextJson.csproj" />
+        <ProjectReference Include="..\..\Source\AllOverIt.Fixture\AllOverIt.Fixture.csproj" />
+        <ProjectReference Include="..\..\Source\AllOverIt.Pagination\AllOverIt.Pagination.csproj" />
+        <ProjectReference Include="..\..\Source\AllOverIt.Serialization.NewtonsoftJson\AllOverIt.Serialization.NewtonsoftJson.csproj" />
+        <ProjectReference Include="..\..\Source\AllOverIt.Serialization.SystemTextJson\AllOverIt.Serialization.SystemTextJson.csproj" />
     </ItemGroup>
 
 </Project>

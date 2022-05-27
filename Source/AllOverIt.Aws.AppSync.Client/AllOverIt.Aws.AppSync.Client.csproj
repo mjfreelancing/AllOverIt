@@ -12,10 +12,12 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/mjfreelancing/AllOverIt</RepositoryUrl>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <GenerateDocumentationFile>True</GenerateDocumentationFile>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\AllOverIt.Reactive\AllOverIt.Reactive.csproj" />
         <ProjectReference Include="..\AllOverIt.Serialization.Abstractions\AllOverIt.Serialization.Abstractions.csproj" />

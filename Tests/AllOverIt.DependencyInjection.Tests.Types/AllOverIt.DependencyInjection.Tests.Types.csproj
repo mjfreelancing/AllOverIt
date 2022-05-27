@@ -5,7 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Source\AllOverIt.DependencyInjection\AllOverIt.DependencyInjection.csproj" />
+        <ProjectReference Include="..\..\Source\AllOverIt.DependencyInjection\AllOverIt.DependencyInjection.csproj" />
     </ItemGroup>
 
 </Project>
