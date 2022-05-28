@@ -1,5 +1,7 @@
+using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
+using AllOverIt.Serialization.JsonHelper;
 using AllOverIt.Serialization.JsonHelper.Exceptions;
 using AllOverIt.Serialization.SystemTextJson.Converters;
 using FluentAssertions;
@@ -8,8 +10,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text.Json;
-using AllOverIt.Extensions;
-using AllOverIt.Serialization.JsonHelper;
 using Xunit;
 
 namespace AllOverIt.Serialization.SystemTextJson.Tests
