@@ -267,7 +267,7 @@ namespace AllOverIt.Csv.Tests
                         })
                         .ToList();
 
-                    var blankFieldCount = maxCount * 2 - rowData.Count();
+                    var blankFieldCount = maxCount * 2 - rowData.Count;
                     rowData.AddRange(Enumerable.Repeat(string.Empty, blankFieldCount));
 
                     sb.AppendLine(string.Join(",", rowData));

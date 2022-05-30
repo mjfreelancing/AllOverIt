@@ -257,8 +257,8 @@ namespace AllOverIt.Csv.Tests.Extensions
                             null,
                             _sampleData,
                             data => data.Children,
-                            field => new FieldIdentifier<int>[]{},
-                            (field, identifier) => new object[]{}
+                            field => Array.Empty<FieldIdentifier<int>>(),
+                            (field, identifier) => Array.Empty<object>()
                         );
                     })
                     .Should()
@@ -275,8 +275,8 @@ namespace AllOverIt.Csv.Tests.Extensions
                             _serializer,
                             null,
                             data => data.Children,
-                            field => new FieldIdentifier<int>[] { },
-                            (field, identifier) => new object[] { }
+                            field => Array.Empty<FieldIdentifier<int>>(),
+                            (field, identifier) => Array.Empty<object>()
                         );
                     })
                     .Should()
@@ -293,8 +293,8 @@ namespace AllOverIt.Csv.Tests.Extensions
                             _serializer,
                             _sampleData,
                             null,
-                            field => new FieldIdentifier<int>[] { },
-                            (field, identifier) => new object[] { }
+                            field => Array.Empty<FieldIdentifier<int>>(),
+                            (field, identifier) => Array.Empty<object>()
                         );
                     })
                     .Should()
@@ -312,7 +312,7 @@ namespace AllOverIt.Csv.Tests.Extensions
                             _sampleData,
                             data => data.Children,
                             null,
-                            (field, identifier) => new object[] { }
+                            (field, identifier) => Array.Empty<object>()
                         );
                     })
                     .Should()
@@ -329,7 +329,7 @@ namespace AllOverIt.Csv.Tests.Extensions
                             _serializer,
                             _sampleData,
                             data => data.Children,
-                            field => new FieldIdentifier<int>[] { },
+                            field => Array.Empty<FieldIdentifier<int>>(),
                             null
                         );
                     })

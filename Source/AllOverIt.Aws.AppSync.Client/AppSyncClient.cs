@@ -50,6 +50,7 @@ namespace AllOverIt.Aws.AppSync.Client
             return SendRequestAsync<TResponse>(query, authorization, cancellationToken);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA2016")]
         private async Task<GraphqlHttpResponse<TResponse>> SendRequestAsync<TResponse>(GraphqlQuery query, IAppSyncAuthorization authorization,
             CancellationToken cancellationToken)
         {
@@ -57,9 +58,11 @@ namespace AllOverIt.Aws.AppSync.Client
             {
                 using (var responseMessage = await GetHttpResponseMessageAsync(requestMessage, cancellationToken).ConfigureAwait(false))
                 {
+#pragma warning disable CA2016 // Forward the 'CancellationToken' parameter to methods
                     var content = await responseMessage.Content
-                        .ReadAsStringAsync()
+                        .ReadAsStringAsync()            // doesn't accept a CancellationToken
                         .ConfigureAwait(false);
+#pragma warning restore CA2016 // Forward the 'CancellationToken' parameter to methods
 
                     var result = _configuration.Serializer
                         .DeserializeObject<GraphqlHttpResponse<TResponse>>(content);

@@ -195,7 +195,7 @@ namespace AllOverIt.Caching
             _ = key.WhenNotNull(nameof(key));
             _ = addResolver.WhenNotNull(nameof(addResolver));
 
-            Func<GenericCacheKeyBase, TArg, object> objectResolver = (valueKey, arg) => addResolver.Invoke(valueKey, arg);
+            object objectResolver(GenericCacheKeyBase valueKey, TArg arg) => addResolver.Invoke(valueKey, arg);
 
             return (TValue) _cache.GetOrAdd(
                 key,
@@ -214,8 +214,9 @@ namespace AllOverIt.Caching
             _ = addResolver.WhenNotNull(nameof(addResolver));
             _ = updateResolver.WhenNotNull(nameof(updateResolver));
 
-            Func<GenericCacheKeyBase, object> objectAddResolver = valueKey => addResolver.Invoke(valueKey);
-            Func<GenericCacheKeyBase, object, object> objectUpdateResolver = (valueKey, value) => updateResolver.Invoke(valueKey, (TValue) value);
+            object objectAddResolver(GenericCacheKeyBase valueKey) => addResolver.Invoke(valueKey);
+
+            object objectUpdateResolver(GenericCacheKeyBase valueKey, object value) => updateResolver.Invoke(valueKey, (TValue) value);
 
             return (TValue) _cache.AddOrUpdate(
                 key,
@@ -232,7 +233,7 @@ namespace AllOverIt.Caching
             _ = key.WhenNotNull(nameof(key));
             _ = updateResolver.WhenNotNull(nameof(updateResolver));
 
-            Func<GenericCacheKeyBase, object, object> objectUpdateResolver = (valueKey, value) => updateResolver.Invoke(valueKey, (TValue) value);
+            object objectUpdateResolver(GenericCacheKeyBase valueKey, object value) => updateResolver.Invoke(valueKey, (TValue) value);
 
             return (TValue) _cache.AddOrUpdate(
                 key,
@@ -252,8 +253,9 @@ namespace AllOverIt.Caching
             _ = addResolver.WhenNotNull(nameof(addResolver));
             _ = updateResolver.WhenNotNull(nameof(updateResolver));
 
-            Func<GenericCacheKeyBase, TArg, object> objectAddResolver = (valueKey, arg) => addResolver.Invoke(valueKey, arg);
-            Func<GenericCacheKeyBase, object, TArg, object> objectUpdateResolver = (valueKey, value, arg) => updateResolver.Invoke(valueKey, (TValue) value, arg);
+            object objectAddResolver(GenericCacheKeyBase valueKey, TArg arg) => addResolver.Invoke(valueKey, arg);
+
+            object objectUpdateResolver(GenericCacheKeyBase valueKey, object value, TArg arg) => updateResolver.Invoke(valueKey, (TValue) value, arg);
 
             return (TValue) _cache.AddOrUpdate(
                 key,

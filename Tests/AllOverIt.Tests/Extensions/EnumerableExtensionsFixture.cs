@@ -453,7 +453,7 @@ namespace AllOverIt.Tests.Extensions
                 await Invoking(
                         async () =>
                         {
-                            IAsyncEnumerable<bool> items = AsAsyncEnumerable(new[] {true});
+                            var items = AsAsyncEnumerable(new[] {true});
 
                             await items.SelectAsync(item => Task.FromResult(item), cts.Token).AsListAsync();
                         })
@@ -497,7 +497,7 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Return_True_When_Array_Empty()
             {
-                var actual = EnumerableExtensions.IsNullOrEmpty(new object[] { });
+                var actual = EnumerableExtensions.IsNullOrEmpty(Array.Empty<object>());
 
                 actual.Should().BeTrue();
             }
@@ -540,7 +540,7 @@ namespace AllOverIt.Tests.Extensions
                             IEnumerable<object> items = null;
 
                             // ToList() is required to invoke the method
-                            items.Batch(Create<int>()).ToList();
+                            _ = items.Batch(Create<int>()).ToList();
                         })
                     .Should()
                     .Throw<ArgumentNullException>()

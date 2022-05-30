@@ -18,7 +18,9 @@ namespace AllOverIt.Tests.Extensions
 
         private class Person
         {
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
             private DateTime Timestamp1 { get; } // won't be included in the results
+
             internal DateTime Timestamp2 { get; } // won't be included in the results
             protected int Id { get; }
             public string FirstName { get; set; }

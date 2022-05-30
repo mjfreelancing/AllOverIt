@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Collections;
+using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Pagination.Exceptions;
@@ -92,8 +93,8 @@ namespace AllOverIt.Pagination.Tests
 
                 var expectedReference = paginationDirection switch
                 {
-                    PaginationDirection.Forward => entities.First(),
-                    PaginationDirection.Backward => entities.Last(),
+                    PaginationDirection.Forward => entities.FirstElement(),
+                    PaginationDirection.Backward => entities.LastElement(),
                     _ => throw new InvalidOperationException()
                 };
 
@@ -154,8 +155,8 @@ namespace AllOverIt.Pagination.Tests
 
                 var expectedReference = paginationDirection switch
                 {
-                    PaginationDirection.Forward => entities.Last(),
-                    PaginationDirection.Backward => entities.First(),
+                    PaginationDirection.Forward => entities.LastElement(),
+                    PaginationDirection.Backward => entities.FirstElement(),
                     _ => throw new InvalidOperationException()
                 };
 

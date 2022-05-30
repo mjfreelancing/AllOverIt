@@ -14,14 +14,12 @@ namespace AllOverIt.Tests.Extensions
         {
             public int Property { get; set; }
 
-#pragma warning disable 649
-            // Unassigned field
             public int Field;
-#pragma warning restore 649
 
             public int GetPropertyValue()
             {
-                return Property;
+                Field = 1;          // Prevent CS0649 (Field is never assigned)
+                return Field;
             }
         }
 

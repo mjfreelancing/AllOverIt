@@ -24,6 +24,7 @@ namespace AllOverIt.Fixture.Tests
             }
 
             [Fact]
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0039:Use local function", Justification = "It's part of the test")]
             public void Should_Return_Same_Action()
             {
                 Action toInvoke = () => { };
@@ -47,6 +48,7 @@ namespace AllOverIt.Fixture.Tests
             }
 
             [Fact]
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0039:Use local function", Justification = "It's part of the test")]
             public void Should_Return_Same_Action()
             {
                 Func<string> toInvoke = () => Create<string>();
@@ -114,11 +116,11 @@ namespace AllOverIt.Fixture.Tests
             {
                 var creatorCalled = false;
 
-                Func<DummyClass> creator = () =>
+                DummyClass creator()
                 {
                     creatorCalled = true;
                     return new DummyClass();
-                };
+                }
 
                 Register(creator);
 
@@ -130,7 +132,7 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Create_DummyClassThreeArgs()
             {
-                Func<DummyClass> creator = () => new DummyClass();
+                static DummyClass creator() => new();
 
                 Register(creator);
 
@@ -155,13 +157,13 @@ namespace AllOverIt.Fixture.Tests
             {
                 var creatorCalled = false;
 
-                Func<int, DummyClassOneArg> creator = arg1 =>
+                DummyClassOneArg creator(int arg1)
                 {
                     creatorCalled = true;
                     return new DummyClassOneArg(arg1);
-                };
+                }
 
-                Register(creator);
+                Register((Func<int, DummyClassOneArg>) creator);
 
                 Create<DummyClassOneArg>();
 
@@ -171,9 +173,9 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Create_DummyClassThreeArgs()
             {
-                Func<int, DummyClassOneArg> creator = arg1 => new DummyClassOneArg(arg1);
+                static DummyClassOneArg creator(int arg1) => new(arg1);
 
-                Register(creator);
+                Register((Func<int, DummyClassOneArg>) creator);
 
                 var actual = Create<DummyClassOneArg>();
 
@@ -196,13 +198,13 @@ namespace AllOverIt.Fixture.Tests
             {
                 var creatorCalled = false;
 
-                Func<int, double, DummyClassTwoArgs> creator = (arg1, arg2) =>
+                DummyClassTwoArgs creator(int arg1, double arg2)
                 {
                     creatorCalled = true;
                     return new DummyClassTwoArgs(arg1, arg2);
-                };
+                }
 
-                Register(creator);
+                Register((Func<int, double, DummyClassTwoArgs>) creator);
 
                 Create<DummyClassTwoArgs>();
 
@@ -212,9 +214,9 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Create_DummyClassThreeArgs()
             {
-                Func<int, double, DummyClassTwoArgs> creator = (arg1, arg2) => new DummyClassTwoArgs(arg1, arg2);
+                static DummyClassTwoArgs creator(int arg1, double arg2) => new(arg1, arg2);
 
-                Register(creator);
+                Register((Func<int, double, DummyClassTwoArgs>) creator);
 
                 var actual = Create<DummyClassTwoArgs>();
 
@@ -237,13 +239,13 @@ namespace AllOverIt.Fixture.Tests
             {
                 var creatorCalled = false;
 
-                Func<int, double, DummyEnum, DummyClassThreeArgs> creator = (arg1, arg2, arg3) =>
+                DummyClassThreeArgs creator(int arg1, double arg2, DummyEnum arg3)
                 {
                     creatorCalled = true;
                     return new DummyClassThreeArgs(arg1, arg2, arg3);
-                };
+                }
 
-                Register(creator);
+                Register((Func<int, double, DummyEnum, DummyClassThreeArgs>) creator);
 
                 Create<DummyClassThreeArgs>();
 
@@ -253,10 +255,9 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Create_DummyClassThreeArgs()
             {
-                Func<int, double, DummyEnum, DummyClassThreeArgs> creator =
-                  (arg1, arg2, arg3) => new DummyClassThreeArgs(arg1, arg2, arg3);
+                static DummyClassThreeArgs creator(int arg1, double arg2, DummyEnum arg3) => new(arg1, arg2, arg3);
 
-                Register(creator);
+                Register((Func<int, double, DummyEnum, DummyClassThreeArgs>) creator);
 
                 var actual = Create<DummyClassThreeArgs>();
 
@@ -279,13 +280,13 @@ namespace AllOverIt.Fixture.Tests
             {
                 var creatorCalled = false;
 
-                Func<int, double, DummyEnum, float, DummyClassFourArgs> creator = (arg1, arg2, arg3, arg4) =>
+                DummyClassFourArgs creator(int arg1, double arg2, DummyEnum arg3, float arg4)
                 {
                     creatorCalled = true;
                     return new DummyClassFourArgs(arg1, arg2, arg3, arg4);
-                };
+                }
 
-                Register(creator);
+                Register((Func<int, double, DummyEnum, float, DummyClassFourArgs>) creator);
 
                 Create<DummyClassFourArgs>();
 
@@ -295,10 +296,9 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Create_DummyClassFourArgs()
             {
-                Func<int, double, DummyEnum, float, DummyClassFourArgs> creator =
-                  (arg1, arg2, arg3, arg4) => new DummyClassFourArgs(arg1, arg2, arg3, arg4);
+                static DummyClassFourArgs creator(int arg1, double arg2, DummyEnum arg3, float arg4) => new(arg1, arg2, arg3, arg4);
 
-                Register(creator);
+                Register((Func<int, double, DummyEnum, float, DummyClassFourArgs>) creator);
 
                 var actual = Create<DummyClassFourArgs>();
 
@@ -481,7 +481,7 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Create_Many_Numerical()
             {
-                IReadOnlyList<int> values = CreateMany<int>();
+                var values = CreateMany<int>();
 
                 values.Should().HaveCount(5);
             }
@@ -489,7 +489,7 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Create_Many_String()
             {
-                IReadOnlyList<string> values = CreateMany<string>();
+                var values = CreateMany<string>();
 
                 values.Should().HaveCount(5);
             }
@@ -515,7 +515,7 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Create_Many_Class()
             {
-                IReadOnlyList<DummyClass> values = CreateMany<DummyClass>();
+                var values = CreateMany<DummyClass>();
 
                 values.Should().HaveCount(5);
             }

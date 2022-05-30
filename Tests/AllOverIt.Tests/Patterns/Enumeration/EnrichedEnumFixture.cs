@@ -344,13 +344,13 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Not_Convert_From_Value()
             {
-                EnrichedEnumDummy.TryFromNameOrValue("3", out var _).Should().BeFalse();
+                EnrichedEnumDummy.TryFromNameOrValue("3", out _).Should().BeFalse();
             }
 
             [Fact]
             public void Should_Not_Convert_From_Name()
             {
-                EnrichedEnumDummy.TryFromNameOrValue("Value 1", out var _).Should().BeFalse();
+                EnrichedEnumDummy.TryFromNameOrValue("Value 1", out _).Should().BeFalse();
             }
         }
 

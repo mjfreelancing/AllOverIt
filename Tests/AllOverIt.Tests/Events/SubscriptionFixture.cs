@@ -56,7 +56,7 @@ namespace AllOverIt.Tests.Events
             public void Should_Invoke_Handler()
             {
                 var expected = Create<int>();
-                int actual = -expected;
+                var actual = -expected;
 
                 // ReSharper disable once ConvertToLocalFunction
                 Action<int> handler = value =>
@@ -72,12 +72,14 @@ namespace AllOverIt.Tests.Events
             }
         }
 
-        // ReSharper disable once MemberCanBeMadeStatic.Local
-        private void SubscriptionHandler(int value)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
+#pragma warning disable CA1822 // Mark members as static
+        private void SubscriptionHandler(int _)
+#pragma warning restore CA1822 // Mark members as static
         {
         }
 
-        private static void StaticSubscriptionHandler(int value)
+        private static void StaticSubscriptionHandler(int _)
         {
         }
     }

@@ -14,7 +14,7 @@ namespace AllOverIt.Tests.Patterns.Command
     {
         private class DummyCommand : IAsyncCommand<int, int>
         {
-            private Action _action;
+            private readonly Action _action;
 
             public DummyCommand(Action action = null)
             {
@@ -58,7 +58,7 @@ namespace AllOverIt.Tests.Patterns.Command
             {
                 Invoking(() =>
                 {
-                    _ = new AsyncCommandPipeline<int, int>(new IAsyncCommand<int, int>[] { });
+                    _ = new AsyncCommandPipeline<int, int>(Array.Empty<IAsyncCommand<int, int>>());
                 })
                 .Should()
                 .Throw<ArgumentException>()
@@ -106,7 +106,7 @@ namespace AllOverIt.Tests.Patterns.Command
                 Invoking(() =>
                 {
                     var pipeline = new AsyncCommandPipeline<int, int>();
-                    pipeline.Append(new IAsyncCommand<int, int>[] { });
+                    pipeline.Append(Array.Empty<IAsyncCommand<int, int>>());
                 })
                 .Should()
                 .Throw<ArgumentException>()

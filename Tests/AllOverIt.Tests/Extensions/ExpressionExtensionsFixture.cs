@@ -295,7 +295,7 @@ namespace AllOverIt.Tests.Extensions
                 return val1 + val2;
             }
 
-            private int GetException(string message)
+            private static int GetException(string message)
             {
                 throw new Exception(message);
             }

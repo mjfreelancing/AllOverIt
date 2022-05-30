@@ -42,7 +42,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
             [Fact]
             public void Should_Throw_When_Expressions_Empty()
             {
-                Invoking(() => OperatorBase.Create(new Expression[] { }, _creator))
+                Invoking(() => OperatorBase.Create(Array.Empty<Expression>(), _creator))
                     .Should()
                     .Throw<ArgumentException>()
                     .WithNamedMessageWhenEmpty("expressions");

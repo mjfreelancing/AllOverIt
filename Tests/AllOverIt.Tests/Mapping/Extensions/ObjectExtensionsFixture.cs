@@ -55,7 +55,10 @@ namespace AllOverIt.Tests.Mapping.Extensions
         private class DummyTarget
         {
             public int Prop1 { get; set; }
+
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
             private int Prop2 { get; set; }
+            
             public string Prop3 { get; set; }
             internal int Prop4 { get; set; }
             public int Prop5 { get; set; }

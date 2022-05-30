@@ -7,7 +7,7 @@ namespace StringStreamDemo
 {
     internal class Program
     {
-        static async Task Main(string[] args)
+        static async Task Main()
         {
             // Construct the streamer with an initial string
             var stream = new TextStreamer($"{DateTime.Now:dd-MMM-yyyy}");

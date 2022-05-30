@@ -36,7 +36,7 @@ dotnet_style_parentheses_in_other_operators = never_if_unnecessary
 dotnet_style_parentheses_in_relational_binary_operators = never_if_unnecessary:none
 
 # Modifier preferences
-dotnet_style_require_accessibility_modifiers = for_non_interface_members:suggestion
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:silent
 
 # Expression-level preferences
 dotnet_style_coalesce_expression = true
@@ -73,32 +73,32 @@ csharp_style_var_for_built_in_types = true:suggestion
 csharp_style_var_when_type_is_apparent = true:suggestion
 
 # Expression-bodied members
-csharp_style_expression_bodied_accessors = true
-csharp_style_expression_bodied_constructors = false
-csharp_style_expression_bodied_indexers = true
-csharp_style_expression_bodied_lambdas = true
-csharp_style_expression_bodied_local_functions = false
-csharp_style_expression_bodied_methods = false
-csharp_style_expression_bodied_operators = false
-csharp_style_expression_bodied_properties = true
+csharp_style_expression_bodied_accessors = true:silent
+csharp_style_expression_bodied_constructors = false:silent
+csharp_style_expression_bodied_indexers = true:silent
+csharp_style_expression_bodied_lambdas = true:silent
+csharp_style_expression_bodied_local_functions = false:silent
+csharp_style_expression_bodied_methods = false:silent
+csharp_style_expression_bodied_operators = false:silent
+csharp_style_expression_bodied_properties = true:silent
 
 # Pattern matching preferences
 csharp_style_pattern_matching_over_as_with_null_check = true
-csharp_style_pattern_matching_over_is_with_cast_check = true
+csharp_style_pattern_matching_over_is_with_cast_check = true:suggestion
 csharp_style_prefer_not_pattern = true
 csharp_style_prefer_pattern_matching = true
 csharp_style_prefer_switch_expression = true
 
 # Null-checking preferences
-csharp_style_conditional_delegate_call = true
+csharp_style_conditional_delegate_call = true:suggestion
 
 # Modifier preferences
-csharp_prefer_static_local_function = true
+csharp_prefer_static_local_function = true:suggestion
 csharp_preferred_modifier_order = public, private, protected, internal, new, abstract, virtual, sealed, override, static, readonly, extern, unsafe, volatile, async:suggestion
 
 # Code-block preferences
-csharp_prefer_braces = true
-csharp_prefer_simple_using_statement = false
+csharp_prefer_braces = true:silent
+csharp_prefer_simple_using_statement = false:suggestion
 
 # Expression-level preferences
 csharp_prefer_simple_default_expression = true
@@ -268,6 +268,10 @@ resharper_redundant_base_qualifier_highlighting = warning
 resharper_suggest_var_or_type_built_in_types_highlighting = hint
 resharper_suggest_var_or_type_elsewhere_highlighting = hint
 resharper_suggest_var_or_type_simple_types_highlighting = hint
+csharp_using_directive_placement = outside_namespace:silent
+csharp_style_namespace_declarations = block_scoped:silent
+csharp_style_prefer_method_group_conversion = true:silent
+csharp_style_prefer_local_over_anonymous_function = true:suggestion
 
 [*.proto]
 indent_style = tab
@@ -278,3 +282,21 @@ tab_width = 4
 indent_style = space
 indent_size = 4
 tab_width = 4
+dotnet_style_operator_placement_when_wrapping = beginning_of_line
+end_of_line = crlf
+dotnet_style_coalesce_expression = true:suggestion
+dotnet_style_null_propagation = true:suggestion
+dotnet_style_prefer_is_null_check_over_reference_equality_method = true:suggestion
+dotnet_style_prefer_auto_properties = true:silent
+dotnet_style_object_initializer = true:suggestion
+dotnet_style_collection_initializer = true:suggestion
+dotnet_style_prefer_simplified_boolean_expressions = true:suggestion
+dotnet_style_prefer_conditional_expression_over_assignment = true:silent
+dotnet_style_prefer_conditional_expression_over_return = true:silent
+dotnet_style_explicit_tuple_names = true:suggestion
+dotnet_style_predefined_type_for_locals_parameters_members = true:suggestion
+dotnet_diagnostic.CA1016.severity = silent
+dotnet_diagnostic.CA2254.severity = silent
+
+# IDE0040: Add accessibility modifiers
+dotnet_diagnostic.IDE0040.severity = silent

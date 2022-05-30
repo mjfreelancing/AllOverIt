@@ -579,7 +579,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             return _paginatorFactory.Invoke(pageSize, paginationDirection);
         }
 
-        private IReadOnlyCollection<EntityDummy> AssertPagedData(IQueryPaginator<EntityDummy> paginator, int page, int pageSize,
+        private static IReadOnlyCollection<EntityDummy> AssertPagedData(IQueryPaginator<EntityDummy> paginator, int page, int pageSize,
             IOrderedEnumerable<EntityDummy> expectedQuery, string continuationToken)
         {
             var query = paginator.GetPageQuery(continuationToken);

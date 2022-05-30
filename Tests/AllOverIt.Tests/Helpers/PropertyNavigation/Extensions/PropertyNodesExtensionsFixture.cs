@@ -192,7 +192,7 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation.Extensions
                     .Navigate(model => model.Prop3)
                     .Navigate(model => model.Prop4);
 
-                var actual = PropertyNodesExtensions.GetFullNodePath(nodes).Split(".");
+                var actual = PropertyNodesExtensions.GetFullNodePath(nodes).Split('.');
 
                 var expected = new[] {nameof(DummyObject.Prop3), nameof(DummyObject.ChildObject.Prop4)};
 

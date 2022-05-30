@@ -16,11 +16,18 @@ namespace AllOverIt.Tests.Reflection
             public string Prop2 { get; set; }
             public virtual double Prop3 { get; set; }
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
+#pragma warning disable CA1822 // Mark members as static
             public void Method1()
+#pragma warning restore CA1822 // Mark members as static
             {
             }
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "It's part of the test")]
+#pragma warning disable CA1822 // Mark members as static
             private void Method2()
+#pragma warning restore CA1822 // Mark members as static
             {
             }
         }
@@ -28,19 +35,22 @@ namespace AllOverIt.Tests.Reflection
         private class DummySuperClass : DummyBaseClass
         {
             public override double Prop3 { get; set; }
+
             private long Prop4 { get; set; }
 
-#pragma warning disable 649
-            // Unassigned field
             public int Field1;
-#pragma warning restore 649
 
             public void Method3()
             {
+                // Both to prevent IDE0051 (member unused)
+                Prop4 = 1;
+                Method4();
             }
 
             private void Method4()
             {
+                Field1 = 1;     // Prevent CS0649 (Field is never assigned)
+                _ = Prop4;      // Prevent IDE0052 (Prop4 access never used)
             }
         }
 
@@ -61,23 +71,14 @@ namespace AllOverIt.Tests.Reflection
                 throw new NotImplementedException();
             }
 
-#pragma warning disable 8632
-            // Annotation for nullable reference types should only be used in code within a #nullable annotations context
-            // ReSharper disable once UnassignedGetOnlyAutoProperty
-            public override Type? DeclaringType { get; }
-#pragma warning restore 8632
+            public override Type DeclaringType { get; }
 
             // ReSharper disable once UnassignedGetOnlyAutoProperty
             public override MemberTypes MemberType { get; }
 
             public override string Name { get; }
 
-#pragma warning disable 8632
-            // Annotation for nullable reference types should only be used in code within a #nullable annotations context
-            // ReSharper disable once UnassignedGetOnlyAutoProperty
-            public override Type? ReflectedType { get; }
-#pragma warning restore 8632
-
+            public override Type ReflectedType { get; }
         }
 
         public class GetPropertyInfo_Property : ReflectionHelperFixture

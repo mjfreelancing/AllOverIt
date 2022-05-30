@@ -63,7 +63,7 @@
       this.btnGenerate.TabIndex = 0;
       this.btnGenerate.Text = "Generate";
       this.btnGenerate.UseVisualStyleBackColor = true;
-      this.btnGenerate.Click += new System.EventHandler(this.btnGenerate_Click);
+      this.btnGenerate.Click += new System.EventHandler(this.BtnGenerate_Click);
       // 
       // pnlImage
       // 

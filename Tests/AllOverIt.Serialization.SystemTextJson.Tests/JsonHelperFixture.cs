@@ -322,7 +322,7 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                var actual = jsonHelper.TryGetValue(Create<string>(), out var value);
+                var actual = jsonHelper.TryGetValue(Create<string>(), out _);
 
                 actual.Should().BeFalse();
             }
@@ -479,10 +479,8 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                string value;
-
                 var actual = caseSensitive
-                    ? jsonHelper.TryGetValue<string>("Prop1", out value)
+                    ? jsonHelper.TryGetValue<string>("Prop1", out var value)
                     : jsonHelper.TryGetValue<string>("Prop1", out value);
 
                 actual.Should().BeTrue();
@@ -498,10 +496,8 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                Guid value;
-
                 var actual = caseSensitive
-                    ? jsonHelper.TryGetValue<Guid>("Prop1", out value)
+                    ? jsonHelper.TryGetValue<Guid>("Prop1", out var value)
                     : jsonHelper.TryGetValue<Guid>("prop1", out value);
 
                 actual.Should().BeTrue();
@@ -517,10 +513,8 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                string value;
-
                 var actual = caseSensitive
-                    ? jsonHelper.TryGetValue<string>("Prop7", out value)
+                    ? jsonHelper.TryGetValue<string>("Prop7", out var value)
                     : jsonHelper.TryGetValue<string>("prop7", out value);
 
                 actual.Should().BeTrue();
@@ -536,10 +530,8 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                double value;
-
                 var actual = caseSensitive
-                    ? jsonHelper.TryGetValue<double>("Prop8", out value)
+                    ? jsonHelper.TryGetValue<double>("Prop8", out var value)
                     : jsonHelper.TryGetValue<double>("prop8", out value);
 
                 actual.Should().BeTrue();
@@ -555,10 +547,8 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                DateTime value;
-
                 var actual = caseSensitive
-                    ? jsonHelper.TryGetValue<DateTime>("Prop9", out value)
+                    ? jsonHelper.TryGetValue<DateTime>("Prop9", out var value)
                     : jsonHelper.TryGetValue<DateTime>("prop9", out value);
 
                 actual.Should().BeTrue();
@@ -572,7 +562,7 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                var actual = jsonHelper.TryGetValue<int>(Create<string>(), out var value);
+                var actual = jsonHelper.TryGetValue<int>(Create<string>(), out _);
 
                 actual.Should().BeFalse();
             }
@@ -845,7 +835,7 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                var actual = jsonHelper.TryGetValues<int>(Create<string>(), out var value);
+                var actual = jsonHelper.TryGetValues<int>(Create<string>(), out _);
 
                 actual.Should().BeFalse();
             }
@@ -1092,10 +1082,8 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                IEnumerable<IElementDictionary> array;
-
                 var actual = caseSensitive
-                    ? jsonHelper.TryGetObjectArray("Prop10", out array)
+                    ? jsonHelper.TryGetObjectArray("Prop10", out var array)
                     : jsonHelper.TryGetObjectArray("prop10", out array);
 
                 actual.Should().BeTrue();
@@ -1352,10 +1340,8 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                IEnumerable<string> arrayValues;
-
                 _ = caseSensitive
-                    ? jsonHelper.TryGetObjectArrayValues<string>("Prop10", "Prop11", out arrayValues)
+                    ? jsonHelper.TryGetObjectArrayValues<string>("Prop10", "Prop11", out var arrayValues)
                     : jsonHelper.TryGetObjectArrayValues<string>("prop10", "prop11", out arrayValues);
 
                 arrayValues.Should().BeEquivalentTo(_prop6);
@@ -1524,7 +1510,7 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests
                 Invoking(() =>
                 {
                     var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.TryGetDescendantObjectArray(new string[] { }, out _);
+                    _ = jsonHelper.TryGetDescendantObjectArray(Array.Empty<string>(), out _);
                 })
                     .Should()
                     .Throw<ArgumentException>()
@@ -1572,10 +1558,8 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                IEnumerable<IElementDictionary> array;
-
                 _ = caseSensitive
-                    ? jsonHelper.TryGetDescendantObjectArray(new[] { "Prop2", "Prop2a" }, out array)
+                    ? jsonHelper.TryGetDescendantObjectArray(new[] { "Prop2", "Prop2a" }, out var array)
                     : jsonHelper.TryGetDescendantObjectArray(new[] { "prop2", "prop2a" }, out array);
 
                 var arrayItems = array.ToList();
@@ -1652,7 +1636,7 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests
                 Invoking(() =>
                 {
                     var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.GetDescendantObjectArray(new string[] { });
+                    _ = jsonHelper.GetDescendantObjectArray(Array.Empty<string>());
                 })
                     .Should()
                     .Throw<ArgumentException>()
@@ -1754,7 +1738,7 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests
                 Invoking(() =>
                 {
                     var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.TryGetDescendantObjectArrayValues<int>(new string[] { }, Create<string>(), out _);
+                    _ = jsonHelper.TryGetDescendantObjectArrayValues<int>(Array.Empty<string>(), Create<string>(), out _);
                 })
                     .Should()
                     .Throw<ArgumentException>()
@@ -1825,10 +1809,8 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                IEnumerable<int> array;
-
                 _ = caseSensitive
-                    ? jsonHelper.TryGetDescendantObjectArrayValues<int>(new[] {"Prop2", "Prop2a", "Prop2b"}, "Value", out array)
+                    ? jsonHelper.TryGetDescendantObjectArrayValues<int>(new[] {"Prop2", "Prop2a", "Prop2b"}, "Value", out var array)
                     : jsonHelper.TryGetDescendantObjectArrayValues<int>(new[] {"prop2", "prop2a", "prop2b"}, "value", out array);
 
                 var arrayItems = array.ToList();
@@ -1884,7 +1866,7 @@ namespace AllOverIt.Serialization.SystemTextJson.Tests
                 Invoking(() =>
                 {
                     var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.GetDescendantObjectArrayValues<int>(new string[] { }, Create<string>());
+                    _ = jsonHelper.GetDescendantObjectArrayValues<int>(Array.Empty<string>(), Create<string>());
                 })
                     .Should()
                     .Throw<ArgumentException>()

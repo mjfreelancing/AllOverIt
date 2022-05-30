@@ -48,7 +48,7 @@ namespace AllOverIt.Tests.Patterns.Command
             {
                 Invoking(() =>
                 {
-                    _ = new CommandPipeline<int, int>(new ICommand<int, int>[] { });
+                    _ = new CommandPipeline<int, int>(Array.Empty<ICommand<int, int>>());
                 })
                 .Should()
                 .Throw<ArgumentException>()
@@ -96,7 +96,7 @@ namespace AllOverIt.Tests.Patterns.Command
                 Invoking(() =>
                 {
                     var pipeline = new CommandPipeline<int, int>();
-                    pipeline.Append(new ICommand<int, int>[] { });
+                    pipeline.Append(Array.Empty<ICommand<int, int>>());
                 })
                 .Should()
                 .Throw<ArgumentException>()

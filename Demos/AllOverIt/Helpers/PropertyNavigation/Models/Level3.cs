@@ -4,6 +4,8 @@ namespace PropertyNavigation.Models
 {
     public class Level3
     {
+        private readonly int _value = 1;
+
         public IEnumerable<Level4a> Level4a { get; }
         public IEnumerable<Level4b> Level4b { get; }
         public IEnumerable<Level4c> Level4c { get; }
@@ -12,7 +14,7 @@ namespace PropertyNavigation.Models
 
         public int GetValue()
         {
-            return 0;
+            return _value;      // Supress code analysis suggesting to make the method static
         }
     }
 }

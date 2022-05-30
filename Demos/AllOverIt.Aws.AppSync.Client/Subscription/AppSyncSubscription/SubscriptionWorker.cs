@@ -34,20 +34,24 @@ namespace AppSyncSubscription
     public sealed class SubscriptionWorker : BackgroundWorker
     {
         private readonly IAppSyncSubscriptionClient _subscriptionClient;
-
-#pragma warning disable CS0649      // readonly is never assigned
-        private readonly IAppSyncClient _appSyncClient;
         private readonly IAppSyncNamedClientProvider _appSyncNamedClientProvider;
-#pragma warning restore CS0649
-
         private readonly IWorkerReady _workerReady;
         private readonly IJsonSerializer _jsonSerializer;
         private readonly ILogger<SubscriptionWorker> _logger;
+
         private CompositeAsyncDisposable _compositeSubscriptions = new();
+        private IAppSyncClient _appSyncClient;
 
         // The demo can be configured to register a client explicitly, or use a named client - determine which approach was configured.
         // Note: The DI setup has configured the name as "Public". As many named clients can be configured as required.
-        private IAppSyncClient AppSyncClient => _appSyncClient ?? _appSyncNamedClientProvider.GetClient("Public");
+        private IAppSyncClient AppSyncClient
+        {
+            get
+            {
+                _appSyncClient ??= _appSyncNamedClientProvider.GetClient("Public");
+                return _appSyncClient;
+            }
+        }
 
         public SubscriptionWorker(IHostApplicationLifetime applicationLifetime, IAppSyncSubscriptionClient subscriptionClient,
 

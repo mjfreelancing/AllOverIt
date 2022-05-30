@@ -125,7 +125,7 @@ namespace AllOverIt.Tests.Caching
             {
                 var count = 0;
 
-                foreach (var (key, value) in _cache)
+                foreach (var _ in _cache)
                 {
                     count++;
                 }
@@ -307,7 +307,7 @@ namespace AllOverIt.Tests.Caching
             {
                 Invoking(() =>
                     {
-                        _ = _cache.TryGetValue(null, out var _);
+                        _ = _cache.TryGetValue(null, out _);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -334,7 +334,7 @@ namespace AllOverIt.Tests.Caching
             {
                 var key = new KeyType1(Create<int>(), Create<string>());
 
-                var success = _cache.TryGetValue(key, out var _);
+                var success = _cache.TryGetValue(key, out _);
 
                 success.Should().BeFalse();
             }
@@ -347,7 +347,7 @@ namespace AllOverIt.Tests.Caching
             {
                 Invoking(() =>
                     {
-                        _ = _cache.TryGetValue<string>(null, out var _);
+                        _ = _cache.TryGetValue<string>(null, out _);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -374,7 +374,7 @@ namespace AllOverIt.Tests.Caching
             {
                 var key = new KeyType1(Create<int>(), Create<string>());
 
-                var success = _cache.TryGetValue<IReadOnlyCollection<string>>(key, out var _);
+                var success = _cache.TryGetValue<IReadOnlyCollection<string>>(key, out _);
 
                 success.Should().BeFalse();
             }
@@ -409,7 +409,7 @@ namespace AllOverIt.Tests.Caching
 
                 success.Should().BeTrue();
 
-                _cache.TryGetValue(key, out var _).Should().BeFalse();
+                _cache.TryGetValue(key, out _).Should().BeFalse();
             }
 
             [Fact]
@@ -430,7 +430,7 @@ namespace AllOverIt.Tests.Caching
             {
                 Invoking(() =>
                     {
-                        _ = _cache.TryRemove<string>(null, out var _);
+                        _ = _cache.TryRemove<string>(null, out _);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -460,7 +460,7 @@ namespace AllOverIt.Tests.Caching
             {
                 var key = new KeyType1(Create<int>(), Create<string>());
 
-                var actual = _cache.TryRemove<string>(key, out var _);
+                var actual = _cache.TryRemove<string>(key, out _);
 
                 actual.Should().BeFalse();
             }
@@ -710,6 +710,7 @@ namespace AllOverIt.Tests.Caching
             }
         }
 
+    #if !NETSTANDARD2_0
         public class GetOrAdd_Arg_Resolver : GenericCacheFixture
         {
             [Fact]
@@ -800,6 +801,7 @@ namespace AllOverIt.Tests.Caching
                 argValue.Should().Be(actualArgValue);
             }
         }
+#endif
 
         public class AddOrUpdate_AddResolver_UpdateResolver : GenericCacheFixture
         {
@@ -1034,6 +1036,7 @@ namespace AllOverIt.Tests.Caching
             }
         }
 
+#if !NETSTANDARD2_0
         public class AddOrUpdate_Arg_AddResolver_UpdateResolver : GenericCacheFixture
         {
             [Fact]
@@ -1239,6 +1242,7 @@ namespace AllOverIt.Tests.Caching
                 arg.Should().Be(actualArg);
             }
         }
+#endif
 
         public class Explicit : GenericCacheFixture
         {
@@ -1414,7 +1418,7 @@ namespace AllOverIt.Tests.Caching
                 {
                     Invoking(() =>
                         {
-                            ((IDictionary<GenericCacheKeyBase, object>) _cache).TryGetValue(null, out var _);
+                            ((IDictionary<GenericCacheKeyBase, object>) _cache).TryGetValue(null, out _);
                         })
                         .Should()
                         .Throw<ArgumentNullException>()
@@ -1428,7 +1432,7 @@ namespace AllOverIt.Tests.Caching
 
                     _cache.ContainsKey(key).Should().BeFalse();
 
-                    var actual = ((IDictionary<GenericCacheKeyBase, object>) _cache).TryGetValue(key, out var _);
+                    var actual = ((IDictionary<GenericCacheKeyBase, object>) _cache).TryGetValue(key, out _);
 
                     actual.Should().BeFalse();
                 }
@@ -1457,7 +1461,7 @@ namespace AllOverIt.Tests.Caching
                 {
                     Invoking(() =>
                         {
-                            ((IReadOnlyDictionary<GenericCacheKeyBase, object>) _cache).TryGetValue(null, out var _);
+                            ((IReadOnlyDictionary<GenericCacheKeyBase, object>) _cache).TryGetValue(null, out _);
                         })
                         .Should()
                         .Throw<ArgumentNullException>()
@@ -1471,7 +1475,7 @@ namespace AllOverIt.Tests.Caching
 
                     _cache.ContainsKey(key).Should().BeFalse();
 
-                    var actual = ((IReadOnlyDictionary<GenericCacheKeyBase, object>) _cache).TryGetValue(key, out var _);
+                    var actual = ((IReadOnlyDictionary<GenericCacheKeyBase, object>) _cache).TryGetValue(key, out _);
 
                     actual.Should().BeFalse();
                 }

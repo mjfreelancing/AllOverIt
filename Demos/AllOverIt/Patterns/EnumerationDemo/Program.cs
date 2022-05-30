@@ -4,7 +4,7 @@ namespace EnumerationDemo
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             Console.WriteLine($"{nameof(OrderStatus.Quoted)} has a value of {OrderStatus.Quoted.Value} and a name of '{OrderStatus.Quoted.Name}'");
             Console.WriteLine($"{nameof(OrderStatus.Packed)} has a value of {OrderStatus.Packed.Value} and a name of '{OrderStatus.Packed.Name}'");

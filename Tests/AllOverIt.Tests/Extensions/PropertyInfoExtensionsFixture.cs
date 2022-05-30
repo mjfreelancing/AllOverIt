@@ -20,7 +20,10 @@ namespace AllOverIt.Tests.Extensions
         {
             public override int Prop1 { get; set; }
             internal int Prop2 { get; set; }
+
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
             private int Prop3 { get; set; }
+
             protected int Prop4 { get; set; }
             public string Prop5 { get; set; }
             public static double Prop6 { get; set; }

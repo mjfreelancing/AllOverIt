@@ -27,6 +27,7 @@ namespace AllOverIt.Tests.Helpers
             }
 
             [Fact]
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0150:Prefer 'null' check over type check", Justification = "Part of the test and readability")]
             public void Should_Return_As_IReadOnlyCollection()
             {
                 var actual = AllOverIt.Helpers.EnumHelper.GetEnumValues<DummyEnum>();

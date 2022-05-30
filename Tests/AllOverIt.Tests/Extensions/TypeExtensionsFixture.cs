@@ -21,11 +21,18 @@ namespace AllOverIt.Tests.Extensions
             public string Prop2 { get; set; }
             public virtual double Prop3 { get; set; }
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
+#pragma warning disable CA1822 // Mark members as static
             public void Method1()
+#pragma warning restore CA1822 // Mark members as static
             {
             }
 
-            private void Method2(int arg1)
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
+#pragma warning disable CA1822 // Mark members as static
+            private void Method2(int _)
+#pragma warning restore CA1822 // Mark members as static
             {
             }
         }
@@ -34,6 +41,8 @@ namespace AllOverIt.Tests.Extensions
         {
             private readonly int _value;
             public override double Prop3 { get; set; }
+
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
             private long Prop4 { get; set; }
 
             public DummySuperClass()
@@ -45,20 +54,33 @@ namespace AllOverIt.Tests.Extensions
                 _value = value;
             }
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent IDE0051")]
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
+#pragma warning disable CA1822 // Mark members as static
             public void Method3()
+#pragma warning restore CA1822 // Mark members as static
             {
             }
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
             private int Method4()
             {
                 return _value;
             }
 
-            private void Method4(bool arg1)
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
+#pragma warning disable CA1822 // Mark members as static
+            private void Method4(bool _)
+#pragma warning restore CA1822 // Mark members as static
             {
             }
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
+#pragma warning disable CA1822 // Mark members as static
             private int Method4(int arg1)
+#pragma warning restore CA1822 // Mark members as static
             {
                 return arg1;
             }

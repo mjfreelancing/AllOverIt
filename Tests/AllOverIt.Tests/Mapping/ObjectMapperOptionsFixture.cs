@@ -35,7 +35,7 @@ namespace AllOverIt.Tests.Mapping
             {
                 Invoking(() =>
                     {
-                        _options.Exclude(new string[] {});
+                        _options.Exclude(Array.Empty<string>());
                     })
                     .Should()
                     .NotThrow();

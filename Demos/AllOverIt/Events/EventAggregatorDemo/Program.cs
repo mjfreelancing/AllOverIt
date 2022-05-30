@@ -8,7 +8,7 @@ namespace EventAggregatorDemo
 {
     class Program
     {
-        static async Task Main(string[] args)
+        static async Task Main()
         {
             var aggregator = new EventAggregator();
 

@@ -1,4 +1,4 @@
-using System;
+using AllOverIt.Assertion;
 using System.Linq;
 
 namespace AllOverIt.Fixture.Tests.Examples.SUT
@@ -9,7 +9,7 @@ namespace AllOverIt.Fixture.Tests.Examples.SUT
 
         public Aggregator(ICalculator calculator)
         {
-            _calculator = calculator ?? throw new ArgumentNullException();
+            _calculator = calculator.WhenNotNull(nameof(calculator));
         }
 
         public double Summate(params double[] values)

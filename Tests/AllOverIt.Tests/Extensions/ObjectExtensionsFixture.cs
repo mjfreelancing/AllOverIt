@@ -250,9 +250,9 @@ namespace AllOverIt.Tests.Extensions
                 public IDictionary<string, Task> Prop11 { get; set; }
                 public IDictionary<int, DummyType> Prop12 { get; set; }
 
-#pragma warning disable IDE0052 // Remove unread private members
+
+                [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Part of the test")]
                 private string Prop13 { get; set; }
-#pragma warning restore IDE0052 // Remove unread private members
 
                 public string Prop14 { get; set; }
 

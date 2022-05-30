@@ -19,12 +19,11 @@ namespace AllOverIt.Tests.Extensions
         {
             public override double Prop3 { get; set; }
 
-#pragma warning disable CS0649
             public int Field5;
-#pragma warning restore CS0649
 
             public DummySuperClass()
             {
+                Field5 = 1;         // Prevent CS0649 (Field is never assigned)
             }
 
             public static double Method6()

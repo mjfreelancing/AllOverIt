@@ -23,7 +23,7 @@ namespace ParallelEvaluation
             InitializeComponent();
         }
 
-        private void btnGenerate_Click(object sender, EventArgs e)
+        private void BtnGenerate_Click(object sender, EventArgs e)
         {
             var factory = _factories[_nextIdx++];
 

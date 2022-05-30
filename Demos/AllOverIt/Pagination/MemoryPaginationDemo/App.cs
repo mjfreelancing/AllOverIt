@@ -4,7 +4,6 @@ using AllOverIt.GenericHost;
 using AllOverIt.Pagination;
 using AllOverIt.Pagination.Extensions;
 using Bogus;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -42,12 +41,10 @@ namespace MemoryPaginationDemo
         }
 
         private readonly IQueryPaginatorFactory _queryPaginatorFactory; 
-        private readonly ILogger<App> _logger;
 
-        public App(IQueryPaginatorFactory queryPaginatorFactory, ILogger<App> logger)
+        public App(IQueryPaginatorFactory queryPaginatorFactory)
         {
             _queryPaginatorFactory = queryPaginatorFactory.WhenNotNull(nameof(queryPaginatorFactory));
-            _logger = logger.WhenNotNull(nameof(logger));
         }
 
         public override Task StartAsync(CancellationToken cancellationToken)

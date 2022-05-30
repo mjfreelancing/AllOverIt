@@ -60,11 +60,11 @@ namespace AllOverIt.Evaluator.Tests.Operations
 
                 IList<Expression> expressionsIn = null;
 
-                Func<Expression[], IOperator> creator = e =>
+                IOperator creator(Expression[] e)
                 {
                     expressionsIn = new List<Expression>(e);
                     return operatorFake;
-                };
+                }
 
                 _operation = new ArithmeticOperationDummy(Create<int>(), creator);
 

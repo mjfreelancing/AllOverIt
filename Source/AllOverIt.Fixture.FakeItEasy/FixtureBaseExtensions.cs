@@ -8,7 +8,7 @@ using System.Linq;
 namespace AllOverIt.Fixture.FakeItEasy
 {
     /// <summary>Provides a variety of extension methods for <see cref="FixtureBase"/>.</summary>
-    public static class FixtureBaseFakeExtensions
+    public static class FixtureBaseExtensions
     {
         /// <summary>Adds a customization for FakeItEasy.</summary>
         /// <param name="fixtureBase">The <see cref="FixtureBase"/> instance.</param>
@@ -64,11 +64,13 @@ namespace AllOverIt.Fixture.FakeItEasy
             return fixtureBase.Fixture.CreateMany<Fake<TType>>(count).ToList();
         }
 
+
         /// <summary>Creates a stub of the specified type.</summary>
         /// <typeparam name="TType">The type to be faked.</typeparam>
         /// <param name="fixtureBase">The <see cref="FixtureBase"/> instance.</param>
         /// <returns>A stub of the specified type.</returns>
         /// <remarks>A stub is an object that holds pre-defined data or setup that is used to satisfy calls made during a test.</remarks>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for documentation")]
         public static TType CreateStub<TType>(this FixtureBase fixtureBase)
             where TType : class
         {

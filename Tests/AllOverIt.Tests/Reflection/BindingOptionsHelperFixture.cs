@@ -18,12 +18,18 @@ namespace AllOverIt.Tests.Reflection
             {
                 public bool Prop1 { get; }
                 protected bool Prop2 { get; }
+
+                [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
                 private bool Prop3 { get; }
+
                 internal bool Prop4 { get; }
 
                 public static bool StaticProp1 { get; }
                 protected static bool StaticProp2 { get; }
+
+                [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
                 private static bool StaticProp3 { get; }
+
                 internal static bool StaticProp4 { get; }
 
                 public abstract bool AbstractProp1 { get; }
@@ -50,8 +56,9 @@ namespace AllOverIt.Tests.Reflection
                 public bool IsInternal { get; set; }
             }
 
-            private IDictionary<string, PropertyMetadata> _propertyMetadata;
+            private readonly IDictionary<string, PropertyMetadata> _propertyMetadata;
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0028:Simplify collection initialization", Justification = "Readability")]
             public BuildBindingPredicate()
             {
                 _propertyMetadata = new Dictionary<string, PropertyMetadata>();

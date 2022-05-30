@@ -10,6 +10,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Extensions
 {
+#if !NETSTANDARD2_0
     public class AsyncEnumerableExtensionsFixture : FixtureBase
     {
         public class AsListAsync : AsyncEnumerableExtensionsFixture
@@ -200,4 +201,5 @@ namespace AllOverIt.Tests.Extensions
             }
         }
     }
+#endif
 }

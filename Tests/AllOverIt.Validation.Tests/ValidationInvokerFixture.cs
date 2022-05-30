@@ -57,7 +57,7 @@ namespace AllOverIt.Validation.Tests
 
         private class DummyModelValidator2 : ValidatorBase<DummyModel>
         {
-            public DummyModelValidator2(int dummy)
+            public DummyModelValidator2(int _)
             {
             }
         }
