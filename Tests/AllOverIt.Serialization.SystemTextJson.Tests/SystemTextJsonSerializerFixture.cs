@@ -9,7 +9,6 @@ using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Serialization.Abstractions;
 using FluentAssertions;
-using Newtonsoft.Json.Serialization;
 using Xunit;
 
 namespace AllOverIt.Serialization.SystemTextJson.Tests

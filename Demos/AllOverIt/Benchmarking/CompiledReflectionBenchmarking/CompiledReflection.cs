@@ -10,16 +10,18 @@ namespace CompiledReflectionBenchmarking
         public int Value { get; set; }
     }
 
+    // TODO: TBC
+
     [MemoryDiagnoser]
     public class CompiledReflection
     {
         // Reflection
-        private static PropertyInfo dummyPropInfo = typeof(DummyType).GetProperty(nameof(DummyType.Value));
+        private static readonly PropertyInfo dummyPropInfo = typeof(DummyType).GetProperty(nameof(DummyType.Value));
 
         // Compiled
-        private static Func<DummyType, int> _compiledGetTyped = ReflectionHelper.GetCompiledPropertyGetter<DummyType, int>(nameof(DummyType.Value));
-        //private static Func<object, object> _compiledGetObject = ReflectionHelper.GetCompiledPropertyGetter(typeof(DummyType), nameof(DummyType.Value));
-        private static Action<DummyType, int> _compiledSet = ReflectionHelper.GetCompiledPropertySetter<DummyType, int>(nameof(DummyType.Value));
+        private static readonly Func<DummyType, int> _compiledGetTyped = ReflectionHelper.GetCompiledPropertyGetter<DummyType, int>(nameof(DummyType.Value));
+        private static readonly Func<object, object> _compiledGetObject = ReflectionHelper.GetCompiledPropertyGetter(typeof(DummyType), nameof(DummyType.Value));
+        private static readonly Action<DummyType, int> _compiledSet = ReflectionHelper.GetCompiledPropertySetter<DummyType, int>(nameof(DummyType.Value));
 
         [Params(100)]
         public int IterationCount;
@@ -57,17 +59,18 @@ namespace CompiledReflectionBenchmarking
             }
         }
 
-        //[Benchmark]
-        //public void CompiledReflectionGetObject()
-        //{
-        //    var instance = GetDummyType();
+        [Benchmark]
+        public void CompiledReflectionGetObject()
+        {
+            var instance = GetDummyType();
 
-        //    for (var i = 0; i < IterationCount; i++)
-        //    {
-        //        _ = _compiledGetObject.Invoke(instance);
-        //    }
-        //}
+            for (var i = 0; i < IterationCount; i++)
+            {
+                _ = _compiledGetObject.Invoke(instance);
+            }
+        }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Benchmark does not support static methods")]
         [Benchmark]
         public void CompiledReflectionSet()
         {

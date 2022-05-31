@@ -710,7 +710,7 @@ namespace AllOverIt.Tests.Caching
             }
         }
 
-    #if !NETSTANDARD2_0
+#if !NETSTANDARD2_0
         public class GetOrAdd_Arg_Resolver : GenericCacheFixture
         {
             [Fact]

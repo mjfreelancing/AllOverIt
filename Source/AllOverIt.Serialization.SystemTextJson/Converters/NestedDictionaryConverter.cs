@@ -153,9 +153,16 @@ namespace AllOverIt.Serialization.SystemTextJson.Converters
                     writer.WriteEndArray();
                     break;
 
-                default:
+                case Enum enumValue:
+                    writer.WriteStringValue(enumValue.ToString());
+                    break;
+
+                case null:
                     writer.WriteNullValue();
                     break;
+
+                default:
+                    throw new InvalidOperationException($"Unhandled object type '{objectValue.GetType().GetFriendlyName()}' while writing a nested dictionary.");
             }
         }
 

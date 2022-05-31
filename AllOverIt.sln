@@ -227,7 +227,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.Pagination.Tests"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaginationConsole", "Demos\AllOverIt.EntityFrameworkCore\PaginationConsole\PaginationConsole.csproj", "{285107FC-9B74-4C31-BE5B-43662A4D8371}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompiledReflectionBenchmarking", "Demos\AllOverIt\Benchmarking\CompiledReflectionBenchmarking\CompiledReflectionBenchmarking.csproj", "{E605A939-0B55-4BEF-821A-D6A59C382232}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CompiledReflectionBenchmarking", "Demos\AllOverIt\Benchmarking\CompiledReflectionBenchmarking\CompiledReflectionBenchmarking.csproj", "{E605A939-0B55-4BEF-821A-D6A59C382232}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

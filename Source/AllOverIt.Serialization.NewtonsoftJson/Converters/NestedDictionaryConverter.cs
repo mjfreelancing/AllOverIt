@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using AllOverIt.Extensions;
+using System.Linq;
 
 namespace AllOverIt.Serialization.NewtonsoftJson.Converters
 {
@@ -27,7 +28,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Converters
         /// <inheritdoc />
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            WriteValue(writer, value);
+            WriteValue(writer, value, serializer);
         }
 
         private object ReadValue(JsonReader reader)
@@ -107,18 +108,27 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Converters
             throw CreateReadJsonSerializationException();
         }
 
-        private void WriteValue(JsonWriter writer, object value)
+        private void WriteValue(JsonWriter writer, object value, JsonSerializer serializer)
         {
+            // TODO: TBC - Check the SystemText serializer does this - also need to add more tests
+            var converter = serializer.Converters.FirstOrDefault(converter => !ReferenceEquals(converter, this) && converter.CanWrite && converter.CanConvert(value.GetType()));
+
+            if (converter != null)
+            {
+                converter.WriteJson(writer, value, serializer);
+                return;
+            }
+
             var token = JToken.FromObject(value);
 
             switch (token.Type)
             {
                 case JTokenType.Object:
-                    WriteObject(writer, value);
+                    WriteObject(writer, value, serializer);
                     break;
 
                 case JTokenType.Array:
-                    WriteArray(writer, value);
+                    WriteArray(writer, value, serializer);
                     break;
 
                 default:
@@ -127,7 +137,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Converters
             }
         }
 
-        private void WriteObject(JsonWriter writer, object value)
+        private void WriteObject(JsonWriter writer, object value, JsonSerializer serializer)
         {
             writer.WriteStartObject();
 
@@ -136,13 +146,13 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Converters
             foreach (var kvp in element!)
             {
                 writer.WritePropertyName(kvp.Key);
-                WriteValue(writer, kvp.Value);
+                WriteValue(writer, kvp.Value, serializer);
             }
 
             writer.WriteEndObject();
         }
 
-        private void WriteArray(JsonWriter writer, object value)
+        private void WriteArray(JsonWriter writer, object value, JsonSerializer serializer)
         {
             writer.WriteStartArray();
 
@@ -150,7 +160,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Converters
 
             foreach (var element in array!)
             {
-                WriteValue(writer, element);
+                WriteValue(writer, element, serializer);
             }
 
             writer.WriteEndArray();

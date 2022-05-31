@@ -18,8 +18,12 @@ namespace AllOverIt.Tests.Extensions
 
             public int GetPropertyValue()
             {
+                return Property;
+            }
+
+            public void DummyFieldSetter()
+            {
                 Field = 1;          // Prevent CS0649 (Field is never assigned)
-                return Field;
             }
         }
 
