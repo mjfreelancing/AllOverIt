@@ -20,6 +20,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
                     AuthDirectiveMode.ApiKey => Directive.ApiKey(),
                     AuthDirectiveMode.Cognito => Directive.Cognito((attribute as AuthCognitoDirectiveAttribute)!.Groups.ToArray()),
                     AuthDirectiveMode.Iam => Directive.Iam(),
+                    AuthDirectiveMode.Lambda => Directive.Custom("@aws_lambda"),
                     _ => throw new ArgumentOutOfRangeException($"Unknown auth mode '{attribute.Mode}'")
                 };
 
