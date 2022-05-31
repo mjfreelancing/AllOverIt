@@ -13,6 +13,9 @@
         Cognito,
 
         /// <summary>IAM authorization mode.</summary>
-        Iam
+        Iam,
+
+        /// <summary>Lambda authorization mode.</summary>
+        Lambda
     }
 }

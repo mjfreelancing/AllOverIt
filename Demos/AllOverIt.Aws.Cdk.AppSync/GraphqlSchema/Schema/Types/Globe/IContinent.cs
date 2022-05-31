@@ -12,6 +12,7 @@ namespace GraphqlSchema.Schema.Types.Globe
     [AuthApiKeyDirective]
     [AuthIamDirective]
     [AuthOidcDirective]
+    [AuthLambdaDirective]
     internal interface IContinent : ISchemaTypeBase
     {
         string Name();
