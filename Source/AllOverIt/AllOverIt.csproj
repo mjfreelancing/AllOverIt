@@ -22,8 +22,4 @@
     <ItemGroup>
       <ProjectReference Include="..\AllOverIt.Assertion\AllOverIt.Assertion.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Serialization\Extensions\" />
-    </ItemGroup>
 </Project>
