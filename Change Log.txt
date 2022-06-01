@@ -1,5 +1,16 @@
 ======================================================================================================================
 
+01 Jun 2022
+Version 5.8.0
+======================================================================================================================
+AllOverIt
+  * Added endian related utilities to convert values relative to the running architecture
+  * Added ListExtensions for FirstElement() and LastElement()
+
+AllOverIt.Fixture
+  * Updated FixtureBase to customize generating float and decimal values
+
+
 31 May 2022
 Version 5.7.0
 ======================================================================================================================
