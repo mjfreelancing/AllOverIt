@@ -23,7 +23,9 @@ namespace AllOverIt.Fixture
         {
             // Note: cannot used <double> for the factory as it will result in infinite recursion
             var rnd = new Random();
+            Fixture.Customize<float>(composer => composer.FromFactory<int>(value => value * (0.5f + (float) rnd.NextDouble())));
             Fixture.Customize<double>(composer => composer.FromFactory<int>(value => value * (0.5d + rnd.NextDouble())));
+            Fixture.Customize<decimal>(composer => composer.FromFactory<int>(value => value * (0.5m + (decimal) rnd.NextDouble())));
         }
 
         /// <summary>
