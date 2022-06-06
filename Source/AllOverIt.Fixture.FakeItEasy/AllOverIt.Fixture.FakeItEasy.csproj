@@ -12,7 +12,10 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/mjfreelancing/AllOverIt.Fixture.FakeItEasy</RepositoryUrl>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
     </PropertyGroup>
 
@@ -20,7 +23,7 @@
         <PackageReference Include="AutoFixture" Version="4.17.0" />
         <PackageReference Include="AutoFixture.AutoFakeItEasy" Version="4.17.0" />
         <PackageReference Include="FakeItEasy" Version="7.3.1" />
-        <PackageReference Include="FluentAssertions" Version="6.6.0" />
+        <PackageReference Include="FluentAssertions" Version="6.7.0" />
     </ItemGroup>
 
     <ItemGroup>

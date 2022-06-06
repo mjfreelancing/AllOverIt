@@ -6,6 +6,9 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
     /// <summary>Represents a collection of breadcrumb messages and metadata.</summary>
     public interface IBreadcrumbs : IEnumerable<BreadcrumbData>
     {
+        /// <summary>Controls whether or not breadcrumbs are collected.</summary>
+        bool Enabled { get; set; }
+
         /// <summary>The timestamp when breadcrumb collection begins.</summary>
         DateTime StartTimestamp { get; }
 
@@ -13,5 +16,11 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
         /// <param name="breadcrumb">The breadcrumb data item.</param>
         /// <returns>The same breadcrumb instance to allow for a fluent syntax.</returns>
         IBreadcrumbs Add(BreadcrumbData breadcrumb);
+
+        /// <summary>Clears the current collection of breadcrumbs.</summary>
+        void Clear();
+
+        /// <summary>Clears the current collection of breadcrumbs and resets <see cref="StartTimestamp"/>.</summary>
+        void Reset();
     }
 }

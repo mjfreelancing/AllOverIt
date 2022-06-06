@@ -12,12 +12,15 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/mjfreelancing/AllOverIt</RepositoryUrl>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FluentValidation" Version="11.0.1" />
+        <PackageReference Include="FluentValidation" Version="11.0.2" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,5 +1,18 @@
 ======================================================================================================================
 
+XX Jun 2022
+Version 5.9.0
+======================================================================================================================
+AllOverIt
+  * Added Clear(), Reset(), AddCallSite(), and AddExtendedCallSite() to Breadcrumbs, as well as the ability to
+    disable them
+  * Added ReadOnlyCollection, ReadOnlyList, and ReadOnlyDictionary implementations that are  truly immutable
+  * Updated Collection/List/Dictionary EmptyReadOnly<T>() so the underlying collection is truly immutable
+
+AllOverIt.DependencyInjection
+  * Updated to reference Microsoft.Extensions.DependencyInjection.Abstractions instead of Microsoft.Extensions.DependencyInjection
+
+
 01 Jun 2022
 Version 5.8.0
 ======================================================================================================================

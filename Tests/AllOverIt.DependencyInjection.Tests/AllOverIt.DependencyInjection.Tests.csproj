@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
         <PackageReference Include="xunit" Version="2.4.1" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -19,10 +19,17 @@
         </PackageReference>
     </ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\..\Source\AllOverIt.DependencyInjection\AllOverIt.DependencyInjection.csproj" />
-      <ProjectReference Include="..\..\Source\AllOverIt.Fixture\AllOverIt.Fixture.csproj" />
-      <ProjectReference Include="..\AllOverIt.DependencyInjection.Tests.Types\AllOverIt.DependencyInjection.Tests.Types.csproj" />
+    <ItemGroup Condition=" '$(TargetFramework)' != 'net6.0' ">
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
     </ItemGroup>
 
+    <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Source\AllOverIt.DependencyInjection\AllOverIt.DependencyInjection.csproj" />
+        <ProjectReference Include="..\..\Source\AllOverIt.Fixture\AllOverIt.Fixture.csproj" />
+        <ProjectReference Include="..\AllOverIt.DependencyInjection.Tests.Types\AllOverIt.DependencyInjection.Tests.Types.csproj" />
+    </ItemGroup>
 </Project>

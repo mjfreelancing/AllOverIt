@@ -4,7 +4,6 @@ using AllOverIt.Fixture;
 using AllOverIt.Fixture.FakeItEasy;
 using FluentAssertions;
 using System;
-using System.Collections.Generic;
 using Xunit;
 
 namespace AllOverIt.Evaluator.Tests
@@ -12,7 +11,6 @@ namespace AllOverIt.Evaluator.Tests
     public class FormulaCompilerFixture : FixtureBase
     {
         private readonly IVariableRegistry _variableRegistry;
-        private readonly string _formula;
         private FormulaCompiler _formulaCompiler;
 
         public FormulaCompilerFixture()
@@ -20,20 +18,13 @@ namespace AllOverIt.Evaluator.Tests
             this.UseFakeItEasy();
 
             _variableRegistry = this.CreateStub<IVariableRegistry>();
-            _formula = Create<string>();
         }
 
         public class Compiler : FormulaCompilerFixture
         {
-            private readonly double _value;
-            private readonly IEnumerable<string> _referencedVariableNames;
-
             public Compiler()
             {
                 _formulaCompiler = new FormulaCompiler();
-
-                _value = Create<double>();
-                _referencedVariableNames = CreateMany<string>();
             }
 
             [Fact]

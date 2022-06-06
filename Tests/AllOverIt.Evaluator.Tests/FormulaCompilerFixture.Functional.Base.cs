@@ -25,12 +25,12 @@ namespace AllOverIt.Evaluator.Tests
             FormulaCompiler = new FormulaCompiler();
         }
 
-        protected void AssertFormula(string formula, Func<double> func, double precision = 1E-7)
+        protected void AssertFormula(string formula, Func<double> func)
         {
             var expected = func.Invoke();
             var actual = FormulaCompiler.GetResult(formula, VariableRegistry);
 
-            actual.Should().BeApproximately(expected, precision);
+            actual.Should().BeApproximately(expected, 1E-7);
         }
     }
 }
