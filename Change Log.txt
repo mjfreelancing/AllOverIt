@@ -5,7 +5,8 @@ Version 5.9.0
 ======================================================================================================================
 AllOverIt
   * Added Clear(), Reset(), AddCallSite(), and AddExtendedCallSite() to Breadcrumbs, as well as the ability to
-    disable them
+    enable/disable adding breadcrumbs. StartTimestamp and Enabled are now thread safe if indicated by the options.
+    The breadcrumbs can also be configured to initially be enabled or disabled when initially created.
   * Added ReadOnlyCollection, ReadOnlyList, and ReadOnlyDictionary implementations that are  truly immutable
   * Updated Collection/List/Dictionary EmptyReadOnly<T>() so the underlying collection is truly immutable
 
