@@ -1,4 +1,6 @@
 ﻿using AllOverIt.Assertion;
+using AllOverIt.Threading;
+using AllOverIt.Threading.Extensions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -56,7 +58,7 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
             {
                 _maxCapactiy = options.MaxCapacity;
                 _breadcrumbs = new SortedList<long, BreadcrumbData>();
-                _syncRoot = ((ICollection) _breadcrumbs).SyncRoot;
+                _syncRoot = ((ICollection)_breadcrumbs).SyncRoot;
             }
 
             public void Add(BreadcrumbData breadcrumb)
@@ -98,15 +100,52 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
         }
 
         private readonly IEnumerableWrapper _breadcrumbs;
+        private readonly IReadWriteLock _readWriteLock;
+        private bool _enabled;
+        private DateTime _startTimestamp;
 
         /// <inheritdoc />
-        public bool Enabled { get; set; } = true;
+        public bool Enabled
+        {
+            get
+            {
+                using (_readWriteLock.GetReadLock(false))
+                {
+                    return _enabled;
+                }
+            }
+            
+            set
+            {
+                using (_readWriteLock.GetWriteLock())
+                {
+                    _enabled = value;
+                }
+            }
+        }
 
         /// <inheritdoc />
         public BreadcrumbsOptions Options { get; }
 
         /// <inheritdoc />
-        public DateTime StartTimestamp { get; private set; } = DateTime.Now;
+        public DateTime StartTimestamp
+        {
+            get
+            {
+                using (_readWriteLock.GetReadLock(false))
+                {
+                    return _startTimestamp;
+                }
+            }
+
+            private set
+            {
+                using (_readWriteLock.GetWriteLock())
+                {
+                    _startTimestamp = value;
+                }
+            }
+        }
 
         /// <summary>Constructor.</summary>
         /// <param name="options">Provides options that control how breadcrumb items are inserted and cached.</param>
@@ -117,6 +156,13 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
             _breadcrumbs = Options.ThreadSafe
                 ? new MultiThreadListWrapper(Options)
                 : new SingleThreadListWrapper(Options);
+
+            _readWriteLock = Options.ThreadSafe
+                ? new ReadWriteLock()
+                : new NoLock();
+
+            Enabled = Options.StartEnabled;
+            StartTimestamp = DateTime.Now;
         }
 
         /// <inheritdoc />

@@ -73,7 +73,7 @@
                                                  - [8]
                                                  - [16]
         - External dependencies:                 - System.Text.Json v5.0.2 for targets netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0
-                                                                    v6.0.3 for targets net6.0
+                                                                    v6.0.4 for targets net6.0
 
 
   [11] AllOverIt.Aws.AppSync.Client             
@@ -98,7 +98,7 @@
         - AllOverIt dependencies:                - [1]
                                                  - [16]
         - External dependencies:                 - Microsoft.EntityFrameworkCore.Relational v5.0.13 for targets netcoreapp3.1;net5.0
-                                                                                            v6.0.4 for targets net6.0
+                                                                                            v6.0.5 for targets net6.0
 
 
   [14] AllOverIt.Csv                            
@@ -127,11 +127,21 @@
         - External dependencies:                 - Microsoft.Extensions.DependencyInjection.Abstractions v5.0.0 for targets netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0
                                                                                                          v6.0.0 for targets net6.0
 
+
+  [18]  AllOverIt.Serialization     
+        - Targets                                - netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0
+        - AllOverIt dependencies:                - [1]
+                                                 - [8]
+                                                 - [16]
+        - External dependencies:                 - None
+
+
   [19] AllOverIt.Pagination
         - Targets                                - netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0
         - AllOverIt dependencies:                - [1]
                                                  - [16]
         - External dependencies:                 - None
+
 
   [20] AllOverIt.EntityFrameworkCore.Pagination
         - Targets                                - netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0
@@ -140,13 +150,5 @@
                                                  - [13]
         - External dependencies:                 - Microsoft.EntityFrameworkCore.Relational v5.0.13 for targets netcoreapp3.1;net5.0
                                                                                             v6.0.4 for targets net6.0
-
-
-  [18]  AllOverIt.Serialization     
-        - Targets                                - netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0
-        - AllOverIt dependencies:                - [1]
-                                                 - [8]
-                                                 - [16]
-        - External dependencies:                 - None
 
 =====================================================================================================================================================================
