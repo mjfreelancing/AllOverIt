@@ -6,10 +6,6 @@ Version 6.0.0
 AllOverIt
   * Improvements to IAsyncCommand and AsyncCommandPipeline - now includes a cancellation token
   * Added MemberInfo extension method CreateMemberAccessLambda()
-  * Added Clear(), Reset(), AddCallSite(), and AddExtendedCallSite() to Breadcrumbs
-  * Provide the ability to disable Breadcrumbs
-  * Added ReadOnlyCollection, ReadOnlyList, and ReadOnlyDictionary implementations that are  truly immutable
-  * Updated Collection/List/Dictionary EmptyReadOnly<T>() so the underlying collection is truly immutable
 
   * Added compiled property get/set methods GetCompiledPropertyGet() and GetCompiledPropertySet()
                     *******************************************************
@@ -22,18 +18,11 @@ AllOverIt.Assertion
   * Removed methods that asserted an enumerable was a concrete collection type and instead updated .NET Core 3.1
     versions to check for different collection types before falling back to the default Any() Linq method.
 
-AllOverIt.DependencyInjection
-  * Updated to reference Microsoft.Extensions.DependencyInjection.Abstractions instead of Microsoft.Extensions.DependencyInjection
-
 AllOverIt.Pagination
   * New package to provide keyset based pagination for any IQueryable, including EF queries
 
 AllOverIt.EntityFrameworkCore.Pagination
   * New package to provide keyset based pagination extensions for any EF
-
-AllOverIt.Fixture
-AllOverIt.Fixture.FakeItEasy
-  * Updated to FluentAssertions v6.7.0
 
 
 06 Jun 2022
@@ -48,6 +37,10 @@ AllOverIt
 
 AllOverIt.DependencyInjection
   * Updated to reference Microsoft.Extensions.DependencyInjection.Abstractions instead of Microsoft.Extensions.DependencyInjection
+
+AllOverIt.Fixture
+AllOverIt.Fixture.FakeItEasy
+  * Updated to FluentAssertions v6.7.0
 
 
 01 Jun 2022
