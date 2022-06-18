@@ -2,7 +2,6 @@
 using AllOverIt.Extensions;
 using AllOverIt.Patterns.Enumeration;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System;
 using System.Reflection;
 
 namespace AllOverIt.AspNetCore.ModelBinders
@@ -10,8 +9,6 @@ namespace AllOverIt.AspNetCore.ModelBinders
     /// <summary>A model binder provider for all <see cref="EnrichedEnum{T}"/> types.</summary>
     public sealed class EnrichedEnumModelBinderProvider : IModelBinderProvider
     {
-        private static readonly Type EnrichedEnumType = typeof(EnrichedEnum<>);
-
         /// <inheritdoc />
         public IModelBinder GetBinder(ModelBinderProviderContext context)
         {
@@ -26,7 +23,7 @@ namespace AllOverIt.AspNetCore.ModelBinders
 
             var enumType = context.Metadata.ModelType.Assembly.GetType(fullyQualifiedName, false);
 
-            if (enumType.IsDerivedFrom(EnrichedEnumType))
+            if (enumType.IsEnrichedEnum())
             {
                 var methodInfo = typeof(EnrichedEnumModelBinder).GetMethod("CreateInstance", BindingFlags.Static | BindingFlags.Public);
 

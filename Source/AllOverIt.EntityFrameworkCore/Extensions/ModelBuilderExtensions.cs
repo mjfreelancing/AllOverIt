@@ -65,7 +65,7 @@ namespace AllOverIt.EntityFrameworkCore.Extensions
             var unprocessed =
                 from entityType in allEntityTypes
                 from propertyInfo in entityType.ClrType.GetProperties()
-                where propertyInfo.PropertyType.IsDerivedFrom(EnrichedEnumModelBuilderTypes.GenericEnrichedEnumType)
+                where propertyInfo.PropertyType.IsEnrichedEnum()
                 let entityProperty = (entityType, property: propertyInfo)
                 where !processed.Contains(entityProperty)
                 select entityProperty;

@@ -28,7 +28,7 @@ namespace AllOverIt.Serialization.SystemTextJson.Converters
         public override bool CanConvert(Type typeToConvert)
         {
             // The typeToConvert is derived from EnrichedEnum<TEnum>, so need to get the generic from the base class.
-            return typeToConvert.IsDerivedFrom(typeof(EnrichedEnum<>)) &&
+            return typeToConvert.IsEnrichedEnum() &&
                    typeToConvert == typeToConvert.BaseType!.GenericTypeArguments[0];      // must be MyEnum : EnrichedEnum<MyEnum>
         }
 

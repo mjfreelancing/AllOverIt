@@ -20,7 +20,7 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
         public EnrichedEnumEntityOptions()
         {
             EntityPredicate = _ => true;
-            PropertyPredicate = property => property.PropertyType.IsDerivedFrom(EnrichedEnumModelBuilderTypes.GenericEnrichedEnumType);
+            PropertyPredicate = property => property.PropertyType.IsEnrichedEnum();
         }
 
         /// <summary>Constructor. The property options to be configured will be applied to the specified entity types.</summary>
@@ -114,10 +114,9 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
 
         private static void AssertPropertyType(Type propertyType)
         {
-            if (!propertyType.IsDerivedFrom(EnrichedEnumModelBuilderTypes.GenericEnrichedEnumType))
+            if (!propertyType.IsEnrichedEnum())
             {
-                throw new InvalidOperationException(
-                    $"The property type '{propertyType.GetFriendlyName()}' does not inherit '{EnrichedEnumModelBuilderTypes.GenericEnrichedEnumType.GetFriendlyName()}'.");
+                throw new InvalidOperationException($"The property type '{propertyType.GetFriendlyName()}' is not an EnrichedEnum.");
             }
         }
     }

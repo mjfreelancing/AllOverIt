@@ -27,7 +27,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Converters
         public override bool CanConvert(Type objectType)
         {
             // The objectType is derived from EnrichedEnum<TEnum>, so need to get the generic from the base class.
-            return objectType.IsDerivedFrom(typeof(EnrichedEnum<>)) &&
+            return objectType.IsEnrichedEnum() &&
                    objectType == objectType.BaseType!.GenericTypeArguments[0];      // must be MyEnum : EnrichedEnum<MyEnum>
         }
 
