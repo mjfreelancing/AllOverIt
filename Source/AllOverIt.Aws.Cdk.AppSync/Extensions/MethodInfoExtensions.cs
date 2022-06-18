@@ -34,7 +34,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
 
         public static void AssertReturnTypeIsNotNullable(this MethodInfo methodInfo)
         {
-            if (methodInfo.ReturnType.IsGenericNullableType())
+            if (methodInfo.ReturnType.IsNullableType())
             {
                 throw new SchemaException($"{methodInfo.DeclaringType!.Name}.{methodInfo.Name} has a nullable return type. The presence of {nameof(SchemaTypeRequiredAttribute)} " +
                                            "is used to declare a property as required, and its absence makes it optional.");

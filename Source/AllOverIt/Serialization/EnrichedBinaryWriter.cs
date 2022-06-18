@@ -77,7 +77,7 @@ namespace AllOverIt.Serialization
 
             if (!hasTypeId)
             {
-                if (type.IsGenericNullableType())
+                if (type.IsNullableType())
                 {
                     var underlyingType = Nullable.GetUnderlyingType(type);
                     hasTypeId = TypeMapping.TypeIdRegistry.TryGetValue(underlyingType, out rawTypeId);

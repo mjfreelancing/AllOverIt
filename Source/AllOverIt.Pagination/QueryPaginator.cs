@@ -425,7 +425,7 @@ namespace AllOverIt.Pagination
         private static Expression EnsureMatchingType(MemberExpression memberExpression, Expression targetExpression)
         {
             // If the member is nullable but the target isn't then apply a conversion to ensure the comparison expressions work
-            if (memberExpression.Type.IsGenericNullableType() && memberExpression.Type != targetExpression.Type)
+            if (memberExpression.Type.IsNullableType() && memberExpression.Type != targetExpression.Type)
             {
                 return Expression.Convert(targetExpression, memberExpression.Type);
             }

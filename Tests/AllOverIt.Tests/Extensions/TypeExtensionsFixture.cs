@@ -668,7 +668,7 @@ namespace AllOverIt.Tests.Extensions
             [InlineData(typeof(IEnumerable<int>), false)]
             public void Should_Return_If_Is_Generic_Nullable_Type(Type type, bool expected)
             {
-                var actual = AllOverIt.Extensions.TypeExtensions.IsGenericNullableType(type);
+                var actual = AllOverIt.Extensions.TypeExtensions.IsNullableType(type);
 
                 actual.Should().Be(expected);
             }

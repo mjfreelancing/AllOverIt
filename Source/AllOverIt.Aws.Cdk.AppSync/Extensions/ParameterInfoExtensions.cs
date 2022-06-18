@@ -28,7 +28,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
         {
             var methodInfo = parameterInfo.Member as MethodInfo;
 
-            if (parameterInfo.ParameterType.IsGenericNullableType())
+            if (parameterInfo.ParameterType.IsNullableType())
             {
                 var arguments = string.Join(", ", methodInfo!.GetParameters().Select(parameter => $"{parameter.ParameterType.GetFriendlyName()} {parameter.Name}"));
 

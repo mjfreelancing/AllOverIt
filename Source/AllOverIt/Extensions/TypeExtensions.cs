@@ -225,7 +225,7 @@ namespace AllOverIt.Extensions
         /// <summary>Indicates if the <see cref="Type"/> represents a generic nullable type.</summary>
         /// <param name="type">The type to compare.</param>
         /// <returns>True if the <see cref="Type"/> represents a generic nullable type, otherwise false.</returns>
-        public static bool IsGenericNullableType(this Type type)
+        public static bool IsNullableType(this Type type)
         {
             return type.IsGenericType() && (type.GetGenericTypeDefinition() == typeof(Nullable<>));
         }
@@ -235,7 +235,7 @@ namespace AllOverIt.Extensions
         /// <returns>A print-friendly name for a given type.</returns>
         public static string GetFriendlyName(this Type type)
         {
-            if (type.IsGenericType() && !type.IsGenericNullableType())
+            if (type.IsGenericType() && !type.IsNullableType())
             {
                 var typeName = type.Name;
 
@@ -258,7 +258,7 @@ namespace AllOverIt.Extensions
                 return stringBuilder.ToString();
             }
 
-            return type.IsGenericNullableType()
+            return type.IsNullableType()
               ? $"{type.GetGenericArguments().Single().Name}?"
               : type.Name;
         }
