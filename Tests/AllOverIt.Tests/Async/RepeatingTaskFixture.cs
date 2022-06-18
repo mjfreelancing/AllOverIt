@@ -286,7 +286,10 @@ namespace AllOverIt.Tests.Async
 
                 stopwatch.Stop();
 
-                delays[0].Should().BeCloseTo(repeatDelay, 2);
+                // delays[0] can be ignored since it is the first run with no initial delay.
+                // The other delays cannot be guaranteed to be close to 'repeatDelay', so check >=
+                delays[1].Should().BeGreaterThanOrEqualTo(repeatDelay);
+                delays[2].Should().BeGreaterThanOrEqualTo(repeatDelay);
             }
 
             [Fact]
