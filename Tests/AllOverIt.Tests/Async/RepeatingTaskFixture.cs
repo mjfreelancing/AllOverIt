@@ -285,9 +285,7 @@ namespace AllOverIt.Tests.Async
 
                 stopwatch.Stop();
 
-                delays[0].Should().BeLessThan(repeatDelay);                 // should be invoked without delay
-                delays[1].Should().BeGreaterOrEqualTo(repeatDelay - 1);     // occasionally comes in at 99ms
-                delays[2].Should().BeGreaterOrEqualTo(repeatDelay - 1);
+                delays[0].Should().BeCloseTo(repeatDelay, 2);
             }
 
             [Fact]
