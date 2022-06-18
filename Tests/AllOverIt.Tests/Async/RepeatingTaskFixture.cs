@@ -258,14 +258,13 @@ namespace AllOverIt.Tests.Async
                 const int repeatDelay = 100;
                 var cancellationToken = new CancellationTokenSource();
                 var invokedCount = 0;
-                var delays = new List<long>();
+                var delays = new List<int>();
                 var stopwatch = new Stopwatch();
                 var lastElapsed = 0L;
 
                 void DoAction()
                 {
-                    var elapsed = stopwatch.ElapsedMilliseconds - lastElapsed;
-                    lastElapsed = elapsed;
+                    var elapsed = (int)(stopwatch.ElapsedMilliseconds - lastElapsed);
 
                     delays.Add(elapsed);
 
@@ -275,6 +274,8 @@ namespace AllOverIt.Tests.Async
                     {
                         cancellationToken.Cancel();
                     }
+
+                    lastElapsed = stopwatch.ElapsedMilliseconds;
                 }
 
                 stopwatch.Start();
