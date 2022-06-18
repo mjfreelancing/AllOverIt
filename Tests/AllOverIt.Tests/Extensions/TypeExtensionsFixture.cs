@@ -722,5 +722,127 @@ namespace AllOverIt.Tests.Extensions
                 actual.Should().BeTrue();
             }
         }
+
+        public class GetStaticMethod : TypeExtensionsFixture
+        {
+            private class StaticMethodClass
+            {
+                [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
+#pragma warning disable CA1822 // Mark members as static
+                public static void Method1()
+#pragma warning restore CA1822 // Mark members as static
+                {
+                }
+
+                [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
+                [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
+#pragma warning disable CA1822 // Mark members as static
+                private static void Method2()
+#pragma warning restore CA1822 // Mark members as static
+                {
+                }
+
+                [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
+                [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
+#pragma warning disable CA1822 // Mark members as static
+                internal static void Method3()
+#pragma warning restore CA1822 // Mark members as static
+                {
+                }
+            }
+
+            [Fact]
+            public void Should_Not_Get_Method()
+            {
+                var actual = AllOverIt.Extensions.TypeExtensions.GetStaticMethod(typeof(StaticMethodClass), Create<string>());
+
+                actual.Should().BeNull();
+            }
+
+            [Fact]
+            public void Should_Get_Public_Method()
+            {
+                var actual = AllOverIt.Extensions.TypeExtensions.GetStaticMethod(typeof(StaticMethodClass), nameof(StaticMethodClass.Method1));
+
+                actual.Name.Should().Be(nameof(StaticMethodClass.Method1));
+            }
+
+            [Fact]
+            public void Should_Get_Private_Method()
+            {
+                var actual = AllOverIt.Extensions.TypeExtensions.GetStaticMethod(typeof(StaticMethodClass), "Method2");
+
+                actual.Name.Should().Be("Method2");
+            }
+
+            [Fact]
+            public void Should_Get_Internal_Method()
+            {
+                var actual = AllOverIt.Extensions.TypeExtensions.GetStaticMethod(typeof(StaticMethodClass), nameof(StaticMethodClass.Method3));
+
+                actual.Name.Should().Be(nameof(StaticMethodClass.Method3));
+            }
+        }
+
+        public class GetInstanceMethod : TypeExtensionsFixture
+        {
+            private class InstanceMethodClass
+            {
+                [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
+#pragma warning disable CA1822 // Mark members as static
+                public void Method1()
+#pragma warning restore CA1822 // Mark members as static
+                {
+                }
+
+                [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
+                [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
+#pragma warning disable CA1822 // Mark members as static
+                private void Method2()
+#pragma warning restore CA1822 // Mark members as static
+                {
+                }
+
+                [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
+                [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
+#pragma warning disable CA1822 // Mark members as static
+                internal void Method3()
+#pragma warning restore CA1822 // Mark members as static
+                {
+                }
+            }
+
+            [Fact]
+            public void Should_Not_Get_Method()
+            {
+                var actual = AllOverIt.Extensions.TypeExtensions.GetInstanceMethod(typeof(InstanceMethodClass), Create<string>());
+
+                actual.Should().BeNull();
+            }
+
+            [Fact]
+            public void Should_Get_Public_Method()
+            {
+                var actual = AllOverIt.Extensions.TypeExtensions.GetInstanceMethod(typeof(InstanceMethodClass), nameof(InstanceMethodClass.Method1));
+
+                actual.Name.Should().Be(nameof(InstanceMethodClass.Method1));
+            }
+
+            [Fact]
+            public void Should_Get_Private_Method()
+            {
+                var actual = AllOverIt.Extensions.TypeExtensions.GetInstanceMethod(typeof(InstanceMethodClass), "Method2");
+
+                actual.Name.Should().Be("Method2");
+            }
+
+            [Fact]
+            public void Should_Get_Internal_Method()
+            {
+                var actual = AllOverIt.Extensions.TypeExtensions.GetInstanceMethod(typeof(InstanceMethodClass), nameof(InstanceMethodClass.Method3));
+
+                actual.Name.Should().Be(nameof(InstanceMethodClass.Method3));
+            }
+        }
     }
 }

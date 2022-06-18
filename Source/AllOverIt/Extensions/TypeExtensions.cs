@@ -271,6 +271,24 @@ namespace AllOverIt.Extensions
             return type.IsDerivedFrom(EnrichedEnumType);
         }
 
+        /// <summary>Gets the method info for a static method.</summary>
+        /// <param name="type">The type containing the static method.</param>
+        /// <param name="methodName">The name of the static method.</param>
+        /// <returns>The method info for a static method.</returns>
+        public static MethodInfo GetStaticMethod(this Type type, string methodName)
+        {
+            return type.GetMethod(methodName, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+        }
+
+        /// <summary>Gets the method info for an instance method.</summary>
+        /// <param name="type">The type containing the instance method.</param>
+        /// <param name="methodName">The name of the instance method.</param>
+        /// <returns>The method info for an instance method.</returns>
+        public static MethodInfo GetInstanceMethod(this Type type, string methodName)
+        {
+            return type.GetMethod(methodName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        }
+
         private static bool IsRawGenericType(this Type type, Type generic)
         {
             var toCompare = generic.IsGenericType
