@@ -33,7 +33,7 @@ namespace AllOverIt.Extensions
         /// If True, only property metadata of the declared type is returned.</param>
         /// <returns>The property metadata, as <see cref="PropertyInfo"/>, of a provided <see cref="Type"/>.</returns>
         /// <remarks>When class inheritance is involved, this method returns the first property found, starting at the type represented
-        /// by <paramref name="type"/>.</remarks>
+        /// by <paramref name="type"/>. Properties without a getter are excluded.</remarks>
         public static IEnumerable<PropertyInfo> GetPropertyInfo(this Type type, BindingOptions bindingOptions = BindingOptions.Default, bool declaredOnly = false)
         {
             var predicate = BindingOptionsHelper.BuildBindingPredicate(bindingOptions);
@@ -310,7 +310,8 @@ namespace AllOverIt.Extensions
             {
                 var methodInfo = propInfo.GetMethod;
 
-                if (predicate.Invoke(methodInfo))
+                // Ignore any properties without a getter
+                if (methodInfo != null && predicate.Invoke(methodInfo))
                 {
                     propInfos.Add(propInfo);
                 }
