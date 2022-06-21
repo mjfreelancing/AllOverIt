@@ -42,7 +42,7 @@ namespace AllOverIt.Reflection
         }
 
         private static Expression<Func<MethodBase, bool>> OrBindProperty(this Expression<Func<MethodBase, bool>> expression,
-          Func<bool> predicate, Expression<Func<MethodBase, bool>> creator)
+            Func<bool> predicate, Expression<Func<MethodBase, bool>> creator)
         {
             if (!predicate.Invoke())
             {
