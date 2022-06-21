@@ -2,14 +2,13 @@
 using AllOverIt.Exceptions;
 using AllOverIt.Extensions;
 using System;
-using System.Data;
 using System.Linq.Expressions;
 using System.Reflection;
 
 namespace AllOverIt.Reflection
 {
     /// <summary>Contains a number of helper functions related to reflection.</summary>
-    public static partial class ReflectionHelper
+    public static partial class PropertyExpressions
     {
         public static Func<object, object> CreatePropertyGetter(PropertyInfo propertyInfo)
         {

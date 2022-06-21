@@ -7,9 +7,9 @@ using Xunit;
 
 namespace AllOverIt.Tests.Reflection
 {
-    public partial class ReflectionHelperFixture : FixtureBase
+    public partial class PropertyExpressionsFixture : FixtureBase
     {
-        public class GetMethodInfo : ReflectionHelperFixture
+        public class GetMethodInfo : PropertyExpressionsFixture
         {
             private readonly string[] _knownMethods = new[] { "Method1", "Method2", "Method3", "Method4" };
 
@@ -151,7 +151,7 @@ namespace AllOverIt.Tests.Reflection
             }
         }
 
-        public class GetMethodInfo_Named : ReflectionHelperFixture
+        public class GetMethodInfo_Named : PropertyExpressionsFixture
         {
             [Fact]
             public void Should_Not_Find_Method()
@@ -178,7 +178,7 @@ namespace AllOverIt.Tests.Reflection
             }
         }
 
-        public class GetMethodInfo_Named_And_Args : ReflectionHelperFixture
+        public class GetMethodInfo_Named_And_Args : PropertyExpressionsFixture
         {
             [Fact]
             public void Should_Not_Find_Method()

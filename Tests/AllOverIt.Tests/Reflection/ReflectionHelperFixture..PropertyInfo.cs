@@ -6,9 +6,9 @@ using Xunit;
 
 namespace AllOverIt.Tests.Reflection
 {
-    public partial class ReflectionHelperFixture : FixtureBase
+    public partial class PropertyExpressionsFixture : FixtureBase
     {
-        public class GetPropertyInfo_Property : ReflectionHelperFixture
+        public class GetPropertyInfo_Property : PropertyExpressionsFixture
         {
             [Fact]
             public void Should_Get_Property_In_Super()
@@ -47,7 +47,7 @@ namespace AllOverIt.Tests.Reflection
             }
         }
 
-        public class GetPropertyInfo_Bindings : ReflectionHelperFixture
+        public class GetPropertyInfo_Bindings : PropertyExpressionsFixture
         {
             [Fact]
             public void Should_Use_Default_Binding_Not_Declared_Only()

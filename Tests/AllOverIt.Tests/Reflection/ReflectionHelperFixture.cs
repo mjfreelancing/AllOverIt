@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace AllOverIt.Tests.Reflection
 {
-    public partial class ReflectionHelperFixture : FixtureBase
+    public partial class PropertyExpressionsFixture : FixtureBase
     {
         private class DummyBaseClass
         {

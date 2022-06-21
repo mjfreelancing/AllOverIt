@@ -17,15 +17,15 @@ namespace CompiledReflectionBenchmarking
         private static readonly PropertyInfo dummyPropInfo = typeof(DummyType).GetProperty(nameof(DummyType.Value));
 
         // Compiled
-        private static readonly Func<object, object> _objectPropertyGetterInfo = ReflectionHelper.CreatePropertyGetter(dummyPropInfo);
-        private static readonly Func<DummyType, object> _typedPropertyGetterInfo = ReflectionHelper.CreatePropertyGetter<DummyType>(dummyPropInfo);
-        private static readonly Func<DummyType, object> _typedPropertyGetterName = ReflectionHelper.CreatePropertyGetter<DummyType>(nameof(DummyType.Value));
+        private static readonly Func<object, object> _objectPropertyGetterInfo = PropertyExpressions.CreatePropertyGetter(dummyPropInfo);
+        private static readonly Func<DummyType, object> _typedPropertyGetterInfo = PropertyExpressions.CreatePropertyGetter<DummyType>(dummyPropInfo);
+        private static readonly Func<DummyType, object> _typedPropertyGetterName = PropertyExpressions.CreatePropertyGetter<DummyType>(nameof(DummyType.Value));
 
-        private static readonly Action<object, object> _objectPropertySetterInfo = ReflectionHelper.CreatePropertySetter(dummyPropInfo);
-        private static readonly Action<DummyType, object> _typedPropertySetterInfo = ReflectionHelper.CreatePropertySetter<DummyType>(dummyPropInfo);
-        private static readonly Action<DummyType, object> _typedPropertySetterName = ReflectionHelper.CreatePropertySetter<DummyType>(nameof(DummyType.Value));
+        private static readonly Action<object, object> _objectPropertySetterInfo = PropertyExpressions.CreatePropertySetter(dummyPropInfo);
+        private static readonly Action<DummyType, object> _typedPropertySetterInfo = PropertyExpressions.CreatePropertySetter<DummyType>(dummyPropInfo);
+        private static readonly Action<DummyType, object> _typedPropertySetterName = PropertyExpressions.CreatePropertySetter<DummyType>(nameof(DummyType.Value));
 
-        [Params(1)]
+        [Params(10)]
         public int IterationCount;
 
         [Benchmark]

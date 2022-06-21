@@ -8,7 +8,7 @@ using System.Reflection;
 namespace AllOverIt.Reflection
 {
     /// <summary>Contains a number of helper functions related to reflection.</summary>
-    public static partial class ReflectionHelper
+    public static partial class PropertyExpressions
     {
         public static Action<object, object> CreatePropertySetter(PropertyInfo propertyInfo)
         {
