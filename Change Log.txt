@@ -8,13 +8,7 @@ AllOverIt
   * Added MemberInfo extension method CreateMemberAccessLambda()
   * Renamed IsGenericNullableType() to IsNullableType()
   * Added TypeExtensions GetInstanceMethod() and GetStaticMethod()
-
-  * Added compiled property get/set methods GetCompiledPropertyGet() and GetCompiledPropertySet()
-                    *******************************************************
-                    *** TESTS PENDING                        26/05/2022 ***
-                    *** See ReflectionHelper.cs for more to completed   ***
-                    *** See CompiledReflection benchmarks to be updated ***
-                    *******************************************************
+  * Added ReflectionHelper methods CreatePropertyGetter(), CreatePropertySetter() and supporting methods
 
 AllOverIt.Assertion
   * Removed methods that asserted an enumerable was a concrete collection type and instead updated .NET Core 3.1

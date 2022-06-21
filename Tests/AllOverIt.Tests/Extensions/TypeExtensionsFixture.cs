@@ -198,7 +198,7 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
-        public class GetMethods : TypeExtensionsFixture
+        public class GetMethodInfo : TypeExtensionsFixture
         {
             private readonly string[] _knownMethods = { "Method1", "Method2", "Method3", "Method4" };
 

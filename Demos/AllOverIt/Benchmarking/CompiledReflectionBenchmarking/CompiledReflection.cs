@@ -10,8 +10,6 @@ namespace CompiledReflectionBenchmarking
         public int Value { get; set; }
     }
 
-    // TODO: TBC
-
     [MemoryDiagnoser]
     public class CompiledReflection
     {
@@ -19,11 +17,15 @@ namespace CompiledReflectionBenchmarking
         private static readonly PropertyInfo dummyPropInfo = typeof(DummyType).GetProperty(nameof(DummyType.Value));
 
         // Compiled
-        private static readonly Func<DummyType, int> _compiledGetTyped = ReflectionHelper.GetCompiledPropertyGetter<DummyType, int>(nameof(DummyType.Value));
-        private static readonly Func<object, object> _compiledGetObject = ReflectionHelper.GetCompiledPropertyGetter(typeof(DummyType), nameof(DummyType.Value));
-        private static readonly Action<DummyType, int> _compiledSet = ReflectionHelper.GetCompiledPropertySetter<DummyType, int>(nameof(DummyType.Value));
+        private static readonly Func<object, object> _objectPropertyGetterInfo = ReflectionHelper.CreatePropertyGetter(dummyPropInfo);
+        private static readonly Func<DummyType, object> _typedPropertyGetterInfo = ReflectionHelper.CreatePropertyGetter<DummyType>(dummyPropInfo);
+        private static readonly Func<DummyType, object> _typedPropertyGetterName = ReflectionHelper.CreatePropertyGetter<DummyType>(nameof(DummyType.Value));
 
-        [Params(100)]
+        private static readonly Action<object, object> _objectPropertySetterInfo = ReflectionHelper.CreatePropertySetter(dummyPropInfo);
+        private static readonly Action<DummyType, object> _typedPropertySetterInfo = ReflectionHelper.CreatePropertySetter<DummyType>(dummyPropInfo);
+        private static readonly Action<DummyType, object> _typedPropertySetterName = ReflectionHelper.CreatePropertySetter<DummyType>(nameof(DummyType.Value));
+
+        [Params(1)]
         public int IterationCount;
 
         [Benchmark]
@@ -34,6 +36,39 @@ namespace CompiledReflectionBenchmarking
             for (var i = 0; i < IterationCount; i++)
             {
                 _ = dummyPropInfo.GetValue(instance);
+            }
+        }
+
+        [Benchmark]
+        public void Object_PropertyGetter_Info()
+        {
+            var instance = GetDummyType();
+
+            for (var i = 0; i < IterationCount; i++)
+            {
+                _ = _objectPropertyGetterInfo.Invoke(instance);
+            }
+        }
+
+        [Benchmark]
+        public void Typed_PropertyGetter_Info()
+        {
+            var instance = GetDummyType();
+
+            for (var i = 0; i < IterationCount; i++)
+            {
+                _ = _typedPropertyGetterInfo.Invoke(instance);
+            }
+        }
+
+        [Benchmark]
+        public void Typed_PropertyGetter_Name()
+        {
+            var instance = GetDummyType();
+
+            for (var i = 0; i < IterationCount; i++)
+            {
+                _ = _typedPropertyGetterName.Invoke(instance);
             }
         }
 
@@ -49,34 +84,36 @@ namespace CompiledReflectionBenchmarking
         }
 
         [Benchmark]
-        public void CompiledReflectionGetTyped()
+        public void Object_PropertySetter_Info()
         {
             var instance = GetDummyType();
 
             for (var i = 0; i < IterationCount; i++)
             {
-                _ = _compiledGetTyped.Invoke(instance);
+                _objectPropertySetterInfo.Invoke(instance, 20);
             }
         }
 
         [Benchmark]
-        public void CompiledReflectionGetObject()
+        public void Typed_PropertySetter_Info()
         {
             var instance = GetDummyType();
 
             for (var i = 0; i < IterationCount; i++)
             {
-                _ = _compiledGetObject.Invoke(instance);
+                _typedPropertySetterInfo.Invoke(instance, 20);
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Benchmark does not support static methods")]
         [Benchmark]
-        public void CompiledReflectionSet()
+        public void Typed_PropertySetter_Name()
         {
             var instance = GetDummyType();
 
-            _compiledSet.Invoke(instance, 20);
+            for (var i = 0; i < IterationCount; i++)
+            {
+                _typedPropertySetterName.Invoke(instance, 20);
+            }
         }
 
         private static DummyType GetDummyType()
