@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Assertion;
+using AllOverIt.Exceptions;
 using AllOverIt.Extensions;
 using System;
 using System.Linq.Expressions;
@@ -13,9 +14,9 @@ namespace AllOverIt.Reflection
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
 
-            var setterMethodInfo = propertyInfo.GetSetMethod(true);
+            AssertPropertyCanWrite(propertyInfo);
 
-            setterMethodInfo.CheckNotNull($"The property '{propertyInfo.DeclaringType}.{propertyInfo.Name}' does not have a setter.");
+            var setterMethodInfo = propertyInfo.GetSetMethod(true);
 
             var declaringType = propertyInfo.ReflectedType;
 
@@ -37,7 +38,13 @@ namespace AllOverIt.Reflection
         {
             _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
 
-            var propertyInfo = ReflectionCache.GetPropertyInfo(typeof(TType).GetTypeInfo(), propertyName);
+            var type = typeof(TType);
+            var propertyInfo = ReflectionCache.GetPropertyInfo(type.GetTypeInfo(), propertyName);
+
+            if (propertyInfo == null)
+            {
+                throw new ReflectionException($"The property {propertyName} on type {type.GetFriendlyName()} does not exist.");
+            }
 
             return CreatePropertySetterExpressionLambda<TType>(propertyInfo).Compile();
         }
@@ -46,6 +53,8 @@ namespace AllOverIt.Reflection
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
 
+            AssertPropertyCanWrite(propertyInfo);
+
             return CreatePropertySetterExpressionLambda<TType>(propertyInfo).Compile();
         }
 
@@ -53,9 +62,9 @@ namespace AllOverIt.Reflection
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
 
-            var setterMethodInfo = propertyInfo.GetSetMethod(true);
+            AssertPropertyCanWrite(propertyInfo);
 
-            setterMethodInfo.CheckNotNull($"The property '{propertyInfo.DeclaringType}.{propertyInfo.Name}' does not have a setter.");
+            var setterMethodInfo = propertyInfo.GetSetMethod(true);
 
             var instance = Expression.Parameter(typeof(TType), "item");
 
@@ -69,6 +78,14 @@ namespace AllOverIt.Reflection
             var setterCall = Expression.Call(instanceType, setterMethodInfo, valueParam);
 
             return Expression.Lambda<Action<TType, object>>(setterCall, instance, argument);
+        }
+
+        private static void AssertPropertyCanWrite(PropertyInfo propertyInfo)
+        {
+            if (!propertyInfo.CanWrite)
+            {
+                throw new ReflectionException($"The property {propertyInfo.Name} on type {propertyInfo.DeclaringType.GetFriendlyName()} does not have a setter.");
+            }
         }
 
 

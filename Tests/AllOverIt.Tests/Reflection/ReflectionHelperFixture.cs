@@ -34,6 +34,10 @@ namespace AllOverIt.Tests.Reflection
             public override double Prop3 { get; set; }
 
             private long Prop4 { get; set; }
+            
+            public bool Prop5 { set { _ = value; } }    // automatic properties must have a getter
+
+            public bool Prop6 { get; }
 
             public int Field1;
 

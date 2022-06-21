@@ -70,6 +70,11 @@ namespace AllOverIt.Tests.Reflection
                     {
                         Name = "Prop3",
                         PropertyType = typeof(double)
+                    },
+                    new
+                    {
+                        Name = nameof(DummySuperClass.Prop6),
+                        PropertyType = typeof(bool)
                     }
                 };
 
@@ -85,8 +90,13 @@ namespace AllOverIt.Tests.Reflection
                 {
                     new
                     {
-                        Name = "Prop3",
+                        Name = nameof(DummySuperClass.Prop3),
                         PropertyType = typeof(double)
+                    },
+                    new
+                    {
+                        Name = nameof(DummySuperClass.Prop6),
+                        PropertyType = typeof(bool)
                     }
                 };
 

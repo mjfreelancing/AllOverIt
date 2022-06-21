@@ -1,5 +1,8 @@
 ﻿using AllOverIt.Assertion;
+using AllOverIt.Exceptions;
+using AllOverIt.Extensions;
 using System;
+using System.Data;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -26,7 +29,13 @@ namespace AllOverIt.Reflection
         {
             _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
 
-            var propertyInfo = ReflectionCache.GetPropertyInfo(typeof(TType).GetTypeInfo(), propertyName);
+            var type = typeof(TType);
+            var propertyInfo = ReflectionCache.GetPropertyInfo(type.GetTypeInfo(), propertyName);
+
+            if (propertyInfo == null)
+            {
+                throw new ReflectionException($"The property {propertyName} on type {type.GetFriendlyName()} does not exist.");
+            }
 
             return CreatePropertyGetterExpressionLambda<TType>(propertyInfo).Compile();
         }
@@ -35,9 +44,9 @@ namespace AllOverIt.Reflection
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
 
-            var getterMethodInfo = propertyInfo.GetGetMethod(true);
+            AssertPropertyCanRead(propertyInfo);
 
-            getterMethodInfo.CheckNotNull($"The property '{propertyInfo.DeclaringType}.{propertyInfo.Name}' does not have a getter.");
+            var getterMethodInfo = propertyInfo.GetGetMethod(true);
 
             // propertyInfo.DeclaringType should be ok but using ReflectedType, just in case:
             //
@@ -60,6 +69,8 @@ namespace AllOverIt.Reflection
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
 
+            AssertPropertyCanRead(propertyInfo);
+
             var itemParam = Expression.Parameter(typeof(TType), "item");
 
             Expression declaringTypeItemParam = typeof(TType) != propertyInfo.DeclaringType
@@ -71,6 +82,14 @@ namespace AllOverIt.Reflection
             var objectProperty = Expression.TypeAs(property, typeof(object));
 
             return Expression.Lambda<Func<TType, object>>(objectProperty, itemParam);
+        }
+
+        private static void AssertPropertyCanRead(PropertyInfo propertyInfo)
+        {
+            if (!propertyInfo.CanRead)
+            {
+                throw new ReflectionException($"The property {propertyInfo.Name} on type {propertyInfo.DeclaringType.GetFriendlyName()} does not have a getter.");
+            }
         }
     }
 }
