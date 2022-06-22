@@ -1,7 +1,7 @@
-﻿using AllOverIt.Exceptions;
-using AllOverIt.Fixture;
+﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.Enumeration;
+using AllOverIt.Patterns.Enumeration.Exceptions;
 using FluentAssertions;
 using System;
 using System.Runtime.CompilerServices;

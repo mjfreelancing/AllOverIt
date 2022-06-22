@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace AllOverIt.Exceptions
+namespace AllOverIt.Patterns.ValueObject.Exceptions
 {
-    /// <summary>Represents a validation error that occurred while initializing a <see cref="Patterns.ValueObject.ValueObject{TValue, TType}"/>.</summary>
+    /// <summary>Represents a validation error that occurred while initializing a <see cref="ValueObject{TValue, TType}"/>.</summary>
     [Serializable]
     public sealed class ValueObjectValidationException : Exception
     {
@@ -50,7 +50,7 @@ namespace AllOverIt.Exceptions
         private ValueObjectValidationException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            AttemptedValue = (object) info.GetValue(nameof(AttemptedValue), typeof(object));
+            AttemptedValue =  info.GetValue(nameof(AttemptedValue), typeof(object));
         }
     }
 }

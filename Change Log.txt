@@ -9,6 +9,11 @@ AllOverIt
   * Renamed IsGenericNullableType() to IsNullableType()
   * Added TypeExtensions GetInstanceMethod() and GetStaticMethod()
   * Added PropertyExpressions static methods CreatePropertyGetter(), CreatePropertySetter() and supporting methods
+  * Moved CommandException to Patterns/Command/Exceptions
+  * Moved EnrichedEnumException to Patterns/Enumeration/Exceptions
+  * Moved ValueObjectValidationException to Patterns/ValueObject/Exceptions
+  * Moved ProcessException to Process/Exceptions
+  * Moved SelfReferenceException to Formatters/Exceptions
 
 AllOverIt.Assertion
   * Removed methods that asserted an enumerable was a concrete collection type and instead updated .NET Core 3.1

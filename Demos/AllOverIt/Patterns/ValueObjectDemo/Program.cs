@@ -1,4 +1,4 @@
-﻿using AllOverIt.Exceptions;
+﻿using AllOverIt.Patterns.ValueObject.Exceptions;
 using System;
 using ValueObjectDemo.Extensions;
 

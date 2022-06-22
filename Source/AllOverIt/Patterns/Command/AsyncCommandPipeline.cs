@@ -1,5 +1,5 @@
 ﻿using AllOverIt.Assertion;
-using AllOverIt.Exceptions;
+using AllOverIt.Patterns.Command.Exceptions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;

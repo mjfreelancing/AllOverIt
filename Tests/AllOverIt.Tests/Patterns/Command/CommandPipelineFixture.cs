@@ -1,8 +1,8 @@
 ﻿using System;
-using AllOverIt.Exceptions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.Command;
+using AllOverIt.Patterns.Command.Exceptions;
 using FluentAssertions;
 using Xunit;
 

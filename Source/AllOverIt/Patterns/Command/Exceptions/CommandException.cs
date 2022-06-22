@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AllOverIt.Exceptions
+namespace AllOverIt.Patterns.Command.Exceptions
 {
     /// <summary>Represents an error that occurred while executing a command.</summary>
     public class CommandException : Exception

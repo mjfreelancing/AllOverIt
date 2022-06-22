@@ -1,7 +1,6 @@
-﻿using AllOverIt.Patterns.Enumeration;
-using System;
+﻿using System;
 
-namespace AllOverIt.Exceptions
+namespace AllOverIt.Patterns.Enumeration.Exceptions
 {
     /// <summary>Represents an error that occurred while attempting to interpret a name or value as a <see cref="EnrichedEnum{TEnum}"/>.</summary>
     public class EnrichedEnumException : Exception

@@ -1,6 +1,6 @@
 ﻿using AllOverIt.Assertion;
-using AllOverIt.Exceptions;
 using AllOverIt.Extensions;
+using AllOverIt.Formatters.Exceptions;
 using System;
 using System.Collections;
 using System.Collections.Generic;

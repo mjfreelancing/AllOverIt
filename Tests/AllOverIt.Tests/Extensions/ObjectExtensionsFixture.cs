@@ -1,6 +1,6 @@
-﻿using AllOverIt.Exceptions;
-using AllOverIt.Extensions;
+﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
+using AllOverIt.Formatters.Exceptions;
 using AllOverIt.Formatters.Objects;
 using AllOverIt.Patterns.Enumeration;
 using AllOverIt.Reflection;
