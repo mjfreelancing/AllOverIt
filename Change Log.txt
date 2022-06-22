@@ -14,6 +14,7 @@ AllOverIt
   * Moved ValueObjectValidationException to Patterns/ValueObject/Exceptions
   * Moved ProcessException to Process/Exceptions
   * Moved SelfReferenceException to Formatters/Exceptions
+  * ReflectionHelper replaced by ReflectionCache methods
 
 AllOverIt.Assertion
   * Removed methods that asserted an enumerable was a concrete collection type and instead updated .NET Core 3.1

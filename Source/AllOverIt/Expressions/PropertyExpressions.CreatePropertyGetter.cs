@@ -47,7 +47,7 @@ namespace AllOverIt.Reflection
 
             var getterMethodInfo = propertyInfo.GetGetMethod(true);
 
-            // propertyInfo.DeclaringType should be ok but using ReflectedType, just in case:
+            // propertyInfo.DeclaringType should be ok but if there's problems consider propertyInfo.ReflectedType:
             //
             // MemberInfo m1 = typeof(Base).GetMethod("Method");
             // MemberInfo m2 = typeof(Derived).GetMethod("Method");
@@ -55,7 +55,7 @@ namespace AllOverIt.Reflection
             // m1.ReflectedType => Base
             // m2.DeclaringType => Base
             // m2.ReflectedType => Derived
-            
+
             var itemParam = Expression.Parameter(typeof(object), "item");
             var instanceParam = Expression.Convert(itemParam, propertyInfo.DeclaringType);
             var getterCall = Expression.Call(instanceParam, getterMethodInfo);
@@ -64,7 +64,7 @@ namespace AllOverIt.Reflection
             return Expression.Lambda<Func<object, object>>(objectGetterCall, itemParam);
         }
 
-        public static Expression<Func<TType, object>> CreatePropertyGetterExpressionLambda<TType>(PropertyInfo propertyInfo)
+        private static Expression<Func<TType, object>> CreatePropertyGetterExpressionLambda<TType>(PropertyInfo propertyInfo)
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
 
