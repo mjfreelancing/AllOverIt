@@ -9,12 +9,22 @@ using BenchmarkDotNet.Jobs;
 namespace ObjectMappingBenchmarking
 {
     /*
-    |                                        Method |       Mean |    Error |   StdDev | Allocated |
-    |---------------------------------------------- |-----------:|---------:|---------:|----------:|
-    |          AutoMapper_SimpleSource_SimpleTarget |   222.2 ns | 19.19 ns | 54.14 ns |      40 B |
-    | StaticMethod_SimpleSource_Create_SimpleTarget | 4,272.8 ns | 75.40 ns | 66.84 ns |   2,544 B |
-    | ObjectMapper_SimpleSource_Create_SimpleTarget |   961.1 ns | 18.63 ns | 23.57 ns |      88 B |
-    | ObjectMapper_SimpleSource_CopyTo_SimpleTarget |   908.2 ns | 11.79 ns | 10.45 ns |      48 B |
+    |                                        Method |           Job |       Runtime |        Mean |     Error |    StdDev | Allocated |
+    |---------------------------------------------- |-------------- |-------------- |------------:|----------:|----------:|----------:|
+    |          AutoMapper_SimpleSource_SimpleTarget |      .NET 5.0 |      .NET 5.0 |    69.81 ns |  0.766 ns |  1.300 ns |      40 B |
+    | StaticMethod_SimpleSource_Create_SimpleTarget |      .NET 5.0 |      .NET 5.0 | 2,933.67 ns | 38.996 ns | 36.477 ns |   2,864 B |
+    | ObjectMapper_SimpleSource_Create_SimpleTarget |      .NET 5.0 |      .NET 5.0 |   804.67 ns |  9.340 ns |  8.736 ns |     280 B |
+    | ObjectMapper_SimpleSource_CopyTo_SimpleTarget |      .NET 5.0 |      .NET 5.0 |   728.88 ns |  8.419 ns |  7.463 ns |     240 B |
+
+    |          AutoMapper_SimpleSource_SimpleTarget |      .NET 6.0 |      .NET 6.0 |    72.40 ns |  1.102 ns |  0.977 ns |      40 B |
+    | StaticMethod_SimpleSource_Create_SimpleTarget |      .NET 6.0 |      .NET 6.0 | 2,567.73 ns | 26.555 ns | 23.540 ns |   2,608 B |
+    | ObjectMapper_SimpleSource_Create_SimpleTarget |      .NET 6.0 |      .NET 6.0 |   617.13 ns |  7.928 ns |  7.028 ns |      88 B |
+    | ObjectMapper_SimpleSource_CopyTo_SimpleTarget |      .NET 6.0 |      .NET 6.0 |   601.85 ns |  4.908 ns |  4.351 ns |      48 B |
+
+    |          AutoMapper_SimpleSource_SimpleTarget | .NET Core 3.1 | .NET Core 3.1 |   109.66 ns |  0.946 ns |  0.839 ns |      40 B |
+    | StaticMethod_SimpleSource_Create_SimpleTarget | .NET Core 3.1 | .NET Core 3.1 | 3,750.42 ns | 32.529 ns | 30.428 ns |   2,832 B |
+    | ObjectMapper_SimpleSource_Create_SimpleTarget | .NET Core 3.1 | .NET Core 3.1 |   821.65 ns |  5.840 ns |  5.177 ns |     280 B |
+    | ObjectMapper_SimpleSource_CopyTo_SimpleTarget | .NET Core 3.1 | .NET Core 3.1 |   784.03 ns |  6.429 ns |  6.014 ns |     240 B |
     */
 
     [MemoryDiagnoser(false)]
