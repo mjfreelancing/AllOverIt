@@ -1,11 +1,11 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
 using AllOverIt.Mapping.Exceptions;
+using AllOverIt.Reflection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using AllOverIt.Reflection;
 
 namespace AllOverIt.Mapping
 {
@@ -15,14 +15,19 @@ namespace AllOverIt.Mapping
         internal class MatchingPropertyMapper
         {
             internal sealed class PropertyMatchInfo
-            {   
+            {
                 public PropertyInfo SourceInfo { get; }
                 public PropertyInfo TargetInfo { get; }
+                public Func<object, object> SourceGetter { get; }
+                public Action<object, object> TargetSetter { get; }
 
                 public PropertyMatchInfo(PropertyInfo sourceInfo, PropertyInfo targetInfo)
                 {
                     SourceInfo = sourceInfo;
                     TargetInfo = targetInfo;
+
+                    SourceGetter = PropertyExpressions.CreatePropertyGetter(SourceInfo);
+                    TargetSetter = PropertyExpressions.CreatePropertySetter(TargetInfo);
                 }
             }
 
@@ -54,7 +59,6 @@ namespace AllOverIt.Mapping
                     var targetPropInfo = targetPropertyInfo[targetName];
 
                     var matchInfo = new PropertyMatchInfo(sourcePropInfo, targetPropInfo);
-
                     matchedProps.Add(matchInfo);
                 }
 
@@ -65,10 +69,10 @@ namespace AllOverIt.Mapping
             {
                 foreach (var match in Matches)
                 {
-                    var value = match.SourceInfo.GetValue(source);
+                    var value = match.SourceGetter.Invoke(source);
                     var targetValue = MapperOptions.GetConvertedValue(match.SourceInfo.Name, value);
 
-                    match.TargetInfo.SetValue(target, targetValue);
+                    match.TargetSetter.Invoke(target, targetValue);
                 }
             }
         }
