@@ -18,10 +18,9 @@ namespace AllOverIt.Pagination.Extensions
             return columns
                 .SelectAsReadOnlyCollection(column =>
                 {
-                    var propertyInfo = ReflectionCache.GetPropertyInfo(referenceTypeInfo, column.Property.Name);
-                    var type = propertyInfo.PropertyType;
-
-                    return propertyInfo.GetValue(reference);
+                    return ReflectionCache
+                        .GetPropertyInfo(referenceTypeInfo, column.Property.Name)
+                        .GetValue(reference);
                 });
         }
     }

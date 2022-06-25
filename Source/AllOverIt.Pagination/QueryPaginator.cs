@@ -33,7 +33,7 @@ namespace AllOverIt.Pagination
 
         public IContinuationTokenEncoder ContinuationTokenEncoder => GetContinuationTokenEncoder();
 
-        public QueryPaginator(IQueryable<TEntity> query, int pageSize,PaginationDirection paginationDirection = PaginationDirection.Forward)
+        public QueryPaginator(IQueryable<TEntity> query, int pageSize, PaginationDirection paginationDirection = PaginationDirection.Forward)
         {
             _query = query.WhenNotNull(nameof(query));
             _pageSize = pageSize;

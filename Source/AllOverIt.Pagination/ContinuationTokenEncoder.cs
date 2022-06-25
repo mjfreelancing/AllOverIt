@@ -4,15 +4,12 @@ using AllOverIt.Pagination.Exceptions;
 using AllOverIt.Pagination.Extensions;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 
 namespace AllOverIt.Pagination
 {
     internal sealed class ContinuationTokenEncoder : IContinuationTokenEncoder
     {
-        private readonly BinaryFormatter _formatter = new();
         private readonly IReadOnlyCollection<IColumnDefinition> _columns;
         private readonly PaginationDirection _paginationDirection;
 
@@ -58,7 +55,7 @@ namespace AllOverIt.Pagination
                 //Values = 
             };
 
-            return SerializeToken(continuationToken);
+            return ContinuationTokenSerializer.Serialize(continuationToken);
         }
 
         private string Encode<TEntity>(ContinuationDirection continuationDirection, IReadOnlyCollection<TEntity> references)
@@ -104,37 +101,12 @@ namespace AllOverIt.Pagination
                 Values = columnValues
             };
 
-            return SerializeToken(continuationToken);
-        }
-
-        private string SerializeToken(ContinuationToken continuationToken)
-        {
-            using (var stream = new MemoryStream())
-            {
-                _formatter.Serialize(stream, continuationToken);
-
-                stream.Flush();
-                stream.Position = 0;
-
-                var array = stream.ToArray();
-
-                return Convert.ToBase64String(array);
-            }
+            return ContinuationTokenSerializer.Serialize(continuationToken);
         }
 
         internal ContinuationToken Decode(string continuationToken)
         {
-            if (continuationToken.IsNullOrEmpty())
-            {
-                return ContinuationToken.None;
-            }
-
-            var bytes = Convert.FromBase64String(continuationToken);
-
-            using (var stream = new MemoryStream(bytes))
-            {
-                return (ContinuationToken) _formatter.Deserialize(stream);
-            }
+            return ContinuationTokenSerializer.Deserialize(continuationToken, _columns.AsReadOnlyList());
         }
     }
 }
