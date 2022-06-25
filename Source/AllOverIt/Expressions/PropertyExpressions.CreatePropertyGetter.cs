@@ -10,6 +10,7 @@ namespace AllOverIt.Reflection
     /// <summary>Contains a number of helper functions related to reflection.</summary>
     public static partial class PropertyExpressions
     {
+        // TODO: Comment and Tests
         public static Func<object, object> CreatePropertyGetter(PropertyInfo propertyInfo)
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
