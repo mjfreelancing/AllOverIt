@@ -7,8 +7,14 @@ namespace AllOverIt.Pagination
 {
     internal abstract class ColumnDefinition<TEntity> : IColumnDefinition where TEntity : class
     {
-        public PropertyInfo Property { get; init; }
-        public bool IsAscending { get; init; }
+        public PropertyInfo Property { get; }
+        public bool IsAscending { get; }
+
+        public ColumnDefinition(PropertyInfo property, bool isAscending)
+        {
+            Property = property.WhenNotNull(nameof(property));
+            IsAscending = isAscending;
+        }
 
         public abstract IOrderedQueryable<TEntity> ApplyColumnOrderTo(IQueryable<TEntity> queryable, PaginationDirection paginationDirection);
         public abstract IOrderedQueryable<TEntity> ThenApplyColumnOrderTo(IOrderedQueryable<TEntity> queryable, PaginationDirection paginationDirection);
@@ -16,6 +22,11 @@ namespace AllOverIt.Pagination
 
     internal class ColumnDefinition<TEntity, TProp> : ColumnDefinition<TEntity> where TEntity : class
     {
+        public ColumnDefinition(PropertyInfo property, bool isAscending)
+            : base(property, isAscending)
+        {
+        }
+
         public override IOrderedQueryable<TEntity> ApplyColumnOrderTo(IQueryable<TEntity> queryable, PaginationDirection paginationDirection)
         {
             return OrderBy(queryable, paginationDirection);

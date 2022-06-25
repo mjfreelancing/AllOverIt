@@ -5,6 +5,7 @@ using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using Xunit;
 
 namespace AllOverIt.Pagination.Tests
@@ -24,15 +25,29 @@ namespace AllOverIt.Pagination.Tests
             _entities = CreateMany<EntityDummy>();
         }
 
+        public class Constructor : ColumnDefinitionFixture
+        {
+            [Fact]
+            public void Should_Throw_When_ProopertyInfo_Null()
+            {
+                Invoking(() =>
+                {
+                    new ColumnDefinition<EntityDummy, int>(null, Create<bool>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("property");
+            }
+        }
+
         public class ApplyColumnOrderTo : ColumnDefinitionFixture
         {
             [Fact]
             public void Should_Throw_When_Queryable_Null()
             {
-                var idPropertyDefinition = new ColumnDefinition<EntityDummy, int>()
-                {
-                    Property = typeof(EntityDummy).GetProperty(nameof(EntityDummy.Id))
-                };
+                var property = typeof(EntityDummy).GetProperty(nameof(EntityDummy.Id));
+
+                var idPropertyDefinition = new ColumnDefinition<EntityDummy, int>(property, Create<bool>());
 
                 Invoking(() =>
                 {
@@ -43,21 +58,6 @@ namespace AllOverIt.Pagination.Tests
                     .WithNamedMessageWhenNull("queryable");
             }
 
-            [Fact]
-            public void Should_Throw_When_Property_Null()
-            {
-                var propertyDefinition = new ColumnDefinition<EntityDummy, int>();
-                var query = _entities.AsQueryable();
-
-                Invoking(() =>
-                {
-                    propertyDefinition.ApplyColumnOrderTo(query, Create<PaginationDirection>());
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("Property");
-            }
-
             [Theory]
             [InlineData(true, PaginationDirection.Forward)]
             [InlineData(false, PaginationDirection.Forward)]
@@ -65,11 +65,9 @@ namespace AllOverIt.Pagination.Tests
             [InlineData(false, PaginationDirection.Backward)]
             public void Should_OrderBy_Id(bool ascending, PaginationDirection direction)
             {
-                var idPropertyDefinition = new ColumnDefinition<EntityDummy, int>()
-                {
-                    Property = typeof(EntityDummy).GetProperty(nameof(EntityDummy.Id)),
-                    IsAscending = ascending
-                };
+                var property = typeof(EntityDummy).GetProperty(nameof(EntityDummy.Id));
+
+                var idPropertyDefinition = new ColumnDefinition<EntityDummy, int>(property, ascending);
 
                 var query = idPropertyDefinition.ApplyColumnOrderTo(_entities.AsQueryable(), direction);
 
@@ -93,10 +91,9 @@ namespace AllOverIt.Pagination.Tests
             [Fact]
             public void Should_Throw_When_Queryable_Null()
             {
-                var idPropertyDefinition = new ColumnDefinition<EntityDummy, int>()
-                {
-                    Property = typeof(EntityDummy).GetProperty(nameof(EntityDummy.Id))
-                };
+                var property = typeof(EntityDummy).GetProperty(nameof(EntityDummy.Id));
+
+                var idPropertyDefinition = new ColumnDefinition<EntityDummy, int>(property, Create<bool>());
 
                 Invoking(() =>
                 {
@@ -105,21 +102,6 @@ namespace AllOverIt.Pagination.Tests
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("queryable");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Property_Null()
-            {
-                var propertyDefinition = new ColumnDefinition<EntityDummy, int>();
-                var query = _entities.AsQueryable().OrderBy(item => item.Id);
-
-                Invoking(() =>
-                {
-                    propertyDefinition.ThenApplyColumnOrderTo(query, Create<PaginationDirection>());
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("Property");
             }
 
             [Theory]
@@ -140,19 +122,15 @@ namespace AllOverIt.Pagination.Tests
                     .Concat(newEntities)
                     .AsReadOnlyCollection();
 
-                var idPropertyDefinition = new ColumnDefinition<EntityDummy, int>()
-                {
-                    Property = typeof(EntityDummy).GetProperty(nameof(EntityDummy.Id)),
-                    IsAscending = ascending
-                };
+                var idProperty = typeof(EntityDummy).GetProperty(nameof(EntityDummy.Id));
+
+                var idPropertyDefinition = new ColumnDefinition<EntityDummy, int>(idProperty, ascending);
 
                 var query = idPropertyDefinition.ApplyColumnOrderTo(_entities.AsQueryable(), direction);
 
-                var namePropertyDefinition = new ColumnDefinition<EntityDummy, string>()
-                {
-                    Property = typeof(EntityDummy).GetProperty(nameof(EntityDummy.Name)),
-                    IsAscending = ascending
-                };
+                var nameProperty = typeof(EntityDummy).GetProperty(nameof(EntityDummy.Id));
+
+                var namePropertyDefinition = new ColumnDefinition<EntityDummy, string>(nameProperty, ascending);
 
                 query = namePropertyDefinition.ThenApplyColumnOrderTo(query, direction);
 

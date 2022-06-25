@@ -26,16 +26,8 @@ namespace AllOverIt.Pagination.Tests
         {
             _columns = new IColumnDefinition[]
             {
-                new ColumnDefinition<EntityDummy, string>()
-                {
-                    Property = typeof(EntityDummy).GetProperty(nameof(EntityDummy.Name)),
-                    IsAscending = Create<bool>()
-                },
-                new ColumnDefinition<EntityDummy, int>()
-                {
-                    Property = typeof(EntityDummy).GetProperty(nameof(EntityDummy.Id)),
-                    IsAscending = Create<bool>()
-                }
+                new ColumnDefinition<EntityDummy, string>(typeof(EntityDummy).GetProperty(nameof(EntityDummy.Name)), Create<bool>()),
+                new ColumnDefinition<EntityDummy, int>(typeof(EntityDummy).GetProperty(nameof(EntityDummy.Id)), Create<bool>())
             };
         }
 

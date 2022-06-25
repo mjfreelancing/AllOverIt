@@ -181,11 +181,7 @@ namespace AllOverIt.Pagination
 
             var property = (PropertyInfo)fieldOrProperty;
 
-            var paginationItem = new ColumnDefinition<TEntity, TProperty>
-            {
-                Property = property,
-                IsAscending = isAscending
-            };
+            var paginationItem = new ColumnDefinition<TEntity, TProperty>(property, isAscending);
 
             _columns.Add(paginationItem);
         }

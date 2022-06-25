@@ -13,6 +13,7 @@ namespace AllOverIt.Pagination.Extensions
             _ = columns.WhenNotNullOrEmpty(nameof(columns));
             _ = reference.WhenNotNull(nameof(reference));
 
+            // The reference type could be different to the entity type
             var referenceTypeInfo = reference.GetType().GetTypeInfo();
 
             return columns

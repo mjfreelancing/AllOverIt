@@ -49,9 +49,9 @@ namespace AllOverIt.Pagination.Tests.Extensions
             public void Should_Throw_When_Reference_Null()
             {
                 var columns = new List<IColumnDefinition>
-            {
-                new ColumnDefinition<EntityDummy, string>()
-            };
+                {
+                    new ColumnDefinition<EntityDummy, string>(typeof(EntityDummy).GetProperty(nameof(EntityDummy.Name)), Create<bool>())
+                };
 
                 Invoking(() =>
                 {
@@ -68,15 +68,8 @@ namespace AllOverIt.Pagination.Tests.Extensions
                 var columns = new List<IColumnDefinition>();
                 var entity = Create<EntityDummy>();
 
-                columns.Add(new ColumnDefinition<EntityDummy, string>
-                {
-                    Property = entity.GetType().GetPropertyInfo("Name")
-                });
-
-                columns.Add(new ColumnDefinition<EntityDummy, int>
-                {
-                    Property = entity.GetType().GetPropertyInfo("Id")
-                });
+                columns.Add(new ColumnDefinition<EntityDummy, string>(entity.GetType().GetPropertyInfo("Name"), Create<bool>()));
+                columns.Add(new ColumnDefinition<EntityDummy, int>(entity.GetType().GetPropertyInfo("Id"), Create<bool>()));
 
                 var actual = ColumnItemExtensions.GetColumnValues(columns, entity);
 
