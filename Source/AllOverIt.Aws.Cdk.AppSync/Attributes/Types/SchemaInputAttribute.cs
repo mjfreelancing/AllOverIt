@@ -3,8 +3,7 @@
     /// <summary>Apply to an interface that describes a schema 'input' type.</summary>
     public class SchemaInputAttribute : SchemaTypeBaseAttribute
     {
-        /// <summary>When not null or empty, identifies the portion of the input's namespace to exclude from the
-        /// generated name.</summary>
+        /// <summary>Constructor.</summary>
         public SchemaInputAttribute()
             : base(GraphqlSchemaType.Input)
         {
