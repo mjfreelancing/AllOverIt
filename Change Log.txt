@@ -17,6 +17,7 @@ AllOverIt
   * ReflectionHelper replaced by ReflectionCache methods
   * Added a convenience global Breadcrumbs instance (GlobalBreadcrumbs) - for troubleshooting use only
   * Removed all GenericCacheExtensions - already handled by ReflectionCache. Renamed ReflectionCacheKey to IReflectionCacheKey.
+  * Added caching to BuildBindingPredicate()
 
 AllOverIt.Assertion
   * Removed methods that asserted an enumerable was a concrete collection type and instead updated .NET Core 3.1
