@@ -1,4 +1,5 @@
-﻿using AllOverIt.Expressions;
+﻿using AllOverIt.Caching;
+using AllOverIt.Expressions;
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -9,36 +10,43 @@ namespace AllOverIt.Reflection
     {
         internal static Func<MethodBase, bool> BuildBindingPredicate(BindingOptions bindingOptions)
         {
-            // set up defaults for each group
-            if ((bindingOptions & BindingOptions.AllScope) == 0)
+            var key = new GenericCacheKey<IReflectionCacheKey<BindingOptions>, BindingOptions>(null, bindingOptions);
+
+            return GenericCache.Default.GetOrAdd(key, cacheKey =>
             {
-                bindingOptions |= BindingOptions.DefaultScope;
-            }
+                var (_, options) = (GenericCacheKey<IReflectionCacheKey<BindingOptions>, BindingOptions>) cacheKey;
 
-            if ((bindingOptions & BindingOptions.AllAccessor) == 0)
-            {
-                bindingOptions |= BindingOptions.DefaultAccessor;
-            }
+                // set up defaults for each group
+                if ((options & BindingOptions.AllScope) == 0)
+                {
+                    options |= BindingOptions.DefaultScope;
+                }
 
-            if ((bindingOptions & BindingOptions.AllVisibility) == 0)
-            {
-                bindingOptions |= BindingOptions.DefaultVisibility;
-            }
+                if ((options & BindingOptions.AllAccessor) == 0)
+                {
+                    options |= BindingOptions.DefaultAccessor;
+                }
 
-            // calls such as bindingOptions.HasFlag(BindingOptions.Static) are slower than using bitwise operations (See Code Analysis warning RCS1096)
-            var scopePredicate = OrBindProperty(null, () => (bindingOptions & BindingOptions.Static) != 0, info => info.IsStatic)
-                .OrBindProperty(() => (bindingOptions & BindingOptions.Instance) != 0, info => !info.IsStatic);
+                if ((options & BindingOptions.AllVisibility) == 0)
+                {
+                    options |= BindingOptions.DefaultVisibility;
+                }
 
-            var accessorPredicate = OrBindProperty(null, () => (bindingOptions & BindingOptions.Abstract) != 0, info => info.IsAbstract)
-                .OrBindProperty(() => (bindingOptions & BindingOptions.Virtual) != 0, info => info.IsVirtual)
-                .OrBindProperty(() => (bindingOptions & BindingOptions.NonVirtual) != 0, info => !info.IsVirtual);
+                // calls such as bindingOptions.HasFlag(BindingOptions.Static) are slower than using bitwise operations (See Code Analysis warning RCS1096)
+                var scopePredicate = OrBindProperty(null, () => (options & BindingOptions.Static) != 0, info => info.IsStatic)
+                    .OrBindProperty(() => (options & BindingOptions.Instance) != 0, info => !info.IsStatic);
 
-            var visibilityPredicate = OrBindProperty(null, () => (bindingOptions & BindingOptions.Public) != 0, info => info.IsPublic)
-                .OrBindProperty(() => (bindingOptions & BindingOptions.Protected) != 0, info => info.IsFamily)
-                .OrBindProperty(() => (bindingOptions & BindingOptions.Private) != 0, info => info.IsPrivate)
-                .OrBindProperty(() => (bindingOptions & BindingOptions.Internal) != 0, info => info.IsAssembly);
+                var accessorPredicate = OrBindProperty(null, () => (options & BindingOptions.Abstract) != 0, info => info.IsAbstract)
+                    .OrBindProperty(() => (options & BindingOptions.Virtual) != 0, info => info.IsVirtual)
+                    .OrBindProperty(() => (options & BindingOptions.NonVirtual) != 0, info => !info.IsVirtual);
 
-            return scopePredicate.And(accessorPredicate).And(visibilityPredicate).Compile();
+                var visibilityPredicate = OrBindProperty(null, () => (options & BindingOptions.Public) != 0, info => info.IsPublic)
+                    .OrBindProperty(() => (options & BindingOptions.Protected) != 0, info => info.IsFamily)
+                    .OrBindProperty(() => (options & BindingOptions.Private) != 0, info => info.IsPrivate)
+                    .OrBindProperty(() => (options & BindingOptions.Internal) != 0, info => info.IsAssembly);
+
+                return scopePredicate.And(accessorPredicate).And(visibilityPredicate).Compile();
+            });
         }
 
         private static Expression<Func<MethodBase, bool>> OrBindProperty(this Expression<Func<MethodBase, bool>> expression,
