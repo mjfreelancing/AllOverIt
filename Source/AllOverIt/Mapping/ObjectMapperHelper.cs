@@ -60,22 +60,24 @@ namespace AllOverIt.Mapping
 
         private static IEnumerable<PropertyInfo> GetFilteredSourcePropertyInfo(Type sourceType, ObjectMapperOptions options)
         {
-            var sourceProps = new List<PropertyInfo>();
+            var propertyInfo = ReflectionCache
+                .GetPropertyInfo(sourceType, options.Binding)
+                .AsReadOnlyCollection();
+
+            var sourceProps = new List<PropertyInfo>(propertyInfo.Count);
 
             // Deliberately written without the use of LINQ - benchmarking shows better performance and less memory allocations
-
-            // ReSharper disable once LoopCanBeConvertedToQuery
-            foreach (var prop in ReflectionCache.GetPropertyInfo(sourceType, options.Binding))
+            foreach (var propInfo in propertyInfo)
             {
                 // With regards to 'options.Filter', apart from a performance benefit, the source properties must be filtered before looking for
                 // matches (below) just in case the source contains a property name that is not required (excluded via the Filter) but is mapped
                 // to a target property of the same name. Without the pre-filtering, the source selector used in FindMatches() would result in
                 // that property name being added twice, resulting in a duplicate key error.
-                if (prop.CanRead &&
-                    !options.IsExcluded(prop.Name) &&
-                    (options.Filter == null || options.Filter.Invoke(prop)))
+                if (propInfo.CanRead &&
+                    !options.IsExcluded(propInfo.Name) &&
+                    (options.Filter == null || options.Filter.Invoke(propInfo)))
                 {
-                    sourceProps.Add(prop);
+                    sourceProps.Add(propInfo);
                 }
             }
 
@@ -84,16 +86,18 @@ namespace AllOverIt.Mapping
 
         private static IEnumerable<PropertyInfo> GetFilteredTargetPropertyInfo(Type targetType, ObjectMapperOptions options)
         {
-            var targetProps = new List<PropertyInfo>();
+            var propertyInfo = ReflectionCache
+                .GetPropertyInfo(targetType, options.Binding)
+                .AsReadOnlyCollection();
+
+            var targetProps = new List<PropertyInfo>(propertyInfo.Count);
 
             // Deliberately written without the use of LINQ - benchmarking shows better performance and less memory allocations
-
-            // ReSharper disable once LoopCanBeConvertedToQuery
-            foreach (var prop in ReflectionCache.GetPropertyInfo(targetType, options.Binding))
+            foreach (var propInfo in propertyInfo)
             {
-                if (prop.CanWrite)
+                if (propInfo.CanWrite)
                 {
-                    targetProps.Add(prop);
+                    targetProps.Add(propInfo);
                 }
             }
 

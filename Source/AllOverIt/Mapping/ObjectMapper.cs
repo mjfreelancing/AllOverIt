@@ -37,10 +37,10 @@ namespace AllOverIt.Mapping
             internal MatchingPropertyMapper(Type sourceType, Type targetType, ObjectMapperOptions mapperOptions)
             {
                 MapperOptions = mapperOptions.WhenNotNull(nameof(mapperOptions));
-                
+
                 // Find properties that match between the source and target (or have an alias) and meet any filter criteria.
                 var matches = ObjectMapperHelper.GetMappableProperties(sourceType, targetType, mapperOptions);
-                
+
                 var sourcePropertyInfo = ReflectionCache
                     .GetPropertyInfo(sourceType, mapperOptions.Binding)
                     .ToDictionary(prop => prop.Name);
@@ -49,9 +49,8 @@ namespace AllOverIt.Mapping
                     .GetPropertyInfo(targetType, mapperOptions.Binding)
                     .ToDictionary(prop => prop.Name);
 
-                var matchedProps = new List<PropertyMatchInfo>();
+                var matchedProps = new List<PropertyMatchInfo>(matches.Count);
 
-                // ReSharper disable once LoopCanBeConvertedToQuery
                 foreach (var match in matches)
                 {
                     var sourcePropInfo = sourcePropertyInfo[match.Name];
@@ -89,6 +88,7 @@ namespace AllOverIt.Mapping
         {
             var sourceType = typeof(TSource);
             var targetType = typeof(TTarget);
+
             var mapperOptions = GetConfiguredOptionsOrDefault(configure);
 
             _ = CreateMapper(sourceType, targetType, mapperOptions);
@@ -102,11 +102,9 @@ namespace AllOverIt.Mapping
         {
             _ = source.WhenNotNull(nameof(source));
 
-            var sourceType = source.GetType();
-            var targetType = typeof(TTarget);
             var target = new TTarget();
 
-            return MapSourceToTarget(sourceType, source, targetType, target);
+            return MapSourceToTarget(source, target);
         }
 
         /// <inheritdoc />
@@ -116,17 +114,17 @@ namespace AllOverIt.Mapping
             where TSource : class
             where TTarget : class
         {
-            var sourceType = typeof(TSource);
-            var targetType = typeof(TTarget);
-
-            return MapSourceToTarget(sourceType, source, targetType, target);
-        }
-
-        private TTarget MapSourceToTarget<TTarget>(Type sourceType, object source, Type targetType, TTarget target)
-            where TTarget : class
-        {
             _ = source.WhenNotNull(nameof(source));
             _ = target.WhenNotNull(nameof(target));
+
+            return MapSourceToTarget(source, target);
+        }
+
+        private TTarget MapSourceToTarget<TTarget>(object source, TTarget target)
+            where TTarget : class
+        {
+            var sourceType = source.GetType();
+            var targetType = typeof(TTarget);
 
             var mapper = GetMapper(sourceType, targetType);
             mapper.MapPropertyValues(source, target);
