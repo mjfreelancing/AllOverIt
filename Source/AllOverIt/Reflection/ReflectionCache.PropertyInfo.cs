@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Caching;
 using AllOverIt.Extensions;
-using AllOverIt.Reflection.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -46,7 +45,9 @@ namespace AllOverIt.Reflection
         /// <returns>The <see cref="PropertyInfo"/> for a given property on a <see cref="TypeInfo"/> from the default cache.</returns>
         public static PropertyInfo GetPropertyInfo(TypeInfo typeInfo, string propertyName, Func<GenericCacheKeyBase, PropertyInfo> valueResolver = default)
         {
-            return GenericCache.Default.GetPropertyInfo(typeInfo, propertyName, valueResolver ?? GetPropertyInfoFromTypeInfoPropertyName());
+            var key = new GenericCacheKey<IReflectionCacheKey<PropertyInfo>, TypeInfo, string>(null, typeInfo, propertyName);
+
+            return GenericCache.Default.GetOrAdd(key, valueResolver ?? GetPropertyInfoFromTypeInfoPropertyName());
         }
 
         /// <summary>Gets <see cref="PropertyInfo"/> (property metadata) for a given <typeparamref name="TType"/> and options from the default cache.
@@ -77,7 +78,9 @@ namespace AllOverIt.Reflection
         public static IEnumerable<PropertyInfo> GetPropertyInfo(Type type, BindingOptions bindingOptions, bool declaredOnly = false,
             Func<GenericCacheKeyBase, IEnumerable<PropertyInfo>> valueResolver = default)
         {
-            return GenericCache.Default.GetPropertyInfo(type, bindingOptions, declaredOnly, valueResolver ?? GetPropertyInfoFromTypeBindingDeclaredOnly());
+            var key = new GenericCacheKey<IReflectionCacheKey<PropertyInfo>, Type, BindingOptions, bool>(null, type, bindingOptions, declaredOnly);
+
+            return GenericCache.Default.GetOrAdd(key, valueResolver ?? GetPropertyInfoFromTypeBindingDeclaredOnly());
         }
 
         /// <summary>Gets all <see cref="PropertyInfo"/> for a given <see cref="Type"/> and options from the default cache. If the <see cref="PropertyInfo"/>
@@ -90,14 +93,16 @@ namespace AllOverIt.Reflection
         public static IEnumerable<PropertyInfo> GetPropertyInfo(TypeInfo typeInfo, bool declaredOnly = false,
             Func<GenericCacheKeyBase, IEnumerable<PropertyInfo>> valueResolver = default)
         {
-            return GenericCache.Default.GetPropertyInfo(typeInfo, declaredOnly, valueResolver ?? GetPropertyInfoFromTypeInfoDeclaredOnly());
+            var key = new GenericCacheKey<IReflectionCacheKey<PropertyInfo>, TypeInfo, bool>(null, typeInfo, declaredOnly);
+
+            return GenericCache.Default.GetOrAdd(key, valueResolver ?? GetPropertyInfoFromTypeInfoDeclaredOnly());
         }
 
         private static Func<GenericCacheKeyBase, IEnumerable<PropertyInfo>> GetPropertyInfoFromTypeBindingDeclaredOnly()
         {
             return key =>
             {
-                var (_, type, bindingOptions, declaredOnly) = (GenericCacheKey<ReflectionCacheKey<PropertyInfo>, Type, BindingOptions, bool>) key;
+                var (_, type, bindingOptions, declaredOnly) = (GenericCacheKey<IReflectionCacheKey<PropertyInfo>, Type, BindingOptions, bool>) key;
 
                 return type
                     .GetPropertyInfo(bindingOptions, declaredOnly)
@@ -109,7 +114,7 @@ namespace AllOverIt.Reflection
         {
             return key =>
             {
-                var (_, typeInfo, declaredOnly) = (GenericCacheKey<ReflectionCacheKey<PropertyInfo>, TypeInfo, bool>) key;
+                var (_, typeInfo, declaredOnly) = (GenericCacheKey<IReflectionCacheKey<PropertyInfo>, TypeInfo, bool>) key;
 
                 return typeInfo
                     .GetPropertyInfo(declaredOnly)
@@ -121,7 +126,7 @@ namespace AllOverIt.Reflection
         {
             return key =>
             {
-                var (_, typeInfo, propertyName) = (GenericCacheKey<ReflectionCacheKey<PropertyInfo>, TypeInfo, string>) key;
+                var (_, typeInfo, propertyName) = (GenericCacheKey<IReflectionCacheKey<PropertyInfo>, TypeInfo, string>) key;
 
                 return typeInfo.GetPropertyInfo(propertyName);
             };

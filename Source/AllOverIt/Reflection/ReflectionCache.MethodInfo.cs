@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Caching;
 using AllOverIt.Extensions;
-using AllOverIt.Reflection.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -37,7 +36,9 @@ namespace AllOverIt.Reflection
         public static IEnumerable<MethodInfo> GetMethodInfo(Type type, BindingOptions bindingOptions = BindingOptions.Default, bool declaredOnly = false,
             Func<GenericCacheKeyBase, IEnumerable<MethodInfo>> valueResolver = default)
         {
-            return GenericCache.Default.GetMethodInfo(type, bindingOptions, declaredOnly, valueResolver ?? GetMethodInfoFromTypeBindingDeclaredOnly());
+            var key = new GenericCacheKey<IReflectionCacheKey<MethodInfo>, Type, BindingOptions, bool>(null, type, bindingOptions, declaredOnly);
+
+            return GenericCache.Default.GetOrAdd(key, valueResolver ?? GetMethodInfoFromTypeBindingDeclaredOnly());
         }
 
         /// <summary>Gets <see cref="MethodInfo"/> (method metadata) for a given <typeparamref name="TType"/> and method name.</summary>
@@ -83,14 +84,16 @@ namespace AllOverIt.Reflection
         /// <remarks>All instance, static, public, and non-public methods are searched.</remarks>
         public static MethodInfo GetMethodInfo(Type type, string name, Type[] types, Func<GenericCacheKeyBase, MethodInfo> valueResolver = default)
         {
-            return GenericCache.Default.GetMethodInfo(type, name, types, valueResolver ?? GetMethodInfoFromTypeMethodNameArgTypes());
+            var key = new GenericCacheKey<IReflectionCacheKey<MethodInfo>, Type, string, Type[]>(null, type, name, types);
+
+            return GenericCache.Default.GetOrAdd(key, valueResolver ?? GetMethodInfoFromTypeMethodNameArgTypes());
         }
 
         private static Func<GenericCacheKeyBase, IEnumerable<MethodInfo>> GetMethodInfoFromTypeBindingDeclaredOnly()
         {
             return key =>
             {
-                var (_, type, bindingOptions, declaredOnly) = (GenericCacheKey<ReflectionCacheKey<MethodInfo>, Type, BindingOptions, bool>) key;
+                var (_, type, bindingOptions, declaredOnly) = (GenericCacheKey<IReflectionCacheKey<MethodInfo>, Type, BindingOptions, bool>) key;
 
                 return type
                     .GetMethodInfo(bindingOptions, declaredOnly)
@@ -102,7 +105,7 @@ namespace AllOverIt.Reflection
         {
             return key =>
             {
-                var (_, type, name, types) = (GenericCacheKey<ReflectionCacheKey<MethodInfo>, Type, string, Type[]>) key;
+                var (_, type, name, types) = (GenericCacheKey<IReflectionCacheKey<MethodInfo>, Type, string, Type[]>) key;
 
                 return type.GetMethodInfo(name, types);
             };
