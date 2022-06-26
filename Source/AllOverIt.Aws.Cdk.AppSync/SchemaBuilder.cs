@@ -142,6 +142,8 @@ namespace AllOverIt.Aws.Cdk.AppSync
                         requiredTypeInfo,
                         objectType => _graphqlApi.AddType(objectType));
 
+                var authDirectives = methodInfo.GetAuthDirectivesOrDefault();
+
                 // AddQuery / AddMutation
                 graphqlAction.Invoke(methodInfo.Name.GetGraphqlName(),
                     new ResolvableField(
@@ -151,7 +153,8 @@ namespace AllOverIt.Aws.Cdk.AppSync
                             RequestMappingTemplate = _mappingTemplates.GetRequestMapping(fieldMapping),
                             ResponseMappingTemplate = _mappingTemplates.GetResponseMapping(fieldMapping),
                             Args = methodInfo.GetMethodArgs(_graphqlApi, _typeStore),
-                            ReturnType = returnObjectType
+                            ReturnType = returnObjectType,
+                            Directives = authDirectives
                         })
                 );
             }

@@ -32,6 +32,7 @@ namespace GraphqlSchema.Schema
         [NoneDataSource(nameof(Continents), typeof(ContinentsMapping))]
         IContinent[] Continents([SchemaTypeRequired] IContinentFilterInput filter);
 
+        [AuthLambdaDirective]
         [HttpDataSource(EndpointSource.EnvironmentVariable, Constants.HttpDataSource.GetAllContinentsUrlEnvironmentName, typeof(AllContinentsMapping))]
         IContinentConnection AllContinents();
 
