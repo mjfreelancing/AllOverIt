@@ -128,7 +128,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var query = idPropertyDefinition.ApplyColumnOrderTo(_entities.AsQueryable(), direction);
 
-                var nameProperty = typeof(EntityDummy).GetProperty(nameof(EntityDummy.Id));
+                var nameProperty = typeof(EntityDummy).GetProperty(nameof(EntityDummy.Name));
 
                 var namePropertyDefinition = new ColumnDefinition<EntityDummy, string>(nameProperty, ascending);
 

@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Extensions;
+using AllOverIt.Serialization;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,7 +14,7 @@ namespace AllOverIt.Pagination
         {
             using(var stream = new MemoryStream())
             {
-                using (var writer = new BinaryWriter(stream))
+                using (var writer = new EnrichedBinaryWriter(stream))
                 {
                     // Direction
                     writer.Write((byte) continuationToken.Direction);
@@ -27,12 +28,16 @@ namespace AllOverIt.Pagination
                         // Each Value
                         foreach (var value in continuationToken.Values)
                         {
-                            var strValue = ValueToString(value);
-                            var valueBytes = Encoding.UTF8.GetBytes(strValue);
+                            writer.WriteObject(value);
 
-                            // Store as individual bytes with a header length (avoid issues with delimiters and quotes in strings)
-                            writer.Write(valueBytes.Length);
-                            writer.Write(valueBytes);
+                            //// Not using TypeDescriptor.GetConverter() as it incorrectly formats DateTime values (there's no converter)
+                            //// so As<string>() converts it to a string first => see if we can find a more efficient approach
+                            //var strValue = value.As<string>();
+                            //var valueBytes = Encoding.UTF8.GetBytes(strValue);
+
+                            //// Store as individual bytes with a header length (avoid issues with delimiters and quotes in strings)
+                            //writer.Write(valueBytes.Length);
+                            //writer.Write(valueBytes);
                         }
                     }
 
@@ -55,7 +60,7 @@ namespace AllOverIt.Pagination
 
             using (var stream = new MemoryStream(bytes))
             {
-                using (var reader = new BinaryReader(stream))
+                using (var reader = new EnrichedBinaryReader(stream))
                 {
                     var direction = (PaginationDirection) reader.ReadByte();
                     var valueCount = (int) reader.ReadByte();
@@ -72,12 +77,14 @@ namespace AllOverIt.Pagination
 
                     for (var i = 0; i < valueCount; i++)
                     {
-                        var length = reader.ReadInt32();
-                        var valueBytes = reader.ReadBytes(length);
-                        var strValue = Encoding.UTF8.GetString(valueBytes);
+                        //var length = reader.ReadInt32();
+                        //var valueBytes = reader.ReadBytes(length);
+                        //var strValue = Encoding.UTF8.GetString(valueBytes);
 
-                        var column = columnDefinitions[i];
-                        var value = TypeDescriptor.GetConverter(column.Property.PropertyType).ConvertFrom(strValue);
+                        //var column = columnDefinitions[i];
+                        //var value = TypeDescriptor.GetConverter(column.Property.PropertyType).ConvertFrom(strValue);
+
+                        var value = reader.ReadObject();
 
                         values.Add(value);
                     }
@@ -91,18 +98,18 @@ namespace AllOverIt.Pagination
             }
         }
 
-        private static string ValueToString(object value)
-        {
-            return TypeDescriptor
-                .GetConverter(value.GetType())
-                .ConvertToInvariantString(value);
-        }
+        //private static string ValueToString(object value)
+        //{
+        //    return TypeDescriptor
+        //        .GetConverter(value.GetType())
+        //        .ConvertToInvariantString(value);
+        //}
 
-        private static object ValueFromString(string value, Type type)
-        {
-            return TypeDescriptor
-                .GetConverter(type)
-                .ConvertFrom(value);
-        }
+        //private static object ValueFromString(string value, Type type)
+        //{
+        //    return TypeDescriptor
+        //        .GetConverter(type)
+        //        .ConvertFrom(value);
+        //}
     }
 }

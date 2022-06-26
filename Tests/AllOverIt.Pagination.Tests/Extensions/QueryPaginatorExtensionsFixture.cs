@@ -227,8 +227,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
                 var pageSize = _entities.Count / 2;
 
                 var paginator = CreatePaginator(pageSize, PaginationDirection.Forward)
-                    .ColumnAscending(entity => entity.FirstName, item => item.LicenseNumber, entity => entity.LastName,
-                    item => item.DateOfBirth, entity => entity.Id);
+                    .ColumnAscending(entity => entity.FirstName, item => item.LicenseNumber, entity => entity.LastName, item => item.DateOfBirth, entity => entity.Id);
 
                 var expectedQuery = _entities
                     .OrderBy(item => item.FirstName)
@@ -252,8 +251,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
                 var pageSize = _entities.Count / 2;
 
                 var paginator = CreatePaginator(pageSize, PaginationDirection.Backward)
-                    .ColumnAscending(entity => entity.LastName, item => item.LicenseNumber, entity => entity.FirstName,
-                    item => item.DateOfBirth, entity => entity.Id);
+                    .ColumnAscending(entity => entity.LastName, item => item.LicenseNumber, entity => entity.FirstName, item => item.DateOfBirth, entity => entity.Id);
 
                 var expectedQuery = _entities
                     .OrderBy(item => item.LastName)
