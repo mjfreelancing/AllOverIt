@@ -77,12 +77,9 @@ namespace AllOverIt.Tests.Extensions
             var parent = Create<ParentClass>();
 
             Expression<Func<int>> expression = () => parent.Child.Property;
-
-            // unwrap the LambdaExpression
-            var memberExpression = expression.UnwrapMemberExpression();
-
-            var members = memberExpression
-              .GetMemberExpressions()
+            
+            var members = expression
+              .GetMemberExpressions()               // unwraps the LambdaExpression
               .Select(exp => exp.GetValue())
               .AsReadOnlyList();
 

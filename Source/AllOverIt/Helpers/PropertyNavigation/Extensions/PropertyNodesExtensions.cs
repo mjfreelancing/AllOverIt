@@ -1,9 +1,9 @@
-﻿using System;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using AllOverIt.Assertion;
-using AllOverIt.Extensions;
 
 namespace AllOverIt.Helpers.PropertyNavigation.Extensions
 {
@@ -67,14 +67,9 @@ namespace AllOverIt.Helpers.PropertyNavigation.Extensions
 
         private static IEnumerable<PropertyNode> GetNodes(Expression expression)
         {
-            var unwrappedExpression = expression.UnwrapMemberExpression();
+            var memberExpressions = expression.GetMemberExpressions();
 
-            if (unwrappedExpression == null)
-            {
-                throw new Exception($"Invalid expression. Expected a MemberExpression near '{expression}'.");
-            }
-
-            foreach (var memberExpression in unwrappedExpression.GetMemberExpressions())
+            foreach (var memberExpression in memberExpressions)
             {
                 yield return new PropertyNode
                 {

@@ -12,17 +12,19 @@ namespace AllOverIt.Extensions
         /// <summary>Recursively get all <see cref="MemberExpression"/> expressions linked to <paramref name="expression"/>.</summary>
         /// <param name="expression">The expression to get all linked <see cref="MemberExpression"/> expressions.</param>
         /// <returns>All linked <see cref="MemberExpression"/> expressions, including <paramref name="expression"/>.</returns>
-        public static IEnumerable<MemberExpression> GetMemberExpressions(this MemberExpression expression)
+        public static IEnumerable<MemberExpression> GetMemberExpressions(this Expression expression)
         {
             _ = expression ?? throw new ArgumentNullException(nameof(expression));
 
+            var memberExpression = UnwrapMemberExpression(expression);
+
             IEnumerable<MemberExpression> GetMembers()
             {
-                while (expression != null)
+                while (memberExpression != null)
                 {
-                    yield return expression;
+                    yield return memberExpression;
 
-                    expression = expression.Expression.UnwrapMemberExpression();
+                    memberExpression = memberExpression.Expression.UnwrapMemberExpression();
                 }
             }
 

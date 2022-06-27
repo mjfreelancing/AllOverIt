@@ -33,15 +33,13 @@ namespace AllOverIt.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Get_Member_Single()
+            public void Should_Get_Member_Single_From_Lambda_Expression()
             {
                 var subject = Create<DummyPropertyClass>();
 
                 Expression<Func<int>> expression = () => subject.Value;
 
-                var memberExpression = expression.Body as MemberExpression;
-
-                var actual = ExpressionExtensions.GetMemberExpressions(memberExpression);
+                var actual = ExpressionExtensions.GetMemberExpressions(expression);
 
                 var expected = new[]{ "Value", "subject" };
 
@@ -49,16 +47,14 @@ namespace AllOverIt.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Get_Member_Nested()
+            public void Should_Get_Member_Nested_From_Lambda_Expression()
             {
                 // can't use Create<> due to cyclic object graph
                 var subject = Create<DummyNestedClass>();
 
                 Expression<Func<int>> expression = () => subject.Child.Value;
 
-                var memberExpression = expression.Body as MemberExpression;
-
-                var actual = ExpressionExtensions.GetMemberExpressions(memberExpression).AsReadOnlyList();
+                var actual = ExpressionExtensions.GetMemberExpressions(expression).AsReadOnlyList();
 
                 ExpressionExtensions.GetValue(actual[0]).Should().Be(subject);
                 ExpressionExtensions.GetValue(actual[1]).Should().Be(subject.Child);
