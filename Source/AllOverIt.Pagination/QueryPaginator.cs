@@ -295,10 +295,11 @@ namespace AllOverIt.Pagination
             //   )
 
             var firstExpression = new FirstExpression();
+            var referenceParameterCache = new Dictionary<int, Expression>();
 
             var param = Expression.Parameter(typeof(TEntity), "entity");    // Represents entity =>
 
-            var finalExpression = CompoundOuterColumnExpressions(direction, param, referenceValues, firstExpression);
+            var finalExpression = CompoundOuterColumnExpressions(direction, param, referenceValues, firstExpression, referenceParameterCache);
 
             if (_columns.Count > 1)
             {
@@ -326,7 +327,7 @@ namespace AllOverIt.Pagination
         }
 
         private BinaryExpression CompoundOuterColumnExpressions(PaginationDirection direction, ParameterExpression param, IReadOnlyList<object> referenceValues,
-            FirstExpression firstExpression)
+            FirstExpression firstExpression, IDictionary<int, Expression> referenceParameterCache)
         {
             var outerExpression = default(BinaryExpression)!;
 
@@ -334,7 +335,7 @@ namespace AllOverIt.Pagination
             for (var idx = 0; idx < _columns.Count; idx++)
             {
                 // Compound the inner AND expressions
-                var innerExpression = CompoundInnerColumnExpressions(direction, param, referenceValues, idx + 1, firstExpression);
+                var innerExpression = CompoundInnerColumnExpressions(direction, param, referenceValues, idx + 1, firstExpression, referenceParameterCache);
 
                 outerExpression = outerExpression == null
                     ? innerExpression
@@ -345,7 +346,7 @@ namespace AllOverIt.Pagination
         }
 
         private BinaryExpression CompoundInnerColumnExpressions(PaginationDirection direction, ParameterExpression param, IReadOnlyList<object> referenceValues,
-            int columnCount, FirstExpression firstExpression)
+            int columnCount, FirstExpression firstExpression, IDictionary<int, Expression> referenceParameterCache)
         {
             var innerExpression = default(BinaryExpression)!;
 
@@ -354,7 +355,7 @@ namespace AllOverIt.Pagination
             {
                 var column = _columns[idx];
                 var memberAccess = Expression.MakeMemberAccess(param, column.Property);
-                var referenceValue = CreateReferenceParameter(referenceValues[idx], column.Property.PropertyType);
+                var referenceValue = CreateReferenceParameter(referenceValues, idx, column.Property.PropertyType, referenceParameterCache);
 
                 // May be used to apply a predicate optimization
                 if (firstExpression.IsPending)
@@ -427,8 +428,15 @@ namespace AllOverIt.Pagination
             }
         }
 
-        private Expression CreateReferenceParameter(object value, Type valueType)
+        private Expression CreateReferenceParameter(IReadOnlyList<object> referenceValues, int index, Type valueType, IDictionary<int, Expression> referenceParameterCache)
         {
+            if (referenceParameterCache.TryGetValue(index, out var expression))
+            {
+                return expression;
+            }
+
+            var value = referenceValues[index];
+
             if (!_configuration.UseParameterizedQueries)
             {
                 return Expression.Constant(value);
@@ -440,7 +448,11 @@ namespace AllOverIt.Pagination
             var constantParameter = Expression.Constant(parameterValue);
             var property = Expression.PropertyOrField(constantParameter, nameof(ParameterHolder.Value));
 
-            return Expression.Convert(property, valueType);
+            expression = Expression.Convert(property, valueType);
+
+            referenceParameterCache.Add(index, expression);
+
+            return expression;
         }
 
         private static Expression EnsureMatchingType(MemberExpression memberExpression, Expression targetExpression)
