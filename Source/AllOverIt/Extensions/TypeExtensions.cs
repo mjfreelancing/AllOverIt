@@ -298,14 +298,12 @@ namespace AllOverIt.Extensions
             return type == toCompare;
         }
 
-        // ReSharper disable once ReturnTypeCanBeEnumerable.Local
         private static IReadOnlyCollection<PropertyInfo> GetFilteredPropertyInfo(TypeInfo typeInfo, bool declaredOnly, Func<MethodBase, bool> predicate)
         {
             // This implementation is better performing than using method/query LINQ queries
 
             var propInfos = new List<PropertyInfo>();
 
-            // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (var propInfo in typeInfo.GetPropertyInfo(declaredOnly))
             {
                 var methodInfo = propInfo.GetMethod;
