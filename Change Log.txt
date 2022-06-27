@@ -30,7 +30,13 @@ AllOverIt.EntityFrameworkCore.Pagination
   * New package to provide keyset based pagination extensions for any EF
 
 
-06 Jun 2022
+27 Jun 2022
+Version 5.9.1
+======================================================================================================================
+AllOverIt.Aws.Cdk.AppSync
+  * Added missing AuthLambdaDirective support to queries and mutations06 Jun 2022
+  
+  
 Version 5.9.0
 ======================================================================================================================
 AllOverIt
