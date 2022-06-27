@@ -4,6 +4,7 @@ using AllOverIt.GenericHost;
 using AllOverIt.Pagination;
 using AllOverIt.Pagination.Extensions;
 using Bogus;
+using Bogus.DataSets;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,7 +17,7 @@ namespace MemoryPaginationDemo
 {
     public sealed class App : ConsoleAppBase
     {
-        // Cannot use 'Person' as it contains fields - can only use properties in queries 
+        // Cannot use 'Bogus.Person' as it contains fields - can only use properties in queries 
         private class PersonModel
         {
             private static int _id;
@@ -24,12 +25,14 @@ namespace MemoryPaginationDemo
             public int Id { get; }
             public string FirstName { get; }
             public string LastName { get; }
+            public Name.Gender Gender { get; }
 
             public PersonModel(Person person)
             {
                 Id = Interlocked.Increment(ref _id);
                 FirstName = person.FirstName;
                 LastName = person.LastName;
+                Gender = person.Gender;
             }
         }
 
@@ -57,10 +60,11 @@ namespace MemoryPaginationDemo
             var query = from person in persons.AsQueryable()
                         select person;
 
-            // Pagination requires a unique column on the end (Id in this example) just in case multiple records have the same lastname / firstname
+            // Pagination requires a unique column on the end (Id in this example) just in case multiple records have the same lastname / firstname.
+            // The 'Gender' item is only including for testing Enum's in the continuation token.
             var queryPaginator = _queryPaginatorFactory
                   .CreatePaginator(query, pageSize)
-                  .ColumnAscending(person => person.LastName, item => item.FirstName, item => item.Id);
+                  .ColumnAscending(person => person.LastName, item => item.FirstName, item => item.Gender, item => item.Id);
 
             string continuationToken = default;
             var key = 'n';
@@ -86,7 +90,7 @@ namespace MemoryPaginationDemo
 
                 pageResults.ForEach(person =>
                 {
-                    Console.WriteLine($"{person.LastName}, {person.FirstName} ({person.Id})");
+                    Console.WriteLine($"{person.LastName}, {person.FirstName} ({person.Gender}, {person.Id})");
                 });
 
                 Console.WriteLine();
@@ -123,7 +127,11 @@ namespace MemoryPaginationDemo
 
                 elapsed = stopwatch.ElapsedMilliseconds;
 
-                Console.WriteLine($"Continuation token generation time: {elapsed - lastCheckpoint}ms");
+                if (continuationToken.IsNotNullOrEmpty())
+                {
+                    Console.WriteLine($"Continuation token generation time: {elapsed - lastCheckpoint}ms");
+                    Console.WriteLine(continuationToken);
+                }
             }
 
             ExitCode = 0;

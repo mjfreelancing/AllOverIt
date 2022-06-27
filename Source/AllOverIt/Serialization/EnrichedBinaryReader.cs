@@ -25,7 +25,17 @@ namespace AllOverIt.Serialization
             { TypeMapping.TypeId.Decimal, reader => reader.ReadDecimal() },
             { TypeMapping.TypeId.String, reader => reader.ReadString() },
             { TypeMapping.TypeId.Char, reader => reader.ReadChar() },
-            { TypeMapping.TypeId.Enum, reader => reader.ReadInt32() },
+
+            { TypeMapping.TypeId.Enum, reader =>
+                {
+                    var valueTypeName = reader.ReadString();
+                    var valueType = Type.GetType(valueTypeName);                    // TODO: Check for null
+
+                    var value = reader.ReadString();                                // TypeIdReader[rawTypeId].Invoke(this);
+                    return Enum.Parse(valueType, value);
+                }
+            },
+
             { TypeMapping.TypeId.Guid, reader => new Guid(reader.ReadBytes(16)) },
             { TypeMapping.TypeId.DateTime, reader => DateTime.FromBinary(reader.ReadInt64()) },
             { TypeMapping.TypeId.TimeSpan, reader => new TimeSpan(reader.ReadInt64()) }

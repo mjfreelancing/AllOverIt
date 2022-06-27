@@ -26,7 +26,16 @@ namespace AllOverIt.Serialization
             { TypeMapping.TypeId.Decimal, (writer, value) => writer.WriteDecimal((decimal)value) },
             { TypeMapping.TypeId.String, (writer, value) => writer.WriteString((string)value) },
             { TypeMapping.TypeId.Char, (writer, value) => writer.WriteChar((char)value) },
-            { TypeMapping.TypeId.Enum, (writer, value) => writer.WriteInt32((int)value) },                              // TODO: Need to write (and restore) the actual enum type
+            
+            { TypeMapping.TypeId.Enum, (writer, value) =>
+                {
+                    // Need the string representation of the value in order to convert it back to the original Enum type.
+                    // Convert.ChangeType() cannot convert an integral type to an Enum type.
+                    writer.WriteString(value.GetType().AssemblyQualifiedName);        // Need to store a registry of types rather than write them all the time
+                    writer.WriteString($"{value}");   
+                }
+            },
+
             { TypeMapping.TypeId.Guid, (writer, value) => writer.WriteBytes(((Guid)value).ToByteArray()) },
             { TypeMapping.TypeId.DateTime, (writer, value) => writer.WriteInt64(((DateTime)value).ToBinary()) },
             { TypeMapping.TypeId.TimeSpan, (writer, value) => writer.WriteInt64(((TimeSpan)value).Ticks) }
@@ -72,6 +81,7 @@ namespace AllOverIt.Serialization
                 if (type.IsEnum)
                 {
                     rawTypeId = TypeMapping.TypeId.Enum;
+                    hasTypeId = true;
                 }
             }
 
