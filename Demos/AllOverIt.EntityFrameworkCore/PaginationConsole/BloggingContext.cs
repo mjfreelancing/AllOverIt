@@ -13,15 +13,15 @@ namespace PaginationConsole
         {
             base.OnConfiguring(options);
 
-            if (DatabaseStartupOptions.Use == DatabaseChoice.Mysql)
+            if (DemoStartupOptions.Use == DatabaseChoice.Mysql)
             {
                 options.UseMySql("server=localhost;user=root;password=password;database=PaginatedBlogPosts", new MySqlServerVersion(new Version(8, 0, 26)));
             }
-            else if (DatabaseStartupOptions.Use == DatabaseChoice.Sqlite)
+            else if (DemoStartupOptions.Use == DatabaseChoice.Sqlite)
             {
                 options.UseSqlite("Data Source=PaginatedBlogPosts.db");
             }
-            else if (DatabaseStartupOptions.Use == DatabaseChoice.PostgreSql)
+            else if (DemoStartupOptions.Use == DatabaseChoice.PostgreSql)
             {
                 options.UseNpgsql("Host=localhost;Database=PaginatedBlogPosts;Username=postgres;Password=password", options =>
                 {
@@ -30,7 +30,7 @@ namespace PaginationConsole
             }
             else
             {
-                throw new NotImplementedException($"Unknown database type {DatabaseStartupOptions.Use}");
+                throw new NotImplementedException($"Unknown database type {DemoStartupOptions.Use}");
             }
 
             options

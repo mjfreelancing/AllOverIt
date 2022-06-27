@@ -39,11 +39,11 @@ namespace PaginationConsole
             {
                 dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
-                if (DatabaseStartupOptions.RecreateData)
+                if (DemoStartupOptions.RecreateData)
                 {
                     await dbContext.Database.EnsureDeletedAsync(cancellationToken);
 
-                    switch (DatabaseStartupOptions.Use)
+                    switch (DemoStartupOptions.Use)
                     {
                         case DatabaseChoice.Mysql:
                         case DatabaseChoice.PostgreSql:
@@ -55,7 +55,7 @@ namespace PaginationConsole
                             break;
 
                         default:
-                            throw new NotImplementedException($"Unknown database type {DatabaseStartupOptions.Use}");
+                            throw new NotImplementedException($"Unknown database type {DemoStartupOptions.Use}");
                     }
                 }
 
@@ -78,10 +78,17 @@ namespace PaginationConsole
                         post.Title
                     };
 
+                var paginatorConfig = new QueryPaginatorConfiguration
+                {
+                    PageSize = pageSize,
+                    PaginationDirection = PaginationDirection.Forward,      // This is the default
+                    UseParameterizedQueries = true                          // Recommended for EF queries to avoid SQL injection and EF cache improvements
+                };
+
                 // Paginated queries require the last column be a unique Id, hence including the PostId
                 // (could be BlogId if we were only querying the Blogs table)
                 var queryPaginator = _queryPaginatorFactory
-                    .CreatePaginator(query, pageSize)
+                    .CreatePaginator(query, paginatorConfig)
                     .ColumnAscending(item => item.Description, item => item.BlogId, item => item.PostId);
 
                 string continuationToken = default;
@@ -89,12 +96,16 @@ namespace PaginationConsole
 
                 var stopwatch = Stopwatch.StartNew();
                 long? lastTokenGenerationTime = default;
+                var performanceRecordCount = 0;
 
                 while (key != 'q')
                 {
-                    Console.WriteLine();
-                    Console.WriteLine("Querying...");
-                    Console.WriteLine();
+                    if (!DemoStartupOptions.RunPerformanceOnly)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("Querying...");
+                        Console.WriteLine();
+                    }
 
                     stopwatch.Restart();
 
@@ -128,37 +139,53 @@ namespace PaginationConsole
 
                     var totalElapsed = countElapsed + buildQueryElapsed + resultsElapsed + previousElapsed + nextElapsed;
 
-                    pageResults.ForEach(result =>
+                    if (!DemoStartupOptions.RunPerformanceOnly)
                     {
-                        Console.WriteLine($"{result.BlogId}, {result.Description}, {result.PostId}, {result.Title}");
-                    });
+                        pageResults.ForEach(result =>
+                        {
+                            Console.WriteLine($"{result.BlogId}, {result.Description}, {result.PostId}, {result.Title}");
+                        });
 
-                    if (lastTokenGenerationTime.HasValue)
-                    {
+                        if (lastTokenGenerationTime.HasValue)
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine($"ContinuationToken Generation time: {lastTokenGenerationTime}ms");
+                        }
+
                         Console.WriteLine();
-                        Console.WriteLine($"ContinuationToken Generation time: {lastTokenGenerationTime}ms");
+                        Console.WriteLine($"Using ContinuationToken:");
+                        Console.WriteLine(continuationToken);
+                        Console.WriteLine();
+
+                        Console.WriteLine();
+                        Console.WriteLine($"{pageQuery.ToQueryString()}");
+                        Console.WriteLine();
+
+                        Console.WriteLine();
+                        Console.WriteLine($"{pageSize} of {totalRecords} rows. Execution time: {totalElapsed}ms");
+                        Console.WriteLine($"  > Get Total Count: {countElapsed}ms");
+                        Console.WriteLine($"  > Build Query: {buildQueryElapsed}ms");
+                        Console.WriteLine($"  > Get Results: {resultsElapsed}ms");
+                        Console.WriteLine($"  > Has Previous: {previousElapsed}ms");
+                        Console.WriteLine($"  > Has Next: {nextElapsed}ms");
+                        Console.WriteLine($"    >> Total: {countElapsed + buildQueryElapsed + resultsElapsed + previousElapsed + nextElapsed}ms");
+                        Console.WriteLine();
+
+                        key = GetUserInput(hasPrevious, hasNext);
                     }
+                    else
+                    {
+                        performanceRecordCount += pageSize;
 
-                    Console.WriteLine();
-                    Console.WriteLine($"Using ContinuationToken:");
-                    Console.WriteLine(continuationToken);
-                    Console.WriteLine();
+                        Console.WriteLine($"{performanceRecordCount} of {totalRecords}, Total: {countElapsed + buildQueryElapsed + resultsElapsed + previousElapsed + nextElapsed}ms");
 
-                    Console.WriteLine();
-                    Console.WriteLine($"{pageQuery.ToQueryString()}");
-                    Console.WriteLine();
+                        if (!hasNext)
+                        {
+                            break;
+                        }
 
-                    Console.WriteLine();
-                    Console.WriteLine($"{pageSize} of {totalRecords} rows. Execution time: {totalElapsed}ms");
-                    Console.WriteLine($"  > Get Total Count: {countElapsed}ms");
-                    Console.WriteLine($"  > Build Query: {buildQueryElapsed}ms");
-                    Console.WriteLine($"  > Get Results: {resultsElapsed}ms");
-                    Console.WriteLine($"  > Has Previous: {previousElapsed}ms");
-                    Console.WriteLine($"  > Has Next: {nextElapsed}ms");
-                    Console.WriteLine($"    >> Total: {countElapsed + buildQueryElapsed + resultsElapsed + previousElapsed + nextElapsed}ms");
-                    Console.WriteLine();
-
-                    key = GetUserInput(hasPrevious, hasNext);
+                        key = 'n';
+                    }
 
                     stopwatch.Restart();
 

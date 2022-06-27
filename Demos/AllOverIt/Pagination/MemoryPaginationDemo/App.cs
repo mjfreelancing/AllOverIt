@@ -60,10 +60,17 @@ namespace MemoryPaginationDemo
             var query = from person in persons.AsQueryable()
                         select person;
 
+            var paginatorConfig = new QueryPaginatorConfiguration
+            {
+                PageSize = pageSize,
+                PaginationDirection =   PaginationDirection.Forward,    // This is the default
+                UseParameterizedQueries = false                         // Not required for memory based pagination
+            };
+
             // Pagination requires a unique column on the end (Id in this example) just in case multiple records have the same lastname / firstname.
             // The 'Gender' item is only including for testing Enum's in the continuation token.
             var queryPaginator = _queryPaginatorFactory
-                  .CreatePaginator(query, pageSize)
+                  .CreatePaginator(query, paginatorConfig)
                   .ColumnAscending(person => person.LastName, item => item.FirstName, item => item.Gender, item => item.Id);
 
             string continuationToken = default;

@@ -4,10 +4,10 @@ namespace AllOverIt.Pagination
 {
     public sealed class QueryPaginatorFactory : IQueryPaginatorFactory
     {
-        public IQueryPaginator<TEntity> CreatePaginator<TEntity>(IQueryable<TEntity> query, int pageSize,
-            PaginationDirection paginationDirection = PaginationDirection.Forward) where TEntity : class
+        public IQueryPaginator<TEntity> CreatePaginator<TEntity>(IQueryable<TEntity> query, QueryPaginatorConfiguration configuration)
+            where TEntity : class
         {
-            return new QueryPaginator<TEntity>(query, pageSize, paginationDirection);
+            return new QueryPaginator<TEntity>(query, configuration);
         }
     }
 }

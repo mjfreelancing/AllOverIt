@@ -31,7 +31,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
         }
 
         private readonly IReadOnlyCollection<EntityDummy> _entities;
-        private readonly Func<int, PaginationDirection, IQueryPaginator<EntityDummy>> _paginatorFactory;
+        private readonly Func<QueryPaginatorConfiguration, IQueryPaginator<EntityDummy>> _paginatorFactory;
 
 
         private IReadOnlyCollection<EntityDummy> CreateEntities(int count)
@@ -73,7 +73,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
                 from entity in _entities
                 select entity;
 
-            _paginatorFactory = (pageSize, paginationDirection) => new QueryPaginator<EntityDummy>(query.AsQueryable(), pageSize, paginationDirection);
+            _paginatorFactory = configuration => new QueryPaginator<EntityDummy>(query.AsQueryable(), configuration);
         }
 
         public class ColumnAscending_2 : QueryPaginatorExtensionsFixture
@@ -574,7 +574,14 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
         private IQueryPaginator<EntityDummy> CreatePaginator(int pageSize, PaginationDirection paginationDirection)
         {
-            return _paginatorFactory.Invoke(pageSize, paginationDirection);
+            var configuration = new QueryPaginatorConfiguration
+            {
+                PageSize = pageSize,
+                PaginationDirection = paginationDirection,
+                UseParameterizedQueries = Create<bool>()        // Should not affect outcome. More efficient for memory based queries when false
+            };
+
+            return _paginatorFactory.Invoke(configuration);
         }
 
         private static IReadOnlyCollection<EntityDummy> AssertPagedData(IQueryPaginator<EntityDummy> paginator, int page, int pageSize,

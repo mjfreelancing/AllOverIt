@@ -15,17 +15,27 @@ namespace AllOverIt.Pagination
     public sealed class QueryPaginator<TEntity> : QueryPaginatorBase, IQueryPaginator<TEntity>
         where TEntity : class
     {
+        // Used to build parameterized queries when used with EF
+        private sealed class ParameterHolder
+        {
+            public object Value { get; }
+
+            public ParameterHolder(object value)
+            {
+                Value = value;
+            }
+        }
+
         private sealed class FirstExpression
         {
             public bool IsPending => MemberAccess == null;
             public MemberExpression MemberAccess { get; set; }
-            public ConstantExpression ReferenceValue { get; set; }
+            public Expression ReferenceValue { get; set; }
         }
 
         private readonly List<ColumnDefinition<TEntity>> _columns = new();
         private readonly IQueryable<TEntity> _query;
-        private readonly int _pageSize;
-        private readonly PaginationDirection _paginationDirection;
+        private readonly QueryPaginatorConfiguration _configuration;
 
         private ContinuationTokenEncoder _continuationTokenEncoder;
         private IOrderedQueryable<TEntity> _directionQuery;                     // based on the _paginationDirection        
@@ -33,11 +43,10 @@ namespace AllOverIt.Pagination
 
         public IContinuationTokenEncoder ContinuationTokenEncoder => GetContinuationTokenEncoder();
 
-        public QueryPaginator(IQueryable<TEntity> query, int pageSize, PaginationDirection paginationDirection = PaginationDirection.Forward)
+        public QueryPaginator(IQueryable<TEntity> query, QueryPaginatorConfiguration configuration)
         {
             _query = query.WhenNotNull(nameof(query));
-            _pageSize = pageSize;
-            _paginationDirection = paginationDirection;
+            _configuration = configuration.WhenNotNull(nameof(configuration));
         }
 
         public IQueryPaginator<TEntity> ColumnAscending<TProperty>(Expression<Func<TEntity, TProperty>> expression)
@@ -60,10 +69,10 @@ namespace AllOverIt.Pagination
             var decodedToken = GetContinuationTokenEncoder().Decode(continuationToken);
 
             var requiredDirection = decodedToken == ContinuationToken.None
-                ? _paginationDirection
+                ? _configuration.PaginationDirection
                 : decodedToken.Direction;
 
-            var requiredQuery = requiredDirection == _paginationDirection
+            var requiredQuery = requiredDirection == _configuration.PaginationDirection
                 ? GetDirectionQuery()
                 : GetDirectionReverseQuery();
 
@@ -76,7 +85,7 @@ namespace AllOverIt.Pagination
                 paginatedQuery = ApplyContinuationToken(paginatedQuery, decodedToken);
             }
 
-            paginatedQuery = paginatedQuery.Take(_pageSize);
+            paginatedQuery = paginatedQuery.Take(_configuration.PageSize);
 
             if (requiredDirection == PaginationDirection.Backward)
             {
@@ -102,7 +111,7 @@ namespace AllOverIt.Pagination
             }
 
             return backQuery
-                .Take(_pageSize)
+                .Take(_configuration.PageSize)
                 .Reverse();
         }
 
@@ -119,7 +128,7 @@ namespace AllOverIt.Pagination
                 forwardQuery = forwardQuery.Where(predicate);
             }
 
-            return forwardQuery.Take(_pageSize);
+            return forwardQuery.Take(_configuration.PageSize);
         }
 
         public bool HasPreviousPage(TEntity reference)
@@ -188,14 +197,14 @@ namespace AllOverIt.Pagination
 
         private IOrderedQueryable<TEntity> GetDirectionQuery()
         {
-            _directionQuery ??= GetDirectionBasedQuery(_paginationDirection);
+            _directionQuery ??= GetDirectionBasedQuery(_configuration.PaginationDirection);
 
             return _directionQuery;
         }
 
         private IOrderedQueryable<TEntity> GetDirectionReverseQuery()
         {
-            _directionReverseQuery ??= GetDirectionBasedQuery(_paginationDirection.Reverse());
+            _directionReverseQuery ??= GetDirectionBasedQuery(_configuration.PaginationDirection.Reverse());
 
             return _directionReverseQuery;
         }
@@ -204,7 +213,7 @@ namespace AllOverIt.Pagination
         {
             AssertColumnsDefined();
 
-            _continuationTokenEncoder ??= new ContinuationTokenEncoder(_columns, _paginationDirection);
+            _continuationTokenEncoder ??= new ContinuationTokenEncoder(_columns, _configuration.PaginationDirection);
 
             return _continuationTokenEncoder;
         }
@@ -242,7 +251,7 @@ namespace AllOverIt.Pagination
                 .GetColumnValues(reference)
                 .AsReadOnlyList();
 
-            return CreatePaginatedPredicate(_paginationDirection.Reverse(), referenceValues);
+            return CreatePaginatedPredicate(_configuration.PaginationDirection.Reverse(), referenceValues);
         }
 
         private Expression<Func<TEntity, bool>> CreateNextPagePredicate(TEntity reference)
@@ -253,7 +262,7 @@ namespace AllOverIt.Pagination
                 .GetColumnValues(reference)
                 .AsReadOnlyList();
 
-            return CreatePaginatedPredicate(_paginationDirection, referenceValues);
+            return CreatePaginatedPredicate(_configuration.PaginationDirection, referenceValues);
         }
 
         private Expression<Func<TEntity, bool>> CreatePaginatedPredicate(PaginationDirection direction, IReadOnlyList<object> referenceValues)
@@ -345,7 +354,7 @@ namespace AllOverIt.Pagination
             {
                 var column = _columns[idx];
                 var memberAccess = Expression.MakeMemberAccess(param, column.Property);
-                var referenceValue = Expression.Constant(referenceValues[idx]);
+                var referenceValue = CreateReferenceParameter(referenceValues[idx], column.Property.PropertyType);
 
                 // May be used to apply a predicate optimization
                 if (firstExpression.IsPending)
@@ -385,7 +394,7 @@ namespace AllOverIt.Pagination
         }
 
         private static BinaryExpression CreateCompareToExpression(IColumnDefinition entity, MemberExpression memberAccess,
-            ConstantExpression comparisonValue, Func<Expression, Expression, BinaryExpression> compareTo)
+            Expression comparisonValue, Func<Expression, Expression, BinaryExpression> compareTo)
         {
             var propertyType = entity.Property.PropertyType;
 
@@ -416,6 +425,22 @@ namespace AllOverIt.Pagination
                 var comparisonValueExpression = EnsureMatchingType(memberAccess, comparisonValue);
                 return compareTo.Invoke(memberAccess, comparisonValueExpression);
             }
+        }
+
+        private Expression CreateReferenceParameter(object value, Type valueType)
+        {
+            if (!_configuration.UseParameterizedQueries)
+            {
+                return Expression.Constant(value);
+            }
+
+            // Create an expression that will result in a parameterized query being generated (typically for EF queries).
+            // The benefit here is removing the risk of SQL injection as well as keeping the EF cache optimized.
+            var parameterValue = new ParameterHolder(value);
+            var constantParameter = Expression.Constant(parameterValue);
+            var property = Expression.PropertyOrField(constantParameter, nameof(ParameterHolder.Value));
+
+            return Expression.Convert(property, valueType);
         }
 
         private static Expression EnsureMatchingType(MemberExpression memberExpression, Expression targetExpression)
