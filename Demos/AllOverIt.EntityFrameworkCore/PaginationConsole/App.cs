@@ -219,7 +219,6 @@ namespace PaginationConsole
 
             ExitCode = 0;
 
-            Console.WriteLine("DONE");
             Console.WriteLine();
             Console.ReadKey();
         }
