@@ -106,7 +106,7 @@ namespace AllOverIt.Pagination
 
         internal ContinuationToken Decode(string continuationToken)
         {
-            return ContinuationTokenSerializer.Deserialize(continuationToken, _columns.AsReadOnlyList());
+            return ContinuationTokenSerializer.Deserialize(continuationToken);
         }
     }
 }

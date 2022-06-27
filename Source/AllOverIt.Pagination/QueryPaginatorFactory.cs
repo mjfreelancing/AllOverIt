@@ -1,5 +1,4 @@
-﻿using AllOverIt.Assertion;
-using System.Linq;
+﻿using System.Linq;
 
 namespace AllOverIt.Pagination
 {
