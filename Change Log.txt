@@ -37,6 +37,7 @@ AllOverIt.Aws.Cdk.AppSync
   * Added missing AuthLambdaDirective support to queries and mutations06 Jun 2022
   
   
+06 Jun 2022
 Version 5.9.0
 ======================================================================================================================
 AllOverIt
