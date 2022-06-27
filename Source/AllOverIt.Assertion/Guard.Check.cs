@@ -22,7 +22,10 @@ namespace AllOverIt.Assertion
             string errorMessage = default)
             where TType : class
         {
-            _ = @object ?? ThrowInvalidOperationException<TType>(name, errorMessage ?? "Value cannot be null");
+            if (@object == null)
+            {
+                ThrowInvalidOperationException<TType>(name, errorMessage ?? "Value cannot be null");
+            }
         }
 
         /// <summary>Checks the specified object is null.</summary>

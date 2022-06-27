@@ -19,6 +19,7 @@ AllOverIt
   * Removed all GenericCacheExtensions - already handled by ReflectionCache. Renamed ReflectionCacheKey to IReflectionCacheKey.
   * Added caching to BuildBindingPredicate()
   * Updated GetMemberExpressions() extension method to support any Expression that can be unwrapped to a MemberExpression.
+  * General Guard method improvements
 
 AllOverIt.Assertion
   * Removed methods that asserted an enumerable was a concrete collection type and instead updated .NET Core 3.1

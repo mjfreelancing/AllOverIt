@@ -5,12 +5,12 @@ namespace AllOverIt.Assertion
     /// <summary>Provides a number of extensions that enable method pre-condition checking.</summary>
     public static partial class Guard
     {
-        private static string ThrowArgumentNullException(string name, string errorMessage)
+        private static void ThrowArgumentNullException(string name, string errorMessage)
         {
-            return ThrowArgumentNullException<string>(name, errorMessage);
+            ThrowArgumentNullException<string>(name, errorMessage);
         }
 
-        private static TType ThrowArgumentNullException<TType>(string name, string errorMessage)
+        private static void ThrowArgumentNullException<TType>(string name, string errorMessage)
         {
             if (errorMessage == default)
             {
@@ -25,12 +25,12 @@ namespace AllOverIt.Assertion
             ThrowInvalidOperationException<string>(name, errorMessage);
         }
 
-        private static TType ThrowInvalidOperationException<TType>(string name, string errorMessage)
+        private static void ThrowInvalidOperationException<TType>(string name, string errorMessage)
         {
             throw new InvalidOperationException($"{errorMessage} ({name})");
         }
 
-        private static TType ThrowInvalidOperationException<TType>(string errorMessage)
+        private static void ThrowInvalidOperationException<TType>(string errorMessage)
         {
             throw new InvalidOperationException(errorMessage);
         }

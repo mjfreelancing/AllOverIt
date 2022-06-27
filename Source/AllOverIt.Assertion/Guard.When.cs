@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
+using System.Xml.Linq;
 
 namespace AllOverIt.Assertion
 {
@@ -20,8 +21,11 @@ namespace AllOverIt.Assertion
         /// <remarks>Evaluating the expression is an expensive operation as it must be compiled before it can be invoked.</remarks>
         public static TType WhenNotNull<TType>(Expression<Func<TType>> expression, string errorMessage = default)
             where TType : class
-        {
-            _ = expression ?? ThrowArgumentNullException<Expression<Func<TType>>>(nameof(expression), errorMessage);
+{
+            if (expression == null)
+            {
+                ThrowArgumentNullException<Expression<Func<TType>>>(nameof(expression), errorMessage);
+            }
 
             switch (expression)
             {
@@ -47,7 +51,10 @@ namespace AllOverIt.Assertion
         /// <remarks>Evaluating the expression is an expensive operation as it must be compiled before it can be invoked.</remarks>
         public static IEnumerable<TType> WhenNotNullOrEmpty<TType>(Expression<Func<IEnumerable<TType>>> expression, string errorMessage = default)
         {
-            _ = expression ?? ThrowArgumentNullException<Expression<Func<IEnumerable<TType>>>>(nameof(expression), errorMessage);
+            if (expression == null)
+            {
+                ThrowArgumentNullException<Expression<Func<IEnumerable<TType>>>>(nameof(expression), errorMessage);
+            }
 
             switch (expression)
             {
@@ -73,7 +80,10 @@ namespace AllOverIt.Assertion
         /// <remarks>Evaluating the expression is an expensive operation as it must be compiled before it can be invoked.</remarks>
         public static IEnumerable<TType> WhenNotEmpty<TType>(Expression<Func<IEnumerable<TType>>> expression, string errorMessage = default)
         {
-            _ = expression ?? ThrowArgumentNullException<Expression<Func<IEnumerable<TType>>>>(nameof(expression), errorMessage);
+            if (expression == null)
+            {
+                ThrowArgumentNullException<Expression<Func<IEnumerable<TType>>>>(nameof(expression), errorMessage);
+            }
 
             switch (expression)
             {
@@ -98,7 +108,10 @@ namespace AllOverIt.Assertion
         /// <remarks>Evaluating the expression is an expensive operation as it must be compiled before it can be invoked.</remarks>
         public static string WhenNotNullOrEmpty(Expression<Func<string>> expression, string errorMessage = default)
         {
-            _ = expression ?? ThrowArgumentNullException<Expression<Func<string>>>(nameof(expression), errorMessage);
+            if (expression == null)
+            {
+                ThrowArgumentNullException<Expression<Func<string>>>(nameof(expression), errorMessage);
+            }
 
             switch (expression)
             {
@@ -123,7 +136,10 @@ namespace AllOverIt.Assertion
         /// <remarks>Evaluating the expression is an expensive operation as it must be compiled before it can be invoked.</remarks>
         public static string WhenNotEmpty(Expression<Func<string>> expression, string errorMessage = default)
         {
-            _ = expression ?? ThrowArgumentNullException<Expression<Func<string>>>(nameof(expression), errorMessage);
+            if (expression == null)
+            {
+                ThrowArgumentNullException<Expression<Func<string>>>(nameof(expression), errorMessage);
+            }
 
             switch (expression)
             {
@@ -160,7 +176,12 @@ namespace AllOverIt.Assertion
             string errorMessage = default)
             where TType : class
         {
-            return @object ?? ThrowArgumentNullException<TType>(name, errorMessage);
+            if (@object == null)
+            {
+                ThrowArgumentNullException<TType>(name, errorMessage);
+            }
+
+            return @object;
         }
 
         /// <summary>Checks that the provided collection is not null and not empty.</summary>
@@ -178,7 +199,10 @@ namespace AllOverIt.Assertion
 #endif
             string errorMessage = default)
         {
-            _ = @object ?? ThrowArgumentNullException<IEnumerable<TType>>(name, errorMessage);
+            if (@object == null)
+            {
+                ThrowArgumentNullException<IEnumerable<TType>>(name, errorMessage);
+            }
 
             return WhenNotEmpty(@object, name, errorMessage);
         }
@@ -240,7 +264,10 @@ namespace AllOverIt.Assertion
 #endif
             string errorMessage = default)
         {
-            _ = @object ?? ThrowArgumentNullException(name, errorMessage);
+            if (@object == null)
+            {
+                ThrowArgumentNullException(name, errorMessage);
+            }
 
             return WhenNotEmpty(@object, name, errorMessage);
         }

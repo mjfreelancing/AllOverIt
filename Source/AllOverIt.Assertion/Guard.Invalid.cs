@@ -15,7 +15,12 @@ namespace AllOverIt.Assertion
         public static TType InvalidWhenNull<TType>(this TType @object, string errorMessage = default)
             where TType : class
         {
-            return @object ?? ThrowInvalidOperationException<TType>(errorMessage ?? "Value cannot be null");
+            if (@object == null)
+            {
+                ThrowInvalidOperationException<TType>(errorMessage ?? "Value cannot be null");
+            }
+
+            return @object;
         }
 
         /// <summary>Throws an exception if the object instance is not null, otherwise it returns the same instance.</summary>
