@@ -4,13 +4,59 @@ using AllOverIt.Serialization.Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace AllOverIt.Serialization
 {
-    public sealed class EnrichedBinaryWriter : BinaryWriter
+
+
+    public interface IEnrichedBinaryTypeWriter
     {
-        private static readonly IDictionary<TypeMapping.TypeId, Action<BinaryWriter, object>> TypeIdWriter = new Dictionary<TypeMapping.TypeId, Action<BinaryWriter, object>>
+        Type Type { get; }
+        void WriteValue(EnrichedBinaryWriter writer, object value);
+    }
+
+    public abstract class EnrichedBinaryTypeWriter<TType> : IEnrichedBinaryTypeWriter
+    {
+        public Type Type => typeof(TType);
+
+        public abstract void WriteValue(EnrichedBinaryWriter writer, object value);
+    }
+
+    public interface IEnrichedBinaryWriter
+    {
+        IList<IEnrichedBinaryTypeWriter> Writers { get; }
+        void WriteObject(object value);
+    }
+
+
+
+    public sealed class EnrichedBinaryWriter : BinaryWriter, IEnrichedBinaryWriter
+    {
+        private static readonly IDictionary<Type, TypeMapping.TypeId> TypeIdRegistry = new Dictionary<Type, TypeMapping.TypeId>
+        {
+            { typeof(bool), TypeMapping.TypeId.Bool },
+            { typeof(byte), TypeMapping.TypeId.Byte },
+            { typeof(sbyte), TypeMapping.TypeId.SByte },
+            { typeof(ushort), TypeMapping.TypeId.UShort },
+            { typeof(short), TypeMapping.TypeId.Short },
+            { typeof(uint), TypeMapping.TypeId.UInt },
+            { typeof(int), TypeMapping.TypeId.Int },
+            { typeof(ulong), TypeMapping.TypeId.ULong },
+            { typeof(long), TypeMapping.TypeId.Long },
+            { typeof(float), TypeMapping.TypeId.Float },
+            { typeof(double), TypeMapping.TypeId.Double },
+            { typeof(decimal), TypeMapping.TypeId.Decimal },
+            { typeof(string), TypeMapping.TypeId.String },
+            { typeof(char), TypeMapping.TypeId.Char },
+            { typeof(Enum), TypeMapping.TypeId.Enum },
+            { typeof(Guid), TypeMapping.TypeId.Guid },
+            { typeof(DateTime), TypeMapping.TypeId.DateTime },
+            { typeof(TimeSpan), TypeMapping.TypeId.TimeSpan }
+        };
+
+        private static readonly IDictionary<TypeMapping.TypeId, Action<EnrichedBinaryWriter, object>> TypeIdWriter = new Dictionary<TypeMapping.TypeId, Action<EnrichedBinaryWriter, object>>
         {
             { TypeMapping.TypeId.Bool, (writer, value) => writer.WriteBoolean((bool)value) },
             { TypeMapping.TypeId.Byte, (writer, value) => writer.WriteByte((byte)value) },
@@ -38,8 +84,19 @@ namespace AllOverIt.Serialization
 
             { TypeMapping.TypeId.Guid, (writer, value) => writer.WriteBytes(((Guid)value).ToByteArray()) },
             { TypeMapping.TypeId.DateTime, (writer, value) => writer.WriteInt64(((DateTime)value).ToBinary()) },
-            { TypeMapping.TypeId.TimeSpan, (writer, value) => writer.WriteInt64(((TimeSpan)value).Ticks) }
+            { TypeMapping.TypeId.TimeSpan, (writer, value) => writer.WriteInt64(((TimeSpan)value).Ticks) },
+            { TypeMapping.TypeId.UserDefined, (writer, value) =>
+                {
+                    var valueType = value.GetType();
+                    var converter = writer.Writers.SingleOrDefault(converter => converter.Type == valueType);
+
+                    writer.WriteString(valueType.AssemblyQualifiedName);
+                    converter.WriteValue(writer, value);
+                }
+            }
         };
+
+        public IList<IEnrichedBinaryTypeWriter> Writers { get; } = new List<IEnrichedBinaryTypeWriter>();
 
         /// <inheritdoc cref="BinaryWriter(Stream)"/>
         public EnrichedBinaryWriter(Stream output)
@@ -66,7 +123,7 @@ namespace AllOverIt.Serialization
             WriteObject(value.GetType(), value);
         }
 
-        public void WriteObject(Type type, object value)
+        private void WriteObject(Type type, object value)
         {
             if (type.IsArray || type.IsEnumerableType() || type.IsGenericEnumerableType())        // handle enumerable, dictionary etc
             {
@@ -74,7 +131,7 @@ namespace AllOverIt.Serialization
             }
 
             // TODO: error handling and OCP (code below)
-            var hasTypeId = TypeMapping.TypeIdRegistry.TryGetValue(type, out var rawTypeId);
+            var hasTypeId = TypeIdRegistry.TryGetValue(type, out var rawTypeId);
 
             if (!hasTypeId)
             {
@@ -90,8 +147,14 @@ namespace AllOverIt.Serialization
                 if (type.IsNullableType())
                 {
                     var underlyingType = Nullable.GetUnderlyingType(type);
-                    hasTypeId = TypeMapping.TypeIdRegistry.TryGetValue(underlyingType, out rawTypeId);
+                    hasTypeId = TypeIdRegistry.TryGetValue(underlyingType, out rawTypeId);
                 }
+            }
+
+            if (!hasTypeId)
+            {
+                rawTypeId = TypeMapping.TypeId.UserDefined;
+                hasTypeId = true;
             }
 
             var typeId = (byte) rawTypeId;

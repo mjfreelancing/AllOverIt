@@ -92,19 +92,9 @@ namespace AllOverIt.Pagination
         {
             using (var writer = new EnrichedBinaryWriter(stream, Encoding.UTF8, true))
             {
-                writer.Write((byte) continuationToken.Direction);
+                writer.Writers.Add(new ContinuationTokenWriter());
 
-                // Number of values - surely only a handful of values
-                var valueCount = continuationToken.Values?.Count ?? 0;
-                writer.Write((byte) valueCount);
-
-                if (valueCount > 0)
-                {
-                    foreach (var value in continuationToken.Values)
-                    {
-                        writer.WriteObject(value);
-                    }
-                }
+                writer.WriteObject(continuationToken);
             }
         }
 
@@ -112,31 +102,69 @@ namespace AllOverIt.Pagination
         {
             using (var reader = new EnrichedBinaryReader(stream, Encoding.UTF8, true))
             {
-                var direction = (PaginationDirection) reader.ReadByte();
-                var valueCount = (int) reader.ReadByte();
+                reader.Readers.Add(new ContinuationTokenReader());
 
-                if (valueCount == 0)
-                {
-                    return new ContinuationToken
-                    {
-                        Direction = direction
-                    };
-                }
-
-                var values = new List<object>();
-
-                for (var i = 0; i < valueCount; i++)
-                {
-                    var value = reader.ReadObject();
-                    values.Add(value);
-                }
-
-                return new ContinuationToken
-                {
-                    Direction = direction,
-                    Values = values
-                };
+                return (ContinuationToken) reader.ReadObject();
             }
         }
     }
+
+
+
+
+    internal sealed class ContinuationTokenWriter : EnrichedBinaryTypeWriter<ContinuationToken>
+    {
+        public override void WriteValue(EnrichedBinaryWriter writer, object value)
+        {
+            var continuationToken = (ContinuationToken) value;
+
+            writer.Write((byte) continuationToken.Direction);
+
+            // Number of values - surely only a handful of values
+            var valueCount = continuationToken.Values?.Count ?? 0;
+            writer.Write((byte) valueCount);
+
+            if (valueCount > 0)
+            {
+                foreach (var tokenValue in continuationToken.Values)
+                {
+                    writer.WriteObject(tokenValue);
+                }
+            }
+        }
+    }
+
+
+
+    internal sealed class ContinuationTokenReader : EnrichedBinaryTypeReader<ContinuationToken>
+    {
+        public override object ReadValue(EnrichedBinaryReader reader)
+        {
+            var direction = (PaginationDirection) reader.ReadByte();
+            var valueCount = (int) reader.ReadByte();
+
+            if (valueCount == 0)
+            {
+                return new ContinuationToken
+                {
+                    Direction = direction
+                };
+            }
+
+            var values = new List<object>();
+
+            for (var i = 0; i < valueCount; i++)
+            {
+                var value = reader.ReadObject();
+                values.Add(value);
+            }
+
+            return new ContinuationToken
+            {
+                Direction = direction,
+                Values = values
+            };
+        }
+    }
+
 }

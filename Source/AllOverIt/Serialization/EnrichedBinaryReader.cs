@@ -1,5 +1,4 @@
-﻿using AllOverIt.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,9 +6,30 @@ using System.Text;
 
 namespace AllOverIt.Serialization
 {
-    public sealed class EnrichedBinaryReader : BinaryReader
+    public interface IEnrichedBinaryTypeReader
     {
-        private static readonly IDictionary<TypeMapping.TypeId, Func<BinaryReader, object>> TypeIdReader = new Dictionary<TypeMapping.TypeId, Func<BinaryReader, object>>
+        Type Type { get; }
+        object ReadValue(EnrichedBinaryReader reader);
+    }
+
+    public abstract class EnrichedBinaryTypeReader<TType> : IEnrichedBinaryTypeReader
+    {
+        public Type Type => typeof(TType);
+
+        // return a value that identifies this type
+        public abstract object ReadValue(EnrichedBinaryReader reader);
+    }
+
+
+    public interface IEnrichedBinaryReader
+    {
+        IList<IEnrichedBinaryTypeReader> Readers { get; }
+        object ReadObject();
+    }
+
+    public sealed class EnrichedBinaryReader : BinaryReader, IEnrichedBinaryReader
+    {
+        private static readonly IDictionary<TypeMapping.TypeId, Func<EnrichedBinaryReader, object>> TypeIdReader = new Dictionary<TypeMapping.TypeId, Func<EnrichedBinaryReader, object>>
         {
             { TypeMapping.TypeId.Bool, reader => reader.ReadBoolean() },
             { TypeMapping.TypeId.Byte, reader => reader.ReadByte() },
@@ -38,8 +58,19 @@ namespace AllOverIt.Serialization
 
             { TypeMapping.TypeId.Guid, reader => new Guid(reader.ReadBytes(16)) },
             { TypeMapping.TypeId.DateTime, reader => DateTime.FromBinary(reader.ReadInt64()) },
-            { TypeMapping.TypeId.TimeSpan, reader => new TimeSpan(reader.ReadInt64()) }
+            { TypeMapping.TypeId.TimeSpan, reader => new TimeSpan(reader.ReadInt64()) },
+            { TypeMapping.TypeId.UserDefined, reader =>
+                {
+                    var valueTypeName = reader.ReadString();
+                    var valueType = Type.GetType(valueTypeName);                    // TODO: Check for null
+                    var converter = reader.Readers.SingleOrDefault(converter => converter.Type == valueType);
+
+                    return converter.ReadValue(reader);
+                }
+            }
         };
+
+        public IList<IEnrichedBinaryTypeReader> Readers { get; } = new List<IEnrichedBinaryTypeReader>();
 
         /// <inheritdoc cref="BinaryReader(Stream)"/>
         public EnrichedBinaryReader(Stream output)
@@ -63,9 +94,9 @@ namespace AllOverIt.Serialization
         {
             var typeId = ReadByte();
 
-            var rawTypeId = (TypeMapping.TypeId) (typeId & 0x3F);       // Exclude all bit flags
+            var rawTypeId = (TypeMapping.TypeId) (typeId & ~0x80);       // Exclude the default bit flag
 
-            var type = TypeMapping.TypeIdRegistry.Where(kvp => kvp.Value == rawTypeId).Single().Key;
+            //var type = TypeMapping.TypeIdRegistry.Where(kvp => kvp.Value == rawTypeId).Single().Key;
 
             object rawValue = default;
 
