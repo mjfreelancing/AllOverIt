@@ -1,13 +1,14 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
-using AllOverIt.Serialization.Extensions;
+using AllOverIt.Serialization.Binary.Exceptions;
+using AllOverIt.Serialization.Binary.Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace AllOverIt.Serialization
+namespace AllOverIt.Serialization.Binary
 {
 
 
@@ -29,7 +30,6 @@ namespace AllOverIt.Serialization
         IList<IEnrichedBinaryTypeWriter> Writers { get; }
         void WriteObject(object value);
     }
-
 
 
     public sealed class EnrichedBinaryWriter : BinaryWriter, IEnrichedBinaryWriter
@@ -70,19 +70,10 @@ namespace AllOverIt.Serialization
             { TypeMapping.TypeId.Float, (writer, value) => writer.WriteSingle((float)value) },
             { TypeMapping.TypeId.Double, (writer, value) => writer.WriteDouble((double)value) },
             { TypeMapping.TypeId.Decimal, (writer, value) => writer.WriteDecimal((decimal)value) },
-            { TypeMapping.TypeId.String, (writer, value) => writer.WriteString((string)value) },
+            { TypeMapping.TypeId.String, (writer, value) => writer.WriteSafeString((string)value) },
             { TypeMapping.TypeId.Char, (writer, value) => writer.WriteChar((char)value) },
-            
-            { TypeMapping.TypeId.Enum, (writer, value) =>
-                {
-                    // Need the string representation of the value in order to convert it back to the original Enum type.
-                    // Convert.ChangeType() cannot convert an integral type to an Enum type.
-                    writer.WriteString(value.GetType().AssemblyQualifiedName);        // Need to store a registry of types rather than write them all the time
-                    writer.WriteString($"{value}");   
-                }
-            },
-
-            { TypeMapping.TypeId.Guid, (writer, value) => writer.WriteBytes(((Guid)value).ToByteArray()) },
+            { TypeMapping.TypeId.Enum, (writer, value) => writer.WriteEnum(value) },
+            { TypeMapping.TypeId.Guid, (writer, value) => writer.WriteGuid((Guid)value) },
             { TypeMapping.TypeId.DateTime, (writer, value) => writer.WriteInt64(((DateTime)value).ToBinary()) },
             { TypeMapping.TypeId.TimeSpan, (writer, value) => writer.WriteInt64(((TimeSpan)value).Ticks) },
             { TypeMapping.TypeId.UserDefined, (writer, value) =>
@@ -90,7 +81,12 @@ namespace AllOverIt.Serialization
                     var valueType = value.GetType();
                     var converter = writer.Writers.SingleOrDefault(converter => converter.Type == valueType);
 
-                    writer.WriteString(valueType.AssemblyQualifiedName);
+                    if (converter == null)
+                    {
+                        throw new BinaryWriterException($"No binary writer registered for the type '{valueType.GetFriendlyName()}'.");
+                    }
+
+                    writer.Write(valueType.AssemblyQualifiedName);
                     converter.WriteValue(writer, value);
                 }
             }
@@ -116,11 +112,17 @@ namespace AllOverIt.Serialization
         {
         }
 
+        // Writes the value type and the value
         public void WriteObject(object value)
         {
             _ = value.WhenNotNull(nameof(value));
 
             WriteObject(value.GetType(), value);
+        }
+
+        public void WriteObject<TType>(TType value)     // required for nullable types (need the type information)
+        {
+            WriteObject(typeof(TType), value);
         }
 
         private void WriteObject(Type type, object value)

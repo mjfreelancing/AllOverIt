@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Extensions;
-using AllOverIt.Serialization;
+using AllOverIt.Serialization.Binary;
+using AllOverIt.Serialization.Binary.Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -118,16 +119,17 @@ namespace AllOverIt.Pagination
         {
             var continuationToken = (ContinuationToken) value;
 
-            writer.Write((byte) continuationToken.Direction);
+            writer.WriteByte((byte) continuationToken.Direction);
 
             // Number of values - surely only a handful of values
             var valueCount = continuationToken.Values?.Count ?? 0;
-            writer.Write((byte) valueCount);
+            writer.WriteByte((byte) valueCount);
 
             if (valueCount > 0)
             {
                 foreach (var tokenValue in continuationToken.Values)
                 {
+                    // Write the type and value for the token so they can be read back appropriately
                     writer.WriteObject(tokenValue);
                 }
             }

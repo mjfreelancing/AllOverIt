@@ -1,10 +1,11 @@
-﻿using System;
+﻿using AllOverIt.Serialization.Binary.Extensions;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace AllOverIt.Serialization
+namespace AllOverIt.Serialization.Binary
 {
     public interface IEnrichedBinaryTypeReader
     {
@@ -43,20 +44,10 @@ namespace AllOverIt.Serialization
             { TypeMapping.TypeId.Float, reader => reader.ReadSingle() },
             { TypeMapping.TypeId.Double, reader => reader.ReadDouble() },
             { TypeMapping.TypeId.Decimal, reader => reader.ReadDecimal() },
-            { TypeMapping.TypeId.String, reader => reader.ReadString() },
+            { TypeMapping.TypeId.String, reader => reader.ReadSafeString() },
             { TypeMapping.TypeId.Char, reader => reader.ReadChar() },
-
-            { TypeMapping.TypeId.Enum, reader =>
-                {
-                    var valueTypeName = reader.ReadString();
-                    var valueType = Type.GetType(valueTypeName);                    // TODO: Check for null
-
-                    var value = reader.ReadString();
-                    return Enum.Parse(valueType, value);
-                }
-            },
-
-            { TypeMapping.TypeId.Guid, reader => new Guid(reader.ReadBytes(16)) },
+            { TypeMapping.TypeId.Enum, reader => reader.ReadEnum() },
+            { TypeMapping.TypeId.Guid, reader => reader.ReadGuid() },
             { TypeMapping.TypeId.DateTime, reader => DateTime.FromBinary(reader.ReadInt64()) },
             { TypeMapping.TypeId.TimeSpan, reader => new TimeSpan(reader.ReadInt64()) },
             { TypeMapping.TypeId.UserDefined, reader =>

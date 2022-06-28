@@ -1,4 +1,4 @@
-﻿namespace AllOverIt.Serialization
+﻿namespace AllOverIt.Serialization.Binary
 {
     // TODO: TBC
 
