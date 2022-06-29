@@ -61,7 +61,6 @@ namespace AllOverIt.Pagination
                     SerializeToStream(continuationToken, compressor.Stream);
                 }
 
-                stream.Position = 0;
                 var bytes = stream.ToArray();
 
                 return Convert.ToBase64String(bytes);
