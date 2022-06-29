@@ -6,6 +6,12 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
+
+// TODO: Create a reflection based reader / writer
+// TODO: Compare stream sizes of JSON, Custom Writer, Reflection based writer
+// TODO: Benchmark the Custom and Reflection based writers
+
+
 var classroom = new Classroom
 {
     RoomId = Guid.NewGuid(),
