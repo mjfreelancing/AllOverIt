@@ -41,7 +41,11 @@ namespace AllOverIt.Tests.Reflection
 
             private long Prop4 { get; set; }
 
+#pragma warning disable IDE0079 // Remove unnecessary suppression
+#pragma warning disable CA1822 // Mark members as static
             public bool Prop5 { set { _ = value; } }    // automatic properties must have a getter
+#pragma warning restore CA1822 // Mark members as static
+#pragma warning restore IDE0079 // Remove unnecessary suppression
 
             public bool Prop6 { get; }
 
@@ -74,7 +78,11 @@ namespace AllOverIt.Tests.Reflection
                 return _value;
             }
 
+#pragma warning disable IDE0079 // Remove unnecessary suppression
+#pragma warning disable CA1822 // Mark members as static
             public int Method6(int arg)
+#pragma warning restore CA1822 // Mark members as static
+#pragma warning restore IDE0079 // Remove unnecessary suppression
             {
                 return arg;
             }

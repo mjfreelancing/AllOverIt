@@ -32,7 +32,7 @@ namespace AllOverIt.Pagination.Tests
             {
                 Invoking(() =>
                 {
-                    new ColumnDefinition<EntityDummy, int>(null, Create<bool>());
+                    _ = new ColumnDefinition<EntityDummy, int>(null, Create<bool>());
                 })
                     .Should()
                     .Throw<ArgumentNullException>()

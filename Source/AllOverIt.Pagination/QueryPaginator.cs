@@ -66,7 +66,7 @@ namespace AllOverIt.Pagination
             AssertColumnsDefined();
 
             // Returns ContinuationToken.None if there is no token - which defaults to Forward
-            var decodedToken = GetContinuationTokenEncoder().Decode(continuationToken);
+            var decodedToken = Pagination.ContinuationTokenEncoder.Decode(continuationToken);
 
             var requiredDirection = decodedToken == ContinuationToken.None
                 ? _configuration.PaginationDirection

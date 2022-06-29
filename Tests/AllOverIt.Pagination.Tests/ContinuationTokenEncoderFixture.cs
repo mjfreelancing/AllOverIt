@@ -102,7 +102,7 @@ namespace AllOverIt.Pagination.Tests
 
                 actual.Should().NotBeNullOrEmpty();
 
-                var decoded = encoder.Decode(actual);
+                var decoded = ContinuationTokenEncoder.Decode(actual);
 
                 expected.Should().BeEquivalentTo(decoded);
             }
@@ -164,7 +164,7 @@ namespace AllOverIt.Pagination.Tests
 
                 actual.Should().NotBeNullOrEmpty();
 
-                var decoded = encoder.Decode(actual);
+                var decoded = ContinuationTokenEncoder.Decode(actual);
 
                 expected.Should().BeEquivalentTo(decoded);
             }
@@ -205,7 +205,7 @@ namespace AllOverIt.Pagination.Tests
 
                 actual.Should().NotBeNullOrEmpty();
 
-                var decoded = encoder.Decode(actual);
+                var decoded = ContinuationTokenEncoder.Decode(actual);
 
                 expected.Should().BeEquivalentTo(decoded);
             }
@@ -246,7 +246,7 @@ namespace AllOverIt.Pagination.Tests
 
                 actual.Should().NotBeNullOrEmpty();
 
-                var decoded = encoder.Decode(actual);
+                var decoded = ContinuationTokenEncoder.Decode(actual);
 
                 expected.Should().BeEquivalentTo(decoded);
             }
@@ -286,7 +286,7 @@ namespace AllOverIt.Pagination.Tests
 
                 actual.Should().NotBeNullOrEmpty();
 
-                var decoded = encoder.Decode(actual);
+                var decoded = ContinuationTokenEncoder.Decode(actual);
 
                 expected.Should().BeEquivalentTo(decoded);
             }

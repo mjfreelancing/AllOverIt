@@ -104,7 +104,7 @@ namespace AllOverIt.Pagination
             return ContinuationTokenSerializer.Serialize(continuationToken);
         }
 
-        internal ContinuationToken Decode(string continuationToken)
+        internal static ContinuationToken Decode(string continuationToken)
         {
             return ContinuationTokenSerializer.Deserialize(continuationToken);
         }

@@ -42,7 +42,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var items = CreateMany<int>();
                 
-                var expected = items.First();
+                var expected = items[0];
 
                 var actual = items.FirstElement();
 
@@ -79,11 +79,11 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Return_Last_Element()
             {
-                var items = CreateMany<int>().AsReadOnlyList();
+                var items = CreateMany<int>();
 
-                var expected = items.Last();
+                var expected = items[items.Count - 1];
 
-                var actual = items.LastElement();
+                var actual = ListExtensions.LastElement(items);
 
                 expected.Should().Be(actual);
             }
