@@ -31,6 +31,9 @@ AllOverIt.Pagination
 AllOverIt.EntityFrameworkCore.Pagination
   * New package to provide keyset based pagination extensions for any EF
 
+AllOverIt.ReactiveUI
+  * New package                                                     - TESTS PENDING ******************
+
 
 27 Jun 2022
 Version 5.9.1
