@@ -4,6 +4,8 @@ using AllOverIt.Serialization.Binary.Exceptions;
 using AllOverIt.Serialization.Binary.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -18,6 +20,7 @@ namespace AllOverIt.Serialization.Binary
         void WriteValue(EnrichedBinaryWriter writer, object value);
     }
 
+
     public abstract class EnrichedBinaryTypeWriter<TType> : IEnrichedBinaryTypeWriter
     {
         public Type Type => typeof(TType);
@@ -25,10 +28,13 @@ namespace AllOverIt.Serialization.Binary
         public abstract void WriteValue(EnrichedBinaryWriter writer, object value);
     }
 
+
     public interface IEnrichedBinaryWriter
     {
         IList<IEnrichedBinaryTypeWriter> Writers { get; }
         void WriteObject(object value);
+
+        void WriteNullable<TValue>(TValue? value) where TValue : struct;
     }
 
 
@@ -56,7 +62,8 @@ namespace AllOverIt.Serialization.Binary
             { typeof(TimeSpan), TypeMapping.TypeId.TimeSpan }
         };
 
-        private static readonly IDictionary<TypeMapping.TypeId, Action<EnrichedBinaryWriter, object>> TypeIdWriter = new Dictionary<TypeMapping.TypeId, Action<EnrichedBinaryWriter, object>>
+        private static readonly IDictionary<TypeMapping.TypeId, Action<EnrichedBinaryWriter, object>> TypeIdWriter =
+            new Dictionary<TypeMapping.TypeId, Action<EnrichedBinaryWriter, object>>
         {
             { TypeMapping.TypeId.Bool, (writer, value) => writer.WriteBoolean((bool)value) },
             { TypeMapping.TypeId.Byte, (writer, value) => writer.WriteByte((byte)value) },
@@ -76,9 +83,29 @@ namespace AllOverIt.Serialization.Binary
             { TypeMapping.TypeId.Guid, (writer, value) => writer.WriteGuid((Guid)value) },
             { TypeMapping.TypeId.DateTime, (writer, value) => writer.WriteInt64(((DateTime)value).ToBinary()) },
             { TypeMapping.TypeId.TimeSpan, (writer, value) => writer.WriteInt64(((TimeSpan)value).Ticks) },
-            { TypeMapping.TypeId.UserDefined, (writer, value) =>
+            {
+                TypeMapping.TypeId.Cached, (writer, value) =>
                 {
                     var valueType = value.GetType();
+                    var assemblyTypeName = valueType.AssemblyQualifiedName;
+
+                    var index = writer._userDefinedTypeCache[assemblyTypeName];
+                    writer.Write(index);
+
+                    var converter = writer.Writers.SingleOrDefault(converter => converter.Type == valueType);
+                    converter.WriteValue(writer, value);
+                }
+            },
+            {
+                TypeMapping.TypeId.UserDefined, (writer, value) =>
+                {
+                    var valueType = value.GetType();
+                    var assemblyTypeName = valueType.AssemblyQualifiedName;
+
+                    // cache for later, to write the value as a cached user defined type
+                    var cacheIndex = writer._userDefinedTypeCache.Keys.Count + 1;
+                    writer._userDefinedTypeCache.Add(assemblyTypeName, cacheIndex);
+
                     var converter = writer.Writers.SingleOrDefault(converter => converter.Type == valueType);
 
                     if (converter == null)
@@ -86,11 +113,14 @@ namespace AllOverIt.Serialization.Binary
                         throw new BinaryWriterException($"No binary writer registered for the type '{valueType.GetFriendlyName()}'.");
                     }
 
-                    writer.Write(valueType.AssemblyQualifiedName);
+                    writer.Write(assemblyTypeName);
                     converter.WriteValue(writer, value);
                 }
             }
         };
+
+        private readonly IDictionary<string, int> _userDefinedTypeCache = new Dictionary<string, int>();
+        private readonly IReadOnlyCollection<Func<Type, object, TypeMapping.TypeId?>> _typeIdLookups;
 
         public IList<IEnrichedBinaryTypeWriter> Writers { get; } = new List<IEnrichedBinaryTypeWriter>();
 
@@ -98,18 +128,21 @@ namespace AllOverIt.Serialization.Binary
         public EnrichedBinaryWriter(Stream output)
             : base(output)
         {
+            _typeIdLookups = GetTypeIdLookups();
         }
 
         /// <inheritdoc cref="BinaryWriter(Stream, Encoding)"/>
         public EnrichedBinaryWriter(Stream output, Encoding encoding)
             : base(output, encoding)
         {
+            _typeIdLookups = GetTypeIdLookups();
         }
 
         /// <inheritdoc cref="BinaryWriter(Stream, Encoding, bool)"/>
         public EnrichedBinaryWriter(Stream output, Encoding encoding, bool leaveOpen)
             : base(output, encoding, leaveOpen)
         {
+            _typeIdLookups = GetTypeIdLookups();
         }
 
         // Writes the value type and the value
@@ -120,9 +153,15 @@ namespace AllOverIt.Serialization.Binary
             WriteObject(value.GetType(), value);
         }
 
+        // Writes the value type and the value
         public void WriteObject<TType>(TType value)     // required for nullable types (need the type information)
         {
             WriteObject(typeof(TType), value);
+        }
+
+        public void WriteNullable<TValue>(TValue? value) where TValue : struct
+{
+            WriteObject(typeof(TValue?), value);
         }
 
         private void WriteObject(Type type, object value)
@@ -132,32 +171,7 @@ namespace AllOverIt.Serialization.Binary
                 throw new NotImplementedException();
             }
 
-            // TODO: error handling and OCP (code below)
-            var hasTypeId = TypeIdRegistry.TryGetValue(type, out var rawTypeId);
-
-            if (!hasTypeId)
-            {
-                if (type.IsEnum)
-                {
-                    rawTypeId = TypeMapping.TypeId.Enum;
-                    hasTypeId = true;
-                }
-            }
-
-            if (!hasTypeId)
-            {
-                if (type.IsNullableType())
-                {
-                    var underlyingType = Nullable.GetUnderlyingType(type);
-                    hasTypeId = TypeIdRegistry.TryGetValue(underlyingType, out rawTypeId);
-                }
-            }
-
-            if (!hasTypeId)
-            {
-                rawTypeId = TypeMapping.TypeId.UserDefined;
-                hasTypeId = true;
-            }
+            var rawTypeId = GetRawTypeId(type, value);
 
             var typeId = (byte) rawTypeId;
 
@@ -172,6 +186,77 @@ namespace AllOverIt.Serialization.Binary
             {
                 TypeIdWriter[rawTypeId].Invoke(this, value);
             }
+        }
+
+        private IReadOnlyCollection<Func<Type, object, TypeMapping.TypeId?>> GetTypeIdLookups()
+        {
+            return new[]
+            {
+                IsTypeRegistered,
+                IsTypeEnum,
+                IsTypeNullable,
+                GetTypeAsCachedOrUserDefined
+            };
+        }
+
+        private TypeMapping.TypeId GetRawTypeId(Type type, object value)
+        {
+            foreach (var lookup in _typeIdLookups)
+            {
+                var rawTypeId = lookup.Invoke(type, value);
+
+                if (rawTypeId.HasValue)
+                {
+                    return rawTypeId.Value;
+                }
+            }
+
+            throw new InvalidOperationException($"No RawTypeId lookup defined for type '{type.GetFriendlyName()}'.");
+        }
+
+        private TypeMapping.TypeId? IsTypeRegistered(Type type, object value)
+        {
+            if (TypeIdRegistry.TryGetValue(type, out var rawTypeId))
+            {
+                return rawTypeId;
+            }
+
+            return default;
+        }
+
+        private TypeMapping.TypeId? IsTypeEnum(Type type, object value)
+        {
+            if (type.IsEnum)
+            {
+                return TypeMapping.TypeId.Enum;
+            }
+
+            return default;
+        }
+
+        private TypeMapping.TypeId? IsTypeNullable(Type type, object _)
+        {
+            if (type.IsNullableType())
+            {
+                var underlyingType = Nullable.GetUnderlyingType(type);
+
+                if (TypeIdRegistry.TryGetValue(underlyingType, out var rawTypeId))
+                {
+                    return rawTypeId;
+                }
+            }
+
+            return default;
+        }
+
+        private TypeMapping.TypeId? GetTypeAsCachedOrUserDefined(Type _, object value)
+        {
+            var valueType = value.GetType();
+            var assemblyTypeName = valueType.AssemblyQualifiedName;
+
+            return _userDefinedTypeCache.ContainsKey(assemblyTypeName)
+                ? TypeMapping.TypeId.Cached
+                : TypeMapping.TypeId.UserDefined;
         }
     }
 }

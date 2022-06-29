@@ -31,6 +31,7 @@
             //IDictionary = ,
             //Object = ,
 
+            Cached = 126,
             UserDefined = 127,
 
             // Bit to indicate the value is its default (such as for string and nullable) - so don't need to read the value

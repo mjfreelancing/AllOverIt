@@ -2,7 +2,7 @@
 
 namespace AllOverIt.Serialization.Binary.Exceptions
 {
-    /// <summary>Represents on object self-reference error.</summary>
+    /// <summary>Represents an error while writing to a binary stream.</summary>
     public class BinaryWriterException : Exception
     {
         /// <summary>Default constructor.</summary>

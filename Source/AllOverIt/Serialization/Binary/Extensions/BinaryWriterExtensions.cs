@@ -31,6 +31,15 @@ namespace AllOverIt.Serialization.Binary.Extensions
             var value = reader.ReadString();
             return Enum.Parse(valueType, value);
         }
+
+        public static TEnum ReadEnum<TEnum>(this BinaryReader reader)
+        {
+            var valueTypeName = reader.ReadString();
+            var valueType = Type.GetType(valueTypeName);                    // TODO: Check for null
+
+            var value = reader.ReadString();
+            return (TEnum) Enum.Parse(valueType, value);
+        }
     }
 
 
@@ -144,7 +153,6 @@ namespace AllOverIt.Serialization.Binary.Extensions
             writer.Write(value.GetType().AssemblyQualifiedName);
             writer.Write($"{value}");   
         }
-
 
 
     }

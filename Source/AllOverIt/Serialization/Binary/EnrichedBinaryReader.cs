@@ -1,4 +1,5 @@
-﻿using AllOverIt.Serialization.Binary.Extensions;
+﻿using AllOverIt.Serialization.Binary.Exceptions;
+using AllOverIt.Serialization.Binary.Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,14 +12,19 @@ namespace AllOverIt.Serialization.Binary
     {
         Type Type { get; }
         object ReadValue(EnrichedBinaryReader reader);
+        TValue ReadValue<TValue>(EnrichedBinaryReader reader);
     }
 
     public abstract class EnrichedBinaryTypeReader<TType> : IEnrichedBinaryTypeReader
     {
         public Type Type => typeof(TType);
 
-        // return a value that identifies this type
         public abstract object ReadValue(EnrichedBinaryReader reader);
+
+        public TValue ReadValue<TValue>(EnrichedBinaryReader reader)
+        {
+            return (TValue)ReadValue(reader);
+        }
     }
 
 
@@ -26,6 +32,8 @@ namespace AllOverIt.Serialization.Binary
     {
         IList<IEnrichedBinaryTypeReader> Readers { get; }
         object ReadObject();
+        TValue ReadObject<TValue>();
+        TValue? ReadNullable<TValue>() where TValue : struct;
     }
 
     public sealed class EnrichedBinaryReader : BinaryReader, IEnrichedBinaryReader
@@ -50,16 +58,41 @@ namespace AllOverIt.Serialization.Binary
             { TypeMapping.TypeId.Guid, reader => reader.ReadGuid() },
             { TypeMapping.TypeId.DateTime, reader => DateTime.FromBinary(reader.ReadInt64()) },
             { TypeMapping.TypeId.TimeSpan, reader => new TimeSpan(reader.ReadInt64()) },
-            { TypeMapping.TypeId.UserDefined, reader =>
+            {
+                TypeMapping.TypeId.Cached, reader =>
                 {
-                    var valueTypeName = reader.ReadString();
-                    var valueType = Type.GetType(valueTypeName);                    // TODO: Check for null
+                    var cacheIndex = reader.ReadInt32();
+                    var assemblyTypeName = reader._userDefinedTypeCache[cacheIndex];
+
+                    var valueType = Type.GetType(assemblyTypeName);
+                    var converter = reader.Readers.SingleOrDefault(converter => converter.Type == valueType);
+
+                    return converter.ReadValue(reader);
+                }
+            },
+            {
+                TypeMapping.TypeId.UserDefined, reader =>
+                {
+                    var assemblyTypeName = reader.ReadString();
+                    var valueType = Type.GetType(assemblyTypeName);                    // TODO: Check for null
+
+                    if (valueType == null)
+                    {
+                        throw new BinaryReaderException($"Unknown type '{assemblyTypeName}'.");
+                    }
+
+                    // cache for later, to read the value as a cached user defined type
+                    var cacheIndex = reader._userDefinedTypeCache.Keys.Count + 1;
+                    reader._userDefinedTypeCache.Add(cacheIndex, assemblyTypeName);
+
                     var converter = reader.Readers.SingleOrDefault(converter => converter.Type == valueType);
 
                     return converter.ReadValue(reader);
                 }
             }
         };
+
+        private readonly IDictionary<int, string> _userDefinedTypeCache = new Dictionary<int, string>();
 
         public IList<IEnrichedBinaryTypeReader> Readers { get; } = new List<IEnrichedBinaryTypeReader>();
 
@@ -87,8 +120,6 @@ namespace AllOverIt.Serialization.Binary
 
             var rawTypeId = (TypeMapping.TypeId) (typeId & ~0x80);       // Exclude the default bit flag
 
-            //var type = TypeMapping.TypeIdRegistry.Where(kvp => kvp.Value == rawTypeId).Single().Key;
-
             object rawValue = default;
 
             // Applicable to strings and nullable types
@@ -101,6 +132,16 @@ namespace AllOverIt.Serialization.Binary
             }
 
             return rawValue;
+        }
+
+        public TValue ReadObject<TValue>()
+        {
+            return (TValue) ReadObject();
+        }
+
+        public TValue? ReadNullable<TValue>() where TValue : struct
+        {
+            return (TValue?) ReadObject();
         }
     }
 }
