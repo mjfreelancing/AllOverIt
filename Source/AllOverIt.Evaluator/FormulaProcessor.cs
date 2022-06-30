@@ -595,7 +595,6 @@ namespace AllOverIt.Evaluator
         private bool IsCandidateOperation(ReadOnlySpan<char> token)
         {
             // Cannot use ReadOnlySpan<> in a LINQ statement.
-            // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (var operation in _operationFactory.RegisteredOperations)
             {
                 if (operation.AsSpan().StartsWith(token))

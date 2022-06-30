@@ -51,14 +51,12 @@ namespace AllOverIt.Formatters.Objects
                     break;
 
                 case IEnumerable enumerable when instance.GetType() != typeof(string):
-                    // ReSharper disable once PossibleMultipleEnumeration
                     var collateValues = CanCollateEnumerableValues(enumerable, references);
 
                     var arrayValues = collateValues
                         ? new Dictionary<string, string>()
                         : values;
 
-                    // ReSharper disable once PossibleMultipleEnumeration
                     AppendEnumerableAsPropertyValues(prefix, enumerable, arrayValues, references);
 
                     if (collateValues)
@@ -132,7 +130,6 @@ namespace AllOverIt.Formatters.Objects
         private void AppendEnumerableAsPropertyValues(string prefix, IEnumerable enumerable, IDictionary<string, string> values,
             IDictionary<object, ObjectPropertyParent> references)
         {
-            // ReSharper disable once PossibleMultipleEnumeration
             if (ExcludeEnumerable(enumerable))
             {
                 return;
@@ -140,7 +137,6 @@ namespace AllOverIt.Formatters.Objects
 
             var idx = 0;
 
-            // ReSharper disable once PossibleMultipleEnumeration
             foreach (var value in enumerable)
             {
                 var parentReferences = new Dictionary<object, ObjectPropertyParent>(references);
