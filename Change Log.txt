@@ -25,6 +25,10 @@ AllOverIt.Assertion
   * Removed methods that asserted an enumerable was a concrete collection type and instead updated .NET Core 3.1
     versions to check for different collection types before falling back to the default Any() Linq method.
 
+AllOverIt.Aws.AppSync.Client
+  * Renamed AppSyncCognitoAuthorization to AppSyncAuthorization and deleted AppSyncLambdaAuthorization as it also contains
+    an 'authorization' header.
+
 AllOverIt.Pagination
   * New package to provide keyset based pagination for any IQueryable, including EF queries
 
