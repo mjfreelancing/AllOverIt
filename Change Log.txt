@@ -1,5 +1,13 @@
 ======================================================================================================================
 
+02 Jul 2022
+Version 5.9.2
+======================================================================================================================
+AllOverIt.Aws.AppSync.Client
+  * Updated the subscription client so an initial connection established at the time of making a subscription will
+    connect using the provided authorization, or the default authorization if one isn't provided.
+
+
 27 Jun 2022
 Version 5.9.1
 ======================================================================================================================
