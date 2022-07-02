@@ -16,7 +16,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.WebSockets;
 using System.Reactive;
 using System.Reactive.Disposables;
@@ -350,7 +349,10 @@ namespace AllOverIt.Aws.AppSync.Client
         {
             _connectionAuthorization ??= authorization;
 
-            // TODO: Check we have a non-null authorization - throw a custom exception if not provided
+            if (_connectionAuthorization == null)
+            {
+                throw new InvalidOperationException("Authorization has not been provided for the AppSync subscription client connection");
+            }
         }
 
         private Task ConnectWebSocketAsync()

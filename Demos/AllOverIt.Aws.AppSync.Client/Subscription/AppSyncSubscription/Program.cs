@@ -113,7 +113,7 @@ namespace AppSyncSubscription
             services.AddAppSyncSubscriptionClient(provider =>
             {
                 var options = provider.GetRequiredService<IOptions<AppSyncOptions>>().Value;
-                var serializer = CreateJsonJsonSerializer();//provider.GetRequiredService<IJsonSerializer>();
+                var serializer = CreateJsonJsonSerializer();
 
                 return new SubscriptionClientConfiguration
                 {
