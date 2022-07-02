@@ -24,10 +24,12 @@ namespace AllOverIt.Aws.AppSync.Client
 
         /// <summary>Opens a WebSocket connection and registers the client with AppSync. Any existing subscriptions from a
         /// previous connection will be re-subscribed.</summary>
+        /// <param name="authorization">The authorization to use for the request. If null is provided then the default authorization provided
+        /// on the client configuration during construction will be used.</param>
         /// <returns>True if the connection was established, otherwise false.</returns>
         /// <remarks>Refer to <see cref="DisconnectAsync"/> for more information on how existing subscriptions are retained
         /// if the client is disconnected while there are active subscriptions.</remarks>
-        Task<bool> ConnectAsync();
+        Task<bool> ConnectAsync(IAppSyncAuthorization authorization = default);
 
         /// <summary>Unsubscribes any existing subscriptions and then disconnects the client from AppSync. The subscription
         /// registrations are maintained (not disposed of). If a new connection is later established by calling
