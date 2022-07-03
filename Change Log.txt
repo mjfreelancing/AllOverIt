@@ -37,6 +37,7 @@ AllOverIt.EntityFrameworkCore.Pagination
 
 AllOverIt.ReactiveUI
   * New package                                                     - TESTS PENDING ******************
+  * Includes ActivatableViewModel, CountdownTimer
 
 
 02 Jul 2022
