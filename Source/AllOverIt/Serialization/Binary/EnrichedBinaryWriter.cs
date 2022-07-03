@@ -514,7 +514,7 @@ namespace AllOverIt.Serialization.Binary
 
                     if (converter == null)
                     {
-                        throw new EnrichedBinaryWriterException($"No binary writer registered for the type '{valueType.GetFriendlyName()}'.");
+                        throw new BinaryWriterException($"No binary writer registered for the type '{valueType.GetFriendlyName()}'.");
                     }
 
                     writer.Write(assemblyTypeName);
@@ -567,7 +567,7 @@ namespace AllOverIt.Serialization.Binary
 
             if (value is null && (type is null || type == ObjectType))
             {
-                throw new EnrichedBinaryWriterException("All binary serialized values must be typed or have a non-null value.");
+                throw new BinaryWriterException("All binary serialized values must be typed or have a non-null value.");
             }
 
             var rawTypeId = GetRawTypeId(type, value);

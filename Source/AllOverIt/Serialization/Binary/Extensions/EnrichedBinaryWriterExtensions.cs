@@ -1,5 +1,5 @@
-﻿using AllOverIt.Extensions;
-using System;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Extensions;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +22,8 @@ namespace AllOverIt.Serialization.Binary.Extensions
 
         public static void WriteEnumerable(this IEnrichedBinaryWriter writer, IEnumerable enumerable)
         {
+            _ = enumerable.WhenNotNull(nameof(enumerable));
+
             // Will return null if the enumerable comes from something like Enumerable.Range()
             // The action calls WriteObject() which attempts to deal with this by using the value's runtime type (if not null)
             var valueType = enumerable.GetType().GetGenericArguments().SingleOrDefault();
@@ -48,6 +50,8 @@ namespace AllOverIt.Serialization.Binary.Extensions
 
         public static void WriteDictionary(this IEnrichedBinaryWriter writer, IDictionary dictionary)
         {
+            _ = dictionary.WhenNotNull(nameof(dictionary));
+
             var args = dictionary.GetType().GetGenericArguments();
 
             if (!args.Any())
@@ -78,5 +82,4 @@ namespace AllOverIt.Serialization.Binary.Extensions
             }
         }
     }
-
 }

@@ -114,11 +114,6 @@ namespace AllOverIt.Serialization.Binary.Extensions
             // Convert.ChangeType() cannot convert an integral type to an Enum type.
             writer.Write(value.GetType().AssemblyQualifiedName);
             writer.Write($"{value}");   
-        }
-
-
-
-      
+        }      
     }
-
 }

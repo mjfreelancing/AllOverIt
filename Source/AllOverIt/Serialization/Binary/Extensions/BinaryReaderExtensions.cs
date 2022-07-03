@@ -1,11 +1,11 @@
-﻿using System;
+﻿using AllOverIt.Serialization.Binary.Exceptions;
+using System;
 using System.IO;
 
 namespace AllOverIt.Serialization.Binary.Extensions
 {
     public static class BinaryReaderExtensions
     {
-        // TODO: To be moved as these are system extensions
         public static string ReadSafeString(this BinaryReader reader)
         {
             var hasValue = reader.ReadBoolean();
@@ -23,21 +23,31 @@ namespace AllOverIt.Serialization.Binary.Extensions
 
         public static object ReadEnum(this BinaryReader reader)
         {
-            var valueTypeName = reader.ReadString();
-            var valueType = Type.GetType(valueTypeName);                    // TODO: Check for null
-
+            var enumType = GetEnumType(reader);
             var value = reader.ReadString();
-            return Enum.Parse(valueType, value);
+
+            return Enum.Parse(enumType, value);
         }
 
         public static TEnum ReadEnum<TEnum>(this BinaryReader reader)
         {
-            var valueTypeName = reader.ReadString();
-            var valueType = Type.GetType(valueTypeName);                    // TODO: Check for null
-
+            var enumType = GetEnumType(reader);
             var value = reader.ReadString();
-            return (TEnum) Enum.Parse(valueType, value);
+
+            return (TEnum) Enum.Parse(enumType, value);
+        }
+
+        private static Type GetEnumType(BinaryReader reader)
+        {
+            var enumTypeName = reader.ReadString();
+            var enumType = Type.GetType(enumTypeName);
+
+            if (enumType is null)
+            {
+                throw new BinaryReaderException($"Unknown enum type '{enumTypeName}'.");
+            }
+
+            return enumType;
         }
     }
-
 }

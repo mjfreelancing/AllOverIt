@@ -1,18 +1,19 @@
 ﻿using System;
+using System.IO;
 
 namespace AllOverIt.Serialization.Binary.Exceptions
 {
-    /// <summary>Represents an error while writing to a binary stream.</summary>
-    public class EnrichedBinaryWriterException : Exception
+    /// <summary>Represents an error while writing to a <see cref="BinaryWriter"/> or <see cref="EnrichedBinaryWriter"/> stream.</summary>
+    public class BinaryWriterException : Exception
     {
         /// <summary>Default constructor.</summary>
-        public EnrichedBinaryWriterException()
+        public BinaryWriterException()
         {
         }
 
         /// <summary>Constructor.</summary>
         /// <param name="message">The exception message.</param>
-        public EnrichedBinaryWriterException(string message)
+        public BinaryWriterException(string message)
             : base(message)
         {
         }
@@ -20,7 +21,7 @@ namespace AllOverIt.Serialization.Binary.Exceptions
         /// <summary>Constructor.</summary>
         /// <param name="message">The exception message.</param>
         /// <param name="innerException">The inner exception.</param>
-        public EnrichedBinaryWriterException(string message, Exception innerException)
+        public BinaryWriterException(string message, Exception innerException)
             : base(message, innerException)
         {
         }

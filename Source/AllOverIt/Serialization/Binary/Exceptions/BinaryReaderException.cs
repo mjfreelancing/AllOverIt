@@ -1,18 +1,19 @@
 ﻿using System;
+using System.IO;
 
 namespace AllOverIt.Serialization.Binary.Exceptions
 {
-    /// <summary>Represents an error while reading from a binary stream.</summary>
-    public class EnrichedBinaryReaderException : Exception
+    /// <summary>Represents an error while reading from a <see cref="BinaryReader"/> or <see cref="EnrichedBinaryReader"/> stream.</summary>
+    public class BinaryReaderException : Exception
     {
         /// <summary>Default constructor.</summary>
-        public EnrichedBinaryReaderException()
+        public BinaryReaderException()
         {
         }
 
         /// <summary>Constructor.</summary>
         /// <param name="message">The exception message.</param>
-        public EnrichedBinaryReaderException(string message)
+        public BinaryReaderException(string message)
             : base(message)
         {
         }
@@ -20,7 +21,7 @@ namespace AllOverIt.Serialization.Binary.Exceptions
         /// <summary>Constructor.</summary>
         /// <param name="message">The exception message.</param>
         /// <param name="innerException">The inner exception.</param>
-        public EnrichedBinaryReaderException(string message, Exception innerException)
+        public BinaryReaderException(string message, Exception innerException)
             : base(message, innerException)
         {
         }

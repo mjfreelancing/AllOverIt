@@ -67,5 +67,4 @@ namespace AllOverIt.Serialization.Binary.Extensions
             return dictionary.ToDictionary(kvp => (TKey) kvp.Key, kvp => (TValue) kvp.Value);
         }
     }
-
 }
