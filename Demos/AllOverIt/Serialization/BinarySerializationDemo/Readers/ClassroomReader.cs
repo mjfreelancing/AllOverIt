@@ -2,21 +2,28 @@
 using AllOverIt.Serialization.Binary.Extensions;
 using System.Collections.Generic;
 
-internal sealed class ClassroomReader : EnrichedBinaryTypeReader<Classroom>
+internal sealed class ClassroomReader : EnrichedBinaryValueReader<Classroom>
 {
     public override object ReadValue(EnrichedBinaryReader reader)
     {
         var roomId = reader.ReadGuid();
         var teacher = reader.ReadObject<Teacher>();
-        var studentCount = reader.ReadInt32();
+        var students = reader.ReadEnumerable<Student>();
 
-        var students = new List<Student>();
+        //var s = reader.ReadObject<List<object>>();
 
-        for (var i = 0; i < studentCount; i++)
-        {
-            var student = reader.ReadObject<Student>();
-            students.Add(student);
-        }
+
+        //var studentCount = reader.ReadInt32();
+
+        //var students = new List<Student>();
+
+        //for (var i = 0; i < studentCount; i++)
+        //{
+        //    var student = reader.ReadObject<Student>();
+        //    students.Add(student);
+        //}
+
+
 
         return new Classroom
         {

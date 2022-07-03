@@ -112,7 +112,7 @@ namespace AllOverIt.Pagination
 
 
 
-    internal sealed class ContinuationTokenWriter : EnrichedBinaryTypeWriter<ContinuationToken>
+    internal sealed class ContinuationTokenWriter : EnrichedBinaryValueWriter<ContinuationToken>
     {
         public override void WriteValue(EnrichedBinaryWriter writer, object value)
         {
@@ -137,7 +137,7 @@ namespace AllOverIt.Pagination
 
 
 
-    internal sealed class ContinuationTokenReader : EnrichedBinaryTypeReader<ContinuationToken>
+    internal sealed class ContinuationTokenReader : EnrichedBinaryValueReader<ContinuationToken>
     {
         public override object ReadValue(EnrichedBinaryReader reader)
         {

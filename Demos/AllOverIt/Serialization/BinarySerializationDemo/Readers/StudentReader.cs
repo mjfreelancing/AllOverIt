@@ -1,7 +1,7 @@
 ﻿using AllOverIt.Serialization.Binary;
 using AllOverIt.Serialization.Binary.Extensions;
 
-internal sealed class StudentReader : EnrichedBinaryTypeReader<Student>
+internal sealed class StudentReader : EnrichedBinaryValueReader<Student>
 {
     public override object ReadValue(EnrichedBinaryReader reader)
     {

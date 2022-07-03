@@ -4,48 +4,10 @@ using System.IO;
 
 namespace AllOverIt.Serialization.Binary.Extensions
 {
-    // TODO: To be moved as these are system extensions
-
-    public static class BinaryReaderExtensions
-    {
-        public static string ReadSafeString(this BinaryReader reader)
-        {
-            var hasValue = reader.ReadBoolean();
-
-            return hasValue
-                ? reader.ReadString()
-                : default;
-        }
-
-        public static Guid ReadGuid(this BinaryReader reader)
-        {
-            var bytes = reader.ReadBytes(16);
-            return new Guid(bytes);
-        }
-
-        public static object ReadEnum(this BinaryReader reader)
-        {
-            var valueTypeName = reader.ReadString();
-            var valueType = Type.GetType(valueTypeName);                    // TODO: Check for null
-
-            var value = reader.ReadString();
-            return Enum.Parse(valueType, value);
-        }
-
-        public static TEnum ReadEnum<TEnum>(this BinaryReader reader)
-        {
-            var valueTypeName = reader.ReadString();
-            var valueType = Type.GetType(valueTypeName);                    // TODO: Check for null
-
-            var value = reader.ReadString();
-            return (TEnum) Enum.Parse(valueType, value);
-        }
-    }
-
-
-
     public static class BinaryWriterExtensions
     {
+        // TODO: To be moved as these are system extensions
+        
         /// <inheritdoc cref="BinaryWriter.Write(ulong)"/>
         /// <param name="writer">The binary writer.</param>
         public static void WriteUInt64(this BinaryWriter writer, ulong value) => writer.Write(value);
@@ -155,5 +117,8 @@ namespace AllOverIt.Serialization.Binary.Extensions
         }
 
 
+
+      
     }
+
 }

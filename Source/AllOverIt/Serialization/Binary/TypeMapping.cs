@@ -24,11 +24,11 @@
             Guid = 16,
             DateTime = 17,
             TimeSpan = 18,
+            Enumerable = 19,
+            Dictionary = 20,
             //Array = ,
             //Struct = ,
             //KeyValuePair = ,
-            //IEnumerable = ,
-            //IDictionary = ,
             //Object = ,
 
             Cached = 126,

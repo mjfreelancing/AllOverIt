@@ -1,7 +1,9 @@
 ﻿using AllOverIt.Serialization.Binary;
+using AllOverIt.Serialization.Binary.Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -13,15 +15,11 @@ using System.Text.Json.Serialization;
 
 UseCustomReadersAndWriters();
 Console.WriteLine();
-UseReflectionReadersAndWriters();
+//UseReflectionReadersAndWriters();
 
 Console.WriteLine();
 Console.WriteLine("All Over It.");
 Console.ReadKey();
-
-static void UseReflectionReadersAndWriters()
-{
-}
 
 static void UseCustomReadersAndWriters()
 {
@@ -40,6 +38,33 @@ static void UseCustomReadersAndWriters()
             writer.Writers.Add(new ClassroomWriter());
 
             writer.WriteObject(classroom);
+
+
+            var e1 = Enumerable.Range(1, 3);
+            writer.WriteObject(e1);
+
+
+            var d1 = Environment.GetEnvironmentVariables();
+            writer.WriteObject(d1);
+
+
+            var d2 = new Dictionary<object, object>();
+            d2.Add(1, "1");
+            d2.Add(true, 1);
+            d2.Add(Gender.Male, "Male");
+            d2.Add(new Student(), new Teacher());
+            writer.WriteObject(d2);
+
+
+
+            var d3 = new Dictionary<int, double>
+            {
+                { 1, 1.1 },
+                { 2, 2.2 },
+                { 3, 3.3 }
+            };
+
+            writer.WriteObject(d3);
         }
 
         serializedBytes = stream.ToArray();
@@ -66,6 +91,17 @@ static void UseCustomReadersAndWriters()
             reader.Readers.Add(new ClassroomReader());
 
             deserializedClassroom = (Classroom) reader.ReadObject();
+
+
+            var e1 = reader.ReadObject();
+            
+            // was written via IDictionary, assumed to be the equivalent of IDictionary<string, string>
+            var d1 = reader.ReadDictionary<string, string>(); //reader.ReadObject();
+
+            var d2 = reader.ReadDictionary<object, object>(); //reader.ReadObject();
+
+            var d3 = reader.ReadDictionary<int, double>();
+
         }
     }
 
@@ -87,6 +123,48 @@ static void UseCustomReadersAndWriters()
     Console.WriteLine();
 }
 
+//static void UseReflectionReadersAndWriters()
+//{
+//    var classroom = CreateClassroom();
+
+//    byte[] serializedBytes;
+
+//    using (var stream = new MemoryStream())
+//    {
+//        using (var writer = new EnrichedBinaryWriter(stream, Encoding.UTF8, true))
+//        {
+//            var objectWriter = new ObjectBinaryWriter(writer);
+
+
+//            //var d = new Dictionary<object, object>();
+//            //d.Add(1, "1");
+//            //d.Add(true, 1);
+//            //d.Add(Gender.Male, "Male");
+//            //d.Add(new Student(), new Teacher());
+
+//            //objectWriter.WriteObject(d);
+
+//            objectWriter.WriteObject(classroom);
+//        }
+
+//        serializedBytes = stream.ToArray();
+//    }
+
+//    var serializedString = Convert.ToBase64String(serializedBytes);
+
+//    Console.WriteLine("Serialized");
+//    Console.WriteLine("==========");
+//    Console.WriteLine(serializedString);
+//    Console.WriteLine();
+//    Console.WriteLine($"  => {serializedBytes.Length} bytes");
+//    Console.WriteLine();
+
+//    Classroom deserializedClassroom = default;
+
+
+
+//}
+
 static Classroom CreateClassroom()
 {
     return new Classroom
@@ -99,56 +177,26 @@ static Classroom CreateClassroom()
             Gender = Gender.Male
         },
         Students = new List<Student>
-    {
-        new Student
         {
-            FirstName = "Mary",
-            LastName = "Lamb",
-            Gender = Gender.Female,
-            Age = 12
-        },
-        new Student
-        {
-            FirstName = "Charlette",
-            LastName = "Web",
-            Gender = Gender.Female
-        },
-        new Student
-        {
-            FirstName = "Shrek",
-            Gender = Gender.Male,
-            Age = 13
+            new Student
+            {
+                FirstName = "Mary",
+                LastName = "Lamb",
+                Gender = Gender.Female,
+                Age = 12
+            },
+            new Student
+            {
+                FirstName = "Charlette",
+                LastName = "Web",
+                Gender = Gender.Female
+            },
+            new Student
+            {
+                FirstName = "Shrek",
+                Gender = Gender.Male,
+                Age = 13
+            }
         }
-    }
     };
 }
-
-
-
-
-
-public interface IObjectVisitor
-{
-    void Visit(object @object);
-}
-
-
-public sealed class ObjectVisitor : IObjectVisitor
-{
-    public void Visit(object @object)
-    {
-
-    }
-}
-
-
-public sealed class ObjectBinaryWriter
-{
-    public byte[] GetObjectBytes(object @object)
-    {
-
-    }
-}
-
-
-

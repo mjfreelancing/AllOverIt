@@ -1,7 +1,7 @@
 ﻿using AllOverIt.Serialization.Binary;
 using AllOverIt.Serialization.Binary.Extensions;
 
-internal abstract class PersonWriter<TPerson> : EnrichedBinaryTypeWriter<TPerson> where TPerson : Person
+internal abstract class PersonWriter<TPerson> : EnrichedBinaryValueWriter<TPerson> where TPerson : Person
 {
     public override void WriteValue(EnrichedBinaryWriter writer, object value)
     {
