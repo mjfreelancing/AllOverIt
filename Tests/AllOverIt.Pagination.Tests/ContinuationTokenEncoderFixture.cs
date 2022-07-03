@@ -38,7 +38,7 @@ namespace AllOverIt.Pagination.Tests
             {
                 Invoking(() =>
                 {
-                    _ = new ContinuationTokenEncoder(null, Create<PaginationDirection>());
+                    _ = new ContinuationTokenEncoder(null, Create<PaginationDirection>(), Create<bool>());
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -51,7 +51,7 @@ namespace AllOverIt.Pagination.Tests
             [Fact]
             public void Should_Throw_When_References_Null()
             {
-                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward);
+                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward, Create<bool>());
 
                 Invoking(() =>
                 {
@@ -65,7 +65,7 @@ namespace AllOverIt.Pagination.Tests
             [Fact]
             public void Should_Throw_When_References_Empty()
             {
-                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward);
+                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward, Create<bool>());
 
                 Invoking(() =>
                 {
@@ -96,15 +96,30 @@ namespace AllOverIt.Pagination.Tests
                     Values = new object[] { expectedReference.Name, expectedReference.Id }
                 };
 
-                var encoder = new ContinuationTokenEncoder(_columns, paginationDirection);
+                var encoder = new ContinuationTokenEncoder(_columns, paginationDirection, Create<bool>());
 
                 var actual = encoder.EncodePreviousPage(entities);
 
                 actual.Should().NotBeNullOrEmpty();
 
-                var decoded = ContinuationTokenEncoder.Decode(actual);
+                var decoded = encoder.Decode(actual);
 
                 expected.Should().BeEquivalentTo(decoded);
+            }
+
+            [Fact]
+            public void Encoding_With_Compression_Should_Not_Match_Without_Compression()
+            {
+                var entities = CreateMany<EntityDummy>();
+                var paginationDirection = Create<PaginationDirection>();
+                
+                var compressionEncoder = new ContinuationTokenEncoder(_columns, paginationDirection, true);
+                var compressed = compressionEncoder.EncodeNextPage(entities.First());
+
+                var nonCompressionEncoder = new ContinuationTokenEncoder(_columns, paginationDirection, false);
+                var nonCompressed = nonCompressionEncoder.EncodeNextPage(entities.First());
+
+                compressed.Should().NotBeSameAs(nonCompressed);
             }
         }
 
@@ -113,7 +128,7 @@ namespace AllOverIt.Pagination.Tests
             [Fact]
             public void Should_Throw_When_References_Null()
             {
-                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward);
+                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward, Create<bool>());
 
                 Invoking(() =>
                 {
@@ -127,7 +142,7 @@ namespace AllOverIt.Pagination.Tests
             [Fact]
             public void Should_Throw_When_References_Empty()
             {
-                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward);
+                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward, Create<bool>());
 
                 Invoking(() =>
                 {
@@ -158,13 +173,13 @@ namespace AllOverIt.Pagination.Tests
                     Values = new object[] { expectedReference.Name, expectedReference.Id }
                 };
 
-                var encoder = new ContinuationTokenEncoder(_columns, paginationDirection);
+                var encoder = new ContinuationTokenEncoder(_columns, paginationDirection, Create<bool>());
 
                 var actual = encoder.EncodeNextPage(entities);
 
                 actual.Should().NotBeNullOrEmpty();
 
-                var decoded = ContinuationTokenEncoder.Decode(actual);
+                var decoded = encoder.Decode(actual);
 
                 expected.Should().BeEquivalentTo(decoded);
             }
@@ -175,7 +190,7 @@ namespace AllOverIt.Pagination.Tests
             [Fact]
             public void Should_Throw_When_References_Null()
             {
-                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward);
+                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward, Create<bool>());
 
                 Invoking(() =>
                 {
@@ -199,13 +214,13 @@ namespace AllOverIt.Pagination.Tests
                     Values = new object[] { entity.Name, entity.Id }
                 };
 
-                var encoder = new ContinuationTokenEncoder(_columns, paginationDirection);
+                var encoder = new ContinuationTokenEncoder(_columns, paginationDirection, Create<bool>());
 
                 var actual = encoder.EncodePreviousPage(entity);
 
                 actual.Should().NotBeNullOrEmpty();
 
-                var decoded = ContinuationTokenEncoder.Decode(actual);
+                var decoded = encoder.Decode(actual);
 
                 expected.Should().BeEquivalentTo(decoded);
             }
@@ -216,7 +231,7 @@ namespace AllOverIt.Pagination.Tests
             [Fact]
             public void Should_Throw_When_References_Null()
             {
-                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward);
+                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward, Create<bool>());
 
                 Invoking(() =>
                 {
@@ -240,13 +255,13 @@ namespace AllOverIt.Pagination.Tests
                     Values = new object[] { entity.Name, entity.Id }
                 };
 
-                var encoder = new ContinuationTokenEncoder(_columns, paginationDirection);
+                var encoder = new ContinuationTokenEncoder(_columns, paginationDirection, Create<bool>());
 
                 var actual = encoder.EncodeNextPage(entity);
 
                 actual.Should().NotBeNullOrEmpty();
 
-                var decoded = ContinuationTokenEncoder.Decode(actual);
+                var decoded = encoder.Decode(actual);
 
                 expected.Should().BeEquivalentTo(decoded);
             }
@@ -259,7 +274,7 @@ namespace AllOverIt.Pagination.Tests
             [InlineData(PaginationDirection.Backward)]
             public void Should_Encode_First_Page(PaginationDirection paginationDirection)
             {
-                var encoder = new ContinuationTokenEncoder(_columns, paginationDirection);
+                var encoder = new ContinuationTokenEncoder(_columns, paginationDirection, Create<bool>());
 
                 var actual = encoder.EncodeFirstPage();
 
@@ -280,13 +295,13 @@ namespace AllOverIt.Pagination.Tests
                     Values = (object[])null
                 };
 
-                var encoder = new ContinuationTokenEncoder(_columns, paginationDirection);
+                var encoder = new ContinuationTokenEncoder(_columns, paginationDirection, Create<bool>());
 
                 var actual = encoder.EncodeLastPage();
 
                 actual.Should().NotBeNullOrEmpty();
 
-                var decoded = ContinuationTokenEncoder.Decode(actual);
+                var decoded = encoder.Decode(actual);
 
                 expected.Should().BeEquivalentTo(decoded);
             }

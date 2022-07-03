@@ -8,7 +8,7 @@ namespace AllOverIt.Pagination
 {
     public interface IQueryPaginator<TEntity> where TEntity : class
     {
-        IContinuationTokenEncoder ContinuationTokenEncoder { get; }
+        IContinuationTokenEncoder TokenEncoder { get; }
 
         IQueryPaginator<TEntity> ColumnAscending<TProperty>(Expression<Func<TEntity, TProperty>> expression);
         IQueryPaginator<TEntity> ColumnDescending<TProperty>(Expression<Func<TEntity, TProperty>> expression);

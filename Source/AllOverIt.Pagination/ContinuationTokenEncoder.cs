@@ -12,11 +12,13 @@ namespace AllOverIt.Pagination
     {
         private readonly IReadOnlyCollection<IColumnDefinition> _columns;
         private readonly PaginationDirection _paginationDirection;
+        private readonly bool _useCompression;
 
-        public ContinuationTokenEncoder(IReadOnlyCollection<IColumnDefinition> columns, PaginationDirection paginationDirection)
+        public ContinuationTokenEncoder(IReadOnlyCollection<IColumnDefinition> columns, PaginationDirection paginationDirection, bool useCompression)
         {
             _columns = columns.WhenNotNullOrEmpty(nameof(columns)).AsReadOnlyCollection();
             _paginationDirection = paginationDirection;
+            _useCompression = useCompression;
         }
 
         public string EncodePreviousPage<TEntity>(IReadOnlyCollection<TEntity> references) where TEntity : class
@@ -55,7 +57,7 @@ namespace AllOverIt.Pagination
                 //Values = 
             };
 
-            return ContinuationTokenSerializer.Serialize(continuationToken);
+            return Encode(continuationToken);
         }
 
         private string Encode<TEntity>(ContinuationDirection continuationDirection, IReadOnlyCollection<TEntity> references)
@@ -101,12 +103,17 @@ namespace AllOverIt.Pagination
                 Values = columnValues
             };
 
-            return ContinuationTokenSerializer.Serialize(continuationToken);
+            return Encode(continuationToken);
         }
 
-        internal static ContinuationToken Decode(string continuationToken)
+        internal string Encode(ContinuationToken continuationToken)
         {
-            return ContinuationTokenSerializer.Deserialize(continuationToken);
+            return ContinuationTokenSerializer.Serialize(continuationToken, _useCompression);
+        }
+
+        internal ContinuationToken Decode(string continuationToken)
+        {
+            return ContinuationTokenSerializer.Deserialize(continuationToken, _useCompression);
         }
     }
 }

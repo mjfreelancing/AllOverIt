@@ -41,7 +41,7 @@ namespace AllOverIt.Pagination
         private IOrderedQueryable<TEntity> _directionQuery;                     // based on the _paginationDirection        
         private IOrderedQueryable<TEntity> _directionReverseQuery;              // based on the reverse _direction
 
-        public IContinuationTokenEncoder ContinuationTokenEncoder => GetContinuationTokenEncoder();
+        public IContinuationTokenEncoder TokenEncoder => GetContinuationTokenEncoder();
 
         public QueryPaginator(IQueryable<TEntity> query, QueryPaginatorConfiguration configuration)
         {
@@ -66,7 +66,7 @@ namespace AllOverIt.Pagination
             AssertColumnsDefined();
 
             // Returns ContinuationToken.None if there is no token - which defaults to Forward
-            var decodedToken = Pagination.ContinuationTokenEncoder.Decode(continuationToken);
+            var decodedToken = GetContinuationTokenEncoder().Decode(continuationToken);
 
             var requiredDirection = decodedToken == ContinuationToken.None
                 ? _configuration.PaginationDirection
@@ -213,7 +213,7 @@ namespace AllOverIt.Pagination
         {
             AssertColumnsDefined();
 
-            _continuationTokenEncoder ??= new ContinuationTokenEncoder(_columns, _configuration.PaginationDirection);
+            _continuationTokenEncoder ??= new ContinuationTokenEncoder(_columns, _configuration.PaginationDirection, _configuration.UseCompression);
 
             return _continuationTokenEncoder;
         }

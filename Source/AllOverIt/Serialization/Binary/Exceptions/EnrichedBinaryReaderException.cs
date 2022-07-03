@@ -2,17 +2,17 @@
 
 namespace AllOverIt.Serialization.Binary.Exceptions
 {
-    /// <summary>Represents an error while writing to a binary stream.</summary>
-    public class BinaryWriterException : Exception
+    /// <summary>Represents an error while reading from a binary stream.</summary>
+    public class EnrichedBinaryReaderException : Exception
     {
         /// <summary>Default constructor.</summary>
-        public BinaryWriterException()
+        public EnrichedBinaryReaderException()
         {
         }
 
         /// <summary>Constructor.</summary>
         /// <param name="message">The exception message.</param>
-        public BinaryWriterException(string message)
+        public EnrichedBinaryReaderException(string message)
             : base(message)
         {
         }
@@ -20,7 +20,7 @@ namespace AllOverIt.Serialization.Binary.Exceptions
         /// <summary>Constructor.</summary>
         /// <param name="message">The exception message.</param>
         /// <param name="innerException">The inner exception.</param>
-        public BinaryWriterException(string message, Exception innerException)
+        public EnrichedBinaryReaderException(string message, Exception innerException)
             : base(message, innerException)
         {
         }

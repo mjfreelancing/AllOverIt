@@ -20,7 +20,7 @@ namespace AllOverIt.Serialization.Binary.Extensions
             writer.WriteObject(typeof(TType), value);
         }
 
-        public static void WriteEnumerable(this IEnrichedBinaryWriter writer, IEnumerable enumerable, Action<Type, object> action)
+        public static void WriteEnumerable(this IEnrichedBinaryWriter writer, IEnumerable enumerable)
         {
             // Will return null if the enumerable comes from something like Enumerable.Range()
             // The action calls WriteObject() which attempts to deal with this by using the value's runtime type (if not null)
@@ -42,11 +42,11 @@ namespace AllOverIt.Serialization.Binary.Extensions
 
             foreach (var value in collection)
             {
-                action.Invoke(valueType, value);
+                writer.WriteObject(valueType, value);
             }
         }
 
-        public static void WriteDictionary(this IEnrichedBinaryWriter writer, IDictionary dictionary, Action<Type, object> action)
+        public static void WriteDictionary(this IEnrichedBinaryWriter writer, IDictionary dictionary)
         {
             var args = dictionary.GetType().GetGenericArguments();
 
@@ -71,10 +71,10 @@ namespace AllOverIt.Serialization.Binary.Extensions
                 valueEnumerator.MoveNext();
 
                 var key = keyEnumerator.Current;
-                action.Invoke(keyType, key);
+                writer.WriteObject(keyType, key);
 
                 var value = valueEnumerator.Current;
-                action.Invoke(valueType, value);
+                writer.WriteObject(valueType, value);
             }
         }
     }

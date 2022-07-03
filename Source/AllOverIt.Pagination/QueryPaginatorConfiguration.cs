@@ -7,5 +7,7 @@
 
         // Set to False for memory based pagination. Set to True for EF based queries.
         public bool UseParameterizedQueries { get; init; } = true;
+
+        public bool UseCompression { get; init; }
     }
 }

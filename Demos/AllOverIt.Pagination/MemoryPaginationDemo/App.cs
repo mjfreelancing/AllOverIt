@@ -111,19 +111,19 @@ namespace MemoryPaginationDemo
                 switch (key)
                 {
                     case 'f':
-                        continuationToken = queryPaginator.ContinuationTokenEncoder.EncodeFirstPage();      // could also just set to null or string.Empty
+                        continuationToken = queryPaginator.TokenEncoder.EncodeFirstPage();      // could also just set to null or string.Empty
                         break;
 
                     case 'p':
-                        continuationToken = queryPaginator.ContinuationTokenEncoder.EncodePreviousPage(pageResults);
+                        continuationToken = queryPaginator.TokenEncoder.EncodePreviousPage(pageResults);
                         break;
 
                     case 'n':
-                        continuationToken = queryPaginator.ContinuationTokenEncoder.EncodeNextPage(pageResults);
+                        continuationToken = queryPaginator.TokenEncoder.EncodeNextPage(pageResults);
                         break;
 
                     case 'l':
-                        continuationToken = queryPaginator.ContinuationTokenEncoder.EncodeLastPage();
+                        continuationToken = queryPaginator.TokenEncoder.EncodeLastPage();
                         break;
 
                     case 'q':

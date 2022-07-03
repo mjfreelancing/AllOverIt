@@ -82,7 +82,8 @@ namespace PaginationConsole
                 {
                     PageSize = pageSize,
                     PaginationDirection = PaginationDirection.Forward,      // This is the default
-                    UseParameterizedQueries = true                          // Recommended for EF queries to avoid SQL injection and EF cache improvements
+                    UseParameterizedQueries = true,                         // Recommended for EF queries to avoid SQL injection and EF cache improvements
+                    UseCompression = true                                   // Use sparingly. Adds overhead, possibly for minimal gain.
                 };
 
                 // Paginated queries require the last column be a unique Id, hence including the PostId
@@ -192,19 +193,19 @@ namespace PaginationConsole
                     switch (key)
                     {
                         case 'f':
-                            continuationToken = queryPaginator.ContinuationTokenEncoder.EncodeFirstPage();      // could also just set to null or string.Empty
+                            continuationToken = queryPaginator.TokenEncoder.EncodeFirstPage();      // could also just set to null or string.Empty
                             break;
 
                         case 'p':
-                            continuationToken = queryPaginator.ContinuationTokenEncoder.EncodePreviousPage(pageResults);
+                            continuationToken = queryPaginator.TokenEncoder.EncodePreviousPage(pageResults);
                             break;
 
                         case 'n':
-                            continuationToken = queryPaginator.ContinuationTokenEncoder.EncodeNextPage(pageResults);
+                            continuationToken = queryPaginator.TokenEncoder.EncodeNextPage(pageResults);
                             break;
 
                         case 'l':
-                            continuationToken = queryPaginator.ContinuationTokenEncoder.EncodeLastPage();
+                            continuationToken = queryPaginator.TokenEncoder.EncodeLastPage();
                             break;
 
                         case 'q':

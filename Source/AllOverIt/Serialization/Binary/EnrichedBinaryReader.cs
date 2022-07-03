@@ -580,7 +580,7 @@ namespace AllOverIt.Serialization.Binary
 
                     if (valueType == null)
                     {
-                        throw new BinaryReaderException($"Unknown type '{assemblyTypeName}'.");
+                        throw new EnrichedBinaryReaderException($"Unknown type '{assemblyTypeName}'.");
                     }
 
                     // cache for later, to read the value as a cached user defined type

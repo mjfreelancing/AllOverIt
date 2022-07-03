@@ -94,7 +94,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
                 var page1 = AssertPagedData(paginator, 1, pageSize, expectedQuery, null);
 
-                var continuationToken = paginator.ContinuationTokenEncoder.EncodeNextPage(page1);
+                var continuationToken = paginator.TokenEncoder.EncodeNextPage(page1);
 
                 _ = AssertPagedData(paginator, 2, pageSize, expectedQuery, continuationToken);
             }
@@ -115,7 +115,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
                 var page1 = AssertPagedData(paginator, 2, pageSize, expectedQuery, null);
 
-                var continuationToken = paginator.ContinuationTokenEncoder.EncodeNextPage(page1);
+                var continuationToken = paginator.TokenEncoder.EncodeNextPage(page1);
 
                 _ = AssertPagedData(paginator, 1, pageSize, expectedQuery, continuationToken);
             }
@@ -140,7 +140,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
                 var page1 = AssertPagedData(paginator, 1, pageSize, expectedQuery, null);
 
-                var continuationToken = paginator.ContinuationTokenEncoder.EncodeNextPage(page1);
+                var continuationToken = paginator.TokenEncoder.EncodeNextPage(page1);
 
                 _ = AssertPagedData(paginator, 2, pageSize, expectedQuery, continuationToken);
             }
@@ -162,7 +162,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
                 var page1 = AssertPagedData(paginator, 2, pageSize, expectedQuery, null);
 
-                var continuationToken = paginator.ContinuationTokenEncoder.EncodeNextPage(page1);
+                var continuationToken = paginator.TokenEncoder.EncodeNextPage(page1);
 
                 _ = AssertPagedData(paginator, 1, pageSize, expectedQuery, continuationToken);
             }
@@ -188,7 +188,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
                 var page1 = AssertPagedData(paginator, 1, pageSize, expectedQuery, null);
 
-                var continuationToken = paginator.ContinuationTokenEncoder.EncodeNextPage(page1);
+                var continuationToken = paginator.TokenEncoder.EncodeNextPage(page1);
 
                 _ = AssertPagedData(paginator, 2, pageSize, expectedQuery, continuationToken);
             }
@@ -211,7 +211,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
                 var page1 = AssertPagedData(paginator, 2, pageSize, expectedQuery, null);
 
-                var continuationToken = paginator.ContinuationTokenEncoder.EncodeNextPage(page1);
+                var continuationToken = paginator.TokenEncoder.EncodeNextPage(page1);
 
                 _ = AssertPagedData(paginator, 1, pageSize, expectedQuery, continuationToken);
             }
@@ -238,7 +238,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
                 var page1 = AssertPagedData(paginator, 1, pageSize, expectedQuery, null);
 
-                var continuationToken = paginator.ContinuationTokenEncoder.EncodeNextPage(page1);
+                var continuationToken = paginator.TokenEncoder.EncodeNextPage(page1);
 
                 _ = AssertPagedData(paginator, 2, pageSize, expectedQuery, continuationToken);
             }
@@ -262,7 +262,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
                 var page1 = AssertPagedData(paginator, 2, pageSize, expectedQuery, null);
 
-                var continuationToken = paginator.ContinuationTokenEncoder.EncodeNextPage(page1);
+                var continuationToken = paginator.TokenEncoder.EncodeNextPage(page1);
 
                 _ = AssertPagedData(paginator, 1, pageSize, expectedQuery, continuationToken);
             }
@@ -291,7 +291,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
                 var page1 = AssertPagedData(paginator, 1, pageSize, expectedQuery, null);
 
-                var continuationToken = paginator.ContinuationTokenEncoder.EncodeNextPage(page1);
+                var continuationToken = paginator.TokenEncoder.EncodeNextPage(page1);
 
                 _ = AssertPagedData(paginator, 2, pageSize, expectedQuery, continuationToken);
             }
@@ -317,7 +317,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
                 var page1 = AssertPagedData(paginator, 2, pageSize, expectedQuery, null);
 
-                var continuationToken = paginator.ContinuationTokenEncoder.EncodeNextPage(page1);
+                var continuationToken = paginator.TokenEncoder.EncodeNextPage(page1);
 
                 _ = AssertPagedData(paginator, 1, pageSize, expectedQuery, continuationToken);
             }
@@ -341,7 +341,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
                 var page1 = AssertPagedData(paginator, 1, pageSize, expectedQuery, null);
 
-                var continuationToken = paginator.ContinuationTokenEncoder.EncodeNextPage(page1);
+                var continuationToken = paginator.TokenEncoder.EncodeNextPage(page1);
 
                 _ = AssertPagedData(paginator, 2, pageSize, expectedQuery, continuationToken);
             }
@@ -362,7 +362,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
                 var page1 = AssertPagedData(paginator, 2, pageSize, expectedQuery, null);
 
-                var continuationToken = paginator.ContinuationTokenEncoder.EncodeNextPage(page1);
+                var continuationToken = paginator.TokenEncoder.EncodeNextPage(page1);
 
                 _ = AssertPagedData(paginator, 1, pageSize, expectedQuery, continuationToken);
             }
@@ -387,7 +387,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
                 var page1 = AssertPagedData(paginator, 1, pageSize, expectedQuery, null);
 
-                var continuationToken = paginator.ContinuationTokenEncoder.EncodeNextPage(page1);
+                var continuationToken = paginator.TokenEncoder.EncodeNextPage(page1);
 
                 _ = AssertPagedData(paginator, 2, pageSize, expectedQuery, continuationToken);
             }
@@ -409,7 +409,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
                 var page1 = AssertPagedData(paginator, 2, pageSize, expectedQuery, null);
 
-                var continuationToken = paginator.ContinuationTokenEncoder.EncodeNextPage(page1);
+                var continuationToken = paginator.TokenEncoder.EncodeNextPage(page1);
 
                 _ = AssertPagedData(paginator, 1, pageSize, expectedQuery, continuationToken);
             }
@@ -435,7 +435,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
                 var page1 = AssertPagedData(paginator, 1, pageSize, expectedQuery, null);
 
-                var continuationToken = paginator.ContinuationTokenEncoder.EncodeNextPage(page1);
+                var continuationToken = paginator.TokenEncoder.EncodeNextPage(page1);
 
                 _ = AssertPagedData(paginator, 2, pageSize, expectedQuery, continuationToken);
             }
@@ -458,7 +458,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
                 var page1 = AssertPagedData(paginator, 2, pageSize, expectedQuery, null);
 
-                var continuationToken = paginator.ContinuationTokenEncoder.EncodeNextPage(page1);
+                var continuationToken = paginator.TokenEncoder.EncodeNextPage(page1);
 
                 _ = AssertPagedData(paginator, 1, pageSize, expectedQuery, continuationToken);
             }
@@ -486,7 +486,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
                 var page1 = AssertPagedData(paginator, 1, pageSize, expectedQuery, null);
 
-                var continuationToken = paginator.ContinuationTokenEncoder.EncodeNextPage(page1);
+                var continuationToken = paginator.TokenEncoder.EncodeNextPage(page1);
 
                 _ = AssertPagedData(paginator, 2, pageSize, expectedQuery, continuationToken);
             }
@@ -511,7 +511,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
                 var page1 = AssertPagedData(paginator, 2, pageSize, expectedQuery, null);
 
-                var continuationToken = paginator.ContinuationTokenEncoder.EncodeNextPage(page1);
+                var continuationToken = paginator.TokenEncoder.EncodeNextPage(page1);
 
                 _ = AssertPagedData(paginator, 1, pageSize, expectedQuery, continuationToken);
             }
@@ -540,7 +540,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
                 var page1 = AssertPagedData(paginator, 1, pageSize, expectedQuery, null);
 
-                var continuationToken = paginator.ContinuationTokenEncoder.EncodeNextPage(page1);
+                var continuationToken = paginator.TokenEncoder.EncodeNextPage(page1);
 
                 _ = AssertPagedData(paginator, 2, pageSize, expectedQuery, continuationToken);
             }
@@ -566,7 +566,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
                 var page1 = AssertPagedData(paginator, 2, pageSize, expectedQuery, null);
 
-                var continuationToken = paginator.ContinuationTokenEncoder.EncodeNextPage(page1);
+                var continuationToken = paginator.TokenEncoder.EncodeNextPage(page1);
 
                 _ = AssertPagedData(paginator, 1, pageSize, expectedQuery, continuationToken);
             }

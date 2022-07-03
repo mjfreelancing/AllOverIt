@@ -483,21 +483,8 @@ namespace AllOverIt.Serialization.Binary
             { TypeMapping.TypeId.Guid, (writer, value) => writer.WriteGuid((Guid)value) },
             { TypeMapping.TypeId.DateTime, (writer, value) => writer.WriteInt64(((DateTime)value).ToBinary()) },
             { TypeMapping.TypeId.TimeSpan, (writer, value) => writer.WriteInt64(((TimeSpan)value).Ticks) },
-
-            {
-                    TypeMapping.TypeId.Dictionary, (writer, value) =>
-                    {
-                        writer.WriteDictionary((IDictionary)value, (valueType, value) => writer.WriteObject(valueType, value));
-                    }
-            },
-            
-            {
-                    TypeMapping.TypeId.Enumerable, (writer, value) =>
-                    {
-                        // valueType can be null if the enumerable come from something like Enumerable.Range(); WriteObject() deals with this.
-                         writer.WriteEnumerable((IEnumerable)value, (valueType, value) => writer.WriteObject(valueType, value));
-                    }
-            },
+            { TypeMapping.TypeId.Dictionary, (writer, value) => writer.WriteDictionary((IDictionary)value) },            
+            { TypeMapping.TypeId.Enumerable, (writer, value) => writer.WriteEnumerable((IEnumerable)value) },
 
             {
                 TypeMapping.TypeId.Cached, (writer, value) =>
@@ -527,7 +514,7 @@ namespace AllOverIt.Serialization.Binary
 
                     if (converter == null)
                     {
-                        throw new BinaryWriterException($"No binary writer registered for the type '{valueType.GetFriendlyName()}'.");
+                        throw new EnrichedBinaryWriterException($"No binary writer registered for the type '{valueType.GetFriendlyName()}'.");
                     }
 
                     writer.Write(assemblyTypeName);
@@ -580,7 +567,7 @@ namespace AllOverIt.Serialization.Binary
 
             if (value is null && (type is null || type == ObjectType))
             {
-                throw new BinaryWriterException("All binary serialized values must be typed or have a non-null value.");
+                throw new EnrichedBinaryWriterException("All binary serialized values must be typed or have a non-null value.");
             }
 
             var rawTypeId = GetRawTypeId(type, value);

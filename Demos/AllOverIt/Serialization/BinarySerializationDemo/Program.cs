@@ -15,7 +15,6 @@ using System.Text.Json.Serialization;
 
 UseCustomReadersAndWriters();
 Console.WriteLine();
-//UseReflectionReadersAndWriters();
 
 Console.WriteLine();
 Console.WriteLine("All Over It.");
@@ -123,47 +122,7 @@ static void UseCustomReadersAndWriters()
     Console.WriteLine();
 }
 
-//static void UseReflectionReadersAndWriters()
-//{
-//    var classroom = CreateClassroom();
 
-//    byte[] serializedBytes;
-
-//    using (var stream = new MemoryStream())
-//    {
-//        using (var writer = new EnrichedBinaryWriter(stream, Encoding.UTF8, true))
-//        {
-//            var objectWriter = new ObjectBinaryWriter(writer);
-
-
-//            //var d = new Dictionary<object, object>();
-//            //d.Add(1, "1");
-//            //d.Add(true, 1);
-//            //d.Add(Gender.Male, "Male");
-//            //d.Add(new Student(), new Teacher());
-
-//            //objectWriter.WriteObject(d);
-
-//            objectWriter.WriteObject(classroom);
-//        }
-
-//        serializedBytes = stream.ToArray();
-//    }
-
-//    var serializedString = Convert.ToBase64String(serializedBytes);
-
-//    Console.WriteLine("Serialized");
-//    Console.WriteLine("==========");
-//    Console.WriteLine(serializedString);
-//    Console.WriteLine();
-//    Console.WriteLine($"  => {serializedBytes.Length} bytes");
-//    Console.WriteLine();
-
-//    Classroom deserializedClassroom = default;
-
-
-
-//}
 
 static Classroom CreateClassroom()
 {
