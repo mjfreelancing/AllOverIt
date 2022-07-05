@@ -562,7 +562,7 @@ namespace AllOverIt.Serialization.Binary
             // Including null checking in case the values come from something like Enumerable.Range()
             if (type is null || type == ObjectType)
             {
-                type = value.GetType();
+                type = value?.GetType();
             }
 
             if (value is null && (type is null || type == ObjectType))

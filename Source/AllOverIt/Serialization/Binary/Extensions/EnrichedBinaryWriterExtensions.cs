@@ -1,8 +1,7 @@
 ﻿using AllOverIt.Assertion;
-using AllOverIt.Extensions;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AllOverIt.Serialization.Binary.Extensions
 {
@@ -24,9 +23,30 @@ namespace AllOverIt.Serialization.Binary.Extensions
         {
             _ = enumerable.WhenNotNull(nameof(enumerable));
 
-            // Will return null if the enumerable comes from something like Enumerable.Range()
-            // The action calls WriteObject() which attempts to deal with this by using the value's runtime type (if not null)
-            var valueType = enumerable.GetType().GetGenericArguments().SingleOrDefault();
+            // Enumerable.Range()                    => returns a RangeIterator - no generic arguments
+            // IEnumerable<int>                      => contains one generic argument
+            // int?[]{}.Select(item => (object)item) => returns SelectEnumerableIterator<int?, object> - two generic arguments
+            //
+            // Capturing the generic type if available, otherwise will get the type of each value
+            var genericArguments = enumerable.GetType().GetGenericArguments();
+
+            var argType = genericArguments.Length == 1
+                ? genericArguments[0]
+                : null;
+
+            WriteEnumerable(writer, enumerable, argType ?? typeof(object));
+        }
+
+        public static void WriteEnumerable<TType>(this IEnrichedBinaryWriter writer, IEnumerable<TType> enumerable)
+        {
+            _ = enumerable.WhenNotNull(nameof(enumerable));
+
+            WriteEnumerable(writer, enumerable, typeof(TType));
+        }
+
+        public static void WriteEnumerable(this IEnrichedBinaryWriter writer, IEnumerable enumerable, Type valueType)
+        {
+            _ = enumerable.WhenNotNull(nameof(enumerable));
 
             if (enumerable is not ICollection collection)
             {
@@ -48,37 +68,52 @@ namespace AllOverIt.Serialization.Binary.Extensions
             }
         }
 
+
+
+
+        // Not providing a <TKey, TValue> generic version as it will be ambigious with this overload. See WriteTypedDictionary()
+        // This method exists so it supports methods such as Environment.GetEnvironmentVariables() which returns IDictionary.
         public static void WriteDictionary(this IEnrichedBinaryWriter writer, IDictionary dictionary)
         {
             _ = dictionary.WhenNotNull(nameof(dictionary));
 
-            var args = dictionary.GetType().GetGenericArguments();
+            Type keyType;
+            Type valueType;
 
-            if (!args.Any())
+            var genericArguments = dictionary.GetType().GetGenericArguments();
+
+            if (genericArguments.Length == 2)
             {
-                // Assume IDictionary, such as from Environment.GetEnvironmentVariables(), contains values that can be converted to strings
-                dictionary = dictionary.Cast<DictionaryEntry>().ToDictionary(entry => $"{entry.Key}", entry => $"{entry.Value}");
-                args = dictionary.GetType().GetGenericArguments();
+                keyType = genericArguments[0];
+                valueType = genericArguments[1];
+            }
+            else
+            {
+                keyType = typeof(object);
+                valueType = typeof(object);
             }
 
-            // The action calls WriteObject() which deals with 'object' types and null values, where possible.
-            var keyType = args[0];
-            var valueType = args[1];
+            WriteDictionary(writer, dictionary, keyType, valueType);
+        }
 
-            var keyEnumerator = dictionary.Keys.GetEnumerator();
-            var valueEnumerator = dictionary.Values.GetEnumerator();
+        // Convenience method as cannot provide a WriteDictionary<TKey, TValue>() without becoming ambigious with WriteDictionary(IDictionary)
+        public static void WriteTypedDictionary<TKey, TValue>(this IEnrichedBinaryWriter writer, IDictionary<TKey, TValue> dictionary)
+        {
+            _ = dictionary.WhenNotNull(nameof(dictionary));
+
+            WriteDictionary(writer, (IDictionary) dictionary, typeof(TKey), typeof(TValue));
+        }
+
+        public static void WriteDictionary(this IEnrichedBinaryWriter writer, IDictionary dictionary, Type keyType, Type valueType)
+        {
+            _ = dictionary.WhenNotNull(nameof(dictionary));
 
             writer.Write(dictionary.Count);
 
-            while (keyEnumerator.MoveNext())
+            foreach (DictionaryEntry entry in dictionary)
             {
-                valueEnumerator.MoveNext();
-
-                var key = keyEnumerator.Current;
-                writer.WriteObject(keyType, key);
-
-                var value = valueEnumerator.Current;
-                writer.WriteObject(valueType, value);
+                writer.WriteObject(keyType, entry.Key);
+                writer.WriteObject(valueType, entry.Value);
             }
         }
     }

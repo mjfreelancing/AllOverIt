@@ -1,6 +1,7 @@
 ﻿using AllOverIt.Serialization.Binary;
 using AllOverIt.Serialization.Binary.Extensions;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,26 +10,262 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 
 
-// TODO: Create a reflection based reader / writer
-// TODO: Compare stream sizes of JSON, Custom Writer, Reflection based writer
-// TODO: Benchmark the Custom and Reflection based writers
+// TODO: Benchmark the reader and writer
 
-UseCustomReadersAndWriters();
-Console.WriteLine();
+SerializeEnumerableIntsViaReadAndWriteObject();
+SerializeEnumerableIntsViaReadAndWriteEnumerable();
+SerializeEnumerableObjectsViaReadAndWriteEnumerable();
+
+SerializeDictionaryAsObject();
+SerializeDictionaryAsObjectObject();
+SerializeDictionaryAsIDictionary();
+SerializeUsingCustomReadersAndWriters();
 
 Console.WriteLine();
 Console.WriteLine("All Over It.");
 Console.ReadKey();
 
-static void UseCustomReadersAndWriters()
+static void OutputObjectAsJson(string prefix, object @object)
 {
-    var classroom = CreateClassroom();
-    byte[] serializedBytes;
+    var serializerOptions = new JsonSerializerOptions
+    {
+        WriteIndented = true,
+        Converters = { new JsonStringEnumConverter() }
+    };
+
+    var output = JsonSerializer.Serialize(@object);
+
+    Console.WriteLine(prefix);
+    Console.WriteLine("============================================");
+    Console.WriteLine(output);
+    Console.WriteLine();
+}
+
+static void SerializeEnumerableIntsViaReadAndWriteObject()
+{
+    byte[] bytes;
 
     using (var stream = new MemoryStream())
     {
         using (var writer = new EnrichedBinaryWriter(stream, Encoding.UTF8, true))
         {
+            var range = Enumerable
+                .Range(1, 5)
+                //.Cast<int?>()
+                //.Concat(new int?[] { null, 6, 7, 8, 9, 10 });
+                ;
+
+            OutputObjectAsJson("Enumerable (int?), via WriteObject()", range);
+
+            writer.WriteObject(range);
+        }
+
+        bytes = stream.ToArray();
+    }
+
+    using (var stream = new MemoryStream(bytes))
+    {
+        using (var reader = new EnrichedBinaryReader(stream, Encoding.UTF8, true))
+        {
+            var range = reader.ReadObject();
+            OutputObjectAsJson("Decoded, via ReadObject()", range);
+        }
+    }
+}
+
+static void SerializeEnumerableIntsViaReadAndWriteEnumerable()
+{
+    byte[] bytes;
+
+    using (var stream = new MemoryStream())
+    {
+        using (var writer = new EnrichedBinaryWriter(stream, Encoding.UTF8, true))
+        {
+            var range = Enumerable
+                .Range(1, 5)
+                .Cast<int?>()
+                .Concat(new int?[] { null, 6, 7, 8, 9, 10 });
+
+            OutputObjectAsJson("Enumerable (int?), via WriteEnumerable()", range);
+
+            writer.WriteEnumerable(range);
+        }
+
+        bytes = stream.ToArray();
+    }
+
+    using (var stream = new MemoryStream(bytes))
+    {
+        using (var reader = new EnrichedBinaryReader(stream, Encoding.UTF8, true))
+        {
+            var range = reader.ReadEnumerable();
+            OutputObjectAsJson("Decoded, via ReadEnumerable()", range);
+        }
+    }
+}
+
+static void SerializeEnumerableObjectsViaReadAndWriteEnumerable()
+{
+    byte[] bytes;
+
+    using (var stream = new MemoryStream())
+    {
+        using (var writer = new EnrichedBinaryWriter(stream, Encoding.UTF8, true))
+        {
+            // cannot use 'var' when there is a null value
+            IEnumerable<int?> range = Enumerable
+                .Range(1, 5)
+                .Cast<int?>()
+                .Concat(new int?[] { null, 6, 7, 8, 9, 10 });
+
+            OutputObjectAsJson("Enumerable (object), via WriteEnumerable()", range);
+
+            writer.WriteEnumerable(range);
+        }
+
+        bytes = stream.ToArray();
+    }
+
+    using (var stream = new MemoryStream(bytes))
+    {
+        using (var reader = new EnrichedBinaryReader(stream, Encoding.UTF8, true))
+        {
+            var range = reader.ReadEnumerable();
+            OutputObjectAsJson("Decoded, via ReadEnumerable()", range);
+        }
+    }
+}
+
+static void SerializeDictionaryAsObject()
+{
+    byte[] bytes;
+
+    using (var stream = new MemoryStream())
+    {
+        using (var writer = new EnrichedBinaryWriter(stream, Encoding.UTF8, true))
+        {
+            var dict = new Dictionary<object, object>
+            {
+                { 1, "1" },
+                { true, 12.3 },
+                { Gender.Male, "It's a boy" },
+                //{ new Student(), new Teacher() }
+            };
+
+            writer.WriteObject(dict);
+        }
+
+        bytes = stream.ToArray();
+    }
+
+    using (var stream = new MemoryStream(bytes))
+    {
+        using (var reader = new EnrichedBinaryReader(stream, Encoding.UTF8, true))
+        {
+            var dict = reader.ReadObject();
+            OutputObjectAsJson("Decoded, via ReadObject()", dict);
+        }
+    }
+}
+
+static void SerializeDictionaryAsObjectObject()
+{
+    byte[] bytes;
+
+    using (var stream = new MemoryStream())
+    {
+        using (var writer = new EnrichedBinaryWriter(stream, Encoding.UTF8, true))
+        {
+            var dict = new Dictionary<object, object>
+            {
+                { 1, "1" },
+                { true, 12.3 },
+                { Gender.Male, "It's a boy" },
+            };
+
+            writer.WriteDictionary(dict);
+        }
+
+        bytes = stream.ToArray();
+    }
+
+    using (var stream = new MemoryStream(bytes))
+    {
+        using (var reader = new EnrichedBinaryReader(stream, Encoding.UTF8, true))
+        {
+            var dict = reader.ReadDictionary();
+            OutputObjectAsJson("Decoded, via ReadDictionary()", dict);
+        }
+    }
+}
+
+static void SerializeDictionaryAsIntString()
+{
+    byte[] bytes;
+
+    using (var stream = new MemoryStream())
+    {
+        using (var writer = new EnrichedBinaryWriter(stream, Encoding.UTF8, true))
+        {
+            var dict = new Dictionary<int, string>
+            {
+                { 1, "1" },
+                { 2, "2" },
+                { 3, "3" },
+            };
+
+            writer.WriteDictionary(dict);
+        }
+
+        bytes = stream.ToArray();
+    }
+
+    using (var stream = new MemoryStream(bytes))
+    {
+        using (var reader = new EnrichedBinaryReader(stream, Encoding.UTF8, true))
+        {
+            var dict = reader.ReadDictionary();
+            OutputObjectAsJson("Decoded, via ReadDictionary()", dict);
+        }
+    }
+}
+
+static void SerializeDictionaryAsIDictionary()
+{
+    byte[] bytes;
+
+    using (var stream = new MemoryStream())
+    {
+        using (var writer = new EnrichedBinaryWriter(stream, Encoding.UTF8, true))
+        {
+            var dict = Environment.GetEnvironmentVariables();
+
+            writer.WriteDictionary(dict);
+        }
+
+        bytes = stream.ToArray();
+    }
+
+    using (var stream = new MemoryStream(bytes))
+    {
+        using (var reader = new EnrichedBinaryReader(stream, Encoding.UTF8, true))
+        {
+            var dict = reader.ReadDictionary();
+            OutputObjectAsJson("Decoded, via ReadDictionary()", dict);
+        }
+    }
+}
+
+static void SerializeUsingCustomReadersAndWriters()
+{
+    byte[] bytes;
+
+    using (var stream = new MemoryStream())
+    {
+        using (var writer = new EnrichedBinaryWriter(stream, Encoding.UTF8, true))
+        {
+            var classroom = CreateClassroom();
+
             // Using writers will result in a larger stream because type information is stored
             // for each user-defined type. A pure reflection based approach will provide a smaller
             // stream but at the expense of reduced performance when deserializing.
@@ -37,51 +274,12 @@ static void UseCustomReadersAndWriters()
             writer.Writers.Add(new ClassroomWriter());
 
             writer.WriteObject(classroom);
-
-
-            var e1 = Enumerable.Range(1, 3);
-            writer.WriteObject(e1);
-
-
-            var d1 = Environment.GetEnvironmentVariables();
-            writer.WriteObject(d1);
-
-
-            var d2 = new Dictionary<object, object>();
-            d2.Add(1, "1");
-            d2.Add(true, 1);
-            d2.Add(Gender.Male, "Male");
-            d2.Add(new Student(), new Teacher());
-            writer.WriteObject(d2);
-
-
-
-            var d3 = new Dictionary<int, double>
-            {
-                { 1, 1.1 },
-                { 2, 2.2 },
-                { 3, 3.3 }
-            };
-
-            writer.WriteObject(d3);
         }
 
-        serializedBytes = stream.ToArray();
+        bytes = stream.ToArray();
     }
 
-    var serializedString = Convert.ToBase64String(serializedBytes);
-
-    Console.WriteLine("Serialized");
-    Console.WriteLine("==========");
-    Console.WriteLine(serializedString);
-    Console.WriteLine();
-    Console.WriteLine($"  => {serializedBytes.Length} bytes");
-    Console.WriteLine();
-
-    Classroom deserializedClassroom = default;
-    var deserializedBytes = Convert.FromBase64String(serializedString);
-
-    using (var stream = new MemoryStream(deserializedBytes))
+    using (var stream = new MemoryStream(bytes))
     {
         using (var reader = new EnrichedBinaryReader(stream, Encoding.UTF8, true))
         {
@@ -89,39 +287,11 @@ static void UseCustomReadersAndWriters()
             reader.Readers.Add(new TeacherReader());
             reader.Readers.Add(new ClassroomReader());
 
-            deserializedClassroom = (Classroom) reader.ReadObject();
-
-
-            var e1 = reader.ReadObject();
-            
-            // was written via IDictionary, assumed to be the equivalent of IDictionary<string, string>
-            var d1 = reader.ReadDictionary<string, string>(); //reader.ReadObject();
-
-            var d2 = reader.ReadDictionary<object, object>(); //reader.ReadObject();
-
-            var d3 = reader.ReadDictionary<int, double>();
-
+            var classroom = (Classroom) reader.ReadObject();
+            OutputObjectAsJson("Decoded, via ReadObject()", classroom);
         }
     }
-
-    // Serialize the deserialized classroom...
-    var serializerOptions = new JsonSerializerOptions
-    {
-        WriteIndented = true,
-        Converters = { new JsonStringEnumConverter() }
-    };
-
-    var compactClassroomString = JsonSerializer.Serialize(deserializedClassroom);
-    var indentedClassroomString = JsonSerializer.Serialize(deserializedClassroom, serializerOptions);
-
-    Console.WriteLine("Deserialized");
-    Console.WriteLine("============");
-    Console.WriteLine(indentedClassroomString);
-    Console.WriteLine();
-    Console.WriteLine($"  => {compactClassroomString.Length} bytes");
-    Console.WriteLine();
 }
-
 
 
 static Classroom CreateClassroom()
