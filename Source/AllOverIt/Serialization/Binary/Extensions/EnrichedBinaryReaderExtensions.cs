@@ -57,7 +57,7 @@ namespace AllOverIt.Serialization.Binary.Extensions
 
         public static IDictionary<TKey, TValue> ReadDictionary<TKey, TValue>(this IEnrichedBinaryReader reader)
         {
-            var dictionary = reader.ReadObject<Dictionary<object, object>>();
+            var dictionary = reader.ReadDictionary();
 
             if (typeof(TKey) == ObjectType && typeof(TValue) == ObjectType)
             {

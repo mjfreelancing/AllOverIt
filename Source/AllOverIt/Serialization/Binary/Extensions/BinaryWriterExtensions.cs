@@ -104,10 +104,10 @@ namespace AllOverIt.Serialization.Binary.Extensions
         /// <param name="writer">The binary writer.</param>
         public static void WriteGuid(this BinaryWriter writer, Guid value) => writer.WriteBytes(value.ToByteArray());
 
-
         /// <summary>Writes an Enum value to the current stream.</summary>
         /// <param name="writer">The binary writer.</param>
-        /// <remarks>The enum's assembly qualified type name and it's string value are written.</remarks>
+        /// <remarks>The enum's assembly qualified type name and it's string value are written, allowing <see cref="BinaryReaderExtensions.ReadEnum(BinaryReader)"/>
+        /// to read the value and create the appropriate enum type.</remarks>
         public static void WriteEnum(this BinaryWriter writer, object value)
         {
             // Need the string representation of the value in order to convert it back to the original Enum type.

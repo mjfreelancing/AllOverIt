@@ -19,6 +19,8 @@ SerializeEnumerableObjectsViaReadAndWriteEnumerable();
 SerializeDictionaryAsObject();
 SerializeDictionaryAsObjectObject();
 SerializeDictionaryAsIDictionary();
+SerializeDictionaryAsIntString();
+SerializeDictionaryAsIntString2();
 SerializeUsingCustomReadersAndWriters();
 
 Console.WriteLine();
@@ -226,6 +228,37 @@ static void SerializeDictionaryAsIntString()
         {
             var dict = reader.ReadDictionary();
             OutputObjectAsJson("Decoded, via ReadDictionary()", dict);
+        }
+    }
+}
+
+static void SerializeDictionaryAsIntString2()
+{
+    byte[] bytes;
+
+    using (var stream = new MemoryStream())
+    {
+        using (var writer = new EnrichedBinaryWriter(stream, Encoding.UTF8, true))
+        {
+            var dict = new Dictionary<int, string>
+            {
+                { 1, "1" },
+                { 2, "2" },
+                { 3, "3" },
+            };
+
+            writer.WriteDictionary(dict);
+        }
+
+        bytes = stream.ToArray();
+    }
+
+    using (var stream = new MemoryStream(bytes))
+    {
+        using (var reader = new EnrichedBinaryReader(stream, Encoding.UTF8, true))
+        {
+            var dict = reader.ReadDictionary<int, string>();
+            OutputObjectAsJson("Decoded, via ReadDictionary<int, string>()", dict);
         }
     }
 }

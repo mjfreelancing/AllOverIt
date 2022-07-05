@@ -587,19 +587,6 @@ namespace AllOverIt.Serialization.Binary
             }
         }
 
-
-
-        //public void WriteNullable<TValue>(TValue? value) where TValue : struct
-        //{
-        //    WriteObject(typeof(TValue?), value);
-        //}
-
-        //// Writes the value type and the value
-        //public void WriteObject<TType>(TType value)     // required for nullable types (need the type information)
-        //{
-        //    WriteObject(typeof(TType), value);
-        //}
-
         private IReadOnlyCollection<Func<Type, object, TypeMapping.TypeId?>> GetTypeIdLookups()
         {
             return new[]
@@ -675,7 +662,7 @@ namespace AllOverIt.Serialization.Binary
 
         private TypeMapping.TypeId? IsEnumerable(Type type, object _)
         {
-            // Not checking for strings since this is a pre-registered type
+            // Not checking for strings since it's is a pre-registered type
             if (type.IsArray || type.IsEnumerableType())
             {
                 // We could attempt to write the type once if it is a IEnumerable<T> but this gets
