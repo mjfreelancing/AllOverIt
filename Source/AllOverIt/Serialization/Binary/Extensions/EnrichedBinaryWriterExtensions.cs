@@ -10,13 +10,13 @@ namespace AllOverIt.Serialization.Binary.Extensions
     {
         public static void WriteNullable<TValue>(this IEnrichedBinaryWriter writer, TValue? value) where TValue : struct
         {
-            writer.WriteObject(typeof(TValue?), value);
+            writer.WriteObject(value, typeof(TValue?));
         }
 
         // Writes the value type and the value
         public static void WriteObject<TType>(this IEnrichedBinaryWriter writer, TType value)     // required for nullable types (need the type information)
         {
-            writer.WriteObject(typeof(TType), value);
+            writer.WriteObject(value, typeof(TType));
         }
 
         public static void WriteEnumerable(this IEnrichedBinaryWriter writer, IEnumerable enumerable)
@@ -32,9 +32,9 @@ namespace AllOverIt.Serialization.Binary.Extensions
 
             var argType = genericArguments.Length == 1
                 ? genericArguments[0]
-                : null;
+                : typeof(object);
 
-            WriteEnumerable(writer, enumerable, argType ?? typeof(object));
+            WriteEnumerable(writer, enumerable, argType);
         }
 
         public static void WriteEnumerable<TType>(this IEnrichedBinaryWriter writer, IEnumerable<TType> enumerable)
@@ -64,7 +64,7 @@ namespace AllOverIt.Serialization.Binary.Extensions
 
             foreach (var value in collection)
             {
-                writer.WriteObject(valueType, value);
+                writer.WriteObject(value, valueType);
             }
         }
 
@@ -112,8 +112,8 @@ namespace AllOverIt.Serialization.Binary.Extensions
 
             foreach (DictionaryEntry entry in dictionary)
             {
-                writer.WriteObject(keyType, entry.Key);
-                writer.WriteObject(valueType, entry.Value);
+                writer.WriteObject(entry.Key, keyType);
+                writer.WriteObject(entry.Value, valueType);
             }
         }
     }

@@ -26,10 +26,6 @@
             TimeSpan = 18,
             Enumerable = 19,
             Dictionary = 20,
-            //Array = ,
-            //Struct = ,
-            //KeyValuePair = ,
-            //Object = ,
 
             Cached = 126,
             UserDefined = 127,

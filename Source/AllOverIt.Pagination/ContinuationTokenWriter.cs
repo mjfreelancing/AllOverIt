@@ -18,7 +18,7 @@ namespace AllOverIt.Pagination
             // Not using writer.WriteEnumerable() as this assumes at least one value and the token Values can be null (when encoding the first/last page).
             // We could use continuationToken.Values ?? Array.Empty<object>() but then the reader would construct a ContinuationToken with an array of zero
             // values rather than null - resulting in decoding not matching the original value.
-            writer.WriteObject(ValuesType, continuationToken.Values);
+            writer.WriteObject(continuationToken.Values, ValuesType);
         }
     }
 

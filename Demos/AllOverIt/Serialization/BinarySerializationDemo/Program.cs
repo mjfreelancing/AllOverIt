@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Serialization.Binary;
 using AllOverIt.Serialization.Binary.Extensions;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,10 +16,10 @@ SerializeEnumerableIntsViaReadAndWriteEnumerable();
 SerializeEnumerableObjectsViaReadAndWriteEnumerable();
 
 SerializeDictionaryAsObject();
-SerializeDictionaryAsObjectObject();
+SerializeDictionary();
 SerializeDictionaryAsIDictionary();
+SerializeDictionaryAsObjectObject();
 SerializeDictionaryAsIntString();
-SerializeDictionaryAsIntString2();
 SerializeUsingCustomReadersAndWriters();
 
 Console.WriteLine();
@@ -170,7 +169,7 @@ static void SerializeDictionaryAsObject()
     }
 }
 
-static void SerializeDictionaryAsObjectObject()
+static void SerializeDictionary()
 {
     byte[] bytes;
 
@@ -201,7 +200,7 @@ static void SerializeDictionaryAsObjectObject()
     }
 }
 
-static void SerializeDictionaryAsIntString()
+static void SerializeDictionaryAsObjectObject()
 {
     byte[] bytes;
 
@@ -232,7 +231,7 @@ static void SerializeDictionaryAsIntString()
     }
 }
 
-static void SerializeDictionaryAsIntString2()
+static void SerializeDictionaryAsIntString()
 {
     byte[] bytes;
 
@@ -325,7 +324,6 @@ static void SerializeUsingCustomReadersAndWriters()
         }
     }
 }
-
 
 static Classroom CreateClassroom()
 {

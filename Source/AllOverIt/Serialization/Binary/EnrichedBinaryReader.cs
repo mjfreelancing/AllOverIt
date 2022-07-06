@@ -8,26 +8,6 @@ using System.Text;
 
 namespace AllOverIt.Serialization.Binary
 {
-    public interface IEnrichedBinaryValueReader
-    {
-        Type Type { get; }
-        object ReadValue(EnrichedBinaryReader reader);
-        TValue ReadValue<TValue>(EnrichedBinaryReader reader);
-    }
-
-    public abstract class EnrichedBinaryValueReader<TType> : IEnrichedBinaryValueReader
-    {
-        public Type Type => typeof(TType);
-
-        public abstract object ReadValue(EnrichedBinaryReader reader);
-
-        public TValue ReadValue<TValue>(EnrichedBinaryReader reader)
-        {
-            return (TValue)ReadValue(reader);
-        }
-    }
-
-
     public interface IEnrichedBinaryReader
     {
         IList<IEnrichedBinaryValueReader> Readers { get; }
