@@ -11,58 +11,59 @@ using System.Text;
 
 namespace AllOverIt.Serialization.Binary
 {
+    /// <inheritdoc cref="IEnrichedBinaryWriter"/>
     public sealed class EnrichedBinaryWriter : BinaryWriter, IEnrichedBinaryWriter
     {
         private readonly Type ObjectType = typeof(object);
 
-        private static readonly IDictionary<Type, TypeMapping.TypeId> TypeIdRegistry = new Dictionary<Type, TypeMapping.TypeId>
+        private static readonly IDictionary<Type, TypeIdentifier> TypeIdRegistry = new Dictionary<Type, TypeIdentifier>
         {
-            { typeof(bool), TypeMapping.TypeId.Bool },
-            { typeof(byte), TypeMapping.TypeId.Byte },
-            { typeof(sbyte), TypeMapping.TypeId.SByte },
-            { typeof(ushort), TypeMapping.TypeId.UShort },
-            { typeof(short), TypeMapping.TypeId.Short },
-            { typeof(uint), TypeMapping.TypeId.UInt },
-            { typeof(int), TypeMapping.TypeId.Int },
-            { typeof(ulong), TypeMapping.TypeId.ULong },
-            { typeof(long), TypeMapping.TypeId.Long },
-            { typeof(float), TypeMapping.TypeId.Float },
-            { typeof(double), TypeMapping.TypeId.Double },
-            { typeof(decimal), TypeMapping.TypeId.Decimal },
-            { typeof(string), TypeMapping.TypeId.String },
-            { typeof(char), TypeMapping.TypeId.Char },
-            { typeof(Enum), TypeMapping.TypeId.Enum },
-            { typeof(Guid), TypeMapping.TypeId.Guid },
-            { typeof(DateTime), TypeMapping.TypeId.DateTime },
-            { typeof(TimeSpan), TypeMapping.TypeId.TimeSpan }
+            { typeof(bool), TypeIdentifier.Bool },
+            { typeof(byte), TypeIdentifier.Byte },
+            { typeof(sbyte), TypeIdentifier.SByte },
+            { typeof(ushort), TypeIdentifier.UShort },
+            { typeof(short), TypeIdentifier.Short },
+            { typeof(uint), TypeIdentifier.UInt },
+            { typeof(int), TypeIdentifier.Int },
+            { typeof(ulong), TypeIdentifier.ULong },
+            { typeof(long), TypeIdentifier.Long },
+            { typeof(float), TypeIdentifier.Float },
+            { typeof(double), TypeIdentifier.Double },
+            { typeof(decimal), TypeIdentifier.Decimal },
+            { typeof(string), TypeIdentifier.String },
+            { typeof(char), TypeIdentifier.Char },
+            { typeof(Enum), TypeIdentifier.Enum },
+            { typeof(Guid), TypeIdentifier.Guid },
+            { typeof(DateTime), TypeIdentifier.DateTime },
+            { typeof(TimeSpan), TypeIdentifier.TimeSpan }
         };
 
-        private static readonly IDictionary<TypeMapping.TypeId, Action<EnrichedBinaryWriter, object>> TypeIdWriter =
-            new Dictionary<TypeMapping.TypeId, Action<EnrichedBinaryWriter, object>>
+        private static readonly IDictionary<TypeIdentifier, Action<EnrichedBinaryWriter, object>> TypeIdWriter =
+            new Dictionary<TypeIdentifier, Action<EnrichedBinaryWriter, object>>
         {
-            { TypeMapping.TypeId.Bool, (writer, value) => writer.WriteBoolean((bool)value) },
-            { TypeMapping.TypeId.Byte, (writer, value) => writer.WriteByte((byte)value) },
-            { TypeMapping.TypeId.SByte, (writer, value) => writer.WriteSByte((sbyte)value) },
-            { TypeMapping.TypeId.UShort, (writer, value) => writer.WriteUInt16((ushort)value) },
-            { TypeMapping.TypeId.Short, (writer, value) => writer.WriteInt16((short)value) },
-            { TypeMapping.TypeId.UInt, (writer, value) => writer.WriteUInt32((uint)value) },
-            { TypeMapping.TypeId.Int, (writer, value) => writer.WriteInt32((int)value) },
-            { TypeMapping.TypeId.ULong, (writer, value) => writer.WriteUInt64((ulong)value) },
-            { TypeMapping.TypeId.Long, (writer, value) => writer.WriteInt64((long)value) },
-            { TypeMapping.TypeId.Float, (writer, value) => writer.WriteSingle((float)value) },
-            { TypeMapping.TypeId.Double, (writer, value) => writer.WriteDouble((double)value) },
-            { TypeMapping.TypeId.Decimal, (writer, value) => writer.WriteDecimal((decimal)value) },
-            { TypeMapping.TypeId.String, (writer, value) => writer.WriteSafeString((string)value) },
-            { TypeMapping.TypeId.Char, (writer, value) => writer.WriteChar((char)value) },
-            { TypeMapping.TypeId.Enum, (writer, value) => writer.WriteEnum(value) },
-            { TypeMapping.TypeId.Guid, (writer, value) => writer.WriteGuid((Guid)value) },
-            { TypeMapping.TypeId.DateTime, (writer, value) => writer.WriteInt64(((DateTime)value).ToBinary()) },
-            { TypeMapping.TypeId.TimeSpan, (writer, value) => writer.WriteInt64(((TimeSpan)value).Ticks) },
-            { TypeMapping.TypeId.Dictionary, (writer, value) => writer.WriteDictionary((IDictionary)value) },            
-            { TypeMapping.TypeId.Enumerable, (writer, value) => writer.WriteEnumerable((IEnumerable)value) },
+            { TypeIdentifier.Bool, (writer, value) => writer.WriteBoolean((bool)value) },
+            { TypeIdentifier.Byte, (writer, value) => writer.WriteByte((byte)value) },
+            { TypeIdentifier.SByte, (writer, value) => writer.WriteSByte((sbyte)value) },
+            { TypeIdentifier.UShort, (writer, value) => writer.WriteUInt16((ushort)value) },
+            { TypeIdentifier.Short, (writer, value) => writer.WriteInt16((short)value) },
+            { TypeIdentifier.UInt, (writer, value) => writer.WriteUInt32((uint)value) },
+            { TypeIdentifier.Int, (writer, value) => writer.WriteInt32((int)value) },
+            { TypeIdentifier.ULong, (writer, value) => writer.WriteUInt64((ulong)value) },
+            { TypeIdentifier.Long, (writer, value) => writer.WriteInt64((long)value) },
+            { TypeIdentifier.Float, (writer, value) => writer.WriteSingle((float)value) },
+            { TypeIdentifier.Double, (writer, value) => writer.WriteDouble((double)value) },
+            { TypeIdentifier.Decimal, (writer, value) => writer.WriteDecimal((decimal)value) },
+            { TypeIdentifier.String, (writer, value) => writer.WriteSafeString((string)value) },
+            { TypeIdentifier.Char, (writer, value) => writer.WriteChar((char)value) },
+            { TypeIdentifier.Enum, (writer, value) => writer.WriteEnum(value) },
+            { TypeIdentifier.Guid, (writer, value) => writer.WriteGuid((Guid)value) },
+            { TypeIdentifier.DateTime, (writer, value) => writer.WriteInt64(((DateTime)value).ToBinary()) },
+            { TypeIdentifier.TimeSpan, (writer, value) => writer.WriteInt64(((TimeSpan)value).Ticks) },
+            { TypeIdentifier.Dictionary, (writer, value) => writer.WriteDictionary((IDictionary)value) },            
+            { TypeIdentifier.Enumerable, (writer, value) => writer.WriteEnumerable((IEnumerable)value) },
 
             {
-                TypeMapping.TypeId.Cached, (writer, value) =>
+                TypeIdentifier.Cached, (writer, value) =>
                 {
                     var valueType = value.GetType();
                     var assemblyTypeName = valueType.AssemblyQualifiedName;
@@ -70,13 +71,13 @@ namespace AllOverIt.Serialization.Binary
                     var index = writer._userDefinedTypeCache[assemblyTypeName];
                     writer.Write(index);
 
-                    var converter = writer.Writers.SingleOrDefault(converter => converter.Type == valueType);
+                    var converter = writer.Writers.Single(converter => converter.Type == valueType);
                     converter.WriteValue(writer, value);
                 }
             },
 
             {
-                TypeMapping.TypeId.UserDefined, (writer, value) =>
+                TypeIdentifier.UserDefined, (writer, value) =>
                 {
                     var valueType = value.GetType();
                     var assemblyTypeName = valueType.AssemblyQualifiedName;
@@ -85,7 +86,7 @@ namespace AllOverIt.Serialization.Binary
                     var cacheIndex = writer._userDefinedTypeCache.Keys.Count + 1;
                     writer._userDefinedTypeCache.Add(assemblyTypeName, cacheIndex);
 
-                    var converter = writer.Writers.SingleOrDefault(converter => converter.Type == valueType);
+                    var converter = writer.Writers.Single(converter => converter.Type == valueType);
 
                     writer.Write(assemblyTypeName);
                     converter.WriteValue(writer, value);
@@ -94,7 +95,7 @@ namespace AllOverIt.Serialization.Binary
         };
 
         private readonly IDictionary<string, int> _userDefinedTypeCache = new Dictionary<string, int>();
-        private readonly IReadOnlyCollection<Func<Type, TypeMapping.TypeId?>> _typeIdLookups;
+        private readonly IReadOnlyCollection<Func<Type, TypeIdentifier?>> _typeIdLookups;
 
         public IList<IEnrichedBinaryValueWriter> Writers { get; } = new List<IEnrichedBinaryValueWriter>();
 
@@ -119,7 +120,7 @@ namespace AllOverIt.Serialization.Binary
             _typeIdLookups = GetTypeIdLookups();
         }
 
-        // Writes the value type and the value
+        /// <inheritdoc />
         public void WriteObject(object value)
         {
             _ = value.WhenNotNull(nameof(value));
@@ -127,6 +128,7 @@ namespace AllOverIt.Serialization.Binary
             WriteObject(value, value.GetType());
         }
 
+        /// <inheritdoc />
         public void WriteObject(object value, Type type)
         {
             // Including null checking in case the values come from something like Enumerable.Range()
@@ -146,18 +148,18 @@ namespace AllOverIt.Serialization.Binary
 
             if (value == default)
             {
-                typeId |= (byte) TypeMapping.TypeId.DefaultValue;
+                typeId |= (byte) TypeIdentifier.DefaultValue;
             }
 
             this.WriteByte(typeId);
 
-            if ((typeId & (byte) TypeMapping.TypeId.DefaultValue) == 0)
+            if ((typeId & (byte) TypeIdentifier.DefaultValue) == 0)
             {
                 TypeIdWriter[rawTypeId].Invoke(this, value);
             }
         }
 
-        private IReadOnlyCollection<Func<Type, TypeMapping.TypeId?>> GetTypeIdLookups()
+        private IReadOnlyCollection<Func<Type, TypeIdentifier?>> GetTypeIdLookups()
         {
             return new[]
             {
@@ -170,7 +172,7 @@ namespace AllOverIt.Serialization.Binary
             };
         }
 
-        private TypeMapping.TypeId GetRawTypeId(Type type)
+        private TypeIdentifier GetRawTypeId(Type type)
         {
             foreach (var lookup in _typeIdLookups)
             {
@@ -185,21 +187,21 @@ namespace AllOverIt.Serialization.Binary
             throw new BinaryWriterException($"No binary writer registered for the type '{type.GetFriendlyName()}'.");
         }
 
-        private TypeMapping.TypeId? IsTypeRegistered(Type type)
+        private TypeIdentifier? IsTypeRegistered(Type type)
         {
             return TypeIdRegistry.TryGetValue(type, out var rawTypeId)
                 ? rawTypeId
-                : (TypeMapping.TypeId?) default;
+                : (TypeIdentifier?) default;
         }
 
-        private TypeMapping.TypeId? IsTypeEnum(Type type)
+        private TypeIdentifier? IsTypeEnum(Type type)
         {
             return type.IsEnum
-                ? TypeMapping.TypeId.Enum
-                : (TypeMapping.TypeId?) default;
+                ? TypeIdentifier.Enum
+                : (TypeIdentifier?) default;
         }
 
-        private TypeMapping.TypeId? IsTypeNullable(Type type)
+        private TypeIdentifier? IsTypeNullable(Type type)
         {
             if (type.IsNullableType())
             {
@@ -214,17 +216,17 @@ namespace AllOverIt.Serialization.Binary
             return default;
         }
 
-        private TypeMapping.TypeId? IsDictionary(Type type)
+        private TypeIdentifier? IsDictionary(Type type)
         {
             if (typeof(IDictionary).IsAssignableFrom(type))
             {
-                return TypeMapping.TypeId.Dictionary;
+                return TypeIdentifier.Dictionary;
             }
 
             return default;
         }
 
-        private TypeMapping.TypeId? IsEnumerable(Type type)
+        private TypeIdentifier? IsEnumerable(Type type)
         {
             // Not checking for strings since it's is a pre-registered type
             if (type.IsArray || type.IsEnumerableType())
@@ -232,13 +234,13 @@ namespace AllOverIt.Serialization.Binary
                 // We could attempt to write the type once if it is an IEnumerable<T> but this gets
                 // more complicated with nullable, anonymous and iterator types - opting for convenience
                 // and simplicity over stream size.
-                return TypeMapping.TypeId.Enumerable;
+                return TypeIdentifier.Enumerable;
             }
 
             return default;
         }
 
-        private TypeMapping.TypeId? IsUserDefinedOrCached(Type type)
+        private TypeIdentifier? IsUserDefinedOrCached(Type type)
         {
             var converter = Writers.SingleOrDefault(converter => converter.Type == type);
 
@@ -250,8 +252,8 @@ namespace AllOverIt.Serialization.Binary
             var assemblyTypeName = type.AssemblyQualifiedName;
 
             return _userDefinedTypeCache.ContainsKey(assemblyTypeName)
-                ? TypeMapping.TypeId.Cached
-                : TypeMapping.TypeId.UserDefined;
+                ? TypeIdentifier.Cached
+                : TypeIdentifier.UserDefined;
         }
     }
 }
