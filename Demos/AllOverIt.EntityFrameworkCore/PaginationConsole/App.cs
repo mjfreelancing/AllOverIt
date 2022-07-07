@@ -81,8 +81,8 @@ namespace PaginationConsole
                 var paginatorConfig = new QueryPaginatorConfiguration
                 {
                     PageSize = pageSize,
-                    PaginationDirection = PaginationDirection.Forward,      // This is the default
-                    UseParameterizedQueries = true,                         // Recommended for EF queries to avoid SQL injection and EF cache improvements
+                    PaginationDirection = PaginationDirection.Forward,      // This is the default.
+                    UseParameterizedQueries = true,                         // This is the default. Recommended for EF queries to avoid SQL injection and EF cache improvements
                     UseCompression = true                                   // Use sparingly. Adds overhead, possibly for minimal gain.
                 };
 
