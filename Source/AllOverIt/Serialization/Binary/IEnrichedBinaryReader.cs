@@ -10,7 +10,7 @@ namespace AllOverIt.Serialization.Binary
         /// <summary>Provides a list of custom value readers that can deserialize custom types from the underyling stream.</summary>
         IList<IEnrichedBinaryValueReader> Readers { get; }
 
-        #region BinaryReader methods
+        #region Implemented by BinaryReader
 
         /// <inheritdoc cref="BinaryReader.Close"/>
         void Close();

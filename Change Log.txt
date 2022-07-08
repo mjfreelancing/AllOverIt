@@ -20,6 +20,7 @@ AllOverIt
   * Added caching to BuildBindingPredicate()
   * Updated GetMemberExpressions() extension method to support any Expression that can be unwrapped to a MemberExpression.
   * General Guard method improvements
+  * Added EnrichedBinaryReader, EnrichedBinaryWriter and associated value reader / writer
 
 AllOverIt.Assertion
   * Removed methods that asserted an enumerable was a concrete collection type and instead updated .NET Core 3.1
@@ -33,7 +34,7 @@ AllOverIt.Pagination
   * New package to provide keyset based pagination for any IQueryable, including EF queries
 
 AllOverIt.EntityFrameworkCore.Pagination
-  * New package to provide keyset based pagination extensions for any EF
+  * New package to provide keyset based pagination extensions for any EF query
 
 AllOverIt.ReactiveUI
   * New package                                                     - TESTS PENDING ******************

@@ -1,14 +1,13 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Serialization.Binary;
 using AllOverIt.Serialization.Binary.Extensions;
-using System;
 using System.Collections.Generic;
 
 namespace AllOverIt.Pagination
 {
     internal sealed class ContinuationTokenReader : EnrichedBinaryValueReader<ContinuationToken>
     {
-        public override object ReadValue(EnrichedBinaryReader reader)
+        public override object ReadValue(IEnrichedBinaryReader reader)
         {
             var direction = (PaginationDirection) reader.ReadByte();
 

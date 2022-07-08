@@ -6,6 +6,6 @@ namespace AllOverIt.Serialization.Binary
     {
         public Type Type => typeof(TType);
 
-        public abstract void WriteValue(EnrichedBinaryWriter writer, object value);
+        public abstract void WriteValue(IEnrichedBinaryWriter writer, object value);
     }
 }

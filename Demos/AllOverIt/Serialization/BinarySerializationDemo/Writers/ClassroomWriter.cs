@@ -3,7 +3,7 @@ using AllOverIt.Serialization.Binary.Extensions;
 
 internal sealed class ClassroomWriter : EnrichedBinaryValueWriter<Classroom>
 {
-    public override void WriteValue(EnrichedBinaryWriter writer, object value)
+    public override void WriteValue(IEnrichedBinaryWriter writer, object value)
     {
         var classroom = (Classroom) value;
 

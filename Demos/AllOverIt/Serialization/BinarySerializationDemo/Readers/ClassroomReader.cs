@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 internal sealed class ClassroomReader : EnrichedBinaryValueReader<Classroom>
 {
-    public override object ReadValue(EnrichedBinaryReader reader)
+    public override object ReadValue(IEnrichedBinaryReader reader)
     {
         var roomId = reader.ReadGuid();
         var teacher = reader.ReadObject<Teacher>();

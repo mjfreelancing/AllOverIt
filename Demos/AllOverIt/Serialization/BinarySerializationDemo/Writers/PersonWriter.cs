@@ -3,7 +3,7 @@ using AllOverIt.Serialization.Binary.Extensions;
 
 internal abstract class PersonWriter<TPerson> : EnrichedBinaryValueWriter<TPerson> where TPerson : Person
 {
-    public override void WriteValue(EnrichedBinaryWriter writer, object value)
+    public override void WriteValue(IEnrichedBinaryWriter writer, object value)
     {
         var person = (Person) value;
 

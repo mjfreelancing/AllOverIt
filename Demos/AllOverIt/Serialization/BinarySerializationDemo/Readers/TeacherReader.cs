@@ -3,7 +3,7 @@ using AllOverIt.Serialization.Binary.Extensions;
 
 internal sealed class TeacherReader : EnrichedBinaryValueReader<Teacher>
 {
-    public override object ReadValue(EnrichedBinaryReader reader)
+    public override object ReadValue(IEnrichedBinaryReader reader)
     {
         var firstName = reader.ReadSafeString();
         var lastName = reader.ReadSafeString();

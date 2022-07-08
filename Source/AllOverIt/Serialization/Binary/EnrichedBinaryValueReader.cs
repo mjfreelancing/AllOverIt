@@ -6,9 +6,9 @@ namespace AllOverIt.Serialization.Binary
     {
         public Type Type => typeof(TType);
 
-        public abstract object ReadValue(EnrichedBinaryReader reader);
+        public abstract object ReadValue(IEnrichedBinaryReader reader);
 
-        public TValue ReadValue<TValue>(EnrichedBinaryReader reader)
+        public TValue ReadValue<TValue>(IEnrichedBinaryReader reader)
         {
             return (TValue)ReadValue(reader);
         }

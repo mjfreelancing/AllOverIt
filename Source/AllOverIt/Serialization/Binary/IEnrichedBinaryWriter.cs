@@ -18,10 +18,7 @@ namespace AllOverIt.Serialization.Binary
         /// <summary>Clears all buffers for the current writer and causes any buffered data to be written to the underlying stream.</summary>
         void Flush();
 
-        /// <summary>Sets the position within the current stream.</summary>
-        /// <param name="offset">A byte offset relative to origin.</param>
-        /// <param name="origin">Indicates the reference point from which the new position is to be obtained.</param>
-        /// <returns>The position with the current stream.</returns>
+        /// <inheritdoc cref="BinaryWriter.Seek(int, SeekOrigin)"/>
         long Seek(int offset, SeekOrigin origin);
 
         /// <inheritdoc cref="BinaryWriter.Write(char[], int, int)"/>
