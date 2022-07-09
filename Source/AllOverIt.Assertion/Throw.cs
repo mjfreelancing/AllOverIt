@@ -6,6 +6,90 @@ namespace AllOverIt.Assertion
 {
     public static class Throw<TException> where TException : Exception
     {
+        #region When
+        public static void When(bool condition)
+        {
+            if (condition)
+            {
+                ThrowException();
+            }
+        }
+
+        public static void When<TExceptionArg1>(bool condition, TExceptionArg1 arg1)
+        {
+            if (condition)
+            {
+                ThrowException(arg1);
+            }
+        }
+
+        public static void When<TExceptionArg1, TExceptionArg2>(bool condition, TExceptionArg1 arg1, TExceptionArg2 arg2)
+        {
+            if (condition)
+            {
+                ThrowException(arg1, arg2);
+            }
+        }
+
+        public static void When<TExceptionArg1, TExceptionArg2, TExceptionArg3>(bool condition, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg2 arg3)
+        {
+            if (condition)
+            {
+                ThrowException(arg1, arg2, arg3);
+            }
+        }
+
+        public static void When<TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>(bool condition, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg2 arg3, TExceptionArg2 arg4)
+        {
+            if (condition)
+            {
+                ThrowException(arg1, arg2, arg3, arg4);
+            }
+        }
+        #endregion
+
+        #region WhenNot
+        public static void WhenNot(bool condition)
+        {
+            if (!condition)
+            {
+                ThrowException();
+            }
+        }
+
+        public static void WhenNot<TExceptionArg1>(bool condition, TExceptionArg1 arg1)
+        {
+            if (!condition)
+            {
+                ThrowException(arg1);
+            }
+        }
+
+        public static void WhenNot<TExceptionArg1, TExceptionArg2>(bool condition, TExceptionArg1 arg1, TExceptionArg2 arg2)
+        {
+            if (!condition)
+            {
+                ThrowException(arg1, arg2);
+            }
+        }
+
+        public static void WhenNot<TExceptionArg1, TExceptionArg2, TExceptionArg3>(bool condition, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg2 arg3)
+        {
+            if (!condition)
+            {
+                ThrowException(arg1, arg2, arg3);
+            }
+        }
+
+        public static void WhenNot<TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>(bool condition, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg2 arg3, TExceptionArg2 arg4)
+        {
+            if (!condition)
+            {
+                ThrowException(arg1, arg2, arg3, arg4);
+            }
+        }
+        #endregion
+
         #region WhenNull
         public static void WhenNull<TType>(TType @object)
             where TType : class
