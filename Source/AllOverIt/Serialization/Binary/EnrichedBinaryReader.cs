@@ -53,11 +53,12 @@ namespace AllOverIt.Serialization.Binary
                     var assemblyTypeName = reader.ReadString();
                     var valueType = Type.GetType(assemblyTypeName);
 
-                    Throw<BinaryReaderException>.WhenNull(valueType, $"Unknown type '{assemblyTypeName}'.");
+                    //if (valueType == null)
+                    //{
+                    //    throw new BinaryReaderException($"Unknown type '{assemblyTypeName}'.");
+                    //}
 
-                    //valueType
-                    //    .ThrowWhenNull()
-                    //    .Exception<BinaryReaderException, Type, string>(valueType, $"Unknown type '{assemblyTypeName}'.");
+                    Throw<BinaryReaderException>.WhenNull(valueType, $"Unknown type '{assemblyTypeName}'.");
 
                     // cache for later, to read the value as a cached user defined type
                     var cacheIndex = reader._userDefinedTypeCache.Keys.Count + 1;
