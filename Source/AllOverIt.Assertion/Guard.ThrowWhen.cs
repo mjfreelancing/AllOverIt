@@ -9,7 +9,13 @@ namespace AllOverIt.Assertion
         /// <summary>Represents a type that will throw an exception.</summary>
         public interface IThrowWhen
         {
-            void Throw<TException>(string errorMessage = default) where TException : Exception;
+            void Exception(Exception exception);
+            void Exception<TException>() where TException : Exception, new();
+            void Exception<TException>(string message) where TException : Exception;
+            void Exception<TException, TArg1>(TArg1 arg1) where TException : Exception;
+            void Exception<TException, TArg1, TArg2>(TArg1 arg1, TArg2 arg2) where TException : Exception;
+            void Exception<TException, TArg1, TArg2, TArg3>(TArg1 arg1, TArg2 arg2, TArg3 arg3) where TException : Exception;
+            void Exception<TException, TArg1, TArg2, TArg3, TArg4>(TArg1 arg1, TArg2 arg2, TArg3 arg3, TArg4 arg4) where TException : Exception;
         }
 
         /// <summary>Provides the facility to throw an exception if a condition is true.</summary>
@@ -17,25 +23,51 @@ namespace AllOverIt.Assertion
         {
             private sealed class DoThrow : IThrowWhen
             {
-                public void Throw<TException>(string errorMessage = default) where TException : Exception
+                public void Exception(Exception exception)
                 {
-                    throw CreateException<TException>(errorMessage);
+                    throw exception;
                 }
 
-                private static Exception CreateException<TException>(string errorMessage) where TException : Exception
+                public void Exception<TException>() where TException : Exception, new()
                 {
-                    return string.IsNullOrWhiteSpace(errorMessage)
-                        ? (Exception) Activator.CreateInstance(typeof(TException))
-                        : (Exception) Activator.CreateInstance(typeof(TException), new object[] { errorMessage });
+                    throw new TException();
+                }
+
+                public void Exception<TException>(string message) where TException : Exception
+                {
+                    Exception<TException, string>(message);
+                }
+
+                public void Exception<TException, TArg1>(TArg1 arg1) where TException : Exception
+                {
+                    throw (Exception) Activator.CreateInstance(typeof(TException), new object[] { arg1 });
+                }
+
+                public void Exception<TException, TArg1, TArg2>(TArg1 arg1, TArg2 arg2) where TException : Exception
+                {
+                    throw (Exception) Activator.CreateInstance(typeof(TException), new object[] { arg1, arg2 });
+                }
+
+                public void Exception<TException, TArg1, TArg2, TArg3>(TArg1 arg1, TArg2 arg2, TArg3 arg3) where TException : Exception
+                {
+                    throw (Exception) Activator.CreateInstance(typeof(TException), new object[] { arg1, arg2, arg3 });
+                }
+
+                public void Exception<TException, TArg1, TArg2, TArg3, TArg4>(TArg1 arg1, TArg2 arg2, TArg3 arg3, TArg4 arg4) where TException : Exception
+                {
+                    throw (Exception) Activator.CreateInstance(typeof(TException), new object[] { arg1, arg2, arg3, arg4 });
                 }
             }
 
             private sealed class DoNotThrow : IThrowWhen
             {
-                public void Throw<TException>(string errorMessage = default) where TException : Exception
-                {
-                    // Do nothing
-                }
+                public void Exception(Exception exception) { }
+                public void Exception<TException>() where TException : Exception, new() { }
+                public void Exception<TException>(string message) where TException : Exception { }
+                public void Exception<TException, TArg1>(TArg1 arg1) where TException : Exception { }
+                public void Exception<TException, TArg1, TArg2>(TArg1 arg1, TArg2 arg2) where TException : Exception { }
+                public void Exception<TException, TArg1, TArg2, TArg3>(TArg1 arg1, TArg2 arg2, TArg3 arg3) where TException : Exception { }
+                public void Exception<TException, TArg1, TArg2, TArg3, TArg4>(TArg1 arg1, TArg2 arg2, TArg3 arg3, TArg4 arg4) where TException : Exception { }
             }
 
             private static readonly IThrowWhen DoThrowInstance = new DoThrow();
@@ -56,7 +88,7 @@ namespace AllOverIt.Assertion
         /// <typeparam name="TType">The object type.</typeparam>
         /// <param name="object">The class instance.</param>
         /// <returns>A <see cref="ThrowWhen"/> object that provides the ability to throw an exception when a condition is satisfied.</returns>
-        public static IThrowWhen WhenNull<TType>(this TType @object)
+        public static IThrowWhen ThrowWhenNull<TType>(this TType @object)
             where TType : class
         {
             return ThrowWhen.Create(@object is null);
@@ -66,7 +98,7 @@ namespace AllOverIt.Assertion
         /// <typeparam name="TType">The object type.</typeparam>
         /// <param name="object">The class instance.</param>
         /// <returns>A <see cref="ThrowWhen"/> object that provides the ability to throw an exception when a condition is satisfied.</returns>
-        public static IThrowWhen WhenNotNull<TType>(this TType @object)
+        public static IThrowWhen ThrowWhenNotNull<TType>(this TType @object)
             where TType : class
         {
             return ThrowWhen.Create(@object is not null);
@@ -75,7 +107,7 @@ namespace AllOverIt.Assertion
         /// <summary>Sets up a precondition to throw an exception when a string is null.</summary>
         /// <param name="object">The string instance.</param>
         /// <returns>A <see cref="ThrowWhen"/> object that provides the ability to throw an exception when a condition is satisfied.</returns>
-        public static IThrowWhen WhenNull(this string @object)
+        public static IThrowWhen ThrowWhenNull(this string @object)
         {
             return ThrowWhen.Create(@object is null);
         }
@@ -83,7 +115,7 @@ namespace AllOverIt.Assertion
         /// <summary>Sets up a precondition to throw an exception when a string is null or empty (whitespace).</summary>
         /// <param name="object">The string instance.</param>
         /// <returns>A <see cref="ThrowWhen"/> object that provides the ability to throw an exception when a condition is satisfied.</returns>
-        public static IThrowWhen WhenNullOrEmpty(this string @object)
+        public static IThrowWhen ThrowWhenNullOrEmpty(this string @object)
         {
             return ThrowWhen.Create(string.IsNullOrWhiteSpace(@object));
         }
@@ -91,7 +123,7 @@ namespace AllOverIt.Assertion
         /// <summary>Sets up a precondition to throw an exception when a string is not null or empty (whitespace).</summary>
         /// <param name="object">The string instance.</param>
         /// <returns>A <see cref="ThrowWhen"/> object that provides the ability to throw an exception when a condition is satisfied.</returns>
-        public static IThrowWhen WhenNotNullOrEmpty(this string @object)
+        public static IThrowWhen ThrowWhenNotNullOrEmpty(this string @object)
         {
             return ThrowWhen.Create(!string.IsNullOrWhiteSpace(@object));
         }
@@ -100,7 +132,7 @@ namespace AllOverIt.Assertion
         /// <typeparam name="TType">The object type.</typeparam>
         /// <param name="object">The class instance.</param>
         /// <returns>A <see cref="ThrowWhen"/> object that provides the ability to throw an exception when a condition is satisfied.</returns>
-        public static IThrowWhen WhenNullOrEmpty<TType>(this IEnumerable<TType> @object)
+        public static IThrowWhen ThrowWhenNullOrEmpty<TType>(this IEnumerable<TType> @object)
         {
             return ThrowWhen.Create(@object is null || !@object.Any());
         }
@@ -109,7 +141,7 @@ namespace AllOverIt.Assertion
         /// <typeparam name="TType">The object type.</typeparam>
         /// <param name="object">The class instance.</param>
         /// <returns>A <see cref="ThrowWhen"/> object that provides the ability to throw an exception when a condition is satisfied.</returns>
-        public static IThrowWhen WhenNotNullOrEmpty<TType>(this IEnumerable<TType> @object)
+        public static IThrowWhen ThrowWhenNotNullOrEmpty<TType>(this IEnumerable<TType> @object)
         {
             return ThrowWhen.Create(@object is not null && @object.Any());
         }
