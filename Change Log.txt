@@ -24,7 +24,8 @@ AllOverIt
   * Renamed AsListAsync() back to ToListAsync() and added overloads of SelectAsReadOnlyCollectionAsync() and SelectAsReadOnlyListAsync()
     for both IEnumerable and IAsyncEnumerable.
     EF's ToListAsync() works on IQueryable
-  * Moved some extension methods from EnumerableExtensions to AsyncEnumerableExtensions.
+  * Moved some extension methods from EnumerableExtensions to AsyncEnumerableExtensions
+  * Removed Guard.InvalidWhen - can equally use WhenNotNull() and related methods
 
 AllOverIt.Assertion
   * Removed methods that asserted an enumerable was a concrete collection type and instead updated .NET Core 3.1
