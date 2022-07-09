@@ -1,58 +1,11 @@
-﻿using AllOverIt.Assertion;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
-namespace TestNamespace
-{
-    internal class TestClass
-    {
-    }
-
-    internal class TestClass2
-    {
-        public void Doit()
-        {
-            string s = default;
-
-            Throw<Exception>.WhenNull(s);
-            Throw<Exception>.WhenNotNull(s);
-            Throw<Exception>.WhenNullOrEmpty(s);
-
-            TestClass x = default;
-            Throw<Exception>.WhenNull(x);
-            Throw<Exception>.WhenNotNull(x);
-        }
-    }
-}
-
 
 namespace AllOverIt.Assertion
 {
     public static class Throw<TException> where TException : Exception
     {
-        private static bool IsNull<TType>(TType @object)
-        {
-            return @object is null;
-        }
-
-        private static bool IsNotNull<TType>(TType @object)
-        {
-            // This is more efficient that !IsNull()
-            return @object is not null;
-        }
-
-        private static bool IsNullOrEmpty(string @object)
-        {
-            return string.IsNullOrWhiteSpace(@object);
-        }
-
-        private static bool IsNullOrEmpty<TType>(IEnumerable<TType> @object)
-        {
-            return @object is null || !@object.Any();
-        }
-
-
         #region WhenNull
         public static void WhenNull<TType>(TType @object)
             where TType : class
@@ -267,5 +220,26 @@ namespace AllOverIt.Assertion
             throw (Exception) Activator.CreateInstance(typeof(TException), new object[] { arg1, arg2, arg3, arg4 });
         }
         #endregion
+
+        private static bool IsNull<TType>(TType @object)
+        {
+            return @object is null;
+        }
+
+        private static bool IsNotNull<TType>(TType @object)
+        {
+            // This is more efficient that !IsNull()
+            return @object is not null;
+        }
+
+        private static bool IsNullOrEmpty(string @object)
+        {
+            return string.IsNullOrWhiteSpace(@object);
+        }
+
+        private static bool IsNullOrEmpty<TType>(IEnumerable<TType> @object)
+        {
+            return @object is null || !@object.Any();
+        }
     }
 }
