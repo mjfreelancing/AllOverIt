@@ -53,9 +53,7 @@ namespace AllOverIt.Serialization.Binary
                     var assemblyTypeName = reader.ReadString();
                     var valueType = Type.GetType(assemblyTypeName);
 
-                    valueType
-                        .ThrowWhenNull()
-                        .Exception<BinaryReaderException>($"Unknown type '{assemblyTypeName}'.");
+                    Throw<BinaryReaderException>.WhenNull(valueType, $"Unknown type '{assemblyTypeName}'.");
 
                     //valueType
                     //    .ThrowWhenNull()
