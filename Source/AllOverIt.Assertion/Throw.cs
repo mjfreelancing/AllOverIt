@@ -195,11 +195,6 @@ namespace AllOverIt.Assertion
             throw (Exception) Activator.CreateInstance(typeof(TException));
         }
 
-        private static void ThrowException(string message)
-        {
-            ThrowException<string>(message);
-        }
-
         private static void ThrowException<TArg1>(TArg1 arg1)
         {
             throw (Exception) Activator.CreateInstance(typeof(TException), new object[] { arg1 });
