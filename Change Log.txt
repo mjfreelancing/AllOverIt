@@ -19,8 +19,12 @@ AllOverIt
   * Removed all GenericCacheExtensions - already handled by ReflectionCache. Renamed ReflectionCacheKey to IReflectionCacheKey.
   * Added caching to BuildBindingPredicate()
   * Updated GetMemberExpressions() extension method to support any Expression that can be unwrapped to a MemberExpression.
-  * General Guard method improvements
+  * General Guard method improvements plus additional ThrowWhenXXX() type methods
   * Added EnrichedBinaryReader, EnrichedBinaryWriter and associated value reader / writer
+  * Renamed AsListAsync() back to ToListAsync() and added overloads of SelectAsReadOnlyCollectionAsync() and SelectAsReadOnlyListAsync()
+    for both IEnumerable and IAsyncEnumerable.
+    EF's ToListAsync() works on IQueryable
+  * Moved some extension methods from EnumerableExtensions to AsyncEnumerableExtensions.
 
 AllOverIt.Assertion
   * Removed methods that asserted an enumerable was a concrete collection type and instead updated .NET Core 3.1
