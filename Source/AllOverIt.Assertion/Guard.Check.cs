@@ -66,10 +66,8 @@ namespace AllOverIt.Assertion
 #endif
             string errorMessage = default)
         {
-            // ReSharper disable once PossibleMultipleEnumeration
             CheckNotNull(@object, name, errorMessage);
 
-            // ReSharper disable once PossibleMultipleEnumeration
             CheckNotEmpty(@object, name, errorMessage);
         }
 

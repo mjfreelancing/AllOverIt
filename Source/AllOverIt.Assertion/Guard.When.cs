@@ -224,7 +224,6 @@ namespace AllOverIt.Assertion
             if (@object != null)
             {
 #if NET5_0_OR_GREATER
-                // ReSharper disable once PossibleMultipleEnumeration
                 var any = @object.Any();
 #else
                 // We don't have access to IListProvider<TType> so do the best we can to avoid multiple enumeration via Any()
@@ -235,7 +234,6 @@ namespace AllOverIt.Assertion
                     ICollection<TType> items => items.Count != 0,
                     ICollection iCollection => iCollection.Count != 0,
 
-                    // ReSharper disable once PossibleMultipleEnumeration
                     _ => @object.Any()
                 };
 #endif
@@ -246,7 +244,6 @@ namespace AllOverIt.Assertion
                 }
             }
 
-            // ReSharper disable once PossibleMultipleEnumeration
             return @object;
         }
 

@@ -51,10 +51,8 @@ namespace AllOverIt.Assertion
         /// <returns>The same source object instance.</returns>
         public static IEnumerable<TType> InvalidWhenNullOrEmpty<TType>(this IEnumerable<TType> @object, string errorMessage = default)
         {
-            // ReSharper disable once PossibleMultipleEnumeration
             InvalidWhenNull(@object, errorMessage);
 
-            // ReSharper disable once PossibleMultipleEnumeration
             return InvalidWhenEmpty(@object, errorMessage);
         }
 
@@ -68,13 +66,11 @@ namespace AllOverIt.Assertion
         /// <returns>The same source object instance.</returns>
         public static IEnumerable<TType> InvalidWhenEmpty<TType>(this IEnumerable<TType> @object, string errorMessage = default)
         {
-            // ReSharper disable once PossibleMultipleEnumeration
             if (@object != null && !@object.Any())
             {
                 ThrowInvalidOperationException<IEnumerable<TType>>(errorMessage ?? "Value cannot be empty");
             }
 
-            // ReSharper disable once PossibleMultipleEnumeration
             return @object;
         }
 

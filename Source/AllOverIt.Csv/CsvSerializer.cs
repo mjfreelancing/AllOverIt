@@ -53,11 +53,9 @@ namespace AllOverIt.Csv
         /// <inheritdoc />
         public void AddFields(IEnumerable<string> headerNames, Func<TCsvData, IEnumerable<object>> valuesResolver)
         {
-            // ReSharper disable once PossibleMultipleEnumeration
             _ = headerNames.WhenNotNull(nameof(headerNames));
             _ = valuesResolver.WhenNotNull(nameof(valuesResolver));
 
-            // ReSharper disable once PossibleMultipleEnumeration
             _fieldResolvers.Add(new CsvFieldResolver(headerNames, valuesResolver));
         }
 
