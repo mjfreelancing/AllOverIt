@@ -8,7 +8,7 @@ namespace AllOverIt.Tests.Assertion
 {
     public partial class GuardFixture
     {
-        public class WhenNotNullOrEmpty_String : Assertion.GuardFixture
+        public class WhenNotNullOrEmpty_String : GuardFixture
         {
             [Fact]
             public void Should_Throw_When_Null()
@@ -131,7 +131,7 @@ namespace AllOverIt.Tests.Assertion
             }
         }
 
-        public class WhenNotEmpty_String : Assertion.GuardFixture
+        public class WhenNotEmpty_String : GuardFixture
         {
             [Fact]
             public void Should_Not_Throw_When_Null()

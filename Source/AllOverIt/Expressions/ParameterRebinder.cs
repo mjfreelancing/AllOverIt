@@ -1,3 +1,4 @@
+using AllOverIt.Assertion;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -24,8 +25,8 @@ namespace AllOverIt.Expressions
         /// <returns>A new expression with the parameter expressions replaced.</returns>
         public static Expression ReplaceParameters(IDictionary<ParameterExpression, ParameterExpression> parameterMap, Expression expression)
         {
-            _ = parameterMap ?? throw new ArgumentNullException(nameof(parameterMap));
-            _ = expression ?? throw new ArgumentNullException(nameof(expression));
+            _ = parameterMap.WhenNotNull(nameof(parameterMap));
+            _ = expression.WhenNotNull(nameof(expression));
 
             return new ParameterRebinder(parameterMap).Visit(expression);
         }

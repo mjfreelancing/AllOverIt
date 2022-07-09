@@ -7,7 +7,7 @@ namespace AllOverIt.Assertion
 {
     public static partial class Guard
     {
-        /// <summary>Checks the specified object is not null.</summary>
+        /// <summary>Checks the specified object is not null, throwing <see cref="InvalidOperationException"/> if it is.</summary>
         /// <typeparam name="TType">The object type.</typeparam>
         /// <param name="object">The object instance.</param>
         /// <param name="name">The name of the instance.</param>
@@ -28,7 +28,7 @@ namespace AllOverIt.Assertion
             }
         }
 
-        /// <summary>Checks the specified object is null.</summary>
+        /// <summary>Checks the specified object is null, throwing <see cref="InvalidOperationException"/> if it is.</summary>
         /// <typeparam name="TType">The object type.</typeparam>
         /// <param name="object">The object instance.</param>
         /// <param name="name">The name of the instance.</param>
@@ -49,7 +49,7 @@ namespace AllOverIt.Assertion
             }
         }
 
-        /// <summary>Checks the specified enumerable is not null or empty.</summary>
+        /// <summary>Checks the specified enumerable is not null or empty, throwing <see cref="InvalidOperationException"/> if it is.</summary>
         /// <typeparam name="TType">The element type.</typeparam>
         /// <param name="object">The enumerable instance</param>
         /// <param name="name">The name of the instance.</param>
@@ -71,7 +71,7 @@ namespace AllOverIt.Assertion
             CheckNotEmpty(@object, name, errorMessage);
         }
 
-        /// <summary>Checks the specified enumerable is not empty.</summary>
+        /// <summary>Checks the specified enumerable is not empty, throwing <see cref="InvalidOperationException"/> if it is.</summary>
         /// <typeparam name="TType">The element type.</typeparam>
         /// <param name="object">The enumerable instance.</param>
         /// <param name="name">The name of the instance.</param>
@@ -93,7 +93,7 @@ namespace AllOverIt.Assertion
             }
         }
 
-        /// <summary>Checks the specified string is not null or empty.</summary>
+        /// <summary>Checks the specified string is not null or empty, throwing <see cref="InvalidOperationException"/> if it is.</summary>
         /// <param name="object">The string instance</param>
         /// <param name="name">The name of the instance.</param>
         /// <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be null" for a null
@@ -111,7 +111,7 @@ namespace AllOverIt.Assertion
             CheckNotEmpty(@object, name, errorMessage);
         }
 
-        /// <summary>Checks the specified string is not empty.</summary>
+        /// <summary>Checks the specified string is not empty, throwing <see cref="InvalidOperationException"/> if it is.</summary>
         /// <param name="object">The string instance</param>
         /// <param name="name">The name of the instance.</param>
         /// <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be empty".</param>
