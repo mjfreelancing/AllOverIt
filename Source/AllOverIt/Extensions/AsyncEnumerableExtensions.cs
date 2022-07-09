@@ -3,6 +3,7 @@
 using AllOverIt.Assertion;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,14 +12,35 @@ namespace AllOverIt.Extensions
     /// <summary>Provides a variety of extension methods for <see cref="IAsyncEnumerable{T}"/>.</summary>
     public static class AsyncEnumerableExtensions
     {
-        // Not named 'ToListAsync' because this easily conflicts with other implementations of the same name (such as EF)
+        /// <summary>Asynchronously projects each item within a sequence.</summary>
+        /// <typeparam name="TType">The type of each element to be projected.</typeparam>
+        /// <typeparam name="TResult">The projected result type.</typeparam>
+        /// <param name="items">The sequence of elements to be projected.</param>
+        /// <param name="selector">The transform function to be applied to each element.</param>
+        /// <param name="cancellationToken">A cancellation token.</param>
+        /// <returns>An enumerator that provides asynchronous iteration over a sequence of elements.</returns>
+        public static async IAsyncEnumerable<TResult> SelectAsync<TType, TResult>(this IAsyncEnumerable<TType> items, Func<TType, Task<TResult>> selector,
+            [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        {
+            _ = items.WhenNotNull(nameof(items));
+
+            await foreach (var item in items.WithCancellation(cancellationToken))
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                yield return await selector.Invoke(item).ConfigureAwait(false);
+            }
+        }
+
         /// <summary>Iterates over an <see cref="IAsyncEnumerable{T}"/> to create a <see cref="List{T}"/>.</summary>
         /// <typeparam name="TType">The element type.</typeparam>
         /// <param name="items">The enumerable to convert to a list asynchronously.</param>
         /// <param name="cancellationToken">A cancellation token to cancel the processing.</param>
         /// <returns>An <see cref="IList{T}"/> from the source items.</returns>
-        public static async Task<IList<TType>> AsListAsync<TType>(this IAsyncEnumerable<TType> items, CancellationToken cancellationToken = default)
+        public static async Task<IList<TType>> ToListAsync<TType>(this IAsyncEnumerable<TType> items, CancellationToken cancellationToken = default)
         {
+            _ = items.WhenNotNull(nameof(items));
+
             var listItems = new List<TType>();
 
             await foreach (var item in items.WithCancellation(cancellationToken).ConfigureAwait(false))
@@ -40,12 +62,10 @@ namespace AllOverIt.Extensions
         public static async Task<IList<TResult>> SelectAsListAsync<TSource, TResult>(this IAsyncEnumerable<TSource> items, Func<TSource, Task<TResult>> selector,
             CancellationToken cancellationToken = default)
         {
-            // ReSharper disable once PossibleMultipleEnumeration
             _ = items.WhenNotNull(nameof(items));
 
             var listItems = new List<TResult>();
 
-            // ReSharper disable once PossibleMultipleEnumeration
             await foreach (var item in items.WithCancellation(cancellationToken).ConfigureAwait(false))
             {
                 cancellationToken.ThrowIfCancellationRequested();
@@ -83,6 +103,40 @@ namespace AllOverIt.Extensions
         {
             var results = await SelectAsListAsync(items, selector, cancellationToken).ConfigureAwait(false);
             return results.AsReadOnlyList();
+        }
+
+
+        /// <summary>Asynchronously iterates a sequence of elements and provides the zero-based index of the current item.</summary>
+        /// <typeparam name="TType">The element type.</typeparam>
+        /// <param name="items">The source sequence of elements.</param>
+        /// <param name="action">The asynchronous action to invoke against each element in the sequence.</param>
+        /// <returns>An awaitable task that completes when the iteration is complete.</returns>
+        public static async Task ForEachAsync<TType>(this IAsyncEnumerable<TType> items, Func<TType, int, Task> action)
+        {
+            _ = items.WhenNotNull(nameof(items));
+
+            var index = 0;
+
+            await foreach (var item in items)
+            {
+                await action.Invoke(item, index++).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>Asynchronously projects each element of a sequence into a new form that includes the element's zero-based index.</summary>
+        /// <typeparam name="TType">The element type.</typeparam>
+        /// <param name="items">The source sequence of elements.</param>
+        /// <returns>The projected sequence including the element's index.</returns>
+        public static async IAsyncEnumerable<(TType Item, int Index)> WithIndexAsync<TType>(this IAsyncEnumerable<TType> items)
+        {
+            _ = items.WhenNotNull(nameof(items));
+
+            var index = 0;
+
+            await foreach (var item in items)
+            {
+                yield return (item, index++);
+            }
         }
     }
 }

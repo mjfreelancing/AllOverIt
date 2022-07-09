@@ -263,6 +263,54 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
+#if !NETSTANDARD2_0
+        public class SelectAsync : EnumerableExtensionsFixture
+        {
+            [Fact]
+            public async Task Should_Throw_When_Null()
+            {                
+                await Invoking(
+                    async () =>
+                    {
+                        IEnumerable<bool> items = null;
+
+                        await items.SelectAsync(item => Task.FromResult(item)).ToListAsync();
+                    })
+                  .Should()
+                  .ThrowAsync<ArgumentNullException>()
+                  .WithNamedMessageWhenNull("items");
+            }
+
+            [Fact]
+            public async Task Should_Cancel_Iteration()
+            {
+                var cts = new CancellationTokenSource();
+                cts.Cancel();
+
+                await Invoking(
+                    async () =>
+                    {
+                        IEnumerable<bool> items = new[] { true };
+
+                        await items.SelectAsync(item => Task.FromResult(item), cts.Token).ToListAsync();
+                    })
+                  .Should()
+                  .ThrowAsync<OperationCanceledException>();
+            }
+
+            [Fact]
+            public async Task Should_Iterate_Collection()
+            {
+                var values = CreateMany<bool>();
+                var expected = values.SelectAsReadOnlyCollection(item => !item);
+
+                var actual = await values.SelectAsync(item => Task.FromResult(!item)).ToListAsync();
+
+                expected.Should().BeEquivalentTo(actual);
+            }
+        }
+#endif
+
         public class SelectAsList : EnumerableExtensionsFixture
         {
             [Fact]
@@ -381,17 +429,17 @@ namespace AllOverIt.Tests.Extensions
         }
 
 #if !NETSTANDARD2_0
-        public class SelectAsync_Enumerable : EnumerableExtensionsFixture
+        public class SelectAsReadOnlyCollectionAsync : EnumerableExtensionsFixture
         {
             [Fact]
             public async Task Should_Throw_When_Null()
-            {                
+            {
                 await Invoking(
-                    async () =>
+                    () =>
                     {
-                        IEnumerable<bool> items = null;
+                        IEnumerable<object> items = null;
 
-                        await items.SelectAsync(item => Task.FromResult(item)).AsListAsync();
+                        return items.SelectAsReadOnlyCollectionAsync(item => Task.FromResult(item));
                     })
                   .Should()
                   .ThrowAsync<ArgumentNullException>()
@@ -399,87 +447,63 @@ namespace AllOverIt.Tests.Extensions
             }
 
             [Fact]
-            public async Task Should_Cancel_Iteration()
+            public async Task Should_Not_Throw_When_Empty()
             {
-                var cts = new CancellationTokenSource();
-                cts.Cancel();
+                var items = new List<int>();
 
-                await Invoking(
-                    async () =>
-                    {
-                        IEnumerable<bool> items = new[] { true };
-
-                        await items.SelectAsync(item => Task.FromResult(item), cts.Token).AsListAsync();
-                    })
+                await Invoking(() => items.SelectAsReadOnlyCollectionAsync(item => Task.FromResult(item)))
                   .Should()
-                  .ThrowAsync<OperationCanceledException>();
+                  .NotThrowAsync();
             }
 
             [Fact]
-            public async Task Should_Iterate_Collection()
+            public async Task Should_Return_Projected_List()
             {
-                var values = CreateMany<bool>();
-                var expected = values.SelectAsReadOnlyCollection(item => !item);
+                var source = CreateMany<int>();
+                var expected = source.Select(item => item * 2);
 
-                var actual = await values.SelectAsync(item => Task.FromResult(!item)).AsListAsync();
+                var actual = await source.SelectAsReadOnlyCollectionAsync(item => Task.FromResult(item * 2));
 
                 expected.Should().BeEquivalentTo(actual);
             }
         }
 
-        public class SelectAsync_AsyncEnumerable : EnumerableExtensionsFixture
+        public class SelectAsReadOnlyListAsync : EnumerableExtensionsFixture
         {
             [Fact]
             public async Task Should_Throw_When_Null()
             {
                 await Invoking(
-                        async () =>
-                        {
-                            IAsyncEnumerable<bool> items = null;
+                    () =>
+                    {
+                        IEnumerable<object> items = null;
 
-                            await items.SelectAsync(item => Task.FromResult(item)).AsListAsync();
-                        })
-                    .Should()
-                    .ThrowAsync<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("items");
+                        return items.SelectAsReadOnlyListAsync(item => Task.FromResult(item));
+                    })
+                  .Should()
+                  .ThrowAsync<ArgumentNullException>()
+                  .WithNamedMessageWhenNull("items");
             }
 
             [Fact]
-            public async Task Should_Cancel_Iteration()
+            public async Task Should_Not_Throw_When_Empty()
             {
-                var cts = new CancellationTokenSource();
-                cts.Cancel();
+                var items = new List<int>();
 
-                await Invoking(
-                        async () =>
-                        {
-                            var items = AsAsyncEnumerable(new[] {true});
-
-                            await items.SelectAsync(item => Task.FromResult(item), cts.Token).AsListAsync();
-                        })
-                    .Should()
-                    .ThrowAsync<OperationCanceledException>();
+                await Invoking(() => items.SelectAsReadOnlyListAsync(item => Task.FromResult(item)))
+                  .Should()
+                  .NotThrowAsync();
             }
 
             [Fact]
-            public async Task Should_Iterate_Collection()
+            public async Task Should_Return_Projected_List()
             {
-                var values = CreateMany<bool>();
-                var expected = values.SelectAsReadOnlyCollection(item => !item);
+                var source = CreateMany<int>();
+                var expected = source.Select(item => item * 2);
 
-                var actual = await AsAsyncEnumerable(values).SelectAsync(item => Task.FromResult(!item)).AsListAsync();
+                var actual = await source.SelectAsReadOnlyListAsync(item => Task.FromResult(item * 2));
 
                 expected.Should().BeEquivalentTo(actual);
-            }
-
-            private static async IAsyncEnumerable<bool> AsAsyncEnumerable(IEnumerable<bool> items)
-            {
-                foreach (var item in items)
-                {
-                    yield return item;
-                }
-
-                await Task.CompletedTask;
             }
         }
 #endif
@@ -582,7 +606,7 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
-        public class WithIndex_Enumerable : EnumerableExtensionsFixture
+        public class WithIndex : EnumerableExtensionsFixture
         {
             [Fact]
             public void Should_Throw_When_Null()
@@ -619,45 +643,6 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
-#if !NETSTANDARD2_0
-        public class WithIndex_AsyncEnumerable : EnumerableExtensionsFixture
-        {
-            [Fact]
-            public async Task Should_Throw_When_Null()
-            {
-                await Invoking(
-                        async () =>
-                        {
-                            IAsyncEnumerable<object> items = null;
-
-                            // AsListAsync() is required to invoke the method
-                            _ = await items.WithIndexAsync().AsListAsync();
-                        })
-                    .Should()
-                    .ThrowAsync<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("items");
-            }
-
-            [Fact]
-            public async Task Should_Provide_Item_Index()
-            {
-                var values = Create<string>();
-                var expectedValues = values.Select((item, index) => (item, index)).AsReadOnlyCollection();
-
-                var index = 0;
-
-                await foreach (var (value, idx) in AsAsyncEnumerable(values).WithIndexAsync())
-                {
-                    var expected = expectedValues.ElementAt(index++);
-
-                    expected
-                        .Should()
-                        .BeEquivalentTo((value, idx));
-                }
-            }
-        }
-#endif
-
         public class ForEach : EnumerableExtensionsFixture
         {
             [Fact]
@@ -691,7 +676,7 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
-        public class ForEachAsync_Enumerable : EnumerableExtensionsFixture
+        public class ForEachAsync : EnumerableExtensionsFixture
         {
             [Fact]
             public async Task Should_Throw_When_Null()
@@ -725,43 +710,6 @@ namespace AllOverIt.Tests.Extensions
                 count.Should().Be(values.Length);
             }
         }
-
-#if !NETSTANDARD2_0
-        public class ForEachAsync_AsyncEnumerable : EnumerableExtensionsFixture
-        {
-            [Fact]
-            public async Task Should_Throw_When_Null()
-            {
-                await Invoking(
-                        async () =>
-                        {
-                            IAsyncEnumerable<object> items = null;
-
-                            await items.ForEachAsync((_, _) => Task.CompletedTask);
-                        })
-                    .Should()
-                    .ThrowAsync<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("items");
-            }
-
-            [Fact]
-            public async Task Should_Iterate_Items_With_Index()
-            {
-                var values = Create<string>();
-                var count = 0;
-
-                await AsAsyncEnumerable(values).ForEachAsync(async (item, index) =>
-                {
-                    await Task.CompletedTask;
-
-                    item.Should().Be(values.ElementAt(index));
-                    count++;
-                });
-
-                count.Should().Be(values.Length);
-            }
-        }
-#endif
 
         public class FindMatches : EnumerableExtensionsFixture
         {
@@ -848,17 +796,5 @@ namespace AllOverIt.Tests.Extensions
                 expected.Should().BeEquivalentTo(matches);
             }
         }
-
-#if !NETSTANDARD2_0
-        private static async IAsyncEnumerable<TType> AsAsyncEnumerable<TType>(IEnumerable<TType> items)
-        {
-            foreach (var item in items)
-            {
-                yield return item;
-            }
-
-            await Task.CompletedTask;
-        }
-#endif
     }
 }
