@@ -7,10 +7,13 @@ using System.Reflection;
 
 namespace AllOverIt.Reflection
 {
-    /// <summary>Contains a number of helper functions related to reflection.</summary>
+    /// <summary>Contains a number of property getter helper functions related to <see cref="PropertyInfo"/>.</summary>
     public static partial class PropertyExpressions
     {
-        // TODO: Comment and Tests
+        /// <summary>Creates a compiled expression as a <see cref="Func{T, TResult}"/> to get a property value, as an object, based
+        /// on a specified <see cref="PropertyInfo"/> instance.</summary>
+        /// <param name="propertyInfo">The <see cref="PropertyInfo"/> to build a property getter.</param>
+        /// <returns>The compiled property getter.</returns>
         public static Func<object, object> CreatePropertyGetter(PropertyInfo propertyInfo)
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
@@ -18,6 +21,11 @@ namespace AllOverIt.Reflection
             return CreatePropertyGetterExpressionLambda(propertyInfo).Compile();
         }
 
+        /// <summary>Creates a compiled expression as a <see cref="Func{T, TResult}"/> to get a property value based on a specified
+        /// <see cref="PropertyInfo"/> instance.</summary>
+        /// <typeparam name="TType">The object type to get the property value from.</typeparam>
+        /// <param name="propertyInfo">The <see cref="PropertyInfo"/> to build a property getter.</param>
+        /// <returns>The compiled property getter.</returns>
         public static Func<TType, object> CreatePropertyGetter<TType>(PropertyInfo propertyInfo)
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
@@ -25,6 +33,11 @@ namespace AllOverIt.Reflection
             return CreatePropertyGetterExpressionLambda<TType>(propertyInfo).Compile();
         }
 
+        /// <summary>Creates a compiled expression as a <see cref="Func{T, TResult}"/> to get a property value based on a specified
+        /// property name.</summary>
+        /// <typeparam name="TType">The object type to get the property value from.</typeparam>
+        /// <param name="propertyName">The name of the property to get the value from.</param>
+        /// <returns>The compiled property getter.</returns>
         public static Func<TType, object> CreatePropertyGetter<TType>(string propertyName)
         {
             _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
@@ -40,6 +53,9 @@ namespace AllOverIt.Reflection
             return CreatePropertyGetterExpressionLambda<TType>(propertyInfo).Compile();
         }
 
+        /// <summary>Gets an expression lambda that represents getting a property value from an object.</summary>
+        /// <param name="propertyInfo">The <see cref="PropertyInfo"/> to build a property getter.</param>
+        /// <returns>The expression lambda representing a property getter.</returns>
         public static Expression<Func<object, object>> CreatePropertyGetterExpressionLambda(PropertyInfo propertyInfo)
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
