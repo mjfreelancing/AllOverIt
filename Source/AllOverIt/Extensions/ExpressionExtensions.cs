@@ -14,7 +14,7 @@ namespace AllOverIt.Extensions
         /// <returns>All linked <see cref="MemberExpression"/> expressions, including <paramref name="expression"/>.</returns>
         public static IEnumerable<MemberExpression> GetMemberExpressions(this Expression expression)
         {
-            _ = expression ?? throw new ArgumentNullException(nameof(expression));
+            _ = expression.WhenNotNull(nameof(expression));
 
             var memberExpression = UnwrapMemberExpression(expression);
 
@@ -40,7 +40,7 @@ namespace AllOverIt.Extensions
         /// In all other cases, null is returned.</returns>
         public static MemberExpression UnwrapMemberExpression(this Expression expression)
         {
-            _ = expression ?? throw new ArgumentNullException(nameof(expression));
+            _ = expression.WhenNotNull(nameof(expression));
 
             return expression switch
             {
@@ -58,7 +58,7 @@ namespace AllOverIt.Extensions
         /// <returns>The field or property member.</returns>
         public static MemberInfo GetFieldOrProperty(this Expression expression)
         {
-            _ = expression ?? throw new ArgumentNullException(nameof(expression));
+            _ = expression.WhenNotNull(nameof(expression));
 
             var memberExpression = expression.UnwrapMemberExpression();
 

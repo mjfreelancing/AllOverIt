@@ -1,6 +1,6 @@
-﻿using AllOverIt.Patterns.Enumeration;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Patterns.Enumeration;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System;
 using System.Threading.Tasks;
 
 namespace AllOverIt.AspNetCore.ModelBinders
@@ -24,10 +24,7 @@ namespace AllOverIt.AspNetCore.ModelBinders
         /// <inheritdoc />
         public Task BindModelAsync(ModelBindingContext bindingContext)
         {
-            if (bindingContext == null)
-            {
-                throw new ArgumentNullException(nameof(bindingContext));
-            }
+            _ = bindingContext.WhenNotNull(nameof(bindingContext));
 
             var valueProviderResult = bindingContext.ValueProvider.GetValue(bindingContext.FieldName);
 

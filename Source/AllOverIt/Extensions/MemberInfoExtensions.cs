@@ -1,6 +1,6 @@
-﻿using System;
+﻿using AllOverIt.Assertion;
+using System;
 using System.Reflection;
-using AllOverIt.Assertion;
 
 namespace AllOverIt.Extensions
 {
@@ -13,8 +13,8 @@ namespace AllOverIt.Extensions
         /// <param name="value">The value to assign to the property or field.</param>
         public static void SetValue(this MemberInfo memberInfo, object target, object value)
         {
-            _ = memberInfo ?? throw new ArgumentNullException(nameof(memberInfo));
-            _ = target ?? throw new ArgumentNullException(nameof(target));
+            _ = memberInfo.WhenNotNull(nameof(memberInfo));
+            _ = target.WhenNotNull(nameof(target));
 
             switch (memberInfo)
             {
@@ -53,7 +53,7 @@ namespace AllOverIt.Extensions
         /// <returns>The property, field or method call return type.</returns>
         public static Type GetMemberType(this MemberInfo memberInfo)
         {
-            _ = memberInfo ?? throw new ArgumentNullException(nameof(memberInfo));
+            _ = memberInfo.WhenNotNull(nameof(memberInfo));
 
             return memberInfo switch
             {
