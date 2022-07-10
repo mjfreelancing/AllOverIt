@@ -31,7 +31,7 @@ namespace AllOverIt.Assertion
             }
         }
 
-        public static void When<TExceptionArg1, TExceptionArg2, TExceptionArg3>(bool condition, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg2 arg3)
+        public static void When<TExceptionArg1, TExceptionArg2, TExceptionArg3>(bool condition, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3)
         {
             if (condition)
             {
@@ -39,7 +39,7 @@ namespace AllOverIt.Assertion
             }
         }
 
-        public static void When<TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>(bool condition, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg2 arg3, TExceptionArg2 arg4)
+        public static void When<TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>(bool condition, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3, TExceptionArg4 arg4)
         {
             if (condition)
             {
@@ -73,7 +73,7 @@ namespace AllOverIt.Assertion
             }
         }
 
-        public static void WhenNot<TExceptionArg1, TExceptionArg2, TExceptionArg3>(bool condition, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg2 arg3)
+        public static void WhenNot<TExceptionArg1, TExceptionArg2, TExceptionArg3>(bool condition, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3)
         {
             if (!condition)
             {
@@ -81,7 +81,7 @@ namespace AllOverIt.Assertion
             }
         }
 
-        public static void WhenNot<TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>(bool condition, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg2 arg3, TExceptionArg2 arg4)
+        public static void WhenNot<TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>(bool condition, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3, TExceptionArg4 arg4)
         {
             if (!condition)
             {
@@ -118,7 +118,7 @@ namespace AllOverIt.Assertion
             }
         }
 
-        public static void WhenNull<TType, TExceptionArg1, TExceptionArg2, TExceptionArg3>(TType @object, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg2 arg3)
+        public static void WhenNull<TType, TExceptionArg1, TExceptionArg2, TExceptionArg3>(TType @object, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3)
             where TType : class
         {
             if (IsNull(@object))
@@ -127,7 +127,7 @@ namespace AllOverIt.Assertion
             }
         }
 
-        public static void WhenNull<TType, TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>(TType @object, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg2 arg3, TExceptionArg2 arg4)
+        public static void WhenNull<TType, TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>(TType @object, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3, TExceptionArg4 arg4)
             where TType : class
         {
             if (IsNull(@object))
@@ -165,7 +165,7 @@ namespace AllOverIt.Assertion
             }
         }
 
-        public static void WhenNotNull<TType, TExceptionArg1, TExceptionArg2, TExceptionArg3>(TType @object, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg2 arg3)
+        public static void WhenNotNull<TType, TExceptionArg1, TExceptionArg2, TExceptionArg3>(TType @object, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3)
             where TType : class
         {
             if (IsNotNull(@object))
@@ -174,7 +174,7 @@ namespace AllOverIt.Assertion
             }
         }
 
-        public static void WhenNotNull<TType, TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>(TType @object, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg2 arg3, TExceptionArg2 arg4)
+        public static void WhenNotNull<TType, TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>(TType @object, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3, TExceptionArg4 arg4)
             where TType : class
         {
             if (IsNotNull(@object))
@@ -209,7 +209,7 @@ namespace AllOverIt.Assertion
             }
         }
 
-        public static void WhenNullOrEmpty<TExceptionArg1, TExceptionArg2, TExceptionArg3>(string @object, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg2 arg3)
+        public static void WhenNullOrEmpty<TExceptionArg1, TExceptionArg2, TExceptionArg3>(string @object, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3)
         {
             if (IsNullOrEmpty(@object))
             {
@@ -217,7 +217,7 @@ namespace AllOverIt.Assertion
             }
         }
 
-        public static void WhenNullOrEmpty<TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>(string @object, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg2 arg3, TExceptionArg2 arg4)
+        public static void WhenNullOrEmpty<TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>(string @object, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3, TExceptionArg4 arg4)
         {
             if (IsNullOrEmpty(@object))
             {
@@ -254,7 +254,7 @@ namespace AllOverIt.Assertion
             }
         }
 
-        public static void WhenNullOrEmpty<TType, TExceptionArg1, TExceptionArg2, TExceptionArg3>(IEnumerable<TType> @object, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg2 arg3)
+        public static void WhenNullOrEmpty<TType, TExceptionArg1, TExceptionArg2, TExceptionArg3>(IEnumerable<TType> @object, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3)
             where TType : class
         {
             if (IsNullOrEmpty(@object))
@@ -263,7 +263,7 @@ namespace AllOverIt.Assertion
             }
         }
 
-        public static void WhenNullOrEmpty<TType, TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>(IEnumerable<TType> @object, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg2 arg3, TExceptionArg2 arg4)
+        public static void WhenNullOrEmpty<TType, TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>(IEnumerable<TType> @object, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3, TExceptionArg4 arg4)
             where TType : class
         {
             if (IsNullOrEmpty(@object))
