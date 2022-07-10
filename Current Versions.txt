@@ -156,7 +156,9 @@
         - Targets                                - netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0
         - AllOverIt dependencies:                - [1]
                                                  - [16]
-        - External dependencies:                 - ReactiveUI v16.4.15 for targets netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0
+        - External dependencies:                 - Microsoft.Extensions.DependencyInjection.Abstractions v5.0.0 for targets netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0
+                                                                                                         v6.0.0 for targets net6.0
+                                                 - ReactiveUI v16.4.15 for targets netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0
                                                               v18.2.5 for targets net6.0
 
 =====================================================================================================================================================================
