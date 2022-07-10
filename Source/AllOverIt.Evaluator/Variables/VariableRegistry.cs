@@ -20,7 +20,7 @@ namespace AllOverIt.Evaluator.Variables
 
             if (_variableRegistry.ContainsKey(variable.Name))
             {
-                throw new VariableException($"The variable '{variable.Name}' is already registered");
+                throw new VariableException($"The variable '{variable.Name}' is already registered.");
             }
 
             _variableRegistry[variable.Name] = variable;

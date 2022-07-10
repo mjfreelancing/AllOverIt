@@ -351,7 +351,7 @@ namespace AllOverIt.Aws.AppSync.Client
 
             if (_connectionAuthorization == null)
             {
-                throw new InvalidOperationException("Authorization has not been provided for the AppSync subscription client connection");
+                throw new InvalidOperationException("Authorization has not been provided for the AppSync subscription client connection.");
             }
         }
 

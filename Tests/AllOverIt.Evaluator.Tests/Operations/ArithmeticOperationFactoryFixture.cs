@@ -111,7 +111,7 @@ namespace AllOverIt.Evaluator.Tests.Operations
                         () => _operationFactory.RegisterOperation("xyz", Create<int>(), Create<int>(), Creator))
                     .Should()
                     .Throw<OperationFactoryException>()
-                    .WithMessage("Operation already registered for the 'xyz' operator");
+                    .WithMessage("Operation already registered for the 'xyz' operator.");
             }
 
             [Fact]

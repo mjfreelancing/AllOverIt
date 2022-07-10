@@ -47,7 +47,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
                 })
                 .Should()
                 .Throw<ValueObjectValidationException>()
-                .WithMessage("Invalid value: aba");
+                .WithMessage("Invalid value 'aba'.");
             }
 
             [Fact]

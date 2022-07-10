@@ -140,7 +140,7 @@ namespace AllOverIt.Mapping
 
             if (_mapperCache.TryGetValue(mappingKey, out _))
             {
-                throw new ObjectMapperException($"Mapping already exists between {sourceType.GetFriendlyName()} and {targetType.GetFriendlyName()}");
+                throw new ObjectMapperException($"Mapping already exists between {sourceType.GetFriendlyName()} and {targetType.GetFriendlyName()}.");
             }
 
             var mapper = new MatchingPropertyMapper(sourceType, targetType, mapperOptions);

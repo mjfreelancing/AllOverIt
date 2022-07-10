@@ -237,7 +237,7 @@ namespace AllOverIt.Formatters.Objects
 
                     if (references.ContainsKey(value))
                     {
-                        throw new SelfReferenceException($"Self referencing detected at '{path}' of type '{type.GetFriendlyName()}'");
+                        throw new SelfReferenceException($"Self referencing detected at '{path}' of type '{type.GetFriendlyName()}'.");
                     }
 
                     if (Options.Filter != null)

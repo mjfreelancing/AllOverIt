@@ -55,7 +55,7 @@ namespace AllOverIt.Tests.Mapping
                     })
                     .Should()
                     .Throw<ObjectMapperException>()
-                    .WithMessage("ObjectMapper do not support nested mappings (source => source.Child.Prop1)");
+                    .WithMessage("ObjectMapper do not support nested mappings (source => source.Child.Prop1).");
             }
 
             [Fact]
@@ -110,7 +110,7 @@ namespace AllOverIt.Tests.Mapping
                     })
                     .Should()
                     .Throw<ObjectMapperException>()
-                    .WithMessage("ObjectMapper do not support nested mappings (source => source.Child.Prop1)");
+                    .WithMessage("ObjectMapper do not support nested mappings (source => source.Child.Prop1).");
             }
 
             [Fact]
@@ -122,7 +122,7 @@ namespace AllOverIt.Tests.Mapping
                     })
                     .Should()
                     .Throw<ObjectMapperException>()
-                    .WithMessage("ObjectMapper do not support nested mappings (target => target.Child.Prop1)");
+                    .WithMessage("ObjectMapper do not support nested mappings (target => target.Child.Prop1).");
             }
 
             [Fact]
@@ -165,7 +165,7 @@ namespace AllOverIt.Tests.Mapping
                     })
                     .Should()
                     .Throw<ObjectMapperException>()
-                    .WithMessage("ObjectMapper do not support nested mappings (source => source.Child.Prop1)");
+                    .WithMessage("ObjectMapper do not support nested mappings (source => source.Child.Prop1).");
             }
 
             [Fact]

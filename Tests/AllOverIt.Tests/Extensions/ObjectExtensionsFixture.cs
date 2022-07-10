@@ -397,7 +397,7 @@ namespace AllOverIt.Tests.Extensions
                     })
                     .Should()
                     .Throw<SelfReferenceException>()
-                    .WithMessage("Self referencing detected at 'Prop2.Prop2.Prop2' of type 'DummyType'");
+                    .WithMessage("Self referencing detected at 'Prop2.Prop2.Prop2' of type 'DummyType'.");
             }
 
             [Fact]
@@ -1213,7 +1213,7 @@ namespace AllOverIt.Tests.Extensions
                   })
                   .Should()
                   .Throw<MemberAccessException>()
-                  .WithMessage($"The property '{propertyName}' was not found");
+                  .WithMessage($"The property '{propertyName}' was not found.");
             }
         }
 
@@ -1254,7 +1254,7 @@ namespace AllOverIt.Tests.Extensions
                     })
                     .Should()
                     .Throw<MemberAccessException>()
-                    .WithMessage($"The property '{propertyName}' was not found");
+                    .WithMessage($"The property '{propertyName}' was not found.");
             }
         }
 
@@ -1295,7 +1295,7 @@ namespace AllOverIt.Tests.Extensions
                   })
                   .Should()
                   .Throw<MemberAccessException>()
-                  .WithMessage($"The property '{propertyName}' was not found");
+                  .WithMessage($"The property '{propertyName}' was not found.");
             }
         }
 
@@ -1336,7 +1336,7 @@ namespace AllOverIt.Tests.Extensions
                     })
                     .Should()
                     .Throw<MemberAccessException>()
-                    .WithMessage($"The property '{propertyName}' was not found");
+                    .WithMessage($"The property '{propertyName}' was not found.");
             }
         }
 
@@ -1381,7 +1381,7 @@ namespace AllOverIt.Tests.Extensions
                   })
                   .Should()
                   .Throw<MemberAccessException>()
-                  .WithMessage($"The property '{propertyName}' was not found");
+                  .WithMessage($"The property '{propertyName}' was not found.");
             }
         }
 
@@ -1426,7 +1426,7 @@ namespace AllOverIt.Tests.Extensions
                     })
                     .Should()
                     .Throw<MemberAccessException>()
-                    .WithMessage($"The property '{propertyName}' was not found");
+                    .WithMessage($"The property '{propertyName}' was not found.");
             }
         }
 
@@ -1471,7 +1471,7 @@ namespace AllOverIt.Tests.Extensions
                   })
                   .Should()
                   .Throw<MemberAccessException>()
-                  .WithMessage($"The property '{propertyName}' was not found");
+                  .WithMessage($"The property '{propertyName}' was not found.");
             }
         }
 
@@ -1516,7 +1516,7 @@ namespace AllOverIt.Tests.Extensions
                     })
                     .Should()
                     .Throw<MemberAccessException>()
-                    .WithMessage($"The property '{propertyName}' was not found");
+                    .WithMessage($"The property '{propertyName}' was not found.");
             }
         }
 

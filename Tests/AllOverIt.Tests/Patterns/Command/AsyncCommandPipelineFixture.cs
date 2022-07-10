@@ -54,15 +54,14 @@ namespace AllOverIt.Tests.Patterns.Command
             }
 
             [Fact]
-            public void Should_Throw_When_Commands_Empty()
+            public void Should_Not_Throw_When_Commands_Empty()
             {
                 Invoking(() =>
                 {
                     _ = new AsyncCommandPipeline<int, int>(Array.Empty<IAsyncCommand<int, int>>());
                 })
                 .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("commands");
+                .NotThrow();
             }
 
             [Fact]
@@ -101,7 +100,7 @@ namespace AllOverIt.Tests.Patterns.Command
             }
 
             [Fact]
-            public void Should_Throw_When_Commands_Empty()
+            public void Should_Not_Throw_When_Commands_Empty()
             {
                 Invoking(() =>
                 {
@@ -109,8 +108,7 @@ namespace AllOverIt.Tests.Patterns.Command
                     pipeline.Append(Array.Empty<IAsyncCommand<int, int>>());
                 })
                 .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("commands");
+                .NotThrow();
             }
 
             [Fact]

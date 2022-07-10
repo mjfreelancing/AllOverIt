@@ -407,7 +407,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     })
                     .Should()
                     .Throw<SelfReferenceException>()
-                    .WithMessage("Self referencing detected at 'Prop2.Prop2.Prop2' of type 'DummyType'");
+                    .WithMessage("Self referencing detected at 'Prop2.Prop2.Prop2' of type 'DummyType'.");
             }
 
             [Fact]

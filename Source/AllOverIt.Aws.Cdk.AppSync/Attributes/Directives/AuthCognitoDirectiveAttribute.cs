@@ -15,7 +15,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Attributes.Directives
         public AuthCognitoDirectiveAttribute(params string[] groups)
             : base(AuthDirectiveMode.Cognito)
         {
-            Groups = groups.AsReadOnlyCollection();
+            Groups = groups?.AsReadOnlyCollection();
 
             if (Groups.IsNullOrEmpty())
             {

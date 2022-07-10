@@ -45,7 +45,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 Invoking(() => _registry.AddVariable(variable.FakedObject))
                     .Should()
                     .Throw<VariableException>()
-                    .WithMessage("The variable 'xyz' is already registered");
+                    .WithMessage("The variable 'xyz' is already registered.");
             }
 
             [Fact]

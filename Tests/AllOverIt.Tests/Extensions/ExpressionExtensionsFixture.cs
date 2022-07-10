@@ -162,7 +162,7 @@ namespace AllOverIt.Tests.Extensions
                 Invoking(() => ExpressionExtensions.GetFieldOrProperty(expression))
                   .Should()
                   .Throw<InvalidOperationException>()
-                  .WithMessage("Expected a property or field access expression");
+                  .WithMessage("Expected a property or field access expression.");
             }
         }
 

@@ -23,7 +23,7 @@ namespace AllOverIt.DependencyInjection.Extensions
 
             if (!descriptors.Any())
             {
-                throw new DependencyRegistrationException($"No registered services found for the type '{serviceType.GetFriendlyName()}'");
+                throw new DependencyRegistrationException($"No registered services found for the type '{serviceType.GetFriendlyName()}'.");
             }
 
             foreach (var descriptor in descriptors)

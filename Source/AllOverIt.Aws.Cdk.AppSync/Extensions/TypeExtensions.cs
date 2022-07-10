@@ -29,7 +29,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
             {
                 if (schemaTypeAttributes.Count > 1)
                 {
-                    throw new SchemaException($"'{typeInfo.Name}' contains more than one schema type attribute");
+                    throw new SchemaException($"'{typeInfo.Name}' contains more than one schema type attribute.");
                 }
 
                 attribute = schemaTypeAttributes.Single();

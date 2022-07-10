@@ -20,7 +20,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Converters
         {
             if (reader.Value == null)
             {
-                throw new FormatException("Expecting to read a DateTime value but found null");
+                throw new FormatException("Expecting to read a DateTime value but found null.");
             }
 
             var dateTime = (DateTime) reader.Value;

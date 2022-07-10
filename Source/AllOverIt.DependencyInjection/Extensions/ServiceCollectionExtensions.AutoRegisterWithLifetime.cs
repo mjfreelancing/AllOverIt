@@ -60,7 +60,8 @@ namespace AllOverIt.DependencyInjection.Extensions
 
                         if (firstMismatch != null)
                         {
-                            throw new DependencyRegistrationException($"The service type {serviceType.GetFriendlyName()} is already registered to the implementation type {implementationType.GetFriendlyName()} but has a different lifetime ({firstMismatch.Lifetime}).");
+                            throw new DependencyRegistrationException($"The service type {serviceType.GetFriendlyName()} is already registered to the implementation type " +
+                                                                      $"{implementationType.GetFriendlyName()} but has a different lifetime ({firstMismatch.Lifetime}).");
                         }
 
                         return;

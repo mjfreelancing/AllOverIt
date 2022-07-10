@@ -1,4 +1,5 @@
-﻿using ReactiveUI;
+﻿using AllOverIt.Assertion;
+using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;
 using System.Linq;
@@ -33,7 +34,7 @@ namespace AllOverIt.ReactiveUI
         {
             if (IsRunning)
             {
-                throw new InvalidOperationException("The countdown timer period cannot be modified while executing");
+                throw new InvalidOperationException("The countdown timer period cannot be modified while executing.");
             }
 
             TotalMilliseconds = totalMilliseconds;
@@ -79,12 +80,12 @@ namespace AllOverIt.ReactiveUI
         {
             if (IsRunning)
             {
-                throw new InvalidOperationException("The countdown timer is already executing");
+                throw new InvalidOperationException("The countdown timer is already executing.");
             }
 
             if (_startCommand == null)
             {
-                throw new InvalidOperationException($"The {nameof(Configure)}() method must be called first");
+                throw new InvalidOperationException($"The {nameof(Configure)}() method must be called first.");
             }
 
             Stop();

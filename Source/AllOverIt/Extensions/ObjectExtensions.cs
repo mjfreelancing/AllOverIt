@@ -88,8 +88,9 @@ namespace AllOverIt.Extensions
         /// <exception cref="MemberAccessException">When the property name cannot be found using the provided binding flags.</exception>
         public static object GetPropertyValue(this object instance, Type instanceType, string propertyName, BindingFlags bindingFlags)
         {
-            var propertyInfo = GetPropertyInfo(instanceType, propertyName, bindingFlags)
-                                ?? throw new MemberAccessException($"The property '{propertyName}' was not found");
+            var propertyInfo = GetPropertyInfo(instanceType, propertyName, bindingFlags);
+
+            _ = propertyInfo ?? throw new MemberAccessException($"The property '{propertyName}' was not found.");
 
             return propertyInfo.GetValue(instance);
         }
@@ -121,7 +122,7 @@ namespace AllOverIt.Extensions
                 .GetPropertyInfo(bindingOptions, false)
                 .SingleOrDefault(item => item.Name == propertyName);
 
-            _ = propertyInfo ?? throw new MemberAccessException($"The property '{propertyName}' was not found");
+            _ = propertyInfo ?? throw new MemberAccessException($"The property '{propertyName}' was not found.");
 
             return propertyInfo.GetValue(instance);
         }
@@ -149,8 +150,9 @@ namespace AllOverIt.Extensions
         /// <exception cref="MemberAccessException">When the property name cannot be found using the provided binding flags.</exception>
         public static void SetPropertyValue(this object instance, Type instanceType, string propertyName, object value, BindingFlags bindingFlags)
         {
-            var propertyInfo = GetPropertyInfo(instanceType, propertyName, bindingFlags)
-                                ?? throw new MemberAccessException($"The property '{propertyName}' was not found");
+            var propertyInfo = GetPropertyInfo(instanceType, propertyName, bindingFlags);
+
+            _ = propertyInfo ?? throw new MemberAccessException($"The property '{propertyName}' was not found.");
 
             propertyInfo.SetValue(instance, value);
         }
@@ -182,7 +184,7 @@ namespace AllOverIt.Extensions
                 .GetPropertyInfo(bindingOptions, false)
                 .SingleOrDefault(item => item.Name == propertyName);
 
-            _ = propertyInfo ?? throw new MemberAccessException($"The property '{propertyName}' was not found");
+            _ = propertyInfo ?? throw new MemberAccessException($"The property '{propertyName}' was not found.");
 
             propertyInfo.SetValue(instance, value);
         }
@@ -224,7 +226,6 @@ namespace AllOverIt.Extensions
                     return (TType) instance;
                 }
 
-                // expect a converter - or fail
                 var typeConverter = TypeDescriptor.GetConverter(genericType);
 
                 if (!typeConverter.IsValid(instance))

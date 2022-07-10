@@ -329,7 +329,6 @@ namespace AllOverIt.Evaluator
             if (!_lastPushIsOperator)
             {
                 var namedOperand = ReadNamedOperand();
-
                 throw new FormulaException($"'{namedOperand}' is a variable or method that does not follow an operator, or is an unregistered operator.");
             }
 
@@ -501,7 +500,7 @@ namespace AllOverIt.Evaluator
         {
             if (_currentIndex == _formula.Length)
             {
-                throw new FormulaException("Nothing to read");
+                throw new FormulaException("Nothing to read.");
             }
 
             var startIndex = _currentIndex;
@@ -537,7 +536,7 @@ namespace AllOverIt.Evaluator
         {
             if (_currentIndex == _formula.Length)
             {
-                throw new FormulaException("Nothing to read");
+                throw new FormulaException("Nothing to read.");
             }
 
             var startIndex = _currentIndex;

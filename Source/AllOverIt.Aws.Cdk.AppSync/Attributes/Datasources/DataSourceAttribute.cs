@@ -27,7 +27,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources
             {
                 if (!typeof(IRequestResponseMapping).IsAssignableFrom(mappingType))
                 {
-                    throw new InvalidOperationException($"The type '{mappingType.FullName}' must implement '{nameof(IRequestResponseMapping)}'");
+                    throw new InvalidOperationException($"The type '{mappingType.FullName}' must implement '{nameof(IRequestResponseMapping)}'.");
                 }
 
                 MappingType = mappingType;

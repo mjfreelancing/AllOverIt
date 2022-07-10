@@ -29,7 +29,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Mapping
 
             if (mapping == null)
             {
-                throw new KeyNotFoundException($"Request mapping not found for the key '{mappingKey}'");
+                throw new KeyNotFoundException($"Request mapping not found for the key '{mappingKey}'.");
             }
 
             return MappingTemplate.FromString(mapping);
@@ -42,7 +42,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Mapping
         {
             var mapping = _functionResponseMappings.GetValueOrDefault(mappingKey); if (mapping == null)
             {
-                throw new KeyNotFoundException($"Response mapping not found for the key '{mappingKey}'");
+                throw new KeyNotFoundException($"Response mapping not found for the key '{mappingKey}'.");
             }
 
             return MappingTemplate.FromString(mapping);

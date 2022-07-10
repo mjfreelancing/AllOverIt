@@ -64,7 +64,7 @@ namespace AllOverIt.Evaluator.Operations
             {
                 if (throwIfRegistered)
                 {
-                    throw new OperationFactoryException($"Operation already registered for the '{symbol}' operator");
+                    throw new OperationFactoryException($"Operation already registered for the '{symbol}' operator.");
                 }
 
                 return false;

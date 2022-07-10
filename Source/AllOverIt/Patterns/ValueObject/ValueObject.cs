@@ -127,7 +127,7 @@ namespace AllOverIt.Patterns.ValueObject
         {
             if (!ValidateValue(value))
             {
-                throw new ValueObjectValidationException(value, $"Invalid value: {value}");
+                throw new ValueObjectValidationException(value, $"Invalid value '{value}'.");
             }
         }
     }

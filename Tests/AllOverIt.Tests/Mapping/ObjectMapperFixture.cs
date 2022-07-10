@@ -139,7 +139,7 @@ namespace AllOverIt.Tests.Mapping
                 Invoking(()=>_mapper.Configure<DummySource2, DummyTarget>())
                     .Should()
                     .Throw<ObjectMapperException>()
-                    .WithMessage($"Mapping already exists between {nameof(DummySource2)} and {nameof(DummyTarget)}");
+                    .WithMessage($"Mapping already exists between {nameof(DummySource2)} and {nameof(DummyTarget)}.");
             }
 
             [Fact]

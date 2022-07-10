@@ -63,7 +63,7 @@ namespace AllOverIt.Extensions
 
             var memberExpression = expression.UnwrapMemberExpression();
 
-            _ = memberExpression ?? throw new InvalidOperationException("Expected a property or field access expression");
+            _ = memberExpression ?? throw new InvalidOperationException("Expected a property or field access expression.");
 
             return memberExpression.Member;
         }
