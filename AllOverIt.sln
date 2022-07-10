@@ -235,6 +235,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.ReactiveUI", "Sou
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MemoryPaginationDemo", "Demos\AllOverIt.Pagination\MemoryPaginationDemo\MemoryPaginationDemo.csproj", "{03EF88CD-2897-4005-851C-9249D091E697}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllOverIt.Assertion", "AllOverIt.Assertion", "{DF0960C9-1088-442A-B8A7-CAA3966A4271}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThrowWhenBenchmarking", "Demos\AllOverIt.Assertion\Benchmarking\ThrowWhenBenchmarking\ThrowWhenBenchmarking.csproj", "{4F3C23D6-D074-4B11-8926-633D92C015E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -565,6 +569,10 @@ Global
 		{03EF88CD-2897-4005-851C-9249D091E697}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03EF88CD-2897-4005-851C-9249D091E697}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03EF88CD-2897-4005-851C-9249D091E697}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F3C23D6-D074-4B11-8926-633D92C015E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F3C23D6-D074-4B11-8926-633D92C015E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F3C23D6-D074-4B11-8926-633D92C015E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F3C23D6-D074-4B11-8926-633D92C015E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -679,6 +687,8 @@ Global
 		{138E7308-D73D-4B1F-8B91-699571BAC7C7} = {BE8012ED-9DB2-451E-813F-12E1E16BA3A8}
 		{864BF048-1229-463F-8B2A-6655B8770255} = {FC8E8DB2-1299-44F4-A233-0EDCE225BB8C}
 		{03EF88CD-2897-4005-851C-9249D091E697} = {FB7E848C-C503-4835-A323-1FCF3E72AB71}
+		{DF0960C9-1088-442A-B8A7-CAA3966A4271} = {D9F6B8A1-4B01-4708-8851-741FC19F2440}
+		{4F3C23D6-D074-4B11-8926-633D92C015E1} = {DF0960C9-1088-442A-B8A7-CAA3966A4271}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19DD11B3-596E-4862-B5C4-1FFFFB173106}
