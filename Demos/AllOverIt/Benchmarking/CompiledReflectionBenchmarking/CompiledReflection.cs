@@ -17,13 +17,13 @@ namespace CompiledReflectionBenchmarking
         private static readonly PropertyInfo dummyPropInfo = typeof(DummyType).GetProperty(nameof(DummyType.Value));
 
         // Compiled
-        private static readonly Func<object, object> _objectPropertyGetterInfo = PropertyExpressions.CreatePropertyGetter(dummyPropInfo);
-        private static readonly Func<DummyType, object> _typedPropertyGetterInfo = PropertyExpressions.CreatePropertyGetter<DummyType>(dummyPropInfo);
-        private static readonly Func<DummyType, object> _typedPropertyGetterName = PropertyExpressions.CreatePropertyGetter<DummyType>(nameof(DummyType.Value));
+        private static readonly Func<object, object> _objectPropertyGetterInfo = PropertyHelper.CreatePropertyGetter(dummyPropInfo);
+        private static readonly Func<DummyType, object> _typedPropertyGetterInfo = PropertyHelper.CreatePropertyGetter<DummyType>(dummyPropInfo);
+        private static readonly Func<DummyType, object> _typedPropertyGetterName = PropertyHelper.CreatePropertyGetter<DummyType>(nameof(DummyType.Value));
 
-        private static readonly Action<object, object> _objectPropertySetterInfo = PropertyExpressions.CreatePropertySetter(dummyPropInfo);
-        private static readonly Action<DummyType, object> _typedPropertySetterInfo = PropertyExpressions.CreatePropertySetter<DummyType>(dummyPropInfo);
-        private static readonly Action<DummyType, object> _typedPropertySetterName = PropertyExpressions.CreatePropertySetter<DummyType>(nameof(DummyType.Value));
+        private static readonly Action<object, object> _objectPropertySetterInfo = PropertyHelper.CreatePropertySetter(dummyPropInfo);
+        private static readonly Action<DummyType, object> _typedPropertySetterInfo = PropertyHelper.CreatePropertySetter<DummyType>(dummyPropInfo);
+        private static readonly Action<DummyType, object> _typedPropertySetterName = PropertyHelper.CreatePropertySetter<DummyType>(nameof(DummyType.Value));
 
         [Params(4)]
         public int IterationCount;

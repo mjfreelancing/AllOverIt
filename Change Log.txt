@@ -8,7 +8,7 @@ AllOverIt
   * Added MemberInfo extension method CreateMemberAccessLambda()
   * Renamed IsGenericNullableType() to IsNullableType()
   * Added TypeExtensions GetInstanceMethod() and GetStaticMethod()
-  * Added PropertyExpressions static methods CreatePropertyGetter(), CreatePropertySetter() and supporting methods
+  * Added PropertyHelper static methods CreatePropertyGetter(), CreatePropertySetter() and supporting methods
   * Moved CommandException to Patterns/Command/Exceptions
   * Moved EnrichedEnumException to Patterns/Enumeration/Exceptions
   * Moved ValueObjectValidationException to Patterns/ValueObject/Exceptions

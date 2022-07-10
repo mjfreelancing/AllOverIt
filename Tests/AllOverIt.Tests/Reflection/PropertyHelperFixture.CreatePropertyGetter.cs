@@ -10,7 +10,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Reflection
 {
-    public partial class PropertyExpressionsFixture : FixtureBase
+    public partial class PropertyHelperFixture : FixtureBase
     {
         private class DummyBaseClass
         {
@@ -88,14 +88,14 @@ namespace AllOverIt.Tests.Reflection
             }
         }
 
-        public class CreatePropertyGetter_Object : PropertyExpressionsFixture
+        public class CreatePropertyGetter_Object : PropertyHelperFixture
         {
             [Fact]
             public void Should_Throw_When_PropertyInfo_Null()
             {
                 Invoking(() =>
                 {
-                    _ = PropertyExpressions.CreatePropertyGetter(null);
+                    _ = PropertyHelper.CreatePropertyGetter(null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -111,7 +111,7 @@ namespace AllOverIt.Tests.Reflection
                 };
 
                 var propInfo = typeof(DummyBaseClass).GetProperty(nameof(DummyBaseClass.Prop1));
-                var getter = PropertyExpressions.CreatePropertyGetter(propInfo);
+                var getter = PropertyHelper.CreatePropertyGetter(propInfo);
 
                 var actual = getter.Invoke(expected);
 
@@ -124,7 +124,7 @@ namespace AllOverIt.Tests.Reflection
                 Invoking(() =>
                 {
                     var propInfo = typeof(DummySuperClass).GetProperty(nameof(DummySuperClass.Prop5));
-                    _ = PropertyExpressions.CreatePropertyGetter(propInfo);
+                    _ = PropertyHelper.CreatePropertyGetter(propInfo);
                 })
                   .Should()
                   .Throw<ReflectionException>()
@@ -132,14 +132,14 @@ namespace AllOverIt.Tests.Reflection
             }
         }
 
-        public class CreatePropertyGetter_Typed_PropertyInfo : PropertyExpressionsFixture
+        public class CreatePropertyGetter_Typed_PropertyInfo : PropertyHelperFixture
         {
             [Fact]
             public void Should_Throw_When_PropertyInfo_Null()
             {
                 Invoking(() =>
                 {
-                    _ = PropertyExpressions.CreatePropertyGetter<DummyBaseClass>((PropertyInfo) null);
+                    _ = PropertyHelper.CreatePropertyGetter<DummyBaseClass>((PropertyInfo) null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -155,7 +155,7 @@ namespace AllOverIt.Tests.Reflection
                 };
 
                 var propInfo = typeof(DummyBaseClass).GetProperty(nameof(DummyBaseClass.Prop1));
-                var getter = PropertyExpressions.CreatePropertyGetter<DummyBaseClass>(propInfo);
+                var getter = PropertyHelper.CreatePropertyGetter<DummyBaseClass>(propInfo);
 
                 var actual = getter.Invoke(expected);
 
@@ -168,7 +168,7 @@ namespace AllOverIt.Tests.Reflection
                 Invoking(() =>
                 {
                     var propInfo = typeof(DummySuperClass).GetProperty(nameof(DummySuperClass.Prop5));
-                    _ = PropertyExpressions.CreatePropertyGetter<DummySuperClass>(propInfo);
+                    _ = PropertyHelper.CreatePropertyGetter<DummySuperClass>(propInfo);
                 })
                   .Should()
                   .Throw<ReflectionException>()
@@ -176,14 +176,14 @@ namespace AllOverIt.Tests.Reflection
             }
         }
 
-        public class CreatePropertyGetter_Typed_PropertyName : PropertyExpressionsFixture
+        public class CreatePropertyGetter_Typed_PropertyName : PropertyHelperFixture
         {
             [Fact]
             public void Should_Throw_When_PropertyInfo_Null()
             {
                 Invoking(() =>
                 {
-                    _ = PropertyExpressions.CreatePropertyGetter<DummyBaseClass>((string)null);
+                    _ = PropertyHelper.CreatePropertyGetter<DummyBaseClass>((string)null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -198,7 +198,7 @@ namespace AllOverIt.Tests.Reflection
                     Prop1 = Create<int>()
                 };
 
-                var getter = PropertyExpressions.CreatePropertyGetter<DummyBaseClass>(nameof(DummyBaseClass.Prop1));
+                var getter = PropertyHelper.CreatePropertyGetter<DummyBaseClass>(nameof(DummyBaseClass.Prop1));
 
                 var actual = getter.Invoke(expected);
 
@@ -212,7 +212,7 @@ namespace AllOverIt.Tests.Reflection
 
                 Invoking(() =>
                 {
-                    _ = PropertyExpressions.CreatePropertyGetter<DummyBaseClass>(propertyName);
+                    _ = PropertyHelper.CreatePropertyGetter<DummyBaseClass>(propertyName);
                 })
                    .Should()
                    .Throw<ReflectionException>()

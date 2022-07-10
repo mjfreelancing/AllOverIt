@@ -26,8 +26,8 @@ namespace AllOverIt.Mapping
                     SourceInfo = sourceInfo;
                     TargetInfo = targetInfo;
 
-                    SourceGetter = PropertyExpressions.CreatePropertyGetter(SourceInfo);
-                    TargetSetter = PropertyExpressions.CreatePropertySetter(TargetInfo);
+                    SourceGetter = PropertyHelper.CreatePropertyGetter(SourceInfo);
+                    TargetSetter = PropertyHelper.CreatePropertySetter(TargetInfo);
                 }
             }
 

@@ -23,7 +23,7 @@ namespace AllOverIt.Reflection
 
 
 
-    public static partial class FieldExpressions
+    public static /*partial*/ class FieldHelper
     {
 
 

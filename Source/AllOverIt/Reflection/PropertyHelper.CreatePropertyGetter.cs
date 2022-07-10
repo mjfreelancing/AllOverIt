@@ -8,7 +8,7 @@ using System.Reflection;
 namespace AllOverIt.Reflection
 {
     /// <summary>Contains a number of property getter helper functions related to <see cref="PropertyInfo"/>.</summary>
-    public static partial class PropertyExpressions
+    public static partial class PropertyHelper
     {
         /// <summary>Creates a compiled expression as a <see cref="Func{T, TResult}"/> to get a property value, as an object, based
         /// on a specified <see cref="PropertyInfo"/> instance.</summary>

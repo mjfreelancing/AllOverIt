@@ -347,7 +347,7 @@ namespace AllOverIt.Tests.Reflection
             }
         }
 
-        public class GetMethodInfo_Typed_Name_And_Args : PropertyExpressionsFixture
+        public class GetMethodInfo_Typed_Name_And_Args : ReflectionCacheFixture
         {
             [Fact]
             public void Should_Not_Find_Method()
@@ -390,7 +390,7 @@ namespace AllOverIt.Tests.Reflection
             }
         }
 
-        public class GetMethodInfo_Type_Name_And_Args : PropertyExpressionsFixture
+        public class GetMethodInfo_Type_Name_And_Args : ReflectionCacheFixture
         {
             [Fact]
             public void Should_Not_Find_Method()

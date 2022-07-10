@@ -10,16 +10,16 @@ using Xunit;
 
 namespace AllOverIt.Tests.Reflection
 {
-    public partial class PropertyExpressionsFixture : FixtureBase
+    public partial class PropertyHelperFixture : FixtureBase
     {
-        public class CreatePropertySetter_Object : PropertyExpressionsFixture
+        public class CreatePropertySetter_Object : PropertyHelperFixture
         {
             [Fact]
             public void Should_Throw_When_PropertyInfo_Null()
             {
                 Invoking(() =>
                 {
-                    _ = PropertyExpressions.CreatePropertySetter(null);
+                    _ = PropertyHelper.CreatePropertySetter(null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -33,7 +33,7 @@ namespace AllOverIt.Tests.Reflection
                 var model = new DummyBaseClass();
 
                 var propInfo = typeof(DummyBaseClass).GetProperty(nameof(DummyBaseClass.Prop1));
-                var setter = PropertyExpressions.CreatePropertySetter(propInfo);
+                var setter = PropertyHelper.CreatePropertySetter(propInfo);
 
                 setter.Invoke(model, expected);
 
@@ -46,7 +46,7 @@ namespace AllOverIt.Tests.Reflection
                 Invoking(() =>
                 {
                     var propInfo = typeof(DummySuperClass).GetProperty(nameof(DummySuperClass.Prop6));
-                    _ = PropertyExpressions.CreatePropertySetter(propInfo);
+                    _ = PropertyHelper.CreatePropertySetter(propInfo);
                 })
                   .Should()
                   .Throw<ReflectionException>()
@@ -54,14 +54,14 @@ namespace AllOverIt.Tests.Reflection
             }
         }
 
-        public class CreatePropertySetter_Typed_PropertyInfo : PropertyExpressionsFixture
+        public class CreatePropertySetter_Typed_PropertyInfo : PropertyHelperFixture
         {
             [Fact]
             public void Should_Throw_When_PropertyInfo_Null()
             {
                 Invoking(() =>
                 {
-                    _ = PropertyExpressions.CreatePropertySetter<DummyBaseClass>((PropertyInfo) null);
+                    _ = PropertyHelper.CreatePropertySetter<DummyBaseClass>((PropertyInfo) null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -75,7 +75,7 @@ namespace AllOverIt.Tests.Reflection
                 var model = new DummyBaseClass();
 
                 var propInfo = typeof(DummyBaseClass).GetProperty(nameof(DummyBaseClass.Prop1));
-                var setter = PropertyExpressions.CreatePropertySetter<DummyBaseClass>(propInfo);
+                var setter = PropertyHelper.CreatePropertySetter<DummyBaseClass>(propInfo);
 
                 setter.Invoke(model, expected);
 
@@ -88,7 +88,7 @@ namespace AllOverIt.Tests.Reflection
                 Invoking(() =>
                 {
                     var propInfo = typeof(DummySuperClass).GetProperty(nameof(DummySuperClass.Prop6));
-                    _ = PropertyExpressions.CreatePropertySetter<DummySuperClass>(propInfo);
+                    _ = PropertyHelper.CreatePropertySetter<DummySuperClass>(propInfo);
                 })
                   .Should()
                   .Throw<ReflectionException>()
@@ -96,14 +96,14 @@ namespace AllOverIt.Tests.Reflection
             }
         }
 
-        public class CreatePropertySetter_Typed_PropertyName : PropertyExpressionsFixture
+        public class CreatePropertySetter_Typed_PropertyName : PropertyHelperFixture
         {
             [Fact]
             public void Should_Throw_When_PropertyInfo_Null()
             {
                 Invoking(() =>
                 {
-                    _ = PropertyExpressions.CreatePropertySetter<DummyBaseClass>((string) null);
+                    _ = PropertyHelper.CreatePropertySetter<DummyBaseClass>((string) null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -116,7 +116,7 @@ namespace AllOverIt.Tests.Reflection
                 var expected = Create<int>();
                 var model = new DummyBaseClass();
 
-                var setter = PropertyExpressions.CreatePropertySetter<DummyBaseClass>(nameof(DummyBaseClass.Prop1));
+                var setter = PropertyHelper.CreatePropertySetter<DummyBaseClass>(nameof(DummyBaseClass.Prop1));
 
                 setter.Invoke(model, expected);
 
@@ -130,7 +130,7 @@ namespace AllOverIt.Tests.Reflection
 
                 Invoking(() =>
                 {
-                    _ = PropertyExpressions.CreatePropertySetter<DummyBaseClass>(propertyName);
+                    _ = PropertyHelper.CreatePropertySetter<DummyBaseClass>(propertyName);
                 })
                    .Should()
                    .Throw<ReflectionException>()
