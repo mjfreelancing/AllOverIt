@@ -3,6 +3,8 @@ using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Xunit;
@@ -127,12 +129,12 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
-        public class GetFieldOrProperty : ExpressionExtensionsFixture
+        public class GetPropertyOrFieldMemberInfo : ExpressionExtensionsFixture
         {
             [Fact]
             public void Should_Throw_When_Expression_Null()
             {
-                Invoking(() => ExpressionExtensions.GetFieldOrProperty(null))
+                Invoking(() => ExpressionExtensions.GetPropertyOrFieldMemberInfo(null))
                   .Should()
                   .Throw<ArgumentNullException>()
                   .WithNamedMessageWhenNull("expression");
@@ -147,7 +149,7 @@ namespace AllOverIt.Tests.Extensions
 
                 expression.Body.Should().BeOfType<UnaryExpression>();
 
-                var actual = ExpressionExtensions.GetFieldOrProperty(expression);
+                var actual = ExpressionExtensions.GetPropertyOrFieldMemberInfo(expression);
 
                 var expected = ((expression.Body as UnaryExpression).Operand as MemberExpression).Member;
 
@@ -159,7 +161,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 Expression<Func<int>> expression = () => 0;
 
-                Invoking(() => ExpressionExtensions.GetFieldOrProperty(expression))
+                Invoking(() => ExpressionExtensions.GetPropertyOrFieldMemberInfo(expression))
                   .Should()
                   .Throw<InvalidOperationException>()
                   .WithMessage("Expected a property or field access expression.");
@@ -294,6 +296,81 @@ namespace AllOverIt.Tests.Extensions
             private static int GetException(string message)
             {
                 throw new Exception(message);
+            }
+        }
+
+        public class CastOrConvertTo : ExpressionExtensionsFixture
+        {
+            [Fact]
+            public void Should_Return_Same_Expression_When_Object_Assignable_From_String()
+            {
+                var strValue = Create<string>();
+                var valueExpression = Expression.Constant(strValue);
+
+                var converted = valueExpression.CastOrConvertTo(typeof(object));
+
+                converted.Should().BeSameAs(valueExpression);
+            }
+
+            [Fact]
+            public void Should_Return_Same_Expression_When_IEnumerable_Assignable_From_IReadOnlyList()
+            {
+                var strValue = CreateMany<string>();
+                var valueExpression = Expression.Constant(strValue);
+
+                var converted = valueExpression.CastOrConvertTo(typeof(IEnumerable<string>));
+
+                converted.Should().BeSameAs(valueExpression);
+            }
+
+            [Fact]
+            public void Should_Convert_Value_Type()
+            {
+                var intValue = Create<int>();
+                var valueExpression = Expression.Constant(intValue);
+
+                var converted = valueExpression.CastOrConvertTo(typeof(double)) as UnaryExpression;
+
+                converted.NodeType.Should().Be(ExpressionType.Convert);
+                converted.Operand.Should().Be(valueExpression);
+                converted.Type.Should().Be(typeof(double));
+            }
+
+            [Fact]
+            public void Should_TypeAs_Bool_To_String()
+            {
+                var boolValue = Create<bool>();
+                var valueExpression = Expression.Constant(boolValue);
+
+                var converted = valueExpression.CastOrConvertTo(typeof(string)) as UnaryExpression;
+
+                converted.NodeType.Should().Be(ExpressionType.TypeAs);
+                converted.Operand.Should().Be(valueExpression);
+                converted.Type.Should().Be(typeof(string));
+            }
+
+            [Fact]
+            public void Should_Convert_Object_To_Value_Type()
+            {
+                var itemParam = Expression.Parameter(typeof(object), "item");
+
+                var converted = itemParam.CastOrConvertTo(typeof(int)) as UnaryExpression;
+
+                converted.NodeType.Should().Be(ExpressionType.Convert);
+                converted.Operand.Should().Be(itemParam);
+                converted.Type.Should().Be(typeof(int));
+            }
+
+            [Fact]
+            public void Should_TypeAs_Object_To_Nullable_Type()
+            {
+                var itemParam = Expression.Parameter(typeof(object), "item");
+
+                var converted = itemParam.CastOrConvertTo(typeof(int?)) as UnaryExpression;
+
+                converted.NodeType.Should().Be(ExpressionType.TypeAs);
+                converted.Operand.Should().Be(itemParam);
+                converted.Type.Should().Be(typeof(int?));
             }
         }
     }

@@ -99,7 +99,7 @@ namespace AllOverIt.Tests.Extensions
 
             Expression<Func<int>> expression = () => parent.Child.Property;
 
-            var memberInfo = expression.GetFieldOrProperty();
+            var memberInfo = expression.GetPropertyOrFieldMemberInfo();
 
             var name = memberInfo.Name;
             var value = memberInfo.GetValue(parent.Child);
@@ -115,7 +115,7 @@ namespace AllOverIt.Tests.Extensions
 
             Expression<Func<int>> expression = () => parent.Child.Field;
 
-            var memberInfo = expression.GetFieldOrProperty();
+            var memberInfo = expression.GetPropertyOrFieldMemberInfo();
 
             var name = memberInfo.Name;
             var value = memberInfo.GetValue(parent.Child);

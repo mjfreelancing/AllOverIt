@@ -1,13 +1,12 @@
-﻿using AllOverIt.Extensions;
-using AllOverIt.Fixture;
+﻿using AllOverIt.Fixture;
 using AllOverIt.Patterns.Specification;
+using AllOverIt.Patterns.Specification.Extensions;
 using AllOverIt.Tests.Patterns.Specification.Dummies;
 using FluentAssertions;
 using System.Linq;
-using AllOverIt.Tests.Patterns.Specification.Extensions;
 using Xunit;
 
-namespace AllOverIt.Tests.Extensions
+namespace AllOverIt.Tests.Patterns.Specification.Extensions
 {
     public partial class EnumerableExtensionsFixture : FixtureBase
     {

@@ -52,12 +52,10 @@ namespace AllOverIt.Extensions
             };
         }
 
-        /// <summary>
-        /// Gets the field or property member of a <see cref="MemberExpression"/>, unwrapped from a <see cref="LambdaExpression"/> if required.
-        /// </summary>
+        /// <summary>Gets the property or field member of a <see cref="MemberExpression"/>, unwrapped from a <see cref="LambdaExpression"/> if required.</summary>
         /// <param name="expression">The expression containing the field or property member.</param>
-        /// <returns>The field or property member.</returns>
-        public static MemberInfo GetFieldOrProperty(this Expression expression)
+        /// <returns>The property or field member.</returns>
+        public static MemberInfo GetPropertyOrFieldMemberInfo(this Expression expression)
         {
             _ = expression.WhenNotNull(nameof(expression));
 
@@ -122,9 +120,26 @@ namespace AllOverIt.Extensions
             catch (TargetInvocationException exception)
             {
                 // The InnerException will never be null - it holds the underlying exception thrown by the invoked method
-                // ReSharper disable once PossibleNullReferenceException
                 throw exception.InnerException;
             }
+        }
+
+        /// <summary>Casts or type converts an <see cref="Expression"/> to a specified target type.</summary>
+        /// <param name="expression">The expression to be cast or converted</param>
+        /// <param name="targetType">The target type.</param>
+        /// <returns>If the <paramref name="targetType"/> is assignable from the <paramref name="expression"/>'s type then the same reference is returned.
+        /// If the target type is a non-nullable value type then a type conversion is performed, otherwise an explicit reference or boxing conversion is
+        /// performed.</returns>
+        public static Expression CastOrConvertTo(this Expression expression, Type targetType)
+        {
+            if (targetType.IsAssignableFrom(expression.Type))
+            {
+                return expression;
+            }
+
+            return targetType.IsValueType && !targetType.IsNullableType()
+                ? Expression.Convert(expression, targetType)            // Type conversion
+                : Expression.TypeAs(expression, targetType);            // Explicit reference or boxing conversion
         }
     }
 }

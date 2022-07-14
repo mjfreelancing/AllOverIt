@@ -3,23 +3,9 @@ using System;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace AllOverIt.Reflection
+namespace AllOverIt.Expressions
 {
     // TODO: Complete
-    public static class ExpressionExtensions
-    {
-        public static Expression GetCastOrConvertExpression(this Expression expression, Type targetType)
-        {
-            if (targetType.IsAssignableFrom(expression.Type))
-            {
-                return expression;
-            }
-
-            return targetType.IsValueType && !targetType.IsNullableType()
-                ? Expression.Convert(expression, targetType)
-                : Expression.TypeAs(expression, targetType);
-        }
-    }
 
 
 
@@ -30,7 +16,7 @@ namespace AllOverIt.Reflection
         public static Func<object, object> CreateGetter(FieldInfo fieldInfo)
         {
             var itemParam = Expression.Parameter(typeof(object), "item");
-            var instanceParam = itemParam.GetCastOrConvertExpression(fieldInfo.DeclaringType);
+            var instanceParam = itemParam.CastOrConvertTo(fieldInfo.DeclaringType);
 
             var instanceField = Expression.Field(instanceParam, fieldInfo);
             var objectinstanceField = Expression.Convert(instanceField, typeof(object));
@@ -40,18 +26,18 @@ namespace AllOverIt.Reflection
                 .Compile();
         }
 
-        
+
 
         public static Func<TType, object> CreateGetter<TType>(FieldInfo fieldInfo)
         {
             var instance = Expression.Parameter(typeof(TType), "item");
-            
+
             var field = typeof(TType) != fieldInfo.DeclaringType
                 ? Expression.Field(Expression.TypeAs(instance, fieldInfo.DeclaringType), fieldInfo)
                 : Expression.Field(instance, fieldInfo);
 
             var convertField = Expression.TypeAs(field, typeof(object));
-            
+
             return Expression.Lambda<Func<TType, object>>(convertField, instance).Compile();
         }
 

@@ -180,7 +180,7 @@ namespace AllOverIt.Pagination
                 throw new PaginationException("Additional columns cannot be added once pagination has begun.");
             }
 
-            var fieldOrProperty = propertyExpression.GetFieldOrProperty();
+            var fieldOrProperty = propertyExpression.GetPropertyOrFieldMemberInfo();
 
             if (fieldOrProperty is FieldInfo _)
             {

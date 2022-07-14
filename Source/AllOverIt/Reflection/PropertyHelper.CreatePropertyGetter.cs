@@ -1,6 +1,6 @@
 ﻿using AllOverIt.Assertion;
-using AllOverIt.Exceptions;
 using AllOverIt.Extensions;
+using AllOverIt.Reflection.Exceptions;
 using System;
 using System.Linq.Expressions;
 using System.Reflection;

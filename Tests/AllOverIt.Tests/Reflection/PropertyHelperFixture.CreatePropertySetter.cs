@@ -1,8 +1,8 @@
-﻿using AllOverIt.Exceptions;
-using AllOverIt.Extensions;
+﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Reflection;
+using AllOverIt.Reflection.Exceptions;
 using FluentAssertions;
 using System;
 using System.Reflection;

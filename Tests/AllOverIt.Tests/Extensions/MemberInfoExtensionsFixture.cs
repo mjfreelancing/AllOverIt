@@ -46,7 +46,7 @@ namespace AllOverIt.Tests.Extensions
 
                 Expression<Func<double>> expression = () => superClass.Prop3;
 
-                var memberInfo = expression.GetFieldOrProperty();
+                var memberInfo = expression.GetPropertyOrFieldMemberInfo();
 
                 var name = memberInfo.Name;
                 var value = CreateExcluding<double>(0);
@@ -64,7 +64,7 @@ namespace AllOverIt.Tests.Extensions
 
                 Expression<Func<int>> expression = () => superClass.Field5;
 
-                var memberInfo = expression.GetFieldOrProperty();
+                var memberInfo = expression.GetPropertyOrFieldMemberInfo();
 
                 var name = memberInfo.Name;
                 var value = CreateExcluding<int>(0);
@@ -85,7 +85,7 @@ namespace AllOverIt.Tests.Extensions
 
                 Expression<Func<double>> expression = () => superClass.Prop3;
 
-                var memberInfo = expression.GetFieldOrProperty();
+                var memberInfo = expression.GetPropertyOrFieldMemberInfo();
 
                 var name = memberInfo.Name;
                 var value = MemberInfoExtensions.GetValue(memberInfo, superClass);
@@ -101,7 +101,7 @@ namespace AllOverIt.Tests.Extensions
 
                 Expression<Func<int>> expression = () => superClass.Field5;
 
-                var memberInfo = expression.GetFieldOrProperty();
+                var memberInfo = expression.GetPropertyOrFieldMemberInfo();
 
                 var name = memberInfo.Name;
                 var value = MemberInfoExtensions.GetValue(memberInfo, superClass);
@@ -117,7 +117,7 @@ namespace AllOverIt.Tests.Extensions
 
                 Expression<Func<string>> expression = () => parentClass.SuperClass.Prop2;
 
-                var memberInfo = expression.GetFieldOrProperty();
+                var memberInfo = expression.GetPropertyOrFieldMemberInfo();
 
                 var name = memberInfo.Name;
                 var value = MemberInfoExtensions.GetValue(memberInfo, parentClass.SuperClass);
@@ -136,7 +136,7 @@ namespace AllOverIt.Tests.Extensions
 
                 Expression<Func<string>> expression = () => parentClass.SuperClass.Prop2;
 
-                var memberInfo = expression.GetFieldOrProperty();
+                var memberInfo = expression.GetPropertyOrFieldMemberInfo();
 
                 var name = memberInfo.Name;
                 var propType = MemberInfoExtensions.GetMemberType(memberInfo);
@@ -152,7 +152,7 @@ namespace AllOverIt.Tests.Extensions
 
                 Expression<Func<int>> expression = () => parentClass.SuperClass.Field5;
 
-                var memberInfo = expression.GetFieldOrProperty();
+                var memberInfo = expression.GetPropertyOrFieldMemberInfo();
 
                 var name = memberInfo.Name;
                 var fieldType = MemberInfoExtensions.GetMemberType(memberInfo);
