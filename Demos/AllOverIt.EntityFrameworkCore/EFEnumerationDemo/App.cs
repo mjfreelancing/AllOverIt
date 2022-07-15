@@ -1,269 +1,19 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
 using AllOverIt.Filtering.Extensions;
-using AllOverIt.Filtering.Operations;
 using AllOverIt.GenericHost;
-using AllOverIt.Patterns.Specification;
-using AllOverIt.Patterns.Specification.Extensions;
 using EFEnumerationDemo.Entities;
-using EFEnumerationDemo.Filtering;
 using EFEnumerationDemo.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace EFEnumerationDemo
 {
-
-    public interface IFilterSpecificationBuilder<TType, TFilter>
-        where TType : class
-        where TFilter : class, IFilter
-    {
-        ILinqSpecification<TType> GetSpecification(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation);
-        ILinqSpecification<TType> GetSpecification<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation);
-
-        ILinqSpecification<TType> And(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation1, Func<TFilter, IStringOperation> operation2);
-        ILinqSpecification<TType> And<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation1, Func<TFilter, IOperation> operation2);
-
-        ILinqSpecification<TType> Or(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation1, Func<TFilter, IStringOperation> operation2);
-        ILinqSpecification<TType> Or<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation1, Func<TFilter, IOperation> operation2);
-    }
-
-    public class FilterSpecificationBuilder<TType, TFilter> : IFilterSpecificationBuilder<TType, TFilter>
-        where TType : class
-        where TFilter : class, IFilter
-    {
-        private readonly TFilter _filter;
-
-        public FilterSpecificationBuilder(TFilter filter)
-        {
-            _filter = filter.WhenNotNull(nameof(filter));
-        }
-
-        public ILinqSpecification<TType> GetSpecification(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation)
-        {
-            return GetOperationSpecification(propertyExpression, operation);
-        }
-
-        public ILinqSpecification<TType> GetSpecification<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation)
-        {
-            return GetOperationSpecification(propertyExpression, operation);
-        }
-
-        #region AND Operations
-        public ILinqSpecification<TType> And(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation1, Func<TFilter, IStringOperation> operation2)
-        {
-            var specification1 = GetOperationSpecification(propertyExpression, operation1);
-            var specification2 = GetOperationSpecification(propertyExpression, operation2);
-            
-            return specification1.And(specification2);
-        }
-
-        public ILinqSpecification<TType> And<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation1, Func<TFilter, IOperation> operation2)
-        {
-            var specification1 = GetOperationSpecification(propertyExpression, operation1);
-            var specification2 = GetOperationSpecification(propertyExpression, operation2);
-            
-            return specification1.And(specification2);
-        }
-        #endregion
-
-        #region OR Operations
-        public ILinqSpecification<TType> Or(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation1, Func<TFilter, IStringOperation> operation2)
-        {
-            var specification1 = GetOperationSpecification(propertyExpression, operation1);
-            var specification2 = GetOperationSpecification(propertyExpression, operation2);
-            
-            return specification1.Or(specification2);
-        }
-
-        public ILinqSpecification<TType> Or<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation1, Func<TFilter, IOperation> operation2)
-        {
-            var specification1 = GetOperationSpecification(propertyExpression, operation1);
-            var specification2 = GetOperationSpecification(propertyExpression, operation2);
-            
-            return specification1.Or(specification2);
-        }
-        #endregion
-
-
-
-        private ILinqSpecification<TType> GetOperationSpecification<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation)
-        {
-            var operand = operation.Invoke(_filter);
-
-            if (operand is IGreaterThan<TProperty> greaterThan)
-            {
-                return new GreaterThan<TType, TProperty>(propertyExpression, greaterThan.Value);
-            }
-            else if (operand is ILessThan<TProperty> lessThan)
-            {
-                return new LessThan<TType, TProperty>(propertyExpression, lessThan.Value);
-            }
-
-            throw new InvalidOperationException("Unknown operation.");
-        }
-
-        private ILinqSpecification<TType> GetOperationSpecification(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation)
-        {
-            var operand = operation.Invoke(_filter);
-
-            if (operand is IContains contains)
-            {
-                return new Contains<TType>(propertyExpression, contains.Value);
-            }
-            else if (operand is IStartsWith startsWith)
-            {
-                return new StartsWith<TType>(propertyExpression, startsWith.Value);
-            }
-
-            throw new InvalidOperationException("Unknown operation.");
-        }
-    }
-
-
-
-    public interface ILogicalFilterBuilder<TType, TFilter>
-      where TType : class
-      where TFilter : class, IFilter
-    {
-        ILogicalFilterBuilder<TType, TFilter> And(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation);
-        ILogicalFilterBuilder<TType, TFilter> And<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation);
-        ILogicalFilterBuilder<TType, TFilter> And(ILinqSpecification<TType> specification);
-
-
-        ILogicalFilterBuilder<TType, TFilter> Or(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation);
-        ILogicalFilterBuilder<TType, TFilter> Or<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation);
-        ILogicalFilterBuilder<TType, TFilter> Or(ILinqSpecification<TType> specification);
-    }
-
-    public interface IFilterBuilder<TType, TFilter>
-       where TType : class
-       where TFilter : class, IFilter
-    {
-        ILogicalFilterBuilder<TType, TFilter> Where(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation);
-        ILogicalFilterBuilder<TType, TFilter> Where<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation);
-        ILogicalFilterBuilder<TType, TFilter> Where(ILinqSpecification<TType> specification);
-    }
-
-    public sealed class FilterBuilder<TType, TFilter> : IFilterBuilder<TType, TFilter>, ILogicalFilterBuilder<TType, TFilter>
-        where TType : class
-        where TFilter : class, IFilter
-    {
-        private readonly IFilterSpecificationBuilder<TType, TFilter> _specificationBuilder;
-
-        private ILinqSpecification<TType> _currentSpecification;
-
-        public ILinqSpecification<TType> QuerySpecification => _currentSpecification;
-
-        public FilterBuilder(IFilterSpecificationBuilder<TType, TFilter> specificationBuilder)
-        {
-            _specificationBuilder = specificationBuilder.WhenNotNull(nameof(specificationBuilder));
-        }
-
-        #region WHERE Operations
-        public ILogicalFilterBuilder<TType, TFilter> Where(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation)
-        {
-            _currentSpecification = _specificationBuilder.GetSpecification(propertyExpression, operation);
-
-            return this;
-        }
-
-        public ILogicalFilterBuilder<TType, TFilter> Where<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation)
-        {
-            _currentSpecification = _specificationBuilder.GetSpecification(propertyExpression, operation);
-
-            return this;
-        }
-
-        public ILogicalFilterBuilder<TType, TFilter> Where(ILinqSpecification<TType> specification)
-        {
-            _currentSpecification = specification;
-
-            return this;
-        }
-        #endregion
-
-        #region AND Operations
-        public ILogicalFilterBuilder<TType, TFilter> And(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation)
-        {
-            var specification = _specificationBuilder.GetSpecification(propertyExpression, operation);
-            _currentSpecification = _currentSpecification.And(specification);
-
-            return this;
-        }
-
-        public ILogicalFilterBuilder<TType, TFilter> And<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation)
-        {
-            var specification = _specificationBuilder.GetSpecification(propertyExpression, operation);
-            _currentSpecification = _currentSpecification.And(specification);
-
-            return this;
-        }
-
-        public ILogicalFilterBuilder<TType, TFilter> And(ILinqSpecification<TType> specification)
-        {
-            _currentSpecification = _currentSpecification.And(specification);
-
-            return this;
-        }
-        #endregion
-
-        #region OR Operations
-        public ILogicalFilterBuilder<TType, TFilter> Or(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation)
-        {
-            var specification = _specificationBuilder.GetSpecification(propertyExpression, operation);
-            _currentSpecification = _currentSpecification.Or(specification);
-
-            return this;
-        }
-
-
-        public ILogicalFilterBuilder<TType, TFilter> Or<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation)
-        {
-            var specification = _specificationBuilder.GetSpecification(propertyExpression, operation);
-            _currentSpecification = _currentSpecification.Or(specification);
-
-            return this;
-        }
-
-        public ILogicalFilterBuilder<TType, TFilter> Or(ILinqSpecification<TType> specification)
-        {
-            _currentSpecification = _currentSpecification.Or(specification);
-
-            return this;
-        }
-        #endregion
-    }
-
-    public static class QueryableExtensions
-    {
-        public static IQueryable<TType> ApplyFilter<TType, TFilter>(this IQueryable<TType> queryable, TFilter filter,
-            Action<IFilterSpecificationBuilder<TType, TFilter>, IFilterBuilder<TType, TFilter>> action)
-            where TType : class
-            where TFilter : class, IFilter
-        {
-            _ = filter.WhenNotNull(nameof(filter));
-
-            var specificationBuilder = new FilterSpecificationBuilder<TType, TFilter>(filter);
-            var builder = new FilterBuilder<TType, TFilter>(specificationBuilder);
-
-            action.Invoke(specificationBuilder, builder);
-
-            return queryable.Where(builder.QuerySpecification);
-        }
-    }
-
-
-
-
-
     public sealed class App : ConsoleAppBase
     {
         private readonly IDbContextFactory<BloggingContext> _dbContextFactory;
@@ -288,18 +38,14 @@ namespace EFEnumerationDemo
 
                 await CreateDataIfRequired();
 
-
-
-
-                // Demonstrating how to use LinqSpecification based filtering
-                var filter = new Filter
+                // properties are initialized using implicit operators
+                var filter = new BlogFilter
                 {
-                    GreaterThan = (GreaterThan<int>) 9,         // explicit operator
-                    LessThan = new LessThan<int>(12),           // constructor                  
-                    Contains = { Value = "#12" },               // object initialization
-                    StartsWith = { Value = "#1" }
+                    GreaterThan = 9,
+                    LessThan = 12,                  // same as new LessThan<int>(12)
+                    Contains = "#12",
+                    StartsWith = "#1"
                 };
-
 
                 var query = dbContext.Blogs
 
@@ -308,7 +54,7 @@ namespace EFEnumerationDemo
                     {
                         var s1 = specificationBuilder.And(blog => blog.Id, f => f.GreaterThan, f => f.LessThan);
                         var s2 = specificationBuilder.Or(blog => blog.Description, f => f.Contains, f => f.StartsWith);
-                        
+
                         filterBuilder
                             .Where(s1)
                             .Or(s2);            // can chain more And() / Or() calls

@@ -273,5 +273,19 @@ namespace AllOverIt.Extensions
             var matchingKeys = firstMap.Keys.Intersect(secondItems.Select(secondSelector));
             return matchingKeys.Select(key => firstMap[key]);
         }
+
+        /// <summary>Determines if a collection is unique when grouped by a specified key selector.</summary>
+        /// <typeparam name="TType">The element type in the source collection.</typeparam>
+        /// <typeparam name="TKey">The key type.</typeparam>
+        /// <param name="source">The source collection.</param>
+        /// <param name="selector">The key selector.</param>
+        /// <returns>True when the grouping results in one element per key, otherwise false.</returns>
+        public static bool HasDistinctGrouping<TType, TKey>(this IEnumerable<TType> source, Func<TType, TKey> selector)
+        {
+            return source
+                .WhenNotNull(nameof(source))
+                .GroupBy(selector)
+                .All(item => item.Count() == 1);
+        }
     }
 }

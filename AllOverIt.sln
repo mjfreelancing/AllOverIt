@@ -241,7 +241,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThrowWhenBenchmarking", "De
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllOverIt.Filtering", "AllOverIt.Filtering", "{ACBA60A5-46AE-4659-8117-22C741751F7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilteringDemo", "Demos\AllOverIt.Filtering\FilteringDemo\FilteringDemo.csproj", "{2305424D-7DB6-44C1-8FCB-6D06241B5D7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FilteringDemo", "Demos\AllOverIt.Filtering\FilteringDemo\FilteringDemo.csproj", "{2305424D-7DB6-44C1-8FCB-6D06241B5D7B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllOverIt.Filtering", "Source\AllOverIt.Filtering\AllOverIt.Filtering.csproj", "{339CC9B1-4ABB-4A93-A147-7BFA7434321A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -581,6 +583,10 @@ Global
 		{2305424D-7DB6-44C1-8FCB-6D06241B5D7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2305424D-7DB6-44C1-8FCB-6D06241B5D7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2305424D-7DB6-44C1-8FCB-6D06241B5D7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{339CC9B1-4ABB-4A93-A147-7BFA7434321A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{339CC9B1-4ABB-4A93-A147-7BFA7434321A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{339CC9B1-4ABB-4A93-A147-7BFA7434321A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{339CC9B1-4ABB-4A93-A147-7BFA7434321A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -699,6 +705,7 @@ Global
 		{4F3C23D6-D074-4B11-8926-633D92C015E1} = {DF0960C9-1088-442A-B8A7-CAA3966A4271}
 		{ACBA60A5-46AE-4659-8117-22C741751F7A} = {D9F6B8A1-4B01-4708-8851-741FC19F2440}
 		{2305424D-7DB6-44C1-8FCB-6D06241B5D7B} = {ACBA60A5-46AE-4659-8117-22C741751F7A}
+		{339CC9B1-4ABB-4A93-A147-7BFA7434321A} = {FC8E8DB2-1299-44F4-A233-0EDCE225BB8C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19DD11B3-596E-4862-B5C4-1FFFFB173106}

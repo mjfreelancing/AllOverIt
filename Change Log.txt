@@ -28,6 +28,7 @@ AllOverIt
   * Moved some extension methods from EnumerableExtensions to AsyncEnumerableExtensions
   * Removed Guard.InvalidWhen - can equally use WhenNotNull() and related methods
   * Moved ILinqSpecification extensions to the AllOverIt.Patterns.Specification.Extensions namespace
+  * Added IEnumerable extension HasDistinctGrouping()
 
 AllOverIt.Assertion
   * Removed methods that asserted an enumerable was a concrete collection type and instead updated .NET Core 3.1
@@ -46,6 +47,9 @@ AllOverIt.EntityFrameworkCore.Pagination
 AllOverIt.ReactiveUI
   * New package                                                     - TESTS PENDING ******************
   * Includes ActivatableViewModel, CountdownTimer
+
+AllOverIt.Filtering
+  * New package to provide IQueryable filter builders
 
 
 02 Jul 2022

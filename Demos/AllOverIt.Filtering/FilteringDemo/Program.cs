@@ -1,8 +1,4 @@
-﻿using AllOverIt.Filtering;
-using AllOverIt.Filtering.Operations;
-using System.Linq;
-
-namespace FilteringDemo
+﻿namespace FilteringDemo
 {
     internal sealed class Product
     {

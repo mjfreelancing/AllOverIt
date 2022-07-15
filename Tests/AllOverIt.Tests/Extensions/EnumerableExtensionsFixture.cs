@@ -796,5 +796,41 @@ namespace AllOverIt.Tests.Extensions
                 expected.Should().BeEquivalentTo(matches);
             }
         }
+
+        public class HasDistinctGrouping : EnumerableExtensionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Null()
+            {
+                Invoking(() =>
+                {
+                    EnumerableExtensions.HasDistinctGrouping<string, string>(null, item => item);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("source");
+            }
+
+            [Fact]
+            public void Should_Return_True_When_All_Keys_Distinct()
+            {
+                var items = CreateMany<string>();
+
+                var actual = items.HasDistinctGrouping(item => item);
+
+                actual.Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Return_False_When_All_Keys_Not_Distinct()
+            {
+                var duplicate = Create<string>();
+                var items = CreateMany<string>().Concat(new[] { duplicate , duplicate }).ToList();
+
+                var actual = items.HasDistinctGrouping(item => item);
+
+                actual.Should().BeFalse();
+            }
+        }
     }
 }
