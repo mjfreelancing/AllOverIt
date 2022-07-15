@@ -25,14 +25,13 @@ namespace EFEnumerationDemo
         where TType : class
         where TFilter : class, IFilter
     {
-        ILinqSpecification<TType> And(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation);
+        ILinqSpecification<TType> GetSpecification(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation);
+        ILinqSpecification<TType> GetSpecification<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation);
+
         ILinqSpecification<TType> And(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation1, Func<TFilter, IStringOperation> operation2);
-        ILinqSpecification<TType> And<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation);
         ILinqSpecification<TType> And<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation1, Func<TFilter, IOperation> operation2);
 
-        ILinqSpecification<TType> Or(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation);
         ILinqSpecification<TType> Or(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation1, Func<TFilter, IStringOperation> operation2);
-        ILinqSpecification<TType> Or<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation);
         ILinqSpecification<TType> Or<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation1, Func<TFilter, IOperation> operation2);
     }
 
@@ -47,23 +46,23 @@ namespace EFEnumerationDemo
             _filter = filter.WhenNotNull(nameof(filter));
         }
 
-        #region AND Operations
-        public ILinqSpecification<TType> And(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation)
+        public ILinqSpecification<TType> GetSpecification(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation)
         {
             return GetOperationSpecification(propertyExpression, operation);
         }
 
+        public ILinqSpecification<TType> GetSpecification<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation)
+        {
+            return GetOperationSpecification(propertyExpression, operation);
+        }
+
+        #region AND Operations
         public ILinqSpecification<TType> And(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation1, Func<TFilter, IStringOperation> operation2)
         {
             var specification1 = GetOperationSpecification(propertyExpression, operation1);
             var specification2 = GetOperationSpecification(propertyExpression, operation2);
             
             return specification1.And(specification2);
-        }
-
-        public ILinqSpecification<TType> And<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation)
-        {
-            return GetOperationSpecification(propertyExpression, operation);
         }
 
         public ILinqSpecification<TType> And<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation1, Func<TFilter, IOperation> operation2)
@@ -76,12 +75,6 @@ namespace EFEnumerationDemo
         #endregion
 
         #region OR Operations
-        // string related operation
-        public ILinqSpecification<TType> Or(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation)
-        {
-            return GetOperationSpecification(propertyExpression, operation);
-        }
-
         // string related operations
         public ILinqSpecification<TType> Or(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation1, Func<TFilter, IStringOperation> operation2)
         {
@@ -89,12 +82,6 @@ namespace EFEnumerationDemo
             var specification2 = GetOperationSpecification(propertyExpression, operation2);
             
             return specification1.Or(specification2);
-        }
-
-
-        public ILinqSpecification<TType> Or<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation)
-        {
-            return GetOperationSpecification(propertyExpression, operation);
         }
 
         public ILinqSpecification<TType> Or<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation1, Func<TFilter, IOperation> operation2)
@@ -105,6 +92,8 @@ namespace EFEnumerationDemo
             return specification1.Or(specification2);
         }
         #endregion
+
+
 
         private ILinqSpecification<TType> GetOperationSpecification<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation)
         {
@@ -147,18 +136,12 @@ namespace EFEnumerationDemo
        where TFilter : class, IFilter
     {
         IFilterBuilder<TType, TFilter> And(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation);
-        IFilterBuilder<TType, TFilter> And(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation1, Func<TFilter, IStringOperation> operation2);
         IFilterBuilder<TType, TFilter> And<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation);
-        IFilterBuilder<TType, TFilter> And<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation1, Func<TFilter, IOperation> operation2);
         IFilterBuilder<TType, TFilter> And(ILinqSpecification<TType> specification);
-        IFilterBuilder<TType, TFilter> And(ILinqSpecification<TType> specification1, ILinqSpecification<TType> specification2);
 
         IFilterBuilder<TType, TFilter> Or(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation);
-        IFilterBuilder<TType, TFilter> Or(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation1, Func<TFilter, IStringOperation> operation2);
         IFilterBuilder<TType, TFilter> Or<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation);
-        IFilterBuilder<TType, TFilter> Or<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation1, Func<TFilter, IOperation> operation2);
         IFilterBuilder<TType, TFilter> Or(ILinqSpecification<TType> specification);
-        IFilterBuilder<TType, TFilter> Or(ILinqSpecification<TType> specification1, ILinqSpecification<TType> specification2);
     }
 
     public sealed class FilterBuilder<TType, TFilter> : IFilterBuilder<TType, TFilter>
@@ -180,17 +163,7 @@ namespace EFEnumerationDemo
         // string related operation
         public IFilterBuilder<TType, TFilter> And(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation)
         {
-            var specification = _specificationBuilder.And(propertyExpression, operation);
-
-            ApplyToCurrentSpecification(specification, LinqSpecificationExtensions.And);
-
-            return this;
-        }
-
-        // string related operation
-        public IFilterBuilder<TType, TFilter> And(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation1, Func<TFilter, IStringOperation> operation2)
-        {
-            var specification = _specificationBuilder.And(propertyExpression, operation1, operation2);
+            var specification = _specificationBuilder.GetSpecification(propertyExpression, operation);
 
             ApplyToCurrentSpecification(specification, LinqSpecificationExtensions.And);
 
@@ -199,16 +172,7 @@ namespace EFEnumerationDemo
 
         public IFilterBuilder<TType, TFilter> And<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation)
         {
-            var specification = _specificationBuilder.And(propertyExpression, operation);
-
-            ApplyToCurrentSpecification(specification, LinqSpecificationExtensions.And);
-
-            return this;
-        }
-
-        public IFilterBuilder<TType, TFilter> And<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation1, Func<TFilter, IOperation> operation2)
-        {
-            var specification = _specificationBuilder.And(propertyExpression, operation1, operation2);
+            var specification = _specificationBuilder.GetSpecification(propertyExpression, operation);
 
             ApplyToCurrentSpecification(specification, LinqSpecificationExtensions.And);
 
@@ -221,34 +185,15 @@ namespace EFEnumerationDemo
 
             return this;
         }
-
-        public IFilterBuilder<TType, TFilter> And(ILinqSpecification<TType> specification1, ILinqSpecification<TType> specification2)
-        {
-            var combined = specification1.And(specification2);
-
-            ApplyToCurrentSpecification(combined, LinqSpecificationExtensions.And);
-
-            return this;
-        }
         #endregion
 
         #region OR Operations
         // string related operation
         public IFilterBuilder<TType, TFilter> Or(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation)
         {
-            var specification = _specificationBuilder.Or(propertyExpression, operation);
+            var specification = _specificationBuilder.GetSpecification(propertyExpression, operation);
 
             ApplyToCurrentSpecification(specification, LinqSpecificationExtensions.Or);
-
-            return this;
-        }
-
-        // string related operations
-        public IFilterBuilder<TType, TFilter> Or(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation1, Func<TFilter, IStringOperation> operation2)
-        {
-            var specification = _specificationBuilder.Or(propertyExpression, operation1, operation2);
-
-            ApplyToCurrentSpecification(specification, LinqSpecificationExtensions.And);
 
             return this;
         }
@@ -256,18 +201,9 @@ namespace EFEnumerationDemo
 
         public IFilterBuilder<TType, TFilter> Or<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation)
         {
-            var specification = _specificationBuilder.Or(propertyExpression, operation);
+            var specification = _specificationBuilder.GetSpecification(propertyExpression, operation);
 
             ApplyToCurrentSpecification(specification, LinqSpecificationExtensions.Or);
-
-            return this;
-        }
-
-        public IFilterBuilder<TType, TFilter> Or<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation1, Func<TFilter, IOperation> operation2)
-        {
-            var specification = _specificationBuilder.Or(propertyExpression, operation1, operation2);
-
-            ApplyToCurrentSpecification(specification, LinqSpecificationExtensions.And);
 
             return this;
         }
@@ -275,15 +211,6 @@ namespace EFEnumerationDemo
         public IFilterBuilder<TType, TFilter> Or(ILinqSpecification<TType> specification)
         {
             ApplyToCurrentSpecification(specification, LinqSpecificationExtensions.Or);
-
-            return this;
-        }
-
-        public IFilterBuilder<TType, TFilter> Or(ILinqSpecification<TType> specification1, ILinqSpecification<TType> specification2)
-        {
-            var combined = specification1.Or(specification2);
-
-            ApplyToCurrentSpecification(combined, LinqSpecificationExtensions.And);
 
             return this;
         }
@@ -300,32 +227,12 @@ namespace EFEnumerationDemo
                 return;
             }
 
-            // operation could be:
-            //   public static ILinqSpecification<TType> And<TType>(this ILinqSpecification<TType> leftSpecification, ILinqSpecification<TType> rightSpecification)
-            //   public static ILinqSpecification<TType> AndNot<TType>(this ILinqSpecification<TType> leftSpecification, ILinqSpecification<TType> rightSpecification)
-            //   public static ILinqSpecification<TType> Or<TType>(this ILinqSpecification<TType> leftSpecification, ILinqSpecification<TType> rightSpecification)
-            //   public static ILinqSpecification<TType> OrNot<TType>(this ILinqSpecification<TType> leftSpecification, ILinqSpecification<TType> rightSpecification)
-
-            // There is also a 'Not' to consider
-            //   public static ILinqSpecification<TType> Not<TType>(this ILinqSpecification<TType> specification)
-
             _currentSpecification = operation.Invoke(_currentSpecification, specification);
         }
     }
 
     public static class QueryableExtensions
     {
-        public static IQueryable<TType> ApplyFilter<TType, TFilter>(this IQueryable<TType> queryable, TFilter filter,
-            Action<IFilterBuilder<TType, TFilter>> action)
-            where TType : class
-            where TFilter : class, IFilter
-        {
-            return ApplyFilter(queryable, filter, (_, filterBuilder) =>
-            {
-                action.Invoke(filterBuilder);
-            });
-        }
-
         public static IQueryable<TType> ApplyFilter<TType, TFilter>(this IQueryable<TType> queryable, TFilter filter,
             Action<IFilterSpecificationBuilder<TType, TFilter>, IFilterBuilder<TType, TFilter>> action)
             where TType : class
@@ -379,7 +286,7 @@ namespace EFEnumerationDemo
                     GreaterThan = (GreaterThan<int>) 9,         // explicit operator
                     LessThan = new LessThan<int>(12),           // constructor                  
                     Contains = { Value = "#12" },               // object initialization
-                    StartsWith = { Value = "#" }
+                    StartsWith = { Value = "#1" }
                 };
 
 
@@ -388,52 +295,21 @@ namespace EFEnumerationDemo
                     // If starting with a single operation, using And() / Or() will have the same outcome since there is no initial specification
                     //builder.And(blog => blog.Id, f => f.GreaterThan);
 
-                    // Option 1: All operations are chained
-                    //.ApplyFilter(filter, filterBuilder =>
-                    //{
-                    //    // All individual and chained calls are combined as AND
-
-                    //    // Example: (Id > 1 AND Id < 2) AND (Description %value% OR Description value%)
-                    //    filterBuilder
-                    //        .And(blog => blog.Id, f => f.GreaterThan, f => f.LessThan)
-                    //        .Or(blog => blog.Description, f => f.Contains, f => f.StartsWith);
-                    //})
+                  
 
 
 
                     // Option 2: Can build expressions to build more elaborate logic
                     .ApplyFilter(filter, (specificationBuilder, filterBuilder) =>
                     {
-                        // Example: (Id > 1 AND Id < 2) OR (Description %value% AND Description value%)
-                        var specification1 = specificationBuilder.And(blog => blog.Id, f => f.GreaterThan, f => f.LessThan);
-                        var specification2 = specificationBuilder.And(blog => blog.Description, f => f.Contains, f => f.StartsWith);
+                        //filterBuilder.And(blog => blog.Id, f => f.GreaterThan, f => f.LessThan);
 
-                        // either:
-                        //var combined = specification1.Or(specification2);             // OR's specification1 and specification2, then
-                        //filterBuilder.And(combined);                                  // AND's this with any previous expressions
+                        var s1 = specificationBuilder.And(blog => blog.Id, f => f.GreaterThan, f => f.LessThan);
+                        var s2 = specificationBuilder.Or(blog => blog.Description, f => f.Contains, f => f.StartsWith);
+                        filterBuilder.And(s1);
+                        filterBuilder.Or(s2);
 
-                        // or: - exactly the same as above
-                        filterBuilder.Or(specification1, specification2);
                     })
-
-                    /*
-                    .ApplyFilter(filter, builder =>
-                    {
-                        // ( g && l ) || c
-                        builder.And(blog => blog.Id, g => g.GreaterThan, g => g.LessThan)
-                               .Or(blog => blog.Description, g => g.Contains)
-
-                        // ( g || l ) && c
-                        builder.Or(blog => blog.Id, g => g.GreaterThan, g => g.LessThan)
-                               .And(blog => blog.Description, g => g.Contains)
-
-                        // ( g || l ) && (c || sw)
-                        var g1 = builder.Or(blog => blog.Id, g => g.GreaterThan, g => g.LessThan)
-                        var g2 = builder.Or(blog => blog.Description, g => g.Contains, g => g.StartsWith)
-
-                        builder.And(g1, g2)
-                    })
-                    */
 
                     .Join(dbContext.Posts,
                         blog => blog.Id,
