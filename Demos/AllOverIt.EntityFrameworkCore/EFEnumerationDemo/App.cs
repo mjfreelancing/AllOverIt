@@ -217,17 +217,11 @@ namespace EFEnumerationDemo
         #endregion
 
 
-
-
         private void ApplyToCurrentSpecification(ILinqSpecification<TType> specification, Func<ILinqSpecification<TType>, ILinqSpecification<TType>, ILinqSpecification<TType>> operation)
         {
-            if (_currentSpecification == null)
-            {
-                _currentSpecification = specification;
-                return;
-            }
-
-            _currentSpecification = operation.Invoke(_currentSpecification, specification);
+            _currentSpecification = _currentSpecification == null
+                ? specification
+                : operation.Invoke(_currentSpecification, specification);
         }
     }
 
