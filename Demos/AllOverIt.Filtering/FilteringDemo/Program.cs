@@ -17,20 +17,21 @@ namespace FilteringDemo
         {
             var products = GetProducts();
 
-            IFilter<Product> filter = new Filter<Product>();
 
-            //filter.By(nameof(Product.Name), Operation.EqualTo, "Chairs");
+            //IFilter<Product> filter = new Filter<Product>();
 
-            filter.By(entity => entity.Price, Operation.GreaterThan, 15)
-                .And
-                .By(entity => entity.Price, Operation.LessThan, 30.0)
-                .Or
-                .Group
-                .By(entity => entity.Category, Operation.EqualTo, "Furniture");
+            ////filter.By(nameof(Product.Name), Operation.EqualTo, "Chairs");
 
-            var str = filter.ToString();
+            //filter.By(entity => entity.Price, Operation.GreaterThan, 15)
+            //    .And
+            //    .By(entity => entity.Price, Operation.LessThan, 30.0)
+            //    .Or
+            //    .Group
+            //    .By(entity => entity.Category, Operation.EqualTo, "Furniture");
 
-            var results = products.Where(filter).ToList();
+            //var str = filter.ToString();
+
+            //var results = products.Where(filter).ToList();
 
 
 
