@@ -29,10 +29,5 @@ namespace AllOverIt.Assertion
         {
             throw new InvalidOperationException($"{errorMessage} ({name})");
         }
-
-        private static void ThrowInvalidOperationException<TType>(string errorMessage)
-        {
-            throw new InvalidOperationException(errorMessage);
-        }
     }
 }
