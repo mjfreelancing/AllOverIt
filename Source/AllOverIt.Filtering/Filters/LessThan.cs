@@ -1,6 +1,6 @@
 ﻿namespace AllOverIt.Filtering.Filters
 {
-    public class LessThan<TType> : ILessThan<TType>
+    public sealed class LessThan<TType> : ILessThan<TType>
     {
         public TType Value { get; set; }
 

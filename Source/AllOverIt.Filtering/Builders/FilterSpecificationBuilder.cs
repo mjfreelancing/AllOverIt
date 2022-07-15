@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Assertion;
+using AllOverIt.Extensions;
 using AllOverIt.Filtering.Filters;
 using AllOverIt.Filtering.Operations;
 using AllOverIt.Patterns.Specification;
@@ -19,82 +20,113 @@ namespace AllOverIt.Filtering.Builders
             _filter = filter.WhenNotNull(nameof(filter));
         }
 
-        public ILinqSpecification<TType> GetSpecification(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation)
+
+
+        public ILinqSpecification<TType> Create(Expression<Func<TType, string>> propertyExpression,
+            Func<TFilter, IStringFilterOperation> operation)
         {
-            return GetOperationSpecification(propertyExpression, operation);
+            return GetFilterSpecification(propertyExpression, operation);
         }
 
-        public ILinqSpecification<TType> GetSpecification<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation)
+        // Caters for IOperation and IArrayOperation
+        public ILinqSpecification<TType> Create<TProperty>(Expression<Func<TType, TProperty>> propertyExpression,
+            Func<TFilter, IFilterOperation> operation)
         {
-            return GetOperationSpecification(propertyExpression, operation);
+            return GetFilterSpecification(propertyExpression, operation);
         }
+
+
 
         #region AND Operations
-        public ILinqSpecification<TType> And(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation1, Func<TFilter, IStringOperation> operation2)
+        public ILinqSpecification<TType> And(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation1,
+            Func<TFilter, IStringFilterOperation> operation2)
         {
-            var specification1 = GetOperationSpecification(propertyExpression, operation1);
-            var specification2 = GetOperationSpecification(propertyExpression, operation2);
+            var specification1 = GetFilterSpecification(propertyExpression, operation1);
+            var specification2 = GetFilterSpecification(propertyExpression, operation2);
 
             return specification1.And(specification2);
         }
 
-        public ILinqSpecification<TType> And<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation1, Func<TFilter, IOperation> operation2)
+        // Caters for IOperation and IArrayOperation
+        public ILinqSpecification<TType> And<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IFilterOperation> operation1,
+            Func<TFilter, IFilterOperation> operation2)
         {
-            var specification1 = GetOperationSpecification(propertyExpression, operation1);
-            var specification2 = GetOperationSpecification(propertyExpression, operation2);
+            var specification1 = GetFilterSpecification(propertyExpression, operation1);
+            var specification2 = GetFilterSpecification(propertyExpression, operation2);
 
             return specification1.And(specification2);
         }
         #endregion
+
+
 
         #region OR Operations
-        public ILinqSpecification<TType> Or(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation1, Func<TFilter, IStringOperation> operation2)
+        public ILinqSpecification<TType> Or(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation1,
+            Func<TFilter, IStringFilterOperation> operation2)
         {
-            var specification1 = GetOperationSpecification(propertyExpression, operation1);
-            var specification2 = GetOperationSpecification(propertyExpression, operation2);
+            var specification1 = GetFilterSpecification(propertyExpression, operation1);
+            var specification2 = GetFilterSpecification(propertyExpression, operation2);
 
             return specification1.Or(specification2);
         }
 
-        public ILinqSpecification<TType> Or<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation1, Func<TFilter, IOperation> operation2)
+        // Caters for IOperation and IArrayOperation
+        public ILinqSpecification<TType> Or<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IFilterOperation> operation1,
+            Func<TFilter, IFilterOperation> operation2)
         {
-            var specification1 = GetOperationSpecification(propertyExpression, operation1);
-            var specification2 = GetOperationSpecification(propertyExpression, operation2);
+            var specification1 = GetFilterSpecification(propertyExpression, operation1);
+            var specification2 = GetFilterSpecification(propertyExpression, operation2);
 
             return specification1.Or(specification2);
         }
         #endregion
 
-        private ILinqSpecification<TType> GetOperationSpecification<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation)
+
+
+        private ILinqSpecification<TType> GetFilterSpecification(Expression<Func<TType, string>> propertyExpression,
+            Func<TFilter, IStringFilterOperation> operation)
         {
             var operand = operation.Invoke(_filter);
 
-            if (operand is IGreaterThan<TProperty> greaterThan)
+            return operand switch
             {
-                return new GreaterThan<TType, TProperty>(propertyExpression, greaterThan.Value);
-            }
-            else if (operand is ILessThan<TProperty> lessThan)
-            {
-                return new LessThan<TType, TProperty>(propertyExpression, lessThan.Value);
-            }
-
-            throw new InvalidOperationException("Unknown operation.");
+                IContains contains => new ContainsOperation<TType>(propertyExpression, contains.Value),
+                INotContains notContains => new NotContains<TType>(propertyExpression, notContains.Value),
+                IStartsWith startsWith => new StartsWith<TType>(propertyExpression, startsWith.Value),
+                IEndsWith endsWith => new EndsWithOperation<TType>(propertyExpression, endsWith.Value),
+                _ => throw new InvalidOperationException("Unknown operation."),
+            };
         }
 
-        private ILinqSpecification<TType> GetOperationSpecification(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation)
+        // Caters for IOperation and IArrayOperation
+        private ILinqSpecification<TType> GetFilterSpecification<TProperty>(Expression<Func<TType, TProperty>> propertyExpression,
+            Func<TFilter, IFilterOperation> operation)
         {
             var operand = operation.Invoke(_filter);
 
-            if (operand is IContains contains)
+            return operand switch
             {
-                return new Contains<TType>(propertyExpression, contains.Value);
-            }
-            else if (operand is IStartsWith startsWith)
-            {
-                return new StartsWith<TType>(propertyExpression, startsWith.Value);
-            }
+                IArrayFilterOperation array => GetFilterSpecification(propertyExpression, array),
+                IEqualTo<TProperty> equalTo => new EqualTo<TType, TProperty>(propertyExpression, equalTo.Value),
+                IGreaterThan<TProperty> greaterThan => new GreaterThan<TType, TProperty>(propertyExpression, greaterThan.Value),
+                IGreaterThanOrEqual<TProperty> greaterThanOrEqual => new GreaterThanOrEqual<TType, TProperty>(propertyExpression, greaterThanOrEqual.Value),
+                ILessThan<TProperty> lessThan => new LessThan<TType, TProperty>(propertyExpression, lessThan.Value),
+                ILessThanOrEqual<TProperty> lessThanOrEqual => new LessThanOrEqual<TType, TProperty>(propertyExpression, lessThanOrEqual.Value),
+                _ => throw new InvalidOperationException($"Unknown operation {operand.GetType().GetFriendlyName()} for {propertyExpression}."),
+            };
+        }
 
-            throw new InvalidOperationException("Unknown operation.");
+
+        private ILinqSpecification<TType> GetFilterSpecification<TProperty>(Expression<Func<TType, TProperty>> propertyExpression,
+           IArrayFilterOperation operation)
+        {
+            //var operand = operation.Invoke(_filter);
+
+            return operation switch
+            {
+                IIn<TProperty> array => new In<TType, TProperty>(propertyExpression, array.Values),
+                _ => throw new InvalidOperationException("Unknown operation."),
+            };
         }
     }
 }

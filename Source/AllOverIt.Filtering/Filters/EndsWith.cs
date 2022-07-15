@@ -1,26 +1,26 @@
 ﻿namespace AllOverIt.Filtering.Filters
 {
-    public sealed class StartsWith : IStartsWith
+    public sealed class EndsWith : IEndsWith
     {
         public string Value { get; set; }
 
-        public StartsWith()
+        public EndsWith()
         {
         }
 
-        public StartsWith(string value)
+        public EndsWith(string value)
         {
             Value = value;
         }
 
-        public static explicit operator string(StartsWith value)
+        public static explicit operator string(EndsWith value)
         {
             return value.Value;
         }
 
-        public static implicit operator StartsWith(string value)
+        public static implicit operator EndsWith(string value)
         {
-            return new StartsWith
+            return new EndsWith
             {
                 Value = value
             };

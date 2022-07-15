@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Assertion;
+using AllOverIt.Expressions;
 using AllOverIt.Extensions;
 using AllOverIt.Pagination.Exceptions;
 using AllOverIt.Pagination.Extensions;
@@ -15,17 +16,6 @@ namespace AllOverIt.Pagination
     public sealed class QueryPaginator<TEntity> : QueryPaginatorBase, IQueryPaginator<TEntity>
         where TEntity : class
     {
-        // Used to build parameterized queries when used with EF
-        private sealed class ParameterHolder
-        {
-            public object Value { get; }
-
-            public ParameterHolder(object value)
-            {
-                Value = value;
-            }
-        }
-
         private sealed class FirstExpression
         {
             public bool IsPending => MemberAccess == null;
@@ -444,11 +434,7 @@ namespace AllOverIt.Pagination
 
             // Create an expression that will result in a parameterized query being generated (typically for EF queries).
             // The benefit here is removing the risk of SQL injection as well as keeping the EF cache optimized.
-            var parameterValue = new ParameterHolder(value);
-            var constantParameter = Expression.Constant(parameterValue);
-            var property = Expression.PropertyOrField(constantParameter, nameof(ParameterHolder.Value));
-
-            expression = Expression.Convert(property, valueType);
+            expression = ExpressionUtils.CreateParameterizedValue(value, valueType);
 
             referenceParameterCache.Add(index, expression);
 

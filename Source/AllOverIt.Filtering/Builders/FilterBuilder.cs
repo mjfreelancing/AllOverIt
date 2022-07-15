@@ -3,6 +3,7 @@ using AllOverIt.Filtering.Filters;
 using AllOverIt.Patterns.Specification;
 using AllOverIt.Patterns.Specification.Extensions;
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Filtering.Builders
@@ -23,16 +24,25 @@ namespace AllOverIt.Filtering.Builders
         }
 
         #region WHERE Operations
-        public ILogicalFilterBuilder<TType, TFilter> Where(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation)
+        public ILogicalFilterBuilder<TType, TFilter> Where(Expression<Func<TType, string>> propertyExpression,
+            Func<TFilter, IStringFilterOperation> operation)
         {
-            _currentSpecification = _specificationBuilder.GetSpecification(propertyExpression, operation);
+            _currentSpecification = _specificationBuilder.Create(propertyExpression, operation);
+            return this;
+        }
+
+        public ILogicalFilterBuilder<TType, TFilter> Where<TProperty>(Expression<Func<TType, IList<TProperty>>> propertyExpression,
+            Func<TFilter, IArrayFilterOperation> operation)
+        {
+            _currentSpecification = _specificationBuilder.Create(propertyExpression, operation);
 
             return this;
         }
 
-        public ILogicalFilterBuilder<TType, TFilter> Where<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation)
+        public ILogicalFilterBuilder<TType, TFilter> Where<TProperty>(Expression<Func<TType, TProperty>> propertyExpression,
+            Func<TFilter, IFilterOperation> operation)
         {
-            _currentSpecification = _specificationBuilder.GetSpecification(propertyExpression, operation);
+            _currentSpecification = _specificationBuilder.Create(propertyExpression, operation);
 
             return this;
         }
@@ -46,17 +56,19 @@ namespace AllOverIt.Filtering.Builders
         #endregion
 
         #region AND Operations
-        public ILogicalFilterBuilder<TType, TFilter> And(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation)
+        public ILogicalFilterBuilder<TType, TFilter> And(Expression<Func<TType, string>> propertyExpression,
+            Func<TFilter, IStringFilterOperation> operation)
         {
-            var specification = _specificationBuilder.GetSpecification(propertyExpression, operation);
+            var specification = _specificationBuilder.Create(propertyExpression, operation);
             _currentSpecification = _currentSpecification.And(specification);
 
             return this;
         }
 
-        public ILogicalFilterBuilder<TType, TFilter> And<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation)
+        public ILogicalFilterBuilder<TType, TFilter> And<TProperty>(Expression<Func<TType, TProperty>> propertyExpression,
+            Func<TFilter, IFilterOperation> operation)
         {
-            var specification = _specificationBuilder.GetSpecification(propertyExpression, operation);
+            var specification = _specificationBuilder.Create(propertyExpression, operation);
             _currentSpecification = _currentSpecification.And(specification);
 
             return this;
@@ -71,18 +83,20 @@ namespace AllOverIt.Filtering.Builders
         #endregion
 
         #region OR Operations
-        public ILogicalFilterBuilder<TType, TFilter> Or(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringOperation> operation)
+        public ILogicalFilterBuilder<TType, TFilter> Or(Expression<Func<TType, string>> propertyExpression,
+            Func<TFilter, IStringFilterOperation> operation)
         {
-            var specification = _specificationBuilder.GetSpecification(propertyExpression, operation);
+            var specification = _specificationBuilder.Create(propertyExpression, operation);
             _currentSpecification = _currentSpecification.Or(specification);
 
             return this;
         }
 
 
-        public ILogicalFilterBuilder<TType, TFilter> Or<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IOperation> operation)
+        public ILogicalFilterBuilder<TType, TFilter> Or<TProperty>(Expression<Func<TType, TProperty>> propertyExpression,
+            Func<TFilter, IFilterOperation> operation)
         {
-            var specification = _specificationBuilder.GetSpecification(propertyExpression, operation);
+            var specification = _specificationBuilder.Create(propertyExpression, operation);
             _currentSpecification = _currentSpecification.Or(specification);
 
             return this;

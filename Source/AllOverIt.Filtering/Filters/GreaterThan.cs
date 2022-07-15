@@ -1,6 +1,6 @@
 ﻿namespace AllOverIt.Filtering.Filters
 {
-    public class GreaterThan<TType> : IGreaterThan<TType>
+    public sealed class GreaterThan<TType> : IGreaterThan<TType>
     {
         public TType Value { get; set; }
 
@@ -23,6 +23,4 @@
             return new GreaterThan<TType>(value);
         }
     }
-
-
 }

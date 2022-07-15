@@ -5,16 +5,16 @@ using SystemExpression = System.Linq.Expressions.Expression;    // avoid conflic
 
 namespace AllOverIt.Filtering.Operations
 {
-    internal sealed class EndsWith<TEntity> : OperationBase<TEntity, string> where TEntity : class
+    internal sealed class EndsWithOperation<TEntity> : OperationBase<TEntity, string> where TEntity : class
     {
         private static readonly MethodInfo EndsWithMethod = typeof(string).GetMethod("EndsWith", new[] { typeof(string) });
 
-        public EndsWith(Expression<Func<TEntity, string>> propertyExpression, string value)
+        public EndsWithOperation(Expression<Func<TEntity, string>> propertyExpression, string value)
             : base(propertyExpression, value, CreatePredicate)
         {
         }
 
-        private static SystemExpression CreatePredicate(MemberExpression member, ConstantExpression constant)
+        private static SystemExpression CreatePredicate(MemberExpression member, SystemExpression constant)
         {
             return SystemExpression.Call(member, EndsWithMethod, constant);
         }

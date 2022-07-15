@@ -5,16 +5,16 @@ using SystemExpression = System.Linq.Expressions.Expression;    // avoid conflic
 
 namespace AllOverIt.Filtering.Operations
 {
-    internal sealed class Contains<TEntity> : OperationBase<TEntity, string> where TEntity : class
+    internal sealed class ContainsOperation<TEntity> : OperationBase<TEntity, string> where TEntity : class
     {
         private static readonly MethodInfo ContainsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) });
 
-        public Contains(Expression<Func<TEntity, string>> propertyExpression, string value)
+        public ContainsOperation(Expression<Func<TEntity, string>> propertyExpression, string value)
             : base(propertyExpression, value, CreatePredicate)
         {
         }
 
-        private static SystemExpression CreatePredicate(MemberExpression member, ConstantExpression constant)
+        private static SystemExpression CreatePredicate(MemberExpression member, SystemExpression constant)
         {
             return SystemExpression.Call(member, ContainsMethod, constant);
         }

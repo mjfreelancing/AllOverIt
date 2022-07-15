@@ -41,23 +41,53 @@ namespace EFEnumerationDemo
                 // properties are initialized using implicit operators
                 var filter = new BlogFilter
                 {
+                    EqualToInt = 4,
+                    EqualToString = "abc",
                     GreaterThan = 9,
-                    LessThan = 12,                  // same as new LessThan<int>(12)
+                    GreaterThanOrEqual = 10,
+                    LessThan = 15,                  // same as new LessThan<int>(15)
+                    LessThanOrEqual = 13,
                     Contains = "#12",
-                    StartsWith = "#1"
+                    StartsWith = "#1",
+                    EndsWith = "##",
+                    In = new List<int>(new[] { 10, 11 })
                 };
 
                 var query = dbContext.Blogs
 
-                    // WHERE ((`b`.`Id` > 9) AND (`b`.`Id` < 12)) OR ((`b`.`Description` LIKE '%#12%') OR (`b`.`Description` LIKE '#1%'))
+                    // WHERE ((`b`.`Id` > 9) AND (`b`.`Id` < 15)) OR ((`b`.`Description` LIKE '%#12%') OR (`b`.`Description` LIKE '#1%'))
                     .ApplyFilter(filter, (specificationBuilder, filterBuilder) =>
                     {
-                        var s1 = specificationBuilder.And(blog => blog.Id, f => f.GreaterThan, f => f.LessThan);
-                        var s2 = specificationBuilder.Or(blog => blog.Description, f => f.Contains, f => f.StartsWith);
+                        // Use Create() for building a single specification against a property
+                        var s1 = specificationBuilder.Create(blog => blog.Id, f => f.In);
+
+                        // These methods require the two operations to act on the same property, hence must support the same type
+                        var s2 = specificationBuilder.And(blog => blog.Id, f => f.GreaterThan, f => f.LessThan);
+                        var s3 = specificationBuilder.Or(blog => blog.Description, f => f.Contains, f => f.StartsWith);
+                        var s4 = specificationBuilder.Or(blog => blog.Id, f => f.In, f => f.LessThan);
+
+                        var s5 = specificationBuilder.Create(blog => blog.Description, f => f.EndsWith);
+                        var s6 = specificationBuilder.Create(blog => blog.Id, f => f.EqualToInt);
+
+                        // A mismatch on property type will result in:
+                        // System.InvalidOperationException: Unknown operation EqualTo<Int32> for blog => blog.Description.
+                        // var s7 = specificationBuilder.Create(blog => blog.Description, f => f.EqualToInt);
+
+                        var s7 = specificationBuilder.Create(blog => blog.Description, f => f.EqualToString);
+                        var s8 = specificationBuilder.Create(blog => blog.Id, f => f.GreaterThanOrEqual);
+                        var s9 = specificationBuilder.Create(blog => blog.Id, f => f.LessThanOrEqual);
+
 
                         filterBuilder
                             .Where(s1)
-                            .Or(s2);            // can chain more And() / Or() calls
+                            .And(s2)
+                            .Or(s3)
+                            .Or(s4)
+                            .Or(s5)
+                            .Or(s6)
+                            .Or(s7)
+                            .Or(s8)
+                            .Or(s9);
                     })
 
                     .Join(dbContext.Posts,
@@ -75,7 +105,7 @@ namespace EFEnumerationDemo
 
                 Console.WriteLine();
 
-                foreach (var result in results)
+                foreach (var result in results.Take(1))     // TEMP Take()
                 {
                     Console.WriteLine($"{result.Id} - {result.Description} - {result.Rating.Value} - {result.Rating.Name} - {result.Content}");
                 }

@@ -1,6 +1,6 @@
 ﻿namespace AllOverIt.Filtering.Filters
 {
-    public interface IOperation
+    public interface IFilterOperation
     {
     }
 }

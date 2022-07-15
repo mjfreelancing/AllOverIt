@@ -1,4 +1,5 @@
-﻿using AllOverIt.Extensions;
+﻿using AllOverIt.Expressions;
+using AllOverIt.Extensions;
 using AllOverIt.Patterns.Specification;
 using System;
 using System.Collections.Generic;
@@ -17,8 +18,8 @@ namespace AllOverIt.Filtering.Operations
             TProperty value,
             
             // Creates the final expression
-            Func<MemberExpression, ConstantExpression, SystemExpression> predicateExpressionFactory)
-                : base(() => CreateResolver(propertyExpression, SystemExpression.Constant(value), predicateExpressionFactory))
+            Func<MemberExpression, SystemExpression, SystemExpression> predicateExpressionFactory)
+                : base(() => CreateResolver(propertyExpression, CreateValueExpression(value), predicateExpressionFactory))
         {
         }
 
@@ -30,13 +31,13 @@ namespace AllOverIt.Filtering.Operations
             IList<TProperty> values,
 
             // Creates the final expression
-            Func<MemberExpression, ConstantExpression, SystemExpression> predicateExpressionFactory)
-                : base(() => CreateResolver(propertyExpression, SystemExpression.Constant(values), predicateExpressionFactory))
+            Func<MemberExpression, SystemExpression, SystemExpression> predicateExpressionFactory)
+                : base(() => CreateResolver(propertyExpression, CreateValueExpression(values), predicateExpressionFactory))
         {
         }
 
-        private static Expression<Func<TEntity, bool>> CreateResolver(Expression<Func<TEntity, TProperty>> propertyExpression, ConstantExpression constant,
-            Func<MemberExpression, ConstantExpression, SystemExpression> predicateExpressionFactory)
+        private static Expression<Func<TEntity, bool>> CreateResolver(Expression<Func<TEntity, TProperty>> propertyExpression, SystemExpression constant,
+            Func<MemberExpression, SystemExpression, SystemExpression> predicateExpressionFactory)
         {
             var parameter = SystemExpression.Parameter(typeof(TEntity), "entity");
 
@@ -54,9 +55,18 @@ namespace AllOverIt.Filtering.Operations
 
 
 
-            var predicate = predicateExpressionFactory.Invoke(member as MemberExpression, constant);
+            var predicate = predicateExpressionFactory.Invoke(member, constant);
 
             return SystemExpression.Lambda<Func<TEntity, bool>>(predicate, parameter);
+        }
+
+        private static SystemExpression CreateValueExpression<TValue>(TValue value)
+        {
+            // TODO: If not using parameterized values, simply return:
+            // return SystemExpression.Constant(value);
+
+            // Must use the runtime type, not the typeof(TValue) because IList<T> causes issues when the value is a List<T>
+            return ExpressionUtils.CreateParameterizedValue(value, value.GetType());
         }
     }
 }

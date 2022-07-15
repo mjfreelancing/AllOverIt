@@ -14,7 +14,7 @@ namespace AllOverIt.Filtering.Operations
         {
         }
 
-        private static SystemExpression CreatePredicate(MemberExpression member, ConstantExpression _)
+        private static SystemExpression CreatePredicate(MemberExpression member, SystemExpression _)
         {
             var isNull = SystemExpression.Equal(member, NullConstant);
 

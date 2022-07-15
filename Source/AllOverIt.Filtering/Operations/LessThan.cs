@@ -11,7 +11,7 @@ namespace AllOverIt.Filtering.Operations
         {
         }
 
-        private static SystemExpression CreatePredicate(MemberExpression member, ConstantExpression constant)
+        private static SystemExpression CreatePredicate(MemberExpression member, SystemExpression constant)
         {
             return SystemExpression.LessThan(member, constant);
         }

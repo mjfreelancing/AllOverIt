@@ -1,6 +1,6 @@
 ﻿namespace AllOverIt.Filtering.Filters
 {
-    public class Contains : IContains
+    public sealed class Contains : IContains
     {
         public string Value { get; set; }
 
@@ -26,6 +26,4 @@
             };
         }
     }
-
-
 }

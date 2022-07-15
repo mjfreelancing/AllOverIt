@@ -1,6 +1,6 @@
 ﻿namespace AllOverIt.Filtering.Filters
 {
-    public interface IStartsWith : IStringFilterOperation
+    public interface IEndsWith : IStringFilterOperation
     {
         string Value { get; }
     }
