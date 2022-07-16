@@ -106,7 +106,6 @@ namespace AllOverIt.Filtering.Builders
             return this;
         }
 
-
         public ILogicalFilterBuilder<TType, TFilter> Or<TProperty>(Expression<Func<TType, TProperty>> propertyExpression,
             Func<TFilter, IFilterOperation> operation)
         {

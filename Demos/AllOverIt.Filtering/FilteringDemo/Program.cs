@@ -38,7 +38,7 @@ namespace FilteringDemo
 
     internal class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             var products = GetProducts();
 
