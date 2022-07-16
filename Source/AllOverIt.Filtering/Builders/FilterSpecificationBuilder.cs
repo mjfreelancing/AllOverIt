@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
+using AllOverIt.Filtering.Extensions;
 using AllOverIt.Filtering.Filters;
 using AllOverIt.Filtering.Operations;
 using AllOverIt.Patterns.Specification;
@@ -14,10 +15,12 @@ namespace AllOverIt.Filtering.Builders
         where TFilter : class, IFilter
     {
         private readonly TFilter _filter;
+        private readonly IFilterSpecificationBuilderOptions _options;
 
-        public FilterSpecificationBuilder(TFilter filter)
+        public FilterSpecificationBuilder(TFilter filter, IFilterSpecificationBuilderOptions options)
         {
             _filter = filter.WhenNotNull(nameof(filter));
+            _options = options.WhenNotNull(nameof(options));
         }
 
         public ILinqSpecification<TType> Create(Expression<Func<TType, string>> propertyExpression,
@@ -82,10 +85,10 @@ namespace AllOverIt.Filtering.Builders
 
             return operation switch
             {
-                IContains contains => new ContainsOperation<TType>(propertyExpression, contains.Value),
-                INotContains notContains => new NotContainsOperation<TType>(propertyExpression, notContains.Value),
-                IStartsWith startsWith => new StartsWithOperation<TType>(propertyExpression, startsWith.Value),
-                IEndsWith endsWith => new EndsWithOperation<TType>(propertyExpression, endsWith.Value),
+                IContains contains => new ContainsOperation<TType>(propertyExpression, contains.Value, _options.UseParameterizedQueries),
+                INotContains notContains => new NotContainsOperation<TType>(propertyExpression, notContains.Value, _options.UseParameterizedQueries),
+                IStartsWith startsWith => new StartsWithOperation<TType>(propertyExpression, startsWith.Value, _options.UseParameterizedQueries),
+                IEndsWith endsWith => new EndsWithOperation<TType>(propertyExpression, endsWith.Value, _options.UseParameterizedQueries),
 
                 _ => throw new InvalidOperationException($"Cannot apply {operation.GetType().GetFriendlyName()} to {propertyExpression}."),
             };
@@ -99,16 +102,16 @@ namespace AllOverIt.Filtering.Builders
             return operation switch
             {
                 // IArrayFilterOperation
-                IIn<TProperty> array => new InOperation<TType, TProperty>(propertyExpression, array.Values),
-                INotIn<TProperty> array => new NotInOperation<TType, TProperty>(propertyExpression, array.Values),
+                IIn<TProperty> array => new InOperation<TType, TProperty>(propertyExpression, array.Values, _options.UseParameterizedQueries),
+                INotIn<TProperty> array => new NotInOperation<TType, TProperty>(propertyExpression, array.Values, _options.UseParameterizedQueries),
 
                 // IFilterOperation
-                IEqualTo<TProperty> equalTo => new EqualToOperation<TType, TProperty>(propertyExpression, equalTo.Value),
-                INotEqualTo<TProperty> equalTo => new NotEqualToOperation<TType, TProperty>(propertyExpression, equalTo.Value),
-                IGreaterThan<TProperty> greaterThan => new GreaterThanOperation<TType, TProperty>(propertyExpression, greaterThan.Value),
-                IGreaterThanOrEqual<TProperty> greaterThanOrEqual => new GreaterThanOrEqualOperation<TType, TProperty>(propertyExpression, greaterThanOrEqual.Value),
-                ILessThan<TProperty> lessThan => new LessThanOperation<TType, TProperty>(propertyExpression, lessThan.Value),
-                ILessThanOrEqual<TProperty> lessThanOrEqual => new LessThanOrEqualOperation<TType, TProperty>(propertyExpression, lessThanOrEqual.Value),
+                IEqualTo<TProperty> equalTo => new EqualToOperation<TType, TProperty>(propertyExpression, equalTo.Value, _options.UseParameterizedQueries),
+                INotEqualTo<TProperty> equalTo => new NotEqualToOperation<TType, TProperty>(propertyExpression, equalTo.Value, _options.UseParameterizedQueries),
+                IGreaterThan<TProperty> greaterThan => new GreaterThanOperation<TType, TProperty>(propertyExpression, greaterThan.Value, _options.UseParameterizedQueries),
+                IGreaterThanOrEqual<TProperty> greaterThanOrEqual => new GreaterThanOrEqualOperation<TType, TProperty>(propertyExpression, greaterThanOrEqual.Value, _options.UseParameterizedQueries),
+                ILessThan<TProperty> lessThan => new LessThanOperation<TType, TProperty>(propertyExpression, lessThan.Value, _options.UseParameterizedQueries),
+                ILessThanOrEqual<TProperty> lessThanOrEqual => new LessThanOrEqualOperation<TType, TProperty>(propertyExpression, lessThanOrEqual.Value, _options.UseParameterizedQueries),
 
                 _ => throw new InvalidOperationException($"Cannot apply {operation.GetType().GetFriendlyName()} to {propertyExpression}."),
             };

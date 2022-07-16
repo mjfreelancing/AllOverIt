@@ -9,8 +9,8 @@ namespace AllOverIt.Filtering.Operations
     {
         private static readonly MethodInfo ContainsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) });
 
-        public NotContainsOperation(Expression<Func<TEntity, string>> propertyExpression, string value)
-            : base(propertyExpression, value, CreatePredicate)
+        public NotContainsOperation(Expression<Func<TEntity, string>> propertyExpression, string value, bool useParameterizedQueries)
+            : base(propertyExpression, value, CreatePredicate, useParameterizedQueries)
         {
         }
 

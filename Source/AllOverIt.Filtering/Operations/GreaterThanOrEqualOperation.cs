@@ -6,8 +6,8 @@ namespace AllOverIt.Filtering.Operations
 {
     internal sealed class GreaterThanOrEqualOperation<TEntity, TProperty> : OperationBase<TEntity, TProperty> where TEntity : class
     {
-        public GreaterThanOrEqualOperation(Expression<Func<TEntity, TProperty>> propertyExpression, TProperty value)
-            : base(propertyExpression, value, CreatePredicate)
+        public GreaterThanOrEqualOperation(Expression<Func<TEntity, TProperty>> propertyExpression, TProperty value, bool useParameterizedQueries)
+            : base(propertyExpression, value, CreatePredicate, useParameterizedQueries)
         {
         }
 

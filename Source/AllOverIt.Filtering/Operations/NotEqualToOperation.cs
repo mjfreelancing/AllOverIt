@@ -6,8 +6,8 @@ namespace AllOverIt.Filtering.Operations
 {
     internal sealed class NotEqualToOperation<TEntity, TProperty> : OperationBase<TEntity, TProperty> where TEntity : class
     {
-        public NotEqualToOperation(Expression<Func<TEntity, TProperty>> propertyExpression, TProperty value)
-            : base(propertyExpression, value, CreatePredicate)
+        public NotEqualToOperation(Expression<Func<TEntity, TProperty>> propertyExpression, TProperty value, bool useParameterizedQueries)
+            : base(propertyExpression, value, CreatePredicate, useParameterizedQueries)
         {
         }
 

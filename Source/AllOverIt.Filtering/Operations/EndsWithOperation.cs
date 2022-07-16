@@ -9,8 +9,8 @@ namespace AllOverIt.Filtering.Operations
     {
         private static readonly MethodInfo EndsWithMethod = typeof(string).GetMethod("EndsWith", new[] { typeof(string) });
 
-        public EndsWithOperation(Expression<Func<TEntity, string>> propertyExpression, string value)
-            : base(propertyExpression, value, CreatePredicate)
+        public EndsWithOperation(Expression<Func<TEntity, string>> propertyExpression, string value, bool useParameterizedQueries)
+            : base(propertyExpression, value, CreatePredicate, useParameterizedQueries)
         {
         }
 

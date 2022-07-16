@@ -9,8 +9,8 @@ namespace AllOverIt.Filtering.Operations
     {
         private static readonly MethodInfo StartsWithMethod = typeof(string).GetMethod("StartsWith", new[] { typeof(string) });
 
-        public StartsWithOperation(Expression<Func<TEntity, string>> propertyExpression, string value)
-            : base(propertyExpression, value, CreatePredicate)
+        public StartsWithOperation(Expression<Func<TEntity, string>> propertyExpression, string value, bool useParameterizedQueries)
+            : base(propertyExpression, value, CreatePredicate, useParameterizedQueries)
         {
         }
 

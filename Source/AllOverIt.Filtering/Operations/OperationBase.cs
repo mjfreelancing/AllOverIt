@@ -18,8 +18,11 @@ namespace AllOverIt.Filtering.Operations
             TProperty value,
             
             // Creates the final expression
-            Func<MemberExpression, SystemExpression, SystemExpression> predicateExpressionFactory)
-                : base(() => CreateResolver(propertyExpression, CreateValueExpression(value), predicateExpressionFactory))
+            Func<MemberExpression, SystemExpression, SystemExpression> predicateExpressionFactory,
+            
+            // Use parameter proxies (for EF queries) or plain constant expressions
+            bool useParameterizedQueries)
+                : base(() => CreateResolver(propertyExpression, CreateValueExpression(value, useParameterizedQueries), predicateExpressionFactory))
         {
         }
 
@@ -31,8 +34,11 @@ namespace AllOverIt.Filtering.Operations
             IList<TProperty> values,
 
             // Creates the final expression
-            Func<MemberExpression, SystemExpression, SystemExpression> predicateExpressionFactory)
-                : base(() => CreateResolver(propertyExpression, CreateValueExpression(values), predicateExpressionFactory))
+            Func<MemberExpression, SystemExpression, SystemExpression> predicateExpressionFactory,
+
+            // Use parameter proxies (for EF queries) or plain constant expressions
+            bool useParameterizedQueries)
+                : base(() => CreateResolver(propertyExpression, CreateValueExpression(values, useParameterizedQueries), predicateExpressionFactory))
         {
         }
 
@@ -41,32 +47,18 @@ namespace AllOverIt.Filtering.Operations
         {
             var parameter = SystemExpression.Parameter(typeof(TEntity), "entity");
 
+            var memberExpression = propertyExpression.GetPropertyOrFieldExpressionUsingParameter(parameter);
 
-            // TODO: Add this is a utility
-            // Get the full property chain
-            MemberExpression member = null;
-            var memberExpressions = propertyExpression.GetMemberExpressions();
-
-            foreach (var memberExpression in memberExpressions)
-            {
-                var expression = (SystemExpression) member ?? parameter;
-                member = SystemExpression.PropertyOrField(expression, memberExpression.Member.Name);
-            }
-
-
-
-            var predicate = predicateExpressionFactory.Invoke(member, constant);
+            var predicate = predicateExpressionFactory.Invoke(memberExpression, constant);
 
             return SystemExpression.Lambda<Func<TEntity, bool>>(predicate, parameter);
         }
 
-        private static SystemExpression CreateValueExpression<TValue>(TValue value)
+        private static SystemExpression CreateValueExpression<TValue>(TValue value, bool useParameterizedQueries)
         {
-            // TODO: If not using parameterized values, simply return:
-            //return SystemExpression.Constant(value);
-
-            // Must use the runtime type, not the typeof(TValue) because IList<T> causes issues when the value is a List<T>
-            return ExpressionUtils.CreateParameterizedValue(value, value.GetType());
+            return useParameterizedQueries
+                ? ExpressionUtils.CreateParameterizedValue(value, value.GetType())
+                : SystemExpression.Constant(value);
         }
     }
 }
