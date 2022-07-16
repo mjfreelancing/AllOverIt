@@ -109,10 +109,10 @@ namespace AllOverIt.Filtering.Builders
                 IArrayFilterOperation array => GetFilterSpecification(propertyExpression, array),
                 IEqualTo<TProperty> equalTo => new EqualToOperation<TType, TProperty>(propertyExpression, equalTo.Value),
                 INotEqualTo<TProperty> equalTo => new NotEqualToOperation<TType, TProperty>(propertyExpression, equalTo.Value),
-                IGreaterThan<TProperty> greaterThan => new GreaterThan<TType, TProperty>(propertyExpression, greaterThan.Value),
-                IGreaterThanOrEqual<TProperty> greaterThanOrEqual => new GreaterThanOrEqual<TType, TProperty>(propertyExpression, greaterThanOrEqual.Value),
-                ILessThan<TProperty> lessThan => new LessThan<TType, TProperty>(propertyExpression, lessThan.Value),
-                ILessThanOrEqual<TProperty> lessThanOrEqual => new LessThanOrEqual<TType, TProperty>(propertyExpression, lessThanOrEqual.Value),
+                IGreaterThan<TProperty> greaterThan => new GreaterThanOperation<TType, TProperty>(propertyExpression, greaterThan.Value),
+                IGreaterThanOrEqual<TProperty> greaterThanOrEqual => new GreaterThanOrEqualOperation<TType, TProperty>(propertyExpression, greaterThanOrEqual.Value),
+                ILessThan<TProperty> lessThan => new LessThanOperation<TType, TProperty>(propertyExpression, lessThan.Value),
+                ILessThanOrEqual<TProperty> lessThanOrEqual => new LessThanOrEqualOperation<TType, TProperty>(propertyExpression, lessThanOrEqual.Value),
                 _ => throw new InvalidOperationException($"Unknown operation {operand.GetType().GetFriendlyName()} for {propertyExpression}."),
             };
         }
@@ -125,8 +125,8 @@ namespace AllOverIt.Filtering.Builders
 
             return operation switch
             {
-                IIn<TProperty> array => new In<TType, TProperty>(propertyExpression, array.Values),
-                INotIn<TProperty> array => new NotIn<TType, TProperty>(propertyExpression, array.Values),
+                IIn<TProperty> array => new InOperation<TType, TProperty>(propertyExpression, array.Values),
+                INotIn<TProperty> array => new NotInOperation<TType, TProperty>(propertyExpression, array.Values),
                 _ => throw new InvalidOperationException("Unknown operation."),
             };
         }

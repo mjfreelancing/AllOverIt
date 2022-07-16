@@ -6,11 +6,11 @@ using SystemExpression = System.Linq.Expressions.Expression;    // avoid conflic
 
 namespace AllOverIt.Filtering.Operations
 {
-    internal sealed class In<TEntity, TProperty> : OperationBase<TEntity, TProperty> where TEntity : class
+    internal sealed class InOperation<TEntity, TProperty> : OperationBase<TEntity, TProperty> where TEntity : class
     {
         private static readonly MethodInfo ContainsMethod = typeof(List<TProperty>).GetMethod("Contains", new[] { typeof(TProperty) });
 
-        public In(Expression<Func<TEntity, TProperty>> propertyExpression, IList<TProperty> values)
+        public InOperation(Expression<Func<TEntity, TProperty>> propertyExpression, IList<TProperty> values)
             : base(propertyExpression, values, CreatePredicate)
         {
         }

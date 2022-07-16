@@ -4,16 +4,16 @@ using SystemExpression = System.Linq.Expressions.Expression;    // avoid conflic
 
 namespace AllOverIt.Filtering.Operations
 {
-    internal sealed class GreaterThanOrEqual<TEntity, TProperty> : OperationBase<TEntity, TProperty> where TEntity : class
+    internal sealed class LessThanOperation<TEntity, TProperty> : OperationBase<TEntity, TProperty> where TEntity : class
     {
-        public GreaterThanOrEqual(Expression<Func<TEntity, TProperty>> propertyExpression, TProperty value)
+        public LessThanOperation(Expression<Func<TEntity, TProperty>> propertyExpression, TProperty value)
             : base(propertyExpression, value, CreatePredicate)
         {
         }
 
         private static SystemExpression CreatePredicate(MemberExpression member, SystemExpression constant)
         {
-            return SystemExpression.GreaterThanOrEqual(member, constant);
+            return SystemExpression.LessThan(member, constant);
         }
     }
 }
