@@ -82,13 +82,11 @@ namespace EFEnumerationDemo
                         var _s9 = specificationBuilder.Create(blog => blog.Id, f => f.NotIn);
 
 
-                        //var s4 = specificationBuilder.Or(blog => blog.Id, f => f.In, f => f.LessThan);
+                        // System.InvalidOperationException: Cannot apply EqualTo<Int32> to blog => blog.Description.
+                        // var _s10 = specificationBuilder.Create(blog => blog.Description, f => f.EqualToInt);
 
-                        //var s5 = specificationBuilder.Create(blog => blog.Description);
-
-                        // A mismatch on property type will result in:
-                        // System.InvalidOperationException: Unknown operation EqualTo<Int32> for blog => blog.Description.
-                        // var s7 = specificationBuilder.Create(blog => blog.Description, f => f.EqualToInt);
+                        // System.InvalidOperationException: Cannot apply In<Int32> to blog => blog.Description.
+                        // var _s10 = specificationBuilder.Create(blog => blog.Description, f => f.In);
 
 
                         filterBuilder

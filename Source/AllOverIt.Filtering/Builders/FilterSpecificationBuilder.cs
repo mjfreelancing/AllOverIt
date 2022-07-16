@@ -76,27 +76,27 @@ namespace AllOverIt.Filtering.Builders
         #endregion
 
         private ILinqSpecification<TType> GetFilterSpecification(Expression<Func<TType, string>> propertyExpression,
-            Func<TFilter, IStringFilterOperation> operation)
+            Func<TFilter, IStringFilterOperation> filterOperation)
         {
-            var operand = operation.Invoke(_filter);
+            var operation = filterOperation.Invoke(_filter);
 
-            return operand switch
+            return operation switch
             {
                 IContains contains => new ContainsOperation<TType>(propertyExpression, contains.Value),
                 INotContains notContains => new NotContainsOperation<TType>(propertyExpression, notContains.Value),
                 IStartsWith startsWith => new StartsWithOperation<TType>(propertyExpression, startsWith.Value),
                 IEndsWith endsWith => new EndsWithOperation<TType>(propertyExpression, endsWith.Value),
 
-                _ => throw new InvalidOperationException("Unknown operation."),
+                _ => throw new InvalidOperationException($"Cannot apply {operation.GetType().GetFriendlyName()} to {propertyExpression}."),
             };
         }
 
         private ILinqSpecification<TType> GetFilterSpecification<TProperty>(Expression<Func<TType, TProperty>> propertyExpression,
-            Func<TFilter, IFilterOperation> operation)
+            Func<TFilter, IFilterOperation> filterOperation)
         {
-            var operand = operation.Invoke(_filter);
+            var operation = filterOperation.Invoke(_filter);
 
-            return operand switch
+            return operation switch
             {
                 // IArrayFilterOperation
                 IIn<TProperty> array => new InOperation<TType, TProperty>(propertyExpression, array.Values),
@@ -110,7 +110,7 @@ namespace AllOverIt.Filtering.Builders
                 ILessThan<TProperty> lessThan => new LessThanOperation<TType, TProperty>(propertyExpression, lessThan.Value),
                 ILessThanOrEqual<TProperty> lessThanOrEqual => new LessThanOrEqualOperation<TType, TProperty>(propertyExpression, lessThanOrEqual.Value),
 
-                _ => throw new InvalidOperationException($"Unknown operation {operand.GetType().GetFriendlyName()} for {propertyExpression}."),
+                _ => throw new InvalidOperationException($"Cannot apply {operation.GetType().GetFriendlyName()} to {propertyExpression}."),
             };
         }
     }
