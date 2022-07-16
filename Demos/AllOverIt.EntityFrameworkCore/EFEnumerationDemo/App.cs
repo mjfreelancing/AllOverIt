@@ -50,7 +50,7 @@ namespace EFEnumerationDemo
                         LessThan = 5,
                         LessThanOrEqual = 7,
                         In = new List<int>(new[]{1, 2, 3}),         // implicit conversion
-                        NotIn = new NotIn<int>(new[]{1, 2, 3})      // constructor
+                        NotIn = new NotIn<int>(new[]{4, 5, 6})      // constructor
                     },
                     Description = {
                         EqualTo = "#10",
@@ -147,13 +147,17 @@ namespace EFEnumerationDemo
                     var s4 = specificationBuilder.Or(blog => blog.Id, f => f.Id.GreaterThanOrEqual, f => f.Id.LessThanOrEqual);
                     filterBuilder.Where(s4);
 
-                    // Id In / NotIn - chaining filterBuilder.Where() and Or() without using an explicit specification
+                    // Id In / NotIn - chaining filterBuilder.Where() and Or() without using an explicit specification.
+                    // Since sequential Where() calls results in an AND, this criteria will result in:
+                    //  (previous_criteria) && (Id IN (1, 2, 3)) || (Id NOT IN (4, 5, 6))
+                    // That is, chained methods are simply appended and operator precedence is automatically applied.
                     filterBuilder.Where(blog => blog.Id, f => f.Id.In)
                                  .Or(blog => blog.Id, f => f.Id.NotIn);
 
                     // Description EqualTo / NotEqualTo / Contains / NotContains / StartsWith / EndsWith - combining them as
                     // AND using the specificationBuilder then OR to the previous criteria added to the filter builder.
-                    // Also shows using 'Current' to allow for chaining as an OR instead of the implicit AND.
+                    // Also shows using 'Current' to allow for continued chaining as an OR / AND can only otherwise follow a Where().
+                    // (Note, Current will be null if there have been no previous criteria applied)
                     var s5 = specificationBuilder.Create(blog => blog.Description, f => f.Description.EqualTo);
                     var s6 = specificationBuilder.Create(blog => blog.Description, f => f.Description.NotEqualTo);
                     var s7 = specificationBuilder.Create(blog => blog.Description, f => f.Description.Contains);
