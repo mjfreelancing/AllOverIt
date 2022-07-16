@@ -21,5 +21,4 @@ namespace AllOverIt.Pagination
             writer.WriteObject(continuationToken.Values, ValuesType);
         }
     }
-
 }
