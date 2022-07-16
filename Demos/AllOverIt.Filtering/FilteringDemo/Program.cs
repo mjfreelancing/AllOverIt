@@ -42,7 +42,7 @@ namespace FilteringDemo
         {
             var products = GetProducts();
 
-            var filter = new ProductFilter
+            var productFilter = new ProductFilter
             {
                 Category = {
                     StartsWith = "fu"
@@ -64,14 +64,14 @@ namespace FilteringDemo
 
             var results = products
                 .AsQueryable()
-                .ApplyFilter(filter, (specificationBuilder, filterBuilder) =>
+                .ApplyFilter(productFilter, (specificationBuilder, filterBuilder) =>
                 {
-                    var priceGte = specificationBuilder.Create(product => product.Price, f => f.Price.GreaterThanOrEqual);
-                    var priceLte = specificationBuilder.Create(product => product.Price, f => f.Price.LessThanOrEqual);
+                    var priceGte = specificationBuilder.Create(product => product.Price, filter => filter.Price.GreaterThanOrEqual);
+                    var priceLte = specificationBuilder.Create(product => product.Price, filter => filter.Price.LessThanOrEqual);
 
                     filterBuilder
-                        .Where(product => product.Category, f => f.Category.StartsWith)
-                        .And(product => product.Name, f => f.Name.Contains)
+                        .Where(product => product.Category, filter => filter.Category.StartsWith)
+                        .And(product => product.Name, filter => filter.Name.Contains)
                         .And(priceGte.And(priceLte));
 
                     // TODO

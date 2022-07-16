@@ -123,7 +123,7 @@ namespace EFEnumerationDemo
             _logger.LogInformation("App is stopped");
         }
 
-        private static IQueryable<Blog> CreateFilteredBlogQuery(BloggingContext dbContext, BlogFilter filter)
+        private static IQueryable<Blog> CreateFilteredBlogQuery(BloggingContext dbContext, BlogFilter blogFilter)
         {
             // This demo shows different approaches to combining options - the demo doesn't logically
             // make sense, but it's here to show different construct options. It assumes each option
@@ -132,38 +132,38 @@ namespace EFEnumerationDemo
             // Each call to filterBuilder.Where() will AND the criteria with the previous criteria.
             return dbContext.Blogs
                 .AsQueryable()
-                .ApplyFilter(filter, (specificationBuilder, filterBuilder) =>
+                .ApplyFilter(blogFilter, (specificationBuilder, filterBuilder) =>
                 {
                     // Id EqualTo / NotEqualTo - using individual specifications
-                    var s1 = specificationBuilder.Create(blog => blog.Id, f => f.Id.EqualTo);
-                    var s2 = specificationBuilder.Create(blog => blog.Id, f => f.Id.NotEqualTo);
+                    var s1 = specificationBuilder.Create(blog => blog.Id, filter => filter.Id.EqualTo);
+                    var s2 = specificationBuilder.Create(blog => blog.Id, filter => filter.Id.NotEqualTo);
                     filterBuilder.Where(s1.And(s2));
 
                     // Id GreaterThan / LessThan - using specificationBuilder.And()
-                    var s3 = specificationBuilder.And(blog => blog.Id, f => f.Id.GreaterThan, f => f.Id.LessThan);
+                    var s3 = specificationBuilder.And(blog => blog.Id, filter => filter.Id.GreaterThan, filter => filter.Id.LessThan);
                     filterBuilder.Where(s3);
 
                     // Id GreaterThanOrEqual / LessThanOrEqual - using specificationBuilder.Or()
-                    var s4 = specificationBuilder.Or(blog => blog.Id, f => f.Id.GreaterThanOrEqual, f => f.Id.LessThanOrEqual);
+                    var s4 = specificationBuilder.Or(blog => blog.Id, filter => filter.Id.GreaterThanOrEqual, filter => filter.Id.LessThanOrEqual);
                     filterBuilder.Where(s4);
 
                     // Id In / NotIn - chaining filterBuilder.Where() and Or() without using an explicit specification.
                     // Since sequential Where() calls results in an AND, this criteria will result in:
                     //  (previous_criteria) && (Id IN (1, 2, 3)) || (Id NOT IN (4, 5, 6))
                     // That is, chained methods are simply appended and operator precedence is automatically applied.
-                    filterBuilder.Where(blog => blog.Id, f => f.Id.In)
-                                 .Or(blog => blog.Id, f => f.Id.NotIn);
+                    filterBuilder.Where(blog => blog.Id, filter => filter.Id.In)
+                                 .Or(blog => blog.Id, filter => filter.Id.NotIn);
 
                     // Description EqualTo / NotEqualTo / Contains / NotContains / StartsWith / EndsWith - combining them as
                     // AND using the specificationBuilder then OR to the previous criteria added to the filter builder.
                     // Also shows using 'Current' to allow for continued chaining as an OR / AND can only otherwise follow a Where().
                     // (Note, Current will be null if there have been no previous criteria applied)
-                    var s5 = specificationBuilder.Create(blog => blog.Description, f => f.Description.EqualTo);
-                    var s6 = specificationBuilder.Create(blog => blog.Description, f => f.Description.NotEqualTo);
-                    var s7 = specificationBuilder.Create(blog => blog.Description, f => f.Description.Contains);
-                    var s8 = specificationBuilder.Create(blog => blog.Description, f => f.Description.NotContains);
-                    var s9 = specificationBuilder.Create(blog => blog.Description, f => f.Description.StartsWith);
-                    var s10 = specificationBuilder.Create(blog => blog.Description, f => f.Description.EndsWith);
+                    var s5 = specificationBuilder.Create(blog => blog.Description, filter => filter.Description.EqualTo);
+                    var s6 = specificationBuilder.Create(blog => blog.Description, filter => filter.Description.NotEqualTo);
+                    var s7 = specificationBuilder.Create(blog => blog.Description, filter => filter.Description.Contains);
+                    var s8 = specificationBuilder.Create(blog => blog.Description, filter => filter.Description.NotContains);
+                    var s9 = specificationBuilder.Create(blog => blog.Description, filter => filter.Description.StartsWith);
+                    var s10 = specificationBuilder.Create(blog => blog.Description, filter => filter.Description.EndsWith);
                     var combined = s5.And(s6).And(s7).And(s8).And(s9).And(s10);
 
                     filterBuilder.Current.Or(combined);
