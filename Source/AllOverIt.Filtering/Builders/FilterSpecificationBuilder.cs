@@ -20,8 +20,6 @@ namespace AllOverIt.Filtering.Builders
             _filter = filter.WhenNotNull(nameof(filter));
         }
 
-
-
         public ILinqSpecification<TType> Create(Expression<Func<TType, string>> propertyExpression,
             Func<TFilter, IStringFilterOperation> operation)
         {
@@ -34,8 +32,6 @@ namespace AllOverIt.Filtering.Builders
         {
             return GetFilterSpecification(propertyExpression, operation);
         }
-
-
 
         #region AND Operations
         public ILinqSpecification<TType> And(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation1,
@@ -58,8 +54,6 @@ namespace AllOverIt.Filtering.Builders
         }
         #endregion
 
-
-
         #region OR Operations
         public ILinqSpecification<TType> Or(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation1,
             Func<TFilter, IStringFilterOperation> operation2)
@@ -81,8 +75,6 @@ namespace AllOverIt.Filtering.Builders
         }
         #endregion
 
-
-
         private ILinqSpecification<TType> GetFilterSpecification(Expression<Func<TType, string>> propertyExpression,
             Func<TFilter, IStringFilterOperation> operation)
         {
@@ -94,11 +86,11 @@ namespace AllOverIt.Filtering.Builders
                 INotContains notContains => new NotContainsOperation<TType>(propertyExpression, notContains.Value),
                 IStartsWith startsWith => new StartsWithOperation<TType>(propertyExpression, startsWith.Value),
                 IEndsWith endsWith => new EndsWithOperation<TType>(propertyExpression, endsWith.Value),
+
                 _ => throw new InvalidOperationException("Unknown operation."),
             };
         }
 
-        // Caters for IOperation and IArrayOperation
         private ILinqSpecification<TType> GetFilterSpecification<TProperty>(Expression<Func<TType, TProperty>> propertyExpression,
             Func<TFilter, IFilterOperation> operation)
         {
@@ -106,28 +98,19 @@ namespace AllOverIt.Filtering.Builders
 
             return operand switch
             {
-                IArrayFilterOperation array => GetFilterSpecification(propertyExpression, array),
+                // IArrayFilterOperation
+                IIn<TProperty> array => new InOperation<TType, TProperty>(propertyExpression, array.Values),
+                INotIn<TProperty> array => new NotInOperation<TType, TProperty>(propertyExpression, array.Values),
+
+                // IFilterOperation
                 IEqualTo<TProperty> equalTo => new EqualToOperation<TType, TProperty>(propertyExpression, equalTo.Value),
                 INotEqualTo<TProperty> equalTo => new NotEqualToOperation<TType, TProperty>(propertyExpression, equalTo.Value),
                 IGreaterThan<TProperty> greaterThan => new GreaterThanOperation<TType, TProperty>(propertyExpression, greaterThan.Value),
                 IGreaterThanOrEqual<TProperty> greaterThanOrEqual => new GreaterThanOrEqualOperation<TType, TProperty>(propertyExpression, greaterThanOrEqual.Value),
                 ILessThan<TProperty> lessThan => new LessThanOperation<TType, TProperty>(propertyExpression, lessThan.Value),
                 ILessThanOrEqual<TProperty> lessThanOrEqual => new LessThanOrEqualOperation<TType, TProperty>(propertyExpression, lessThanOrEqual.Value),
+
                 _ => throw new InvalidOperationException($"Unknown operation {operand.GetType().GetFriendlyName()} for {propertyExpression}."),
-            };
-        }
-
-
-        private ILinqSpecification<TType> GetFilterSpecification<TProperty>(Expression<Func<TType, TProperty>> propertyExpression,
-           IArrayFilterOperation operation)
-        {
-            //var operand = operation.Invoke(_filter);
-
-            return operation switch
-            {
-                IIn<TProperty> array => new InOperation<TType, TProperty>(propertyExpression, array.Values),
-                INotIn<TProperty> array => new NotInOperation<TType, TProperty>(propertyExpression, array.Values),
-                _ => throw new InvalidOperationException("Unknown operation."),
             };
         }
     }
