@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Expressions;
 using AllOverIt.Extensions;
+using AllOverIt.Filtering.Extensions;
 using AllOverIt.Patterns.Specification;
 using System;
 using System.Collections.Generic;
@@ -19,10 +20,9 @@ namespace AllOverIt.Filtering.Operations
             
             // Creates the final expression
             Func<MemberExpression, SystemExpression, SystemExpression> predicateExpressionFactory,
-            
-            // Use parameter proxies (for EF queries) or plain constant expressions
-            bool useParameterizedQueries)
-                : base(() => CreateResolver(propertyExpression, CreateValueExpression(value, useParameterizedQueries), predicateExpressionFactory))
+
+            IFilterSpecificationBuilderOptions options)
+                : base(() => CreateResolver(propertyExpression, CreateValueExpression(value, options.UseParameterizedQueries), predicateExpressionFactory))
         {
         }
 
@@ -36,9 +36,8 @@ namespace AllOverIt.Filtering.Operations
             // Creates the final expression
             Func<MemberExpression, SystemExpression, SystemExpression> predicateExpressionFactory,
 
-            // Use parameter proxies (for EF queries) or plain constant expressions
-            bool useParameterizedQueries)
-                : base(() => CreateResolver(propertyExpression, CreateValueExpression(values, useParameterizedQueries), predicateExpressionFactory))
+            IFilterSpecificationBuilderOptions options)
+                : base(() => CreateResolver(propertyExpression, CreateValueExpression(values, options.UseParameterizedQueries), predicateExpressionFactory))
         {
         }
 

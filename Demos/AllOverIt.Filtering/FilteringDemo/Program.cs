@@ -1,4 +1,10 @@
-﻿namespace FilteringDemo
+﻿using AllOverIt.Filtering.Extensions;
+using AllOverIt.Filtering.Filters;
+using AllOverIt.Patterns.Specification.Extensions;
+using System;
+using System.Linq;
+
+namespace FilteringDemo
 {
     internal sealed class Product
     {
@@ -7,30 +13,80 @@
         public double Price { get; set; }
     }
 
+    public sealed class ProductFilter : IFilter
+    {
+        public sealed class CategoryFilter
+        {
+            public StartsWith StartsWith { get; set; } 
+        }
+
+        public sealed class NameFilter
+        {
+            public Contains Contains { get; set; }
+        }
+
+        public sealed class PriceFilter
+        {
+            public GreaterThanOrEqual<double> GreaterThanOrEqual { get; set; }
+            public LessThanOrEqual<double> LessThanOrEqual { get; set; }
+        }
+
+        public CategoryFilter Category { get; init; } = new();
+        public NameFilter Name { get; init; } = new();
+        public PriceFilter Price { get; init; } = new();
+    }
+
     internal class Program
     {
         static void Main(string[] args)
         {
             var products = GetProducts();
 
+            var filter = new ProductFilter
+            {
+                Category = {
+                    StartsWith = "fu"
+                },
+                Name = {
+                    Contains = "r"
+                },
+                Price = {
+                    GreaterThanOrEqual = 15.0,
+                    LessThanOrEqual = 700.0
+                }
+            };
 
-            //IFilter<Product> filter = new Filter<Product>();
+            var filterOptions = new QueryFilterOptions
+            {
+                UseParameterizedQueries = false,
+                StringComparison = StringComparison.InvariantCultureIgnoreCase
+            };
 
-            ////filter.By(nameof(Product.Name), Operation.EqualTo, "Chairs");
+            var results = products
+                .AsQueryable()
+                .ApplyFilter(filter, (specificationBuilder, filterBuilder) =>
+                {
+                    var priceGte = specificationBuilder.Create(product => product.Price, f => f.Price.GreaterThanOrEqual);
+                    var priceLte = specificationBuilder.Create(product => product.Price, f => f.Price.LessThanOrEqual);
 
-            //filter.By(entity => entity.Price, Operation.GreaterThan, 15)
-            //    .And
-            //    .By(entity => entity.Price, Operation.LessThan, 30.0)
-            //    .Or
-            //    .Group
-            //    .By(entity => entity.Category, Operation.EqualTo, "Furniture");
+                    filterBuilder
+                        .Where(product => product.Category, f => f.Category.StartsWith)
+                        .And(product => product.Name, f => f.Name.Contains)
+                        .And(priceGte.And(priceLte));
 
-            //var str = filter.ToString();
+                    // TODO
+                    // var queryString = filterBuilder.ToString()
+                }, filterOptions)
+                .ToList();
 
-            //var results = products.Where(filter).ToList();
+            foreach (var result in results)
+            {
+                Console.WriteLine($"{result.Category}, {result.Name}, {result.Price}");
+            }
 
-
-
+            Console.WriteLine();
+            Console.WriteLine("All Over It.");
+            Console.ReadKey();
         }
 
         private static Product[] GetProducts()
@@ -54,6 +110,12 @@
                     Category = "Furniture",
                     Name = "Cupboard",
                     Price = 500
+                },
+                new Product
+                {
+                    Category = "Furniture",
+                    Name = "Dresser",
+                    Price = 250
                 },
                 new Product
                 {

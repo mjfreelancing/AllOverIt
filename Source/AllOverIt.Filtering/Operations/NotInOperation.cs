@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AllOverIt.Filtering.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -10,8 +11,8 @@ namespace AllOverIt.Filtering.Operations
     {
         private static readonly MethodInfo ContainsMethod = typeof(ICollection<TProperty>).GetMethod("Contains", new[] { typeof(TProperty) });
 
-        public NotInOperation(Expression<Func<TEntity, TProperty>> propertyExpression, IList<TProperty> values, bool useParameterizedQueries)
-            : base(propertyExpression, values, CreatePredicate, useParameterizedQueries)
+        public NotInOperation(Expression<Func<TEntity, TProperty>> propertyExpression, IList<TProperty> values, IFilterSpecificationBuilderOptions options)
+            : base(propertyExpression, values, CreatePredicate, options)
         {
         }
 

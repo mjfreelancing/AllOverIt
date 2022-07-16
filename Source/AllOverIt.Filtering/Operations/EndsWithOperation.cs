@@ -1,22 +1,26 @@
-﻿using System;
+﻿using AllOverIt.Filtering.Extensions;
+using System;
 using System.Linq.Expressions;
-using System.Reflection;
 using SystemExpression = System.Linq.Expressions.Expression;    // avoid conflict with the Expression property on LinqSpecification
 
 namespace AllOverIt.Filtering.Operations
 {
     internal sealed class EndsWithOperation<TEntity> : OperationBase<TEntity, string> where TEntity : class
     {
-        private static readonly MethodInfo EndsWithMethod = typeof(string).GetMethod("EndsWith", new[] { typeof(string) });
-
-        public EndsWithOperation(Expression<Func<TEntity, string>> propertyExpression, string value, bool useParameterizedQueries)
-            : base(propertyExpression, value, CreatePredicate, useParameterizedQueries)
+        public EndsWithOperation(Expression<Func<TEntity, string>> propertyExpression, string value, IFilterSpecificationBuilderOptions options)
+            : base(propertyExpression, value, (member, constant) => CreatePredicate(member, constant, options.StringComparison), options)
         {
         }
 
-        private static SystemExpression CreatePredicate(MemberExpression member, SystemExpression constant)
+        private static SystemExpression CreatePredicate(MemberExpression member, SystemExpression constant, StringComparison? stringComparison)
         {
-            return SystemExpression.Call(member, EndsWithMethod, constant);
+            if (stringComparison.HasValue)
+            {
+                var comparison = SystemExpression.Constant(stringComparison.Value);
+                return SystemExpression.Call(member, StringFilterMethodInfo.EndsWithStringComparison, constant, comparison);
+            }
+
+            return SystemExpression.Call(member, StringFilterMethodInfo.EndsWith, constant);
         }
     }
 }
