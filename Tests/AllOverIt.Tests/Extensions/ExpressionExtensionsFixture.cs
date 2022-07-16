@@ -2,11 +2,14 @@
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
+using FluentAssertions.Equivalency;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection.Metadata;
 using Xunit;
 
 namespace AllOverIt.Tests.Extensions
@@ -16,6 +19,7 @@ namespace AllOverIt.Tests.Extensions
         private class DummyPropertyClass
         {
             public int Value { get; set; }
+            public double Field;
         }
 
         private class DummyNestedClass : DummyPropertyClass
@@ -61,6 +65,269 @@ namespace AllOverIt.Tests.Extensions
                 ExpressionExtensions.GetValue(actual[0]).Should().Be(subject);
                 ExpressionExtensions.GetValue(actual[1]).Should().Be(subject.Child);
                 ExpressionExtensions.GetValue(actual[2]).Should().Be(subject.Child.Value);
+            }
+        }
+
+        public class GetPropertyOrFieldExpressionUsingParameter : ExpressionExtensionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Property_Expression_Null()
+{
+                var parameter = Expression.Parameter(typeof(DummyPropertyClass), "item");
+
+                Invoking(() => ExpressionExtensions.GetPropertyOrFieldExpressionUsingParameter<DummyPropertyClass, int>(null, parameter))
+                  .Should()
+                  .Throw<ArgumentNullException>()
+                  .WithNamedMessageWhenNull("propertyOrFieldExpression");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Parameter_Expression_Null()
+            {
+                var parameter = Expression.Parameter(typeof(DummyPropertyClass), "item");
+
+                Invoking(() => ExpressionExtensions.GetPropertyOrFieldExpressionUsingParameter<DummyPropertyClass, int>(item => item.Value, null))
+                  .Should()
+                  .Throw<ArgumentNullException>()
+                  .WithNamedMessageWhenNull("parameterExpression");
+            }
+
+            [Fact]
+            public void Should_Get_Property_As_Parameter_MemberExpression()
+            {
+                var subject = Create<DummyPropertyClass>();                
+
+                var parameter = Expression.Parameter(typeof(DummyPropertyClass), "item");
+                var memberExpression = ExpressionExtensions.GetPropertyOrFieldExpressionUsingParameter<DummyPropertyClass, int>(subject => subject.Value, parameter);
+
+                memberExpression.Expression.Should().BeAssignableTo<ParameterExpression>();
+
+                // Now test by building a predicate that compares against the expected value
+                var predicate = Expression.Equal(memberExpression, Expression.Constant(subject.Value));
+
+                // Convert it to a Func<DummyPropertyClass, bool>
+                var lambda = Expression.Lambda<Func<DummyPropertyClass, bool>>(predicate, parameter);
+                var compiled = lambda.Compile();
+
+                // And invoke
+                compiled.Invoke(subject).Should().BeTrue();
+
+                // And confirm it fails when the value on the subject is changed
+                subject.Value++;
+
+                // And invoke
+                compiled.Invoke(subject).Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Get_Nested_Property_As_Parameter_MemberExpression()
+            {
+                var subject = Create<DummyNestedClass>();
+
+                var parameter = Expression.Parameter(typeof(DummyNestedClass), "item");
+                var memberExpression = ExpressionExtensions.GetPropertyOrFieldExpressionUsingParameter<DummyNestedClass, int>(subject => subject.Child.Value, parameter);
+
+                var parentExpression = memberExpression.Expression as MemberExpression;
+                parentExpression.Expression.Should().BeAssignableTo<ParameterExpression>();
+
+                // Now test by building a predicate that compares against the expected value
+                var predicate = Expression.Equal(memberExpression, Expression.Constant(subject.Child.Value));
+
+                // Convert it to a Func<DummyNestedClass, bool>
+                var lambda = Expression.Lambda<Func<DummyNestedClass, bool>>(predicate, parameter);
+                var compiled = lambda.Compile();
+
+                // And invoke
+                compiled.Invoke(subject).Should().BeTrue();
+
+                // And confirm it fails when the value on the subject is changed
+                subject.Child.Value++;
+
+                // And invoke
+                compiled.Invoke(subject).Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Get_Field_As_Parameter_MemberExpression()
+            {
+                var subject = Create<DummyPropertyClass>();
+
+                var parameter = Expression.Parameter(typeof(DummyPropertyClass), "item");
+                var memberExpression = ExpressionExtensions.GetPropertyOrFieldExpressionUsingParameter<DummyPropertyClass, double>(subject => subject.Field, parameter);
+
+                memberExpression.Expression.Should().BeAssignableTo<ParameterExpression>();
+
+                // Now test by building a predicate that compares against the expected value
+                var predicate = Expression.Equal(memberExpression, Expression.Constant(subject.Field));
+
+                // Convert it to a Func<DummyPropertyClass, bool>
+                var lambda = Expression.Lambda<Func<DummyPropertyClass, bool>>(predicate, parameter);
+                var compiled = lambda.Compile();
+
+                // And invoke
+                compiled.Invoke(subject).Should().BeTrue();
+
+                // And confirm it fails when the value on the subject is changed
+                subject.Field++;
+
+                // And invoke
+                compiled.Invoke(subject).Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Get_Nested_Field_As_Parameter_MemberExpression()
+            {
+                var subject = Create<DummyNestedClass>();
+
+                var parameter = Expression.Parameter(typeof(DummyNestedClass), "item");
+                var memberExpression = ExpressionExtensions.GetPropertyOrFieldExpressionUsingParameter<DummyNestedClass, double>(subject => subject.Child.Field, parameter);
+
+                var parentExpression = memberExpression.Expression as MemberExpression;
+                parentExpression.Expression.Should().BeAssignableTo<ParameterExpression>();
+
+                // Now test by building a predicate that compares against the expected value
+                var predicate = Expression.Equal(memberExpression, Expression.Constant(subject.Child.Field));
+
+                // Convert it to a Func<DummyNestedClass, bool>
+                var lambda = Expression.Lambda<Func<DummyNestedClass, bool>>(predicate, parameter);
+                var compiled = lambda.Compile();
+
+                // And invoke
+                compiled.Invoke(subject).Should().BeTrue();
+
+                // And confirm it fails when the value on the subject is changed
+                subject.Child.Field++;
+
+                // And invoke
+                compiled.Invoke(subject).Should().BeFalse();
+            }
+        }
+
+        public class GetParameterPropertyOrFieldExpression : ExpressionExtensionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Property_Expression_Null()
+            {
+                var parameter = Expression.Parameter(typeof(DummyPropertyClass), "item");
+
+                Invoking(() => ExpressionExtensions.GetParameterPropertyOrFieldExpression<DummyPropertyClass, int>(null))
+                  .Should()
+                  .Throw<ArgumentNullException>()
+                  .WithNamedMessageWhenNull("propertyOrFieldExpression");
+            }
+
+            [Fact]
+            public void Should_Get_Property_As_Parameter_MemberExpression()
+            {
+                var subject = Create<DummyPropertyClass>();
+
+                var memberExpression = ExpressionExtensions.GetParameterPropertyOrFieldExpression<DummyPropertyClass, int>(subject => subject.Value);
+
+                memberExpression.Expression.Should().BeAssignableTo<ParameterExpression>();
+
+                var parameter = memberExpression.Expression as ParameterExpression;
+
+                // Now test by building a predicate that compares against the expected value
+                var predicate = Expression.Equal(memberExpression, Expression.Constant(subject.Value));
+
+                // Convert it to a Func<DummyPropertyClass, bool>
+                var lambda = Expression.Lambda<Func<DummyPropertyClass, bool>>(predicate, parameter);
+                var compiled = lambda.Compile();
+
+                // And invoke
+                compiled.Invoke(subject).Should().BeTrue();
+
+                // And confirm it fails when the value on the subject is changed
+                subject.Value++;
+
+                // And invoke
+                compiled.Invoke(subject).Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Get_Nested_Property_As_Parameter_MemberExpression()
+            {
+                var subject = Create<DummyNestedClass>();
+
+                var memberExpression = ExpressionExtensions.GetParameterPropertyOrFieldExpression<DummyNestedClass, int>(subject => subject.Child.Value);
+
+                var parentExpression = memberExpression.Expression as MemberExpression;
+                parentExpression.Expression.Should().BeAssignableTo<ParameterExpression>();
+
+                var parameter = parentExpression.Expression as ParameterExpression;
+
+                // Now test by building a predicate that compares against the expected value
+                var predicate = Expression.Equal(memberExpression, Expression.Constant(subject.Child.Value));
+
+                // Convert it to a Func<DummyNestedClass, bool>
+                var lambda = Expression.Lambda<Func<DummyNestedClass, bool>>(predicate, parameter);
+                var compiled = lambda.Compile();
+
+                // And invoke
+                compiled.Invoke(subject).Should().BeTrue();
+
+                // And confirm it fails when the value on the subject is changed
+                subject.Child.Value++;
+
+                // And invoke
+                compiled.Invoke(subject).Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Get_Field_As_Parameter_MemberExpression()
+            {
+                var subject = Create<DummyPropertyClass>();
+
+                var memberExpression = ExpressionExtensions.GetParameterPropertyOrFieldExpression<DummyPropertyClass, double>(subject => subject.Field);
+
+                memberExpression.Expression.Should().BeAssignableTo<ParameterExpression>();
+
+                var parameter = memberExpression.Expression as ParameterExpression;
+
+                // Now test by building a predicate that compares against the expected value
+                var predicate = Expression.Equal(memberExpression, Expression.Constant(subject.Field));
+
+                // Convert it to a Func<DummyPropertyClass, bool>
+                var lambda = Expression.Lambda<Func<DummyPropertyClass, bool>>(predicate, parameter);
+                var compiled = lambda.Compile();
+
+                // And invoke
+                compiled.Invoke(subject).Should().BeTrue();
+
+                // And confirm it fails when the value on the subject is changed
+                subject.Field++;
+
+                // And invoke
+                compiled.Invoke(subject).Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Get_Nested_Field_As_Parameter_MemberExpression()
+            {
+                var subject = Create<DummyNestedClass>();
+
+                var memberExpression = ExpressionExtensions.GetParameterPropertyOrFieldExpression<DummyNestedClass, double>(subject => subject.Child.Field);
+
+                var parentExpression = memberExpression.Expression as MemberExpression;
+                parentExpression.Expression.Should().BeAssignableTo<ParameterExpression>();
+
+                var parameter = parentExpression.Expression as ParameterExpression;
+
+                // Now test by building a predicate that compares against the expected value
+                var predicate = Expression.Equal(memberExpression, Expression.Constant(subject.Child.Field));
+
+                // Convert it to a Func<DummyNestedClass, bool>
+                var lambda = Expression.Lambda<Func<DummyNestedClass, bool>>(predicate, parameter);
+                var compiled = lambda.Compile();
+
+                // And invoke
+                compiled.Invoke(subject).Should().BeTrue();
+
+                // And confirm it fails when the value on the subject is changed
+                subject.Child.Field++;
+
+                // And invoke
+                compiled.Invoke(subject).Should().BeFalse();
             }
         }
 

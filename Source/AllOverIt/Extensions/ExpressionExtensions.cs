@@ -32,6 +32,47 @@ namespace AllOverIt.Extensions
             return GetMembers().Reverse();
         }
 
+        /// <summary>Constructs a <see cref="MemberExpression"/> from a property or field accessor expression and a <see cref="ParameterExpression"/>.</summary>
+        /// <typeparam name="TType">The object type containing the property.</typeparam>
+        /// <typeparam name="TProperty">The property type.</typeparam>
+        /// <param name="propertyOrFieldExpression">The property or field accessor expression.</param>
+        /// <param name="parameter">The parameter to use when constructing the <see cref="MemberExpression"/>.</param>
+        /// <returns>A <see cref="MemberExpression"/> representing the property or field accessor expression. This expression can later be used
+        /// to obtain the value of the property or field, or convert it to a <see cref="ConstantExpression"/>./returns>
+        public static MemberExpression GetPropertyOrFieldExpressionUsingParameter<TType, TProperty>(
+            this Expression<Func<TType, TProperty>> propertyOrFieldExpression, ParameterExpression parameterExpression)
+        {
+            _ = propertyOrFieldExpression.WhenNotNull(nameof(propertyOrFieldExpression));
+            _ = parameterExpression.WhenNotNull(nameof(parameterExpression));
+
+            MemberExpression member = null;
+            var memberExpressions = propertyOrFieldExpression.GetMemberExpressions();
+
+            foreach (var memberExpression in memberExpressions)
+            {
+                var expression = (Expression) member ?? parameterExpression;
+                member = Expression.PropertyOrField(expression, memberExpression.Member.Name);
+            }
+
+            return member;
+        }
+
+        /// <summary>Constructs a <see cref="MemberExpression"/> from a property or field accessor expression. The expression will be
+        /// constructed from a <see cref="ParameterExpression"/>.</summary>
+        /// <typeparam name="TType">The object type containing the property.</typeparam>
+        /// <typeparam name="TProperty">The property type.</typeparam>
+        /// <param name="propertyOrFieldExpression">The property or field accessor expression.</param>
+        /// <returns>A <see cref="MemberExpression"/> representing the property or field accessor expression. This expression can later be used
+        /// to obtain the value of the property or field, or convert it to a <see cref="ConstantExpression"/>./returns>
+        public static MemberExpression GetParameterPropertyOrFieldExpression<TType, TProperty>(this Expression<Func<TType, TProperty>> propertyOrFieldExpression)
+        {
+            _ = propertyOrFieldExpression.WhenNotNull(nameof(propertyOrFieldExpression));
+
+            var parameter = Expression.Parameter(typeof(TType), "entity");
+
+            return GetPropertyOrFieldExpressionUsingParameter(propertyOrFieldExpression, parameter);
+        }
+
         /// <summary>Gets the <paramref name="expression"/> as a <see cref="MemberExpression"/>.</summary>
         /// <param name="expression">The expression to be unwrapped as a <see cref="MemberExpression"/>.</param>
         /// <returns>
