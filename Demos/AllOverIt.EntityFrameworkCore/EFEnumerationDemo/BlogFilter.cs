@@ -2,27 +2,31 @@
 
 namespace EFEnumerationDemo
 {
-    public class BlogFilter : IFilter
+    public sealed class BlogFilter : IFilter
     {
-        public Contains Contains { get; init; } = new();
-        public NotContains NotContains { get; init; } = new();
+        public sealed class IdFilter
+        {
+            public EqualTo<int> EqualTo { get; set; }
+            public NotEqualTo<int> NotEqualTo { get; set; }
+            public GreaterThan<int> GreaterThan { get; set; }
+            public GreaterThanOrEqual<int> GreaterThanOrEqual { get; set; }
+            public LessThan<int> LessThan { get; set; }
+            public LessThanOrEqual<int> LessThanOrEqual { get; set; }
+            public In<int> In { get; set; }
+            public NotIn<int> NotIn { get; set; }
+        }
 
-        public EqualTo<int> EqualToInt { get; init; } = new();
-        public EqualTo<string> EqualToString { get; init; } = new();
+        public sealed class DescriptionFilter
+        {
+            public EqualTo<string> EqualTo { get; set; }
+            public NotEqualTo<string> NotEqualTo { get; set; }
+            public Contains Contains { get; set; }
+            public NotContains NotContains { get; set; }
+            public StartsWith StartsWith { get; set; }
+            public EndsWith EndsWith { get; set; }
+        }
 
-        public NotEqualTo<int> NotEqualToInt { get; init; } = new();
-        public NotEqualTo<string> NotEqualToString { get; init; } = new();
-
-        public GreaterThan<int> GreaterThan { get; init; } = new();
-        public GreaterThanOrEqual<int> GreaterThanOrEqual { get; init; } = new();
-
-        public LessThan<int> LessThan { get; init; } = new();
-        public LessThanOrEqual<int> LessThanOrEqual { get; init; } = new();
-
-        public StartsWith StartsWith { get; init; } = new();
-        public EndsWith EndsWith { get; init; } = new();
-
-        public In<int> In { get; init; } = new();
-        public NotIn<int> NotIn { get; init; } = new();
+        public IdFilter Id { get; init; } = new();
+        public DescriptionFilter Description { get; init; } = new();
     }
 }

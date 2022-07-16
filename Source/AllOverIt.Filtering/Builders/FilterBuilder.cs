@@ -16,7 +16,10 @@ namespace AllOverIt.Filtering.Builders
 
         private ILinqSpecification<TType> _currentSpecification;
 
+        // The final specification that can be applied to an IQueryable.Where()
         public ILinqSpecification<TType> QuerySpecification => _currentSpecification;
+
+        public ILogicalFilterBuilder<TType, TFilter> Current => this;
 
         public FilterBuilder(IFilterSpecificationBuilder<TType, TFilter> specificationBuilder)
         {
@@ -31,10 +34,15 @@ namespace AllOverIt.Filtering.Builders
             return this;
         }
 
+        // Sequential Where() calls are AND' together
         public ILogicalFilterBuilder<TType, TFilter> Where<TProperty>(Expression<Func<TType, IList<TProperty>>> propertyExpression,
             Func<TFilter, IArrayFilterOperation> operation)
         {
-            _currentSpecification = _specificationBuilder.Create(propertyExpression, operation);
+            var nextSpecfication = _specificationBuilder.Create(propertyExpression, operation);
+
+            _currentSpecification = _currentSpecification == null
+                ? nextSpecfication
+                : _currentSpecification.And(nextSpecfication);
 
             return this;
         }
@@ -42,14 +50,20 @@ namespace AllOverIt.Filtering.Builders
         public ILogicalFilterBuilder<TType, TFilter> Where<TProperty>(Expression<Func<TType, TProperty>> propertyExpression,
             Func<TFilter, IFilterOperation> operation)
         {
-            _currentSpecification = _specificationBuilder.Create(propertyExpression, operation);
+            var nextSpecfication = _specificationBuilder.Create(propertyExpression, operation);
+
+            _currentSpecification = _currentSpecification == null
+                ? nextSpecfication
+                : _currentSpecification.And(nextSpecfication);
 
             return this;
         }
 
         public ILogicalFilterBuilder<TType, TFilter> Where(ILinqSpecification<TType> specification)
         {
-            _currentSpecification = specification;
+            _currentSpecification = _currentSpecification == null
+                ? specification
+                : _currentSpecification.And(specification);
 
             return this;
         }

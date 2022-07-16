@@ -8,7 +8,7 @@ namespace AllOverIt.Filtering.Operations
 {
     internal sealed class InOperation<TEntity, TProperty> : OperationBase<TEntity, TProperty> where TEntity : class
     {
-        private static readonly MethodInfo ContainsMethod = typeof(List<TProperty>).GetMethod("Contains", new[] { typeof(TProperty) });
+        private static readonly MethodInfo ContainsMethod = typeof(ICollection<TProperty>).GetMethod("Contains", new[] { typeof(TProperty) });
 
         public InOperation(Expression<Func<TEntity, TProperty>> propertyExpression, IList<TProperty> values)
             : base(propertyExpression, values, CreatePredicate)

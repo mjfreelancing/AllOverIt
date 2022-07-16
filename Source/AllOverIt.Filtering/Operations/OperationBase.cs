@@ -63,10 +63,10 @@ namespace AllOverIt.Filtering.Operations
         private static SystemExpression CreateValueExpression<TValue>(TValue value)
         {
             // TODO: If not using parameterized values, simply return:
-            return SystemExpression.Constant(value);
+            //return SystemExpression.Constant(value);
 
             // Must use the runtime type, not the typeof(TValue) because IList<T> causes issues when the value is a List<T>
-            // return ExpressionUtils.CreateParameterizedValue(value, value.GetType());
+            return ExpressionUtils.CreateParameterizedValue(value, value.GetType());
         }
     }
 }

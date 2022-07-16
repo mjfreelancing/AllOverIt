@@ -9,6 +9,9 @@ namespace AllOverIt.Filtering.Builders
        where TType : class
        where TFilter : class, IFilter
     {
+        // Gets the current logical expression to cater for additional chaining
+        ILogicalFilterBuilder<TType, TFilter> Current { get; }
+
         ILogicalFilterBuilder<TType, TFilter> Where(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation);
         ILogicalFilterBuilder<TType, TFilter> Where<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IFilterOperation> operation);
         ILogicalFilterBuilder<TType, TFilter> Where(ILinqSpecification<TType> specification);

@@ -13,7 +13,6 @@ namespace AllOverIt.Filtering.Builders
         ILogicalFilterBuilder<TType, TFilter> And<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IFilterOperation> operation);
         ILogicalFilterBuilder<TType, TFilter> And(ILinqSpecification<TType> specification);
 
-
         ILogicalFilterBuilder<TType, TFilter> Or(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation);
         ILogicalFilterBuilder<TType, TFilter> Or<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IFilterOperation> operation);
         ILogicalFilterBuilder<TType, TFilter> Or(ILinqSpecification<TType> specification);
