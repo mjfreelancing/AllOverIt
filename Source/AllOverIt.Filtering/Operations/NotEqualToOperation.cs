@@ -4,9 +4,9 @@ using SystemExpression = System.Linq.Expressions.Expression;    // avoid conflic
 
 namespace AllOverIt.Filtering.Operations
 {
-    internal sealed class NotEqualTo<TEntity, TProperty> : OperationBase<TEntity, TProperty> where TEntity : class
+    internal sealed class NotEqualToOperation<TEntity, TProperty> : OperationBase<TEntity, TProperty> where TEntity : class
     {
-        public NotEqualTo(Expression<Func<TEntity, TProperty>> propertyExpression, TProperty value)
+        public NotEqualToOperation(Expression<Func<TEntity, TProperty>> propertyExpression, TProperty value)
             : base(propertyExpression, value, CreatePredicate)
         {
         }

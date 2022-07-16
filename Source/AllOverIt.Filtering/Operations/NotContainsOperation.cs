@@ -5,11 +5,11 @@ using SystemExpression = System.Linq.Expressions.Expression;    // avoid conflic
 
 namespace AllOverIt.Filtering.Operations
 {
-    internal sealed class NotContains<TEntity> : OperationBase<TEntity, string> where TEntity : class
+    internal sealed class NotContainsOperation<TEntity> : OperationBase<TEntity, string> where TEntity : class
     {
         private static readonly MethodInfo ContainsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) });
 
-        public NotContains(Expression<Func<TEntity, string>> propertyExpression, string value)
+        public NotContainsOperation(Expression<Func<TEntity, string>> propertyExpression, string value)
             : base(propertyExpression, value, CreatePredicate)
         {
         }

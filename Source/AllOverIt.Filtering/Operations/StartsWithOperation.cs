@@ -1,19 +1,22 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Reflection;
 using SystemExpression = System.Linq.Expressions.Expression;    // avoid conflict with the Expression property on LinqSpecification
 
 namespace AllOverIt.Filtering.Operations
 {
-    internal sealed class EqualTo<TEntity, TProperty> : OperationBase<TEntity, TProperty> where TEntity : class
+    internal sealed class StartsWithOperation<TEntity> : OperationBase<TEntity, string> where TEntity : class
     {
-        public EqualTo(Expression<Func<TEntity, TProperty>> propertyExpression, TProperty value)
+        private static readonly MethodInfo StartsWithMethod = typeof(string).GetMethod("StartsWith", new[] { typeof(string) });
+
+        public StartsWithOperation(Expression<Func<TEntity, string>> propertyExpression, string value)
             : base(propertyExpression, value, CreatePredicate)
         {
         }
 
         private static SystemExpression CreatePredicate(MemberExpression member, SystemExpression constant)
         {
-            return SystemExpression.Equal(member, constant);
+            return SystemExpression.Call(member, StartsWithMethod, constant);
         }
     }
 }

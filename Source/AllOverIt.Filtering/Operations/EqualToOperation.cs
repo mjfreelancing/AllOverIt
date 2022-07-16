@@ -4,12 +4,10 @@ using SystemExpression = System.Linq.Expressions.Expression;    // avoid conflic
 
 namespace AllOverIt.Filtering.Operations
 {
-    internal sealed class IsNull<TEntity, TProperty> : OperationBase<TEntity, TProperty>
-        where TEntity : class
-        where TProperty : class
+    internal sealed class EqualToOperation<TEntity, TProperty> : OperationBase<TEntity, TProperty> where TEntity : class
     {
-        public IsNull(Expression<Func<TEntity, TProperty>> propertyExpression)
-            : base(propertyExpression, (TProperty) default, CreatePredicate)
+        public EqualToOperation(Expression<Func<TEntity, TProperty>> propertyExpression, TProperty value)
+            : base(propertyExpression, value, CreatePredicate)
         {
         }
 
