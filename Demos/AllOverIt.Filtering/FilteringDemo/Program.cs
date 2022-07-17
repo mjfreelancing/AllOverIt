@@ -1,4 +1,5 @@
-﻿using AllOverIt.Filtering.Extensions;
+﻿using AllOverIt.Filtering.Builders.Extensions;
+using AllOverIt.Filtering.Extensions;
 using AllOverIt.Patterns.Specification.Extensions;
 using System;
 using System.Linq;
@@ -49,7 +50,7 @@ namespace FilteringDemo
 
                     // Output the generated query as readable text
                     // (((Category StartsWith 'fu' AND Name Contains 'r') AND ((Price >= 15) AND (Price <= 700))) AND (LastUpdated >= '2022-07-07T00:00:00.000Z'))
-                    var queryString = filterBuilder.ToString();
+                    var queryString = filterBuilder.AsQueryString();
                     Console.WriteLine(queryString);
 
                 }, filterOptions)

@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Assertion;
-using AllOverIt.Filtering.Filters;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,11 +6,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace AllOverIt.Filtering.Builders
+namespace AllOverIt.Patterns.Specification.Utils
 {
-    internal class FilterBuilderSpecificationVisitor : ExpressionVisitor
+    public sealed class LinqSpecificationVisitor : ExpressionVisitor
     {
-        private static readonly IDictionary<ExpressionType, string> _expressionOperators = new Dictionary<ExpressionType, string>
+        private static readonly IDictionary<ExpressionType, string> _expressionTypeMapping = new Dictionary<ExpressionType, string>
         {
             [ExpressionType.Not] = "NOT",
             [ExpressionType.GreaterThan] = ">",
@@ -24,23 +23,21 @@ namespace AllOverIt.Filtering.Builders
             [ExpressionType.OrElse] = "OR"
         };
 
-        private static readonly IDictionary<Type, Func<object, string>> _typeConverters = new Dictionary<Type, Func<object, string>>
+        private static readonly IDictionary<Type, Func<object, string>> _valueConverters = new Dictionary<Type, Func<object, string>>
         {
             [typeof(string)] = value => $"'{value}'",
             [typeof(DateTime)] = value => $"'{((DateTime) value).ToUniversalTime():yyyy-MM-ddTHH:mm:ss.fffZ}'",
-            [typeof(bool)] = value => value.ToString().ToLower()
+            [typeof(bool)] = value => value.ToString()
         };
 
         private readonly StringBuilder _queryStringBuilder = new();
         private readonly Stack<string> _fieldNames = new();
 
-        public string AsQueryString<TType, TFilter>(IFilterBuilder<TType, TFilter> filterBuilder)
-       where TType : class
-       where TFilter : class, IFilter
+        public string AsQueryString<TType>(ILinqSpecification<TType> specification) where TType : class
         {
-            _ = filterBuilder.WhenNotNull(nameof(filterBuilder));
+            _ = specification.WhenNotNull(nameof(specification));
 
-            Visit(filterBuilder.AsSpecification.Expression);
+            Visit(specification.Expression);
 
             var result = _queryStringBuilder.ToString();
 
@@ -51,7 +48,7 @@ namespace AllOverIt.Filtering.Builders
 
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {
-            if (node.Object != null)
+            if (node.Object is not null)
             {
                 Visit(node.Object);
             }
@@ -77,7 +74,7 @@ namespace AllOverIt.Filtering.Builders
                         {
                             _queryStringBuilder.Append(", ");
                         }
-                    }                    
+                    }
 
                     _queryStringBuilder.Append(')');
                 }
@@ -95,7 +92,7 @@ namespace AllOverIt.Filtering.Builders
                     return node;
 
                 case ExpressionType.Not:
-                    _queryStringBuilder.Append($" {_expressionOperators[node.NodeType]} ");
+                    _queryStringBuilder.Append($" {_expressionTypeMapping[node.NodeType]} ");
                     _queryStringBuilder.Append('(');
 
                     Visit(node.Operand);
@@ -105,7 +102,7 @@ namespace AllOverIt.Filtering.Builders
                     return node;
 
                 default:
-                    throw new NotSupportedException("Only not(\"!\") unary operator is supported!");
+                    throw new NotSupportedException($"Unsupported unary operator '{node.NodeType}'");
             }
         }
 
@@ -114,7 +111,7 @@ namespace AllOverIt.Filtering.Builders
             _queryStringBuilder.Append('(');
             Visit(node.Left);
 
-            _queryStringBuilder.Append($" {_expressionOperators[node.NodeType]} ");
+            _queryStringBuilder.Append($" {_expressionTypeMapping[node.NodeType]} ");
 
             Visit(node.Right);
             _queryStringBuilder.Append(')');
@@ -142,11 +139,11 @@ namespace AllOverIt.Filtering.Builders
                     ? type.GetProperty(fieldName).GetValue(input)
                     : fieldInfo.GetValue(input);
 
-                if (value is IList list)
+                if (value is ICollection collection)
                 {
                     var items = new List<string>();
 
-                    foreach (var item in list)
+                    foreach (var item in collection)
                     {
                         items.Add(GetValue(item));
                     }
@@ -160,22 +157,25 @@ namespace AllOverIt.Filtering.Builders
             }
             else
             {
-                return _typeConverters.ContainsKey(type)
-                    ? _typeConverters[type](input)
+                return _valueConverters.TryGetValue(type, out var converter)
+                    ? converter.Invoke(input)
                     : input.ToString();
             }
         }
 
         protected override Expression VisitMember(MemberExpression node)
         {
-            if (node.Expression.NodeType == ExpressionType.Constant || node.Expression.NodeType == ExpressionType.MemberAccess)
+            switch (node.Expression.NodeType)
             {
-                _fieldNames.Push(node.Member.Name);
-                Visit(node.Expression);
-            }
-            else
-            {
-                _queryStringBuilder.Append(node.Member.Name);
+                case ExpressionType.Constant:
+                case ExpressionType.MemberAccess:
+                    _fieldNames.Push(node.Member.Name);
+                    Visit(node.Expression);
+                    break;
+
+                default:
+                    _queryStringBuilder.Append(node.Member.Name);
+                    break;
             }
 
             return node;

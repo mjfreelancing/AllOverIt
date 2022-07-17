@@ -1,4 +1,5 @@
-﻿using AllOverIt.Filtering.Filters;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Filtering.Filters;
 using AllOverIt.Patterns.Specification;
 using System;
 using System.Linq.Expressions;
