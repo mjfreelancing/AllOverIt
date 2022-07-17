@@ -5,9 +5,14 @@ namespace FilteringDemo
 {
     public sealed class ProductFilter : IFilter
     {
+        public sealed class ActiveFilter
+        {
+            public EqualTo<bool> EqualTo { get; set; } 
+        }
+
         public sealed class CategoryFilter
         {
-            public StartsWith StartsWith { get; set; } 
+            public StartsWith StartsWith { get; set; }
         }
 
         public sealed class NameFilter
@@ -26,6 +31,7 @@ namespace FilteringDemo
             public GreaterThanOrEqual<DateTime> GreaterThanOrEqual { get; set; }
         }
 
+        public ActiveFilter Active { get; init; } = new();
         public CategoryFilter Category { get; init; } = new();
         public NameFilter Name { get; init; } = new();
         public PriceFilter Price { get; init; } = new();

@@ -14,6 +14,10 @@ namespace FilteringDemo
 
             var productFilter = new ProductFilter
             {
+                Active =
+                {
+                    EqualTo = true
+                },
                 Category = {
                     StartsWith = "fu"
                 },
@@ -43,7 +47,8 @@ namespace FilteringDemo
                     var priceLte = specificationBuilder.Create(product => product.Price, filter => filter.Price.LessThanOrEqual);
 
                     filterBuilder
-                        .Where(product => product.Category, filter => filter.Category.StartsWith)
+                        .Where(product => product.Active, filter => filter.Active.EqualTo)
+                        .And(product => product.Category, filter => filter.Category.StartsWith)
                         .And(product => product.Name, filter => filter.Name.Contains)
                         .And(priceGte.And(priceLte))
                         .And(product => product.LastUpdated, filter => filter.LastUpdated.GreaterThanOrEqual);

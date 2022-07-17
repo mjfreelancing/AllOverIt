@@ -100,7 +100,7 @@ namespace AllOverIt.Patterns.Specification.Utils
                     return node;
 
                 case ExpressionType.Not:
-                    _queryStringBuilder.Append($" {_expressionTypeMapping[node.NodeType]} ");
+                    _queryStringBuilder.Append($"{_expressionTypeMapping[node.NodeType]} ");
                     _queryStringBuilder.Append('(');
 
                     Visit(node.Operand);
