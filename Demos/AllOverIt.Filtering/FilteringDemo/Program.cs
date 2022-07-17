@@ -1,51 +1,10 @@
 ﻿using AllOverIt.Filtering.Extensions;
-using AllOverIt.Filtering.Filters;
 using AllOverIt.Patterns.Specification.Extensions;
 using System;
-using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
 
 namespace FilteringDemo
 {
-    internal sealed class Product
-    {
-        public string Category { get; set; }
-        public string Name { get; set; }
-        public double Price { get; set; }
-        public DateTime LastUpdated { get; set; }
-    }
-
-    public sealed class ProductFilter : IFilter
-    {
-        public sealed class CategoryFilter
-        {
-            public StartsWith StartsWith { get; set; } 
-        }
-
-        public sealed class NameFilter
-        {
-            public Contains Contains { get; set; }
-        }
-
-        public sealed class PriceFilter
-        {
-            public GreaterThanOrEqual<double> GreaterThanOrEqual { get; set; }
-            public LessThanOrEqual<double> LessThanOrEqual { get; set; }
-        }
-
-        public sealed class LastUpdatedFilter
-        {
-            public GreaterThanOrEqual<DateTime> GreaterThanOrEqual { get; set; }
-        }
-
-        public CategoryFilter Category { get; init; } = new();
-        public NameFilter Name { get; init; } = new();
-        public PriceFilter Price { get; init; } = new();
-        public LastUpdatedFilter LastUpdated { get; init; } = new();
-    }
-
     internal class Program
     {
         static void Main()
@@ -65,7 +24,7 @@ namespace FilteringDemo
                     LessThanOrEqual = 700.0
                 },
                 LastUpdated = {
-                    GreaterThanOrEqual = DateTime.UtcNow.Date.AddDays(-10), // Change to 14 to see two records return
+                    GreaterThanOrEqual = DateTime.UtcNow.Date.AddDays(-10),     // Change to 14 to see two records return
                 }
             };
 
