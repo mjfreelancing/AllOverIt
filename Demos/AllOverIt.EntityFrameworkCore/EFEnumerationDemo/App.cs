@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Assertion;
+using AllOverIt.Filtering.Builders.Extensions;
 using AllOverIt.Filtering.Extensions;
 using AllOverIt.Filtering.Filters;
 using AllOverIt.GenericHost;
@@ -170,8 +171,11 @@ namespace EFEnumerationDemo
 
                     // Output the generated query as readable text:
                     // (((((((Id == 5) AND (Id != 6)) AND ((Id > 10) AND (Id < 5))) AND ((Id >= 15) OR (Id <= 7))) AND (1, 2, 3) Contains Id) OR  NOT ((4, 5, 6) Contains Id)) OR ((((((Description == '#10') AND (Description != '#100')) AND Description Contains '2') AND  NOT (Description Contains '3')) AND Description StartsWith '#') AND Description EndsWith '55'))
-                    var queryString = filterBuilder.ToString();
-                    Console.WriteLine(queryString);
+                    var queryString = filterBuilder.AsQueryString();
+
+                    Console.WriteLine();
+                    Console.WriteLine($"Filter as query string: {queryString}");
+                    Console.WriteLine();
                 });
         }
 
