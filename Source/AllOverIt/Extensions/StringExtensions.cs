@@ -8,19 +8,6 @@ namespace AllOverIt.Extensions
     /// <summary>Provides a variety of extension methods for <see cref="string"/> types.</summary>
     public static class StringExtensions
     {
-        /// <summary>Determines if a string contains a specified character.</summary>
-        /// <param name="str">The string to be tested.</param>
-        /// <param name="value">The character value to be searched for within the string.</param>
-        /// <returns>True if the string contains the specified character, otherwise false.</returns>
-        public static bool ContainsChar(this string str, char value)
-        {
-#if NETSTANDARD2_0
-            return str.Contains($"{value}");
-#else
-            return str.Contains(value);
-#endif
-        }
-
         /// <summary>Converts a given string to another type.</summary>
         /// <typeparam name="TType">The type to convert to.</typeparam>
         /// <param name="value">The value to be converted.</param>

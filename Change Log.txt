@@ -30,6 +30,7 @@ AllOverIt
   * Moved ILinqSpecification extensions to the AllOverIt.Patterns.Specification.Extensions namespace
   * Added IEnumerable extension HasDistinctGrouping()
   * Added expression extension methods GetPropertyOrFieldExpressionUsingParameter() and GetParameterPropertyOrFieldExpression()
+  * Removed ContainsChar() extension for Net Standard 2.0
 
 AllOverIt.Assertion
   * Removed methods that asserted an enumerable was a concrete collection type and instead updated .NET Core 3.1
