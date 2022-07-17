@@ -37,7 +37,7 @@ namespace AllOverIt.Filtering.Extensions
 
             action.Invoke(specificationBuilder, builder);
 
-            return queryable.Where(builder.QuerySpecification);
+            return queryable.Where(builder.AsSpecification);
         }
     }
 }
