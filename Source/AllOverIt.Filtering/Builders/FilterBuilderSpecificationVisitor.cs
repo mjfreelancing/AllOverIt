@@ -3,6 +3,7 @@ using AllOverIt.Filtering.Filters;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
@@ -55,9 +56,32 @@ namespace AllOverIt.Filtering.Builders
                 Visit(node.Object);
             }
 
+            // Such as Contains, StartsWith, EndsWith
             _queryStringBuilder.Append($" {node.Method.Name} ");
 
-            Visit(node.Arguments[0]);       // TODO: Check is one of StartsWith, EndsWith, Contains
+            if (node.Arguments.Any())
+            {
+                if (node.Arguments.Count == 1)
+                {
+                    Visit(node.Arguments[0]);
+                }
+                else
+                {
+                    _queryStringBuilder.Append('(');
+
+                    for (var i = 0; i < node.Arguments.Count; i++)
+                    {
+                        Visit(node.Arguments[i]);
+
+                        if (i != node.Arguments.Count - 1)
+                        {
+                            _queryStringBuilder.Append(", ");
+                        }
+                    }                    
+
+                    _queryStringBuilder.Append(')');
+                }
+            }
 
             return node;
         }
