@@ -64,27 +64,25 @@ namespace AllOverIt.Filtering.Builders
 
         protected override Expression VisitUnary(UnaryExpression node)
         {
-            if (node.NodeType == ExpressionType.Convert)
+            switch (node.NodeType)
             {
-                //var me = node.Operand as MemberExpression;
+                case ExpressionType.Convert:
+                    Visit(node.Operand);
+                    return node;
 
+                case ExpressionType.Not:
+                    _queryStringBuilder.Append($" {_expressionOperators[node.NodeType]} ");
+                    _queryStringBuilder.Append('(');
 
-                Visit(node.Operand);
-                return node;
+                    Visit(node.Operand);
+
+                    _queryStringBuilder.Append(')');
+
+                    return node;
+
+                default:
+                    throw new NotSupportedException("Only not(\"!\") unary operator is supported!");
             }
-
-            if (node.NodeType != ExpressionType.Not)
-            {
-                throw new NotSupportedException("Only not(\"!\") unary operator is supported!");
-            }
-
-            _queryStringBuilder.Append($" {_expressionOperators[node.NodeType]} ");
-
-            _queryStringBuilder.Append('(');
-            Visit(node.Operand);
-            _queryStringBuilder.Append(')');
-
-            return node;
         }
 
         protected override Expression VisitBinary(BinaryExpression node)
