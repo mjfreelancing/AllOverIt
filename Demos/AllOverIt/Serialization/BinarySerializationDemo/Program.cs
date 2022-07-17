@@ -113,8 +113,7 @@ static void SerializeEnumerableObjectsViaReadAndWriteEnumerable()
     {
         using (var writer = new EnrichedBinaryWriter(stream, Encoding.UTF8, true))
         {
-            // cannot use 'var' when there is a null value
-            IEnumerable<int?> range = Enumerable
+            var range = Enumerable
                 .Range(1, 5)
                 .Cast<int?>()
                 .Concat(new int?[] { null, 6, 7, 8, 9, 10 });

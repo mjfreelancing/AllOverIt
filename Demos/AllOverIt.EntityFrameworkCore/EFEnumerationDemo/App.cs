@@ -168,11 +168,10 @@ namespace EFEnumerationDemo
 
                     filterBuilder.Current.Or(combined);
 
-                    // Output the generated query as readable text
+                    // Output the generated query as readable text:
+                    // (((((((Id == 5) AND (Id != 6)) AND ((Id > 10) AND (Id < 5))) AND ((Id >= 15) OR (Id <= 7))) AND (1, 2, 3) Contains Id) OR  NOT ((4, 5, 6) Contains Id)) OR ((((((Description == '#10') AND (Description != '#100')) AND Description Contains '2') AND  NOT (Description Contains '3')) AND Description StartsWith '#') AND Description EndsWith '55'))
                     var queryString = filterBuilder.ToString();
                     Console.WriteLine(queryString);
-
-                    // (((((((Id == 5) AND (Id != 6)) AND ((Id > 10) AND (Id < 5))) AND ((Id >= 15) OR (Id <= 7))) AND (1, 2, 3) Contains Id) OR  NOT ((4, 5, 6) Contains Id)) OR ((((((Description == '#10') AND (Description != '#100')) AND Description Contains '2') AND  NOT (Description Contains '3')) AND Description StartsWith '#') AND Description EndsWith '55'))
                 });
         }
 

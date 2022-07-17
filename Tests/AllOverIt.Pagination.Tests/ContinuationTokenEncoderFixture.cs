@@ -114,10 +114,10 @@ namespace AllOverIt.Pagination.Tests
                 var paginationDirection = Create<PaginationDirection>();
                 
                 var compressionEncoder = new ContinuationTokenEncoder(_columns, paginationDirection, true);
-                var compressed = compressionEncoder.EncodeNextPage(entities.First());
+                var compressed = compressionEncoder.EncodeNextPage(entities[0]);
 
                 var nonCompressionEncoder = new ContinuationTokenEncoder(_columns, paginationDirection, false);
-                var nonCompressed = nonCompressionEncoder.EncodeNextPage(entities.First());
+                var nonCompressed = nonCompressionEncoder.EncodeNextPage(entities[0]);
 
                 compressed.Should().NotBeSameAs(nonCompressed);
             }
