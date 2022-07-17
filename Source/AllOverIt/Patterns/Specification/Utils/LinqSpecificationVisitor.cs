@@ -37,13 +37,21 @@ namespace AllOverIt.Patterns.Specification.Utils
         {
             _ = specification.WhenNotNull(nameof(specification));
 
-            Visit(specification.Expression);
+            try
+            {
+                Visit(specification.Expression);
 
-            var result = _queryStringBuilder.ToString();
-
-            _queryStringBuilder.Clear();
-
-            return result;
+                return _queryStringBuilder.ToString();
+            }
+            catch(Exception exception)
+            {
+                // TODO: Throw a custom exception with the current output for reference
+                throw new Exception(_queryStringBuilder.ToString(), exception);
+            }
+            finally
+            {
+                _queryStringBuilder.Clear();
+            }
         }
 
         protected override Expression VisitMethodCall(MethodCallExpression node)
@@ -132,14 +140,7 @@ namespace AllOverIt.Patterns.Specification.Utils
 
             if (type.IsClass && type != typeof(string))
             {
-                var fieldName = _fieldNames.Pop();
-                var fieldInfo = type.GetField(fieldName);
-
-                var value = fieldInfo == null
-                    ? type.GetProperty(fieldName).GetValue(input)
-                    : fieldInfo.GetValue(input);
-
-                if (value is ICollection collection)
+                if (input is ICollection collection)
                 {
                     var items = new List<string>();
 
@@ -152,6 +153,13 @@ namespace AllOverIt.Patterns.Specification.Utils
                 }
                 else
                 {
+                    var fieldName = _fieldNames.Pop();
+                    var fieldInfo = type.GetField(fieldName);
+
+                    var value = fieldInfo == null
+                        ? type.GetProperty(fieldName).GetValue(input)
+                        : fieldInfo.GetValue(input);
+
                     return GetValue(value);
                 }
             }
