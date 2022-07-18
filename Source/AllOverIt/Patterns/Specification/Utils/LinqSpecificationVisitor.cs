@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Assertion;
+using AllOverIt.Patterns.Specification.Exceptions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Text;
 
 namespace AllOverIt.Patterns.Specification.Utils
 {
+    /// <summary>Converts the expression of an <see cref="ILinqSpecification{TType}"/> to a query-like string.</summary>
     public sealed class LinqSpecificationVisitor : ExpressionVisitor
     {
         private static readonly IDictionary<ExpressionType, string> _expressionTypeMapping = new Dictionary<ExpressionType, string>
@@ -33,6 +35,10 @@ namespace AllOverIt.Patterns.Specification.Utils
         private readonly StringBuilder _queryStringBuilder = new();
         private readonly Stack<string> _fieldNames = new();
 
+        /// <summary>Converts the expression of the provided <see cref="ILinqSpecification{TType}"/> to a query-like string.</summary>
+        /// <typeparam name="TType">The candidate type the specification applies to.</typeparam>
+        /// <param name="specification">The Linq-based specification.</param>
+        /// <returns>A query-like string representation of the provided <see cref="ILinqSpecification{TType}"/>.</returns>
         public string AsQueryString<TType>(ILinqSpecification<TType> specification) where TType : class
         {
             _ = specification.WhenNotNull(nameof(specification));
@@ -46,7 +52,7 @@ namespace AllOverIt.Patterns.Specification.Utils
             catch(Exception exception)
             {
                 // TODO: Throw a custom exception with the current output for reference
-                throw new Exception(_queryStringBuilder.ToString(), exception);
+                throw new LinqSpecificationVisitorException("An error occurred while trying to convert a specification to a query string.", exception, _queryStringBuilder.ToString());
             }
             finally
             {
@@ -54,6 +60,7 @@ namespace AllOverIt.Patterns.Specification.Utils
             }
         }
 
+        /// <inheritdoc />
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {
             if (node.Object is not null)
@@ -61,7 +68,7 @@ namespace AllOverIt.Patterns.Specification.Utils
                 Visit(node.Object);
             }
 
-            // Such as Contains, StartsWith, EndsWith
+            // Such as Contains
             _queryStringBuilder.Append($" {node.Method.Name} ");
 
             if (node.Arguments.Any())
@@ -91,6 +98,7 @@ namespace AllOverIt.Patterns.Specification.Utils
             return node;
         }
 
+        /// <inheritdoc />
         protected override Expression VisitUnary(UnaryExpression node)
         {
             switch (node.NodeType)
@@ -114,6 +122,7 @@ namespace AllOverIt.Patterns.Specification.Utils
             }
         }
 
+        /// <inheritdoc />
         protected override Expression VisitBinary(BinaryExpression node)
         {
             _queryStringBuilder.Append('(');
@@ -127,6 +136,7 @@ namespace AllOverIt.Patterns.Specification.Utils
             return node;
         }
 
+        /// <inheritdoc />
         protected override Expression VisitConstant(ConstantExpression node)
         {
             _queryStringBuilder.Append(GetValue(node.Value));

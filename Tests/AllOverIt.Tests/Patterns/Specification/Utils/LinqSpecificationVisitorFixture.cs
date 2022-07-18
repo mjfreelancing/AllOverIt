@@ -4,6 +4,7 @@ using AllOverIt.Patterns.Specification;
 using AllOverIt.Patterns.Specification.Utils;
 using FluentAssertions;
 using System;
+using System.Linq;
 using Xunit;
 
 namespace AllOverIt.Tests.Patterns.Specification.Utils
@@ -38,7 +39,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
             }
 
             [Fact]
-            public void Should_QueryString_EqualTo()
+            public void Should_Output_EqualTo()
             {
                 var value = Create<int>();
 
@@ -50,7 +51,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
             }
 
             [Fact]
-            public void Should_QueryString_NotEqualTo()
+            public void Should_Output_NotEqualTo()
             {
                 var value = Create<int>();
 
@@ -62,7 +63,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
             }
 
             [Fact]
-            public void Should_QueryString_GreaterThan()
+            public void Should_Output_GreaterThan()
             {
                 var value = Create<int>();
 
@@ -74,7 +75,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
             }
 
             [Fact]
-            public void Should_QueryString_GreaterThanEqualTo()
+            public void Should_Output_GreaterThanEqualTo()
             {
                 var value = Create<int>();
 
@@ -86,7 +87,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
             }
 
             [Fact]
-            public void Should_QueryString_LessThan()
+            public void Should_Output_LessThan()
             {
                 var value = Create<int>();
 
@@ -98,7 +99,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
             }
 
             [Fact]
-            public void Should_QueryString_LessThanEqualTo()
+            public void Should_Output_LessThanEqualTo()
             {
                 var value = Create<int>();
 
@@ -110,7 +111,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
             }
 
             [Fact]
-            public void Should_QueryString_Combine_Two_Operations()
+            public void Should_Output_Combine_Two_Operations()
             {
                 var value1 = Create<int>();
                 var value2 = Create<int>();
@@ -123,32 +124,67 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
             }
 
             [Fact]
-            public void Should_QueryString_Single_Quote_String_Value()
+            public void Should_Output_Single_Quote_String_Value()
             {
-                var value3 = Create<string>();
+                var value = Create<string>();
 
-                var specification = LinqSpecification<TypeDummy>.Create(item => item.Value3 == value3);
+                var specification = LinqSpecification<TypeDummy>.Create(item => item.Value3 == value);
 
                 var actual = _visitor.AsQueryString(specification);
 
-                actual.Should().Be($"(Value3 == '{value3}')");
+                actual.Should().Be($"(Value3 == '{value}')");
             }
 
             [Fact]
-            public void Should_QueryString_Bool_Comparison()
+            public void Should_Output_Bool_Comparison()
             {
-                var value5 = Create<bool>();
+                var value = Create<bool>();
 
                 // Has to be a comparison, can't just use 'item => item.Value5' as this only retrieves the property name
-                var specification = LinqSpecification<TypeDummy>.Create(item => item.Value5 == value5);
+                var specification = LinqSpecification<TypeDummy>.Create(item => item.Value5 == value);
 
                 var actual = _visitor.AsQueryString(specification);
 
-                actual.Should().Be($"(Value5 == {value5})");
+                actual.Should().Be($"(Value5 == {value})");
             }
 
             [Fact]
-            public void Should_QueryString_Not_Two_Operations()
+            public void Should_Output_Contains()
+            {
+                var values = CreateMany<int>().ToList();
+
+                var specification = LinqSpecification<TypeDummy>.Create(item => values.Contains(item.Value1));
+
+                var actual = _visitor.AsQueryString(specification);
+
+                actual.Should().Be($"({string.Join(", ", values)}) Contains Value1");
+            }
+
+            [Fact]
+            public void Should_Output_Constant()
+            {
+                var specification = LinqSpecification<TypeDummy>.Create(item => item.Value1 == 99);
+
+                var actual = _visitor.AsQueryString(specification);
+
+                actual.Should().Be("(Value1 == 99)");
+            }
+
+            [Fact]
+            public void Should_Output_DateTime_Comparison()
+            {
+                var value = Create<DateTime>().ToUniversalTime();
+
+                // Has to be a comparison, can't just use 'item => item.Value5' as this only retrieves the property name
+                var specification = LinqSpecification<TypeDummy>.Create(item => item.Value4 == value);
+
+                var actual = _visitor.AsQueryString(specification);
+
+                actual.Should().Be($"(Value4 == '{value:yyyy-MM-ddTHH:mm:ss.fffZ}')");
+            }
+
+            [Fact]
+            public void Should_Output_Not_Two_Operations()
             {
                 var value1 = Create<int>();
                 var value2 = Create<int>();
@@ -161,7 +197,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
             }
 
             [Fact]
-            public void Should_QueryString_Three_Operations_With_A_Not()
+            public void Should_Output_Three_Operations_With_A_Not()
             {
                 var value1 = Create<int>();
                 var value2 = Create<int>();
@@ -175,7 +211,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
             }
 
             [Fact]
-            public void Should_QueryString_Combine_Three_Operations()
+            public void Should_Output_Combine_Three_Operations()
             {
                 var value1 = Create<int>();
                 var value2 = Create<int>();
