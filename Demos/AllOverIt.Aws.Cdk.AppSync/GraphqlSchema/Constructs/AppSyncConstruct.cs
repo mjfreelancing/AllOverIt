@@ -5,7 +5,10 @@ using Amazon.CDK.AWS.AppSync;
 using GraphqlSchema.Schema;
 using GraphqlSchema.Schema.Mappings;
 using GraphqlSchema.Schema.Mappings.Query;
+using GraphqlSchema.Schema.Types;
 using System;
+using System.Collections.Generic;
+using SystemType = System.Type;
 
 namespace GraphqlSchema.Constructs
 {
@@ -64,7 +67,13 @@ namespace GraphqlSchema.Constructs
             // Based on a base class type
             mappingTypeFactory.Register<HttpGetResponseMapping>(type => (IRequestResponseMapping)Activator.CreateInstance(type, "super_secret_api_key" ));
 
-            var graphql = new AppSyncDemoGraphql(this, appProps, authMode, mappingTemplates, mappingTypeFactory);
+            // DateType doesn't have an attribute. Without one, it would be named "DateType", except when overriden like so:
+            var typeNameOverrides = new Dictionary<SystemType, string>
+            {
+                { typeof(DateType), "CustomDateType" }
+            };
+
+            var graphql = new AppSyncDemoGraphql(this, appProps, authMode, typeNameOverrides, mappingTemplates, mappingTypeFactory);
 
             graphql
                 .AddSchemaQuery<IAppSyncDemoQueryDefinition>()

@@ -5,6 +5,7 @@ using AllOverIt.Aws.Cdk.AppSync.Attributes.Types;
 using AllOverIt.Aws.Cdk.AppSync.Exceptions;
 using AllOverIt.Aws.Cdk.AppSync.Factories;
 using AllOverIt.Aws.Cdk.AppSync.Mapping;
+using AllOverIt.Collections;
 using AllOverIt.Extensions;
 using Amazon.CDK.AWS.AppSync;
 using System;
@@ -17,6 +18,8 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
 {
     internal static class MethodInfoExtensions
     {
+        private static readonly IReadOnlyDictionary<SystemType, string> EmptyTypeNameOverrides = Dictionary.EmptyReadOnly<SystemType, string>();
+
         public static RequiredTypeInfo GetRequiredTypeInfo(this MethodInfo methodInfo)
         {
             return new RequiredTypeInfo(methodInfo);
@@ -85,13 +88,13 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
 
         public static void AssertReturnSchemaType(this MethodInfo methodInfo, SystemType parentType)
         {
-            // make sure TYPE schema types on have other TYPE types, and similarly for INPUT schema types.
-            var parentSchemaType = parentType.GetGraphqlTypeDescriptor().SchemaType;
+            // make sure TYPE schema types only have other TYPE types, and similarly for INPUT schema types.
+            var parentSchemaType = parentType.GetGraphqlTypeDescriptor(EmptyTypeNameOverrides).SchemaType;
             var returnType = methodInfo.ReturnType;
 
             if (parentSchemaType is GraphqlSchemaType.Input or GraphqlSchemaType.Type)
             {
-                var methodSchemaType = returnType.GetGraphqlTypeDescriptor().SchemaType;
+                var methodSchemaType = returnType.GetGraphqlTypeDescriptor(EmptyTypeNameOverrides).SchemaType;
 
                 if (methodSchemaType is GraphqlSchemaType.Input or GraphqlSchemaType.Type)
                 {

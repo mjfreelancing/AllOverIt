@@ -4,17 +4,18 @@ using AllOverIt.Aws.Cdk.AppSync.Mapping;
 using Amazon.CDK;
 using Amazon.CDK.AWS.AppSync;
 using Amazon.CDK.AWS.Cognito;
-using Amazon.CDK.AWS.EC2;
 using Amazon.CDK.AWS.Lambda;
 using Amazon.CDK.AWS.S3;
+using System.Collections.Generic;
+using SystemType = System.Type;
 
 namespace GraphqlSchema
 {
     internal sealed class AppSyncDemoGraphql : AppGraphqlBase
     {
-        public AppSyncDemoGraphql(Construct scope, AppSyncDemoAppProps appProps, IAuthorizationMode authMode, MappingTemplates mappingTemplates,
-            MappingTypeFactory mappingTypeFactory)
-            : base(scope, "GraphQl", GetGraphqlApiProps(scope, appProps, authMode), mappingTemplates, mappingTypeFactory)
+        public AppSyncDemoGraphql(Construct scope, AppSyncDemoAppProps appProps, IAuthorizationMode authMode, IReadOnlyDictionary<SystemType, string> typeNameOverrides,
+            MappingTemplates mappingTemplates, MappingTypeFactory mappingTypeFactory)
+            : base(scope, "GraphQl", GetGraphqlApiProps(scope, appProps, authMode), typeNameOverrides, mappingTemplates, mappingTypeFactory)
         {
         }
 

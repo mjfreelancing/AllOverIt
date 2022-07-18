@@ -1,14 +1,19 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync.Attributes.Types;
 using AllOverIt.Aws.Cdk.AppSync.Exceptions;
+using AllOverIt.Collections;
 using AllOverIt.Extensions;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using SystemType = System.Type;
 
 namespace AllOverIt.Aws.Cdk.AppSync.Extensions
 {
     internal static class ParameterInfoExtensions
     {
+        private static readonly IReadOnlyDictionary<SystemType, string> EmptyTypeNameOverrides = Dictionary.EmptyReadOnly<SystemType, string>();
+
         public static RequiredTypeInfo GetRequiredTypeInfo(this ParameterInfo parameterInfo)
         {
             return new RequiredTypeInfo(parameterInfo);
@@ -41,7 +46,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
         public static void AssertParameterSchemaType(this ParameterInfo parameterInfo, MethodInfo methodInfo)
         {
             var requiredTypeInfo = parameterInfo.GetRequiredTypeInfo();
-            var parameterSchemaType = requiredTypeInfo.Type.GetGraphqlTypeDescriptor().SchemaType;
+            var parameterSchemaType = requiredTypeInfo.Type.GetGraphqlTypeDescriptor(EmptyTypeNameOverrides).SchemaType;
 
             if (parameterSchemaType != GraphqlSchemaType.Scalar &&
                 parameterSchemaType != GraphqlSchemaType.AWSScalar &&

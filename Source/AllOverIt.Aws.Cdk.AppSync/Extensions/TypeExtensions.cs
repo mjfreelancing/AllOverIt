@@ -1,8 +1,10 @@
-﻿using AllOverIt.Aws.Cdk.AppSync.Attributes.Directives;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Aws.Cdk.AppSync.Attributes.Directives;
 using AllOverIt.Aws.Cdk.AppSync.Attributes.Types;
 using AllOverIt.Aws.Cdk.AppSync.Exceptions;
 using AllOverIt.Extensions;
 using Amazon.CDK.AWS.AppSync;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using SystemType = System.Type;
@@ -40,25 +42,38 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
             return false;
         }
 
-        public static GraphqlSchemaTypeDescriptor GetGraphqlTypeDescriptor(this SystemType type)
+        public static GraphqlSchemaTypeDescriptor GetGraphqlTypeDescriptor(this SystemType type, IReadOnlyDictionary<SystemType, string> typeNameOverrides)
         {
+            _ = typeNameOverrides.WhenNotNull();
+
+            _ = typeNameOverrides.TryGetValue(type, out var typeNameOverride);
+
             var elementType = type.GetElementTypeIfArray();
             var typeInfo = elementType!.GetTypeInfo();
 
             // If the type is an enum explicitly look for the lack of an attribute
             if (type.IsEnum && !TryGetSchemaAttribute<SchemaTypeBaseAttribute>(typeInfo, out _))
             {
-                return new GraphqlSchemaTypeDescriptor(elementType, GraphqlSchemaType.Enum, type.Name);
+                return typeNameOverride.IsNullOrEmpty()
+                    ? new GraphqlSchemaTypeDescriptor(elementType, GraphqlSchemaType.Enum, type.Name)
+                    : new GraphqlSchemaTypeDescriptor(elementType, GraphqlSchemaType.Enum, typeNameOverride);
             }
 
             // SchemaTypeAttribute indicates if this is a scalar, enum, interface, or input type (cannot be on an array)
             if (TryGetSchemaAttribute<SchemaTypeBaseAttribute>(typeInfo, out var schemaTypeAttribute))
             {
                 var schemaTypeName = GetNamespaceBasedName(type.Namespace, schemaTypeAttribute.ExcludeNamespacePrefix, schemaTypeAttribute.Name);
+                
+                if (typeNameOverride.IsNotNullOrEmpty() && schemaTypeName.IsNotNullOrEmpty())
+                {
+                    throw new SchemaException($"The type {type.GetFriendlyName()} has an attribute based name ({schemaTypeName}) and an override ({typeNameOverride}). Only one is allowed.");
+                }
 
                 if (schemaTypeName.IsNullOrEmpty())
                 {
-                    schemaTypeName = typeInfo.Name;
+                    schemaTypeName = typeNameOverride.IsNotNullOrEmpty()
+                        ? typeNameOverride
+                        : typeInfo.Name;
                 }
 
                 return new GraphqlSchemaTypeDescriptor(elementType, schemaTypeAttribute.GraphqlSchemaType, schemaTypeName);

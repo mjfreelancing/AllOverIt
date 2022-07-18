@@ -17,6 +17,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
     {
         private readonly IList<SystemType> _typeUnderConstruction = new List<SystemType>();
         private readonly GraphqlApi _graphqlApi;
+        private readonly IReadOnlyDictionary<SystemType, string> _typeNameOverrides;
         private readonly MappingTemplates _mappingTemplates;
         private readonly MappingTypeFactory _mappingTypeFactory;
         private readonly DataSourceFactory _dataSourceFactory;
@@ -40,19 +41,21 @@ namespace AllOverIt.Aws.Cdk.AppSync
             {nameof(String), requiredTypeInfo => GraphqlType.String(CreateTypeOptions(requiredTypeInfo))}
         };
 
-        public GraphqlTypeStore(GraphqlApi graphqlApi, MappingTemplates mappingTemplates, MappingTypeFactory mappingTypeFactory, DataSourceFactory dataSourceFactory)
+        public GraphqlTypeStore(GraphqlApi graphqlApi, IReadOnlyDictionary<SystemType, string> typeNameOverrides, MappingTemplates mappingTemplates,
+            MappingTypeFactory mappingTypeFactory, DataSourceFactory dataSourceFactory)
         {
-            _graphqlApi = graphqlApi.WhenNotNull(nameof(graphqlApi));
-            _mappingTemplates = mappingTemplates.WhenNotNull(nameof(mappingTemplates));
-            _mappingTypeFactory = mappingTypeFactory.WhenNotNull(nameof(mappingTypeFactory));
-            _dataSourceFactory = dataSourceFactory.WhenNotNull(nameof(dataSourceFactory));
+            _graphqlApi = graphqlApi.WhenNotNull();
+            _typeNameOverrides = typeNameOverrides.WhenNotNull();
+            _mappingTemplates = mappingTemplates.WhenNotNull();
+            _mappingTypeFactory = mappingTypeFactory.WhenNotNull();
+            _dataSourceFactory = dataSourceFactory.WhenNotNull();
         }
 
         public GraphqlType GetGraphqlType(string fieldName, RequiredTypeInfo requiredTypeInfo, Action<IIntermediateType> typeCreated)
         {
             SchemaUtils.AssertNoProperties(requiredTypeInfo.Type);
 
-            var typeDescriptor = requiredTypeInfo.Type.GetGraphqlTypeDescriptor();
+            var typeDescriptor = requiredTypeInfo.Type.GetGraphqlTypeDescriptor(_typeNameOverrides);
             var typeName = typeDescriptor.Name;
 
             var fieldTypeCreator = GetTypeCreator(fieldName, requiredTypeInfo.Type, typeName, typeDescriptor, typeCreated);
@@ -156,7 +159,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
                 {
                     // the type is already under construction - we can get away with a dummy intermediate type
                     // that has the name and no definition.
-                    var typeDescriptor = requiredTypeInfo.Type.GetGraphqlTypeDescriptor();
+                    var typeDescriptor = requiredTypeInfo.Type.GetGraphqlTypeDescriptor(_typeNameOverrides);
                     var intermediateType = CreateIntermediateType(typeDescriptor);
 
                     returnObjectType = intermediateType.Attribute(CreateTypeOptions(requiredTypeInfo));
