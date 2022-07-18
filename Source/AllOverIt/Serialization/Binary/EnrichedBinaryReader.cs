@@ -2,7 +2,6 @@
 using AllOverIt.Serialization.Binary.Exceptions;
 using AllOverIt.Serialization.Binary.Extensions;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -52,11 +51,6 @@ namespace AllOverIt.Serialization.Binary
                 {
                     var assemblyTypeName = reader.ReadString();
                     var valueType = Type.GetType(assemblyTypeName);
-
-                    //if (valueType == null)
-                    //{
-                    //    throw new BinaryReaderException($"Unknown type '{assemblyTypeName}'.");
-                    //}
 
                     Throw<BinaryReaderException>.WhenNull(valueType, $"Unknown type '{assemblyTypeName}'.");
 
