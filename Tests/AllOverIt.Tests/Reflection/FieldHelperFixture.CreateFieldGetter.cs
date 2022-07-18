@@ -3,6 +3,7 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Reflection;
 using FluentAssertions;
 using System;
+using System.Reflection;
 using Xunit;
 
 namespace AllOverIt.Tests.Reflection
@@ -60,7 +61,8 @@ namespace AllOverIt.Tests.Reflection
                 var field2 = Create<int>();
                 var model = new DummyClass(field2);
 
-                var fieldInfo = typeof(DummyClass).GetField("Field2");  // can't use nameof() since it is private
+                // can't use nameof() since it is private
+                var fieldInfo = typeof(DummyClass).GetField("Field2", BindingFlags.Instance | BindingFlags.NonPublic);
                 var getter = FieldHelper.CreateFieldGetter(fieldInfo);
 
                 var actual = getter.Invoke(model);
@@ -105,7 +107,8 @@ namespace AllOverIt.Tests.Reflection
                 var field2 = Create<int>();
                 var model = new DummyClass(field2);
 
-                var fieldInfo = typeof(DummyClass).GetField("Field2");  // can't use nameof() since it is private
+                // can't use nameof() since it is private
+                var fieldInfo = typeof(DummyClass).GetField("Field2", BindingFlags.Instance | BindingFlags.NonPublic);
                 var getter = FieldHelper.CreateFieldGetter<DummyClass>(fieldInfo);
 
                 var actual = getter.Invoke(model);
