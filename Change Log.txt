@@ -40,6 +40,10 @@ AllOverIt.Aws.AppSync.Client
   * Renamed AppSyncCognitoAuthorization to AppSyncAuthorization and deleted AppSyncLambdaAuthorization as it also contains
     an 'authorization' header.
 
+AllOverIt.Aws.Cdk.AppSync
+  * Added support for GQL schema to be provided type name overrides (typically for enum types)
+  * Added support to enable EnrichedEnum to be treated as a GQL enum
+
 AllOverIt.Pagination
   * New package to provide keyset based pagination for any IQueryable, including EF queries
 
