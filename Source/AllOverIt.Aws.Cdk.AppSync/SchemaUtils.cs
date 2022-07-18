@@ -41,7 +41,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
         private static void CheckForProperties(SystemType type)
         {
             // not expecting class types to be used, but check anyway
-            if (type != typeof(string) && (type.IsClass || type.IsInterface))
+            if (type != typeof(string) && !type.IsEnrichedEnum() && (type.IsClass || type.IsInterface))
             {
                 if (type.IsInterface)
                 {

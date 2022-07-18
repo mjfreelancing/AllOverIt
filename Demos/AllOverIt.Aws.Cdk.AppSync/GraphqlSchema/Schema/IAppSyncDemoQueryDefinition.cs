@@ -59,7 +59,7 @@ namespace GraphqlSchema.Schema
         #region Date, Time, DateTime, Timestamp responses
 
         [NoneDataSource(nameof(CountryDate), typeof(CountryDateMapping))]
-        AwsTypeDate CountryDate([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType);
+        AwsTypeDate CountryDate([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType, DateFormat dateFormat);
 
         [NoneDataSource(nameof(CountryTime), typeof(CountryTimeMapping))]
         AwsTypeTime CountryTime([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType);

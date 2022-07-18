@@ -4,6 +4,7 @@ using AllOverIt.Aws.Cdk.AppSync.Factories;
 using AllOverIt.Aws.Cdk.AppSync.Mapping;
 using AllOverIt.Aws.Cdk.AppSync.Schema.Types;
 using AllOverIt.Extensions;
+using AllOverIt.Reflection;
 using Amazon.CDK.AWS.AppSync;
 using System;
 using System.Collections.Generic;
@@ -70,9 +71,20 @@ namespace AllOverIt.Aws.Cdk.AppSync
             {
                 var elementType = type.GetElementTypeIfArray();
 
-                var objectType = elementType!.IsEnum
-                    ? CreateEnumType(elementType, typeDescriptor)
-                    : CreateInterfaceType(parentName, elementType, typeDescriptor);
+                IIntermediateType objectType;
+
+                if (elementType!.IsEnum)
+                {
+                    objectType = CreateEnumType(elementType, typeDescriptor);
+                }
+                else if (elementType.IsEnrichedEnum())
+                {
+                    objectType = CreateEnumTypeFromEnrichedEnum(elementType, typeDescriptor);
+                }
+                else
+                {
+                    objectType = CreateInterfaceType(parentName, elementType, typeDescriptor);
+                }
 
                 // notify of type creation so it can, for example, be added to a schema
                 typeCreated.Invoke(objectType);
@@ -90,6 +102,25 @@ namespace AllOverIt.Aws.Cdk.AppSync
                 Definition = type.GetEnumNames().Select(item => item.ToUpperSnakeCase()).ToArray()
             });
 
+            return CreateEnumType(enumType, typeDescriptor);
+        }
+
+        private IIntermediateType CreateEnumTypeFromEnrichedEnum(SystemType type, GraphqlSchemaTypeDescriptor typeDescriptor)
+        {
+            var propNames = type.GetFields()
+                .Where(fieldInfo => fieldInfo.IsStatic && fieldInfo.FieldType == type)
+                .Select(fieldInfo => fieldInfo.Name.ToUpperSnakeCase());
+
+            var enumType = new EnumType(typeDescriptor.Name, new EnumTypeOptions
+            {
+                Definition = propNames.ToArray()
+            });
+
+            return CreateEnumType(enumType, typeDescriptor);
+        }
+
+        private IIntermediateType CreateEnumType(EnumType enumType, GraphqlSchemaTypeDescriptor typeDescriptor)
+        {
             _fieldTypes.Add(
                 typeDescriptor.Name,
                 requiredTypeInfo => enumType.Attribute(CreateTypeOptions(requiredTypeInfo)));

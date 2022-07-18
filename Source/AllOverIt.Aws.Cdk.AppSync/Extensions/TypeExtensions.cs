@@ -52,7 +52,9 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
             var typeInfo = elementType!.GetTypeInfo();
 
             // If the type is an enum explicitly look for the lack of an attribute
-            if (type.IsEnum && !TryGetSchemaAttribute<SchemaTypeBaseAttribute>(typeInfo, out _))
+            var isEnum = type.IsEnum || type.IsEnrichedEnum();
+
+            if (isEnum && !TryGetSchemaAttribute<SchemaTypeBaseAttribute>(typeInfo, out _))
             {
                 return typeNameOverride.IsNullOrEmpty()
                     ? new GraphqlSchemaTypeDescriptor(elementType, GraphqlSchemaType.Enum, type.Name)
