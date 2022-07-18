@@ -70,7 +70,8 @@ namespace GraphqlSchema.Constructs
             // DateType doesn't have an attribute. Without one, it would be named "DateType", except when overriden like so:
             var typeNameOverrides = new Dictionary<SystemType, string>
             {
-                { typeof(DateType), "CustomDateType" }
+                { typeof(DateType), "CustomDateType" },
+                { typeof(DateFormat), "CustomDateFormat" },
             };
 
             var graphql = new AppSyncDemoGraphql(this, appProps, authMode, typeNameOverrides, mappingTemplates, mappingTypeFactory);
