@@ -119,6 +119,21 @@ namespace AllOverIt.Tests.Reflection
             }
 
             [Fact]
+            public void Should_Create_Getter_For_Private_Property()
+            {
+                var model = new DummySuperClass();
+                model.Method3();     // Sets Prop4 to 1
+
+                // can't use nameof() since it is private
+                var propInfo = typeof(DummySuperClass).GetProperty("Prop4", BindingFlags.Instance | BindingFlags.NonPublic);
+                var getter = PropertyHelper.CreatePropertyGetter(propInfo);
+
+                var actual = getter.Invoke(model);
+
+                actual.Should().Be(1);
+            }
+
+            [Fact]
             public void Should_Throw_When_Property_Has_No_Getter()
             {
                 Invoking(() =>
@@ -160,6 +175,21 @@ namespace AllOverIt.Tests.Reflection
                 var actual = getter.Invoke(expected);
 
                 actual.Should().Be(expected.Prop1);
+            }
+
+            [Fact]
+            public void Should_Create_Getter_For_Private_Property()
+            {
+                var model = new DummySuperClass();
+                model.Method3();     // Sets Prop4 to 1
+
+                // can't use nameof() since it is private
+                var propInfo = typeof(DummySuperClass).GetProperty("Prop4", BindingFlags.Instance | BindingFlags.NonPublic);
+                var getter = PropertyHelper.CreatePropertyGetter<DummyBaseClass>(propInfo);
+
+                var actual = getter.Invoke(model);
+
+                actual.Should().Be(1);
             }
 
             [Fact]

@@ -4,6 +4,7 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Reflection;
 using AllOverIt.Reflection.Exceptions;
 using FluentAssertions;
+using FluentAssertions.Equivalency;
 using System;
 using System.Reflection;
 using Xunit;
@@ -38,6 +39,31 @@ namespace AllOverIt.Tests.Reflection
                 setter.Invoke(model, expected);
 
                 model.Prop1.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Create_Setter_For_Private_Property()
+            {
+                var model = new DummySuperClass();
+                model.Method3();     // Sets Prop4 to 1
+
+                // can't use nameof() since it is private
+                var propInfo = typeof(DummySuperClass).GetProperty("Prop4", BindingFlags.Instance | BindingFlags.NonPublic);
+                var getter = PropertyHelper.CreatePropertyGetter(propInfo);
+
+                var actual = getter.Invoke(model);
+
+                actual.Should().Be(1);
+
+                // now change it
+                var expected = Create<long>();
+
+                var setter = PropertyHelper.CreatePropertySetter(propInfo);
+                setter.Invoke(model, expected);
+
+                actual = getter.Invoke(model);
+
+                actual.Should().Be(expected);
             }
 
             [Fact]
