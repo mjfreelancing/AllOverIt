@@ -81,6 +81,7 @@ namespace FilteringDemo
             {
                 new Product
                 {
+                    Active = true,
                     Category = "Furniture",
                     Name = "Chairs",
                     Price = 1000,
@@ -88,6 +89,7 @@ namespace FilteringDemo
                 },
                 new Product
                 {
+                    Active = true,
                     Category = "Furniture",
                     Name = "Table",
                     Price = 800,
@@ -95,6 +97,7 @@ namespace FilteringDemo
                 },
                 new Product
                 {
+                    Active = true,
                     Category = "Furniture",
                     Name = "Cupboard",
                     Price = 500,
@@ -102,6 +105,7 @@ namespace FilteringDemo
                 },
                 new Product
                 {
+                    Active = true,
                     Category = "Furniture",
                     Name = "Dresser",
                     Price = 250,
@@ -109,6 +113,7 @@ namespace FilteringDemo
                 },
                 new Product
                 {
+                    Active = true,
                     Category = "Furniture",
                     Name = "Lamp",
                     Price = 50,
@@ -116,6 +121,7 @@ namespace FilteringDemo
                 },
                 new Product
                 {
+                    Active = true,
                     Category = "Clothing",
                     Name = "Shirt",
                     Price = 10,
@@ -123,6 +129,7 @@ namespace FilteringDemo
                 },
                 new Product
                 {
+                    Active = true,
                     Category = "Clothing",
                     Name = "Trousers",
                     Price = 15,
@@ -130,6 +137,7 @@ namespace FilteringDemo
                 },
                 new Product
                 {
+                    Active = true,
                     Category = "Clothing",
                     Name = "Jumper",
                     Price = 20,
@@ -137,6 +145,7 @@ namespace FilteringDemo
                 },
                 new Product
                 {
+                    Active = true,
                     Category = "Clothing",
                     Name = "Jacket",
                     Price = 20,
@@ -144,6 +153,7 @@ namespace FilteringDemo
                 },
                 new Product
                 {
+                    Active = true,
                     Category = "Clothing",
                     Name = "Shoes",
                     Price = 200,
@@ -151,6 +161,7 @@ namespace FilteringDemo
                 },
                 new Product
                 {
+                    Active = true,
                     Category = "Clothing",
                     Name = "Socks",
                     Price = 25,
@@ -158,6 +169,7 @@ namespace FilteringDemo
                 },
                 new Product
                 {
+                    Active = true,
                     Category = "Clothing",
                     Name = "Underwear",
                     Price = 18,
