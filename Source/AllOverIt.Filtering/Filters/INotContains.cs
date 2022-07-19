@@ -2,6 +2,5 @@
 {
     public interface INotContains : IStringFilterOperation
     {
-        string Value { get; }
     }
 }

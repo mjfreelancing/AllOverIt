@@ -2,6 +2,5 @@
 {
     public interface IContains : IStringFilterOperation
     {
-        string Value { get; }
     }
 }

@@ -6,5 +6,6 @@ namespace AllOverIt.Filtering.Builders
     {
         bool UseParameterizedQueries { get; }
         StringComparison? StringComparison { get; }
+        bool IgnoreNullFilterValues { get; }
     }
 }

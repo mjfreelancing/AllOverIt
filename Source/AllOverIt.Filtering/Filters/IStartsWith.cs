@@ -2,6 +2,5 @@
 {
     public interface IStartsWith : IStringFilterOperation
     {
-        string Value { get; }
     }
 }

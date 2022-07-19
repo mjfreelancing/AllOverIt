@@ -146,6 +146,11 @@ namespace AllOverIt.Patterns.Specification.Utils
 
         private string GetValue(object input)
         {
+            if (input is null)
+            {
+                return "null";
+            }
+
             var type = input.GetType();
 
             if (type.IsClass && type != typeof(string))

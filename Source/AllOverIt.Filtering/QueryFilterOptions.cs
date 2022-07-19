@@ -7,5 +7,6 @@ namespace AllOverIt.Filtering
     {
         public bool UseParameterizedQueries { get; init; } = true;
         public StringComparison? StringComparison { get; init; }        // Only set, if required, for non-database queries
+        public bool IgnoreNullFilterValues { get; init; }
     }
 }

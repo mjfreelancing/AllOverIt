@@ -3,7 +3,6 @@ using AllOverIt.Filtering.Filters;
 using AllOverIt.Patterns.Specification;
 using AllOverIt.Patterns.Specification.Extensions;
 using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Filtering.Builders
@@ -32,40 +31,26 @@ namespace AllOverIt.Filtering.Builders
         public ILogicalFilterBuilder<TType, TFilter> Where(Expression<Func<TType, string>> propertyExpression,
             Func<TFilter, IStringFilterOperation> operation)
         {
-            _currentSpecification = _specificationBuilder.Create(propertyExpression, operation);
-            return this;
-        }
+            var specification = _specificationBuilder.Create(propertyExpression, operation);
 
-        // Sequential Where() calls are AND' together
-        public ILogicalFilterBuilder<TType, TFilter> Where<TProperty>(Expression<Func<TType, IList<TProperty>>> propertyExpression,
-            Func<TFilter, IArrayFilterOperation> operation)
-        {
-            var nextSpecfication = _specificationBuilder.Create(propertyExpression, operation);
-
-            _currentSpecification = _currentSpecification == null
-                ? nextSpecfication
-                : _currentSpecification.And(nextSpecfication);
+            ApplyNextSpecification(specification, LinqSpecificationExtensions.And);
 
             return this;
         }
 
         public ILogicalFilterBuilder<TType, TFilter> Where<TProperty>(Expression<Func<TType, TProperty>> propertyExpression,
-            Func<TFilter, IFilterOperation> operation)
+            Func<TFilter, IBasicFilterOperation> operation)
         {
-            var nextSpecfication = _specificationBuilder.Create(propertyExpression, operation);
+            var specification = _specificationBuilder.Create(propertyExpression, operation);
 
-            _currentSpecification = _currentSpecification == null
-                ? nextSpecfication
-                : _currentSpecification.And(nextSpecfication);
+            ApplyNextSpecification(specification, LinqSpecificationExtensions.And);
 
             return this;
         }
 
         public ILogicalFilterBuilder<TType, TFilter> Where(ILinqSpecification<TType> specification)
         {
-            _currentSpecification = _currentSpecification == null
-                ? specification
-                : _currentSpecification.And(specification);
+            ApplyNextSpecification(specification, LinqSpecificationExtensions.And);
 
             return this;
         }
@@ -76,23 +61,25 @@ namespace AllOverIt.Filtering.Builders
             Func<TFilter, IStringFilterOperation> operation)
         {
             var specification = _specificationBuilder.Create(propertyExpression, operation);
-            _currentSpecification = _currentSpecification.And(specification);
+
+            ApplyNextSpecification(specification, LinqSpecificationExtensions.And);
 
             return this;
         }
 
         public ILogicalFilterBuilder<TType, TFilter> And<TProperty>(Expression<Func<TType, TProperty>> propertyExpression,
-            Func<TFilter, IFilterOperation> operation)
+            Func<TFilter, IBasicFilterOperation> operation)
         {
             var specification = _specificationBuilder.Create(propertyExpression, operation);
-            _currentSpecification = _currentSpecification.And(specification);
+
+            ApplyNextSpecification(specification, LinqSpecificationExtensions.And);
 
             return this;
         }
 
         public ILogicalFilterBuilder<TType, TFilter> And(ILinqSpecification<TType> specification)
         {
-            _currentSpecification = _currentSpecification.And(specification);
+            ApplyNextSpecification(specification, LinqSpecificationExtensions.And);
 
             return this;
         }
@@ -103,26 +90,44 @@ namespace AllOverIt.Filtering.Builders
             Func<TFilter, IStringFilterOperation> operation)
         {
             var specification = _specificationBuilder.Create(propertyExpression, operation);
-            _currentSpecification = _currentSpecification.Or(specification);
+
+            ApplyNextSpecification(specification, LinqSpecificationExtensions.Or);
 
             return this;
         }
 
         public ILogicalFilterBuilder<TType, TFilter> Or<TProperty>(Expression<Func<TType, TProperty>> propertyExpression,
-            Func<TFilter, IFilterOperation> operation)
+            Func<TFilter, IBasicFilterOperation> operation)
         {
             var specification = _specificationBuilder.Create(propertyExpression, operation);
-            _currentSpecification = _currentSpecification.Or(specification);
+
+            ApplyNextSpecification(specification, LinqSpecificationExtensions.Or);
 
             return this;
         }
 
         public ILogicalFilterBuilder<TType, TFilter> Or(ILinqSpecification<TType> specification)
         {
-            _currentSpecification = _currentSpecification.Or(specification);
+            ApplyNextSpecification(specification, LinqSpecificationExtensions.Or);
 
             return this;
         }
         #endregion
+
+        private void ApplyNextSpecification(ILinqSpecification<TType> specification,
+           Func<ILinqSpecification<TType>, ILinqSpecification<TType>, ILinqSpecification<TType>> action)
+        {
+            if (Accept(specification))
+            {
+                _currentSpecification = _currentSpecification == null
+                    ? specification
+                    : action.Invoke(_currentSpecification, specification);
+            }
+        }
+
+        private static bool Accept(ILinqSpecification<TType> specification)
+        {
+            return specification != FilterSpecificationBuilder<TType, TFilter>.SpecificationIgnore;
+        }
     }
 }

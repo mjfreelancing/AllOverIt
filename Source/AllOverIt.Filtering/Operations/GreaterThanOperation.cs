@@ -8,7 +8,7 @@ namespace AllOverIt.Filtering.Operations
     internal sealed class GreaterThanOperation<TEntity, TProperty> : OperationBase<TEntity, TProperty> where TEntity : class
     {
         public GreaterThanOperation(Expression<Func<TEntity, TProperty>> propertyExpression, TProperty value, IFilterSpecificationBuilderOptions options)
-            : base(propertyExpression, value, CreatePredicate, options)
+            : base(propertyExpression, value, true, CreatePredicate, options)
         {
         }
 

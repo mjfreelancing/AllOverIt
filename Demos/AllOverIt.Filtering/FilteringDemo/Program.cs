@@ -1,5 +1,7 @@
-﻿using AllOverIt.Filtering.Builders.Extensions;
+﻿using AllOverIt.Filtering;
+using AllOverIt.Filtering.Builders.Extensions;
 using AllOverIt.Filtering.Extensions;
+using AllOverIt.Filtering.Filters;
 using AllOverIt.Patterns.Specification.Extensions;
 using System;
 using System.Linq;
@@ -36,7 +38,8 @@ namespace FilteringDemo
             var filterOptions = new QueryFilterOptions
             {
                 UseParameterizedQueries = false,
-                StringComparison = StringComparison.InvariantCultureIgnoreCase
+                StringComparison = StringComparison.InvariantCultureIgnoreCase,
+                IgnoreNullFilterValues = true
             };
 
             var results = products
@@ -53,7 +56,7 @@ namespace FilteringDemo
                         .And(priceGte.And(priceLte))
                         .And(product => product.LastUpdated, filter => filter.LastUpdated.GreaterThanOrEqual);
 
-                    // Output the generated query as readable text
+                    // Output the generated query as readable text, such as:
                     // (((Category StartsWith 'fu' AND Name Contains 'r') AND ((Price >= 15) AND (Price <= 700))) AND (LastUpdated >= '2022-07-07T00:00:00.000Z'))
                     var queryString = filterBuilder.AsQueryString();
 

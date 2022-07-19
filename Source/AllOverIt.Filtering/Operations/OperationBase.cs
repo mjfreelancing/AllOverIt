@@ -1,4 +1,5 @@
-﻿using AllOverIt.Expressions;
+﻿using AllOverIt.Evaluator.Exceptions;
+using AllOverIt.Expressions;
 using AllOverIt.Extensions;
 using AllOverIt.Filtering.Builders;
 using AllOverIt.Patterns.Specification;
@@ -18,11 +19,14 @@ namespace AllOverIt.Filtering.Operations
             // The constant value used in the predicate
             TProperty value,
             
+            // Indicates if an exception is to be thrown when the provided value is null
+            bool supportsNull,
+
             // Creates the final expression
             Func<MemberExpression, SystemExpression, SystemExpression> predicateExpressionFactory,
 
             IFilterSpecificationBuilderOptions options)
-                : base(() => CreateResolver(propertyExpression, CreateValueExpression(value, options.UseParameterizedQueries), predicateExpressionFactory))
+                : base(() => CreateResolver(propertyExpression, CreateValueExpression(value, supportsNull, options.UseParameterizedQueries), predicateExpressionFactory))
         {
         }
 
@@ -37,7 +41,7 @@ namespace AllOverIt.Filtering.Operations
             Func<MemberExpression, SystemExpression, SystemExpression> predicateExpressionFactory,
 
             IFilterSpecificationBuilderOptions options)
-                : base(() => CreateResolver(propertyExpression, CreateValueExpression(values, options.UseParameterizedQueries), predicateExpressionFactory))
+                : base(() => CreateResolver(propertyExpression, CreateValueExpression(values, false, options.UseParameterizedQueries), predicateExpressionFactory))
         {
         }
 
@@ -53,11 +57,34 @@ namespace AllOverIt.Filtering.Operations
             return SystemExpression.Lambda<Func<TEntity, bool>>(predicate, parameter);
         }
 
-        private static SystemExpression CreateValueExpression<TValue>(TValue value, bool useParameterizedQueries)
+        private static SystemExpression CreateValueExpression<TValue>(TValue value, bool supportsNull, bool useParameterizedQueries)
         {
-            return useParameterizedQueries
-                ? ExpressionUtils.CreateParameterizedValue(value, value.GetType())
-                : SystemExpression.Constant(value);
+            // Need to deal with null strings and nullables. Could use Nullable.GetUnderlyingType() for nullable
+            // types but the approach below works for both cases.
+
+            // eg bool? on the entity
+            var expectedType = typeof(TValue);
+
+            // eg bool value provided for comparison
+            var valueType = value == null
+                ? typeof(TValue)
+                : value.GetType();
+
+            if (valueType != expectedType)
+            {
+                valueType = expectedType;
+            }
+
+            var result = useParameterizedQueries
+                ? ExpressionUtils.CreateParameterizedValue(value, valueType)
+                : SystemExpression.Constant(value, valueType);
+
+            if (!supportsNull && result.GetValue() == null)
+            {
+                throw new NullNotSupportedException();
+            }
+
+            return result;
         }
     }
 }

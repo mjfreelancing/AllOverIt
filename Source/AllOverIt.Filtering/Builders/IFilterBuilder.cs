@@ -16,7 +16,10 @@ namespace AllOverIt.Filtering.Builders
         ILogicalFilterBuilder<TType, TFilter> Current { get; }
 
         ILogicalFilterBuilder<TType, TFilter> Where(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation);
-        ILogicalFilterBuilder<TType, TFilter> Where<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IFilterOperation> operation);
+
+        // Also handles IArrayFilterOperation
+        ILogicalFilterBuilder<TType, TFilter> Where<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IBasicFilterOperation> operation);
+
         ILogicalFilterBuilder<TType, TFilter> Where(ILinqSpecification<TType> specification);
     }
 }

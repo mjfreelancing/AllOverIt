@@ -1,7 +1,6 @@
 ﻿namespace AllOverIt.Filtering.Filters
 {
-    public interface IGreaterThan<TProperty> : IFilterOperation
+    public interface IGreaterThan<TProperty> : IBasicFilterOperation<TProperty>
     {
-        TProperty Value { get; }
     }
 }

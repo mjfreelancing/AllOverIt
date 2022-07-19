@@ -8,7 +8,7 @@ namespace AllOverIt.Filtering.Operations
     internal sealed class EndsWithOperation<TEntity> : OperationBase<TEntity, string> where TEntity : class
     {
         public EndsWithOperation(Expression<Func<TEntity, string>> propertyExpression, string value, IFilterSpecificationBuilderOptions options)
-            : base(propertyExpression, value, (member, constant) => CreatePredicate(member, constant, options.StringComparison), options)
+            : base(propertyExpression, value, false, (member, constant) => CreatePredicate(member, constant, options.StringComparison), options)
         {
         }
 

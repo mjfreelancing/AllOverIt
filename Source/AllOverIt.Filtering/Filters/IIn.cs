@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace AllOverIt.Filtering.Filters
+﻿namespace AllOverIt.Filtering.Filters
 {
-    public interface IIn<TProperty> : IArrayFilterOperation
+    public interface IIn<TProperty> : IArrayFilterOperation<TProperty>
     {
-        IList<TProperty> Values { get; }
     }
 }

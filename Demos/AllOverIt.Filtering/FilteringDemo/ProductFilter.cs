@@ -7,23 +7,23 @@ namespace FilteringDemo
     {
         public sealed class ActiveFilter
         {
-            public EqualTo<bool> EqualTo { get; set; } 
+            public EqualTo<bool?> EqualTo { get; set; } = new();
         }
 
         public sealed class CategoryFilter
         {
-            public StartsWith StartsWith { get; set; }
+            public StartsWith StartsWith { get; set; } = new();
         }
 
         public sealed class NameFilter
         {
-            public Contains Contains { get; set; }
+            public Contains Contains { get; set; } = new();
         }
 
         public sealed class PriceFilter
         {
-            public GreaterThanOrEqual<double> GreaterThanOrEqual { get; set; }
-            public LessThanOrEqual<double> LessThanOrEqual { get; set; }
+            public GreaterThanOrEqual<double> GreaterThanOrEqual { get; set; } = new();
+            public LessThanOrEqual<double> LessThanOrEqual { get; set; } = new();
         }
 
         public sealed class LastUpdatedFilter
