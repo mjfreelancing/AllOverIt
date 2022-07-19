@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Filtering.Builders;
-using AllOverIt.Filtering.Filters;
 using AllOverIt.Patterns.Specification.Extensions;
 using System;
 using System.Data;
@@ -25,7 +24,7 @@ namespace AllOverIt.Filtering.Extensions
         public static IQueryable<TType> ApplyFilter<TType, TFilter>(this IQueryable<TType> queryable, TFilter filter,
             Action<IFilterSpecificationBuilder<TType, TFilter>, IFilterBuilder<TType, TFilter>> action, QueryFilterOptions options = default)
             where TType : class
-            where TFilter : class, IFilter
+            where TFilter : class
         {
             _ = filter.WhenNotNull(nameof(filter));
 

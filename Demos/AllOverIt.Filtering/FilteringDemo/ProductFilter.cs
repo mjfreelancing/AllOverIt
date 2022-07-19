@@ -3,7 +3,7 @@ using System;
 
 namespace FilteringDemo
 {
-    public sealed class ProductFilter : IFilter
+    public sealed class ProductFilter
     {
         public sealed class ActiveFilter
         {

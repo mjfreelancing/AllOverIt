@@ -11,7 +11,7 @@ namespace AllOverIt.Filtering.Builders
     // Use the AsQueryString() extension method to get a string representation
     internal sealed class FilterBuilder<TType, TFilter> : IFilterBuilder<TType, TFilter>, ILogicalFilterBuilder<TType, TFilter>
         where TType : class
-        where TFilter : class, IFilter
+        where TFilter : class
     {
         private readonly IFilterSpecificationBuilder<TType, TFilter> _specificationBuilder;
 

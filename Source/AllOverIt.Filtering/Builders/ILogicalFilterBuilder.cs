@@ -7,7 +7,7 @@ namespace AllOverIt.Filtering.Builders
 {
     public interface ILogicalFilterBuilder<TType, TFilter>
       where TType : class
-      where TFilter : class, IFilter
+      where TFilter : class
     {
         ILogicalFilterBuilder<TType, TFilter> And(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation);
         ILogicalFilterBuilder<TType, TFilter> And<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IFilterOperation> operation);

@@ -12,7 +12,7 @@ namespace AllOverIt.Filtering.Builders
 {
     internal class FilterSpecificationBuilder<TType, TFilter> : IFilterSpecificationBuilder<TType, TFilter>
         where TType : class
-        where TFilter : class, IFilter
+        where TFilter : class
     {
         private readonly TFilter _filter;
         private readonly IFilterSpecificationBuilderOptions _options;

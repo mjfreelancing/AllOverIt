@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Assertion;
-using AllOverIt.Filtering.Filters;
 using AllOverIt.Patterns.Specification.Utils;
 
 namespace AllOverIt.Filtering.Builders.Extensions
@@ -8,7 +7,7 @@ namespace AllOverIt.Filtering.Builders.Extensions
     {
         public static string AsQueryString<TType, TFilter>(this IFilterBuilder<TType, TFilter> filterBuilder)
            where TType : class
-           where TFilter : class, IFilter
+           where TFilter : class
         {
             _ = filterBuilder.WhenNotNull(nameof(filterBuilder));
 

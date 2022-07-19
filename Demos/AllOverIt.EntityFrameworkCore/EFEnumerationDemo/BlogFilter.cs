@@ -2,7 +2,7 @@
 
 namespace EFEnumerationDemo
 {
-    public sealed class BlogFilter : IFilter
+    public sealed class BlogFilter
     {
         public sealed class IdFilter
         {

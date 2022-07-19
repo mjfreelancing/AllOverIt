@@ -1,5 +1,4 @@
-﻿using AllOverIt.Assertion;
-using AllOverIt.Filtering.Filters;
+﻿using AllOverIt.Filtering.Filters;
 using AllOverIt.Patterns.Specification;
 using System;
 using System.Linq.Expressions;
@@ -8,7 +7,7 @@ namespace AllOverIt.Filtering.Builders
 {
     public interface IFilterBuilder<TType, TFilter>
        where TType : class
-       where TFilter : class, IFilter
+       where TFilter : class
     {
         // Gets the current state of the filter builder as a specification.
         ILinqSpecification<TType> AsSpecification { get; }
