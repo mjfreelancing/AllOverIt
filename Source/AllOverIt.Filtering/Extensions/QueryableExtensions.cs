@@ -7,18 +7,6 @@ using System.Linq;
 
 namespace AllOverIt.Filtering.Extensions
 {
-    public interface IFilterSpecificationBuilderOptions
-    {
-        bool UseParameterizedQueries { get; }
-        StringComparison? StringComparison { get; }
-    }
-
-    public sealed class QueryFilterOptions : IFilterSpecificationBuilderOptions
-    {
-        public bool UseParameterizedQueries { get; init; } = true;
-        public StringComparison? StringComparison { get; init; }        // Only set, if required, for non-database queries
-    }
-
     public static class QueryableExtensions
     {
         public static IQueryable<TType> ApplyFilter<TType, TFilter>(this IQueryable<TType> queryable, TFilter filter,

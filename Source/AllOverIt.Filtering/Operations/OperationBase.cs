@@ -1,6 +1,6 @@
 ﻿using AllOverIt.Expressions;
 using AllOverIt.Extensions;
-using AllOverIt.Filtering.Extensions;
+using AllOverIt.Filtering.Builders;
 using AllOverIt.Patterns.Specification;
 using System;
 using System.Collections.Generic;
