@@ -13,7 +13,10 @@ namespace AllOverIt.Tests.Reflection
         private class DummyClass
         {
             public int Field1;
-            private int Field2;
+
+#pragma warning disable IDE0052 // Remove unread private members
+            private readonly int Field2;
+#pragma warning restore IDE0052 // Remove unread private members
 
             public DummyClass()
             {
