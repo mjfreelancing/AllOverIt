@@ -1,26 +1,26 @@
 ﻿namespace AllOverIt.Filtering.Filters
 {
-    public sealed class GreaterThanOrEqual<TType> : IGreaterThanOrEqual<TType>
+    public sealed class GreaterThanOrEqual<TProperty> : IGreaterThanOrEqual<TProperty>
     {
-        public TType Value { get; set; }
+        public TProperty Value { get; set; }
 
         public GreaterThanOrEqual()
         {
         }
 
-        public GreaterThanOrEqual(TType value)
+        public GreaterThanOrEqual(TProperty value)
         {
             Value = value;
         }
 
-        public static explicit operator TType(GreaterThanOrEqual<TType> value)
+        public static explicit operator TProperty(GreaterThanOrEqual<TProperty> value)
         {
             return value.Value;
         }
 
-        public static implicit operator GreaterThanOrEqual<TType>(TType value)
+        public static implicit operator GreaterThanOrEqual<TProperty>(TProperty value)
         {
-            return new GreaterThanOrEqual<TType>(value);
+            return new GreaterThanOrEqual<TProperty>(value);
         }
     }
 }

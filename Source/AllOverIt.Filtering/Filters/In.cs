@@ -3,27 +3,27 @@ using System.Collections.Generic;
 
 namespace AllOverIt.Filtering.Filters
 {
-    public sealed class In<TType> : IIn<TType>
+    public sealed class In<TProperty> : IIn<TProperty>
     {
-        public IList<TType> Values { get; set; }
+        public IList<TProperty> Value { get; set; }
 
         public In()
         {
         }
 
-        public In(IEnumerable<TType> values)
+        public In(IEnumerable<TProperty> values)
         {
-            Values = values.AsList();
+            Value = values.AsList();
         }
 
-        public static explicit operator List<TType>(In<TType> value)
+        public static explicit operator List<TProperty>(In<TProperty> value)
         {
-            return (List<TType>) value.Values;
+            return (List<TProperty>) value.Value;
         }
 
-        public static implicit operator In<TType>(List<TType> values)
+        public static implicit operator In<TProperty>(List<TProperty> values)
         {
-            return new In<TType>(values);
+            return new In<TProperty>(values);
         }
     }
 }

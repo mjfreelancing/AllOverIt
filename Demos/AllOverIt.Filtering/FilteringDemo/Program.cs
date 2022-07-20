@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Filtering;
 using AllOverIt.Filtering.Builders.Extensions;
 using AllOverIt.Filtering.Extensions;
-using AllOverIt.Filtering.Filters;
 using AllOverIt.Patterns.Specification.Extensions;
 using System;
 using System.Linq;

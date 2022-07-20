@@ -1,26 +1,26 @@
 ﻿namespace AllOverIt.Filtering.Filters
 {
-    public sealed class NotEqualTo<TType> : INotEqualTo<TType>
+    public sealed class NotEqualTo<TProperty> : INotEqualTo<TProperty>
     {
-        public TType Value { get; set; }
+        public TProperty Value { get; set; }
 
         public NotEqualTo()
         {
         }
 
-        public NotEqualTo(TType value)
+        public NotEqualTo(TProperty value)
         {
             Value = value;
         }
 
-        public static explicit operator TType(NotEqualTo<TType> value)
+        public static explicit operator TProperty(NotEqualTo<TProperty> value)
         {
             return value.Value;
         }
 
-        public static implicit operator NotEqualTo<TType>(TType value)
+        public static implicit operator NotEqualTo<TProperty>(TProperty value)
         {
-            return new NotEqualTo<TType>(value);
+            return new NotEqualTo<TProperty>(value);
         }
     }
 }

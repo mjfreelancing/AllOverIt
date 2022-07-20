@@ -3,27 +3,27 @@ using System.Collections.Generic;
 
 namespace AllOverIt.Filtering.Filters
 {
-    public sealed class NotIn<TType> : INotIn<TType>
+    public sealed class NotIn<TProperty> : INotIn<TProperty>
     {
-        public IList<TType> Values { get; set; }
+        public IList<TProperty> Value { get; set; }
 
         public NotIn()
         {
         }
 
-        public NotIn(IEnumerable<TType> values)
+        public NotIn(IEnumerable<TProperty> values)
         {
-            Values = values.AsList();
+            Value = values.AsList();
         }
 
-        public static explicit operator List<TType>(NotIn<TType> value)
+        public static explicit operator List<TProperty>(NotIn<TProperty> value)
         {
-            return (List<TType>) value.Values;
+            return (List<TProperty>) value.Value;
         }
 
-        public static implicit operator NotIn<TType>(List<TType> values)
+        public static implicit operator NotIn<TProperty>(List<TProperty> values)
         {
-            return new NotIn<TType>(values);
+            return new NotIn<TProperty>(values);
         }
     }
 }

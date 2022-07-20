@@ -22,13 +22,13 @@ namespace FilteringDemo
 
         public sealed class PriceFilter
         {
-            public GreaterThanOrEqual<double> GreaterThanOrEqual { get; set; } = new();
+            public GreaterThanOrEqual<double?> GreaterThanOrEqual { get; set; } = new();
             public LessThanOrEqual<double> LessThanOrEqual { get; set; } = new();
         }
 
         public sealed class LastUpdatedFilter
         {
-            public GreaterThanOrEqual<DateTime> GreaterThanOrEqual { get; set; }
+            public GreaterThanOrEqual<DateTime?> GreaterThanOrEqual { get; set; } = new();
         }
 
         public ActiveFilter Active { get; init; } = new();

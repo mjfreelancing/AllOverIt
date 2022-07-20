@@ -6,8 +6,8 @@ namespace AllOverIt.Filtering.Filters
     {
     }
 
-    public interface IArrayFilterOperation<TProperty> : IArrayFilterOperation
+    public interface IArrayFilterOperation<TProperty> : IArrayFilterOperation, IFilterOperationType<IList<TProperty>>
     {
-        IList<TProperty> Values { get; }
+        //IList<TProperty> Value { get; }
     }
 }

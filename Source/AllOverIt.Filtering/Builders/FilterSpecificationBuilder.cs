@@ -6,6 +6,8 @@ using AllOverIt.Filtering.Operations;
 using AllOverIt.Patterns.Specification;
 using AllOverIt.Patterns.Specification.Extensions;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Filtering.Builders
@@ -14,6 +16,7 @@ namespace AllOverIt.Filtering.Builders
         where TType : class
         where TFilter : class
     {
+        private readonly IReadOnlyDictionary<Type, Type> _filterOperations;
         private readonly TFilter _filter;
         private readonly IFilterSpecificationBuilderOptions _options;
 
@@ -23,6 +26,24 @@ namespace AllOverIt.Filtering.Builders
         {
             _filter = filter.WhenNotNull(nameof(filter));
             _options = options.WhenNotNull(nameof(options));
+
+
+            var ops = new Dictionary<Type, Type>
+            {
+                // IArrayFilterOperation
+                { typeof(IIn<>), typeof(InOperation<,>) },
+                { typeof(INotIn<>), typeof(NotInOperation<,>) },
+
+                // IBasicFilterOperation
+                { typeof(IEqualTo<>), typeof(EqualToOperation<,>) },
+                { typeof(INotEqualTo<>), typeof(NotEqualToOperation<,>) },
+                { typeof(IGreaterThan<>), typeof(GreaterThanOperation<,>) },
+                { typeof(IGreaterThanOrEqual<>), typeof(GreaterThanOrEqualOperation<,>) },
+                { typeof(ILessThan<>), typeof(LessThanOperation<,>) },
+                { typeof(ILessThanOrEqual<>), typeof(LessThanOrEqualOperation<,>) }
+            };
+
+            _filterOperations = ops;
         }
 
         public ILinqSpecification<TType> Create(Expression<Func<TType, string>> propertyExpression,
@@ -124,42 +145,61 @@ namespace AllOverIt.Filtering.Builders
 
             Throw<InvalidOperationException>.WhenNull($"The filter operation resolver on {propertyExpression} cannot return null.");
 
-            if (_options.IgnoreNullFilterValues && typeof(TProperty).IsNullableType())
-            {
-                switch (operation)
-                {
-                    case IArrayFilterOperation<TProperty> op1 when op1.Values is null:
-                    case IBasicFilterOperation<TProperty> op2 when op2.Value is null:
-                        return SpecificationIgnore;
+            // The TProperty is based on the entity's property type. When this is non-nullable but the filter's value type is
+            // nullable we need to use reflection to determine if the filter's value is null - we cannot cast the operation to
+            // something like IBasicFilterOperation<TProperty?>.
+            var operationType = operation.GetType();
 
-                    default:    // fall through, continue processing                        
-                        break;
+            if (_options.IgnoreNullFilterValues)
+            {
+                // Nullable<T>
+                var operationTypeIsNullable = operationType.GetGenericArguments()[0].IsNullableType();
+
+                if (operationTypeIsNullable)
+                {
+                    var propInfo = operationType.GetProperty(nameof(IFilterOperationType<TProperty>.Value));
+                    var value = propInfo.GetValue(operation);
+
+                    if (value is null)
+                    {
+                        return SpecificationIgnore;
+                    }
                 }
             }
 
+            var operationKey = _filterOperations.Keys.SingleOrDefault(type => operationType.IsDerivedFrom(type));
+
+            Throw<InvalidOperationException>.WhenNull(operationKey, $"The operation type '{operationType.GetFriendlyName()}' is not registered with a specification factory.");
+
+            var specificationOperationType = _filterOperations[operationKey];
+
             try
             {
-                return operation switch
-                {
-                    // IArrayFilterOperation
-                    IIn<TProperty> array => new InOperation<TType, TProperty>(propertyExpression, array.Values, _options),
-                    INotIn<TProperty> array => new NotInOperation<TType, TProperty>(propertyExpression, array.Values, _options),
-
-                    // IFilterOperation
-                    IEqualTo<TProperty> equalTo => new EqualToOperation<TType, TProperty>(propertyExpression, equalTo.Value, _options),
-                    INotEqualTo<TProperty> equalTo => new NotEqualToOperation<TType, TProperty>(propertyExpression, equalTo.Value, _options),
-                    IGreaterThan<TProperty> greaterThan => new GreaterThanOperation<TType, TProperty>(propertyExpression, greaterThan.Value, _options),
-                    IGreaterThanOrEqual<TProperty> greaterThanOrEqual => new GreaterThanOrEqualOperation<TType, TProperty>(propertyExpression, greaterThanOrEqual.Value, _options),
-                    ILessThan<TProperty> lessThan => new LessThanOperation<TType, TProperty>(propertyExpression, lessThan.Value, _options),
-                    ILessThanOrEqual<TProperty> lessThanOrEqual => new LessThanOrEqualOperation<TType, TProperty>(propertyExpression, lessThanOrEqual.Value, _options),
-
-                    _ => throw new InvalidOperationException($"Cannot apply {operation.GetType().GetFriendlyName()} to {propertyExpression} (of type {propertyExpression.UnwrapMemberExpression().Member.GetMemberType().GetFriendlyName()})."),
-                };
+                return CreateSpecificationOperation(specificationOperationType, operation, propertyExpression);
             }
             catch (NullNotSupportedException)
             {
                 throw new NullNotSupportedException($"The filter operation on {propertyExpression} does not support null values.");
             }
+        }
+
+        // As an example, creates a EqualToOperation<,> based on a IEqualTo<>
+        // Caters for IBasicFilterOperation and IArrayFilterOperation
+        private ILinqSpecification<TType> CreateSpecificationOperation<TProperty>(Type specificationOperationType, IBasicFilterOperation operation, Expression<Func<TType, TProperty>> propertyExpression)
+        {
+            // operation, such as IEqualTo<>
+            var operationType = operation.GetType();
+
+            // TProperty may be nullable
+            var typeArgs = new[] { typeof(TType), typeof(TProperty) };
+
+            // specificationOperationType, such as EqualToOperation<,>
+            var genericOperation = specificationOperationType.MakeGenericType(typeArgs);
+
+            // TODO: Assumes not IArrayFilterOperation  - needs to be updated
+            var value = operationType.GetProperty(nameof(IFilterOperationType<TProperty>.Value)).GetValue(operation);
+
+            return (ILinqSpecification<TType>) Activator.CreateInstance(genericOperation, new object[] { propertyExpression, value, _options });
         }
     }
 }
