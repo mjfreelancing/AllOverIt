@@ -11,10 +11,12 @@ namespace AllOverIt.Filtering.Builders
         where TFilter : class
     {
         // Create a specification for a single operation against a property.
-        ILinqSpecification<TType> Create(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation, Action<OperationFilterOptions> options = default);
+        ILinqSpecification<TType> Create(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation,
+            Action<OperationFilterOptions> options = default);
 
         // Also handles IArrayFilterOperation
-        ILinqSpecification<TType> Create<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IBasicFilterOperation> operation, Action<OperationFilterOptions> options = default);
+        ILinqSpecification<TType> Create<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IBasicFilterOperation> operation,
+            Action<OperationFilterOptions> options = default);
 
         // Create a specification that ANDs two operations on a property.
         ILinqSpecification<TType> And(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation1,

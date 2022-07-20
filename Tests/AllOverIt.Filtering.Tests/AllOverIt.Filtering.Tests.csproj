@@ -26,9 +26,9 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\Source\AllOverIt.Filtering\AllOverIt.Filtering.csproj" />
         <ProjectReference Include="..\..\Source\AllOverIt.Fixture.FakeItEasy\AllOverIt.Fixture.FakeItEasy.csproj" />
         <ProjectReference Include="..\..\Source\AllOverIt.Fixture\AllOverIt.Fixture.csproj" />
-        <ProjectReference Include="..\..\Source\AllOverIt\AllOverIt.csproj" />
     </ItemGroup>
 
 </Project>

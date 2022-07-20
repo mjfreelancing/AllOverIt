@@ -1,5 +1,16 @@
 ======================================================================================================================
 
+XX XXX XXXX
+Version 6.0.0-RC.2
+======================================================================================================================
+AllOverIt
+  * Modified HashCodeHelper to only support IEnumerable<T> or params object[]. Removed the custom seed option. The
+    original algorithm is in place for NET STANDARD 2.0, but all other versions now use .NET's HashCode struct.
+
+AllOverIt.Filtering
+  * Refactoring / implementation improvements to support nullable types / values.
+
+
 18 Jul 2022
 Version 6.0.0-RC.1
 ======================================================================================================================
