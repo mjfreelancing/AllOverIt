@@ -1,7 +1,7 @@
 ﻿using AllOverIt.Evaluator.Exceptions;
 using AllOverIt.Expressions;
 using AllOverIt.Extensions;
-using AllOverIt.Filtering.Builders;
+using AllOverIt.Filtering.Options;
 using AllOverIt.Patterns.Specification;
 using System;
 using System.Collections.Generic;
@@ -25,7 +25,7 @@ namespace AllOverIt.Filtering.Operations
             // Creates the final expression
             Func<MemberExpression, SystemExpression, SystemExpression> predicateExpressionFactory,
 
-            IFilterSpecificationBuilderOptions options)
+            IOperationFilterOptions options)
                 : base(() => CreateResolver(propertyExpression, CreateValueExpression(value, supportsNull, options.UseParameterizedQueries), predicateExpressionFactory))
         {
         }
@@ -40,7 +40,7 @@ namespace AllOverIt.Filtering.Operations
             // Creates the final expression
             Func<MemberExpression, SystemExpression, SystemExpression> predicateExpressionFactory,
 
-            IFilterSpecificationBuilderOptions options)
+            IOperationFilterOptions options)
                 : base(() => CreateResolver(propertyExpression, CreateValueExpression(values, false, options.UseParameterizedQueries), predicateExpressionFactory))
         {
         }

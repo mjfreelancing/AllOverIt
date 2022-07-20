@@ -1,6 +1,6 @@
-﻿using AllOverIt.Filtering;
-using AllOverIt.Filtering.Builders.Extensions;
+﻿using AllOverIt.Filtering.Builders.Extensions;
 using AllOverIt.Filtering.Extensions;
+using AllOverIt.Filtering.Options;
 using AllOverIt.Patterns.Specification.Extensions;
 using System;
 using System.Linq;
@@ -17,10 +17,10 @@ namespace FilteringDemo
             {
                 Active =
                 {
-                    EqualTo = true
+                    //EqualTo = true
                 },
                 Category = {
-                    StartsWith = "fu"
+                    //StartsWith = "fu"
                 },
                 Name = {
                     Contains = "r"
@@ -38,7 +38,7 @@ namespace FilteringDemo
             {
                 UseParameterizedQueries = false,
                 StringComparison = StringComparison.InvariantCultureIgnoreCase,
-                IgnoreNullFilterValues = true
+                IgnoreNullFilterValues = false
             };
 
             var results = products

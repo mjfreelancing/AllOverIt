@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Filtering.Builders;
+using AllOverIt.Filtering.Options;
 using System;
 using System.Linq.Expressions;
 using SystemExpression = System.Linq.Expressions.Expression;    // avoid conflict with the Expression property on LinqSpecification
@@ -7,7 +8,7 @@ namespace AllOverIt.Filtering.Operations
 {
     internal sealed class GreaterThanOrEqualOperation<TEntity, TProperty> : OperationBase<TEntity, TProperty> where TEntity : class
     {
-        public GreaterThanOrEqualOperation(Expression<Func<TEntity, TProperty>> propertyExpression, TProperty value, IFilterSpecificationBuilderOptions options)
+        public GreaterThanOrEqualOperation(Expression<Func<TEntity, TProperty>> propertyExpression, TProperty value, IOperationFilterOptions options)
             : base(propertyExpression, value, true, CreatePredicate, options)
         {
         }

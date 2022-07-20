@@ -3,12 +3,14 @@ using AllOverIt.Evaluator.Exceptions;
 using AllOverIt.Extensions;
 using AllOverIt.Filtering.Filters;
 using AllOverIt.Filtering.Operations;
+using AllOverIt.Filtering.Options;
 using AllOverIt.Patterns.Specification;
 using AllOverIt.Patterns.Specification.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace AllOverIt.Filtering.Builders
 {
@@ -16,19 +18,7 @@ namespace AllOverIt.Filtering.Builders
         where TType : class
         where TFilter : class
     {
-        private readonly IReadOnlyDictionary<Type, Type> _filterOperations;
-        private readonly TFilter _filter;
-        private readonly IFilterSpecificationBuilderOptions _options;
-
-        public static readonly ILinqSpecification<TType> SpecificationIgnore = LinqSpecification<TType>.Create(_ => true);
-
-        public FilterSpecificationBuilder(TFilter filter, IFilterSpecificationBuilderOptions options)
-        {
-            _filter = filter.WhenNotNull(nameof(filter));
-            _options = options.WhenNotNull(nameof(options));
-
-
-            var ops = new Dictionary<Type, Type>
+        private readonly IReadOnlyDictionary<Type, Type> _filterOperations = new Dictionary<Type, Type>
             {
                 // IArrayFilterOperation
                 { typeof(IIn<>), typeof(InOperation<,>) },
@@ -43,38 +33,46 @@ namespace AllOverIt.Filtering.Builders
                 { typeof(ILessThanOrEqual<>), typeof(LessThanOrEqualOperation<,>) }
             };
 
-            _filterOperations = ops;
+        private readonly TFilter _filter;
+        private readonly IQueryFilterOptions _options;
+
+        public static readonly ILinqSpecification<TType> SpecificationIgnore = LinqSpecification<TType>.Create(_ => true);
+
+        public FilterSpecificationBuilder(TFilter filter, IQueryFilterOptions options)
+        {
+            _filter = filter.WhenNotNull(nameof(filter));
+            _options = options.WhenNotNull(nameof(options));
         }
 
-        public ILinqSpecification<TType> Create(Expression<Func<TType, string>> propertyExpression,
-            Func<TFilter, IStringFilterOperation> operation)
+        public ILinqSpecification<TType> Create(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation,
+            Action<OperationFilterOptions> options)
         {
-            return GetFilterSpecification(propertyExpression, operation);
+            return GetFilterSpecification(propertyExpression, operation, options);
         }
 
         // Caters for IOperation and IArrayOperation
         public ILinqSpecification<TType> Create<TProperty>(Expression<Func<TType, TProperty>> propertyExpression,
-            Func<TFilter, IBasicFilterOperation> operation)
+            Func<TFilter, IBasicFilterOperation> operation, Action<OperationFilterOptions> options)
         {
-            return GetFilterSpecification(propertyExpression, operation);
+            return GetFilterSpecification(propertyExpression, operation, options);
         }
 
         #region AND Operations
         public ILinqSpecification<TType> And(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation1,
-            Func<TFilter, IStringFilterOperation> operation2)
+            Func<TFilter, IStringFilterOperation> operation2, Action<OperationFilterOptions> options)
         {
-            var specification1 = GetFilterSpecification(propertyExpression, operation1);
-            var specification2 = GetFilterSpecification(propertyExpression, operation2);
+            var specification1 = GetFilterSpecification(propertyExpression, operation1, options);
+            var specification2 = GetFilterSpecification(propertyExpression, operation2, options);
 
             return specification1.And(specification2);
         }
 
         // Caters for IOperation and IArrayOperation
         public ILinqSpecification<TType> And<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IBasicFilterOperation> operation1,
-            Func<TFilter, IBasicFilterOperation> operation2)
+            Func<TFilter, IBasicFilterOperation> operation2, Action<OperationFilterOptions> options)
         {
-            var specification1 = GetFilterSpecification(propertyExpression, operation1);
-            var specification2 = GetFilterSpecification(propertyExpression, operation2);
+            var specification1 = GetFilterSpecification(propertyExpression, operation1, options);
+            var specification2 = GetFilterSpecification(propertyExpression, operation2, options);
 
             return specification1.And(specification2);
         }
@@ -82,33 +80,48 @@ namespace AllOverIt.Filtering.Builders
 
         #region OR Operations
         public ILinqSpecification<TType> Or(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation1,
-            Func<TFilter, IStringFilterOperation> operation2)
+            Func<TFilter, IStringFilterOperation> operation2, Action<OperationFilterOptions> options)
         {
-            var specification1 = GetFilterSpecification(propertyExpression, operation1);
-            var specification2 = GetFilterSpecification(propertyExpression, operation2);
+            var specification1 = GetFilterSpecification(propertyExpression, operation1, options);
+            var specification2 = GetFilterSpecification(propertyExpression, operation2, options);
 
             return specification1.Or(specification2);
         }
 
         // Caters for IOperation and IArrayOperation
         public ILinqSpecification<TType> Or<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IBasicFilterOperation> operation1,
-            Func<TFilter, IBasicFilterOperation> operation2)
+            Func<TFilter, IBasicFilterOperation> operation2, Action<OperationFilterOptions> options)
         {
-            var specification1 = GetFilterSpecification(propertyExpression, operation1);
-            var specification2 = GetFilterSpecification(propertyExpression, operation2);
+            var specification1 = GetFilterSpecification(propertyExpression, operation1, options);
+            var specification2 = GetFilterSpecification(propertyExpression, operation2, options);
 
             return specification1.Or(specification2);
         }
         #endregion
 
-        private ILinqSpecification<TType> GetFilterSpecification(Expression<Func<TType, string>> propertyExpression,
-            Func<TFilter, IStringFilterOperation> filterOperation)
+        private OperationFilterOptions GetOperationFilterOptions(Action<OperationFilterOptions> action)
+        {
+            var filterOptions = new OperationFilterOptions
+            {
+                UseParameterizedQueries = _options.UseParameterizedQueries,
+                StringComparison = _options.StringComparison,
+                IgnoreNullFilterValue = _options.IgnoreNullFilterValues
+            };
+
+            action?.Invoke(filterOptions);
+
+            return filterOptions;
+        }
+
+        private ILinqSpecification<TType> GetFilterSpecification(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> filterOperation,
+            Action<OperationFilterOptions> options)
         {
             var operation = filterOperation.Invoke(_filter);
+            var filterOptions = GetOperationFilterOptions(options);
 
             Throw<InvalidOperationException>.WhenNull($"The filter operation resolver on {propertyExpression} cannot return null.");
 
-            if (_options.IgnoreNullFilterValues)
+            if (filterOptions.IgnoreNullFilterValue)
             {
                 switch (operation)
                 {
@@ -124,10 +137,10 @@ namespace AllOverIt.Filtering.Builders
             {
                 return operation switch
                 {
-                    IContains contains => new ContainsOperation<TType>(propertyExpression, contains.Value, _options),
-                    INotContains notContains => new NotContainsOperation<TType>(propertyExpression, notContains.Value, _options),
-                    IStartsWith startsWith => new StartsWithOperation<TType>(propertyExpression, startsWith.Value, _options),
-                    IEndsWith endsWith => new EndsWithOperation<TType>(propertyExpression, endsWith.Value, _options),
+                    IContains contains => new ContainsOperation<TType>(propertyExpression, contains.Value, filterOptions),
+                    INotContains notContains => new NotContainsOperation<TType>(propertyExpression, notContains.Value, filterOptions),
+                    IStartsWith startsWith => new StartsWithOperation<TType>(propertyExpression, startsWith.Value, filterOptions),
+                    IEndsWith endsWith => new EndsWithOperation<TType>(propertyExpression, endsWith.Value, filterOptions),
 
                     _ => throw new InvalidOperationException($"Cannot apply {operation.GetType().GetFriendlyName()} to {propertyExpression}."),
                 };
@@ -139,9 +152,10 @@ namespace AllOverIt.Filtering.Builders
         }
 
         private ILinqSpecification<TType> GetFilterSpecification<TProperty>(Expression<Func<TType, TProperty>> propertyExpression,
-            Func<TFilter, IBasicFilterOperation> filterOperation)
+            Func<TFilter, IBasicFilterOperation> filterOperation, Action<OperationFilterOptions> options)
         {
             var operation = filterOperation.Invoke(_filter);
+            var filterOptions = GetOperationFilterOptions(options);
 
             Throw<InvalidOperationException>.WhenNull($"The filter operation resolver on {propertyExpression} cannot return null.");
 
@@ -150,12 +164,13 @@ namespace AllOverIt.Filtering.Builders
             // something like IBasicFilterOperation<TProperty?>.
             var operationType = operation.GetType();
 
-            if (_options.IgnoreNullFilterValues)
+            if (filterOptions.IgnoreNullFilterValue)
             {
                 // Nullable<T>
                 var operationTypeIsNullable = operationType.GetGenericArguments()[0].IsNullableType();
+                var operationIsArray = operationType.IsDerivedFrom(typeof(IArrayFilterOperation));
 
-                if (operationTypeIsNullable)
+                if (operationTypeIsNullable || operationIsArray)
                 {
                     var propInfo = operationType.GetProperty(nameof(IFilterOperationType<TProperty>.Value));
                     var value = propInfo.GetValue(operation);
@@ -175,17 +190,18 @@ namespace AllOverIt.Filtering.Builders
 
             try
             {
-                return CreateSpecificationOperation(specificationOperationType, operation, propertyExpression);
+                return CreateSpecificationOperation(specificationOperationType, operation, propertyExpression, filterOptions);
             }
             catch (NullNotSupportedException)
             {
-                throw new NullNotSupportedException($"The filter operation on {propertyExpression} does not support null values.");
+                throw new NullNotSupportedException($"The filter operation {operationType.GetFriendlyName()}() on {propertyExpression} does not support null values.");
             }
         }
 
         // As an example, creates a EqualToOperation<,> based on a IEqualTo<>
         // Caters for IBasicFilterOperation and IArrayFilterOperation
-        private ILinqSpecification<TType> CreateSpecificationOperation<TProperty>(Type specificationOperationType, IBasicFilterOperation operation, Expression<Func<TType, TProperty>> propertyExpression)
+        private static ILinqSpecification<TType> CreateSpecificationOperation<TProperty>(Type specificationOperationType, IBasicFilterOperation operation,
+            Expression<Func<TType, TProperty>> propertyExpression, IOperationFilterOptions options)
         {
             // operation, such as IEqualTo<>
             var operationType = operation.GetType();
@@ -199,7 +215,15 @@ namespace AllOverIt.Filtering.Builders
             // TODO: Assumes not IArrayFilterOperation  - needs to be updated
             var value = operationType.GetProperty(nameof(IFilterOperationType<TProperty>.Value)).GetValue(operation);
 
-            return (ILinqSpecification<TType>) Activator.CreateInstance(genericOperation, new object[] { propertyExpression, value, _options });
+            try
+            {
+                return (ILinqSpecification<TType>) Activator.CreateInstance(genericOperation, new object[] { propertyExpression, value, options });
+            }
+            catch (TargetInvocationException exception)
+            {
+                // The operation may throw a NullNotSupportedException
+                throw exception.InnerException ?? exception;
+            }
         }
     }
 }

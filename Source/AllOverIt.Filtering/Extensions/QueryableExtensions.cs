@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Filtering.Builders;
+using AllOverIt.Filtering.Options;
 using AllOverIt.Patterns.Specification.Extensions;
 using System;
 using System.Data;

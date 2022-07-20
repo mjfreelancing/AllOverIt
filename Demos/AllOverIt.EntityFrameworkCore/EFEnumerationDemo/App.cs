@@ -3,7 +3,6 @@ using AllOverIt.Filtering.Builders.Extensions;
 using AllOverIt.Filtering.Extensions;
 using AllOverIt.Filtering.Filters;
 using AllOverIt.GenericHost;
-using AllOverIt.Patterns.Specification;
 using AllOverIt.Patterns.Specification.Extensions;
 using EFEnumerationDemo.Entities;
 using EFEnumerationDemo.Models;
@@ -50,7 +49,7 @@ namespace EFEnumerationDemo
                         GreaterThanOrEqual = 15,
                         LessThan = 5,
                         LessThanOrEqual = 7,
-                        In = new List<int>(new[]{1, 2, 3}),         // implicit conversion
+                        //In = new List<int>(new[]{1, 2, 3}),         // implicit conversion
                         NotIn = new NotIn<int>(new[]{4, 5, 6})      // constructor
                     },
                     Description = {
@@ -152,7 +151,7 @@ namespace EFEnumerationDemo
                     // Since sequential Where() calls results in an AND, this criteria will result in:
                     //  (previous_criteria) && (Id IN (1, 2, 3)) || (Id NOT IN (4, 5, 6))
                     // That is, chained methods are simply appended and operator precedence is automatically applied.
-                    filterBuilder.Where(blog => blog.Id, filter => filter.Id.In)
+                    filterBuilder.Where(blog => blog.Id, filter => filter.Id.In, options => options.IgnoreNullFilterValue = true)
                                  .Or(blog => blog.Id, filter => filter.Id.NotIn);
 
                     // Description EqualTo / NotEqualTo / Contains / NotContains / StartsWith / EndsWith - combining them as
