@@ -1876,7 +1876,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var subject = Create<DummyClass>();
 
-                var expected = GetCumulativeHash(subject, ObjectExtensions.DefaultHashCodeBindings);
+                var expected = GetExpectedHash(subject, ObjectExtensions.DefaultHashCodeBindings);
 
                 var actual = ObjectExtensions.CalculateHashCode(subject);
 
@@ -2087,7 +2087,7 @@ namespace AllOverIt.Tests.Extensions
         }
 
         // get property values based on binding options (for cases when we want to include private variables
-        private static int GetCumulativeHash(object instance, BindingOptions bindingOptions)
+        private static int GetExpectedHash(object instance, BindingOptions bindingOptions)
         {
             var properties = instance
               .GetType()
@@ -2095,12 +2095,20 @@ namespace AllOverIt.Tests.Extensions
               .OrderBy(propertyInfo => propertyInfo.Name)
               .Select(propertyInfo => propertyInfo.GetValue(instance));
 
-            return GetCumulativeHash(properties);
+            return GetExpectedHash(properties);
         }
 
-        private static int GetCumulativeHash(IEnumerable<object> properties)
+        private static int GetExpectedHash(IEnumerable<object> items)
         {
-            return properties.Aggregate(17, (current, property) => current * 23 + (property?.GetHashCode() ?? 0));
+            // NOTE: These tests are not checking NET STANDARD 2.0
+            var hash = new HashCode();
+
+            foreach (var item in items)
+            {
+                hash.Add(item);
+            }
+
+            return hash.ToHashCode();
         }
     }
 }
