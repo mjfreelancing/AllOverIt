@@ -1,4 +1,6 @@
-﻿namespace AllOverIt.Filtering.Filters
+﻿using System.Collections.Generic;
+
+namespace AllOverIt.Filtering.Filters
 {
     public interface IStringFilterOperation
     {
