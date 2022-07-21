@@ -1,4 +1,4 @@
-﻿using AllOverIt.Filtering.Builders;
+﻿using AllOverIt.Expressions;
 using AllOverIt.Filtering.Options;
 using System;
 using System.Linq.Expressions;
@@ -15,13 +15,7 @@ namespace AllOverIt.Filtering.Operations
 
         private static SystemExpression CreatePredicate(MemberExpression member, SystemExpression constant, StringComparison? stringComparison)
         {
-            if (stringComparison.HasValue)
-            {
-                var comparison = SystemExpression.Constant(stringComparison.Value);
-                return SystemExpression.Call(member, StringFilterMethodInfo.EndsWithStringComparison, constant, comparison);
-            }
-
-            return SystemExpression.Call(member, StringFilterMethodInfo.EndsWith, constant);
+            return StringExpressionUtils.CreateEndsWithCallExpression(member, constant, stringComparison);
         }
     }
 }

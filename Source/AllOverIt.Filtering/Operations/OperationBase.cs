@@ -12,6 +12,8 @@ namespace AllOverIt.Filtering.Operations
 {
     internal abstract class OperationBase<TEntity, TProperty> : LinqSpecification<TEntity> where TEntity : class
     {
+        protected static readonly bool PropertyIsString = typeof(TProperty) == typeof(string);
+
         protected OperationBase(
             // The property building the predicate for
             Expression<Func<TEntity, TProperty>> propertyExpression,

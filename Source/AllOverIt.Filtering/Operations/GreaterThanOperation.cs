@@ -1,4 +1,4 @@
-﻿using AllOverIt.Filtering.Builders;
+﻿using AllOverIt.Expressions;
 using AllOverIt.Filtering.Options;
 using System;
 using System.Linq.Expressions;
@@ -9,12 +9,18 @@ namespace AllOverIt.Filtering.Operations
     internal sealed class GreaterThanOperation<TEntity, TProperty> : OperationBase<TEntity, TProperty> where TEntity : class
     {
         public GreaterThanOperation(Expression<Func<TEntity, TProperty>> propertyExpression, TProperty value, IOperationFilterOptions options)
-            : base(propertyExpression, value, true, CreatePredicate, options)
+            : base(propertyExpression, value, !PropertyIsString, (member, constant) => CreatePredicate(member, constant, options.StringComparison), options)
         {
         }
 
-        private static SystemExpression CreatePredicate(MemberExpression member, SystemExpression constant)
+        private static SystemExpression CreatePredicate(MemberExpression member, SystemExpression constant, StringComparison? stringComparison)
         {
+            if (PropertyIsString)
+            {
+                var compareExpression = StringExpressionUtils.CreateCompareCallExpression(member, constant, stringComparison);
+                return SystemExpression.GreaterThan(compareExpression, ExpressionConstants.Zero);
+            }
+
             return SystemExpression.GreaterThan(member, constant);
         }
     }

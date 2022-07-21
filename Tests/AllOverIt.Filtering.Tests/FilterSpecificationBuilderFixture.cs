@@ -1,3 +1,4 @@
+using AllOverIt.Extensions;
 using AllOverIt.Filtering.Builders;
 using AllOverIt.Filtering.Filters;
 using AllOverIt.Filtering.Options;
@@ -6,6 +7,7 @@ using AllOverIt.Fixture.Extensions;
 using FakeItEasy;
 using FluentAssertions;
 using System;
+using System.Linq;
 using Xunit;
 
 namespace AllOverIt.Filtering.Tests
@@ -47,6 +49,9 @@ namespace AllOverIt.Filtering.Tests
                 public Contains Contains { get; set; } = new();
                 public StartsWith StartsWith { get; set; } = new();
                 public EndsWith EndsWith { get; set; } = new();
+                public In<string> In { get; set; } = new();
+                public NotIn<string> NotIn { get; set; } = new();
+                public GreaterThan<string> GreaterThan { get; set; } = new();
             }
 
             public sealed class PriceFilter
@@ -125,7 +130,10 @@ namespace AllOverIt.Filtering.Tests
                         NotContains = Create<string>(),
                         Contains = Create<string>(),
                         StartsWith = Create<string>(),
-                        EndsWith = Create<string>()
+                        EndsWith = Create<string>(),
+                        In = CreateMany<string>().ToList(),
+                        NotIn = CreateMany<string>().ToList(),
+                        GreaterThan = Create<string>()
                     },
                     Price =
                     {
@@ -294,6 +302,117 @@ namespace AllOverIt.Filtering.Tests
                 specification.IsSatisfiedBy(entity).Should().BeTrue();
 
                 entity.Name = $"{_filter.Name.EndsWith.Value}{Create<string>()}";
+
+                specification.IsSatisfiedBy(entity).Should().BeFalse();
+            }
+
+            [Theory]
+            [InlineData(false, default)]
+            [InlineData(true, default)]
+            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
+            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
+            public void Should_Create_In(bool useParameterizedQueries, StringComparison? stringComparison)
+            {
+                _options = new QueryFilterOptions
+                {
+                    UseParameterizedQueries = useParameterizedQueries,
+                    StringComparison = stringComparison,
+                    IgnoreNullFilterValues = false
+                };
+
+                _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                var specification = _specificationBuilder.Create(entity => entity.Name, filter => filter.Name.In);
+
+                var entityName = _filter.Name.In.Value[2];
+
+                if (_options.StringComparison == StringComparison.InvariantCultureIgnoreCase)
+                {
+                    entityName = entityName.ToLower();
+                }
+
+                var entity = new DummyEntity
+                {
+                    Name = entityName
+                };
+
+                specification.IsSatisfiedBy(entity).Should().BeTrue();
+
+                entity.Name = Create<string>();
+
+                specification.IsSatisfiedBy(entity).Should().BeFalse();
+            }
+
+            [Theory]
+            [InlineData(false, default)]
+            [InlineData(true, default)]
+            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
+            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
+            public void Should_Create_NotIn(bool useParameterizedQueries, StringComparison? stringComparison)
+            {
+                _options = new QueryFilterOptions
+                {
+                    UseParameterizedQueries = useParameterizedQueries,
+                    StringComparison = stringComparison,
+                    IgnoreNullFilterValues = false
+                };
+
+                _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                var specification = _specificationBuilder.Create(entity => entity.Name, filter => filter.Name.NotIn);
+
+                var entityName = _filter.Name.NotIn.Value[2];
+
+                if (_options.StringComparison == StringComparison.InvariantCultureIgnoreCase)
+                {
+                    entityName = entityName.ToLower();
+                }
+
+                var entity = new DummyEntity
+                {
+                    Name = entityName
+                };
+
+                specification.IsSatisfiedBy(entity).Should().BeFalse();
+
+                entity.Name = Create<string>();
+
+                specification.IsSatisfiedBy(entity).Should().BeTrue();
+            }
+
+            [Theory]
+            [InlineData(false, default)]
+            [InlineData(true, default)]
+            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
+            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
+            public void Should_Create_GreaterThan(bool useParameterizedQueries, StringComparison? stringComparison)
+            {
+                _options = new QueryFilterOptions
+                {
+                    UseParameterizedQueries = useParameterizedQueries,
+                    StringComparison = stringComparison,
+                    IgnoreNullFilterValues = false
+                };
+
+                _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                var specification = _specificationBuilder.Create(entity => entity.Name, filter => filter.Name.GreaterThan);
+
+                var entityName = $"{_filter.Name.GreaterThan.Value}ZZZ";
+
+                if (_options.StringComparison == StringComparison.InvariantCultureIgnoreCase)
+                {
+                    entityName = entityName.ToLower();
+                }
+
+                var entity = new DummyEntity
+                {
+                    Name = entityName
+                };
+
+                specification.IsSatisfiedBy(entity).Should().BeTrue();
+
+                entity.Name = null;
 
                 specification.IsSatisfiedBy(entity).Should().BeFalse();
             }

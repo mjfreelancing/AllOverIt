@@ -1,5 +1,4 @@
-﻿using AllOverIt.Filtering.Builders;
-using AllOverIt.Filtering.Options;
+﻿using AllOverIt.Filtering.Options;
 using System;
 using System.Linq.Expressions;
 using SystemExpression = System.Linq.Expressions.Expression;    // avoid conflict with the Expression property on LinqSpecification
