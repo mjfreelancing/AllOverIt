@@ -16,7 +16,7 @@ namespace AllOverIt.Tests.Reflection
         private class DummyClass
         {
             public int Field1;
-            private readonly int Field2;
+            private int Field2;
 
             public DummyClass()
             {
