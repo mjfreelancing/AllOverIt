@@ -1,6 +1,6 @@
 ======================================================================================================================
 
-XX XXX XXXX
+21 Jul 2022
 Version 6.0.0-RC.2
 ======================================================================================================================
 AllOverIt
@@ -10,7 +10,8 @@ AllOverIt
   * Added Type and TypeInfo extensions to get FieldInfo
 
 AllOverIt.Filtering
-  * Refactoring / implementation improvements to support nullable types / values.
+  * Refactoring / implementation improvements to support nullable types / values
+  * Added support for >, <, >=, and <= string comparisons
 
 
 18 Jul 2022

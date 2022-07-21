@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <LangVersion>Latest</LangVersion>
-        <Version>6.0.0-rc.1</Version>
+        <Version>6.0.0-rc.2</Version>
         <Authors>Malcolm Smith</Authors>
         <Company></Company>
         <Copyright>Copyright © 2021</Copyright>
