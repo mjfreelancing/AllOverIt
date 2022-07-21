@@ -6,16 +6,16 @@ using Xunit;
 
 namespace AllOverIt.Tests.Extensions
 {
-    public class TypeInfoExtensionsFixture : FixtureBase
+    public partial class TypeInfoExtensionsFixture : FixtureBase
     {
-        private class DummyBaseClass
+        private class PropertyBaseClass
         {
             public int Prop1 { get; set; }
             public string Prop2 { get; set; }
             public virtual double Prop3 { get; set; }
         }
 
-        private class DummySuperClass : DummyBaseClass
+        private class PropertySuperClass : PropertyBaseClass
         {
             public override double Prop3 { get; set; }
             public long Prop4 { get; set; }
@@ -26,7 +26,7 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Get_All_Properties_Of_Super()
             {
-                var typeInfo = typeof(DummySuperClass).GetTypeInfo();
+                var typeInfo = typeof(PropertySuperClass).GetTypeInfo();
 
                 var actual = TypeInfoExtensions.GetPropertyInfo(typeInfo, false);
 
@@ -44,7 +44,7 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Get_All_Properties_Of_Base()
             {
-                var typeInfo = typeof(DummyBaseClass).GetTypeInfo();
+                var typeInfo = typeof(PropertyBaseClass).GetTypeInfo();
 
                 var actual = TypeInfoExtensions.GetPropertyInfo(typeInfo, false);
 
@@ -61,7 +61,7 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Get_Declared_Properties_Only()
             {
-                var typeInfo = typeof(DummySuperClass).GetTypeInfo();
+                var typeInfo = typeof(PropertySuperClass).GetTypeInfo();
 
                 var actual = TypeInfoExtensions.GetPropertyInfo(typeInfo, true);
 
@@ -80,7 +80,7 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Get_Property_Of_Super()
             {
-                var typeInfo = typeof(DummySuperClass).GetTypeInfo();
+                var typeInfo = typeof(PropertySuperClass).GetTypeInfo();
 
                 // cast is required for BeEquivalentTo()
                 var actual = (object)TypeInfoExtensions.GetPropertyInfo(typeInfo, "Prop4");
@@ -93,7 +93,7 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Get_Property_Of_Base()
             {
-                var typeInfo = typeof(DummyBaseClass).GetTypeInfo();
+                var typeInfo = typeof(PropertyBaseClass).GetTypeInfo();
 
                 var actual = (object)TypeInfoExtensions.GetPropertyInfo(typeInfo, "Prop1");
 
@@ -105,7 +105,7 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Not_Get_Property()
             {
-                var typeInfo = typeof(DummySuperClass).GetTypeInfo();
+                var typeInfo = typeof(PropertySuperClass).GetTypeInfo();
 
                 var actual = (object)TypeInfoExtensions.GetPropertyInfo(typeInfo, "PropXYZ");
 

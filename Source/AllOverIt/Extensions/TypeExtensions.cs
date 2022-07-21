@@ -36,10 +36,64 @@ namespace AllOverIt.Extensions
         /// by <paramref name="type"/>. Properties without a getter are excluded.</remarks>
         public static IEnumerable<PropertyInfo> GetPropertyInfo(this Type type, BindingOptions bindingOptions = BindingOptions.Default, bool declaredOnly = false)
         {
-            var predicate = BindingOptionsHelper.BuildBindingPredicate(bindingOptions);
+            var predicate = BindingOptionsHelper.BuildPropertyOrMethodBindingPredicate(bindingOptions);
             var typeInfo = type.GetTypeInfo();
 
-            return GetFilteredPropertyInfo(typeInfo, declaredOnly, predicate);
+            // This implementation is better performing than using method/query LINQ queries
+
+            var propInfos = new List<PropertyInfo>();
+
+            foreach (var propInfo in typeInfo.GetPropertyInfo(declaredOnly))
+            {
+                var methodInfo = propInfo.GetMethod;
+
+                // Ignore any properties without a getter
+                if (methodInfo != null && predicate.Invoke(methodInfo))
+                {
+                    propInfos.Add(propInfo);
+                }
+            }
+
+            return propInfos;
+        }
+
+        /// <summary>Gets the <see cref="FieldInfo"/> (field metadata) for a given public or protected field on a <see cref="Type"/>.</summary>
+        /// <param name="type">The <see cref="Type"/> to obtain the field metadata from.</param>
+        /// <param name="fieldName">The name of the field to obtain metadata for.</param>
+        /// <returns>The field metadata, as <see cref="FieldInfo"/>, of a specified field on the provided <paramref name="type"/>.</returns>
+        /// <remarks>When class inheritance is involved, this method returns the first field found, starting at the type represented
+        /// by <paramref name="type"/>.</remarks>
+        public static FieldInfo GetFieldInfo(this Type type, string fieldName)
+        {
+            return TypeInfoExtensions.GetFieldInfo(type.GetTypeInfo(), fieldName);
+        }
+
+        /// <summary>Gets <see cref="FieldInfo"/> (field metadata) for all properties on a given <see cref="Type"/> satisfying a given binding option.</summary>
+        /// <param name="type">The type to obtain field metadata for.</param>
+        /// <param name="bindingOptions">The binding option that determines the scope, access, and visibility rules to apply when searching for the metadata.</param>
+        /// <param name="declaredOnly">If False, the metadata of properties in the declared class as well as base class(es) are returned.
+        /// If True, only field metadata of the declared type is returned.</param>
+        /// <returns>The field metadata, as <see cref="FieldInfo"/>, of a provided <see cref="Type"/>.</returns>
+        /// <remarks>When class inheritance is involved, this method returns the first field found, starting at the type represented
+        /// by <paramref name="type"/>.</remarks>
+        public static IEnumerable<FieldInfo> GetFieldInfo(this Type type, BindingOptions bindingOptions = BindingOptions.Default, bool declaredOnly = false)
+        {
+            var predicate = BindingOptionsHelper.BuildFieldInfoBindingPredicate(bindingOptions);
+            var typeInfo = type.GetTypeInfo();
+
+            // This implementation is better performing than using method/query LINQ queries
+
+            var fieldInfos = new List<FieldInfo>();
+
+            foreach (var fieldInfo in typeInfo.GetFieldInfo(declaredOnly))
+            {
+                if (predicate.Invoke(fieldInfo))
+                {
+                    fieldInfos.Add(fieldInfo);
+                }
+            }
+
+            return fieldInfos;
         }
 
         /// <summary>Gets <see cref="MethodInfo"/> (method metadata) for a given <see cref="Type"/> and binding option.</summary>
@@ -52,7 +106,7 @@ namespace AllOverIt.Extensions
         /// by <paramref name="type"/>.</remarks>
         public static IEnumerable<MethodInfo> GetMethodInfo(this Type type, BindingOptions bindingOptions = BindingOptions.Default, bool declaredOnly = false)
         {
-            var predicate = BindingOptionsHelper.BuildBindingPredicate(bindingOptions);
+            var predicate = BindingOptionsHelper.BuildPropertyOrMethodBindingPredicate(bindingOptions);
             var currentType = type;
 
             while (currentType != null)
@@ -296,26 +350,6 @@ namespace AllOverIt.Extensions
                 : generic;
 
             return type == toCompare;
-        }
-
-        private static IReadOnlyCollection<PropertyInfo> GetFilteredPropertyInfo(TypeInfo typeInfo, bool declaredOnly, Func<MethodBase, bool> predicate)
-        {
-            // This implementation is better performing than using method/query LINQ queries
-
-            var propInfos = new List<PropertyInfo>();
-
-            foreach (var propInfo in typeInfo.GetPropertyInfo(declaredOnly))
-            {
-                var methodInfo = propInfo.GetMethod;
-
-                // Ignore any properties without a getter
-                if (methodInfo != null && predicate.Invoke(methodInfo))
-                {
-                    propInfos.Add(propInfo);
-                }
-            }
-
-            return propInfos;
         }
     }
 }

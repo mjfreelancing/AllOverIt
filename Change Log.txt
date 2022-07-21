@@ -6,6 +6,8 @@ Version 6.0.0-RC.2
 AllOverIt
   * Modified HashCodeHelper to only support IEnumerable<T> or params object[]. Removed the custom seed option. The
     original algorithm is in place for NET STANDARD 2.0, but all other versions now use .NET's HashCode struct.
+  * Added FieldInfo related reflection helpers and caching
+  * Added Type and TypeInfo extensions to get FieldInfo
 
 AllOverIt.Filtering
   * Refactoring / implementation improvements to support nullable types / values.

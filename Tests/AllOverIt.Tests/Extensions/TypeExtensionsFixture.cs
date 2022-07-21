@@ -9,81 +9,72 @@ using System.Runtime.CompilerServices;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.Enumeration;
 using Xunit;
-using ArgumentNullException = System.ArgumentNullException;
 
 namespace AllOverIt.Tests.Extensions
 {
     public class TypeExtensionsFixture : FixtureBase
     {
-        private class DummyBaseClass
+        private class PropertyBaseClass
         {
             public int Prop1 { get; set; }
             public string Prop2 { get; set; }
             public virtual double Prop3 { get; set; }
 
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
-#pragma warning disable CA1822 // Mark members as static
             public void Method1()
-#pragma warning restore CA1822 // Mark members as static
             {
             }
 
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
-#pragma warning disable CA1822 // Mark members as static
             private void Method2(int _)
-#pragma warning restore CA1822 // Mark members as static
             {
             }
         }
 
-        private class DummySuperClass : DummyBaseClass
+        private class PropertySuperClass : PropertyBaseClass
         {
             private readonly int _value;
             public override double Prop3 { get; set; }
 
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
             private long Prop4 { get; set; }
 
-            public DummySuperClass()
+            public PropertySuperClass()
             {
             }
 
-            public DummySuperClass(int value)
+            public PropertySuperClass(int value)
             {
                 _value = value;
             }
 
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent IDE0051")]
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
-#pragma warning disable CA1822 // Mark members as static
             public void Method3()
-#pragma warning restore CA1822 // Mark members as static
             {
             }
 
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
             private int Method4()
             {
                 return _value;
             }
 
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
-#pragma warning disable CA1822 // Mark members as static
             private void Method4(bool _)
-#pragma warning restore CA1822 // Mark members as static
             {
             }
 
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
-#pragma warning disable CA1822 // Mark members as static
             private int Method4(int arg1)
-#pragma warning restore CA1822 // Mark members as static
             {
                 return arg1;
             }
+        }
+
+        private class FieldBaseClass
+        {
+            public int Field1;
+            public string Field2;
+        }
+
+        private class FieldSuperClass : FieldBaseClass
+        {
+            private long Field3;
+            internal static double Field4;
+            public string Field5;
         }
 
         private class DummyComposite<T1, T2>
@@ -116,7 +107,7 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Get_Property_In_Super()
             {
-                var actual = (object) AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(DummySuperClass), "Prop3");
+                var actual = (object) AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(PropertySuperClass), "Prop3");
 
                 var expected = new {Name = "Prop3", PropertyType = typeof(double)};
 
@@ -126,7 +117,7 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Get_Property_In_Base()
             {
-                var actual = (object)AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(DummySuperClass), "Prop1");
+                var actual = (object)AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(PropertySuperClass), "Prop1");
 
                 var expected = new {Name = "Prop1", PropertyType = typeof(int)};
 
@@ -136,7 +127,7 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Not_Find_Property()
             {
-                var actual = (object)AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(DummySuperClass), "PropXYZ");
+                var actual = (object)AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(PropertySuperClass), "PropXYZ");
 
                 actual.Should().BeNull();
             }
@@ -148,7 +139,7 @@ namespace AllOverIt.Tests.Extensions
             public void Should_Use_Default_Binding_Not_Declared_Only()
             {
                 var actual = AllOverIt.Extensions.TypeExtensions
-                    .GetPropertyInfo(typeof(DummySuperClass))
+                    .GetPropertyInfo(typeof(PropertySuperClass))
                     .Select(item => new { item.Name, item.PropertyType });
 
                 var expected = new[]
@@ -165,7 +156,7 @@ namespace AllOverIt.Tests.Extensions
             public void Should_Use_Default_Binding_Declared_Only()
             {
                 var actual = AllOverIt.Extensions.TypeExtensions
-                    .GetPropertyInfo(typeof(DummySuperClass), BindingOptions.Default, true)
+                    .GetPropertyInfo(typeof(PropertySuperClass), BindingOptions.Default, true)
                     .Select(item => new {item.Name, item.PropertyType});
 
                 var expected = new[] {new {Name = "Prop3", PropertyType = typeof(double)}};
@@ -178,7 +169,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var binding = BindingOptions.DefaultScope | BindingOptions.Private | BindingOptions.DefaultAccessor | BindingOptions.DefaultVisibility;
 
-                var actual = AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(DummySuperClass), binding, false);
+                var actual = AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(PropertySuperClass), binding, false);
 
                 actual.Single(item => item.Name == "Prop4").Should().NotBeNull();
             }
@@ -188,9 +179,99 @@ namespace AllOverIt.Tests.Extensions
             {
                 var binding = BindingOptions.All;
 
-                var actual = AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(DummySuperClass), binding, false);
+                var actual = AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(PropertySuperClass), binding, false);
 
                 var expected = new[]{ "Prop1", "Prop2", "Prop3", "Prop4" };
+
+                expected
+                  .Should()
+                  .BeEquivalentTo(actual.Select(item => item.Name));
+            }
+        }
+
+        public class GetFieldInfo_Field : TypeExtensionsFixture
+        {
+            [Fact]
+            public void Should_Get_Field_In_Super()
+            {
+                var actual = (object) AllOverIt.Extensions.TypeExtensions.GetFieldInfo(typeof(FieldSuperClass), "Field4");
+
+                var expected = new { Name = "Field4", FieldType = typeof(double) };
+
+                actual.Should().BeEquivalentTo(expected);
+            }
+
+            [Fact]
+            public void Should_Get_Field_In_Base()
+            {
+                var actual = (object) AllOverIt.Extensions.TypeExtensions.GetFieldInfo(typeof(FieldSuperClass), "Field1");
+
+                var expected = new { Name = "Field1", FieldType = typeof(int) };
+
+                actual.Should().BeEquivalentTo(expected);
+            }
+
+            [Fact]
+            public void Should_Not_Find_Field()
+            {
+                var actual = (object) AllOverIt.Extensions.TypeExtensions.GetFieldInfo(typeof(FieldSuperClass), "PropXYZ");
+
+                actual.Should().BeNull();
+            }
+        }
+
+        public class GetFieldInfo_Bindings : TypeExtensionsFixture
+        {
+            [Fact]
+            public void Should_Use_Default_Binding_Not_Declared_Only()
+            {
+                var actual = AllOverIt.Extensions.TypeExtensions
+                    .GetFieldInfo(typeof(FieldSuperClass))
+                    .Select(item => new { item.Name, item.FieldType });
+
+                var expected = new[]
+                {
+                    new {Name = "Field1", FieldType = typeof(int)},
+                    new {Name = "Field2", FieldType = typeof(string)},
+                    new {Name = "Field5", FieldType = typeof(string)}
+                };
+
+                expected.Should().BeEquivalentTo(actual);
+            }
+
+            [Fact]
+            public void Should_Use_Default_Binding_Declared_Only()
+            {
+                var actual = AllOverIt.Extensions.TypeExtensions
+                    .GetFieldInfo(typeof(FieldSuperClass), BindingOptions.Default, true)
+                    .Select(item => new { item.Name, item.FieldType });
+
+                var expected = new[]
+                {
+                    new {Name = "Field5", FieldType = typeof(string)}
+                };
+
+                expected.Should().BeEquivalentTo(actual);
+            }
+
+            [Fact]
+            public void Should_Include_Private_Field()
+            {
+                var binding = BindingOptions.DefaultScope | BindingOptions.Private | BindingOptions.DefaultAccessor | BindingOptions.DefaultVisibility;
+
+                var actual = AllOverIt.Extensions.TypeExtensions.GetFieldInfo(typeof(FieldSuperClass), binding, false);
+
+                actual.Single(item => item.Name == "Field3").Should().NotBeNull();
+            }
+
+            [Fact]
+            public void Should_Include_All_Fields()
+            {
+                var binding = BindingOptions.All;
+
+                var actual = AllOverIt.Extensions.TypeExtensions.GetFieldInfo(typeof(FieldSuperClass), binding, false);
+
+                var expected = new[] { "Field1", "Field2", "Field3", "Field4", "Field5" };
 
                 expected
                   .Should()
@@ -208,7 +289,7 @@ namespace AllOverIt.Tests.Extensions
             public void Should_Use_Default_Binding_Not_Declared_Only()
             {
                 var actual = AllOverIt.Extensions.TypeExtensions
-                  .GetMethodInfo(typeof(DummySuperClass))
+                  .GetMethodInfo(typeof(PropertySuperClass))
                   .Where(item => _knownMethods.Contains(item.Name))
                   .Select(item => new
                   {
@@ -218,8 +299,8 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = new[]
                 {
-                    new {Name = "Method1", DeclaringType = typeof(DummyBaseClass)},
-                    new {Name = "Method3", DeclaringType = typeof(DummySuperClass)}
+                    new {Name = "Method1", DeclaringType = typeof(PropertyBaseClass)},
+                    new {Name = "Method3", DeclaringType = typeof(PropertySuperClass)}
                 };
 
                 expected.Should().BeEquivalentTo(actual);
@@ -229,7 +310,7 @@ namespace AllOverIt.Tests.Extensions
             public void Should_Use_Default_Binding_Declared_Only()
             {
                 var actual = AllOverIt.Extensions.TypeExtensions
-                  .GetMethodInfo(typeof(DummySuperClass), BindingOptions.Default, true)
+                  .GetMethodInfo(typeof(PropertySuperClass), BindingOptions.Default, true)
                   .Where(item => _knownMethods.Contains(item.Name))
                   .Select(item => new
                   {
@@ -239,7 +320,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = new[]
                 {
-                    new {Name = "Method3", DeclaringType = typeof(DummySuperClass)}
+                    new {Name = "Method3", DeclaringType = typeof(PropertySuperClass)}
                 };
 
                 expected.Should().BeEquivalentTo(actual);
@@ -249,7 +330,7 @@ namespace AllOverIt.Tests.Extensions
             public void Should_Get_All_Base_Methods_Only()
             {
                 var actual = AllOverIt.Extensions.TypeExtensions
-                  .GetMethodInfo(typeof(DummyBaseClass), BindingOptions.All, true)
+                  .GetMethodInfo(typeof(PropertyBaseClass), BindingOptions.All, true)
                   .Where(item => _knownMethods.Contains(item.Name))
                   .Select(item => new
                   {
@@ -259,8 +340,8 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = new[]
                 {
-                    new {Name = "Method1", DeclaringType = typeof(DummyBaseClass)},
-                    new {Name = "Method2", DeclaringType = typeof(DummyBaseClass)}
+                    new {Name = "Method1", DeclaringType = typeof(PropertyBaseClass)},
+                    new {Name = "Method2", DeclaringType = typeof(PropertyBaseClass)}
                 };
 
                 expected.Should().BeEquivalentTo(actual);
@@ -270,7 +351,7 @@ namespace AllOverIt.Tests.Extensions
             public void Should_Get_All_Super_Methods_Only()
             {
                 var actual = AllOverIt.Extensions.TypeExtensions
-                  .GetMethodInfo(typeof(DummySuperClass), BindingOptions.All, true)
+                  .GetMethodInfo(typeof(PropertySuperClass), BindingOptions.All, true)
                   .Where(item => _knownMethods.Contains(item.Name))
                   .Select(item => new
                   {
@@ -281,10 +362,10 @@ namespace AllOverIt.Tests.Extensions
                 // there are 3 overloads of Method4
                 var expected = new[]
                 {
-                    new {Name = "Method3", DeclaringType = typeof(DummySuperClass)},
-                    new {Name = "Method4", DeclaringType = typeof(DummySuperClass)},
-                    new {Name = "Method4", DeclaringType = typeof(DummySuperClass)},
-                    new {Name = "Method4", DeclaringType = typeof(DummySuperClass)}
+                    new {Name = "Method3", DeclaringType = typeof(PropertySuperClass)},
+                    new {Name = "Method4", DeclaringType = typeof(PropertySuperClass)},
+                    new {Name = "Method4", DeclaringType = typeof(PropertySuperClass)},
+                    new {Name = "Method4", DeclaringType = typeof(PropertySuperClass)}
                 };
 
                 expected.Should().BeEquivalentTo(actual);
@@ -294,7 +375,7 @@ namespace AllOverIt.Tests.Extensions
             public void Should_Get_Private_Methods_Only()
             {
                 var actual = AllOverIt.Extensions.TypeExtensions
-                  .GetMethodInfo(typeof(DummySuperClass), BindingOptions.Private, false)   // default scope and visibility is implied
+                  .GetMethodInfo(typeof(PropertySuperClass), BindingOptions.Private, false)   // default scope and visibility is implied
                   .Where(item => _knownMethods.Contains(item.Name))
                   .Select(item => new
                   {
@@ -305,10 +386,10 @@ namespace AllOverIt.Tests.Extensions
                 // there are 3 overloads of Method4
                 var expected = new[]
                 {
-                    new {Name = "Method2", DeclaringType = typeof(DummyBaseClass)},
-                    new {Name = "Method4", DeclaringType = typeof(DummySuperClass)},
-                    new {Name = "Method4", DeclaringType = typeof(DummySuperClass)},
-                    new {Name = "Method4", DeclaringType = typeof(DummySuperClass)}
+                    new {Name = "Method2", DeclaringType = typeof(PropertyBaseClass)},
+                    new {Name = "Method4", DeclaringType = typeof(PropertySuperClass)},
+                    new {Name = "Method4", DeclaringType = typeof(PropertySuperClass)},
+                    new {Name = "Method4", DeclaringType = typeof(PropertySuperClass)}
                 };
 
                 expected.Should().BeEquivalentTo(actual);
@@ -320,7 +401,7 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Not_Find_Method()
             {
-                var actual = AllOverIt.Extensions.TypeExtensions.GetMethodInfo(typeof(DummySuperClass), Create<string>());
+                var actual = AllOverIt.Extensions.TypeExtensions.GetMethodInfo(typeof(PropertySuperClass), Create<string>());
 
                 actual.Should().BeNull();
             }
@@ -328,13 +409,13 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Find_Method_With_No_Arguments()
             {
-                var actual = AllOverIt.Extensions.TypeExtensions.GetMethodInfo(typeof(DummySuperClass), "Method4");
+                var actual = AllOverIt.Extensions.TypeExtensions.GetMethodInfo(typeof(PropertySuperClass), "Method4");
 
                 actual.Should().NotBeNull();
 
                 // make sure the correct overload was chosen
                 var expected = Create<int>();
-                var dummy = new DummySuperClass(expected);
+                var dummy = new PropertySuperClass(expected);
 
                 var value = actual.Invoke(dummy, null);
 
@@ -347,7 +428,7 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Not_Find_Method()
             {
-                var actual = AllOverIt.Extensions.TypeExtensions.GetMethodInfo(typeof(DummySuperClass), Create<string>(), Type.EmptyTypes);
+                var actual = AllOverIt.Extensions.TypeExtensions.GetMethodInfo(typeof(PropertySuperClass), Create<string>(), Type.EmptyTypes);
 
                 actual.Should().BeNull();
             }
@@ -355,13 +436,13 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Find_Method_With_No_Arguments()
             {
-                var actual = AllOverIt.Extensions.TypeExtensions.GetMethodInfo(typeof(DummySuperClass), "Method4", Type.EmptyTypes);
+                var actual = AllOverIt.Extensions.TypeExtensions.GetMethodInfo(typeof(PropertySuperClass), "Method4", Type.EmptyTypes);
 
                 actual.Should().NotBeNull();
 
                 // make sure the correct overload was chosen
                 var expected = Create<int>();
-                var dummy = new DummySuperClass(expected);
+                var dummy = new PropertySuperClass(expected);
 
                 var value = actual.Invoke(dummy, null);
 
@@ -371,13 +452,13 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Find_Method_With_Specific_Arguments()
             {
-                var actual = AllOverIt.Extensions.TypeExtensions.GetMethodInfo(typeof(DummySuperClass), "Method4", new[] { typeof(int) });
+                var actual = AllOverIt.Extensions.TypeExtensions.GetMethodInfo(typeof(PropertySuperClass), "Method4", new[] { typeof(int) });
 
                 actual.Should().NotBeNull();
 
                 // make sure the correct overload was chosen
                 var expected = Create<int>();
-                var dummy = new DummySuperClass();
+                var dummy = new PropertySuperClass();
 
                 var value = actual.Invoke(dummy, new object[] { expected });
 
@@ -393,7 +474,7 @@ namespace AllOverIt.Tests.Extensions
             [InlineData(typeof(string), false)]
             [InlineData(typeof(bool), false)]
             [InlineData(typeof(char), false)]
-            [InlineData(typeof(DummySuperClass), false)]
+            [InlineData(typeof(PropertySuperClass), false)]
             public void Should_Determine_If_Is_Enum_Type(Type type, bool expected)
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.IsEnumType(type);
@@ -410,7 +491,7 @@ namespace AllOverIt.Tests.Extensions
             [InlineData(typeof(string), true)]
             [InlineData(typeof(bool), false)]
             [InlineData(typeof(char), false)]
-            [InlineData(typeof(DummySuperClass), true)]
+            [InlineData(typeof(PropertySuperClass), true)]
             [InlineData(typeof(IEnumerable<int>), false)]
             public void Should_Determine_If_Is_Class_Type(Type type, bool expected)
             {
@@ -428,7 +509,7 @@ namespace AllOverIt.Tests.Extensions
             [InlineData(typeof(string), false)]
             [InlineData(typeof(bool), true)]
             [InlineData(typeof(char), true)]
-            [InlineData(typeof(DummySuperClass), false)]
+            [InlineData(typeof(PropertySuperClass), false)]
             public void Should_Determine_If_Is_Primitive_Type(Type type, bool expected)
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.IsPrimitiveType(type);
@@ -446,7 +527,7 @@ namespace AllOverIt.Tests.Extensions
             [InlineData(typeof(string), false)]
             [InlineData(typeof(bool), false)]
             [InlineData(typeof(char), false)]
-            [InlineData(typeof(DummySuperClass), false)]
+            [InlineData(typeof(PropertySuperClass), false)]
             public void Should_Determine_If_Is_Integral_Type(Type type, bool expected)
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.IsIntegralType(type);
@@ -464,7 +545,7 @@ namespace AllOverIt.Tests.Extensions
             [InlineData(typeof(string), false)]
             [InlineData(typeof(bool), false)]
             [InlineData(typeof(char), false)]
-            [InlineData(typeof(DummySuperClass), false)]
+            [InlineData(typeof(PropertySuperClass), false)]
             public void Should_Determine_If_Is_Integral_Type(Type type, bool expected)
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.IsFloatingType(type);
@@ -662,7 +743,7 @@ namespace AllOverIt.Tests.Extensions
             [InlineData(typeof(int), false)]
             [InlineData(typeof(int?), true)]
             [InlineData(typeof(string), false)]
-            [InlineData(typeof(DummySuperClass), false)]
+            [InlineData(typeof(PropertySuperClass), false)]
             [InlineData(typeof(DummyEnum?), true)]
             [InlineData(typeof(IEnumerable<int?>), false)]
             [InlineData(typeof(IEnumerable<int>), false)]
@@ -685,9 +766,9 @@ namespace AllOverIt.Tests.Extensions
             [InlineData(typeof(DummyEnum?), "DummyEnum?")]
             [InlineData(typeof(IEnumerable<DummyEnum>), "IEnumerable<DummyEnum>")]
             [InlineData(typeof(IEnumerable<DummyEnum?>), "IEnumerable<DummyEnum?>")]
-            [InlineData(typeof(IDictionary<DummyEnum, DummySuperClass>), "IDictionary<DummyEnum, DummySuperClass>")]
-            [InlineData(typeof(KeyValuePair<DummyEnum?, DummyBaseClass>), "KeyValuePair<DummyEnum?, DummyBaseClass>")]
-            [InlineData(typeof(IEnumerable<IDictionary<DummyEnum, DummySuperClass>>), "IEnumerable<IDictionary<DummyEnum, DummySuperClass>>")]
+            [InlineData(typeof(IDictionary<DummyEnum, PropertySuperClass>), "IDictionary<DummyEnum, PropertySuperClass>")]
+            [InlineData(typeof(KeyValuePair<DummyEnum?, PropertyBaseClass>), "KeyValuePair<DummyEnum?, PropertyBaseClass>")]
+            [InlineData(typeof(IEnumerable<IDictionary<DummyEnum, PropertySuperClass>>), "IEnumerable<IDictionary<DummyEnum, PropertySuperClass>>")]
             public void Should_Create_Friendly_Type_Name(Type type, string expected)
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.GetFriendlyName(type);
@@ -701,7 +782,7 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Return_False()
             {
-                var actual = typeof(DummySuperClass).IsEnrichedEnum();
+                var actual = typeof(PropertySuperClass).IsEnrichedEnum();
 
                 actual.Should().BeFalse();
             }

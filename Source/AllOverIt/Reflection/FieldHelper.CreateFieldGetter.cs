@@ -7,11 +7,8 @@ using System.Reflection;
 
 namespace AllOverIt.Reflection
 {
-    public static class FieldHelper
+    public static partial class FieldHelper
     {
-        private static readonly MethodInfo SetFieldMethodInfo = typeof(FieldHelper).GetMethod(
-            nameof(SetField), BindingFlags.Static | BindingFlags.NonPublic, null, Type.EmptyTypes, null);
-
         public static Func<object, object> CreateFieldGetter(FieldInfo fieldInfo)
         {
             _ = fieldInfo.WhenNotNull(nameof(fieldInfo));
@@ -42,89 +39,19 @@ namespace AllOverIt.Reflection
             return Expression.Lambda<Func<TType, object>>(convertField, instance).Compile();
         }
 
-        //public static Func<TType, object> CreateFieldGetter<TType>(string fieldName)
-        //{
-        //    _ = fieldName.WhenNotNullOrEmpty(nameof(fieldName));
-
-        //    var type = typeof(TType);
-        //    var fieldInfo = ReflectionCache.GetFieldInfo(type.GetTypeInfo(), fieldName);
-
-        //    if (fieldInfo == null)
-        //    {
-        //        throw new ReflectionException($"The field {fieldName} on type {type.GetFriendlyName()} does not exist.");
-        //    }
-
-        //    return CreateFieldGetter<TType>(fieldInfo);
-        //}
-
-        public static Action<object, object> CreateFieldSetter(FieldInfo fieldInfo)
+        public static Func<TType, object> CreateFieldGetter<TType>(string fieldName)
         {
-            _ = fieldInfo.WhenNotNull(nameof(fieldInfo));
+            _ = fieldName.WhenNotNullOrEmpty(nameof(fieldName));
 
-            var declaringType = fieldInfo.DeclaringType;
+            var type = typeof(TType);
+            var fieldInfo = ReflectionCache.GetFieldInfo(type.GetTypeInfo(), fieldName);
 
-            var sourceParameter = Expression.Parameter(typeof(object), "source");
-            var valueParameter = Expression.Parameter(typeof(object), "value");
+            if (fieldInfo == null)
+            {
+                throw new ReflectionException($"The field {fieldName} on type {type.GetFriendlyName()} does not exist.");
+            }
 
-            var sourceExpression = declaringType.IsValueType && !declaringType.IsNullableType()
-                ? Expression.Unbox(sourceParameter, declaringType)
-                : sourceParameter.CastOrConvertTo(declaringType);
-
-            var fieldExpression = Expression.Field(sourceExpression, fieldInfo);
-
-            var valueExpression = valueParameter.CastOrConvertTo(fieldExpression.Type);
-
-            var genericSetFieldMethodInfo = SetFieldMethodInfo.MakeGenericMethod(fieldExpression.Type);
-
-            var setFieldMethodCallExpression = Expression.Call(null, genericSetFieldMethodInfo, fieldExpression, valueExpression);
-
-            var setterFn = Expression
-                .Lambda<Action<object, object>>(setFieldMethodCallExpression, sourceParameter, valueParameter)
-                .Compile();
-
-            return setterFn;
+            return CreateFieldGetter<TType>(fieldInfo);
         }
-
-        public static Action<TType, object> CreateFieldSetter<TType>(FieldInfo fieldInfo)
-        {
-            _ = fieldInfo.WhenNotNull(nameof(fieldInfo));
-
-            var instance = Expression.Parameter(typeof(TType), "item");
-            var argument = Expression.Parameter(typeof(object), "arg");
-
-            var field = typeof(TType) != fieldInfo.DeclaringType
-                ? Expression.Field(Expression.TypeAs(instance, fieldInfo.DeclaringType), fieldInfo)
-                : Expression.Field(instance, fieldInfo);
-
-            var setterCall = Expression.Assign(
-                field,
-                Expression.Convert(argument, fieldInfo.FieldType));
-
-            return Expression
-                .Lambda<Action<TType, object>>(setterCall, instance, argument)
-                .Compile();
-        }
-
-        public static Action<TType, object> CreateFieldSetterByRef<TType>(FieldInfo fieldInfo)
-        {
-            _ = fieldInfo.WhenNotNull(nameof(fieldInfo));
-
-            var instance = Expression.Parameter(typeof(TType).MakeByRefType(), "item");
-            var argument = Expression.Parameter(typeof(object), "arg");
-
-            var field = typeof(TType) != fieldInfo.DeclaringType
-                ? Expression.Field(Expression.TypeAs(instance, fieldInfo.DeclaringType), fieldInfo)
-                : Expression.Field(instance, fieldInfo);
-
-            var setterCall = Expression.Assign(
-                field,
-                Expression.Convert(argument, fieldInfo.FieldType));
-
-            return Expression
-                .Lambda<Action<TType, object>>(setterCall, instance, argument)
-                .Compile();
-        }
-
-        internal static void SetField<TValue>(ref TValue field, TValue newValue) => field = newValue;
     }
 }

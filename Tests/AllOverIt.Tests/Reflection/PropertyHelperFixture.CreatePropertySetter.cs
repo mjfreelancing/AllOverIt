@@ -11,7 +11,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Reflection
 {
-    public partial class PropertyHelperFixture : FixtureBase
+    public partial class PropertyHelperFixture
     {
         public class CreatePropertySetter_Object : PropertyHelperFixture
         {
@@ -95,7 +95,7 @@ namespace AllOverIt.Tests.Reflection
             }
 
             [Fact]
-            public void Should_Create_Getter()
+            public void Should_Create_Setter()
             {
                 var expected = Create<int>();
                 var model = new DummyBaseClass();
@@ -137,7 +137,7 @@ namespace AllOverIt.Tests.Reflection
             }
 
             [Fact]
-            public void Should_Create_Getter()
+            public void Should_Create_Setter()
             {
                 var expected = Create<int>();
                 var model = new DummyBaseClass();

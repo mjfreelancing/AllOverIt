@@ -10,26 +10,20 @@ using Xunit;
 
 namespace AllOverIt.Tests.Reflection
 {
-    public class BindingOptionsHelperFixture : FixtureBase
+    public partial class BindingOptionsHelperFixture : FixtureBase
     {
-        public class BuildBindingPredicate : BindingOptionsHelperFixture
+        public class BuildPropertyOrMethodBindingPredicate : BindingOptionsHelperFixture
         {
             private abstract class BindingDummy
             {
                 public bool Prop1 { get; }
                 protected bool Prop2 { get; }
-
-                [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
                 private bool Prop3 { get; }
-
                 internal bool Prop4 { get; }
 
                 public static bool StaticProp1 { get; }
                 protected static bool StaticProp2 { get; }
-
-                [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
                 private static bool StaticProp3 { get; }
-
                 internal static bool StaticProp4 { get; }
 
                 public abstract bool AbstractProp1 { get; }
@@ -59,7 +53,7 @@ namespace AllOverIt.Tests.Reflection
             private readonly IDictionary<string, PropertyMetadata> _propertyMetadata;
 
             [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0028:Simplify collection initialization", Justification = "Readability")]
-            public BuildBindingPredicate()
+            public BuildPropertyOrMethodBindingPredicate()
             {
                 _propertyMetadata = new Dictionary<string, PropertyMetadata>();
 
@@ -131,7 +125,7 @@ namespace AllOverIt.Tests.Reflection
 
             private static IReadOnlyList<string> GetBindingDummyPropertyNames(BindingOptions options)
             {
-                var predicate = BindingOptionsHelper.BuildBindingPredicate(options);
+                var predicate = BindingOptionsHelper.BuildPropertyOrMethodBindingPredicate(options);
 
                 var typeInfo = typeof(BindingDummy).GetTypeInfo();
 
@@ -204,7 +198,6 @@ namespace AllOverIt.Tests.Reflection
                    select kvp.Key
                   ).AsReadOnlyList();
             }
-
         }
     }
 }

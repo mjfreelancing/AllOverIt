@@ -8,13 +8,13 @@ namespace AllOverIt.Reflection
 {
     internal static class BindingOptionsHelper
     {
-        internal static Func<MethodBase, bool> BuildBindingPredicate(BindingOptions bindingOptions)
+        internal static Func<MethodBase, bool> BuildPropertyOrMethodBindingPredicate(BindingOptions bindingOptions)
         {
-            var key = new GenericCacheKey<IReflectionCacheKey<BindingOptions>, BindingOptions>(null, bindingOptions);
+            var key = new GenericCacheKey<IReflectionCacheKey<(MethodBase, BindingOptions)>, BindingOptions>(null, bindingOptions);
 
             return GenericCache.Default.GetOrAdd(key, cacheKey =>
             {
-                var (_, options) = (GenericCacheKey<IReflectionCacheKey<BindingOptions>, BindingOptions>) cacheKey;
+                var (_, options) = (GenericCacheKey<IReflectionCacheKey<(MethodBase, BindingOptions)>, BindingOptions>) cacheKey;
 
                 // set up defaults for each group
                 if ((options & BindingOptions.AllScope) == 0)
@@ -49,8 +49,61 @@ namespace AllOverIt.Reflection
             });
         }
 
+        internal static Func<FieldInfo, bool> BuildFieldInfoBindingPredicate(BindingOptions bindingOptions)
+        {
+            var key = new GenericCacheKey<IReflectionCacheKey<(FieldInfo, BindingOptions)>, BindingOptions>(null, bindingOptions);
+
+            return GenericCache.Default.GetOrAdd(key, cacheKey =>
+            {
+                var (_, options) = (GenericCacheKey<IReflectionCacheKey<(FieldInfo, BindingOptions)>, BindingOptions>) cacheKey;
+
+                // set up defaults for each group
+                if ((options & BindingOptions.AllScope) == 0)
+                {
+                    options |= BindingOptions.DefaultScope;
+                }
+
+                // Note: Accessor options abstract and virtual are not applicable to fields
+                if ((options & BindingOptions.AllAccessor) == 0)
+                {
+                    options |= BindingOptions.DefaultAccessor;
+                }
+
+                if ((options & BindingOptions.AllVisibility) == 0)
+                {
+                    options |= BindingOptions.DefaultVisibility;
+                }
+
+                // calls such as bindingOptions.HasFlag(BindingOptions.Static) are slower than using bitwise operations (See Code Analysis warning RCS1096)
+                var scopePredicate = OrBindField(null, () => (options & BindingOptions.Static) != 0, info => info.IsStatic)
+                    .OrBindField(() => (options & BindingOptions.Instance) != 0, info => !info.IsStatic);
+
+                // no accessor predicate being applied since NonVirtual is the only possible option
+
+                var visibilityPredicate = OrBindField(null, () => (options & BindingOptions.Public) != 0, info => info.IsPublic)
+                    .OrBindField(() => (options & BindingOptions.Protected) != 0, info => info.IsFamily)
+                    .OrBindField(() => (options & BindingOptions.Private) != 0, info => info.IsPrivate)
+                    .OrBindField(() => (options & BindingOptions.Internal) != 0, info => info.IsAssembly);
+
+                return scopePredicate.And(visibilityPredicate).Compile();
+            });
+        }
+
         private static Expression<Func<MethodBase, bool>> OrBindProperty(this Expression<Func<MethodBase, bool>> expression,
             Func<bool> predicate, Expression<Func<MethodBase, bool>> creator)
+        {
+            if (!predicate.Invoke())
+            {
+                return expression;
+            }
+
+            return expression == null
+              ? PredicateBuilder.Where(creator)
+              : expression.Or(creator);
+        }
+
+        private static Expression<Func<FieldInfo, bool>> OrBindField(this Expression<Func<FieldInfo, bool>> expression,
+            Func<bool> predicate, Expression<Func<FieldInfo, bool>> creator)
         {
             if (!predicate.Invoke())
             {

@@ -1,8 +1,11 @@
-﻿using AllOverIt.Fixture;
+﻿using AllOverIt.Extensions;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Reflection;
+using AllOverIt.Reflection.Exceptions;
 using FluentAssertions;
 using System;
+using System.Linq;
 using System.Reflection;
 using Xunit;
 
@@ -13,10 +16,7 @@ namespace AllOverIt.Tests.Reflection
         private class DummyClass
         {
             public int Field1;
-
-#pragma warning disable IDE0052 // Remove unread private members
             private readonly int Field2;
-#pragma warning restore IDE0052 // Remove unread private members
 
             public DummyClass()
             {
@@ -81,7 +81,7 @@ namespace AllOverIt.Tests.Reflection
             {
                 Invoking(() =>
                 {
-                    _ = FieldHelper.CreateFieldGetter<DummyClass>(null);
+                    _ = FieldHelper.CreateFieldGetter<DummyClass>((FieldInfo)null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -117,6 +117,50 @@ namespace AllOverIt.Tests.Reflection
                 var actual = getter.Invoke(model);
 
                 actual.Should().Be(field2);
+            }
+        }
+
+        public class CreateFieldGetter_Typed_FieldName : FieldHelperFixture
+        {
+            [Fact]
+            public void Should_Throw_When_FieldName_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = FieldHelper.CreateFieldGetter<DummyClass>((string) null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("fieldName");
+            }
+
+            [Fact]
+            public void Should_Create_Getter()
+            {
+                var expected = new DummyClass
+                {
+                    Field1 = Create<int>()
+                };
+
+                var getter = FieldHelper.CreateFieldGetter<DummyClass>(nameof(DummyClass.Field1));
+
+                var actual = getter.Invoke(expected);
+
+                actual.Should().Be(expected.Field1);
+            }
+
+            [Fact]
+            public void Should_Throw_When_Field_Does_Not_Exist()
+            {
+                var fieldName = Create<string>();
+
+                Invoking(() =>
+                {
+                    _ = FieldHelper.CreateFieldGetter<DummyClass>(fieldName);
+                })
+                   .Should()
+                   .Throw<ReflectionException>()
+                   .WithMessage($"The field {fieldName} on type {typeof(DummyClass).GetFriendlyName()} does not exist.");
             }
         }
     }
