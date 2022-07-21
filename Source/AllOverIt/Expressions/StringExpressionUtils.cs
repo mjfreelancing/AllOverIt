@@ -21,46 +21,42 @@ namespace AllOverIt.Expressions
 
         public static MethodCallExpression CreateCompareCallExpression(Expression instance, Expression value, StringComparison? stringComparison)
         {
-            if (stringComparison.HasValue)
-            {
-                var comparison = Expression.Constant(stringComparison.Value);
-                return Expression.Call(CompareStringComparisonMethodInfo, instance, value, comparison);
-            }
-
-            return Expression.Call(CompareMethodInfo, instance, value);
+            return stringComparison.HasValue
+                ? CreateStaticComparisonCallExpression(CompareStringComparisonMethodInfo, instance, value, stringComparison.Value)
+                : Expression.Call(CompareMethodInfo, instance, value);
         }
 
         public static MethodCallExpression CreateContainsCallExpression(Expression instance, Expression value, StringComparison? stringComparison)
         {
-            if (stringComparison.HasValue)
-            {
-                var comparison = Expression.Constant(stringComparison.Value);
-                return Expression.Call(instance, ContainsStringComparisonMethodInfo, value, comparison);
-            }
-
-            return Expression.Call(instance, ContainsMethodInfo, value);
+            return stringComparison.HasValue
+                ? CreateInstanceComparisonCallExpression(ContainsStringComparisonMethodInfo, instance, value, stringComparison.Value)
+                : Expression.Call(instance, ContainsMethodInfo, value);
         }
 
         public static MethodCallExpression CreateStartsWithCallExpression(Expression instance, Expression value, StringComparison? stringComparison)
         {
-            if (stringComparison.HasValue)
-            {
-                var comparison = Expression.Constant(stringComparison.Value);
-                return Expression.Call(instance, StartsWithStringComparisonMethodInfo, value, comparison);
-            }
-
-            return Expression.Call(instance, StartsWithMethodInfo, value);
+            return stringComparison.HasValue
+                ? CreateInstanceComparisonCallExpression(StartsWithStringComparisonMethodInfo, instance, value, stringComparison.Value)
+                : Expression.Call(instance, StartsWithMethodInfo, value);
         }
 
         public static MethodCallExpression CreateEndsWithCallExpression(Expression instance, Expression value, StringComparison? stringComparison)
         {
-            if (stringComparison.HasValue)
-            {
-                var comparison = Expression.Constant(stringComparison.Value);
-                return Expression.Call(instance, EndsWithStringComparisonMethodInfo, value, comparison);
-            }
+            return stringComparison.HasValue
+                ? CreateInstanceComparisonCallExpression(EndsWithStringComparisonMethodInfo, instance, value, stringComparison.Value)
+                : Expression.Call(instance, EndsWithMethodInfo, value);
+        }
 
-            return Expression.Call(instance, EndsWithMethodInfo, value);
+        private static MethodCallExpression CreateStaticComparisonCallExpression(MethodInfo methodInfo, Expression instance, Expression value, StringComparison stringComparison)
+        {
+            var comparison = Expression.Constant(stringComparison);
+            return Expression.Call(methodInfo, instance, value, comparison);
+        }
+
+        private static MethodCallExpression CreateInstanceComparisonCallExpression(MethodInfo methodInfo, Expression instance, Expression value, StringComparison stringComparison)
+        {
+            var comparison = Expression.Constant(stringComparison);
+            return Expression.Call(instance, methodInfo, value, comparison);
         }
     }
 }
