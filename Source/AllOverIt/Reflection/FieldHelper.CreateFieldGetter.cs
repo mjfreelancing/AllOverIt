@@ -7,8 +7,13 @@ using System.Reflection;
 
 namespace AllOverIt.Reflection
 {
+    /// <summary>Contains a number of field getter and setter helper functions related to <see cref="FieldInfo"/>.</summary>
     public static partial class FieldHelper
     {
+        /// <summary>Creates a compiled expression as a <see cref="Func{object, object}"/> to get a field value based
+        /// on a specified <see cref="FieldInfo"/> instance.</summary>
+        /// <param name="fieldInfo">The <see cref="FieldInfo"/> to build a field getter.</param>
+        /// <returns>The compiled field getter.</returns>
         public static Func<object, object> CreateFieldGetter(FieldInfo fieldInfo)
         {
             _ = fieldInfo.WhenNotNull(nameof(fieldInfo));
@@ -24,6 +29,10 @@ namespace AllOverIt.Reflection
                 .Compile();
         }
 
+        /// <summary>Creates a compiled expression as a <see cref="Func{T, object}"/> to get a field value based
+        /// on a specified <see cref="FieldInfo"/> instance.</summary>
+        /// <param name="fieldInfo">The <see cref="FieldInfo"/> to build a field getter.</param>
+        /// <returns>The compiled field getter.</returns>
         public static Func<TType, object> CreateFieldGetter<TType>(FieldInfo fieldInfo)
         {
             _ = fieldInfo.WhenNotNull(nameof(fieldInfo));
@@ -39,6 +48,11 @@ namespace AllOverIt.Reflection
             return Expression.Lambda<Func<TType, object>>(convertField, instance).Compile();
         }
 
+        /// <summary>Creates a compiled expression as a <see cref="Func{T, object}"/> to get a field value based on a specified
+        /// field name.</summary>
+        /// <typeparam name="TType">The object type to get the field value from.</typeparam>
+        /// <param name="fieldName">The name of the field to get the value from.</param>
+        /// <returns>The compiled field getter.</returns>
         public static Func<TType, object> CreateFieldGetter<TType>(string fieldName)
         {
             _ = fieldName.WhenNotNullOrEmpty(nameof(fieldName));

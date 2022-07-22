@@ -137,5 +137,76 @@ namespace AllOverIt.Tests.Reflection
                    .WithMessage($"The field {fieldName} on type {typeof(DummyClass).GetFriendlyName()} does not exist.");
             }
         }
+
+        public class CreateFieldSetter_Typed_FieldInfo_ByRef : FieldHelperFixture
+        {
+            [Fact]
+            public void Should_Throw_When_FieldInfo_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = FieldHelper.CreateFieldSetterByRef<DummyClass>((FieldInfo) null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("fieldInfo");
+            }
+
+            [Fact]
+            public void Should_Create_Setter_ByRef()
+            {
+                var expected = Create<int>();
+                var model = new DummyClass();
+
+                var fieldInfo = typeof(DummyClass).GetField(nameof(DummyClass.Field1));
+                var setter = FieldHelper.CreateFieldSetterByRef<DummyClass>(fieldInfo);
+
+                setter.Invoke(ref model, expected);
+
+                model.Field1.Should().Be(expected);
+            }
+        }
+
+        public class CreateFieldSetter_Typed_FieldName_ByRef : FieldHelperFixture
+        {
+            [Fact]
+            public void Should_Throw_When_FieldInfo_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = FieldHelper.CreateFieldSetterByRef<DummyClass>((string) null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("fieldName");
+            }
+
+            [Fact]
+            public void Should_Create_Setter()
+            {
+                var expected = Create<int>();
+                var model = new DummyClass();
+
+                var setter = FieldHelper.CreateFieldSetterByRef<DummyClass>(nameof(DummyClass.Field1));
+
+                setter.Invoke(ref model, expected);
+
+                model.Field1.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Throw_When_Field_Does_Not_Exist()
+            {
+                var fieldName = Create<string>();
+
+                Invoking(() =>
+                {
+                    _ = FieldHelper.CreateFieldSetterByRef<DummyClass>(fieldName);
+                })
+                   .Should()
+                   .Throw<ReflectionException>()
+                   .WithMessage($"The field {fieldName} on type {typeof(DummyClass).GetFriendlyName()} does not exist.");
+            }
+        }
     }
 }

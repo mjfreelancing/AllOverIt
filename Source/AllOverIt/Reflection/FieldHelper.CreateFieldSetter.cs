@@ -13,6 +13,16 @@ namespace AllOverIt.Reflection
 
         internal static void SetField<TValue>(ref TValue field, TValue newValue) => field = newValue;
 
+        /// <summary>A delegate type that allows a field value to be updated via a ref.</summary>
+        /// <typeparam name="TType">The object type to set the field value on.</typeparam>
+        /// <param name="instance">The ref instance to update the field value on.</param>
+        /// <param name="value">The value to set on the field.</param>
+        public delegate void SetFieldByRefDelegate<TType>(ref TType instance, object value);
+
+        /// <summary>Creates a compiled expression as an <see cref="Action{object, object}"/> to set a field value
+        /// based on a specified <see cref="FieldInfo"/> instance.</summary>
+        /// <param name="fieldInfo">The <see cref="FieldInfo"/> to build a field setter.</param>
+        /// <returns>The compiled field setter.</returns>
         public static Action<object, object> CreateFieldSetter(FieldInfo fieldInfo)
         {
             _ = fieldInfo.WhenNotNull(nameof(fieldInfo));
@@ -41,15 +51,25 @@ namespace AllOverIt.Reflection
             return setterFn;
         }
 
+        /// <summary>Creates a compiled expression as an <see cref="Action{T, object}"/> to set a field value
+        /// based on a specified <see cref="FieldInfo"/> instance.</summary>
+        /// <typeparam name="TType">The object type to set the field value on.</typeparam>
+        /// <param name="fieldInfo">The <see cref="FieldInfo"/> to build a field setter.</param>
+        /// <returns>The compiled field setter.</returns>
         public static Action<TType, object> CreateFieldSetter<TType>(FieldInfo fieldInfo)
         {
             _ = fieldInfo.WhenNotNull(nameof(fieldInfo));
 
             var instance = Expression.Parameter(typeof(TType), "item");
 
-            return CreateFieldSetter<TType>(instance, fieldInfo);
+            return CreateFieldSetter<TType, Action<TType, object>>(instance, fieldInfo);
         }
 
+        /// <summary>Creates a compiled expression as an <see cref="Action{T, object}"/> to set a field value based
+        /// on a specified field name.</summary>
+        /// <typeparam name="TType">The object type to set the field value on.</typeparam>
+        /// <param name="fieldName">The name of the field to set the value on.</param>
+        /// <returns>The compiled field setter.</returns>
         public static Action<TType, object> CreateFieldSetter<TType>(string fieldName)
         {
             _ = fieldName.WhenNotNullOrEmpty(nameof(fieldName));
@@ -65,18 +85,26 @@ namespace AllOverIt.Reflection
             return CreateFieldSetter<TType>(fieldInfo);
         }
 
-        // TODO: tests
-        public static Action<TType, object> CreateFieldSetterByRef<TType>(FieldInfo fieldInfo)
+        /// <summary>Creates a compiled expression as a <see cref="SetFieldByRefDelegate{T}"/> to set a field value
+        /// by reference based on a specified <see cref="FieldInfo"/> instance.</summary>
+        /// <typeparam name="TType">The object type to set the field value on.</typeparam>
+        /// <param name="fieldInfo">The <see cref="FieldInfo"/> to build a field setter.</param>
+        /// <returns>The compiled field setter.</returns>
+        public static SetFieldByRefDelegate<TType> CreateFieldSetterByRef<TType>(FieldInfo fieldInfo)
         {
             _ = fieldInfo.WhenNotNull(nameof(fieldInfo));
 
             var instance = Expression.Parameter(typeof(TType).MakeByRefType(), "item");
 
-            return CreateFieldSetter<TType>(instance, fieldInfo);
+            return CreateFieldSetter<TType, SetFieldByRefDelegate<TType>>(instance, fieldInfo);
         }
 
-        // TODO: tests
-        public static Action<TType, object> CreateFieldSetterByRef<TType>(string fieldName)
+        /// <summary>Creates a compiled expression as an <see cref="SetFieldByRefDelegate{T}"/> to set a field value
+        /// by reference based on a specified field name.</summary>
+        /// <typeparam name="TType">The object type to set the field value on.</typeparam>
+        /// <param name="fieldName">The name of the field to set the value on.</param>
+        /// <returns>The compiled field setter.</returns>
+        public static SetFieldByRefDelegate<TType> CreateFieldSetterByRef<TType>(string fieldName)
         {
             _ = fieldName.WhenNotNullOrEmpty(nameof(fieldName));
 
@@ -91,7 +119,7 @@ namespace AllOverIt.Reflection
             return CreateFieldSetterByRef<TType>(fieldInfo);
         }
 
-        private static Action<TType, object> CreateFieldSetter<TType>(ParameterExpression instance, FieldInfo fieldInfo)
+        private static TReturn CreateFieldSetter<TType, TReturn>(ParameterExpression instance, FieldInfo fieldInfo)
         {
             var argument = Expression.Parameter(typeof(object), "arg");
 
@@ -102,7 +130,7 @@ namespace AllOverIt.Reflection
             var setterCall = Expression.Assign(field, Expression.Convert(argument, fieldInfo.FieldType));
 
             return Expression
-                .Lambda<Action<TType, object>>(setterCall, instance, argument)
+                .Lambda<TReturn>(setterCall, instance, argument)
                 .Compile();
         }
     }

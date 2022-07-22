@@ -7,11 +7,10 @@ using System.Reflection;
 
 namespace AllOverIt.Reflection
 {
-    /// <summary>Contains a number of property setter helper functions related to <see cref="PropertyInfo"/>.</summary>
     public static partial class PropertyHelper
     {
-        /// <summary>Creates a compiled expression as an <see cref="Action"/> to set a property value, as an object, based on
-        /// a specified <see cref="PropertyInfo"/> instance.</summary>
+        /// <summary>Creates a compiled expression as an <see cref="Action{object, object}"/> to set a property value
+        /// based on a specified <see cref="PropertyInfo"/> instance.</summary>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> to build a property setter.</param>
         /// <returns>The compiled property setter.</returns>
         public static Action<object, object> CreatePropertySetter(PropertyInfo propertyInfo)
@@ -38,7 +37,7 @@ namespace AllOverIt.Reflection
             return Expression.Lambda<Action<object, object>>(setterCall, instance, argument).Compile();
         }
 
-        /// <summary>Creates a compiled expression as an <see cref="Action"/> to set a property value based
+        /// <summary>Creates a compiled expression as an <see cref="Action{T, object}"/> to set a property value based
         /// on a specified <see cref="PropertyInfo"/> instance.</summary>
         /// <typeparam name="TType">The object type to set the property value on.</typeparam>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> to build a property setter.</param>
@@ -52,7 +51,7 @@ namespace AllOverIt.Reflection
             return CreatePropertySetterExpressionLambda<TType>(propertyInfo).Compile();
         }
 
-        /// <summary>Creates a compiled expression as an <see cref="Action"/> to set a property value based
+        /// <summary>Creates a compiled expression as an <see cref="Action{T, object}"/> to set a property value based
         /// on a specified property name.</summary>
         /// <typeparam name="TType">The object type to set the property value on.</typeparam>
         /// <param name="propertyName">The name of the property to set the value on.</param>
