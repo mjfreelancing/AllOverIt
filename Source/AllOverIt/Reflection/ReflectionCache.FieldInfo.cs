@@ -75,7 +75,7 @@ namespace AllOverIt.Reflection
         /// overriden then only the base class <see cref="FieldInfo"/> is returned). If false, only property metadata of the declared type is returned.</param>
         /// <param name="valueResolver">The factory method to obtain the required <see cref="FieldInfo"/>.</param>
         /// <returns>The <see cref="PropFieldInfoertyInfo"/> for a given <see cref="Type"/> and options from the default cache.</returns>
-        public static IEnumerable<FieldInfo> GetFieldInfo(Type type, BindingOptions bindingOptions, bool declaredOnly = false,
+        public static IEnumerable<FieldInfo> GetFieldInfo(Type type, BindingOptions bindingOptions = BindingOptions.Default, bool declaredOnly = false,
             Func<GenericCacheKeyBase, IEnumerable<FieldInfo>> valueResolver = default)
         {
             var key = new GenericCacheKey<IReflectionCacheKey<FieldInfo>, Type, BindingOptions, bool>(null, type, bindingOptions, declaredOnly);
