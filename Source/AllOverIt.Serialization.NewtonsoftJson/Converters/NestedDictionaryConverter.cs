@@ -110,7 +110,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Converters
 
         private void WriteValue(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            // TODO: TBC - Check the SystemText serializer does this - also need to add more tests
+            // TODO: Check the SystemText serializer does this - also need to add more tests
             var converter = serializer.Converters.FirstOrDefault(converter => !ReferenceEquals(converter, this) && converter.CanWrite && converter.CanConvert(value.GetType()));
 
             if (converter != null)

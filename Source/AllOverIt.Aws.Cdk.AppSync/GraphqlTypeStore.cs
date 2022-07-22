@@ -262,7 +262,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
 
         private static IIntermediateType CreateIntermediateType(GraphqlSchemaTypeDescriptor typeDescriptor, IDictionary<string, IField> classDefinition = null)
         {
-            // todo: currently handles Input and Type - haven't yet looked at these below
+            // TODO: currently handles Input and Type - haven't yet looked at these below
 
             // new InterfaceType()
             // https://docs.aws.amazon.com/cdk/api/latest/dotnet/api/Amazon.CDK.AWS.AppSync.InterfaceType.html

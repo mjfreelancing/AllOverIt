@@ -15,8 +15,6 @@ namespace AllOverIt.Serialization.Binary
         /// <inheritdoc />
         public TValue ReadValue<TValue>(IEnrichedBinaryReader reader)
         {
-            // TODO: add a guard to check typeof(TValue) == Type
-
             return (TValue)ReadValue(reader);
         }
     }

@@ -172,7 +172,7 @@ namespace AllOverIt.Tests.Events
 
         public class Subscribe_Action : EventAggregatorFixture
         {
-            // todo: weak references are not behaving in unit tests
+            // TODO: weak references are not behaving in unit tests
             //[Fact]
             //public void Should_Weak_Subscribe_To_Handler()
             //{
@@ -211,7 +211,7 @@ namespace AllOverIt.Tests.Events
 
         public class Subscribe_Func_Task : EventAggregatorFixture
         {
-            // todo: weak references are not behaving in unit tests
+            // TODO: weak references are not behaving in unit tests
             //[Fact]
             //public async Task Should_Weak_Subscribe_To_Handler()
             //{

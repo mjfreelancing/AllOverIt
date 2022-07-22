@@ -13,8 +13,6 @@ namespace AllOverIt.Evaluator.Operations
         /// <summary>Gets all registered operations based on their associated symbol.</summary>
         IEnumerable<string> RegisteredOperations { get; }
 
-        // todo: requires a test
-
         /// <summary>Attempts to register a new operation in terms of its operator symbol, precedence level and a factory used for
         /// creating the required operation. If the symbol is already registered then the request is ignored.</summary>
         /// <param name="symbol">The symbol that identifies the operation being registered.</param>

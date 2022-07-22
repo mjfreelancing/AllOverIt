@@ -51,7 +51,6 @@ namespace AllOverIt.Patterns.Specification.Utils
             }
             catch(Exception exception)
             {
-                // TODO: Throw a custom exception with the current output for reference
                 throw new LinqSpecificationVisitorException("An error occurred while trying to convert a specification to a query string.", exception, _queryStringBuilder.ToString());
             }
             finally

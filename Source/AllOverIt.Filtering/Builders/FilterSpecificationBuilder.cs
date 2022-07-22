@@ -198,7 +198,7 @@ namespace AllOverIt.Filtering.Builders
             }
         }
 
-        // As an example, creates a EqualToOperation<,> based on a IEqualTo<>
+        // As an example, creates an EqualToOperation<,> based on a IEqualTo<>
         // Caters for IBasicFilterOperation and IArrayFilterOperation
         private static ILinqSpecification<TType> CreateSpecificationOperation<TProperty>(Type specificationOperationType, IBasicFilterOperation operation,
             Expression<Func<TType, TProperty>> propertyExpression, IOperationFilterOptions options)
@@ -212,7 +212,7 @@ namespace AllOverIt.Filtering.Builders
             // specificationOperationType, such as EqualToOperation<,>
             var genericOperation = specificationOperationType.MakeGenericType(typeArgs);
 
-            // TODO: Assumes not IArrayFilterOperation  - needs to be updated
+            // Caters for IFilterOperationType<TProperty> and IArrayFilterOperation<TProperty>
             var value = operationType.GetProperty(nameof(IFilterOperationType<TProperty>.Value)).GetValue(operation);
 
             try
