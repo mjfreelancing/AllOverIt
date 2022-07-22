@@ -408,7 +408,7 @@ namespace AllOverIt.Pagination
                     methodCallExpression = Expression.Call(memberAccess, compareToMethod, comparisonValue);
                 }
 
-                return compareTo.Invoke(methodCallExpression, ConstantZero);
+                return compareTo.Invoke(methodCallExpression, ExpressionConstants.Zero);
             }
             else
             {

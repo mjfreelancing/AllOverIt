@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Reflection;
-using AllOverIt.Assertion;
+﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
+using System;
+using System.Collections.Concurrent;
+using System.Reflection;
 
 namespace AllOverIt.Pagination
 {
@@ -12,8 +10,6 @@ namespace AllOverIt.Pagination
     {
         // base class mainly exists to keep statics out of the generic implementations
         private static readonly ConcurrentDictionary<Type, MethodInfo> _comparisonMethods;
-
-        internal static readonly ConstantExpression ConstantZero = Expression.Constant(0);
 
         static QueryPaginatorBase()
         {
