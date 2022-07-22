@@ -199,6 +199,8 @@ namespace AllOverIt.Filtering.Builders
             }
         }
 
+        // TODO: Check for opportunities to improve performance related to reflection
+        //
         // As an example, creates an EqualToOperation<,> based on a IEqualTo<>
         // Caters for IBasicFilterOperation and IArrayFilterOperation
         private static ILinqSpecification<TType> CreateSpecificationOperation<TProperty>(Type specificationOperationType, IBasicFilterOperation operation,

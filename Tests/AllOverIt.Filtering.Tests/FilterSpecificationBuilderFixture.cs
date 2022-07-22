@@ -101,44 +101,49 @@ namespace AllOverIt.Filtering.Tests
             _filter = new DummyEntityFilter
             {
                 Active =
-                    {
-                        EqualTo = Create<bool>()
-                    },
+                {
+                    EqualTo = Create<bool>()
+                },
                 Category =
-                    {
-                        EqualTo = Create<DummyEntityCategory>()
-                    },
+                {
+                    EqualTo = Create<DummyEntityCategory>()
+                },
                 Name =
-                    {
-                        Contains = Create<string>(),
-                        NotContains = Create<string>(),
-                        StartsWith = Create<string>(),
-                        EndsWith = Create<string>(),
-                        In = CreateMany<string>().ToList(),
-                        NotIn = CreateMany<string>().ToList(),
-                        GreaterThan = Create<string>(),
-                        GreaterThanOrEqual = Create<string>(),
-                        LessThan = Create<string>(),
-                        LessThanOrEqual = Create<string>(),
-                        EqualTo = Create<string>(),
-                        NotEqualTo = Create<string>()
-                    },
+                {
+                    Contains = Create<string>(),
+                    NotContains = Create<string>(),
+                    StartsWith = Create<string>(),
+                    EndsWith = Create<string>(),
+                    In = CreateMany<string>().ToList(),
+                    NotIn = CreateMany<string>().ToList(),
+                    GreaterThan = Create<string>(),
+                    GreaterThanOrEqual = Create<string>(),
+                    LessThan = Create<string>(),
+                    LessThanOrEqual = Create<string>(),
+                    EqualTo = Create<string>(),
+                    NotEqualTo = Create<string>()
+                },
                 Price =
-                    {
-                        In = CreateMany<double>().ToList(),
-                        NotIn = CreateMany<double>().ToList(),
-                        GreaterThan = Create<double>(),
-                        GreaterThanOrEqual = Create<double>(),
-                        LessThan = Create<double>(),
-                        LessThanOrEqual = Create<double>(),
-                        EqualTo = Create<double>(),
-                        NotEqualTo = Create<double>()
-                    },
+                {
+                    In = CreateMany<double>().ToList(),
+                    NotIn = CreateMany<double>().ToList(),
+                    GreaterThan = Create<double>(),
+                    GreaterThanOrEqual = Create<double>(),
+                    LessThan = Create<double>(),
+                    LessThanOrEqual = Create<double>(),
+                    EqualTo = Create<double>(),
+                    NotEqualTo = Create<double>()
+                },
                 DateCreated =
-                    {
-                        LessThanOrEqual = DateTime.UtcNow,
-                        GreaterThanOrEqual = DateTime.UtcNow.AddDays(-7)
-                    }
+                {
+                    LessThanOrEqual = DateTime.UtcNow.AddDays(-30),
+                    GreaterThanOrEqual = DateTime.UtcNow.AddDays(-20)
+                },
+                LastUpdated =
+                {
+                    LessThanOrEqual = DateTime.UtcNow,
+                    GreaterThanOrEqual = DateTime.UtcNow.AddDays(-7)
+                }
             };
 
             // all default options
@@ -693,6 +698,226 @@ namespace AllOverIt.Filtering.Tests
             }
         }
 
+        public class And_StringFilter : FilterSpecificationBuilderFixture
+        {
+            [Theory]
+            [InlineData(false, "abc", "xyz", default, "xyz_abc_fgh", "pqr")]
+            [InlineData(true, "abc", "xyz", default, "xyz_abc_fgh", "pqr")]
+            [InlineData(false, "abc", "xyz", StringComparison.InvariantCultureIgnoreCase, "xyz_abc_fgh", "pqr")]
+            [InlineData(true, "abc", "xyz", StringComparison.InvariantCultureIgnoreCase, "xyz_abc_fgh", "pqr")]
+            public void Should_And_Contains_StartsWith(bool useParameterizedQueries, string contains, string startsWith,
+                StringComparison? stringComparison, string trueValue, string falseValue)
+            {
+                _options = new QueryFilterOptions
+                {
+                    UseParameterizedQueries = useParameterizedQueries,
+                    StringComparison = stringComparison,
+                    IgnoreNullFilterValues = false
+                };
+
+                _filter.Name.Contains = contains;
+                _filter.Name.StartsWith = startsWith;
+
+                _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                var specification = _specificationBuilder.And(entity => entity.Name, filter => filter.Name.Contains, filter => filter.Name.StartsWith);
+
+                AssertNameSpecification(specification, trueValue, falseValue);
+            }
+
+            [Theory]
+            [InlineData(false, "abc", "xyz", default, "pqrxyz", "xyz_abc_fgh")]
+            [InlineData(true, "abc", "xyz", default, "pqrxyz", "xyz_abc_fgh")]
+            [InlineData(false, "abc", "xyz", StringComparison.InvariantCultureIgnoreCase, "pqrxyz", "xyz_abc_fgh")]
+            [InlineData(true, "abc", "xyz", StringComparison.InvariantCultureIgnoreCase, "pqrxyz", "xyz_abc_fgh")]
+            public void Should_And_NotContains_EndsWith(bool useParameterizedQueries, string notContains, string endsWith,
+               StringComparison? stringComparison, string trueValue, string falseValue)
+            {
+                _options = new QueryFilterOptions
+                {
+                    UseParameterizedQueries = useParameterizedQueries,
+                    StringComparison = stringComparison,
+                    IgnoreNullFilterValues = false
+                };
+
+                _filter.Name.NotContains = notContains;
+                _filter.Name.EndsWith = endsWith;
+
+                _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                var specification = _specificationBuilder.And(entity => entity.Name, filter => filter.Name.NotContains, filter => filter.Name.EndsWith);
+
+                AssertNameSpecification(specification, trueValue, falseValue);
+            }
+        }
+
+        public class And_Value : FilterSpecificationBuilderFixture
+        {
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_And_LessThanOrEqual_GreaterThanOrEqual(bool useParameterizedQueries)
+            {
+                _options = new QueryFilterOptions
+                {
+                    UseParameterizedQueries = useParameterizedQueries,
+                    IgnoreNullFilterValues = false
+                };
+
+                var lastUpdated = DateTime.Now.Date;
+
+                _filter.LastUpdated.LessThanOrEqual = lastUpdated.AddDays(1);
+                _filter.LastUpdated.GreaterThanOrEqual = lastUpdated.AddDays(-1);
+
+                _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                var specification = _specificationBuilder.And(
+                    entity => entity.LastUpdated,
+                    filter => filter.LastUpdated.LessThanOrEqual,
+                    filter => filter.LastUpdated.GreaterThanOrEqual);
+
+                var entityPrice = _filter.Price.In.Value[2];
+
+                AssertLastUpdatedSpecification(specification, lastUpdated, DateTime.MinValue);
+            }
+
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_And_EqualTo_GreaterThanOrEqual(bool useParameterizedQueries)
+            {
+                _options = new QueryFilterOptions
+                {
+                    UseParameterizedQueries = useParameterizedQueries,
+                    IgnoreNullFilterValues = false
+                };
+
+                var entityPrice = Create<double>();
+
+                _filter.Price.EqualTo = entityPrice;
+                _filter.Price.GreaterThanOrEqual = entityPrice - 1;
+
+                _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                var specification = _specificationBuilder.And(
+                    entity => entity.Price,
+                    filter => filter.Price.EqualTo,
+                    filter => filter.Price.GreaterThanOrEqual);
+
+                AssertPriceSpecification(specification, entityPrice, -entityPrice);
+            }
+        }
+
+        public class Or_StringFilter : FilterSpecificationBuilderFixture
+        {
+            [Theory]
+            [InlineData(false, "abc", "123", default, "xyz_abc_fgh", "pqr")]
+            [InlineData(true, "123", "xyz", default, "xyz_abc_fgh", "pqr")]
+            [InlineData(false, "abc", "123", StringComparison.InvariantCultureIgnoreCase, "xyz_abc_fgh", "pqr")]
+            [InlineData(true, "123", "xyz", StringComparison.InvariantCultureIgnoreCase, "xyz_abc_fgh", "pqr")]
+            public void Should_Or_Contains_StartsWith(bool useParameterizedQueries, string contains, string startsWith,
+               StringComparison? stringComparison, string trueValue, string falseValue)
+            {
+                _options = new QueryFilterOptions
+                {
+                    UseParameterizedQueries = useParameterizedQueries,
+                    StringComparison = stringComparison,
+                    IgnoreNullFilterValues = false
+                };
+
+                _filter.Name.Contains = contains;
+                _filter.Name.StartsWith = startsWith;
+
+                _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                var specification = _specificationBuilder.Or(entity => entity.Name, filter => filter.Name.Contains, filter => filter.Name.StartsWith);
+
+                AssertNameSpecification(specification, trueValue, falseValue);
+            }
+
+            [Theory]
+            [InlineData(false, "123", "abc", default, "pqrxyz", "123")]
+            [InlineData(true, "abc", "123", default, "pqrxyz", "abc")]
+            [InlineData(false, "123", "xyz", StringComparison.InvariantCultureIgnoreCase, "pqrxyz", "123")]
+            [InlineData(true, "abc", "123", StringComparison.InvariantCultureIgnoreCase, "pqrxyz", "abc")]
+            public void Should_Or_NotContains_EndsWith(bool useParameterizedQueries, string notContains, string endsWith,
+               StringComparison? stringComparison, string trueValue, string falseValue)
+            {
+                _options = new QueryFilterOptions
+                {
+                    UseParameterizedQueries = useParameterizedQueries,
+                    StringComparison = stringComparison,
+                    IgnoreNullFilterValues = false
+                };
+
+                _filter.Name.NotContains = notContains;
+                _filter.Name.EndsWith = endsWith;
+
+                _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                var specification = _specificationBuilder.Or(entity => entity.Name, filter => filter.Name.NotContains, filter => filter.Name.EndsWith);
+
+                AssertNameSpecification(specification, trueValue, falseValue);
+            }
+        }
+
+        public class Or_Value : FilterSpecificationBuilderFixture
+        {
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_Or_LessThanOrEqual_GreaterThanOrEqual(bool useParameterizedQueries)
+            {
+                _options = new QueryFilterOptions
+                {
+                    UseParameterizedQueries = useParameterizedQueries,
+                    IgnoreNullFilterValues = false
+                };
+
+                var lastUpdated = DateTime.Now.Date;
+
+                _filter.LastUpdated.LessThanOrEqual = DateTime.MinValue;
+                _filter.LastUpdated.GreaterThanOrEqual = lastUpdated.AddDays(-1);
+
+                _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                var specification = _specificationBuilder.Or(
+                    entity => entity.LastUpdated,
+                    filter => filter.LastUpdated.LessThanOrEqual,
+                    filter => filter.LastUpdated.GreaterThanOrEqual);
+
+                var entityPrice = _filter.Price.In.Value[2];
+
+                AssertLastUpdatedSpecification(specification, lastUpdated, lastUpdated.AddDays(-2));
+            }
+
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_Or_EqualTo_GreaterThanOrEqual(bool useParameterizedQueries)
+            {
+                _options = new QueryFilterOptions
+                {
+                    UseParameterizedQueries = useParameterizedQueries,
+                    IgnoreNullFilterValues = false
+                };
+
+                var entityPrice = Create<double>();
+
+                _filter.Price.EqualTo = entityPrice;
+                _filter.Price.GreaterThanOrEqual = 0;
+
+                _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                var specification = _specificationBuilder.Or(
+                    entity => entity.Price,
+                    filter => filter.Price.EqualTo,
+                    filter => filter.Price.GreaterThanOrEqual);
+
+                AssertPriceSpecification(specification, entityPrice, -entityPrice);
+            }
+        }
+
         private void AssertNameSpecification(ILinqSpecification<DummyEntity> specification, string trueValue, string falseValue)
         {
             if (_options.StringComparison == StringComparison.InvariantCultureIgnoreCase)
@@ -722,6 +947,20 @@ namespace AllOverIt.Filtering.Tests
             specification.IsSatisfiedBy(entity).Should().BeTrue();
 
             entity.Price = falseValue;
+
+            specification.IsSatisfiedBy(entity).Should().BeFalse();
+        }
+
+        private void AssertLastUpdatedSpecification(ILinqSpecification<DummyEntity> specification, DateTime? trueValue, DateTime? falseValue)
+        {
+            var entity = new DummyEntity
+            {
+                LastUpdated = trueValue
+            };
+
+            specification.IsSatisfiedBy(entity).Should().BeTrue();
+
+            entity.LastUpdated = falseValue;
 
             specification.IsSatisfiedBy(entity).Should().BeFalse();
         }
