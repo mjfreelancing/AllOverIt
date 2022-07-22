@@ -52,6 +52,9 @@ namespace AllOverIt.Filtering.Tests
                 public In<string> In { get; set; } = new();
                 public NotIn<string> NotIn { get; set; } = new();
                 public GreaterThan<string> GreaterThan { get; set; } = new();
+                public GreaterThanOrEqual<string> GreaterThanOrEqual { get; set; } = new();
+                public LessThan<string> LessThan { get; set; } = new();
+                public LessThanOrEqual<string> LessThanOrEqual { get; set; } = new();
             }
 
             public sealed class PriceFilter
@@ -133,7 +136,10 @@ namespace AllOverIt.Filtering.Tests
                         EndsWith = Create<string>(),
                         In = CreateMany<string>().ToList(),
                         NotIn = CreateMany<string>().ToList(),
-                        GreaterThan = Create<string>()
+                        GreaterThan = Create<string>(),
+                        GreaterThanOrEqual = Create<string>(),
+                        LessThan = Create<string>(),
+                        LessThanOrEqual = Create<string>()
                     },
                     Price =
                     {
@@ -399,6 +405,80 @@ namespace AllOverIt.Filtering.Tests
                 var specification = _specificationBuilder.Create(entity => entity.Name, filter => filter.Name.GreaterThan);
 
                 var entityName = $"{_filter.Name.GreaterThan.Value}ZZZ";
+
+                if (_options.StringComparison == StringComparison.InvariantCultureIgnoreCase)
+                {
+                    entityName = entityName.ToLower();
+                }
+
+                var entity = new DummyEntity
+                {
+                    Name = entityName
+                };
+
+                specification.IsSatisfiedBy(entity).Should().BeTrue();
+
+                entity.Name = null;
+
+                specification.IsSatisfiedBy(entity).Should().BeFalse();
+            }
+
+            [Theory]
+            [InlineData(false, default)]
+            [InlineData(true, default)]
+            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
+            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
+            public void Should_Create_GreaterThanOrEqual(bool useParameterizedQueries, StringComparison? stringComparison)
+            {
+                _options = new QueryFilterOptions
+                {
+                    UseParameterizedQueries = useParameterizedQueries,
+                    StringComparison = stringComparison,
+                    IgnoreNullFilterValues = false
+                };
+
+                _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                var specification = _specificationBuilder.Create(entity => entity.Name, filter => filter.Name.GreaterThanOrEqual);
+
+                var entityName = $"{_filter.Name.GreaterThanOrEqual.Value}ZZZ";
+
+                if (_options.StringComparison == StringComparison.InvariantCultureIgnoreCase)
+                {
+                    entityName = entityName.ToLower();
+                }
+
+                var entity = new DummyEntity
+                {
+                    Name = entityName
+                };
+
+                specification.IsSatisfiedBy(entity).Should().BeTrue();
+
+                entity.Name = null;
+
+                specification.IsSatisfiedBy(entity).Should().BeFalse();
+            }
+
+            [Theory]
+            [InlineData(false, default)]
+            [InlineData(true, default)]
+            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
+            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
+            public void Should_Create_GreaterThanOrEqual_When_Equal(bool useParameterizedQueries, StringComparison? stringComparison)
+            {
+                _options = new QueryFilterOptions
+                {
+                    UseParameterizedQueries = useParameterizedQueries,
+                    StringComparison = stringComparison,
+                    IgnoreNullFilterValues = false
+                };
+
+                _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                var specification = _specificationBuilder.Create(entity => entity.Name, filter => filter.Name.GreaterThanOrEqual);
+
+                var entityName = _filter.Name.GreaterThanOrEqual.Value;
 
                 if (_options.StringComparison == StringComparison.InvariantCultureIgnoreCase)
                 {
