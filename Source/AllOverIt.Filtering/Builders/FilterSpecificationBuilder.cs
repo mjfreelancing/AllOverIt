@@ -7,6 +7,7 @@ using AllOverIt.Filtering.Options;
 using AllOverIt.Patterns.Specification;
 using AllOverIt.Patterns.Specification.Extensions;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -217,13 +218,66 @@ namespace AllOverIt.Filtering.Builders
 
             try
             {
-                return (ILinqSpecification<TType>) Activator.CreateInstance(genericOperation, new object[] { propertyExpression, value, options });
+                return operation is IArrayFilterOperation
+                    ? CreateArraySpecificationOperation(genericOperation, propertyExpression, value, options)
+                    : CreateBasicSpecificationOperation(genericOperation, propertyExpression, value, options);
             }
             catch (TargetInvocationException exception)
             {
                 // The operation may throw a NullNotSupportedException
                 throw exception.InnerException ?? exception;
             }
+        }
+
+
+        private static ILinqSpecification<TType> CreateBasicSpecificationOperation<TProperty>(Type genericOperation,
+            Expression<Func<TType, TProperty>> propertyExpression, object value, IOperationFilterOptions options)
+        {
+            // No special consideration is required when the value is double (for example) and TProperty is double?
+            var ctor = genericOperation.GetConstructor(new[] {
+                        typeof(Expression<Func<TType, TProperty>>),
+                        typeof(TProperty),
+                        typeof(IOperationFilterOptions)
+                    });
+
+            return (ILinqSpecification<TType>) ctor.Invoke(new object[] { propertyExpression, value, options });
+        }
+
+        private static ILinqSpecification<TType> CreateArraySpecificationOperation<TProperty>(Type genericOperation,
+            Expression<Func<TType, TProperty>> propertyExpression, object values, IOperationFilterOptions options)
+        {
+            Throw<InvalidOperationException>.When(values is not IList, "Array based specifications expected an IList<T>.");
+
+            // The array based operations require special consideration when the value is double (for example) and
+            // TProperty is double? because an error occurs due to List<double> cannot be converted to IList<double?>.
+
+            if (values.GetType().GetGenericArguments()[0] != typeof(TProperty))
+            {
+                values = ConvertListElements((IList) values, typeof(TProperty));
+            }
+
+            var ctor = genericOperation.GetConstructor(new[]
+            {
+                typeof(Expression<Func<TType, TProperty>>),
+                typeof(IList<TProperty>),
+                typeof(IOperationFilterOptions)
+            });
+
+            return (ILinqSpecification<TType>) ctor.Invoke(new object[] { propertyExpression, values, options });
+        }
+
+        private static IList ConvertListElements(IList elements, Type elementType)
+        {
+            var listType = typeof(List<>).MakeGenericType(new[] { elementType });
+
+            var typedList = (IList) Activator.CreateInstance(listType);
+
+            foreach (var element in elements)
+            {
+                typedList.Add(element);
+            }
+
+            return typedList;
         }
     }
 }
