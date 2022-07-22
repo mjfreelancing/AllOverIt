@@ -92,7 +92,6 @@ namespace AllOverIt.Patterns.Specification
         private Func<TType, bool> GetCompiledExpression()
         {
             // More efficient than ??=
-            // ReSharper disable once ConvertIfStatementToNullCoalescingExpression
             if (_compiled == null)
             {
                 _compiled = Expression.Compile();

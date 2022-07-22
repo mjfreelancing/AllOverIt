@@ -16,10 +16,12 @@ namespace AllOverIt.Tests.Reflection
             public string Prop2 { get; set; }
             public virtual double Prop3 { get; set; }
 
+            // Used by GetMethodInfo() tests
             public void Method1()
             {
             }
 
+            // Used by GetMethodInfo() tests
             private void Method2()
             {
             }
@@ -44,19 +46,23 @@ namespace AllOverIt.Tests.Reflection
                 _value = value;
             }
 
+            // Used by GetMethodInfo() tests
             public void Method3()
             {
             }
 
+            // Used by GetMethodInfo() tests
             private void Method4()
             {
             }
 
+            // Used by GetMethodInfo() tests
             public int Method5()
             {
                 return _value;
             }
 
+            // Used by GetMethodInfo() tests
             public int Method6(int arg)
             {
                 return arg;
