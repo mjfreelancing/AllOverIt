@@ -4,7 +4,7 @@ using AllOverIt.Patterns.Specification.Utils;
 namespace AllOverIt.Filtering.Builders.Extensions
 {
     /// <summary>Provides extension methods for <see cref="IFilterBuilder{TType, TFilter}"/>.</summary>
-    public static class IFilterBuilderExtensions
+    public static class FilterBuilderExtensions
     {
         /// <summary>Generates a string representation of the filter specification. This string is intended
         /// only for use in debugging.</summary>

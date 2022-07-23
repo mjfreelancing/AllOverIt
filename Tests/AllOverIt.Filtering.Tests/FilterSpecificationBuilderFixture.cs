@@ -8,6 +8,7 @@ using FakeItEasy;
 using FluentAssertions;
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 using Xunit;
 
 namespace AllOverIt.Filtering.Tests
@@ -174,6 +175,47 @@ namespace AllOverIt.Filtering.Tests
 
         public class Create_StringFilter : FilterSpecificationBuilderFixture
         {
+            [Fact]
+            public void Should_Throw_When_PropertyExpression_Null()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.Create(null, f => f.Name.Contains);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("propertyExpression");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Operation_Null()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.Create(model => model.Name, (Func<DummyEntityFilter, IStringFilterOperation>)null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("operation");
+            }
+
+            [Fact]
+            public void Should_Not_Throw_When_Options_Null()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.Create(model => model.Name, f => f.Name.Contains, null);
+                })
+                    .Should()
+                    .NotThrow();
+            }
+
             [Theory]
             [InlineData(false, default)]
             [InlineData(true, default)]
@@ -521,6 +563,47 @@ namespace AllOverIt.Filtering.Tests
 
         public class Create_Value : FilterSpecificationBuilderFixture
         {
+            [Fact]
+            public void Should_Throw_When_PropertyExpression_Null()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.Create((Expression<Func<DummyEntity, double>>)null, f => f.Price.GreaterThan);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("propertyExpression");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Operation_Null()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.Create(model => model.Price, (Func<DummyEntityFilter, IBasicFilterOperation>) null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("operation");
+            }
+
+            [Fact]
+            public void Should_Not_Throw_When_Options_Null()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.Create(model => model.Price, f => f.Price.GreaterThan, null);
+                })
+                    .Should()
+                    .NotThrow();
+            }
+
             [Theory]
             [InlineData(false)]
             [InlineData(true)]
