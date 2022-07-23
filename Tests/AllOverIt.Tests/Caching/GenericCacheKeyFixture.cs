@@ -50,6 +50,16 @@ namespace AllOverIt.Tests.Caching
                         .Should()
                         .NotThrow();
                 }
+
+                [Fact]
+                public void Should_Set_Key()
+                {
+                    var key1 = Create<string>();
+
+                    var actual = new CacheKeyDummy1(key1);
+
+                    actual.Key1.Should().Be(key1);
+                }
             }
         }
 
@@ -71,6 +81,30 @@ namespace AllOverIt.Tests.Caching
                     Invoking(() => new CacheKeyDummy2(Create<string>(), null))
                         .Should()
                         .NotThrow();
+                }
+
+                [Fact]
+                public void Should_Set_Keys()
+                {
+                    var key1 = Create<string>();
+                    var key2 = Create<int>();
+
+                    var actual = new CacheKeyDummy2(key1, key2);
+
+                    actual.Key1.Should().Be(key1);
+                    actual.Key2.Should().Be(key2);
+                }
+
+                [Fact]
+                public void Should_Deconstruct()
+                {
+                    var key1 = Create<string>();
+                    var key2 = Create<int>();
+
+                    var (actualKey1, actualKey2) = new CacheKeyDummy2(key1, key2);
+
+                    actualKey1.Should().Be(key1);
+                    actualKey2.Should().Be(key2);
                 }
             }
         }
@@ -101,6 +135,34 @@ namespace AllOverIt.Tests.Caching
                     Invoking(() => new CacheKeyDummy3(Create<string>(), Create<int>(), null))
                         .Should()
                         .NotThrow();
+                }
+
+                [Fact]
+                public void Should_Set_Keys()
+                {
+                    var key1 = Create<string>();
+                    var key2 = Create<int>();
+                    var key3 = Create<bool>();
+
+                    var actual = new CacheKeyDummy3(key1, key2, key3);
+
+                    actual.Key1.Should().Be(key1);
+                    actual.Key2.Should().Be(key2);
+                    actual.Key3.Should().Be(key3);
+                }
+
+                [Fact]
+                public void Should_Deconstruct()
+                {
+                    var key1 = Create<string>();
+                    var key2 = Create<int>();
+                    var key3 = Create<bool>();
+
+                    var (actualKey1, actualKey2, actualKey3) = new CacheKeyDummy3(key1, key2, key3);
+
+                    actualKey1.Should().Be(key1);
+                    actualKey2.Should().Be(key2);
+                    actualKey3.Should().Be(key3);
                 }
             }
         }
@@ -139,6 +201,38 @@ namespace AllOverIt.Tests.Caching
                     Invoking(() => new CacheKeyDummy4(Create<string>(), Create<int>(), Create<bool>(), null))
                         .Should()
                         .NotThrow();
+                }
+
+                [Fact]
+                public void Should_Set_Keys()
+                {
+                    var key1 = Create<string>();
+                    var key2 = Create<int>();
+                    var key3 = Create<bool>();
+                    var key4 = Create<double>();
+
+                    var actual = new CacheKeyDummy4(key1, key2, key3, key4);
+
+                    actual.Key1.Should().Be(key1);
+                    actual.Key2.Should().Be(key2);
+                    actual.Key3.Should().Be(key3);
+                    actual.Key4.Should().Be(key4);
+                }
+
+                [Fact]
+                public void Should_Deconstruct()
+                {
+                    var key1 = Create<string>();
+                    var key2 = Create<int>();
+                    var key3 = Create<bool>();
+                    var key4 = Create<double>();
+
+                    var (actualKey1, actualKey2, actualKey3, actualKey4) = new CacheKeyDummy4(key1, key2, key3, key4);
+
+                    actualKey1.Should().Be(key1);
+                    actualKey2.Should().Be(key2);
+                    actualKey3.Should().Be(key3);
+                    actualKey4.Should().Be(key4);
                 }
             }
         }
