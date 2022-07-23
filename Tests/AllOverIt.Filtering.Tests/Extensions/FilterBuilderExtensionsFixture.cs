@@ -10,7 +10,7 @@ using System;
 using System.Linq;
 using Xunit;
 
-namespace AllOverIt.Filtering.Tests
+namespace AllOverIt.Filtering.Tests.Extensions
 {
     public class FilterBuilderExtensionsFixture : FixtureBase
     {
