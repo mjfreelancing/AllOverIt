@@ -5,6 +5,7 @@ Version 6.0.0-RC.3
 ======================================================================================================================
 AllOverIt
   * Internal reflection caching improvements
+  * Added a deconstructor for nullable types
   
 AllOverIt.Filtering
   * Added more overloads to IFilterSpecificationBuilder to cater for combining IBasicFilterOperation (and IArrayFilterOperation)
