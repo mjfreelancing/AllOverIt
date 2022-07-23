@@ -37,7 +37,10 @@ namespace AllOverIt.Filtering.Builders
         private readonly TFilter _filter;
         private readonly IQueryFilterOptions _options;
 
+        // Return True so a single 'ignored' expression behaves as if it didn't exist
         public static readonly ILinqSpecification<TType> SpecificationIgnore = LinqSpecification<TType>.Create(_ => true);
+
+        // Note: IBasicFilterOperation also caters for IArrayFilterOperation
 
         public FilterSpecificationBuilder(TFilter filter, IQueryFilterOptions options)
         {
@@ -45,58 +48,98 @@ namespace AllOverIt.Filtering.Builders
             _options = options.WhenNotNull(nameof(options));
         }
 
+        #region Create
+
         public ILinqSpecification<TType> Create(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation,
             Action<OperationFilterOptions> options)
         {
             return GetFilterSpecification(propertyExpression, operation, options);
         }
 
-        // Caters for IOperation and IArrayOperation
         public ILinqSpecification<TType> Create<TProperty>(Expression<Func<TType, TProperty>> propertyExpression,
             Func<TFilter, IBasicFilterOperation> operation, Action<OperationFilterOptions> options)
         {
             return GetFilterSpecification(propertyExpression, operation, options);
         }
 
-        #region AND Operations
+        #endregion
+
+        #region AND
+
+        public ILinqSpecification<TType> And(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IBasicFilterOperation<string>> operation1,
+            Func<TFilter, IStringFilterOperation> operation2, Action<OperationFilterOptions> options = default)
+        {
+            var specification1 = GetFilterSpecification(propertyExpression, operation1, options);
+            var specification2 = GetFilterSpecification(propertyExpression, operation2, options);
+
+            return CombineSpecifications(specification1, specification2, LinqSpecificationExtensions.And);
+        }
+
+        public ILinqSpecification<TType> And(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation1,
+            Func<TFilter, IBasicFilterOperation<string>> operation2, Action<OperationFilterOptions> options = default)
+        {
+            var specification1 = GetFilterSpecification(propertyExpression, operation1, options);
+            var specification2 = GetFilterSpecification(propertyExpression, operation2, options);
+
+            return CombineSpecifications(specification1, specification2, LinqSpecificationExtensions.And);
+        }
+
         public ILinqSpecification<TType> And(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation1,
             Func<TFilter, IStringFilterOperation> operation2, Action<OperationFilterOptions> options)
         {
             var specification1 = GetFilterSpecification(propertyExpression, operation1, options);
             var specification2 = GetFilterSpecification(propertyExpression, operation2, options);
 
-            return specification1.And(specification2);
+            return CombineSpecifications(specification1, specification2, LinqSpecificationExtensions.And);
         }
 
-        // Caters for IOperation and IArrayOperation
         public ILinqSpecification<TType> And<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IBasicFilterOperation> operation1,
             Func<TFilter, IBasicFilterOperation> operation2, Action<OperationFilterOptions> options)
         {
             var specification1 = GetFilterSpecification(propertyExpression, operation1, options);
             var specification2 = GetFilterSpecification(propertyExpression, operation2, options);
 
-            return specification1.And(specification2);
+            return CombineSpecifications(specification1, specification2, LinqSpecificationExtensions.And);
         }
+
         #endregion
 
-        #region OR Operations
+        #region OR
+
+        public ILinqSpecification<TType> Or(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IBasicFilterOperation<string>> operation1,
+            Func<TFilter, IStringFilterOperation> operation2, Action<OperationFilterOptions> options = default)
+        {
+            var specification1 = GetFilterSpecification(propertyExpression, operation1, options);
+            var specification2 = GetFilterSpecification(propertyExpression, operation2, options);
+
+            return CombineSpecifications(specification1, specification2, LinqSpecificationExtensions.Or);
+        }
+
+        public ILinqSpecification<TType> Or(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation1,
+            Func<TFilter, IBasicFilterOperation<string>> operation2, Action<OperationFilterOptions> options = default)
+        {
+            var specification1 = GetFilterSpecification(propertyExpression, operation1, options);
+            var specification2 = GetFilterSpecification(propertyExpression, operation2, options);
+
+            return CombineSpecifications(specification1, specification2, LinqSpecificationExtensions.Or);
+        }
+
         public ILinqSpecification<TType> Or(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation1,
             Func<TFilter, IStringFilterOperation> operation2, Action<OperationFilterOptions> options)
         {
             var specification1 = GetFilterSpecification(propertyExpression, operation1, options);
             var specification2 = GetFilterSpecification(propertyExpression, operation2, options);
 
-            return specification1.Or(specification2);
+            return CombineSpecifications(specification1, specification2, LinqSpecificationExtensions.Or);
         }
 
-        // Caters for IOperation and IArrayOperation
         public ILinqSpecification<TType> Or<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IBasicFilterOperation> operation1,
             Func<TFilter, IBasicFilterOperation> operation2, Action<OperationFilterOptions> options)
         {
             var specification1 = GetFilterSpecification(propertyExpression, operation1, options);
             var specification2 = GetFilterSpecification(propertyExpression, operation2, options);
 
-            return specification1.Or(specification2);
+            return CombineSpecifications(specification1, specification2, LinqSpecificationExtensions.Or);
         }
         #endregion
 
@@ -167,11 +210,14 @@ namespace AllOverIt.Filtering.Builders
 
             if (filterOptions.IgnoreNullFilterValue)
             {
-                // Nullable<T>
-                var operationTypeIsNullable = operationType.GetGenericArguments()[0].IsNullableType();
+                var genericArgumentType = operationType.GetGenericArguments()[0];
+
+                // Looking for typeof(string) and not IStringFilterOperation because other non (explicit) string operations support strings
+                var argTypeIsNullable = genericArgumentType == typeof(string) || genericArgumentType.IsNullableType();
+
                 var operationIsArray = operationType.IsDerivedFrom(typeof(IArrayFilterOperation));
 
-                if (operationTypeIsNullable || operationIsArray)
+                if (argTypeIsNullable || operationIsArray)
                 {
                     var propInfo = operationType.GetProperty(nameof(IFilterOperationType<TProperty>.Value));
                     var value = propInfo.GetValue(operation);
@@ -266,6 +312,20 @@ namespace AllOverIt.Filtering.Builders
             });
 
             return (ILinqSpecification<TType>) ctor.Invoke(new object[] { propertyExpression, values, options });
+        }
+
+        private ILinqSpecification<TType> CombineSpecifications(ILinqSpecification<TType> specification1, ILinqSpecification<TType> specification2,
+            Func<ILinqSpecification<TType>, ILinqSpecification<TType>, ILinqSpecification<TType>> action)
+        {
+            // simplify the expression if either specifications are to be ignored
+            if (specification1 != SpecificationIgnore && specification2 != SpecificationIgnore)
+            {
+                return action.Invoke(specification1, specification2);
+            }
+
+            return specification1 == SpecificationIgnore
+                ? specification2
+                : specification1;
         }
 
         private static IList ConvertListElements(IList elements, Type elementType)
