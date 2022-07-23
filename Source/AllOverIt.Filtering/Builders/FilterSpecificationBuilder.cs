@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Assertion;
+using AllOverIt.Caching;
 using AllOverIt.Evaluator.Exceptions;
 using AllOverIt.Extensions;
 using AllOverIt.Filtering.Filters;
@@ -6,6 +7,7 @@ using AllOverIt.Filtering.Operations;
 using AllOverIt.Filtering.Options;
 using AllOverIt.Patterns.Specification;
 using AllOverIt.Patterns.Specification.Extensions;
+using AllOverIt.Reflection;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -19,6 +21,8 @@ namespace AllOverIt.Filtering.Builders
         where TType : class
         where TFilter : class
     {
+        private static readonly GenericCache _operationTypePropertyGetters = new();
+
         private readonly IReadOnlyDictionary<Type, Type> _filterOperations = new Dictionary<Type, Type>
             {
                 // IArrayFilterOperation
@@ -219,8 +223,7 @@ namespace AllOverIt.Filtering.Builders
 
                 if (argTypeIsNullable || operationIsArray)
                 {
-                    var propInfo = operationType.GetProperty(nameof(IFilterOperationType<TProperty>.Value));
-                    var value = propInfo.GetValue(operation);
+                    var value = GetOperationValue<TProperty>(operationType, operation);
 
                     if (value is null)
                     {
@@ -262,7 +265,7 @@ namespace AllOverIt.Filtering.Builders
             var genericOperation = specificationOperationType.MakeGenericType(typeArgs);
 
             // Caters for IFilterOperationType<TProperty> and IArrayFilterOperation<TProperty>
-            var value = operationType.GetProperty(nameof(IFilterOperationType<TProperty>.Value)).GetValue(operation);
+            var value = GetOperationValue<TProperty>(operationType, operation);
 
             try
             {
@@ -326,6 +329,28 @@ namespace AllOverIt.Filtering.Builders
             return specification1 == SpecificationIgnore
                 ? specification2
                 : specification1;
+        }
+
+        private static object GetOperationValue<TProperty>(Type operationType, object operation)
+        {
+            var key = new GenericCacheKey<Type>(operationType);
+
+            var propertyGetter = _operationTypePropertyGetters.GetOrAdd(key, cacheKey =>
+            {
+                var opType = ((GenericCacheKey<Type>) cacheKey).Key1;
+                var propInfo = opType.GetProperty(nameof(IFilterOperationType<TProperty>.Value));
+
+                return PropertyHelper.CreatePropertyGetter(propInfo);
+            });
+
+
+            return propertyGetter.Invoke(operation);
+
+            // For reference, the non-cached approach is:
+            //
+            // return operationType
+            //     .GetProperty(nameof(IFilterOperationType<TProperty>.Value))
+            //     .GetValue(operation);
         }
 
         private static IList ConvertListElements(IList elements, Type elementType)
