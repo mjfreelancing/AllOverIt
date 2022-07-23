@@ -6,7 +6,8 @@ using System.Linq.Expressions;
 
 namespace AllOverIt.Filtering.Builders
 {
-    /// <summary>Defines a builder that can create an <see cref="ILinqSpecification{TType}" /> for a given object and filter type.</summary>
+    /// <summary>Defines a builder that can create an <see cref="ILinqSpecification{TType}" /> for a given object and filter type. The specification
+    /// can be used for all general queryable filtering, but is typically used in via the <see cref="IFilterBuilder{TType, TFilter}"/>.</summary>
     /// <typeparam name="TType">The object type to apply the specification to.</typeparam>
     /// <typeparam name="TFilter">A custom filter type used for defining each operation or comparison in the specification.</typeparam>
     public interface IFilterSpecificationBuilder<TType, TFilter>
