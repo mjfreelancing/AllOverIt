@@ -20,7 +20,7 @@ namespace AllOverIt.Filtering.Builders.Extensions
 
             var visitor = new LinqSpecificationVisitor();
 
-            return visitor.AsQueryString(filterBuilder.AsSpecification);
+            return visitor.AsQueryString(filterBuilder.AsSpecification());
         }
     }
 }

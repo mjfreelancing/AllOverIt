@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace AllOverIt.Filtering.Builders
 {
-    // Use the AsQueryString() extension method to get a string representation
+    // Use the ToQueryString() extension method to get a string representation
     internal sealed class FilterBuilder<TType, TFilter> : IFilterBuilder<TType, TFilter>, ILogicalFilterBuilder<TType, TFilter>
         where TType : class
         where TFilter : class

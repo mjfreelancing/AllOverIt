@@ -43,8 +43,9 @@ namespace AllOverIt.Filtering.Builders
         /// <summary>Create a specification that ANDs an <see cref="IBasicFilterOperation"/> (or <see cref="IArrayFilterOperation"/>)
         /// with an <see cref="IStringFilterOperation"/> operation or comparison against a string property on a
         /// <typeparamref name="TType"/> instance.</summary>
-        /// <param name="propertyExpression">An expression identifying the property to apply the specification operation against.</param>
-        /// <param name="operation">The operation or comparison to be performed.</param>
+        /// <param name="propertyExpression">An expression identifying the property to apply the filter operation against.</param>
+        /// <param name="operation1">The left filter operation to be applied.</param>
+        /// <param name="operation2">The right filter operation to be applied.</param>
         /// <param name="options">Optional options that control how the specification is constructed.</param>
         /// <returns>An AND combined specification that performs an operation or comparison against a specified string property on a
         /// <typeparamref name="TType"/> instance.</returns>
@@ -53,8 +54,9 @@ namespace AllOverIt.Filtering.Builders
 
         /// <summary>Create a specification that ANDs an <see cref="IStringFilterOperation"/> with an <see cref="IBasicFilterOperation"/>
         /// (or <see cref="IArrayFilterOperation"/>) operation or comparison against a string property on a <typeparamref name="TType"/> instance.</summary>
-        /// <param name="propertyExpression">An expression identifying the property to apply the specification operation against.</param>
-        /// <param name="operation">The operation or comparison to be performed.</param>
+        /// <param name="propertyExpression">An expression identifying the property to apply the filter operation against.</param>
+        /// <param name="operation1">The left filter operation to be applied.</param>
+        /// <param name="operation2">The right filter operation to be applied.</param>
         /// <param name="options">Optional options that control how the specification is constructed.</param>
         /// <returns>An AND combined specification that performs an operation or comparison against a specified string property on a
         /// <typeparamref name="TType"/> instance.</returns>
@@ -63,8 +65,9 @@ namespace AllOverIt.Filtering.Builders
 
         /// <summary>Create a specification that ANDs two <see cref="IStringFilterOperation"/> operations or comparisons against a string
         /// property on a <typeparamref name="TType"/> instance.</summary>
-        /// <param name="propertyExpression">An expression identifying the property to apply the specification operation against.</param>
-        /// <param name="operation">The operation or comparison to be performed.</param>
+        /// <param name="propertyExpression">An expression identifying the property to apply the filter operation against.</param>
+        /// <param name="operation1">The left filter operation to be applied.</param>
+        /// <param name="operation2">The right filter operation to be applied.</param>
         /// <param name="options">Optional options that control how the specification is constructed.</param>
         /// <returns>An AND combined specification that performs an operation or comparison against a specified string property on a
         /// <typeparamref name="TType"/> instance.</returns>
@@ -73,8 +76,9 @@ namespace AllOverIt.Filtering.Builders
 
         /// <summary>Create a specification that ANDs two <see cref="IBasicFilterOperation"/> (or <see cref="IArrayFilterOperation"/>) operations
         /// or comparisons against a string property on a <typeparamref name="TType"/> instance.</summary>
-        /// <param name="propertyExpression">An expression identifying the property to apply the specification operation against.</param>
-        /// <param name="operation">The operation or comparison to be performed.</param>
+        /// <param name="propertyExpression">An expression identifying the property to apply the filter operation against.</param>
+        /// <param name="operation1">The left filter operation to be applied.</param>
+        /// <param name="operation2">The right filter operation to be applied.</param>
         /// <param name="options">Optional options that control how the specification is constructed.</param>
         /// <returns>An AND combined specification that performs an operation or comparison against a specified string property on a
         /// <typeparamref name="TType"/> instance.</returns>
@@ -88,8 +92,9 @@ namespace AllOverIt.Filtering.Builders
         /// <summary>Create a specification that ORs an <see cref="IBasicFilterOperation"/> (or <see cref="IArrayFilterOperation"/>)
         /// with an <see cref="IStringFilterOperation"/> operation or comparison against a string property on a
         /// <typeparamref name="TType"/> instance.</summary>
-        /// <param name="propertyExpression">An expression identifying the property to apply the specification operation against.</param>
-        /// <param name="operation">The operation or comparison to be performed.</param>
+        /// <param name="propertyExpression">An expression identifying the property to apply the filter operation against.</param>
+        /// <param name="operation1">The left filter operation to be applied.</param>
+        /// <param name="operation2">The right filter operation to be applied.</param>
         /// <param name="options">Optional options that control how the specification is constructed.</param>
         /// <returns>An OR combined specification that performs an operation or comparison against a specified string property on a
         /// <typeparamref name="TType"/> instance.</returns>
@@ -98,8 +103,9 @@ namespace AllOverIt.Filtering.Builders
 
         /// <summary>Create a specification that ORs an <see cref="IStringFilterOperation"/> with an <see cref="IBasicFilterOperation"/>
         /// (or <see cref="IArrayFilterOperation"/>) operation or comparison against a string property on a <typeparamref name="TType"/> instance.</summary>
-        /// <param name="propertyExpression">An expression identifying the property to apply the specification operation against.</param>
-        /// <param name="operation">The operation or comparison to be performed.</param>
+        /// <param name="propertyExpression">An expression identifying the property to apply the filter operation against.</param>
+        /// <param name="operation1">The left filter operation to be applied.</param>
+        /// <param name="operation2">The right filter operation to be applied.</param>
         /// <param name="options">Optional options that control how the specification is constructed.</param>
         /// <returns>An OR combined specification that performs an operation or comparison against a specified string property on a
         /// <typeparamref name="TType"/> instance.</returns>
@@ -108,8 +114,9 @@ namespace AllOverIt.Filtering.Builders
 
         /// <summary>Create a specification that ORs two <see cref="IStringFilterOperation"/> operations or comparisons against a string
         /// property on a <typeparamref name="TType"/> instance.</summary>
-        /// <param name="propertyExpression">An expression identifying the property to apply the specification operation against.</param>
-        /// <param name="operation">The operation or comparison to be performed.</param>
+        /// <param name="propertyExpression">An expression identifying the property to apply the filter operation against.</param>
+        /// <param name="operation1">The left filter operation to be applied.</param>
+        /// <param name="operation2">The right filter operation to be applied.</param>
         /// <param name="options">Optional options that control how the specification is constructed.</param>
         /// <returns>An OR combined specification that performs an operation or comparison against a specified string property on a
         /// <typeparamref name="TType"/> instance.</returns>
@@ -118,8 +125,9 @@ namespace AllOverIt.Filtering.Builders
 
         /// <summary>Create a specification that ORs two <see cref="IBasicFilterOperation"/> (or <see cref="IArrayFilterOperation"/>) operations
         /// or comparisons against a string property on a <typeparamref name="TType"/> instance.</summary>
-        /// <param name="propertyExpression">An expression identifying the property to apply the specification operation against.</param>
-        /// <param name="operation">The operation or comparison to be performed.</param>
+        /// <param name="propertyExpression">An expression identifying the property to apply the filter operation against.</param>
+        /// <param name="operation1">The left filter operation to be applied.</param>
+        /// <param name="operation2">The right filter operation to be applied.</param>
         /// <param name="options">Optional options that control how the specification is constructed.</param>
         /// <returns>An OR combined specification that performs an operation or comparison against a specified string property on a
         /// <typeparamref name="TType"/> instance.</returns>
