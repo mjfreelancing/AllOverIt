@@ -17,9 +17,6 @@ namespace AllOverIt.Filtering.Builders
 
         private ILinqSpecification<TType> _currentSpecification;
 
-        // The final specification that can be applied to an IQueryable.Where()
-        public ILinqSpecification<TType> AsSpecification => _currentSpecification;
-
         // Gets the current logical expression to cater for additional chaining.
         public ILogicalFilterBuilder<TType, TFilter> Current => this;
 
@@ -27,6 +24,9 @@ namespace AllOverIt.Filtering.Builders
         {
             _specificationBuilder = specificationBuilder.WhenNotNull(nameof(specificationBuilder));
         }
+
+        // The final specification that can be applied to an IQueryable.Where()
+        public ILinqSpecification<TType> AsSpecification() => _currentSpecification;
 
         #region WHERE Operations
         public ILogicalFilterBuilder<TType, TFilter> Where(Expression<Func<TType, string>> propertyExpression,

@@ -25,7 +25,9 @@ namespace AllOverIt.Filtering.Extensions
 
             action.Invoke(specificationBuilder, builder);
 
-            return queryable.Where(builder.AsSpecification);
+            var specification = builder.AsSpecification();
+
+            return queryable.Where(specification);
         }
     }
 }
