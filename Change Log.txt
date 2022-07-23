@@ -10,6 +10,7 @@ AllOverIt
 AllOverIt.Filtering
   * Added more overloads to IFilterSpecificationBuilder to cater for combining IBasicFilterOperation (and IArrayFilterOperation)
     with IStringFilterOperation.
+  * Renamed AsQueryString() to ToQueryString()
 
 
 21 Jul 2022

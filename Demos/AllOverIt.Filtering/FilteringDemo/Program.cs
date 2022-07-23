@@ -57,7 +57,7 @@ namespace FilteringDemo
 
                     // Output the generated query as readable text, such as:
                     // (((Category StartsWith 'fu' AND Name Contains 'r') AND ((Price >= 15) AND (Price <= 700))) AND (LastUpdated >= '2022-07-07T00:00:00.000Z'))
-                    var queryString = filterBuilder.AsQueryString();
+                    var queryString = filterBuilder.ToQueryString();
 
                     Console.WriteLine();
                     Console.WriteLine($"Filter as query string: {queryString}");
