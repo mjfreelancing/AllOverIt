@@ -182,7 +182,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
 
-                    _specificationBuilder.Create(null, f => f.Name.Contains);
+                    _specificationBuilder.Create((Expression<Func<DummyEntity, string>>)null, f => f.Name.Contains);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -877,6 +877,226 @@ namespace AllOverIt.Filtering.Tests
 
         public class And_Mixed_BasicFilter_StringFilter : FilterSpecificationBuilderFixture
         {
+            [Fact]
+            public void Should_Throw_When_PropertyExpression_Null_Basic_String()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.And((Expression<Func<DummyEntity, string>>) null, f => f.Name.GreaterThan, f => f.Name.Contains);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("propertyExpression");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Operation1_Null_Basic_String()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.And(model => model.Name, (Func<DummyEntityFilter, IBasicFilterOperation<string>>) null, f => f.Name.Contains);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("operation1");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Operation2_Null_Basic_String()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.And(model => model.Name, f => f.Name.GreaterThan, (Func<DummyEntityFilter, IStringFilterOperation>) null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("operation2");
+            }
+
+            [Fact]
+            public void Should_Not_Throw_When_Options_Null_Basic_String()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.And(model => model.Name, f => f.Name.GreaterThan, f => f.Name.Contains, null);
+                })
+                    .Should()
+                    .NotThrow();
+            }
+
+            [Fact]
+            public void Should_Throw_When_PropertyExpression_Null_String_Basic()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.And((Expression<Func<DummyEntity, string>>) null, f => f.Name.Contains, f => f.Name.GreaterThan);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("propertyExpression");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Operation1_Null_String_Basic()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.And(model => model.Name, (Func<DummyEntityFilter, IStringFilterOperation>) null, f => f.Name.GreaterThan);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("operation1");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Operation2_Null_String_Basic()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.And(model => model.Name, f => f.Name.Contains, (Func<DummyEntityFilter, IBasicFilterOperation<string>>) null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("operation2");
+            }
+
+            [Fact]
+            public void Should_Not_Throw_When_Options_Null_String_Basic()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.And(model => model.Name, f => f.Name.Contains, f => f.Name.GreaterThan, null);
+                })
+                    .Should()
+                    .NotThrow();
+            }
+
+            [Fact]
+            public void Should_Throw_When_PropertyExpression_Null_String_String()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.And((Expression<Func<DummyEntity, string>>) null, f => f.Name.Contains, f => f.Name.NotContains);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("propertyExpression");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Operation1_Null_String_String()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.And(model => model.Name, (Func<DummyEntityFilter, IStringFilterOperation>) null, f => f.Name.NotContains);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("operation1");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Operation2_Null_String_String()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.And(model => model.Name, f => f.Name.Contains, (Func<DummyEntityFilter, IStringFilterOperation>) null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("operation2");
+            }
+
+            [Fact]
+            public void Should_Not_Throw_When_Options_Null_String_String()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.And(model => model.Name, f => f.Name.Contains, f => f.Name.NotContains, null);
+                })
+                    .Should()
+                    .NotThrow();
+            }
+
+            [Fact]
+            public void Should_Throw_When_PropertyExpression_Null_Basic_Basic()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.And((Expression<Func<DummyEntity, double>>) null, f => f.Price.GreaterThan, f => f.Price.LessThan);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("propertyExpression");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Operation1_Null_Basic_Basic()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.And(model => model.Price, (Func<DummyEntityFilter, IBasicFilterOperation>) null, f => f.Price.GreaterThan);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("operation1");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Operation2_Null_Basic_Basic()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.And(model => model.Price, f => f.Price.GreaterThan, (Func<DummyEntityFilter, IBasicFilterOperation>) null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("operation2");
+            }
+
+            [Fact]
+            public void Should_Not_Throw_When_Options_Null_Basic_Basic()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.And(model => model.Price, f => f.Price.LessThan, f => f.Price.GreaterThan, null);
+                })
+                    .Should()
+                    .NotThrow();
+            }
+
             [Theory]
             [InlineData(false, "AbC", "fgh", default, "pqrAbCxyz", "xyz_abc_fgh")]
             [InlineData(true, "AbC", "fgh", default, "pqrAbCxyz", "xyz_abc_fgh")]
@@ -1156,6 +1376,226 @@ namespace AllOverIt.Filtering.Tests
 
         public class Or_Mixed_BasicFilter_StringFilter : FilterSpecificationBuilderFixture
         {
+            [Fact]
+            public void Should_Throw_When_PropertyExpression_Null_Basic_String()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.Or((Expression<Func<DummyEntity, string>>) null, f => f.Name.GreaterThan, f => f.Name.Contains);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("propertyExpression");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Operation1_Null_Basic_String()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.Or(model => model.Name, (Func<DummyEntityFilter, IBasicFilterOperation<string>>) null, f => f.Name.Contains);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("operation1");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Operation2_Null_Basic_String()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.Or(model => model.Name, f => f.Name.GreaterThan, (Func<DummyEntityFilter, IStringFilterOperation>) null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("operation2");
+            }
+
+            [Fact]
+            public void Should_Not_Throw_When_Options_Null_Basic_String()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.Or(model => model.Name, f => f.Name.GreaterThan, f => f.Name.Contains, null);
+                })
+                    .Should()
+                    .NotThrow();
+            }
+
+            [Fact]
+            public void Should_Throw_When_PropertyExpression_Null_String_Basic()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.Or((Expression<Func<DummyEntity, string>>) null, f => f.Name.Contains, f => f.Name.GreaterThan);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("propertyExpression");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Operation1_Null_String_Basic()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.Or(model => model.Name, (Func<DummyEntityFilter, IStringFilterOperation>) null, f => f.Name.GreaterThan);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("operation1");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Operation2_Null_String_Basic()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.Or(model => model.Name, f => f.Name.Contains, (Func<DummyEntityFilter, IBasicFilterOperation<string>>) null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("operation2");
+            }
+
+            [Fact]
+            public void Should_Not_Throw_When_Options_Null_String_Basic()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.Or(model => model.Name, f => f.Name.Contains, f => f.Name.GreaterThan, null);
+                })
+                    .Should()
+                    .NotThrow();
+            }
+
+            [Fact]
+            public void Should_Throw_When_PropertyExpression_Null_String_String()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.Or((Expression<Func<DummyEntity, string>>) null, f => f.Name.Contains, f => f.Name.NotContains);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("propertyExpression");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Operation1_Null_String_String()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.Or(model => model.Name, (Func<DummyEntityFilter, IStringFilterOperation>) null, f => f.Name.NotContains);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("operation1");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Operation2_Null_String_String()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.Or(model => model.Name, f => f.Name.Contains, (Func<DummyEntityFilter, IStringFilterOperation>) null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("operation2");
+            }
+
+            [Fact]
+            public void Should_Not_Throw_When_Options_Null_String_String()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.Or(model => model.Name, f => f.Name.Contains, f => f.Name.NotContains, null);
+                })
+                    .Should()
+                    .NotThrow();
+            }
+
+            [Fact]
+            public void Should_Throw_When_PropertyExpression_Null_Basic_Basic()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.Or((Expression<Func<DummyEntity, double>>) null, f => f.Price.GreaterThan, f => f.Price.LessThan);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("propertyExpression");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Operation1_Null_Basic_Basic()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.Or(model => model.Price, (Func<DummyEntityFilter, IBasicFilterOperation>) null, f => f.Price.GreaterThan);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("operation1");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Operation2_Null_Basic_Basic()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.Or(model => model.Price, f => f.Price.GreaterThan, (Func<DummyEntityFilter, IBasicFilterOperation>) null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("operation2");
+            }
+
+            [Fact]
+            public void Should_Not_Throw_When_Options_Null_Basic_Basic()
+            {
+                Invoking(() =>
+                {
+                    _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                    _specificationBuilder.Or(model => model.Price, f => f.Price.LessThan, f => f.Price.GreaterThan, null);
+                })
+                    .Should()
+                    .NotThrow();
+            }
+
             [Theory]
             [InlineData(false, "AbC", "fgh", default, "pqrAbCxyz", "cde")]
             [InlineData(true, "AbC", "fgh", default, "pqrAbCxyz", "cde")]
