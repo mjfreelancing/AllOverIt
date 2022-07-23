@@ -15,13 +15,7 @@
             Key1 = key1;
         }
 
-        /// <summary>Deconstruct operator.</summary>
-        /// <param name="key1">Will be set to the value of <see cref="Key1"/>.</param>
-        public void Deconstruct(out TKey1 key1)
-        {
-            // Null values are allowed
-            key1 = Key1;
-        }
+        // There is no deconstructor as it requires two or more values
     }
 
     /// <summary>A <see cref="GenericCache"/> key based on one strongly-typed key type.</summary>
