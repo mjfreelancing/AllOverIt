@@ -8,13 +8,16 @@ namespace AllOverIt.Reflection
 {
     internal static class BindingOptionsHelper
     {
+        private static readonly GenericCache _methodBaseCache = new();
+        private static readonly GenericCache _fieldInfoCache = new();
+
         internal static Func<MethodBase, bool> BuildPropertyOrMethodBindingPredicate(BindingOptions bindingOptions)
         {
-            var key = new GenericCacheKey<IReflectionCacheKey<(MethodBase, BindingOptions)>, BindingOptions>(null, bindingOptions);
+            var key = new GenericCacheKey<BindingOptions>(bindingOptions);
 
-            return GenericCache.Default.GetOrAdd(key, cacheKey =>
+            return _methodBaseCache.GetOrAdd(key, cacheKey =>
             {
-                var (_, options) = (GenericCacheKey<IReflectionCacheKey<(MethodBase, BindingOptions)>, BindingOptions>) cacheKey;
+                var options = ((GenericCacheKey<BindingOptions>) cacheKey).Key1;
 
                 // set up defaults for each group
                 if ((options & BindingOptions.AllScope) == 0)
@@ -51,11 +54,11 @@ namespace AllOverIt.Reflection
 
         internal static Func<FieldInfo, bool> BuildFieldInfoBindingPredicate(BindingOptions bindingOptions)
         {
-            var key = new GenericCacheKey<IReflectionCacheKey<(FieldInfo, BindingOptions)>, BindingOptions>(null, bindingOptions);
+            var key = new GenericCacheKey<BindingOptions>(bindingOptions);
 
-            return GenericCache.Default.GetOrAdd(key, cacheKey =>
+            return _fieldInfoCache.GetOrAdd(key, cacheKey =>
             {
-                var (_, options) = (GenericCacheKey<IReflectionCacheKey<(FieldInfo, BindingOptions)>, BindingOptions>) cacheKey;
+                var options = ((GenericCacheKey<BindingOptions>) cacheKey).Key1;
 
                 // set up defaults for each group
                 if ((options & BindingOptions.AllScope) == 0)

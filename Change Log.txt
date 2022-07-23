@@ -3,6 +3,9 @@
 XX XXX XXXX
 Version 6.0.0-RC.3
 ======================================================================================================================
+AllOverIt
+  * Internal reflection caching improvements
+  
 AllOverIt.Filtering
   * Added more overloads to IFilterSpecificationBuilder to cater for combining IBasicFilterOperation (and IArrayFilterOperation)
     with IStringFilterOperation.

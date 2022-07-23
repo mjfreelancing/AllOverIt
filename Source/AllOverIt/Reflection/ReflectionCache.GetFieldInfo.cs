@@ -9,6 +9,8 @@ namespace AllOverIt.Reflection
     /// <summary>Provides a default, static, cache to help improve performance where reflection is used extensively.</summary>
     public static partial class ReflectionCache
     {
+        private static readonly GenericCache _fieldInfoCache = new();
+
         /// <summary>Gets the <see cref="FieldInfo"/> (property metadata) for a given property on a <typeparamref name="TType"/> from the default cache.
         /// If the <see cref="FieldInfo"/> is not in the cache then it will be obtained using the <paramref name="valueResolver"/> and added to the
         /// cache before returning.</summary>
@@ -45,9 +47,9 @@ namespace AllOverIt.Reflection
         /// <returns>The <see cref="FieldInfo"/> for a given property on a <see cref="TypeInfo"/> from the default cache.</returns>
         public static FieldInfo GetFieldInfo(TypeInfo typeInfo, string propertyName, Func<GenericCacheKeyBase, FieldInfo> valueResolver = default)
         {
-            var key = new GenericCacheKey<IReflectionCacheKey<FieldInfo>, TypeInfo, string>(null, typeInfo, propertyName);
+            var key = new GenericCacheKey<TypeInfo, string>(typeInfo, propertyName);
 
-            return GenericCache.Default.GetOrAdd(key, valueResolver ?? GetFieldInfoFromTypeInfoPropertyName());
+            return _fieldInfoCache.GetOrAdd(key, valueResolver ?? GetFieldInfoFromTypeInfoPropertyName());
         }
 
         /// <summary>Gets <see cref="FieldInfo"/> (property metadata) for a given <typeparamref name="TType"/> and options from the default cache.
@@ -78,9 +80,9 @@ namespace AllOverIt.Reflection
         public static IEnumerable<FieldInfo> GetFieldInfo(Type type, BindingOptions bindingOptions = BindingOptions.Default, bool declaredOnly = false,
             Func<GenericCacheKeyBase, IEnumerable<FieldInfo>> valueResolver = default)
         {
-            var key = new GenericCacheKey<IReflectionCacheKey<FieldInfo>, Type, BindingOptions, bool>(null, type, bindingOptions, declaredOnly);
+            var key = new GenericCacheKey<Type, BindingOptions, bool>(type, bindingOptions, declaredOnly);
 
-            return GenericCache.Default.GetOrAdd(key, valueResolver ?? GetFieldInfoFromTypeBindingDeclaredOnly());
+            return _fieldInfoCache.GetOrAdd(key, valueResolver ?? GetFieldInfoFromTypeBindingDeclaredOnly());
         }
 
         /// <summary>Gets all <see cref="FieldInfo"/> for a given <see cref="Type"/> and options from the default cache. If the <see cref="FieldInfo"/>
@@ -93,16 +95,16 @@ namespace AllOverIt.Reflection
         public static IEnumerable<FieldInfo> GetFieldInfo(TypeInfo typeInfo, bool declaredOnly = false,
             Func<GenericCacheKeyBase, IEnumerable<FieldInfo>> valueResolver = default)
         {
-            var key = new GenericCacheKey<IReflectionCacheKey<FieldInfo>, TypeInfo, bool>(null, typeInfo, declaredOnly);
+            var key = new GenericCacheKey<TypeInfo, bool>(typeInfo, declaredOnly);
 
-            return GenericCache.Default.GetOrAdd(key, valueResolver ?? GetFieldInfoFromTypeInfoDeclaredOnly());
+            return _fieldInfoCache.GetOrAdd(key, valueResolver ?? GetFieldInfoFromTypeInfoDeclaredOnly());
         }
 
         private static Func<GenericCacheKeyBase, IEnumerable<FieldInfo>> GetFieldInfoFromTypeBindingDeclaredOnly()
         {
             return key =>
             {
-                var (_, type, bindingOptions, declaredOnly) = (GenericCacheKey<IReflectionCacheKey<FieldInfo>, Type, BindingOptions, bool>) key;
+                var (type, bindingOptions, declaredOnly) = (GenericCacheKey<Type, BindingOptions, bool>) key;
 
                 return type
                     .GetFieldInfo(bindingOptions, declaredOnly)
@@ -114,7 +116,7 @@ namespace AllOverIt.Reflection
         {
             return key =>
             {
-                var (_, typeInfo, declaredOnly) = (GenericCacheKey<IReflectionCacheKey<FieldInfo>, TypeInfo, bool>) key;
+                var (typeInfo, declaredOnly) = (GenericCacheKey<TypeInfo, bool>) key;
 
                 return typeInfo
                     .GetFieldInfo(declaredOnly)
@@ -126,7 +128,7 @@ namespace AllOverIt.Reflection
         {
             return key =>
             {
-                var (_, typeInfo, propertyName) = (GenericCacheKey<IReflectionCacheKey<FieldInfo>, TypeInfo, string>) key;
+                var (typeInfo, propertyName) = (GenericCacheKey<TypeInfo, string>) key;
 
                 return typeInfo.GetFieldInfo(propertyName);
             };
