@@ -5,7 +5,6 @@ using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
-using System.Data;
 using System.Linq;
 using Xunit;
 
@@ -1014,8 +1013,489 @@ namespace AllOverIt.Filtering.Tests
             }
         }
 
+        public class Where_Or_String : FilterBuilderFixture
+        {
+            [Theory]
+            [InlineData(false, default)]
+            [InlineData(true, default)]
+            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
+            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
+            public void Should_Apply_Or_Filter(bool useParameterizedQueries, StringComparison? stringComparison)
+            {
+                var options = new QueryFilterOptions
+                {
+                    UseParameterizedQueries = useParameterizedQueries,
+                    StringComparison = stringComparison,
+                    IgnoreNullFilterValues = false
+                };
 
+                var filterBuilder = CreateFilterBuilder(_filter, options);
 
+                var specification = filterBuilder
+                    .Where(model => model.Prop3, filter => filter.Prop3.EqualTo)
+                    .Or(model => model.Prop1, filter => filter.Prop1.EqualTo)
+                    .AsSpecification();
+
+                var model = new DummyClass
+                {
+                    Prop1 = _filter.Prop1.EqualTo.Value,
+                    Prop3 = _filter.Prop3.EqualTo.Value
+                };
+
+                var actual = specification.IsSatisfiedBy(model);
+
+                actual.Should().BeTrue();
+            }
+
+            [Theory]
+            [InlineData(false, default)]
+            [InlineData(true, default)]
+            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
+            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
+            public void Should_Apply_Nullable_Filter(bool useParameterizedQueries, StringComparison? stringComparison)
+            {
+                var options = new QueryFilterOptions
+                {
+                    UseParameterizedQueries = useParameterizedQueries,
+                    StringComparison = stringComparison,
+                    IgnoreNullFilterValues = false
+                };
+
+                var filterBuilder = CreateFilterBuilder(_filter, options);
+
+                var specification = filterBuilder
+                    .Where(model => model.Prop3, filter => filter.Prop3.EqualTo)
+                    .Or(model => model.Prop1, filter => filter.Prop1.NotEqualTo)
+                    .AsSpecification();
+
+                var model = new DummyClass
+                {
+                    Prop1 = _filter.Prop1.NotEqualTo.Value.Value + 1,
+                    Prop3 = _filter.Prop3.EqualTo.Value
+                };
+
+                var actual = specification.IsSatisfiedBy(model);
+
+                actual.Should().BeTrue();
+            }
+
+            [Theory]
+            [InlineData(false, default)]
+            [InlineData(true, default)]
+            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
+            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
+            public void Should_Ignore_Nullable_Filter1(bool useParameterizedQueries, StringComparison? stringComparison)
+            {
+                var options = new QueryFilterOptions
+                {
+                    UseParameterizedQueries = useParameterizedQueries,
+                    StringComparison = stringComparison,
+                    IgnoreNullFilterValues = true
+                };
+
+                _filter.Prop1.NotEqualTo.Value = null;
+
+                var filterBuilder = CreateFilterBuilder(_filter, options);
+
+                var specification = filterBuilder
+                    .Where(model => model.Prop3, filter => filter.Prop3.EqualTo)
+                    .Or(model => model.Prop1, filter => filter.Prop1.NotEqualTo)
+                    .AsSpecification();
+
+                var model = new DummyClass
+                {
+                    Prop1 = Create<int>(),
+                    Prop3 = _filter.Prop3.EqualTo.Value
+                };
+
+                var actual = specification.IsSatisfiedBy(model);
+
+                actual.Should().BeTrue();
+            }
+
+            [Theory]
+            [InlineData(false, default)]
+            [InlineData(true, default)]
+            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
+            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
+            public void Should_Ignore_Nullable_Filter2(bool useParameterizedQueries, StringComparison? stringComparison)
+            {
+                var options = new QueryFilterOptions
+                {
+                    UseParameterizedQueries = useParameterizedQueries,
+                    StringComparison = stringComparison,
+                    IgnoreNullFilterValues = true
+                };
+
+                _filter.Prop3.EqualTo.Value = null;
+
+                var filterBuilder = CreateFilterBuilder(_filter, options);
+
+                var specification = filterBuilder
+                    .Where(model => model.Prop3, filter => filter.Prop3.EqualTo)
+                    .Or(model => model.Prop1, filter => filter.Prop1.NotEqualTo)
+                    .AsSpecification();
+
+                var model = new DummyClass
+                {
+                    Prop1 = _filter.Prop1.NotEqualTo.Value.Value + 1,
+                    Prop3 = Create<string>()
+                };
+
+                var actual = specification.IsSatisfiedBy(model);
+
+                actual.Should().BeTrue();
+            }
+
+            [Theory]
+            [InlineData(false, default)]
+            [InlineData(true, default)]
+            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
+            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
+            public void Should_Ignore_Nullable_Filter3(bool useParameterizedQueries, StringComparison? stringComparison)
+            {
+                var options = new QueryFilterOptions
+                {
+                    UseParameterizedQueries = useParameterizedQueries,
+                    StringComparison = stringComparison,
+                    IgnoreNullFilterValues = true
+                };
+
+                _filter.Prop1.NotEqualTo.Value = null;
+                _filter.Prop3.EqualTo.Value = null;
+
+                var filterBuilder = CreateFilterBuilder(_filter, options);
+
+                var specification = filterBuilder
+                    .Where(model => model.Prop3, filter => filter.Prop3.EqualTo)
+                    .Or(model => model.Prop1, filter => filter.Prop1.NotEqualTo)
+                    .AsSpecification();
+
+                var model = new DummyClass
+                {
+                    Prop1 = Create<int>(),
+                    Prop3 = Create<string>()
+                };
+
+                var actual = specification.IsSatisfiedBy(model);
+
+                actual.Should().BeTrue();       // the builder has completely ignored both filters, so everything should return true
+            }
+        }
+
+        public class Where_Or_Basic : FilterBuilderFixture
+        {
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_Apply_Or_Filter(bool useParameterizedQueries)
+            {
+                var options = new QueryFilterOptions
+                {
+                    UseParameterizedQueries = useParameterizedQueries,
+                    IgnoreNullFilterValues = false
+                };
+
+                var filterBuilder = CreateFilterBuilder(_filter, options);
+
+                var specification = filterBuilder
+                    .Where(model => model.Prop1, filter => filter.Prop1.EqualTo)
+                    .Or(model => model.Prop2, filter => filter.Prop2.EqualTo)
+                    .AsSpecification();
+
+                var model = new DummyClass
+                {
+                    Prop1 = _filter.Prop1.EqualTo.Value,
+                    Prop2 = _filter.Prop2.EqualTo.Value
+                };
+
+                var actual = specification.IsSatisfiedBy(model);
+
+                actual.Should().BeTrue();
+            }
+
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_Apply_Nullable_Filter(bool useParameterizedQueries)
+            {
+                var options = new QueryFilterOptions
+                {
+                    UseParameterizedQueries = useParameterizedQueries,
+                    IgnoreNullFilterValues = false
+                };
+
+                var filterBuilder = CreateFilterBuilder(_filter, options);
+
+                var specification = filterBuilder
+                    .Where(model => model.Prop1, filter => filter.Prop1.NotEqualTo)
+                    .Or(model => model.Prop2, filter => filter.Prop2.NotEqualTo)
+                    .AsSpecification();
+
+                var model = new DummyClass
+                {
+                    Prop1 = _filter.Prop1.NotEqualTo.Value.Value + 1,
+                    Prop2 = _filter.Prop2.NotEqualTo.Value.Value + 1
+                };
+
+                var actual = specification.IsSatisfiedBy(model);
+
+                actual.Should().BeTrue();
+            }
+
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_Ignore_Nullable_Filter1(bool useParameterizedQueries)
+            {
+                var options = new QueryFilterOptions
+                {
+                    UseParameterizedQueries = useParameterizedQueries,
+                    IgnoreNullFilterValues = true
+                };
+
+                _filter.Prop2.NotEqualTo.Value = null;
+
+                var filterBuilder = CreateFilterBuilder(_filter, options);
+
+                var specification = filterBuilder
+                    .Where(model => model.Prop1, filter => filter.Prop1.EqualTo)
+                    .Or(model => model.Prop2, filter => filter.Prop2.NotEqualTo)
+                    .AsSpecification();
+
+                var model = new DummyClass
+                {
+                    Prop1 = _filter.Prop1.EqualTo.Value,
+                    Prop2 = Create<double>()
+                };
+
+                var actual = specification.IsSatisfiedBy(model);
+
+                actual.Should().BeTrue();
+            }
+
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_Ignore_Nullable_Filter2(bool useParameterizedQueries)
+            {
+                var options = new QueryFilterOptions
+                {
+                    UseParameterizedQueries = useParameterizedQueries,
+                    IgnoreNullFilterValues = true
+                };
+
+                _filter.Prop1.NotEqualTo.Value = null;
+
+                var filterBuilder = CreateFilterBuilder(_filter, options);
+
+                var specification = filterBuilder
+                    .Where(model => model.Prop1, filter => filter.Prop1.NotEqualTo)
+                    .Or(model => model.Prop2, filter => filter.Prop2.EqualTo)
+                    .AsSpecification();
+
+                var model = new DummyClass
+                {
+                    Prop1 = Create<int>(),
+                    Prop2 = _filter.Prop2.EqualTo.Value
+                };
+
+                var actual = specification.IsSatisfiedBy(model);
+
+                actual.Should().BeTrue();
+            }
+
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_Ignore_Nullable_Filter3(bool useParameterizedQueries)
+            {
+                var options = new QueryFilterOptions
+                {
+                    UseParameterizedQueries = useParameterizedQueries,
+                    IgnoreNullFilterValues = true
+                };
+
+                _filter.Prop1.NotEqualTo.Value = null;
+                _filter.Prop2.NotEqualTo.Value = null;
+
+                var filterBuilder = CreateFilterBuilder(_filter, options);
+
+                var specification = filterBuilder
+                    .Where(model => model.Prop1, filter => filter.Prop1.NotEqualTo)
+                    .Or(model => model.Prop2, filter => filter.Prop2.NotEqualTo)
+                    .Or(model => model.Prop3, filter => filter.Prop3.EqualTo)
+                    .AsSpecification();
+
+                var model = new DummyClass
+                {
+                    Prop1 = Create<int>(),
+                    Prop2 = Create<double>(),
+                    Prop3 = _filter.Prop3.EqualTo.Value
+                };
+
+                var actual = specification.IsSatisfiedBy(model);
+
+                actual.Should().BeTrue();       // the builder has completely ignored both nullable filters, so everything should return true
+            }
+        }
+
+        public class Where_Or_Array : FilterBuilderFixture
+        {
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_Apply_Or_Filter(bool useParameterizedQueries)
+            {
+                var options = new QueryFilterOptions
+                {
+                    UseParameterizedQueries = useParameterizedQueries,
+                    IgnoreNullFilterValues = false
+                };
+
+                var filterBuilder = CreateFilterBuilder(_filter, options);
+
+                var specification = filterBuilder
+                    .Where(model => model.Prop1, filter => filter.Prop1.In)
+                    .Or(model => model.Prop2, filter => filter.Prop2.In)
+                    .AsSpecification();
+
+                var model = new DummyClass
+                {
+                    Prop1 = _filter.Prop1.In.Value[1],
+                    Prop2 = _filter.Prop2.In.Value[2]
+                };
+
+                var actual = specification.IsSatisfiedBy(model);
+
+                actual.Should().BeTrue();
+            }
+
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_Apply_Nullable_Filter(bool useParameterizedQueries)
+            {
+                var options = new QueryFilterOptions
+                {
+                    UseParameterizedQueries = useParameterizedQueries,
+                    IgnoreNullFilterValues = false
+                };
+
+                var filterBuilder = CreateFilterBuilder(_filter, options);
+
+                var specification = filterBuilder
+                    .Where(model => model.Prop1, filter => filter.Prop1.In)
+                    .Or(model => model.Prop2, filter => filter.Prop2.NotIn)
+                    .AsSpecification();
+
+                var model = new DummyClass
+                {
+                    Prop1 = _filter.Prop1.In.Value[1],
+                    Prop2 = _filter.Prop2.In.Value.Sum()
+                };
+
+                var actual = specification.IsSatisfiedBy(model);
+
+                actual.Should().BeTrue();
+            }
+
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_Ignore_Nullable_Filter1(bool useParameterizedQueries)
+            {
+                var options = new QueryFilterOptions
+                {
+                    UseParameterizedQueries = useParameterizedQueries,
+                    IgnoreNullFilterValues = true
+                };
+
+                _filter.Prop1.NotIn.Value = null;
+
+                var filterBuilder = CreateFilterBuilder(_filter, options);
+
+                var specification = filterBuilder
+                    .Where(model => model.Prop1, filter => filter.Prop1.NotIn)
+                    .Or(model => model.Prop2, filter => filter.Prop2.NotIn)
+                    .AsSpecification();
+
+                var model = new DummyClass
+                {
+                    Prop1 = Create<int>(),
+                    Prop2 = _filter.Prop2.NotIn.Value.Sum()
+                };
+
+                var actual = specification.IsSatisfiedBy(model);
+
+                actual.Should().BeTrue();
+            }
+
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_Ignore_Nullable_Filter2(bool useParameterizedQueries)
+            {
+                var options = new QueryFilterOptions
+                {
+                    UseParameterizedQueries = useParameterizedQueries,
+                    IgnoreNullFilterValues = true
+                };
+
+                _filter.Prop2.NotIn.Value = null;
+
+                var filterBuilder = CreateFilterBuilder(_filter, options);
+
+                var specification = filterBuilder
+                    .Where(model => model.Prop1, filter => filter.Prop1.NotIn)
+                    .Or(model => model.Prop2, filter => filter.Prop2.NotIn)
+                    .AsSpecification();
+
+                var model = new DummyClass
+                {
+                    Prop1 = _filter.Prop1.NotIn.Value.Sum(item => item.Value),
+                    Prop2 = Create<double>()
+                };
+
+                var actual = specification.IsSatisfiedBy(model);
+
+                actual.Should().BeTrue();
+            }
+
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_Ignore_Nullable_Filter3(bool useParameterizedQueries)
+            {
+                var options = new QueryFilterOptions
+                {
+                    UseParameterizedQueries = useParameterizedQueries,
+                    IgnoreNullFilterValues = true
+                };
+
+                _filter.Prop1.NotIn.Value = null;
+                _filter.Prop2.NotIn.Value = null;
+
+                var filterBuilder = CreateFilterBuilder(_filter, options);
+
+                var specification = filterBuilder
+                    .Where(model => model.Prop1, filter => filter.Prop1.NotIn)
+                    .Or(model => model.Prop2, filter => filter.Prop2.NotIn)
+                    .Or(model => model.Prop3, filter => filter.Prop3.EqualTo)
+                    .AsSpecification();
+
+                var model = new DummyClass
+                {
+                    Prop1 = Create<int>(),
+                    Prop2 = Create<double>(),
+                    Prop3 = _filter.Prop3.EqualTo.Value
+                };
+
+                var actual = specification.IsSatisfiedBy(model);
+
+                actual.Should().BeTrue();       // the builder has completely ignored both nullable filters, so everything should return true
+            }
+        }
 
         private IFilterBuilder<DummyClass, DummyFilter> CreateFilterBuilder(DummyFilter filter = null, QueryFilterOptions options = null)
         {
