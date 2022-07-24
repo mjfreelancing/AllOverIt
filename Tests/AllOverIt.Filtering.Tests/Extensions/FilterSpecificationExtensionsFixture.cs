@@ -12,7 +12,7 @@ using Xunit;
 
 namespace AllOverIt.Filtering.Tests.Extensions
 {
-    public class FilterBuilderExtensionsFixture : FixtureBase
+    public class FilterSpecificationExtensionsFixture : FixtureBase
     {
         private class DummyClass
         {
