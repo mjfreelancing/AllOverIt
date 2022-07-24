@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 namespace AllOverIt.Filtering.Builders
 {
     // Use the ToQueryString() extension method to get a string representation
-    internal sealed class FilterBuilder<TType, TFilter> : IFilterBuilder<TType, TFilter>, ILogicalFilterBuilder<TType, TFilter>
+    internal sealed class FilterBuilder<TType, TFilter> : IFilterBuilder<TType, TFilter>
         where TType : class
         where TFilter : class
     {
@@ -26,7 +26,7 @@ namespace AllOverIt.Filtering.Builders
         }
 
         // The final specification that can be applied to an IQueryable.Where()
-        public ILinqSpecification<TType> AsSpecification() => _currentSpecification;
+        public ILinqSpecification<TType> AsSpecification() => _currentSpecification ?? FilterSpecificationBuilder<TType, TFilter>.SpecificationTrue;
 
         #region WHERE Operations
         public ILogicalFilterBuilder<TType, TFilter> Where(Expression<Func<TType, string>> propertyExpression,
@@ -124,7 +124,7 @@ namespace AllOverIt.Filtering.Builders
         private void ApplyNextSpecification(ILinqSpecification<TType> specification,
            Func<ILinqSpecification<TType>, ILinqSpecification<TType>, ILinqSpecification<TType>> action)
         {
-            if (specification != FilterSpecificationBuilder<TType, TFilter>.SpecificationIgnore)
+            if (specification != FilterSpecificationBuilder<TType, TFilter>.SpecificationTrue)
             {
                 _currentSpecification = _currentSpecification == null
                     ? specification

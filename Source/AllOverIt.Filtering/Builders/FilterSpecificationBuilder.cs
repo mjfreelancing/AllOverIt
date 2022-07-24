@@ -41,8 +41,8 @@ namespace AllOverIt.Filtering.Builders
         private readonly TFilter _filter;
         private readonly IQueryFilterOptions _options;
 
-        // Return True so a single 'ignored' expression behaves as if it didn't exist
-        public static readonly ILinqSpecification<TType> SpecificationIgnore = LinqSpecification<TType>.Create(_ => true);
+        // Return True so 'ignored' expression behaves as if they didn't exist
+        public static readonly ILinqSpecification<TType> SpecificationTrue = LinqSpecification<TType>.Create(_ => true);
 
         // Note: IBasicFilterOperation also caters for IArrayFilterOperation
 
@@ -212,7 +212,7 @@ namespace AllOverIt.Filtering.Builders
                 switch (operation)
                 {
                     case IStringFilterOperation op1 when op1.Value is null:
-                        return SpecificationIgnore;
+                        return SpecificationTrue;
 
                     default:    // fall through, continue processing                        
                         break;
@@ -265,7 +265,7 @@ namespace AllOverIt.Filtering.Builders
 
                     if (value is null)
                     {
-                        return SpecificationIgnore;
+                        return SpecificationTrue;
                     }
                 }
             }
@@ -359,12 +359,12 @@ namespace AllOverIt.Filtering.Builders
             Func<ILinqSpecification<TType>, ILinqSpecification<TType>, ILinqSpecification<TType>> action)
         {
             // simplify the expression if either specifications are to be ignored
-            if (specification1 != SpecificationIgnore && specification2 != SpecificationIgnore)
+            if (specification1 != SpecificationTrue && specification2 != SpecificationTrue)
             {
                 return action.Invoke(specification1, specification2);
             }
 
-            return specification1 == SpecificationIgnore
+            return specification1 == SpecificationTrue
                 ? specification2
                 : specification1;
         }

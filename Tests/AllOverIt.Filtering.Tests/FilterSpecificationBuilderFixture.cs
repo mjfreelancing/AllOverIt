@@ -135,7 +135,6 @@ namespace AllOverIt.Filtering.Tests
                 }
             };
 
-            // all default options
             _options = new QueryFilterOptions
             {
                 UseParameterizedQueries = Create<bool>(),

@@ -9,7 +9,7 @@ namespace AllOverIt.Filtering.Builders
     /// <summary>Defines logical filter or specification operations that can be applied to a filter builder.</summary>
     /// <typeparam name="TType">The object type to apply the filter operation to.</typeparam>
     /// <typeparam name="TFilter">A custom filter type used for defining each operation or comparison in a specification.</typeparam>
-    public interface ILogicalFilterBuilder<TType, TFilter>
+    public interface ILogicalFilterBuilder<TType, TFilter> : IFilterSpecification<TType, TFilter>
       where TType : class
       where TFilter : class
     {

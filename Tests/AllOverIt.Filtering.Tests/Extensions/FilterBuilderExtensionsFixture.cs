@@ -43,7 +43,7 @@ namespace AllOverIt.Filtering.Tests.Extensions
         {
             Invoking(() =>
             {
-                _ = FilterBuilderExtensions.ToQueryString((FilterBuilder<DummyClass, DummyFilter>) null);
+                _ = FilterSpecificationExtensions.ToQueryString((FilterBuilder<DummyClass, DummyFilter>) null);
             })
                 .Should()
                 .Throw<ArgumentNullException>()
