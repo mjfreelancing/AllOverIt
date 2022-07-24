@@ -58,7 +58,7 @@ namespace AllOverIt.Filtering.Builders
         #endregion
 
         #region AND Operations
-        // Not on the interface - want to enforce Where() being the first method called
+        // On ILogicalFilterBuilder interface - want to enforce Where() being the first method called
         public ILogicalFilterBuilder<TType, TFilter> And(Expression<Func<TType, string>> propertyExpression,
             Func<TFilter, IStringFilterOperation> operation, Action<OperationFilterOptions> options = default)
         {
@@ -69,7 +69,7 @@ namespace AllOverIt.Filtering.Builders
             return this;
         }
 
-        // Not on the interface - want to enforce Where() being the first method called
+        // On ILogicalFilterBuilder interface - want to enforce Where() being the first method called
         public ILogicalFilterBuilder<TType, TFilter> And<TProperty>(Expression<Func<TType, TProperty>> propertyExpression,
             Func<TFilter, IBasicFilterOperation> operation, Action<OperationFilterOptions> options = default)
         {
@@ -80,7 +80,7 @@ namespace AllOverIt.Filtering.Builders
             return this;
         }
 
-        // Not on the interface - want to enforce Where() being the first method called
+        // On ILogicalFilterBuilder interface - want to enforce Where() being the first method called
         public ILogicalFilterBuilder<TType, TFilter> And(ILinqSpecification<TType> specification)
         {
             ApplyNextSpecification(specification, LinqSpecificationExtensions.And);
@@ -90,7 +90,7 @@ namespace AllOverIt.Filtering.Builders
         #endregion
 
         #region OR Operations
-        // Not on the interface - want to enforce Where() being the first method called
+        // On ILogicalFilterBuilder interface - want to enforce Where() being the first method called
         public ILogicalFilterBuilder<TType, TFilter> Or(Expression<Func<TType, string>> propertyExpression,
             Func<TFilter, IStringFilterOperation> operation, Action<OperationFilterOptions> options = default)
         {
@@ -101,7 +101,7 @@ namespace AllOverIt.Filtering.Builders
             return this;
         }
 
-        // Not on the interface - want to enforce Where() being the first method called
+        // On ILogicalFilterBuilder interface - want to enforce Where() being the first method called
         public ILogicalFilterBuilder<TType, TFilter> Or<TProperty>(Expression<Func<TType, TProperty>> propertyExpression,
             Func<TFilter, IBasicFilterOperation> operation, Action<OperationFilterOptions> options = default)
         {
@@ -112,7 +112,7 @@ namespace AllOverIt.Filtering.Builders
             return this;
         }
 
-        // Not on the interface - want to enforce Where() being the first method called
+        // On ILogicalFilterBuilder interface - want to enforce Where() being the first method called
         public ILogicalFilterBuilder<TType, TFilter> Or(ILinqSpecification<TType> specification)
         {
             ApplyNextSpecification(specification, LinqSpecificationExtensions.Or);

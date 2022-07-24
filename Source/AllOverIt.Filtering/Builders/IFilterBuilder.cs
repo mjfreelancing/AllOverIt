@@ -7,7 +7,6 @@ using System.Linq;
 
 namespace AllOverIt.Filtering.Builders
 {
-
     /// <summary>
     /// <para>
     /// Defines a queryable filter builder for a specified <typeparamref name="TType"/> object and filter type. This builder can
