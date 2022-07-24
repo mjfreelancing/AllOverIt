@@ -10,7 +10,7 @@ namespace AllOverIt.Filtering.Builders
 {
     /// <summary>Defines a builder that can create an <see cref="ILinqSpecification{TType}" /> for a given object and filter type. The specification
     /// can be used for all general queryable filtering, but is typically used in via the
-    /// <see cref="QueryableExtensions.ApplyFilter{TType, TFilter}(IQueryable{TType}, TFilter, Action{IFilterSpecificationBuilder{TType, TFilter}, IFilterBuilder{TType, TFilter}}, QueryFilterOptions)"/>
+    /// <see cref="QueryableExtensions.ApplyFilter{TType, TFilter}(IQueryable{TType}, TFilter, Action{IFilterSpecificationBuilder{TType, TFilter}, IFilterBuilder{TType, TFilter}}, DefaultQueryFilterOptions)"/>
     /// method.</summary>
     /// <typeparam name="TType">The object type to apply the specification to.</typeparam>
     /// <typeparam name="TFilter">A custom filter type used for defining each operation or comparison in the specification.</typeparam>

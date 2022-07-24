@@ -2,10 +2,16 @@
 
 namespace AllOverIt.Filtering.Options
 {
+    /// <inheritdoc cref="IOperationFilterOptions" />
     public sealed class OperationFilterOptions : IOperationFilterOptions
     {
+        /// <inheritdoc />
         public bool UseParameterizedQueries { get; set; }
-        public StringComparison? StringComparison { get; set; }        // Only set, if required, for non-database queries
+
+        /// <inheritdoc />
+        public StringComparison? StringComparison { get; set; }
+
+        /// <inheritdoc />
         public bool IgnoreNullFilterValue { get; set; }
     }
 }

@@ -86,7 +86,7 @@ namespace AllOverIt.Filtering.Tests
         }
 
         private DummyEntityFilter _filter;
-        private IQueryFilterOptions _options;
+        private IDefaultQueryFilterOptions _options;
         private IFilterSpecificationBuilder<DummyEntity, DummyEntityFilter> _specificationBuilder;
 
         public FilterSpecificationBuilderFixture()
@@ -135,7 +135,7 @@ namespace AllOverIt.Filtering.Tests
                 }
             };
 
-            _options = new QueryFilterOptions
+            _options = new DefaultQueryFilterOptions
             {
                 UseParameterizedQueries = Create<bool>(),
                 StringComparison = Create<bool>() ? default : StringComparison.OrdinalIgnoreCase,
@@ -152,7 +152,7 @@ namespace AllOverIt.Filtering.Tests
             {
                 Invoking(() =>
                 {
-                    _ = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(null, A.Fake<IQueryFilterOptions>());
+                    _ = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(null, A.Fake<IDefaultQueryFilterOptions>());
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -222,7 +222,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
             public void Should_Create_Contains(bool useParameterizedQueries, StringComparison? stringComparison)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -245,7 +245,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
             public void Should_Create_NotContains(bool useParameterizedQueries, StringComparison? stringComparison)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -268,7 +268,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
             public void Should_Create_StartsWith(bool useParameterizedQueries, StringComparison? stringComparison)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -291,7 +291,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
             public void Should_Create_EndsWith(bool useParameterizedQueries, StringComparison? stringComparison)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -314,7 +314,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
             public void Should_Create_In(bool useParameterizedQueries, StringComparison? stringComparison)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -337,7 +337,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
             public void Should_Create_NotIn(bool useParameterizedQueries, StringComparison? stringComparison)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -360,7 +360,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
             public void Should_Create_GreaterThan(bool useParameterizedQueries, StringComparison? stringComparison)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -383,7 +383,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
             public void Should_Create_GreaterThanOrEqual(bool useParameterizedQueries, StringComparison? stringComparison)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -406,7 +406,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
             public void Should_Create_GreaterThanOrEqual_When_Equal(bool useParameterizedQueries, StringComparison? stringComparison)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -429,7 +429,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
             public void Should_Create_LessThan(bool useParameterizedQueries, StringComparison? stringComparison)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -452,7 +452,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
             public void Should_Create_LessThanOrEqual(bool useParameterizedQueries, StringComparison? stringComparison)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -475,7 +475,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
             public void Should_Create_LessThanOrEqual_When_Equal(bool useParameterizedQueries, StringComparison? stringComparison)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -498,7 +498,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
             public void Should_Create_EqualTo(bool useParameterizedQueries, StringComparison? stringComparison)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -521,7 +521,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
             public void Should_Create_NotEqualTo(bool useParameterizedQueries, StringComparison? stringComparison)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -540,7 +540,7 @@ namespace AllOverIt.Filtering.Tests
             [Fact]
             public void Should_Ignore_Null_Filter()
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     IgnoreNullFilterValues = true
                 };
@@ -608,7 +608,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Create_In(bool useParameterizedQueries)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = false
@@ -628,7 +628,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Create_NotIn(bool useParameterizedQueries)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = false
@@ -648,7 +648,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Create_GreaterThan(bool useParameterizedQueries)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = false
@@ -666,7 +666,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Create_GreaterThanOrEqual(bool useParameterizedQueries)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = false
@@ -684,7 +684,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Create_GreaterThanOrEqual_When_Equal(bool useParameterizedQueries)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = false
@@ -702,7 +702,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Create_LessThan(bool useParameterizedQueries)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = false
@@ -720,7 +720,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Create_LessThanOrEqual(bool useParameterizedQueries)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = false
@@ -738,7 +738,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Create_LessThanOrEqual_When_Equal(bool useParameterizedQueries)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = false
@@ -758,7 +758,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Create_EqualTo(bool useParameterizedQueries)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = false
@@ -776,7 +776,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Create_NotEqualTo(bool useParameterizedQueries)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = false
@@ -794,7 +794,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Create_Support_Enum(bool useParameterizedQueries)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = false
@@ -821,7 +821,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Create_Support_Nullable_Enum(bool useParameterizedQueries)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = false
@@ -846,7 +846,7 @@ namespace AllOverIt.Filtering.Tests
             [Fact]
             public void Should_Ignore_Null_Filter()
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     IgnoreNullFilterValues = true
                 };
@@ -1104,7 +1104,7 @@ namespace AllOverIt.Filtering.Tests
             public void Should_And_Contains_GreaterThan(bool useParameterizedQueries, string contains, string greaterThan,
                 StringComparison? stringComparison, string trueValue, string falseValue)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -1129,7 +1129,7 @@ namespace AllOverIt.Filtering.Tests
             public void Should_And_GreaterThan_Contains(bool useParameterizedQueries, string contains, string greaterThan,
                 StringComparison? stringComparison, string trueValue, string falseValue)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -1153,7 +1153,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true, StringComparison.OrdinalIgnoreCase)]
             public void Should_And_EqualTo_In(bool useParameterizedQueries, StringComparison? stringComparison)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -1179,7 +1179,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true, StringComparison.OrdinalIgnoreCase)]
             public void Should_And_NotIn_NotEqualTo(bool useParameterizedQueries, StringComparison? stringComparison)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -1199,7 +1199,7 @@ namespace AllOverIt.Filtering.Tests
             [Fact]
             public void Should_Ignore_Null_Filter()
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     IgnoreNullFilterValues = true
                 };
@@ -1229,7 +1229,7 @@ namespace AllOverIt.Filtering.Tests
             public void Should_And_Contains_StartsWith(bool useParameterizedQueries, string contains, string startsWith,
                 StringComparison? stringComparison, string trueValue, string falseValue)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -1254,7 +1254,7 @@ namespace AllOverIt.Filtering.Tests
             public void Should_And_NotContains_EndsWith(bool useParameterizedQueries, string notContains, string endsWith,
                StringComparison? stringComparison, string trueValue, string falseValue)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -1274,7 +1274,7 @@ namespace AllOverIt.Filtering.Tests
             [Fact]
             public void Should_Ignore_Null_Filter()
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     IgnoreNullFilterValues = true
                 };
@@ -1301,7 +1301,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_And_LessThanOrEqual_GreaterThanOrEqual(bool useParameterizedQueries)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = false
@@ -1329,7 +1329,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_And_EqualTo_GreaterThanOrEqual(bool useParameterizedQueries)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = false
@@ -1353,7 +1353,7 @@ namespace AllOverIt.Filtering.Tests
             [Fact]
             public void Should_Ignore_Null_Filter()
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     IgnoreNullFilterValues = true
                 };
@@ -1603,7 +1603,7 @@ namespace AllOverIt.Filtering.Tests
             public void Should_Or_Contains_GreaterThan(bool useParameterizedQueries, string contains, string greaterThan,
                 StringComparison? stringComparison, string trueValue, string falseValue)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -1628,7 +1628,7 @@ namespace AllOverIt.Filtering.Tests
             public void Should_Or_GreaterThan_Contains(bool useParameterizedQueries, string contains, string greaterThan,
                 StringComparison? stringComparison, string trueValue, string falseValue)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -1652,7 +1652,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true, StringComparison.OrdinalIgnoreCase)]
             public void Should_Or_EqualTo_In(bool useParameterizedQueries, StringComparison? stringComparison)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -1676,7 +1676,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true, StringComparison.OrdinalIgnoreCase)]
             public void Should_Or_NotIn_NotEqualTo(bool useParameterizedQueries, StringComparison? stringComparison)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -1698,7 +1698,7 @@ namespace AllOverIt.Filtering.Tests
             [Fact]
             public void Should_Ignore_Null_Filter()
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     IgnoreNullFilterValues = true
                 };
@@ -1728,7 +1728,7 @@ namespace AllOverIt.Filtering.Tests
             public void Should_Or_Contains_StartsWith(bool useParameterizedQueries, string contains, string startsWith,
                StringComparison? stringComparison, string trueValue, string falseValue)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -1753,7 +1753,7 @@ namespace AllOverIt.Filtering.Tests
             public void Should_Or_NotContains_EndsWith(bool useParameterizedQueries, string notContains, string endsWith,
                StringComparison? stringComparison, string trueValue, string falseValue)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -1773,7 +1773,7 @@ namespace AllOverIt.Filtering.Tests
             [Fact]
             public void Should_Ignore_Null_Filter()
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     IgnoreNullFilterValues = true
                 };
@@ -1800,7 +1800,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Or_LessThanOrEqual_GreaterThanOrEqual(bool useParameterizedQueries)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = false
@@ -1828,7 +1828,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Or_EqualTo_GreaterThanOrEqual(bool useParameterizedQueries)
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = false
@@ -1852,7 +1852,7 @@ namespace AllOverIt.Filtering.Tests
             [Fact]
             public void Should_Ignore_Null_Filter()
             {
-                _options = new QueryFilterOptions
+                _options = new DefaultQueryFilterOptions
                 {
                     IgnoreNullFilterValues = true
                 };

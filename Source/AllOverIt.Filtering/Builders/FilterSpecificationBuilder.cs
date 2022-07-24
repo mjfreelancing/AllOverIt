@@ -39,14 +39,14 @@ namespace AllOverIt.Filtering.Builders
             };
 
         private readonly TFilter _filter;
-        private readonly IQueryFilterOptions _options;
+        private readonly IDefaultQueryFilterOptions _options;
 
         // Return True so 'ignored' expression behaves as if they didn't exist
         public static readonly ILinqSpecification<TType> SpecificationTrue = LinqSpecification<TType>.Create(_ => true);
 
         // Note: IBasicFilterOperation also caters for IArrayFilterOperation
 
-        public FilterSpecificationBuilder(TFilter filter, IQueryFilterOptions options)
+        public FilterSpecificationBuilder(TFilter filter, IDefaultQueryFilterOptions options)
         {
             _filter = filter.WhenNotNull(nameof(filter));
             _options = options.WhenNotNull(nameof(options));

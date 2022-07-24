@@ -11,7 +11,7 @@ namespace AllOverIt.Filtering.Builders
     /// <para>
     /// Defines a queryable filter builder for a specified <typeparamref name="TType"/> object and filter type. This builder can
     /// be used for building any general purpose queryable specification but is typically used in conjunction with
-    /// <see cref="QueryableExtensions.ApplyFilter{TType, TFilter}(IQueryable{TType}, TFilter, Action{IFilterSpecificationBuilder{TType, TFilter}, IFilterBuilder{TType, TFilter}}, QueryFilterOptions)"/>
+    /// <see cref="QueryableExtensions.ApplyFilter{TType, TFilter}(IQueryable{TType}, TFilter, Action{IFilterSpecificationBuilder{TType, TFilter}, IFilterBuilder{TType, TFilter}}, DefaultQueryFilterOptions)"/>
     /// method.
     /// </para>
     /// <para>

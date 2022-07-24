@@ -34,7 +34,7 @@ namespace FilteringDemo
                 }
             };
 
-            var filterOptions = new QueryFilterOptions
+            var filterOptions = new DefaultQueryFilterOptions
             {
                 UseParameterizedQueries = false,
                 StringComparison = StringComparison.InvariantCultureIgnoreCase,

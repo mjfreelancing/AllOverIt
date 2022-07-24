@@ -164,7 +164,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
             public void Should_Apply_Filter(bool useParameterizedQueries, StringComparison? stringComparison)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -194,7 +194,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
             public void Should_Ignore_Filter(bool useParameterizedQueries, StringComparison? stringComparison)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -240,7 +240,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Apply_Filter(bool useParameterizedQueries)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = false
@@ -267,7 +267,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Ignore_Filter(bool useParameterizedQueries)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = true
@@ -309,7 +309,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Apply_Filters_Matching_Types(bool useParameterizedQueries)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = true
@@ -347,7 +347,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Apply_Filters_Different_Types(bool useParameterizedQueries)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = true
@@ -388,7 +388,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Apply_Filter(bool useParameterizedQueries)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = false
@@ -415,7 +415,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Ignore_Filter(bool useParameterizedQueries)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = true
@@ -457,7 +457,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Apply_Filters_Matching_Types(bool useParameterizedQueries)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = true
@@ -495,7 +495,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Apply_Filters_Different_Types(bool useParameterizedQueries)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = true
@@ -538,7 +538,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
             public void Should_Apply_And_Filter(bool useParameterizedQueries, StringComparison? stringComparison)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -570,7 +570,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
             public void Should_Apply_Nullable_Filter(bool useParameterizedQueries, StringComparison? stringComparison)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -602,7 +602,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
             public void Should_Ignore_Nullable_Filter1(bool useParameterizedQueries, StringComparison? stringComparison)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -636,7 +636,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
             public void Should_Ignore_Nullable_Filter2(bool useParameterizedQueries, StringComparison? stringComparison)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -670,7 +670,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
             public void Should_Ignore_Nullable_Filter3(bool useParameterizedQueries, StringComparison? stringComparison)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -706,7 +706,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Apply_And_Filter(bool useParameterizedQueries)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = false
@@ -735,7 +735,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Apply_Nullable_Filter(bool useParameterizedQueries)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = false
@@ -764,7 +764,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Ignore_Nullable_Filter1(bool useParameterizedQueries)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = true
@@ -795,7 +795,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Ignore_Nullable_Filter2(bool useParameterizedQueries)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = true
@@ -826,7 +826,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Ignore_Nullable_Filter3(bool useParameterizedQueries)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = true
@@ -863,7 +863,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Apply_And_Filter(bool useParameterizedQueries)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = false
@@ -892,7 +892,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Apply_Nullable_Filter(bool useParameterizedQueries)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = false
@@ -921,7 +921,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Ignore_Nullable_Filter1(bool useParameterizedQueries)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = true
@@ -952,7 +952,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Ignore_Nullable_Filter2(bool useParameterizedQueries)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = true
@@ -983,7 +983,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Ignore_Nullable_Filter3(bool useParameterizedQueries)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = true
@@ -1022,7 +1022,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
             public void Should_Apply_Or_Filter(bool useParameterizedQueries, StringComparison? stringComparison)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -1054,7 +1054,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
             public void Should_Apply_Nullable_Filter(bool useParameterizedQueries, StringComparison? stringComparison)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -1086,7 +1086,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
             public void Should_Ignore_Nullable_Filter1(bool useParameterizedQueries, StringComparison? stringComparison)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -1120,7 +1120,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
             public void Should_Ignore_Nullable_Filter2(bool useParameterizedQueries, StringComparison? stringComparison)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -1154,7 +1154,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
             public void Should_Ignore_Nullable_Filter3(bool useParameterizedQueries, StringComparison? stringComparison)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparison = stringComparison,
@@ -1190,7 +1190,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Apply_Or_Filter(bool useParameterizedQueries)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = false
@@ -1219,7 +1219,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Apply_Nullable_Filter(bool useParameterizedQueries)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = false
@@ -1248,7 +1248,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Ignore_Nullable_Filter1(bool useParameterizedQueries)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = true
@@ -1279,7 +1279,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Ignore_Nullable_Filter2(bool useParameterizedQueries)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = true
@@ -1310,7 +1310,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Ignore_Nullable_Filter3(bool useParameterizedQueries)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = true
@@ -1347,7 +1347,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Apply_Or_Filter(bool useParameterizedQueries)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = false
@@ -1376,7 +1376,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Apply_Nullable_Filter(bool useParameterizedQueries)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = false
@@ -1405,7 +1405,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Ignore_Nullable_Filter1(bool useParameterizedQueries)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = true
@@ -1436,7 +1436,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Ignore_Nullable_Filter2(bool useParameterizedQueries)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = true
@@ -1467,7 +1467,7 @@ namespace AllOverIt.Filtering.Tests
             [InlineData(true)]
             public void Should_Ignore_Nullable_Filter3(bool useParameterizedQueries)
             {
-                var options = new QueryFilterOptions
+                var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     IgnoreNullFilterValues = true
@@ -1497,10 +1497,10 @@ namespace AllOverIt.Filtering.Tests
             }
         }
 
-        private IFilterBuilder<DummyClass, DummyFilter> CreateFilterBuilder(DummyFilter filter = null, QueryFilterOptions options = null)
+        private IFilterBuilder<DummyClass, DummyFilter> CreateFilterBuilder(DummyFilter filter = null, DefaultQueryFilterOptions options = null)
         {
             filter ??= _filter;
-            options ??= new QueryFilterOptions();
+            options ??= new DefaultQueryFilterOptions();
 
             var specificationBuilder = new FilterSpecificationBuilder<DummyClass, DummyFilter>(filter, options);
             return new FilterBuilder<DummyClass, DummyFilter>(specificationBuilder);

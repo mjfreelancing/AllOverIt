@@ -67,7 +67,7 @@ namespace AllOverIt.Filtering.Tests.Extensions
                 }
             };
 
-            var specificationBuilder = new FilterSpecificationBuilder<DummyClass, DummyFilter>(filter, A.Fake<IQueryFilterOptions>());
+            var specificationBuilder = new FilterSpecificationBuilder<DummyClass, DummyFilter>(filter, A.Fake<IDefaultQueryFilterOptions>());
             var filterBuilder = new FilterBuilder<DummyClass, DummyFilter>(specificationBuilder);
 
             // When applied like this, they are chained from left to right. Use explicit specfications to control precedence.
