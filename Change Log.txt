@@ -12,6 +12,9 @@ AllOverIt.Filtering
     with IStringFilterOperation.
   * Renamed AsQueryString() to ToQueryString()
 
+AllOverIt.FixtureBase
+  * Seed the Random in FixtureBase
+
 
 21 Jul 2022
 Version 6.0.0-RC.2

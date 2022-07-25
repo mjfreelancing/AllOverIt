@@ -11,7 +11,7 @@ namespace AllOverIt.Fixture
     /// </summary>
     public abstract class FixtureBase
     {
-        private readonly Random _random = new();
+        private readonly Random _random = new((int)DateTime.Now.Ticks);
 
         /// <summary> Provides access to the AutoFixture.Fixture being used.</summary>
         protected internal IFixture Fixture { get; } = new AutoFixture.Fixture();
@@ -22,7 +22,8 @@ namespace AllOverIt.Fixture
         protected FixtureBase()
         {
             // Note: cannot used <double> for the factory as it will result in infinite recursion
-            var rnd = new Random();
+            var rnd = new Random((int) DateTime.Now.Ticks);
+
             Fixture.Customize<float>(composer => composer.FromFactory<int>(value => value * (0.5f + (float) rnd.NextDouble())));
             Fixture.Customize<double>(composer => composer.FromFactory<int>(value => value * (0.5d + rnd.NextDouble())));
             Fixture.Customize<decimal>(composer => composer.FromFactory<int>(value => value * (0.5m + (decimal) rnd.NextDouble())));
