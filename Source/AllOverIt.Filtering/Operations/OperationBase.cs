@@ -1,4 +1,5 @@
-﻿using AllOverIt.Evaluator.Exceptions;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Evaluator.Exceptions;
 using AllOverIt.Expressions;
 using AllOverIt.Extensions;
 using AllOverIt.Filtering.Options;
@@ -28,7 +29,7 @@ namespace AllOverIt.Filtering.Operations
             Func<MemberExpression, SystemExpression, SystemExpression> predicateExpressionFactory,
 
             IOperationFilterOptions options)
-                : base(() => CreateResolver(propertyExpression, CreateValueExpression(value, supportsNull, options.UseParameterizedQueries), predicateExpressionFactory))
+                : base(() => CreateResolver(propertyExpression, CreateValueExpression(value, supportsNull, options), predicateExpressionFactory))
         {
         }
 
@@ -43,13 +44,15 @@ namespace AllOverIt.Filtering.Operations
             Func<MemberExpression, SystemExpression, SystemExpression> predicateExpressionFactory,
 
             IOperationFilterOptions options)
-                : base(() => CreateResolver(propertyExpression, CreateValueExpression(values, false, options.UseParameterizedQueries), predicateExpressionFactory))
+                : base(() => CreateResolver(propertyExpression, CreateValueExpression(values, false, options), predicateExpressionFactory))
         {
         }
 
         private static Expression<Func<TEntity, bool>> CreateResolver(Expression<Func<TEntity, TProperty>> propertyExpression, SystemExpression constant,
             Func<MemberExpression, SystemExpression, SystemExpression> predicateExpressionFactory)
         {
+            _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
+
             var parameter = SystemExpression.Parameter(typeof(TEntity), "entity");
 
             var memberExpression = propertyExpression.GetPropertyOrFieldExpressionUsingParameter(parameter);
@@ -59,8 +62,10 @@ namespace AllOverIt.Filtering.Operations
             return SystemExpression.Lambda<Func<TEntity, bool>>(predicate, parameter);
         }
 
-        private static SystemExpression CreateValueExpression<TValue>(TValue value, bool supportsNull, bool useParameterizedQueries)
+        private static SystemExpression CreateValueExpression<TValue>(TValue value, bool supportsNull, IOperationFilterOptions options)
         {
+            _ = options.WhenNotNull(nameof(options));
+
             // Need to deal with null strings and nullables. Could use Nullable.GetUnderlyingType() for nullable
             // types but the approach below works for both cases.
 
@@ -77,7 +82,7 @@ namespace AllOverIt.Filtering.Operations
                 valueType = expectedType;
             }
 
-            var result = useParameterizedQueries
+            var result = options.UseParameterizedQueries
                 ? ExpressionUtils.CreateParameterizedValue(value, valueType)
                 : SystemExpression.Constant(value, valueType);
 
