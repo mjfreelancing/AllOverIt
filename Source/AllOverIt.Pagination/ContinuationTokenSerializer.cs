@@ -1,4 +1,5 @@
-﻿using AllOverIt.Extensions;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Extensions;
 using AllOverIt.Serialization.Binary;
 using System;
 using System.IO;
@@ -11,6 +12,8 @@ namespace AllOverIt.Pagination
     {
         public static string Serialize(ContinuationToken continuationToken, bool usingCompression = false)
         {
+            _ = continuationToken.WhenNotNull(nameof(continuationToken));
+
             using (var stream = new MemoryStream())
             {
                 if (usingCompression)

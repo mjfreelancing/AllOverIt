@@ -1,4 +1,5 @@
-﻿using AllOverIt.Serialization.Binary;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Serialization.Binary;
 using System;
 using System.Collections.Generic;
 
@@ -10,6 +11,8 @@ namespace AllOverIt.Pagination
 
         public override void WriteValue(IEnrichedBinaryWriter writer, object value)
         {
+            _ = writer.WhenNotNull(nameof(writer));
+
             var continuationToken = (ContinuationToken) value;
 
             // Could also use the WriteByte() extension

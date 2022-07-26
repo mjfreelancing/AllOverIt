@@ -1,11 +1,10 @@
 using AllOverIt.Fixture;
-using AllOverIt.Reactive.Extensions;
+using AllOverIt.Fixture.Extensions;
+using FakeItEasy;
 using FluentAssertions;
 using System;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
-using AllOverIt.Fixture.Extensions;
-using AllOverIt.Fixture.FakeItEasy;
 using Xunit;
 using ObservableExtensions = AllOverIt.Reactive.Extensions.ObservableExtensions;
 
@@ -33,7 +32,7 @@ namespace AllOverIt.Reactive.Tests
             {
                 Invoking(() =>
                     {
-                        ObservableExtensions.WaitUntil(this.CreateFake<IObservable<int>>().FakedObject, null);
+                        ObservableExtensions.WaitUntil(A.Fake<IObservable<int>>(), null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -106,7 +105,7 @@ namespace AllOverIt.Reactive.Tests
             {
                 Invoking(() =>
                     {
-                        ObservableExtensions.WaitUntil<int, int>(this.CreateFake<IObservable<int>>().FakedObject, null, value => value);
+                        ObservableExtensions.WaitUntil<int, int>(A.Fake<IObservable<int>>(), null, value => value);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -157,7 +156,7 @@ namespace AllOverIt.Reactive.Tests
             {
                 await Invoking(async () =>
                 {
-                    _ = await ObservableExtensions.WaitUntilAsync(this.CreateFake<IObservable<int>>().FakedObject, null);
+                    _ = await ObservableExtensions.WaitUntilAsync(A.Fake<IObservable<int>>(), null);
                 })
                     .Should()
                     .ThrowAsync<ArgumentNullException>()
@@ -221,7 +220,7 @@ namespace AllOverIt.Reactive.Tests
             {
                 await Invoking(async () =>
                 {
-                    _ = await ObservableExtensions.WaitUntilAsync<int, int>(this.CreateFake<IObservable<int>>().FakedObject, null, Task.FromResult);
+                    _ = await ObservableExtensions.WaitUntilAsync<int, int>(A.Fake<IObservable<int>>(), null, Task.FromResult);
                 })
                     .Should()
                     .ThrowAsync<ArgumentNullException>()
