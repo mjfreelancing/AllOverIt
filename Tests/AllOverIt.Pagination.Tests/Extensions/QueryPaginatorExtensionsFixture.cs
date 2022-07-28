@@ -33,7 +33,6 @@ namespace AllOverIt.Pagination.Tests.Extensions
         private readonly IReadOnlyCollection<EntityDummy> _entities;
         private readonly Func<QueryPaginatorConfiguration, IQueryPaginator<EntityDummy>> _paginatorFactory;
 
-
         private IReadOnlyCollection<EntityDummy> CreateEntities(int count)
         {
             return CreateMany<EntityDummy>(count);

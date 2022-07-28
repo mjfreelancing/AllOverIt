@@ -21,6 +21,33 @@ namespace AllOverIt.Pagination.Tests
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("continuationToken");
             }
+
+            [Fact]
+            public void Should_Compress_Smaller()
+            {
+                var continuationToken = new ContinuationToken
+                {
+                    Direction = Create<PaginationDirection>(),
+                    Values = new object[]
+                   {
+                        Create<bool>(),
+                        Create<int>(),
+                        Create<short>(),
+                        Create<long>(),
+                        Create<PaginationDirection>(),
+                        Create<float>(),
+                        Create<double>(),
+                        Create<string>()
+                   }
+                };
+
+                var notCompressed = ContinuationTokenSerializer.Serialize(continuationToken, false);
+                var compressed = ContinuationTokenSerializer.Serialize(continuationToken, true);
+
+                notCompressed.Length
+                    .Should()
+                    .BeGreaterThan(compressed.Length);
+            }
         }
 
         public class Deserialize : ContinuationTokenSerializerFixture

@@ -41,12 +41,16 @@ namespace AllOverIt.Pagination
 
         public IQueryPaginator<TEntity> ColumnAscending<TProperty>(Expression<Func<TEntity, TProperty>> expression)
         {
+            _ = expression.WhenNotNull(nameof(expression));
+
             AddColumnDefinition(expression, true);
             return this;
         }
 
         public IQueryPaginator<TEntity> ColumnDescending<TProperty>(Expression<Func<TEntity, TProperty>> expression)
         {
+            _ = expression.WhenNotNull(nameof(expression));
+
             AddColumnDefinition(expression, false);
             return this;
         }

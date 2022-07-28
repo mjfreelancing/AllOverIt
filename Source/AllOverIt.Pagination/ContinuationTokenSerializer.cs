@@ -18,10 +18,7 @@ namespace AllOverIt.Pagination
             {
                 if (usingCompression)
                 {
-                    using (var compressor = new DeflateStream(stream, CompressionMode.Compress, true))
-                    {
-                        SerializeToStream(continuationToken, compressor);
-                    }
+                    SerializeToStreamWithDeflate(continuationToken, stream);
                 }
                 else
                 {
@@ -45,17 +42,9 @@ namespace AllOverIt.Pagination
 
             using (var stream = new MemoryStream(bytes))
             {
-                if (usingCompression)
-                {
-                    using (var decompressor = new DeflateStream(stream, CompressionMode.Decompress, true))
-                    {
-                        return DeserializeFromStream(decompressor);
-                    }
-                }
-                else
-                {
-                    return DeserializeFromStream(stream);
-                }
+                return usingCompression
+                    ? DeserializeFromStreamWithInflate(stream) 
+                    : DeserializeFromStream(stream);
             }
         }
 
@@ -69,13 +58,29 @@ namespace AllOverIt.Pagination
             }
         }
 
-        public static ContinuationToken DeserializeFromStream(Stream stream)
+        private static ContinuationToken DeserializeFromStream(Stream stream)
         {
             using (var reader = new EnrichedBinaryReader(stream, Encoding.UTF8, true))
             {
                 reader.Readers.Add(new ContinuationTokenReader());
 
                 return (ContinuationToken) reader.ReadObject();
+            }
+        }
+
+        private static void SerializeToStreamWithDeflate(ContinuationToken continuationToken, Stream stream)
+        {
+            using (var compressor = new DeflateStream(stream, CompressionMode.Compress, true))
+            {
+                SerializeToStream(continuationToken, compressor);
+            }
+        }
+
+        private static ContinuationToken DeserializeFromStreamWithInflate(Stream stream)
+        {
+            using (var decompressor = new DeflateStream(stream, CompressionMode.Decompress, true))
+            {
+                return DeserializeFromStream(decompressor);
             }
         }
     }
