@@ -1,14 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-  </PropertyGroup>
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Source\AllOverIt.DependencyInjection\AllOverIt.DependencyInjection.csproj" />
-    <ProjectReference Include="..\..\..\Source\AllOverIt.GenericHost\AllOverIt.GenericHost.csproj" />
-    <ProjectReference Include="..\..\..\Source\AllOverIt.Validation\AllOverIt.Validation.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\Source\AllOverIt.DependencyInjection\AllOverIt.DependencyInjection.csproj" />
+        <ProjectReference Include="..\..\..\Source\AllOverIt.GenericHost\AllOverIt.GenericHost.csproj" />
+        <ProjectReference Include="..\..\..\Source\AllOverIt.Validation\AllOverIt.Validation.csproj" />
+    </ItemGroup>
 
 </Project>

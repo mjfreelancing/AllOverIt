@@ -2,7 +2,6 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
@@ -10,7 +9,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\..\Source\AllOverIt.Assertion\AllOverIt.Assertion.csproj" />
+        <ProjectReference Include="..\..\..\..\Source\AllOverIt.Assertion\AllOverIt.Assertion.csproj" />
     </ItemGroup>
 
 </Project>

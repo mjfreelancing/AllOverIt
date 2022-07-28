@@ -8,16 +8,26 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 		Change Log.txt = Change Log.txt
 		Current Versions.txt = Current Versions.txt
+		Directory.Build.props = Directory.Build.props
 		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{D9F6B8A1-4B01-4708-8851-741FC19F2440}"
+	ProjectSection(SolutionItems) = preProject
+		Demos\Directory.Build.props = Demos\Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllOverIt", "AllOverIt", "{0DC79E13-DE7A-417D-8A7B-64ABA3F4E1C8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{FC8E8DB2-1299-44F4-A233-0EDCE225BB8C}"
+	ProjectSection(SolutionItems) = preProject
+		Source\Directory.Build.props = Source\Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0C08FAE6-4CD9-4C7B-A849-EB0DB9BD1451}"
+	ProjectSection(SolutionItems) = preProject
+		Tests\Directory.Build.props = Tests\Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt", "Source\AllOverIt\AllOverIt.csproj", "{553E7550-90BD-4DAE-9460-3D5B58BA4E00}"
 EndProject
@@ -245,7 +255,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FilteringDemo", "Demos\AllO
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.Filtering", "Source\AllOverIt.Filtering\AllOverIt.Filtering.csproj", "{339CC9B1-4ABB-4A93-A147-7BFA7434321A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllOverIt.Filtering.Tests", "Tests\AllOverIt.Filtering.Tests\AllOverIt.Filtering.Tests.csproj", "{EF9F8FA4-6002-4498-8E60-9915A0D1DC4C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.Filtering.Tests", "Tests\AllOverIt.Filtering.Tests\AllOverIt.Filtering.Tests.csproj", "{EF9F8FA4-6002-4498-8E60-9915A0D1DC4C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

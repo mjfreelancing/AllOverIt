@@ -2,8 +2,6 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
-        <LangVersion>Latest</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,8 +17,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\Source\AllOverIt.EntityFrameworkCore.Pagination\AllOverIt.EntityFrameworkCore.Pagination.csproj" />
-      <ProjectReference Include="..\..\..\Source\AllOverIt.GenericHost\AllOverIt.GenericHost.csproj" />
+        <ProjectReference Include="..\..\..\Source\AllOverIt.EntityFrameworkCore.Pagination\AllOverIt.EntityFrameworkCore.Pagination.csproj" />
+        <ProjectReference Include="..\..\..\Source\AllOverIt.GenericHost\AllOverIt.GenericHost.csproj" />
     </ItemGroup>
 
 </Project>

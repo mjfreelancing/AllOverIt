@@ -8,7 +8,7 @@ namespace AllOverIt.Pagination
 {
     public abstract class QueryPaginatorBase
     {
-        // base class mainly exists to keep statics out of the generic implementations
+        // base class mainly exists to keep non-generic statics out of the generic implementations
         private static readonly ConcurrentDictionary<Type, MethodInfo> _comparisonMethods;
 
         static QueryPaginatorBase()

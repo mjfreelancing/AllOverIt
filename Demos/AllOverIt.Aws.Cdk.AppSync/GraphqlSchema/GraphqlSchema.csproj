@@ -2,12 +2,10 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net5.0</TargetFramework>
-        <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\Source\AllOverIt.Aws.Cdk.AppSync\AllOverIt.Aws.Cdk.AppSync.csproj" />
+        <ProjectReference Include="..\..\..\Source\AllOverIt.Aws.Cdk.AppSync\AllOverIt.Aws.Cdk.AppSync.csproj" />
     </ItemGroup>
 
 </Project>

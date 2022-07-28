@@ -2,30 +2,10 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
-        <LangVersion>Latest</LangVersion>
-        <Version>6.0.0-rc.2</Version>
-        <Authors>Malcolm Smith</Authors>
-        <Company></Company>
         <Copyright>Copyright © 2021</Copyright>
         <Description>A library to help build AWS Graphql schemas using a code-first approach.</Description>
-        <PackageTags>utilities</PackageTags>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <RepositoryType>git</RepositoryType>
-        <RepositoryUrl>https://github.com/mjfreelancing/AllOverIt</RepositoryUrl>
-        <PackageIcon>aoi_package_icon.png</PackageIcon>
+        <PackageTags>utilities;aws;amazon;appsync;cdk</PackageTags>
     </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-        <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    </PropertyGroup>
-
-    <ItemGroup>
-        <None Include="..\..\Resources\aoi_package_icon.png">
-            <Pack>True</Pack>
-            <PackagePath>\</PackagePath>
-        </None>
-    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Amazon.CDK.AWS.AppSync" Version="1.153.1" />
