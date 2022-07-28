@@ -18,7 +18,7 @@ namespace AllOverIt.Serialization.Binary
         /// <inheritdoc cref="BinaryReader.PeekChar"/>
         int PeekChar();
 
-        /// <inheritdoc cref="BinaryReader.Read"/>
+        /// <inheritdoc cref="BinaryReader.Read()"/>
         int Read();
 
         /// <inheritdoc cref="BinaryReader.Read(byte[], int, int)"/>
