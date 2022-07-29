@@ -36,11 +36,21 @@ namespace AllOverIt.Pagination.Tests
             12                         12                       3                         1                          10 
            =====================================================================================================================
          */
-        
+
+        private enum Status
+        {
+            Single,
+            Defacto,
+            Married,
+            Widowed
+        }
+
         private sealed class EntityDummy
         {
             public int Id { get; set; }
             public string FirstName { get; set; }
+            public Guid Reference { get; set; }
+            public Status Status { get; set; }
         }
 
         public class Constructor : QueryPaginatorFixture
@@ -1261,9 +1271,47 @@ namespace AllOverIt.Pagination.Tests
             }
         }
 
-        private (IReadOnlyCollection<EntityDummy> All,
-            IReadOnlyCollection<EntityDummy> Page1, IReadOnlyCollection<EntityDummy> Page2,
-            IReadOnlyCollection<EntityDummy> Page3, IReadOnlyCollection<EntityDummy> Page4) GetEntities()
+        public class Comparisons: QueryPaginatorFixture
+        {
+            [Fact]
+            public void Should_Compare_Enum_Guid()
+            {
+                var (all, p1, p2, p3, p4) = GetEntities();
+                var query = all.AsQueryable();
+
+                var config = new QueryPaginatorConfiguration
+                {
+                    PageSize = 9,
+                    PaginationDirection = PaginationDirection.Forward
+                };
+
+                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                    .ColumnAscending(entity => entity.Status)
+                    .ColumnAscending(entity => entity.Reference);
+
+                var expected = all
+                    .OrderBy(item => item.Status)
+                    .ThenBy(item => item.Reference)
+                    .Skip(9)
+                    .ToList();
+
+                var results = paginator.GetPageQuery().ToList();
+
+                query = paginator.GetNextPageQuery(results.Last());
+
+                results = query.ToList();
+
+                // Should only be the last page left
+                results.SequenceEqual(expected).Should().BeTrue();
+            }
+        }
+
+        private (
+            IReadOnlyCollection<EntityDummy> All,
+            IReadOnlyCollection<EntityDummy> Page1,
+            IReadOnlyCollection<EntityDummy> Page2,
+            IReadOnlyCollection<EntityDummy> Page3,
+            IReadOnlyCollection<EntityDummy> Page4) GetEntities()
         {
             var all = Enumerable
                 .Range(1, 12)
