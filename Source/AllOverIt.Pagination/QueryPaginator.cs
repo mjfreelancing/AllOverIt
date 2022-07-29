@@ -93,11 +93,12 @@ namespace AllOverIt.Pagination
 
         public IQueryable<TEntity> GetPreviousPageQuery(TEntity reference)
         {
+            // When reference == null, returns the first page relative to the pagination direction
+
             AssertColumnsDefined();
 
             var backQuery = GetDirectionReverseQuery().AsQueryable();
 
-            // When reference == null, returns the last page relative to the pagination direction
             if (reference != null)
             {
                 var predicate = CreatePreviousPagePredicate(reference);
@@ -116,11 +117,12 @@ namespace AllOverIt.Pagination
 
         public IQueryable<TEntity> GetNextPageQuery(TEntity reference)
         {
+            // When reference == null, returns the first page relative to the pagination direction
+
             AssertColumnsDefined();
 
             var forwardQuery = GetDirectionQuery().AsQueryable();
 
-            // When reference == null, returns the first page relative to the pagination direction
             if (reference != null)
             {
                 var predicate = CreateNextPagePredicate(reference);
@@ -139,6 +141,8 @@ namespace AllOverIt.Pagination
 
         public bool HasPreviousPage(TEntity reference)
         {
+            _ = reference.WhenNotNull(nameof(reference));
+
             AssertColumnsDefined();
 
             var previousQuery = GetDirectionReverseQuery().AsQueryable();
@@ -150,6 +154,8 @@ namespace AllOverIt.Pagination
         public Task<bool> HasPreviousPageAsync(TEntity reference, Func<IQueryable<TEntity>, Expression<Func<TEntity, bool>>, CancellationToken, Task<bool>> anyResolver,
             CancellationToken cancellationToken)
         {
+            _ = reference.WhenNotNull(nameof(reference));
+
             AssertColumnsDefined();
 
             var previousQuery = GetDirectionReverseQuery().AsQueryable();
@@ -160,6 +166,8 @@ namespace AllOverIt.Pagination
 
         public bool HasNextPage(TEntity reference)
         {
+            _ = reference.WhenNotNull(nameof(reference));
+
             AssertColumnsDefined();
 
             var nextQuery = GetDirectionQuery().AsQueryable();
@@ -171,6 +179,8 @@ namespace AllOverIt.Pagination
         public Task<bool> HasNextPageAsync(TEntity reference, Func<IQueryable<TEntity>, Expression<Func<TEntity, bool>>, CancellationToken, Task<bool>> anyResolver,
             CancellationToken cancellationToken)
         {
+            _ = reference.WhenNotNull(nameof(reference));
+
             AssertColumnsDefined();
 
             var nextQuery = GetDirectionQuery().AsQueryable();
@@ -251,8 +261,6 @@ namespace AllOverIt.Pagination
 
         private Expression<Func<TEntity, bool>> CreatePreviousPagePredicate(TEntity reference)
         {
-            _ = reference.WhenNotNull(nameof(reference));
-
             var referenceValues = _columns
                 .GetColumnValues(reference)
                 .AsReadOnlyList();
@@ -262,8 +270,6 @@ namespace AllOverIt.Pagination
 
         private Expression<Func<TEntity, bool>> CreateNextPagePredicate(TEntity reference)
         {
-            _ = reference.WhenNotNull(nameof(reference));
-
             var referenceValues = _columns
                 .GetColumnValues(reference)
                 .AsReadOnlyList();

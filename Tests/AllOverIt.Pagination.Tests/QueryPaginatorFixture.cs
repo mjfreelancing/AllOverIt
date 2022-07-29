@@ -5,8 +5,11 @@ using AllOverIt.Pagination.Exceptions;
 using FakeItEasy;
 using FluentAssertions;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace AllOverIt.Pagination.Tests
@@ -511,6 +514,24 @@ namespace AllOverIt.Pagination.Tests
         public class GetPreviousPageQuery : QueryPaginatorFixture
         {
             [Fact]
+            public void Should_Throw_When_No_Columns_Defined()
+            {
+                Invoking(() =>
+                {
+                    var query = Array.Empty<EntityDummy>().AsQueryable();
+
+                    var config = Create<QueryPaginatorConfiguration>();
+
+                    var paginator = new QueryPaginator<EntityDummy>(query, config);
+
+                    _ = paginator.GetPreviousPageQuery(null);
+                })
+                   .Should()
+                   .Throw<PaginationException>()
+                   .WithMessage("At least one column must be defined for pagination.");
+            }
+
+            [Fact]
             public void Should_Get_Last_Page_When_Ascending_Forward_And_Null_Reference()
             {
                 var (all, p1, p2, p3, p4) = GetEntities();
@@ -698,6 +719,24 @@ namespace AllOverIt.Pagination.Tests
         public class GetNextPageQuery : QueryPaginatorFixture
         {
             [Fact]
+            public void Should_Throw_When_No_Columns_Defined()
+            {
+                Invoking(() =>
+                {
+                    var query = Array.Empty<EntityDummy>().AsQueryable();
+
+                    var config = Create<QueryPaginatorConfiguration>();
+
+                    var paginator = new QueryPaginator<EntityDummy>(query, config);
+
+                    _ = paginator.GetNextPageQuery(null);
+                })
+                   .Should()
+                   .Throw<PaginationException>()
+                   .WithMessage("At least one column must be defined for pagination.");
+            }
+
+            [Fact]
             public void Should_Get_First_Page_When_Ascending_Forward_And_Null_Reference()
             {
                 var (all, p1, p2, p3, p4) = GetEntities();
@@ -863,6 +902,362 @@ namespace AllOverIt.Pagination.Tests
                 var page2 = paginator.GetNextPageQuery(page1.First()).ToList();
 
                 page2.SequenceEqual(p2.Reverse()).Should().BeTrue();
+            }
+        }
+
+        public class HasPreviousPage : QueryPaginatorFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Reference_Entity_Null()
+            {
+                Invoking(() =>
+                {
+                    var query = Array.Empty<EntityDummy>().AsQueryable();
+
+                    var config = new QueryPaginatorConfiguration
+                    {
+                        PageSize = 3,
+                        PaginationDirection = PaginationDirection.Forward
+                    };
+
+                    var paginator = new QueryPaginator<EntityDummy>(query, config);
+
+                    _ = paginator.HasPreviousPage(null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("reference");
+            }
+
+            [Fact]
+            public void Should_Throw_When_No_Columns_Defined()
+            {
+                Invoking(() =>
+                {
+                    var query = Array.Empty<EntityDummy>().AsQueryable();
+
+                    var config = Create<QueryPaginatorConfiguration>();
+
+                    var paginator = new QueryPaginator<EntityDummy>(query, config);
+
+                    _ = paginator.HasPreviousPage(Create<EntityDummy>());
+                })
+                   .Should()
+                   .Throw<PaginationException>()
+                   .WithMessage("At least one column must be defined for pagination.");
+            }
+
+            [Fact]
+            public void Should_Return_False_When_No_Previous_Data()
+            {
+                var (all, p1, p2, p3, p4) = GetEntities();
+
+                var query = all.AsQueryable();
+
+                var config = new QueryPaginatorConfiguration
+                {
+                    PageSize = 3,
+                    PaginationDirection = PaginationDirection.Forward
+                };
+
+                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                    .ColumnAscending(entity => entity.Id);
+
+                var actual = paginator.HasPreviousPage(p1.First());
+
+                actual.Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Return_True_When_Previous_Data()
+            {
+                var (all, p1, p2, p3, p4) = GetEntities();
+
+                var query = all.AsQueryable();
+
+                var config = new QueryPaginatorConfiguration
+                {
+                    PageSize = 3,
+                    PaginationDirection = PaginationDirection.Forward
+                };
+
+                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                    .ColumnAscending(entity => entity.Id);
+
+                var actual = paginator.HasPreviousPage(p1.Skip(1).First());
+
+                actual.Should().BeTrue();
+            }
+        }
+
+        public class HasPreviousPageAsync : QueryPaginatorFixture
+        {
+            [Fact]
+            public async Task Should_Throw_When_Reference_Entity_Null()
+            {
+                await Invoking(async () =>
+                {
+                    var query = Array.Empty<EntityDummy>().AsQueryable();
+
+                    var config = new QueryPaginatorConfiguration
+                    {
+                        PageSize = 3,
+                        PaginationDirection = PaginationDirection.Forward
+                    };
+
+                    var paginator = new QueryPaginator<EntityDummy>(query, config);
+
+                    _ = await paginator.HasPreviousPageAsync(
+                        null,
+                        (queryable, expression, cancellationToken) => Task.FromResult(false),
+                        CancellationToken.None);
+                })
+                    .Should()
+                    .ThrowAsync<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("reference");
+            }
+
+            [Fact]
+            public async Task Should_Throw_When_No_Columns_Defined()
+            {
+                await Invoking(async () =>
+                {
+                    var query = Array.Empty<EntityDummy>().AsQueryable();
+
+                    var config = Create<QueryPaginatorConfiguration>();
+
+                    var paginator = new QueryPaginator<EntityDummy>(query, config);
+
+                    _ = await paginator.HasPreviousPageAsync(
+                        Create<EntityDummy>(),
+                        (queryable, expression, cancellationToken) => Task.FromResult(false),
+                        CancellationToken.None);
+                })
+                   .Should()
+                   .ThrowAsync<PaginationException>()
+                   .WithMessage("At least one column must be defined for pagination.");
+            }
+
+            [Fact]
+            public async Task Should_Return_False_When_No_Previous_Data()
+            {
+                var query = Array.Empty<EntityDummy>().AsQueryable();
+
+                var config = new QueryPaginatorConfiguration
+                {
+                    PageSize = 3,
+                    PaginationDirection = PaginationDirection.Forward
+                };
+
+                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                    .ColumnAscending(entity => entity.Id);
+
+                var actual = await paginator.HasPreviousPageAsync(
+                    Create<EntityDummy>(),
+                    (queryable, expression, cancellationToken) => Task.FromResult(false),
+                    CancellationToken.None);
+
+                actual.Should().BeFalse();
+            }
+
+            [Fact]
+            public async Task Should_Return_True_When_Previous_Data()
+            {
+                var query = Array.Empty<EntityDummy>().AsQueryable();
+
+                var config = new QueryPaginatorConfiguration
+                {
+                    PageSize = 3,
+                    PaginationDirection = PaginationDirection.Forward
+                };
+
+                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                    .ColumnAscending(entity => entity.Id);
+
+                var actual = await paginator.HasPreviousPageAsync(
+                    Create<EntityDummy>(),
+                    (queryable, expression, cancellationToken) => Task.FromResult(true),
+                    CancellationToken.None);
+
+                actual.Should().BeTrue();
+            }
+        }
+
+        public class HasNextPage : QueryPaginatorFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Reference_Entity_Null()
+            {
+                Invoking(() =>
+                {
+                    var query = Array.Empty<EntityDummy>().AsQueryable();
+
+                    var config = new QueryPaginatorConfiguration
+                    {
+                        PageSize = 3,
+                        PaginationDirection = PaginationDirection.Forward
+                    };
+
+                    var paginator = new QueryPaginator<EntityDummy>(query, config);
+
+                    _ = paginator.HasNextPage(null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("reference");
+            }
+
+            [Fact]
+            public void Should_Throw_When_No_Columns_Defined()
+            {
+                Invoking(() =>
+                {
+                    var query = Array.Empty<EntityDummy>().AsQueryable();
+
+                    var config = Create<QueryPaginatorConfiguration>();
+
+                    var paginator = new QueryPaginator<EntityDummy>(query, config);
+
+                    _ = paginator.HasNextPage(Create<EntityDummy>());
+                })
+                   .Should()
+                   .Throw<PaginationException>()
+                   .WithMessage("At least one column must be defined for pagination.");
+            }
+
+            [Fact]
+            public void Should_Return_False_When_No_Next_Data()
+            {
+                var (all, p1, p2, p3, p4) = GetEntities();
+
+                var query = all.AsQueryable();
+
+                var config = new QueryPaginatorConfiguration
+                {
+                    PageSize = 3,
+                    PaginationDirection = PaginationDirection.Forward
+                };
+
+                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                    .ColumnAscending(entity => entity.Id);
+
+                var actual = paginator.HasNextPage(p4.Last());
+
+                actual.Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Return_True_When_Next_Data()
+            {
+                var (all, p1, p2, p3, p4) = GetEntities();
+
+                var query = all.AsQueryable();
+
+                var config = new QueryPaginatorConfiguration
+                {
+                    PageSize = 3,
+                    PaginationDirection = PaginationDirection.Forward
+                };
+
+                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                    .ColumnAscending(entity => entity.Id);
+
+                var actual = paginator.HasNextPage(p4.Skip(1).First());
+
+                actual.Should().BeTrue();
+            }
+        }
+
+        public class HasNextPageAsync : QueryPaginatorFixture
+        {
+            [Fact]
+            public async Task Should_Throw_When_Reference_Entity_Null()
+            {
+                await Invoking(async () =>
+                {
+                    var query = Array.Empty<EntityDummy>().AsQueryable();
+
+                    var config = new QueryPaginatorConfiguration
+                    {
+                        PageSize = 3,
+                        PaginationDirection = PaginationDirection.Forward
+                    };
+
+                    var paginator = new QueryPaginator<EntityDummy>(query, config);
+
+                    _ = await paginator.HasNextPageAsync(
+                        null,
+                        (queryable, expression, cancellationToken) => Task.FromResult(false),
+                        CancellationToken.None);
+                })
+                    .Should()
+                    .ThrowAsync<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("reference");
+            }
+
+            [Fact]
+            public async Task Should_Throw_When_No_Columns_Defined()
+            {
+                await Invoking(async () =>
+                {
+                    var query = Array.Empty<EntityDummy>().AsQueryable();
+
+                    var config = Create<QueryPaginatorConfiguration>();
+
+                    var paginator = new QueryPaginator<EntityDummy>(query, config);
+
+                    _ = await paginator.HasNextPageAsync(
+                        Create<EntityDummy>(),
+                        (queryable, expression, cancellationToken) => Task.FromResult(false),
+                        CancellationToken.None);
+                })
+                   .Should()
+                   .ThrowAsync<PaginationException>()
+                   .WithMessage("At least one column must be defined for pagination.");
+            }
+
+            [Fact]
+            public async Task Should_Return_False_When_No_Next_Data()
+            {
+                var query = Array.Empty<EntityDummy>().AsQueryable();
+
+                var config = new QueryPaginatorConfiguration
+                {
+                    PageSize = 3,
+                    PaginationDirection = PaginationDirection.Forward
+                };
+
+                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                    .ColumnAscending(entity => entity.Id);
+
+                var actual = await paginator.HasNextPageAsync(
+                    Create<EntityDummy>(),
+                    (queryable, expression, cancellationToken) => Task.FromResult(false),
+                    CancellationToken.None);
+
+                actual.Should().BeFalse();
+            }
+
+            [Fact]
+            public async Task Should_Return_True_When_Next_Data()
+            {
+                var query = Array.Empty<EntityDummy>().AsQueryable();
+
+                var config = new QueryPaginatorConfiguration
+                {
+                    PageSize = 3,
+                    PaginationDirection = PaginationDirection.Forward
+                };
+
+                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                    .ColumnAscending(entity => entity.Id);
+
+                var actual = await paginator.HasNextPageAsync(
+                    Create<EntityDummy>(),
+                    (queryable, expression, cancellationToken) => Task.FromResult(true),
+                    CancellationToken.None);
+
+                actual.Should().BeTrue();
             }
         }
 
