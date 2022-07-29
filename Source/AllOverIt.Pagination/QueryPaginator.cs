@@ -104,9 +104,14 @@ namespace AllOverIt.Pagination
                 backQuery = backQuery.Where(predicate);
             }
 
-            return backQuery
-                .Take(_configuration.PageSize)
-                .Reverse();
+            backQuery = backQuery.Take(_configuration.PageSize);
+
+            if (_configuration.PaginationDirection == PaginationDirection.Forward)
+            {
+                backQuery = backQuery.Reverse();
+            }
+
+            return backQuery;
         }
 
         public IQueryable<TEntity> GetNextPageQuery(TEntity reference)
@@ -122,7 +127,14 @@ namespace AllOverIt.Pagination
                 forwardQuery = forwardQuery.Where(predicate);
             }
 
-            return forwardQuery.Take(_configuration.PageSize);
+            forwardQuery = forwardQuery.Take(_configuration.PageSize);
+
+            if (_configuration.PaginationDirection == PaginationDirection.Backward)
+            {
+                forwardQuery = forwardQuery.Reverse();
+            }
+
+            return forwardQuery;
         }
 
         public bool HasPreviousPage(TEntity reference)

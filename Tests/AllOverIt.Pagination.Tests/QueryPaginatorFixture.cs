@@ -13,28 +13,31 @@ namespace AllOverIt.Pagination.Tests
 {
     public class QueryPaginatorFixture : FixtureBase
     {
-        private enum Relationship
-        {
-            Single,
-            Defacto,
-            Married,
-            Widowed
-        }
-
+        /*
+           Data       Page      Ascending-Forward        Ascending-Backward        Descending-Forward        Descending-Backward
+           =====================================================================================================================
+            1                          1                        10                        12                         3                         
+            2          1               2                        11                        11                         2        
+            3                          3                        12                        10                         1        
+           =====================================================================================================================
+            4                          4                        7                         9                          6        
+            5          2               5                        8                         8                          5        
+            6                          6                        9                         7                          4        
+           =====================================================================================================================
+            7                          7                        4                         6                          9        
+            8          3               8                        5                         5                          8        
+            9                          9                        6                         4                          7        
+           =====================================================================================================================
+            10                         10                       1                         3                          12       
+            11         4               11                       2                         2                          11       
+            12                         12                       3                         1                          10 
+           =====================================================================================================================
+         */
+        
         private sealed class EntityDummy
         {
             public int Id { get; set; }
             public string FirstName { get; set; }
-            public string LastName { get; set; }
-            public DateTime DateOfBirth { get; set; }
-            public Relationship Relationship { get; set; }
-            public int LicenseNumber { get; set; }
-            public bool Active { get; set; }
-
-            public EntityDummy()
-            {
-
-            }
         }
 
         public class Constructor : QueryPaginatorFixture
@@ -303,8 +306,8 @@ namespace AllOverIt.Pagination.Tests
             [Fact]
             public void Should_Get_Next_Page_When_Ascending_Forward()
             {
-                var entities = GetEntities();
-                var query = entities.AsQueryable();
+                var (all, p1, p2, p3, p4) = GetEntities();
+                var query = all.AsQueryable();
 
                 var config = new QueryPaginatorConfiguration
                 {
@@ -315,25 +318,20 @@ namespace AllOverIt.Pagination.Tests
                 var paginator = new QueryPaginator<EntityDummy>(query, config)
                     .ColumnAscending(entity => entity.Id);
 
-                var expected = query.OrderBy(item => item.Id)
-                    .Skip(config.PageSize)
-                    .Take(config.PageSize)
-                    .ToList();
-
                 var page1 = paginator.GetPageQuery().ToList();
 
                 var token = paginator.TokenEncoder.EncodeNextPage(page1);
 
                 var page2 = paginator.GetPageQuery(token).ToList();
 
-                page2.SequenceEqual(expected).Should().BeTrue();
+                page2.SequenceEqual(p2).Should().BeTrue();
             }
 
             [Fact]
             public void Should_Get_Next_Page_When_Ascending_Backward()
             {
-                var entities = GetEntities();
-                var query = entities.AsQueryable();
+                var (all, p1, p2, p3, p4) = GetEntities();
+                var query = all.AsQueryable();
 
                 var config = new QueryPaginatorConfiguration
                 {
@@ -344,26 +342,20 @@ namespace AllOverIt.Pagination.Tests
                 var paginator = new QueryPaginator<EntityDummy>(query, config)
                     .ColumnAscending(entity => entity.Id);
 
-                var expected = query.OrderByDescending(item => item.Id)
-                    .Skip(config.PageSize)
-                    .Take(config.PageSize)
-                    .Reverse()
-                    .ToList();
-
                 var page1 = paginator.GetPageQuery().ToList();
 
                 var token = paginator.TokenEncoder.EncodeNextPage(page1);
 
                 var page2 = paginator.GetPageQuery(token).ToList();
 
-                page2.SequenceEqual(expected).Should().BeTrue();
+                page2.SequenceEqual(p3).Should().BeTrue();
             }
 
             [Fact]
             public void Should_Get_Next_Page_When_Descending_Forward()
             {
-                var entities = GetEntities();
-                var query = entities.AsQueryable();
+                var (all, p1, p2, p3, p4) = GetEntities();
+                var query = all.AsQueryable();
 
                 var config = new QueryPaginatorConfiguration
                 {
@@ -374,25 +366,20 @@ namespace AllOverIt.Pagination.Tests
                 var paginator = new QueryPaginator<EntityDummy>(query, config)
                     .ColumnDescending(entity => entity.Id);
 
-                var expected = query.OrderByDescending(item => item.Id)
-                    .Skip(config.PageSize)
-                    .Take(config.PageSize)
-                    .ToList();
-
                 var page1 = paginator.GetPageQuery().ToList();
 
                 var token = paginator.TokenEncoder.EncodeNextPage(page1);
 
                 var page2 = paginator.GetPageQuery(token).ToList();
 
-                page2.SequenceEqual(expected).Should().BeTrue();
+                page2.SequenceEqual(p3.Reverse()).Should().BeTrue();
             }
 
             [Fact]
             public void Should_Get_Next_Page_When_Descending_Backward()
             {
-                var entities = GetEntities();
-                var query = entities.AsQueryable();
+                var (all, p1, p2, p3, p4) = GetEntities();
+                var query = all.AsQueryable();
 
                 var config = new QueryPaginatorConfiguration
                 {
@@ -402,12 +389,6 @@ namespace AllOverIt.Pagination.Tests
 
                 var paginator = new QueryPaginator<EntityDummy>(query, config)
                     .ColumnDescending(entity => entity.Id);
-
-                var expected = query.OrderBy(item => item.Id)
-                    .Skip(config.PageSize)
-                    .Take(config.PageSize)
-                    .Reverse()
-                    .ToList();
 
                 var page1 = paginator.GetPageQuery().ToList();
 
@@ -415,14 +396,14 @@ namespace AllOverIt.Pagination.Tests
 
                 var page2 = paginator.GetPageQuery(token).ToList();
 
-                page2.SequenceEqual(expected).Should().BeTrue();
+                page2.SequenceEqual(p2.Reverse()).Should().BeTrue();
             }
 
             [Fact]
             public void Should_Get_Prev_Page_When_Ascending_Forward()
             {
-                var entities = GetEntities();
-                var query = entities.AsQueryable();
+                var (all, p1, p2, p3, p4) = GetEntities();
+                var query = all.AsQueryable();
 
                 var config = new QueryPaginatorConfiguration
                 {
@@ -433,11 +414,6 @@ namespace AllOverIt.Pagination.Tests
                 var paginator = new QueryPaginator<EntityDummy>(query, config)
                     .ColumnAscending(entity => entity.Id);
 
-                var expected = query.OrderBy(item => item.Id)
-                    .Skip(config.PageSize)
-                    .Take(config.PageSize)
-                    .ToList();
-
                 var page = paginator.GetPageQuery().ToList();
                 var token = paginator.TokenEncoder.EncodeNextPage(page);
                 page = paginator.GetPageQuery(token).ToList();
@@ -447,14 +423,14 @@ namespace AllOverIt.Pagination.Tests
                 token = paginator.TokenEncoder.EncodePreviousPage(page);
                 page = paginator.GetPageQuery(token).ToList();
 
-                page.SequenceEqual(expected).Should().BeTrue();
+                page.SequenceEqual(p2).Should().BeTrue();
             }
 
             [Fact]
             public void Should_Get_Prev_Page_When_Ascending_Backward()
             {
-                var entities = GetEntities();
-                var query = entities.AsQueryable();
+                var (all, p1, p2, p3, p4) = GetEntities();
+                var query = all.AsQueryable();
 
                 var config = new QueryPaginatorConfiguration
                 {
@@ -465,12 +441,6 @@ namespace AllOverIt.Pagination.Tests
                 var paginator = new QueryPaginator<EntityDummy>(query, config)
                     .ColumnAscending(entity => entity.Id);
 
-                var expected = query.OrderByDescending(item => item.Id)
-                    .Skip(config.PageSize)
-                    .Take(config.PageSize)
-                    .Reverse()
-                    .ToList();
-
                 var page = paginator.GetPageQuery().ToList();
                 var token = paginator.TokenEncoder.EncodeNextPage(page);
                 page = paginator.GetPageQuery(token).ToList();
@@ -480,14 +450,14 @@ namespace AllOverIt.Pagination.Tests
                 token = paginator.TokenEncoder.EncodePreviousPage(page);
                 page = paginator.GetPageQuery(token).ToList();
 
-                page.SequenceEqual(expected).Should().BeTrue();
+                page.SequenceEqual(p3).Should().BeTrue();
             }
 
             [Fact]
             public void Should_Get_Prev_Page_When_Descending_Forward()
             {
-                var entities = GetEntities();
-                var query = entities.AsQueryable();
+                var (all, p1, p2, p3, p4) = GetEntities();
+                var query = all.AsQueryable();
 
                 var config = new QueryPaginatorConfiguration
                 {
@@ -498,11 +468,6 @@ namespace AllOverIt.Pagination.Tests
                 var paginator = new QueryPaginator<EntityDummy>(query, config)
                     .ColumnDescending(entity => entity.Id);
 
-                var expected = query.OrderByDescending(item => item.Id)
-                    .Skip(config.PageSize)
-                    .Take(config.PageSize)
-                    .ToList();
-
                 var page = paginator.GetPageQuery().ToList();
                 var token = paginator.TokenEncoder.EncodeNextPage(page);
                 page = paginator.GetPageQuery(token).ToList();
@@ -512,14 +477,14 @@ namespace AllOverIt.Pagination.Tests
                 token = paginator.TokenEncoder.EncodePreviousPage(page);
                 page = paginator.GetPageQuery(token).ToList();
 
-                page.SequenceEqual(expected).Should().BeTrue();
+                page.SequenceEqual(p3.Reverse()).Should().BeTrue();
             }
 
             [Fact]
             public void Should_Get_Prev_Page_When_Descending_Backward()
             {
-                var entities = GetEntities();
-                var query = entities.AsQueryable();
+                var (all, p1, p2, p3, p4) = GetEntities();
+                var query = all.AsQueryable();
 
                 var config = new QueryPaginatorConfiguration
                 {
@@ -530,12 +495,6 @@ namespace AllOverIt.Pagination.Tests
                 var paginator = new QueryPaginator<EntityDummy>(query, config)
                     .ColumnDescending(entity => entity.Id);
 
-                var expected = query.OrderBy(item => item.Id)
-                    .Skip(config.PageSize)
-                    .Take(config.PageSize)
-                    .Reverse()
-                    .ToList();
-
                 var page = paginator.GetPageQuery().ToList();
                 var token = paginator.TokenEncoder.EncodeNextPage(page);
                 page = paginator.GetPageQuery(token).ToList();
@@ -545,7 +504,7 @@ namespace AllOverIt.Pagination.Tests
                 token = paginator.TokenEncoder.EncodePreviousPage(page);
                 page = paginator.GetPageQuery(token).ToList();
 
-                page.SequenceEqual(expected).Should().BeTrue();
+                page.SequenceEqual(p2.Reverse()).Should().BeTrue();
             }
         }
 
@@ -554,8 +513,8 @@ namespace AllOverIt.Pagination.Tests
             [Fact]
             public void Should_Get_Last_Page_When_Ascending_Forward_And_Null_Reference()
             {
-                var entities = GetEntities();
-                var query = entities.AsQueryable();
+                var (all, p1, p2, p3, p4) = GetEntities();
+                var query = all.AsQueryable();
 
                 var config = new QueryPaginatorConfiguration
                 {
@@ -566,21 +525,16 @@ namespace AllOverIt.Pagination.Tests
                 var paginator = new QueryPaginator<EntityDummy>(query, config)
                     .ColumnAscending(entity => entity.Id);
 
-                var expected = query.OrderByDescending(item => item.Id)
-                    .Take(config.PageSize)
-                    .Reverse()
-                    .ToList();
-
                 var page = paginator.GetPreviousPageQuery(null).ToList();
 
-                page.SequenceEqual(expected).Should().BeTrue();
+                page.SequenceEqual(p4).Should().BeTrue();
             }
 
             [Fact]
             public void Should_Get_First_Page_When_Ascending_Backward_And_Null_Reference()
             {
-                var entities = GetEntities();
-                var query = entities.AsQueryable();
+                var (all, p1, p2, p3, p4) = GetEntities();
+                var query = all.AsQueryable();
 
                 var config = new QueryPaginatorConfiguration
                 {
@@ -591,21 +545,16 @@ namespace AllOverIt.Pagination.Tests
                 var paginator = new QueryPaginator<EntityDummy>(query, config)
                     .ColumnAscending(entity => entity.Id);
 
-                var expected = query.OrderBy(item => item.Id)
-                    .Take(config.PageSize)
-                    .Reverse()
-                    .ToList();
-
                 var page = paginator.GetPreviousPageQuery(null).ToList();
 
-                page.Should().BeEquivalentTo(expected);
+                page.SequenceEqual(p1).Should().BeTrue();
             }
 
             [Fact]
             public void Should_Get_First_Page_When_Descending_Forward_And_Null_Reference()
             {
-                var entities = GetEntities();
-                var query = entities.AsQueryable();
+                var (all, p1, p2, p3, p4) = GetEntities();
+                var query = all.AsQueryable();
 
                 var config = new QueryPaginatorConfiguration
                 {
@@ -616,21 +565,16 @@ namespace AllOverIt.Pagination.Tests
                 var paginator = new QueryPaginator<EntityDummy>(query, config)
                     .ColumnDescending(entity => entity.Id);
 
-                var expected = query.OrderBy(item => item.Id)
-                    .Take(config.PageSize)
-                    .Reverse()
-                    .ToList();
-
                 var page = paginator.GetPreviousPageQuery(null).ToList();
 
-                page.Should().BeEquivalentTo(expected);
+                page.SequenceEqual(p1.Reverse()).Should().BeTrue();
             }
 
             [Fact]
             public void Should_Get_Last_Page_When_Descending_Backward_And_Null_Reference()
             {
-                var entities = GetEntities();
-                var query = entities.AsQueryable();
+                var (all, p1, p2, p3, p4) = GetEntities();
+                var query = all.AsQueryable();
 
                 var config = new QueryPaginatorConfiguration
                 {
@@ -641,20 +585,16 @@ namespace AllOverIt.Pagination.Tests
                 var paginator = new QueryPaginator<EntityDummy>(query, config)
                     .ColumnDescending(entity => entity.Id);
 
-                var expected = query.OrderByDescending(item => item.Id)
-                    .Take(config.PageSize)
-                    .ToList();
-
                 var page = paginator.GetPreviousPageQuery(null).ToList();
 
-                page.Should().BeEquivalentTo(expected);
+                page.SequenceEqual(p4.Reverse()).Should().BeTrue();
             }
 
             [Fact]
             public void Should_Get_Prev_Page_When_Ascending_Forward()
             {
-                var entities = GetEntities();
-                var query = entities.AsQueryable();
+                var (all, p1, p2, p3, p4) = GetEntities();
+                var query = all.AsQueryable();
 
                 var config = new QueryPaginatorConfiguration
                 {
@@ -665,11 +605,6 @@ namespace AllOverIt.Pagination.Tests
                 var paginator = new QueryPaginator<EntityDummy>(query, config)
                     .ColumnAscending(entity => entity.Id);
 
-                var expected = query.OrderBy(item => item.Id)
-                    .Skip(config.PageSize)
-                    .Take(config.PageSize)
-                    .ToList();
-
                 var page = paginator.GetPageQuery().ToList();
                 var token = paginator.TokenEncoder.EncodeNextPage(page);
                 page = paginator.GetPageQuery(token).ToList();
@@ -678,14 +613,14 @@ namespace AllOverIt.Pagination.Tests
 
                 page = paginator.GetPreviousPageQuery(page.First()).ToList();
 
-                page.SequenceEqual(expected).Should().BeTrue();
+                page.SequenceEqual(p2).Should().BeTrue();
             }
 
             [Fact]
             public void Should_Get_Prev_Page_When_Ascending_Backward()
             {
-                var entities = GetEntities();
-                var query = entities.AsQueryable();
+                var (all, p1, p2, p3, p4) = GetEntities();
+                var query = all.AsQueryable();
 
                 var config = new QueryPaginatorConfiguration
                 {
@@ -696,11 +631,6 @@ namespace AllOverIt.Pagination.Tests
                 var paginator = new QueryPaginator<EntityDummy>(query, config)
                     .ColumnAscending(entity => entity.Id);
 
-                var expected = query.OrderByDescending(item => item.Id)
-                    .Skip(config.PageSize)
-                    .Take(config.PageSize)
-                    .ToList();
-
                 var page = paginator.GetPageQuery().ToList();
                 var token = paginator.TokenEncoder.EncodeNextPage(page);
                 page = paginator.GetPageQuery(token).ToList();
@@ -709,14 +639,14 @@ namespace AllOverIt.Pagination.Tests
 
                 page = paginator.GetPreviousPageQuery(page.Last()).ToList();
 
-                page.SequenceEqual(expected).Should().BeTrue();
+                page.SequenceEqual(p3).Should().BeTrue();
             }
 
             [Fact]
             public void Should_Get_Prev_Page_When_Descending_Forward()
             {
-                var entities = GetEntities();
-                var query = entities.AsQueryable();
+                var (all, p1, p2, p3, p4) = GetEntities();
+                var query = all.AsQueryable();
 
                 var config = new QueryPaginatorConfiguration
                 {
@@ -727,12 +657,6 @@ namespace AllOverIt.Pagination.Tests
                 var paginator = new QueryPaginator<EntityDummy>(query, config)
                     .ColumnDescending(entity => entity.Id);
 
-                var expected = query.OrderByDescending(item => item.Id)
-                    .Skip(config.PageSize)
-                    .Take(config.PageSize)
-                    .Reverse()
-                    .ToList();
-
                 var page = paginator.GetPageQuery().ToList();
                 var token = paginator.TokenEncoder.EncodeNextPage(page);
                 page = paginator.GetPageQuery(token).ToList();
@@ -741,14 +665,14 @@ namespace AllOverIt.Pagination.Tests
 
                 page = paginator.GetPreviousPageQuery(page.First()).ToList();
 
-                page.SequenceEqual(expected).Should().BeTrue();
+                page.SequenceEqual(p3.Reverse()).Should().BeTrue();
             }
 
             [Fact]
             public void Should_Get_Prev_Page_When_Descending_Backward()
             {
-                var entities = GetEntities();
-                var query = entities.AsQueryable();
+                var (all, p1, p2, p3, p4) = GetEntities();
+                var query = all.AsQueryable();
 
                 var config = new QueryPaginatorConfiguration
                 {
@@ -759,11 +683,6 @@ namespace AllOverIt.Pagination.Tests
                 var paginator = new QueryPaginator<EntityDummy>(query, config)
                     .ColumnDescending(entity => entity.Id);
 
-                var expected = query.OrderBy(item => item.Id)
-                    .Skip(config.PageSize)
-                    .Take(config.PageSize)
-                    .ToList();
-
                 var page = paginator.GetPageQuery().ToList();
                 var token = paginator.TokenEncoder.EncodeNextPage(page);
                 page = paginator.GetPageQuery(token).ToList();
@@ -772,7 +691,7 @@ namespace AllOverIt.Pagination.Tests
 
                 page = paginator.GetPreviousPageQuery(page.Last()).ToList();
 
-                page.SequenceEqual(expected).Should().BeTrue();
+                page.SequenceEqual(p2.Reverse()).Should().BeTrue();
             }
         }
 
@@ -781,8 +700,8 @@ namespace AllOverIt.Pagination.Tests
             [Fact]
             public void Should_Get_First_Page_When_Ascending_Forward_And_Null_Reference()
             {
-                var entities = GetEntities();
-                var query = entities.AsQueryable();
+                var (all, p1, p2, p3, p4) = GetEntities();
+                var query = all.AsQueryable();
 
                 var config = new QueryPaginatorConfiguration
                 {
@@ -793,20 +712,16 @@ namespace AllOverIt.Pagination.Tests
                 var paginator = new QueryPaginator<EntityDummy>(query, config)
                     .ColumnAscending(entity => entity.Id);
 
-                var expected = query.OrderBy(item => item.Id)
-                    .Take(config.PageSize)
-                    .ToList();
-
                 var page = paginator.GetNextPageQuery(null).ToList();
 
-                page.SequenceEqual(expected).Should().BeTrue();
+                page.SequenceEqual(p1).Should().BeTrue();
             }
 
             [Fact]
             public void Should_Get_Last_Page_When_Ascending_Backward_And_Null_Reference()
             {
-                var entities = GetEntities();
-                var query = entities.AsQueryable();
+                var (all, p1, p2, p3, p4) = GetEntities();
+                var query = all.AsQueryable();
 
                 var config = new QueryPaginatorConfiguration
                 {
@@ -817,20 +732,16 @@ namespace AllOverIt.Pagination.Tests
                 var paginator = new QueryPaginator<EntityDummy>(query, config)
                     .ColumnAscending(entity => entity.Id);
 
-                var expected = query.OrderByDescending(item => item.Id)
-                    .Take(config.PageSize)
-                    .ToList();
-
                 var page = paginator.GetNextPageQuery(null).ToList();
 
-                page.SequenceEqual(expected).Should().BeTrue();
+                page.SequenceEqual(p4).Should().BeTrue();
             }
 
             [Fact]
-            public void Should_Get_First_Page_When_Descending_Forward_And_Null_Reference()
+            public void Should_Get_Last_Page_When_Descending_Forward_And_Null_Reference()
             {
-                var entities = GetEntities();
-                var query = entities.AsQueryable();
+                var (all, p1, p2, p3, p4) = GetEntities();
+                var query = all.AsQueryable();
 
                 var config = new QueryPaginatorConfiguration
                 {
@@ -841,20 +752,16 @@ namespace AllOverIt.Pagination.Tests
                 var paginator = new QueryPaginator<EntityDummy>(query, config)
                     .ColumnDescending(entity => entity.Id);
 
-                var expected = query.OrderByDescending(item => item.Id)
-                    .Take(config.PageSize)
-                    .ToList();
-
                 var page = paginator.GetNextPageQuery(null).ToList();
 
-                page.SequenceEqual(expected).Should().BeTrue();
+                page.SequenceEqual(p4.Reverse()).Should().BeTrue();
             }
 
             [Fact]
-            public void Should_Get_Last_Page_When_Descending_Backward_And_Null_Reference()
+            public void Should_Get_First_Page_When_Descending_Backward_And_Null_Reference()
             {
-                var entities = GetEntities();
-                var query = entities.AsQueryable();
+                var (all, p1, p2, p3, p4) = GetEntities();
+                var query = all.AsQueryable();
 
                 var config = new QueryPaginatorConfiguration
                 {
@@ -865,20 +772,16 @@ namespace AllOverIt.Pagination.Tests
                 var paginator = new QueryPaginator<EntityDummy>(query, config)
                     .ColumnDescending(entity => entity.Id);
 
-                var expected = query.OrderBy(item => item.Id)
-                    .Take(config.PageSize)
-                    .ToList();
-
                 var page = paginator.GetNextPageQuery(null).ToList();
 
-                page.SequenceEqual(expected).Should().BeTrue();
+                page.SequenceEqual(p1.Reverse()).Should().BeTrue();
             }
 
             [Fact]
             public void Should_Get_Next_Page_When_Ascending_Forward()
             {
-                var entities = GetEntities();
-                var query = entities.AsQueryable();
+                var (all, p1, p2, p3, p4) = GetEntities();
+                var query = all.AsQueryable();
 
                 var config = new QueryPaginatorConfiguration
                 {
@@ -889,23 +792,18 @@ namespace AllOverIt.Pagination.Tests
                 var paginator = new QueryPaginator<EntityDummy>(query, config)
                     .ColumnAscending(entity => entity.Id);
 
-                var expected = query.OrderBy(item => item.Id)
-                    .Skip(config.PageSize)
-                    .Take(config.PageSize)
-                    .ToList();
-
                 var page1 = paginator.GetPageQuery().ToList();
 
                 var page2 = paginator.GetNextPageQuery(page1.Last()).ToList();
 
-                page2.SequenceEqual(expected).Should().BeTrue();
+                page2.SequenceEqual(p2).Should().BeTrue();
             }
 
             [Fact]
             public void Should_Get_Next_Page_When_Ascending_Backward()
             {
-                var entities = GetEntities();
-                var query = entities.AsQueryable();
+                var (all, p1, p2, p3, p4) = GetEntities();
+                var query = all.AsQueryable();
 
                 var config = new QueryPaginatorConfiguration
                 {
@@ -916,24 +814,18 @@ namespace AllOverIt.Pagination.Tests
                 var paginator = new QueryPaginator<EntityDummy>(query, config)
                     .ColumnAscending(entity => entity.Id);
 
-                var expected = query.OrderByDescending(item => item.Id)
-                    .Skip(config.PageSize)
-                    .Take(config.PageSize)
-                    .Reverse()
-                    .ToList();
-
                 var page1 = paginator.GetPageQuery().ToList();
 
                 var page2 = paginator.GetNextPageQuery(page1.First()).ToList();
 
-                page2.SequenceEqual(expected).Should().BeTrue();
+                page2.SequenceEqual(p3).Should().BeTrue();
             }
 
             [Fact]
             public void Should_Get_Next_Page_When_Descending_Forward()
             {
-                var entities = GetEntities();
-                var query = entities.AsQueryable();
+                var (all, p1, p2, p3, p4) = GetEntities();
+                var query = all.AsQueryable();
 
                 var config = new QueryPaginatorConfiguration
                 {
@@ -944,23 +836,18 @@ namespace AllOverIt.Pagination.Tests
                 var paginator = new QueryPaginator<EntityDummy>(query, config)
                     .ColumnDescending(entity => entity.Id);
 
-                var expected = query.OrderByDescending(item => item.Id)
-                    .Skip(config.PageSize)
-                    .Take(config.PageSize)
-                    .ToList();
-
                 var page1 = paginator.GetPageQuery().ToList();
 
                 var page2 = paginator.GetNextPageQuery(page1.Last()).ToList();
 
-                page2.SequenceEqual(expected).Should().BeTrue();
+                page2.SequenceEqual(p3.Reverse()).Should().BeTrue();
             }
 
             [Fact]
             public void Should_Get_Next_Page_When_Descending_Backward()
             {
-                var entities = GetEntities();
-                var query = entities.AsQueryable();
+                var (all, p1, p2, p3, p4) = GetEntities();
+                var query = all.AsQueryable();
 
                 var config = new QueryPaginatorConfiguration
                 {
@@ -971,23 +858,19 @@ namespace AllOverIt.Pagination.Tests
                 var paginator = new QueryPaginator<EntityDummy>(query, config)
                     .ColumnDescending(entity => entity.Id);
 
-                var expected = query.OrderBy(item => item.Id)
-                    .Skip(config.PageSize)
-                    .Take(config.PageSize)
-                    .Reverse()
-                    .ToList();
-
                 var page1 = paginator.GetPageQuery().ToList();
 
                 var page2 = paginator.GetNextPageQuery(page1.First()).ToList();
 
-                page2.SequenceEqual(expected).Should().BeTrue();
+                page2.SequenceEqual(p2.Reverse()).Should().BeTrue();
             }
         }
 
-        private IReadOnlyCollection<EntityDummy> GetEntities()
+        private (IReadOnlyCollection<EntityDummy> All,
+            IReadOnlyCollection<EntityDummy> Page1, IReadOnlyCollection<EntityDummy> Page2,
+            IReadOnlyCollection<EntityDummy> Page3, IReadOnlyCollection<EntityDummy> Page4) GetEntities()
         {
-            return Enumerable
+            var all = Enumerable
                 .Range(1, 12)
                 .SelectAsReadOnlyCollection(index =>
                 {
@@ -996,38 +879,13 @@ namespace AllOverIt.Pagination.Tests
 
                     return entity;
                 });
+
+            var p1 = all.Take(3).AsReadOnlyCollection();
+            var p2 = all.Skip(3).Take(3).AsReadOnlyCollection();
+            var p3 = all.Skip(6).Take(3).AsReadOnlyCollection();
+            var p4 = all.Skip(9).Take(3).AsReadOnlyCollection();
+
+            return (all, p1, p2, p3, p4);
         }
     }
-
-
-    /*
-     
-     
-             Data       Ascending-Forward         Ascending-Backward         Descending-Forward          Descending-Backward
-              1                1                          10                          12                           3                         
-              2                2                          11                          11                           2        
-              3                3                          12                          10                           1        
-
-              4                4                          7                           9                            6        
-              5                5                          8                           8                            5        
-              6                6                          9                           7                            4        
-
-              7                7                          4                           6                            9        
-              8                8                          5                           5                            8        
-              9                9                          6                           4                            7        
-
-              10               10                         1                           3                            12       
-              11               11                         2                           2                            11       
-              12               12                         3                           1                            10       
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     */
 }
