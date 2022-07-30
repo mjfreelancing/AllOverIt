@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Assertion;
+using AllOverIt.Reflection;
 using System;
 using System.ComponentModel;
 using System.Text;
@@ -33,7 +34,7 @@ namespace AllOverIt.Extensions
                 return (TType)Enum.Parse(valueType, value, true);
             }
 
-            if (valueType == typeof(bool))
+            if (valueType == CommonTypes.BoolType)
             {
                 switch (value)
                 {

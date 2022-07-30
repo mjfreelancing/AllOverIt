@@ -1,6 +1,7 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
 using AllOverIt.Formatters.Exceptions;
+using AllOverIt.Reflection;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -50,7 +51,7 @@ namespace AllOverIt.Formatters.Objects
                     AppendDictionaryAsPropertyValues(prefix, dictionary, values, references);
                     break;
 
-                case IEnumerable enumerable when instance.GetType() != typeof(string):
+                case IEnumerable enumerable when instance.GetType() != CommonTypes.StringType:
                     var collateValues = CanCollateEnumerableValues(enumerable, references);
 
                     var arrayValues = collateValues
@@ -88,7 +89,7 @@ namespace AllOverIt.Formatters.Objects
             var args = GetDictionaryGenericArguments(dictionary);
             var keyType = args[0];
 
-            var isClassType = keyType.IsClass && keyType != typeof(string);
+            var isClassType = keyType.IsClass && keyType != CommonTypes.StringType;
             var idx = 0;
 
             var keyEnumerator = dictionary.Keys.GetEnumerator();
@@ -158,7 +159,7 @@ namespace AllOverIt.Formatters.Objects
         {
             var instanceType = instance.GetType();
 
-            if (!instanceType.IsClass || instanceType == typeof(string))
+            if (!instanceType.IsClass || instanceType == CommonTypes.StringType)
             {
                 // The value doesn't have properties....only option is to ToString() it
                 values.Add(Options.RootValueOptions.ScalarKeyName, instance.ToString());
@@ -203,7 +204,7 @@ namespace AllOverIt.Formatters.Objects
             {
                 var type = value.GetType();
 
-                var isString = type == typeof(string);
+                var isString = type == CommonTypes.StringType;
 
                 if (isString && ((string)value).IsNullOrEmpty())        // null was already checked, so this only applies to empty values
                 {
@@ -369,7 +370,7 @@ namespace AllOverIt.Formatters.Objects
             // Only allowing the collation of primitive types - collating complex types is not very helpful / readable
             var elementType = GetEnumerableElementType(enumerable);
 
-            if (elementType.IsClassType() && elementType != typeof(string))
+            if (elementType.IsClassType() && elementType != CommonTypes.StringType)
             {
                 return false;
             }

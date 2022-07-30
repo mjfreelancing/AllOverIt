@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync.Exceptions;
 using AllOverIt.Extensions;
+using AllOverIt.Reflection;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -41,7 +42,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
         private static void CheckForProperties(SystemType type)
         {
             // not expecting class types to be used, but check anyway
-            if (type != typeof(string) && !type.IsEnrichedEnum() && (type.IsClass || type.IsInterface))
+            if (type != CommonTypes.StringType && !type.IsEnrichedEnum() && (type.IsClass || type.IsInterface))
             {
                 if (type.IsInterface)
                 {

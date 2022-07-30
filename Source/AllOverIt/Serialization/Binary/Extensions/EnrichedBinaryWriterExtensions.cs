@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
+using AllOverIt.Reflection;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,8 +10,6 @@ namespace AllOverIt.Serialization.Binary.Extensions
     /// <summary>Provides extension methods for <see cref="IEnrichedBinaryWriter"/>.</summary>
     public static class EnrichedBinaryWriterExtensions
     {
-        private static readonly Type ObjectType = typeof(object);
-
         /// <inheritdoc cref="BinaryWriter.Write(ulong)"/>
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
         public static void WriteUInt64(this IEnrichedBinaryWriter writer, ulong value) => writer.Write(value);
@@ -152,7 +151,7 @@ namespace AllOverIt.Serialization.Binary.Extensions
 
             var argType = genericArguments.Length == 1
                 ? genericArguments[0]
-                : ObjectType;
+                : CommonTypes.ObjectType;
 
             WriteEnumerable(writer, enumerable, argType);
         }
@@ -218,8 +217,8 @@ namespace AllOverIt.Serialization.Binary.Extensions
             }
             else
             {
-                keyType = ObjectType;
-                valueType = ObjectType;
+                keyType = CommonTypes.ObjectType;
+                valueType = CommonTypes.ObjectType;
             }
 
             WriteDictionary(writer, dictionary, keyType, valueType);

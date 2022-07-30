@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Globalization;
 using AllOverIt.Extensions;
 using AllOverIt.Patterns.Enumeration;
+using AllOverIt.Reflection;
 
 namespace AllOverIt.Converters
 {
@@ -16,7 +17,7 @@ namespace AllOverIt.Converters
         /// <inheritdoc />
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
-            return sourceType == typeof(string) || sourceType.IsIntegralType();
+            return sourceType == CommonTypes.StringType || sourceType.IsIntegralType();
         }
 
         /// <inheritdoc />
@@ -27,7 +28,7 @@ namespace AllOverIt.Converters
                 return null;
             }
 
-            return value.GetType() == typeof(string)
+            return value.GetType() == CommonTypes.StringType
                 ? EnrichedEnum<TEnum>.From((string) value)
                 : EnrichedEnum<TEnum>.From(Convert.ToInt32(value));
         }
@@ -35,7 +36,7 @@ namespace AllOverIt.Converters
         /// <inheritdoc />
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
-            return destinationType == typeof(string) || destinationType.IsIntegralType();
+            return destinationType == CommonTypes.StringType || destinationType.IsIntegralType();
         }
 
         /// <inheritdoc />
@@ -46,7 +47,7 @@ namespace AllOverIt.Converters
                 return null;
             }
 
-            return destinationType == typeof(string)
+            return destinationType == CommonTypes.StringType
                 ? ((EnrichedEnum<TEnum>) value).Name
                 : Convert.ChangeType(((EnrichedEnum<TEnum>) value).Value, destinationType);
         }

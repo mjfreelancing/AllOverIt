@@ -1,20 +1,16 @@
-﻿using AllOverIt.Reflection;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Reflection;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using AllOverIt.Assertion;
-using AllOverIt.Patterns.Enumeration;
 
 namespace AllOverIt.Extensions
 {
     /// <summary>Provides a variety of extension methods for <see cref="Type"/> types.</summary>
     public static class TypeExtensions
     {
-        private static readonly Type EnrichedEnumType = typeof(EnrichedEnum<>);
-
         /// <summary>Gets the <see cref="PropertyInfo"/> (property metadata) for a given public or protected property on a <see cref="Type"/>.</summary>
         /// <param name="type">The <see cref="Type"/> to obtain the property metadata from.</param>
         /// <param name="propertyName">The name of the property to obtain metadata for.</param>
@@ -180,8 +176,17 @@ namespace AllOverIt.Extensions
         /// <returns>True if the <see cref="Type"/> represents an integral type, otherwise false.</returns>
         public static bool IsIntegralType(this Type type)
         {
-            return new[] {typeof (byte), typeof (sbyte), typeof (short), typeof (ushort),
-                    typeof (int), typeof (uint), typeof (long), typeof (ulong)}.Contains(type);
+            return new[]
+            {
+                CommonTypes.ByteType,
+                CommonTypes.SByteType,
+                CommonTypes.ShortType,
+                CommonTypes.UShortType,
+                CommonTypes.IntType,
+                CommonTypes.UIntType,
+                CommonTypes.LongType,
+                CommonTypes.ULongType
+            }.Contains(type);
         }
 
         /// <summary>Indicates if the <see cref="Type"/> represents a floating type.</summary>
@@ -189,7 +194,12 @@ namespace AllOverIt.Extensions
         /// <returns>True if the <see cref="Type"/> represents a floating type, otherwise false.</returns>
         public static bool IsFloatingType(this Type type)
         {
-            return new[] { typeof(float), typeof(double), typeof(decimal) }.Contains(type);
+            return new[]
+            {
+                CommonTypes.FloatType,
+                CommonTypes.DoubleType,
+                CommonTypes.DecimalType
+            }.Contains(type);
         }
 
         /// <summary>Indicates if the <see cref="Type"/> represents an enumerable type.</summary>
@@ -198,9 +208,9 @@ namespace AllOverIt.Extensions
         /// <returns>True if the <see cref="Type"/> represents an enumerable type, otherwise false.</returns>
         public static bool IsEnumerableType(this Type type, bool includeString = false)
         {
-            return type == typeof(string)
+            return type == CommonTypes.StringType
               ? includeString
-              : typeof(IEnumerable).IsAssignableFrom(type);
+              : CommonTypes.IEnumerableType.IsAssignableFrom(type);
         }
 
         /// <summary>Indicates if the <see cref="Type"/> represents a generic enumerable type.</summary>
@@ -208,7 +218,7 @@ namespace AllOverIt.Extensions
         /// <returns>True if the <see cref="Type"/> represents a generic enumerable type, otherwise false.</returns>
         public static bool IsGenericEnumerableType(this Type type)
         {
-            return type.IsGenericType() && typeof(IEnumerable).IsAssignableFrom(type);
+            return type.IsGenericType() && CommonTypes.IEnumerableType.IsAssignableFrom(type);
         }
 
         /// <summary>Indicates if the <see cref="Type"/> represents a generic type.</summary>
@@ -238,7 +248,7 @@ namespace AllOverIt.Extensions
             _ = type.WhenNotNull(nameof(type));
             _ = fromType.WhenNotNull(nameof(fromType));
 
-            while (type != null && type != typeof(object))
+            while (type != null && type != CommonTypes.ObjectType)
             {
                 if (fromType.IsRawGenericType(type))
                 {
@@ -281,7 +291,7 @@ namespace AllOverIt.Extensions
         /// <returns>True if the <see cref="Type"/> represents a generic nullable type, otherwise false.</returns>
         public static bool IsNullableType(this Type type)
         {
-            return type.IsGenericType() && (type.GetGenericTypeDefinition() == typeof(Nullable<>));
+            return type.IsGenericType() && (type.GetGenericTypeDefinition() == CommonTypes.NullableGenericType);
         }
 
         /// <summary>A utility method that returns a print-friendly name for a given type.</summary>
@@ -322,7 +332,7 @@ namespace AllOverIt.Extensions
         /// <returns>True if the type inherits from EnrichedEnum&lt;>, otherwise False.</returns>
         public static bool IsEnrichedEnum(this Type type)
         {
-            return type.IsDerivedFrom(EnrichedEnumType);
+            return type.IsDerivedFrom(CommonTypes.EnrichedEnumGenericType);
         }
 
         /// <summary>Gets the method info for a static method.</summary>

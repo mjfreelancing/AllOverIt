@@ -1,4 +1,5 @@
-﻿using AllOverIt.Serialization.Binary.Exceptions;
+﻿using AllOverIt.Reflection;
+using AllOverIt.Serialization.Binary.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +9,6 @@ namespace AllOverIt.Serialization.Binary.Extensions
     /// <summary>Provides extension methods for <see cref="IEnrichedBinaryReader"/>.</summary>
     public static class EnrichedBinaryReaderExtensions
     {
-        private static readonly Type ObjectType = typeof(object);
-
         /// <summary>Reads a string from the current stream, including null values.</summary>
         /// <param name="reader">The reader that is reading from the current stream.</param>
         /// <returns>The read string. If the written string was null then null will be returned.</returns>
@@ -138,7 +137,7 @@ namespace AllOverIt.Serialization.Binary.Extensions
         {
             var dictionary = reader.ReadDictionary();
 
-            if (typeof(TKey) == ObjectType && typeof(TValue) == ObjectType)
+            if (typeof(TKey) == CommonTypes.ObjectType && typeof(TValue) == CommonTypes.ObjectType)
             {
                 return (IDictionary<TKey, TValue>) dictionary;
             }

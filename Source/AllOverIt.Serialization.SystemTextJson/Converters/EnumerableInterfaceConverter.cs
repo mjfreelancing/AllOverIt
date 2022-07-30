@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AllOverIt.Reflection;
+using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -12,7 +13,7 @@ namespace AllOverIt.Serialization.SystemTextJson.Converters
         where TConcrete : class, TInterface
     {
         private static readonly Type InterfaceType = typeof(TInterface);
-        private static readonly Type EnumerableInterfaceType = typeof(IEnumerable<>).MakeGenericType(typeof(TInterface));
+        private static readonly Type EnumerableInterfaceType = CommonTypes.IEnumerableGenericType.MakeGenericType(typeof(TInterface));
 
         /// <inheritdoc />
         public override bool CanConvert(Type typeToConvert)

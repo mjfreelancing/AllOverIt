@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
+using AllOverIt.Reflection;
 using AllOverIt.Serialization.Binary.Exceptions;
 using AllOverIt.Serialization.Binary.Extensions;
 using System;
@@ -14,28 +15,26 @@ namespace AllOverIt.Serialization.Binary
     /// <inheritdoc cref="IEnrichedBinaryWriter"/>
     public sealed class EnrichedBinaryWriter : BinaryWriter, IEnrichedBinaryWriter
     {
-        private readonly Type ObjectType = typeof(object);
-
         private static readonly IDictionary<Type, TypeIdentifier> TypeIdRegistry = new Dictionary<Type, TypeIdentifier>
         {
-            { typeof(bool), TypeIdentifier.Bool },
-            { typeof(byte), TypeIdentifier.Byte },
-            { typeof(sbyte), TypeIdentifier.SByte },
-            { typeof(ushort), TypeIdentifier.UShort },
-            { typeof(short), TypeIdentifier.Short },
-            { typeof(uint), TypeIdentifier.UInt },
-            { typeof(int), TypeIdentifier.Int },
-            { typeof(ulong), TypeIdentifier.ULong },
-            { typeof(long), TypeIdentifier.Long },
-            { typeof(float), TypeIdentifier.Float },
-            { typeof(double), TypeIdentifier.Double },
-            { typeof(decimal), TypeIdentifier.Decimal },
-            { typeof(string), TypeIdentifier.String },
-            { typeof(char), TypeIdentifier.Char },
-            { typeof(Enum), TypeIdentifier.Enum },
-            { typeof(Guid), TypeIdentifier.Guid },
-            { typeof(DateTime), TypeIdentifier.DateTime },
-            { typeof(TimeSpan), TypeIdentifier.TimeSpan }
+            { CommonTypes.BoolType, TypeIdentifier.Bool },
+            { CommonTypes.ByteType, TypeIdentifier.Byte },
+            { CommonTypes.SByteType, TypeIdentifier.SByte },
+            { CommonTypes.UShortType, TypeIdentifier.UShort },
+            { CommonTypes.ShortType, TypeIdentifier.Short },
+            { CommonTypes.UIntType, TypeIdentifier.UInt },
+            { CommonTypes.IntType, TypeIdentifier.Int },
+            { CommonTypes.ULongType, TypeIdentifier.ULong },
+            { CommonTypes.LongType, TypeIdentifier.Long },
+            { CommonTypes.FloatType, TypeIdentifier.Float },
+            { CommonTypes.DoubleType, TypeIdentifier.Double },
+            { CommonTypes.DecimalType, TypeIdentifier.Decimal },
+            { CommonTypes.StringType, TypeIdentifier.String },
+            { CommonTypes.CharType, TypeIdentifier.Char },
+            { CommonTypes.EnumType, TypeIdentifier.Enum },
+            { CommonTypes.GuidType, TypeIdentifier.Guid },
+            { CommonTypes.DateTimeType, TypeIdentifier.DateTime },
+            { CommonTypes.TimeSpanType, TypeIdentifier.TimeSpan }
         };
 
         private static readonly IDictionary<TypeIdentifier, Action<EnrichedBinaryWriter, object>> TypeIdWriter =
@@ -59,7 +58,7 @@ namespace AllOverIt.Serialization.Binary
             { TypeIdentifier.Guid, (writer, value) => writer.WriteGuid((Guid)value) },
             { TypeIdentifier.DateTime, (writer, value) => writer.WriteInt64(((DateTime)value).ToBinary()) },
             { TypeIdentifier.TimeSpan, (writer, value) => writer.WriteInt64(((TimeSpan)value).Ticks) },
-            { TypeIdentifier.Dictionary, (writer, value) => writer.WriteDictionary((IDictionary)value) },            
+            { TypeIdentifier.Dictionary, (writer, value) => writer.WriteDictionary((IDictionary)value) },
             { TypeIdentifier.Enumerable, (writer, value) => writer.WriteEnumerable((IEnumerable)value) },
 
             {
@@ -132,12 +131,12 @@ namespace AllOverIt.Serialization.Binary
         public void WriteObject(object value, Type type)
         {
             // Including null checking in case the values come from something like Enumerable.Range()
-            if (type is null || type == ObjectType)
+            if (type is null || type == CommonTypes.ObjectType)
             {
                 type = value?.GetType();
             }
 
-            if (value is null && (type is null || type == ObjectType))
+            if (value is null && (type is null || type == CommonTypes.ObjectType))
             {
                 throw new BinaryWriterException("All binary serialized values must be typed or have a non-null value.");
             }

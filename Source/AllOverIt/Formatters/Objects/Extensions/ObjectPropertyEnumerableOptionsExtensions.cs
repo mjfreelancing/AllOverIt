@@ -3,6 +3,7 @@ using AllOverIt.Extensions;
 using AllOverIt.Formatters.Objects.Exceptions;
 using AllOverIt.Helpers.PropertyNavigation;
 using AllOverIt.Helpers.PropertyNavigation.Extensions;
+using AllOverIt.Reflection;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -38,7 +39,7 @@ namespace AllOverIt.Formatters.Objects.Extensions
                     elementType = leafNodeType.GetElementType();
                 }
 
-                if (typeof(IEnumerable).IsAssignableFrom(leafNodeType))
+                if (CommonTypes.IEnumerableType.IsAssignableFrom(leafNodeType))
                 {
                     if (leafNodeType.IsGenericType)
                     {
@@ -49,7 +50,7 @@ namespace AllOverIt.Formatters.Objects.Extensions
                 // elementType is null when not an array or IEnumerable
                 var typeToCheck = elementType ?? leafNodeType;
 
-                if (typeToCheck.IsClassType() && typeToCheck != typeof(string))
+                if (typeToCheck.IsClassType() && typeToCheck != CommonTypes.StringType)
                 {
                     throw new ObjectPropertyFilterException($"The leaf property on path '{fullNodePath}' cannot be a class type ({item.ObjectType.GetFriendlyName()}).");
                 }

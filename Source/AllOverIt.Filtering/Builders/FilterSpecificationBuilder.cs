@@ -255,7 +255,7 @@ namespace AllOverIt.Filtering.Builders
                 var genericArgumentType = operationType.GetGenericArguments()[0];
 
                 // Looking for typeof(string) and not IStringFilterOperation because other non (explicit) string operations support strings
-                var argTypeIsNullable = genericArgumentType == typeof(string) || genericArgumentType.IsNullableType();
+                var argTypeIsNullable = genericArgumentType == CommonTypes.StringType || genericArgumentType.IsNullableType();
 
                 var operationIsArray = operationType.IsDerivedFrom(typeof(IArrayFilterOperation));
 
@@ -393,7 +393,7 @@ namespace AllOverIt.Filtering.Builders
 
         private static IList ConvertListElements(IList elements, Type elementType)
         {
-            var listType = typeof(List<>).MakeGenericType(new[] { elementType });
+            var listType = CommonTypes.ListGenericType.MakeGenericType(new[] { elementType });
 
             var typedList = (IList) Activator.CreateInstance(listType);
 

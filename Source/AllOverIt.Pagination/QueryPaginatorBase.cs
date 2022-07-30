@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
+using AllOverIt.Reflection;
 using System;
 using System.Collections.Concurrent;
 using System.Reflection;
@@ -15,9 +16,9 @@ namespace AllOverIt.Pagination
         {
             var comparableTypes = new[]
             {
-                typeof(bool),
-                typeof(string),
-                typeof(Guid)
+                CommonTypes.BoolType,
+                CommonTypes.StringType,
+                CommonTypes.GuidType
             };
 
             var registry = new ConcurrentDictionary<Type, MethodInfo>();

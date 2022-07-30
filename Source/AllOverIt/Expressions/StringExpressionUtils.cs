@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Assertion;
+using AllOverIt.Reflection;
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -8,17 +9,33 @@ namespace AllOverIt.Expressions
     /// <summary>A utility class that provides expression helpers related string operations.</summary>
     public static class StringExpressionUtils
     {
-        private static readonly MethodInfo CompareMethodInfo = typeof(string).GetMethod("Compare", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(string), typeof(string) }, null);
-        private static readonly MethodInfo CompareStringComparisonMethodInfo = typeof(string).GetMethod("Compare", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(string), typeof(string), typeof(StringComparison) }, null);
+        // Compare
+        private static readonly MethodInfo CompareMethodInfo = CommonTypes.StringType.GetMethod(
+            "Compare", BindingFlags.Public | BindingFlags.Static, null, new[] { CommonTypes.StringType, CommonTypes.StringType }, null);        
+        
+        private static readonly MethodInfo CompareStringComparisonMethodInfo = CommonTypes.StringType.GetMethod(
+            "Compare", BindingFlags.Public | BindingFlags.Static, null, new[] { CommonTypes.StringType, CommonTypes.StringType, CommonTypes.StringComparisonType }, null);
 
-        private static readonly MethodInfo ContainsMethodInfo = typeof(string).GetMethod("Contains", new[] { typeof(string) });
-        private static readonly MethodInfo ContainsStringComparisonMethodInfo = typeof(string).GetMethod("Contains", new[] { typeof(string), typeof(StringComparison) });
+        // Contains
+        private static readonly MethodInfo ContainsMethodInfo = CommonTypes.StringType.GetMethod(
+            "Contains", new[] { CommonTypes.StringType });
 
-        private static readonly MethodInfo StartsWithMethodInfo = typeof(string).GetMethod("StartsWith", new[] { typeof(string) });
-        private static readonly MethodInfo StartsWithStringComparisonMethodInfo = typeof(string).GetMethod("StartsWith", new[] { typeof(string), typeof(StringComparison) });
+        private static readonly MethodInfo ContainsStringComparisonMethodInfo = CommonTypes.StringType.GetMethod(
+            "Contains", new[] { CommonTypes.StringType, CommonTypes.StringComparisonType });
 
-        private static readonly MethodInfo EndsWithMethodInfo = typeof(string).GetMethod("EndsWith", new[] { typeof(string) });
-        private static readonly MethodInfo EndsWithStringComparisonMethodInfo = typeof(string).GetMethod("EndsWith", new[] { typeof(string), typeof(StringComparison) });
+        // StartsWith
+        private static readonly MethodInfo StartsWithMethodInfo = CommonTypes.StringType.GetMethod(
+            "StartsWith", new[] { CommonTypes.StringType });
+
+        private static readonly MethodInfo StartsWithStringComparisonMethodInfo = CommonTypes.StringType.GetMethod(
+            "StartsWith", new[] { CommonTypes.StringType, CommonTypes.StringComparisonType });
+
+        // EndsWith
+        private static readonly MethodInfo EndsWithMethodInfo = CommonTypes.StringType.GetMethod(
+            "EndsWith", new[] { CommonTypes.StringType });
+
+        private static readonly MethodInfo EndsWithStringComparisonMethodInfo = CommonTypes.StringType.GetMethod(
+            "EndsWith", new[] { CommonTypes.StringType, CommonTypes.StringComparisonType });
 
         /// <summary>Creates a <see cref="MethodCallExpression"/> that will execute the static method <see cref="string.Compare(string?, string?)" /> or
         /// <see cref="string.Compare(string?, string?, StringComparison)"/> method based on the provided arguments.</summary>

@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Patterns.Specification.Exceptions;
+using AllOverIt.Reflection;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,9 +28,9 @@ namespace AllOverIt.Patterns.Specification.Utils
 
         private static readonly IDictionary<Type, Func<object, string>> _valueConverters = new Dictionary<Type, Func<object, string>>
         {
-            [typeof(string)] = value => $"'{value}'",
-            [typeof(DateTime)] = value => $"'{((DateTime) value).ToUniversalTime():yyyy-MM-ddTHH:mm:ss.fffZ}'",
-            [typeof(bool)] = value => value.ToString()
+            [CommonTypes.StringType] = value => $"'{value}'",
+            [CommonTypes.DateTimeType] = value => $"'{((DateTime) value).ToUniversalTime():yyyy-MM-ddTHH:mm:ss.fffZ}'",
+            [CommonTypes.BoolType] = value => value.ToString()
         };
 
         private readonly StringBuilder _queryStringBuilder = new();
@@ -152,7 +153,7 @@ namespace AllOverIt.Patterns.Specification.Utils
 
             var type = input.GetType();
 
-            if (type.IsClass && type != typeof(string))
+            if (type.IsClass && type != CommonTypes.StringType)
             {
                 if (input is ICollection collection)
                 {

@@ -3,6 +3,7 @@ using AllOverIt.Aws.Cdk.AppSync.Attributes.Directives;
 using AllOverIt.Aws.Cdk.AppSync.Attributes.Types;
 using AllOverIt.Aws.Cdk.AppSync.Exceptions;
 using AllOverIt.Extensions;
+using AllOverIt.Reflection;
 using Amazon.CDK.AWS.AppSync;
 using System.Collections.Generic;
 using System.Linq;
@@ -82,7 +83,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
             }
 
             // not expecting class types to be used, but check anyway
-            if (elementType != typeof(string) && (elementType.IsClass || elementType.IsInterface))
+            if (elementType != CommonTypes.StringType && (elementType.IsClass || elementType.IsInterface))
             {
                 var typeDescription = elementType.IsClass ? "class" : "interface";
 

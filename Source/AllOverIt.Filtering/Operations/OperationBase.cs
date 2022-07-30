@@ -4,6 +4,7 @@ using AllOverIt.Expressions;
 using AllOverIt.Extensions;
 using AllOverIt.Filtering.Options;
 using AllOverIt.Patterns.Specification;
+using AllOverIt.Reflection;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -13,7 +14,7 @@ namespace AllOverIt.Filtering.Operations
 {
     internal abstract class OperationBase<TEntity, TProperty> : LinqSpecification<TEntity> where TEntity : class
     {
-        protected static readonly bool PropertyIsString = typeof(TProperty) == typeof(string);
+        protected static readonly bool PropertyIsString = typeof(TProperty) == CommonTypes.StringType;
 
         protected OperationBase(
             // The property building the predicate for

@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using AllOverIt.Helpers.PropertyNavigation.Extensions;
+using AllOverIt.Reflection;
 
 namespace PropertyNavigation
 {
@@ -85,7 +86,7 @@ namespace PropertyNavigation
 
             var typeToCheck = elementType ?? leafNodeType;
 
-            if (typeToCheck.IsClassType() && typeToCheck != typeof(string))
+            if (typeToCheck.IsClassType() && typeToCheck != CommonTypes.StringType)
             {
                 Console.WriteLine("The leaf node/element is a class type");
             }

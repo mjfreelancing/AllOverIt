@@ -213,12 +213,12 @@ namespace AllOverIt.Extensions
             var instanceType = instance.GetType();
 
             // return the same value if no conversion is required
-            if (genericType == instanceType || genericType == typeof(object))
+            if (genericType == instanceType || genericType == CommonTypes.ObjectType)
             {
                 return (TType) instance;
             }
 
-            if (genericType.IsClassType() && genericType != typeof(string))
+            if (genericType.IsClassType() && genericType != CommonTypes.StringType)
             {
                 // return the same value if the instance is a class inheriting `TType`
                 if (instanceType.IsDerivedFrom(genericType))
@@ -237,9 +237,9 @@ namespace AllOverIt.Extensions
             }
 
             // convert from integral to bool (conversion from a string is handled further below)
-            if (genericType == typeof(bool) && instance.IsIntegral())
+            if (genericType == CommonTypes.BoolType && instance.IsIntegral())
             {
-                var intValue = (int)Convert.ChangeType(instance, typeof(int));
+                var intValue = (int)Convert.ChangeType(instance, CommonTypes.IntType);
 
                 if (intValue is < 0 or > 1)
                 {
@@ -247,7 +247,7 @@ namespace AllOverIt.Extensions
                 }
 
                 // convert the integral to a boolean
-                instance = (bool)Convert.ChangeType(intValue, typeof(bool));
+                instance = (bool)Convert.ChangeType(intValue, CommonTypes.BoolType);
 
                 return (TType)instance;
             }
@@ -276,7 +276,7 @@ namespace AllOverIt.Extensions
                 return (TType)instance;
             }
 
-            if (genericType == typeof(bool) || instance is bool || genericType == typeof(char) || instance is char)
+            if (genericType == CommonTypes.BoolType || instance is bool || genericType == CommonTypes.CharType || instance is char)
             {
                 return (TType)Convert.ChangeType(instance, genericType);
             }
