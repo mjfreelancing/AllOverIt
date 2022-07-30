@@ -43,6 +43,7 @@ namespace AllOverIt.Tests.Serialization
             public DateTime DateTime { get; set; }
             public TimeSpan TimeSpan { get; set; }
             public IEnumerable<double> Doubles { get; set; }
+            public IDictionary<int, string> Dictionary { get; set; }
 
             // =================================================================================
 
@@ -70,6 +71,7 @@ namespace AllOverIt.Tests.Serialization
                 writer.WriteObject(DateTime);
                 writer.WriteObject(TimeSpan);
                 writer.WriteObject(Doubles);                    // Must be read back as List<object> and then converted
+                writer.WriteObject(Dictionary);
             }
 
             public void Read_Method1(IEnrichedBinaryReader reader)
@@ -97,7 +99,14 @@ namespace AllOverIt.Tests.Serialization
                 TimeSpan = reader.ReadObject<TimeSpan>();
 
                 // Must use this syntax when written using WriteObject()
-                Doubles = reader.ReadObject<List<object>>().Select(item => (double)item);
+                Doubles = reader
+                    .ReadObject<List<object>>()
+                    .Select(item => (double)item);
+
+                // Must use this syntax when written using WriteObject()
+                Dictionary = reader
+                    .ReadObject<Dictionary<object, object>>()
+                    .ToDictionary(kvp => (int)kvp.Key, kvp => (string)kvp.Value);
             }
 
             // =================================================================================
@@ -129,6 +138,7 @@ namespace AllOverIt.Tests.Serialization
                 writer.WriteObject(TimeSpan);
 
                 writer.WriteEnumerable(Doubles);
+                writer.WriteTypedDictionary<int, string>(Dictionary);
             }
 
             public void Read_Method2(IEnrichedBinaryReader reader)
@@ -159,6 +169,9 @@ namespace AllOverIt.Tests.Serialization
 
                 // Must use this syntax when using WriteEnumerable()
                 Doubles = reader.ReadEnumerable<double>();
+
+                // Must use this syntax when using WriteTypedDictionary()
+                Dictionary = reader.ReadDictionary<int, string>();
             }
 
             // =================================================================================
@@ -185,6 +198,7 @@ namespace AllOverIt.Tests.Serialization
                 writer.WriteObject(DateTime);
                 writer.WriteObject(TimeSpan);
                 writer.WriteObject(Doubles);
+                writer.WriteObject(Dictionary);
             }
 
             public void Read_Method3(IEnrichedBinaryReader reader)
@@ -212,34 +226,17 @@ namespace AllOverIt.Tests.Serialization
                 TimeSpan = reader.ReadObject<TimeSpan>();
 
                 // Must use this syntax when written using WriteObject()
-                Doubles = reader.ReadObject<List<object>>().Select(item => (double)item);
+                Doubles = reader
+                    .ReadObject<List<object>>()
+                    .Select(item => (double) item);
+
+                // Must use this syntax when written using WriteObject()
+                Dictionary = reader
+                    .ReadObject<Dictionary<object, object>>()
+                    .ToDictionary(kvp => (int) kvp.Key, kvp => (string) kvp.Value);
             }
 
             // =================================================================================
-
-
-            /*
-            { TypeIdentifier.Bool, reader => reader.ReadBoolean() },
-            { TypeIdentifier.Byte, reader => reader.ReadByte() },
-            { TypeIdentifier.SByte, reader => reader.ReadSByte() },
-            { TypeIdentifier.UShort, reader => reader.ReadUInt16() },
-            { TypeIdentifier.Short, reader => reader.ReadInt16() },
-            { TypeIdentifier.UInt, reader => reader.ReadUInt32() },
-            { TypeIdentifier.Int, reader => reader.ReadInt32() },
-            { TypeIdentifier.ULong, reader => reader.ReadUInt64() },
-            { TypeIdentifier.Long, reader => reader.ReadInt64() },
-            { TypeIdentifier.Float, reader => reader.ReadSingle() },
-            { TypeIdentifier.Double, reader => reader.ReadDouble() },
-            { TypeIdentifier.Decimal, reader => reader.ReadDecimal() },
-            { TypeIdentifier.String, reader => reader.ReadSafeString() },
-            { TypeIdentifier.Char, reader => reader.ReadChar() },
-            { TypeIdentifier.Enum, reader => reader.ReadEnum() },
-            { TypeIdentifier.Guid, reader => reader.ReadGuid() },
-            { TypeIdentifier.DateTime, reader => DateTime.FromBinary(reader.ReadInt64()) },
-            { TypeIdentifier.TimeSpan, reader => new TimeSpan(reader.ReadInt64()) },
-            { TypeIdentifier.Dictionary, reader => reader.ReadDictionary() },
-            { TypeIdentifier.Enumerable, reader => reader.ReadEnumerable() },             
-             */
 
         }
 
