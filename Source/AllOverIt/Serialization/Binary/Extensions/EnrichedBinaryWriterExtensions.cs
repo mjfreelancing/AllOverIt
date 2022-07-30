@@ -7,6 +7,8 @@ using System.Collections.Generic;
 
 namespace AllOverIt.Serialization.Binary.Extensions
 {
+    // NOT NULL CHECKING FOR A NULL WRITER ON EACH CALL AS ITS TOO MUCH OF A HOT PATH
+
     /// <summary>Provides extension methods for <see cref="IEnrichedBinaryWriter"/>.</summary>
     public static class EnrichedBinaryWriterExtensions
     {
