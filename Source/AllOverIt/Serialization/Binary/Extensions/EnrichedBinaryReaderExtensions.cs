@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Assertion;
+using AllOverIt.Extensions;
 using AllOverIt.Reflection;
 using AllOverIt.Serialization.Binary.Exceptions;
 using System;
@@ -107,9 +108,7 @@ namespace AllOverIt.Serialization.Binary.Extensions
         /// to the <typeparamref name="TValue"/> type.</returns>
         public static IEnumerable<TValue> ReadEnumerable<TValue>(this IEnrichedBinaryReader reader)
         {
-            return reader
-                .ReadObject<List<object>>()
-                .Cast<TValue>();
+            return reader.ReadEnumerable().SelectAsReadOnlyCollection(item => (TValue) item);
         }
 
         /// <summary>Reads a dictionary value from the current stream that was originally written using

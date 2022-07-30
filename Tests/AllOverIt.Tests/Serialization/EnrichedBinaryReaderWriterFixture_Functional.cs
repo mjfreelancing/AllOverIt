@@ -3,6 +3,7 @@ using AllOverIt.Serialization.Binary;
 using AllOverIt.Serialization.Binary.Extensions;
 using FluentAssertions;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -41,6 +42,7 @@ namespace AllOverIt.Tests.Serialization
             public Guid Guid { get; set; }
             public DateTime DateTime { get; set; }
             public TimeSpan TimeSpan { get; set; }
+            public IEnumerable<double> Doubles { get; set; }
 
             // =================================================================================
 
@@ -67,6 +69,7 @@ namespace AllOverIt.Tests.Serialization
                 writer.WriteObject(Guid);
                 writer.WriteObject(DateTime);
                 writer.WriteObject(TimeSpan);
+                writer.WriteObject(Doubles);                    // Must be read back as List<object> and then converted
             }
 
             public void Read_Method1(IEnrichedBinaryReader reader)
@@ -92,6 +95,9 @@ namespace AllOverIt.Tests.Serialization
                 Guid = reader.ReadObject<Guid>();
                 DateTime = reader.ReadObject<DateTime>();
                 TimeSpan = reader.ReadObject<TimeSpan>();
+
+                // Must use this syntax when written using WriteObject()
+                Doubles = reader.ReadObject<List<object>>().Select(item => (double)item);
             }
 
             // =================================================================================
@@ -121,6 +127,8 @@ namespace AllOverIt.Tests.Serialization
                 writer.WriteObject(Guid);
                 writer.WriteObject(DateTime);
                 writer.WriteObject(TimeSpan);
+
+                writer.WriteEnumerable(Doubles);
             }
 
             public void Read_Method2(IEnrichedBinaryReader reader)
@@ -148,6 +156,9 @@ namespace AllOverIt.Tests.Serialization
                 Guid = reader.ReadObject<Guid>();
                 DateTime = reader.ReadObject<DateTime>();
                 TimeSpan = reader.ReadObject<TimeSpan>();
+
+                // Must use this syntax when using WriteEnumerable()
+                Doubles = reader.ReadEnumerable<double>();
             }
 
             // =================================================================================
@@ -173,6 +184,7 @@ namespace AllOverIt.Tests.Serialization
                 writer.WriteObject(Guid);
                 writer.WriteObject(DateTime);
                 writer.WriteObject(TimeSpan);
+                writer.WriteObject(Doubles);
             }
 
             public void Read_Method3(IEnrichedBinaryReader reader)
@@ -198,6 +210,9 @@ namespace AllOverIt.Tests.Serialization
                 Guid = reader.ReadObject<Guid>();
                 DateTime = reader.ReadObject<DateTime>();
                 TimeSpan = reader.ReadObject<TimeSpan>();
+
+                // Must use this syntax when written using WriteObject()
+                Doubles = reader.ReadObject<List<object>>().Select(item => (double)item);
             }
 
             // =================================================================================

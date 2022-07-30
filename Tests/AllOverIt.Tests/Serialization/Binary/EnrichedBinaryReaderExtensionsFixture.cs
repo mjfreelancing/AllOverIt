@@ -249,12 +249,15 @@ namespace AllOverIt.Tests.Serialization.Binary
             [Fact]
             public void Should_Read_Enumerable()
             {
-                // must have List<object> to emulate what the write would have done
-                var values = new[] { 1, 0, 1, -1, 2 }.ToList();
+                var values = new[] { 1, 0, 1, -1, 2 };
+
+                _readerFake
+                    .CallsTo(fake => fake.ReadInt32())
+                    .Returns(5);
 
                 _readerFake
                     .CallsTo(fake => fake.ReadObject())
-                    .Returns(values.SelectAsList(item => (object)item));
+                    .ReturnsNextFromSequence(1, 0, 1, -1, 2);
 
                 var actual = EnrichedBinaryReaderExtensions.ReadEnumerable<int>(_readerFake.FakedObject);
 
