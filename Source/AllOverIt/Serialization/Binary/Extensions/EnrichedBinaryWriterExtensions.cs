@@ -30,7 +30,7 @@ namespace AllOverIt.Serialization.Binary.Extensions
         public static void WriteSafeString(this IEnrichedBinaryWriter writer, string value)
         {
             var hasValue = value.IsNotNullOrEmpty();
-            writer.WriteBoolean(hasValue);
+            writer.Write(hasValue);
 
             if (hasValue)
             {
@@ -106,7 +106,7 @@ namespace AllOverIt.Serialization.Binary.Extensions
 
         /// <summary>Writes a GUID value to the current stream.</summary>
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
-        public static void WriteGuid(this IEnrichedBinaryWriter writer, Guid value) => writer.WriteBytes(value.ToByteArray());
+        public static void WriteGuid(this IEnrichedBinaryWriter writer, Guid value) => writer.Write(value.ToByteArray());
 
         /// <summary>Writes an Enum value to the current stream.</summary>
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
