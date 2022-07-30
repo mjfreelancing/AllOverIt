@@ -7,8 +7,8 @@ internal sealed class ClassroomWriter : EnrichedBinaryValueWriter<Classroom>
     {
         var classroom = (Classroom) value;
 
-        writer.WriteGuid(classroom.RoomId);         // Writes the Guid without a type prefix
+        writer.WriteGuid(classroom.RoomId);
         writer.WriteObject(classroom.Teacher);
-        writer.WriteObject(classroom.Students);     // This is an Enumerable
+        writer.WriteEnumerable(classroom.Students);
     }
 }
