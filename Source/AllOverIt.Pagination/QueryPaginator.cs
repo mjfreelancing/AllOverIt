@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 
 namespace AllOverIt.Pagination
 {
+    /// <summary>A paginated query builder that supports ordering multiple columns suitable for forward and backward navigation.</summary>
+    /// <typeparam name="TEntity">The entity type that the generated query is based on.</typeparam>
     public sealed class QueryPaginator<TEntity> : QueryPaginatorBase, IQueryPaginator<TEntity>
         where TEntity : class
     {
@@ -33,6 +35,9 @@ namespace AllOverIt.Pagination
 
         public IContinuationTokenEncoder TokenEncoder => GetContinuationTokenEncoder();
 
+        /// <summary>Constructor.</summary>
+        /// <param name="query">The base query to apply pagination to.</param>
+        /// <param name="configuration">Provides paginator options that define how the paginated query will be generated.</param>
         public QueryPaginator(IQueryable<TEntity> query, QueryPaginatorConfiguration configuration)
         {
             _query = query.WhenNotNull(nameof(query));

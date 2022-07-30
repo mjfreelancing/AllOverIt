@@ -7,6 +7,7 @@ using System.Reflection;
 
 namespace AllOverIt.Pagination
 {
+    /// <summary>Base query paginator. Contains a static registry of type comparisons.</summary>
     public abstract class QueryPaginatorBase
     {
         // base class mainly exists to keep non-generic statics out of the generic implementations
@@ -37,7 +38,7 @@ namespace AllOverIt.Pagination
             _comparisonMethods = registry;
         }
 
-        protected static bool TryGetComparisonMethodInfo(Type type, out MethodInfo methodInfo)
+        internal static bool TryGetComparisonMethodInfo(Type type, out MethodInfo methodInfo)
         {
             // Enum's are IComparable but we can't pre-register the types we don't know about - so register them as they arrive
             if (type.IsEnum)

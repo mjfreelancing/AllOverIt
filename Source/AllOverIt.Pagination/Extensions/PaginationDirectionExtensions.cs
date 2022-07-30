@@ -1,6 +1,6 @@
 ﻿namespace AllOverIt.Pagination.Extensions
 {
-    public static class PaginationDirectionExtensions
+    internal static class PaginationDirectionExtensions
     {
         public static PaginationDirection Reverse(this PaginationDirection direction)
         {

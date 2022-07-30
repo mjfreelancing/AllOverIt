@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace AllOverIt.Pagination
 {
+    /// <summary>Creates a <see cref="IQueryPaginator{TEntity}"/> instances.</summary>
     public sealed class QueryPaginatorFactory : IQueryPaginatorFactory
     {
         public IQueryPaginator<TEntity> CreatePaginator<TEntity>(IQueryable<TEntity> query, QueryPaginatorConfiguration configuration)

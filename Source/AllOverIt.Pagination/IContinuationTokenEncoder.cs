@@ -2,6 +2,7 @@
 
 namespace AllOverIt.Pagination
 {
+    /// <summary>Describes a token generator that simplifies requesting next and previous page queries.</summary>
     public interface IContinuationTokenEncoder
     {
         // The caller can create a previous/next page token as desired - the first/last row is selected based on the direction
