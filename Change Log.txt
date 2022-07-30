@@ -13,6 +13,9 @@ AllOverIt.Filtering
     with IStringFilterOperation.
   * Renamed AsQueryString() to ToQueryString()
 
+AllOverIt.Pagination
+  * Renamed AddQueryPaginator() extension method to AddQueryPaginatorFactory()
+
 AllOverIt.FixtureBase
   * Seed the Random in FixtureBase
 

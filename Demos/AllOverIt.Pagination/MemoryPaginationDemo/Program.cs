@@ -12,7 +12,7 @@ class Program
             .CreateConsoleHostBuilder<App>(args)
             .ConfigureServices((hostContext, services) =>
             {
-                services.AddQueryPaginator();
+                services.AddQueryPaginatorFactory();
             })
             .RunConsoleAsync(options => options.SuppressStatusMessages = true);
     }
