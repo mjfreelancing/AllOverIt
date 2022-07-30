@@ -14,6 +14,8 @@ using Xunit;
 
 namespace AllOverIt.Tests.Serialization.Binary
 {
+    // ALL TESTS ARE BEHAVIOURAL AND MAY NOT REFLECT HOW THE ACTUAL IMPLEMENTATION WORKS.
+    // FUNCTIONAL TESTS COVER THE REAL IMPLEMENTATION.
     public class EnrichedBinaryReaderExtensionsFixture : FixtureBase
     {
         private enum DummyEnum
