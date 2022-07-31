@@ -60,7 +60,6 @@ namespace AllOverIt.Serialization.Binary
             { TypeIdentifier.TimeSpan, (writer, value) => writer.WriteInt64(((TimeSpan)value).Ticks) },
             { TypeIdentifier.Dictionary, (writer, value) => writer.WriteDictionary((IDictionary)value) },
             { TypeIdentifier.Enumerable, (writer, value) => writer.WriteEnumerable((IEnumerable)value) },
-
             {
                 TypeIdentifier.Cached, (writer, value) =>
                 {
@@ -74,7 +73,6 @@ namespace AllOverIt.Serialization.Binary
                     converter.WriteValue(writer, value);
                 }
             },
-
             {
                 TypeIdentifier.UserDefined, (writer, value) =>
                 {
