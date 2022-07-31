@@ -64,7 +64,7 @@ namespace AllOverIt.Serialization.Binary.Extensions
         }
 
         /// <summary>Reads an object from the current stream that was originally written using
-        /// <see cref="EnrichedBinaryWriterExtensions.WriteObject{TType}(IEnrichedBinaryWriter, TType)"/>.
+        /// <see cref="EnrichedBinaryWriterExtensions.WriteObject{TType}(IEnrichedBinaryWriter, TType)"/>.</summary>
         /// <typeparam name="TValue">The value type to be read from the current stream.</typeparam>
         /// <param name="reader">The reader that is reading from the current stream.</param>
         /// <returns>The object read from the stream.</returns>
@@ -74,13 +74,24 @@ namespace AllOverIt.Serialization.Binary.Extensions
         }
 
         /// <summary>Reads an enumerable from the current stream that was originally written using
-        /// <see cref="EnrichedBinaryWriterExtensions.WriteObject{TType}(IEnrichedBinaryWriter, TType)"/>.
+        /// <see cref="EnrichedBinaryWriterExtensions.WriteObject{TType}(IEnrichedBinaryWriter, TType)"/>.</summary>
         /// <typeparam name="TValue">The value type to be read from the current stream.</typeparam>
         /// <param name="reader">The reader that is reading from the current stream.</param>
         /// <returns>The object read from the stream.</returns>
         public static IEnumerable<TValue> ReadObjectAsEnumerable<TValue>(this IEnrichedBinaryReader reader)
         {
             return reader.ReadObject<List<object>>().Select(item => (TValue) item);
+        }
+
+        /// <summary>Reads a typed dictionary from the current stream that was originally written using
+        /// <see cref="EnrichedBinaryWriterExtensions.WriteObject{TType}(IEnrichedBinaryWriter, TType)"/>.</summary>
+        /// <typeparam name="TKey">The dictionary key type to be read from the current stream.</typeparam>
+        /// <typeparam name="TValue">The dictionary value type to be read from the current stream.</typeparam>
+        /// <param name="reader">The reader that is reading from the current stream.</param>
+        /// <returns>The object read from the stream.</returns>
+        public static IDictionary<TKey, TValue> ReadObjectAsDictionary<TKey, TValue>(this IEnrichedBinaryReader reader)
+        {
+            return reader.ReadObject<Dictionary<object, object>>().ToDictionary(kvp => (TKey) kvp.Key, kvp => (TValue) kvp.Value);
         }
 
         /// <summary>Reads a nullable value from the current stream that was originally written using

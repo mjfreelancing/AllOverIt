@@ -233,7 +233,7 @@ namespace AllOverIt.Serialization.Binary.Extensions
         /// <param name="dictionary">The IDictionary to be written.</param>
         /// <remarks>This method cannot exist as an overload of <see cref="EnrichedBinaryWriterExtensions.WriteDictionary(IEnrichedBinaryWriter, IDictionary)"/>
         /// without becoming ambigious.</remarks>
-        public static void WriteTypedDictionary<TKey, TValue>(this IEnrichedBinaryWriter writer, IDictionary<TKey, TValue> dictionary)
+        public static void WriteDictionary<TKey, TValue>(this IEnrichedBinaryWriter writer, IDictionary<TKey, TValue> dictionary)
         {
             _ = dictionary.WhenNotNull(nameof(dictionary));
 

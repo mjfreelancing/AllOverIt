@@ -3,6 +3,7 @@ using AllOverIt.Serialization.Binary;
 using AllOverIt.Serialization.Binary.Extensions;
 using FluentAssertions;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -101,11 +102,10 @@ namespace AllOverIt.Tests.Serialization
                 // Must use this syntax when written using WriteObject()
                 // Same as reader.ReadObject<List<object>>().Select(item => (double)item);
                 Doubles = reader.ReadObjectAsEnumerable<double>();
-                
+
                 // Must use this syntax when written using WriteObject()
-                Dictionary = reader
-                    .ReadObject<Dictionary<object, object>>()
-                    .ToDictionary(kvp => (int)kvp.Key, kvp => (string)kvp.Value);
+                // Same as reader.ReadObject<Dictionary<object, object>>().ToDictionary(kvp => (int) kvp.Key, kvp => (string) kvp.Value);
+                Dictionary = reader.ReadObjectAsDictionary<int, string>();
             }
 
             // =================================================================================
@@ -137,7 +137,7 @@ namespace AllOverIt.Tests.Serialization
                 writer.WriteObject(TimeSpan);
 
                 writer.WriteEnumerable(Doubles);
-                writer.WriteTypedDictionary<int, string>(Dictionary);
+                writer.WriteDictionary(Dictionary);     // is generic overload <int, string>
             }
 
             public void Read_Method2(IEnrichedBinaryReader reader)
@@ -229,9 +229,8 @@ namespace AllOverIt.Tests.Serialization
                 Doubles = reader.ReadObjectAsEnumerable<double>();
 
                 // Must use this syntax when written using WriteObject()
-                Dictionary = reader
-                    .ReadObject<Dictionary<object, object>>()
-                    .ToDictionary(kvp => (int) kvp.Key, kvp => (string) kvp.Value);
+                // Same as reader.ReadObject<Dictionary<object, object>>().ToDictionary(kvp => (int) kvp.Key, kvp => (string) kvp.Value);
+                Dictionary = reader.ReadObjectAsDictionary<int, string>();
             }
 
             // =================================================================================
@@ -447,6 +446,35 @@ namespace AllOverIt.Tests.Serialization
                 {
                     // Same as: reader.ReadObject<List<object>>().Select(item => (int)item);
                     actual = reader.ReadObjectAsEnumerable<int>();
+                }
+            }
+
+            actual.Should().BeEquivalentTo(expected);
+        }
+
+        [Fact]
+        public void Should_Write_Non_Generic_Dictionary()
+        {
+            var expected = Environment.GetEnvironmentVariables();       // IDictionary
+            IDictionary<string, string> actual = default;               // Expected to be read back as
+
+            byte[] bytes;
+
+            using (var stream = new MemoryStream())
+            {
+                using (var writer = new EnrichedBinaryWriter(stream, Encoding.UTF8, true))
+                {
+                    writer.WriteDictionary(expected);
+                }
+
+                bytes = stream.ToArray();
+            }
+
+            using (var stream = new MemoryStream(bytes))
+            {
+                using (var reader = new EnrichedBinaryReader(stream, Encoding.UTF8, true))
+                {
+                    actual = reader.ReadDictionary<string, string>();
                 }
             }
 
