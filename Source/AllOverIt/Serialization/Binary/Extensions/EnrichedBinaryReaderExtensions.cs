@@ -73,6 +73,16 @@ namespace AllOverIt.Serialization.Binary.Extensions
             return (TValue) reader.ReadObject();
         }
 
+        /// <summary>Reads an enumerable from the current stream that was originally written using
+        /// <see cref="EnrichedBinaryWriterExtensions.WriteObject{TType}(IEnrichedBinaryWriter, TType)"/>.
+        /// <typeparam name="TValue">The value type to be read from the current stream.</typeparam>
+        /// <param name="reader">The reader that is reading from the current stream.</param>
+        /// <returns>The object read from the stream.</returns>
+        public static IEnumerable<TValue> ReadObjectAsEnumerable<TValue>(this IEnrichedBinaryReader reader)
+        {
+            return reader.ReadObject<List<object>>().Select(item => (TValue) item);
+        }
+
         /// <summary>Reads a nullable value from the current stream that was originally written using
         /// <see cref="EnrichedBinaryWriterExtensions.WriteNullable{TValue}(IEnrichedBinaryWriter, TValue?)"/>
         /// or <see cref="EnrichedBinaryWriterExtensions.WriteObject{TType}(IEnrichedBinaryWriter, TType)"/>.</summary>

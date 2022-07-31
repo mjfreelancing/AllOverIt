@@ -99,10 +99,9 @@ namespace AllOverIt.Tests.Serialization
                 TimeSpan = reader.ReadObject<TimeSpan>();
 
                 // Must use this syntax when written using WriteObject()
-                Doubles = reader
-                    .ReadObject<List<object>>()
-                    .Select(item => (double)item);
-
+                // Same as reader.ReadObject<List<object>>().Select(item => (double)item);
+                Doubles = reader.ReadObjectAsEnumerable<double>();
+                
                 // Must use this syntax when written using WriteObject()
                 Dictionary = reader
                     .ReadObject<Dictionary<object, object>>()
@@ -226,9 +225,8 @@ namespace AllOverIt.Tests.Serialization
                 TimeSpan = reader.ReadObject<TimeSpan>();
 
                 // Must use this syntax when written using WriteObject()
-                Doubles = reader
-                    .ReadObject<List<object>>()
-                    .Select(item => (double) item);
+                // Same as reader.ReadObject<List<object>>().Select(item => (double)item);
+                Doubles = reader.ReadObjectAsEnumerable<double>();
 
                 // Must use this syntax when written using WriteObject()
                 Dictionary = reader
@@ -327,6 +325,128 @@ namespace AllOverIt.Tests.Serialization
                 using (var reader = new EnrichedBinaryReader(stream, Encoding.UTF8, true))
                 {
                     actual.Read_Method3(reader);
+                }
+            }
+
+            actual.Should().BeEquivalentTo(expected);
+        }
+
+        [Fact]
+        public void Should_Write_RangeIterator_Using_WriteEnumerable()
+        {
+            var expected = Enumerable.Range(1, 10);     // returns a RangeIterator - no generic arguments
+
+            IEnumerable<int> actual = default;
+
+            byte[] bytes;
+
+            using (var stream = new MemoryStream())
+            {
+                using (var writer = new EnrichedBinaryWriter(stream, Encoding.UTF8, true))
+                {
+                    writer.WriteEnumerable(expected);
+                }
+
+                bytes = stream.ToArray();
+            }
+
+            using (var stream = new MemoryStream(bytes))
+            {
+                using (var reader = new EnrichedBinaryReader(stream, Encoding.UTF8, true))
+                {
+                    actual = reader.ReadEnumerable<int>();
+                }
+            }
+
+            actual.Should().BeEquivalentTo(expected);
+        }
+
+        [Fact]
+        public void Should_Write_RangeIterator_Using_WriteObject()
+        {
+            var expected = Enumerable.Range(1, 10);     // returns a RangeIterator - no generic arguments
+
+            IEnumerable<int> actual = default;
+
+            byte[] bytes;
+
+            using (var stream = new MemoryStream())
+            {
+                using (var writer = new EnrichedBinaryWriter(stream, Encoding.UTF8, true))
+                {
+                    writer.WriteObject(expected);
+                }
+
+                bytes = stream.ToArray();
+            }
+
+            using (var stream = new MemoryStream(bytes))
+            {
+                using (var reader = new EnrichedBinaryReader(stream, Encoding.UTF8, true))
+                {
+                    // Same as: reader.ReadObject<List<object>>().Select(item => (int)item);
+                    actual = reader.ReadObjectAsEnumerable<int>();
+                }
+            }
+
+            actual.Should().BeEquivalentTo(expected);
+        }
+
+        [Fact]
+        public void Should_Write_SelectEnumerableIterator_Using_WriteEnumerable()
+        {
+            var expected = CreateMany<int>().Select(item => (object) item);     // returns SelectEnumerableIterator<int?, object> - two generic arguments
+
+            IEnumerable<int> actual = default;
+
+            byte[] bytes;
+
+            using (var stream = new MemoryStream())
+            {
+                using (var writer = new EnrichedBinaryWriter(stream, Encoding.UTF8, true))
+                {
+                    writer.WriteEnumerable(expected);
+                }
+
+                bytes = stream.ToArray();
+            }
+
+            using (var stream = new MemoryStream(bytes))
+            {
+                using (var reader = new EnrichedBinaryReader(stream, Encoding.UTF8, true))
+                {
+                    actual = reader.ReadEnumerable<int>();
+                }
+            }
+
+            actual.Should().BeEquivalentTo(expected);
+        }
+
+        [Fact]
+        public void Should_Write_SelectEnumerableIterator_Using_WriteObject()
+        {
+            var expected = CreateMany<int>().Select(item => (object) item);     // returns SelectEnumerableIterator<int?, object> - two generic arguments
+
+            IEnumerable<int> actual = default;
+
+            byte[] bytes;
+
+            using (var stream = new MemoryStream())
+            {
+                using (var writer = new EnrichedBinaryWriter(stream, Encoding.UTF8, true))
+                {
+                    writer.WriteObject(expected);
+                }
+
+                bytes = stream.ToArray();
+            }
+
+            using (var stream = new MemoryStream(bytes))
+            {
+                using (var reader = new EnrichedBinaryReader(stream, Encoding.UTF8, true))
+                {
+                    // Same as: reader.ReadObject<List<object>>().Select(item => (int)item);
+                    actual = reader.ReadObjectAsEnumerable<int>();
                 }
             }
 
