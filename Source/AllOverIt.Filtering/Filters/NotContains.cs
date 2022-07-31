@@ -1,8 +1,6 @@
 ﻿namespace AllOverIt.Filtering.Filters
 {
-    /// <summary>Provides a filter option where elements are compared to the value of its
-    /// <see cref="IStringFilterOperation.Value"/>. The comparison returns true when the
-    /// element does not contain the value of this <see cref="IStringFilterOperation.Value"/>.</summary>
+    /// <summary>Provides a filter that returns true when the element does not contain the value of this filter.</summary>
     public sealed class NotContains : INotContains
     {
         /// <summary>The filter value used for comparison. The comparison returns true when the

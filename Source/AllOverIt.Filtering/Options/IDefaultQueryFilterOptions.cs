@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Filtering.Builders;
+using AllOverIt.Filtering.Filters;
 using System;
 
 namespace AllOverIt.Filtering.Options
@@ -18,7 +19,7 @@ namespace AllOverIt.Filtering.Options
 
         /// <summary>When building a predicate via a filter builder (as an <see cref="IPredicateFilterBuilder{TType, TFilter}"/>
         /// or <see cref="ILogicalFilterBuilder{TType, TFilter}"/>) the comparison value is extracted from the provided expression (of
-        /// type <see cref="IBasicFilterOperation"/> or <see cref="IArrayFilterOperation}"/> or <see cref="IStringFilterOperation"/>).
+        /// type <see cref="IBasicFilterOperation"/> or <see cref="IArrayFilterOperation"/> or <see cref="IStringFilterOperation"/>).
         /// This option instructs the builder to ignore the predicate if the filter's value is null. This can be handy for automatically
         /// excluding optional filters.</summary>
         bool IgnoreNullFilterValues { get; }

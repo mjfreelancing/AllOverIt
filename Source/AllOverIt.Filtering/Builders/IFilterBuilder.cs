@@ -27,7 +27,7 @@ namespace AllOverIt.Filtering.Builders
     {
         /// <summary>
         /// <para>
-        /// Gets the current logical expression to cater for additional of <see cref="Where(ILinqSpecification{TType})"/> or
+        /// Gets the current logical expression to cater for additional of <see cref="IPredicateFilterBuilder{TType, TFilter}.Where(ILinqSpecification{TType})"/> or
         /// <see cref="ILogicalFilterBuilder{TType, TFilter}.And(ILinqSpecification{TType})"/> or <see cref="ILogicalFilterBuilder{TType, TFilter}.Or(ILinqSpecification{TType})"/>
         /// calls (or one of their overloads).
         /// </para>

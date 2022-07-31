@@ -1,8 +1,6 @@
 ﻿namespace AllOverIt.Filtering.Filters
 {
-    /// <summary>Provides a filter option where elements are compared to the value of its
-    /// <see cref="IFilterOperationType{TProperty}.Value"/>. The comparison returns true when the
-    /// element is not equal to the value of this <see cref="IFilterOperationType{TProperty}.Value"/>.</summary>
+    /// <summary>Provides a filter that returns true when the element is not equal to the value of this filter.</summary>
     public sealed class NotEqualTo<TProperty> : INotEqualTo<TProperty>
     {
         /// <summary>The filter value used for comparison. The comparison returns true when the

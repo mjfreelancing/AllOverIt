@@ -3,9 +3,7 @@ using System.Collections.Generic;
 
 namespace AllOverIt.Filtering.Filters
 {
-    /// <summary>Provides a filter option where elements are compared to the value of its
-    /// <see cref="IArrayFilterOperation{TProperty}.Value"/>. The comparison returns true when the
-    /// element exists in this <see cref="IFilterOperationType{TProperty}.Value"/>.</summary>
+    /// <summary>Provides a filter that returns true when the element exists in this filter.</summary>
     public sealed class In<TProperty> : IIn<TProperty>
     {
         /// <summary>The filter value used for comparison. The comparison returns true when the
@@ -18,7 +16,7 @@ namespace AllOverIt.Filtering.Filters
         }
 
         /// <summary>Constructor.</summary>
-        /// <param name="value">The values to set on this filter option.</param>
+        /// <param name="values">The values to set on this filter option.</param>
         public In(IEnumerable<TProperty> values)
         {
             Value = values.AsList();
@@ -32,7 +30,7 @@ namespace AllOverIt.Filtering.Filters
         }
 
         /// <summary>Implicit operator to return the provided List&lt;<typeparamref name="TProperty"/>&gt; as a <see cref="In{TProperty}"/> instance.</summary>
-        /// <param name="value">The string value.</param>
+        /// <param name="values">The string value.</param>
         public static implicit operator In<TProperty>(List<TProperty> values)
         {
             return new In<TProperty>(values);
