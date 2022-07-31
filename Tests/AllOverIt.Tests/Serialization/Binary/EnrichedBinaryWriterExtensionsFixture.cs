@@ -1,8 +1,10 @@
 ﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Serialization.Binary;
 using AllOverIt.Serialization.Binary.Extensions;
 using FakeItEasy;
+using FluentAssertions;
 using System;
 using System.Linq;
 using Xunit;
@@ -36,6 +38,18 @@ namespace AllOverIt.Tests.Serialization.Binary
         public class WriteUInt64 : EnrichedBinaryWriterExtensionsFixture
         {
             [Fact]
+            public void Should_Throw_When_Writer_Null()
+            {
+                Invoking(() =>
+                {
+                    EnrichedBinaryWriterExtensions.WriteUInt64(null, Create<ulong>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("writer");
+            }
+
+            [Fact]
             public void Should_Write_Value()
             {
                 var value = Create<ulong>();
@@ -50,6 +64,18 @@ namespace AllOverIt.Tests.Serialization.Binary
 
         public class WriteUInt32 : EnrichedBinaryWriterExtensionsFixture
         {
+            [Fact]
+            public void Should_Throw_When_Writer_Null()
+            {
+                Invoking(() =>
+                {
+                    EnrichedBinaryWriterExtensions.WriteUInt32(null, Create<uint>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("writer");
+            }
+
             [Fact]
             public void Should_Write_Value()
             {
@@ -66,6 +92,18 @@ namespace AllOverIt.Tests.Serialization.Binary
         public class WriteUInt16 : EnrichedBinaryWriterExtensionsFixture
         {
             [Fact]
+            public void Should_Throw_When_Writer_Null()
+            {
+                Invoking(() =>
+                {
+                    EnrichedBinaryWriterExtensions.WriteUInt16(null, Create<ushort>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("writer");
+            }
+
+            [Fact]
             public void Should_Write_Value()
             {
                 var value = Create<ushort>();
@@ -80,6 +118,18 @@ namespace AllOverIt.Tests.Serialization.Binary
 
         public class WriteSafeString : EnrichedBinaryWriterExtensionsFixture
         {
+            [Fact]
+            public void Should_Throw_When_Writer_Null()
+            {
+                Invoking(() =>
+                {
+                    EnrichedBinaryWriterExtensions.WriteSafeString(null, Create<string>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("writer");
+            }
+
             [Fact]
             public void Should_Not_Write_Value()
             {
@@ -107,6 +157,18 @@ namespace AllOverIt.Tests.Serialization.Binary
         public class WriteSingle : EnrichedBinaryWriterExtensionsFixture
         {
             [Fact]
+            public void Should_Throw_When_Writer_Null()
+            {
+                Invoking(() =>
+                {
+                    EnrichedBinaryWriterExtensions.WriteSingle(null, Create<float>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("writer");
+            }
+
+            [Fact]
             public void Should_Write_Value()
             {
                 var value = Create<float>();
@@ -122,6 +184,18 @@ namespace AllOverIt.Tests.Serialization.Binary
         public class WriteSByte : EnrichedBinaryWriterExtensionsFixture
         {
             [Fact]
+            public void Should_Throw_When_Writer_Null()
+            {
+                Invoking(() =>
+                {
+                    EnrichedBinaryWriterExtensions.WriteSByte(null, Create<sbyte>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("writer");
+            }
+
+            [Fact]
             public void Should_Write_Value()
             {
                 var value = Create<sbyte>();
@@ -136,6 +210,18 @@ namespace AllOverIt.Tests.Serialization.Binary
 
         public class WriteChars_Span : EnrichedBinaryWriterExtensionsFixture
         {
+            [Fact]
+            public void Should_Throw_When_Writer_Null()
+            {
+                Invoking(() =>
+                {
+                    EnrichedBinaryWriterExtensions.WriteChars(null, Create<string>().AsSpan());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("writer");
+            }
+
             // CS8175 - Cannot use ref local 'span' in anonymous method, lambda expression, or query expression
             //
             //[Fact]
@@ -154,11 +240,35 @@ namespace AllOverIt.Tests.Serialization.Binary
 
         public class WriteBytes_Span : EnrichedBinaryWriterExtensionsFixture
         {
+            [Fact]
+            public void Should_Throw_When_Writer_Null()
+            {
+                Invoking(() =>
+                {
+                    EnrichedBinaryWriterExtensions.WriteBytes(null, (Span<byte>)Array.Empty<byte>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("writer");
+            }
+
             // CS8175 - As above for WriteChars
         }
 
         public class WriteInt64 : EnrichedBinaryWriterExtensionsFixture
         {
+            [Fact]
+            public void Should_Throw_When_Writer_Null()
+            {
+                Invoking(() =>
+                {
+                    EnrichedBinaryWriterExtensions.WriteInt64(null, Create<long>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("writer");
+            }
+
             [Fact]
             public void Should_Write_Value()
             {
@@ -175,6 +285,18 @@ namespace AllOverIt.Tests.Serialization.Binary
         public class WriteInt32 : EnrichedBinaryWriterExtensionsFixture
         {
             [Fact]
+            public void Should_Throw_When_Writer_Null()
+            {
+                Invoking(() =>
+                {
+                    EnrichedBinaryWriterExtensions.WriteInt32(null, Create<int>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("writer");
+            }
+
+            [Fact]
             public void Should_Write_Value()
             {
                 var value = Create<int>();
@@ -189,6 +311,18 @@ namespace AllOverIt.Tests.Serialization.Binary
 
         public class WriteDouble : EnrichedBinaryWriterExtensionsFixture
         {
+            [Fact]
+            public void Should_Throw_When_Writer_Null()
+            {
+                Invoking(() =>
+                {
+                    EnrichedBinaryWriterExtensions.WriteDouble(null, Create<double>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("writer");
+            }
+
             [Fact]
             public void Should_Write_Value()
             {
@@ -205,6 +339,18 @@ namespace AllOverIt.Tests.Serialization.Binary
         public class WriteDecimal : EnrichedBinaryWriterExtensionsFixture
         {
             [Fact]
+            public void Should_Throw_When_Writer_Null()
+            {
+                Invoking(() =>
+                {
+                    EnrichedBinaryWriterExtensions.WriteDecimal(null, Create<decimal>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("writer");
+            }
+
+            [Fact]
             public void Should_Write_Value()
             {
                 var value = Create<decimal>();
@@ -219,6 +365,18 @@ namespace AllOverIt.Tests.Serialization.Binary
 
         public class WriteChars_Index_Count : EnrichedBinaryWriterExtensionsFixture
         {
+            [Fact]
+            public void Should_Throw_When_Writer_Null()
+            {
+                Invoking(() =>
+                {
+                    EnrichedBinaryWriterExtensions.WriteChars(null, Array.Empty<char>(), Create<int>(), Create<int>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("writer");
+            }
+
             [Fact]
             public void Should_Write_Value()
             {
@@ -237,6 +395,18 @@ namespace AllOverIt.Tests.Serialization.Binary
         public class WriteChars : EnrichedBinaryWriterExtensionsFixture
         {
             [Fact]
+            public void Should_Throw_When_Writer_Null()
+            {
+                Invoking(() =>
+                {
+                    EnrichedBinaryWriterExtensions.WriteChars(null, Array.Empty<char>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("writer");
+            }
+
+            [Fact]
             public void Should_Write_Value()
             {
                 var value = CreateMany<char>().ToArray();
@@ -251,6 +421,18 @@ namespace AllOverIt.Tests.Serialization.Binary
 
         public class WriteBytes_Index_Count : EnrichedBinaryWriterExtensionsFixture
         {
+            [Fact]
+            public void Should_Throw_When_Writer_Null()
+            {
+                Invoking(() =>
+                {
+                    EnrichedBinaryWriterExtensions.WriteBytes(null, Array.Empty<byte>(), Create<int>(), Create<int>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("writer");
+            }
+
             [Fact]
             public void Should_Write_Value()
             {
@@ -269,6 +451,18 @@ namespace AllOverIt.Tests.Serialization.Binary
         public class WriteBytes : EnrichedBinaryWriterExtensionsFixture
         {
             [Fact]
+            public void Should_Throw_When_Writer_Null()
+            {
+                Invoking(() =>
+                {
+                    EnrichedBinaryWriterExtensions.WriteBytes(null, Array.Empty<byte>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("writer");
+            }
+
+            [Fact]
             public void Should_Write_Value()
             {
                 var value = CreateMany<byte>().ToArray();
@@ -283,6 +477,18 @@ namespace AllOverIt.Tests.Serialization.Binary
 
         public class WriteByte : EnrichedBinaryWriterExtensionsFixture
         {
+            [Fact]
+            public void Should_Throw_When_Writer_Null()
+            {
+                Invoking(() =>
+                {
+                    EnrichedBinaryWriterExtensions.WriteByte(null, Create<byte>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("writer");
+            }
+
             [Fact]
             public void Should_Write_Value()
             {
@@ -299,6 +505,18 @@ namespace AllOverIt.Tests.Serialization.Binary
         public class WriteBoolean : EnrichedBinaryWriterExtensionsFixture
         {
             [Fact]
+            public void Should_Throw_When_Writer_Null()
+            {
+                Invoking(() =>
+                {
+                    EnrichedBinaryWriterExtensions.WriteBoolean(null, Create<bool>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("writer");
+            }
+
+            [Fact]
             public void Should_Write_Value()
             {
                 var value = Create<bool>();
@@ -313,6 +531,18 @@ namespace AllOverIt.Tests.Serialization.Binary
 
         public class WriteInt16 : EnrichedBinaryWriterExtensionsFixture
         {
+            [Fact]
+            public void Should_Throw_When_Writer_Null()
+            {
+                Invoking(() =>
+                {
+                    EnrichedBinaryWriterExtensions.WriteInt16(null, Create<short>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("writer");
+            }
+
             [Fact]
             public void Should_Write_Value()
             {
@@ -329,6 +559,18 @@ namespace AllOverIt.Tests.Serialization.Binary
         public class WriteChar : EnrichedBinaryWriterExtensionsFixture
         {
             [Fact]
+            public void Should_Throw_When_Writer_Null()
+            {
+                Invoking(() =>
+                {
+                    EnrichedBinaryWriterExtensions.WriteChar(null, Create<char>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("writer");
+            }
+
+            [Fact]
             public void Should_Write_Value()
             {
                 var value = Create<char>();
@@ -343,6 +585,18 @@ namespace AllOverIt.Tests.Serialization.Binary
 
         public class WriteGuid : EnrichedBinaryWriterExtensionsFixture
         {
+            [Fact]
+            public void Should_Throw_When_Writer_Null()
+            {
+                Invoking(() =>
+                {
+                    EnrichedBinaryWriterExtensions.WriteGuid(null, Create<Guid>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("writer");
+            }
+
             [Fact]
             public void Should_Write_Value()
             {
@@ -359,6 +613,18 @@ namespace AllOverIt.Tests.Serialization.Binary
         public class WriteEnum : EnrichedBinaryWriterExtensionsFixture
         {
             [Fact]
+            public void Should_Throw_When_Writer_Null()
+            {
+                Invoking(() =>
+                {
+                    EnrichedBinaryWriterExtensions.WriteEnum(null, Create<DummyEnum>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("writer");
+            }
+
+            [Fact]
             public void Should_Write_Value()
             {
                 var value = Create<DummyEnum>();
@@ -374,6 +640,18 @@ namespace AllOverIt.Tests.Serialization.Binary
         public class WriteNullable : EnrichedBinaryWriterExtensionsFixture
         {
             [Fact]
+            public void Should_Throw_When_Writer_Null()
+            {
+                Invoking(() =>
+                {
+                    EnrichedBinaryWriterExtensions.WriteNullable<int>(null, Create<int>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("writer");
+            }
+
+            [Fact]
             public void Should_Write_Value()
             {
                 int? value = Create<int>();
@@ -388,6 +666,18 @@ namespace AllOverIt.Tests.Serialization.Binary
 
         public class WriteObject_Typed : EnrichedBinaryWriterExtensionsFixture
         {
+            [Fact]
+            public void Should_Throw_When_Writer_Null()
+            {
+                Invoking(() =>
+                {
+                    EnrichedBinaryWriterExtensions.WriteObject<DummyType>(null, Create<DummyType>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("writer");
+            }
+
             [Fact]
             public void Should_Write_Value()
             {
