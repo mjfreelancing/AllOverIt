@@ -36,9 +36,9 @@ namespace AllOverIt.Extensions
         /// <typeparam name="TType">The object type containing the property.</typeparam>
         /// <typeparam name="TProperty">The property type.</typeparam>
         /// <param name="propertyOrFieldExpression">The property or field accessor expression.</param>
-        /// <param name="parameter">The parameter to use when constructing the <see cref="MemberExpression"/>.</param>
+        /// <param name="parameterExpression">The parameter to use when constructing the <see cref="MemberExpression"/>.</param>
         /// <returns>A <see cref="MemberExpression"/> representing the property or field accessor expression. This expression can later be used
-        /// to obtain the value of the property or field, or convert it to a <see cref="ConstantExpression"/>./returns>
+        /// to obtain the value of the property or field, or convert it to a <see cref="ConstantExpression"/>.</returns>
         public static MemberExpression GetPropertyOrFieldExpressionUsingParameter<TType, TProperty>(
             this Expression<Func<TType, TProperty>> propertyOrFieldExpression, ParameterExpression parameterExpression)
         {
@@ -63,7 +63,7 @@ namespace AllOverIt.Extensions
         /// <typeparam name="TProperty">The property type.</typeparam>
         /// <param name="propertyOrFieldExpression">The property or field accessor expression.</param>
         /// <returns>A <see cref="MemberExpression"/> representing the property or field accessor expression. This expression can later be used
-        /// to obtain the value of the property or field, or convert it to a <see cref="ConstantExpression"/>./returns>
+        /// to obtain the value of the property or field, or convert it to a <see cref="ConstantExpression"/>.</returns>
         public static MemberExpression GetParameterPropertyOrFieldExpression<TType, TProperty>(this Expression<Func<TType, TProperty>> propertyOrFieldExpression)
         {
             _ = propertyOrFieldExpression.WhenNotNull(nameof(propertyOrFieldExpression));
@@ -79,7 +79,8 @@ namespace AllOverIt.Extensions
         /// If <paramref name="expression"/> is a <see cref="MemberExpression"/> then the same expression is returned.
         /// If <paramref name="expression"/> is a <see cref="LambdaExpression"/> then its Body is returned if it is a
         /// <see cref="MemberExpression"/>, or a <see cref="UnaryExpression"/> who's Operand is a <see cref="MemberExpression"/>.
-        /// In all other cases, null is returned.</returns>
+        /// In all other cases, null is returned.
+        /// </returns>
         public static MemberExpression UnwrapMemberExpression(this Expression expression)
         {
             _ = expression.WhenNotNull(nameof(expression));
