@@ -6,6 +6,7 @@ namespace AllOverIt.Pagination
     /// <summary>Creates a <see cref="IQueryPaginator{TEntity}"/> instances.</summary>
     public sealed class QueryPaginatorFactory : IQueryPaginatorFactory
     {
+        /// <inheritdoc />
         public IQueryPaginator<TEntity> CreatePaginator<TEntity>(IQueryable<TEntity> query, QueryPaginatorConfiguration configuration)
             where TEntity : class
         {

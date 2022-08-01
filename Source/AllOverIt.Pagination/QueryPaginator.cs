@@ -33,6 +33,7 @@ namespace AllOverIt.Pagination
         private IOrderedQueryable<TEntity> _directionQuery;                     // based on the _paginationDirection        
         private IOrderedQueryable<TEntity> _directionReverseQuery;              // based on the reverse _direction
 
+        /// <summary>Provides the token encoder used to encode and decode continuation tokens.</summary>
         public IContinuationTokenEncoder TokenEncoder => GetContinuationTokenEncoder();
 
         /// <summary>Constructor.</summary>
@@ -44,6 +45,7 @@ namespace AllOverIt.Pagination
             _configuration = configuration.WhenNotNull(nameof(configuration));
         }
 
+        /// <inheritdoc />
         public IQueryPaginator<TEntity> ColumnAscending<TProperty>(Expression<Func<TEntity, TProperty>> expression)
         {
             _ = expression.WhenNotNull(nameof(expression));
@@ -52,6 +54,7 @@ namespace AllOverIt.Pagination
             return this;
         }
 
+        /// <inheritdoc />
         public IQueryPaginator<TEntity> ColumnDescending<TProperty>(Expression<Func<TEntity, TProperty>> expression)
         {
             _ = expression.WhenNotNull(nameof(expression));
@@ -60,6 +63,7 @@ namespace AllOverIt.Pagination
             return this;
         }
 
+        /// <inheritdoc />
         public IQueryable<TEntity> GetPageQuery(string continuationToken = default)
         {
             AssertColumnsDefined();
@@ -96,6 +100,7 @@ namespace AllOverIt.Pagination
             return paginatedQuery;
         }
 
+        /// <inheritdoc />
         public IQueryable<TEntity> GetPreviousPageQuery(TEntity reference)
         {
             // When reference == null, returns the first page relative to the pagination direction
@@ -120,6 +125,7 @@ namespace AllOverIt.Pagination
             return backQuery;
         }
 
+        /// <inheritdoc />
         public IQueryable<TEntity> GetNextPageQuery(TEntity reference)
         {
             // When reference == null, returns the first page relative to the pagination direction
@@ -144,6 +150,7 @@ namespace AllOverIt.Pagination
             return forwardQuery;
         }
 
+        /// <inheritdoc />
         public bool HasPreviousPage(TEntity reference)
         {
             _ = reference.WhenNotNull(nameof(reference));
@@ -156,6 +163,7 @@ namespace AllOverIt.Pagination
             return previousQuery.Any(predicate);
         }
 
+        /// <inheritdoc />
         public Task<bool> HasPreviousPageAsync(TEntity reference, Func<IQueryable<TEntity>, Expression<Func<TEntity, bool>>, CancellationToken, Task<bool>> anyResolver,
             CancellationToken cancellationToken)
         {
@@ -169,6 +177,7 @@ namespace AllOverIt.Pagination
             return anyResolver.Invoke(previousQuery, predicate, cancellationToken);
         }
 
+        /// <inheritdoc />
         public bool HasNextPage(TEntity reference)
         {
             _ = reference.WhenNotNull(nameof(reference));
@@ -181,6 +190,7 @@ namespace AllOverIt.Pagination
             return nextQuery.Any(predicate);
         }
 
+        /// <inheritdoc />
         public Task<bool> HasNextPageAsync(TEntity reference, Func<IQueryable<TEntity>, Expression<Func<TEntity, bool>>, CancellationToken, Task<bool>> anyResolver,
             CancellationToken cancellationToken)
         {
