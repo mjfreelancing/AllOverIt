@@ -30,8 +30,8 @@ namespace AllOverIt.Serialization.Binary
             { TypeIdentifier.Char, reader => reader.ReadChar() },
             { TypeIdentifier.Enum, reader => reader.ReadEnum() },
             { TypeIdentifier.Guid, reader => reader.ReadGuid() },
-            { TypeIdentifier.DateTime, reader => DateTime.FromBinary(reader.ReadInt64()) },
-            { TypeIdentifier.TimeSpan, reader => new TimeSpan(reader.ReadInt64()) },
+            { TypeIdentifier.DateTime, reader => reader.ReadDateTime() },
+            { TypeIdentifier.TimeSpan, reader => reader.ReadTimeSpan() },
             { TypeIdentifier.Dictionary, reader => reader.ReadDictionary() },
             { TypeIdentifier.Enumerable, reader => reader.ReadEnumerable() },
             {

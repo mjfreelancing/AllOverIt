@@ -664,6 +664,60 @@ namespace AllOverIt.Tests.Serialization.Binary
             }
         }
 
+        public class WriteDateTime : EnrichedBinaryWriterExtensionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Writer_Null()
+            {
+                Invoking(() =>
+                {
+                    EnrichedBinaryWriterExtensions.WriteDateTime(null, Create<DateTime>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("writer");
+            }
+
+            [Fact]
+            public void Should_Write_Value()
+            {
+                var value = Create<DateTime>();
+
+                EnrichedBinaryWriterExtensions.WriteDateTime(_writerFake.FakedObject, value);
+
+                _writerFake
+                    .CallsTo(fake => fake.Write(value.ToBinary()))
+                    .MustHaveHappened();
+            }
+        }
+
+        public class WriteTimeSpan : EnrichedBinaryWriterExtensionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Writer_Null()
+            {
+                Invoking(() =>
+                {
+                    EnrichedBinaryWriterExtensions.WriteTimeSpan(null, Create<TimeSpan>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("writer");
+            }
+
+            [Fact]
+            public void Should_Write_Value()
+            {
+                var value = Create<TimeSpan>();
+
+                EnrichedBinaryWriterExtensions.WriteTimeSpan(_writerFake.FakedObject, value);
+
+                _writerFake
+                     .CallsTo(fake => fake.Write(value.Ticks))
+                     .MustHaveHappened();
+            }
+        }
+
         public class WriteObject_Typed : EnrichedBinaryWriterExtensionsFixture
         {
             [Fact]

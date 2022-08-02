@@ -5,6 +5,9 @@ Version 6.0.0-RC.4
 ======================================================================================================================
 All - Added source linking to all packages
 
+AllOverIt
+  * Updated binary serialization to include extension methods for read/write DateTime and TimeSpan
+
 
 31 Jul 2022
 Version 6.0.0-RC.3

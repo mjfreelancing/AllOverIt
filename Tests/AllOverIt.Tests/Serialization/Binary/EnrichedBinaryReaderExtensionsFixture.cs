@@ -235,6 +235,64 @@ namespace AllOverIt.Tests.Serialization.Binary
             }
         }
 
+        public class ReadDateTime : EnrichedBinaryReaderExtensionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Reader_Null()
+            {
+                Invoking(() =>
+                {
+                    EnrichedBinaryReaderExtensions.ReadDateTime(null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("reader");
+            }
+
+            [Fact]
+            public void Should_Read_DateTime()
+            {
+                var value = Create<DateTime>();               
+
+                _readerFake
+                    .CallsTo(fake => fake.ReadInt64())
+                    .Returns(value.ToBinary());
+
+                var actual = EnrichedBinaryReaderExtensions.ReadDateTime(_readerFake.FakedObject);
+
+                actual.Should().Be(value);
+            }
+        }
+
+        public class ReadTimeSpan : EnrichedBinaryReaderExtensionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Reader_Null()
+            {
+                Invoking(() =>
+                {
+                    EnrichedBinaryReaderExtensions.ReadTimeSpan(null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("reader");
+            }
+
+            [Fact]
+            public void Should_Read_TimeSpan()
+            {
+                var value = Create<TimeSpan>();
+
+                _readerFake
+                    .CallsTo(fake => fake.ReadInt64())
+                    .Returns(value.Ticks);
+
+                var actual = EnrichedBinaryReaderExtensions.ReadTimeSpan(_readerFake.FakedObject);
+
+                actual.Should().Be(value);
+            }
+        }
+
         public class ReadObject_Typed : EnrichedBinaryReaderExtensionsFixture
         {
             [Fact]

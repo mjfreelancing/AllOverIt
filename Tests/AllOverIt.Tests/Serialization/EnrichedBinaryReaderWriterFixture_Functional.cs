@@ -66,11 +66,13 @@ namespace AllOverIt.Tests.Serialization
                 writer.WriteSafeString(NullString);             // Can't use Write()
                 writer.Write(Char);
 
+                // Items below require these extension methods or WriteObject()
+                writer.WriteEnum(Enum);
+                writer.WriteGuid(Guid);
+                writer.WriteDateTime(DateTime);
+                writer.WriteTimeSpan(TimeSpan);
+
                 // Items below require WriteObject
-                writer.WriteObject(Enum);
-                writer.WriteObject(Guid);
-                writer.WriteObject(DateTime);
-                writer.WriteObject(TimeSpan);
                 writer.WriteObject(Doubles);                    // Must be read back as List<object> and then converted
                 writer.WriteObject(Dictionary);
             }
@@ -93,11 +95,11 @@ namespace AllOverIt.Tests.Serialization
                 NullString = reader.ReadSafeString();           // Can't use reader.ReadString()
                 Char = reader.ReadChar();
 
-                // These were written using WriteObject()
-                Enum = reader.ReadObject<DummyEnum>();
-                Guid = reader.ReadObject<Guid>();
-                DateTime = reader.ReadObject<DateTime>();
-                TimeSpan = reader.ReadObject<TimeSpan>();
+                // Using extension methods to match the write calls
+                Enum = reader.ReadEnum<DummyEnum>();
+                Guid = reader.ReadGuid();
+                DateTime = reader.ReadDateTime();
+                TimeSpan = reader.ReadTimeSpan();
 
                 // Must use this syntax when written using WriteObject()
                 // Same as reader.ReadObject<List<object>>().Select(item => (double)item);
@@ -130,7 +132,7 @@ namespace AllOverIt.Tests.Serialization
 
                 writer.WriteChar(Char);
 
-                // Items below require WriteObject
+                // Method 1 used the extension methods, this method is using WriteObject
                 writer.WriteObject(Enum);
                 writer.WriteObject(Guid);
                 writer.WriteObject(DateTime);

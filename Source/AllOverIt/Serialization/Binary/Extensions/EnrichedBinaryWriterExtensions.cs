@@ -124,6 +124,14 @@ namespace AllOverIt.Serialization.Binary.Extensions
             writer.Write($"{value}");
         }
 
+        /// <summary>Writes a DateTime value to the current stream.</summary>
+        /// <param name="writer">The binary writer that is writing to the current stream.</param>
+        public static void WriteDateTime(this IEnrichedBinaryWriter writer, DateTime value) => writer.WhenNotNull(nameof(writer)).Write(value.ToBinary());
+
+        /// <summary>Writes a TimeSpan value to the current stream.</summary>
+        /// <param name="writer">The binary writer that is writing to the current stream.</param>
+        public static void WriteTimeSpan(this IEnrichedBinaryWriter writer, TimeSpan value) => writer.WhenNotNull(nameof(writer)).Write(value.Ticks);
+
         public static void WriteNullable<TValue>(this IEnrichedBinaryWriter writer, TValue? value) where TValue : struct
         {
             writer

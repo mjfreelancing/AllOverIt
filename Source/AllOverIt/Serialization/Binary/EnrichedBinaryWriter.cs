@@ -56,8 +56,8 @@ namespace AllOverIt.Serialization.Binary
             { TypeIdentifier.Char, (writer, value) => writer.WriteChar((char)value) },
             { TypeIdentifier.Enum, (writer, value) => writer.WriteEnum(value) },
             { TypeIdentifier.Guid, (writer, value) => writer.WriteGuid((Guid)value) },
-            { TypeIdentifier.DateTime, (writer, value) => writer.WriteInt64(((DateTime)value).ToBinary()) },
-            { TypeIdentifier.TimeSpan, (writer, value) => writer.WriteInt64(((TimeSpan)value).Ticks) },
+            { TypeIdentifier.DateTime, (writer, value) => writer.WriteDateTime((DateTime)value) },
+            { TypeIdentifier.TimeSpan, (writer, value) => writer.WriteTimeSpan((TimeSpan)value) },
             { TypeIdentifier.Dictionary, (writer, value) => writer.WriteDictionary((IDictionary)value) },
             { TypeIdentifier.Enumerable, (writer, value) => writer.WriteEnumerable((IEnumerable)value) },
             {

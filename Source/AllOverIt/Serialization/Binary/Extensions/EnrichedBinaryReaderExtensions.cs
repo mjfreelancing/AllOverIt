@@ -69,6 +69,28 @@ namespace AllOverIt.Serialization.Binary.Extensions
             return (TEnum) Enum.Parse(enumType, value);
         }
 
+        /// <summary>Reads a <see cref="DateTime"/> from the current stream.</summary>
+        /// <param name="reader">The reader that is reading from the current stream.</param>
+        /// <returns>The read <see cref="DateTime"/>.</returns>
+        public static DateTime ReadDateTime(this IEnrichedBinaryReader reader)
+        {
+            _ = reader.WhenNotNull(nameof(reader));
+
+            var date = reader.ReadInt64();
+            return DateTime.FromBinary(date);
+        }
+
+        /// <summary>Reads a <see cref="TimeSpan"/> from the current stream.</summary>
+        /// <param name="reader">The reader that is reading from the current stream.</param>
+        /// <returns>The read <see cref="TimeSpan"/>.</returns>
+        public static TimeSpan ReadTimeSpan(this IEnrichedBinaryReader reader)
+        {
+            _ = reader.WhenNotNull(nameof(reader));
+
+            var timespan = reader.ReadInt64();
+            return new TimeSpan(timespan);
+        }
+
         /// <summary>Reads an object from the current stream that was originally written using
         /// <see cref="EnrichedBinaryWriterExtensions.WriteObject{TType}(IEnrichedBinaryWriter, TType)"/>.</summary>
         /// <typeparam name="TValue">The value type to be read from the current stream.</typeparam>
