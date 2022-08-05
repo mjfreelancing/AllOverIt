@@ -33,7 +33,7 @@ namespace EnrichedEnumModelBinding.Problems
             extensions.Add("error", errorDetails);
         }
 
-        private IReadOnlyCollection<ValidationFailure> CreateValidationFailures(ActionContext context)
+        private static IReadOnlyCollection<ValidationFailure> CreateValidationFailures(ActionContext context)
         {
             var failures = new List<ValidationFailure>();
 

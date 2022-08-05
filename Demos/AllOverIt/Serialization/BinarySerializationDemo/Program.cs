@@ -19,13 +19,13 @@ internal class Program
 
     private static void OutputObjectAsJson(string prefix, object @object)
     {
-        var serializerOptions = new JsonSerializerOptions
+        var options = new JsonSerializerOptions
         {
             WriteIndented = true,
             Converters = { new JsonStringEnumConverter() }
         };
 
-        var output = JsonSerializer.Serialize(@object);
+        var output = JsonSerializer.Serialize(@object, options);
 
         Console.WriteLine(prefix);
         Console.WriteLine("============================================");

@@ -28,6 +28,11 @@ namespace ValueObjectDemo
             return other is not null && this.ConvertToKelvin().Equals(other.ConvertToKelvin());
         }
 
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as EnrichedTemperature);
+        }
+
         public int CompareTo(EnrichedTemperature other)
         {
             return this.ConvertToKelvin().CompareTo(other.ConvertToKelvin());

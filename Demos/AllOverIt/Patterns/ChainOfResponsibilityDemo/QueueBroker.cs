@@ -5,6 +5,8 @@ namespace ChainOfResponsibilityDemo
 {
     public sealed class QueueBroker
     {
+// This is demo code - the members would normally be accessing member data
+#pragma warning disable CA1822 // Mark members as static
         public void Send(QueueMessage message)
         {
             // emulate various exceptions
@@ -26,5 +28,6 @@ namespace ChainOfResponsibilityDemo
         {
             Console.WriteLine("Deadletter message");
         }
+#pragma warning restore CA1822 // Mark members as static
     }
 }

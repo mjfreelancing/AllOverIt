@@ -4,6 +4,8 @@ namespace ChainOfResponsibilityDemo.Handlers
 {
     public abstract class QueueMessageHandlerBase : ChainOfResponsibilityHandler<QueueMessageHandlerState, QueueMessageHandlerState>
     {
+        // This is demo code - the members would normally be accessing member data
+#pragma warning disable CA1822 // Mark members as static
         protected QueueMessageHandlerState Abandon(QueueMessageHandlerState state)
         {
             state.QueueBroker.Abandon();
@@ -15,5 +17,6 @@ namespace ChainOfResponsibilityDemo.Handlers
             state.QueueBroker.Deadletter();
             return state;
         }
+#pragma warning restore CA1822 // Mark members as static
     }
 }
