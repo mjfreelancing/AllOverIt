@@ -62,7 +62,7 @@ namespace AllOverIt.Filtering.Tests
 
             public sealed class PriceFilter
             {
-                public In<double> In { get; set; } = new();
+                public In<double?> In { get; set; } = new();
                 public NotIn<double> NotIn { get; set; } = new();
                 public GreaterThan<double> GreaterThan { get; set; } = new();
                 public GreaterThanOrEqual<double> GreaterThanOrEqual { get; set; } = new();
@@ -108,7 +108,7 @@ namespace AllOverIt.Filtering.Tests
                     NotContains = Create<string>(),
                     StartsWith = Create<string>(),
                     EndsWith = Create<string>(),
-                    In = CreateMany<string>().ToList(),
+                    In = new In<string>(CreateMany<string>().ToArray()),        // A specific example using ToArray() that previously failed a test
                     NotIn = CreateMany<string>().ToList(),
                     GreaterThan = Create<string>(),
                     GreaterThanOrEqual = Create<string>(),
@@ -119,7 +119,7 @@ namespace AllOverIt.Filtering.Tests
                 },
                 Price =
                 {
-                    In = CreateMany<double>().ToList(),
+                    In = new In<double?>(CreateMany<double?>().ToArray()),      // Testing ToArray with double?
                     NotIn = CreateMany<double>().ToList(),
                     GreaterThan = Create<double>(),
                     GreaterThanOrEqual = Create<double>(),
@@ -648,7 +648,8 @@ namespace AllOverIt.Filtering.Tests
 
                 var entityPrice = _filter.Price.In.Value[2];
 
-                AssertPriceSpecification(specification, entityPrice, _filter.Price.In.Value.Sum());
+                // As a test, deliberately passing double[] for a specification of type double?[]
+                AssertPriceSpecification(specification, entityPrice, _filter.Price.In.Value.Select(item => item.Value).Sum());
             }
 
             [Theory]

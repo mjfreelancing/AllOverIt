@@ -318,7 +318,6 @@ namespace AllOverIt.Filtering.Builders
             }
         }
 
-
         private static ILinqSpecification<TType> CreateBasicSpecificationOperation<TProperty>(Type genericOperation,
             Expression<Func<TType, TProperty>> propertyExpression, object value, IOperationFilterOptions options)
         {
@@ -340,9 +339,11 @@ namespace AllOverIt.Filtering.Builders
             // The array based operations require special consideration when the value is double (for example) and
             // TProperty is double? because an error occurs due to List<double> cannot be converted to IList<double?>.
 
-            if (values.GetType().GetGenericArguments()[0] != typeof(TProperty))
+            var valuesType = values.GetType();            
+
+            if (valuesType.IsGenericEnumerableType() && valuesType.GetGenericArguments()[0] != typeof(TProperty))
             {
-                values = ConvertListElements((IList) values, typeof(TProperty));
+                values = ConvertListElements((IEnumerable) values, typeof(TProperty));
             }
 
             var ctor = genericOperation.GetConstructor(new[]
@@ -391,7 +392,7 @@ namespace AllOverIt.Filtering.Builders
             //     .GetValue(operation);
         }
 
-        private static IList ConvertListElements(IList elements, Type elementType)
+        private static IList ConvertListElements(IEnumerable elements, Type elementType)
         {
             var listType = CommonTypes.ListGenericType.MakeGenericType(new[] { elementType });
 
