@@ -80,6 +80,7 @@ namespace PaginationConsole
                         post.Title
                     };
 
+                // Apply a filter
                 var filter = new BlogFilter
                 {
                     Description =
@@ -89,6 +90,8 @@ namespace PaginationConsole
                     }
                 };
 
+                // Note: This use of lower() is fine for the filtering but when combined with the pagination below
+                //       the final SQL is not valid for the subsequent pages (as they don't lower() the columns).
                 var filterOptions = new DefaultQueryFilterOptions
                 {
                     StringComparisonMode = StringComparisonMode.ToLower
@@ -101,6 +104,7 @@ namespace PaginationConsole
                         .Or(entity => entity.Description, f => f.Description.Contains);
                 }, filterOptions);
 
+                // Apply pagination
                 var paginatorConfig = new QueryPaginatorConfiguration
                 {
                     PageSize = pageSize,
