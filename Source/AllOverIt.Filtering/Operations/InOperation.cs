@@ -12,11 +12,11 @@ namespace AllOverIt.Filtering.Operations
         private static readonly MethodInfo ContainsMethod = typeof(ICollection<TProperty>).GetMethod("Contains", new[] { typeof(TProperty) });
 
         public InOperation(Expression<Func<TEntity, TProperty>> propertyExpression, IList<TProperty> values, IOperationFilterOptions options)
-            : base(propertyExpression, values, CreatePredicate, options)
+            : base(propertyExpression, values, options, (member, constant, _) => CreatePredicate(member, constant))
         {
         }
 
-        private static SystemExpression CreatePredicate(MemberExpression member, SystemExpression constant)
+        private static SystemExpression CreatePredicate(SystemExpression member, SystemExpression constant)
         {
             return SystemExpression.Call(constant, ContainsMethod, member);
         }

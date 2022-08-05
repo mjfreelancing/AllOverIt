@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Expressions;
 using AllOverIt.Filtering.Options;
+using AllOverIt.Filtering.Utils;
 using System;
 using System.Linq.Expressions;
 using SystemExpression = System.Linq.Expressions.Expression;    // avoid conflict with the Expression property on LinqSpecification
@@ -9,15 +10,16 @@ namespace AllOverIt.Filtering.Operations
     internal sealed class LessThanOperation<TEntity, TProperty> : OperationBase<TEntity, TProperty> where TEntity : class
     {
         public LessThanOperation(Expression<Func<TEntity, TProperty>> propertyExpression, TProperty value, IOperationFilterOptions options)
-            : base(propertyExpression, value, !PropertyIsString, (member, constant) => CreatePredicate(member, constant, options.StringComparison), options)
+            : base(propertyExpression, value, !PropertyIsString, options, CreatePredicate)
         {
         }
 
-        private static SystemExpression CreatePredicate(MemberExpression member, SystemExpression constant, StringComparison? stringComparison)
+        private static SystemExpression CreatePredicate(SystemExpression member, SystemExpression constant, IOperationFilterOptions filterOptions)
         {
             if (PropertyIsString)
             {
-                var compareExpression = StringExpressionUtils.CreateCompareCallExpression(member, constant, stringComparison);
+                var compareExpression = StringComparisonExpressionUtils.CreateCompareCallExpression(member, constant, filterOptions.StringComparisonMode);
+
                 return SystemExpression.LessThan(compareExpression, ExpressionConstants.Zero);
             }
 

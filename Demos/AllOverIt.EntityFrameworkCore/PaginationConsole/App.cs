@@ -1,5 +1,7 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
+using AllOverIt.Filtering.Extensions;
+using AllOverIt.Filtering.Options;
 using AllOverIt.GenericHost;
 using AllOverIt.Pagination;
 using AllOverIt.Pagination.Extensions;
@@ -77,6 +79,27 @@ namespace PaginationConsole
                         PostId = post.Id,
                         post.Title
                     };
+
+                var filter = new BlogFilter
+                {
+                    Description =
+                    { 
+                        Contains = "vero",
+                        StartsWith = "vero",
+                    }
+                };
+
+                var filterOptions = new DefaultQueryFilterOptions
+                {
+                    StringComparisonMode = StringComparisonMode.ToLower
+                };
+
+                query = query.ApplyFilter(filter, (specificationBuilder, filterBuilder) =>
+                {
+                    filterBuilder
+                        .Where(entity => entity.Description, f => f.Description.StartsWith)
+                        .Or(entity => entity.Description, f => f.Description.Contains);
+                }, filterOptions);
 
                 var paginatorConfig = new QueryPaginatorConfiguration
                 {

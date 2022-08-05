@@ -37,7 +37,7 @@ namespace FilteringDemo
             var filterOptions = new DefaultQueryFilterOptions
             {
                 UseParameterizedQueries = false,
-                StringComparison = StringComparison.InvariantCultureIgnoreCase,
+                StringComparisonMode = StringComparisonMode.ToLower,
                 IgnoreNullFilterValues = false
             };
 

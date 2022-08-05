@@ -7,6 +7,8 @@ All - Added source linking to all packages
 
 AllOverIt
   * Updated binary serialization to include extension methods for read/write DateTime and TimeSpan
+  * Added CreateToLowerCallExpression() and CreateToUpperCallExpression() to StringExpressionUtils
+  * Improvements to LinqSpecificationVisitor output
 
 
 31 Jul 2022

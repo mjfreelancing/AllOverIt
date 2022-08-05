@@ -85,12 +85,10 @@ namespace AllOverIt.Filtering.Tests.Extensions
             var prop2GreaterThanOrEqual = filter.Prop2.GreaterThanOrEqual.Value;
 
             // Example:
-            // ((((Prop1 == 175) OR (109, 206, 12, 195, 17) Contains Prop1) AND (Prop2 <= 289.6046517882983)) AND (Prop2 >= 145.5696846337848))
-
-            // Note: Binary operators result in surrounding ( ), while unary operators do not
+            // ((((Prop1 == 81) OR (36, 42, 157, 100, 229).Contains(Prop1)) AND (Prop2 <= 14.318397636673598)) AND (Prop2 >= 214.43616649365805))
 
             var step1 = $"(Prop1 == {prop1EqualTo})";                                   // Binary
-            var step2 = $"({string.Join(", ", prop1In)}) Contains Prop1";               // Unary, but () surround the numbers
+            var step2 = $"({string.Join(", ", prop1In)}).Contains(Prop1)";              // Unary, but () surround the numbers
             var step3 = $"(Prop2 <= {prop2LessThanOrEqual})";                           // Binary
             var step4 = $"(Prop2 >= {prop2GreaterThanOrEqual})";                        // Binary
 

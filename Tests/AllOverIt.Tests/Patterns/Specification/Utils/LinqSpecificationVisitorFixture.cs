@@ -157,7 +157,20 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
 
                 var actual = _visitor.AsQueryString(specification);
 
-                actual.Should().Be($"({string.Join(", ", values)}) Contains Value1");
+                actual.Should().Be($"({string.Join(", ", values)}).Contains(Value1)");
+            }
+
+            [Fact]
+            public void Should_Output_Chained_Calls()
+            {
+                var value1 = Create<string>();
+                var value2 = Create<string>();
+
+                var specification = LinqSpecification<TypeDummy>.Create(item => value1.ToLower().StartsWith(value2));
+
+                var actual = _visitor.AsQueryString(specification);
+
+                actual.Should().Be($"'{value1}'.ToLower().StartsWith('{value2}')");
             }
 
             [Fact]

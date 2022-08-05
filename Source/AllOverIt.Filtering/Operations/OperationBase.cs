@@ -3,6 +3,7 @@ using AllOverIt.Evaluator.Exceptions;
 using AllOverIt.Expressions;
 using AllOverIt.Extensions;
 using AllOverIt.Filtering.Options;
+using AllOverIt.Filtering.Utils;
 using AllOverIt.Patterns.Specification;
 using AllOverIt.Reflection;
 using System;
@@ -26,11 +27,11 @@ namespace AllOverIt.Filtering.Operations
             // Indicates if an exception is to be thrown when the provided value is null
             bool supportsNull,
 
-            // Creates the final expression
-            Func<MemberExpression, SystemExpression, SystemExpression> predicateExpressionFactory,
+            IOperationFilterOptions options,
 
-            IOperationFilterOptions options)
-                : base(() => CreateResolver(propertyExpression, CreateValueExpression(value, supportsNull, options), predicateExpressionFactory))
+            // Creates the final expression
+            Func<SystemExpression, SystemExpression, IOperationFilterOptions, SystemExpression> predicateExpressionFactory)
+                : base(() => CreateResolver(propertyExpression, CreateValueExpression(value, supportsNull, options), options, predicateExpressionFactory))
         {
         }
 
@@ -41,24 +42,24 @@ namespace AllOverIt.Filtering.Operations
             // The constant value used in the predicate
             IList<TProperty> values,
 
-            // Creates the final expression
-            Func<MemberExpression, SystemExpression, SystemExpression> predicateExpressionFactory,
+            IOperationFilterOptions options,
 
-            IOperationFilterOptions options)
-                : base(() => CreateResolver(propertyExpression, CreateValueExpression(values, false, options), predicateExpressionFactory))
+            // Creates the final expression
+            Func<SystemExpression, SystemExpression, IOperationFilterOptions, SystemExpression> predicateExpressionFactory)
+                : base(() => CreateResolver(propertyExpression, CreateValueExpression(values, false, options), options, predicateExpressionFactory))
         {
         }
 
         private static Expression<Func<TEntity, bool>> CreateResolver(Expression<Func<TEntity, TProperty>> propertyExpression, SystemExpression constant,
-            Func<MemberExpression, SystemExpression, SystemExpression> predicateExpressionFactory)
+            IOperationFilterOptions options, Func<SystemExpression, SystemExpression, IOperationFilterOptions, SystemExpression> predicateExpressionFactory)
         {
             _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
 
             var parameter = SystemExpression.Parameter(typeof(TEntity), "entity");
 
-            var memberExpression = propertyExpression.GetPropertyOrFieldExpressionUsingParameter(parameter);
+            SystemExpression memberExpression = propertyExpression.GetPropertyOrFieldExpressionUsingParameter(parameter);
 
-            var predicate = predicateExpressionFactory.Invoke(memberExpression, constant);
+            var predicate = predicateExpressionFactory.Invoke(memberExpression, constant, options);
 
             return SystemExpression.Lambda<Func<TEntity, bool>>(predicate, parameter);
         }

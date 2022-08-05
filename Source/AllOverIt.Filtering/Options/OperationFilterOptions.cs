@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Filtering.Options
+﻿namespace AllOverIt.Filtering.Options
 {
     /// <inheritdoc cref="IOperationFilterOptions" />
     public sealed class OperationFilterOptions : IOperationFilterOptions
@@ -9,7 +7,7 @@ namespace AllOverIt.Filtering.Options
         public bool UseParameterizedQueries { get; set; }
 
         /// <inheritdoc />
-        public StringComparison? StringComparison { get; set; }
+        public StringComparisonMode StringComparisonMode { get; init; } = StringComparisonMode.None;
 
         /// <inheritdoc />
         public bool IgnoreNullFilterValue { get; set; }

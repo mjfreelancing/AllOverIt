@@ -68,8 +68,8 @@ namespace AllOverIt.Patterns.Specification.Utils
                 Visit(node.Object);
             }
 
-            // Such as Contains
-            _queryStringBuilder.Append($" {node.Method.Name} ");
+            // Such as Contains, StartsWith, EndsWith, ...
+            _queryStringBuilder.Append($".{node.Method.Name}(");
 
             if (node.Arguments.Any())
             {
@@ -79,8 +79,6 @@ namespace AllOverIt.Patterns.Specification.Utils
                 }
                 else
                 {
-                    _queryStringBuilder.Append('(');
-
                     for (var i = 0; i < node.Arguments.Count; i++)
                     {
                         Visit(node.Arguments[i]);
@@ -90,10 +88,10 @@ namespace AllOverIt.Patterns.Specification.Utils
                             _queryStringBuilder.Append(", ");
                         }
                     }
-
-                    _queryStringBuilder.Append(')');
                 }
             }
+
+            _queryStringBuilder.Append(')');
 
             return node;
         }

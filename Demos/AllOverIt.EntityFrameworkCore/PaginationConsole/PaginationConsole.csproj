@@ -18,6 +18,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\..\Source\AllOverIt.EntityFrameworkCore.Pagination\AllOverIt.EntityFrameworkCore.Pagination.csproj" />
+        <ProjectReference Include="..\..\..\Source\AllOverIt.Filtering\AllOverIt.Filtering.csproj" />
         <ProjectReference Include="..\..\..\Source\AllOverIt.GenericHost\AllOverIt.GenericHost.csproj" />
     </ItemGroup>
 

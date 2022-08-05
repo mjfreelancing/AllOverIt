@@ -138,7 +138,7 @@ namespace AllOverIt.Filtering.Tests
             _options = new DefaultQueryFilterOptions
             {
                 UseParameterizedQueries = Create<bool>(),
-                StringComparison = Create<bool>() ? default : StringComparison.OrdinalIgnoreCase,
+                StringComparisonMode = Create<bool>() ? StringComparisonMode.None : StringComparisonMode.ToLower,
                 IgnoreNullFilterValues = false
             };
 
@@ -216,16 +216,18 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, default)]
-            [InlineData(true, default)]
-            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
-            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
-            public void Should_Create_Contains(bool useParameterizedQueries, StringComparison? stringComparison)
+            [InlineData(false, StringComparisonMode.None)]
+            [InlineData(true, StringComparisonMode.None)]
+            [InlineData(false, StringComparisonMode.ToUpper)]
+            [InlineData(true, StringComparisonMode.ToUpper)]
+            [InlineData(false, StringComparisonMode.ToLower)]
+            [InlineData(true, StringComparisonMode.ToLower)]
+            public void Should_Create_Contains(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = false
                 };
 
@@ -239,16 +241,18 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, default)]
-            [InlineData(true, default)]
-            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
-            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
-            public void Should_Create_NotContains(bool useParameterizedQueries, StringComparison? stringComparison)
+            [InlineData(false, StringComparisonMode.None)]
+            [InlineData(true, StringComparisonMode.None)]
+            [InlineData(false, StringComparisonMode.ToUpper)]
+            [InlineData(true, StringComparisonMode.ToUpper)]
+            [InlineData(false, StringComparisonMode.ToLower)]
+            [InlineData(true, StringComparisonMode.ToLower)]
+            public void Should_Create_NotContains(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = false
                 };
 
@@ -262,16 +266,18 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, default)]
-            [InlineData(true, default)]
-            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
-            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
-            public void Should_Create_StartsWith(bool useParameterizedQueries, StringComparison? stringComparison)
+            [InlineData(false, StringComparisonMode.None)]
+            [InlineData(true, StringComparisonMode.None)]
+            [InlineData(false, StringComparisonMode.ToUpper)]
+            [InlineData(true, StringComparisonMode.ToUpper)]
+            [InlineData(false, StringComparisonMode.ToLower)]
+            [InlineData(true, StringComparisonMode.ToLower)]
+            public void Should_Create_StartsWith(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = false
                 };
 
@@ -285,16 +291,18 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, default)]
-            [InlineData(true, default)]
-            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
-            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
-            public void Should_Create_EndsWith(bool useParameterizedQueries, StringComparison? stringComparison)
+            [InlineData(false, StringComparisonMode.None)]
+            [InlineData(true, StringComparisonMode.None)]
+            [InlineData(false, StringComparisonMode.ToUpper)]
+            [InlineData(true, StringComparisonMode.ToUpper)]
+            [InlineData(false, StringComparisonMode.ToLower)]
+            [InlineData(true, StringComparisonMode.ToLower)]
+            public void Should_Create_EndsWith(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = false
                 };
 
@@ -308,16 +316,18 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, default)]
-            [InlineData(true, default)]
-            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
-            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
-            public void Should_Create_In(bool useParameterizedQueries, StringComparison? stringComparison)
+            [InlineData(false, StringComparisonMode.None)]
+            [InlineData(true, StringComparisonMode.None)]
+            [InlineData(false, StringComparisonMode.ToUpper)]
+            [InlineData(true, StringComparisonMode.ToUpper)]
+            [InlineData(false, StringComparisonMode.ToLower)]
+            [InlineData(true, StringComparisonMode.ToLower)]
+            public void Should_Create_In(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = false
                 };
 
@@ -331,16 +341,18 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, default)]
-            [InlineData(true, default)]
-            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
-            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
-            public void Should_Create_NotIn(bool useParameterizedQueries, StringComparison? stringComparison)
+            [InlineData(false, StringComparisonMode.None)]
+            [InlineData(true, StringComparisonMode.None)]
+            [InlineData(false, StringComparisonMode.ToUpper)]
+            [InlineData(true, StringComparisonMode.ToUpper)]
+            [InlineData(false, StringComparisonMode.ToLower)]
+            [InlineData(true, StringComparisonMode.ToLower)]
+            public void Should_Create_NotIn(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = false
                 };
 
@@ -354,16 +366,18 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, default)]
-            [InlineData(true, default)]
-            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
-            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
-            public void Should_Create_GreaterThan(bool useParameterizedQueries, StringComparison? stringComparison)
+            [InlineData(false, StringComparisonMode.None)]
+            [InlineData(true, StringComparisonMode.None)]
+            [InlineData(false, StringComparisonMode.ToUpper)]
+            [InlineData(true, StringComparisonMode.ToUpper)]
+            [InlineData(false, StringComparisonMode.ToLower)]
+            [InlineData(true, StringComparisonMode.ToLower)]
+            public void Should_Create_GreaterThan(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = false
                 };
 
@@ -373,20 +387,22 @@ namespace AllOverIt.Filtering.Tests
 
                 var entityName = $"{_filter.Name.GreaterThan.Value}ZZZ";
 
-                AssertNameSpecification(specification, entityName, null);
+                AssertNameSpecification(specification, entityName, _filter.Name.GreaterThan.Value);
             }
 
             [Theory]
-            [InlineData(false, default)]
-            [InlineData(true, default)]
-            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
-            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
-            public void Should_Create_GreaterThanOrEqual(bool useParameterizedQueries, StringComparison? stringComparison)
+            [InlineData(false, StringComparisonMode.None)]
+            [InlineData(true, StringComparisonMode.None)]
+            [InlineData(false, StringComparisonMode.ToUpper)]
+            [InlineData(true, StringComparisonMode.ToUpper)]
+            [InlineData(false, StringComparisonMode.ToLower)]
+            [InlineData(true, StringComparisonMode.ToLower)]
+            public void Should_Create_GreaterThanOrEqual(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = false
                 };
 
@@ -396,20 +412,22 @@ namespace AllOverIt.Filtering.Tests
 
                 var entityName = $"{_filter.Name.GreaterThanOrEqual.Value}ZZZ";
 
-                AssertNameSpecification(specification, entityName, null);
+                AssertNameSpecification(specification, entityName, _filter.Name.GreaterThanOrEqual.Value[..4]);
             }
 
             [Theory]
-            [InlineData(false, default)]
-            [InlineData(true, default)]
-            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
-            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
-            public void Should_Create_GreaterThanOrEqual_When_Equal(bool useParameterizedQueries, StringComparison? stringComparison)
+            [InlineData(false, StringComparisonMode.None)]
+            [InlineData(true, StringComparisonMode.None)]
+            [InlineData(false, StringComparisonMode.ToUpper)]
+            [InlineData(true, StringComparisonMode.ToUpper)]
+            [InlineData(false, StringComparisonMode.ToLower)]
+            [InlineData(true, StringComparisonMode.ToLower)]
+            public void Should_Create_GreaterThanOrEqual_When_Equal(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = false
                 };
 
@@ -419,20 +437,22 @@ namespace AllOverIt.Filtering.Tests
 
                 var entityName = _filter.Name.GreaterThanOrEqual.Value;
 
-                AssertNameSpecification(specification, entityName, null);
+                AssertNameSpecification(specification, entityName, _filter.Name.GreaterThanOrEqual.Value[..4]);
             }
 
             [Theory]
-            [InlineData(false, default)]
-            [InlineData(true, default)]
-            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
-            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
-            public void Should_Create_LessThan(bool useParameterizedQueries, StringComparison? stringComparison)
+            [InlineData(false, StringComparisonMode.None)]
+            [InlineData(true, StringComparisonMode.None)]
+            [InlineData(false, StringComparisonMode.ToUpper)]
+            [InlineData(true, StringComparisonMode.ToUpper)]
+            [InlineData(false, StringComparisonMode.ToLower)]
+            [InlineData(true, StringComparisonMode.ToLower)]
+            public void Should_Create_LessThan(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = false
                 };
 
@@ -446,16 +466,18 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, default)]
-            [InlineData(true, default)]
-            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
-            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
-            public void Should_Create_LessThanOrEqual(bool useParameterizedQueries, StringComparison? stringComparison)
+            [InlineData(false, StringComparisonMode.None)]
+            [InlineData(true, StringComparisonMode.None)]
+            [InlineData(false, StringComparisonMode.ToUpper)]
+            [InlineData(true, StringComparisonMode.ToUpper)]
+            [InlineData(false, StringComparisonMode.ToLower)]
+            [InlineData(true, StringComparisonMode.ToLower)]
+            public void Should_Create_LessThanOrEqual(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = false
                 };
 
@@ -469,16 +491,18 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, default)]
-            [InlineData(true, default)]
-            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
-            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
-            public void Should_Create_LessThanOrEqual_When_Equal(bool useParameterizedQueries, StringComparison? stringComparison)
+            [InlineData(false, StringComparisonMode.None)]
+            [InlineData(true, StringComparisonMode.None)]
+            [InlineData(false, StringComparisonMode.ToUpper)]
+            [InlineData(true, StringComparisonMode.ToUpper)]
+            [InlineData(false, StringComparisonMode.ToLower)]
+            [InlineData(true, StringComparisonMode.ToLower)]
+            public void Should_Create_LessThanOrEqual_When_Equal(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = false
                 };
 
@@ -492,16 +516,18 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, default)]
-            [InlineData(true, default)]
-            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
-            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
-            public void Should_Create_EqualTo(bool useParameterizedQueries, StringComparison? stringComparison)
+            [InlineData(false, StringComparisonMode.None)]
+            [InlineData(true, StringComparisonMode.None)]
+            [InlineData(false, StringComparisonMode.ToUpper)]
+            [InlineData(true, StringComparisonMode.ToUpper)]
+            [InlineData(false, StringComparisonMode.ToLower)]
+            [InlineData(true, StringComparisonMode.ToLower)]
+            public void Should_Create_EqualTo(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = false
                 };
 
@@ -511,20 +537,22 @@ namespace AllOverIt.Filtering.Tests
 
                 var entityName = _filter.Name.EqualTo.Value;
 
-                AssertNameSpecification(specification, entityName, null);
+                AssertNameSpecification(specification, entityName, Create<string>());
             }
 
             [Theory]
-            [InlineData(false, default)]
-            [InlineData(true, default)]
-            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
-            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
-            public void Should_Create_NotEqualTo(bool useParameterizedQueries, StringComparison? stringComparison)
+            [InlineData(false, StringComparisonMode.None)]
+            [InlineData(true, StringComparisonMode.None)]
+            [InlineData(false, StringComparisonMode.ToUpper)]
+            [InlineData(true, StringComparisonMode.ToUpper)]
+            [InlineData(false, StringComparisonMode.ToLower)]
+            [InlineData(true, StringComparisonMode.ToLower)]
+            public void Should_Create_NotEqualTo(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = false
                 };
 
@@ -534,7 +562,7 @@ namespace AllOverIt.Filtering.Tests
 
                 var entityName = _filter.Name.NotEqualTo.Value;
 
-                AssertNameSpecification(specification, null, entityName);
+                AssertNameSpecification(specification, Create<string>(), entityName);
             }
 
             [Fact]
@@ -1097,17 +1125,19 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, "AbC", "fgh", default, "pqrAbCxyz", "xyz_abc_fgh")]
-            [InlineData(true, "AbC", "fgh", default, "pqrAbCxyz", "xyz_abc_fgh")]
-            [InlineData(false, "AbC", "fgh", StringComparison.OrdinalIgnoreCase, "pqrAbCxyz", "cde")]
-            [InlineData(true, "AbC", "fgh", StringComparison.OrdinalIgnoreCase, "pqrAbCxyz", "cde")]
+            [InlineData(false, "AbC", "fgh", StringComparisonMode.None, "pqrAbCxyz", "xyz_abc_fgh")]
+            [InlineData(true, "AbC", "fgh", StringComparisonMode.None, "pqrAbCxyz", "xyz_abc_fgh")]
+            [InlineData(false, "AbC", "fgh", StringComparisonMode.ToLower, "pqrAbCxyz", "cde")]
+            [InlineData(true, "AbC", "fgh", StringComparisonMode.ToLower, "pqrAbCxyz", "cde")]
+            [InlineData(false, "AbC", "fgh", StringComparisonMode.ToUpper, "pqrAbCxyz", "cde")]
+            [InlineData(true, "AbC", "fgh", StringComparisonMode.ToUpper, "pqrAbCxyz", "cde")]
             public void Should_And_Contains_GreaterThan(bool useParameterizedQueries, string contains, string greaterThan,
-                StringComparison? stringComparison, string trueValue, string falseValue)
+                StringComparisonMode stringComparisonMode, string trueValue, string falseValue)
             {
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = false
                 };
 
@@ -1122,17 +1152,19 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, "AbC", "fgh", default, "pqrAbCxyz", "xyz_abc_fgh")]
-            [InlineData(true, "AbC", "fgh", default, "pqrAbCxyz", "xyz_abc_fgh")]
-            [InlineData(false, "AbC", "fgh", StringComparison.OrdinalIgnoreCase, "pqrAbCxyz", "cde")]
-            [InlineData(true, "AbC", "fgh", StringComparison.OrdinalIgnoreCase, "pqrAbCxyz", "cde")]
+            [InlineData(false, "AbC", "fgh", StringComparisonMode.None, "pqrAbCxyz", "xyz_abc_fgh")]
+            [InlineData(true, "AbC", "fgh", StringComparisonMode.None, "pqrAbCxyz", "xyz_abc_fgh")]
+            [InlineData(false, "AbC", "fgh", StringComparisonMode.ToLower, "pqrAbCxyz", "cde")]
+            [InlineData(true, "AbC", "fgh", StringComparisonMode.ToLower, "pqrAbCxyz", "cde")]
+            [InlineData(false, "AbC", "fgh", StringComparisonMode.ToUpper, "pqrAbCxyz", "cde")]
+            [InlineData(true, "AbC", "fgh", StringComparisonMode.ToUpper, "pqrAbCxyz", "cde")]
             public void Should_And_GreaterThan_Contains(bool useParameterizedQueries, string contains, string greaterThan,
-                StringComparison? stringComparison, string trueValue, string falseValue)
+                StringComparisonMode stringComparisonMode, string trueValue, string falseValue)
             {
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = false
                 };
 
@@ -1147,16 +1179,18 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, default)]
-            [InlineData(true, default)]
-            [InlineData(false, StringComparison.OrdinalIgnoreCase)]
-            [InlineData(true, StringComparison.OrdinalIgnoreCase)]
-            public void Should_And_EqualTo_In(bool useParameterizedQueries, StringComparison? stringComparison)
+            [InlineData(false, StringComparisonMode.None)]
+            [InlineData(true, StringComparisonMode.None)]
+            [InlineData(false, StringComparisonMode.ToLower)]
+            [InlineData(true, StringComparisonMode.ToLower)]
+            [InlineData(false, StringComparisonMode.ToUpper)]
+            [InlineData(true, StringComparisonMode.ToUpper)]
+            public void Should_And_EqualTo_In(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = false
                 };
 
@@ -1173,16 +1207,18 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, default)]
-            [InlineData(true, default)]
-            [InlineData(false, StringComparison.OrdinalIgnoreCase)]
-            [InlineData(true, StringComparison.OrdinalIgnoreCase)]
-            public void Should_And_NotIn_NotEqualTo(bool useParameterizedQueries, StringComparison? stringComparison)
+            [InlineData(false, StringComparisonMode.None)]
+            [InlineData(true, StringComparisonMode.None)]
+            [InlineData(false, StringComparisonMode.ToLower)]
+            [InlineData(true, StringComparisonMode.ToLower)]
+            [InlineData(false, StringComparisonMode.ToUpper)]
+            [InlineData(true, StringComparisonMode.ToUpper)]
+            public void Should_And_NotIn_NotEqualTo(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = false
                 };
 
@@ -1222,17 +1258,19 @@ namespace AllOverIt.Filtering.Tests
         public class And_StringFilter : FilterSpecificationBuilderFixture
         {
             [Theory]
-            [InlineData(false, "AbC", "xyz", default, "xyz_AbC_fgh", "pqr")]
-            [InlineData(true, "AbC", "xyz", default, "xyz_AbC_fgh", "pqr")]
-            [InlineData(false, "AbC", "xyz", StringComparison.OrdinalIgnoreCase, "xyz_AbC_fgh", "pqr")]
-            [InlineData(true, "AbC", "xyz", StringComparison.OrdinalIgnoreCase, "xyz_AbC_fgh", "pqr")]
+            [InlineData(false, "AbC", "xyz", StringComparisonMode.None, "xyz_AbC_fgh", "pqr")]
+            [InlineData(true, "AbC", "xyz", StringComparisonMode.None, "xyz_AbC_fgh", "pqr")]
+            [InlineData(false, "AbC", "xyz", StringComparisonMode.ToLower, "xyz_AbC_fgh", "pqr")]
+            [InlineData(true, "AbC", "xyz", StringComparisonMode.ToLower, "xyz_AbC_fgh", "pqr")]
+            [InlineData(false, "AbC", "xyz", StringComparisonMode.ToUpper, "xyz_AbC_fgh", "pqr")]
+            [InlineData(true, "AbC", "xyz", StringComparisonMode.ToUpper, "xyz_AbC_fgh", "pqr")]
             public void Should_And_Contains_StartsWith(bool useParameterizedQueries, string contains, string startsWith,
-                StringComparison? stringComparison, string trueValue, string falseValue)
+                StringComparisonMode stringComparisonMode, string trueValue, string falseValue)
             {
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = false
                 };
 
@@ -1247,17 +1285,19 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, "AbC", "xyz", default, "pqrxyz", "xyz_AbC_fgh")]
-            [InlineData(true, "AbC", "xyz", default, "pqrxyz", "xyz_AbC_fgh")]
-            [InlineData(false, "AbC", "xyz", StringComparison.OrdinalIgnoreCase, "pqrxyz", "xyz_AbC_fgh")]
-            [InlineData(true, "AbC", "xyz", StringComparison.OrdinalIgnoreCase, "pqrxyz", "xyz_AbC_fgh")]
+            [InlineData(false, "AbC", "xyz", StringComparisonMode.None, "pqrxyz", "xyz_AbC_fgh")]
+            [InlineData(true, "AbC", "xyz", StringComparisonMode.None, "pqrxyz", "xyz_AbC_fgh")]
+            [InlineData(false, "AbC", "xyz", StringComparisonMode.ToLower, "pqrxyz", "xyz_AbC_fgh")]
+            [InlineData(true, "AbC", "xyz", StringComparisonMode.ToLower, "pqrxyz", "xyz_AbC_fgh")]
+            [InlineData(false, "AbC", "xyz", StringComparisonMode.ToUpper, "pqrxyz", "xyz_AbC_fgh")]
+            [InlineData(true, "AbC", "xyz", StringComparisonMode.ToUpper, "pqrxyz", "xyz_AbC_fgh")]
             public void Should_And_NotContains_EndsWith(bool useParameterizedQueries, string notContains, string endsWith,
-               StringComparison? stringComparison, string trueValue, string falseValue)
+               StringComparisonMode stringComparisonMode, string trueValue, string falseValue)
             {
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = false
                 };
 
@@ -1596,17 +1636,19 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, "AbC", "fgh", default, "pqrAbCxyz", "cde")]
-            [InlineData(true, "AbC", "fgh", default, "pqrAbCxyz", "cde")]
-            [InlineData(false, "AbC", "fgh", StringComparison.OrdinalIgnoreCase, "pqrAbCxyz", "cde")]
-            [InlineData(true, "AbC", "fgh", StringComparison.OrdinalIgnoreCase, "pqrAbCxyz", "cde")]
+            [InlineData(false, "AbC", "fgh", StringComparisonMode.None, "pqrAbCxyz", "cde")]
+            [InlineData(true, "AbC", "fgh", StringComparisonMode.None, "pqrAbCxyz", "cde")]
+            [InlineData(false, "AbC", "fgh", StringComparisonMode.ToUpper, "pqrAbCxyz", "cde")]
+            [InlineData(true, "AbC", "fgh", StringComparisonMode.ToUpper, "pqrAbCxyz", "cde")]
+            [InlineData(false, "AbC", "fgh", StringComparisonMode.ToLower, "pqrAbCxyz", "cde")]
+            [InlineData(true, "AbC", "fgh", StringComparisonMode.ToLower, "pqrAbCxyz", "cde")]
             public void Should_Or_Contains_GreaterThan(bool useParameterizedQueries, string contains, string greaterThan,
-                StringComparison? stringComparison, string trueValue, string falseValue)
+                StringComparisonMode stringComparisonMode, string trueValue, string falseValue)
             {
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = false
                 };
 
@@ -1621,17 +1663,19 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, "AbC", "fgh", default, "pqrAbCxyz", "cde")]
-            [InlineData(true, "AbC", "fgh", default, "pqrAbCxyz", "cde")]
-            [InlineData(false, "AbC", "fgh", StringComparison.OrdinalIgnoreCase, "pqrAbCxyz", "cde")]
-            [InlineData(true, "AbC", "fgh", StringComparison.OrdinalIgnoreCase, "pqrAbCxyz", "cde")]
+            [InlineData(false, "AbC", "fgh", StringComparisonMode.None, "pqrAbCxyz", "cde")]
+            [InlineData(true, "AbC", "fgh", StringComparisonMode.None, "pqrAbCxyz", "cde")]
+            [InlineData(false, "AbC", "fgh", StringComparisonMode.ToUpper, "pqrAbCxyz", "cde")]
+            [InlineData(true, "AbC", "fgh", StringComparisonMode.ToUpper, "pqrAbCxyz", "cde")]
+            [InlineData(false, "AbC", "fgh", StringComparisonMode.ToLower, "pqrAbCxyz", "cde")]
+            [InlineData(true, "AbC", "fgh", StringComparisonMode.ToLower, "pqrAbCxyz", "cde")]
             public void Should_Or_GreaterThan_Contains(bool useParameterizedQueries, string contains, string greaterThan,
-                StringComparison? stringComparison, string trueValue, string falseValue)
+                StringComparisonMode stringComparisonMode, string trueValue, string falseValue)
             {
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = false
                 };
 
@@ -1646,16 +1690,18 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, default)]
-            [InlineData(true, default)]
-            [InlineData(false, StringComparison.OrdinalIgnoreCase)]
-            [InlineData(true, StringComparison.OrdinalIgnoreCase)]
-            public void Should_Or_EqualTo_In(bool useParameterizedQueries, StringComparison? stringComparison)
+            [InlineData(false, StringComparisonMode.None)]
+            [InlineData(true, StringComparisonMode.None)]
+            [InlineData(false, StringComparisonMode.ToUpper)]
+            [InlineData(true, StringComparisonMode.ToUpper)]
+            [InlineData(false, StringComparisonMode.ToLower)]
+            [InlineData(true, StringComparisonMode.ToLower)]
+            public void Should_Or_EqualTo_In(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = false
                 };
 
@@ -1670,16 +1716,18 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, default)]
-            [InlineData(true, default)]
-            [InlineData(false, StringComparison.OrdinalIgnoreCase)]
-            [InlineData(true, StringComparison.OrdinalIgnoreCase)]
-            public void Should_Or_NotIn_NotEqualTo(bool useParameterizedQueries, StringComparison? stringComparison)
+            [InlineData(false, StringComparisonMode.None)]
+            [InlineData(true, StringComparisonMode.None)]
+            [InlineData(false, StringComparisonMode.ToUpper)]
+            [InlineData(true, StringComparisonMode.ToUpper)]
+            [InlineData(false, StringComparisonMode.ToLower)]
+            [InlineData(true, StringComparisonMode.ToLower)]
+            public void Should_Or_NotIn_NotEqualTo(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = false
                 };
 
@@ -1721,17 +1769,19 @@ namespace AllOverIt.Filtering.Tests
         public class Or_StringFilter : FilterSpecificationBuilderFixture
         {
             [Theory]
-            [InlineData(false, "abc", "123", default, "xyz_abc_fgh", "pqr")]
-            [InlineData(true, "123", "xyz", default, "xyz_abc_fgh", "pqr")]
-            [InlineData(false, "abc", "123", StringComparison.InvariantCultureIgnoreCase, "xyz_abc_fgh", "pqr")]
-            [InlineData(true, "123", "xyz", StringComparison.InvariantCultureIgnoreCase, "xyz_abc_fgh", "pqr")]
+            [InlineData(false, "abc", "123", StringComparisonMode.None, "xyz_abc_fgh", "pqr")]
+            [InlineData(true, "123", "xyz", StringComparisonMode.None, "xyz_abc_fgh", "pqr")]
+            [InlineData(false, "abc", "123", StringComparisonMode.ToUpper, "xyz_abc_fgh", "pqr")]
+            [InlineData(true, "123", "xyz", StringComparisonMode.ToUpper, "xyz_abc_fgh", "pqr")]
+            [InlineData(false, "abc", "123", StringComparisonMode.ToLower, "xyz_abc_fgh", "pqr")]
+            [InlineData(true, "123", "xyz", StringComparisonMode.ToLower, "xyz_abc_fgh", "pqr")]
             public void Should_Or_Contains_StartsWith(bool useParameterizedQueries, string contains, string startsWith,
-               StringComparison? stringComparison, string trueValue, string falseValue)
+               StringComparisonMode stringComparisonMode, string trueValue, string falseValue)
             {
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = false
                 };
 
@@ -1746,17 +1796,19 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, "123", "abc", default, "pqrxyz", "123")]
-            [InlineData(true, "abc", "123", default, "pqrxyz", "abc")]
-            [InlineData(false, "123", "xyz", StringComparison.InvariantCultureIgnoreCase, "pqrxyz", "123")]
-            [InlineData(true, "abc", "123", StringComparison.InvariantCultureIgnoreCase, "pqrxyz", "abc")]
+            [InlineData(false, "123", "abc", StringComparisonMode.None, "pqrxyz", "123")]
+            [InlineData(true, "abc", "123", StringComparisonMode.None, "pqrxyz", "abc")]
+            [InlineData(false, "123", "xyz", StringComparisonMode.ToUpper, "pqrxyz", "123")]
+            [InlineData(true, "abc", "123", StringComparisonMode.ToUpper, "pqrxyz", "abc")]
+            [InlineData(false, "123", "xyz", StringComparisonMode.ToLower, "pqrxyz", "123")]
+            [InlineData(true, "abc", "123", StringComparisonMode.ToLower, "pqrxyz", "abc")]
             public void Should_Or_NotContains_EndsWith(bool useParameterizedQueries, string notContains, string endsWith,
-               StringComparison? stringComparison, string trueValue, string falseValue)
+               StringComparisonMode stringComparisonMode, string trueValue, string falseValue)
             {
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = false
                 };
 
@@ -1874,7 +1926,7 @@ namespace AllOverIt.Filtering.Tests
 
         private void AssertNameSpecification(ILinqSpecification<DummyEntity> specification, string trueValue, string falseValue)
         {
-            if (_options.StringComparison == StringComparison.OrdinalIgnoreCase)
+            if (_options.StringComparisonMode == StringComparisonMode.ToLower)
             {
                 trueValue = trueValue?.ToLower();
             }

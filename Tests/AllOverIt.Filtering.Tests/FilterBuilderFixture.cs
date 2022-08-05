@@ -158,16 +158,18 @@ namespace AllOverIt.Filtering.Tests
         public class Where_String : FilterBuilderFixture
         {
             [Theory]
-            [InlineData(false, default)]
-            [InlineData(true, default)]
-            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
-            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
-            public void Should_Apply_Filter(bool useParameterizedQueries, StringComparison? stringComparison)
+            [InlineData(false, StringComparisonMode.None)]
+            [InlineData(true, StringComparisonMode.None)]
+            [InlineData(false, StringComparisonMode.ToUpper)]
+            [InlineData(true, StringComparisonMode.ToUpper)]
+            [InlineData(false, StringComparisonMode.ToLower)]
+            [InlineData(true, StringComparisonMode.ToLower)]
+            public void Should_Apply_Filter(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = false
                 };
 
@@ -188,16 +190,18 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, default)]
-            [InlineData(true, default)]
-            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
-            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
-            public void Should_Ignore_Filter(bool useParameterizedQueries, StringComparison? stringComparison)
+            [InlineData(false, StringComparisonMode.None)]
+            [InlineData(true, StringComparisonMode.None)]
+            [InlineData(false, StringComparisonMode.ToUpper)]
+            [InlineData(true, StringComparisonMode.ToUpper)]
+            [InlineData(false, StringComparisonMode.ToLower)]
+            [InlineData(true, StringComparisonMode.ToLower)]
+            public void Should_Ignore_Filter(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = true
                 };
 
@@ -532,16 +536,18 @@ namespace AllOverIt.Filtering.Tests
         public class Where_And_String : FilterBuilderFixture
         {
             [Theory]
-            [InlineData(false, default)]
-            [InlineData(true, default)]
-            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
-            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
-            public void Should_Apply_And_Filter(bool useParameterizedQueries, StringComparison? stringComparison)
+            [InlineData(false, StringComparisonMode.None)]
+            [InlineData(true, StringComparisonMode.None)]
+            [InlineData(false, StringComparisonMode.ToUpper)]
+            [InlineData(true, StringComparisonMode.ToUpper)]
+            [InlineData(false, StringComparisonMode.ToLower)]
+            [InlineData(true, StringComparisonMode.ToLower)]
+            public void Should_Apply_And_Filter(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = false
                 };
 
@@ -564,16 +570,18 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, default)]
-            [InlineData(true, default)]
-            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
-            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
-            public void Should_Apply_Nullable_Filter(bool useParameterizedQueries, StringComparison? stringComparison)
+            [InlineData(false, StringComparisonMode.None)]
+            [InlineData(true, StringComparisonMode.None)]
+            [InlineData(false, StringComparisonMode.ToUpper)]
+            [InlineData(true, StringComparisonMode.ToUpper)]
+            [InlineData(false, StringComparisonMode.ToLower)]
+            [InlineData(true, StringComparisonMode.ToLower)]
+            public void Should_Apply_Nullable_Filter(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = false
                 };
 
@@ -596,16 +604,18 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, default)]
-            [InlineData(true, default)]
-            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
-            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
-            public void Should_Ignore_Nullable_Filter1(bool useParameterizedQueries, StringComparison? stringComparison)
+            [InlineData(false, StringComparisonMode.None)]
+            [InlineData(true, StringComparisonMode.None)]
+            [InlineData(false, StringComparisonMode.ToUpper)]
+            [InlineData(true, StringComparisonMode.ToUpper)]
+            [InlineData(false, StringComparisonMode.ToLower)]
+            [InlineData(true, StringComparisonMode.ToLower)]
+            public void Should_Ignore_Nullable_Filter1(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = true
                 };
 
@@ -630,16 +640,18 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, default)]
-            [InlineData(true, default)]
-            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
-            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
-            public void Should_Ignore_Nullable_Filter2(bool useParameterizedQueries, StringComparison? stringComparison)
+            [InlineData(false, StringComparisonMode.None)]
+            [InlineData(true, StringComparisonMode.None)]
+            [InlineData(false, StringComparisonMode.ToUpper)]
+            [InlineData(true, StringComparisonMode.ToUpper)]
+            [InlineData(false, StringComparisonMode.ToLower)]
+            [InlineData(true, StringComparisonMode.ToLower)]
+            public void Should_Ignore_Nullable_Filter2(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = true
                 };
 
@@ -664,16 +676,18 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, default)]
-            [InlineData(true, default)]
-            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
-            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
-            public void Should_Ignore_Nullable_Filter3(bool useParameterizedQueries, StringComparison? stringComparison)
+            [InlineData(false, StringComparisonMode.None)]
+            [InlineData(true, StringComparisonMode.None)]
+            [InlineData(false, StringComparisonMode.ToUpper)]
+            [InlineData(true, StringComparisonMode.ToUpper)]
+            [InlineData(false, StringComparisonMode.ToLower)]
+            [InlineData(true, StringComparisonMode.ToLower)]
+            public void Should_Ignore_Nullable_Filter3(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = true
                 };
 
@@ -1016,16 +1030,18 @@ namespace AllOverIt.Filtering.Tests
         public class Where_Or_String : FilterBuilderFixture
         {
             [Theory]
-            [InlineData(false, default)]
-            [InlineData(true, default)]
-            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
-            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
-            public void Should_Apply_Or_Filter(bool useParameterizedQueries, StringComparison? stringComparison)
+            [InlineData(false, StringComparisonMode.None)]
+            [InlineData(true, StringComparisonMode.None)]
+            [InlineData(false, StringComparisonMode.ToUpper)]
+            [InlineData(true, StringComparisonMode.ToUpper)]
+            [InlineData(false, StringComparisonMode.ToLower)]
+            [InlineData(true, StringComparisonMode.ToLower)]
+            public void Should_Apply_Or_Filter(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = false
                 };
 
@@ -1048,16 +1064,18 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, default)]
-            [InlineData(true, default)]
-            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
-            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
-            public void Should_Apply_Nullable_Filter(bool useParameterizedQueries, StringComparison? stringComparison)
+            [InlineData(false, StringComparisonMode.None)]
+            [InlineData(true, StringComparisonMode.None)]
+            [InlineData(false, StringComparisonMode.ToUpper)]
+            [InlineData(true, StringComparisonMode.ToUpper)]
+            [InlineData(false, StringComparisonMode.ToLower)]
+            [InlineData(true, StringComparisonMode.ToLower)]
+            public void Should_Apply_Nullable_Filter(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = false
                 };
 
@@ -1080,16 +1098,18 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, default)]
-            [InlineData(true, default)]
-            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
-            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
-            public void Should_Ignore_Nullable_Filter1(bool useParameterizedQueries, StringComparison? stringComparison)
+            [InlineData(false, StringComparisonMode.None)]
+            [InlineData(true, StringComparisonMode.None)]
+            [InlineData(false, StringComparisonMode.ToUpper)]
+            [InlineData(true, StringComparisonMode.ToUpper)]
+            [InlineData(false, StringComparisonMode.ToLower)]
+            [InlineData(true, StringComparisonMode.ToLower)]
+            public void Should_Ignore_Nullable_Filter1(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = true
                 };
 
@@ -1114,16 +1134,18 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, default)]
-            [InlineData(true, default)]
-            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
-            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
-            public void Should_Ignore_Nullable_Filter2(bool useParameterizedQueries, StringComparison? stringComparison)
+            [InlineData(false, StringComparisonMode.None)]
+            [InlineData(true, StringComparisonMode.None)]
+            [InlineData(false, StringComparisonMode.ToUpper)]
+            [InlineData(true, StringComparisonMode.ToUpper)]
+            [InlineData(false, StringComparisonMode.ToLower)]
+            [InlineData(true, StringComparisonMode.ToLower)]
+            public void Should_Ignore_Nullable_Filter2(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = true
                 };
 
@@ -1148,16 +1170,18 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, default)]
-            [InlineData(true, default)]
-            [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
-            [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
-            public void Should_Ignore_Nullable_Filter3(bool useParameterizedQueries, StringComparison? stringComparison)
+            [InlineData(false, StringComparisonMode.None)]
+            [InlineData(true, StringComparisonMode.None)]
+            [InlineData(false, StringComparisonMode.ToUpper)]
+            [InlineData(true, StringComparisonMode.ToUpper)]
+            [InlineData(false, StringComparisonMode.ToLower)]
+            [InlineData(true, StringComparisonMode.ToLower)]
+            public void Should_Ignore_Nullable_Filter3(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    StringComparison = stringComparison,
+                    StringComparisonMode = stringComparisonMode,
                     IgnoreNullFilterValues = true
                 };
 

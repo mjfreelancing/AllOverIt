@@ -35,16 +35,18 @@ namespace AllOverIt.Filtering.Tests.Operations
         }
 
         [Theory]
-        [InlineData(false, default)]
-        [InlineData(true, default)]
-        [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
-        [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
-        public void Should_Satisfy_Specification_String_When_Equal(bool useParameterizedQueries, StringComparison? stringComparison)
+        [InlineData(false, StringComparisonMode.None)]
+        [InlineData(true, StringComparisonMode.None)]
+        [InlineData(false, StringComparisonMode.ToUpper)]
+        [InlineData(true, StringComparisonMode.ToUpper)]
+        [InlineData(false, StringComparisonMode.ToLower)]
+        [InlineData(true, StringComparisonMode.ToLower)]
+        public void Should_Satisfy_Specification_String_When_Equal(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
         {
             var options = new OperationFilterOptions
             {
                 UseParameterizedQueries = useParameterizedQueries,
-                StringComparison = stringComparison
+                StringComparisonMode = stringComparisonMode
             };
 
             var operation = new LessThanOrEqualOperation<DummyClass, string>(model => model.Name, Model.Name, options);
@@ -53,16 +55,18 @@ namespace AllOverIt.Filtering.Tests.Operations
         }
 
         [Theory]
-        [InlineData(false, default)]
-        [InlineData(true, default)]
-        [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
-        [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
-        public void Should_Satisfy_Specification_String_When_LessThan(bool useParameterizedQueries, StringComparison? stringComparison)
+        [InlineData(false, StringComparisonMode.None)]
+        [InlineData(true, StringComparisonMode.None)]
+        [InlineData(false, StringComparisonMode.ToUpper)]
+        [InlineData(true, StringComparisonMode.ToUpper)]
+        [InlineData(false, StringComparisonMode.ToLower)]
+        [InlineData(true, StringComparisonMode.ToLower)]
+        public void Should_Satisfy_Specification_String_When_LessThan(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
         {
             var options = new OperationFilterOptions
             {
                 UseParameterizedQueries = useParameterizedQueries,
-                StringComparison = stringComparison
+                StringComparisonMode = stringComparisonMode
             };
 
             var operation = new LessThanOrEqualOperation<DummyClass, string>(model => model.Name, $"{Model.Name}ZZZ", options);
@@ -101,16 +105,18 @@ namespace AllOverIt.Filtering.Tests.Operations
         }
 
         [Theory]
-        [InlineData(false, default)]
-        [InlineData(true, default)]
-        [InlineData(false, StringComparison.InvariantCultureIgnoreCase)]
-        [InlineData(true, StringComparison.InvariantCultureIgnoreCase)]
-        public void Should_Not_Satisfy_Specification_String(bool useParameterizedQueries, StringComparison? stringComparison)
+        [InlineData(false, StringComparisonMode.None)]
+        [InlineData(true, StringComparisonMode.None)]
+        [InlineData(false, StringComparisonMode.ToUpper)]
+        [InlineData(true, StringComparisonMode.ToUpper)]
+        [InlineData(false, StringComparisonMode.ToLower)]
+        [InlineData(true, StringComparisonMode.ToLower)]
+        public void Should_Not_Satisfy_Specification_String(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
         {
             var options = new OperationFilterOptions
             {
                 UseParameterizedQueries = useParameterizedQueries,
-                StringComparison = stringComparison
+                StringComparisonMode = stringComparisonMode
             };
 
             var operation = new LessThanOrEqualOperation<DummyClass, string>(model => model.Name, Model.Name[..4], options);

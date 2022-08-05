@@ -190,7 +190,7 @@ namespace AllOverIt.Filtering.Builders
             var filterOptions = new OperationFilterOptions
             {
                 UseParameterizedQueries = _options.UseParameterizedQueries,
-                StringComparison = _options.StringComparison,
+                StringComparisonMode = _options.StringComparisonMode,
                 IgnoreNullFilterValue = _options.IgnoreNullFilterValues
             };
 
@@ -355,7 +355,7 @@ namespace AllOverIt.Filtering.Builders
             return (ILinqSpecification<TType>) ctor.Invoke(new object[] { propertyExpression, values, options });
         }
 
-        private ILinqSpecification<TType> CombineSpecifications(ILinqSpecification<TType> specification1, ILinqSpecification<TType> specification2,
+        private static ILinqSpecification<TType> CombineSpecifications(ILinqSpecification<TType> specification1, ILinqSpecification<TType> specification2,
             Func<ILinqSpecification<TType>, ILinqSpecification<TType>, ILinqSpecification<TType>> action)
         {
             // simplify the expression if either specifications are to be ignored
