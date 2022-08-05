@@ -174,6 +174,19 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
             }
 
             [Fact]
+            public void Should_Output_Compare()
+            {
+                var value1 = Create<string>();
+                var value2 = Create<string>();
+
+                var specification = LinqSpecification<TypeDummy>.Create(item => string.Compare(value1, value2) == 0);
+
+                var actual = _visitor.AsQueryString(specification);
+
+                actual.Should().Be($"(Compare('{value1}', '{value2}') == 0)");
+            }
+
+            [Fact]
             public void Should_Output_Constant()
             {
                 var specification = LinqSpecification<TypeDummy>.Create(item => item.Value1 == 99);

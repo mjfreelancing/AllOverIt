@@ -1195,7 +1195,8 @@ namespace AllOverIt.Filtering.Tests
                     IgnoreNullFilterValues = false
                 };
 
-                _filter.Name.In.Value.Add(_filter.Name.EqualTo.Value);
+                var newValues = _filter.Name.In.Value.Concat(new[] { _filter.Name.EqualTo.Value });     // It's array (fixed size), so cannot just add the value
+                _filter.Name.In = new In<string>(newValues);
 
                 _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
 

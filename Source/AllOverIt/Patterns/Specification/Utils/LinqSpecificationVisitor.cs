@@ -69,7 +69,14 @@ namespace AllOverIt.Patterns.Specification.Utils
             }
 
             // Such as Contains, StartsWith, EndsWith, ...
-            _queryStringBuilder.Append($".{node.Method.Name}(");
+            if (node.Object is null)
+            {
+                _queryStringBuilder.Append($"{node.Method.Name}(");
+            }
+            else
+            {
+                _queryStringBuilder.Append($".{node.Method.Name}(");
+            }
 
             if (node.Arguments.Any())
             {
