@@ -1,4 +1,6 @@
-﻿using AllOverIt.Fixture;
+﻿using AllOverIt.Filtering.Options;
+using AllOverIt.Fixture;
+using System.Collections.Generic;
 
 namespace AllOverIt.Filtering.Tests.Operations
 {
@@ -15,6 +17,21 @@ namespace AllOverIt.Filtering.Tests.Operations
         public OperationsFixtureBase()
         {
             Model = Create<DummyClass>();
+        }
+
+        protected static IEnumerable<object[]> FilterComparisonOptions()
+        {
+            return new List<object[]>
+            {
+                new object[] { false, StringComparisonMode.None },
+                new object[] { true, StringComparisonMode.None },
+                new object[] { false, StringComparisonMode.ToUpper },
+                new object[] { true, StringComparisonMode.ToUpper  },
+                new object[] { false, StringComparisonMode.ToLower },
+                new object[] { true, StringComparisonMode.ToLower },
+                new object[] { false, StringComparisonMode.InvariantCultureIgnoreCase },
+                new object[] { true, StringComparisonMode.InvariantCultureIgnoreCase },
+            };
         }
     }
 }

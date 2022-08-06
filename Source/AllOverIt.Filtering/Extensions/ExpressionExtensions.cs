@@ -14,13 +14,22 @@ namespace AllOverIt.Filtering.Extensions
                 return expression;
             }
 
-            return stringComparisonMode switch
+            if (stringComparisonMode == StringComparisonMode.None)
             {
-                StringComparisonMode.None => expression,
-                StringComparisonMode.ToLower => StringExpressionUtils.CreateToLowerCallExpression(expression),
-                StringComparisonMode.ToUpper => StringExpressionUtils.CreateToUpperCallExpression(expression),
-                _ => throw new InvalidOperationException($"Unknown string comparison mode '{stringComparisonMode}'.")
-            };
+                return expression;
+            }
+
+            if (stringComparisonMode == StringComparisonMode.ToLower)
+            {
+                return StringExpressionUtils.CreateToLowerCallExpression(expression);
+            }
+
+            if (stringComparisonMode == StringComparisonMode.ToUpper)
+            {
+                return StringExpressionUtils.CreateToUpperCallExpression(expression);
+            }
+
+            throw new InvalidOperationException($"Unknown string comparison mode '{stringComparisonMode}'.");
         }
     }
 }

@@ -9,13 +9,16 @@ namespace PaginationConsole.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterDatabase()
+                .Annotation("Npgsql:PostgresExtension:citext", ",,");
+
             migrationBuilder.CreateTable(
                 name: "Blogs",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false)
+                    Description = table.Column<string>(type: "citext", maxLength: 500, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -28,8 +31,8 @@ namespace PaginationConsole.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Title = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
-                    Content = table.Column<string>(type: "text", nullable: false),
+                    Title = table.Column<string>(type: "citext", maxLength: 500, nullable: false),
+                    Content = table.Column<string>(type: "citext", nullable: false),
                     BlogId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>

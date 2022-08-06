@@ -13,9 +13,9 @@ namespace AllOverIt.Filtering.Operations
         {
         }
 
-        private static SystemExpression CreatePredicate(SystemExpression member, SystemExpression constant, IOperationFilterOptions filterOptions)
+        private static SystemExpression CreatePredicate(SystemExpression member, SystemExpression constant, IOperationFilterOptions options)
         {
-            return StringComparisonExpressionUtils.CreateContainsCallExpression(member, constant, filterOptions.StringComparisonMode);
+            return StringComparisonExpressionUtils.CreateContainsCallExpression(member, constant, options.StringComparisonMode);
         }
     }
 }

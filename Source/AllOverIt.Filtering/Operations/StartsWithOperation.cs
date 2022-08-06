@@ -14,12 +14,21 @@ namespace AllOverIt.Filtering.Operations
         {
         }
 
-        private static SystemExpression CreatePredicate(SystemExpression member, SystemExpression constant, IOperationFilterOptions filterOptions)
+        private static SystemExpression CreatePredicate(SystemExpression instance, SystemExpression value, IOperationFilterOptions options)
         {
-            member = member.ApplyStringComparisonMode(filterOptions.StringComparisonMode);
-            constant = constant.ApplyStringComparisonMode(filterOptions.StringComparisonMode);
+            var stringComparisonMode = options.StringComparisonMode;
 
-            return StringExpressionUtils.CreateStartsWithCallExpression(member, constant);
+            if (stringComparisonMode.IsStringComparison())
+            {
+                var stringComparison = stringComparisonMode.GetStringComparison();
+
+                return StringExpressionUtils.CreateStartsWithCallExpression(instance, value, stringComparison);
+            }
+
+            instance = instance.ApplyStringComparisonMode(stringComparisonMode);
+            value = value.ApplyStringComparisonMode(stringComparisonMode);
+
+            return StringExpressionUtils.CreateStartsWithCallExpression(instance, value);
         }
     }
 }

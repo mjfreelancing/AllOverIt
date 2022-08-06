@@ -35,12 +35,7 @@ namespace AllOverIt.Filtering.Tests.Operations
         }
 
         [Theory]
-        [InlineData(false, StringComparisonMode.None)]
-        [InlineData(true, StringComparisonMode.None)]
-        [InlineData(false, StringComparisonMode.ToUpper)]
-        [InlineData(true, StringComparisonMode.ToUpper)]
-        [InlineData(false, StringComparisonMode.ToLower)]
-        [InlineData(true, StringComparisonMode.ToLower)]
+        [MemberData(nameof(FilterComparisonOptions))]
         public void Should_Satisfy_Specification_String(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
         {
             var options = new OperationFilterOptions
@@ -70,12 +65,7 @@ namespace AllOverIt.Filtering.Tests.Operations
         }
 
         [Theory]
-        [InlineData(false, StringComparisonMode.None)]
-        [InlineData(true, StringComparisonMode.None)]
-        [InlineData(false, StringComparisonMode.ToUpper)]
-        [InlineData(true, StringComparisonMode.ToUpper)]
-        [InlineData(false, StringComparisonMode.ToLower)]
-        [InlineData(true, StringComparisonMode.ToLower)]
+        [MemberData(nameof(FilterComparisonOptions))]
         public void Should_Not_Satisfy_Specification_String(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
         {
             var options = new OperationFilterOptions

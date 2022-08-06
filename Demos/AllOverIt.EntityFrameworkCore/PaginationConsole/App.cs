@@ -9,6 +9,7 @@ using Bogus;
 using KeysetPaginationConsole;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Npgsql;
 using PaginationConsole.Entities;
 using System;
 using System.Collections.Generic;
@@ -39,10 +40,9 @@ namespace PaginationConsole
 
             using (var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken))
             {
-                dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-
                 if (DemoStartupOptions.RecreateData)
                 {
+                    // Note: For this demo, comment out to prevent deleting if just applying a migration
                     await dbContext.Database.EnsureDeletedAsync(cancellationToken);
 
                     switch (DemoStartupOptions.Use)
@@ -50,9 +50,17 @@ namespace PaginationConsole
                         case DatabaseChoice.Mysql:
                         case DatabaseChoice.PostgreSql:
                             await dbContext.Database.MigrateAsync(cancellationToken);
+
+                            // required for access to "citext"
+                            using (var connection = (NpgsqlConnection) dbContext.Database.GetDbConnection())
+                            {
+                                connection.Open();
+                                connection.ReloadTypes();
+                            }
                             break;
 
                         case DatabaseChoice.Sqlite:
+                            // Only creates the database - there are no migrations for Sqlite
                             await dbContext.Database.EnsureCreatedAsync(cancellationToken);
                             break;
 
@@ -60,6 +68,11 @@ namespace PaginationConsole
                             throw new NotImplementedException($"Unknown database type {DemoStartupOptions.Use}");
                     }
                 }
+            }
+
+            using (var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken))
+            {
+                dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
                 const int pageSize = 100;
 
@@ -86,22 +99,21 @@ namespace PaginationConsole
                     Description =
                     { 
                         Contains = "vero",
-                        StartsWith = "vero",
+                        StartsWith = "voluptatum",
                     }
                 };
 
-                // Note: This use of lower() is fine for the filtering but when combined with the pagination below
-                //       the final SQL is not valid for the subsequent pages (as they don't lower() the columns).
+                // Note: Just here to show how to set it up.
                 var filterOptions = new DefaultQueryFilterOptions
                 {
-                    StringComparisonMode = StringComparisonMode.ToLower
+                    //StringComparisonMode = StringComparisonMode.ToLower
                 };
 
                 query = query.ApplyFilter(filter, (specificationBuilder, filterBuilder) =>
                 {
                     filterBuilder
                         .Where(entity => entity.Description, f => f.Description.StartsWith)
-                        .Or(entity => entity.Description, f => f.Description.Contains);
+                        .And(entity => entity.Description, f => f.Description.Contains);
                 }, filterOptions);
 
                 // Apply pagination

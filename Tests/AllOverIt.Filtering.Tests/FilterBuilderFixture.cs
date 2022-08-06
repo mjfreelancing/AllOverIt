@@ -5,13 +5,14 @@ using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
 namespace AllOverIt.Filtering.Tests
 {
     // Note: The tests for FilterSpecificationBuilder looks more at the different combinations
-    //       of possible criteria whereas these tests focus on  applying the options.
+    //       of possible criteria whereas these tests focus on applying the options.
     public class FilterBuilderFixture : FixtureBase
     {
         private class DummyClass
@@ -158,12 +159,7 @@ namespace AllOverIt.Filtering.Tests
         public class Where_String : FilterBuilderFixture
         {
             [Theory]
-            [InlineData(false, StringComparisonMode.None)]
-            [InlineData(true, StringComparisonMode.None)]
-            [InlineData(false, StringComparisonMode.ToUpper)]
-            [InlineData(true, StringComparisonMode.ToUpper)]
-            [InlineData(false, StringComparisonMode.ToLower)]
-            [InlineData(true, StringComparisonMode.ToLower)]
+            [MemberData(nameof(FilterComparisonOptions))]
             public void Should_Apply_Filter(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 var options = new DefaultQueryFilterOptions
@@ -190,12 +186,7 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, StringComparisonMode.None)]
-            [InlineData(true, StringComparisonMode.None)]
-            [InlineData(false, StringComparisonMode.ToUpper)]
-            [InlineData(true, StringComparisonMode.ToUpper)]
-            [InlineData(false, StringComparisonMode.ToLower)]
-            [InlineData(true, StringComparisonMode.ToLower)]
+            [MemberData(nameof(FilterComparisonOptions))]
             public void Should_Ignore_Filter(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 var options = new DefaultQueryFilterOptions
@@ -536,12 +527,7 @@ namespace AllOverIt.Filtering.Tests
         public class Where_And_String : FilterBuilderFixture
         {
             [Theory]
-            [InlineData(false, StringComparisonMode.None)]
-            [InlineData(true, StringComparisonMode.None)]
-            [InlineData(false, StringComparisonMode.ToUpper)]
-            [InlineData(true, StringComparisonMode.ToUpper)]
-            [InlineData(false, StringComparisonMode.ToLower)]
-            [InlineData(true, StringComparisonMode.ToLower)]
+            [MemberData(nameof(FilterComparisonOptions))]
             public void Should_Apply_And_Filter(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 var options = new DefaultQueryFilterOptions
@@ -570,12 +556,7 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, StringComparisonMode.None)]
-            [InlineData(true, StringComparisonMode.None)]
-            [InlineData(false, StringComparisonMode.ToUpper)]
-            [InlineData(true, StringComparisonMode.ToUpper)]
-            [InlineData(false, StringComparisonMode.ToLower)]
-            [InlineData(true, StringComparisonMode.ToLower)]
+            [MemberData(nameof(FilterComparisonOptions))]
             public void Should_Apply_Nullable_Filter(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 var options = new DefaultQueryFilterOptions
@@ -604,12 +585,7 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, StringComparisonMode.None)]
-            [InlineData(true, StringComparisonMode.None)]
-            [InlineData(false, StringComparisonMode.ToUpper)]
-            [InlineData(true, StringComparisonMode.ToUpper)]
-            [InlineData(false, StringComparisonMode.ToLower)]
-            [InlineData(true, StringComparisonMode.ToLower)]
+            [MemberData(nameof(FilterComparisonOptions))]
             public void Should_Ignore_Nullable_Filter1(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 var options = new DefaultQueryFilterOptions
@@ -640,12 +616,7 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, StringComparisonMode.None)]
-            [InlineData(true, StringComparisonMode.None)]
-            [InlineData(false, StringComparisonMode.ToUpper)]
-            [InlineData(true, StringComparisonMode.ToUpper)]
-            [InlineData(false, StringComparisonMode.ToLower)]
-            [InlineData(true, StringComparisonMode.ToLower)]
+            [MemberData(nameof(FilterComparisonOptions))]
             public void Should_Ignore_Nullable_Filter2(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 var options = new DefaultQueryFilterOptions
@@ -676,12 +647,7 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, StringComparisonMode.None)]
-            [InlineData(true, StringComparisonMode.None)]
-            [InlineData(false, StringComparisonMode.ToUpper)]
-            [InlineData(true, StringComparisonMode.ToUpper)]
-            [InlineData(false, StringComparisonMode.ToLower)]
-            [InlineData(true, StringComparisonMode.ToLower)]
+            [MemberData(nameof(FilterComparisonOptions))]
             public void Should_Ignore_Nullable_Filter3(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 var options = new DefaultQueryFilterOptions
@@ -1030,12 +996,7 @@ namespace AllOverIt.Filtering.Tests
         public class Where_Or_String : FilterBuilderFixture
         {
             [Theory]
-            [InlineData(false, StringComparisonMode.None)]
-            [InlineData(true, StringComparisonMode.None)]
-            [InlineData(false, StringComparisonMode.ToUpper)]
-            [InlineData(true, StringComparisonMode.ToUpper)]
-            [InlineData(false, StringComparisonMode.ToLower)]
-            [InlineData(true, StringComparisonMode.ToLower)]
+            [MemberData(nameof(FilterComparisonOptions))]
             public void Should_Apply_Or_Filter(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 var options = new DefaultQueryFilterOptions
@@ -1064,12 +1025,7 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, StringComparisonMode.None)]
-            [InlineData(true, StringComparisonMode.None)]
-            [InlineData(false, StringComparisonMode.ToUpper)]
-            [InlineData(true, StringComparisonMode.ToUpper)]
-            [InlineData(false, StringComparisonMode.ToLower)]
-            [InlineData(true, StringComparisonMode.ToLower)]
+            [MemberData(nameof(FilterComparisonOptions))]
             public void Should_Apply_Nullable_Filter(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 var options = new DefaultQueryFilterOptions
@@ -1098,12 +1054,7 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, StringComparisonMode.None)]
-            [InlineData(true, StringComparisonMode.None)]
-            [InlineData(false, StringComparisonMode.ToUpper)]
-            [InlineData(true, StringComparisonMode.ToUpper)]
-            [InlineData(false, StringComparisonMode.ToLower)]
-            [InlineData(true, StringComparisonMode.ToLower)]
+            [MemberData(nameof(FilterComparisonOptions))]
             public void Should_Ignore_Nullable_Filter1(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 var options = new DefaultQueryFilterOptions
@@ -1134,12 +1085,7 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, StringComparisonMode.None)]
-            [InlineData(true, StringComparisonMode.None)]
-            [InlineData(false, StringComparisonMode.ToUpper)]
-            [InlineData(true, StringComparisonMode.ToUpper)]
-            [InlineData(false, StringComparisonMode.ToLower)]
-            [InlineData(true, StringComparisonMode.ToLower)]
+            [MemberData(nameof(FilterComparisonOptions))]
             public void Should_Ignore_Nullable_Filter2(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 var options = new DefaultQueryFilterOptions
@@ -1170,12 +1116,7 @@ namespace AllOverIt.Filtering.Tests
             }
 
             [Theory]
-            [InlineData(false, StringComparisonMode.None)]
-            [InlineData(true, StringComparisonMode.None)]
-            [InlineData(false, StringComparisonMode.ToUpper)]
-            [InlineData(true, StringComparisonMode.ToUpper)]
-            [InlineData(false, StringComparisonMode.ToLower)]
-            [InlineData(true, StringComparisonMode.ToLower)]
+            [MemberData(nameof(FilterComparisonOptions))]
             public void Should_Ignore_Nullable_Filter3(bool useParameterizedQueries, StringComparisonMode stringComparisonMode)
             {
                 var options = new DefaultQueryFilterOptions
@@ -1528,6 +1469,21 @@ namespace AllOverIt.Filtering.Tests
 
             var specificationBuilder = new FilterSpecificationBuilder<DummyClass, DummyFilter>(filter, options);
             return new FilterBuilder<DummyClass, DummyFilter>(specificationBuilder);
+        }
+
+        protected static IEnumerable<object[]> FilterComparisonOptions()
+        {
+            return new List<object[]>
+            {
+                new object[] { false, StringComparisonMode.None },
+                new object[] { true, StringComparisonMode.None },
+                new object[] { false, StringComparisonMode.ToUpper },
+                new object[] { true, StringComparisonMode.ToUpper  },
+                new object[] { false, StringComparisonMode.ToLower },
+                new object[] { true, StringComparisonMode.ToLower },
+                new object[] { false, StringComparisonMode.InvariantCultureIgnoreCase },
+                new object[] { true, StringComparisonMode.InvariantCultureIgnoreCase },
+            };
         }
     }           
 }

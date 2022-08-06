@@ -14,11 +14,11 @@ namespace AllOverIt.Filtering.Operations
         {
         }
 
-        private static SystemExpression CreatePredicate(SystemExpression member, SystemExpression constant, IOperationFilterOptions filterOptions)
+        private static SystemExpression CreatePredicate(SystemExpression member, SystemExpression constant, IOperationFilterOptions options)
         {
             if (PropertyIsString)
             {
-                var compareExpression = StringComparisonExpressionUtils.CreateCompareCallExpression(member, constant, filterOptions.StringComparisonMode);
+                var compareExpression = StringComparisonExpressionUtils.CreateCompareCallExpression(member, constant, options.StringComparisonMode);
 
                 return SystemExpression.NotEqual(compareExpression, ExpressionConstants.Zero);
             }

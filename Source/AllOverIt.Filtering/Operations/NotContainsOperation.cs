@@ -13,9 +13,9 @@ namespace AllOverIt.Filtering.Operations
         {
         }
 
-        private static SystemExpression CreatePredicate(SystemExpression member, SystemExpression constant, IOperationFilterOptions filterOptions)
+        private static SystemExpression CreatePredicate(SystemExpression member, SystemExpression constant, IOperationFilterOptions options)
         {
-            var contains = StringComparisonExpressionUtils.CreateContainsCallExpression(member, constant, filterOptions.StringComparisonMode);
+            var contains = StringComparisonExpressionUtils.CreateContainsCallExpression(member, constant, options.StringComparisonMode);
 
             return SystemExpression.Not(contains);
         }

@@ -25,7 +25,8 @@ namespace PaginationConsole
             {
                 options.UseNpgsql("Host=localhost;Database=PaginatedBlogPosts;Username=postgres;Password=password", options =>
                 {
-                    options.SetPostgresVersion(new Version(13, 6));
+                    options.SetPostgresVersion(new Version(10, 18));
+                    //options.SetPostgresVersion(new Version(13, 6));
                 });
             }
             else
@@ -36,6 +37,45 @@ namespace PaginationConsole
             options
                 //.LogTo(Console.WriteLine, LogLevel.Information)
                 .EnableDetailedErrors();
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            if (DemoStartupOptions.Use == DatabaseChoice.PostgreSql)
+            {
+                // NOTE: Non-deterministic collations do not work with LIKE (or ILIKE) so sticking with "citext"
+
+                modelBuilder.HasPostgresExtension("citext");
+
+
+                // Create a non-deterministic, case-insensitive ICU collation ("ci_collation" is any arbitrary name - also used below)
+                // https://unicode-org.github.io/icu/userguide/collation/
+                //modelBuilder
+                //    .HasCollation("ci_collation", locale: "en-u-ks-primary", provider: "icu", deterministic: false);
+
+                // ??
+                // modelBuilder.UseDefaultColumnCollation("ci_collation");
+            }
+
+            // Individual column
+            //
+            //modelBuilder
+            //    .Entity<Blog>()
+            //    .Property(blog => blog.Description)
+            //    .HasColumnType("citext");
+        }
+
+        protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+        {
+            // All string columns
+            //
+            if (DemoStartupOptions.Use == DatabaseChoice.PostgreSql)
+            {
+                configurationBuilder
+                    .Properties<string>()
+                    .HaveColumnType("citext");
+                    //.UseCollation("ci_collation");
+            }
         }
     }
 }
