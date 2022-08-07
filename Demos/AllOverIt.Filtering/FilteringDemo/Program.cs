@@ -1,4 +1,5 @@
-﻿using AllOverIt.Filtering.Builders.Extensions;
+﻿using AllOverIt.Expressions.Strings;
+using AllOverIt.Filtering.Builders.Extensions;
 using AllOverIt.Filtering.Extensions;
 using AllOverIt.Filtering.Options;
 using AllOverIt.Patterns.Specification.Extensions;

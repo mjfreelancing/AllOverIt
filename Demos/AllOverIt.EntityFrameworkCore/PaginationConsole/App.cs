@@ -100,6 +100,9 @@ namespace PaginationConsole
                     { 
                         Contains = "vero",
                         StartsWith = "voluptatum",
+
+                        GreaterThan = "a",
+                        LessThan = "b"
                     }
                 };
 
@@ -112,6 +115,11 @@ namespace PaginationConsole
                 query = query.ApplyFilter(filter, (specificationBuilder, filterBuilder) =>
                 {
                     filterBuilder
+                        // Example 1:
+                        //.Where(entity => entity.Description, f => f.Description.GreaterThan)
+                        //.And(entity => entity.Description, f => f.Description.LessThan);
+
+                        // Example 2:
                         .Where(entity => entity.Description, f => f.Description.StartsWith)
                         .And(entity => entity.Description, f => f.Description.Contains);
                 }, filterOptions);

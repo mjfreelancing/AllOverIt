@@ -1,5 +1,4 @@
-﻿using AllOverIt.Expressions;
-using AllOverIt.Filtering.Extensions;
+﻿using AllOverIt.Expressions.Strings;
 using AllOverIt.Filtering.Options;
 using System;
 using System.Linq.Expressions;
@@ -16,19 +15,7 @@ namespace AllOverIt.Filtering.Operations
 
         private static SystemExpression CreatePredicate(SystemExpression instance, SystemExpression value, IOperationFilterOptions options)
         {
-            var stringComparisonMode = options.StringComparisonMode;
-
-            if (stringComparisonMode.IsStringComparison())
-            {
-                var stringComparison = stringComparisonMode.GetStringComparison();
-
-                return StringExpressionUtils.CreateEndsWithCallExpression(instance, value, stringComparison);
-            }
-
-            instance = instance.ApplyStringComparisonMode(stringComparisonMode);
-            value = value.ApplyStringComparisonMode(stringComparisonMode);
-
-            return StringExpressionUtils.CreateEndsWithCallExpression(instance, value);
+            return StringComparisonUtils.CreateEndsWithCallExpression(instance, value, options.StringComparisonMode);
         }
     }
 }

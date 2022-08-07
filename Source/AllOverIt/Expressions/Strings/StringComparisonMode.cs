@@ -1,9 +1,7 @@
 ﻿using AllOverIt.Patterns.Enumeration;
-using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace AllOverIt.Filtering.Options
+namespace AllOverIt.Expressions.Strings
 {
     /// <summary>Provides options that control how string comparisons will be performed.</summary>
     public sealed class StringComparisonMode : EnrichedEnum<StringComparisonMode>
@@ -38,37 +36,6 @@ namespace AllOverIt.Filtering.Options
         public StringComparisonMode(int value, [CallerMemberName] string name = null)
             : base(value, name)
         {
-        }
-    }
-
-    public static class StringComparisonModeExtensions
-    {
-        private static readonly IReadOnlyDictionary<StringComparisonMode, StringComparison> _comparisonModes = new Dictionary<StringComparisonMode, StringComparison>
-        {
-            { StringComparisonMode.CurrentCulture, StringComparison.CurrentCulture},
-            { StringComparisonMode.CurrentCultureIgnoreCase, StringComparison.CurrentCultureIgnoreCase},
-            { StringComparisonMode.InvariantCulture, StringComparison.InvariantCulture},
-            { StringComparisonMode.InvariantCultureIgnoreCase, StringComparison.InvariantCultureIgnoreCase},
-            { StringComparisonMode.Ordinal, StringComparison.Ordinal},
-            { StringComparisonMode.OrdinalIgnoreCase, StringComparison.OrdinalIgnoreCase},
-        };
-
-        public static StringComparison GetStringComparison(this StringComparisonMode stringComparisonMode)
-        {
-            if (_comparisonModes.TryGetValue(stringComparisonMode, out var stringComparison))
-            {
-                return stringComparison;
-            }
-
-            throw new InvalidOperationException($"The string comparison mode '{stringComparisonMode}' cannot be converted to a {nameof(StringComparison)} value.");
-        }
-
-        public static bool IsStringComparison(this StringComparisonMode stringComparisonMode)
-        {
-            return stringComparisonMode != StringComparisonMode.None &&
-                   stringComparisonMode != StringComparisonMode.ToLower &&
-                   stringComparisonMode != StringComparisonMode.ToUpper;
-
         }
     }
 }

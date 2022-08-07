@@ -1,6 +1,6 @@
 ﻿using AllOverIt.Expressions;
+using AllOverIt.Expressions.Strings;
 using AllOverIt.Filtering.Options;
-using AllOverIt.Filtering.Utils;
 using System;
 using System.Linq.Expressions;
 using SystemExpression = System.Linq.Expressions.Expression;    // avoid conflict with the Expression property on LinqSpecification
@@ -18,7 +18,7 @@ namespace AllOverIt.Filtering.Operations
         {
             if (PropertyIsString)
             {
-                var compareExpression = StringComparisonExpressionUtils.CreateCompareCallExpression(member, constant, options.StringComparisonMode);
+                var compareExpression = StringComparisonUtils.CreateCompareCallExpression(member, constant, options.StringComparisonMode);
 
                 return SystemExpression.LessThan(compareExpression, ExpressionConstants.Zero);
             }

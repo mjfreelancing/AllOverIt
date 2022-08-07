@@ -1,5 +1,5 @@
-﻿using AllOverIt.Filtering.Options;
-using AllOverIt.Filtering.Utils;
+﻿using AllOverIt.Expressions.Strings;
+using AllOverIt.Filtering.Options;
 using System;
 using System.Linq.Expressions;
 using SystemExpression = System.Linq.Expressions.Expression;    // avoid conflict with the Expression property on LinqSpecification
@@ -15,7 +15,7 @@ namespace AllOverIt.Filtering.Operations
 
         private static SystemExpression CreatePredicate(SystemExpression member, SystemExpression constant, IOperationFilterOptions options)
         {
-            return StringComparisonExpressionUtils.CreateContainsCallExpression(member, constant, options.StringComparisonMode);
+            return StringComparisonUtils.CreateContainsCallExpression(member, constant, options.StringComparisonMode);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using AllOverIt.Filtering.Options;
+﻿using AllOverIt.Expressions.Strings;
+using AllOverIt.Filtering.Options;
 using AllOverIt.Fixture;
 using System.Collections.Generic;
 

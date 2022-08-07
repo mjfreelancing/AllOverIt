@@ -1,4 +1,6 @@
-﻿namespace AllOverIt.Filtering.Options
+﻿using AllOverIt.Expressions.Strings;
+
+namespace AllOverIt.Filtering.Options
 {
     /// <inheritdoc cref="IDefaultQueryFilterOptions" />
     public sealed class DefaultQueryFilterOptions : IDefaultQueryFilterOptions

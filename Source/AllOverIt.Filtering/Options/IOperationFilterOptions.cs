@@ -1,6 +1,6 @@
-﻿using AllOverIt.Filtering.Builders;
+﻿using AllOverIt.Expressions.Strings;
+using AllOverIt.Filtering.Builders;
 using AllOverIt.Filtering.Filters;
-using System;
 
 namespace AllOverIt.Filtering.Options
 {

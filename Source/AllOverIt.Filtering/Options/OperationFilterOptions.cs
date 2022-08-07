@@ -1,4 +1,6 @@
-﻿namespace AllOverIt.Filtering.Options
+﻿using AllOverIt.Expressions.Strings;
+
+namespace AllOverIt.Filtering.Options
 {
     /// <inheritdoc cref="IOperationFilterOptions" />
     public sealed class OperationFilterOptions : IOperationFilterOptions

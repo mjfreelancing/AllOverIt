@@ -1,4 +1,5 @@
-﻿using AllOverIt.Filtering.Operations;
+﻿using AllOverIt.Expressions.Strings;
+using AllOverIt.Filtering.Operations;
 using AllOverIt.Filtering.Options;
 using AllOverIt.Fixture.Extensions;
 using FakeItEasy;

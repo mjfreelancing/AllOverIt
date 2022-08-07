@@ -353,10 +353,10 @@ namespace AllOverIt.Pagination
             return Expression.Lambda<Func<TEntity, bool>>(finalExpression, param);
         }
 
-        private BinaryExpression CompoundOuterColumnExpressions(PaginationDirection direction, ParameterExpression param, IReadOnlyList<object> referenceValues,
+        private Expression CompoundOuterColumnExpressions(PaginationDirection direction, ParameterExpression param, IReadOnlyList<object> referenceValues,
             FirstExpression firstExpression, IDictionary<int, Expression> referenceParameterCache)
         {
-            var outerExpression = default(BinaryExpression)!;
+            Expression outerExpression = default;
 
             // Compound the outer OR expressions
             for (var idx = 0; idx < _columns.Count; idx++)
@@ -372,10 +372,10 @@ namespace AllOverIt.Pagination
             return outerExpression;
         }
 
-        private BinaryExpression CompoundInnerColumnExpressions(PaginationDirection direction, ParameterExpression param, IReadOnlyList<object> referenceValues,
+        private Expression CompoundInnerColumnExpressions(PaginationDirection direction, ParameterExpression param, IReadOnlyList<object> referenceValues,
             int columnCount, FirstExpression firstExpression, IDictionary<int, Expression> referenceParameterCache)
         {
-            var innerExpression = default(BinaryExpression)!;
+            Expression innerExpression = default;
 
             // Compound the inner AND expressions
             for (var idx = 0; idx < columnCount; idx++)
@@ -391,7 +391,7 @@ namespace AllOverIt.Pagination
                     firstExpression.ReferenceValue = referenceValue;
                 }
 
-                BinaryExpression columnExpression;
+                Expression columnExpression;
 
                 if (idx == columnCount - 1)
                 {
@@ -421,8 +421,8 @@ namespace AllOverIt.Pagination
             return innerExpression;
         }
 
-        private static BinaryExpression CreateCompareToExpression(IColumnDefinition entity, MemberExpression memberAccess,
-            Expression comparisonValue, Func<Expression, Expression, BinaryExpression> compareTo)
+        private static Expression CreateCompareToExpression(IColumnDefinition entity, MemberExpression memberAccess,
+            Expression comparisonValue, Func<Expression, Expression, Expression> compareTo)
         {
             var propertyType = entity.Property.PropertyType;
 
@@ -489,8 +489,7 @@ namespace AllOverIt.Pagination
             return targetExpression;
         }
 
-        private static Func<Expression, Expression, BinaryExpression> GetComparisonExpression(PaginationDirection direction,
-            ColumnDefinition<TEntity> item, bool orEqual)
+        private static Func<Expression, Expression, BinaryExpression> GetComparisonExpression(PaginationDirection direction, ColumnDefinition<TEntity> item, bool orEqual)
         {
             var greaterThan = direction switch
             {

@@ -3,7 +3,6 @@ using AllOverIt.Evaluator.Exceptions;
 using AllOverIt.Expressions;
 using AllOverIt.Extensions;
 using AllOverIt.Filtering.Options;
-using AllOverIt.Filtering.Utils;
 using AllOverIt.Patterns.Specification;
 using AllOverIt.Reflection;
 using System;
