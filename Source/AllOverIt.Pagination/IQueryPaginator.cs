@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AllOverIt.Pagination
 {
-    /// <summary>Defines a paginated query builder that supports ordering multiple columns suitable for forward and backward navigation.</summary>
+    /// <summary>Defines a keyset paginated query builder that supports ordering multiple columns suitable for forward and backward navigation.</summary>
     /// <typeparam name="TEntity">The entity type that the generated query is based on.</typeparam>
     public interface IQueryPaginator<TEntity> where TEntity : class
     {
