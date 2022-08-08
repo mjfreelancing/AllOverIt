@@ -33,7 +33,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
             {
                 var breadcrumb = Create<BreadcrumbData>();
 
-                _ = _breadcrumbs.Add(breadcrumb);
+                _breadcrumbs.Add(breadcrumb);
 
                 var actual = _breadcrumbs.ToList();
 
@@ -50,7 +50,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 
                 var breadcrumb = Create<BreadcrumbData>();
 
-                _ = breadcrumbs.Add(breadcrumb);
+                breadcrumbs.Add(breadcrumb);
 
                 var actual = breadcrumbs.ToList();
 
@@ -65,7 +65,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
             {
                 Invoking(() =>
                 {
-                    _ = _breadcrumbs.Add(null);
+                    _breadcrumbs.Add(null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -73,21 +73,11 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
             }
 
             [Fact]
-            public void Should_Return_Same_Instance()
-            {
-                var breadcrumb = Create<BreadcrumbData>();
-
-                var actual = _breadcrumbs.Add(breadcrumb);
-
-                actual.Should().BeSameAs(_breadcrumbs);
-            }
-
-            [Fact]
             public void Should_Add_Breadcrumb()
             {
                 var breadcrumb = Create<BreadcrumbData>();
 
-                _ = _breadcrumbs.Add(breadcrumb);
+                _breadcrumbs.Add(breadcrumb);
 
                 var actual = _breadcrumbs.ToList();
 
@@ -128,7 +118,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
             {
                 var breadcrumb = Create<BreadcrumbData>();
 
-                _ = _breadcrumbs.Add(breadcrumb);
+                _breadcrumbs.Add(breadcrumb);
 
                 _breadcrumbs.Should().HaveCount(1);
 
@@ -157,7 +147,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
             {
                 var breadcrumb = Create<BreadcrumbData>();
 
-                _ = _breadcrumbs.Add(breadcrumb);
+                _breadcrumbs.Add(breadcrumb);
 
                 _breadcrumbs.Should().HaveCount(1);
 

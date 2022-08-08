@@ -14,8 +14,7 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
 
         /// <summary>Adds a new breadcrumb data item.</summary>
         /// <param name="breadcrumb">The breadcrumb data item.</param>
-        /// <returns>The same breadcrumb instance to allow for a fluent syntax.</returns>
-        IBreadcrumbs Add(BreadcrumbData breadcrumb);
+        void Add(BreadcrumbData breadcrumb);
 
         /// <summary>Clears the current collection of breadcrumbs.</summary>
         void Clear();

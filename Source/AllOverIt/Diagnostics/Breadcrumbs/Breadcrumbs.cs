@@ -172,7 +172,7 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
         }
 
         /// <inheritdoc />
-        public IBreadcrumbs Add(BreadcrumbData breadcrumb)
+        public void Add(BreadcrumbData breadcrumb)
         {
             _ = breadcrumb.WhenNotNull(nameof(breadcrumb));
 
@@ -180,8 +180,6 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
             {
                 _breadcrumbs.Add(breadcrumb);
             }
-
-            return this;
         }
 
         /// <inheritdoc />
