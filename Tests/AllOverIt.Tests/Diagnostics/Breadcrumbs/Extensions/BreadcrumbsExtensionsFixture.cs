@@ -71,7 +71,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             [Fact]
             public void Should_Add_Breadcrumb_Message()
             {
-                var _ = BreadcrumbsExtensions.AddCallSite(_breadcrumbs, this);
+                BreadcrumbsExtensions.AddCallSite(_breadcrumbs, this);
 
                 var actual = _breadcrumbs.ToList();
 
@@ -156,7 +156,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             [Fact]
             public void Should_Add_Breadcrumb_Message()
             {
-                var _ = BreadcrumbsExtensions.AddExtendedCallSite(_breadcrumbs, this);
+                BreadcrumbsExtensions.AddExtendedCallSite(_breadcrumbs, this);
 
                 var actual = _breadcrumbs.ToList();
 
@@ -225,7 +225,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             {
                 var message = Create<string>();
 
-                var _ = BreadcrumbsExtensions.Add(_breadcrumbs, message);
+                BreadcrumbsExtensions.Add(_breadcrumbs, message);
 
                 var actual = _breadcrumbs.ToList();
 
@@ -248,16 +248,6 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                         options => options
                             .Excluding(model => model.Timestamp)
                             .Excluding(model => model.TimestampUtc));
-            }
-
-            [Fact]
-            public void Should_Return_Same_Instance()
-            {
-                var message = Create<string>();
-
-                var actual = BreadcrumbsExtensions.Add(_breadcrumbs, message);
-
-                actual.Should().BeSameAs(_breadcrumbs);
             }
         }
 
@@ -314,7 +304,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                 var message = Create<string>();
                 var metadata = Create<int>();
 
-                var _ = BreadcrumbsExtensions.Add(_breadcrumbs, message, metadata);
+                BreadcrumbsExtensions.Add(_breadcrumbs, message, metadata);
 
                 var actual = _breadcrumbs.ToList();
 
@@ -337,17 +327,6 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                         options => options
                             .Excluding(model => model.Timestamp)
                             .Excluding(model => model.TimestampUtc));
-            }
-
-            [Fact]
-            public void Should_Return_Same_Instance()
-            {
-                var message = Create<string>();
-                var metadata = new { Value = Create<int>() };
-
-                var actual = BreadcrumbsExtensions.Add(_breadcrumbs, message, metadata);
-
-                actual.Should().BeSameAs(_breadcrumbs);
             }
         }
 
@@ -403,7 +382,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             {
                 var message = Create<string>();
 
-                var _ = BreadcrumbsExtensions.Add(_breadcrumbs, this, message);
+                BreadcrumbsExtensions.Add(_breadcrumbs, this, message);
 
                 var actual = _breadcrumbs.ToList();
 
@@ -436,7 +415,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             {
                 var message = Create<string>();
 
-                var _ = BreadcrumbsExtensions.Add(_breadcrumbs, this, message, string.Empty);
+                BreadcrumbsExtensions.Add(_breadcrumbs, this, message, string.Empty);
 
                 var actual = _breadcrumbs.ToList();
 
@@ -470,7 +449,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                 var message = Create<string>();
                 var callerName = Create<string>();
 
-                var _ = BreadcrumbsExtensions.Add(_breadcrumbs, this, message, callerName);
+                BreadcrumbsExtensions.Add(_breadcrumbs, this, message, callerName);
 
                 var actual = _breadcrumbs.ToList();
 
@@ -496,16 +475,6 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                         options => options
                             .Excluding(model => model.Timestamp)
                             .Excluding(model => model.TimestampUtc));
-            }
-
-            [Fact]
-            public void Should_Return_Same_Instance()
-            {
-                var message = Create<string>();
-
-                var actual = BreadcrumbsExtensions.Add(_breadcrumbs, this, message);
-
-                actual.Should().BeSameAs(_breadcrumbs);
             }
         }
 
