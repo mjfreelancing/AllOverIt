@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AllOverIt.Threading
 {
@@ -23,6 +24,31 @@ namespace AllOverIt.Threading
         }
 
         /// <summary>Performs no action.</summary>
+        /// <param name="upgradeable">Ignored.</param>
+        /// <param name="timeout">Ignored.</param>
+        /// <returns>Always returns true.</returns>
+        public bool TryEnterReadLock(bool upgradeable, TimeSpan timeout)
+        {
+            return true;
+        }
+
+        /// <summary>Performs no action.</summary>
+        /// <param name="millisecondsTimeout">Ignored.</param>
+        /// <returns>Always returns true.</returns>
+        public bool TryEnterUpgradeableReadLock(int millisecondsTimeout)
+        {
+            return true;
+        }
+
+        /// <summary>Performs no action.</summary>
+        /// <param name="timeout">Ignored.</param>
+        /// <returns>Always returns true.</returns>
+        public bool TryEnterUpgradeableReadLock(TimeSpan timeout)
+        {
+            return true;
+        }
+
+        /// <summary>Performs no action.</summary>
         public void ExitReadLock()
         {
         }
@@ -35,6 +61,13 @@ namespace AllOverIt.Threading
         /// <summary>Performs no action.</summary>
         /// <param name="millisecondsTimeout">Ignored.</param>
         public bool TryEnterWriteLock(int millisecondsTimeout)
+        {
+            return true;
+        }
+
+        /// <summary>Performs no action.</summary>
+        /// <param name="timeout">Ignored.</param>
+        public bool TryEnterWriteLock(TimeSpan timeout)
         {
             return true;
         }
