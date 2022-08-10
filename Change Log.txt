@@ -10,6 +10,9 @@ AllOverIt
   * Added CreateToLowerCallExpression() and CreateToUpperCallExpression() to StringExpressionUtils
   * Improvements to LinqSpecificationVisitor output
   * Removed unnecessary return type from IBreadcrumbs.Add()
+  * Updates to IReadWriteLock
+  * Added SynchronizedCache - TESTS PENDING
+  * Added NullBreadcrumbs
 
 
 31 Jul 2022
