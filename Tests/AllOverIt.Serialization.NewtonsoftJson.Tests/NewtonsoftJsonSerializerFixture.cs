@@ -1,5 +1,6 @@
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
+using AllOverIt.Patterns.Enumeration;
 using AllOverIt.Serialization.Abstractions;
 using AllOverIt.Serialization.Abstractions.Exceptions;
 using FluentAssertions;
@@ -7,6 +8,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -281,6 +283,62 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Tests
                         .Should()
                         .ThrowAsync<OperationCanceledException>();
                 }
+            }
+        }
+        
+        public class Serialize_Deserialize : NewtonsoftJsonSerializerFixture
+        {
+            private class EnrichedEnumDummy : EnrichedEnum<EnrichedEnumDummy>
+            {
+                public static readonly EnrichedEnumDummy Value1 = new(1);
+                public static readonly EnrichedEnumDummy Value2 = new(2, "Value 2");
+                public static readonly EnrichedEnumDummy Value3 = new(3);
+
+                private EnrichedEnumDummy(int value, [CallerMemberName] string name = null)
+                    : base(value, name)
+                {
+                }
+            }
+
+            private class DummyWithEnum
+            {
+                public EnrichedEnumDummy Prop1 { get; init; }
+                public EnrichedEnumDummy Prop2 { get; init; }
+                public EnrichedEnumDummy Prop3 { get; init; }
+            }
+
+            [Fact]
+            public void Should_Serialize_Deserialize_EnrichedEnum()
+            {
+                var value = new DummyWithEnum
+                {
+                    Prop1 = EnrichedEnumDummy.Value1,
+                    Prop2 = EnrichedEnumDummy.Value2,
+                    Prop3 = EnrichedEnumDummy.Value3
+                };
+
+                var expected = "{\"Prop1\":\"Value1\",\"Prop2\":\"Value 2\",\"Prop3\":\"Value3\"}";
+
+                var serializer = new NewtonsoftJsonSerializer();
+
+                serializer.Configure(new JsonSerializerConfiguration
+                {
+                    SupportEnrichedEnums = true
+                });
+
+                var actual = serializer.SerializeObject(value);
+                actual.Should().BeEquivalentTo(expected);
+
+                var deserialized = new DummyWithEnum();
+                deserialized.Prop1.Should().BeNull();
+                deserialized.Prop2.Should().BeNull();
+                deserialized.Prop3.Should().BeNull();
+
+                deserialized = serializer.DeserializeObject<DummyWithEnum>(actual);
+
+                deserialized.Prop1.Should().BeSameAs(EnrichedEnumDummy.Value1);
+                deserialized.Prop2.Should().BeSameAs(EnrichedEnumDummy.Value2);
+                deserialized.Prop3.Should().BeSameAs(EnrichedEnumDummy.Value3);
             }
         }
     }
