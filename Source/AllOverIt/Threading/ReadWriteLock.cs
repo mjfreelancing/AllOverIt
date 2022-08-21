@@ -9,7 +9,7 @@ namespace AllOverIt.Threading
     // information on the semantics of this lock type.
 
     /// <summary>Represents a lock that is used to manage access to a resource, allowing multiple threads for reading or
-    /// exclusive access for writing.</summary>
+    /// exclusive access for writing. This cannot be used with async methods.</summary>
     [ExcludeFromCodeCoverage]
     public sealed class ReadWriteLock : IReadWriteLock
     {
