@@ -22,6 +22,12 @@ namespace GraphqlSchema
                 }
             });
 
+            // required to test HttpDataSourceAttribute
+            stack1.ExportValue(Token.AsString(Constants.HttpDataSource.GetLanguageUrlExplicit), new ExportValueOptions
+            {
+                Name = Constants.Import.GetCountriesUrlImportName
+            });
+
             var stack2 = new Stack(app, $"{Constants.AppName}V{Constants.ServiceVersion}Stack2", new StackProps
             {
                 Env = new CDKEnvironment
@@ -29,12 +35,6 @@ namespace GraphqlSchema
                     Account = SystemEnvironment.GetEnvironmentVariable("CDK_DEFAULT_ACCOUNT"),
                     Region = SystemEnvironment.GetEnvironmentVariable("CDK_DEFAULT_REGION")
                 }
-            });
-
-            // required to test HttpDataSourceAttribute
-            stack1.ExportValue(Token.AsString(Constants.HttpDataSource.GetLanguageUrlExplicit), new ExportValueOptions
-            {
-                Name = Constants.Import.GetCountriesUrlImportName
             });
 
             var appProps = new AppSyncDemoAppProps

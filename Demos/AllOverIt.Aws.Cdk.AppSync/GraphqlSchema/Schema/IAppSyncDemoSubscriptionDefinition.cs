@@ -14,6 +14,6 @@ namespace GraphqlSchema.Schema
 
         [SubscriptionMutation(nameof(IAppSyncDemoMutationDefinition.AddLanguage))]   
         [SubscriptionDataSource(nameof(AddedLanguage))]
-        ILanguage AddedLanguage(GraphqlTypeId code);                                // only providing the ability to (optionally) filter by code
+        ILanguage AddedLanguage(GraphqlTypeId code);        // only providing the ability to (optionally) filter by code
     }
 }
