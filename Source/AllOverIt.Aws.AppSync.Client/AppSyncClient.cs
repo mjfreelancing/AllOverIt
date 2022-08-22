@@ -16,7 +16,6 @@ namespace AllOverIt.Aws.AppSync.Client
     {
         public static readonly string HttpClientName = typeof(AppSyncClient).FullName;
 
-        //private readonly HttpClient _httpClient;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IAppSyncClientConfiguration _configuration;
 
