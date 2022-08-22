@@ -11,6 +11,8 @@ using AllOverIt.Extensions;
 using AllOverIt.Helpers;
 using AllOverIt.Patterns.ResourceInitialization;
 using AllOverIt.Reactive.Extensions;
+using AllOverIt.Threading;
+using AllOverIt.Threading.Extensions;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -38,7 +40,7 @@ namespace AllOverIt.Aws.AppSync.Client
 
         // Only allow a single subscription to be processed at a time, just in case there are communication errors during
         // the connection or registration handshaking. Trying to deal with overlapping state is too complex.
-        private readonly SemaphoreSlim _subscriptionLock = new(1, 1);
+        private readonly IAwaitableLock _subscriptionLock = new AwaitableLock();
 
         private readonly BehaviorSubject<SubscriptionConnectionState> _connectionStateSubject = new(SubscriptionConnectionState.Disconnected);
         private readonly Subject<Exception> _exceptionSubject = new();
@@ -102,7 +104,7 @@ namespace AllOverIt.Aws.AppSync.Client
                     try
                     {
                         // unsubscribe from AppSync but do not remove them from the registry
-                        await UnsubscribeSubscriptionAsync(subscription, false);                            
+                        await UnsubscribeSubscriptionAsync(subscription, false);
                     }
                     catch (Exception exception)
                     {
@@ -129,12 +131,10 @@ namespace AllOverIt.Aws.AppSync.Client
             Action<GraphqlSubscriptionResponse<TResponse>> responseAction, IAppSyncAuthorization authorization = null)
         {
             // Only allow a single registration at a time to avoid complex overlapping connection states when there's a WebSocket issue.
-            await _subscriptionLock.WaitAsync().ConfigureAwait(false);
-
-            SetConnectionAuthorizationIfRequired(authorization ?? _configuration.DefaultAuthorization);
-
-            try
+            using (await _subscriptionLock.GetLockAsync().ConfigureAwait(false))
             {
+                SetConnectionAuthorizationIfRequired(authorization ?? _configuration.DefaultAuthorization);
+
                 return await _connectionStateSubject.WaitUntilAsync(
                     state => state is
                         SubscriptionConnectionState.Disconnected or
@@ -162,7 +162,7 @@ namespace AllOverIt.Aws.AppSync.Client
                                 var payload = new SubscriptionQueryPayload
                                 {
                                     Data = _configuration.Serializer.SerializeObject(query),
-                                    Extensions = new {authorization = hostAuthorization.KeyValues}
+                                    Extensions = new { authorization = hostAuthorization.KeyValues }
                                 };
 
                                 var registration = new SubscriptionRegistrationRequest<TResponse>(query.Id, payload, responseAction, _configuration.Serializer);
@@ -188,7 +188,7 @@ namespace AllOverIt.Aws.AppSync.Client
                                 // SubscribeTimeoutException
                                 // WebSocketConnectionLostException - if the websocket is shutdown mid-subscription registration
                                 _exceptionSubject.OnNext(exception);
-                                
+
                                 // The disconnection has most likely already been performed, but just in case
                                 ShutdownConnection();
 
@@ -196,10 +196,6 @@ namespace AllOverIt.Aws.AppSync.Client
                             }
                         }
                     });
-            }
-            finally
-            {
-                _subscriptionLock.Release();
             }
         }
 
@@ -298,7 +294,7 @@ namespace AllOverIt.Aws.AppSync.Client
                             return CurrentConnectionState;
                         });
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 // WebSocketException
                 _exceptionSubject.OnNext(exception);
@@ -563,7 +559,7 @@ namespace AllOverIt.Aws.AppSync.Client
 
                 // this implies the subscription is being disposed of after the connection was closed (by the consumer)
                 // so just remove it from the collection of subscriptions.
-                if(removeFromRegistry)
+                if (removeFromRegistry)
                 {
                     _subscriptions.Remove(registration.Id);
                 }

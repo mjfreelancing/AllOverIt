@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 
 namespace AllOverIt.Threading
@@ -10,7 +9,6 @@ namespace AllOverIt.Threading
 
     /// <summary>Represents a lock that is used to manage access to a resource, allowing multiple threads for reading or
     /// exclusive access for writing. This cannot be used with async methods.</summary>
-    [ExcludeFromCodeCoverage]
     public sealed class ReadWriteLock : IReadWriteLock
     {
         // Many threads can enter the read lock simultaneously.

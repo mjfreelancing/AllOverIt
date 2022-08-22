@@ -64,11 +64,7 @@ namespace AllOverIt.Aws.AppSync.Client
             {
                 using (var responseMessage = await GetHttpResponseMessageAsync(requestMessage, cancellationToken).ConfigureAwait(false))
                 {
-#pragma warning disable CA2016 // Forward the 'CancellationToken' parameter to methods
-                    var content = await responseMessage.Content
-                        .ReadAsStringAsync()            // doesn't accept a CancellationToken
-                        .ConfigureAwait(false);
-#pragma warning restore CA2016 // Forward the 'CancellationToken' parameter to methods
+                    var content = await GetHttpResponseAsString(responseMessage, cancellationToken).ConfigureAwait(false);
 
                     var result = _configuration.Serializer
                         .DeserializeObject<GraphqlHttpResponse<TResponse>>(content);
@@ -84,6 +80,17 @@ namespace AllOverIt.Aws.AppSync.Client
                     throw new GraphqlHttpRequestException(responseMessage.StatusCode, result.Errors, content);
                 }
             }
+        }
+
+        private static Task<string> GetHttpResponseAsString(HttpResponseMessage responseMessage, CancellationToken cancellationToken)
+        {
+#if NET5_0_OR_GREATER
+            return responseMessage.Content.ReadAsStringAsync(cancellationToken);
+#else
+#pragma warning disable CA2016 // Forward the 'CancellationToken' parameter to methods
+            return responseMessage.Content.ReadAsStringAsync();
+#pragma warning restore CA2016 // Forward the 'CancellationToken' parameter to methods
+#endif
         }
 
         private HttpRequestMessage CreateHttpRequestMessage(GraphqlQuery query, IAppSyncAuthorization authorization)

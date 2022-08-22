@@ -7,6 +7,7 @@ namespace AppSyncSubscription
     {
         // Must use this over a TaskCompletionSource as the console / worker are running in different threads.
         // Attempting to use the TCS results in the Wait() task blocking when awaited.
+        // Note: NOT using AwaitableLock since this initializes as (1, 1)
         private readonly SemaphoreSlim _semaphore = new(0, 1);
 
         public void SetCompleted()

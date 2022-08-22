@@ -1,11 +1,9 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using AllOverIt.Patterns.ResourceInitialization;
+﻿using AllOverIt.Patterns.ResourceInitialization;
+using System;
 
 namespace AllOverIt.Threading.Extensions
 {
     /// <summary>Provides a variety of extension methods for <see cref="IReadWriteLock"/> types.</summary>
-    [ExcludeFromCodeCoverage]
     public static class ReadWriteLockExtensions
     {
         /// <summary>Gets a read lock that will auto-release when disposed.</summary>
