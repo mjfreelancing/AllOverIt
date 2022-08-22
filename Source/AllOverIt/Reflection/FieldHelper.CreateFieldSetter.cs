@@ -19,7 +19,7 @@ namespace AllOverIt.Reflection
         /// <param name="value">The value to set on the field.</param>
         public delegate void SetFieldByRefDelegate<TType>(ref TType instance, object value);
 
-        /// <summary>Creates a compiled expression as an <see cref="Action{object, object}"/> to set a field value
+        /// <summary>Creates a compiled expression as an <c>Action{object, object}</c> to set a field value
         /// based on a specified <see cref="FieldInfo"/> instance.</summary>
         /// <param name="fieldInfo">The <see cref="FieldInfo"/> to build a field setter.</param>
         /// <returns>The compiled field setter.</returns>
@@ -51,7 +51,7 @@ namespace AllOverIt.Reflection
             return setterFn;
         }
 
-        /// <summary>Creates a compiled expression as an <see cref="Action{T, object}"/> to set a field value
+        /// <summary>Creates a compiled expression as an <c>Action{TType, object}</c> to set a field value
         /// based on a specified <see cref="FieldInfo"/> instance.</summary>
         /// <typeparam name="TType">The object type to set the field value on.</typeparam>
         /// <param name="fieldInfo">The <see cref="FieldInfo"/> to build a field setter.</param>
@@ -65,7 +65,7 @@ namespace AllOverIt.Reflection
             return CreateFieldSetter<TType, Action<TType, object>>(instance, fieldInfo);
         }
 
-        /// <summary>Creates a compiled expression as an <see cref="Action{T, object}"/> to set a field value based
+        /// <summary>Creates a compiled expression as an <c>Action{TType, object}</c> to set a field value based
         /// on a specified field name.</summary>
         /// <typeparam name="TType">The object type to set the field value on.</typeparam>
         /// <param name="fieldName">The name of the field to set the value on.</param>

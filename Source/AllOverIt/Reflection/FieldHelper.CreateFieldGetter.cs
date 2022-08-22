@@ -10,7 +10,7 @@ namespace AllOverIt.Reflection
     /// <summary>Contains a number of field getter and setter helper functions related to <see cref="FieldInfo"/>.</summary>
     public static partial class FieldHelper
     {
-        /// <summary>Creates a compiled expression as a <see cref="Func{object, object}"/> to get a field value based
+        /// <summary>Creates a compiled expression as a <c>Func{object, object}</c> to get a field value based
         /// on a specified <see cref="FieldInfo"/> instance.</summary>
         /// <param name="fieldInfo">The <see cref="FieldInfo"/> to build a field getter.</param>
         /// <returns>The compiled field getter.</returns>
@@ -29,7 +29,7 @@ namespace AllOverIt.Reflection
                 .Compile();
         }
 
-        /// <summary>Creates a compiled expression as a <see cref="Func{T, object}"/> to get a field value based
+        /// <summary>Creates a compiled expression as a <c>Func{TType, object}</c> to get a field value based
         /// on a specified <see cref="FieldInfo"/> instance.</summary>
         /// <param name="fieldInfo">The <see cref="FieldInfo"/> to build a field getter.</param>
         /// <returns>The compiled field getter.</returns>
@@ -48,7 +48,7 @@ namespace AllOverIt.Reflection
             return Expression.Lambda<Func<TType, object>>(convertField, instance).Compile();
         }
 
-        /// <summary>Creates a compiled expression as a <see cref="Func{T, object}"/> to get a field value based on a specified
+        /// <summary>Creates a compiled expression as a <c>Func{TType, object}</c> to get a field value based on a specified
         /// field name.</summary>
         /// <typeparam name="TType">The object type to get the field value from.</typeparam>
         /// <param name="fieldName">The name of the field to get the value from.</param>

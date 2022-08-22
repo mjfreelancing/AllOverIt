@@ -10,7 +10,7 @@ namespace AllOverIt.Reflection
     /// <summary>Contains a number of property getter and setter helper functions related to <see cref="PropertyInfo"/>.</summary>
     public static partial class PropertyHelper
     {
-        /// <summary>Creates a compiled expression as a <see cref="Func{object, object}"/> to get a property value based
+        /// <summary>Creates a compiled expression as a <c>Func{object, object}</c> to get a property value based
         /// on a specified <see cref="PropertyInfo"/> instance.</summary>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> to build a property getter.</param>
         /// <returns>The compiled property getter.</returns>
@@ -21,7 +21,7 @@ namespace AllOverIt.Reflection
             return CreatePropertyGetterExpressionLambda(propertyInfo).Compile();
         }
 
-        /// <summary>Creates a compiled expression as a <see cref="Func{T, object}"/> to get a property value based on a specified
+        /// <summary>Creates a compiled expression as a <c>Func{TType, object}</c> to get a property value based on a specified
         /// <see cref="PropertyInfo"/> instance.</summary>
         /// <typeparam name="TType">The object type to get the property value from.</typeparam>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> to build a property getter.</param>
@@ -33,7 +33,7 @@ namespace AllOverIt.Reflection
             return CreatePropertyGetterExpressionLambda<TType>(propertyInfo).Compile();
         }
 
-        /// <summary>Creates a compiled expression as a <see cref="Func{T, object}"/> to get a property value based on a specified
+        /// <summary>Creates a compiled expression as a <c>Func{TType, object}</c> to get a property value based on a specified
         /// property name.</summary>
         /// <typeparam name="TType">The object type to get the property value from.</typeparam>
         /// <param name="propertyName">The name of the property to get the value from.</param>

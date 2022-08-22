@@ -9,7 +9,7 @@ namespace AllOverIt.Reflection
 {
     public static partial class PropertyHelper
     {
-        /// <summary>Creates a compiled expression as an <see cref="Action{object, object}"/> to set a property value
+        /// <summary>Creates a compiled expression as an <c>Action{object, object}</c> to set a property value
         /// based on a specified <see cref="PropertyInfo"/> instance.</summary>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> to build a property setter.</param>
         /// <returns>The compiled property setter.</returns>
@@ -37,7 +37,7 @@ namespace AllOverIt.Reflection
             return Expression.Lambda<Action<object, object>>(setterCall, instance, argument).Compile();
         }
 
-        /// <summary>Creates a compiled expression as an <see cref="Action{T, object}"/> to set a property value based
+        /// <summary>Creates a compiled expression as an <c>Action{TType, object}</c> to set a property value based
         /// on a specified <see cref="PropertyInfo"/> instance.</summary>
         /// <typeparam name="TType">The object type to set the property value on.</typeparam>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> to build a property setter.</param>
@@ -51,7 +51,7 @@ namespace AllOverIt.Reflection
             return CreatePropertySetterExpressionLambda<TType>(propertyInfo).Compile();
         }
 
-        /// <summary>Creates a compiled expression as an <see cref="Action{T, object}"/> to set a property value based
+        /// <summary>Creates a compiled expression as an <c>Action{TType, object}</c> to set a property value based
         /// on a specified property name.</summary>
         /// <typeparam name="TType">The object type to set the property value on.</typeparam>
         /// <param name="propertyName">The name of the property to set the value on.</param>
