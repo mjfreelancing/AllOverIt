@@ -10,7 +10,9 @@ namespace GraphqlSchema.Schema.Types
         public string Name();
         public string Currency();
 
-        [AuthLambdaDirective] 
+#if DEBUG   // Using RELEASE mode to deploy without these (DEBUG mode is used to check Synth output)
+        [AuthLambdaDirective]
+#endif
         public ILanguage[] Languages();
 
         public IContinent Continent();      // this is a circular reference

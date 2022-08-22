@@ -13,12 +13,15 @@ using GraphqlSchema.Schema.Types.Globe;
 namespace GraphqlSchema.Schema
 {
     // All schema fields must be defined as methods. Properties cannot be used.
-    // Cannot use nullable return types are parameters. Use [SchemaTypeRequired] to indicate required, otherwise nullable is assumed.
+    // Cannot use nullable return types or parameters. Use [SchemaTypeRequired] to indicate required, otherwise nullable is assumed.
     internal interface IAppSyncDemoQueryDefinition : IQueryDefinition
     {
         // NOTE: Leave this as the first item as it is testing a parameter and return type that is unknown at the time of parsing
         [NoneDataSource(nameof(CountryLanguage)/*, typeof(CountryLanguageMapping)*/)]        // providing this mapping via code
+
+#if DEBUG   // Using RELEASE mode to deploy without these (DEBUG mode is used to check Synth output)
         [AuthApiKeyDirective]
+#endif
         ILanguage CountryLanguage(ICountryFilterInput country);
 
         // demonstrates how to obtain the datasource mapping via a user-provided factory
@@ -32,17 +35,19 @@ namespace GraphqlSchema.Schema
         [NoneDataSource(nameof(Continents), typeof(ContinentsMapping))]
         IContinent[] Continents([SchemaTypeRequired] IContinentFilterInput filter);
 
+#if DEBUG   // Using RELEASE mode to deploy without these (DEBUG mode is used to check Synth output)
         [AuthLambdaDirective]
+#endif
         [HttpDataSource(EndpointSource.EnvironmentVariable, Constants.HttpDataSource.GetAllContinentsUrlEnvironmentName, typeof(AllContinentsMapping))]
         IContinentConnection AllContinents();
 
         // ******************************************************************************************************************************** //
         // NOTE: This can only be deployed after an initial deployment that excludes this (as it requires the export value to be available) //
         // ******************************************************************************************************************************** //
-        [SchemaArrayRequired]       // leave here for testing the schema generator
-        [SchemaTypeRequired]        // leave here for testing the schema generator
-        [HttpDataSource(EndpointSource.ImportValue, Constants.Import.GetCountriesUrlImportName, typeof(CountriesMapping))]
-        ICountry[] Countries([SchemaTypeRequired] ICountryFilterInput filter);
+        //[SchemaArrayRequired]       // leave here for testing the schema generator
+        //[SchemaTypeRequired]        // leave here for testing the schema generator
+        //[HttpDataSource(EndpointSource.ImportValue, Constants.Import.GetCountriesUrlImportName, typeof(CountriesMapping))]
+        //ICountry[] Countries([SchemaTypeRequired] ICountryFilterInput filter);
 
         [NoneDataSource(nameof(AllCountries), typeof(AllCountriesMapping))]
         ICountryConnection AllCountries();
@@ -56,7 +61,7 @@ namespace GraphqlSchema.Schema
         [NoneDataSource(nameof(Globe), typeof(GlobeMapping))]
         IGlobe Globe();
 
-        #region Date, Time, DateTime, Timestamp responses
+#region Date, Time, DateTime, Timestamp responses
 
         [NoneDataSource(nameof(CountryDate), typeof(CountryDateMapping))]
         AwsTypeDate CountryDate([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType, DateFormat dateFormat);

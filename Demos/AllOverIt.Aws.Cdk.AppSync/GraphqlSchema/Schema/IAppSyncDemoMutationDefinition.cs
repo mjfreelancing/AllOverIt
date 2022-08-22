@@ -15,7 +15,9 @@ namespace GraphqlSchema.Schema
         [LambdaDataSource(Constants.Function.AddCountry, typeof(AddCountryMapping))]
         ICountry AddCountry([SchemaTypeRequired] ICountryInput country);
 
+#if DEBUG   // Using RELEASE mode to deploy without these (DEBUG mode is used to check Synth output)
         [AuthLambdaDirective]
+#endif
         [SchemaTypeRequired]
         [LambdaDataSource(Constants.Function.UpdateCountry, typeof(UpdateCountryMapping))]
         ICountry UpdateCountry([SchemaTypeRequired] ICountryInput country);

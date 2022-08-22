@@ -29,6 +29,8 @@ namespace GraphqlSchema
                 {
                     DefaultAuthorization = authMode,
 
+#if DEBUG   // Using RELEASE mode to deploy without these (DEBUG mode is used to check Synth output)
+
                     // would normally pass in the additional auth modes - these have been added to show the auth directive attributes work
                     AdditionalAuthorizationModes = new IAuthorizationMode[]
                     {
@@ -40,6 +42,7 @@ namespace GraphqlSchema
                                 UserPool = new UserPool(scope, "SomeUserPool")
                             }
                         },
+
                         new AuthorizationMode
                         {
                             AuthorizationType = AuthorizationType.OIDC,
@@ -48,10 +51,12 @@ namespace GraphqlSchema
                                 OidcProvider = "https://domain.com"
                             }
                         },
+
                         new AuthorizationMode
                         {
                             AuthorizationType = AuthorizationType.IAM
                         },
+
                         new AuthorizationMode
                         {
                             AuthorizationType = AuthorizationType.LAMBDA,
@@ -72,6 +77,7 @@ namespace GraphqlSchema
                             }
                         }
                     }
+#endif
                 }
             };
         }
