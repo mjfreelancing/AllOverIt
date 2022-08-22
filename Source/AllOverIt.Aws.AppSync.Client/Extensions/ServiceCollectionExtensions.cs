@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using AllOverIt.Serialization.Abstractions;
+using System.Net.Http;
 
 namespace AllOverIt.Aws.AppSync.Client.Extensions
 {
@@ -14,12 +15,16 @@ namespace AllOverIt.Aws.AppSync.Client.Extensions
         /// <returns>An <see cref="AppSyncClient"/> instance, configured with the resolved configuration.</returns>
         public static IServiceCollection AddAppSyncClient(this IServiceCollection services, Func<IServiceProvider, IAppSyncClientConfiguration> configurationResolver)
         {
+            services.AddHttpClient<IAppSyncClient, AppSyncClient>(AppSyncClient.HttpClientName);
+
             services.AddSingleton<IAppSyncClient>(provider =>
             {
+                var httpClientFactory = provider.GetRequiredService<IHttpClientFactory>();
+
                 var configuration = configurationResolver.Invoke(provider);
                 ConfigureJsonSerializer(configuration.Serializer);
 
-                return new AppSyncClient(configuration);
+                return new AppSyncClient(httpClientFactory, configuration);
             });
 
             return services;
@@ -66,6 +71,8 @@ namespace AllOverIt.Aws.AppSync.Client.Extensions
         /// <returns>An <see cref="AppSyncClient"/> instance, per name, configured with the provided configuration.</returns>
         public static IServiceCollection AddAppSyncNamedClient(this IServiceCollection services, Func<IServiceProvider, string, IAppSyncClientConfiguration> configResolver)
         {
+            services.AddHttpClient<IAppSyncClient, AppSyncClient>(AppSyncClient.HttpClientName);
+
             // Although a singleton, the registered delegate will be called EACH time a named client is requested via NamedAppSyncClientDelegate.
             // The IAppSyncNamedClientProvider ensures a client (and it's configuration) is only ever requested once per name.
             services.AddSingleton<NamedAppSyncClientConfigurationDelegate>(provider => clientName =>
@@ -80,10 +87,12 @@ namespace AllOverIt.Aws.AppSync.Client.Extensions
             // The IAppSyncNamedClientProvider ensures a client (and it's configuration) is only ever requested once per name.
             services.AddSingleton<NamedAppSyncClientDelegate>(provider => name =>
             {
+                var httpClientFactory = provider.GetRequiredService<IHttpClientFactory>();
+
                 var configuration = provider.GetRequiredService<NamedAppSyncClientConfigurationDelegate>();
                 var namedConfig = configuration.Invoke(name);
 
-                return new AppSyncClient(namedConfig);
+                return new AppSyncClient(httpClientFactory, namedConfig);
             });
 
             // This provider will only ever call the NamedAppSyncClientDelegate once per name

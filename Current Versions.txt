@@ -82,8 +82,8 @@
                                                  - [8]
                                                  - [16]
         - External dependencies:                 - System.Reactive v5.0.0
-                                                 - Microsoft.Extensions.DependencyInjection v5.0.2 for targets netstandard2.1;netcoreapp3.1;net5.0
-                                                                                            v6.0.0 for targets net6.0
+                                                 - Microsoft.Extensions.DependencyInjection v6.0.0
+                                                 - Microsoft.Extensions.Http v6.0.0
 
 
   [12] AllOverIt.AspNetCore                     
