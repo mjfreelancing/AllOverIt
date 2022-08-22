@@ -14,13 +14,14 @@ namespace AllOverIt.Aws.AppSync.Client
     /// <summary>An AppSync query and mutation graphql client.</summary>
     public sealed class AppSyncClient : IAppSyncClient
     {
+        /// <summary>The expected <see cref="HttpClient"/> name to be registered with <see cref="IHttpClientFactory"/>.</summary>
         public static readonly string HttpClientName = typeof(AppSyncClient).FullName;
 
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IAppSyncClientConfiguration _configuration;
 
         /// <summary>Constructor.</summary>
-        /// <param name="httpClientFactory">The HttpClient factory used to get a named client for sending requests. The client
+        /// <param name="httpClientFactory">The <see cref="HttpClient"/> factory used to get a named client for sending requests. The client
         /// must be registered with the name provided by <see cref="HttpClientName"/>.</param>
         /// <param name="configuration">Contains configuration details for AppSync Graphql query and mutation operations.</param>
         public AppSyncClient(IHttpClientFactory httpClientFactory, IAppSyncClientConfiguration configuration)
