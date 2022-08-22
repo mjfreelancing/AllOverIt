@@ -5,7 +5,6 @@ using AllOverIt.Filtering.Options;
 using AllOverIt.GenericHost;
 using AllOverIt.Pagination;
 using AllOverIt.Pagination.Extensions;
-using Bogus;
 using KeysetPaginationConsole;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -74,7 +73,7 @@ namespace PaginationConsole
             {
                 dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
-                const int pageSize = 100;
+                const int pageSize = 25;
 
                 await CreateDataIfRequired();
 
@@ -98,11 +97,13 @@ namespace PaginationConsole
                 {
                     Description =
                     { 
-                        Contains = "vero",
-                        StartsWith = "voluptatum",
-
-                        GreaterThan = "a",
-                        LessThan = "b"
+                        Contains = "tion 2",
+                        StartsWith = "de"
+                    },
+                    Title =
+                    {
+                        GreaterThan = "TiTlE 100",
+                        //LessThan = "Title 2"
                     }
                 };
 
@@ -115,13 +116,10 @@ namespace PaginationConsole
                 query = query.ApplyFilter(filter, (specificationBuilder, filterBuilder) =>
                 {
                     filterBuilder
-                        // Example 1:
-                        //.Where(entity => entity.Description, f => f.Description.GreaterThan)
-                        //.And(entity => entity.Description, f => f.Description.LessThan);
-
-                        // Example 2:
                         .Where(entity => entity.Description, f => f.Description.StartsWith)
-                        .And(entity => entity.Description, f => f.Description.Contains);
+                        .And(entity => entity.Description, f => f.Description.Contains)
+                        .And(entity => entity.Title, f => f.Title.GreaterThan);
+                        //.And(entity => entity.Title, f => f.Title.LessThan);
                 }, filterOptions);
 
                 // Apply pagination
@@ -135,9 +133,11 @@ namespace PaginationConsole
 
                 // Paginated queries require the last column be a unique Id, hence including the PostId
                 // (could be BlogId if we were only querying the Blogs table)
+                // NOTE: Performance is dictated by indexes. This demo sets the ordering based on the results from a join
+                //       so this is not going to be highly performant - it's more of a demo on pagination.
                 var queryPaginator = _queryPaginatorFactory
                     .CreatePaginator(query, paginatorConfig)
-                    .ColumnAscending(item => item.Description, item => item.BlogId, item => item.PostId);
+                    .ColumnAscending(item => item.Description, item => item.Title, item => item.BlogId, item => item.PostId);
 
                 string continuationToken = default;
                 var key = 'n';
@@ -191,7 +191,7 @@ namespace PaginationConsole
                     {
                         pageResults.ForEach(result =>
                         {
-                            Console.WriteLine($"{result.BlogId}, {result.Description}, {result.PostId}, {result.Title}");
+                            Console.WriteLine($"{result.BlogId}, {result.Description}, {result.Title}, {result.PostId}");
                         });
 
                         if (lastTokenGenerationTime.HasValue)
@@ -303,21 +303,52 @@ namespace PaginationConsole
         {
             Console.WriteLine($"Processing index {index}");
 
-            var blogFaker = new Faker<Blog>()
-                .RuleFor(blog => blog.Description, faker => faker.Lorem.Sentence(8));
-
-            var postFaker = new Faker<Post>()
-                .RuleFor(post => post.Title, faker => faker.Lorem.Sentence(4))
-                .RuleFor(post => post.Content, faker => faker.Lorem.Paragraph());
-
             using (var dbContext = await _dbContextFactory.CreateDbContextAsync())
             {
                 var blogs = new List<Blog>();
 
+                var startIndex = (index - 1) * batchSize + 1;
+
                 for (var blogIndex = 0; blogIndex < batchSize; blogIndex++)
                 {
-                    var blog = blogFaker.Generate();
-                    var posts = postFaker.Generate(6);
+                    string description = default;
+
+                    switch ((startIndex + blogIndex) % 4)
+                    {
+                        case 0:
+                            description = $"Description {startIndex + blogIndex}";
+                            break;
+
+                        case 1:
+                            description = $"description {startIndex + blogIndex}";
+                            break;
+
+                        case 2:
+                            description = $"DESCRIPTION {startIndex + blogIndex}";
+                            break;
+
+                        case 3:
+                            description = $"DeScRiPtIoN {startIndex + blogIndex}";
+                            break;
+                    }
+
+                    var blog = new Blog
+                    {
+                        Description = description
+                    };
+
+                    var posts = new List<Post>();
+
+                    for (var postIndex = startIndex; postIndex < startIndex + 6; postIndex++)
+                    {
+                        var post = new Post
+                        {
+                            Title = $"Title {startIndex}",
+                            Content = $"Content {startIndex}"
+                        };
+
+                        posts.Add(post);
+                    }
 
                     blog.Posts = posts;
                     blogs.Add(blog);
