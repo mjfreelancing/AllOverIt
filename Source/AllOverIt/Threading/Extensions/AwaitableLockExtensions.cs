@@ -5,8 +5,6 @@ using AllOverIt.Patterns.ResourceInitialization;
 
 namespace AllOverIt.Threading.Extensions
 {
-    // TODO: Add tests
-
     /// <summary>Provides a variety of extension methods for <see cref="IAwaitableLock"/> types.</summary>
     public static class AwaitableLockExtensions
     {
@@ -17,9 +15,9 @@ namespace AllOverIt.Threading.Extensions
         /// when the disposable is disposed.</returns>
         public static async Task<IDisposable> GetLockAsync(this IAwaitableLock @lock, CancellationToken cancellationToken = default)
         {
-            await @lock.LockAsync(cancellationToken).ConfigureAwait(false);
+            await @lock.EnterLockAsync(cancellationToken).ConfigureAwait(false);
 
-            return new Raii(() => { }, () => @lock.Release());
+            return new Raii(() => { }, () => @lock.ExitLock());
         }
     }
 }
