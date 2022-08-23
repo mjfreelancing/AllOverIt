@@ -6,6 +6,10 @@ Version 6.0.0-RC.5
 AllOverIt
   * Added AwaitableLock to complement ReadWriteLock for async scenarios (although it does not support re-entrant)
 
+AllOverIt.Filtering
+  * Renamed IgnoreNullFilterValues to IgnoreDefaultFilterValues so default constructed In and NotIn objects are
+    considered (internal null value as opposed to an empty list).
+
 
 22 Aug 2022
 Version 6.0.0-RC.4
