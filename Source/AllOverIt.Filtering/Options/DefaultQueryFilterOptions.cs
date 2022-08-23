@@ -12,6 +12,6 @@ namespace AllOverIt.Filtering.Options
         public StringComparisonMode StringComparisonMode { get; init; } = StringComparisonMode.None;
 
         /// <inheritdoc />
-        public bool IgnoreNullFilterValues { get; init; }
+        public bool IgnoreDefaultFilterValues { get; init; } = true;
     }
 }

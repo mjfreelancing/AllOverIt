@@ -191,7 +191,7 @@ namespace AllOverIt.Filtering.Builders
             {
                 UseParameterizedQueries = _options.UseParameterizedQueries,
                 StringComparisonMode = _options.StringComparisonMode,
-                IgnoreNullFilterValue = _options.IgnoreNullFilterValues
+                IgnoreDefaultFilterValue = _options.IgnoreDefaultFilterValues
             };
 
             action?.Invoke(filterOptions);
@@ -207,7 +207,7 @@ namespace AllOverIt.Filtering.Builders
 
             Throw<InvalidOperationException>.WhenNull($"The filter operation resolver on {propertyExpression} cannot return null.");
 
-            if (filterOptions.IgnoreNullFilterValue)
+            if (filterOptions.IgnoreDefaultFilterValue)
             {
                 switch (operation)
                 {
@@ -250,7 +250,7 @@ namespace AllOverIt.Filtering.Builders
             // something like IBasicFilterOperation<TProperty?>.
             var operationType = operation.GetType();
 
-            if (filterOptions.IgnoreNullFilterValue)
+            if (filterOptions.IgnoreDefaultFilterValue)
             {
                 var genericArgumentType = operationType.GetGenericArguments()[0];
 

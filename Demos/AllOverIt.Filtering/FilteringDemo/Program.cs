@@ -39,7 +39,7 @@ namespace FilteringDemo
             {
                 UseParameterizedQueries = false,
                 StringComparisonMode = StringComparisonMode.ToLower,
-                IgnoreNullFilterValues = false
+                IgnoreDefaultFilterValues = false
             };
 
             var results = products

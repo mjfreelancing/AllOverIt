@@ -167,7 +167,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 var filterBuilder = CreateFilterBuilder(_filter, options);
@@ -194,7 +194,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 // Start by confirming the filter is applied
@@ -239,7 +239,7 @@ namespace AllOverIt.Filtering.Tests
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 var filterBuilder = CreateFilterBuilder(_filter, options);
@@ -266,7 +266,7 @@ namespace AllOverIt.Filtering.Tests
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 // Start by confirming the filter is applied
@@ -308,7 +308,7 @@ namespace AllOverIt.Filtering.Tests
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 var filterBuilder1 = CreateFilterBuilder(_filter, options);
@@ -346,7 +346,7 @@ namespace AllOverIt.Filtering.Tests
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 var filterBuilder1 = CreateFilterBuilder(_filter, options);
@@ -387,7 +387,7 @@ namespace AllOverIt.Filtering.Tests
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 var filterBuilder = CreateFilterBuilder(_filter, options);
@@ -414,7 +414,7 @@ namespace AllOverIt.Filtering.Tests
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 // Start by confirming the filter is applied
@@ -456,7 +456,7 @@ namespace AllOverIt.Filtering.Tests
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 var filterBuilder1 = CreateFilterBuilder(_filter, options);
@@ -494,7 +494,7 @@ namespace AllOverIt.Filtering.Tests
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 var filterBuilder1 = CreateFilterBuilder(_filter, options);
@@ -535,7 +535,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 var filterBuilder = CreateFilterBuilder(_filter, options);
@@ -564,7 +564,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 var filterBuilder = CreateFilterBuilder(_filter, options);
@@ -593,7 +593,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 _filter.Prop1.NotEqualTo.Value = null;
@@ -624,7 +624,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 _filter.Prop3.EqualTo.Value = null;
@@ -655,7 +655,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 _filter.Prop1.NotEqualTo.Value = null;
@@ -690,7 +690,7 @@ namespace AllOverIt.Filtering.Tests
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 var filterBuilder = CreateFilterBuilder(_filter, options);
@@ -719,7 +719,7 @@ namespace AllOverIt.Filtering.Tests
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 var filterBuilder = CreateFilterBuilder(_filter, options);
@@ -748,7 +748,7 @@ namespace AllOverIt.Filtering.Tests
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 _filter.Prop2.NotEqualTo.Value = null;
@@ -779,7 +779,7 @@ namespace AllOverIt.Filtering.Tests
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 _filter.Prop1.NotEqualTo.Value = null;
@@ -810,7 +810,7 @@ namespace AllOverIt.Filtering.Tests
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 _filter.Prop1.NotEqualTo.Value = null;
@@ -847,7 +847,7 @@ namespace AllOverIt.Filtering.Tests
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 var filterBuilder = CreateFilterBuilder(_filter, options);
@@ -876,7 +876,7 @@ namespace AllOverIt.Filtering.Tests
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 var filterBuilder = CreateFilterBuilder(_filter, options);
@@ -905,7 +905,7 @@ namespace AllOverIt.Filtering.Tests
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 _filter.Prop1.NotIn.Value = null;
@@ -936,7 +936,7 @@ namespace AllOverIt.Filtering.Tests
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 _filter.Prop2.NotIn.Value = null;
@@ -967,7 +967,7 @@ namespace AllOverIt.Filtering.Tests
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 _filter.Prop1.NotIn.Value = null;
@@ -1004,7 +1004,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 var filterBuilder = CreateFilterBuilder(_filter, options);
@@ -1033,7 +1033,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 var filterBuilder = CreateFilterBuilder(_filter, options);
@@ -1062,7 +1062,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 _filter.Prop1.NotEqualTo.Value = null;
@@ -1093,7 +1093,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 _filter.Prop3.EqualTo.Value = null;
@@ -1124,7 +1124,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 _filter.Prop1.NotEqualTo.Value = null;
@@ -1159,7 +1159,7 @@ namespace AllOverIt.Filtering.Tests
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 var filterBuilder = CreateFilterBuilder(_filter, options);
@@ -1188,7 +1188,7 @@ namespace AllOverIt.Filtering.Tests
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 var filterBuilder = CreateFilterBuilder(_filter, options);
@@ -1217,7 +1217,7 @@ namespace AllOverIt.Filtering.Tests
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 _filter.Prop2.NotEqualTo.Value = null;
@@ -1248,7 +1248,7 @@ namespace AllOverIt.Filtering.Tests
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 _filter.Prop1.NotEqualTo.Value = null;
@@ -1279,7 +1279,7 @@ namespace AllOverIt.Filtering.Tests
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 _filter.Prop1.NotEqualTo.Value = null;
@@ -1316,7 +1316,7 @@ namespace AllOverIt.Filtering.Tests
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 var filterBuilder = CreateFilterBuilder(_filter, options);
@@ -1345,7 +1345,7 @@ namespace AllOverIt.Filtering.Tests
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 var filterBuilder = CreateFilterBuilder(_filter, options);
@@ -1374,7 +1374,7 @@ namespace AllOverIt.Filtering.Tests
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 _filter.Prop1.NotIn.Value = null;
@@ -1405,7 +1405,7 @@ namespace AllOverIt.Filtering.Tests
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 _filter.Prop2.NotIn.Value = null;
@@ -1436,7 +1436,7 @@ namespace AllOverIt.Filtering.Tests
                 var options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 _filter.Prop1.NotIn.Value = null;

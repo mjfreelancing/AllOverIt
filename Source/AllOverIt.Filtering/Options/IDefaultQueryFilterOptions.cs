@@ -21,6 +21,6 @@ namespace AllOverIt.Filtering.Options
         /// type <see cref="IBasicFilterOperation"/> or <see cref="IArrayFilterOperation"/> or <see cref="IStringFilterOperation"/>).
         /// This option instructs the builder to ignore the predicate if the filter's value is null. This can be handy for automatically
         /// excluding optional filters.</summary>
-        bool IgnoreNullFilterValues { get; }
+        bool IgnoreDefaultFilterValues { get; }
     }
 }

@@ -151,7 +151,7 @@ namespace EFEnumerationDemo
                     // Since sequential Where() calls results in an AND, this criteria will result in:
                     //  (previous_criteria) && (Id IN (1, 2, 3)) || (Id NOT IN (4, 5, 6))
                     // That is, chained methods are simply appended and operator precedence is automatically applied.
-                    filterBuilder.Where(blog => blog.Id, filter => filter.Id.In, options => options.IgnoreNullFilterValue = true)
+                    filterBuilder.Where(blog => blog.Id, filter => filter.Id.In, options => options.IgnoreDefaultFilterValue = true)
                                  .Or(blog => blog.Id, filter => filter.Id.NotIn);
 
                     // Description EqualTo / NotEqualTo / Contains / NotContains / StartsWith / EndsWith - combining them as

@@ -142,7 +142,7 @@ namespace AllOverIt.Filtering.Tests
             {
                 UseParameterizedQueries = Create<bool>(),
                 StringComparisonMode = Create<bool>() ? StringComparisonMode.None : StringComparisonMode.ToLower,
-                IgnoreNullFilterValues = false
+                IgnoreDefaultFilterValues = false
             };
 
             _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
@@ -235,7 +235,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
@@ -264,7 +264,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
@@ -293,7 +293,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
@@ -322,7 +322,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
@@ -351,7 +351,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
@@ -380,7 +380,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
@@ -409,7 +409,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
@@ -438,7 +438,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
@@ -467,7 +467,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
@@ -496,7 +496,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
@@ -525,7 +525,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
@@ -554,7 +554,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
@@ -583,7 +583,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
@@ -612,7 +612,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
@@ -629,7 +629,7 @@ namespace AllOverIt.Filtering.Tests
             {
                 _options = new DefaultQueryFilterOptions
                 {
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 _filter.Name.EqualTo.Value = null;
@@ -698,7 +698,7 @@ namespace AllOverIt.Filtering.Tests
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
@@ -719,7 +719,7 @@ namespace AllOverIt.Filtering.Tests
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
@@ -739,7 +739,7 @@ namespace AllOverIt.Filtering.Tests
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
@@ -757,7 +757,7 @@ namespace AllOverIt.Filtering.Tests
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
@@ -775,7 +775,7 @@ namespace AllOverIt.Filtering.Tests
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
@@ -793,7 +793,7 @@ namespace AllOverIt.Filtering.Tests
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
@@ -811,7 +811,7 @@ namespace AllOverIt.Filtering.Tests
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
@@ -829,7 +829,7 @@ namespace AllOverIt.Filtering.Tests
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
@@ -849,7 +849,7 @@ namespace AllOverIt.Filtering.Tests
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
@@ -867,7 +867,7 @@ namespace AllOverIt.Filtering.Tests
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
@@ -885,7 +885,7 @@ namespace AllOverIt.Filtering.Tests
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
@@ -912,7 +912,7 @@ namespace AllOverIt.Filtering.Tests
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
@@ -936,7 +936,7 @@ namespace AllOverIt.Filtering.Tests
             {
                 _options = new DefaultQueryFilterOptions
                 {
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 _filter.Active.EqualTo.Value = null;
@@ -1202,7 +1202,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _filter.Name.Contains = contains;
@@ -1233,7 +1233,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _filter.Name.Contains = contains;
@@ -1263,7 +1263,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 var newValues = _filter.Name.In.Value.Concat(new[] { _filter.Name.EqualTo.Value });     // It's array (fixed size), so cannot just add the value
@@ -1296,7 +1296,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
@@ -1314,7 +1314,7 @@ namespace AllOverIt.Filtering.Tests
             {
                 _options = new DefaultQueryFilterOptions
                 {
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 _filter.Name.EqualTo.Value = null;
@@ -1352,7 +1352,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _filter.Name.Contains = contains;
@@ -1383,7 +1383,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _filter.Name.NotContains = notContains;
@@ -1401,7 +1401,7 @@ namespace AllOverIt.Filtering.Tests
             {
                 _options = new DefaultQueryFilterOptions
                 {
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 _filter.Name.NotContains.Value = null;
@@ -1429,7 +1429,7 @@ namespace AllOverIt.Filtering.Tests
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 var lastUpdated = DateTime.Now.Date;
@@ -1457,7 +1457,7 @@ namespace AllOverIt.Filtering.Tests
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 var entityPrice = Create<double>();
@@ -1480,7 +1480,7 @@ namespace AllOverIt.Filtering.Tests
             {
                 _options = new DefaultQueryFilterOptions
                 {
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 _filter.LastUpdated.GreaterThanOrEqual.Value = null;
@@ -1738,7 +1738,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _filter.Name.Contains = contains;
@@ -1769,7 +1769,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _filter.Name.Contains = contains;
@@ -1799,7 +1799,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
@@ -1829,7 +1829,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _filter.Name.NotIn.Value.Add(_filter.Name.NotEqualTo.Value);
@@ -1849,7 +1849,7 @@ namespace AllOverIt.Filtering.Tests
             {
                 _options = new DefaultQueryFilterOptions
                 {
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 _filter.Name.EqualTo.Value = null;
@@ -1887,7 +1887,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _filter.Name.Contains = contains;
@@ -1918,7 +1918,7 @@ namespace AllOverIt.Filtering.Tests
                 {
                     UseParameterizedQueries = useParameterizedQueries,
                     StringComparisonMode = stringComparisonMode,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 _filter.Name.NotContains = notContains;
@@ -1936,7 +1936,7 @@ namespace AllOverIt.Filtering.Tests
             {
                 _options = new DefaultQueryFilterOptions
                 {
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 _filter.Name.EqualTo.Value = null;
@@ -1964,7 +1964,7 @@ namespace AllOverIt.Filtering.Tests
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 var lastUpdated = DateTime.Now.Date;
@@ -1992,7 +1992,7 @@ namespace AllOverIt.Filtering.Tests
                 _options = new DefaultQueryFilterOptions
                 {
                     UseParameterizedQueries = useParameterizedQueries,
-                    IgnoreNullFilterValues = false
+                    IgnoreDefaultFilterValues = false
                 };
 
                 var entityPrice = Create<double>();
@@ -2015,7 +2015,7 @@ namespace AllOverIt.Filtering.Tests
             {
                 _options = new DefaultQueryFilterOptions
                 {
-                    IgnoreNullFilterValues = true
+                    IgnoreDefaultFilterValues = true
                 };
 
                 _filter.LastUpdated.GreaterThanOrEqual.Value = null;

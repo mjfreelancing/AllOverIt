@@ -6,12 +6,12 @@ namespace AllOverIt.Filtering.Options
     public sealed class OperationFilterOptions : IOperationFilterOptions
     {
         /// <inheritdoc />
-        public bool UseParameterizedQueries { get; set; }
+        public bool UseParameterizedQueries { get; set; } = true;
 
         /// <inheritdoc />
         public StringComparisonMode StringComparisonMode { get; init; } = StringComparisonMode.None;
 
         /// <inheritdoc />
-        public bool IgnoreNullFilterValue { get; set; }
+        public bool IgnoreDefaultFilterValue { get; set; } = true;
     }
 }
