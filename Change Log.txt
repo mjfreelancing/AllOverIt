@@ -1,6 +1,6 @@
 ======================================================================================================================
 
-XX XXX 2022
+24 Aug 2022
 Version 6.0.0-RC.5
 ======================================================================================================================
 AllOverIt
@@ -11,6 +11,9 @@ AllOverIt
 AllOverIt.Filtering
   * Renamed IgnoreNullFilterValues to IgnoreDefaultFilterValues so default constructed In and NotIn objects are
     considered (internal null value as opposed to an empty list).
+
+AllOverIt.Aws.Cdk.AppSync
+  * Fix bug with arrays of EnrichedEnum in GQL schema
 
 
 22 Aug 2022
