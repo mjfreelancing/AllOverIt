@@ -229,14 +229,6 @@ namespace AllOverIt.Extensions
             return type.GetTypeInfo().IsGenericType;
         }
 
-        /// <summary>Gets an array of the generic type arguments for this type.</summary>
-        /// <param name="type">The <see cref="Type"/> containing the generic type arguments.</param>
-        /// <returns>An array of the generic type arguments for this type.</returns>
-        public static IEnumerable<Type> GetGenericArguments(this Type type)
-        {
-            return type.GetTypeInfo().GenericTypeArguments;
-        }
-
         /// <summary>Determines if a type is derived from another base type, including unbound generic types such as List&lt;>. Similar to
         /// IsSubClassOf(), this method does not support looking for inherited interfaces.</summary>
         /// <param name="type">The type to be tested.</param>

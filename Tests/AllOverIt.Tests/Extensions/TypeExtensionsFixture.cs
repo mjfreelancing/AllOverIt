@@ -613,20 +613,6 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
-        public class GetGenericArguments : TypeExtensionsFixture
-        {
-            [Theory]
-            [InlineData(typeof(Lazy<int>), new[] { typeof(int) })]
-            [InlineData(typeof(IEnumerable<IList<IDictionary<int, string>>>), new[] { typeof(IList<IDictionary<int, string>>) })]
-            [InlineData(typeof(DummyComposite<int, IDictionary<int, string>>), new[] { typeof(int), typeof(IDictionary<int, string>) })]
-            public void Should_Get_Generic_Argument_Types(Type type, IEnumerable<Type> expected)
-            {
-                var actual = AllOverIt.Extensions.TypeExtensions.GetGenericArguments(type);
-
-                expected.Should().BeEquivalentTo(actual);
-            }
-        }
-
         public class IsSubClassOfRawGeneric : TypeExtensionsFixture
         {
             private interface IDerived { }
