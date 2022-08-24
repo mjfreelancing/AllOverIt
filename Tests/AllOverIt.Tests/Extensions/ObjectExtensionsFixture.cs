@@ -1649,9 +1649,64 @@ namespace AllOverIt.Tests.Extensions
                   .WithMessage($"Cannot convert integral '{value}' to a Boolean. (Parameter 'instance')");
             }
 
+            [Fact]
+            public void Should_Convert_Guid_To_String()
+            {
+                var value = Guid.NewGuid();
+                var expected = value.ToString();
+
+                var actual = ObjectExtensions.As<String>(value);
+
+                expected.Should().Be(actual);
+            }
+
+            [Fact]
+            public void Should_Convert_String_To_Guid()
+            {
+                var expected = Guid.NewGuid();
+                var value = expected.ToString();
+
+                var actual = ObjectExtensions.As<Guid>(value);
+
+                expected.Should().Be(actual);
+            }
+
             [Theory]
-            [InlineData((short)0, false)]
-            [InlineData((short)1, true)]
+            [InlineData((Int16) 10, (short) 10)]
+            [InlineData((Int32) 20, (short) 20)]
+            [InlineData((Int64) 30, (short) 30)]
+            public void Should_Convert_Integral_To_Int16(object value, short expected)
+            {
+                var actual = ObjectExtensions.As<short>(value);
+
+                actual.Should().Be(expected);
+            }
+
+            [Theory]
+            [InlineData((Int16) 10, (int) 10)]
+            [InlineData((Int32) 20, (int) 20)]
+            [InlineData((Int64) 30, (int) 30)]
+            public void Should_Convert_Integral_To_Int32(object value, int expected)
+            {
+                var actual = ObjectExtensions.As<int>(value);
+
+                actual.Should().Be(expected);
+            }
+
+            [Theory]
+            [InlineData((Int16) 10, (long) 10)]
+            [InlineData((Int32) 20, (long) 20)]
+            [InlineData((Int64) 30, (long) 30)]
+            public void Should_Convert_Integral_To_Int64(object value, long expected)
+            {
+                var actual = ObjectExtensions.As<long>(value);
+
+                actual.Should().Be(expected);
+            }
+
+            [Theory]
+            [InlineData((short) 0, false)]
+            [InlineData((short) 1, true)]
             [InlineData(0, false)]
             [InlineData(1, true)]
             [InlineData(0L, false)]
@@ -1729,7 +1784,7 @@ namespace AllOverIt.Tests.Extensions
                 Invoking(() => ObjectExtensions.As<DummyEnum>(value))
                   .Should()
                   .Throw<ArgumentOutOfRangeException>()
-                  .WithMessage($"Cannot cast '{value}' to a '{typeof(DummyEnum)}' value. (Parameter 'instance')");
+                  .WithMessage($"Cannot cast '{value}' to a '{nameof(DummyEnum)}' value. (Parameter 'instance')");
             }
 
             [Theory]
@@ -1853,6 +1908,17 @@ namespace AllOverIt.Tests.Extensions
                 var actual = ObjectExtensions.AsNullable<bool>(value);
 
                 actual.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Convert_String_To_Guid()
+            {
+                Guid? expected = Guid.NewGuid();
+                var value = expected.ToString();
+
+                var actual = ObjectExtensions.AsNullable<Guid>(value);
+
+                expected.Should().Be(actual);
             }
         }
 

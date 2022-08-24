@@ -143,6 +143,17 @@ namespace AllOverIt.Tests.Extensions
 
                 actual.Should().Be(expected);
             }
+
+            [Fact]
+            public void Should_Convert_String_To_Guid()
+            {
+                var expected = Guid.NewGuid();
+                var value = expected.ToString();
+
+                var actual = StringExtensions.As<Guid>(value);
+
+                expected.Should().Be(actual);
+            }
         }
 
         public class AsNullable : StringExtensionsFixture
@@ -233,6 +244,17 @@ namespace AllOverIt.Tests.Extensions
                 var actual = StringExtensions.AsNullable<DummyEnum>(value);
 
                 actual.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Convert_String_To_Guid()
+            {
+                Guid? expected = Guid.NewGuid();
+                var value = expected.ToString();
+
+                var actual = StringExtensions.AsNullable<Guid>(value);
+
+                expected.Should().Be(actual);
             }
         }
 
