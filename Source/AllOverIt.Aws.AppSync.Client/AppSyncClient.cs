@@ -87,9 +87,7 @@ namespace AllOverIt.Aws.AppSync.Client
 #if NET5_0_OR_GREATER
             return responseMessage.Content.ReadAsStringAsync(cancellationToken);
 #else
-#pragma warning disable CA2016 // Forward the 'CancellationToken' parameter to methods
             return responseMessage.Content.ReadAsStringAsync();
-#pragma warning restore CA2016 // Forward the 'CancellationToken' parameter to methods
 #endif
         }
 

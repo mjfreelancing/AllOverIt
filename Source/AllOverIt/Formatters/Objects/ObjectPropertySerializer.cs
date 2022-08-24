@@ -62,11 +62,14 @@ namespace AllOverIt.Formatters.Objects
 
                     if (collateValues)
                     {
+#pragma warning disable IDE0074 // Use compound assignment
+                        // More efficient than ??=
                         if (prefix == null)
                         {
                             // The array must have been a root object (not a property value) so use "[]" as the prefix
                             prefix = Options.RootValueOptions.ArrayKeyName;
                         }
+#pragma warning restore IDE0074 // Use compound assignment
 
                         values.Add(prefix, string.Join(Options.EnumerableOptions.Separator, arrayValues.Values));
                     }
