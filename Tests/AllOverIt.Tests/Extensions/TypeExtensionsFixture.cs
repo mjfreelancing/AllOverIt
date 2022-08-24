@@ -501,6 +501,24 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
+        public class IsValueType : TypeExtensionsFixture
+        {
+            [Theory]
+            [InlineData(typeof(DummyEnum), true)]
+            [InlineData(typeof(int), true)]
+            [InlineData(typeof(string), false)]
+            [InlineData(typeof(bool), true)]
+            [InlineData(typeof(char), true)]
+            [InlineData(typeof(PropertySuperClass), false)]
+            [InlineData(typeof(IEnumerable<int>), false)]
+            public void Should_Determine_If_Is_Value_Type(Type type, bool expected)
+            {
+                var actual = AllOverIt.Extensions.TypeExtensions.IsValueType(type);
+
+                actual.Should().Be(expected);
+            }
+        }
+
         public class IsPrimitiveType : TypeExtensionsFixture
         {
             [Theory]

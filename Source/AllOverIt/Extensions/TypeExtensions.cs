@@ -163,6 +163,14 @@ namespace AllOverIt.Extensions
             return type.GetTypeInfo().IsClass;
         }
 
+        /// <summary>Indicates if the <see cref="Type"/> represents a value type.</summary>
+        /// <param name="type">The type to compare.</param>
+        /// <returns>True if the <see cref="Type"/> represents a value type, otherwise false.</returns>
+        public static bool IsValueType(this Type type)
+        {
+            return type.GetTypeInfo().IsValueType;
+        }
+
         /// <summary>Indicates if the <see cref="Type"/> represents a primitive type.</summary>
         /// <param name="type">The type to compare.</param>
         /// <returns>True if the <see cref="Type"/> represents a primitive type, otherwise false.</returns>

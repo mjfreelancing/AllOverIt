@@ -6,6 +6,7 @@ Version 6.0.0-RC.5
 AllOverIt
   * Added AwaitableLock to complement ReadWriteLock for async scenarios (although it does not support re-entrant)
   * Deleted GetGenericArguments() - same as type.GenericTypeArguments
+  * Added Type extension IsValueType()
 
 AllOverIt.Filtering
   * Renamed IgnoreNullFilterValues to IgnoreDefaultFilterValues so default constructed In and NotIn objects are
