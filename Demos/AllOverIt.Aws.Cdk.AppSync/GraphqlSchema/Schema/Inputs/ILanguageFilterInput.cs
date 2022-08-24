@@ -5,6 +5,6 @@ namespace GraphqlSchema.Schema.Inputs
     [SchemaInput("LanguageFilterInput")]
     internal interface ILanguageFilterInput
     {
-        public IStringQueryOperatorInput Code();
+        IStringQueryOperatorInput Code();
     }
 }

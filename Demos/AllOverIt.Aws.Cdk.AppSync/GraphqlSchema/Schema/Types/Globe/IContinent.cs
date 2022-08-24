@@ -35,5 +35,7 @@ namespace GraphqlSchema.Schema.Types.Globe
         [AuthIamDirective]
 #endif
         string[] CountryCodes();
+
+        DateFormat[] DateFormats();
     }
 }

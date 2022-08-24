@@ -6,8 +6,8 @@ namespace GraphqlSchema.Schema.Inputs.Globe
     [SchemaInput("GraphqlSchema.Schema.Inputs", "CountryFilterInput")]
     internal interface ICountryFilterInput
     {
-        public IStringQueryOperatorInput Code();
-        public IStringQueryOperatorInput Currency();
-        public IStringQueryOperatorInput Continent();
+        IStringQueryOperatorInput Code();
+        IStringQueryOperatorInput Currency();
+        IStringQueryOperatorInput Continent();
     }
 }

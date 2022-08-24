@@ -47,18 +47,19 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
         {
             _ = typeNameOverrides.WhenNotNull();
 
-            _ = typeNameOverrides.TryGetValue(type, out var typeNameOverride);
-
             var elementType = type.GetElementTypeIfArray();
+
+            _ = typeNameOverrides.TryGetValue(elementType, out var typeNameOverride);
+
             var typeInfo = elementType!.GetTypeInfo();
 
             // If the type is an enum explicitly look for the lack of an attribute
-            var isEnum = type.IsEnum || type.IsEnrichedEnum();
+            var isEnum = elementType.IsEnum || elementType.IsEnrichedEnum();
 
             if (isEnum && !TryGetSchemaAttribute<SchemaTypeBaseAttribute>(typeInfo, out _))
             {
                 return typeNameOverride.IsNullOrEmpty()
-                    ? new GraphqlSchemaTypeDescriptor(elementType, GraphqlSchemaType.Enum, type.Name)
+                    ? new GraphqlSchemaTypeDescriptor(elementType, GraphqlSchemaType.Enum, elementType.Name)
                     : new GraphqlSchemaTypeDescriptor(elementType, GraphqlSchemaType.Enum, typeNameOverride);
             }
 

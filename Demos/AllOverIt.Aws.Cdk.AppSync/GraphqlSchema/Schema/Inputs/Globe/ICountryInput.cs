@@ -8,16 +8,16 @@ namespace GraphqlSchema.Schema.Inputs.Globe
     internal interface ICountryInput
     {
         [SchemaTypeRequired]
-        public GraphqlTypeId Code();
+        GraphqlTypeId Code();
 
         [SchemaTypeRequired]
-        public string Name();
+        string Name();
 
         [SchemaTypeRequired]
-        public string Currency();
+        string Currency();
 
         [SchemaArrayRequired]
         [SchemaTypeRequired]
-        public ILanguageInput[] Languages();
+        ILanguageInput[] Languages();
     }
 }

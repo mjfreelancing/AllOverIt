@@ -5,6 +5,6 @@ namespace GraphqlSchema.Schema.Types
     [SchemaType("State")]
     internal interface IState : ISchemaTypeBase
     {
-        public string Name();
+        string Name();
     }
 }
