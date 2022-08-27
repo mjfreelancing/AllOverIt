@@ -6,7 +6,7 @@ using System;
 namespace AllOverIt.ReactiveUI.Factories
 {
     /// <summary>Instantiates a View based on its' associated ViewModel.</summary>
-    internal sealed class ViewFactory : IViewFactory
+    public sealed class ViewFactory : IViewFactory
     {
         private readonly IServiceProvider _provider;
 
