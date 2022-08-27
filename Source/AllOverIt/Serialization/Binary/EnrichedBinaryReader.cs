@@ -67,6 +67,7 @@ namespace AllOverIt.Serialization.Binary
 
         private readonly IDictionary<int, string> _userDefinedTypeCache = new Dictionary<int, string>();
 
+        /// <inheritdoc />
         public IList<IEnrichedBinaryValueReader> Readers { get; } = new List<IEnrichedBinaryValueReader>();
 
         /// <inheritdoc cref="BinaryReader(Stream)"/>

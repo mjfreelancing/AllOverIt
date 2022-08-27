@@ -94,6 +94,7 @@ namespace AllOverIt.Serialization.Binary
         private readonly IDictionary<string, int> _userDefinedTypeCache = new Dictionary<string, int>();
         private readonly IReadOnlyCollection<Func<Type, TypeIdentifier?>> _typeIdLookups;
 
+        /// <inheritdoc />
         public IList<IEnrichedBinaryValueWriter> Writers { get; } = new List<IEnrichedBinaryValueWriter>();
 
         /// <inheritdoc cref="BinaryWriter(Stream)"/>

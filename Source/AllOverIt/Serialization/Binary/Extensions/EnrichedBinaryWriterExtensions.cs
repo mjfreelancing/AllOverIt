@@ -13,18 +13,22 @@ namespace AllOverIt.Serialization.Binary.Extensions
     {
         /// <inheritdoc cref="BinaryWriter.Write(ulong)"/>
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
+        /// <param name="value">The value to be written.</param>
         public static void WriteUInt64(this IEnrichedBinaryWriter writer, ulong value) => writer.WhenNotNull(nameof(writer)).Write(value);
 
         /// <inheritdoc cref="BinaryWriter.Write(uint)"/>
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
+        /// <param name="value">The value to be written.</param>
         public static void WriteUInt32(this IEnrichedBinaryWriter writer, uint value) => writer.WhenNotNull(nameof(writer)).Write(value);
 
         /// <inheritdoc cref="BinaryWriter.Write(ushort)"/>
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
+        /// <param name="value">The value to be written.</param>
         public static void WriteUInt16(this IEnrichedBinaryWriter writer, ushort value) => writer.WhenNotNull(nameof(writer)).Write(value);
 
         /// <inheritdoc cref="BinaryWriter.Write(string)"/>
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
+        /// <param name="value">The value to be written.</param>
         /// <remarks>The value can null.</remarks>
         public static void WriteSafeString(this IEnrichedBinaryWriter writer, string value)
         {
@@ -41,78 +45,100 @@ namespace AllOverIt.Serialization.Binary.Extensions
 
         /// <inheritdoc cref="BinaryWriter.Write(float)"/>
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
+        /// <param name="value">The value to be written.</param>
         public static void WriteSingle(this IEnrichedBinaryWriter writer, float value) => writer.WhenNotNull(nameof(writer)).Write(value);
 
         /// <inheritdoc cref="BinaryWriter.Write(sbyte)"/>
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
+        /// <param name="value">The value to be written.</param>
         public static void WriteSByte(this IEnrichedBinaryWriter writer, sbyte value) => writer.WhenNotNull(nameof(writer)).Write(value);
 
 #if NETSTANDARD2_1 || NETCOREAPP3_1_OR_GREATER
         /// <inheritdoc cref="BinaryWriter.Write(ReadOnlySpan{char})"/>
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
-        public static void WriteChars(this IEnrichedBinaryWriter writer, ReadOnlySpan<char> chars) => writer.WhenNotNull(nameof(writer)).Write(chars);
+        /// <param name="value">The value to be written.</param>
+        public static void WriteChars(this IEnrichedBinaryWriter writer, ReadOnlySpan<char> value) => writer.WhenNotNull(nameof(writer)).Write(value);
 
         /// <inheritdoc cref="BinaryWriter.Write(ReadOnlySpan{byte})"/>
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
-        public static void WriteBytes(this IEnrichedBinaryWriter writer, ReadOnlySpan<byte> buffer) => writer.WhenNotNull(nameof(writer)).Write(buffer);
+        /// <param name="value">The value to be written.</param>
+        public static void WriteBytes(this IEnrichedBinaryWriter writer, ReadOnlySpan<byte> value) => writer.WhenNotNull(nameof(writer)).Write(value);
 #endif
 
         /// <inheritdoc cref="BinaryWriter.Write(long)"/>
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
+        /// <param name="value">The value to be written.</param>
         public static void WriteInt64(this IEnrichedBinaryWriter writer, long value) => writer.WhenNotNull(nameof(writer)).Write(value);
 
         /// <inheritdoc cref="BinaryWriter.Write(int)"/>
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
+        /// <param name="value">The value to be written.</param>
         public static void WriteInt32(this IEnrichedBinaryWriter writer, int value) => writer.WhenNotNull(nameof(writer)).Write(value);
 
         /// <inheritdoc cref="BinaryWriter.Write(double)"/>
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
+        /// <param name="value">The value to be written.</param>
         public static void WriteDouble(this IEnrichedBinaryWriter writer, double value) => writer.WhenNotNull(nameof(writer)).Write(value);
 
         /// <inheritdoc cref="BinaryWriter.Write(decimal)"/>
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
+        /// <param name="value">The value to be written.</param>
         public static void WriteDecimal(this IEnrichedBinaryWriter writer, decimal value) => writer.WhenNotNull(nameof(writer)).Write(value);
 
         /// <inheritdoc cref="BinaryWriter.Write(char[], int, int)"/>
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
-        public static void WriteChars(this IEnrichedBinaryWriter writer, char[] chars, int index, int count) => writer.WhenNotNull(nameof(writer)).Write(chars, index, count);
+        /// <param name="value">The value to be written.</param>
+        /// <param name="index">The index of the first character to read from the value and write to the stream.</param>
+        /// <param name="count">The number of characters to read from the value and write to the stream.</param>
+        public static void WriteChars(this IEnrichedBinaryWriter writer, char[] value, int index, int count) => writer.WhenNotNull(nameof(writer)).Write(value, index, count);
 
         /// <inheritdoc cref="BinaryWriter.Write(char[])"/>
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
-        public static void WriteChars(this IEnrichedBinaryWriter writer, char[] chars) => writer.WhenNotNull(nameof(writer)).Write(chars);
+        /// <param name="value">The value to be written.</param>
+        public static void WriteChars(this IEnrichedBinaryWriter writer, char[] value) => writer.WhenNotNull(nameof(writer)).Write(value);
 
         /// <inheritdoc cref="BinaryWriter.Write(byte[], int, int)"/>
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
-        public static void WriteBytes(this IEnrichedBinaryWriter writer, byte[] buffer, int index, int count) => writer.WhenNotNull(nameof(writer)).Write(buffer, index, count);
+        /// <param name="value">The value to be written.</param>
+        /// <param name="index">The index of the first character to read from the value and write to the stream.</param>
+        /// <param name="count">The number of characters to read from the value and write to the stream.</param>
+        public static void WriteBytes(this IEnrichedBinaryWriter writer, byte[] value, int index, int count) => writer.WhenNotNull(nameof(writer)).Write(value, index, count);
 
         /// <inheritdoc cref="BinaryWriter.Write(byte[])"/>
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
-        public static void WriteBytes(this IEnrichedBinaryWriter writer, byte[] buffer) => writer.WhenNotNull(nameof(writer)).Write(buffer);
+        /// <param name="value">The value to be written.</param>
+        public static void WriteBytes(this IEnrichedBinaryWriter writer, byte[] value) => writer.WhenNotNull(nameof(writer)).Write(value);
 
         /// <inheritdoc cref="BinaryWriter.Write(byte)"/>
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
+        /// <param name="value">The value to be written.</param>
         public static void WriteByte(this IEnrichedBinaryWriter writer, byte value) => writer.WhenNotNull(nameof(writer)).Write(value);
 
         /// <inheritdoc cref="BinaryWriter.Write(bool)"/>
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
+        /// <param name="value">The value to be written.</param>
         public static void WriteBoolean(this IEnrichedBinaryWriter writer, bool value) => writer.WhenNotNull(nameof(writer)).Write(value);
 
         /// <inheritdoc cref="BinaryWriter.Write(short)"/>
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
+        /// <param name="value">The value to be written.</param>
         public static void WriteInt16(this IEnrichedBinaryWriter writer, short value) => writer.WhenNotNull(nameof(writer)).Write(value);
 
         /// <inheritdoc cref="BinaryWriter.Write(char)"/>
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
+        /// <param name="value">The value to be written.</param>
         public static void WriteChar(this IEnrichedBinaryWriter writer, char value) => writer.WhenNotNull(nameof(writer)).Write(value);
 
         /// <summary>Writes a GUID value to the current stream.</summary>
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
+        /// <param name="value">The value to be written.</param>
         public static void WriteGuid(this IEnrichedBinaryWriter writer, Guid value) => writer.WhenNotNull(nameof(writer)).Write(value.ToByteArray());
 
         /// <summary>Writes an Enum value to the current stream.</summary>
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
-        /// <remarks>The enum's assembly qualified type name and it's string value are written, allowing <see cref="BinaryReaderExtensions.ReadEnum(BinaryReader)"/>
-        /// to read the value and create the appropriate enum type.</remarks>
+        /// <param name="value">The value to be written.</param>
+        /// <remarks>The enum's assembly qualified type name and it's string value are written, allowing
+        /// <see cref="EnrichedBinaryReaderExtensions.ReadEnum(IEnrichedBinaryReader)"/> to read the value and create the appropriate enum type.</remarks>
         public static void WriteEnum(this IEnrichedBinaryWriter writer, object value)
         {
             // Need the string representation of the value in order to convert it back to the original Enum type.
@@ -126,12 +152,18 @@ namespace AllOverIt.Serialization.Binary.Extensions
 
         /// <summary>Writes a DateTime value to the current stream.</summary>
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
+        /// <param name="value">The value to be written.</param>
         public static void WriteDateTime(this IEnrichedBinaryWriter writer, DateTime value) => writer.WhenNotNull(nameof(writer)).Write(value.ToBinary());
 
         /// <summary>Writes a TimeSpan value to the current stream.</summary>
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
+        /// <param name="value"></param>
         public static void WriteTimeSpan(this IEnrichedBinaryWriter writer, TimeSpan value) => writer.WhenNotNull(nameof(writer)).Write(value.Ticks);
 
+        /// <summary>Writes a nullable value to the current stream.</summary>
+        /// <typeparam name="TValue">The value type.</typeparam>
+        /// <param name="writer">The binary writer that is writing to the current stream.</param>
+        /// <param name="value">The value to be written.</param>
         public static void WriteNullable<TValue>(this IEnrichedBinaryWriter writer, TValue? value) where TValue : struct
         {
             writer

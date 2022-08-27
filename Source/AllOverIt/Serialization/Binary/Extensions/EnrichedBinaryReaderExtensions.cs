@@ -141,6 +141,11 @@ namespace AllOverIt.Serialization.Binary.Extensions
                 .ReadObject();
         }
 
+        /// <summary>Reads an enumerable value from the current stream that was originally written using
+        /// <see cref="EnrichedBinaryWriterExtensions.WriteEnumerable(IEnrichedBinaryWriter, System.Collections.IEnumerable)"/>
+        /// or one of its overloads.</summary>
+        /// <param name="reader">The reader that is reading from the current stream.</param>
+        /// <returns>The IEnumerable read from the stream.</returns>
         public static IEnumerable<object> ReadEnumerable(this IEnrichedBinaryReader reader)
         {
             var count = reader
