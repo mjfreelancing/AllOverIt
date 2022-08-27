@@ -1,4 +1,4 @@
-﻿using AllOverIt.Extensions;
+﻿using AllOverIt.Assertion;
 using AllOverIt.Filtering.Filters;
 using System.Linq;
 
@@ -11,25 +11,31 @@ namespace AllOverIt.Filtering.Builders.Extensions
         /// <typeparam name="TType">The filter element type.</typeparam>
         /// <param name="filter">The filter instance.</param>
         /// <returns>True if the filter has a non-null value with at least one element, otherwise false.</returns>
-        public static bool Any<TType>(this IArrayFilterOperation<TType> filter)
+        public static bool HasValue<TType>(this IArrayFilterOperation<TType> filter)
         {
+            _ = filter.WhenNotNull(nameof(filter));
+
             return filter.Value?.Any() ?? false;
         }
 
-        /// <summary>Indicates if the filter has a non-null value that is not empty nor contains whitespace.</summary>
+        /// <summary>Indicates if the filter has a non-null value.</summary>
         /// <param name="filter">The filter instance.</param>
-        /// <returns>True if the filter has a non-null value that is not empty nor contains whitespace, otherwise false.</returns>
-        public static bool Any(this IStringFilterOperation filter)
+        /// <returns>True if the filter has a non-null value, otherwise false.</returns>
+        public static bool HasValue(this IStringFilterOperation filter)
         {
-            return filter.Value.IsNotNullOrEmpty();
+            _ = filter.WhenNotNull(nameof(filter));
+
+            return filter.Value is not null;
         }
 
         /// <summary>Indicates if the filter has a non-null value.</summary>
         /// <typeparam name="TType">The (nullable) filter type.</typeparam>
         /// <param name="filter">The filter instance.</param>
         /// <returns>True if the filter has a non-null value, otherwise false.</returns>
-        public static bool Any<TType>(this IBasicFilterOperation<TType?> filter) where TType : struct
+        public static bool HasValue<TType>(this IBasicFilterOperation<TType?> filter) where TType : struct
         {
+            _ = filter.WhenNotNull(nameof(filter));
+
             return filter.Value.HasValue;
         }
     }
