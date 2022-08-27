@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Expressions.Strings.Extensions;
+using AllOverIt.Extensions;
 using AllOverIt.Reflection;
 using System;
 using System.Linq.Expressions;
@@ -19,8 +20,17 @@ namespace AllOverIt.Expressions.Strings
         private static readonly MethodInfo ContainsMethodInfo = CommonTypes.StringType.GetMethod(
             "Contains", new[] { CommonTypes.StringType });
 
+#if NETSTANDARD2_0
+
+        private static readonly MethodInfo ContainsStringComparisonMethodInfo = StringExtensions.StringExtensionsType.GetMethod(
+            "Contains", BindingFlags.Public | BindingFlags.Static, null, new[] { CommonTypes.StringType, CommonTypes.StringType, CommonTypes.StringComparisonType }, null);
+
+#else
+
         private static readonly MethodInfo ContainsStringComparisonMethodInfo = CommonTypes.StringType.GetMethod(
             "Contains", new[] { CommonTypes.StringType, CommonTypes.StringComparisonType });
+
+#endif
 
         private static readonly MethodInfo StartsWithMethodInfo = CommonTypes.StringType.GetMethod(
             "StartsWith", new[] { CommonTypes.StringType });
@@ -80,20 +90,27 @@ namespace AllOverIt.Expressions.Strings
         }
 
         /// <summary>Creates a <see cref="MethodCallExpression"/> that will execute the instance method <see cref="string.Contains(string)" /> or
-        /// <see cref="string.Contains(string, StringComparison)"/> method based on the provided arguments.</summary>
+        /// its <see cref="StringComparison"/> overload.</summary>
         /// <param name="instance">The string instance to call the method on.</param>
         /// <param name="value">The string value to be passed to the called method.</param>
         /// <param name="stringComparison">The <see cref="StringComparison"/> option, when provided.</param>
         /// <returns>A <see cref="MethodCallExpression"/> that will execute the static <see cref="string.Contains(string)" /> or
-        /// <see cref="string.Contains(string, StringComparison)"/> method based on the provided arguments.</returns>
+        /// its <see cref="StringComparison"/> overload.</returns>
         public static MethodCallExpression CreateContainsCallExpression(Expression instance, Expression value, StringComparison? stringComparison = default)
         {
             _ = instance.WhenNotNull(nameof(instance));
             _ = value.WhenNotNull(nameof(value));
 
-            return stringComparison.HasValue
-                ? CreateInstanceComparisonCallExpression(ContainsStringComparisonMethodInfo, instance, value, stringComparison.Value)
-                : Expression.Call(instance, ContainsMethodInfo, value);
+            if (stringComparison.HasValue)
+            {
+#if NETSTANDARD2_0
+                return CreateStaticComparisonCallExpression(ContainsStringComparisonMethodInfo, instance, value, stringComparison.Value);
+#else
+                return CreateInstanceComparisonCallExpression(ContainsStringComparisonMethodInfo, instance, value, stringComparison.Value);
+#endif
+            }
+
+            return Expression.Call(instance, ContainsMethodInfo, value);
         }
 
         /// <summary>Creates a <see cref="MethodCallExpression"/> that will perform a string comparison (contains) based on the provided
@@ -196,9 +213,9 @@ namespace AllOverIt.Expressions.Strings
                 (val1, val2, stringComparison) => CreateEndsWithCallExpression(val1, val2, stringComparison));
         }
 
-        /// <summary>Creates a <see cref="MethodCallExpression"/> that will execute the instance method <see cref="string.ToLower" />.</summary>
+        /// <summary>Creates a <see cref="MethodCallExpression"/> that will execute the instance method <see cref="string.ToLower()" />.</summary>
         /// <param name="value">The string instance to call the method on.</param>
-        /// <returns>A <see cref="MethodCallExpression"/> that will execute the instance method <see cref="string.ToLower" />.</returns>
+        /// <returns>A <see cref="MethodCallExpression"/> that will execute the instance method <see cref="string.ToLower()" />.</returns>
         public static MethodCallExpression CreateToLowerCallExpression(Expression value)
         {
             _ = value.WhenNotNull(nameof(value));
@@ -206,9 +223,9 @@ namespace AllOverIt.Expressions.Strings
             return Expression.Call(value, ToLowerMethodInfo);
         }
 
-        /// <summary>Creates a <see cref="MethodCallExpression"/> that will execute the instance method <see cref="string.ToUpper" />.</summary>
+        /// <summary>Creates a <see cref="MethodCallExpression"/> that will execute the instance method <see cref="string.ToUpper()" />.</summary>
         /// <param name="value">The string instance to call the method on.</param>
-        /// <returns>A <see cref="MethodCallExpression"/> that will execute the instance method <see cref="string.ToUpper" />.</returns>
+        /// <returns>A <see cref="MethodCallExpression"/> that will execute the instance method <see cref="string.ToUpper()" />.</returns>
         public static MethodCallExpression CreateToUpperCallExpression(Expression value)
         {
             _ = value.WhenNotNull(nameof(value));

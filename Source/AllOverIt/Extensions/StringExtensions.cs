@@ -9,6 +9,22 @@ namespace AllOverIt.Extensions
     /// <summary>Provides a variety of extension methods for <see cref="string"/> types.</summary>
     public static class StringExtensions
     {
+#if NETSTANDARD2_0
+        internal static readonly Type StringExtensionsType = typeof(StringExtensions);
+
+        // Required for use StringComparisonUtils
+        //
+        /// <summary>Determines if a string is contained within another using a specified string comparison method.</summary>
+        /// <param name="value">The source string.</param>
+        /// <param name="match">The string to match in the source string.</param>
+        /// <param name="comparison">The comparison method.</param>
+        /// <returns>True if the string was found, otherwise false.</returns>
+        public static bool Contains(this string value, string match, StringComparison comparison)
+        {
+            return value.IndexOf(match, comparison) >= 0;
+        }
+#endif
+
         /// <summary>Converts a given string to another type.</summary>
         /// <typeparam name="TType">The type to convert to.</typeparam>
         /// <param name="value">The value to be converted.</param>
