@@ -256,6 +256,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.Filtering", "Sour
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.Filtering.Tests", "Tests\AllOverIt.Filtering.Tests\AllOverIt.Filtering.Tests.csproj", "{EF9F8FA4-6002-4498-8E60-9915A0D1DC4C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllOverIt.ReactiveUI", "AllOverIt.ReactiveUI", "{CBA4C7C8-2425-4DDB-969E-831048D84BF3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountdownTimerApp", "Demos\AllOverIt.ReactiveUI\CountdownTimerApp\CountdownTimerApp.csproj", "{CCE3D5F8-208B-4FB8-9F10-3DBAF7B8A25E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -602,6 +606,10 @@ Global
 		{EF9F8FA4-6002-4498-8E60-9915A0D1DC4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF9F8FA4-6002-4498-8E60-9915A0D1DC4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF9F8FA4-6002-4498-8E60-9915A0D1DC4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCE3D5F8-208B-4FB8-9F10-3DBAF7B8A25E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCE3D5F8-208B-4FB8-9F10-3DBAF7B8A25E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCE3D5F8-208B-4FB8-9F10-3DBAF7B8A25E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCE3D5F8-208B-4FB8-9F10-3DBAF7B8A25E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -722,6 +730,8 @@ Global
 		{2305424D-7DB6-44C1-8FCB-6D06241B5D7B} = {ACBA60A5-46AE-4659-8117-22C741751F7A}
 		{339CC9B1-4ABB-4A93-A147-7BFA7434321A} = {FC8E8DB2-1299-44F4-A233-0EDCE225BB8C}
 		{EF9F8FA4-6002-4498-8E60-9915A0D1DC4C} = {0C08FAE6-4CD9-4C7B-A849-EB0DB9BD1451}
+		{CBA4C7C8-2425-4DDB-969E-831048D84BF3} = {D9F6B8A1-4B01-4708-8851-741FC19F2440}
+		{CCE3D5F8-208B-4FB8-9F10-3DBAF7B8A25E} = {CBA4C7C8-2425-4DDB-969E-831048D84BF3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19DD11B3-596E-4862-B5C4-1FFFFB173106}

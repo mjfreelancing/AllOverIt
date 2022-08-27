@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<UseWPF>true</UseWPF>
+		<LangVersion>Latest</LangVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="ReactiveUI" Version="18.3.1" />
+		<PackageReference Include="ReactiveUI.Fody" Version="18.3.1" />
+		<PackageReference Include="ReactiveUI.WPF" Version="18.3.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\Source\AllOverIt.ReactiveUI\AllOverIt.ReactiveUI.csproj" />
+	</ItemGroup>
+
+</Project>
