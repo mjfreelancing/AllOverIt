@@ -19,6 +19,9 @@ namespace CountdownTimerApp.ViewModels
         [Reactive]
         public bool IsRunning { get; set; }
 
+        [Reactive]
+        public bool IsDone { get; set; }
+
         public ReactiveCommand<Unit, Unit> ResumeTimerCommand { get; private set; }
         public ReactiveCommand<Unit, Unit> PauseTimerCommand { get; private set; }
         public ReactiveCommand<Unit, Unit> StopTimerCommand { get; private set; }
@@ -56,6 +59,7 @@ namespace CountdownTimerApp.ViewModels
                 .Subscribe(_ =>                 // true when completed, false when cancelled
                 {
                     RemainingSeconds = CountdownSeconds;
+                    IsDone = true;
                 })
                 .DisposeWith(disposables);
 
@@ -67,6 +71,8 @@ namespace CountdownTimerApp.ViewModels
                 {
                     _countdownTimer.Configure(TimeSpan.FromSeconds(RemainingSeconds), TimeSpan.FromSeconds(1), RxApp.MainThreadScheduler);
                     _countdownTimer.Start();
+
+                    IsDone = false;
                     IsRunning = true;
                 }, canRun)
                 .DisposeWith(disposables);
