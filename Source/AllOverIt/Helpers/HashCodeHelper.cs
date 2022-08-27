@@ -8,7 +8,6 @@ namespace AllOverIt.Helpers
     public static class HashCodeHelper
     {
         /// <summary>Calculates a hash code based on the provided items using a specified initial seed.</summary>
-        /// <param name="seed">The initial seed value for the hash code.</param>
         /// <param name="items">The items to calculate a hash code for.</param>
         /// <returns>A hash code based on the provided items and specified initial seed.</returns>
         public static int CalculateHashCode(params object[] items)

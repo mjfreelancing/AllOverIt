@@ -149,6 +149,25 @@ namespace AllOverIt.Patterns.Specification.Utils
             return node;
         }
 
+        /// <inheritdoc />
+        protected override Expression VisitMember(MemberExpression node)
+        {
+            switch (node.Expression.NodeType)
+            {
+                case ExpressionType.Constant:
+                case ExpressionType.MemberAccess:
+                    _fieldNames.Push(node.Member.Name);
+                    Visit(node.Expression);
+                    break;
+
+                default:
+                    _queryStringBuilder.Append(node.Member.Name);
+                    break;
+            }
+
+            return node;
+        }
+
         private string GetValue(object input)
         {
             if (input is null)
@@ -189,24 +208,6 @@ namespace AllOverIt.Patterns.Specification.Utils
                     ? converter.Invoke(input)
                     : input.ToString();
             }
-        }
-
-        protected override Expression VisitMember(MemberExpression node)
-        {
-            switch (node.Expression.NodeType)
-            {
-                case ExpressionType.Constant:
-                case ExpressionType.MemberAccess:
-                    _fieldNames.Push(node.Member.Name);
-                    Visit(node.Expression);
-                    break;
-
-                default:
-                    _queryStringBuilder.Append(node.Member.Name);
-                    break;
-            }
-
-            return node;
         }
     }
 }

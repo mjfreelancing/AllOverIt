@@ -3,7 +3,8 @@ using System.Linq;
 
 namespace AllOverIt.Patterns.Specification.Extensions
 {
-    public static partial class EnumerableExtensions
+    /// <summary>Provides a variety of specification extension methods for <see cref="IEnumerable{T}"/>.</summary>
+    public static class EnumerableExtensions
     {
         /// <summary>Gets all candidates that meet the criteria of a provided specification.</summary>
         /// <typeparam name="TType">The candidate type the specification applies to.</typeparam>
