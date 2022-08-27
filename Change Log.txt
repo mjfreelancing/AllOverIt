@@ -35,7 +35,7 @@ AllOverIt
   * Improvements to LinqSpecificationVisitor output
   * Removed unnecessary return type from IBreadcrumbs.Add()
   * Updates to IReadWriteLock
-  * Added SynchronizedCache - TESTS PENDING
+  * Added SynchronizedCache
   * Added NullBreadcrumbs
 
 AllOverIt.Aws.AppSync.Client
@@ -127,8 +127,8 @@ AllOverIt.EntityFrameworkCore.Pagination
   * New package to provide keyset based pagination extensions for any EF query
 
 AllOverIt.ReactiveUI
-  * New package                                                     - TESTS PENDING ******************
-  * Includes ActivatableViewModel, CountdownTimer
+  * New package
+  * Includes ActivatableViewModel, CountdownTimer, IViewFactory
 
 AllOverIt.Filtering
   * New package to provide IQueryable filter builders
