@@ -33,7 +33,12 @@ namespace AllOverIt.Expressions.Strings
         /// <summary>Compare strings using ordinal (binary) sort rules and ignoring the case of the strings being compared.</summary>
         public static readonly StringComparisonMode OrdinalIgnoreCase = new(8);
 
-        public StringComparisonMode(int value, [CallerMemberName] string name = null)
+        private StringComparisonMode()
+        {
+            // Required for some serialization scenarios
+        }
+
+        private StringComparisonMode(int value, [CallerMemberName] string name = null)
             : base(value, name)
         {
         }
