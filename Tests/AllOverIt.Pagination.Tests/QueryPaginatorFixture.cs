@@ -68,6 +68,16 @@ namespace AllOverIt.Pagination.Tests
             }
 
             [Fact]
+            public void Should_Set_Query()
+            {
+                var query = Array.Empty<EntityDummy>().AsQueryable();
+
+                var paginator = new QueryPaginator<EntityDummy>(query, Create<QueryPaginatorConfiguration>());
+
+                paginator.Query.Should().BeSameAs(query);
+            }
+
+            [Fact]
             public void Should_Throw_When_Configuration_Null()
             {
                 Invoking(() =>

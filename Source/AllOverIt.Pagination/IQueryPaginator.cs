@@ -10,7 +10,10 @@ namespace AllOverIt.Pagination
     /// <typeparam name="TEntity">The entity type that the generated query is based on.</typeparam>
     public interface IQueryPaginator<TEntity> where TEntity : class
     {
-        /// <summary>A token generator that simplifies requesting next and previous page queries.</summary>
+        /// <summary>Contains the query the paginator is based on.</summary>
+        IQueryable<TEntity> Query { get; }
+
+        /// <summary>A token generator used to encode and decode continuation tokens that simplifies requesting next and previous page queries.</summary>
         IContinuationTokenEncoder TokenEncoder { get; }
 
         /// <summary>Appends a new ascending order-by column. When ordering by multiple columns it is important that the last column

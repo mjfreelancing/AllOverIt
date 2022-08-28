@@ -26,14 +26,16 @@ namespace AllOverIt.Pagination
         }
 
         private readonly List<ColumnDefinition<TEntity>> _columns = new();
-        private readonly IQueryable<TEntity> _query;
         private readonly QueryPaginatorConfiguration _configuration;
 
         private ContinuationTokenEncoder _continuationTokenEncoder;
         private IOrderedQueryable<TEntity> _directionQuery;                     // based on the _paginationDirection        
         private IOrderedQueryable<TEntity> _directionReverseQuery;              // based on the reverse _direction
 
-        /// <summary>Provides the token encoder used to encode and decode continuation tokens.</summary>
+        /// <inheritdoc />
+        public IQueryable<TEntity> Query { get; }
+
+        /// <inheritdoc />
         public IContinuationTokenEncoder TokenEncoder => GetContinuationTokenEncoder();
 
         /// <summary>Constructor.</summary>
@@ -41,7 +43,7 @@ namespace AllOverIt.Pagination
         /// <param name="configuration">Provides paginator options that define how the paginated query will be generated.</param>
         public QueryPaginator(IQueryable<TEntity> query, QueryPaginatorConfiguration configuration)
         {
-            _query = query.WhenNotNull(nameof(query));
+            Query = query.WhenNotNull(nameof(query));
             _configuration = configuration.WhenNotNull(nameof(configuration));
         }
 
@@ -254,7 +256,7 @@ namespace AllOverIt.Pagination
             return _columns.Aggregate(
                 (IOrderedQueryable<TEntity>) default,
                 (currentQuery, nextColumn) => currentQuery == null
-                    ? nextColumn.ApplyColumnOrderTo(_query, direction)
+                    ? nextColumn.ApplyColumnOrderTo(Query, direction)
                     : nextColumn.ThenApplyColumnOrderTo(currentQuery, direction));
         }
 
