@@ -1,8 +1,11 @@
 ======================================================================================================================
 
-XX XXX 2022
+29 Aug 2022
 Version 6.0.0-RC.6
 ======================================================================================================================
+AllOverIt.Pagination
+  * Exposed the query associated with the paginator
+
 AllOverIt.Filtering
   * Added filter extensions
   * Dropped SynchronizedCache in favour of using an IMemoryCache based implementation
