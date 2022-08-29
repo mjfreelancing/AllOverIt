@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using AllOverIt.Reflection;
+using Newtonsoft.Json;
 using System;
 
 namespace AllOverIt.Serialization.NewtonsoftJson.Converters
@@ -12,7 +13,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Converters
         /// <returns>True if the object to be converted is a <see cref="DateTime"/>.</returns>
         public override bool CanConvert(Type objectType)
         {
-            return typeof(DateTime) == objectType;
+            return CommonTypes.DateTimeType == objectType || CommonTypes.NullableDateTimeType == objectType;
         }
 
         /// <inheritdoc />
@@ -20,7 +21,7 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Converters
         {
             if (reader.Value == null)
             {
-                throw new FormatException("Expecting to read a DateTime value but found null.");
+                return null;
             }
 
             var dateTime = (DateTime) reader.Value;
@@ -31,6 +32,12 @@ namespace AllOverIt.Serialization.NewtonsoftJson.Converters
         /// <inheritdoc />
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
+            if (value is null)
+            {
+                writer.WriteNull();
+                return;
+            }
+
             var utcDateTime = DateTime.SpecifyKind((DateTime)value, DateTimeKind.Utc);
             writer.WriteValue(utcDateTime);
         }
