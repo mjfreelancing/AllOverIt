@@ -1,6 +1,16 @@
 ======================================================================================================================
 
 29 Aug 2022
+Version 6.0.0-RC.7
+======================================================================================================================
+AllOverIt
+  * Added nullable types to AllOverIt.Reflection.CommonTypes
+
+AllOverIt.Serialization.NewtonsoftJson
+  * Updated DateTimeAsUtcConverter support DateTime? (implicitly supported in AllOverIt.Serialization.SystemTextJson)
+
+
+29 Aug 2022
 Version 6.0.0-RC.6
 ======================================================================================================================
 AllOverIt.Pagination
