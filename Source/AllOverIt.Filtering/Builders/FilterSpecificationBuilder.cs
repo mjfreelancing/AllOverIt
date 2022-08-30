@@ -1,7 +1,7 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Caching;
-using AllOverIt.Evaluator.Exceptions;
 using AllOverIt.Extensions;
+using AllOverIt.Filtering.Exceptions;
 using AllOverIt.Filtering.Filters;
 using AllOverIt.Filtering.Operations;
 using AllOverIt.Filtering.Options;

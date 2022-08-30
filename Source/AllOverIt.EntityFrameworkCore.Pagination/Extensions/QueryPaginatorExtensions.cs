@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace KeysetPaginationConsole
+namespace AllOverIt.EntityFrameworkCore.Pagination.Extensions
 {
     /// <summary>Provides extension methods for <see cref="IQueryPaginator{TEntity}"/>.</summary>
     public static class QueryPaginatorExtensions

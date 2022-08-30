@@ -1,7 +1,8 @@
 ﻿using AllOverIt.Assertion;
+using AllOverIt.Filtering.Builders;
 using AllOverIt.Patterns.Specification.Utils;
 
-namespace AllOverIt.Filtering.Builders.Extensions
+namespace AllOverIt.Filtering.Extensions
 {
     /// <summary>Provides extension methods for <see cref="IFilterBuilder{TType, TFilter}"/>.</summary>
     public static class FilterSpecificationExtensions

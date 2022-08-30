@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Assertion;
-using AllOverIt.Filtering.Builders.Extensions;
 using AllOverIt.Filtering.Extensions;
 using AllOverIt.Filtering.Filters;
 using AllOverIt.GenericHost;

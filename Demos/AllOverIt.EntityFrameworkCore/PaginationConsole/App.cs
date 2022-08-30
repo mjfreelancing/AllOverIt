@@ -1,11 +1,11 @@
 ﻿using AllOverIt.Assertion;
+using AllOverIt.EntityFrameworkCore.Pagination.Extensions;
 using AllOverIt.Extensions;
 using AllOverIt.Filtering.Extensions;
 using AllOverIt.Filtering.Options;
 using AllOverIt.GenericHost;
 using AllOverIt.Pagination;
 using AllOverIt.Pagination.Extensions;
-using KeysetPaginationConsole;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Npgsql;

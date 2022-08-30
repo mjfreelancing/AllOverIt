@@ -2,7 +2,7 @@
 using AllOverIt.Filtering.Filters;
 using System.Linq;
 
-namespace AllOverIt.Filtering.Builders.Extensions
+namespace AllOverIt.Filtering.Extensions
 {
     /// <summary>Provides extension methods for various filter operations.</summary>
     public static class FilterExtensions

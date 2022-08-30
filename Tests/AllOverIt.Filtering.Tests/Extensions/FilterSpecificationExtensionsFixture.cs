@@ -1,5 +1,5 @@
 ﻿using AllOverIt.Filtering.Builders;
-using AllOverIt.Filtering.Builders.Extensions;
+using AllOverIt.Filtering.Extensions;
 using AllOverIt.Filtering.Filters;
 using AllOverIt.Filtering.Options;
 using AllOverIt.Fixture;

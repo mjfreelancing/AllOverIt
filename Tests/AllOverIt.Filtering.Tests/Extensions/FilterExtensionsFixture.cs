@@ -1,4 +1,4 @@
-﻿using AllOverIt.Filtering.Builders.Extensions;
+﻿using AllOverIt.Filtering.Extensions;
 using AllOverIt.Filtering.Filters;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
