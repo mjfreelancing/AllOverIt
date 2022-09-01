@@ -1,8 +1,12 @@
 ﻿using AllOverIt.Expressions;
 using AllOverIt.Extensions;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
+using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.Resources;
 using System;
+using System.Linq;
+using System.Linq.Expressions;
 using Xunit;
 
 namespace AllOverIt.Tests.Expressions
@@ -136,6 +140,112 @@ namespace AllOverIt.Tests.Expressions
                 actual.GetValue()
                     .Should()
                     .BeNull();
+            }
+        }
+
+        public class CreateParameterExpressionsFixture : ExpressionUtilsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Params_Null()
+            {
+                Invoking(() =>
+                {
+                    ExpressionUtils.CreateParameterExpressions(null).ToList();
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("parameterTypes");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Params_Empty()
+            {
+                Invoking(() =>
+                {
+                    ExpressionUtils.CreateParameterExpressions(Type.EmptyTypes).ToList();
+                })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("parameterTypes");
+            }
+
+            [Fact]
+            public void Should_Return_Parameters()
+            {
+                var actual = ExpressionUtils
+                    .CreateParameterExpressions(new[] { typeof(int), typeof(double), typeof(string) })
+                    .ToList();
+
+                actual.Should().BeEquivalentTo(new[] 
+                { 
+                    Expression.Parameter(typeof(int), "t1"),
+                    Expression.Parameter(typeof(double), "t2"),
+                    Expression.Parameter(typeof(string), "t3")
+                });
+            }
+        }
+
+        public class GetConstructorWithParametersFixture : ExpressionUtilsFixture
+        {
+            private class DummyType
+            {
+                public DummyType(int val1, string val2)
+                {
+                }
+            }
+
+            [Fact]
+            public void Should_Throw_When_Type_Null()
+            {
+                Invoking(() =>
+                {
+                    ExpressionUtils.GetConstructorWithParameters(null, new[] { typeof(double) });
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("type");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Params_Null()
+            {
+                Invoking(() =>
+                {
+                    ExpressionUtils.GetConstructorWithParameters(typeof(DummyType), null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("paramTypes");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Params_Empty()
+            {
+                Invoking(() =>
+                {
+                    ExpressionUtils.GetConstructorWithParameters(typeof(DummyType), Type.EmptyTypes);
+                })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("paramTypes");
+            }
+
+            [Fact]
+            public void Should_Return_NewExpression_And_Parameters()
+            {
+                var actual = ExpressionUtils.GetConstructorWithParameters(typeof(DummyType), new[] { typeof(int), typeof(string) });
+
+                var expectedParameters = new[]
+                {
+                    Expression.Parameter(typeof(int), "t1"),
+                    Expression.Parameter(typeof(string), "t2")
+                };
+
+                actual.NewExpression.Should().BeOfType<NewExpression>();
+                actual.NewExpression.Type.Should().Be(typeof(DummyType));
+                actual.NewExpression.Arguments.Should().BeEquivalentTo(expectedParameters);
+
+                actual.ParameterExpressions.Should().BeEquivalentTo(expectedParameters);
             }
         }
     }

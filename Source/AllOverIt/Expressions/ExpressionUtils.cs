@@ -48,32 +48,41 @@ namespace AllOverIt.Expressions
             return Expression.Convert(property, valueType);
         }
 
-
-
-        // TODO: tests
+        /// <summary>Creates an enumerable of <see cref="ParameterExpression"/> for each of the provided types.</summary>
+        /// <param name="parameterTypes">The enumerable of parameter types.</param>
+        /// <returns>An enumerable of <see cref="ParameterExpression"/> for each of the provided types.</returns>
         public static IEnumerable<ParameterExpression> CreateParameterExpressions(IEnumerable<Type> parameterTypes)
         {
+            _ = parameterTypes.WhenNotNullOrEmpty(nameof(parameterTypes));
+
             var id = 1;
 
             foreach (var paramType in parameterTypes)
             {
-                yield return Expression.Parameter(paramType, $"{id++}");
+                yield return Expression.Parameter(paramType, $"t{id++}");
             }
         }
 
-
-        // TODO: tests
-        public static (NewExpression, ParameterExpression[]) GetConstructorWithParameters(Type type, Type[] paramTypes)
+        /// <summary>Gets a <see cref="NewExpression"/> and the constructor parameters as <see cref="ParameterExpression"/>[] for
+        /// a provided type and its' constructor parameter types.</summary>
+        /// <param name="type">The type to obtain a <see cref="NewExpression"/> for.</param>
+        /// <param name="paramTypes">The type's constructor argument types.</param>
+        /// <returns>A <see cref="NewExpression"/> and the constructor parameters as <see cref="ParameterExpression"/>[] for
+        /// a provided type and its' constructor parameter types.</returns>
+        public static (NewExpression NewExpression, ParameterExpression[] ParameterExpressions) GetConstructorWithParameters(Type type, Type[] paramTypes)
         {
+            _ = type.WhenNotNull(nameof(type));
+            _ = paramTypes.WhenNotNullOrEmpty(nameof(paramTypes));
+
             var ctor = type.GetConstructor(paramTypes);
 
             Throw<InvalidOperationException>.WhenNull(ctor, $"The type {type.GetFriendlyName()} does not have a suitable constructor.");
 
-            var parameters = ExpressionUtils.CreateParameterExpressions(paramTypes).ToArray();
+            var parameters = CreateParameterExpressions(paramTypes).ToArray();
             var newExpression = Expression.New(ctor, parameters);
 
+            // 'parameters' is the same as newExpression.Arguments, but returning it as ParameterExpression[] makes it easier to consume
             return (newExpression, parameters);
         }
-
     }
 }
