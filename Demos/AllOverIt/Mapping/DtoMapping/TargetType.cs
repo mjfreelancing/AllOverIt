@@ -10,5 +10,7 @@ namespace DtoMapping
         public int Prop5b { get; set; }
         public int Prop6 { get; set; }
         public IReadOnlyCollection<string> Prop7 { get; set; }
+        public ChildTargetType Prop8 { get; set; }
+        public ChildTargetType Prop8a { get; set; }
     }
 }

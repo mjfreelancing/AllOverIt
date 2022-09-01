@@ -27,6 +27,7 @@ namespace AllOverIt.Tests.Mapping
         {
             public int Prop1 { get; set; }
             public int Prop2 { get; set; }
+            public double Prop3 { get; set; }
             public DummyChild Child { get; set; }
         }
 
@@ -82,7 +83,7 @@ namespace AllOverIt.Tests.Mapping
             {
                 Invoking(() =>
                     {
-                        _options.WithAlias(null, target => target.Prop1);
+                        _options.WithAlias<int, int>(null, target => target.Prop1);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -94,7 +95,7 @@ namespace AllOverIt.Tests.Mapping
             {
                 Invoking(() =>
                     {
-                        _options.WithAlias<int>(source => source.Prop2, null);
+                        _options.WithAlias<int, int>(source => source.Prop2, null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -131,6 +132,14 @@ namespace AllOverIt.Tests.Mapping
                 _ = _options.WithAlias(source => source.Prop3, target => target.Prop2);
 
                 _options.GetAliasName(nameof(DummySource.Prop3)).Should().Be(nameof(DummyTarget.Prop2));
+            }
+
+            [Fact]
+            public void Should_Set_Alias_Different_Types()
+            {
+                _ = _options.WithAlias(source => source.Prop1, target => target.Prop3);
+
+                _options.GetAliasName(nameof(DummySource.Prop1)).Should().Be(nameof(DummyTarget.Prop3));
             }
 
             [Fact]

@@ -1,5 +1,8 @@
 ﻿using AllOverIt.Assertion;
+using AllOverIt.Extensions;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Expressions
@@ -44,5 +47,33 @@ namespace AllOverIt.Expressions
 
             return Expression.Convert(property, valueType);
         }
+
+
+
+        // TODO: tests
+        public static IEnumerable<ParameterExpression> CreateParameterExpressions(IEnumerable<Type> parameterTypes)
+        {
+            var id = 1;
+
+            foreach (var paramType in parameterTypes)
+            {
+                yield return Expression.Parameter(paramType, $"{id++}");
+            }
+        }
+
+
+        // TODO: tests
+        public static (NewExpression, ParameterExpression[]) GetConstructorWithParameters(Type type, Type[] paramTypes)
+        {
+            var ctor = type.GetConstructor(paramTypes);
+
+            Throw<InvalidOperationException>.WhenNull(ctor, $"The type {type.GetFriendlyName()} does not have a suitable constructor.");
+
+            var parameters = ExpressionUtils.CreateParameterExpressions(paramTypes).ToArray();
+            var newExpression = Expression.New(ctor, parameters);
+
+            return (newExpression, parameters);
+        }
+
     }
 }

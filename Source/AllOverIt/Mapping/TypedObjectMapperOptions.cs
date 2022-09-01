@@ -34,12 +34,13 @@ namespace AllOverIt.Mapping
         }
 
         /// <summary>Maps a property on the source object to an alias property on the target object.</summary>
-        /// <typeparam name="TProperty">The source property type.</typeparam>
+        /// <typeparam name="TSourceProperty">The source property type.</typeparam>
+        /// <typeparam name="TTargetProperty">The target property type.</typeparam>
         /// <param name="sourceExpression">An expression to specify the property on the source object.</param>
         /// <param name="targetExpression">An expression to specify the property on the target object.</param>
         /// <returns>The same <see cref="TypedObjectMapperOptions{TSource, TTarget}"/> instance so a fluent syntax can be used.</returns>
-        public TypedObjectMapperOptions<TSource, TTarget> WithAlias<TProperty>(Expression<Func<TSource, TProperty>> sourceExpression,
-            Expression<Func<TTarget, TProperty>> targetExpression)
+        public TypedObjectMapperOptions<TSource, TTarget> WithAlias<TSourceProperty, TTargetProperty>(Expression<Func<TSource, TSourceProperty>> sourceExpression,
+            Expression<Func<TTarget, TTargetProperty>> targetExpression)
         {
             _ = sourceExpression.WhenNotNull(nameof(sourceExpression));
             _ = targetExpression.WhenNotNull(nameof(targetExpression));

@@ -21,22 +21,62 @@ namespace AllOverIt.Mapping
                 public Func<object, object> SourceGetter { get; }
                 public Action<object, object> TargetSetter { get; }
 
-                public PropertyMatchInfo(PropertyInfo sourceInfo, PropertyInfo targetInfo)
+                public PropertyMatchInfo(PropertyInfo sourceInfo, PropertyInfo targetInfo, Func<Type, Type, MatchingPropertyMapper> mapperResolver,
+                    Func<Type, object> typeCreator)
                 {
                     SourceInfo = sourceInfo;
                     TargetInfo = targetInfo;
 
                     SourceGetter = PropertyHelper.CreatePropertyGetter(SourceInfo);
                     TargetSetter = PropertyHelper.CreatePropertySetter(TargetInfo);
+
+                    // Look to see if nested object mapping needs to be handled - will only get here if the property has not been excluded
+                    if (!SourceInfo.PropertyType.IsValueType && SourceInfo.PropertyType != CommonTypes.StringType)
+                    {
+                        if (SourceInfo.PropertyType.IsEnumerableType())
+                        {
+                            // TODO: Currently only supporting shallow copy of things like IEnumerable<T> to IEnumerable<T>, unless a
+                            //       converter is configured. To be updated to look at the enumerable types and process their mapping.
+                            return;
+                        }
+
+                        TargetSetter = MapNestedObject(mapperResolver, typeCreator);
+                    }
+                }
+
+                private Action<object, object> MapNestedObject(Func<Type, Type, MatchingPropertyMapper> mapperResolver, Func<Type, object> typeCreator)
+                {
+                    // Get (or create) a suitable mapper for this property
+                    var propertyMapper = mapperResolver.Invoke(SourceInfo.PropertyType, TargetInfo.PropertyType);
+
+                    Throw<ObjectMapperException>.WhenNull(propertyMapper, $"No mapper found for type '{SourceInfo.PropertyType.GetFriendlyName()}'.");
+
+                    var parentTargetSetter = TargetSetter;
+
+                    // Replace the target setter so it handles the mapping of the nested object properties
+                    return (parentTarget, parentPropertyValue) =>
+                    {
+                        // Create the target type
+                        var childProperty = typeCreator.Invoke(TargetInfo.PropertyType);
+
+                        // Map the child properties
+                        propertyMapper.MapPropertyValues(parentPropertyValue, childProperty);
+
+                        // Assign the child property to the parent target
+                        parentTargetSetter.Invoke(parentTarget, childProperty);
+                    };
                 }
             }
 
             internal readonly ObjectMapperOptions MapperOptions;
             internal readonly PropertyMatchInfo[] Matches;
 
-            internal MatchingPropertyMapper(Type sourceType, Type targetType, ObjectMapperOptions mapperOptions)
+            // 'mapperResolver' is used to get property mapping for nested (object) properties
+            internal MatchingPropertyMapper(Type sourceType, Type targetType, ObjectMapperOptions mapperOptions,
+                Func<Type, Type, MatchingPropertyMapper> mapperResolver, Func<Type, object> typeCreator)
             {
                 MapperOptions = mapperOptions.WhenNotNull(nameof(mapperOptions));
+                _ = mapperResolver.WhenNotNull(nameof(mapperResolver));
 
                 // Find properties that match between the source and target (or have an alias) and meet any filter criteria.
                 var matches = ObjectMapperHelper.GetMappableProperties(sourceType, targetType, mapperOptions);
@@ -57,7 +97,7 @@ namespace AllOverIt.Mapping
                     var targetName = ObjectMapperHelper.GetTargetAliasName(match.Name, mapperOptions);
                     var targetPropInfo = targetPropertyInfo[targetName];
 
-                    var matchInfo = new PropertyMatchInfo(sourcePropInfo, targetPropInfo);
+                    var matchInfo = new PropertyMatchInfo(sourcePropInfo, targetPropInfo, mapperResolver, typeCreator);
                     matchedProps.Add(matchInfo);
                 }
 
@@ -76,6 +116,7 @@ namespace AllOverIt.Mapping
             }
         }
 
+        private readonly IDictionary<Type, Func<object>> _TypeCreators = new Dictionary<Type, Func<object>>();
         private readonly IDictionary<(Type, Type), MatchingPropertyMapper> _mapperCache = new Dictionary<(Type, Type), MatchingPropertyMapper>();
 
         /// <summary>Defines the default mapper options to apply when explicit options are not setup at the time of mapping configuration.</summary>
@@ -143,7 +184,38 @@ namespace AllOverIt.Mapping
                 throw new ObjectMapperException($"Mapping already exists between {sourceType.GetFriendlyName()} and {targetType.GetFriendlyName()}.");
             }
 
-            var mapper = new MatchingPropertyMapper(sourceType, targetType, mapperOptions);
+            var mapper = new MatchingPropertyMapper(
+                sourceType,
+                targetType,
+                mapperOptions,
+
+                // Gets a source => target propery mapper
+                (srcType, trgType) =>
+                {
+                    // If nested (object) properties need to be mapped, get the registered mapper
+                    var nestedMappingKey = (srcType, trgType);
+
+                    // If CreateMapper is called, this results in the _mapperCache being updated
+                    return _mapperCache.TryGetValue(nestedMappingKey, out var mapper)
+                        ? mapper
+                        : CreateMapper(srcType, trgType, mapperOptions);
+                },
+
+                // Creates an instance of a given type used a factory cache
+                type =>
+                {
+                    if (_TypeCreators.TryGetValue(type, out var creator))
+                    {
+                        return creator.Invoke();
+                    }
+
+                    creator = type.GetFactory();
+
+                    _TypeCreators.Add(type, creator);
+
+                    return creator.Invoke();
+                });
+
             _mapperCache.Add(mappingKey, mapper);
 
             return mapper;

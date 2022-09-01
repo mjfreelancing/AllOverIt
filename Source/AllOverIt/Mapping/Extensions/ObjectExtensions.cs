@@ -6,7 +6,9 @@ namespace AllOverIt.Mapping.Extensions
     /// <summary>Provides extension methods for mapping a source type to a target type.</summary>
     public static class ObjectExtensions
     {
-        /// <summary>Maps properties from a source object onto a default constructed target type.</summary>
+        /// <summary>Maps properties from a source object onto a default constructed target type. This method is slower than using
+        /// <see cref="ObjectMapper"/> and only supports simple models that can assign properties via reflection. Nested objects
+        /// are not supported.</summary>
         /// <typeparam name="TTarget">The target type the source object is being mapped onto.</typeparam>
         /// <param name="source">The source object to be mapped onto a target.</param>
         /// <param name="options">Provides options that control how source properties are copied onto a target instance.</param>
@@ -21,7 +23,9 @@ namespace AllOverIt.Mapping.Extensions
             return MapSourceToTarget(source, target, options);
         }
 
-        /// <summary>Maps properties from a source object onto a default constructed target type.</summary>
+        /// <summary>Maps properties from a source object onto a default constructed target type. This method is slower than using
+        /// <see cref="ObjectMapper"/> and only supports simple models that can assign properties via reflection. Nested objects
+        /// are not supported.</summary>
         /// <typeparam name="TTarget">The target type the source object is being mapped onto.</typeparam>
         /// <param name="source">The source object to be mapped onto a target.</param>
         /// <param name="bindingOptions">The binding options used to determine how properties on the source object are discovered.</param>
@@ -35,7 +39,9 @@ namespace AllOverIt.Mapping.Extensions
             return MapSourceToTarget(source, target, bindingOptions);
         }
 
-        /// <summary>Maps properties from a source object onto a provided target instance.</summary>
+        /// <summary>Maps properties from a source object onto a provided target instance. This method is slower than using
+        /// <see cref="ObjectMapper"/> and only supports simple models that can assign properties via reflection. Nested objects
+        /// are not supported.</summary>
         /// <typeparam name="TSource">The source type to copy property values from.</typeparam>
         /// <typeparam name="TTarget">The target type the source object is being mapped onto.</typeparam>
         /// <param name="source">The source object to be mapped onto a target.</param>
@@ -53,7 +59,9 @@ namespace AllOverIt.Mapping.Extensions
             return MapSourceToTarget(source, target, options);
         }
 
-        /// <summary>Maps properties from a source object onto a provided target instance.</summary>
+        /// <summary>Maps properties from a source object onto a provided target instance. This method is slower than using
+        /// <see cref="ObjectMapper"/> and only supports simple models that can assign properties via reflection. Nested objects
+        /// are not supported.</summary>
         /// <typeparam name="TSource">The source type to copy property values from.</typeparam>
         /// <typeparam name="TTarget">The target type the source object is being mapped onto.</typeparam>
         /// <param name="source">The source object to be mapped onto a target.</param>

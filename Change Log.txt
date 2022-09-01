@@ -1,5 +1,21 @@
 ======================================================================================================================
 
+XX XXX 2022
+Version 6.0.0-RC.8
+======================================================================================================================
+AllOverIt
+  * Added MapMany() extension methods for IObjectMapper
+  * Added support for mapping child object properties to IObjectMapper
+  * Added CreateParameterExpressions() and GetConstructorWithParameters() to ExpressionUtils
+  * Added GetFactory() overloads to TypeExtensions
+  * Added new TypeFactory class
+  * Updated WithAlias() on TypedObjectMapperOptions so the two property types can be different
+
+AllOverIt.EntityFrameworkCore.Pagination
+AllOverIt.Filtering
+  * Namespace corrections
+
+
 29 Aug 2022
 Version 6.0.0-RC.7
 ======================================================================================================================

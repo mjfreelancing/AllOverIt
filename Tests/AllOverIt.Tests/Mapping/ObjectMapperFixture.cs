@@ -136,7 +136,7 @@ namespace AllOverIt.Tests.Mapping
             {
                 _mapper.Configure<DummySource2, DummyTarget>();
 
-                Invoking(()=>_mapper.Configure<DummySource2, DummyTarget>())
+                Invoking(() => _mapper.Configure<DummySource2, DummyTarget>())
                     .Should()
                     .Throw<ObjectMapperException>()
                     .WithMessage($"Mapping already exists between {nameof(DummySource2)} and {nameof(DummyTarget)}.");
@@ -170,7 +170,7 @@ namespace AllOverIt.Tests.Mapping
             {
                 _mapper.Configure<DummySource2, DummyTarget>(options =>
                 {
-                    options.Filter = propInfo => new[] {"Prop10", "Prop12", "Prop8"}.Contains(propInfo.Name);
+                    options.Filter = propInfo => new[] { "Prop10", "Prop12", "Prop8" }.Contains(propInfo.Name);
                 });
 
                 var propertyMapper = _mapper.GetMapper(_source2.GetType(), _target.GetType());
@@ -222,7 +222,7 @@ namespace AllOverIt.Tests.Mapping
 
                     options
                         .WithAlias(src => src.Prop8, trg => trg.Prop1)
-                        .WithAlias(src => (int)src.Prop12, trg => trg.Prop5);
+                        .WithAlias(src => (int) src.Prop12, trg => trg.Prop5);
                 });
 
                 var propertyMapper = _mapper.GetMapper(_source2.GetType(), _target.GetType());
@@ -253,7 +253,7 @@ namespace AllOverIt.Tests.Mapping
                     options
                         .WithAlias(src => src.Prop8, trg => trg.Prop1)
                         .WithAlias(src => (int) src.Prop12, trg => trg.Prop5);
-                    
+
                     options.WithConversion(src => src.Prop8, value => value * factor);
                 });
 
@@ -351,7 +351,7 @@ namespace AllOverIt.Tests.Mapping
                 _mapper.Configure<DummySource2, DummyTarget>(options =>
                 {
                     options.Filter = propInfo =>
-                        !new[] {nameof(DummySource2.Prop10), nameof(DummySource2.Prop8), nameof(DummySource2.Prop11)}.Contains(propInfo.Name);
+                        !new[] { nameof(DummySource2.Prop10), nameof(DummySource2.Prop8), nameof(DummySource2.Prop11) }.Contains(propInfo.Name);
                 });
 
                 var actual = _mapper.Map<DummyTarget>(_source2);
@@ -590,7 +590,7 @@ namespace AllOverIt.Tests.Mapping
             public void Should_Default_Map()
             {
                 var actual = _mapper.Map<DummySource1, DummyTarget>(_source1, _target);
-                
+
                 var expected = new
                 {
                     _source1.Prop1,

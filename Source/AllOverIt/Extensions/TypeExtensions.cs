@@ -2,6 +2,7 @@
 using AllOverIt.Reflection;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -9,7 +10,7 @@ using System.Text;
 namespace AllOverIt.Extensions
 {
     /// <summary>Provides a variety of extension methods for <see cref="Type"/> types.</summary>
-    public static class TypeExtensions
+    public static partial class TypeExtensions
     {
         /// <summary>Gets the <see cref="PropertyInfo"/> (property metadata) for a given public or protected property on a <see cref="Type"/>.</summary>
         /// <param name="type">The <see cref="Type"/> to obtain the property metadata from.</param>

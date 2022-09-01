@@ -22,7 +22,15 @@ namespace DtoMapping
                 Prop2 = true,
                 Prop3 = new List<string>(new[] { "1", "2", "3" }),
                 Prop5a = 20,
-                Prop7 = null
+                Prop7 = null,
+                Prop8 =
+                {
+                    Prop1 = 99
+                },
+                Prop9 =
+                {
+                    Prop1 = 88
+                }
             };
 
             StaticCreateTargetUsingBindingOnOptions(source, serializer);
@@ -57,6 +65,9 @@ namespace DtoMapping
                 Binding = BindingOptions.DefaultScope | BindingOptions.Private | BindingOptions.DefaultAccessor | BindingOptions.DefaultVisibility
             };
 
+            // Nested objects are not supported by the static MapTo() methods.
+            options.Exclude(nameof(SourceType.Prop8), nameof(SourceType.Prop9));
+
             var target = source.MapTo<TargetType>(options);
 
             PrintMapping("Static create target, binding private properties only", source, target, serializer);
@@ -68,6 +79,9 @@ namespace DtoMapping
             {
                 Binding = BindingOptions.DefaultScope | BindingOptions.Private | BindingOptions.DefaultAccessor | BindingOptions.DefaultVisibility
             };
+
+            // Nested objects are not supported by the static MapTo() methods.
+            options.Exclude(nameof(SourceType.Prop8), nameof(SourceType.Prop9));
 
             var target = new TargetType();
             _ = source.MapTo(target, options);
@@ -130,7 +144,7 @@ namespace DtoMapping
 
             objectMapper.Map(source, target);
 
-            PrintMapping("Existing target, filter Prop1 || Pro5a, aliased to Prop5b and Prop6, default binding", source, target, serializer);
+            PrintMapping("Existing target, filter Prop1 || Prop5a, aliased to Prop5b and Prop6, default binding", source, target, serializer);
         }
 
         private static void MapperMapOntoExistingTargetUsingConversionDuringConfigure(SourceType source, IJsonSerializer serializer)
@@ -140,17 +154,24 @@ namespace DtoMapping
 
             source.Prop7 = new[] {"Val1", "Val2", "Val3"};
 
+            // This is for one of the child property types. It is optional. If not defined here then it will be defined
+            // when Configure<SourceType, TargetType>() is called - as part of determining the matching properties.
+            objectMapper.Configure<ChildSourceType, ChildTargetType>();
+
             objectMapper.Configure<SourceType, TargetType>(opt =>
             {
                 opt.WithConversion(src => src.Prop7, value =>
                 {
                     return value.Reverse().AsReadOnlyCollection();
                 });
+
+                // Testing the child object property types that have a different name
+                opt.WithAlias(src => src.Prop9, trg => trg.Prop8a);
             });
 
             objectMapper.Map(source, target);
 
-            PrintMapping("Existing target, convert IEnumerable to IReadOnlyCollection, default binding", source, target, serializer);
+            PrintMapping("Existing target, using conversion IEnumerable to IReadOnlyCollection, alias child object property", source, target, serializer);
         }
 
         private static void MapperMapOntoExistingTargetUsingExcludeDuringConfigure(SourceType source, IJsonSerializer serializer)
@@ -167,7 +188,7 @@ namespace DtoMapping
 
             objectMapper.Map(source, target);
 
-            PrintMapping("Existing target, exclude a non-mappable, default binding", source, target, serializer);
+            PrintMapping("Existing target, exclude a non-mappable IEnumerable, default binding", source, target, serializer);
         }
 
         private static void PrintMapping(string message, SourceType source, TargetType target, IJsonSerializer serializer)

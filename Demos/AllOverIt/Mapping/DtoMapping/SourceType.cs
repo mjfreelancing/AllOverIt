@@ -10,6 +10,8 @@ namespace DtoMapping
         private int Prop4 { get; }      // Is public on the target, but has a private setter
         public int Prop5a { get; set; }
         public IEnumerable<string> Prop7 { get; set; }
+        public ChildSourceType Prop8 { get; set; } = new();
+        public ChildSourceType Prop9 { get; set; } = new();
 
         public SourceType(int prop4)
         {
