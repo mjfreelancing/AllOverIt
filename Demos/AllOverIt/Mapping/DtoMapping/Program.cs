@@ -58,7 +58,7 @@ namespace DtoMapping
             MapperMapOntoExistingTargetUsingOptionsDuringConfigure(source, serializer);
             Console.WriteLine();
 
-            MapperMapOntoExistingTargetUsingConversionDuringConfigure(source, serializer);
+            MapperMapOntoExistingTargetUsingConversionAndCloning(source, serializer);
             Console.WriteLine();
 
             MapperMapOntoExistingTargetUsingExcludeDuringConfigure(source, serializer);
@@ -157,45 +157,41 @@ namespace DtoMapping
             PrintMapping("Existing target, filter Prop1 || Prop5a, aliased to Prop5b and Prop6, default binding", source, target, serializer);
         }
 
-        private static void MapperMapOntoExistingTargetUsingConversionDuringConfigure(SourceType source, IJsonSerializer serializer)
+        private static void MapperMapOntoExistingTargetUsingConversionAndCloning(SourceType source, IJsonSerializer serializer)
         {
             var objectMapper = new ObjectMapper();
-            
-            //objectMapper.Configure<ChildSourceType, ChildTargetType>(opt =>
-            //{
-            //    opt.DeepClone(src => src.Prop2a);
-            //});
 
-            objectMapper.Configure<ChildChildSourceType, ChildChildTargetType>();
+            // Collections are not cloned by default - this configuration will force a new collection to be created
+            objectMapper.Configure<ChildSourceType, ChildTargetType>(opt =>
+            {
+                opt.DeepClone(src => src.Prop2a);
+            });
 
             var target = new TargetType();
 
-            //source.Prop7 = new[] {"Val1", "Val2", "Val3"};
-
-            // This is for one of the child property types. It is optional. If not defined here then it will be defined
-            // when Configure<SourceType, TargetType>() is called - as part of determining the matching properties.
-            //objectMapper.Configure<ChildSourceType, ChildTargetType>();
+            source.Prop7 = new[] {"Val1", "Val2", "Val3"};
 
             objectMapper.Configure<SourceType, TargetType>(opt =>
             {
-                //opt.WithConversion(src => src.Prop7, value =>
-                //{
-                //    return value.Reverse();
-                //});
-
+                opt.WithConversion(src => src.Prop7, (mapper, value) =>
+                {
+                    return value.Reverse();
+                });
 
                 // Testing the child object property types that have a different name
                 opt.WithAlias(src => src.Prop9, trg => trg.Prop8a);
 
-                //opt.DeepClone(src => src.Prop9);
+                opt.DeepClone(src => src.Prop9);
 
-                //opt.WithConversion(src => src.Prop8, (mapper, value) =>
-                //   {
-                //       return mapper.Map<ChildTargetType>(value);
-                //   });
+                opt.WithConversion(src => src.Prop8, (mapper, value) =>
+                   {
+                       return mapper.Map<ChildTargetType>(value);
+                   });
 
                 opt.WithConversion(src => src.Prop9, (mapper, value) =>
                 {
+                    // Can use the mapper, or explicitly create the return type
+
                     return mapper.Map<ChildTargetType>(value);
                     //return new ChildTargetType { Prop1 = value.Prop1 };
                 });
@@ -204,7 +200,18 @@ namespace DtoMapping
 
             objectMapper.Map(source, target);
 
-            PrintMapping("Existing target, using conversion IEnumerable to IReadOnlyCollection, alias child object property", source, target, serializer);
+            PrintMapping("Existing target, using conversion and cloning, alias child object property", source, target, serializer);
+
+            if (ReferenceEquals(source.Prop8.Prop2a, target.Prop8.Prop2a))
+            {
+                Console.WriteLine();
+                Console.WriteLine("*** CLONE FAILED ***");
+            }
+            else
+            {
+                Console.WriteLine();
+                Console.WriteLine("*** CLONE worked as expected ***");
+            }
         }
 
         private static void MapperMapOntoExistingTargetUsingExcludeDuringConfigure(SourceType source, IJsonSerializer serializer)

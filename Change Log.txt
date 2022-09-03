@@ -6,17 +6,18 @@ Version 6.0.0-RC.9
 AllOverIt
   * ObjectMapper significantly updated:
     - The WithConversion() call now provides the mapper instance so complex nested scenarios can be addressed
-    - Source / Target type mapping can be configured on demand when there are no special requirements
+    - Source / Target type mapping can be configured on demand (internally) when there are no special requirements.
+      If there's no custom alias, exclusion, or conversion required then the source / target types do not need to
+      be explicitly configured up front.
     - Object properties are now shallow copied if the source type is assignable to the target type
     - Object properties can be individually configured for deep cloning. Only relevant when the source and target
       types are the same OR they are a collection of the same type (collections are normally shallow copied).
-      Choosing to do this at the property level rather than the type level as it provides greater granularity and
+      Choosing to do this at the property level rather than the type level provides greater granularity and
       simplifies the implementation when a property is an enumerable type. Shallow copying is the default behaviour
       so deep copying requires intentional configuration.
-    - Polymorphic types can be handled through a custom conversion (using the mapper)
+    - Abstract target property (hence polymorphic) types can be handled through a custom conversion (using the mapper)
     - Where Source / Target value type properties are different an attempt will be made to convert the source to the
       target type. Requires the source type implement IConvertable.
-
 
 
 01 Sep 2022
