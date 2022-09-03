@@ -186,5 +186,25 @@ namespace AllOverIt.Tests.Mapping
         {
             public ObservableCollection<string> Prop1 { get; set; }
         }
+
+        private class DummyDictionarySource
+        {
+            public IDictionary<string, int> Prop1 { get; set; }
+        }
+
+        private class DummyDictionaryTarget
+        {
+            public IDictionary<string, int> Prop1 { get; set; }
+        }
+
+        private class DummyEnumerableSource
+        {
+            public IEnumerable<int> Prop1 { get; set; }
+        }
+
+        private class DummyArrayTarget
+        {
+            public int[] Prop1 { get; set; }
+        }
     }
 }

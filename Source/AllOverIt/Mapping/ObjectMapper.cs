@@ -155,17 +155,39 @@ namespace AllOverIt.Mapping
                     {
                         var isAssignable = targetPropertyType.IsAssignableFrom(sourceValueType);
 
-                        if (sourcePropertyType.IsEnumerableType())
+                        if (sourceValueType.IsEnumerableType())
                         {
                             // Expecting the target to also be an enumerable type
                             Throw<ObjectMapperException>.When(
                                 !targetPropertyType.IsEnumerableType(),
-                                $"Cannot map {sourcePropertyType.GetFriendlyName()} to {targetPropertyType.GetFriendlyName()}. Use a custom conversion.");
+                                $"Cannot map {sourceValueType.GetFriendlyName()} to {targetPropertyType.GetFriendlyName()}. Use a custom conversion.");
 
                             if (!isAssignable || doDeepClone)
                             {
-                                var sourceElementType = sourcePropertyType.GetGenericArguments()[0];
-                                var targetElementType = targetPropertyType.GetGenericArguments()[0];
+                                switch (sourceValue)
+                                {
+                                    case IDictionary dictionary:
+                                        break;
+
+                                    case IEnumerable enumerable:
+                                        break;
+
+                                    default:
+                                        throw new ObjectMapperException($"Cannot map type '{sourceValueType.GetFriendlyName()}'.");
+                                }
+
+
+
+                                // HANDLE DICTIONARY VS COLLECTIONS
+
+
+                                var sourceElementType = sourceValueType.IsArray
+                                    ? sourceValueType.GetElementType()
+                                    : sourceValueType.GetGenericArguments()[0];
+
+                                var targetElementType = targetPropertyType.IsArray
+                                    ? targetPropertyType.GetElementType()
+                                    : targetPropertyType.GetGenericArguments()[0];
 
                                 var listType = CommonTypes.ListGenericType.MakeGenericType(new[] { targetElementType });
 
@@ -204,7 +226,15 @@ namespace AllOverIt.Mapping
                                     typedList.Add(currentElement);
                                 }
 
-                                sourceValue = typedList;
+                                if (targetPropertyType.IsArray)
+                                {
+                                    var toArrayMethod = listType.GetMethod("ToArray");                          // TODO: Cache this
+                                    sourceValue = toArrayMethod.Invoke(typedList, Type.EmptyTypes);
+                                }
+                                else
+                                {
+                                    sourceValue = typedList;
+                                }
                             }
                         }
                         else

@@ -1405,6 +1405,57 @@ namespace AllOverIt.Tests.Mapping
 
                 actual.Prop1.Should().BeEquivalentTo(source.Prop9);
             }
+
+
+
+
+
+
+
+
+            [Fact]
+            public void Should_Shallow_Copy_Dictionary_Values()
+            {
+                var mapper = new ObjectMapper();
+
+                var source = Create<DummyDictionarySource>();
+                var actual = new DummyDictionaryTarget();
+
+                _ = mapper.Map<DummyDictionarySource, DummyDictionaryTarget>(source, actual);
+
+                actual.Prop1.Should().BeSameAs(source.Prop1);
+            }
+
+            [Fact]
+            public void Should_Map_Enumerable_To_Array()
+            {
+                var mapper = new ObjectMapper();
+
+                var source = Create<DummyEnumerableSource>();
+                var actual = new DummyArrayTarget();
+
+                _ = mapper.Map<DummyEnumerableSource, DummyArrayTarget>(source, actual);
+
+                actual.Prop1.Should().BeEquivalentTo(source.Prop1);
+            }
+
+            [Fact]
+            public void Should_Deep_Copy_Dictionary_Values()
+            {
+                var mapper = new ObjectMapper();
+
+                mapper.Configure<DummyDictionarySource, DummyDictionaryTarget>(opt =>
+                {
+                    opt.DeepClone(src => src.Prop1);
+                });
+
+                var source = Create<DummyDictionarySource>();
+                var actual = new DummyDictionaryTarget();
+
+                _ = mapper.Map<DummyDictionarySource, DummyDictionaryTarget>(source, actual);
+
+                actual.Prop1.Should().BeSameAs(source.Prop1);
+            }
         }
     }
 }
