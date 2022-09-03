@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace DtoMapping
 {
@@ -6,6 +7,7 @@ namespace DtoMapping
     {
         public int Prop1 { get; set; }
         public IReadOnlyCollection<string> Prop3 { get; set; }
+        public ObservableCollection<string> Prop3b { get; set; }
         public int Prop4 { get; private set; }      // Is private on the source
         public int Prop5b { get; set; }
         public int Prop6 { get; set; }

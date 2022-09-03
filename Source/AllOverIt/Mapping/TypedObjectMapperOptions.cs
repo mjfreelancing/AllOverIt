@@ -16,7 +16,14 @@ namespace AllOverIt.Mapping
         where TSource : class
         where TTarget : class
     {
-        private ObjectMapperOptions Options => this;
+        /// <summary>Constructor.</summary>
+        /// <param name="mapper">The associated object mapper.</param>
+        public TypedObjectMapperOptions(IObjectMapper mapper)
+            : base(mapper)
+        {
+            // The base class allows null - for use with object extensions
+            _ = mapper.WhenNotNull(nameof(mapper));
+        }
 
         /// <summary>Excludes one or more source properties from object mapping.</summary>
         /// <typeparam name="TProperty">The source property type.</typeparam>
@@ -28,10 +35,29 @@ namespace AllOverIt.Mapping
 
             var sourceName = GetPropertyName(sourceExpression);
 
-            Options.Exclude(sourceName);
+            Exclude(sourceName);
 
             return this;
         }
+
+
+
+
+        public TypedObjectMapperOptions<TSource, TTarget> DeepClone<TProperty>(Expression<Func<TSource, TProperty>> sourceExpression)
+        {
+            _ = sourceExpression.WhenNotNull(nameof(sourceExpression));
+
+            var sourceName = GetPropertyName(sourceExpression);
+
+            DeepClone(sourceName);
+
+            return this;
+        }
+
+
+
+
+
 
         /// <summary>Maps a property on the source object to an alias property on the target object.</summary>
         /// <typeparam name="TSourceProperty">The source property type.</typeparam>
@@ -48,7 +74,7 @@ namespace AllOverIt.Mapping
             var sourceName = GetPropertyName(sourceExpression);
             var targetName = GetPropertyName(targetExpression);
 
-            Options.WithAlias(sourceName, targetName);
+            WithAlias(sourceName, targetName);
 
             return this;
         }
@@ -60,14 +86,14 @@ namespace AllOverIt.Mapping
         /// <param name="converter">The source to target value conversion delegate.</param>
         /// <returns>The same <see cref="TypedObjectMapperOptions{TSource, TTarget}"/> instance so a fluent syntax can be used.</returns>
         public TypedObjectMapperOptions<TSource, TTarget> WithConversion<TProperty>(Expression<Func<TSource, TProperty>> sourceExpression,
-            Func<TProperty, object> converter)
+            Func<IObjectMapper, TProperty, object> converter)
         {
             _ = sourceExpression.WhenNotNull(nameof(sourceExpression));
             _ = converter.WhenNotNull(nameof(converter));
 
             var sourceName = GetPropertyName(sourceExpression);
 
-            Options.WithConversion(sourceName, source => converter.Invoke((TProperty) source));
+            WithConversion(sourceName, (mapper, source) => converter.Invoke(mapper, (TProperty) source));
 
             return this;
         }

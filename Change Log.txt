@@ -1,5 +1,17 @@
 ======================================================================================================================
 
+XX XXX 2022
+Version 6.0.0-RC.9
+======================================================================================================================
+AllOverIt
+  * ObjectMapper significantly updated:
+    - The WithConversion() call now provides the mapper instance so complex nested scenarios can be addressed
+    - Source / Target type mapping can be configured on demand when there are no special requirements
+    - Object properties are now shallow copied if the source type is assignable to the target type
+    - Object properties can be individually configured for deep cloning
+
+
+
 01 Sep 2022
 Version 6.0.0-RC.8
 ======================================================================================================================

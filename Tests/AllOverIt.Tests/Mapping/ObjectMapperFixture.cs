@@ -9,69 +9,14 @@ using System.Linq;
 using System.Reflection;
 using AllOverIt.Extensions;
 using Xunit;
+using AllOverIt.Mapping.Extensions;
+using System.Collections.ObjectModel;
 
 namespace AllOverIt.Tests.Mapping
 {
-    public class ObjectMapperFixture : FixtureBase
+    public partial class ObjectMapperFixture : FixtureBase
     {
-        private enum DummyEnum
-        {
-            Value1,
-            Value2
-        }
-
-        private class DummySource1
-        {
-            public int Prop1 { get; set; }
-            private int Prop2 { get; set; }
-            public string Prop3 { get; set; }
-            internal int Prop4 { get; set; }
-            public int? Prop5 { get; set; }
-            public int Prop6 { get; set; }
-            public string Prop7a { get; set; }
-            public int Prop8 { get; private set; }
-            public IEnumerable<string> Prop9 { get; set; }
-            public DummyEnum Prop12 { get; set; }
-            public int Prop13 { get; set; }
-
-            public DummySource1()
-            {
-                Prop2 = 10;
-            }
-
-            public int GetProp2()
-            {
-                return Prop2;
-            }
-        }
-
-        private class DummySource2 : DummySource1
-        {
-            public IReadOnlyCollection<string> Prop10 { get; set; }
-            public IEnumerable<string> Prop11 { get; set; }
-        }
-
-        private class DummyTarget
-        {
-            public int Prop1 { get; set; }
-
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
-            private int Prop2 { get; set; }
-
-            public string Prop3 { get; set; }
-            internal int Prop4 { get; set; }
-            public int Prop5 { get; set; }
-            public int? Prop6 { get; set; }
-            public string Prop7b { get; set; }
-            public int Prop8 { get; private set; }
-            public IEnumerable<string> Prop9 { get; set; }
-            public IEnumerable<string> Prop10 { get; set; }
-            public IReadOnlyCollection<string> Prop11 { get; set; }
-            public int Prop12 { get; set; }
-            public DummyEnum Prop13 { get; set; }
-        }
-
-        private readonly ObjectMapper _mapper;
+        private ObjectMapper _mapper;
         private readonly DummySource1 _source1;
         private readonly DummySource2 _source2;
         private readonly DummyTarget _target;
@@ -79,6 +24,17 @@ namespace AllOverIt.Tests.Mapping
         protected ObjectMapperFixture()
         {
             _mapper = new ObjectMapper();
+
+            _mapper.Configure<DummySource1, DummyTarget>(opt =>
+            {
+                opt.WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value);
+            });
+
+            _mapper.Configure<DummySource2, DummyTarget>(opt =>
+            {
+                opt.WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value);
+            });
+
             _source1 = Create<DummySource1>();
             _source2 = Create<DummySource2>();
             _target = new DummyTarget();
@@ -91,6 +47,7 @@ namespace AllOverIt.Tests.Mapping
             {
                 var expected = new
                 {
+                    DeepClone = false,
                     Binding = BindingOptions.Default,
                     Filter = (Func<PropertyInfo, bool>) null
                 };
@@ -106,6 +63,8 @@ namespace AllOverIt.Tests.Mapping
             [Fact]
             public void Should_Default_Configure()
             {
+                _mapper = new ObjectMapper();
+
                 var propertyMapper = _mapper.GetMapper(_source2.GetType(), _target.GetType());
 
                 propertyMapper.MapperOptions.Should().Be(_mapper.DefaultOptions);
@@ -114,7 +73,7 @@ namespace AllOverIt.Tests.Mapping
 
                 var expected = new[]
                 {
-                    (nameof(DummySource2.Prop1), typeof(int), nameof(DummyTarget.Prop1), typeof(int)),
+                    (nameof(DummySource2.Prop1), typeof(int), nameof(DummyTarget.Prop1), typeof(float)),
                     (nameof(DummySource2.Prop3), typeof(string), nameof(DummyTarget.Prop3), typeof(string)),
                     (nameof(DummySource2.Prop5), typeof(int?), nameof(DummyTarget.Prop5), typeof(int)),
                     (nameof(DummySource2.Prop6), typeof(int), nameof(DummyTarget.Prop6), typeof(int?)),
@@ -134,7 +93,7 @@ namespace AllOverIt.Tests.Mapping
             [Fact]
             public void Should_Throw_When_Configured_More_Than_Once()
             {
-                _mapper.Configure<DummySource2, DummyTarget>();
+                // The constructor already has a mapping for _mapper.Configure<DummySource2, DummyTarget>();
 
                 Invoking(() => _mapper.Configure<DummySource2, DummyTarget>())
                     .Should()
@@ -147,7 +106,14 @@ namespace AllOverIt.Tests.Mapping
             {
                 var binding = BindingOptions.Instance | BindingOptions.Internal;
 
-                _mapper.Configure<DummySource2, DummyTarget>(options => options.Binding = binding);
+                _mapper = new ObjectMapper();
+
+                _mapper.Configure<DummySource2, DummyTarget>(options =>
+                {
+                    options.WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value);
+
+                    options.Binding = binding;
+                });
 
                 var propertyMapper = _mapper.GetMapper(_source2.GetType(), _target.GetType());
 
@@ -168,8 +134,12 @@ namespace AllOverIt.Tests.Mapping
             [Fact]
             public void Should_Configure_With_Filter()
             {
+                _mapper = new ObjectMapper();
+
                 _mapper.Configure<DummySource2, DummyTarget>(options =>
                 {
+                    options.WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value);
+
                     options.Filter = propInfo => new[] { "Prop10", "Prop12", "Prop8" }.Contains(propInfo.Name);
                 });
 
@@ -192,10 +162,15 @@ namespace AllOverIt.Tests.Mapping
             [Fact]
             public void Should_Configure_With_Exclude()
             {
+                _mapper = new ObjectMapper();
+
                 _mapper.Configure<DummySource2, DummyTarget>(options =>
                 {
                     options.Filter = propInfo => new[] { "Prop10", "Prop12", "Prop8" }.Contains(propInfo.Name);
-                    options.Exclude(src => src.Prop10);
+                    
+                    options
+                        .WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value)
+                        .Exclude(src => src.Prop10);
                 });
 
                 var propertyMapper = _mapper.GetMapper(_source2.GetType(), _target.GetType());
@@ -216,11 +191,14 @@ namespace AllOverIt.Tests.Mapping
             [Fact]
             public void Should_Configure_With_Filter_And_Alias()
             {
+                _mapper = new ObjectMapper();
+
                 _mapper.Configure<DummySource2, DummyTarget>(options =>
                 {
                     options.Filter = propInfo => new[] { "Prop10", "Prop12", "Prop8" }.Contains(propInfo.Name);
 
                     options
+                        .WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value)
                         .WithAlias(src => src.Prop8, trg => trg.Prop1)
                         .WithAlias(src => (int) src.Prop12, trg => trg.Prop5);
                 });
@@ -231,7 +209,7 @@ namespace AllOverIt.Tests.Mapping
 
                 var expected = new[]
                 {
-                    (nameof(DummySource2.Prop8), typeof(int), nameof(DummyTarget.Prop1), typeof(int)),
+                    (nameof(DummySource2.Prop8), typeof(int), nameof(DummyTarget.Prop1), typeof(float)),
                     (nameof(DummySource2.Prop10), typeof(IReadOnlyCollection<string>), nameof(DummyTarget.Prop10), typeof(IEnumerable<string>)),
                     (nameof(DummySource2.Prop12), typeof(DummyEnum), nameof(DummyTarget.Prop5), typeof(int))
                 };
@@ -246,15 +224,18 @@ namespace AllOverIt.Tests.Mapping
             {
                 var factor = GetWithinRange(2, 5);
 
+                _mapper = new ObjectMapper();
+
                 _mapper.Configure<DummySource2, DummyTarget>(options =>
                 {
                     options.Filter = propInfo => new[] { "Prop10", "Prop12", "Prop8" }.Contains(propInfo.Name);
 
                     options
+                        .WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value)
                         .WithAlias(src => src.Prop8, trg => trg.Prop1)
                         .WithAlias(src => (int) src.Prop12, trg => trg.Prop5);
 
-                    options.WithConversion(src => src.Prop8, value => value * factor);
+                    options.WithConversion(src => src.Prop8, (mapper, value) => value * factor);
                 });
 
                 var propertyMapper = _mapper.GetMapper(_source2.GetType(), _target.GetType());
@@ -263,7 +244,7 @@ namespace AllOverIt.Tests.Mapping
 
                 var expectedAliases = new[]
                 {
-                    (nameof(DummySource2.Prop8), typeof(int), nameof(DummyTarget.Prop1), typeof(int)),
+                    (nameof(DummySource2.Prop8), typeof(int), nameof(DummyTarget.Prop1), typeof(float)),
                     (nameof(DummySource2.Prop10), typeof(IReadOnlyCollection<string>), nameof(DummyTarget.Prop10), typeof(IEnumerable<string>)),
                     (nameof(DummySource2.Prop12), typeof(DummyEnum), nameof(DummyTarget.Prop5), typeof(int))
                 };
@@ -348,8 +329,12 @@ namespace AllOverIt.Tests.Mapping
             [Fact]
             public void Should_Map_Using_Filter()
             {
+                _mapper = new ObjectMapper();
+
                 _mapper.Configure<DummySource2, DummyTarget>(options =>
                 {
+                    options.WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value);
+
                     options.Filter = propInfo =>
                         !new[] { nameof(DummySource2.Prop10), nameof(DummySource2.Prop8), nameof(DummySource2.Prop11) }.Contains(propInfo.Name);
                 });
@@ -379,9 +364,12 @@ namespace AllOverIt.Tests.Mapping
             [Fact]
             public void Should_Map_Exclude_And_Private_Properties()
             {
+                _mapper = new ObjectMapper();
+
                 _mapper.Configure<DummySource2, DummyTarget>(options =>
                 {
                     options
+                        .WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value)
                         .Exclude(src => src.Prop10)
                         .Exclude(src => src.Prop11);
 
@@ -413,9 +401,12 @@ namespace AllOverIt.Tests.Mapping
             [Fact]
             public void Should_Map_Exclude_And_Internal_Properties()
             {
+                _mapper = new ObjectMapper();
+
                 _mapper.Configure<DummySource2, DummyTarget>(options =>
                 {
                     options
+                        .WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value)
                         .Exclude(src => src.Prop10)
                         .Exclude(src => src.Prop11);
 
@@ -447,9 +438,12 @@ namespace AllOverIt.Tests.Mapping
             [Fact]
             public void Should_Map_Exclude_Bind_And_Alias_Properties_By_Name()
             {
+                _mapper = new ObjectMapper();
+
                 _mapper.Configure<DummySource2, DummyTarget>(options =>
                 {
                     options
+                        .WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value)
                         .Exclude(src => src.Prop10)
                         .Exclude(src => src.Prop11);
 
@@ -483,10 +477,15 @@ namespace AllOverIt.Tests.Mapping
             [Fact]
             public void Should_Map_Exclude_Bind_And_Alias_Properties_By_Expression()
             {
+                _mapper = new ObjectMapper();
+
                 _mapper.Configure<DummySource2, DummyTarget>(options =>
                 {
-                    options.Exclude(src => src.Prop11);
-                    options.WithAlias(source => source.Prop7a, target => target.Prop7b);
+                    options
+                        .WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value)
+                        .Exclude(src => src.Prop11)
+                        .WithAlias(source => source.Prop7a, target => target.Prop7b);
+
                     options.Binding = BindingOptions.Public | BindingOptions.Internal;
                 });
 
@@ -515,9 +514,13 @@ namespace AllOverIt.Tests.Mapping
             [Fact]
             public void Should_Map_WithConversion()
             {
+                _mapper = new ObjectMapper();
+
                 _mapper.Configure<DummySource2, DummyTarget>(options =>
                 {
-                    options.WithConversion(nameof(DummySource2.Prop11), value => ((IEnumerable<string>) value).Reverse().AsReadOnlyCollection());
+                    options
+                        .WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value)
+                        .WithConversion(nameof(DummySource2.Prop11), (mapper, value) => ((IEnumerable<string>) value).Reverse().AsReadOnlyCollection());
                 });
 
                 var actual = _mapper.Map<DummyTarget>(_source2);
@@ -540,6 +543,267 @@ namespace AllOverIt.Tests.Mapping
                 };
 
                 expected.Should().BeEquivalentTo(actual);
+            }
+
+            [Fact]
+            public void Should_Shallow_Map_Nested_Properties()
+            {
+                _mapper.Configure<DummyRootParentSource, DummyRootParentTarget>(opt =>
+                {
+                    opt.Exclude(src => src.RootB);
+                });
+
+                var source = new DummyRootParentSource();
+
+                var actual = _mapper.Map<DummyRootParentTarget>(source);
+
+                actual.RootA.Should().BeSameAs(source.RootA);
+            }
+
+            [Fact]
+            public void Should_Auto_Convert_Nested_Value_Type_Properties()
+            {
+                _mapper.Configure<DummyRootParentSource, DummyRootParentTarget>(opt =>
+                {
+                    opt.Exclude(src => src.RootA);
+                });
+
+                var source = new DummyRootParentSource();
+
+                var actual = _mapper.Map<DummyRootParentTarget>(source);
+
+                actual.RootB.Prop1.Should().Be((double) source.RootB.Prop1);
+            }
+
+            [Fact]
+            public void Should_Deep_Clone_Map_Nested_Properties_1()
+            {
+                _mapper.Configure<DummyRootParentSource, DummyRootParentTarget>(opt =>
+                {
+                    opt.DeepClone(src => src.RootA)
+                       .DeepClone(src => src.RootB);
+                });
+
+                var source = new DummyRootParentSource();
+
+                var actual = _mapper.Map<DummyRootParentTarget>(source);
+
+                actual.RootA.Should().NotBeSameAs(source.RootA);                        // cloned
+                actual.RootA.Prop2a.Should().BeSameAs(source.RootA.Prop2a);             // not cloned
+                actual.RootB.Should().NotBeSameAs(source.RootB);                        // cloned
+            }
+
+            [Fact]
+            public void Should_Deep_Clone_Map_Nested_Properties_2()
+            {
+                _mapper.Configure<DummyRootParentSource, DummyRootParentTarget>(opt =>
+                {
+                    opt.DeepClone(src => src.RootA)
+                       .DeepClone(src => src.RootB);
+                });
+
+                _mapper.Configure<DummyRootChildSource, DummyRootChildSource>(opt =>
+                {
+                    opt.DeepClone(src => src.Prop2a);
+                });
+
+                var source = new DummyRootParentSource();
+
+                var actual = _mapper.Map<DummyRootParentTarget>(source);
+
+                actual.RootA.Should().NotBeSameAs(source.RootA);                        // cloned
+                actual.RootA.Prop2a.Should().NotBeSameAs(source.RootA.Prop2a);          // cloned
+                actual.RootB.Should().NotBeSameAs(source.RootB);                        // cloned
+
+                var expected = new
+                {
+                    RootA = new
+                    {
+                        Prop1 = source.RootA.Prop1,
+                        Prop2a = new
+                        {
+                            Prop2 = source.RootA.Prop2a.Prop2,
+                            Prop3 = source.RootA.Prop2a.Prop3
+                        },
+                        Prop2b = new
+                        {
+                            Prop2 = source.RootA.Prop2b.Prop2,
+                            Prop3 = source.RootA.Prop2b.Prop3
+                        }
+                    },
+                    RootB = new
+                    {
+                        Prop1 = source.RootB.Prop1,
+                        Prop2a = new
+                        {
+                            Prop2 = source.RootB.Prop2a.Prop2,
+                            Prop3 = source.RootB.Prop2a.Prop3
+                        },
+                        Prop2b = new
+                        {
+                            Prop2 = source.RootB.Prop2b.Prop2,
+                            Prop3 = source.RootB.Prop2b.Prop3
+                        }
+                    }
+                };
+
+                expected.Should().BeEquivalentTo(actual);
+            }
+
+            [Fact]
+            public void Should_Map_Enumerables_Different_Types()
+            {
+                var mapper = new ObjectMapper();
+
+                // Configuration is only required for upfront performance gains.
+                // mapper.Configure<DummyEnumerableRootSource, DummyEnumerableRootTarget>();
+                // mapper.Configure<DummyRootParentSource, DummyRootParentTarget>();
+
+                var source = Create<DummyEnumerableRootSource>();
+
+                var actual = mapper.Map<DummyEnumerableRootTarget>(source);
+
+                actual.Prop1.Should().NotBeEmpty();
+
+                actual.Prop1.ForEach((prop, index) =>
+                {
+                    var sourceItem = source.Prop1.ElementAt(index);
+
+                    var expected = new
+                    {
+                        RootA = new
+                        {
+                            Prop1 = sourceItem.RootA.Prop1,
+                            Prop2a = new
+                            {
+                                Prop2 = sourceItem.RootA.Prop2a.Prop2,
+                                Prop3 = sourceItem.RootA.Prop2a.Prop3       // this is an IEnumerable<int>
+                            },
+                            Prop2b = new
+                            {
+                                Prop2 = sourceItem.RootA.Prop2b.Prop2,
+                                Prop3 = sourceItem.RootA.Prop2b.Prop3       // this is an IEnumerable<int>
+                            }
+                        },
+                        RootB = new
+                        {
+                            Prop1 = sourceItem.RootB.Prop1,
+                            Prop2a = new
+                            {
+                                Prop2 = sourceItem.RootB.Prop2a.Prop2,
+                                Prop3 = sourceItem.RootB.Prop2a.Prop3       // this is an IEnumerable<int>
+                            },
+                            Prop2b = new
+                            {
+                                Prop2 = sourceItem.RootB.Prop2b.Prop2,
+                                Prop3 = sourceItem.RootB.Prop2b.Prop3       // this is an IEnumerable<int>
+                            }
+                        }
+                    };
+
+                    expected.Should().BeEquivalentTo(prop);
+                });
+            }
+
+            [Fact]
+            public void Should_Map_Abstract_Target()
+            {
+                var mapper = new ObjectMapper();
+
+                mapper.Configure<DummySourceHost, DummyAbstractTarget>(opt =>
+                {
+                    opt.WithConversion(src => src.Prop1, (mapper2, value) =>
+                    {
+                        // value is a 'DummySource1' and Prop1 on 'DummyAbstractTarget' is abstract (DummyAbstractBase)
+                        // so this will map it to the concrete type 'DummyConcrete2'
+                        return mapper2.Map<DummyConcrete2>(value);
+                    });
+                });
+
+                var source = Create<DummySourceHost>();
+
+                var actual = mapper.Map<DummyAbstractTarget>(source);
+
+                actual.Prop1.Prop1.Should().Be(source.Prop1.Prop1);
+            }
+
+            [Fact]
+            public void Should_Map_Enumerable_Using_MapMany()
+            {
+                var mapper = new ObjectMapper();
+
+                mapper.Configure<DummyEnumerableRootSource, DummyEnumerableRootTarget>(opt =>
+                {
+                    // This approach is not required for mapping enumerables of different types - it's only written this way for the test
+                    opt.WithConversion(src => src.Prop1, (mapper2, value) => mapper2.MapMany<DummyRootParentTarget>(value));
+                });
+
+                var source = Create<DummyEnumerableRootSource>();
+
+                var actual = mapper.Map<DummyEnumerableRootTarget>(source);
+
+                actual.Prop1.ForEach((prop, index) =>
+                {
+                    var sourceItem = source.Prop1.ElementAt(index);
+
+                    var expected = new
+                    {
+                        RootA = new
+                        {
+                            Prop1 = sourceItem.RootA.Prop1,
+                            Prop2a = new
+                            {
+                                Prop2 = sourceItem.RootA.Prop2a.Prop2,
+                                Prop3 = sourceItem.RootA.Prop2a.Prop3       // this is an IEnumerable<int>
+                            },
+                            Prop2b = new
+                            {
+                                Prop2 = sourceItem.RootA.Prop2b.Prop2,
+                                Prop3 = sourceItem.RootA.Prop2b.Prop3       // this is an IEnumerable<int>
+                            }
+                        },
+                        RootB = new
+                        {
+                            Prop1 = sourceItem.RootB.Prop1,
+                            Prop2a = new
+                            {
+                                Prop2 = sourceItem.RootB.Prop2a.Prop2,
+                                Prop3 = sourceItem.RootB.Prop2a.Prop3       // this is an IEnumerable<int>
+                            },
+                            Prop2b = new
+                            {
+                                Prop2 = sourceItem.RootB.Prop2b.Prop2,
+                                Prop3 = sourceItem.RootB.Prop2b.Prop3       // this is an IEnumerable<int>
+                            }
+                        }
+                    };
+
+                    expected.Should().BeEquivalentTo(prop);
+                });
+            }
+
+            [Fact]
+            public void Should_Map_To_ObservableCollection()
+            {
+                var mapper = new ObjectMapper();
+
+                mapper.Configure<DummySource1, DummyObservableCollectionHost>(opt =>
+                {
+                    opt.Exclude(src => src.Prop1);                                  // Conflicts with Prop1 on the target
+                    opt.WithAlias(src => src.Prop9, target => target.Prop1);        // Alias Prop9 to Prop1 on the target
+
+                    // This is a typical example of how to map to something other than a list
+                    opt.WithConversion(src => src.Prop9, (mapper2, value) =>
+                    {
+                        return new ObservableCollection<string>(value.ToList());
+                    });
+                });
+
+                var source = Create<DummySource1>();
+
+                var actual = mapper.Map<DummyObservableCollectionHost>(source);
+
+                actual.Prop1.Should().BeEquivalentTo(source.Prop9);
             }
         }
 
@@ -616,8 +880,12 @@ namespace AllOverIt.Tests.Mapping
             [Fact]
             public void Should_Map_Using_Filter()
             {
+                _mapper = new ObjectMapper();
+
                 _mapper.Configure<DummySource2, DummyTarget>(options =>
                 {
+                    options.WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value);
+
                     options.Filter = propInfo =>
                         !new[] { nameof(DummySource2.Prop10), nameof(DummySource2.Prop8), nameof(DummySource2.Prop11) }.Contains(propInfo.Name);
                 });
@@ -647,9 +915,12 @@ namespace AllOverIt.Tests.Mapping
             [Fact]
             public void Should_Map_Exclude_And_Private_Properties()
             {
+                _mapper = new ObjectMapper();
+
                 _mapper.Configure<DummySource2, DummyTarget>(options =>
                 {
                     options
+                        .WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value)
                         .Exclude(src => src.Prop10)
                         .Exclude(src => src.Prop11);
 
@@ -681,9 +952,12 @@ namespace AllOverIt.Tests.Mapping
             [Fact]
             public void Should_Map_Exclude_And_Internal_Properties()
             {
+                _mapper = new ObjectMapper();
+
                 _mapper.Configure<DummySource2, DummyTarget>(options =>
                 {
                     options
+                        .WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value)
                         .Exclude(src => src.Prop10)
                         .Exclude(src => src.Prop11);
 
@@ -715,13 +989,15 @@ namespace AllOverIt.Tests.Mapping
             [Fact]
             public void Should_Map_Exclude_Bind_And_Alias_Properties_By_Name()
             {
+                _mapper = new ObjectMapper();
+
                 _mapper.Configure<DummySource2, DummyTarget>(options =>
                 {
                     options
+                        .WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value)
                         .Exclude(src => src.Prop10)
-                        .Exclude(src => src.Prop11);
-
-                    options.WithAlias(nameof(DummySource2.Prop7a), nameof(DummyTarget.Prop7b));
+                        .Exclude(src => src.Prop11)
+                        .WithAlias(nameof(DummySource2.Prop7a), nameof(DummyTarget.Prop7b));
 
                     options.Binding = BindingOptions.Public | BindingOptions.Internal;
                 });
@@ -751,10 +1027,15 @@ namespace AllOverIt.Tests.Mapping
             [Fact]
             public void Should_Map_Exclude_Bind_And_Alias_Properties_By_Expression()
             {
+                _mapper = new ObjectMapper();
+
                 _mapper.Configure<DummySource2, DummyTarget>(options =>
                 {
-                    options.Exclude(src => src.Prop11);
-                    options.WithAlias(source => source.Prop7a, target => target.Prop7b);
+                    options
+                        .WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value)
+                        .Exclude(src => src.Prop11)
+                        .WithAlias(source => source.Prop7a, target => target.Prop7b);
+
                     options.Binding = BindingOptions.Public | BindingOptions.Internal;
                 });
 
@@ -783,9 +1064,13 @@ namespace AllOverIt.Tests.Mapping
             [Fact]
             public void Should_Map_WithConversion()
             {
+                _mapper = new ObjectMapper();
+
                 _mapper.Configure<DummySource2, DummyTarget>(options =>
                 {
-                    options.WithConversion(nameof(DummySource2.Prop11), value => ((IEnumerable<string>) value).Reverse().AsReadOnlyCollection());
+                    options
+                        .WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value)
+                        .WithConversion(nameof(DummySource2.Prop11), (mapper, value) => ((IEnumerable<string>) value).Reverse().AsReadOnlyCollection());
                 });
 
                 var actual = _mapper.Map<DummySource2, DummyTarget>(_source2, _target);
@@ -808,6 +1093,280 @@ namespace AllOverIt.Tests.Mapping
                 };
 
                 expected.Should().BeEquivalentTo(actual);
+            }
+
+
+
+            // ADD A TEST THAT SHOWS DEEPLY NESTED OBJECTS CAN BE MAPPED WITH CONVERSION USING THE MAPPER
+
+
+            [Fact]
+            public void Should_Shallow_Map_Nested_Properties()
+            {
+                _mapper.Configure<DummyRootParentSource, DummyRootParentTarget>(opt =>
+                {
+                    opt.Exclude(src => src.RootB);
+                });
+
+                var source = new DummyRootParentSource();
+                var actual = new DummyRootParentTarget();
+
+                _ = _mapper.Map<DummyRootParentSource, DummyRootParentTarget>(source, actual);
+
+                actual.RootA.Should().BeSameAs(source.RootA);
+            }
+
+            [Fact]
+            public void Should_Auto_Convert_Nested_Value_Type_Properties()
+            {
+                _mapper.Configure<DummyRootParentSource, DummyRootParentTarget>(opt =>
+                {
+                    opt.Exclude(src => src.RootA);
+                });
+
+                var source = new DummyRootParentSource();
+                var actual = new DummyRootParentTarget();
+
+                _ = _mapper.Map<DummyRootParentSource, DummyRootParentTarget>(source, actual);
+
+                actual.RootB.Prop1.Should().Be((double)source.RootB.Prop1);
+            }
+
+            [Fact]
+            public void Should_Deep_Clone_Map_Nested_Properties_1()
+            {
+                _mapper.Configure<DummyRootParentSource, DummyRootParentTarget>(opt =>
+                {
+                    opt.DeepClone(src => src.RootA)
+                       .DeepClone(src => src.RootB);
+                });
+
+                var source = new DummyRootParentSource();
+                var actual = new DummyRootParentTarget();
+
+                _ = _mapper.Map<DummyRootParentSource, DummyRootParentTarget>(source, actual);
+
+                actual.RootA.Should().NotBeSameAs(source.RootA);                // cloned
+                actual.RootA.Prop2a.Should().BeSameAs(source.RootA.Prop2a);     // not cloned
+                actual.RootB.Should().NotBeSameAs(source.RootB);                // cloned
+            }
+
+            [Fact]
+            public void Should_Deep_Clone_Map_Nested_Properties_2()
+            {
+                _mapper.Configure<DummyRootParentSource, DummyRootParentTarget>(opt =>
+                {
+                    opt.DeepClone(src => src.RootA)
+                       .DeepClone(src => src.RootB);
+                });
+
+                _mapper.Configure<DummyRootChildSource, DummyRootChildSource>(opt =>
+                {
+                    opt.DeepClone(src => src.Prop2a);
+                });
+
+                var source = new DummyRootParentSource();
+                var actual = new DummyRootParentTarget();
+
+                _ = _mapper.Map<DummyRootParentSource, DummyRootParentTarget>(source, actual);
+
+                actual.RootA.Should().NotBeSameAs(source.RootA);                        // cloned
+                actual.RootA.Prop2a.Should().NotBeSameAs(source.RootA.Prop2a);          // cloned
+                actual.RootB.Should().NotBeSameAs(source.RootB);                        // cloned
+
+                var expected = new
+                {
+                    RootA = new
+                    {
+                        Prop1 = source.RootA.Prop1,
+                        Prop2a = new
+                        {
+                            Prop2 = source.RootA.Prop2a.Prop2,
+                            Prop3 = source.RootA.Prop2a.Prop3
+                        },
+                        Prop2b = new
+                        {
+                            Prop2 = source.RootA.Prop2b.Prop2,
+                            Prop3 = source.RootA.Prop2b.Prop3
+                        }
+                    },
+                    RootB = new
+                    {
+                        Prop1 = source.RootB.Prop1,
+                        Prop2a = new
+                        {
+                            Prop2 = source.RootB.Prop2a.Prop2,
+                            Prop3 = source.RootB.Prop2a.Prop3
+                        },
+                        Prop2b = new
+                        {
+                            Prop2 = source.RootB.Prop2b.Prop2,
+                            Prop3 = source.RootB.Prop2b.Prop3
+                        }
+                    }
+                };
+
+                expected.Should().BeEquivalentTo(actual);
+            }
+
+            [Fact]
+            public void Should_Map_Enumerables_Different_Types()
+            {
+                var mapper = new ObjectMapper();
+
+                // Configuration is only required for upfront performance gains.
+                // mapper.Configure<DummyEnumerableRootSource, DummyEnumerableRootTarget>();
+                // mapper.Configure<DummyRootParentSource, DummyRootParentTarget>();
+
+                var source = Create<DummyEnumerableRootSource>();
+                var actual = new DummyEnumerableRootTarget();
+
+                _ = mapper.Map<DummyEnumerableRootSource, DummyEnumerableRootTarget>(source, actual);
+
+                actual.Prop1.Should().NotBeEmpty();
+
+                actual.Prop1.ForEach((prop, index) => 
+                {
+                    var sourceItem = source.Prop1.ElementAt(index);
+
+                    var expected = new
+                    {
+                        RootA = new
+                        {
+                            Prop1 = sourceItem.RootA.Prop1,
+                            Prop2a = new
+                            {
+                                Prop2 = sourceItem.RootA.Prop2a.Prop2,
+                                Prop3 = sourceItem.RootA.Prop2a.Prop3       // this is an IEnumerable<int>
+                            },
+                            Prop2b = new
+                            {
+                                Prop2 = sourceItem.RootA.Prop2b.Prop2,
+                                Prop3 = sourceItem.RootA.Prop2b.Prop3       // this is an IEnumerable<int>
+                            }
+                        },
+                        RootB = new
+                        {
+                            Prop1 = sourceItem.RootB.Prop1,
+                            Prop2a = new
+                            {
+                                Prop2 = sourceItem.RootB.Prop2a.Prop2,
+                                Prop3 = sourceItem.RootB.Prop2a.Prop3       // this is an IEnumerable<int>
+                            },
+                            Prop2b = new
+                            {
+                                Prop2 = sourceItem.RootB.Prop2b.Prop2,
+                                Prop3 = sourceItem.RootB.Prop2b.Prop3       // this is an IEnumerable<int>
+                            }
+                        }
+                    };
+
+                    expected.Should().BeEquivalentTo(prop);
+                });
+            }
+
+            [Fact]
+            public void Should_Map_Abstract_Target()
+            {
+                var mapper = new ObjectMapper();
+
+                mapper.Configure<DummySourceHost, DummyAbstractTarget>(opt =>
+                {
+                    opt.WithConversion(src => src.Prop1, (mapper2, value) =>
+                    {
+                        // value is a 'DummySource1' and Prop1 on 'DummyAbstractTarget' is abstract (DummyAbstractBase)
+                        // so this will map it to the concrete type 'DummyConcrete2'
+                        return mapper2.Map<DummyConcrete2>(value);
+                    });
+                });
+
+                var source = Create<DummySourceHost>();
+                var actual = new DummyAbstractTarget();
+
+                _ = mapper.Map<DummySourceHost, DummyAbstractTarget>(source, actual);
+
+                actual.Prop1.Prop1.Should().Be(source.Prop1.Prop1);
+            }
+
+            [Fact]
+            public void Should_Map_Enumerable_Using_MapMany()
+            {
+                var mapper = new ObjectMapper();
+
+                mapper.Configure<DummyEnumerableRootSource, DummyEnumerableRootTarget>(opt =>
+                {
+                    // This approach is not required for mapping enumerables of different types - it's only written this way for the test
+                    opt.WithConversion(src => src.Prop1, (mapper2, value) => mapper2.MapMany<DummyRootParentTarget>(value));
+                });
+
+                var source = Create<DummyEnumerableRootSource>();
+                var actual = new DummyEnumerableRootTarget();
+
+                _ = mapper.Map<DummyEnumerableRootSource, DummyEnumerableRootTarget>(source, actual);
+
+                actual.Prop1.ForEach((prop, index) =>
+                {
+                    var sourceItem = source.Prop1.ElementAt(index);
+
+                    var expected = new
+                    {
+                        RootA = new
+                        {
+                            Prop1 = sourceItem.RootA.Prop1,
+                            Prop2a = new
+                            {
+                                Prop2 = sourceItem.RootA.Prop2a.Prop2,
+                                Prop3 = sourceItem.RootA.Prop2a.Prop3       // this is an IEnumerable<int>
+                            },
+                            Prop2b = new
+                            {
+                                Prop2 = sourceItem.RootA.Prop2b.Prop2,
+                                Prop3 = sourceItem.RootA.Prop2b.Prop3       // this is an IEnumerable<int>
+                            }
+                        },
+                        RootB = new
+                        {
+                            Prop1 = sourceItem.RootB.Prop1,
+                            Prop2a = new
+                            {
+                                Prop2 = sourceItem.RootB.Prop2a.Prop2,
+                                Prop3 = sourceItem.RootB.Prop2a.Prop3       // this is an IEnumerable<int>
+                            },
+                            Prop2b = new
+                            {
+                                Prop2 = sourceItem.RootB.Prop2b.Prop2,
+                                Prop3 = sourceItem.RootB.Prop2b.Prop3       // this is an IEnumerable<int>
+                            }
+                        }
+                    };
+
+                    expected.Should().BeEquivalentTo(prop);
+                });
+            }
+
+            [Fact]
+            public void Should_Map_To_ObservableCollection()
+            {
+                var mapper = new ObjectMapper();
+
+                mapper.Configure<DummySource1, DummyObservableCollectionHost>(opt =>
+                {
+                    opt.Exclude(src => src.Prop1);                                  // Conflicts with Prop1 on the target
+                    opt.WithAlias(src => src.Prop9, target => target.Prop1);        // Alias Prop9 to Prop1 on the target
+
+                    // This is a typical example of how to map to something other than a list
+                    opt.WithConversion(src => src.Prop9, (mapper2, value) =>
+                    {
+                        return new ObservableCollection<string>(value.ToList());
+                    });
+                });
+
+                var source = Create<DummySource1>();
+                var actual = new DummyObservableCollectionHost();
+
+                _ = mapper.Map<DummySource1, DummyObservableCollectionHost>(source, actual);
+
+                actual.Prop1.Should().BeEquivalentTo(source.Prop9);
             }
         }
     }

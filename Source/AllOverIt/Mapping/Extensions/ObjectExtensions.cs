@@ -92,7 +92,7 @@ namespace AllOverIt.Mapping.Extensions
 
         private static TTarget MapSourceToTarget<TTarget>(object source, TTarget target, BindingOptions bindingOptions)
         {
-            var options = new ObjectMapperOptions
+            var options = new ObjectMapperOptions(null)
             {
                 Binding = bindingOptions
             };

@@ -130,5 +130,8 @@ namespace AllOverIt.Reflection
 
         /// <summary>Type declaration for a <c>typeof(EnrichedEnum&lt;&gt;)</c>.</summary>
         public static readonly Type EnrichedEnumGenericType = typeof(EnrichedEnum<>);
+
+        /// <summary>Type declaration for a <c>typeof(IConvertible)</c>.</summary>
+        public static readonly Type IConvertibleType = typeof(IConvertible);
     }
 }

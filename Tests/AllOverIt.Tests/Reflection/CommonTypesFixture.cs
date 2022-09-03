@@ -61,6 +61,7 @@ namespace AllOverIt.Tests.Reflection
             yield return new object[] { CommonTypes.ListGenericType, typeof(List<>) };
             yield return new object[] { CommonTypes.StringComparisonType, typeof(StringComparison) };
             yield return new object[] { CommonTypes.EnrichedEnumGenericType, typeof(EnrichedEnum<>) };
+            yield return new object[] { CommonTypes.IConvertibleType, typeof(IConvertible) };
         }
     }
 }

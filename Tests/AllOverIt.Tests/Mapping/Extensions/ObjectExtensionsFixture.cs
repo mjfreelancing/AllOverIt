@@ -72,6 +72,7 @@ namespace AllOverIt.Tests.Mapping.Extensions
             public DummyEnum Prop13 { get; set; }
         }
 
+        private readonly ObjectMapper _mapper = new();
         private readonly DummySource1 _source1;
         private readonly DummySource2 _source2;
 
@@ -88,7 +89,7 @@ namespace AllOverIt.Tests.Mapping.Extensions
             public MapTo_Target_Options()
             {
                 // Excluding because cannot convert IEnumerable to IReadOnlyCollection without a property conversion
-                _options = new ObjectMapperOptions().Exclude(nameof(DummySource2.Prop11));
+                _options = new ObjectMapperOptions(null).Exclude(nameof(DummySource2.Prop11));
             }
 
             [Fact]
@@ -259,7 +260,7 @@ namespace AllOverIt.Tests.Mapping.Extensions
             [Fact]
             public void Should_Map_Alias_Properties_By_Expression()
             {
-                var options = new TypedObjectMapperOptions<DummySource2, DummyTarget>()
+                var options = new TypedObjectMapperOptions<DummySource2, DummyTarget>(_mapper)
                         .WithAlias(source => source.Prop7a, target => target.Prop7b)
                         .Exclude(nameof(DummySource2.Prop11));
 
@@ -288,8 +289,8 @@ namespace AllOverIt.Tests.Mapping.Extensions
             [Fact]
             public void Should_Map_WithConversion()
             {
-                var options = new ObjectMapperOptions()
-                    .WithConversion(nameof(DummySource2.Prop11), value => ((IEnumerable<string>) value).Reverse().AsReadOnlyCollection());
+                var options = new ObjectMapperOptions(null)
+                    .WithConversion(nameof(DummySource2.Prop11), (_, value) => ((IEnumerable<string>) value).Reverse().AsReadOnlyCollection());
 
                 var actual = ObjectExtensions.MapTo<DummyTarget>(_source2, options);
 
@@ -423,7 +424,7 @@ namespace AllOverIt.Tests.Mapping.Extensions
             public MapTo_Source_Target_Options()
             {
                 // Excluding because cannot convert IEnumerable to IReadOnlyCollection without a property conversion
-                _options = new TypedObjectMapperOptions<DummySource2, DummyTarget>().Exclude(source => source.Prop11);
+                _options = new TypedObjectMapperOptions<DummySource2, DummyTarget>(_mapper).Exclude(source => source.Prop11);
                 _target = new DummyTarget();
             }
 
@@ -615,7 +616,7 @@ namespace AllOverIt.Tests.Mapping.Extensions
             [Fact]
             public void Should_Map_Alias_Properties_By_Expression()
             {
-                var options = new TypedObjectMapperOptions<DummySource2, DummyTarget>()
+                var options = new TypedObjectMapperOptions<DummySource2, DummyTarget>(_mapper)
                     .Exclude(source => source.Prop11)
                     .WithAlias(source => source.Prop7a, target => target.Prop7b);
 
@@ -644,8 +645,8 @@ namespace AllOverIt.Tests.Mapping.Extensions
             [Fact]
             public void Should_Map_WithConversion()
             {
-                var options = new TypedObjectMapperOptions<DummySource2, DummyTarget>()
-                    .WithConversion(source => source.Prop11, value => value.Reverse().AsReadOnlyCollection());
+                var options = new TypedObjectMapperOptions<DummySource2, DummyTarget>(_mapper)
+                    .WithConversion(source => source.Prop11, (mapper, value) => value.Reverse().AsReadOnlyCollection());
 
                 var actual = ObjectExtensions.MapTo<DummySource2, DummyTarget>(_source2, _target, options);
 

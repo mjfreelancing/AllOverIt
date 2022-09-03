@@ -87,7 +87,7 @@ namespace ObjectMappingBenchmarking
             };
 
             _simpleTarget = new SimpleTarget();
-            _options = new ObjectMapperOptions();
+            _options = new ObjectMapperOptions(null);
         }
 
 #if AUTOMAPPER

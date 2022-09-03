@@ -31,7 +31,29 @@ namespace AllOverIt.Tests.Mapping
             public DummyChild Child { get; set; }
         }
 
-        private readonly TypedObjectMapperOptions<DummySource, DummyTarget> _options = new();
+        private readonly ObjectMapper _mapper;
+        private readonly TypedObjectMapperOptions<DummySource, DummyTarget> _options;
+
+        public TypedObjectMapperOptionsFixture()
+        {
+            _mapper = new();
+            _options = new(_mapper);
+        }
+
+        public class Constructor : TypedObjectMapperOptionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Mapper_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = new TypedObjectMapperOptions<DummySource, DummyTarget>(null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("mapper");
+            }
+        }
 
         public class Exclude : TypedObjectMapperOptionsFixture
         {
@@ -154,11 +176,29 @@ namespace AllOverIt.Tests.Mapping
         public class WithConversion : TypedObjectMapperOptionsFixture
         {
             [Fact]
+            public void Should_Provide_Mapper()
+            {
+                var propName = Create<string>();
+
+                IObjectMapper actual = null;
+
+                _options.WithConversion(propName, (mapper, value) =>
+                {
+                    actual = mapper;
+                    return value;
+                });
+
+                _ = _options.GetConvertedValue(propName, Create<int>());
+
+                actual.Should().BeSameAs(_mapper);
+            }
+
+            [Fact]
             public void Should_Throw_When_SourceExpression_Null()
             {
                 Invoking(() =>
                     {
-                        _options.WithConversion<int>(null, value => value);
+                        _options.WithConversion<int>(null, (mapper, value) => value);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -170,7 +210,7 @@ namespace AllOverIt.Tests.Mapping
             {
                 Invoking(() =>
                     {
-                        _options.WithConversion(source => source.Child.Prop1, val => val);
+                        _options.WithConversion(source => source.Child.Prop1, (mapper, val) => val);
                     })
                     .Should()
                     .Throw<ObjectMapperException>()
@@ -195,7 +235,7 @@ namespace AllOverIt.Tests.Mapping
                 var value = Create<int>();
                 var factor = Create<int>();
 
-                _options.WithConversion(source => source.Prop2, val => val * factor);
+                _options.WithConversion(source => source.Prop2, (mapper, val) => val * factor);
 
                 var actual = _options.GetConvertedValue(nameof(DummySource.Prop2), value);
 
@@ -205,7 +245,7 @@ namespace AllOverIt.Tests.Mapping
             [Fact]
             public void Should_Return_Same_Options()
             {
-                var actual = _options.WithConversion(source => source.Prop3, value => value);
+                var actual = _options.WithConversion(source => source.Prop3, (mapper, value) => value);
 
                 actual.Should().Be(_options);
             }

@@ -12,18 +12,31 @@ namespace AllOverIt.Mapping
         private sealed class TargetOptions
         {
             public bool Excluded { get; set; }
+            public bool DeepClone { get; set; }
             public string Alias { get; set; }
-            public Func<object, object> Converter { get; set; }
+            public Func<IObjectMapper, object, object> Converter { get; set; }
         }
 
         // Source property to target options - updated via extension methods
         private readonly IDictionary<string, TargetOptions> _sourceTargetOptions = new Dictionary<string, TargetOptions>();
+
+        /// <summary>The object mapper associated with these options. This will be null when used via the object extensions
+        /// and not <see cref="IObjectMapper"/>.</summary>
+        protected IObjectMapper Mapper { get; }
 
         /// <summary>The binding options used to determine how properties on the source object are discovered.</summary>
         public BindingOptions Binding { get; set; } = BindingOptions.Default;
 
         /// <summary>Use to filter out source properties discovered based on the <see cref="Binding"/> option used.</summary>
         public Func<PropertyInfo, bool> Filter { get; set; }
+
+        /// <summary>Constructor.</summary>
+        /// <param name="mapper">The associated object mapper.</param>
+        public ObjectMapperOptions(IObjectMapper mapper)
+        {
+            // Will be null when used via the object extensions and not IObjectMapper
+            Mapper = mapper;
+        }
 
         /// <summary>Excludes one or more source properties from object mapping.</summary>
         /// <param name="sourceNames">One or more source property names to be excluded from mapping.</param>
@@ -39,6 +52,26 @@ namespace AllOverIt.Mapping
 
             return this;
         }
+
+
+
+        // TODO: TESTS
+
+        public ObjectMapperOptions DeepClone(params string[] sourceNames)
+        {
+            _ = sourceNames.WhenNotNull(nameof(sourceNames));
+
+            foreach (var sourceName in sourceNames)
+            {
+                UpdateTargetOptions(sourceName, targetOptions => targetOptions.DeepClone = true);
+            }
+
+            return this;
+        }
+
+
+
+
 
         /// <summary>Maps a property on the source type to an alias property on the target type.</summary>
         /// <param name="sourceName">The source type property name.</param>
@@ -61,12 +94,12 @@ namespace AllOverIt.Mapping
         /// <param name="sourceName">The source type property name.</param>
         /// <param name="converter">The source to target value conversion delegate.</param>
         /// <returns>The same <see cref="ObjectMapperOptions"/> instance so a fluent syntax can be used.</returns>
-        public ObjectMapperOptions WithConversion(string sourceName, Func<object, object> converter)
+        public ObjectMapperOptions WithConversion(string sourceName, Func<IObjectMapper, object, object> converter)
         {
             _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
             _ = converter.WhenNotNull(nameof(converter));
 
-            UpdateTargetOptions( sourceName, targetOptions => targetOptions.Converter = converter);
+            UpdateTargetOptions(sourceName, targetOptions => targetOptions.Converter = converter);
 
             return this;
         }
@@ -77,6 +110,21 @@ namespace AllOverIt.Mapping
 
             return _sourceTargetOptions.TryGetValue(sourceName, out var targetOptions) && targetOptions.Excluded;
         }
+
+
+
+
+        // tests
+
+        internal bool IsDeepClone(string sourceName)
+        {
+            _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
+
+            return _sourceTargetOptions.TryGetValue(sourceName, out var targetOptions) && targetOptions.DeepClone;
+        }
+
+
+
 
         internal string GetAliasName(string sourceName)
         {
@@ -96,7 +144,7 @@ namespace AllOverIt.Mapping
                 : null;
 
             return converter != null
-                ? converter.Invoke(sourceValue)
+                ? converter.Invoke(Mapper, sourceValue)
                 : sourceValue;
         }
 

@@ -277,7 +277,7 @@ namespace AllOverIt.Extensions
             }
 
             if (instanceType != CommonTypes.StringType &&
-                instanceType.IsDerivedFrom(typeof(IConvertible)) &&
+                instanceType.IsDerivedFrom(CommonTypes.IConvertibleType) &&
                 convertToType.IsValueType)
             {
                 return (TType)Convert.ChangeType(instance, convertToType);

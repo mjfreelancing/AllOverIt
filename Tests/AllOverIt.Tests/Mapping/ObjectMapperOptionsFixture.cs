@@ -9,11 +9,28 @@ namespace AllOverIt.Tests.Mapping
 {
     public class ObjectMapperOptionsFixture : FixtureBase
     {
+        private readonly ObjectMapper _mapper;
         private readonly ObjectMapperOptions _options;
 
         protected ObjectMapperOptionsFixture()
         {
-            _options = new ObjectMapperOptions();
+            _mapper = new();
+            _options = new ObjectMapperOptions(_mapper);
+        }
+
+        public class Constructor : ObjectMapperOptionsFixture
+        {
+            [Fact]
+            public void Should_Not_Throw_When_Mapper_Null()
+            {
+                Invoking(() =>
+                {
+                    // The object extensions canmap simple objects without a mapper
+                    _ = new ObjectMapperOptions(null);
+                })
+                    .Should()
+                    .NotThrow();
+            }
         }
 
         public class Exclude : ObjectMapperOptionsFixture
@@ -161,12 +178,41 @@ namespace AllOverIt.Tests.Mapping
 
         public class WithConversion : ObjectMapperOptionsFixture
         {
+            private class DummySource
+            {
+                public int Prop1 { get; set; }
+            }
+
+            private class DummyTarget
+            {
+                public string Prop1 { get; set; }
+            }
+
+            [Fact]
+            public void Should_Provide_Mapper()
+            {
+                var propName = Create<string>();
+
+                // ObjectMapperOptions allows a null mapper, this test ensures it is provided if constructed with one
+                IObjectMapper actual = null;
+
+                _options.WithConversion(propName, (mapper, value) =>
+                {
+                    actual = mapper;
+                    return value;
+                });
+
+                _ = _options.GetConvertedValue(propName, Create<int>());
+
+                actual.Should().BeSameAs(_mapper);
+            }
+
             [Fact]
             public void Should_Throw_When_SourceName_Null()
             {
                 Invoking(() =>
                 {
-                    _options.WithConversion(null, value => value);
+                    _options.WithConversion(null, (mapper, value) => value);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -178,7 +224,7 @@ namespace AllOverIt.Tests.Mapping
             {
                 Invoking(() =>
                 {
-                    _options.WithConversion(string.Empty, value => value);
+                    _options.WithConversion(string.Empty, (mapper, value) => value);
                 })
                     .Should()
                     .Throw<ArgumentException>()
@@ -190,7 +236,7 @@ namespace AllOverIt.Tests.Mapping
             {
                 Invoking(() =>
                 {
-                    _options.WithConversion("  ", value => value);
+                    _options.WithConversion("  ", (mapper, value) => value);
                 })
                     .Should()
                     .Throw<ArgumentException>()
@@ -216,7 +262,7 @@ namespace AllOverIt.Tests.Mapping
                 var value = Create<int>();
                 var factor = Create<int>();
 
-                _options.WithConversion(sourceName, val => (int)val * factor);
+                _options.WithConversion(sourceName, (mapper, val) => (int)val * factor);
 
                 var actual = _options.GetConvertedValue(sourceName, value);
 
@@ -226,7 +272,7 @@ namespace AllOverIt.Tests.Mapping
             [Fact]
             public void Should_Return_Same_Options()
             {
-                var actual = _options.WithConversion(Create<string>(), value => value);
+                var actual = _options.WithConversion(Create<string>(), (mapper, value) => value);
 
                 actual.Should().Be(_options);
             }
@@ -404,7 +450,7 @@ namespace AllOverIt.Tests.Mapping
                 var sourceName = Create<string>();
                 var factor = GetWithinRange(2, 5);
 
-                _options.WithConversion(sourceName, value => (int) value * factor);
+                _options.WithConversion(sourceName, (mapper, value) => (int) value * factor);
 
                 var value = Create<int>();
 
