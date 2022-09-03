@@ -43,119 +43,119 @@ namespace DtoMapping
                 }
             };
 
-            //StaticCreateTargetUsingBindingOnOptions(source, serializer);
-            //Console.WriteLine();
+            StaticCreateTargetUsingBindingOnOptions(source, serializer);
+            Console.WriteLine();
 
-            //StaticMapOntoExistingTargetUsingBindingOnOptions(source, serializer);
-            //Console.WriteLine();
+            StaticMapOntoExistingTargetUsingBindingOnOptions(source, serializer);
+            Console.WriteLine();
 
-            //MapperCreateTargetUsingBindingOnOptions(source, serializer);
-            //Console.WriteLine();
+            MapperCreateTargetUsingBindingOnOptions(source, serializer);
+            Console.WriteLine();
 
-            //MapperMapOntoExistingTargetUsingDefaultFilterOnOptions(source, serializer);
-            //Console.WriteLine();
+            MapperMapOntoExistingTargetUsingDefaultFilterOnOptions(source, serializer);
+            Console.WriteLine();
 
-            //MapperMapOntoExistingTargetUsingOptionsDuringConfigure(source, serializer);
-            //Console.WriteLine();
+            MapperMapOntoExistingTargetUsingOptionsDuringConfigure(source, serializer);
+            Console.WriteLine();
 
             MapperMapOntoExistingTargetUsingConversionDuringConfigure(source, serializer);
             Console.WriteLine();
 
-            //MapperMapOntoExistingTargetUsingExcludeDuringConfigure(source, serializer);
-            //Console.WriteLine();
+            MapperMapOntoExistingTargetUsingExcludeDuringConfigure(source, serializer);
+            Console.WriteLine();
 
             Console.WriteLine("All Over It.");
             Console.ReadKey();
         }
 
-        //private static void StaticCreateTargetUsingBindingOnOptions(SourceType source, IJsonSerializer serializer)
-        //{
-        //    var options = new ObjectMapperOptions
-        //    {
-        //        Binding = BindingOptions.DefaultScope | BindingOptions.Private | BindingOptions.DefaultAccessor | BindingOptions.DefaultVisibility
-        //    };
+        private static void StaticCreateTargetUsingBindingOnOptions(SourceType source, IJsonSerializer serializer)
+        {
+            var options = new ObjectMapperOptions(null)
+            {
+                Binding = BindingOptions.DefaultScope | BindingOptions.Private | BindingOptions.DefaultAccessor | BindingOptions.DefaultVisibility
+            };
 
-        //    // Nested objects and collections are not supported by the static MapTo() methods.
-        //    options.Exclude(nameof(SourceType.Prop3), nameof(SourceType.Prop3b), nameof(SourceType.Prop8), nameof(SourceType.Prop9));
+            // Nested objects and collections are not supported by the static MapTo() methods.
+            options.Exclude(nameof(SourceType.Prop3), nameof(SourceType.Prop3b), nameof(SourceType.Prop8), nameof(SourceType.Prop9));
 
-        //    var target = source.MapTo<TargetType>(options);
+            var target = source.MapTo<TargetType>(options);
 
-        //    PrintMapping("Static create target, binding private properties only", source, target, serializer);
-        //}
+            PrintMapping("Static create target, binding private properties only", source, target, serializer);
+        }
 
-        //private static void StaticMapOntoExistingTargetUsingBindingOnOptions(SourceType source, IJsonSerializer serializer)
-        //{
-        //    var options = new ObjectMapperOptions
-        //    {
-        //        Binding = BindingOptions.DefaultScope | BindingOptions.Private | BindingOptions.DefaultAccessor | BindingOptions.DefaultVisibility
-        //    };
+        private static void StaticMapOntoExistingTargetUsingBindingOnOptions(SourceType source, IJsonSerializer serializer)
+        {
+            var options = new ObjectMapperOptions(null)
+            {
+                Binding = BindingOptions.DefaultScope | BindingOptions.Private | BindingOptions.DefaultAccessor | BindingOptions.DefaultVisibility
+            };
 
-        //    // Nested objects and collections are not supported by the static MapTo() methods.
-        //    options.Exclude(nameof(SourceType.Prop3), nameof(SourceType.Prop3b), nameof(SourceType.Prop8), nameof(SourceType.Prop9));
+            // Nested objects and collections are not supported by the static MapTo() methods.
+            options.Exclude(nameof(SourceType.Prop3), nameof(SourceType.Prop3b), nameof(SourceType.Prop8), nameof(SourceType.Prop9));
 
-        //    var target = new TargetType();
-        //    _ = source.MapTo(target, options);
+            var target = new TargetType();
+            _ = source.MapTo(target, options);
 
-        //    PrintMapping("Static existing target, binding private properties only", source, target, serializer);
-        //}
+            PrintMapping("Static existing target, binding private properties only", source, target, serializer);
+        }
 
-        //private static void MapperCreateTargetUsingBindingOnOptions(SourceType source, IJsonSerializer serializer)
-        //{
-        //    var objectMapper = new ObjectMapper
-        //    {
-        //        DefaultOptions =
-        //        {
-        //            Binding = BindingOptions.DefaultScope | BindingOptions.Private | BindingOptions.DefaultAccessor |BindingOptions.DefaultVisibility
-        //        }
-        //    };
+        private static void MapperCreateTargetUsingBindingOnOptions(SourceType source, IJsonSerializer serializer)
+        {
+            var objectMapper = new ObjectMapper
+            {
+                DefaultOptions =
+                {
+                    Binding = BindingOptions.DefaultScope | BindingOptions.Private | BindingOptions.DefaultAccessor |BindingOptions.DefaultVisibility
+                }
+            };
 
-        //    objectMapper.Configure<SourceType, TargetType>();
+            objectMapper.Configure<SourceType, TargetType>();
 
-        //    var target = objectMapper.Map<TargetType>(source);
+            var target = objectMapper.Map<TargetType>(source);
 
-        //    PrintMapping("Create target, binding private properties only", source, target, serializer);
-        //}
+            PrintMapping("Create target, binding private properties only", source, target, serializer);
+        }
 
-        //private static void MapperMapOntoExistingTargetUsingDefaultFilterOnOptions(SourceType source, IJsonSerializer serializer)
-        //{
-        //    var objectMapper = new ObjectMapper
-        //    {
-        //        DefaultOptions =
-        //        {
-        //            Filter = propInfo => propInfo.Name != nameof(SourceType.Prop1)
-        //        }
-        //    };
+        private static void MapperMapOntoExistingTargetUsingDefaultFilterOnOptions(SourceType source, IJsonSerializer serializer)
+        {
+            var objectMapper = new ObjectMapper
+            {
+                DefaultOptions =
+                {
+                    Filter = propInfo => propInfo.Name != nameof(SourceType.Prop1)
+                }
+            };
 
-        //    objectMapper.Configure<SourceType, TargetType>();
+            objectMapper.Configure<SourceType, TargetType>();
 
-        //    var target = new TargetType();
-        //    _ = objectMapper.Map(source, target);
+            var target = new TargetType();
+            _ = objectMapper.Map(source, target);
 
-        //    PrintMapping("Existing target, filter out Prop1, default binding", source, target, serializer);
-        //}
+            PrintMapping("Existing target, filter out Prop1, default binding", source, target, serializer);
+        }
 
-        //private static void MapperMapOntoExistingTargetUsingOptionsDuringConfigure(SourceType source, IJsonSerializer serializer)
-        //{
-        //    var objectMapper = new ObjectMapper();
-        //    var target = new TargetType();
+        private static void MapperMapOntoExistingTargetUsingOptionsDuringConfigure(SourceType source, IJsonSerializer serializer)
+        {
+            var objectMapper = new ObjectMapper();
+            var target = new TargetType();
 
-        //    objectMapper.Configure<SourceType, TargetType>(opt =>
-        //    {
-        //        // This is the default, just showing it
-        //        opt.Binding = BindingOptions.Default;
+            objectMapper.Configure<SourceType, TargetType>(opt =>
+            {
+                // This is the default, just showing it
+                opt.Binding = BindingOptions.Default;
 
-        //        opt.Filter = propInfo => propInfo.Name == nameof(SourceType.Prop1) ||
-        //                                 propInfo.Name == nameof(SourceType.Prop5a);
+                opt.Filter = propInfo => propInfo.Name == nameof(SourceType.Prop1) ||
+                                         propInfo.Name == nameof(SourceType.Prop5a);
 
-        //        // Copy Prop5a onto Prop5b and Prop1 onto Prop6
-        //        opt.WithAlias(src => src.Prop5a, trg => trg.Prop5b)
-        //           .WithAlias(src => src.Prop1, trg => trg.Prop6);
-        //    });
+                // Copy Prop5a onto Prop5b and Prop1 onto Prop6
+                opt.WithAlias(src => src.Prop5a, trg => trg.Prop5b)
+                   .WithAlias(src => src.Prop1, trg => trg.Prop6);
+            });
 
-        //    objectMapper.Map(source, target);
+            objectMapper.Map(source, target);
 
-        //    PrintMapping("Existing target, filter Prop1 || Prop5a, aliased to Prop5b and Prop6, default binding", source, target, serializer);
-        //}
+            PrintMapping("Existing target, filter Prop1 || Prop5a, aliased to Prop5b and Prop6, default binding", source, target, serializer);
+        }
 
         private static void MapperMapOntoExistingTargetUsingConversionDuringConfigure(SourceType source, IJsonSerializer serializer)
         {
@@ -207,22 +207,22 @@ namespace DtoMapping
             PrintMapping("Existing target, using conversion IEnumerable to IReadOnlyCollection, alias child object property", source, target, serializer);
         }
 
-        //private static void MapperMapOntoExistingTargetUsingExcludeDuringConfigure(SourceType source, IJsonSerializer serializer)
-        //{
-        //    var objectMapper = new ObjectMapper();
-        //    var target = new TargetType();
+        private static void MapperMapOntoExistingTargetUsingExcludeDuringConfigure(SourceType source, IJsonSerializer serializer)
+        {
+            var objectMapper = new ObjectMapper();
+            var target = new TargetType();
 
-        //    source.Prop7 = new[] { "Val1", "Val2", "Val3" };
+            source.Prop7 = new[] { "Val1", "Val2", "Val3" };
 
-        //    objectMapper.Configure<SourceType, TargetType>(opt =>
-        //    {
-        //        opt.Exclude(src => src.Prop7);
-        //    });
+            objectMapper.Configure<SourceType, TargetType>(opt =>
+            {
+                opt.Exclude(src => src.Prop7);
+            });
 
-        //    objectMapper.Map(source, target);
+            objectMapper.Map(source, target);
 
-        //    PrintMapping("Existing target, exclude a non-mappable IEnumerable, default binding", source, target, serializer);
-        //}
+            PrintMapping("Existing target, exclude a non-mappable IEnumerable, default binding", source, target, serializer);
+        }
 
         private static void PrintMapping(string message, SourceType source, TargetType target, IJsonSerializer serializer)
         {
