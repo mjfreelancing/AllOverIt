@@ -25,7 +25,7 @@ namespace AllOverIt.Mapping
             _ = mapper.WhenNotNull(nameof(mapper));
         }
 
-        /// <summary>Excludes one or more source properties from object mapping.</summary>
+        /// <summary>Excludes a source property from object mapping.</summary>
         /// <typeparam name="TProperty">The source property type.</typeparam>
         /// <param name="sourceExpression">An expression to specify the source property being excluded.</param>
         /// <returns>The same <see cref="TypedObjectMapperOptions{TSource, TTarget}"/> instance so a fluent syntax can be used.</returns>
@@ -40,9 +40,10 @@ namespace AllOverIt.Mapping
             return this;
         }
 
-
-
-        // todo: tests
+        /// <summary>Configures a source property for deep cloning when object mapping. All child object
+        /// <typeparam name="TProperty">The source property type.</typeparam>
+        /// <param name="sourceExpression">An expression to specify the source property to be deep cloned.</param>
+        /// <returns></returns>
         public TypedObjectMapperOptions<TSource, TTarget> DeepClone<TProperty>(Expression<Func<TSource, TProperty>> sourceExpression)
         {
             _ = sourceExpression.WhenNotNull(nameof(sourceExpression));
@@ -53,11 +54,6 @@ namespace AllOverIt.Mapping
 
             return this;
         }
-
-
-
-
-
 
         /// <summary>Maps a property on the source object to an alias property on the target object.</summary>
         /// <typeparam name="TSourceProperty">The source property type.</typeparam>

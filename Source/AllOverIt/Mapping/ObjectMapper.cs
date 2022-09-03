@@ -134,7 +134,7 @@ namespace AllOverIt.Mapping
                 var sourcePropertyType = match.SourceInfo.PropertyType;
                 var targetPropertyType = match.TargetInfo.PropertyType;
 
-                var doDeepClone = isDeepClone || propertyMapper.MapperOptions.IsClone(match.SourceInfo.Name);
+                var doDeepClone = isDeepClone || propertyMapper.MapperOptions.IsDeepClone(match.SourceInfo.Name);
 
 
                 // If the target property type is different then a conversion or mapping may be required

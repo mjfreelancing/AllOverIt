@@ -79,6 +79,52 @@ namespace AllOverIt.Tests.Mapping
             }
         }
 
+        public class DeepClone : ObjectMapperOptionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_SourceNames_Null()
+            {
+                Invoking(() =>
+                {
+                    _options.DeepClone(null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("sourceNames");
+            }
+
+            [Fact]
+            public void Should_Not_Throw_When_SourceNames_Empty()
+            {
+                Invoking(() =>
+                {
+                    _options.DeepClone(Array.Empty<string>());
+                })
+                    .Should()
+                    .NotThrow();
+            }
+
+            [Fact]
+            public void Should_DeepClone_Names()
+            {
+                var name = Create<string>();
+
+                _options.DeepClone(name);
+
+                _options.IsDeepClone(name).Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Return_Same_Options()
+            {
+                var names = Create<string>();
+
+                var actual = _options.DeepClone(names);
+
+                actual.Should().Be(_options);
+            }
+        }
+
         public class WithAlias : ObjectMapperOptionsFixture
         {
             [Fact]

@@ -98,6 +98,49 @@ namespace AllOverIt.Tests.Mapping
             }
         }
 
+        public class DeepClone : TypedObjectMapperOptionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_SourceExpression_Null()
+            {
+                Invoking(() =>
+                {
+                    _options.DeepClone<int>(null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("sourceExpression");
+            }
+
+            [Fact]
+            public void Should_Not_Allow_Nested_Properties()
+            {
+                Invoking(() =>
+                {
+                    _options.DeepClone(source => source.Child.Prop1);
+                })
+                    .Should()
+                    .Throw<ObjectMapperException>()
+                    .WithMessage("ObjectMapper do not support nested mappings (source => source.Child.Prop1).");
+            }
+
+            [Fact]
+            public void Should_DeepClone_Name()
+            {
+                _options.DeepClone(source => source.Child);
+
+                _options.IsDeepClone(nameof(DummySource.Child)).Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Return_Same_Options()
+            {
+                var actual = _options.DeepClone(source => source.Child);
+
+                actual.Should().Be(_options);
+            }
+        }
+
         public class WithAlias : TypedObjectMapperOptionsFixture
         {
             [Fact]

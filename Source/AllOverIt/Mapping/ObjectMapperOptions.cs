@@ -53,10 +53,10 @@ namespace AllOverIt.Mapping
             return this;
         }
 
-
-
-        // TODO: TESTS
-
+        /// <summary>Configures one or more source properties for deep cloning when object mapping. All child object
+        /// properties will be cloned.</summary>
+        /// <param name="sourceNames">One or more source property names to be configured for deep cloning.</param>
+        /// <returns>The same <see cref="ObjectMapperOptions"/> instance so a fluent syntax can be used.</returns>
         public ObjectMapperOptions DeepClone(params string[] sourceNames)
         {
             _ = sourceNames.WhenNotNull(nameof(sourceNames));
@@ -68,10 +68,6 @@ namespace AllOverIt.Mapping
 
             return this;
         }
-
-
-
-
 
         /// <summary>Maps a property on the source type to an alias property on the target type.</summary>
         /// <param name="sourceName">The source type property name.</param>
@@ -111,20 +107,12 @@ namespace AllOverIt.Mapping
             return _sourceTargetOptions.TryGetValue(sourceName, out var targetOptions) && targetOptions.Excluded;
         }
 
-
-
-
-        // tests
-
-        internal bool IsClone(string sourceName)
+        internal bool IsDeepClone(string sourceName)
         {
             _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
 
             return _sourceTargetOptions.TryGetValue(sourceName, out var targetOptions) && targetOptions.DeepClone;
         }
-
-
-
 
         internal string GetAliasName(string sourceName)
         {
