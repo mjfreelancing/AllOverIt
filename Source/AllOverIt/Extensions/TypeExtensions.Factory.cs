@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 namespace AllOverIt.Extensions
 {
     // TODO: tests
+
     public static partial class TypeExtensions
     {
         public static Func<object> GetFactory(this Type type)

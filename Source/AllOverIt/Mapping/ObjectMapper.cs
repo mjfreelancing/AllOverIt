@@ -103,7 +103,7 @@ namespace AllOverIt.Mapping
 
             var target = new TTarget();
 
-            return (TTarget) MapSourceToTarget(source, target);
+            return (TTarget) MapSourceToTarget(source, target, false);
         }
 
         /// <inheritdoc />
@@ -116,10 +116,10 @@ namespace AllOverIt.Mapping
             _ = source.WhenNotNull(nameof(source));
             _ = target.WhenNotNull(nameof(target));
 
-            return (TTarget) MapSourceToTarget(source, target);
+            return (TTarget) MapSourceToTarget(source, target, false);
         }
 
-        private object MapSourceToTarget(object source, object target)
+        private object MapSourceToTarget(object source, object target, bool isDeepClone)
         {
             var sourceType = source.GetType();
             var targetType = target.GetType();
@@ -134,6 +134,7 @@ namespace AllOverIt.Mapping
                 var sourcePropertyType = match.SourceInfo.PropertyType;
                 var targetPropertyType = match.TargetInfo.PropertyType;
 
+                var doDeepClone = isDeepClone || propertyMapper.MapperOptions.IsClone(match.SourceInfo.Name);
 
 
                 // If the target property type is different then a conversion or mapping may be required
@@ -153,7 +154,6 @@ namespace AllOverIt.Mapping
                     else if (sourceValueType != CommonTypes.StringType)
                     {
                         var isAssignable = targetPropertyType.IsAssignableFrom(sourceValueType);
-                        var isDeepClone = propertyMapper.MapperOptions.IsDeepClone(match.SourceInfo.Name);
 
                         if (sourcePropertyType.IsEnumerableType())
                         {
@@ -162,7 +162,7 @@ namespace AllOverIt.Mapping
                                 !targetPropertyType.IsEnumerableType(),
                                 $"Cannot map {sourcePropertyType.GetFriendlyName()} to {targetPropertyType.GetFriendlyName()}. Use a custom conversion.");
 
-                            if (!isAssignable || isDeepClone)
+                            if (!isAssignable || doDeepClone)
                             {
                                 var sourceElementType = sourcePropertyType.GetGenericArguments()[0];
                                 var targetElementType = targetPropertyType.GetGenericArguments()[0];
@@ -198,7 +198,7 @@ namespace AllOverIt.Mapping
 
                                         var targetInstance = targetCtor.Invoke(null);
 
-                                        currentElement = MapSourceToTarget(currentElement, targetInstance);
+                                        currentElement = MapSourceToTarget(currentElement, targetInstance, doDeepClone);
                                     }
 
                                     typedList.Add(currentElement);
@@ -209,10 +209,10 @@ namespace AllOverIt.Mapping
                         }
                         else
                         {
-                            if (!isAssignable || isDeepClone)
+                            if (!isAssignable || doDeepClone)
                             {
                                 var targetInstance = CreateType(targetPropertyType);
-                                sourceValue = MapSourceToTarget(sourceValue, targetInstance);
+                                sourceValue = MapSourceToTarget(sourceValue, targetInstance, doDeepClone);
                             }
                         }
                     }                   

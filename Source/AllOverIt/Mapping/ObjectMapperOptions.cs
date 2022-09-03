@@ -116,7 +116,7 @@ namespace AllOverIt.Mapping
 
         // tests
 
-        internal bool IsDeepClone(string sourceName)
+        internal bool IsClone(string sourceName)
         {
             _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
 

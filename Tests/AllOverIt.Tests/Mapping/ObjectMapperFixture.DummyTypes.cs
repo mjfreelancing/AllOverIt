@@ -120,18 +120,25 @@ namespace AllOverIt.Tests.Mapping
         {
             public DummyRootChildSource RootA { get; set; }
             public DummyRootChildSource RootB { get; set; }
+            public DummyRootChildSource RootC { get; set; }
 
             public DummyRootParentSource()
             {
                 RootA = new();
 
                 RootB = new();
-
                 RootB.Prop1 = RootA.Prop1 + 1;
                 RootB.Prop2a.Prop2 = RootA.Prop2a.Prop2 + 2;
                 RootB.Prop2a.Prop3 = RootA.Prop2a.Prop3.Concat(new[] { 4, 5, 6 });
                 RootB.Prop2b.Prop2 = RootA.Prop2b.Prop2 + 3;
                 RootB.Prop2b.Prop3 = RootA.Prop2b.Prop3.Concat(new[] { 7, 8, 9 });
+
+                RootC = new();
+                RootC.Prop1 = RootB.Prop1 + 1;
+                RootC.Prop2a.Prop2 = RootB.Prop2a.Prop2 + 2;
+                RootC.Prop2a.Prop3 = RootB.Prop2a.Prop3.Concat(new[] { 4, 5, 6 });
+                RootC.Prop2b.Prop2 = RootB.Prop2b.Prop2 + 3;
+                RootC.Prop2b.Prop3 = RootB.Prop2b.Prop3.Concat(new[] { 7, 8, 9 });
             }
         }
 
@@ -139,6 +146,7 @@ namespace AllOverIt.Tests.Mapping
         {
             public DummyRootChildSource RootA { get; set; }
             public DummyRootChildTarget RootB { get; set; }
+            public DummyRootChildSource RootC { get; set; }
         }
 
         private class DummyEnumerableRootSource

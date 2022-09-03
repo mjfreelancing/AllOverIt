@@ -576,44 +576,21 @@ namespace AllOverIt.Tests.Mapping
             }
 
             [Fact]
-            public void Should_Deep_Clone_Map_Nested_Properties_1()
+            public void Should_Deep_Clone_Nested_Properties()
             {
                 _mapper.Configure<DummyRootParentSource, DummyRootParentTarget>(opt =>
                 {
-                    opt.DeepClone(src => src.RootA)
-                       .DeepClone(src => src.RootB);
+                    opt.DeepClone(src => src.RootA);
                 });
 
                 var source = new DummyRootParentSource();
 
                 var actual = _mapper.Map<DummyRootParentTarget>(source);
 
-                actual.RootA.Should().NotBeSameAs(source.RootA);                        // cloned
-                actual.RootA.Prop2a.Should().BeSameAs(source.RootA.Prop2a);             // not cloned
-                actual.RootB.Should().NotBeSameAs(source.RootB);                        // cloned
-            }
-
-            [Fact]
-            public void Should_Deep_Clone_Map_Nested_Properties_2()
-            {
-                _mapper.Configure<DummyRootParentSource, DummyRootParentTarget>(opt =>
-                {
-                    opt.DeepClone(src => src.RootA)
-                       .DeepClone(src => src.RootB);
-                });
-
-                _mapper.Configure<DummyRootChildSource, DummyRootChildSource>(opt =>
-                {
-                    opt.DeepClone(src => src.Prop2a);
-                });
-
-                var source = new DummyRootParentSource();
-
-                var actual = _mapper.Map<DummyRootParentTarget>(source);
-
-                actual.RootA.Should().NotBeSameAs(source.RootA);                        // cloned
-                actual.RootA.Prop2a.Should().NotBeSameAs(source.RootA.Prop2a);          // cloned
-                actual.RootB.Should().NotBeSameAs(source.RootB);                        // cloned
+                actual.RootA.Should().NotBeSameAs(source.RootA);                // deep cloned
+                actual.RootA.Prop2a.Should().NotBeSameAs(source.RootA.Prop2a);  // deep cloned
+                actual.RootB.Should().NotBeSameAs(source.RootB);                // source and target types are different
+                actual.RootC.Should().BeSameAs(source.RootC);                   // not deep cloned
 
                 var expected = new
                 {
@@ -643,6 +620,20 @@ namespace AllOverIt.Tests.Mapping
                         {
                             Prop2 = source.RootB.Prop2b.Prop2,
                             Prop3 = source.RootB.Prop2b.Prop3
+                        }
+                    },
+                    RootC = new
+                    {
+                        Prop1 = source.RootC.Prop1,
+                        Prop2a = new
+                        {
+                            Prop2 = source.RootC.Prop2a.Prop2,
+                            Prop3 = source.RootC.Prop2a.Prop3
+                        },
+                        Prop2b = new
+                        {
+                            Prop2 = source.RootC.Prop2b.Prop2,
+                            Prop3 = source.RootC.Prop2b.Prop3
                         }
                     }
                 };
@@ -697,6 +688,20 @@ namespace AllOverIt.Tests.Mapping
                             {
                                 Prop2 = sourceItem.RootB.Prop2b.Prop2,
                                 Prop3 = sourceItem.RootB.Prop2b.Prop3       // this is an IEnumerable<int>
+                            }
+                        },
+                        RootC = new
+                        {
+                            Prop1 = sourceItem.RootC.Prop1,
+                            Prop2a = new
+                            {
+                                Prop2 = sourceItem.RootC.Prop2a.Prop2,
+                                Prop3 = sourceItem.RootC.Prop2a.Prop3       // this is an IEnumerable<int>
+                            },
+                            Prop2b = new
+                            {
+                                Prop2 = sourceItem.RootC.Prop2b.Prop2,
+                                Prop3 = sourceItem.RootC.Prop2b.Prop3       // this is an IEnumerable<int>
                             }
                         }
                     };
@@ -774,6 +779,20 @@ namespace AllOverIt.Tests.Mapping
                             {
                                 Prop2 = sourceItem.RootB.Prop2b.Prop2,
                                 Prop3 = sourceItem.RootB.Prop2b.Prop3       // this is an IEnumerable<int>
+                            }
+                        },
+                        RootC = new
+                        {
+                            Prop1 = sourceItem.RootC.Prop1,
+                            Prop2a = new
+                            {
+                                Prop2 = sourceItem.RootC.Prop2a.Prop2,
+                                Prop3 = sourceItem.RootC.Prop2a.Prop3       // this is an IEnumerable<int>
+                            },
+                            Prop2b = new
+                            {
+                                Prop2 = sourceItem.RootC.Prop2b.Prop2,
+                                Prop3 = sourceItem.RootC.Prop2b.Prop3       // this is an IEnumerable<int>
                             }
                         }
                     };
@@ -1133,12 +1152,11 @@ namespace AllOverIt.Tests.Mapping
             }
 
             [Fact]
-            public void Should_Deep_Clone_Map_Nested_Properties_1()
+            public void Should_Deep_Clone_Nested_Properties()
             {
                 _mapper.Configure<DummyRootParentSource, DummyRootParentTarget>(opt =>
                 {
-                    opt.DeepClone(src => src.RootA)
-                       .DeepClone(src => src.RootB);
+                    opt.DeepClone(src => src.RootA);
                 });
 
                 var source = new DummyRootParentSource();
@@ -1146,33 +1164,10 @@ namespace AllOverIt.Tests.Mapping
 
                 _ = _mapper.Map<DummyRootParentSource, DummyRootParentTarget>(source, actual);
 
-                actual.RootA.Should().NotBeSameAs(source.RootA);                // cloned
-                actual.RootA.Prop2a.Should().BeSameAs(source.RootA.Prop2a);     // not cloned
-                actual.RootB.Should().NotBeSameAs(source.RootB);                // cloned
-            }
-
-            [Fact]
-            public void Should_Deep_Clone_Map_Nested_Properties_2()
-            {
-                _mapper.Configure<DummyRootParentSource, DummyRootParentTarget>(opt =>
-                {
-                    opt.DeepClone(src => src.RootA)
-                       .DeepClone(src => src.RootB);
-                });
-
-                _mapper.Configure<DummyRootChildSource, DummyRootChildSource>(opt =>
-                {
-                    opt.DeepClone(src => src.Prop2a);
-                });
-
-                var source = new DummyRootParentSource();
-                var actual = new DummyRootParentTarget();
-
-                _ = _mapper.Map<DummyRootParentSource, DummyRootParentTarget>(source, actual);
-
-                actual.RootA.Should().NotBeSameAs(source.RootA);                        // cloned
-                actual.RootA.Prop2a.Should().NotBeSameAs(source.RootA.Prop2a);          // cloned
-                actual.RootB.Should().NotBeSameAs(source.RootB);                        // cloned
+                actual.RootA.Should().NotBeSameAs(source.RootA);                // deep cloned
+                actual.RootA.Prop2a.Should().NotBeSameAs(source.RootA.Prop2a);  // deep cloned
+                actual.RootB.Should().NotBeSameAs(source.RootB);                // source and target types are different
+                actual.RootC.Should().BeSameAs(source.RootC);                   // not deep cloned
 
                 var expected = new
                 {
@@ -1202,6 +1197,20 @@ namespace AllOverIt.Tests.Mapping
                         {
                             Prop2 = source.RootB.Prop2b.Prop2,
                             Prop3 = source.RootB.Prop2b.Prop3
+                        }
+                    },
+                    RootC = new
+                    {
+                        Prop1 = source.RootC.Prop1,
+                        Prop2a = new
+                        {
+                            Prop2 = source.RootC.Prop2a.Prop2,
+                            Prop3 = source.RootC.Prop2a.Prop3
+                        },
+                        Prop2b = new
+                        {
+                            Prop2 = source.RootC.Prop2b.Prop2,
+                            Prop3 = source.RootC.Prop2b.Prop3
                         }
                     }
                 };
@@ -1257,6 +1266,20 @@ namespace AllOverIt.Tests.Mapping
                             {
                                 Prop2 = sourceItem.RootB.Prop2b.Prop2,
                                 Prop3 = sourceItem.RootB.Prop2b.Prop3       // this is an IEnumerable<int>
+                            }
+                        },
+                        RootC = new
+                        {
+                            Prop1 = sourceItem.RootC.Prop1,
+                            Prop2a = new
+                            {
+                                Prop2 = sourceItem.RootC.Prop2a.Prop2,
+                                Prop3 = sourceItem.RootC.Prop2a.Prop3       // this is an IEnumerable<int>
+                            },
+                            Prop2b = new
+                            {
+                                Prop2 = sourceItem.RootC.Prop2b.Prop2,
+                                Prop3 = sourceItem.RootC.Prop2b.Prop3       // this is an IEnumerable<int>
                             }
                         }
                     };
@@ -1336,6 +1359,20 @@ namespace AllOverIt.Tests.Mapping
                             {
                                 Prop2 = sourceItem.RootB.Prop2b.Prop2,
                                 Prop3 = sourceItem.RootB.Prop2b.Prop3       // this is an IEnumerable<int>
+                            }
+                        },
+                        RootC = new
+                        {
+                            Prop1 = sourceItem.RootC.Prop1,
+                            Prop2a = new
+                            {
+                                Prop2 = sourceItem.RootC.Prop2a.Prop2,
+                                Prop3 = sourceItem.RootC.Prop2a.Prop3       // this is an IEnumerable<int>
+                            },
+                            Prop2b = new
+                            {
+                                Prop2 = sourceItem.RootC.Prop2b.Prop2,
+                                Prop3 = sourceItem.RootC.Prop2b.Prop3       // this is an IEnumerable<int>
                             }
                         }
                     };
