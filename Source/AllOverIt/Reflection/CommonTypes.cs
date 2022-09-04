@@ -125,6 +125,12 @@ namespace AllOverIt.Reflection
         /// <summary>Type declaration for a <c>typeof(List&lt;&gt;)</c>.</summary>
         public static readonly Type ListGenericType = typeof(List<>);
 
+        /// <summary>Type declaration for a <c>typeof(Dictionary&lt;&gt;)</c>.</summary>
+        public static readonly Type DictionaryGenericType = typeof(Dictionary<,>);
+
+        /// <summary>Type declaration for a <c>typeof(KeyValuePair&lt;&gt;)</c>.</summary>
+        public static readonly Type KeyValuePairType = typeof(KeyValuePair<,>);
+
         /// <summary>Type declaration for a <c>typeof(StringComparison)</c>.</summary>
         public static readonly Type StringComparisonType = typeof(StringComparison);
 

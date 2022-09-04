@@ -1,11 +1,11 @@
-﻿using AllOverIt.Extensions;
-using System;
-using System.Linq;
-using System.Linq.Expressions;
-using AllOverIt.Assertion;
+﻿using AllOverIt.Assertion;
 using AllOverIt.Helpers.PropertyNavigation;
 using AllOverIt.Helpers.PropertyNavigation.Extensions;
 using AllOverIt.Mapping.Exceptions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace AllOverIt.Mapping
 {
@@ -13,12 +13,12 @@ namespace AllOverIt.Mapping
     /// <typeparam name="TSource">The source object type.</typeparam>
     /// <typeparam name="TTarget">The target object type.</typeparam>
     public sealed class TypedObjectMapperOptions<TSource, TTarget> : ObjectMapperOptions
-        where TSource : class
-        where TTarget : class
+        //where TSource : class
+        //where TTarget : class
     {
         /// <summary>Constructor.</summary>
         /// <param name="mapper">The associated object mapper.</param>
-        public TypedObjectMapperOptions(IObjectMapper mapper)
+        public TypedObjectMapperOptions(IObjectMapper mapper, IDictionary<(Type, Type), Func<IObjectMapper, object, object>> sourceTargetFactories = default)       // TODO: Use this
             : base(mapper)
         {
             // The base class allows null - for use with object extensions
@@ -94,8 +94,29 @@ namespace AllOverIt.Mapping
             return this;
         }
 
+
+
+        //_sourceTargetFactories
+
+        public TypedObjectMapperOptions<TSource, TTarget> ConstructUsing(Func<IObjectMapper, TSource, TTarget> constructor)
+        {
+            _ = constructor.WhenNotNull(nameof(constructor));
+
+            var factoryKey = (typeof(TSource), typeof(TTarget));
+
+            // TODO: for testing - clean up, provide the
+            ((ObjectMapper)Mapper)._sourceTargetFactories.Add(factoryKey, (mapper, source) => constructor.Invoke(mapper, (TSource) source));
+
+            //ConstructUsing(typeof(TSource), typeof(TTarget), (mapper, source) => constructor.Invoke(mapper, (TSource) source));
+
+            return this;
+        }
+
+
+
+
         private static string GetPropertyName<TType, TProperty>(Expression<Func<TType, TProperty>> sourceExpression)
-            where TType : class
+            //where TType : class
         {
             var propertyNodes = PropertyNavigator
                 .For<TType>()

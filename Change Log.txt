@@ -18,6 +18,10 @@ AllOverIt
     - Abstract target property (hence polymorphic) types can be handled through a custom conversion (using the mapper)
     - Where Source / Target value type properties are different an attempt will be made to convert the source to the
       target type. Requires the source type implement IConvertable.
+    - Added support to provide source to target type factory methods. Required removing the class constraints from
+      some Map() methods.
+    - Added Dictionary support for deep cloning. Requires a call to Configure() + ConstructUsing() on the options for
+      the source to target KeyValuePair types when they are not the same type.
 
 
 01 Sep 2022

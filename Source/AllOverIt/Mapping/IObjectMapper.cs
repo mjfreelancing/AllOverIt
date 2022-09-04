@@ -9,9 +9,7 @@ namespace AllOverIt.Mapping
         /// <typeparam name="TSource">The source type.</typeparam>
         /// <typeparam name="TTarget">The target type.</typeparam>
         /// <param name="configure">The action that allows the mapper options to be configured.</param>
-        void Configure<TSource, TTarget>(Action<TypedObjectMapperOptions<TSource, TTarget>> configure = default)
-            where TSource : class
-            where TTarget : class;
+        void Configure<TSource, TTarget>(Action<TypedObjectMapperOptions<TSource, TTarget>> configure = default);
 
         /// <summary>Default constructs the target type and copies properties from the provided source type.</summary>
         /// <typeparam name="TTarget">The target type.</typeparam>
@@ -26,8 +24,6 @@ namespace AllOverIt.Mapping
         /// <param name="source">The source object to be mapped onto a target.</param>
         /// <param name="target">The target instance to have property values copied onto.</param>
         /// <returns>The same target instance after all source properties have been copied.</returns>
-        TTarget Map<TSource, TTarget>(TSource source, TTarget target)
-            where TSource : class
-            where TTarget : class;
+        TTarget Map<TSource, TTarget>(TSource source, TTarget target);
     }
 }

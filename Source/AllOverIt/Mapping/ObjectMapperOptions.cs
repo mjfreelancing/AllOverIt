@@ -20,6 +20,12 @@ namespace AllOverIt.Mapping
         // Source property to target options - updated via extension methods
         private readonly IDictionary<string, TargetOptions> _sourceTargetOptions = new Dictionary<string, TargetOptions>();
 
+
+
+        //private readonly IDictionary<(Type, Type), Func<IObjectMapper, object, object>> _sourceTargetFactories = new Dictionary<(Type, Type), Func<IObjectMapper, object, object>>();
+
+
+
         /// <summary>The object mapper associated with these options. This will be null when used via the object extensions
         /// and not <see cref="IObjectMapper"/>.</summary>
         protected IObjectMapper Mapper { get; }
@@ -86,7 +92,8 @@ namespace AllOverIt.Mapping
         }
 
         /// <summary>Provides a source to target property value converter. This can be used when there is no implicit
-        /// conversion available between the source and target types.</summary>
+        /// conversion available between the source and target types. The converted value will be assigned to the target
+        /// instance.</summary>
         /// <param name="sourceName">The source type property name.</param>
         /// <param name="converter">The source to target value conversion delegate.</param>
         /// <returns>The same <see cref="ObjectMapperOptions"/> instance so a fluent syntax can be used.</returns>
@@ -99,6 +106,36 @@ namespace AllOverIt.Mapping
 
             return this;
         }
+
+
+
+
+
+        //public ObjectMapperOptions ConstructUsing(Type sourceType, Type targetType, Func<IObjectMapper, object, object> factory)
+        //{
+        //    _ = sourceType.WhenNotNull(nameof(sourceType));
+        //    _ = targetType.WhenNotNull(nameof(targetType));
+        //    _ = factory.WhenNotNull(nameof(factory));
+
+        //    _sourceTargetFactories.Add((sourceType, targetType), factory);
+
+        //    return this;
+        //}
+
+        //internal bool TryGetTargetFactory(Type sourceType, Type targetType, out Func<IObjectMapper, object, object> factory)
+        //{
+        //    if (_sourceTargetFactories.TryGetValue((sourceType, targetType), out factory))
+        //    {
+        //        return true;
+        //    }
+
+        //    factory = null;
+        //    return false;
+        //}
+
+
+
+
 
         internal bool IsExcluded(string sourceName)
         {

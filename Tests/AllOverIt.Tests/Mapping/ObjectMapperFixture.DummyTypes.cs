@@ -190,11 +190,13 @@ namespace AllOverIt.Tests.Mapping
         private class DummyDictionarySource
         {
             public IDictionary<string, int> Prop1 { get; set; }
+            public IDictionary<string, int> Prop2 { get; set; }
         }
 
         private class DummyDictionaryTarget
         {
             public IDictionary<string, int> Prop1 { get; set; }
+            public IDictionary<string, double> Prop2 { get; set; }
         }
 
         private class DummyEnumerableSource

@@ -71,6 +71,9 @@ namespace AllOverIt.Mapping
         private readonly IDictionary<Type, Func<object>> _typeCreators = new Dictionary<Type, Func<object>>();
         private readonly IDictionary<(Type, Type), MatchingPropertyMapper> _mapperCache = new Dictionary<(Type, Type), MatchingPropertyMapper>();
 
+        internal readonly IDictionary<(Type, Type), Func<IObjectMapper, object, object>> _sourceTargetFactories = new Dictionary<(Type, Type), Func<IObjectMapper, object, object>>();
+
+
         /// <summary>Defines the default mapper options to apply when explicit options are not setup at the time of mapping configuration.</summary>
         public ObjectMapperOptions DefaultOptions { get; }
 
@@ -82,8 +85,6 @@ namespace AllOverIt.Mapping
 
         /// <inheritdoc />
         public void Configure<TSource, TTarget>(Action<TypedObjectMapperOptions<TSource, TTarget>> configure = default)
-            where TSource : class
-            where TTarget : class
         {
             var sourceType = typeof(TSource);
             var targetType = typeof(TTarget);
@@ -110,12 +111,7 @@ namespace AllOverIt.Mapping
         /// <remarks>If mapping configuration is not performed in advance then default configuration will be applied. The configuration
         /// cannot be changed later.</remarks>
         public TTarget Map<TSource, TTarget>(TSource source, TTarget target)
-            where TSource : class
-            where TTarget : class
         {
-            _ = source.WhenNotNull(nameof(source));
-            _ = target.WhenNotNull(nameof(target));
-
             return (TTarget) MapSourceToTarget(source, target, false);
         }
 
@@ -134,124 +130,163 @@ namespace AllOverIt.Mapping
                 var sourcePropertyType = match.SourceInfo.PropertyType;
                 var targetPropertyType = match.TargetInfo.PropertyType;
 
-                var doDeepClone = isDeepClone || propertyMapper.MapperOptions.IsDeepClone(match.SourceInfo.Name);
+                var deepCloneSource = isDeepClone || propertyMapper.MapperOptions.IsDeepClone(match.SourceInfo.Name);
 
+                var targetValue = GetMappedSourceValue(sourceValue, sourcePropertyType, targetPropertyType, deepCloneSource);
 
-                // If the target property type is different then a conversion or mapping may be required
-                // Enumerable types need to be checked because the source / target types
-
-
-
-
-                if (sourceValue is not null)
-                {
-                    var sourceValueType = sourceValue.GetType();
-
-                    if (sourceValueType.IsValueType)
-                    {
-                        sourceValue = ConvertValueIfNotTargetType(sourceValue, sourceValueType, targetPropertyType);
-                    }
-                    else if (sourceValueType != CommonTypes.StringType)
-                    {
-                        var isAssignable = targetPropertyType.IsAssignableFrom(sourceValueType);
-
-                        if (sourceValueType.IsEnumerableType())
-                        {
-                            // Expecting the target to also be an enumerable type
-                            Throw<ObjectMapperException>.When(
-                                !targetPropertyType.IsEnumerableType(),
-                                $"Cannot map {sourceValueType.GetFriendlyName()} to {targetPropertyType.GetFriendlyName()}. Use a custom conversion.");
-
-                            if (!isAssignable || doDeepClone)
-                            {
-                                switch (sourceValue)
-                                {
-                                    case IDictionary dictionary:
-                                        break;
-
-                                    case IEnumerable enumerable:
-                                        break;
-
-                                    default:
-                                        throw new ObjectMapperException($"Cannot map type '{sourceValueType.GetFriendlyName()}'.");
-                                }
-
-
-
-                                // HANDLE DICTIONARY VS COLLECTIONS
-
-
-                                var sourceElementType = sourceValueType.IsArray
-                                    ? sourceValueType.GetElementType()
-                                    : sourceValueType.GetGenericArguments()[0];
-
-                                var targetElementType = targetPropertyType.IsArray
-                                    ? targetPropertyType.GetElementType()
-                                    : targetPropertyType.GetGenericArguments()[0];
-
-                                var listType = CommonTypes.ListGenericType.MakeGenericType(new[] { targetElementType });
-
-                                if (!_listCreators.TryGetValue(listType, out var listFactory))
-                                {
-                                    listFactory = listType.GetFactory();
-                                    
-                                    _listCreators.Add(listType, listFactory);
-                                }
-
-                                var typedList = (IList) listFactory.Invoke();
-
-                                var sourceElements = GetSourceElements(sourceValue);
-
-                                foreach (var sourceElement in sourceElements)
-                                {
-                                    var currentElement = sourceElement;
-
-                                    if (sourceElementType.IsValueType)
-                                    {
-                                        currentElement = ConvertValueIfNotTargetType(currentElement, sourceElementType, targetElementType);
-                                    }
-                                    else if (sourceElementType != CommonTypes.StringType)
-                                    {
-                                        var targetCtor = targetElementType.GetConstructor(Type.EmptyTypes);     // TODO: Cache a compiled factory
-
-                                        Throw<ObjectMapperException>.WhenNull(
-                                            targetCtor, 
-                                            $"The type '{targetElementType.GetFriendlyName()}' does not have a default constructor. Use a custom conversion.");
-
-                                        var targetInstance = targetCtor.Invoke(null);
-
-                                        currentElement = MapSourceToTarget(currentElement, targetInstance, doDeepClone);
-                                    }
-
-                                    typedList.Add(currentElement);
-                                }
-
-                                if (targetPropertyType.IsArray)
-                                {
-                                    var toArrayMethod = listType.GetMethod("ToArray");                          // TODO: Cache this
-                                    sourceValue = toArrayMethod.Invoke(typedList, Type.EmptyTypes);
-                                }
-                                else
-                                {
-                                    sourceValue = typedList;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (!isAssignable || doDeepClone)
-                            {
-                                var targetInstance = CreateType(targetPropertyType);
-                                sourceValue = MapSourceToTarget(sourceValue, targetInstance, doDeepClone);
-                            }
-                        }
-                    }                   
-                }
-
-                match.TargetSetter.Invoke(target, sourceValue);
+                match.TargetSetter.Invoke(target, targetValue);
             }
 
             return target;
+        }
+
+        private object GetMappedSourceValue(object sourceValue, Type sourcePropertyType, Type targetPropertyType, bool deepClone)
+        {
+            if (sourceValue is null)
+            {
+                return null;
+            }
+
+            var sourceValueType = sourceValue.GetType();
+
+            if (sourceValueType == CommonTypes.StringType)
+            {
+                return sourceValue;
+            }
+
+            if (sourceValueType.IsValueType)
+            {
+                return ConvertValueIfNotTargetType(sourceValue, sourceValueType, targetPropertyType);
+            }
+
+            var isAssignable = targetPropertyType.IsAssignableFrom(sourceValueType);
+
+            // Assuming the target is also an enumerable type - a cast exception will result if it cannot be assigned
+            if (!isAssignable || deepClone)
+            {
+                return CreateTargetFromSourceValue(sourceValue, sourceValueType, sourcePropertyType, targetPropertyType, deepClone);
+            }
+
+            return sourceValue;
+        }
+
+        private object CreateTargetFromSourceValue(object sourceValue, Type sourceValueType, Type sourcePropertyType, Type targetPropertyType, bool deepClone)
+        {
+            if (sourceValueType.IsEnumerableType())
+            {
+                return sourceValue switch
+                {
+                    IDictionary _ => CreateTargetDictionary(sourceValue, sourceValueType, targetPropertyType),
+                    IEnumerable _ => CreateTargetCollection(sourceValue, sourceValueType, targetPropertyType, deepClone),
+                    _ => throw new ObjectMapperException($"Cannot map type '{sourceValueType.GetFriendlyName()}'."),
+                };
+            }
+
+            if (_sourceTargetFactories.TryGetValue((sourcePropertyType, targetPropertyType), out var factory))
+            {
+                return factory.Invoke(this, sourceValue);
+            }
+
+            var targetInstance = CreateType(targetPropertyType);
+            return MapSourceToTarget(sourceValue, targetInstance, deepClone);
+        }
+
+        private object CreateTargetDictionary(object sourceValue, Type sourceValueType, Type targetPropertyType)
+        {
+            Throw<ObjectMapperException>.When(
+                !sourceValueType.IsGenericType || !targetPropertyType.IsGenericType,
+                "Non-generic dictionary mapping is not supported.");
+
+            // TODO: See what factories can be cached
+
+            // get types for the source dictionary
+            var sourceTypeArgs = sourceValueType.GenericTypeArguments;
+            var sourceDictionaryKeyType = sourceTypeArgs[0];
+            var sourceDictionaryValueType = sourceTypeArgs[1];
+            var sourceKvpType = CommonTypes.KeyValuePairType.MakeGenericType(new[] { sourceDictionaryKeyType, sourceDictionaryValueType });
+
+
+            // Create the target dictionary
+            var targetTypeArgs = targetPropertyType.GenericTypeArguments;
+            var targetKeyType = targetTypeArgs[0];
+            var targetValueType = targetTypeArgs[1];
+
+            var dictionaryType = CommonTypes.DictionaryGenericType.MakeGenericType(new[] { targetKeyType, targetValueType });
+            var dictionaryFactory = dictionaryType.GetFactory();
+            var dictionaryInstance = dictionaryFactory.Invoke();
+
+            var targetKvpType = CommonTypes.KeyValuePairType.MakeGenericType(new[] { targetKeyType, targetValueType });
+
+            var dictionaryAddMethod = typeof(ICollection<>)
+                .MakeGenericType(targetKvpType)
+                .GetMethod("Add", new[] { targetKvpType });
+
+            var sourceElements = GetSourceElements(sourceValue);
+
+            foreach (var sourceElement in sourceElements)
+            {
+                // Start by assuming the sourceKvpType and targetKvpType are the same. If they are not, then a casting
+                // error will be thrown and the caller should call ConstructUsing() to provide the required factory.
+                var targetElement = sourceElement;
+
+                if (_sourceTargetFactories.TryGetValue((sourceKvpType, targetKvpType), out var factory))
+                {
+                    targetElement = factory.Invoke(this, sourceElement);
+                }
+
+                dictionaryAddMethod.Invoke(dictionaryInstance, new[] { targetElement });
+            }
+
+            return dictionaryInstance;
+        }
+
+        private object CreateTargetCollection(object sourceValue, Type sourceValueType, Type targetPropertyType, bool doDeepClone)
+        {
+            var sourceElementType = sourceValueType.IsArray
+                                    ? sourceValueType.GetElementType()
+                                    : sourceValueType.GetGenericArguments()[0];
+
+            var targetElementType = targetPropertyType.IsArray
+                ? targetPropertyType.GetElementType()
+                : targetPropertyType.GetGenericArguments()[0];
+
+            var (listType, listInstance) = CreateTypedList(targetElementType);
+
+            var sourceElements = GetSourceElements(sourceValue);
+
+            foreach (var sourceElement in sourceElements)
+            {
+                var currentElement = sourceElement;
+
+                if (sourceElementType.IsValueType)
+                {
+                    currentElement = ConvertValueIfNotTargetType(currentElement, sourceElementType, targetElementType);
+                }
+                else if (sourceElementType != CommonTypes.StringType)
+                {
+                    var targetCtor = targetElementType.GetConstructor(Type.EmptyTypes);     // TODO: Cache a compiled factory
+
+                    Throw<ObjectMapperException>.WhenNull(
+                        targetCtor,
+                        $"The type '{targetElementType.GetFriendlyName()}' does not have a default constructor. Use a custom conversion.");
+
+                    var targetInstance = targetCtor.Invoke(null);
+
+                    currentElement = MapSourceToTarget(currentElement, targetInstance, doDeepClone);
+                }
+
+                listInstance.Add(currentElement);
+            }
+
+            if (targetPropertyType.IsArray)
+            {
+                var toArrayMethod = listType.GetMethod("ToArray");                          // TODO: Cache this
+                return toArrayMethod.Invoke(listInstance, Type.EmptyTypes);
+            }
+            else
+            {
+                return listInstance;
+            }
         }
 
         private static object ConvertValueIfNotTargetType(object sourceValue, Type sourceValueType, Type targetPropertyType)
@@ -269,6 +304,21 @@ namespace AllOverIt.Mapping
             }
 
             return sourceValue;
+        }
+
+        private (Type, IList) CreateTypedList(Type targetElementType)
+        {
+            var listType = CommonTypes.ListGenericType.MakeGenericType(new[] { targetElementType });
+
+            if (!_listCreators.TryGetValue(listType, out var listFactory))
+            {
+                listFactory = listType.GetFactory();
+
+                _listCreators.Add(listType, listFactory);
+            }
+
+            var listInstance = (IList) listFactory.Invoke();
+            return (listType, listInstance);
         }
 
         private static IEnumerable<object> GetSourceElements(object sourceElements)
@@ -326,8 +376,8 @@ namespace AllOverIt.Mapping
         }
 
         private ObjectMapperOptions GetConfiguredOptionsOrDefault<TSource, TTarget>(Action<TypedObjectMapperOptions<TSource, TTarget>> configure)
-            where TSource : class
-            where TTarget : class
+            //where TSource : class
+            //where TTarget : class
         {
             if (configure == null)
             {

@@ -829,30 +829,6 @@ namespace AllOverIt.Tests.Mapping
         public class Map_Source_Target : ObjectMapperFixture
         {
             [Fact]
-            public void Should_Throw_When_Source_Null()
-            {
-                Invoking(() =>
-                {
-                    _ = _mapper.Map<DummySource1, DummyTarget>(null, _target);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithParameterName("source");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Target_Null()
-            {
-                Invoking(() =>
-                    {
-                        _ = _mapper.Map<DummySource1, DummyTarget>(_source1, null);
-                    })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithParameterName("target");
-            }
-
-            [Fact]
             public void Should_Return_Same_Target()
             {
                 var actual = _mapper.Map<DummySource1, DummyTarget>(_source1, _target);
@@ -1418,6 +1394,12 @@ namespace AllOverIt.Tests.Mapping
             {
                 var mapper = new ObjectMapper();
 
+                mapper.Configure<DummyDictionarySource, DummyDictionaryTarget>(opt =>
+                {
+                    // Excluding as the source destination are different types - would never be shallow copied
+                    opt.Exclude(src => src.Prop2);
+                });
+
                 var source = Create<DummyDictionarySource>();
                 var actual = new DummyDictionaryTarget();
 
@@ -1442,9 +1424,15 @@ namespace AllOverIt.Tests.Mapping
             [Fact]
             public void Should_Deep_Copy_Dictionary_Values()
             {
-                var mapper = new ObjectMapper();
+                var objectMapper = new ObjectMapper();
 
-                mapper.Configure<DummyDictionarySource, DummyDictionaryTarget>(opt =>
+                // TODO: Add test to show it throws when this is not configured
+                objectMapper.Configure<KeyValuePair<string, int>, KeyValuePair<string, double>>(opt =>
+                {
+                    opt.ConstructUsing((mapper, value) => new KeyValuePair<string, double>(value.Key, (double) value.Value));
+                });
+
+                objectMapper.Configure<DummyDictionarySource, DummyDictionaryTarget>(opt =>
                 {
                     opt.DeepClone(src => src.Prop1);
                 });
@@ -1452,9 +1440,12 @@ namespace AllOverIt.Tests.Mapping
                 var source = Create<DummyDictionarySource>();
                 var actual = new DummyDictionaryTarget();
 
-                _ = mapper.Map<DummyDictionarySource, DummyDictionaryTarget>(source, actual);
+                _ = objectMapper.Map<DummyDictionarySource, DummyDictionaryTarget>(source, actual);
 
-                actual.Prop1.Should().BeSameAs(source.Prop1);
+                actual.Prop1.Should().NotBeSameAs(source.Prop1);
+                source.Prop1.Should().BeEquivalentTo(actual.Prop1);
+
+                // TODO: set expectation on Prop2
             }
         }
     }
