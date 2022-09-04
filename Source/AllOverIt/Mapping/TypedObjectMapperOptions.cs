@@ -41,7 +41,7 @@ namespace AllOverIt.Mapping
             return this;
         }
 
-        /// <summary>Configures a source property for deep cloning when object mapping. All child object
+        /// <summary>Configures a source property for deep cloning when object mapping.</summary>
         /// <typeparam name="TProperty">The source property type.</typeparam>
         /// <param name="sourceExpression">An expression to specify the source property to be deep cloned.</param>
         /// <returns>The same <see cref="TypedObjectMapperOptions{TSource, TTarget}"/> instance so a fluent syntax can be used.</returns>
