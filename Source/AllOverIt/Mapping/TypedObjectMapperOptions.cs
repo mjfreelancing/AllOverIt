@@ -18,7 +18,9 @@ namespace AllOverIt.Mapping
 
         /// <summary>Constructor.</summary>
         /// <param name="mapper">The associated object mapper.</param>
-        public TypedObjectMapperOptions(IObjectMapper mapper, Action<Type, Type, Func<IObjectMapper, object, object>> sourceTargetFactoryRegistration)
+        /// <param name="sourceTargetFactoryRegistration">Used to register a target type factory with the object mapper for a provided
+        /// source and target type combination.</param>
+        internal TypedObjectMapperOptions(IObjectMapper mapper, Action<Type, Type, Func<IObjectMapper, object, object>> sourceTargetFactoryRegistration)
             : base(mapper)
         {
             _sourceTargetFactoryRegistration = sourceTargetFactoryRegistration.WhenNotNull(nameof(sourceTargetFactoryRegistration));
