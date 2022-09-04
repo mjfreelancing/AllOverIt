@@ -17,14 +17,8 @@ namespace AllOverIt.Mapping
             public Func<IObjectMapper, object, object> Converter { get; set; }
         }
 
-        // Source property to target options - updated via extension methods
+        // Source property to target options
         private readonly IDictionary<string, TargetOptions> _sourceTargetOptions = new Dictionary<string, TargetOptions>();
-
-
-
-        //private readonly IDictionary<(Type, Type), Func<IObjectMapper, object, object>> _sourceTargetFactories = new Dictionary<(Type, Type), Func<IObjectMapper, object, object>>();
-
-
 
         /// <summary>The object mapper associated with these options. This will be null when used via the object extensions
         /// and not <see cref="IObjectMapper"/>.</summary>
@@ -40,8 +34,7 @@ namespace AllOverIt.Mapping
         /// <param name="mapper">The associated object mapper.</param>
         public ObjectMapperOptions(IObjectMapper mapper)
         {
-            // Will be null when used via the object extensions and not IObjectMapper
-            Mapper = mapper;
+            Mapper = mapper.WhenNotNull(nameof(mapper));
         }
 
         /// <summary>Excludes one or more source properties from object mapping.</summary>
@@ -106,36 +99,6 @@ namespace AllOverIt.Mapping
 
             return this;
         }
-
-
-
-
-
-        //public ObjectMapperOptions ConstructUsing(Type sourceType, Type targetType, Func<IObjectMapper, object, object> factory)
-        //{
-        //    _ = sourceType.WhenNotNull(nameof(sourceType));
-        //    _ = targetType.WhenNotNull(nameof(targetType));
-        //    _ = factory.WhenNotNull(nameof(factory));
-
-        //    _sourceTargetFactories.Add((sourceType, targetType), factory);
-
-        //    return this;
-        //}
-
-        //internal bool TryGetTargetFactory(Type sourceType, Type targetType, out Func<IObjectMapper, object, object> factory)
-        //{
-        //    if (_sourceTargetFactories.TryGetValue((sourceType, targetType), out factory))
-        //    {
-        //        return true;
-        //    }
-
-        //    factory = null;
-        //    return false;
-        //}
-
-
-
-
 
         internal bool IsExcluded(string sourceName)
         {

@@ -67,12 +67,9 @@ namespace AllOverIt.Mapping
             }
         }
 
-        private readonly IDictionary<Type, Func<object>> _listCreators = new Dictionary<Type, Func<object>>();
-        private readonly IDictionary<Type, Func<object>> _typeCreators = new Dictionary<Type, Func<object>>();
+        private readonly IDictionary<Type, Func<object>> _internalTypeFactories = new Dictionary<Type, Func<object>>();
         private readonly IDictionary<(Type, Type), MatchingPropertyMapper> _mapperCache = new Dictionary<(Type, Type), MatchingPropertyMapper>();
-
-        internal readonly IDictionary<(Type, Type), Func<IObjectMapper, object, object>> _sourceTargetFactories = new Dictionary<(Type, Type), Func<IObjectMapper, object, object>>();
-
+        private readonly IDictionary<(Type, Type), Func<IObjectMapper, object, object>> _sourceTargetFactories = new Dictionary<(Type, Type), Func<IObjectMapper, object, object>>();
 
         /// <summary>Defines the default mapper options to apply when explicit options are not setup at the time of mapping configuration.</summary>
         public ObjectMapperOptions DefaultOptions { get; }
@@ -205,19 +202,16 @@ namespace AllOverIt.Mapping
             var sourceDictionaryValueType = sourceTypeArgs[1];
             var sourceKvpType = CommonTypes.KeyValuePairType.MakeGenericType(new[] { sourceDictionaryKeyType, sourceDictionaryValueType });
 
-
             // Create the target dictionary
             var targetTypeArgs = targetPropertyType.GenericTypeArguments;
             var targetKeyType = targetTypeArgs[0];
             var targetValueType = targetTypeArgs[1];
 
-            var dictionaryType = CommonTypes.DictionaryGenericType.MakeGenericType(new[] { targetKeyType, targetValueType });
-            var dictionaryFactory = dictionaryType.GetFactory();
-            var dictionaryInstance = dictionaryFactory.Invoke();
+            var dictionaryInstance = CreatedTypedDictionary(targetKeyType, targetValueType);
 
             var targetKvpType = CommonTypes.KeyValuePairType.MakeGenericType(new[] { targetKeyType, targetValueType });
 
-            var dictionaryAddMethod = typeof(ICollection<>)
+            var dictionaryAddMethod = CommonTypes.ICollectionGenericType
                 .MakeGenericType(targetKvpType)
                 .GetMethod("Add", new[] { targetKvpType });
 
@@ -312,21 +306,6 @@ namespace AllOverIt.Mapping
             return sourceValue;
         }
 
-        private (Type, IList) CreateTypedList(Type targetElementType)
-        {
-            var listType = CommonTypes.ListGenericType.MakeGenericType(new[] { targetElementType });
-
-            if (!_listCreators.TryGetValue(listType, out var listFactory))
-            {
-                listFactory = listType.GetFactory();
-
-                _listCreators.Add(listType, listFactory);
-            }
-
-            var listInstance = (IList) listFactory.Invoke();
-            return (listType, listInstance);
-        }
-
         private static IEnumerable<object> GetSourceElements(object sourceElements)
         {
             var sourceItemsIterator = ((IEnumerable) sourceElements).GetEnumerator();
@@ -337,16 +316,45 @@ namespace AllOverIt.Mapping
             }
         }
 
+        private (Type, IList) CreateTypedList(Type targetElementType)
+        {
+            var listType = CommonTypes.ListGenericType.MakeGenericType(new[] { targetElementType });
+
+            if (!_internalTypeFactories.TryGetValue(listType, out var factory))
+            {
+                factory = listType.GetFactory();
+
+                _internalTypeFactories.Add(listType, factory);
+            }
+
+            var listInstance = (IList) factory.Invoke();
+            return (listType, listInstance);
+        }
+
+        private object CreatedTypedDictionary(Type keyType, Type valueType)
+        {
+            var dictionaryType = CommonTypes.DictionaryGenericType.MakeGenericType(new[] { keyType, valueType });
+
+            if (!_internalTypeFactories.TryGetValue(dictionaryType, out var factory))
+            {
+                factory = dictionaryType.GetFactory();
+
+                _internalTypeFactories.Add(dictionaryType, factory);
+            }
+
+            return factory.Invoke();
+        }
+
         private object CreateType(Type type)
         {
-            if (_typeCreators.TryGetValue(type, out var creator))
+            if (_internalTypeFactories.TryGetValue(type, out var creator))
             {
                 return creator.Invoke();
             }
 
             creator = type.GetFactory();
 
-            _typeCreators.Add(type, creator);
+            _internalTypeFactories.Add(type, creator);
 
             return creator.Invoke();
         }
@@ -382,15 +390,17 @@ namespace AllOverIt.Mapping
         }
 
         private ObjectMapperOptions GetConfiguredOptionsOrDefault<TSource, TTarget>(Action<TypedObjectMapperOptions<TSource, TTarget>> configure)
-            //where TSource : class
-            //where TTarget : class
         {
             if (configure == null)
             {
                 return DefaultOptions;
             }
 
-            var mapperOptions = new TypedObjectMapperOptions<TSource, TTarget>(this);
+            var mapperOptions = new TypedObjectMapperOptions<TSource, TTarget>(this, (sourceType, targetType, factory) =>
+            {
+                var key = (sourceType, targetType);
+                _sourceTargetFactories.Add(key, factory);
+            });
 
             configure?.Invoke(mapperOptions);
 

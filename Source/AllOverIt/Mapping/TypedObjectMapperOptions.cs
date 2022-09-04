@@ -3,7 +3,6 @@ using AllOverIt.Helpers.PropertyNavigation;
 using AllOverIt.Helpers.PropertyNavigation.Extensions;
 using AllOverIt.Mapping.Exceptions;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -13,16 +12,16 @@ namespace AllOverIt.Mapping
     /// <typeparam name="TSource">The source object type.</typeparam>
     /// <typeparam name="TTarget">The target object type.</typeparam>
     public sealed class TypedObjectMapperOptions<TSource, TTarget> : ObjectMapperOptions
-        //where TSource : class
-        //where TTarget : class
     {
+        // source type, target type, factory (ampper, source, target)
+        private readonly Action<Type, Type, Func<IObjectMapper, object, object>> _sourceTargetFactoryRegistration;
+
         /// <summary>Constructor.</summary>
         /// <param name="mapper">The associated object mapper.</param>
-        public TypedObjectMapperOptions(IObjectMapper mapper, IDictionary<(Type, Type), Func<IObjectMapper, object, object>> sourceTargetFactories = default)       // TODO: Use this
+        public TypedObjectMapperOptions(IObjectMapper mapper, Action<Type, Type, Func<IObjectMapper, object, object>> sourceTargetFactoryRegistration)
             : base(mapper)
         {
-            // The base class allows null - for use with object extensions
-            _ = mapper.WhenNotNull(nameof(mapper));
+            _sourceTargetFactoryRegistration = sourceTargetFactoryRegistration.WhenNotNull(nameof(sourceTargetFactoryRegistration));
         }
 
         /// <summary>Excludes a source property from object mapping.</summary>
@@ -43,7 +42,7 @@ namespace AllOverIt.Mapping
         /// <summary>Configures a source property for deep cloning when object mapping. All child object
         /// <typeparam name="TProperty">The source property type.</typeparam>
         /// <param name="sourceExpression">An expression to specify the source property to be deep cloned.</param>
-        /// <returns></returns>
+        /// <returns>The same <see cref="TypedObjectMapperOptions{TSource, TTarget}"/> instance so a fluent syntax can be used.</returns>
         public TypedObjectMapperOptions<TSource, TTarget> DeepClone<TProperty>(Expression<Func<TSource, TProperty>> sourceExpression)
         {
             _ = sourceExpression.WhenNotNull(nameof(sourceExpression));
@@ -94,29 +93,19 @@ namespace AllOverIt.Mapping
             return this;
         }
 
-
-
-        //_sourceTargetFactories
-
-        public TypedObjectMapperOptions<TSource, TTarget> ConstructUsing(Func<IObjectMapper, TSource, TTarget> constructor)
+        /// <summary>Provides the option to specify a factory method to create the required target type from a given source.</summary>
+        /// <param name="targetFactory">The factory that will create the required target type.</param>
+        /// <returns>The same <see cref="TypedObjectMapperOptions{TSource, TTarget}"/> instance so a fluent syntax can be used.</returns>
+        public TypedObjectMapperOptions<TSource, TTarget> ConstructUsing(Func<IObjectMapper, TSource, TTarget> targetFactory)
         {
-            _ = constructor.WhenNotNull(nameof(constructor));
+            _ = targetFactory.WhenNotNull(nameof(targetFactory));
 
-            var factoryKey = (typeof(TSource), typeof(TTarget));
-
-            // TODO: for testing - clean up, provide the
-            ((ObjectMapper)Mapper)._sourceTargetFactories.Add(factoryKey, (mapper, source) => constructor.Invoke(mapper, (TSource) source));
-
-            //ConstructUsing(typeof(TSource), typeof(TTarget), (mapper, source) => constructor.Invoke(mapper, (TSource) source));
+            _sourceTargetFactoryRegistration.Invoke(typeof(TSource), typeof(TTarget), (mapper, source) => targetFactory.Invoke(mapper, (TSource) source));
 
             return this;
         }
 
-
-
-
         private static string GetPropertyName<TType, TProperty>(Expression<Func<TType, TProperty>> sourceExpression)
-            //where TType : class
         {
             var propertyNodes = PropertyNavigator
                 .For<TType>()

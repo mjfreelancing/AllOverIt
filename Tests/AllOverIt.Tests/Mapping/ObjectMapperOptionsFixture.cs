@@ -21,7 +21,7 @@ namespace AllOverIt.Tests.Mapping
         public class Constructor : ObjectMapperOptionsFixture
         {
             [Fact]
-            public void Should_Not_Throw_When_Mapper_Null()
+            public void Should_Throw_When_Mapper_Null()
             {
                 Invoking(() =>
                 {
@@ -29,7 +29,8 @@ namespace AllOverIt.Tests.Mapping
                     _ = new ObjectMapperOptions(null);
                 })
                     .Should()
-                    .NotThrow();
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("mapper");
             }
         }
 

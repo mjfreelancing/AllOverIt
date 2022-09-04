@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Mapping;
-using AllOverIt.Mapping.Extensions;
 using AllOverIt.Reflection;
 using AllOverIt.Serialization.Abstractions;
 using AllOverIt.Serialization.SystemTextJson;
@@ -43,12 +42,6 @@ namespace DtoMapping
                 }
             };
 
-            StaticCreateTargetUsingBindingOnOptions(source, serializer);
-            Console.WriteLine();
-
-            StaticMapOntoExistingTargetUsingBindingOnOptions(source, serializer);
-            Console.WriteLine();
-
             MapperCreateTargetUsingBindingOnOptions(source, serializer);
             Console.WriteLine();
 
@@ -66,37 +59,6 @@ namespace DtoMapping
 
             Console.WriteLine("All Over It.");
             Console.ReadKey();
-        }
-
-        private static void StaticCreateTargetUsingBindingOnOptions(SourceType source, IJsonSerializer serializer)
-        {
-            var options = new ObjectMapperOptions(null)
-            {
-                Binding = BindingOptions.DefaultScope | BindingOptions.Private | BindingOptions.DefaultAccessor | BindingOptions.DefaultVisibility
-            };
-
-            // Nested objects and collections are not supported by the static MapTo() methods.
-            options.Exclude(nameof(SourceType.Prop3), nameof(SourceType.Prop3b), nameof(SourceType.Prop8), nameof(SourceType.Prop9));
-
-            var target = source.MapTo<TargetType>(options);
-
-            PrintMapping("Static create target, binding private properties only", source, target, serializer);
-        }
-
-        private static void StaticMapOntoExistingTargetUsingBindingOnOptions(SourceType source, IJsonSerializer serializer)
-        {
-            var options = new ObjectMapperOptions(null)
-            {
-                Binding = BindingOptions.DefaultScope | BindingOptions.Private | BindingOptions.DefaultAccessor | BindingOptions.DefaultVisibility
-            };
-
-            // Nested objects and collections are not supported by the static MapTo() methods.
-            options.Exclude(nameof(SourceType.Prop3), nameof(SourceType.Prop3b), nameof(SourceType.Prop8), nameof(SourceType.Prop9));
-
-            var target = new TargetType();
-            _ = source.MapTo(target, options);
-
-            PrintMapping("Static existing target, binding private properties only", source, target, serializer);
         }
 
         private static void MapperCreateTargetUsingBindingOnOptions(SourceType source, IJsonSerializer serializer)
@@ -234,7 +196,7 @@ namespace DtoMapping
         private static void PrintMapping(string message, SourceType source, TargetType target, IJsonSerializer serializer)
         {
             Console.WriteLine(message);
-            //Console.WriteLine($"  Source = {serializer.SerializeObject(source)} (Prop4 = {source.GetProp4()})");
+            Console.WriteLine($"  Source = {serializer.SerializeObject(source)} (Prop4 = {source.GetProp4()})");
             Console.WriteLine($"  Target = {serializer.SerializeObject(target)}");
         }
     }

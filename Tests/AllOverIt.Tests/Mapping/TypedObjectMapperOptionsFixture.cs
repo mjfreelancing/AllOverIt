@@ -32,12 +32,12 @@ namespace AllOverIt.Tests.Mapping
         }
 
         private readonly ObjectMapper _mapper;
-        private readonly TypedObjectMapperOptions<DummySource, DummyTarget> _options;
+        private TypedObjectMapperOptions<DummySource, DummyTarget> _options;
 
         public TypedObjectMapperOptionsFixture()
         {
             _mapper = new();
-            _options = new(_mapper);
+            _options = new(_mapper, (source, target, factory) => { });
         }
 
         public class Constructor : TypedObjectMapperOptionsFixture
@@ -47,7 +47,7 @@ namespace AllOverIt.Tests.Mapping
             {
                 Invoking(() =>
                 {
-                    _ = new TypedObjectMapperOptions<DummySource, DummyTarget>(null);
+                    _ = new TypedObjectMapperOptions<DummySource, DummyTarget>(null, (source, target, factory) => { });
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -219,33 +219,43 @@ namespace AllOverIt.Tests.Mapping
         public class WithConversion : TypedObjectMapperOptionsFixture
         {
             [Fact]
+            public void Should_Throw_When_SourceExpression_Null()
+            {
+                Invoking(() =>
+                {
+                    _options.WithConversion<int>(null, (mapper, value) => value);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("sourceExpression");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Converter_Null()
+            {
+                Invoking(() =>
+                {
+                    _options.WithConversion<int>(source => source.Prop3, null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("converter");
+            }
+
+            [Fact]
             public void Should_Provide_Mapper()
             {
-                var propName = Create<string>();
-
                 IObjectMapper actual = null;
 
-                _options.WithConversion(propName, (mapper, value) =>
+                _options.WithConversion<int>(source => source.Prop3, (mapper, value) =>
                 {
                     actual = mapper;
                     return value;
                 });
 
-                _ = _options.GetConvertedValue(propName, Create<int>());
+                _ = _options.GetConvertedValue(nameof(DummySource.Prop3), Create<int>());
 
                 actual.Should().BeSameAs(_mapper);
-            }
-
-            [Fact]
-            public void Should_Throw_When_SourceExpression_Null()
-            {
-                Invoking(() =>
-                    {
-                        _options.WithConversion<int>(null, (mapper, value) => value);
-                    })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("sourceExpression");
             }
 
             [Fact]
@@ -258,18 +268,6 @@ namespace AllOverIt.Tests.Mapping
                     .Should()
                     .Throw<ObjectMapperException>()
                     .WithMessage("ObjectMapper do not support nested mappings (source => source.Child.Prop1).");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Converter_Null()
-            {
-                Invoking(() =>
-                    {
-                        _options.WithConversion(source => source.Prop3, null);
-                    })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("converter");
             }
 
             [Fact]
@@ -289,6 +287,88 @@ namespace AllOverIt.Tests.Mapping
             public void Should_Return_Same_Options()
             {
                 var actual = _options.WithConversion(source => source.Prop3, (mapper, value) => value);
+
+                actual.Should().Be(_options);
+            }
+        }
+
+        public class ConstructUsing : TypedObjectMapperOptionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_TargetFactory_Null()
+            {
+                Invoking(() =>
+                {
+                    _options.ConstructUsing(null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("targetFactory");
+            }
+
+            [Fact]
+            public void Should_Provide_Mapper_When_Invoke_Factory()
+            {
+                // the mapper actually stores / invokes the factory
+
+                IObjectMapper actual = null;
+
+                _mapper.Configure<DummyChild, DummyChild>(opt =>
+                {
+                    opt.ConstructUsing((mapper, value) =>
+                    {
+                        actual = mapper;
+                        return new DummyChild();
+                    });
+                });
+
+                _mapper.Configure<DummySource, DummyTarget>(opt =>
+                {
+                    // need to force a deep clone for source / target properties of the same type
+                    opt.DeepClone(src => src.Child);
+                });
+
+                var source = Create<DummySource>();
+
+                _ = _mapper.Map<DummyTarget>(source);
+
+                actual.Should().BeSameAs(_mapper);
+            }
+
+            [Fact]
+            public void Should_Use_Factory()
+            {
+                // the mapper actually stores / invokes the factory
+
+                DummyChild actual = null;
+                var expected = Create<DummyChild>();
+
+                _mapper.Configure<DummyChild, DummyChild>(opt =>
+                {
+                    opt.ConstructUsing((mapper, value) =>
+                    {
+                        actual = expected;
+                        return expected;
+                    });
+                });
+
+                _mapper.Configure<DummySource, DummyTarget>(opt =>
+                {
+                    // need to force a deep clone for source / target properties of the same type
+                    opt.DeepClone(src => src.Child);
+                });
+
+                var source = Create<DummySource>();
+
+                _ = _mapper.Map<DummyTarget>(source);
+
+                expected.Should().BeSameAs(actual);
+            }
+
+            [Fact]
+            public void Should_Return_Same_Options()
+            {
+                var actual = _options.ConstructUsing((mapper, value) => default);
 
                 actual.Should().Be(_options);
             }

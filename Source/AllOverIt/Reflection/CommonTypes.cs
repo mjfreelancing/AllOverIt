@@ -122,6 +122,12 @@ namespace AllOverIt.Reflection
         /// <summary>Type declaration for a <c>typeof(IEnumerable&lt;&gt;)</c>.</summary>
         public static readonly Type IEnumerableGenericType = typeof(IEnumerable<>);
 
+        /// <summary>Type declaration for a <c>typeof(ICollection)</c>.</summary>
+        public static readonly Type ICollectionType = typeof(ICollection);
+
+        /// <summary>Type declaration for a <c>typeof(ICollection&lt;&gt;)</c>.</summary>
+        public static readonly Type ICollectionGenericType = typeof(ICollection<>);
+
         /// <summary>Type declaration for a <c>typeof(List&lt;&gt;)</c>.</summary>
         public static readonly Type ListGenericType = typeof(List<>);
 

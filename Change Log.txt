@@ -5,6 +5,8 @@ Version 6.0.0-RC.9
 ======================================================================================================================
 AllOverIt
   * ObjectMapper significantly updated:
+    - Dropped support for object extensions to statically map objects. Lacks performance, does not promote testing,
+      limited in functionality.
     - The WithConversion() call now provides the mapper instance so complex nested scenarios can be addressed
     - Source / Target type mapping can be configured on demand (internally) when there are no special requirements.
       If there's no custom alias, exclusion, or conversion required then the source / target types do not need to

@@ -1,10 +1,12 @@
 ﻿#define AUTOMAPPER
 using AllOverIt.Mapping;
-using AllOverIt.Mapping.Extensions;
-using AutoMapper;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Jobs;
 using System;
+
+#if AUTOMAPPER
+    using AutoMapper;
+#endif
 
 namespace ObjectMappingBenchmarking
 {
@@ -62,7 +64,6 @@ namespace ObjectMappingBenchmarking
 
         private readonly SimpleSource _simpleSource;
         private readonly SimpleTarget _simpleTarget;
-        private readonly ObjectMapperOptions _options;
 
         public MappingTests()
         {
@@ -87,7 +88,6 @@ namespace ObjectMappingBenchmarking
             };
 
             _simpleTarget = new SimpleTarget();
-            _options = new ObjectMapperOptions(null);
         }
 
 #if AUTOMAPPER
@@ -130,34 +130,6 @@ namespace ObjectMappingBenchmarking
         public void ObjectMapper_CopyTo_Target()
         {
             _ = _objectMapper.Map(_simpleSource, _simpleTarget);
-        }
-
-        // public static TTarget MapTo<TTarget>(this object source, ObjectMapperOptions options)
-        [Benchmark]
-        public void ObjectMapper_Static_Create_Target_With_Options()
-        {
-            _ = _simpleSource.MapTo<SimpleTarget>(_options);
-        }
-
-        // static TTarget MapTo<TTarget>(this object source, BindingOptions bindingOptions = BindingOptions.Default)
-        [Benchmark]
-        public void ObjectMapper_Static_Create_Target_Default_Options()
-        {
-            _ = _simpleSource.MapTo<SimpleTarget>();
-        }
-
-        // public static TTarget MapTo<TTarget>(this object source, BindingOptions bindingOptions = BindingOptions.Default)
-        [Benchmark]
-        public void ObjectMapper_Static_CopyTo_Target_With_Options()
-        {
-            _ = _simpleSource.MapTo(_simpleTarget, _options);
-        }
-
-        // static TTarget MapTo<TSource, TTarget>(this TSource source, TTarget target, BindingOptions bindingOptions = BindingOptions.Default)
-        [Benchmark]
-        public void ObjectMapper_Static_CopyTo_Target_Default_Options()
-        {
-            _ = _simpleSource.MapTo(_simpleTarget);
         }
     }
 }

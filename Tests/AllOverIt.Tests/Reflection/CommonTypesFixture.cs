@@ -6,6 +6,7 @@ using FluentAssertions;
 using AllOverIt.Reflection;
 using System.Collections;
 using AllOverIt.Patterns.Enumeration;
+using System.Collections.ObjectModel;
 
 namespace AllOverIt.Tests.Reflection
 {
@@ -58,6 +59,8 @@ namespace AllOverIt.Tests.Reflection
             yield return new object[] { CommonTypes.NullableGenericType, typeof(Nullable<>) };
             yield return new object[] { CommonTypes.IEnumerableType, typeof(IEnumerable) };
             yield return new object[] { CommonTypes.IEnumerableGenericType, typeof(IEnumerable<>) };
+            yield return new object[] { CommonTypes.ICollectionType, typeof(ICollection) };
+            yield return new object[] { CommonTypes.ICollectionGenericType, typeof(ICollection<>) };
             yield return new object[] { CommonTypes.ListGenericType, typeof(List<>) };
             yield return new object[] { CommonTypes.DictionaryGenericType, typeof(Dictionary<,>) };
             yield return new object[] { CommonTypes.KeyValuePairType, typeof(KeyValuePair<,>) };

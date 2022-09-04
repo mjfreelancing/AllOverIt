@@ -3,7 +3,6 @@ using AllOverIt.Extensions;
 using AllOverIt.Reflection;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace AllOverIt.Mapping
@@ -24,33 +23,6 @@ namespace AllOverIt.Mapping
                     src => GetTargetAliasName(src.Name, options),
                     target => target.Name)
                 .AsReadOnlyCollection();
-        }
-
-        // Only to be used when property values need to be get/set based on binding options (ie., static methods, never ObjectMapper)
-        internal static void MapPropertyValues(Type sourceType, object source, Type targetType, object target, IReadOnlyCollection<PropertyInfo> matches,
-            ObjectMapperOptions mapperOptions)
-        {
-            _ = source.WhenNotNull(nameof(source));
-            _ = target.WhenNotNull(nameof(target));
-            _ = matches.WhenNotNull(nameof(matches));                   // allow empty
-            _ = mapperOptions.WhenNotNull(nameof(mapperOptions));
-
-            var sourcePropertyInfo = ReflectionCache
-                .GetPropertyInfo(sourceType, mapperOptions.Binding)
-                .ToDictionary(prop => prop.Name);
-
-            var targetPropertyInfo = ReflectionCache
-                .GetPropertyInfo(targetType, mapperOptions.Binding)
-                .ToDictionary(prop => prop.Name);
-
-            foreach (var match in matches)
-            {
-                var value = sourcePropertyInfo[match.Name].GetValue(source);
-                var targetName = GetTargetAliasName(match.Name, mapperOptions);
-                var targetValue = mapperOptions.GetConvertedValue(match.Name, value);
-
-                targetPropertyInfo[targetName].SetValue(target, targetValue);
-            }
         }
 
         internal static string GetTargetAliasName(string sourceName, ObjectMapperOptions options)
