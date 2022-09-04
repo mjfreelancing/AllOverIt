@@ -824,6 +824,81 @@ namespace AllOverIt.Tests.Mapping
 
                 actual.Prop1.Should().BeEquivalentTo(source.Prop9);
             }
+
+            [Fact]
+            public void Should_Shallow_Copy_Dictionary_Values()
+            {
+                var mapper = new ObjectMapper();
+
+                mapper.Configure<DummyDictionarySource, DummyDictionaryTarget>(opt =>
+                {
+                    // Excluding as the source destination are different types - would never be shallow copied
+                    opt.Exclude(src => src.Prop2);
+                });
+
+                var source = Create<DummyDictionarySource>();
+
+                var actual = mapper.Map<DummyDictionaryTarget>(source);
+
+                actual.Prop1.Should().BeSameAs(source.Prop1);
+            }
+
+            [Fact]
+            public void Should_Map_Enumerable_To_Array()
+            {
+                var mapper = new ObjectMapper();
+
+                var source = Create<DummyEnumerableSource>();
+
+                var actual = mapper.Map<DummyArrayTarget>(source);
+
+                actual.Prop1.Should().BeEquivalentTo(source.Prop1);
+            }
+
+            [Fact]
+            public void Should_Throw_When_Factory_Not_Defined()
+            {
+                var mapper = new ObjectMapper();
+
+                var source = Create<DummyDictionarySource>();
+
+                Invoking(() =>
+                {
+                    _ = mapper.Map<DummyDictionaryTarget>(source);
+                })
+                    .Should()
+                    .Throw<ObjectMapperException>()
+                    .WithMessage($"The type '{typeof(KeyValuePair<string, int>).GetFriendlyName()}' cannot be assigned to type '{typeof(KeyValuePair<string, double>).GetFriendlyName()}'.");
+            }
+
+            [Fact]
+            public void Should_Deep_Copy_Dictionary_Values()
+            {
+                var objectMapper = new ObjectMapper();
+
+                objectMapper.Configure<KeyValuePair<string, int>, KeyValuePair<string, double>>(opt =>
+                {
+                    opt.ConstructUsing((mapper, value) => new KeyValuePair<string, double>(value.Key, (double) value.Value));
+                });
+
+                objectMapper.Configure<DummyDictionarySource, DummyDictionaryTarget>(opt =>
+                {
+                    opt.DeepClone(src => src.Prop1);
+                });
+
+                var source = Create<DummyDictionarySource>();
+
+                var actual = objectMapper.Map<DummyDictionaryTarget>(source);
+
+                actual.Prop1.Should().NotBeSameAs(source.Prop1);
+                source.Prop1.Should().BeEquivalentTo(actual.Prop1);
+
+                var expected = source.Prop2
+                    .Select(kvp => new KeyValuePair<string, double>(kvp.Key, (double) kvp.Value))
+                    .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+                expected.Should().BeEquivalentTo(actual.Prop2);
+            }
         }
 
         public class Map_Source_Target : ObjectMapperFixture
@@ -1382,13 +1457,6 @@ namespace AllOverIt.Tests.Mapping
                 actual.Prop1.Should().BeEquivalentTo(source.Prop9);
             }
 
-
-
-
-
-
-
-
             [Fact]
             public void Should_Shallow_Copy_Dictionary_Values()
             {
@@ -1422,11 +1490,27 @@ namespace AllOverIt.Tests.Mapping
             }
 
             [Fact]
+            public void Should_Throw_When_Factory_Not_Defined()
+            {
+                var mapper = new ObjectMapper();
+
+                var source = Create<DummyDictionarySource>();
+                var actual = new DummyDictionaryTarget();
+
+                Invoking(() =>
+                {
+                    _ = mapper.Map<DummyDictionarySource, DummyDictionaryTarget>(source, actual);
+                })
+                    .Should()
+                    .Throw<ObjectMapperException>()
+                    .WithMessage($"The type '{typeof(KeyValuePair<string, int>).GetFriendlyName()}' cannot be assigned to type '{typeof(KeyValuePair<string, double>).GetFriendlyName()}'.");
+            }
+
+            [Fact]
             public void Should_Deep_Copy_Dictionary_Values()
             {
                 var objectMapper = new ObjectMapper();
 
-                // TODO: Add test to show it throws when this is not configured
                 objectMapper.Configure<KeyValuePair<string, int>, KeyValuePair<string, double>>(opt =>
                 {
                     opt.ConstructUsing((mapper, value) => new KeyValuePair<string, double>(value.Key, (double) value.Value));
@@ -1445,7 +1529,11 @@ namespace AllOverIt.Tests.Mapping
                 actual.Prop1.Should().NotBeSameAs(source.Prop1);
                 source.Prop1.Should().BeEquivalentTo(actual.Prop1);
 
-                // TODO: set expectation on Prop2
+                var expected = source.Prop2
+                    .Select(kvp => new KeyValuePair<string, double>(kvp.Key, (double) kvp.Value))
+                    .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+                expected.Should().BeEquivalentTo(actual.Prop2);
             }
         }
     }

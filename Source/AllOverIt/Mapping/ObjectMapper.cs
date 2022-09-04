@@ -234,6 +234,12 @@ namespace AllOverIt.Mapping
                     targetElement = factory.Invoke(this, sourceElement);
                 }
 
+                var targetElementType = targetElement.GetType();
+
+                Throw<ObjectMapperException>.When(
+                    targetKvpType != targetElementType,
+                    $"The type '{targetElementType.GetFriendlyName()}' cannot be assigned to type '{targetKvpType.GetFriendlyName()}'.");
+
                 dictionaryAddMethod.Invoke(dictionaryInstance, new[] { targetElement });
             }
 
