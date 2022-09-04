@@ -32,7 +32,7 @@ namespace AllOverIt.Mapping
 
         /// <summary>Constructor.</summary>
         /// <param name="mapper">The associated object mapper.</param>
-        public ObjectMapperOptions(IObjectMapper mapper)
+        internal ObjectMapperOptions(IObjectMapper mapper)
         {
             Mapper = mapper.WhenNotNull(nameof(mapper));
         }
