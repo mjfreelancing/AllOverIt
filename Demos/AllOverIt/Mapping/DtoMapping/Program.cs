@@ -4,6 +4,7 @@ using AllOverIt.Serialization.Abstractions;
 using AllOverIt.Serialization.SystemTextJson;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace DtoMapping
@@ -16,12 +17,12 @@ namespace DtoMapping
 
             var source = new SourceType(5)
             {
-                //Prop1 = 10,
-                //Prop2 = true,
+                Prop1 = 10,
+                Prop2 = true,
                 Prop3 = new List<string>(new[] { "1", "2", "3" }),
-                //Prop3b = new List<string>(new[] { "4", "5", "6" }),
-                //Prop5a = 20,
-                //Prop7 = null,
+                Prop3b = new List<string>(new[] { "4", "5", "6" }),
+                Prop5a = 20,
+                Prop7 = null,
                 Prop8 =
                 {
                     Prop1 = 99,
@@ -61,6 +62,17 @@ namespace DtoMapping
             Console.ReadKey();
         }
 
+        private static void ApplyCommonMapperConfiguration(IObjectMapper objectMapper)
+        {
+            objectMapper.Configure<SourceType, TargetType>(opt =>
+            {
+                opt.WithConversion(src => src.Prop3b, (mapper, value) =>
+                {
+                    return new ObservableCollection<string>(value);
+                });
+            });
+        }
+
         private static void MapperCreateTargetUsingBindingOnOptions(SourceType source, IJsonSerializer serializer)
         {
             var objectMapper = new ObjectMapper
@@ -71,7 +83,7 @@ namespace DtoMapping
                 }
             };
 
-            objectMapper.Configure<SourceType, TargetType>();
+            ApplyCommonMapperConfiguration(objectMapper);
 
             var target = objectMapper.Map<TargetType>(source);
 
@@ -88,7 +100,7 @@ namespace DtoMapping
                 }
             };
 
-            objectMapper.Configure<SourceType, TargetType>();
+            ApplyCommonMapperConfiguration(objectMapper);
 
             var target = new TargetType();
             _ = objectMapper.Map(source, target);
@@ -103,6 +115,11 @@ namespace DtoMapping
 
             objectMapper.Configure<SourceType, TargetType>(opt =>
             {
+                opt.WithConversion(src => src.Prop3b, (mapper, value) =>
+                {
+                    return new ObservableCollection<string>(value);
+                });
+
                 // This is the default, just showing it
                 opt.Binding = BindingOptions.Default;
 
@@ -135,6 +152,11 @@ namespace DtoMapping
 
             objectMapper.Configure<SourceType, TargetType>(opt =>
             {
+                opt.WithConversion(src => src.Prop3b, (mapper, value) =>
+                {
+                    return new ObservableCollection<string>(value);
+                });
+
                 opt.WithConversion(src => src.Prop7, (mapper, value) =>
                 {
                     return value.Reverse();
@@ -185,6 +207,11 @@ namespace DtoMapping
 
             objectMapper.Configure<SourceType, TargetType>(opt =>
             {
+                opt.WithConversion(src => src.Prop3b, (mapper, value) =>
+                {
+                    return new ObservableCollection<string>(value);
+                });
+
                 opt.Exclude(src => src.Prop7);
             });
 
