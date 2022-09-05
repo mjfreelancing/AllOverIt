@@ -1,7 +1,9 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
+using AllOverIt.Reflection;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -83,6 +85,41 @@ namespace AllOverIt.Expressions
 
             // 'parameters' is the same as newExpression.Arguments, but returning it as ParameterExpression[] makes it easier to consume
             return (newExpression, parameters);
+        }
+
+        /// <summary>Gets a <see cref="NewExpression"/> and the constructor parameters as <see cref="ParameterExpression"/>[] for
+        /// a provided type and its' constructor parameter types. The returned parameter expressions are each of type <c>object</c>
+        /// that are cast to the required type before being passed into the constructor.</summary>
+        /// <param name="type">The type to obtain a <see cref="NewExpression"/> for.</param>
+        /// <param name="paramTypes">The type's constructor argument types.</param>
+        /// <returns>A <see cref="NewExpression"/> and the constructor parameters as <see cref="ParameterExpression"/>[] for
+        /// a provided type and its' constructor parameter types.</returns>
+        public static (NewExpression NewExpression, ParameterExpression[] ParameterExpressions) GetConstructorWithParametersAsObjects(Type type, Type[] paramTypes)
+        {
+            _ = type.WhenNotNull(nameof(type));
+            _ = paramTypes.WhenNotNullOrEmpty(nameof(paramTypes));
+
+            var ctor = type.GetConstructor(paramTypes);
+
+            Throw<InvalidOperationException>.WhenNull(ctor, $"The type {type.GetFriendlyName()} does not have a suitable constructor.");
+
+            var objectParams = new List<ParameterExpression>();     // object arguments provided by the caller
+            var ctorParams = new List<Expression>();                // each object cast to the required type so it can be passed to the constructor
+
+            var id = 1;
+
+            foreach (var paramType in paramTypes)
+            {
+                var objectParam = Expression.Parameter(CommonTypes.ObjectType, $"t{id++}");
+
+                objectParams.Add(objectParam);
+
+                ctorParams.Add(objectParam.CastOrConvertTo(paramType));
+            }
+
+            var newExpression = Expression.New(ctor, ctorParams);
+
+            return (newExpression, objectParams.ToArray());
         }
     }
 }

@@ -143,7 +143,7 @@ namespace AllOverIt.Tests.Expressions
             }
         }
 
-        public class CreateParameterExpressionsFixture : ExpressionUtilsFixture
+        public class CreateParameterExpressions : ExpressionUtilsFixture
         {
             [Fact]
             public void Should_Throw_When_Params_Null()
@@ -185,7 +185,7 @@ namespace AllOverIt.Tests.Expressions
             }
         }
 
-        public class GetConstructorWithParametersFixture : ExpressionUtilsFixture
+        public class GetConstructorWithParameters : ExpressionUtilsFixture
         {
             private class DummyType
             {
@@ -244,6 +244,76 @@ namespace AllOverIt.Tests.Expressions
                 actual.NewExpression.Should().BeOfType<NewExpression>();
                 actual.NewExpression.Type.Should().Be(typeof(DummyType));
                 actual.NewExpression.Arguments.Should().BeEquivalentTo(expectedParameters);
+
+                actual.ParameterExpressions.Should().BeEquivalentTo(expectedParameters);
+            }
+        }
+
+        public class GetConstructorWithParametersAsObjects : ExpressionUtilsFixture
+        {
+            private class DummyType
+            {
+                public DummyType(int val1, string val2)
+                {
+                }
+            }
+
+            [Fact]
+            public void Should_Throw_When_Type_Null()
+            {
+                Invoking(() =>
+                {
+                    ExpressionUtils.GetConstructorWithParametersAsObjects(null, new[] { typeof(double) });
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("type");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Params_Null()
+            {
+                Invoking(() =>
+                {
+                    ExpressionUtils.GetConstructorWithParametersAsObjects(typeof(DummyType), null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("paramTypes");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Params_Empty()
+            {
+                Invoking(() =>
+                {
+                    ExpressionUtils.GetConstructorWithParametersAsObjects(typeof(DummyType), Type.EmptyTypes);
+                })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("paramTypes");
+            }
+
+            [Fact]
+            public void Should_Return_NewExpression_And_Parameters()
+            {
+                var actual = ExpressionUtils.GetConstructorWithParametersAsObjects(typeof(DummyType), new[] { typeof(int), typeof(string) });
+
+                var expectedParameters = new[]
+                {
+                    Expression.Parameter(typeof(object), "t1"),
+                    Expression.Parameter(typeof(object), "t2")
+                };
+
+                var expectedConstructorParameters = new[]
+                {
+                    Expression.Convert(expectedParameters[0], typeof(int)),     // Convert
+                    Expression.TypeAs(expectedParameters[1], typeof(string))    // Cast
+                };
+
+                actual.NewExpression.Should().BeOfType<NewExpression>();
+                actual.NewExpression.Type.Should().Be(typeof(DummyType));
+                actual.NewExpression.Arguments.Should().BeEquivalentTo(expectedConstructorParameters);
 
                 actual.ParameterExpressions.Should().BeEquivalentTo(expectedParameters);
             }
