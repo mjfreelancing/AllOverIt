@@ -80,14 +80,14 @@ namespace AllOverIt.Tests.Mapping
             }
         }
 
-        public class DeepClone : ObjectMapperOptionsFixture
+        public class DeepCopy : ObjectMapperOptionsFixture
         {
             [Fact]
             public void Should_Throw_When_SourceNames_Null()
             {
                 Invoking(() =>
                 {
-                    _options.DeepClone(null);
+                    _options.DeepCopy(null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -99,20 +99,20 @@ namespace AllOverIt.Tests.Mapping
             {
                 Invoking(() =>
                 {
-                    _options.DeepClone(Array.Empty<string>());
+                    _options.DeepCopy(Array.Empty<string>());
                 })
                     .Should()
                     .NotThrow();
             }
 
             [Fact]
-            public void Should_DeepClone_Names()
+            public void Should_DeepCopy_Names()
             {
                 var name = Create<string>();
 
-                _options.DeepClone(name);
+                _options.DeepCopy(name);
 
-                _options.IsDeepClone(name).Should().BeTrue();
+                _options.IsDeepCopy(name).Should().BeTrue();
             }
 
             [Fact]
@@ -120,7 +120,7 @@ namespace AllOverIt.Tests.Mapping
             {
                 var names = Create<string>();
 
-                var actual = _options.DeepClone(names);
+                var actual = _options.DeepCopy(names);
 
                 actual.Should().Be(_options);
             }

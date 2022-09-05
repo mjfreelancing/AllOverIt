@@ -47,7 +47,7 @@ namespace AllOverIt.Tests.Mapping
             {
                 var expected = new
                 {
-                    DeepClone = false,
+                    DeepCopy = false,
                     Binding = BindingOptions.Default,
                     Filter = (Func<PropertyInfo, bool>) null
                 };
@@ -580,7 +580,7 @@ namespace AllOverIt.Tests.Mapping
             {
                 _mapper.Configure<DummyRootParentSource, DummyRootParentTarget>(opt =>
                 {
-                    opt.DeepClone(src => src.RootA);
+                    opt.DeepCopy(src => src.RootA);
                 });
 
                 var source = new DummyRootParentSource();
@@ -883,7 +883,7 @@ namespace AllOverIt.Tests.Mapping
 
                 objectMapper.Configure<DummyDictionarySource, DummyDictionaryTarget>(opt =>
                 {
-                    opt.DeepClone(src => src.Prop1);
+                    opt.DeepCopy(src => src.Prop1);
                 });
 
                 var source = Create<DummyDictionarySource>();
@@ -1207,7 +1207,7 @@ namespace AllOverIt.Tests.Mapping
             {
                 _mapper.Configure<DummyRootParentSource, DummyRootParentTarget>(opt =>
                 {
-                    opt.DeepClone(src => src.RootA);
+                    opt.DeepCopy(src => src.RootA);
                 });
 
                 var source = new DummyRootParentSource();
@@ -1518,7 +1518,7 @@ namespace AllOverIt.Tests.Mapping
 
                 objectMapper.Configure<DummyDictionarySource, DummyDictionaryTarget>(opt =>
                 {
-                    opt.DeepClone(src => src.Prop1);
+                    opt.DeepCopy(src => src.Prop1);
                 });
 
                 var source = Create<DummyDictionarySource>();

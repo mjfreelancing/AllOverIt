@@ -12,7 +12,7 @@ namespace AllOverIt.Mapping
         private sealed class TargetOptions
         {
             public bool Excluded { get; set; }
-            public bool DeepClone { get; set; }
+            public bool DeepCopy { get; set; }
             public string Alias { get; set; }
             public Func<IObjectMapper, object, object> Converter { get; set; }
         }
@@ -56,13 +56,13 @@ namespace AllOverIt.Mapping
         /// properties will be cloned.</summary>
         /// <param name="sourceNames">One or more source property names to be configured for deep cloning.</param>
         /// <returns>The same <see cref="ObjectMapperOptions"/> instance so a fluent syntax can be used.</returns>
-        public ObjectMapperOptions DeepClone(params string[] sourceNames)
+        public ObjectMapperOptions DeepCopy(params string[] sourceNames)
         {
             _ = sourceNames.WhenNotNull(nameof(sourceNames));
 
             foreach (var sourceName in sourceNames)
             {
-                UpdateTargetOptions(sourceName, targetOptions => targetOptions.DeepClone = true);
+                UpdateTargetOptions(sourceName, targetOptions => targetOptions.DeepCopy = true);
             }
 
             return this;
@@ -107,11 +107,11 @@ namespace AllOverIt.Mapping
             return _sourceTargetOptions.TryGetValue(sourceName, out var targetOptions) && targetOptions.Excluded;
         }
 
-        internal bool IsDeepClone(string sourceName)
+        internal bool IsDeepCopy(string sourceName)
         {
             _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
 
-            return _sourceTargetOptions.TryGetValue(sourceName, out var targetOptions) && targetOptions.DeepClone;
+            return _sourceTargetOptions.TryGetValue(sourceName, out var targetOptions) && targetOptions.DeepCopy;
         }
 
         internal string GetAliasName(string sourceName)

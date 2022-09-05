@@ -69,7 +69,10 @@ namespace AllOverIt.Mapping
 
         private readonly IDictionary<Type, Func<object>> _internalTypeFactories = new Dictionary<Type, Func<object>>();
         private readonly IDictionary<(Type, Type), MatchingPropertyMapper> _mapperCache = new Dictionary<(Type, Type), MatchingPropertyMapper>();
-        private readonly IDictionary<(Type, Type), Func<IObjectMapper, object, object>> _sourceTargetFactories = new Dictionary<(Type, Type), Func<IObjectMapper, object, object>>();
+
+        // Source => Target factories provided via configuration
+        private readonly IDictionary<(Type, Type), Func<IObjectMapper, object, object>> _sourceTargetFactories
+            = new Dictionary<(Type, Type), Func<IObjectMapper, object, object>>();      
 
         /// <summary>Defines the default mapper options to apply when explicit options are not setup at the time of mapping configuration.</summary>
         public ObjectMapperOptions DefaultOptions { get; }
@@ -112,7 +115,7 @@ namespace AllOverIt.Mapping
             return (TTarget) MapSourceToTarget(source, target, false);
         }
 
-        private object MapSourceToTarget(object source, object target, bool isDeepClone)
+        private object MapSourceToTarget(object source, object target, bool isDeepCopy)
         {
             var sourceType = source.GetType();
             var targetType = target.GetType();
@@ -127,9 +130,9 @@ namespace AllOverIt.Mapping
                 var sourcePropertyType = match.SourceInfo.PropertyType;
                 var targetPropertyType = match.TargetInfo.PropertyType;
 
-                var deepCloneSource = isDeepClone || propertyMapper.MapperOptions.IsDeepClone(match.SourceInfo.Name);
+                var deepCopySource = isDeepCopy || propertyMapper.MapperOptions.IsDeepCopy(match.SourceInfo.Name);
 
-                var targetValue = GetMappedSourceValue(sourceValue, sourcePropertyType, targetPropertyType, deepCloneSource);
+                var targetValue = GetMappedSourceValue(sourceValue, sourcePropertyType, targetPropertyType, deepCopySource);
 
                 match.TargetSetter.Invoke(target, targetValue);
             }
@@ -137,7 +140,7 @@ namespace AllOverIt.Mapping
             return target;
         }
 
-        private object GetMappedSourceValue(object sourceValue, Type sourcePropertyType, Type targetPropertyType, bool deepClone)
+        private object GetMappedSourceValue(object sourceValue, Type sourcePropertyType, Type targetPropertyType, bool deepCopy)
         {
             if (sourceValue is null)
             {
@@ -159,22 +162,22 @@ namespace AllOverIt.Mapping
             var isAssignable = targetPropertyType.IsAssignableFrom(sourceValueType);
 
             // Assuming the target is also an enumerable type - a cast exception will result if it cannot be assigned
-            if (!isAssignable || deepClone)
+            if (!isAssignable || deepCopy)
             {
-                return CreateTargetFromSourceValue(sourceValue, sourceValueType, sourcePropertyType, targetPropertyType, deepClone);
+                return CreateTargetFromSourceValue(sourceValue, sourceValueType, sourcePropertyType, targetPropertyType, deepCopy);
             }
 
             return sourceValue;
         }
 
-        private object CreateTargetFromSourceValue(object sourceValue, Type sourceValueType, Type sourcePropertyType, Type targetPropertyType, bool deepClone)
+        private object CreateTargetFromSourceValue(object sourceValue, Type sourceValueType, Type sourcePropertyType, Type targetPropertyType, bool deepCopy)
         {
             if (sourceValueType.IsEnumerableType())
             {
                 return sourceValue switch
                 {
                     IDictionary _ => CreateTargetDictionary(sourceValue, sourceValueType, targetPropertyType),
-                    IEnumerable _ => CreateTargetCollection(sourceValue, sourceValueType, targetPropertyType, deepClone),
+                    IEnumerable _ => CreateTargetCollection(sourceValue, sourceValueType, targetPropertyType, deepCopy),
                     _ => throw new ObjectMapperException($"Cannot map type '{sourceValueType.GetFriendlyName()}'."),
                 };
             }
@@ -185,7 +188,7 @@ namespace AllOverIt.Mapping
             }
 
             var targetInstance = CreateType(targetPropertyType);
-            return MapSourceToTarget(sourceValue, targetInstance, deepClone);
+            return MapSourceToTarget(sourceValue, targetInstance, deepCopy);
         }
 
         private object CreateTargetDictionary(object sourceValue, Type sourceValueType, Type targetPropertyType)
@@ -240,7 +243,7 @@ namespace AllOverIt.Mapping
             return dictionaryInstance;
         }
 
-        private object CreateTargetCollection(object sourceValue, Type sourceValueType, Type targetPropertyType, bool doDeepClone)
+        private object CreateTargetCollection(object sourceValue, Type sourceValueType, Type targetPropertyType, bool doDeepCopy)
         {
             var sourceElementType = sourceValueType.IsArray
                                     ? sourceValueType.GetElementType()
@@ -272,7 +275,7 @@ namespace AllOverIt.Mapping
 
                     var targetInstance = targetCtor.Invoke(null);
 
-                    currentElement = MapSourceToTarget(currentElement, targetInstance, doDeepClone);
+                    currentElement = MapSourceToTarget(currentElement, targetInstance, doDeepCopy);
                 }
 
                 listInstance.Add(currentElement);
@@ -319,15 +322,8 @@ namespace AllOverIt.Mapping
         private (Type, IList) CreateTypedList(Type targetElementType)
         {
             var listType = CommonTypes.ListGenericType.MakeGenericType(new[] { targetElementType });
+            var listInstance = (IList) CreateType(listType);
 
-            if (!_internalTypeFactories.TryGetValue(listType, out var factory))
-            {
-                factory = listType.GetFactory();
-
-                _internalTypeFactories.Add(listType, factory);
-            }
-
-            var listInstance = (IList) factory.Invoke();
             return (listType, listInstance);
         }
 
@@ -335,28 +331,19 @@ namespace AllOverIt.Mapping
         {
             var dictionaryType = CommonTypes.DictionaryGenericType.MakeGenericType(new[] { keyType, valueType });
 
-            if (!_internalTypeFactories.TryGetValue(dictionaryType, out var factory))
-            {
-                factory = dictionaryType.GetFactory();
-
-                _internalTypeFactories.Add(dictionaryType, factory);
-            }
-
-            return factory.Invoke();
+            return CreateType(dictionaryType);
         }
 
         private object CreateType(Type type)
         {
-            if (_internalTypeFactories.TryGetValue(type, out var creator))
+            if (!_internalTypeFactories.TryGetValue(type, out var factory))
             {
-                return creator.Invoke();
+                factory = type.GetFactory();
+
+                _internalTypeFactories.Add(type, factory);
             }
 
-            creator = type.GetFactory();
-
-            _internalTypeFactories.Add(type, creator);
-
-            return creator.Invoke();
+            return factory.Invoke();
         }
 
         private MatchingPropertyMapper CreateMapper(Type sourceType, Type targetType, ObjectMapperOptions mapperOptions)
@@ -391,7 +378,7 @@ namespace AllOverIt.Mapping
 
         private ObjectMapperOptions GetConfiguredOptionsOrDefault<TSource, TTarget>(Action<TypedObjectMapperOptions<TSource, TTarget>> configure)
         {
-            if (configure == null)
+            if (configure is null)
             {
                 return DefaultOptions;
             }

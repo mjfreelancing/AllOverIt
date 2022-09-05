@@ -4,6 +4,20 @@
 Version 6.0.0-RC.9
 ======================================================================================================================
 AllOverIt
+  * Added ExpressionUtils.GetConstructorWithParametersAsObjects() so 'object' argument types can be used to construct
+    other types with constructor arguments
+  * Updated TypeFactory to allow object creation based on Type arguments rather than generic types. In summary:
+    - TypeFactory<TCreate>.Create() will create a factory for the provided type. Generics or Type args can be used to
+      create the required type.
+    - TypeExtensions.GetFactory() will create a factory for the type being extended. Generics or Type args can be used
+      to create the required type.
+  * Renamed DeepClone in ObjectMapperOptions to DeepCopy
+
+
+04 Sep 2022
+Version 6.0.0-RC.9
+======================================================================================================================
+AllOverIt
   * ObjectMapper significantly updated:
     - Dropped support for object extensions to statically map objects. Lacks performance, does not promote testing,
       limited in functionality.

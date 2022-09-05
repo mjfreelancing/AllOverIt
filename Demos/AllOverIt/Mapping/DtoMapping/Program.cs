@@ -143,7 +143,7 @@ namespace DtoMapping
             // Collections are not cloned by default - this configuration will force a new collection to be created
             objectMapper.Configure<ChildSourceType, ChildTargetType>(opt =>
             {
-                opt.DeepClone(src => src.Prop2a);
+                opt.DeepCopy(src => src.Prop2a);
             });
 
             var target = new TargetType();
@@ -165,7 +165,7 @@ namespace DtoMapping
                 // Testing the child object property types that have a different name
                 opt.WithAlias(src => src.Prop9, trg => trg.Prop8a);
 
-                opt.DeepClone(src => src.Prop9);
+                opt.DeepCopy(src => src.Prop9);
 
                 opt.WithConversion(src => src.Prop8, (mapper, value) =>
                    {

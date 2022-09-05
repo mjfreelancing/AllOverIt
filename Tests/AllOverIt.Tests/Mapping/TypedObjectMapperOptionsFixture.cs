@@ -98,14 +98,14 @@ namespace AllOverIt.Tests.Mapping
             }
         }
 
-        public class DeepClone : TypedObjectMapperOptionsFixture
+        public class DeepCopy : TypedObjectMapperOptionsFixture
         {
             [Fact]
             public void Should_Throw_When_SourceExpression_Null()
             {
                 Invoking(() =>
                 {
-                    _options.DeepClone<int>(null);
+                    _options.DeepCopy<int>(null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -117,7 +117,7 @@ namespace AllOverIt.Tests.Mapping
             {
                 Invoking(() =>
                 {
-                    _options.DeepClone(source => source.Child.Prop1);
+                    _options.DeepCopy(source => source.Child.Prop1);
                 })
                     .Should()
                     .Throw<ObjectMapperException>()
@@ -125,17 +125,17 @@ namespace AllOverIt.Tests.Mapping
             }
 
             [Fact]
-            public void Should_DeepClone_Name()
+            public void Should_DeepCopy_Name()
             {
-                _options.DeepClone(source => source.Child);
+                _options.DeepCopy(source => source.Child);
 
-                _options.IsDeepClone(nameof(DummySource.Child)).Should().BeTrue();
+                _options.IsDeepCopy(nameof(DummySource.Child)).Should().BeTrue();
             }
 
             [Fact]
             public void Should_Return_Same_Options()
             {
-                var actual = _options.DeepClone(source => source.Child);
+                var actual = _options.DeepCopy(source => source.Child);
 
                 actual.Should().Be(_options);
             }
@@ -325,7 +325,7 @@ namespace AllOverIt.Tests.Mapping
                 _mapper.Configure<DummySource, DummyTarget>(opt =>
                 {
                     // need to force a deep clone for source / target properties of the same type
-                    opt.DeepClone(src => src.Child);
+                    opt.DeepCopy(src => src.Child);
                 });
 
                 var source = Create<DummySource>();
@@ -355,7 +355,7 @@ namespace AllOverIt.Tests.Mapping
                 _mapper.Configure<DummySource, DummyTarget>(opt =>
                 {
                     // need to force a deep clone for source / target properties of the same type
-                    opt.DeepClone(src => src.Child);
+                    opt.DeepCopy(src => src.Child);
                 });
 
                 var source = Create<DummySource>();
