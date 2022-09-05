@@ -666,6 +666,14 @@ namespace AllOverIt.Fixture.Tests
             }
 
             [Fact]
+            public void Should_Not_Throw_When_Min_And_Max_On_Limits()
+            {
+                Invoking(() => { GetWithinRange(int.MinValue, int.MaxValue); })
+                  .Should()
+                  .NotThrow();
+            }
+
+            [Fact]
             public void Should_Not_Throw_When_Max_Greater_Than_Min()
             {
                 var maxValue = Create<int>();
@@ -703,6 +711,14 @@ namespace AllOverIt.Fixture.Tests
             }
 
             [Fact]
+            public void Should_Not_Throw_When_Min_And_Max_On_Limits()
+            {
+                Invoking(() => { GetWithinRange(double.MinValue, double.MaxValue); })
+                  .Should()
+                  .NotThrow();
+            }
+
+            [Fact]
             public void Should_Not_Throw_When_Max_Greater_Than_Min()
             {
                 var maxValue = Create<double>();
@@ -737,6 +753,14 @@ namespace AllOverIt.Fixture.Tests
                   .Should()
                   .Throw<ArgumentOutOfRangeException>()
                   .WithMessage("The minValue must be less than maxValue (Parameter 'minValue')");
+            }
+
+            [Fact]
+            public void Should_Not_Throw_When_Min_And_Max_On_Limits()
+            {
+                Invoking(() => { GetManyWithinRange(int.MinValue, int.MaxValue); })
+                  .Should()
+                  .NotThrow();
             }
 
             [Fact]
@@ -832,6 +856,14 @@ namespace AllOverIt.Fixture.Tests
                   .Should()
                   .Throw<ArgumentOutOfRangeException>()
                   .WithMessage("The minValue must be less than maxValue (Parameter 'minValue')");
+            }
+
+            [Fact]
+            public void Should_Not_Throw_When_Min_And_Max_On_Limits()
+            {
+                Invoking(() => { GetManyWithinRange(double.MinValue, double.MaxValue); })
+                  .Should()
+                  .NotThrow();
             }
 
             [Fact]

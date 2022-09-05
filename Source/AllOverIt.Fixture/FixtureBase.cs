@@ -244,6 +244,12 @@ namespace AllOverIt.Fixture
                 throw new ArgumentOutOfRangeException(nameof(minValue), $"The {nameof(minValue)} must be less than {nameof(maxValue)}");
             }
 
+            // safeguard against the lower/upper boundary going out of range
+            if (maxValue == int.MaxValue)
+            {
+                maxValue--;
+            }
+
             return _random.Next(minValue, maxValue + 1);
         }
 
