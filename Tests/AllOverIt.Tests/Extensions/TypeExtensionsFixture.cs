@@ -12,7 +12,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Extensions
 {
-    public class TypeExtensionsFixture : FixtureBase
+    public partial class TypeExtensionsFixture : FixtureBase
     {
         private class PropertyBaseClass
         {
