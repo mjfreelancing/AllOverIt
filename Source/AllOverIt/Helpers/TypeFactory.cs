@@ -33,6 +33,22 @@ namespace AllOverIt.Helpers
                 .Compile();
         }
 
+        /// <summary>Creates a compiled factory that when invoked will instantiate a <typeparamref name="TCreate"/> with the specified constructor
+        /// argument types. All arguments can be provided to the factory as object types but they will be converted to the required constructor
+        /// argument type.</summary>
+        /// <param name="arg1">Constructor argument 1.</param>
+        /// <returns>A factory that when invoked will return a newly constructed <typeparamref name="TCreate"/> instance using provided arguments.</returns>
+        public static Func<object, TCreate> Create(Type arg1)
+        {
+            var paramTypes = new[] { arg1 };
+
+            var (newExpression, parameters) = ExpressionUtils.GetConstructorWithParametersAsObjects(typeof(TCreate), paramTypes);
+
+            return Expression
+                .Lambda<Func<object, TCreate>>(newExpression, parameters)
+                .Compile();
+        }
+
         /// <summary>Creates a compiled factory that when invoked will instantiate a <typeparamref name="TCreate"/> with the specified constructor argument types.</summary>
         /// <typeparam name="TArg1">Constructor argument 1.</typeparam>
         /// <typeparam name="TArg2">Constructor argument 2.</typeparam>
@@ -45,6 +61,23 @@ namespace AllOverIt.Helpers
 
             return Expression
                 .Lambda<Func<TArg1, TArg2, TCreate>>(newExpression, parameters)
+                .Compile();
+        }
+
+        /// <summary>Creates a compiled factory that when invoked will instantiate a <typeparamref name="TCreate"/> with the specified constructor
+        /// argument types. All arguments can be provided to the factory as object types but they will be converted to the required constructor
+        /// argument type.</summary>
+        /// <param name="arg1">Constructor argument 1.</param>
+        /// <param name="arg2">Constructor argument 2.</param>
+        /// <returns>A factory that when invoked will return a newly constructed <typeparamref name="TCreate"/> instance using provided arguments.</returns>
+        public static Func<object, object, TCreate> Create(Type arg1, Type arg2)
+        {
+            var paramTypes = new[] { arg1, arg2 };
+
+            var (newExpression, parameters) = ExpressionUtils.GetConstructorWithParametersAsObjects(typeof(TCreate), paramTypes);
+
+            return Expression
+                .Lambda<Func<object, object, TCreate>>(newExpression, parameters)
                 .Compile();
         }
 
@@ -64,6 +97,24 @@ namespace AllOverIt.Helpers
                 .Compile();
         }
 
+        /// <summary>Creates a compiled factory that when invoked will instantiate a <typeparamref name="TCreate"/> with the specified constructor
+        /// argument types. All arguments can be provided to the factory as object types but they will be converted to the required constructor
+        /// argument type.</summary>
+        /// <param name="arg1">Constructor argument 1.</param>
+        /// <param name="arg2">Constructor argument 2.</param>
+        /// <param name="arg3">Constructor argument 3.</param>
+        /// <returns>A factory that when invoked will return a newly constructed <typeparamref name="TCreate"/> instance using provided arguments.</returns>
+        public static Func<object, object, object, TCreate> Create(Type arg1, Type arg2, Type arg3)
+        {
+            var paramTypes = new[] { arg1, arg2, arg3 };
+
+            var (newExpression, parameters) = ExpressionUtils.GetConstructorWithParametersAsObjects(typeof(TCreate), paramTypes);
+
+            return Expression
+                .Lambda<Func<object, object, object, TCreate>>(newExpression, parameters)
+                .Compile();
+        }
+
         /// <summary>Creates a compiled factory that when invoked will instantiate a <typeparamref name="TCreate"/> with the specified constructor argument types.</summary>
         /// <typeparam name="TArg1">Constructor argument 1.</typeparam>
         /// <typeparam name="TArg2">Constructor argument 2.</typeparam>
@@ -78,6 +129,25 @@ namespace AllOverIt.Helpers
 
             return Expression
                 .Lambda<Func<TArg1, TArg2, TArg3, TArg4, TCreate>>(newExpression, parameters)
+                .Compile();
+        }
+
+        /// <summary>Creates a compiled factory that when invoked will instantiate a <typeparamref name="TCreate"/> with the specified constructor
+        /// argument types. All arguments can be provided to the factory as object types but they will be converted to the required constructor
+        /// argument type.</summary>
+        /// <param name="arg1">Constructor argument 1.</param>
+        /// <param name="arg2">Constructor argument 2.</param>
+        /// <param name="arg3">Constructor argument 3.</param>
+        /// <param name="arg4">Constructor argument 4.</param>
+        /// <returns>A factory that when invoked will return a newly constructed <typeparamref name="TCreate"/> instance using provided arguments.</returns>
+        public static Func<object, object, object, object, TCreate> Create(Type arg1, Type arg2, Type arg3, Type arg4)
+        {
+            var paramTypes = new[] { arg1, arg2, arg3, arg4 };
+
+            var (newExpression, parameters) = ExpressionUtils.GetConstructorWithParametersAsObjects(typeof(TCreate), paramTypes);
+
+            return Expression
+                .Lambda<Func<object, object, object, object, TCreate>>(newExpression, parameters)
                 .Compile();
         }
 
@@ -99,6 +169,26 @@ namespace AllOverIt.Helpers
                 .Compile();
         }
 
+        /// <summary>Creates a compiled factory that when invoked will instantiate a <typeparamref name="TCreate"/> with the specified constructor
+        /// argument types. All arguments can be provided to the factory as object types but they will be converted to the required constructor
+        /// argument type.</summary>
+        /// <param name="arg1">Constructor argument 1.</param>
+        /// <param name="arg2">Constructor argument 2.</param>
+        /// <param name="arg3">Constructor argument 3.</param>
+        /// <param name="arg4">Constructor argument 4.</param>
+        /// <param name="arg5">Constructor argument 5.</param>
+        /// <returns>A factory that when invoked will return a newly constructed <typeparamref name="TCreate"/> instance using provided arguments.</returns>
+        public static Func<object, object, object, object, object, TCreate> Create(Type arg1, Type arg2, Type arg3, Type arg4, Type arg5)
+        {
+            var paramTypes = new[] { arg1, arg2, arg3, arg4, arg5 };
+
+            var (newExpression, parameters) = ExpressionUtils.GetConstructorWithParametersAsObjects(typeof(TCreate), paramTypes);
+
+            return Expression
+                .Lambda<Func<object, object, object, object, object, TCreate>>(newExpression, parameters)
+                .Compile();
+        }
+
         /// <summary>Creates a compiled factory that when invoked will instantiate a <typeparamref name="TCreate"/> with the specified constructor argument types.</summary>
         /// <typeparam name="TArg1">Constructor argument 1.</typeparam>
         /// <typeparam name="TArg2">Constructor argument 2.</typeparam>
@@ -115,6 +205,27 @@ namespace AllOverIt.Helpers
 
             return Expression
                 .Lambda<Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TCreate>>(newExpression, parameters)
+                .Compile();
+        }
+
+        /// <summary>Creates a compiled factory that when invoked will instantiate a <typeparamref name="TCreate"/> with the specified constructor
+        /// argument types. All arguments can be provided to the factory as object types but they will be converted to the required constructor
+        /// argument type.</summary>
+        /// <param name="arg1">Constructor argument 1.</param>
+        /// <param name="arg2">Constructor argument 2.</param>
+        /// <param name="arg3">Constructor argument 3.</param>
+        /// <param name="arg4">Constructor argument 4.</param>
+        /// <param name="arg5">Constructor argument 5.</param>
+        /// <param name="arg6">Constructor argument 6.</param>
+        /// <returns>A factory that when invoked will return a newly constructed <typeparamref name="TCreate"/> instance using provided arguments.</returns>
+        public static Func<object, object, object, object, object, object, TCreate> Create(Type arg1, Type arg2, Type arg3, Type arg4, Type arg5, Type arg6)
+        {
+            var paramTypes = new[] { arg1, arg2, arg3, arg4, arg5, arg6 };
+
+            var (newExpression, parameters) = ExpressionUtils.GetConstructorWithParametersAsObjects(typeof(TCreate), paramTypes);
+
+            return Expression
+                .Lambda<Func<object, object, object, object, object, object, TCreate>>(newExpression, parameters)
                 .Compile();
         }
 
@@ -138,6 +249,28 @@ namespace AllOverIt.Helpers
                 .Compile();
         }
 
+        /// <summary>Creates a compiled factory that when invoked will instantiate a <typeparamref name="TCreate"/> with the specified constructor
+        /// argument types. All arguments can be provided to the factory as object types but they will be converted to the required constructor
+        /// argument type.</summary>
+        /// <param name="arg1">Constructor argument 1.</param>
+        /// <param name="arg2">Constructor argument 2.</param>
+        /// <param name="arg3">Constructor argument 3.</param>
+        /// <param name="arg4">Constructor argument 4.</param>
+        /// <param name="arg5">Constructor argument 5.</param>
+        /// <param name="arg6">Constructor argument 6.</param>
+        /// <param name="arg7">Constructor argument 7.</param>
+        /// <returns>A factory that when invoked will return a newly constructed <typeparamref name="TCreate"/> instance using provided arguments.</returns>
+        public static Func<object, object, object, object, object, object, object, TCreate> Create(Type arg1, Type arg2, Type arg3, Type arg4, Type arg5, Type arg6, Type arg7)
+        {
+            var paramTypes = new[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7 };
+
+            var (newExpression, parameters) = ExpressionUtils.GetConstructorWithParametersAsObjects(typeof(TCreate), paramTypes);
+
+            return Expression
+                .Lambda<Func<object, object, object, object, object, object, object, TCreate>>(newExpression, parameters)
+                .Compile();
+        }
+
         /// <summary>Creates a compiled factory that when invoked will instantiate a <typeparamref name="TCreate"/> with the specified constructor argument types.</summary>
         /// <typeparam name="TArg1">Constructor argument 1.</typeparam>
         /// <typeparam name="TArg2">Constructor argument 2.</typeparam>
@@ -156,6 +289,29 @@ namespace AllOverIt.Helpers
 
             return Expression
                 .Lambda<Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TCreate>>(newExpression, parameters)
+                .Compile();
+        }
+
+        /// <summary>Creates a compiled factory that when invoked will instantiate a <typeparamref name="TCreate"/> with the specified constructor
+        /// argument types. All arguments can be provided to the factory as object types but they will be converted to the required constructor
+        /// argument type.</summary>
+        /// <param name="arg1">Constructor argument 1.</param>
+        /// <param name="arg2">Constructor argument 2.</param>
+        /// <param name="arg3">Constructor argument 3.</param>
+        /// <param name="arg4">Constructor argument 4.</param>
+        /// <param name="arg5">Constructor argument 5.</param>
+        /// <param name="arg6">Constructor argument 6.</param>
+        /// <param name="arg7">Constructor argument 7.</param>
+        /// <param name="arg8">Constructor argument 8.</param>
+        /// <returns>A factory that when invoked will return a newly constructed <typeparamref name="TCreate"/> instance using provided arguments.</returns>
+        public static Func<object, object, object, object, object, object, object, object, TCreate> Create(Type arg1, Type arg2, Type arg3, Type arg4, Type arg5, Type arg6, Type arg7, Type arg8)
+        {
+            var paramTypes = new[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 };
+
+            var (newExpression, parameters) = ExpressionUtils.GetConstructorWithParametersAsObjects(typeof(TCreate), paramTypes);
+
+            return Expression
+                .Lambda<Func<object, object, object, object, object, object, object, object, TCreate>>(newExpression, parameters)
                 .Compile();
         }
     }

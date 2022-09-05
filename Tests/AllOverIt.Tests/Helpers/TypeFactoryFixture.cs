@@ -87,140 +87,282 @@ namespace AllOverIt.Tests.Helpers
             expected.Should().BeEquivalentTo(actual2);
         }
 
-        [Fact]
-        public void Should_Create_Using_Constructor_With_1_Arg()
+        public class Typed : TypeFactoryFixture
         {
-            var expected = new DummyType(Create<int>());
+            [Fact]
+            public void Should_Create_Using_Constructor_With_1_Arg()
+            {
+                var expected = new DummyType(Create<int>());
 
-            var factory = TypeFactory<DummyType>.Create<int>();
+                var factory = TypeFactory<DummyType>.Create<int>();
 
-            var actual1 = factory.Invoke(expected.Prop1);
-            var actual2 = factory.Invoke(expected.Prop1);
+                var actual1 = factory.Invoke(expected.Prop1);
+                var actual2 = factory.Invoke(expected.Prop1);
 
-            actual1.Should().NotBeSameAs(actual2);
+                actual1.Should().NotBeSameAs(actual2);
 
-            expected.Should().BeEquivalentTo(actual1);
-            expected.Should().BeEquivalentTo(actual2);
+                expected.Should().BeEquivalentTo(actual1);
+                expected.Should().BeEquivalentTo(actual2);
+            }
+
+            [Fact]
+            public void Should_Create_Using_Constructor_With_2_Args()
+            {
+                var expected = new DummyType(Create<int>(), Create<int>());
+
+                var factory = TypeFactory<DummyType>.Create<int, int>();
+
+                var actual1 = factory.Invoke(expected.Prop1, expected.Prop2);
+                var actual2 = factory.Invoke(expected.Prop1, expected.Prop2);
+
+                actual1.Should().NotBeSameAs(actual2);
+
+                expected.Should().BeEquivalentTo(actual1);
+                expected.Should().BeEquivalentTo(actual2);
+            }
+
+            [Fact]
+            public void Should_Create_Using_Constructor_With_3_Args()
+            {
+                var expected = new DummyType(Create<int>(), Create<int>(), Create<double>());
+
+                var factory = TypeFactory<DummyType>.Create<int, int, double>();
+
+                var actual1 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3);
+                var actual2 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3);
+
+                actual1.Should().NotBeSameAs(actual2);
+
+                expected.Should().BeEquivalentTo(actual1);
+                expected.Should().BeEquivalentTo(actual2);
+            }
+
+            [Fact]
+            public void Should_Create_Using_Constructor_With_4_Args()
+            {
+                var expected = new DummyType(Create<int>(), Create<int>(), Create<double>(), Create<double>());
+
+                var factory = TypeFactory<DummyType>.Create<int, int, double, double>();
+
+                var actual1 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4);
+                var actual2 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4);
+
+                actual1.Should().NotBeSameAs(actual2);
+
+                expected.Should().BeEquivalentTo(actual1);
+                expected.Should().BeEquivalentTo(actual2);
+            }
+
+            [Fact]
+            public void Should_Create_Using_Constructor_With_5_Args()
+            {
+                var expected = new DummyType(
+                    Create<int>(), Create<int>(), Create<double>(), Create<double>(),
+                    Create<Guid>());
+
+                var factory = TypeFactory<DummyType>.Create<int, int, double, double, Guid>();
+
+                var actual1 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5);
+                var actual2 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5);
+
+                actual1.Should().NotBeSameAs(actual2);
+
+                expected.Should().BeEquivalentTo(actual1);
+                expected.Should().BeEquivalentTo(actual2);
+            }
+
+            [Fact]
+            public void Should_Create_Using_Constructor_With_6_Args()
+            {
+                var expected = new DummyType(
+                    Create<int>(), Create<int>(), Create<double>(), Create<double>(),
+                    Create<Guid>(), Create<Guid>());
+
+                var factory = TypeFactory<DummyType>.Create<int, int, double, double, Guid, Guid>();
+
+                var actual1 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5, expected.Prop6);
+                var actual2 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5, expected.Prop6);
+
+                actual1.Should().NotBeSameAs(actual2);
+
+                expected.Should().BeEquivalentTo(actual1);
+                expected.Should().BeEquivalentTo(actual2);
+            }
+
+            [Fact]
+            public void Should_Create_Using_Constructor_With_7_Args()
+            {
+                var expected = new DummyType(
+                    Create<int>(), Create<int>(), Create<double>(), Create<double>(),
+                    Create<Guid>(), Create<Guid>(), Create<string>());
+
+                var factory = TypeFactory<DummyType>.Create<int, int, double, double, Guid, Guid, string>();
+
+                var actual1 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5, expected.Prop6, expected.Prop7);
+                var actual2 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5, expected.Prop6, expected.Prop7);
+
+                actual1.Should().NotBeSameAs(actual2);
+
+                expected.Should().BeEquivalentTo(actual1);
+                expected.Should().BeEquivalentTo(actual2);
+            }
+
+            [Fact]
+            public void Should_Create_Using_Constructor_With_8_Args()
+            {
+                var expected = new DummyType(
+                    Create<int>(), Create<int>(), Create<double>(), Create<double>(),
+                    Create<Guid>(), Create<Guid>(), Create<string>(), Create<string>());
+
+                var factory = TypeFactory<DummyType>.Create<int, int, double, double, Guid, Guid, string, string>();
+
+                var actual1 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5, expected.Prop6, expected.Prop7, expected.Prop8);
+                var actual2 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5, expected.Prop6, expected.Prop7, expected.Prop8);
+
+                actual1.Should().NotBeSameAs(actual2);
+
+                expected.Should().BeEquivalentTo(actual1);
+                expected.Should().BeEquivalentTo(actual2);
+            }
         }
 
-        [Fact]
-        public void Should_Create_Using_Constructor_With_2_Args()
+        public class AsObject : TypeFactoryFixture
         {
-            var expected = new DummyType(Create<int>(), Create<int>());
+            [Fact]
+            public void Should_Create_Using_Constructor_With_1_Arg()
+            {
+                var expected = new DummyType(Create<int>());
 
-            var factory = TypeFactory<DummyType>.Create<int, int>();
+                var factory = TypeFactory<DummyType>.Create(typeof(int));
 
-            var actual1 = factory.Invoke(expected.Prop1, expected.Prop2);
-            var actual2 = factory.Invoke(expected.Prop1, expected.Prop2);
+                var actual1 = factory.Invoke(expected.Prop1);
+                var actual2 = factory.Invoke(expected.Prop1);
 
-            actual1.Should().NotBeSameAs(actual2);
+                actual1.Should().NotBeSameAs(actual2);
 
-            expected.Should().BeEquivalentTo(actual1);
-            expected.Should().BeEquivalentTo(actual2);
-        }
+                expected.Should().BeEquivalentTo(actual1);
+                expected.Should().BeEquivalentTo(actual2);
+            }
 
-        [Fact]
-        public void Should_Create_Using_Constructor_With_3_Args()
-        {
-            var expected = new DummyType(Create<int>(), Create<int>(), Create<double>());
+            [Fact]
+            public void Should_Create_Using_Constructor_With_2_Args()
+            {
+                var expected = new DummyType(Create<int>(), Create<int>());
 
-            var factory = TypeFactory<DummyType>.Create<int, int, double>();
+                var factory = TypeFactory<DummyType>.Create(typeof(int), typeof(int));
 
-            var actual1 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3);
-            var actual2 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3);
+                var actual1 = factory.Invoke(expected.Prop1, expected.Prop2);
+                var actual2 = factory.Invoke(expected.Prop1, expected.Prop2);
 
-            actual1.Should().NotBeSameAs(actual2);
+                actual1.Should().NotBeSameAs(actual2);
 
-            expected.Should().BeEquivalentTo(actual1);
-            expected.Should().BeEquivalentTo(actual2);
-        }
+                expected.Should().BeEquivalentTo(actual1);
+                expected.Should().BeEquivalentTo(actual2);
+            }
 
-        [Fact]
-        public void Should_Create_Using_Constructor_With_4_Args()
-        {
-            var expected = new DummyType(Create<int>(), Create<int>(), Create<double>(), Create<double>());
+            [Fact]
+            public void Should_Create_Using_Constructor_With_3_Args()
+            {
+                var expected = new DummyType(Create<int>(), Create<int>(), Create<double>());
 
-            var factory = TypeFactory<DummyType>.Create<int, int, double, double>();
+                var factory = TypeFactory<DummyType>.Create(typeof(int), typeof(int), typeof(double));
 
-            var actual1 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4);
-            var actual2 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4);
+                var actual1 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3);
+                var actual2 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3);
 
-            actual1.Should().NotBeSameAs(actual2);
+                actual1.Should().NotBeSameAs(actual2);
 
-            expected.Should().BeEquivalentTo(actual1);
-            expected.Should().BeEquivalentTo(actual2);
-        }
+                expected.Should().BeEquivalentTo(actual1);
+                expected.Should().BeEquivalentTo(actual2);
+            }
 
-        [Fact]
-        public void Should_Create_Using_Constructor_With_5_Args()
-        {
-            var expected = new DummyType(
-                Create<int>(), Create<int>(), Create<double>(), Create<double>(),
-                Create<Guid>());
+            [Fact]
+            public void Should_Create_Using_Constructor_With_4_Args()
+            {
+                var expected = new DummyType(Create<int>(), Create<int>(), Create<double>(), Create<double>());
 
-            var factory = TypeFactory<DummyType>.Create<int, int, double, double, Guid>();
+                var factory = TypeFactory<DummyType>.Create(typeof(int), typeof(int), typeof(double), typeof(double));
 
-            var actual1 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5);
-            var actual2 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5);
+                var actual1 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4);
+                var actual2 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4);
 
-            actual1.Should().NotBeSameAs(actual2);
+                actual1.Should().NotBeSameAs(actual2);
 
-            expected.Should().BeEquivalentTo(actual1);
-            expected.Should().BeEquivalentTo(actual2);
-        }
+                expected.Should().BeEquivalentTo(actual1);
+                expected.Should().BeEquivalentTo(actual2);
+            }
 
-        [Fact]
-        public void Should_Create_Using_Constructor_With_6_Args()
-        {
-            var expected = new DummyType(
-                Create<int>(), Create<int>(), Create<double>(), Create<double>(),
-                Create<Guid>(), Create<Guid>());
+            [Fact]
+            public void Should_Create_Using_Constructor_With_5_Args()
+            {
+                var expected = new DummyType(
+                    Create<int>(), Create<int>(), Create<double>(), Create<double>(),
+                    Create<Guid>());
 
-            var factory = TypeFactory<DummyType>.Create<int, int, double, double, Guid, Guid>();
+                var factory = TypeFactory<DummyType>.Create(typeof(int), typeof(int), typeof(double), typeof(double), typeof(Guid));
 
-            var actual1 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5, expected.Prop6);
-            var actual2 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5, expected.Prop6);
+                var actual1 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5);
+                var actual2 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5);
 
-            actual1.Should().NotBeSameAs(actual2);
+                actual1.Should().NotBeSameAs(actual2);
 
-            expected.Should().BeEquivalentTo(actual1);
-            expected.Should().BeEquivalentTo(actual2);
-        }
+                expected.Should().BeEquivalentTo(actual1);
+                expected.Should().BeEquivalentTo(actual2);
+            }
 
-        [Fact]
-        public void Should_Create_Using_Constructor_With_7_Args()
-        {
-            var expected = new DummyType(
-                Create<int>(), Create<int>(), Create<double>(), Create<double>(),
-                Create<Guid>(), Create<Guid>(), Create<string>());
+            [Fact]
+            public void Should_Create_Using_Constructor_With_6_Args()
+            {
+                var expected = new DummyType(
+                    Create<int>(), Create<int>(), Create<double>(), Create<double>(),
+                    Create<Guid>(), Create<Guid>());
 
-            var factory = TypeFactory<DummyType>.Create<int, int, double, double, Guid, Guid, string>();
+                var factory = TypeFactory<DummyType>.Create(typeof(int), typeof(int), typeof(double), typeof(double), typeof(Guid), typeof(Guid));
 
-            var actual1 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5, expected.Prop6, expected.Prop7);
-            var actual2 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5, expected.Prop6, expected.Prop7);
+                var actual1 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5, expected.Prop6);
+                var actual2 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5, expected.Prop6);
 
-            actual1.Should().NotBeSameAs(actual2);
+                actual1.Should().NotBeSameAs(actual2);
 
-            expected.Should().BeEquivalentTo(actual1);
-            expected.Should().BeEquivalentTo(actual2);
-        }
+                expected.Should().BeEquivalentTo(actual1);
+                expected.Should().BeEquivalentTo(actual2);
+            }
 
-        [Fact]
-        public void Should_Create_Using_Constructor_With_8_Args()
-        {
-            var expected = new DummyType(
-                Create<int>(), Create<int>(), Create<double>(), Create<double>(),
-                Create<Guid>(), Create<Guid>(), Create<string>(), Create<string>());
+            [Fact]
+            public void Should_Create_Using_Constructor_With_7_Args()
+            {
+                var expected = new DummyType(
+                    Create<int>(), Create<int>(), Create<double>(), Create<double>(),
+                    Create<Guid>(), Create<Guid>(), Create<string>());
 
-            var factory = TypeFactory<DummyType>.Create<int, int, double, double, Guid, Guid, string, string>();
+                var factory = TypeFactory<DummyType>.Create(typeof(int), typeof(int), typeof(double), typeof(double), typeof(Guid), typeof(Guid), typeof(string));
 
-            var actual1 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5, expected.Prop6, expected.Prop7, expected.Prop8);
-            var actual2 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5, expected.Prop6, expected.Prop7, expected.Prop8);
+                var actual1 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5, expected.Prop6, expected.Prop7);
+                var actual2 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5, expected.Prop6, expected.Prop7);
 
-            actual1.Should().NotBeSameAs(actual2);
+                actual1.Should().NotBeSameAs(actual2);
 
-            expected.Should().BeEquivalentTo(actual1);
-            expected.Should().BeEquivalentTo(actual2);
+                expected.Should().BeEquivalentTo(actual1);
+                expected.Should().BeEquivalentTo(actual2);
+            }
+
+            [Fact]
+            public void Should_Create_Using_Constructor_With_8_Args()
+            {
+                var expected = new DummyType(
+                    Create<int>(), Create<int>(), Create<double>(), Create<double>(),
+                    Create<Guid>(), Create<Guid>(), Create<string>(), Create<string>());
+
+                var factory = TypeFactory<DummyType>.Create(typeof(int), typeof(int), typeof(double), typeof(double), typeof(Guid), typeof(Guid), typeof(string), typeof(string));
+
+                var actual1 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5, expected.Prop6, expected.Prop7, expected.Prop8);
+                var actual2 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5, expected.Prop6, expected.Prop7, expected.Prop8);
+
+                actual1.Should().NotBeSameAs(actual2);
+
+                expected.Should().BeEquivalentTo(actual1);
+                expected.Should().BeEquivalentTo(actual2);
+            }
         }
     }
 }
