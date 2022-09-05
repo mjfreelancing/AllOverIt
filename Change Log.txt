@@ -13,6 +13,9 @@ AllOverIt
       to create the required type.
   * Renamed DeepClone in ObjectMapperOptions to DeepCopy
 
+AllOver.Fixture
+  * Fixed getWithinRange() related methods to handle int.MaxValue correctly.
+
 
 04 Sep 2022
 Version 6.0.0-RC.9
