@@ -11,6 +11,8 @@ AllOverIt
       create the required type.
     - TypeExtensions.GetFactory() will create a factory for the type being extended. Generics or Type args can be used
       to create the required type.
+  * Object mapper refactored to allow configuration to be injected => allowing it to be defined up front and multiple
+    mapper instances being able to use it.
   * Renamed DeepClone in ObjectMapperOptions to DeepCopy
 
 AllOver.Fixture
