@@ -56,13 +56,13 @@ namespace AllOverIt.Tests.Mapping
                 configuration.Configure<DummySource2, DummyTarget>();
 
                 configuration.PropertyMatchers
-                    .TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out var propertyMapper)
+                    .TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out var propertyMatcher)
                     .Should()
                     .BeTrue();
 
-                propertyMapper.MatcherOptions.Should().Be(configuration.PropertyMatchers.DefaultOptions);
+                propertyMatcher.MatcherOptions.Should().Be(configuration.PropertyMatchers.DefaultOptions);
 
-                var actualMatches = GetMatchesNameAndType(propertyMapper.Matches);
+                var actualMatches = GetMatchesNameAndType(propertyMatcher.Matches);
 
                 var expected = new[]
                 {
@@ -98,13 +98,13 @@ namespace AllOverIt.Tests.Mapping
                 });
 
                 configuration.PropertyMatchers
-                   .TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out var propertyMapper)
+                   .TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out var propertyMatcher)
                    .Should()
                    .BeTrue();
 
-                propertyMapper.MatcherOptions.Binding.Should().Be(binding);
+                propertyMatcher.MatcherOptions.Binding.Should().Be(binding);
 
-                var actualMatches = GetMatchesNameAndType(propertyMapper.Matches);
+                var actualMatches = GetMatchesNameAndType(propertyMatcher.Matches);
 
                 var expected = new[]
                 {
@@ -129,11 +129,11 @@ namespace AllOverIt.Tests.Mapping
                 });
 
                 configuration.PropertyMatchers
-                  .TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out var propertyMapper)
+                  .TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out var propertyMatcher)
                   .Should()
                   .BeTrue();
 
-                var actualMatches = GetMatchesNameAndType(propertyMapper.Matches);
+                var actualMatches = GetMatchesNameAndType(propertyMatcher.Matches);
 
                 var expected = new[]
                 {
@@ -162,11 +162,11 @@ namespace AllOverIt.Tests.Mapping
                 });
 
                 configuration.PropertyMatchers
-                  .TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out var propertyMapper)
+                  .TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out var propertyMatcher)
                   .Should()
                   .BeTrue();
 
-                var actualMatches = GetMatchesNameAndType(propertyMapper.Matches);
+                var actualMatches = GetMatchesNameAndType(propertyMatcher.Matches);
 
                 var expected = new[]
                 {
@@ -195,11 +195,11 @@ namespace AllOverIt.Tests.Mapping
                 });
 
                 configuration.PropertyMatchers
-                  .TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out var propertyMapper)
+                  .TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out var propertyMatcher)
                   .Should()
                   .BeTrue();
 
-                var actualMatches = GetMatchesNameAndType(propertyMapper.Matches);
+                var actualMatches = GetMatchesNameAndType(propertyMatcher.Matches);
 
                 var expected = new[]
                 {
@@ -238,11 +238,11 @@ namespace AllOverIt.Tests.Mapping
                 });
 
                 configuration.PropertyMatchers
-                  .TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out var propertyMapper)
+                  .TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out var propertyMatcher)
                   .Should()
                   .BeTrue();
 
-                var actualMatches = GetMatchesNameAndType(propertyMapper.Matches);
+                var actualMatches = GetMatchesNameAndType(propertyMatcher.Matches);
 
                 var expectedAliases = new[]
                 {
@@ -258,7 +258,7 @@ namespace AllOverIt.Tests.Mapping
                 var value = Create<int>() % 1000 + 1;
 
                 var mapper = new ObjectMapper();
-                var convertedValue = propertyMapper.MatcherOptions.GetConvertedValue(mapper, nameof(DummySource2.Prop8), value);
+                var convertedValue = propertyMatcher.MatcherOptions.GetConvertedValue(mapper, nameof(DummySource2.Prop8), value);
 
                 actualMapper.Should().BeSameAs(mapper);         // Just an additional sanity check
                 convertedValue.Should().Be(value * factor);

@@ -32,6 +32,8 @@ namespace AllOverIt.Mapping
 
         internal ObjectPropertyMatcher(Type sourceType, Type targetType, PropertyMatcherOptions matcherOptions)
         {
+            _ = sourceType.WhenNotNull(nameof(sourceType));
+            _ = targetType.WhenNotNull(nameof(targetType));
             MatcherOptions = matcherOptions.WhenNotNull(nameof(matcherOptions));
 
             // Find properties that match between the source and target (or have an alias) and meet any filter criteria.
