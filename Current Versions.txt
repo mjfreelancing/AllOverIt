@@ -10,7 +10,7 @@
         - Targets                                - netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0
         - AllOverIt dependencies:                - [1]
                                                  - [16]
-        - External dependencies:                 - FluentValidation v11.2.0
+        - External dependencies:                 - FluentValidation v11.2.1
 
 
   [3]  AllOverIt.Aws.Cdk.AppSync                
