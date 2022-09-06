@@ -2,39 +2,37 @@
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Mapping;
+using AllOverIt.Reflection;
 using FluentAssertions;
 using Xunit;
 
 namespace AllOverIt.Tests.Mapping
 {
-    public class ObjectMapperOptionsFixture : FixtureBase
+    public class PropertyMatcherOptionsFixture : FixtureBase
     {
-        private readonly ObjectMapper _mapper;
-        private readonly ObjectMapperOptions _options;
+        private readonly PropertyMatcherOptions _options;
 
-        protected ObjectMapperOptionsFixture()
+        protected PropertyMatcherOptionsFixture()
         {
-            _mapper = new();
-            _options = new ObjectMapperOptions(_mapper);
+            _options = new PropertyMatcherOptions();
         }
 
-        public class Constructor : ObjectMapperOptionsFixture
+        public class Constructor : PropertyMatcherOptionsFixture
         {
             [Fact]
-            public void Should_Throw_When_Mapper_Null()
+            public void Should_Have_Default_Binding()
             {
-                Invoking(() =>
-                {
-                    // The object extensions canmap simple objects without a mapper
-                    _ = new ObjectMapperOptions(null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("mapper");
+                _options.Binding.Should().Be(BindingOptions.Default);
+            }
+
+            [Fact]
+            public void Should_Have_Null_Filter()
+            {
+                _options.Filter.Should().BeNull();
             }
         }
 
-        public class Exclude : ObjectMapperOptionsFixture
+        public class Exclude : PropertyMatcherOptionsFixture
         {
             [Fact]
             public void Should_Throw_When_SourceNames_Null()
@@ -60,7 +58,7 @@ namespace AllOverIt.Tests.Mapping
             }
 
             [Fact]
-            public void Should_Exclude_Names()
+            public void Should_Set_Exclude_For_Name()
             {
                 var name = Create<string>();
 
@@ -80,7 +78,7 @@ namespace AllOverIt.Tests.Mapping
             }
         }
 
-        public class DeepCopy : ObjectMapperOptionsFixture
+        public class DeepCopy : PropertyMatcherOptionsFixture
         {
             [Fact]
             public void Should_Throw_When_SourceNames_Null()
@@ -106,7 +104,7 @@ namespace AllOverIt.Tests.Mapping
             }
 
             [Fact]
-            public void Should_DeepCopy_Names()
+            public void Should_Set_DeepCopy_For_Name()
             {
                 var name = Create<string>();
 
@@ -126,7 +124,7 @@ namespace AllOverIt.Tests.Mapping
             }
         }
 
-        public class WithAlias : ObjectMapperOptionsFixture
+        public class WithAlias : PropertyMatcherOptionsFixture
         {
             [Fact]
             public void Should_Throw_When_SourceName_Null()
@@ -201,7 +199,7 @@ namespace AllOverIt.Tests.Mapping
             }
 
             [Fact]
-            public void Should_Set_Alias()
+            public void Should_Set_Alias_For_Name()
             {
                 var source = Create<string>();
                 var target = Create<string>();
@@ -223,7 +221,7 @@ namespace AllOverIt.Tests.Mapping
             }
         }
 
-        public class WithConversion : ObjectMapperOptionsFixture
+        public class WithConversion : PropertyMatcherOptionsFixture
         {
             private class DummySource
             {
@@ -249,9 +247,11 @@ namespace AllOverIt.Tests.Mapping
                     return value;
                 });
 
-                _ = _options.GetConvertedValue(propName, Create<int>());
+                var mapper = new ObjectMapper();
 
-                actual.Should().BeSameAs(_mapper);
+                _ = _options.GetConvertedValue(mapper, propName, Create<int>());
+
+                actual.Should().BeSameAs(mapper);
             }
 
             [Fact]
@@ -311,7 +311,9 @@ namespace AllOverIt.Tests.Mapping
 
                 _options.WithConversion(sourceName, (mapper, val) => (int)val * factor);
 
-                var actual = _options.GetConvertedValue(sourceName, value);
+                var mapper = new ObjectMapper();
+
+                var actual = _options.GetConvertedValue(mapper, sourceName, value);
 
                 actual.Should().BeEquivalentTo(value * factor);
             }
@@ -325,7 +327,7 @@ namespace AllOverIt.Tests.Mapping
             }
         }
 
-        public class IsExcluded : ObjectMapperOptionsFixture
+        public class IsExcluded : PropertyMatcherOptionsFixture
         {
             [Fact]
             public void Should_Throw_When_SourceName_Null()
@@ -390,7 +392,7 @@ namespace AllOverIt.Tests.Mapping
             }
         }
 
-        public class GetAliasName : ObjectMapperOptionsFixture
+        public class GetAliasName : PropertyMatcherOptionsFixture
         {
             [Fact]
             public void Should_Throw_When_SourceName_Null()
@@ -452,14 +454,29 @@ namespace AllOverIt.Tests.Mapping
             }
         }
 
-        public class GetConvertedValue : ObjectMapperOptionsFixture
+        public class GetConvertedValue : PropertyMatcherOptionsFixture
         {
+            [Fact]
+            public void Should_Throw_When_Mapper_Null()
+            {
+                Invoking(() =>
+                {
+                    _options.GetConvertedValue(null, Create<string>(), Create<string>());
+
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("objectMapper");
+            }
+
             [Fact]
             public void Should_Throw_When_SourceName_Null()
             {
                 Invoking(() =>
                 {
-                    _options.GetConvertedValue(null, Create<string>());
+                    var mapper = new ObjectMapper();
+
+                    _options.GetConvertedValue(mapper, null, Create<string>());
 
                 })
                     .Should()
@@ -472,7 +489,9 @@ namespace AllOverIt.Tests.Mapping
             {
                 Invoking(() =>
                 {
-                    _options.GetConvertedValue(string.Empty, Create<string>());
+                    var mapper = new ObjectMapper();
+
+                    _options.GetConvertedValue(mapper, string.Empty, Create<string>());
                 })
                     .Should()
                     .Throw<ArgumentException>()
@@ -484,7 +503,9 @@ namespace AllOverIt.Tests.Mapping
             {
                 Invoking(() =>
                 {
-                    _options.GetConvertedValue("  ", Create<string>());
+                    var mapper = new ObjectMapper();
+                    
+                    _options.GetConvertedValue(mapper, "  ", Create<string>());
                 })
                     .Should()
                     .Throw<ArgumentException>()
@@ -501,7 +522,9 @@ namespace AllOverIt.Tests.Mapping
 
                 var value = Create<int>();
 
-                var actual = _options.GetConvertedValue(sourceName, value);
+                var mapper = new ObjectMapper();
+                
+                var actual = _options.GetConvertedValue(mapper, sourceName, value);
 
                 actual.Should().Be(value * factor);
             }
@@ -511,7 +534,9 @@ namespace AllOverIt.Tests.Mapping
             {
                 var value = Create<int>();
 
-                var actual = _options.GetConvertedValue(Create<string>(), value);
+                var mapper = new ObjectMapper();
+                
+                var actual = _options.GetConvertedValue(mapper, Create<string>(), value);
 
                 actual.Should().Be(value);
             }

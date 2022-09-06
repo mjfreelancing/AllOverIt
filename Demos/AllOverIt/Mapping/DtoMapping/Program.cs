@@ -13,7 +13,12 @@ namespace DtoMapping
     {
         static void Main()
         {
-            var serializer = new SystemTextJsonSerializer();
+            //var options = new JsonSerializerOptions
+            //{
+            //    WriteIndented = true,
+            //};
+
+            var serializer = new SystemTextJsonSerializer(/*options*/);
 
             var source = new SourceType(5)
             {
@@ -62,28 +67,24 @@ namespace DtoMapping
             Console.ReadKey();
         }
 
-        private static void ApplyCommonMapperConfiguration(IObjectMapper objectMapper)
+        private static void MapperCreateTargetUsingBindingOnOptions(SourceType source, IJsonSerializer serializer)
         {
-            objectMapper.Configure<SourceType, TargetType>(opt =>
+            var defaultOptions = new PropertyMatcherOptions
+            {
+                Binding = BindingOptions.DefaultScope | BindingOptions.Private | BindingOptions.DefaultAccessor | BindingOptions.DefaultVisibility
+            };
+
+            var mapperConfigurator = new ObjectMapperConfiguration(defaultOptions);
+
+            mapperConfigurator.Configure<SourceType, TargetType>(opt =>
             {
                 opt.WithConversion(src => src.Prop3b, (mapper, value) =>
                 {
                     return new ObservableCollection<string>(value);
                 });
             });
-        }
 
-        private static void MapperCreateTargetUsingBindingOnOptions(SourceType source, IJsonSerializer serializer)
-        {
-            var objectMapper = new ObjectMapper
-            {
-                DefaultOptions =
-                {
-                    Binding = BindingOptions.DefaultScope | BindingOptions.Private | BindingOptions.DefaultAccessor |BindingOptions.DefaultVisibility
-                }
-            };
-
-            ApplyCommonMapperConfiguration(objectMapper);
+            var objectMapper = new ObjectMapper(mapperConfigurator);
 
             var target = objectMapper.Map<TargetType>(source);
 
@@ -92,15 +93,22 @@ namespace DtoMapping
 
         private static void MapperMapOntoExistingTargetUsingDefaultFilterOnOptions(SourceType source, IJsonSerializer serializer)
         {
-            var objectMapper = new ObjectMapper
+            var defaultOptions = new PropertyMatcherOptions
             {
-                DefaultOptions =
-                {
-                    Filter = propInfo => propInfo.Name != nameof(SourceType.Prop1)
-                }
+                Filter = propInfo => propInfo.Name != nameof(SourceType.Prop1)
             };
 
-            ApplyCommonMapperConfiguration(objectMapper);
+            var mapperConfigurator = new ObjectMapperConfiguration(defaultOptions);
+
+            mapperConfigurator.Configure<SourceType, TargetType>(opt =>
+            {
+                opt.WithConversion(src => src.Prop3b, (mapper, value) =>
+                {
+                    return new ObservableCollection<string>(value);
+                });
+            });
+
+            var objectMapper = new ObjectMapper(mapperConfigurator);
 
             var target = new TargetType();
             _ = objectMapper.Map(source, target);
@@ -110,15 +118,16 @@ namespace DtoMapping
 
         private static void MapperMapOntoExistingTargetUsingOptionsDuringConfigure(SourceType source, IJsonSerializer serializer)
         {
-            var objectMapper = new ObjectMapper();
-            var target = new TargetType();
+            var mapperConfigurator = new ObjectMapperConfiguration();
 
-            objectMapper.Configure<SourceType, TargetType>(opt =>
+            mapperConfigurator.Configure<SourceType, TargetType>(opt =>
             {
-                opt.WithConversion(src => src.Prop3b, (mapper, value) =>
-                {
-                    return new ObservableCollection<string>(value);
-                });
+                // Not required since we are filtering to Prop1 and Prop5a
+                //
+                // opt.WithConversion(src => src.Prop3b, (mapper, value) =>
+                // {
+                //     return new ObservableCollection<string>(value);
+                // });
 
                 // This is the default, just showing it
                 opt.Binding = BindingOptions.Default;
@@ -131,6 +140,11 @@ namespace DtoMapping
                    .WithAlias(src => src.Prop1, trg => trg.Prop6);
             });
 
+            //ApplyCommonMapperConfiguration(mapperConfigurator);
+
+            var objectMapper = new ObjectMapper(mapperConfigurator);
+            var target = new TargetType();
+
             objectMapper.Map(source, target);
 
             PrintMapping("Existing target, filter Prop1 || Prop5a, aliased to Prop5b and Prop6, default binding", source, target, serializer);
@@ -138,19 +152,15 @@ namespace DtoMapping
 
         private static void MapperMapOntoExistingTargetUsingConversionAndCloning(SourceType source, IJsonSerializer serializer)
         {
-            var objectMapper = new ObjectMapper();
+            var mapperConfigurator = new ObjectMapperConfiguration();
 
             // Collections are not cloned by default - this configuration will force a new collection to be created
-            objectMapper.Configure<ChildSourceType, ChildTargetType>(opt =>
+            mapperConfigurator.Configure<ChildSourceType, ChildTargetType>(opt =>
             {
                 opt.DeepCopy(src => src.Prop2a);
             });
 
-            var target = new TargetType();
-
-            source.Prop7 = new[] {"Val1", "Val2", "Val3"};
-
-            objectMapper.Configure<SourceType, TargetType>(opt =>
+            mapperConfigurator.Configure<SourceType, TargetType>(opt =>
             {
                 opt.WithConversion(src => src.Prop3b, (mapper, value) =>
                 {
@@ -176,11 +186,16 @@ namespace DtoMapping
                 {
                     // Can use the mapper, or explicitly create the return type
 
-                    return mapper.Map<ChildTargetType>(value);
-                    //return new ChildTargetType { Prop1 = value.Prop1 };
+                    //return mapper.Map<ChildTargetType>(value);
+                    return new ChildTargetType { Prop1 = value.Prop1 };
                 });
 
             });
+
+            source.Prop7 = new[] { "Val1", "Val2", "Val3" };
+            var target = new TargetType();
+
+            var objectMapper = new ObjectMapper(mapperConfigurator);
 
             objectMapper.Map(source, target);
 
@@ -200,12 +215,9 @@ namespace DtoMapping
 
         private static void MapperMapOntoExistingTargetUsingExcludeDuringConfigure(SourceType source, IJsonSerializer serializer)
         {
-            var objectMapper = new ObjectMapper();
-            var target = new TargetType();
+            var mapperConfigurator = new ObjectMapperConfiguration();
 
-            source.Prop7 = new[] { "Val1", "Val2", "Val3" };
-
-            objectMapper.Configure<SourceType, TargetType>(opt =>
+            mapperConfigurator.Configure<SourceType, TargetType>(opt =>
             {
                 opt.WithConversion(src => src.Prop3b, (mapper, value) =>
                 {
@@ -215,6 +227,11 @@ namespace DtoMapping
                 opt.Exclude(src => src.Prop7);
             });
 
+            var objectMapper = new ObjectMapper(mapperConfigurator);
+
+            source.Prop7 = new[] { "Val1", "Val2", "Val3" };            // Should not be mapped as it has been excluded
+            var target = new TargetType();           
+
             objectMapper.Map(source, target);
 
             PrintMapping("Existing target, exclude a non-mappable IEnumerable, default binding", source, target, serializer);
@@ -223,8 +240,13 @@ namespace DtoMapping
         private static void PrintMapping(string message, SourceType source, TargetType target, IJsonSerializer serializer)
         {
             Console.WriteLine(message);
+            Console.WriteLine();
             Console.WriteLine($"  Source = {serializer.SerializeObject(source)} (Prop4 = {source.GetProp4()})");
+            Console.WriteLine();
             Console.WriteLine($"  Target = {serializer.SerializeObject(target)}");
+            Console.WriteLine();
+            Console.WriteLine("====================================================");
+            Console.WriteLine();
         }
     }
 }

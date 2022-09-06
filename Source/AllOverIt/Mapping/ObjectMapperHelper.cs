@@ -10,7 +10,7 @@ namespace AllOverIt.Mapping
     // These methods are indirectly tested via ObjectMapper and ObjectExtensions (AllOverIt.Mapping.Extensions)
     internal static class ObjectMapperHelper
     {
-        internal static IReadOnlyCollection<PropertyInfo> GetMappableProperties(Type sourceType, Type targetType, ObjectMapperOptions options)
+        internal static IReadOnlyCollection<PropertyInfo> GetMappableProperties(Type sourceType, Type targetType, PropertyMatcherOptions options)
         {
             _ = options.WhenNotNull(nameof(options));
 
@@ -25,12 +25,12 @@ namespace AllOverIt.Mapping
                 .AsReadOnlyCollection();
         }
 
-        internal static string GetTargetAliasName(string sourceName, ObjectMapperOptions options)
+        internal static string GetTargetAliasName(string sourceName, PropertyMatcherOptions options)
         {
             return options.GetAliasName(sourceName) ?? sourceName;
         }
 
-        private static IEnumerable<PropertyInfo> GetFilteredSourcePropertyInfo(Type sourceType, ObjectMapperOptions options)
+        private static IEnumerable<PropertyInfo> GetFilteredSourcePropertyInfo(Type sourceType, PropertyMatcherOptions options)
         {
             var propertyInfo = ReflectionCache
                 .GetPropertyInfo(sourceType, options.Binding)
@@ -56,7 +56,7 @@ namespace AllOverIt.Mapping
             return sourceProps;
         }
 
-        private static IEnumerable<PropertyInfo> GetFilteredTargetPropertyInfo(Type targetType, ObjectMapperOptions options)
+        private static IEnumerable<PropertyInfo> GetFilteredTargetPropertyInfo(Type targetType, PropertyMatcherOptions options)
         {
             var propertyInfo = ReflectionCache
                 .GetPropertyInfo(targetType, options.Binding)

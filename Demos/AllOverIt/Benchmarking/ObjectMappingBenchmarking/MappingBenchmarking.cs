@@ -11,46 +11,28 @@ using System;
 namespace ObjectMappingBenchmarking
 {
     /*
-    // BEFORE
-    |                                        Method |       Runtime |        Mean |     Error |    StdDev | Allocated |
-    |---------------------------------------------- |-------------- |------------:|----------:|----------:|----------:|
-    |          AutoMapper_SimpleSource_SimpleTarget |      .NET 5.0 |    69.81 ns |  0.766 ns |  1.300 ns |      40 B |
-    | ObjectMapper_SimpleSource_Create_SimpleTarget |      .NET 5.0 |   804.67 ns |  9.340 ns |  8.736 ns |     280 B |
-    | ObjectMapper_SimpleSource_CopyTo_SimpleTarget |      .NET 5.0 |   728.88 ns |  8.419 ns |  7.463 ns |     240 B |
-    | StaticMethod_SimpleSource_Create_SimpleTarget |      .NET 5.0 | 2,933.67 ns | 38.996 ns | 36.477 ns |   2,864 B |
+    |                                     Method |          Mean |         Error |        StdDev |        Median | Allocated |
+    |------------------------------------------- |--------------:|--------------:|--------------:|--------------:|----------:|
+    |                      AutoMapper_New_Mapper | 107,214.25 ns |  2,129.132 ns |  4,934.587 ns | 105,570.74 ns |  43,366 B |
+    | ObjectMapper_New_Mapper_Explicit_Configure | 669,252.49 ns | 12,229.540 ns | 12,558.837 ns | 671,961.04 ns |  33,114 B |
+    | ObjectMapper_New_Mapper_Implicit_Configure | 668,595.91 ns | 13,110.411 ns | 15,097.968 ns | 669,269.04 ns |  33,114 B |
+    |                   AutoMapper_Create_Target |      74.85 ns |      1.466 ns |      1.630 ns |      75.19 ns |      40 B |
+    |                 ObjectMapper_Create_Target |     241.69 ns |      4.485 ns |      4.195 ns |     242.39 ns |      88 B |
+    |                 ObjectMapper_CopyTo_Target |     238.05 ns |      4.116 ns |      3.850 ns |     237.60 ns |      48 B |
 
-    |          AutoMapper_SimpleSource_SimpleTarget |      .NET 6.0 |    72.40 ns |  1.102 ns |  0.977 ns |      40 B |
-    | ObjectMapper_SimpleSource_Create_SimpleTarget |      .NET 6.0 |   617.13 ns |  7.928 ns |  7.028 ns |      88 B |
-    | ObjectMapper_SimpleSource_CopyTo_SimpleTarget |      .NET 6.0 |   601.85 ns |  4.908 ns |  4.351 ns |      48 B |
-    | StaticMethod_SimpleSource_Create_SimpleTarget |      .NET 6.0 | 2,567.73 ns | 26.555 ns | 23.540 ns |   2,608 B |
 
-    |          AutoMapper_SimpleSource_SimpleTarget | .NET Core 3.1 |   109.66 ns |  0.946 ns |  0.839 ns |      40 B |
-    | ObjectMapper_SimpleSource_Create_SimpleTarget | .NET Core 3.1 |   821.65 ns |  5.840 ns |  5.177 ns |     280 B |
-    | ObjectMapper_SimpleSource_CopyTo_SimpleTarget | .NET Core 3.1 |   784.03 ns |  6.429 ns |  6.014 ns |     240 B |
-    | StaticMethod_SimpleSource_Create_SimpleTarget | .NET Core 3.1 | 3,750.42 ns | 32.529 ns | 30.428 ns |   2,832 B |
+    |                                     Method |          Mean |         Error |        StdDev |        Median | Allocated |
+    |------------------------------------------- |--------------:|--------------:|--------------:|--------------:|----------:|
+    |                      AutoMapper_New_Mapper | 127,781.94 ns |  9,108.572 ns | 26,856.830 ns | 110,726.37 ns |  43,366 B |
+    |                   AutoMapper_Create_Target |      77.25 ns |      1.538 ns |      1.646 ns |      76.69 ns |      40 B |
+    |                   AutoMapper_CopyTo_Target |      73.76 ns |      1.405 ns |      1.246 ns |      73.16 ns |         - |
+    | ObjectMapper_New_Mapper_Explicit_Configure | 677,466.63 ns | 11,923.769 ns | 11,153.501 ns | 678,157.76 ns |  33,170 B |
+    | ObjectMapper_New_Mapper_Implicit_Configure | 678,204.01 ns | 12,919.114 ns | 13,823.307 ns | 674,865.33 ns |  33,170 B |
+    |   ObjectMapper_PreConfigured_Create_Target |     316.85 ns |      5.596 ns |      4.369 ns |     317.21 ns |     128 B |
+    |   ObjectMapper_PreConfigured_CopyTo_Target |     300.11 ns |      5.766 ns |      4.815 ns |     299.16 ns |      88 B |    
+     */
 
-    *******************************************************************************************************************
-
-    // AFTER
-    |                                        Method |       Runtime |        Mean |     Error |    StdDev | Allocated |
-    |---------------------------------------------- |-------------- |------------:|----------:|----------:|----------:|
-    |          AutoMapper_SimpleSource_SimpleTarget |      .NET 5.0 |    71.69 ns |  0.727 ns |  1.641 ns |      40 B |
-    | ObjectMapper_SimpleSource_Create_SimpleTarget |      .NET 5.0 |   139.29 ns |  2.806 ns |  3.119 ns |      88 B |
-    | ObjectMapper_SimpleSource_CopyTo_SimpleTarget |      .NET 5.0 |   101.99 ns |  1.964 ns |  1.837 ns |      48 B |
-    | StaticMethod_SimpleSource_Create_SimpleTarget |      .NET 5.0 | 2,916.50 ns | 54.468 ns | 55.935 ns |   2,864 B |
-
-    |          AutoMapper_SimpleSource_SimpleTarget |      .NET 6.0 |    72.09 ns |  1.428 ns |  1.467 ns |      40 B |
-    | ObjectMapper_SimpleSource_Create_SimpleTarget |      .NET 6.0 |   112.80 ns |  2.212 ns |  2.173 ns |      88 B |
-    | ObjectMapper_SimpleSource_CopyTo_SimpleTarget |      .NET 6.0 |   102.75 ns |  1.983 ns |  1.948 ns |      48 B |
-    | StaticMethod_SimpleSource_Create_SimpleTarget |      .NET 6.0 | 2,529.94 ns | 50.301 ns | 49.402 ns |   2,608 B |
-
-    |          AutoMapper_SimpleSource_SimpleTarget | .NET Core 3.1 |   106.59 ns |  1.692 ns |  1.583 ns |      40 B |
-    | ObjectMapper_SimpleSource_Create_SimpleTarget | .NET Core 3.1 |   139.07 ns |  2.701 ns |  2.653 ns |      88 B |
-    | ObjectMapper_SimpleSource_CopyTo_SimpleTarget | .NET Core 3.1 |   101.33 ns |  1.705 ns |  1.595 ns |      48 B |
-    | StaticMethod_SimpleSource_Create_SimpleTarget | .NET Core 3.1 | 3,601.60 ns | 68.513 ns | 64.087 ns |   2,832 B |
-    */
-
-    [MemoryDiagnoser(false)]
+    [MemoryDiagnoser(true)]
     //[SimpleJob(RuntimeMoniker.NetCoreApp31)]
     //[SimpleJob(RuntimeMoniker.Net50)]
     [SimpleJob(RuntimeMoniker.Net60)]
@@ -62,8 +44,20 @@ namespace ObjectMappingBenchmarking
 
         private readonly IObjectMapper _objectMapper;
 
-        private readonly SimpleSource _simpleSource;
-        private readonly SimpleTarget _simpleTarget;
+        private static readonly SimpleSource _simpleSource;
+        private static readonly SimpleTarget _simpleTarget;
+
+        static MappingTests()
+        {
+            _simpleSource = new SimpleSource
+            {
+                Prop1 = 1,
+                Prop2 = "Some Text",
+                TimestampUtc = DateTime.UtcNow
+            };
+
+            _simpleTarget = new SimpleTarget();
+        }
 
         public MappingTests()
         {
@@ -76,18 +70,11 @@ namespace ObjectMappingBenchmarking
             _autoMapper = new Mapper(autoMapperConfig);
 #endif
 
-            _objectMapper = new ObjectMapper();
+            var mapperConfigurator = new ObjectMapperConfiguration();
 
-            _objectMapper.Configure<SimpleSource, SimpleTarget>();
+            mapperConfigurator.Configure<SimpleSource, SimpleTarget>();
 
-            _simpleSource = new SimpleSource
-            {
-                Prop1 = 1,
-                Prop2 = "Some Text",
-                TimestampUtc = DateTime.UtcNow
-            };
-
-            _simpleTarget = new SimpleTarget();
+            _objectMapper = new ObjectMapper(mapperConfigurator);
         }
 
 #if AUTOMAPPER
@@ -103,31 +90,49 @@ namespace ObjectMappingBenchmarking
 
             _ = _autoMapper.Map<SimpleTarget>(_simpleSource);
         }
-        
+
         [Benchmark]
         public void AutoMapper_Create_Target()
         {
             _ = _autoMapper.Map<SimpleTarget>(_simpleSource);
         }
-#endif
 
         [Benchmark]
-        public void ObjectMapper_Create_Target()
+        public void AutoMapper_CopyTo_Target()
         {
-            _ = _objectMapper.Map<SimpleTarget>(_simpleSource);
+            _ = _autoMapper.Map(_simpleSource, _simpleTarget);
+        }
+#endif
+
+        [Benchmark]     // for speed comparison
+        public void ObjectMapper_New_Mapper_Explicit_Configure()
+        {
+            var mapperConfigurator = new ObjectMapperConfiguration();
+
+            mapperConfigurator.Configure<SimpleSource, SimpleTarget>();       // not really required since it will happen implicitly
+
+            var objectMapper = new ObjectMapper(mapperConfigurator);
+
+            _ = objectMapper.Map(_simpleSource, _simpleTarget);
         }
 
         [Benchmark]     // for speed comparison
-        public void ObjectMapper_CopyTo_Target_New_Mapper()
+        public void ObjectMapper_New_Mapper_Implicit_Configure()
         {
             var objectMapper = new ObjectMapper();
-            objectMapper.Configure<SimpleSource, SimpleTarget>();
+            // not mapping => objectMapper.Configure<SimpleSource, SimpleTarget>();
 
             _ = objectMapper.Map(_simpleSource, _simpleTarget);
         }
 
         [Benchmark]
-        public void ObjectMapper_CopyTo_Target()
+        public void ObjectMapper_PreConfigured_Create_Target()
+        {
+            _ = _objectMapper.Map<SimpleTarget>(_simpleSource);
+        }
+
+        [Benchmark]
+        public void ObjectMapper_PreConfigured_CopyTo_Target()
         {
             _ = _objectMapper.Map(_simpleSource, _simpleTarget);
         }

@@ -13,15 +13,15 @@ using System.Collections.ObjectModel;
 
 namespace AllOverIt.Tests.Mapping
 {
-    public partial class ObjectMapperFixture : FixtureBase
+    internal static class ObjectMapperTypes
     {
-        private enum DummyEnum
+        internal enum DummyEnum
         {
             Value1,
             Value2
         }
 
-        private class DummySource1
+        internal class DummySource1
         {
             public int Prop1 { get; set; }
             private int Prop2 { get; set; }
@@ -46,13 +46,13 @@ namespace AllOverIt.Tests.Mapping
             }
         }
 
-        private class DummySource2 : DummySource1
+        internal class DummySource2 : DummySource1
         {
             public IReadOnlyCollection<string> Prop10 { get; set; }
             public IEnumerable<string> Prop11 { get; set; }
         }
 
-        private class DummyTarget
+        internal class DummyTarget
         {
             public float Prop1 { get; set; }        // This is an int on the source
 
@@ -72,7 +72,7 @@ namespace AllOverIt.Tests.Mapping
             public DummyEnum Prop13 { get; set; }
         }
 
-        private class DummyRootGrandChildSource
+        internal class DummyRootGrandChildSource
         {
             public int Prop2 { get; set; }
             public IEnumerable<int> Prop3 { get; set; }
@@ -84,13 +84,13 @@ namespace AllOverIt.Tests.Mapping
             }
         }
 
-        private class DummyRootGrandChildTarget
+        internal class DummyRootGrandChildTarget
         {
             public double? Prop2 { get; set; }
             public IEnumerable<double> Prop3 { get; set; }
         }
 
-        private class DummyRootChildSource
+        internal class DummyRootChildSource
         {
             public int Prop1 { get; set; }
             public DummyRootGrandChildSource Prop2a { get; set; }
@@ -109,14 +109,14 @@ namespace AllOverIt.Tests.Mapping
             }
         }
 
-        private class DummyRootChildTarget
+        internal class DummyRootChildTarget
         {
             public double Prop1 { get; set; }
             public DummyRootGrandChildSource Prop2a { get; set; }
             public DummyRootGrandChildTarget Prop2b { get; set; }
         }
 
-        private class DummyRootParentSource
+        internal class DummyRootParentSource
         {
             public DummyRootChildSource RootA { get; set; }
             public DummyRootChildSource RootB { get; set; }
@@ -142,69 +142,69 @@ namespace AllOverIt.Tests.Mapping
             }
         }
 
-        private class DummyRootParentTarget
+        internal class DummyRootParentTarget
         {
             public DummyRootChildSource RootA { get; set; }
             public DummyRootChildTarget RootB { get; set; }
             public DummyRootChildSource RootC { get; set; }
         }
 
-        private class DummyEnumerableRootSource
+        internal class DummyEnumerableRootSource
         {
             public IEnumerable<DummyRootParentSource> Prop1 { get; set; }
         }
 
-        private class DummyEnumerableRootTarget
+        internal class DummyEnumerableRootTarget
         {
             public IEnumerable<DummyRootParentTarget> Prop1 { get; set; }
         }
 
-        private class DummyAbstractBase
+        internal class DummyAbstractBase
         {
             public int Prop1 { get; init; }     // Note the 'init' and not 'set'
         }
 
-        private class DummyConcrete1 : DummyAbstractBase
+        internal class DummyConcrete1 : DummyAbstractBase
         {
         }
 
-        private class DummyConcrete2 : DummyAbstractBase
+        internal class DummyConcrete2 : DummyAbstractBase
         {
         }
 
-        private class DummySourceHost
+        internal class DummySourceHost
         {
             public DummySource1 Prop1 { get; set; }
         }
 
-        private class DummyAbstractTarget
+        internal class DummyAbstractTarget
         {
             public DummyAbstractBase Prop1 { get; set; }
         }
 
-        private class DummyObservableCollectionHost
+        internal class DummyObservableCollectionHost
         {
             public ObservableCollection<string> Prop1 { get; set; }
         }
 
-        private class DummyDictionarySource
+        internal class DummyDictionarySource
         {
             public IDictionary<string, int> Prop1 { get; set; }
             public IDictionary<string, int> Prop2 { get; set; }
         }
 
-        private class DummyDictionaryTarget
+        internal class DummyDictionaryTarget
         {
             public IDictionary<string, int> Prop1 { get; set; }
             public IDictionary<string, double> Prop2 { get; set; }
         }
 
-        private class DummyEnumerableSource
+        internal class DummyEnumerableSource
         {
             public IEnumerable<int> Prop1 { get; set; }
         }
 
-        private class DummyArrayTarget
+        internal class DummyArrayTarget
         {
             public int[] Prop1 { get; set; }
         }

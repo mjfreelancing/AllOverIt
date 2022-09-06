@@ -1,16 +1,8 @@
-﻿using System;
-
-namespace AllOverIt.Mapping
+﻿namespace AllOverIt.Mapping
 {
     /// <summary>Represents an object mapper that will copy property values from a source onto a target.</summary>
     public interface IObjectMapper
     {
-        /// <summary>Allows source to target mapping configuration to be initialized in advance.</summary>
-        /// <typeparam name="TSource">The source type.</typeparam>
-        /// <typeparam name="TTarget">The target type.</typeparam>
-        /// <param name="configure">The action that allows the mapper options to be configured.</param>
-        void Configure<TSource, TTarget>(Action<TypedObjectMapperOptions<TSource, TTarget>> configure = default);
-
         /// <summary>Default constructs the target type and copies properties from the provided source type.</summary>
         /// <typeparam name="TTarget">The target type.</typeparam>
         /// <param name="source">The source instance to copy property values from.</param>

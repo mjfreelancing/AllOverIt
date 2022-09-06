@@ -13,85 +13,18 @@ namespace AllOverIt.Mapping
     /// <summary>Implements an object mapper that will copy property values from a source onto a target.</summary>
     public sealed class ObjectMapper : IObjectMapper
     {
-        internal class MatchingPropertyMapper
+        private readonly ObjectMapperConfiguration _objectMapperConfigurator;
+
+        /// <summary>Constructor. A default constructed <see cref="ObjectMapperConfiguration"/> will be used.</summary>
+        public ObjectMapper()
+            : this(new ObjectMapperConfiguration())
         {
-            internal sealed class PropertyMatchInfo
-            {
-                public PropertyInfo SourceInfo { get; }
-                public PropertyInfo TargetInfo { get; }
-                public Func<object, object> SourceGetter { get; }
-                public Action<object, object> TargetSetter { get; }
-
-                public PropertyMatchInfo(PropertyInfo sourceInfo, PropertyInfo targetInfo)
-                {
-                    SourceInfo = sourceInfo;
-                    TargetInfo = targetInfo;
-
-                    SourceGetter = PropertyHelper.CreatePropertyGetter(SourceInfo);
-                    TargetSetter = PropertyHelper.CreatePropertySetter(TargetInfo);
-                }
-            }
-
-            public ObjectMapperOptions MapperOptions { get; }
-            public PropertyMatchInfo[] Matches { get; }
-
-            // 'mapperResolver' is used to get property mapping for nested (object) properties
-            internal MatchingPropertyMapper(Type sourceType, Type targetType, ObjectMapperOptions mapperOptions)
-            {
-                MapperOptions = mapperOptions.WhenNotNull(nameof(mapperOptions));
-
-                // Find properties that match between the source and target (or have an alias) and meet any filter criteria.
-                var matches = ObjectMapperHelper.GetMappableProperties(sourceType, targetType, mapperOptions);
-
-                var sourcePropertyInfo = ReflectionCache
-                    .GetPropertyInfo(sourceType, mapperOptions.Binding)
-                    .ToDictionary(prop => prop.Name);
-
-                var targetPropertyInfo = ReflectionCache
-                    .GetPropertyInfo(targetType, mapperOptions.Binding)
-                    .ToDictionary(prop => prop.Name);
-
-                var matchedProps = new List<PropertyMatchInfo>(matches.Count);
-
-                foreach (var match in matches)
-                {
-                    var sourcePropInfo = sourcePropertyInfo[match.Name];
-                    var targetName = ObjectMapperHelper.GetTargetAliasName(match.Name, mapperOptions);
-                    var targetPropInfo = targetPropertyInfo[targetName];
-
-                    var matchInfo = new PropertyMatchInfo(sourcePropInfo, targetPropInfo);
-                    matchedProps.Add(matchInfo);
-                }
-
-                Matches = matchedProps.ToArray();
-            }
         }
-
-        private readonly IDictionary<Type, Func<object>> _internalTypeFactories = new Dictionary<Type, Func<object>>();
-        private readonly IDictionary<(Type, Type), MatchingPropertyMapper> _mapperCache = new Dictionary<(Type, Type), MatchingPropertyMapper>();
-
-        // Source => Target factories provided via configuration
-        private readonly IDictionary<(Type, Type), Func<IObjectMapper, object, object>> _sourceTargetFactories
-            = new Dictionary<(Type, Type), Func<IObjectMapper, object, object>>();      
-
-        /// <summary>Defines the default mapper options to apply when explicit options are not setup at the time of mapping configuration.</summary>
-        public ObjectMapperOptions DefaultOptions { get; }
 
         /// <summary>Constructor.</summary>
-        public ObjectMapper()
+        public ObjectMapper(ObjectMapperConfiguration objectMapperConfigurator)
         {
-            DefaultOptions = new(this);
-        }
-
-        /// <inheritdoc />
-        public void Configure<TSource, TTarget>(Action<TypedObjectMapperOptions<TSource, TTarget>> configure = default)
-        {
-            var sourceType = typeof(TSource);
-            var targetType = typeof(TTarget);
-
-            var mapperOptions = GetConfiguredOptionsOrDefault(configure);
-
-            _ = CreateMapper(sourceType, targetType, mapperOptions);
+            _objectMapperConfigurator = objectMapperConfigurator.WhenNotNull(nameof(objectMapperConfigurator));
         }
 
         /// <inheritdoc />
@@ -120,17 +53,17 @@ namespace AllOverIt.Mapping
             var sourceType = source.GetType();
             var targetType = target.GetType();
 
-            var propertyMapper = GetMapper(sourceType, targetType);
+            var propertyMapper = _objectMapperConfigurator.PropertyMatchers.GetOrCreateMapper(sourceType, targetType);
 
             foreach (var match in propertyMapper.Matches)
             {
                 var value = match.SourceGetter.Invoke(source);
-                var sourceValue = propertyMapper.MapperOptions.GetConvertedValue(match.SourceInfo.Name, value);
+                var sourceValue = propertyMapper.MatcherOptions.GetConvertedValue(this, match.SourceInfo.Name, value);
 
                 var sourcePropertyType = match.SourceInfo.PropertyType;
                 var targetPropertyType = match.TargetInfo.PropertyType;
 
-                var deepCopySource = isDeepCopy || propertyMapper.MapperOptions.IsDeepCopy(match.SourceInfo.Name);
+                var deepCopySource = isDeepCopy || propertyMapper.MatcherOptions.IsDeepCopy(match.SourceInfo.Name);
 
                 var targetValue = GetMappedSourceValue(sourceValue, sourcePropertyType, targetPropertyType, deepCopySource);
 
@@ -182,7 +115,7 @@ namespace AllOverIt.Mapping
                 };
             }
 
-            if (_sourceTargetFactories.TryGetValue((sourcePropertyType, targetPropertyType), out var factory))
+            if (_objectMapperConfigurator.TypeFactory.TryGet(sourcePropertyType, targetPropertyType, out var factory))
             {
                 return factory.Invoke(this, sourceValue);
             }
@@ -226,7 +159,7 @@ namespace AllOverIt.Mapping
                 // error will be thrown and the caller should call ConstructUsing() to provide the required factory.
                 var targetElement = sourceElement;
 
-                if (_sourceTargetFactories.TryGetValue((sourceKvpType, targetKvpType), out var factory))
+                if (_objectMapperConfigurator.TypeFactory.TryGet(sourceKvpType, targetKvpType, out var factory))
                 {
                     targetElement = factory.Invoke(this, sourceElement);
                 }
@@ -336,62 +269,14 @@ namespace AllOverIt.Mapping
 
         private object CreateType(Type type)
         {
-            if (!_internalTypeFactories.TryGetValue(type, out var factory))
+            if (!_objectMapperConfigurator.TypeFactory.TryGet(type, out var factory))
             {
                 factory = type.GetFactory();
 
-                _internalTypeFactories.Add(type, factory);
+                _objectMapperConfigurator.TypeFactory.Add(type, factory);
             }
 
             return factory.Invoke();
-        }
-
-        private MatchingPropertyMapper CreateMapper(Type sourceType, Type targetType, ObjectMapperOptions mapperOptions)
-        {
-            _ = mapperOptions.WhenNotNull(nameof(mapperOptions));
-
-            var mappingKey = (sourceType, targetType);
-
-            if (_mapperCache.TryGetValue(mappingKey, out _))
-            {
-                throw new ObjectMapperException($"Mapping already exists between {sourceType.GetFriendlyName()} and {targetType.GetFriendlyName()}.");
-            }
-
-            var mapper = new MatchingPropertyMapper(
-                sourceType,
-                targetType,
-                mapperOptions);
-
-            _mapperCache.Add(mappingKey, mapper);
-
-            return mapper;
-        }
-
-        internal MatchingPropertyMapper GetMapper(Type sourceType, Type targetType)
-        {
-            var mappingKey = (sourceType, targetType);
-            
-            return _mapperCache.TryGetValue(mappingKey, out var mapper)
-                ? mapper
-                : CreateMapper(sourceType, targetType, DefaultOptions);
-        }
-
-        private ObjectMapperOptions GetConfiguredOptionsOrDefault<TSource, TTarget>(Action<TypedObjectMapperOptions<TSource, TTarget>> configure)
-        {
-            if (configure is null)
-            {
-                return DefaultOptions;
-            }
-
-            var mapperOptions = new TypedObjectMapperOptions<TSource, TTarget>(this, (sourceType, targetType, factory) =>
-            {
-                var key = (sourceType, targetType);
-                _sourceTargetFactories.Add(key, factory);
-            });
-
-            configure?.Invoke(mapperOptions);
-
-            return mapperOptions;
         }
     }
 }

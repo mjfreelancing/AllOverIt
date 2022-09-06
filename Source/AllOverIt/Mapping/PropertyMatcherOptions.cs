@@ -6,8 +6,8 @@ using AllOverIt.Reflection;
 
 namespace AllOverIt.Mapping
 {
-    /// <summary>Provides options that control how source properties are copied onto a target instance.</summary>
-    public class ObjectMapperOptions
+    /// <summary>Provides options that control how source properties are matched and copied onto a target instance.</summary>
+    public class PropertyMatcherOptions
     {
         private sealed class TargetOptions
         {
@@ -20,27 +20,16 @@ namespace AllOverIt.Mapping
         // Source property to target options
         private readonly IDictionary<string, TargetOptions> _sourceTargetOptions = new Dictionary<string, TargetOptions>();
 
-        /// <summary>The object mapper associated with these options. This will be null when used via the object extensions
-        /// and not <see cref="IObjectMapper"/>.</summary>
-        protected IObjectMapper Mapper { get; }
-
         /// <summary>The binding options used to determine how properties on the source object are discovered.</summary>
         public BindingOptions Binding { get; set; } = BindingOptions.Default;
 
         /// <summary>Use to filter out source properties discovered based on the <see cref="Binding"/> option used.</summary>
         public Func<PropertyInfo, bool> Filter { get; set; }
 
-        /// <summary>Constructor.</summary>
-        /// <param name="mapper">The associated object mapper.</param>
-        internal ObjectMapperOptions(IObjectMapper mapper)
-        {
-            Mapper = mapper.WhenNotNull(nameof(mapper));
-        }
-
         /// <summary>Excludes one or more source properties from object mapping.</summary>
         /// <param name="sourceNames">One or more source property names to be excluded from mapping.</param>
-        /// <returns>The same <see cref="ObjectMapperOptions"/> instance so a fluent syntax can be used.</returns>
-        public ObjectMapperOptions Exclude(params string[] sourceNames)
+        /// <returns>The same <see cref="PropertyMatcherOptions"/> instance so a fluent syntax can be used.</returns>
+        public PropertyMatcherOptions Exclude(params string[] sourceNames)
         {
             _ = sourceNames.WhenNotNull(nameof(sourceNames));
 
@@ -55,8 +44,8 @@ namespace AllOverIt.Mapping
         /// <summary>Configures one or more source properties for deep cloning when object mapping. All child object
         /// properties will be cloned.</summary>
         /// <param name="sourceNames">One or more source property names to be configured for deep cloning.</param>
-        /// <returns>The same <see cref="ObjectMapperOptions"/> instance so a fluent syntax can be used.</returns>
-        public ObjectMapperOptions DeepCopy(params string[] sourceNames)
+        /// <returns>The same <see cref="PropertyMatcherOptions"/> instance so a fluent syntax can be used.</returns>
+        public PropertyMatcherOptions DeepCopy(params string[] sourceNames)
         {
             _ = sourceNames.WhenNotNull(nameof(sourceNames));
 
@@ -73,8 +62,8 @@ namespace AllOverIt.Mapping
         /// <param name="targetName">The target type property name.</param>
         /// <remarks>There is no validation of the property names provided. An exception will be thrown at runtime if
         /// no matching property name can be found.</remarks>
-        /// <returns>The same <see cref="ObjectMapperOptions"/> instance so a fluent syntax can be used.</returns>
-        public ObjectMapperOptions WithAlias(string sourceName, string targetName)
+        /// <returns>The same <see cref="PropertyMatcherOptions"/> instance so a fluent syntax can be used.</returns>
+        public PropertyMatcherOptions WithAlias(string sourceName, string targetName)
         {
             _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
             _ = targetName.WhenNotNullOrEmpty(nameof(targetName));
@@ -89,8 +78,8 @@ namespace AllOverIt.Mapping
         /// instance.</summary>
         /// <param name="sourceName">The source type property name.</param>
         /// <param name="converter">The source to target value conversion delegate.</param>
-        /// <returns>The same <see cref="ObjectMapperOptions"/> instance so a fluent syntax can be used.</returns>
-        public ObjectMapperOptions WithConversion(string sourceName, Func<IObjectMapper, object, object> converter)
+        /// <returns>The same <see cref="PropertyMatcherOptions"/> instance so a fluent syntax can be used.</returns>
+        public PropertyMatcherOptions WithConversion(string sourceName, Func<IObjectMapper, object, object> converter)
         {
             _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
             _ = converter.WhenNotNull(nameof(converter));
@@ -123,8 +112,9 @@ namespace AllOverIt.Mapping
                 : sourceName;
         }
 
-        internal object GetConvertedValue(string sourceName, object sourceValue)
+        internal object GetConvertedValue(IObjectMapper objectMapper, string sourceName, object sourceValue)
         {
+            _ = objectMapper.WhenNotNull(nameof(objectMapper));
             _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
 
             var converter = _sourceTargetOptions.TryGetValue(sourceName, out var targetOptions)
@@ -132,11 +122,11 @@ namespace AllOverIt.Mapping
                 : null;
 
             return converter != null
-                ? converter.Invoke(Mapper, sourceValue)
+                ? converter.Invoke(objectMapper, sourceValue)
                 : sourceValue;
         }
 
-        private void UpdateTargetOptions(string sourceName, Action<ObjectMapperOptions.TargetOptions> optionsAction)
+        private void UpdateTargetOptions(string sourceName, Action<PropertyMatcherOptions.TargetOptions> optionsAction)
         {
             var hasOptions = _sourceTargetOptions.TryGetValue(sourceName, out var targetOptions);
 

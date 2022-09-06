@@ -11,17 +11,15 @@ namespace AllOverIt.Mapping
     /// <summary>Provides options that control how source properties are copied onto a target instance.</summary>
     /// <typeparam name="TSource">The source object type.</typeparam>
     /// <typeparam name="TTarget">The target object type.</typeparam>
-    public sealed class TypedObjectMapperOptions<TSource, TTarget> : ObjectMapperOptions
+    public sealed class TypedPropertyMatcherOptions<TSource, TTarget> : PropertyMatcherOptions
     {
         // source type, target type, factory (ampper, source, target)
         private readonly Action<Type, Type, Func<IObjectMapper, object, object>> _sourceTargetFactoryRegistration;
 
         /// <summary>Constructor.</summary>
-        /// <param name="mapper">The associated object mapper.</param>
         /// <param name="sourceTargetFactoryRegistration">Used to register a target type factory with the object mapper for a provided
         /// source and target type combination.</param>
-        internal TypedObjectMapperOptions(IObjectMapper mapper, Action<Type, Type, Func<IObjectMapper, object, object>> sourceTargetFactoryRegistration)
-            : base(mapper)
+        internal TypedPropertyMatcherOptions(Action<Type, Type, Func<IObjectMapper, object, object>> sourceTargetFactoryRegistration)
         {
             _sourceTargetFactoryRegistration = sourceTargetFactoryRegistration.WhenNotNull(nameof(sourceTargetFactoryRegistration));
         }
@@ -29,8 +27,8 @@ namespace AllOverIt.Mapping
         /// <summary>Excludes a source property from object mapping.</summary>
         /// <typeparam name="TProperty">The source property type.</typeparam>
         /// <param name="sourceExpression">An expression to specify the source property being excluded.</param>
-        /// <returns>The same <see cref="TypedObjectMapperOptions{TSource, TTarget}"/> instance so a fluent syntax can be used.</returns>
-        public TypedObjectMapperOptions<TSource, TTarget> Exclude<TProperty>(Expression<Func<TSource, TProperty>> sourceExpression)
+        /// <returns>The same <see cref="TypedPropertyMatcherOptions{TSource, TTarget}"/> instance so a fluent syntax can be used.</returns>
+        public TypedPropertyMatcherOptions<TSource, TTarget> Exclude<TProperty>(Expression<Func<TSource, TProperty>> sourceExpression)
         {
             _ = sourceExpression.WhenNotNull(nameof(sourceExpression));
 
@@ -44,8 +42,8 @@ namespace AllOverIt.Mapping
         /// <summary>Configures a source property for deep copying when object mapping.</summary>
         /// <typeparam name="TProperty">The source property type.</typeparam>
         /// <param name="sourceExpression">An expression to specify the source property to be deep cloned.</param>
-        /// <returns>The same <see cref="TypedObjectMapperOptions{TSource, TTarget}"/> instance so a fluent syntax can be used.</returns>
-        public TypedObjectMapperOptions<TSource, TTarget> DeepCopy<TProperty>(Expression<Func<TSource, TProperty>> sourceExpression)
+        /// <returns>The same <see cref="TypedPropertyMatcherOptions{TSource, TTarget}"/> instance so a fluent syntax can be used.</returns>
+        public TypedPropertyMatcherOptions<TSource, TTarget> DeepCopy<TProperty>(Expression<Func<TSource, TProperty>> sourceExpression)
         {
             _ = sourceExpression.WhenNotNull(nameof(sourceExpression));
 
@@ -61,8 +59,8 @@ namespace AllOverIt.Mapping
         /// <typeparam name="TTargetProperty">The target property type.</typeparam>
         /// <param name="sourceExpression">An expression to specify the property on the source object.</param>
         /// <param name="targetExpression">An expression to specify the property on the target object.</param>
-        /// <returns>The same <see cref="TypedObjectMapperOptions{TSource, TTarget}"/> instance so a fluent syntax can be used.</returns>
-        public TypedObjectMapperOptions<TSource, TTarget> WithAlias<TSourceProperty, TTargetProperty>(Expression<Func<TSource, TSourceProperty>> sourceExpression,
+        /// <returns>The same <see cref="TypedPropertyMatcherOptions{TSource, TTarget}"/> instance so a fluent syntax can be used.</returns>
+        public TypedPropertyMatcherOptions<TSource, TTarget> WithAlias<TSourceProperty, TTargetProperty>(Expression<Func<TSource, TSourceProperty>> sourceExpression,
             Expression<Func<TTarget, TTargetProperty>> targetExpression)
         {
             _ = sourceExpression.WhenNotNull(nameof(sourceExpression));
@@ -81,8 +79,8 @@ namespace AllOverIt.Mapping
         /// <typeparam name="TProperty">The source property type.</typeparam>
         /// <param name="sourceExpression">An expression to specify the property on the source object.</param>
         /// <param name="converter">The source to target value conversion delegate.</param>
-        /// <returns>The same <see cref="TypedObjectMapperOptions{TSource, TTarget}"/> instance so a fluent syntax can be used.</returns>
-        public TypedObjectMapperOptions<TSource, TTarget> WithConversion<TProperty>(Expression<Func<TSource, TProperty>> sourceExpression,
+        /// <returns>The same <see cref="TypedPropertyMatcherOptions{TSource, TTarget}"/> instance so a fluent syntax can be used.</returns>
+        public TypedPropertyMatcherOptions<TSource, TTarget> WithConversion<TProperty>(Expression<Func<TSource, TProperty>> sourceExpression,
             Func<IObjectMapper, TProperty, object> converter)
         {
             _ = sourceExpression.WhenNotNull(nameof(sourceExpression));
@@ -97,8 +95,8 @@ namespace AllOverIt.Mapping
 
         /// <summary>Provides the option to specify a factory method to create the required target type from a given source.</summary>
         /// <param name="targetFactory">The factory that will create the required target type.</param>
-        /// <returns>The same <see cref="TypedObjectMapperOptions{TSource, TTarget}"/> instance so a fluent syntax can be used.</returns>
-        public TypedObjectMapperOptions<TSource, TTarget> ConstructUsing(Func<IObjectMapper, TSource, TTarget> targetFactory)
+        /// <returns>The same <see cref="TypedPropertyMatcherOptions{TSource, TTarget}"/> instance so a fluent syntax can be used.</returns>
+        public TypedPropertyMatcherOptions<TSource, TTarget> ConstructUsing(Func<IObjectMapper, TSource, TTarget> targetFactory)
         {
             _ = targetFactory.WhenNotNull(nameof(targetFactory));
 
