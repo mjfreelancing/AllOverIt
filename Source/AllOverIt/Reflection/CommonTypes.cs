@@ -128,8 +128,14 @@ namespace AllOverIt.Reflection
         /// <summary>Type declaration for a <c>typeof(ICollection&lt;&gt;)</c>.</summary>
         public static readonly Type ICollectionGenericType = typeof(ICollection<>);
 
+        /// <summary>Type declaration for a <c>typeof(IList&lt;&gt;)</c>.</summary>
+        public static readonly Type IListGenericType = typeof(IList<>);
+
         /// <summary>Type declaration for a <c>typeof(List&lt;&gt;)</c>.</summary>
         public static readonly Type ListGenericType = typeof(List<>);
+
+        /// <summary>Type declaration for a <c>typeof(IDictionary&lt;&gt;)</c>.</summary>
+        public static readonly Type IDictionaryGenericType = typeof(IDictionary<,>);
 
         /// <summary>Type declaration for a <c>typeof(Dictionary&lt;&gt;)</c>.</summary>
         public static readonly Type DictionaryGenericType = typeof(Dictionary<,>);
