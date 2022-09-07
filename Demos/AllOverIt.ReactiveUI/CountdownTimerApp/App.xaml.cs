@@ -10,7 +10,7 @@ namespace CountdownTimerApp
 {
     public partial class App : Application
     {
-        private IHost _host;
+        private readonly IHost _host;
 
         public App()
         {
