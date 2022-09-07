@@ -33,7 +33,7 @@ namespace AllOverIt.Pagination
         private IOrderedQueryable<TEntity> _directionReverseQuery;              // based on the reverse _direction
 
         /// <inheritdoc />
-        public IQueryable<TEntity> Query { get; }
+        public IQueryable<TEntity> BaseQuery { get; }
 
         /// <inheritdoc />
         public IContinuationTokenEncoder TokenEncoder => GetContinuationTokenEncoder();
@@ -43,7 +43,7 @@ namespace AllOverIt.Pagination
         /// <param name="configuration">Provides paginator options that define how the paginated query will be generated.</param>
         public QueryPaginator(IQueryable<TEntity> query, QueryPaginatorConfiguration configuration)
         {
-            Query = query.WhenNotNull(nameof(query));
+            BaseQuery = query.WhenNotNull(nameof(query));
             _configuration = configuration.WhenNotNull(nameof(configuration));
         }
 
@@ -256,7 +256,7 @@ namespace AllOverIt.Pagination
             return _columns.Aggregate(
                 (IOrderedQueryable<TEntity>) default,
                 (currentQuery, nextColumn) => currentQuery == null
-                    ? nextColumn.ApplyColumnOrderTo(Query, direction)
+                    ? nextColumn.ApplyColumnOrderTo(BaseQuery, direction)
                     : nextColumn.ThenApplyColumnOrderTo(currentQuery, direction));
         }
 

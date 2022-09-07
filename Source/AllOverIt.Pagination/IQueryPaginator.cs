@@ -11,7 +11,7 @@ namespace AllOverIt.Pagination
     public interface IQueryPaginator<TEntity> where TEntity : class
     {
         /// <summary>Contains the query the paginator is based on.</summary>
-        IQueryable<TEntity> Query { get; }
+        IQueryable<TEntity> BaseQuery { get; }
 
         /// <summary>A token generator used to encode and decode continuation tokens that simplifies requesting next and previous page queries.</summary>
         IContinuationTokenEncoder TokenEncoder { get; }
