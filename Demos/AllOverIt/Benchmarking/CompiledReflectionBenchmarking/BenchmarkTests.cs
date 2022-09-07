@@ -11,7 +11,7 @@ namespace CompiledReflectionBenchmarking
     }
 
     [MemoryDiagnoser]
-    public class CompiledReflection
+    public class BenchmarkTests
     {
         // Reflection
         private static readonly PropertyInfo dummyPropInfo = typeof(DummyType).GetProperty(nameof(DummyType.Value));

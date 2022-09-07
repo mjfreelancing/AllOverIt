@@ -19,13 +19,13 @@ namespace SpecificationBenchmarking
     */
 
     [MemoryDiagnoser]
-    public class SpecificationTest
+    public class BenchmarkTests
     {
         private readonly Person _candidate;
         private readonly Specification<Person> _criteria;
         private readonly LinqSpecification<Person> _criteriaLinq;
 
-        public SpecificationTest()
+        public BenchmarkTests()
         {
             _candidate = new Person(20, Sex.Male, "WE");
 

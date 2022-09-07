@@ -6,7 +6,7 @@ namespace SpecificationBenchmarking
     {
         static void Main()
         {
-            BenchmarkRunner.Run<SpecificationTest>();
+            BenchmarkRunner.Run<BenchmarkTests>();
         }
     }
 }

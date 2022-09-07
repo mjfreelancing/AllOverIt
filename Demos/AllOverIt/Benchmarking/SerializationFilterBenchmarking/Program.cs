@@ -6,7 +6,7 @@ namespace SerializationFilterBenchmarking
     {
         static void Main()
         {
-            BenchmarkRunner.Run<ObjectFilterTest>();
+            BenchmarkRunner.Run<BenchmarkTests>();
         }
     }
 }

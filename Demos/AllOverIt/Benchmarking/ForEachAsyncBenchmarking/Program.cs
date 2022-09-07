@@ -6,7 +6,7 @@ namespace ForEachAsyncBenchmarking
     {
         static void Main()
         {
-            BenchmarkRunner.Run<AsyncCalculations>();
+            BenchmarkRunner.Run<BenchmarkTests>();
         }
     }
 }

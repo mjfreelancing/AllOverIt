@@ -6,7 +6,7 @@ namespace CompiledReflectionBenchmarking
     {
         static void Main()
         {
-            BenchmarkRunner.Run<CompiledReflection>();
+            BenchmarkRunner.Run<BenchmarkTests>();
         }
     }
 }

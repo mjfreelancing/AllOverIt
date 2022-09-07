@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 namespace ForEachAsyncBenchmarking
 {
     [MemoryDiagnoser]
-    public class AsyncCalculations
+    public class BenchmarkTests
     {
         private static readonly IEnumerable<(int input1, int input2)> Inputs = GetInputs();
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Benchmark does not support static methods")]
         [Benchmark]
         public async Task MultiplySequentially()
         {
@@ -21,28 +20,24 @@ namespace ForEachAsyncBenchmarking
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Benchmark does not support static methods")]
         [Benchmark]
         public async Task MultiplyAsParallel16()
         {
             await Inputs.ForEachAsParallelAsync(Multiply, 16);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Benchmark does not support static methods")]
         [Benchmark]
         public async Task MultiplyAsTask16()
         {
             await Inputs.ForEachAsTaskAsync(Multiply, 16);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Benchmark does not support static methods")]
         [Benchmark]
         public async Task MultiplyAsParallel100()
         {
             await Inputs.ForEachAsParallelAsync(Multiply, 100);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Benchmark does not support static methods")]
         [Benchmark]
         public async Task MultiplyAsTask100()
         {

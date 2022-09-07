@@ -7,12 +7,12 @@ using System.Linq;
 namespace SerializationFilterBenchmarking
 {
     [MemoryDiagnoser]
-    public class ObjectFilterTest
+    public class BenchmarkTests
     {
         private readonly ComplexObject _complexObject;
         private readonly ObjectPropertySerializer _serializer;
 
-        public ObjectFilterTest()
+        public BenchmarkTests()
         {
             _complexObject = new ComplexObject
             {
