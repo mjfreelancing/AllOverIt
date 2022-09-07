@@ -123,7 +123,7 @@ namespace DtoMapping
 
             mapperConfigurator.Configure<SourceType, TargetType>(opt =>
             {
-                // Not required since we are filtering to Prop1 and Prop5a
+                // Not required since we are filtering to only Prop1, Prop3 and Prop5a
                 //
                 // opt.WithConversion(src => src.Prop3b, (mapper, value) =>
                 // {
@@ -134,14 +134,19 @@ namespace DtoMapping
                 opt.Binding = BindingOptions.Default;
 
                 opt.Filter = propInfo => propInfo.Name == nameof(SourceType.Prop1) ||
+                                         propInfo.Name == nameof(SourceType.Prop3) ||
                                          propInfo.Name == nameof(SourceType.Prop5a);
 
                 // Copy Prop5a onto Prop5b and Prop1 onto Prop6
                 opt.WithAlias(src => src.Prop5a, trg => trg.Prop5b)
                    .WithAlias(src => src.Prop1, trg => trg.Prop6);
+
+                // With this commented out, Prop3 on the target will be an empty collection.
+                // Remove the comment and Prop3 will be assigned the specified array,
+                // opt.UseWhenNull(src => src.Prop3, new[] { "_" });
             });
 
-            //ApplyCommonMapperConfiguration(mapperConfigurator);
+            source.Prop3 = null;
 
             var objectMapper = new ObjectMapper(mapperConfigurator);
             var target = new TargetType();

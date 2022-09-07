@@ -26,7 +26,8 @@ namespace AllOverIt.Tests.Mapping
                 {
                     DeepCopy = false,
                     Binding = BindingOptions.Default,
-                    Filter = (Func<PropertyInfo, bool>) null
+                    Filter = (Func<PropertyInfo, bool>) null,
+                    AllowNullCollections = false
                 };
 
                 expected

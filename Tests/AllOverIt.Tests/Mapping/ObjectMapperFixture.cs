@@ -1388,6 +1388,55 @@ namespace AllOverIt.Tests.Mapping
             }
 
             [Fact]
+            public void Should_Map_To_Null_Array()
+            {
+                var defaultOptions = new PropertyMatcherOptions
+                {
+                    AllowNullCollections = true
+                };
+
+                var configuration = new ObjectMapperConfiguration(defaultOptions);
+
+                var mapper = new ObjectMapper(configuration);
+
+                var source = new DummyEnumerableSource();
+
+                var actual = new DummyArrayTarget();
+
+                _ = mapper.Map<DummyEnumerableSource, DummyArrayTarget>(source, actual);
+
+                actual.Prop1.Should().BeNull();
+            }
+
+            [Fact]
+            public void Should_Default_Map_To_Empty_Array()
+            {
+                var mapper = new ObjectMapper();
+
+                var source = new DummyEnumerableSource();
+
+                var actual = new DummyArrayTarget();
+
+                _ = mapper.Map<DummyEnumerableSource, DummyArrayTarget>(source, actual);
+
+                actual.Prop1.Should().BeEmpty();
+            }
+
+            [Fact]
+            public void Should_Default_Map_To_Empty_Dictionary()
+            {
+                var objectMapper = new ObjectMapper();
+
+                var source = new DummyDictionarySource();
+                var actual = new DummyDictionaryTarget();
+
+                _ = objectMapper.Map<DummyDictionarySource, DummyDictionaryTarget>(source, actual);
+
+                actual.Prop1.Should().BeEmpty();
+                actual.Prop2.Should().BeEmpty();
+            }
+
+            [Fact]
             public void Should_Throw_When_Factory_Not_Defined()
             {
                 var mapper = new ObjectMapper();

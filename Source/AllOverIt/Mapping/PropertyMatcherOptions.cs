@@ -15,6 +15,7 @@ namespace AllOverIt.Mapping
             public Func<object, bool> ExcludeWhen { get; set; }         // Excluded at runtime based on the source value
             public bool DeepCopy { get; set; }
             public string Alias { get; set; }
+            public object NullReplacement { get; set; }
             public Func<IObjectMapper, object, object> Converter { get; set; }
         }
 
@@ -26,6 +27,14 @@ namespace AllOverIt.Mapping
 
         /// <summary>Use to filter out source properties discovered based on the <see cref="Binding"/> option used.</summary>
         public Func<PropertyInfo, bool> Filter { get; set; }
+
+        /// <summary>
+        /// <para>The default mapping behaviour of collections when the source is null is to create an empty array, list, or
+        /// dictionary. This option changes that behaviour so a null source value is mapped as a null target value.</para>
+        /// <para>If the target collection cannot be assigned an array, list, or dictionary then the <see cref="WithConversion(string, Func{IObjectMapper, object, object})"/>
+        /// method should be used.</para>
+        /// </summary>
+        public bool AllowNullCollections { get; set; }
 
         /// <summary>Excludes one or more source properties from object mapping.</summary>
         /// <param name="sourceNames">One or more source property names to be excluded from mapping.</param>
@@ -88,6 +97,19 @@ namespace AllOverIt.Mapping
             return this;
         }
 
+        /// <summary>Specifies a value to assign to the target property when the source property is null.</summary>
+        /// <param name="sourceName">The source type property name.</param>
+        /// <param name="nullReplacement">The value to assign to the target property when the source value is null.</param>
+        /// <returns>The same <see cref="PropertyMatcherOptions"/> instance so a fluent syntax can be used.</returns>
+        public PropertyMatcherOptions UseWhenNull(string sourceName, object nullReplacement)
+        {
+            _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
+
+            UpdateTargetOptions(sourceName, targetOptions => targetOptions.NullReplacement = nullReplacement);
+
+            return this;
+        }
+
         /// <summary>Provides a source to target property value converter. This can be used when there is no implicit
         /// conversion available between the source and target types. The converted value will be assigned to the target
         /// instance.</summary>
@@ -132,6 +154,15 @@ namespace AllOverIt.Mapping
             return _sourceTargetOptions.TryGetValue(sourceName, out var targetOptions)
                 ? targetOptions.Alias
                 : sourceName;
+        }
+
+        internal object GetNullReplacement(string sourceName)
+        {
+            _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
+
+            return _sourceTargetOptions.TryGetValue(sourceName, out var targetOptions)
+                ? targetOptions.NullReplacement
+                : null;
         }
 
         internal object GetConvertedValue(IObjectMapper objectMapper, string sourceName, object sourceValue)

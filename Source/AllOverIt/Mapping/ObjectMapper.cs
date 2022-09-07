@@ -51,14 +51,15 @@ namespace AllOverIt.Mapping
             var sourceType = source.GetType();
             var targetType = target.GetType();
 
-            var propertyMapper = _objectMapperConfigurator.PropertyMatchers.GetOrCreateMapper(sourceType, targetType);
+            var propertyMatcher = _objectMapperConfigurator.PropertyMatchers.GetOrCreateMapper(sourceType, targetType);
 
-            foreach (var match in propertyMapper.Matches)
+            foreach (var match in propertyMatcher.Matches)
             {
-                var value = match.SourceGetter.Invoke(source);
-                var sourceValue = propertyMapper.MatcherOptions.GetConvertedValue(this, match.SourceInfo.Name, value);
+                // Get the source value
+                var sourceValue = match.SourceGetter.Invoke(source);
 
-                if (propertyMapper.MatcherOptions.IsExcludedWhen(match.SourceInfo.Name, value))
+                // See if we skip this property based on its value
+                if (propertyMatcher.MatcherOptions.IsExcludedWhen(match.SourceInfo.Name, sourceValue))
                 {
                     continue;
                 }
@@ -66,9 +67,16 @@ namespace AllOverIt.Mapping
                 var sourcePropertyType = match.SourceInfo.PropertyType;
                 var targetPropertyType = match.TargetInfo.PropertyType;
 
-                var deepCopySource = isDeepCopy || propertyMapper.MatcherOptions.IsDeepCopy(match.SourceInfo.Name);
+                // Is there a null value replacement configured
+                sourceValue ??= propertyMatcher.MatcherOptions.GetNullReplacement(match.SourceInfo.Name);
 
-                var targetValue = GetMappedSourceValue(sourceValue, sourcePropertyType, targetPropertyType, deepCopySource);
+                // Is there a conversion configured ?
+                sourceValue = propertyMatcher.MatcherOptions.GetConvertedValue(this, match.SourceInfo.Name, sourceValue);
+
+                var deepCopySource = isDeepCopy || propertyMatcher.MatcherOptions.IsDeepCopy(match.SourceInfo.Name);
+
+                // Handles null source values, including the creation of empty collections if required
+                var targetValue = GetMappedSourceValue(sourceValue, sourcePropertyType, targetPropertyType, deepCopySource, propertyMatcher);
 
                 match.TargetSetter.Invoke(target, targetValue);
             }
@@ -76,10 +84,16 @@ namespace AllOverIt.Mapping
             return target;
         }
 
-        private object GetMappedSourceValue(object sourceValue, Type sourcePropertyType, Type targetPropertyType, bool deepCopy)
+        private object GetMappedSourceValue(object sourceValue, Type sourcePropertyType, Type targetPropertyType, bool deepCopy,
+            ObjectPropertyMatcher propertyMatcher)
         {
             if (sourceValue is null)
             {
+                if (targetPropertyType.IsEnumerableType() && !propertyMatcher.MatcherOptions.AllowNullCollections)
+                {
+                    return CreateEmptyCollection(targetPropertyType);
+                }
+                
                 return null;
             }
 
@@ -97,7 +111,6 @@ namespace AllOverIt.Mapping
 
             var isAssignable = targetPropertyType.IsAssignableFrom(sourceValueType);
 
-            // Assuming the target is also an enumerable type - a cast exception will result if it cannot be assigned
             if (!isAssignable || deepCopy)
             {
                 return CreateTargetFromSourceValue(sourceValue, sourceValueType, sourcePropertyType, targetPropertyType, deepCopy);
@@ -112,8 +125,8 @@ namespace AllOverIt.Mapping
             {
                 return sourceValue switch
                 {
-                    IDictionary _ => CreateTargetDictionary(sourceValue, sourceValueType, targetPropertyType),
-                    IEnumerable _ => CreateTargetCollection(sourceValue, sourceValueType, targetPropertyType, deepCopy),
+                    IDictionary _ => MapToDictionary(sourceValue, sourceValueType, targetPropertyType),
+                    IEnumerable _ => MapToCollection(sourceValue, sourceValueType, targetPropertyType, deepCopy),
                     _ => throw new ObjectMapperException($"Cannot map type '{sourceValueType.GetFriendlyName()}'."),
                 };
             }
@@ -127,13 +140,11 @@ namespace AllOverIt.Mapping
             return MapSourceToTarget(sourceValue, targetInstance, deepCopy);
         }
 
-        private object CreateTargetDictionary(object sourceValue, Type sourceValueType, Type targetPropertyType)
+        private object MapToDictionary(object sourceValue, Type sourceValueType, Type targetPropertyType)
         {
             Throw<ObjectMapperException>.When(
                 !sourceValueType.IsGenericType || !targetPropertyType.IsGenericType,
                 "Non-generic dictionary mapping is not supported.");
-
-            // TODO: See what factories can be cached
 
             // get types for the source dictionary
             var sourceTypeArgs = sourceValueType.GenericTypeArguments;
@@ -142,17 +153,11 @@ namespace AllOverIt.Mapping
             var sourceKvpType = CommonTypes.KeyValuePairType.MakeGenericType(new[] { sourceDictionaryKeyType, sourceDictionaryValueType });
 
             // Create the target dictionary
-            var targetTypeArgs = targetPropertyType.GenericTypeArguments;
-            var targetKeyType = targetTypeArgs[0];
-            var targetValueType = targetTypeArgs[1];
-
-            var dictionaryInstance = CreatedTypedDictionary(targetKeyType, targetValueType);
-
-            var targetKvpType = CommonTypes.KeyValuePairType.MakeGenericType(new[] { targetKeyType, targetValueType });
+            var (dictionaryInstance, targetKvpType) = CreateDictionary(targetPropertyType);
 
             var dictionaryAddMethod = CommonTypes.ICollectionGenericType
                 .MakeGenericType(targetKvpType)
-                .GetMethod("Add", new[] { targetKvpType });
+                .GetMethod("Add", new[] { targetKvpType });                             // todo: cache this
 
             var sourceElements = GetSourceElements(sourceValue);
 
@@ -179,7 +184,7 @@ namespace AllOverIt.Mapping
             return dictionaryInstance;
         }
 
-        private object CreateTargetCollection(object sourceValue, Type sourceValueType, Type targetPropertyType, bool doDeepCopy)
+        private object MapToCollection(object sourceValue, Type sourceValueType, Type targetPropertyType, bool doDeepCopy)
         {
             var sourceElementType = sourceValueType.IsArray
                                     ? sourceValueType.GetElementType()
@@ -217,15 +222,41 @@ namespace AllOverIt.Mapping
                 listInstance.Add(currentElement);
             }
 
+            return GetAsListOrArray(listType, listInstance, targetPropertyType);
+        }
+
+        private object CreateEmptyCollection(Type targetPropertyType)
+        {
+            if (targetPropertyType.IsDerivedFrom(CommonTypes.IDictionaryGenericType))
+            {
+                var (instance, _) = CreateDictionary(targetPropertyType);
+
+                return instance;
+            }
+
+            if (targetPropertyType.IsDerivedFrom(CommonTypes.IEnumerableGenericType))
+            {
+                var targetElementType = targetPropertyType.IsArray
+                    ? targetPropertyType.GetElementType()
+                    : targetPropertyType.GetGenericArguments()[0];
+
+                var (listType, listInstance) = CreateTypedList(targetElementType);
+
+                return GetAsListOrArray(listType, listInstance, targetPropertyType);
+            }
+
+            return null;
+        }
+
+        private object GetAsListOrArray(Type listType, IList listInstance, Type targetPropertyType)
+        {
             if (targetPropertyType.IsArray)
             {
                 var toArrayMethod = listType.GetMethod("ToArray");                          // TODO: Cache this
                 return toArrayMethod.Invoke(listInstance, Type.EmptyTypes);
             }
-            else
-            {
-                return listInstance;
-            }
+
+            return listInstance;
         }
 
         private static object ConvertValueIfNotTargetType(object sourceValue, Type sourceValueType, Type targetPropertyType)
@@ -255,7 +286,19 @@ namespace AllOverIt.Mapping
             }
         }
 
-        private (Type, IList) CreateTypedList(Type targetElementType)
+        private (object Instance, Type KvpType) CreateDictionary(Type targetPropertyType)
+        {
+            var targetTypeArgs = targetPropertyType.GenericTypeArguments;
+            var targetKeyType = targetTypeArgs[0];
+            var targetValueType = targetTypeArgs[1];
+
+            var dictionaryInstance = CreatedTypedDictionary(targetKeyType, targetValueType);
+            var targetKvpType = CommonTypes.KeyValuePairType.MakeGenericType(new[] { targetKeyType, targetValueType });
+
+            return (dictionaryInstance, targetKvpType);
+        }
+
+        private (Type ListType, IList ListInstance) CreateTypedList(Type targetElementType)
         {
             var listType = CommonTypes.ListGenericType.MakeGenericType(new[] { targetElementType });
             var listInstance = (IList) CreateType(listType);

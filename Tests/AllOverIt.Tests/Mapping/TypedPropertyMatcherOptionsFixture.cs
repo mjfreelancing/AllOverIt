@@ -187,6 +187,51 @@ namespace AllOverIt.Tests.Mapping
             }
         }
 
+        public class UseWhenNull : TypedPropertyMatcherOptionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_SourceExpression_Null()
+            {
+                Invoking(() =>
+                {
+                    _options.UseWhenNull<DummyChild, DummyChild?>(null, Create<DummyChild>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("sourceExpression");
+            }
+
+            [Fact]
+            public void Should_Not_Allow_Source_Nested_Properties()
+            {
+                Invoking(() =>
+                {
+                    _options.UseWhenNull<int?, int?>(source => source.Child.Prop1, Create<int>());
+                })
+                    .Should()
+                    .Throw<ObjectMapperException>()
+                    .WithMessage("ObjectMapper do not support nested mappings (source => source.Child.Prop1).");
+            }
+
+            [Fact]
+            public void Should_Set_Null_Replacement()
+            {
+                var replacement = new DummyTarget();
+
+                _ = _options.UseWhenNull(source => source.Child, replacement);
+
+                _options.GetNullReplacement(nameof(DummySource.Child)).Should().BeSameAs(replacement);
+            }
+
+            [Fact]
+            public void Should_Return_Same_Options()
+            {
+                var actual = _options.UseWhenNull(source => source.Child, Create<DummyTarget>());
+
+                actual.Should().Be(_options);
+            }
+        }
+
         public class WithAlias : TypedPropertyMatcherOptionsFixture
         {
             [Fact]

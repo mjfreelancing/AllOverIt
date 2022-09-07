@@ -284,6 +284,76 @@ namespace AllOverIt.Tests.Mapping
             }
         }
 
+        public class UseWhenNull : PropertyMatcherOptionsFixture
+        {
+            private class DummySource
+            {
+                public int Prop1 { get; set; }
+            }
+
+            private class DummyTarget
+            {
+                public string Prop1 { get; set; }
+            }
+
+            [Fact]
+            public void Should_Throw_When_SourceName_Null()
+            {
+                Invoking(() =>
+                {
+                    _options.UseWhenNull(null, new { });
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("sourceName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_SourceName_Empty()
+            {
+                Invoking(() =>
+                {
+                    _options.UseWhenNull(string.Empty, new { });
+                })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("sourceName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_SourceName_Whitespace()
+            {
+                Invoking(() =>
+                {
+                    _options.UseWhenNull("  ", new { });
+                })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("sourceName");
+            }
+
+            [Fact]
+            public void Should_Set_Null_Replacement()
+            {
+                var sourceName = Create<string>();
+                var replacement = Create<string>();
+
+                _options.UseWhenNull(sourceName, replacement);
+
+                var actual = _options.GetNullReplacement(sourceName);
+
+                actual.Should().Be(replacement);
+            }
+
+            [Fact]
+            public void Should_Return_Same_Options()
+            {
+                var actual = _options.UseWhenNull(Create<string>(), new { });
+
+                actual.Should().Be(_options);
+            }
+        }
+
         public class WithConversion : PropertyMatcherOptionsFixture
         {
             private class DummySource

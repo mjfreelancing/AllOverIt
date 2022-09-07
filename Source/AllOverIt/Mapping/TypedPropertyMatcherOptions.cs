@@ -92,6 +92,23 @@ namespace AllOverIt.Mapping
             return this;
         }
 
+        /// <summary>Specifies a value to assign to the target property when the source property is null.</summary>
+        /// <typeparam name="TSourceProperty">The source property type.</typeparam>
+        /// <typeparam name="TTargetProperty">The target property type.</typeparam>
+        /// <param name="sourceExpression">An expression to specify the property on the source object.</param>
+        /// <param name="nullReplacement">The value to assign to the target property when the source value is null.</param>
+        /// <returns>The same <see cref="TypedPropertyMatcherOptions{TSource, TTarget}"/> instance so a fluent syntax can be used.</returns>
+        public TypedPropertyMatcherOptions<TSource, TTarget> UseWhenNull<TSourceProperty, TTargetProperty>(Expression<Func<TSource, TSourceProperty>> sourceExpression,
+            TTargetProperty nullReplacement)
+        {
+            _ = sourceExpression.WhenNotNull(nameof(sourceExpression));
+
+            var sourceName = GetPropertyName(sourceExpression);
+            UseWhenNull(sourceName, nullReplacement);
+
+            return this;
+        }
+
         /// <summary>Provides a source to target property value converter. This can be used when there is no implicit
         /// conversion available between the source and target types.</summary>
         /// <typeparam name="TProperty">The source property type.</typeparam>
