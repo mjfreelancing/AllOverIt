@@ -310,6 +310,43 @@ namespace AllOverIt.Tests.Mapping
             }
 
             [Fact]
+            public void Should_Map_Exclude_Using_Predicate()
+            {
+                var configuration = new ObjectMapperConfiguration();
+
+                configuration.Configure<DummySource2, DummyTarget>(options =>
+                {
+                    options
+                        .Exclude(src => src.Prop13)
+                        .ExcludeWhen(src => src.Prop11, value => value.NotAny())
+                        .WithAlias(source => source.Prop7a, target => target.Prop7b);
+                });
+
+                var mapper = new ObjectMapper(configuration);
+
+                _source2.Prop11 = Array.Empty<string>();    // test ExcludeWhen()
+
+                var actual = mapper.Map<DummyTarget>(_source2);
+
+                var expected = new
+                {
+                    _source2.Prop1,
+                    _source2.Prop3,
+                    _source2.Prop5,
+                    _source2.Prop6,
+                    Prop7b = _source2.Prop7a,
+                    Prop8 = default(int),
+                    _source2.Prop9,
+                    _source2.Prop10,
+                    Prop11 = default(IReadOnlyCollection<string>),
+                    Prop12 = (int) _source2.Prop12,
+                    Prop13 = default (DummyEnum)
+                };
+
+                expected.Should().BeEquivalentTo(actual);
+            }
+
+            [Fact]
             public void Should_Map_WithConversion()
             {
                 var configuration = new ObjectMapperConfiguration();

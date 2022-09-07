@@ -11,7 +11,8 @@ namespace AllOverIt.Mapping
     {
         private sealed class TargetOptions
         {
-            public bool Excluded { get; set; }
+            public bool Exclude { get; set; }                           // Efficiently excluded when processing the configuration
+            public Func<object, bool> ExcludeWhen { get; set; }         // Excluded at runtime based on the source value
             public bool DeepCopy { get; set; }
             public string Alias { get; set; }
             public Func<IObjectMapper, object, object> Converter { get; set; }
@@ -35,8 +36,22 @@ namespace AllOverIt.Mapping
 
             foreach (var sourceName in sourceNames)
             {
-                UpdateTargetOptions(sourceName, targetOptions => targetOptions.Excluded = true);
+                UpdateTargetOptions(sourceName, targetOptions => targetOptions.Exclude = true);
             }
+
+            return this;
+        }
+
+        /// <summary>Excludes a source property from mapping at runtime based on a predicate applied to the property's value.</summary>
+        /// <param name="sourceName">The name of the property to exclude when a predicate condition is met.</param>
+        /// <param name="predicate">The predicate to apply to the source property value at runtime.</param>
+        /// <returns>The same <see cref="PropertyMatcherOptions"/> instance so a fluent syntax can be used.</returns>
+        public PropertyMatcherOptions ExcludeWhen(string sourceName, Func<object, bool> predicate)
+        {
+            _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
+            _ = predicate.WhenNotNull(nameof(predicate));
+
+            UpdateTargetOptions(sourceName, targetOptions => targetOptions.ExcludeWhen = predicate);
 
             return this;
         }
@@ -93,7 +108,14 @@ namespace AllOverIt.Mapping
         {
             _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
 
-            return _sourceTargetOptions.TryGetValue(sourceName, out var targetOptions) && targetOptions.Excluded;
+            return _sourceTargetOptions.TryGetValue(sourceName, out var targetOptions) && targetOptions.Exclude;
+        }
+
+        internal bool IsExcludedWhen(string sourceName, object sourceValue)
+        {
+            _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
+
+            return _sourceTargetOptions.TryGetValue(sourceName, out var targetOptions) && (targetOptions.ExcludeWhen?.Invoke(sourceValue) ?? false);
         }
 
         internal bool IsDeepCopy(string sourceName)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Mapping;
@@ -60,19 +61,81 @@ namespace AllOverIt.Tests.Mapping
             [Fact]
             public void Should_Set_Exclude_For_Name()
             {
-                var name = Create<string>();
+                var names = CreateMany<string>(3).ToArray();
 
-                _options.Exclude(name);
+                _options.Exclude(names);
 
-                _options.IsExcluded(name).Should().BeTrue();
+                _options.IsExcluded(names[1]).Should().BeTrue();
             }
 
             [Fact]
             public void Should_Return_Same_Options()
             {
-                var names = Create<string>();
+                var names = CreateMany<string>().ToArray();
 
                 var actual = _options.Exclude(names);
+
+                actual.Should().Be(_options);
+            }
+        }
+
+        public class ExcludeWhen : PropertyMatcherOptionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_SourceName_Null()
+            {
+                Invoking(() =>
+                {
+                    _options.ExcludeWhen(null, _ => Create<bool>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("sourceName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_SourceName_Empty()
+            {
+                Invoking(() =>
+                {
+                    _options.ExcludeWhen(string.Empty, _ => Create<bool>());
+                })
+                   .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("sourceName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_SourceName_Whitespace()
+            {
+                Invoking(() =>
+                {
+                    _options.ExcludeWhen("  ", _ => Create<bool>());
+                })
+                   .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("sourceName");
+            }
+
+            [Fact]
+            public void Should_Set_ExcludeWhen_For_Name()
+            {
+                var name = Create<string>();
+                Func<object, bool> predicate = value => (int)value == 1;
+
+                _options.ExcludeWhen(name, predicate);
+
+                _options.IsExcludedWhen(name, 1).Should().BeTrue();
+                _options.IsExcludedWhen(name, 2).Should().BeFalse();
+                _options.IsExcludedWhen(Create<string>(), Create<int>()).Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Return_Same_Options()
+            {
+                var name = Create<string>();
+
+                var actual = _options.ExcludeWhen(name, _ => Create<bool>());
 
                 actual.Should().Be(_options);
             }

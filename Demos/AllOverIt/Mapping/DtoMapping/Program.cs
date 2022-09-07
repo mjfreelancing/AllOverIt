@@ -1,4 +1,5 @@
-﻿using AllOverIt.Mapping;
+﻿using AllOverIt.Extensions;
+using AllOverIt.Mapping;
 using AllOverIt.Reflection;
 using AllOverIt.Serialization.Abstractions;
 using AllOverIt.Serialization.SystemTextJson;
@@ -201,7 +202,7 @@ namespace DtoMapping
 
             PrintMapping("Existing target, using conversion and cloning, alias child object property", source, target, serializer);
 
-            if (ReferenceEquals(source.Prop8.Prop2a, target.Prop8.Prop2a))
+            if (ReferenceEquals(source.Prop8.Prop2a, target.Prop8?.Prop2a))
             {
                 Console.WriteLine();
                 Console.WriteLine("*** CLONE FAILED ***");
@@ -224,12 +225,15 @@ namespace DtoMapping
                     return new ObservableCollection<string>(value);
                 });
 
-                opt.Exclude(src => src.Prop7);
+                //opt.Exclude(src => src.Prop7);
+                opt.ExcludeWhen(src => src.Prop7, values => values.AsReadOnlyCollection().Count == 3);
             });
 
             var objectMapper = new ObjectMapper(mapperConfigurator);
 
-            source.Prop7 = new[] { "Val1", "Val2", "Val3" };            // Should not be mapped as it has been excluded
+            // May be excluded - depends on which rule is applied above
+            source.Prop7 = new[] { "Val1", "Val2", "Val3" };
+            
             var target = new TargetType();           
 
             objectMapper.Map(source, target);

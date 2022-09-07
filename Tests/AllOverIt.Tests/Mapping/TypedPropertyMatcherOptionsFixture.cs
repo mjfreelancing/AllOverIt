@@ -97,6 +97,53 @@ namespace AllOverIt.Tests.Mapping
             }
         }
 
+        public class ExcludeWhen : TypedPropertyMatcherOptionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_SourceExpression_Null()
+            {
+                Invoking(() =>
+                {
+                    _options.ExcludeWhen<int>(null, _ => Create<bool>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("sourceExpression");
+            }
+
+            [Fact]
+            public void Should_Not_Allow_Nested_Properties()
+            {
+                Invoking(() =>
+                {
+                    _options.ExcludeWhen(source => source.Child.Prop1, _ => Create<bool>());
+                })
+                    .Should()
+                    .Throw<ObjectMapperException>()
+                    .WithMessage("ObjectMapper do not support nested mappings (source => source.Child.Prop1).");
+            }
+
+            [Fact]
+            public void Should_Exclude_Name()
+            {
+                Func<object, bool> predicate = value => (int) value == 1;
+
+                _options.ExcludeWhen(source => source.Prop2, predicate);
+
+                _options.IsExcludedWhen(nameof(DummySource.Prop2), 1).Should().BeTrue();
+                _options.IsExcludedWhen(nameof(DummySource.Prop2), 2).Should().BeFalse();
+                _options.IsExcludedWhen(Create<string>(), Create<int>()).Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Return_Same_Options()
+            {
+                var actual = _options.ExcludeWhen(source => source.Prop2, _ => Create<bool>());
+
+                actual.Should().Be(_options);
+            }
+        }
+
         public class DeepCopy : TypedPropertyMatcherOptionsFixture
         {
             [Fact]

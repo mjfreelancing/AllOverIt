@@ -58,6 +58,11 @@ namespace AllOverIt.Mapping
                 var value = match.SourceGetter.Invoke(source);
                 var sourceValue = propertyMapper.MatcherOptions.GetConvertedValue(this, match.SourceInfo.Name, value);
 
+                if (propertyMapper.MatcherOptions.IsExcludedWhen(match.SourceInfo.Name, value))
+                {
+                    continue;
+                }
+
                 var sourcePropertyType = match.SourceInfo.PropertyType;
                 var targetPropertyType = match.TargetInfo.PropertyType;
 

@@ -39,6 +39,24 @@ namespace AllOverIt.Mapping
             return this;
         }
 
+        /// <summary>Excludes a source property from mapping at runtime based on a predicate applied to the property's value.</summary>
+        /// <typeparam name="TProperty">The source property type.</typeparam>
+        /// <param name="sourceExpression">An expression to specify the source property being excluded.</param>
+        /// <param name="predicate">The predicate to apply to the source property value at runtime.</param>
+        /// <returns>The same <see cref="TypedPropertyMatcherOptions{TSource, TTarget}"/> instance so a fluent syntax can be used.</returns>
+        public TypedPropertyMatcherOptions<TSource, TTarget> ExcludeWhen<TProperty>(Expression<Func<TSource, TProperty>> sourceExpression,
+            Func<TProperty, bool> predicate)
+        {
+            _ = sourceExpression.WhenNotNull(nameof(sourceExpression));
+            _ = predicate.WhenNotNull(nameof(predicate));
+
+            var sourceName = GetPropertyName(sourceExpression);
+
+            ExcludeWhen(sourceName, source => predicate.Invoke((TProperty) source));
+
+            return this;
+        }
+
         /// <summary>Configures a source property for deep copying when object mapping.</summary>
         /// <typeparam name="TProperty">The source property type.</typeparam>
         /// <param name="sourceExpression">An expression to specify the source property to be deep cloned.</param>
