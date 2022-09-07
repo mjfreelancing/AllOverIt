@@ -14,6 +14,7 @@ namespace AllOverIt.Tests.Mapping
         private class DummyChild
         {
             public int Prop1 { get; set; }
+            public int? Prop2 { get; set; }
         }
 
         private class DummySource
@@ -194,7 +195,7 @@ namespace AllOverIt.Tests.Mapping
             {
                 Invoking(() =>
                 {
-                    _options.UseWhenNull<DummyChild, DummyChild?>(null, Create<DummyChild>());
+                    _options.UseWhenNull<DummyChild, DummyChild>(null, Create<DummyChild>());
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -206,11 +207,11 @@ namespace AllOverIt.Tests.Mapping
             {
                 Invoking(() =>
                 {
-                    _options.UseWhenNull<int?, int?>(source => source.Child.Prop1, Create<int>());
+                    _options.UseWhenNull<int?, int?>(source => source.Child.Prop2, Create<int>());
                 })
                     .Should()
                     .Throw<ObjectMapperException>()
-                    .WithMessage("ObjectMapper do not support nested mappings (source => source.Child.Prop1).");
+                    .WithMessage("ObjectMapper do not support nested mappings (source => source.Child.Prop2).");
             }
 
             [Fact]
