@@ -8,11 +8,13 @@ AllOverIt
   * Updated ObjectMapper to default to creating empty collections when the source is null (instead of assigning null).
     This can be changed via the default options (PropertyMatcherOptions).
 
-
 AllOverIt.Pagination
   * Renamed the exposed query provided to the paginator as BaseQuery so it isn't confused with the resultant paginated
     query provided by GetPageQuery(). This base query can be used to get the total page count without having to carry
     it around seperately.
+
+AllOverIt.Aws.Cdk.AppSync
+  * Renamed cursor related properties to token on AppSync IPageInfo
 
 
 04 Sep 2022
