@@ -13,6 +13,10 @@ AllOverIt.Pagination
     query provided by GetPageQuery(). This base query can be used to get the total page count without having to carry
     it around seperately.
 
+AllOverIt.EntityFrameworkCore.Pagination
+  * Added PageResult and IQueryPaginator extension to obtain a page of results and associated information.
+
+
 AllOverIt.Aws.Cdk.AppSync
   * Renamed cursor related properties to token on AppSync IPageInfo
 
