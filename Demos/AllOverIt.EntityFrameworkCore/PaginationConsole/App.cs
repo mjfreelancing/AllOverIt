@@ -130,7 +130,7 @@ namespace PaginationConsole
                     UseParameterizedQueries = true,                         // This is the default. Recommended for EF queries to avoid SQL injection and EF cache improvements
                     ContinuationTokenOptions =
                     {
-                        HashMode = ContinuationTokenHashMode.Sha1,
+                        IncludeHash = true,
                         UseCompression = true                               // Use sparingly. Adds overhead, possibly for minimal gain.
                     }
                 };

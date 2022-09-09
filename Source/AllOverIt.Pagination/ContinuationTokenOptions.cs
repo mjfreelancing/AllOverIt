@@ -6,7 +6,7 @@
         public static readonly ContinuationTokenOptions None = new();
 
         /// <inheritdoc />
-        public ContinuationTokenHashMode HashMode { get; set; } = ContinuationTokenHashMode.None;
+        public bool IncludeHash { get; set; }
 
         /// <inheritdoc />
         public bool UseCompression { get; set; }

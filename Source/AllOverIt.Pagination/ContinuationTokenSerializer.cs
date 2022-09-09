@@ -3,7 +3,6 @@ using AllOverIt.Extensions;
 using AllOverIt.Pagination.Exceptions;
 using AllOverIt.Serialization.Binary;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -14,21 +13,7 @@ namespace AllOverIt.Pagination
 {
     internal static class ContinuationTokenSerializer
     {
-        private static IDictionary<ContinuationTokenHashMode, int> _hashAlgorithmBytes = new Dictionary<ContinuationTokenHashMode, int>
-        {
-            { ContinuationTokenHashMode.Sha1, 160 / 8 },
-            { ContinuationTokenHashMode.Sha256, 256 / 8 },
-            { ContinuationTokenHashMode.Sha384, 384 / 8 },
-            { ContinuationTokenHashMode.Sha512, 512 / 8 },
-        };
-
-        private static IDictionary<ContinuationTokenHashMode, Lazy<HashAlgorithm>> _hashAlgorithms = new Dictionary<ContinuationTokenHashMode, Lazy<HashAlgorithm>>
-        {
-            { ContinuationTokenHashMode.Sha1, new Lazy<HashAlgorithm>(() => SHA1.Create()) },
-            { ContinuationTokenHashMode.Sha256, new Lazy<HashAlgorithm>(() => SHA256.Create()) },
-            { ContinuationTokenHashMode.Sha384, new Lazy<HashAlgorithm>(() => SHA384.Create()) },
-            { ContinuationTokenHashMode.Sha512, new Lazy<HashAlgorithm>(() => SHA512.Create()) },
-        };
+        private const int HashByteLength = 128 / 8;
 
         public static bool TryDecodeTokenBytes(string continuationToken, IContinuationTokenOptions options, out byte[] continuationTokenBytes)
         {
@@ -43,19 +28,25 @@ namespace AllOverIt.Pagination
 
             var bytes = buffer[..byteCount].ToArray();
 
-            if (options.HashMode != ContinuationTokenHashMode.None)
+            if (options.IncludeHash)
             {
-                var hashByteLength = _hashAlgorithmBytes[options.HashMode];
-
-                var hashBytes = bytes[..hashByteLength];
-                var contentBytes = bytes[hashByteLength..];
-
-                var hashAlgorithm = _hashAlgorithms[options.HashMode].Value;
-                var contentHash = hashAlgorithm.ComputeHash(contentBytes);
-
-                if (!contentHash.SequenceEqual(hashBytes))
+                // Must have at least the hash value bytes + 1 byte of content
+                if (bytes.Length < HashByteLength + 1)
                 {
                     return false;
+                }
+
+                var hashBytes = bytes[..HashByteLength];
+                var contentBytes = bytes[HashByteLength..];
+
+                using (var hashAlgorithm = MD5.Create())
+                {
+                    var contentHash = hashAlgorithm.ComputeHash(contentBytes);
+
+                    if (!contentHash.SequenceEqual(hashBytes))
+                    {
+                        return false;
+                    }
                 }
 
                 bytes = contentBytes;
@@ -83,12 +74,13 @@ namespace AllOverIt.Pagination
 
                 var bytes = stream.ToArray();
 
-                if (options.HashMode != ContinuationTokenHashMode.None)
+                if (options.IncludeHash)
                 {
-                    var hashAlgorithm = _hashAlgorithms[options.HashMode].Value;
-                    var hash = hashAlgorithm.ComputeHash(bytes);
-
-                    bytes = hash.Concat(bytes).ToArray();
+                    using (var hashAlgorithm = MD5.Create())
+                    {
+                        var hash = hashAlgorithm.ComputeHash(bytes);
+                        bytes = hash.Concat(bytes).ToArray();
+                    }
                 }
 
                 return Convert.ToBase64String(bytes);
