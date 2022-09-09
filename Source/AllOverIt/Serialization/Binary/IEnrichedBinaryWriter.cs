@@ -27,14 +27,11 @@ namespace AllOverIt.Serialization.Binary
         /// <inheritdoc cref="BinaryWriter.Write(byte[], int, int)"/>
         void Write(byte[] buffer, int index, int count);
 
-#if NETSTANDARD2_1 || NETCOREAPP3_1_OR_GREATER
-
         /// <inheritdoc cref="BinaryWriter.Write(ReadOnlySpan{byte})"/>
         void Write(ReadOnlySpan<byte> buffer);
 
         /// <inheritdoc cref="BinaryWriter.Write(ReadOnlySpan{char})"/>
         void Write(ReadOnlySpan<char> chars);
-#endif
 
         /// <inheritdoc cref="BinaryWriter.Write(bool)"/>
         void Write(bool value);

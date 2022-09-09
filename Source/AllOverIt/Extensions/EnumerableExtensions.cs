@@ -60,7 +60,6 @@ namespace AllOverIt.Extensions
             return items as IReadOnlyCollection<TType> ?? new ReadOnlyCollection<TType>(items.AsList());
         }
 
-#if !NETSTANDARD2_0
         /// <summary>Asynchronously projects each item within a sequence.</summary>
         /// <typeparam name="TType">The type of each element to be projected.</typeparam>
         /// <typeparam name="TResult">The projected result type.</typeparam>
@@ -80,7 +79,6 @@ namespace AllOverIt.Extensions
                 yield return await selector.Invoke(item).ConfigureAwait(false);
             }
         }
-#endif
 
         /// <summary>Projects each element into another form and returns the result as an IList{TResult}.</summary>
         /// <typeparam name="TSource">The source elements.</typeparam>
@@ -121,7 +119,6 @@ namespace AllOverIt.Extensions
             return items.Select(selector).ToList();
         }
 
-#if !NETSTANDARD2_0
         /// <summary>Asynchronously projects each element into another form and returns the result as an IReadOnlyCollection{TResult}.</summary>
         /// <typeparam name="TSource">The source elements.</typeparam>
         /// <typeparam name="TResult">The projected result type.</typeparam>
@@ -159,7 +156,6 @@ namespace AllOverIt.Extensions
 
             return results.AsReadOnlyList();
         }
-#endif
 
         /// <summary>
         /// Applicable to strings and collections, this method determines if the instance is null or empty.

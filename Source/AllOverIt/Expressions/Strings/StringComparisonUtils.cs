@@ -20,17 +20,8 @@ namespace AllOverIt.Expressions.Strings
         private static readonly MethodInfo ContainsMethodInfo = CommonTypes.StringType.GetMethod(
             "Contains", new[] { CommonTypes.StringType });
 
-#if NETSTANDARD2_0
-
-        private static readonly MethodInfo ContainsStringComparisonMethodInfo = StringExtensions.StringExtensionsType.GetMethod(
-            "Contains", BindingFlags.Public | BindingFlags.Static, null, new[] { CommonTypes.StringType, CommonTypes.StringType, CommonTypes.StringComparisonType }, null);
-
-#else
-
         private static readonly MethodInfo ContainsStringComparisonMethodInfo = CommonTypes.StringType.GetMethod(
             "Contains", new[] { CommonTypes.StringType, CommonTypes.StringComparisonType });
-
-#endif
 
         private static readonly MethodInfo StartsWithMethodInfo = CommonTypes.StringType.GetMethod(
             "StartsWith", new[] { CommonTypes.StringType });
@@ -101,16 +92,9 @@ namespace AllOverIt.Expressions.Strings
             _ = instance.WhenNotNull(nameof(instance));
             _ = value.WhenNotNull(nameof(value));
 
-            if (stringComparison.HasValue)
-            {
-#if NETSTANDARD2_0
-                return CreateStaticComparisonCallExpression(ContainsStringComparisonMethodInfo, instance, value, stringComparison.Value);
-#else
-                return CreateInstanceComparisonCallExpression(ContainsStringComparisonMethodInfo, instance, value, stringComparison.Value);
-#endif
-            }
-
-            return Expression.Call(instance, ContainsMethodInfo, value);
+            return stringComparison.HasValue
+                ? CreateInstanceComparisonCallExpression(ContainsStringComparisonMethodInfo, instance, value, stringComparison.Value)
+                : Expression.Call(instance, ContainsMethodInfo, value);
         }
 
         /// <summary>Creates a <see cref="MethodCallExpression"/> that will perform a string comparison (contains) based on the provided

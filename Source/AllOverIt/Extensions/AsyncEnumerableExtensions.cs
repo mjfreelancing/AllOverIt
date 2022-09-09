@@ -1,6 +1,4 @@
-﻿#if !NETSTANDARD2_0
-
-using AllOverIt.Assertion;
+﻿using AllOverIt.Assertion;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -140,4 +138,3 @@ namespace AllOverIt.Extensions
         }
     }
 }
-#endif

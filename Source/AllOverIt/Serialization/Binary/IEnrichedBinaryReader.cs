@@ -27,13 +27,11 @@ namespace AllOverIt.Serialization.Binary
         /// <inheritdoc cref="BinaryReader.Read(char[], int, int)"/>
         int Read(char[] buffer, int index, int count);
 
-#if NETSTANDARD2_1 || NETCOREAPP3_1_OR_GREATER
         /// <inheritdoc cref="BinaryReader.Read(Span{byte})"/>
         int Read(Span<byte> buffer);
 
         /// <inheritdoc cref="BinaryReader.Read(Span{char})"/>
         int Read(Span<char> buffer);
-#endif
 
         /// <inheritdoc cref="BinaryReader.ReadBoolean"/>
         bool ReadBoolean();

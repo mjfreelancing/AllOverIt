@@ -3,6 +3,8 @@
 XX XXX 2022
 Version 6.0.0-RC.12
 ======================================================================================================================
+ALL - Dropped support for NET STANDARD 2.0
+
 AllOverIt.EntityFramework.Pagination
 AllOverIt.Pagination
   * Moved PageResult from AllOverIt.EntityFramework.Pagination to AllOverIt.Pagination

@@ -263,7 +263,6 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
-#if !NETSTANDARD2_0
         public class SelectAsync : EnumerableExtensionsFixture
         {
             [Fact]
@@ -309,7 +308,6 @@ namespace AllOverIt.Tests.Extensions
                 expected.Should().BeEquivalentTo(actual);
             }
         }
-#endif
 
         public class SelectAsList : EnumerableExtensionsFixture
         {
@@ -428,7 +426,6 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
-#if !NETSTANDARD2_0
         public class SelectAsReadOnlyCollectionAsync : EnumerableExtensionsFixture
         {
             [Fact]
@@ -506,7 +503,6 @@ namespace AllOverIt.Tests.Extensions
                 expected.Should().BeEquivalentTo(actual);
             }
         }
-#endif
 
         public class IsNullOrEmpty : EnumerableExtensionsFixture
         {

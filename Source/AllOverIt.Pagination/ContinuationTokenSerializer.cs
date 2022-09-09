@@ -30,6 +30,41 @@ namespace AllOverIt.Pagination
             { ContinuationTokenHashMode.Sha512, new Lazy<HashAlgorithm>(() => SHA512.Create()) },
         };
 
+        public static bool TryDecodeTokenBytes(string continuationToken, IContinuationTokenOptions options, out byte[] continuationTokenBytes)
+        {
+            continuationTokenBytes = default;
+
+            var buffer = new Span<byte>(new byte[continuationToken.Length]);
+
+            if (!Convert.TryFromBase64String(continuationToken, buffer, out var byteCount))
+            {
+                return false;
+            }
+
+            var bytes = buffer[..byteCount].ToArray();
+
+            if (options.HashMode != ContinuationTokenHashMode.None)
+            {
+                var hashByteLength = _hashAlgorithmBytes[options.HashMode];
+
+                var hashBytes = bytes[..hashByteLength];
+                var contentBytes = bytes[hashByteLength..];
+
+                var hashAlgorithm = _hashAlgorithms[options.HashMode].Value;
+                var contentHash = hashAlgorithm.ComputeHash(contentBytes);
+
+                if (!contentHash.SequenceEqual(hashBytes))
+                {
+                    return false;
+                }
+
+                bytes = contentBytes;
+            }
+
+            continuationTokenBytes = bytes;
+            return true;
+        }
+
         public static string Serialize(ContinuationToken continuationToken, IContinuationTokenOptions options)
         {
             _ = continuationToken.WhenNotNull(nameof(continuationToken));
@@ -69,28 +104,9 @@ namespace AllOverIt.Pagination
 
             _ = options.WhenNotNull(nameof(options));
 
-            var bytes = Convert.FromBase64String(continuationToken);
-
-            if (options.HashMode != ContinuationTokenHashMode.None)
+            if (!TryDecodeTokenBytes(continuationToken, options, out var bytes))
             {
-                var hashByteLength = _hashAlgorithmBytes[options.HashMode];
-
-#if NETSTANDARD2_0
-                var hashBytes = new ArraySegment<byte>(bytes, 0, hashByteLength);
-                var contentBytes = new ArraySegment<byte>(bytes, hashByteLength, bytes.Length - hashByteLength).ToArray();
-#else
-                var hashBytes = bytes[..hashByteLength];
-                var contentBytes = bytes[hashByteLength..];
-#endif
-                var hashAlgorithm = _hashAlgorithms[options.HashMode].Value;
-                var contentHash = hashAlgorithm.ComputeHash(contentBytes);
-
-                if (!contentHash.SequenceEqual(hashBytes))
-                {
-                    throw new PaginationException("Invalid continuation token. Hash value mismatch.");
-                }
-
-                bytes = contentBytes;
+                throw new PaginationException("Invalid continuation token. Hash value mismatch.");
             }
 
             using (var stream = new MemoryStream(bytes))

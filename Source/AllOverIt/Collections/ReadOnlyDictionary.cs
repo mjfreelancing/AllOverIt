@@ -46,16 +46,7 @@ namespace AllOverIt.Collections
         /// <param name="data">Data to be added to the readonly dictionary.</param>
         public ReadOnlyDictionary(IEnumerable<KeyValuePair<TKey, TValue>> data)
         {
-#if NETSTANDARD2_0
-            _dictionary = new Dictionary<TKey, TValue>();
-
-            foreach (var item in data)
-            {
-                _dictionary[item.Key] = item.Value;
-            }
-#else
             _dictionary = new Dictionary<TKey, TValue>(data);
-#endif
         }
 
         /// <inheritdoc />

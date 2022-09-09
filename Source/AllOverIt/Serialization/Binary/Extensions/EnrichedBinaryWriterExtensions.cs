@@ -53,7 +53,6 @@ namespace AllOverIt.Serialization.Binary.Extensions
         /// <param name="value">The value to be written.</param>
         public static void WriteSByte(this IEnrichedBinaryWriter writer, sbyte value) => writer.WhenNotNull(nameof(writer)).Write(value);
 
-#if NETSTANDARD2_1 || NETCOREAPP3_1_OR_GREATER
         /// <inheritdoc cref="BinaryWriter.Write(ReadOnlySpan{char})"/>
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
         /// <param name="value">The value to be written.</param>
@@ -63,7 +62,6 @@ namespace AllOverIt.Serialization.Binary.Extensions
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
         /// <param name="value">The value to be written.</param>
         public static void WriteBytes(this IEnrichedBinaryWriter writer, ReadOnlySpan<byte> value) => writer.WhenNotNull(nameof(writer)).Write(value);
-#endif
 
         /// <inheritdoc cref="BinaryWriter.Write(long)"/>
         /// <param name="writer">The binary writer that is writing to the current stream.</param>

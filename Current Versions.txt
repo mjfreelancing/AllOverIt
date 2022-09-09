@@ -1,13 +1,13 @@
 =====================================================================================================================================================================
 
   [1]  AllOverIt                                
-        - Targets                                - netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0
+        - Targets                                - netstandard2.1;netcoreapp3.1;net5.0;net6.0
         - AllOverIt dependencies:                - [16]
         - External dependencies:                 - None
 
 
   [2]  AllOverIt.Validation                     
-        - Targets                                - netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0
+        - Targets                                - netstandard2.1;netcoreapp3.1;net5.0;net6.0
         - AllOverIt dependencies:                - [1]
                                                  - [16]
         - External dependencies:                 - FluentValidation v11.2.1
@@ -29,22 +29,22 @@
 
 
   [5]  AllOverIt.GenericHost                    
-        - Targets                                - netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0
+        - Targets                                - netstandard2.1;netcoreapp3.1;net5.0;net6.0
         - AllOverIt dependencies:                - [1]
                                                  - [16]
-        - External dependencies:                 - Microsoft.Extensions.Hosting v5.0.0 for targets netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0
+        - External dependencies:                 - Microsoft.Extensions.Hosting v5.0.0 for targets netstandard2.1;netcoreapp3.1;net5.0
                                                                                 v6.0.1 for targets net6.0
 
 
   [6]  AllOverIt.Fixture                        
-        - Targets                                - netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0
+        - Targets                                - netstandard2.1;netcoreapp3.1;net5.0;net6.0
         - AllOverIt dependencies:                - None
         - External dependencies:                 - AutoFixture v4.17.0
                                                  - FluentAssertions v6.7.0
 
 
   [7]  AllOverIt.Fixture.FakeItEasy             
-        - Targets                                - netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0
+        - Targets                                - netstandard2.1;netcoreapp3.1;net5.0;net6.0
         - AllOverIt dependencies:                - [6]
         - External dependencies:                 - AutoFixture v4.17.0
                                                  - AutoFixture.AutoFakeItEasy v4.17.0
@@ -53,13 +53,13 @@
 
 
   [8]  AllOverIt.Serialization.Abstractions     
-        - Targets                                - netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0
+        - Targets                                - netstandard2.1;netcoreapp3.1;net5.0;net6.0
         - AllOverIt dependencies:                - None
         - External dependencies:                 - None
 
 
   [9]  AllOverIt.Serialization.NewtonsoftJson   
-        - Targets                                - netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0
+        - Targets                                - netstandard2.1;netcoreapp3.1;net5.0;net6.0
         - AllOverIt dependencies:                - [1]
                                                  - [8]
                                                  - [16]
@@ -68,11 +68,11 @@
 
 
   [10] AllOverIt.Serialization.SystemTextJson   
-        - Targets                                - netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0
+        - Targets                                - netstandard2.1;netcoreapp3.1;net5.0;net6.0
         - AllOverIt dependencies:                - [1]
                                                  - [8]
                                                  - [16]
-        - External dependencies:                 - System.Text.Json v5.0.2 for targets netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0
+        - External dependencies:                 - System.Text.Json v5.0.2 for targets netstandard2.1;netcoreapp3.1;net5.0
                                                                     v6.0.5 for targets net6.0
 
 
@@ -102,34 +102,34 @@
 
 
   [14] AllOverIt.Csv                            
-        - Targets                                - netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0
+        - Targets                                - netstandard2.1;netcoreapp3.1;net5.0;net6.0
         - AllOverIt dependencies:                - [1]
                                                  - [16]
         - External dependencies:                 - CsvHelper v28.0.1
 
 
   [15] AllOverIt.Reactive                       
-        - Targets                                - netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0
+        - Targets                                - netstandard2.1;netcoreapp3.1;net5.0;net6.0
         - AllOverIt dependencies:                - [1]
                                                  - [16]
         - External dependencies:                 - System.Reactive v5.0.0
 
 
   [16] AllOverIt.Assertion                      
-        - Targets                                - netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0
+        - Targets                                - netstandard2.1;netcoreapp3.1;net5.0;net6.0
         - AllOverIt dependencies:                - None
         - External dependencies:                 - None
 
 
   [17] AllOverIt.DependencyInjection     
-        - Targets                                - netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0
+        - Targets                                - netstandard2.1;netcoreapp3.1;net5.0;net6.0
         - AllOverIt dependencies:                - [16]
-        - External dependencies:                 - Microsoft.Extensions.DependencyInjection.Abstractions v5.0.0 for targets netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0
+        - External dependencies:                 - Microsoft.Extensions.DependencyInjection.Abstractions v5.0.0 for targets netstandard2.1;netcoreapp3.1;net5.0
                                                                                                          v6.0.0 for targets net6.0
 
 
   [18]  AllOverIt.Serialization     
-        - Targets                                - netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0
+        - Targets                                - netstandard2.1;netcoreapp3.1;net5.0;net6.0
         - AllOverIt dependencies:                - [1]
                                                  - [8]
                                                  - [16]
@@ -137,15 +137,15 @@
 
 
   [19] AllOverIt.Pagination
-        - Targets                                - netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0
+        - Targets                                - netstandard2.1;netcoreapp3.1;net5.0;net6.0
         - AllOverIt dependencies:                - [1]
                                                  - [16]
-        - External dependencies:                 - Microsoft.Extensions.DependencyInjection.Abstractions v5.0.0 for targets netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0
+        - External dependencies:                 - Microsoft.Extensions.DependencyInjection.Abstractions v5.0.0 for targets netstandard2.1;netcoreapp3.1;net5.0
                                                                                                          v6.0.0 for targets net6.0
 
 
   [20] AllOverIt.EntityFrameworkCore.Pagination
-        - Targets                                - netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0
+        - Targets                                - netstandard2.1;netcoreapp3.1;net5.0;net6.0
         - AllOverIt dependencies:                - [1]
                                                  - [16]
                                                  - [13]
@@ -154,17 +154,17 @@
 
 
   [21] AllOverIt.ReactiveUI
-        - Targets                                - netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0
+        - Targets                                - netstandard2.1;netcoreapp3.1;net5.0;net6.0
         - AllOverIt dependencies:                - [1]
                                                  - [16]
-        - External dependencies:                 - Microsoft.Extensions.DependencyInjection.Abstractions v5.0.0 for targets netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0
+        - External dependencies:                 - Microsoft.Extensions.DependencyInjection.Abstractions v5.0.0 for targets netstandard2.1;netcoreapp3.1;net5.0
                                                                                                          v6.0.0 for targets net6.0
-                                                 - ReactiveUI v16.4.15 for targets netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0
+                                                 - ReactiveUI v16.4.15 for targets netstandard2.1;netcoreapp3.1;net5.0
                                                               v18.3.1 for targets net6.0
 
 
   [22] AllOverIt.Filtering
-        - Targets                                - netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0
+        - Targets                                - netstandard2.1;netcoreapp3.1;net5.0;net6.0
         - AllOverIt dependencies:                - [1]
                                                  - [16]
         - External dependencies:                 - None

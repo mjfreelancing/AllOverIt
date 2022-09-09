@@ -8,7 +8,6 @@ using Xunit;
 
 namespace AllOverIt.Tests.Patterns.ResourceInitialization
 {
-#if !NETSTANDARD2_0
     public class RaiiAsyncFixture : FixtureBase
     {
         public class RaiiAsync_NonType : RaiiFixture
@@ -260,5 +259,4 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
             }
         }
     }
-#endif
 }

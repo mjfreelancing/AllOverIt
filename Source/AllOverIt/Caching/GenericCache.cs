@@ -187,7 +187,6 @@ namespace AllOverIt.Caching
             return (TValue) _cache.GetOrAdd(key, value);
         }
 
-#if !NETSTANDARD2_0
         /// <inheritdoc />
         public TValue GetOrAdd<TArg, TValue>(
             GenericCacheKeyBase key,
@@ -204,7 +203,6 @@ namespace AllOverIt.Caching
                 objectResolver,
                 resolverArgument);
         }
-#endif
 
         /// <inheritdoc />
         public TValue AddOrUpdate<TValue>(
@@ -243,7 +241,6 @@ namespace AllOverIt.Caching
                 objectUpdateResolver);
         }
 
-#if !NETSTANDARD2_0
         /// <inheritdoc />
         public TValue AddOrUpdate<TArg, TValue>(
             GenericCacheKeyBase key,
@@ -265,7 +262,6 @@ namespace AllOverIt.Caching
                 objectUpdateResolver,
                 resolverArgument);
         }
-#endif
 
         #region Explicit implementations
         bool ICollection<KeyValuePair<GenericCacheKeyBase, object>>.IsReadOnly => false;

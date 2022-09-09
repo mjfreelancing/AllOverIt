@@ -1,6 +1,4 @@
-﻿#if !NETSTANDARD2_0
-
-using AllOverIt.Assertion;
+﻿using AllOverIt.Assertion;
 using System;
 using System.Threading.Tasks;
 
@@ -84,4 +82,3 @@ namespace AllOverIt.Patterns.ResourceInitialization
         }
     }
 }
-#endif

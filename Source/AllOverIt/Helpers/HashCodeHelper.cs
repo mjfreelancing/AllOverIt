@@ -21,9 +21,6 @@ namespace AllOverIt.Helpers
         /// <returns>A hash code based on the provided items.</returns>
         public static int CalculateHashCode<TType>(IEnumerable<TType> items)
         {
-#if NETSTANDARD2_0
-            return items.Aggregate(17, (current, item) => current * 23 + (item?.GetHashCode() ?? 0));
-#else
             var hash = new HashCode();
 
             foreach (var item in items)
@@ -32,7 +29,6 @@ namespace AllOverIt.Helpers
             }
 
             return hash.ToHashCode();
-#endif
         }
     }
 }

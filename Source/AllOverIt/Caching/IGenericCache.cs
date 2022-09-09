@@ -79,7 +79,6 @@ namespace AllOverIt.Caching
         /// <returns>The existing value of a key if it exists, otherwise the newly added value.</returns>
         TValue GetOrAdd<TValue>(GenericCacheKeyBase key, TValue value);
 
-#if !NETSTANDARD2_0
         /// <summary>Adds a key/value pair to the cache using a specified resolver and an argument when the key does not exist,
         /// otherwise returns the existing value.</summary>
         /// <typeparam name="TArg">The argument type.</typeparam>
@@ -92,7 +91,6 @@ namespace AllOverIt.Caching
             GenericCacheKeyBase key,
             Func<GenericCacheKeyBase, TArg, TValue> addResolver,
             TArg resolverArgument);
-#endif
 
         /// <summary>Adds a key/value pair to the cache using a specified resolver and an argument when the key does not exist,
         /// otherwise updates the existing value.</summary>
@@ -118,7 +116,6 @@ namespace AllOverIt.Caching
             TValue addValue,
             Func<GenericCacheKeyBase, TValue, TValue> updateResolver);
 
-#if !NETSTANDARD2_0
         /// <summary>Adds a key/value pair to the cache using a specified resolver and an argument when the key does not exist,
         /// updates the existing value using a specified value factory and an argument.</summary>
         /// <typeparam name="TArg">The argument type.</typeparam>
@@ -133,6 +130,5 @@ namespace AllOverIt.Caching
             Func<GenericCacheKeyBase, TArg, TValue> addResolver,
             Func<GenericCacheKeyBase, TValue, TArg, TValue> updateResolver,
             TArg resolverArgument);
-#endif
     }
 }

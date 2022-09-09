@@ -710,7 +710,6 @@ namespace AllOverIt.Tests.Caching
             }
         }
 
-#if !NETSTANDARD2_0
         public class GetOrAdd_Arg_Resolver : GenericCacheFixture
         {
             [Fact]
@@ -801,7 +800,6 @@ namespace AllOverIt.Tests.Caching
                 argValue.Should().Be(actualArgValue);
             }
         }
-#endif
 
         public class AddOrUpdate_AddResolver_UpdateResolver : GenericCacheFixture
         {
@@ -1036,7 +1034,6 @@ namespace AllOverIt.Tests.Caching
             }
         }
 
-#if !NETSTANDARD2_0
         public class AddOrUpdate_Arg_AddResolver_UpdateResolver : GenericCacheFixture
         {
             [Fact]
@@ -1242,7 +1239,6 @@ namespace AllOverIt.Tests.Caching
                 arg.Should().Be(actualArg);
             }
         }
-#endif
 
         public class Explicit : GenericCacheFixture
         {

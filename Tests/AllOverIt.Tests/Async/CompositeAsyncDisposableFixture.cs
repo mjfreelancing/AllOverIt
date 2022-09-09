@@ -10,7 +10,6 @@ using Xunit;
 
 namespace AllOverIt.Tests.Async
 {
-#if !NETSTANDARD2_0
     public class CompositeAsyncDisposableFixture : FixtureBase
     {
         public CompositeAsyncDisposableFixture()
@@ -105,5 +104,4 @@ namespace AllOverIt.Tests.Async
             }
         }
     }
-#endif
 }

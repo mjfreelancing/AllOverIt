@@ -6,7 +6,6 @@ A general purpose library containing a variety of classes, utilities, and helper
 
 | Target         | Supported |
 |----------------|-----------|
-| netstandard2.0 |    Yes    |
 | netstandard2.1 |    Yes    |
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
@@ -23,7 +22,6 @@ Provides additional features for use in ASP .NET Core applications.
 
 | Target         | Supported |
 |----------------|-----------|
-| netstandard2.0 |    No     |
 | netstandard2.1 |    No     |
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
@@ -38,7 +36,6 @@ A library of pre and post condition assertion helper methods.
 
 | Target         | Supported |
 |----------------|-----------|
-| netstandard2.0 |    Yes    |
 | netstandard2.1 |    Yes    |
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
@@ -53,7 +50,6 @@ Provides an AWS AppSync Graphql Subscription client.
 
 | Target         | Supported |
 |----------------|-----------|
-| netstandard2.0 |    No     |
 | netstandard2.1 |    Yes    |
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
@@ -68,7 +64,6 @@ Includes a code-first graphql schema generator that also provides support for bi
 
 | Target         | Supported |
 |----------------|-----------|
-| netstandard2.0 |    No     |
 | netstandard2.1 |    No     |
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    No     |
@@ -83,7 +78,6 @@ A library to assist with CSV export using CsvHelper.
 
 | Target         | Supported |
 |----------------|-----------|
-| netstandard2.0 |    Yes    |
 | netstandard2.1 |    Yes    |
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
@@ -98,7 +92,6 @@ A library containing useful dependency injection related utilities.
 
 | Target         | Supported |
 |----------------|-----------|
-| netstandard2.0 |    Yes    |
 | netstandard2.1 |    Yes    |
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
@@ -113,7 +106,6 @@ Provides additional features for use in Entity Framework Core applications.
 
 | Target         | Supported |
 |----------------|-----------|
-| netstandard2.0 |    No     |
 | netstandard2.1 |    Yes    |
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
@@ -128,7 +120,6 @@ A library providing pagination utilities for use with Entity Framework Core.
 
 | Target         | Supported |
 |----------------|-----------|
-| netstandard2.0 |    No     |
 | netstandard2.1 |    Yes    |
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
@@ -143,7 +134,6 @@ A library designed to parse and evaluate mathemtical expressions. It provides su
 
 | Target         | Supported |
 |----------------|-----------|
-| netstandard2.0 |    No     |
 | netstandard2.1 |    Yes    |
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
@@ -158,7 +148,6 @@ A library providing queryable filtering utilities.
 
 | Target         | Supported |
 |----------------|-----------|
-| netstandard2.0 |    Yes    |
 | netstandard2.1 |    Yes    |
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
@@ -173,7 +162,6 @@ Contains a base Fixture class that includes a number of helpful utility methods.
 
 | Target         | Supported |
 |----------------|-----------|
-| netstandard2.0 |    Yes    |
 | netstandard2.1 |    Yes    |
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
@@ -188,7 +176,6 @@ Extends **AllOverIt.Fixture** to assist with the creation of single/multiple stu
 
 | Target         | Supported |
 |----------------|-----------|
-| netstandard2.0 |    Yes    |
 | netstandard2.1 |    Yes    |
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
@@ -203,7 +190,6 @@ Provides the ability to quickly create console applications that support depende
 
 | Target         | Supported |
 |----------------|-----------|
-| netstandard2.0 |    Yes    |
 | netstandard2.1 |    Yes    |
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
@@ -218,7 +204,6 @@ A library providing queryable pagination utilities.
 
 | Target         | Supported |
 |----------------|-----------|
-| netstandard2.0 |    Yes    |
 | netstandard2.1 |    Yes    |
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
@@ -233,7 +218,6 @@ Provides utility extensions for use with System.Reactive.
 
 | Target         | Supported |
 |----------------|-----------|
-| netstandard2.0 |    Yes    |
 | netstandard2.1 |    Yes    |
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
@@ -248,7 +232,6 @@ Provides utility extensions for use with ReactiveUI.
 
 | Target         | Supported |
 |----------------|-----------|
-| netstandard2.0 |    Yes    |
 | netstandard2.1 |    Yes    |
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
@@ -263,7 +246,6 @@ Provides common serialization helpers.
 
 | Target         | Supported |
 |----------------|-----------|
-| netstandard2.0 |    Yes    |
 | netstandard2.1 |    Yes    |
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
@@ -278,7 +260,6 @@ Provides abstractions for JSON serialization.
 
 | Target         | Supported |
 |----------------|-----------|
-| netstandard2.0 |    Yes    |
 | netstandard2.1 |    Yes    |
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
@@ -293,7 +274,6 @@ A JSON serialization wrapper around NewtsonSoft.Json (an implementation for AllO
 
 | Target         | Supported |
 |----------------|-----------|
-| netstandard2.0 |    Yes    |
 | netstandard2.1 |    Yes    |
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
@@ -308,7 +288,6 @@ A JSON serialization wrapper around System.Text.Json (an implementation for AllO
 
 | Target         | Supported |
 |----------------|-----------|
-| netstandard2.0 |    Yes    |
 | netstandard2.1 |    Yes    |
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
@@ -323,7 +302,6 @@ Provides additional validators and extensions for use with FluentValidation.
 
 | Target         | Supported |
 |----------------|-----------|
-| netstandard2.0 |    Yes    |
 | netstandard2.1 |    Yes    |
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
