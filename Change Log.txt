@@ -1,5 +1,15 @@
 ======================================================================================================================
 
+XX XXX 2022
+Version 6.0.0-RC.12
+======================================================================================================================
+AllOverIt.EntityFramework.Pagination
+AllOverIt.Pagination
+  * Moved PageResult from AllOverIt.EntityFramework.Pagination to AllOverIt.Pagination
+  * Added the ability to encode a hash value within a serialized continuation token. This, along with the compression
+    option, have moved to a ContinuationTokenOptions class.
+
+
 09 Sep 2022
 Version 6.0.0-RC.11
 ======================================================================================================================

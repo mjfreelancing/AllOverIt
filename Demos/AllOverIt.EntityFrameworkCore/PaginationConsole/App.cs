@@ -128,7 +128,11 @@ namespace PaginationConsole
                     PageSize = pageSize,
                     PaginationDirection = PaginationDirection.Forward,      // This is the default.
                     UseParameterizedQueries = true,                         // This is the default. Recommended for EF queries to avoid SQL injection and EF cache improvements
-                    UseCompression = true                                   // Use sparingly. Adds overhead, possibly for minimal gain.
+                    ContinuationTokenOptions =
+                    {
+                        HashMode = ContinuationTokenHashMode.Sha1,
+                        UseCompression = true                               // Use sparingly. Adds overhead, possibly for minimal gain.
+                    }
                 };
 
                 // Paginated queries require the last column be a unique Id, hence including the PostId

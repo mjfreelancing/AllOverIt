@@ -14,7 +14,7 @@
         /// based queries as it will help with performance as well as avoid SQL Injection attacks.</summary>
         public bool UseParameterizedQueries { get; init; } = true;
 
-        /// <summary>Indicates if the continuation token should be compressed. This is not enabled by default.</summary>
-        public bool UseCompression { get; init; }
+        /// <summary>Provides options that can be applied when serializing a <see cref="ContinuationToken"/>.</summary>
+        public ContinuationTokenOptions ContinuationTokenOptions { get; init; } = new();
     }
 }

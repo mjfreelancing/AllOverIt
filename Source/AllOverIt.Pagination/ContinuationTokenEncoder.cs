@@ -12,13 +12,14 @@ namespace AllOverIt.Pagination
     {
         private readonly IReadOnlyCollection<IColumnDefinition> _columns;
         private readonly PaginationDirection _paginationDirection;
-        private readonly bool _useCompression;
+        private readonly IContinuationTokenOptions _continuationTokenOptions;
 
-        public ContinuationTokenEncoder(IReadOnlyCollection<IColumnDefinition> columns, PaginationDirection paginationDirection, bool useCompression)
+        public ContinuationTokenEncoder(IReadOnlyCollection<IColumnDefinition> columns, PaginationDirection paginationDirection,
+            IContinuationTokenOptions continuationTokenOptions)
         {
             _columns = columns.WhenNotNullOrEmpty(nameof(columns)).AsReadOnlyCollection();
             _paginationDirection = paginationDirection;
-            _useCompression = useCompression;
+            _continuationTokenOptions = continuationTokenOptions.WhenNotNull(nameof(continuationTokenOptions));
         }
 
         public string EncodePreviousPage<TEntity>(IReadOnlyCollection<TEntity> references) where TEntity : class
@@ -108,12 +109,12 @@ namespace AllOverIt.Pagination
 
         internal string Encode(ContinuationToken continuationToken)
         {
-            return ContinuationTokenSerializer.Serialize(continuationToken, _useCompression);
+            return ContinuationTokenSerializer.Serialize(continuationToken, _continuationTokenOptions);
         }
 
         internal ContinuationToken Decode(string continuationToken)
         {
-            return ContinuationTokenSerializer.Deserialize(continuationToken, _useCompression);
+            return ContinuationTokenSerializer.Deserialize(continuationToken, _continuationTokenOptions);
         }
     }
 }

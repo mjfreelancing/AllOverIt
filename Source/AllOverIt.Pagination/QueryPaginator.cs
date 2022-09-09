@@ -246,7 +246,7 @@ namespace AllOverIt.Pagination
         {
             AssertColumnsDefined();
 
-            _continuationTokenEncoder ??= new ContinuationTokenEncoder(_columns, _configuration.PaginationDirection, _configuration.UseCompression);
+            _continuationTokenEncoder ??= new ContinuationTokenEncoder(_columns, _configuration.PaginationDirection, _configuration.ContinuationTokenOptions);
 
             return _continuationTokenEncoder;
         }

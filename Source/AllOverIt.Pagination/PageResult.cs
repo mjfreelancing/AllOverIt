@@ -1,7 +1,6 @@
-﻿using AllOverIt.Pagination;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace AllOverIt.EntityFrameworkCore.Pagination
+namespace AllOverIt.Pagination
 {
     /// <summary>Contains a page of results and token information that can be used to execute a query using an <see cref="IQueryPaginator{TResult}"/>
     /// that obtains the previous or next page of data.</summary>

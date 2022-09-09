@@ -1,22 +1,43 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
+using AllOverIt.Pagination.Exceptions;
 using AllOverIt.Serialization.Binary;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace AllOverIt.Pagination
 {
     internal static class ContinuationTokenSerializer
     {
-        public static string Serialize(ContinuationToken continuationToken, bool usingCompression = false)
+        private static IDictionary<ContinuationTokenHashMode, int> _hashAlgorithmBytes = new Dictionary<ContinuationTokenHashMode, int>
+        {
+            { ContinuationTokenHashMode.Sha1, 160 / 8 },
+            { ContinuationTokenHashMode.Sha256, 256 / 8 },
+            { ContinuationTokenHashMode.Sha384, 384 / 8 },
+            { ContinuationTokenHashMode.Sha512, 512 / 8 },
+        };
+
+        private static IDictionary<ContinuationTokenHashMode, Lazy<HashAlgorithm>> _hashAlgorithms = new Dictionary<ContinuationTokenHashMode, Lazy<HashAlgorithm>>
+        {
+            { ContinuationTokenHashMode.Sha1, new Lazy<HashAlgorithm>(() => SHA1.Create()) },
+            { ContinuationTokenHashMode.Sha256, new Lazy<HashAlgorithm>(() => SHA256.Create()) },
+            { ContinuationTokenHashMode.Sha384, new Lazy<HashAlgorithm>(() => SHA384.Create()) },
+            { ContinuationTokenHashMode.Sha512, new Lazy<HashAlgorithm>(() => SHA512.Create()) },
+        };
+
+        public static string Serialize(ContinuationToken continuationToken, IContinuationTokenOptions options)
         {
             _ = continuationToken.WhenNotNull(nameof(continuationToken));
+            _ = options.WhenNotNull(nameof(options));
 
             using (var stream = new MemoryStream())
             {
-                if (usingCompression)
+                if (options.UseCompression)
                 {
                     SerializeToStreamWithDeflate(continuationToken, stream);
                 }
@@ -27,22 +48,54 @@ namespace AllOverIt.Pagination
 
                 var bytes = stream.ToArray();
 
+                if (options.HashMode != ContinuationTokenHashMode.None)
+                {
+                    var hashAlgorithm = _hashAlgorithms[options.HashMode].Value;
+                    var hash = hashAlgorithm.ComputeHash(bytes);
+
+                    bytes = hash.Concat(bytes).ToArray();
+                }
+
                 return Convert.ToBase64String(bytes);
             }
         }
 
-        public static ContinuationToken Deserialize(string continuationToken, bool usingCompression = false)
+        public static ContinuationToken Deserialize(string continuationToken, IContinuationTokenOptions options)
         {
             if (continuationToken.IsNullOrEmpty())
             {
                 return ContinuationToken.None;
             }
 
+            _ = options.WhenNotNull(nameof(options));
+
             var bytes = Convert.FromBase64String(continuationToken);
+
+            if (options.HashMode != ContinuationTokenHashMode.None)
+            {
+                var hashByteLength = _hashAlgorithmBytes[options.HashMode];
+
+#if NETSTANDARD2_0
+                var hashBytes = new ArraySegment<byte>(bytes, 0, hashByteLength);
+                var contentBytes = new ArraySegment<byte>(bytes, hashByteLength, bytes.Length - hashByteLength).ToArray();
+#else
+                var hashBytes = bytes[..hashByteLength];
+                var contentBytes = bytes[hashByteLength..];
+#endif
+                var hashAlgorithm = _hashAlgorithms[options.HashMode].Value;
+                var contentHash = hashAlgorithm.ComputeHash(contentBytes);
+
+                if (!contentHash.SequenceEqual(hashBytes))
+                {
+                    throw new PaginationException("Invalid continuation token. Hash value mismatch.");
+                }
+
+                bytes = contentBytes;
+            }
 
             using (var stream = new MemoryStream(bytes))
             {
-                return usingCompression
+                return options.UseCompression
                     ? DeserializeFromStreamWithInflate(stream) 
                     : DeserializeFromStream(stream);
             }
