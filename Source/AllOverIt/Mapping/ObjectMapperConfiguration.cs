@@ -6,21 +6,24 @@ namespace AllOverIt.Mapping
     /// <summary>Provides object mapping configuration that can be applied to an <see cref="ObjectMapper"/>.</summary>
     public sealed class ObjectMapperConfiguration
     {
-        internal PropertyMatcherCache PropertyMatchers { get; }
-        internal ObjectMapperTypeFactory TypeFactory { get; }
+        internal readonly PropertyMatcherCache _propertyMatcherCache = new();
+        internal readonly ObjectMapperTypeFactory _typeFactory = new();
 
-        /// <summary>Constructor.</summary>
-        /// <param name="defaultOptions">Specifies default options for all mapping operations. If not provided then a default
-        /// constructed <see cref="PropertyMatcherOptions"/> is used.</param>
-        public ObjectMapperConfiguration(PropertyMatcherOptions defaultOptions = default)
-            : this(new PropertyMatcherCache(defaultOptions), new ObjectMapperTypeFactory())
+        /// <summary>Provides global mapping options.</summary>
+        public ObjectMapperOptions Options { get; } = new();
+
+        /// <summary>Constructor. Initialized with a default constructed <see cref="PropertyMatcherOptions"/>.</summary>
+        public ObjectMapperConfiguration()
         {
         }
 
-        internal ObjectMapperConfiguration(PropertyMatcherCache propertyMapperCache, ObjectMapperTypeFactory mapperTypeFactory)
+        /// <summary>Constructor.</summary>
+        /// <param name="configure">Provides the ability to configure default options for all non-configured mapping operations.</param>
+        public ObjectMapperConfiguration(Action<ObjectMapperOptions> configure)
         {
-            PropertyMatchers = propertyMapperCache.WhenNotNull(nameof(propertyMapperCache));
-            TypeFactory = mapperTypeFactory.WhenNotNull(nameof(mapperTypeFactory));
+            configure
+                .WhenNotNull(nameof(configure))
+                .Invoke(Options);
         }
 
         /// <summary>Allows source to target mapping configuration to be initialized in advance.</summary>
@@ -32,26 +35,21 @@ namespace AllOverIt.Mapping
             var sourceType = typeof(TSource);
             var targetType = typeof(TTarget);
 
-            var matcherOptions = GetConfiguredOptionsOrDefault(configure);
+            var matcherOptions = PropertyMatcherOptions.None;
 
-            _ = PropertyMatchers.CreateMapper(sourceType, targetType, matcherOptions);
-        }
-
-        private PropertyMatcherOptions GetConfiguredOptionsOrDefault<TSource, TTarget>(Action<TypedPropertyMatcherOptions<TSource, TTarget>> configure)
-        {
-            if (configure is null)
+            if (configure is not null)
             {
-                return PropertyMatchers.DefaultOptions;
+                var typedMatcherOptions = new TypedPropertyMatcherOptions<TSource, TTarget>((sourceType, targetType, factory) =>
+                {
+                    _typeFactory.Add(sourceType, targetType, factory);
+                });
+
+                configure.Invoke(typedMatcherOptions);
+
+                matcherOptions = typedMatcherOptions;
             }
 
-            var matcherOptions = new TypedPropertyMatcherOptions<TSource, TTarget>((sourceType, targetType, factory) =>
-            {
-                TypeFactory.Add(sourceType, targetType, factory);
-            });
-
-            configure?.Invoke(matcherOptions);
-
-            return matcherOptions;
+            _ = _propertyMatcherCache.CreateMapper(sourceType, targetType, matcherOptions);
         }
     }
 }

@@ -8,15 +8,8 @@ namespace AllOverIt.Mapping
 {
     internal sealed class PropertyMatcherCache
     {
+        // Maps source/target types to the property matcher configuration
         private readonly IDictionary<(Type, Type), ObjectPropertyMatcher> _matcherCache = new Dictionary<(Type, Type), ObjectPropertyMatcher>();
-
-        /// <summary>Defines the default mapper options to apply when explicit options are not setup at the time of mapping configuration.</summary>
-        public PropertyMatcherOptions DefaultOptions { get; }
-
-        public PropertyMatcherCache(PropertyMatcherOptions defaultOptions)
-        {
-            DefaultOptions = defaultOptions ?? new();
-        }
 
         public ObjectPropertyMatcher CreateMapper(Type sourceType, Type targetType, PropertyMatcherOptions matcherOptions)
         {
@@ -48,7 +41,7 @@ namespace AllOverIt.Mapping
 
             return TryGetMapper(sourceType, targetType, out var matcher)
                 ? matcher
-                : CreateMapper(sourceType, targetType, DefaultOptions);
+                : CreateMapper(sourceType, targetType, PropertyMatcherOptions.None);
         }
 
         internal bool TryGetMapper(Type sourceType, Type targetType, out ObjectPropertyMatcher matcher)

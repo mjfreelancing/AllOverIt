@@ -12,44 +12,11 @@ using static AllOverIt.Tests.Mapping.ObjectMapperTypes;
 
 namespace AllOverIt.Tests.Mapping
 {
-
     public class PropertyMatcherCacheFixture : FixtureBase
-    {
-        public class DefaultOptions : PropertyMatcherCacheFixture
-        {
-            [Fact]
-            public void Should_Have_Default_Options()
-            {
-                var cache = new PropertyMatcherCache(null);
-
-                var expected = new
-                {
-                    DeepCopy = false,
-                    Binding = BindingOptions.Default,
-                    Filter = (Func<PropertyInfo, bool>) null,
-                    AllowNullCollections = false
-                };
-
-                expected
-                    .Should()
-                    .BeEquivalentTo(cache.DefaultOptions, opt => opt.IncludingInternalProperties());
-            }
-
-            [Fact]
-            public void Should_Have_Provided_Options()
-            {
-                var expected = new PropertyMatcherOptions();
-                var cache = new PropertyMatcherCache(expected);
-
-                expected
-                    .Should()
-                    .BeSameAs(cache.DefaultOptions);
-            }
-        }
-
+    {       
         public class CreateMapper : PropertyMatcherCacheFixture
         {
-            private readonly PropertyMatcherCache _cache = new(null);
+            private readonly PropertyMatcherCache _cache = new();
 
             [Fact]
             public void Should_Throw_When_Source_Type_Null()
@@ -89,11 +56,24 @@ namespace AllOverIt.Tests.Mapping
                     .Throw<ObjectMapperException>()
                     .WithMessage($"Mapping already exists between {nameof(DummySource2)} and {nameof(DummyTarget)}.");
             }
+
+            [Fact]
+            public void Should_Create_Mapper_With_Options()
+            {
+                _cache.TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out _).Should().BeFalse();
+
+                var matcherOptions = Create<PropertyMatcherOptions>();
+
+                var actual = _cache.CreateMapper(typeof(DummySource2), typeof(DummyTarget), matcherOptions);
+
+                actual.Should().NotBeNull();
+                actual.MatcherOptions.Should().BeSameAs(matcherOptions);
+            }
         }
 
         public class GetOrCreateMapper : PropertyMatcherCacheFixture
         {
-            private readonly PropertyMatcherCache _cache = new(null);
+            private readonly PropertyMatcherCache _cache = new();
 
             [Fact]
             public void Should_Throw_When_Source_Type_Null()
@@ -126,19 +106,20 @@ namespace AllOverIt.Tests.Mapping
             }
 
             [Fact]
-            public void Should_Create_Mapper()
+            public void Should_Create_Mapper_With_Default_Options()
             {
                 _cache.TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out _).Should().BeFalse();
 
                 var actual = _cache.GetOrCreateMapper(typeof(DummySource2), typeof(DummyTarget));
 
                 actual.Should().NotBeNull();
+                actual.MatcherOptions.Should().BeSameAs(PropertyMatcherOptions.None);
             }
         }
 
         public class TryGetMapper : PropertyMatcherCacheFixture
         {
-            private readonly PropertyMatcherCache _cache = new(null);
+            private readonly PropertyMatcherCache _cache = new();
 
             [Fact]
             public void Should_Throw_When_Source_Type_Null()
@@ -156,6 +137,21 @@ namespace AllOverIt.Tests.Mapping
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("targetType");
+            }
+
+            [Fact]
+            public void Should_Get_Mapper_With_Default_Options()
+            {
+                _cache.TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out _).Should().BeFalse();
+
+                var matcherOptions = Create<PropertyMatcherOptions>();
+
+                _ = _cache.CreateMapper(typeof(DummySource2), typeof(DummyTarget), matcherOptions);
+
+                _cache.TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out var actual).Should().BeTrue();
+
+                actual.Should().NotBeNull();
+                actual.MatcherOptions.Should().BeSameAs(matcherOptions);
             }
         }
     }

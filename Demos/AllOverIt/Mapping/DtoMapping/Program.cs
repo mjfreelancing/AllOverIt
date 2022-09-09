@@ -70,22 +70,19 @@ namespace DtoMapping
 
         private static void MapperCreateTargetUsingBindingOnOptions(SourceType source, IJsonSerializer serializer)
         {
-            var defaultOptions = new PropertyMatcherOptions
-            {
-                Binding = BindingOptions.DefaultScope | BindingOptions.Private | BindingOptions.DefaultAccessor | BindingOptions.DefaultVisibility
-            };
+            var mapperConfiguration = new ObjectMapperConfiguration();
 
-            var mapperConfigurator = new ObjectMapperConfiguration(defaultOptions);
-
-            mapperConfigurator.Configure<SourceType, TargetType>(opt =>
+            mapperConfiguration.Configure<SourceType, TargetType>(options =>
             {
-                opt.WithConversion(src => src.Prop3b, (mapper, value) =>
+                options.Binding = BindingOptions.DefaultScope | BindingOptions.Private | BindingOptions.DefaultAccessor | BindingOptions.DefaultVisibility;
+
+                options.WithConversion(src => src.Prop3b, (mapper, value) =>
                 {
                     return new ObservableCollection<string>(value);
                 });
             });
 
-            var objectMapper = new ObjectMapper(mapperConfigurator);
+            var objectMapper = new ObjectMapper(mapperConfiguration);
 
             var target = objectMapper.Map<TargetType>(source);
 
@@ -94,22 +91,19 @@ namespace DtoMapping
 
         private static void MapperMapOntoExistingTargetUsingDefaultFilterOnOptions(SourceType source, IJsonSerializer serializer)
         {
-            var defaultOptions = new PropertyMatcherOptions
-            {
-                Filter = propInfo => propInfo.Name != nameof(SourceType.Prop1)
-            };
+            var mapperConfiguration = new ObjectMapperConfiguration();
 
-            var mapperConfigurator = new ObjectMapperConfiguration(defaultOptions);
-
-            mapperConfigurator.Configure<SourceType, TargetType>(opt =>
+            mapperConfiguration.Configure<SourceType, TargetType>(options =>
             {
-                opt.WithConversion(src => src.Prop3b, (mapper, value) =>
+                options.Filter = propInfo => propInfo.Name != nameof(SourceType.Prop1);
+
+                options.WithConversion(src => src.Prop3b, (mapper, value) =>
                 {
                     return new ObservableCollection<string>(value);
                 });
             });
 
-            var objectMapper = new ObjectMapper(mapperConfigurator);
+            var objectMapper = new ObjectMapper(mapperConfiguration);
 
             var target = new TargetType();
             _ = objectMapper.Map(source, target);
@@ -119,9 +113,9 @@ namespace DtoMapping
 
         private static void MapperMapOntoExistingTargetUsingOptionsDuringConfigure(SourceType source, IJsonSerializer serializer)
         {
-            var mapperConfigurator = new ObjectMapperConfiguration();
+            var mapperConfiguration = new ObjectMapperConfiguration();
 
-            mapperConfigurator.Configure<SourceType, TargetType>(opt =>
+            mapperConfiguration.Configure<SourceType, TargetType>(options =>
             {
                 // Not required since we are filtering to only Prop1, Prop3 and Prop5a
                 //
@@ -131,15 +125,15 @@ namespace DtoMapping
                 // });
 
                 // This is the default, just showing it
-                opt.Binding = BindingOptions.Default;
+                options.Binding = BindingOptions.Default;
 
-                opt.Filter = propInfo => propInfo.Name == nameof(SourceType.Prop1) ||
-                                         propInfo.Name == nameof(SourceType.Prop3) ||
-                                         propInfo.Name == nameof(SourceType.Prop5a);
+                options.Filter = propInfo => propInfo.Name == nameof(SourceType.Prop1) ||
+                                 propInfo.Name == nameof(SourceType.Prop3) ||
+                                 propInfo.Name == nameof(SourceType.Prop5a);
 
                 // Copy Prop5a onto Prop5b and Prop1 onto Prop6
-                opt.WithAlias(src => src.Prop5a, trg => trg.Prop5b)
-                   .WithAlias(src => src.Prop1, trg => trg.Prop6);
+                options.WithAlias(src => src.Prop5a, trg => trg.Prop5b)
+                       .WithAlias(src => src.Prop1, trg => trg.Prop6);
 
                 // With this commented out, Prop3 on the target will be an empty collection.
                 // Remove the comment and Prop3 will be assigned the specified array,
@@ -148,7 +142,7 @@ namespace DtoMapping
 
             source.Prop3 = null;
 
-            var objectMapper = new ObjectMapper(mapperConfigurator);
+            var objectMapper = new ObjectMapper(mapperConfiguration);
             var target = new TargetType();
 
             objectMapper.Map(source, target);
@@ -158,37 +152,37 @@ namespace DtoMapping
 
         private static void MapperMapOntoExistingTargetUsingConversionAndCloning(SourceType source, IJsonSerializer serializer)
         {
-            var mapperConfigurator = new ObjectMapperConfiguration();
+            var mapperConfiguration = new ObjectMapperConfiguration();
 
             // Collections are not cloned by default - this configuration will force a new collection to be created
-            mapperConfigurator.Configure<ChildSourceType, ChildTargetType>(opt =>
+            mapperConfiguration.Configure<ChildSourceType, ChildTargetType>(options =>
             {
-                opt.DeepCopy(src => src.Prop2a);
+                options.DeepCopy(src => src.Prop2a);
             });
 
-            mapperConfigurator.Configure<SourceType, TargetType>(opt =>
+            mapperConfiguration.Configure<SourceType, TargetType>(options =>
             {
-                opt.WithConversion(src => src.Prop3b, (mapper, value) =>
+                options.WithConversion(src => src.Prop3b, (mapper, value) =>
                 {
                     return new ObservableCollection<string>(value);
                 });
 
-                opt.WithConversion(src => src.Prop7, (mapper, value) =>
+                options.WithConversion(src => src.Prop7, (mapper, value) =>
                 {
                     return value.Reverse();
                 });
 
                 // Testing the child object property types that have a different name
-                opt.WithAlias(src => src.Prop9, trg => trg.Prop8a);
+                options.WithAlias(src => src.Prop9, trg => trg.Prop8a);
 
-                opt.DeepCopy(src => src.Prop9);
+                options.DeepCopy(src => src.Prop9);
 
-                opt.WithConversion(src => src.Prop8, (mapper, value) =>
+                options.WithConversion(src => src.Prop8, (mapper, value) =>
                    {
                        return mapper.Map<ChildTargetType>(value);
                    });
 
-                opt.WithConversion(src => src.Prop9, (mapper, value) =>
+                options.WithConversion(src => src.Prop9, (mapper, value) =>
                 {
                     // Can use the mapper, or explicitly create the return type
 
@@ -201,7 +195,7 @@ namespace DtoMapping
             source.Prop7 = new[] { "Val1", "Val2", "Val3" };
             var target = new TargetType();
 
-            var objectMapper = new ObjectMapper(mapperConfigurator);
+            var objectMapper = new ObjectMapper(mapperConfiguration);
 
             objectMapper.Map(source, target);
 
@@ -221,22 +215,22 @@ namespace DtoMapping
 
         private static void MapperMapOntoExistingTargetUsingExcludeDuringConfigure(SourceType source, IJsonSerializer serializer)
         {
-            var mapperConfigurator = new ObjectMapperConfiguration();
-
-            mapperConfigurator.Configure<SourceType, TargetType>(opt =>
+            // Showing the configuration can be provided at the time of construction
+            var objectMapper = new ObjectMapper(configuration =>
             {
-                opt.WithConversion(src => src.Prop3b, (mapper, value) =>
+                configuration.Configure<SourceType, TargetType>(options =>
                 {
-                    return new ObservableCollection<string>(value);
-                });
+                    options.WithConversion(src => src.Prop3b, (mapper, value) =>
+                    {
+                        return new ObservableCollection<string>(value);
+                    });
 
-                //opt.Exclude(src => src.Prop7);
-                opt.ExcludeWhen(src => src.Prop7, values => values.AsReadOnlyCollection().Count == 3);
+                    // will exclude Prop7 because the item count matches. This means the target will be null
+                    // (and not an empty collection) because the property is completely excluded from mapping
+                    options.ExcludeWhen(src => src.Prop7, values => values.AsReadOnlyCollection().Count == 3);
+                });
             });
 
-            var objectMapper = new ObjectMapper(mapperConfigurator);
-
-            // May be excluded - depends on which rule is applied above
             source.Prop7 = new[] { "Val1", "Val2", "Val3" };
             
             var target = new TargetType();           

@@ -30,6 +30,209 @@ namespace AllOverIt.Tests.Mapping
             _target = new DummyTarget();
         }
 
+        public class Constructor_Default : ObjectMapperFixture
+        {
+            [Fact]
+            public void Should_Set_Default_Configuration()
+            {
+                var mapper = new ObjectMapper();
+
+                mapper._configuration.Should().NotBeNull();
+            }
+        }
+
+        public class Constructor_Configuration : ObjectMapperFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Configuration_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = new ObjectMapper((ObjectMapperConfiguration) null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("configuration");
+            }
+
+            [Fact]
+            public void Should_Set_Configuration()
+            {
+                var configuration = Create<ObjectMapperConfiguration>();
+                var mapper = new ObjectMapper(configuration);
+
+                mapper._configuration.Should().BeSameAs(configuration);
+            }
+        }
+
+        public class Constructor_Configuration_Action : ObjectMapperFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Configuration_Action_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = new ObjectMapper((Action<ObjectMapperConfiguration>) null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("configuration");
+            }
+
+            [Fact]
+            public void Should_Set_Configuration()
+            {
+                PropertyMatcherCache actual = default;
+
+                var objectMapper = new ObjectMapper(config =>
+                {
+                    config.Configure<DummySource1, DummyTarget>(opt =>
+                    {
+                        opt.Exclude(src => src.Prop5);
+                    });
+
+                    actual = config._propertyMatcherCache;
+                });
+
+                actual.Should().NotBeNull();
+
+                actual.TryGetMapper(typeof(DummySource1), typeof(DummyTarget), out var mapper).Should().BeTrue();
+
+                var actualMatches = GetMatchesNameAndType(mapper.Matches);
+
+                var expected = new[]
+                {
+                    (nameof(DummySource2.Prop1), typeof(int), nameof(DummyTarget.Prop1), typeof(float)),
+                    (nameof(DummySource2.Prop3), typeof(string), nameof(DummyTarget.Prop3), typeof(string)),
+                    //(nameof(DummySource2.Prop5), typeof(int?), nameof(DummyTarget.Prop5), typeof(int)),
+                    (nameof(DummySource2.Prop6), typeof(int), nameof(DummyTarget.Prop6), typeof(int?)),
+                    (nameof(DummySource2.Prop8), typeof(int), nameof(DummyTarget.Prop8), typeof(int)),
+                    (nameof(DummySource2.Prop9), typeof(IEnumerable<string>), nameof(DummyTarget.Prop9), typeof(IEnumerable<string>)),
+                    (nameof(DummySource2.Prop12), typeof(DummyEnum), nameof(DummyTarget.Prop12), typeof(int)),
+                    (nameof(DummySource2.Prop13), typeof(int), nameof(DummyTarget.Prop13), typeof(DummyEnum))
+                };
+
+                expected
+                    .Should()
+                    .BeEquivalentTo(actualMatches);
+            }
+        }
+
+        public class Constructor_Options_Configuration_Action : ObjectMapperFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Options_Action_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = new ObjectMapper((Action<ObjectMapperOptions>) null, configuration => { });
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("defaultOptions");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Configuration_Action_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = new ObjectMapper(options => { }, (Action<ObjectMapperConfiguration>) null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("configuration");
+            }
+
+            [Fact]
+            public void Should_Set_Options_And_Configuration()
+            {
+                var allowNullCollections = Create<bool>();
+
+                PropertyMatcherCache actual = default;
+
+                var objectMapper = new ObjectMapper(
+                    options =>
+                    {
+                        options.AllowNullCollections = allowNullCollections;
+                    },
+                    config =>
+                    {
+                        config.Configure<DummySource1, DummyTarget>(options =>
+                        {
+                            // Testing by name
+                            options.Exclude(nameof(DummySource1.Prop1));
+
+                            // Testing by expression
+                            options.Exclude(src => src.Prop5);
+                        });
+
+                        actual = config._propertyMatcherCache;
+                    });
+
+                objectMapper._configuration.Options.AllowNullCollections.Should().Be(allowNullCollections);
+
+                actual.Should().NotBeNull();
+               
+                actual.TryGetMapper(typeof(DummySource1), typeof(DummyTarget), out var mapper).Should().BeTrue();
+
+                var actualMatches = GetMatchesNameAndType(mapper.Matches);
+
+                var expected = new[]
+                {
+                    //(nameof(DummySource2.Prop1), typeof(int), nameof(DummyTarget.Prop1), typeof(float)),
+                    (nameof(DummySource2.Prop3), typeof(string), nameof(DummyTarget.Prop3), typeof(string)),
+                    //(nameof(DummySource2.Prop5), typeof(int?), nameof(DummyTarget.Prop5), typeof(int)),
+                    (nameof(DummySource2.Prop6), typeof(int), nameof(DummyTarget.Prop6), typeof(int?)),
+                    (nameof(DummySource2.Prop8), typeof(int), nameof(DummyTarget.Prop8), typeof(int)),
+                    (nameof(DummySource2.Prop9), typeof(IEnumerable<string>), nameof(DummyTarget.Prop9), typeof(IEnumerable<string>)),
+                    (nameof(DummySource2.Prop12), typeof(DummyEnum), nameof(DummyTarget.Prop12), typeof(int)),
+                    (nameof(DummySource2.Prop13), typeof(int), nameof(DummyTarget.Prop13), typeof(DummyEnum))
+                };
+
+                expected
+                    .Should()
+                    .BeEquivalentTo(actualMatches);
+            }
+
+            [Fact]
+            public void Should_Set_Configuration()
+            {
+                PropertyMatcherCache actual = default;
+
+                var objectMapper = new ObjectMapper(
+                    options => { },
+                    config =>
+                    {
+                        config.Configure<DummySource1, DummyTarget>();
+
+                        actual = config._propertyMatcherCache;
+                    });
+
+                actual.Should().NotBeNull();
+
+                actual.TryGetMapper(typeof(DummySource1), typeof(DummyTarget), out var mapper).Should().BeTrue();
+
+                var actualMatches = GetMatchesNameAndType(mapper.Matches);
+
+                var expected = new[]
+                {
+                    (nameof(DummySource2.Prop1), typeof(int), nameof(DummyTarget.Prop1), typeof(float)),
+                    (nameof(DummySource2.Prop3), typeof(string), nameof(DummyTarget.Prop3), typeof(string)),
+                    (nameof(DummySource2.Prop5), typeof(int?), nameof(DummyTarget.Prop5), typeof(int)),
+                    (nameof(DummySource2.Prop6), typeof(int), nameof(DummyTarget.Prop6), typeof(int?)),
+                    (nameof(DummySource2.Prop8), typeof(int), nameof(DummyTarget.Prop8), typeof(int)),
+                    (nameof(DummySource2.Prop9), typeof(IEnumerable<string>), nameof(DummyTarget.Prop9), typeof(IEnumerable<string>)),
+                    (nameof(DummySource2.Prop12), typeof(DummyEnum), nameof(DummyTarget.Prop12), typeof(int)),
+                    (nameof(DummySource2.Prop13), typeof(int), nameof(DummyTarget.Prop13), typeof(DummyEnum))
+                };
+
+                expected
+                    .Should()
+                    .BeEquivalentTo(actualMatches);
+            }
+        }
+
         public class Map_Target : ObjectMapperFixture
         {
             [Fact]
@@ -111,10 +314,10 @@ namespace AllOverIt.Tests.Mapping
 
                 configuration.Configure<DummySource2, DummyTarget>(options =>
                 {
-                    options.WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value);
-
                     options.Filter = propInfo =>
                         !new[] { nameof(DummySource2.Prop10), nameof(DummySource2.Prop8), nameof(DummySource2.Prop11) }.Contains(propInfo.Name);
+
+                    options.WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value);                    
                 });
 
                 var mapper = new ObjectMapper(configuration);
@@ -146,9 +349,11 @@ namespace AllOverIt.Tests.Mapping
             {
                 var configuration = new ObjectMapperConfiguration();
 
-                configuration.Configure<DummySource1, DummyTarget>(opt =>
+                configuration.Configure<DummySource1, DummyTarget>(options =>
                 {
-                    opt.WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value);
+                    options.Binding = BindingOptions.Public | BindingOptions.Private;
+
+                    options.WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value);
                 });
 
                 configuration.Configure<DummySource2, DummyTarget>(options =>
@@ -156,9 +361,7 @@ namespace AllOverIt.Tests.Mapping
                     options
                         .WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value)
                         .Exclude(src => src.Prop10)
-                        .Exclude(src => src.Prop11);
-
-                    options.Binding = BindingOptions.Public | BindingOptions.Private;
+                        .Exclude(src => src.Prop11);                    
                 });
 
                 var mapper = new ObjectMapper(configuration);
@@ -190,9 +393,11 @@ namespace AllOverIt.Tests.Mapping
             {
                 var configuration = new ObjectMapperConfiguration();
 
-                configuration.Configure<DummySource1, DummyTarget>(opt =>
+                configuration.Configure<DummySource1, DummyTarget>(options =>
                 {
-                    opt.WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value);
+                    options.Binding = BindingOptions.Public | BindingOptions.Internal;
+
+                    options.WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value);
                 });
 
                 configuration.Configure<DummySource2, DummyTarget>(options =>
@@ -201,8 +406,6 @@ namespace AllOverIt.Tests.Mapping
                         .WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value)
                         .Exclude(src => src.Prop10)
                         .Exclude(src => src.Prop11);
-
-                    options.Binding = BindingOptions.Public | BindingOptions.Internal;
                 });
 
                 var mapper = new ObjectMapper(configuration);
@@ -236,14 +439,14 @@ namespace AllOverIt.Tests.Mapping
 
                 configuration.Configure<DummySource2, DummyTarget>(options =>
                 {
+                    options.WithAlias(nameof(DummySource2.Prop7a), nameof(DummyTarget.Prop7b));
+
+                    options.Binding = BindingOptions.Public | BindingOptions.Internal;
+
                     options
                         .WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value)
                         .Exclude(src => src.Prop10)
                         .Exclude(src => src.Prop11);
-
-                    options.WithAlias(nameof(DummySource2.Prop7a), nameof(DummyTarget.Prop7b));
-
-                    options.Binding = BindingOptions.Public | BindingOptions.Internal;
                 });
 
                 var mapper = new ObjectMapper(configuration);
@@ -277,12 +480,12 @@ namespace AllOverIt.Tests.Mapping
 
                 configuration.Configure<DummySource2, DummyTarget>(options =>
                 {
+                    options.Binding = BindingOptions.Public | BindingOptions.Internal;
+
                     options
                         .WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value)
                         .Exclude(src => src.Prop11)
                         .WithAlias(source => source.Prop7a, target => target.Prop7b);
-
-                    options.Binding = BindingOptions.Public | BindingOptions.Internal;
                 });
 
                 var mapper = new ObjectMapper(configuration);
@@ -353,9 +556,9 @@ namespace AllOverIt.Tests.Mapping
 
                 configuration.Configure<DummySource2, DummyTarget>(options =>
                 {
-                    options
-                        .WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value)
-                        .WithConversion(nameof(DummySource2.Prop11), (mapper, value) => ((IEnumerable<string>) value).Reverse().AsReadOnlyCollection());
+                    options.WithConversion(nameof(DummySource2.Prop11), (mapper, value) => ((IEnumerable<string>) value).Reverse().AsReadOnlyCollection());
+
+                    options.WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value);
                 });
 
                 var mapper = new ObjectMapper(configuration);
@@ -825,10 +1028,10 @@ namespace AllOverIt.Tests.Mapping
 
                 configuration.Configure<DummySource2, DummyTarget>(options =>
                 {
-                    options.WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value);
-
                     options.Filter = propInfo =>
                         !new[] { nameof(DummySource2.Prop10), nameof(DummySource2.Prop8), nameof(DummySource2.Prop11) }.Contains(propInfo.Name);
+
+                    options.WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value);
                 });
 
                 var mapper = new ObjectMapper(configuration);
@@ -862,12 +1065,12 @@ namespace AllOverIt.Tests.Mapping
 
                 configuration.Configure<DummySource2, DummyTarget>(options =>
                 {
+                    options.Binding = BindingOptions.Public | BindingOptions.Private;
+
                     options
                         .WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value)
                         .Exclude(src => src.Prop10)
                         .Exclude(src => src.Prop11);
-
-                    options.Binding = BindingOptions.Public | BindingOptions.Private;
                 });
 
                 var mapper = new ObjectMapper(configuration);
@@ -901,12 +1104,12 @@ namespace AllOverIt.Tests.Mapping
 
                 configuration.Configure<DummySource2, DummyTarget>(options =>
                 {
+                    options.Binding = BindingOptions.Public | BindingOptions.Internal;
+
                     options
                         .WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value)
                         .Exclude(src => src.Prop10)
                         .Exclude(src => src.Prop11);
-
-                    options.Binding = BindingOptions.Public | BindingOptions.Internal;
                 });
 
                 var mapper = new ObjectMapper(configuration);
@@ -940,13 +1143,14 @@ namespace AllOverIt.Tests.Mapping
 
                 configuration.Configure<DummySource2, DummyTarget>(options =>
                 {
+                    options.Binding = BindingOptions.Public | BindingOptions.Internal;
+
+                    options.WithAlias(nameof(DummySource2.Prop7a), nameof(DummyTarget.Prop7b));
+
                     options
                         .WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value)
                         .Exclude(src => src.Prop10)
-                        .Exclude(src => src.Prop11)
-                        .WithAlias(nameof(DummySource2.Prop7a), nameof(DummyTarget.Prop7b));
-
-                    options.Binding = BindingOptions.Public | BindingOptions.Internal;
+                        .Exclude(src => src.Prop11);
                 });
 
                 var mapper = new ObjectMapper(configuration);
@@ -980,12 +1184,12 @@ namespace AllOverIt.Tests.Mapping
 
                 configuration.Configure<DummySource2, DummyTarget>(options =>
                 {
+                    options.Binding = BindingOptions.Public | BindingOptions.Internal;
+
                     options
                         .WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value)
                         .Exclude(src => src.Prop11)
                         .WithAlias(source => source.Prop7a, target => target.Prop7b);
-
-                    options.Binding = BindingOptions.Public | BindingOptions.Internal;
                 });
 
                 var mapper = new ObjectMapper(configuration);
@@ -1019,9 +1223,9 @@ namespace AllOverIt.Tests.Mapping
 
                 configuration.Configure<DummySource2, DummyTarget>(options =>
                 {
-                    options
-                        .WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value)
-                        .WithConversion(nameof(DummySource2.Prop11), (mapper, value) => ((IEnumerable<string>) value).Reverse().AsReadOnlyCollection());
+                    options.WithConversion(nameof(DummySource2.Prop11), (mapper, value) => ((IEnumerable<string>) value).Reverse().AsReadOnlyCollection());
+
+                    options.WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value);
                 });
 
                 var mapper = new ObjectMapper(configuration);
@@ -1390,12 +1594,10 @@ namespace AllOverIt.Tests.Mapping
             [Fact]
             public void Should_Map_To_Null_Array()
             {
-                var defaultOptions = new PropertyMatcherOptions
+                var configuration = new ObjectMapperConfiguration(options =>
                 {
-                    AllowNullCollections = true
-                };
-
-                var configuration = new ObjectMapperConfiguration(defaultOptions);
+                    options.AllowNullCollections = true;
+                });
 
                 var mapper = new ObjectMapper(configuration);
 
@@ -1501,6 +1703,14 @@ namespace AllOverIt.Tests.Mapping
             });
 
             return configuration;
+        }
+
+        private static IEnumerable<(string SourceName, Type SourceType, string TargetName, Type TargetType)>
+            GetMatchesNameAndType(IEnumerable<ObjectPropertyMatcher.PropertyMatchInfo> matches)
+        {
+            return matches.Select(
+                match => (match.SourceInfo.Name, match.SourceInfo.PropertyType,
+                          match.TargetInfo.Name, match.TargetInfo.PropertyType));
         }
     }
 }

@@ -22,19 +22,13 @@ namespace AllOverIt.Mapping
         // Source property to target options
         private readonly IDictionary<string, TargetOptions> _sourceTargetOptions = new Dictionary<string, TargetOptions>();
 
+        internal static readonly PropertyMatcherOptions None = new();
+
         /// <summary>The binding options used to determine how properties on the source object are discovered.</summary>
         public BindingOptions Binding { get; set; } = BindingOptions.Default;
 
         /// <summary>Use to filter out source properties discovered based on the <see cref="Binding"/> option used.</summary>
         public Func<PropertyInfo, bool> Filter { get; set; }
-
-        /// <summary>
-        /// <para>The default mapping behaviour of collections when the source is null is to create an empty array, list, or
-        /// dictionary. This option changes that behaviour so a null source value is mapped as a null target value.</para>
-        /// <para>If the target collection cannot be assigned an array, list, or dictionary then the <see cref="WithConversion(string, Func{IObjectMapper, object, object})"/>
-        /// method should be used.</para>
-        /// </summary>
-        public bool AllowNullCollections { get; set; }
 
         /// <summary>Excludes one or more source properties from object mapping.</summary>
         /// <param name="sourceNames">One or more source property names to be excluded from mapping.</param>

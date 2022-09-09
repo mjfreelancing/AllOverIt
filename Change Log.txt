@@ -7,6 +7,7 @@ AllOverIt
   * Added support for ExcludeWhen() to ObjectMapper
   * Updated ObjectMapper to default to creating empty collections when the source is null (instead of assigning null).
     This can be changed via the default options (PropertyMatcherOptions).
+  * Corrected ObjectMapper so it constructs target objects via ConstructUsing() in preference to property mapping
 
 AllOverIt.Pagination
   * Renamed the exposed query provided to the paginator as BaseQuery so it isn't confused with the resultant paginated

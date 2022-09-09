@@ -70,11 +70,11 @@ namespace ObjectMappingBenchmarking
             _autoMapper = new Mapper(autoMapperConfig);
 #endif
 
-            var mapperConfigurator = new ObjectMapperConfiguration();
+            var mapperConfiguration = new ObjectMapperConfiguration();
 
-            mapperConfigurator.Configure<SimpleSource, SimpleTarget>();
+            mapperConfiguration.Configure<SimpleSource, SimpleTarget>();
 
-            _objectMapper = new ObjectMapper(mapperConfigurator);
+            _objectMapper = new ObjectMapper(mapperConfiguration);
         }
 
 #if AUTOMAPPER
@@ -107,11 +107,11 @@ namespace ObjectMappingBenchmarking
         [Benchmark]     // for speed comparison
         public void ObjectMapper_New_Mapper_Explicit_Configure()
         {
-            var mapperConfigurator = new ObjectMapperConfiguration();
+            var mapperConfiguration = new ObjectMapperConfiguration();
 
-            mapperConfigurator.Configure<SimpleSource, SimpleTarget>();       // not really required since it will happen implicitly
+            mapperConfiguration.Configure<SimpleSource, SimpleTarget>();       // not really required since it will happen implicitly
 
-            var objectMapper = new ObjectMapper(mapperConfigurator);
+            var objectMapper = new ObjectMapper(mapperConfiguration);
 
             _ = objectMapper.Map(_simpleSource, _simpleTarget);
         }

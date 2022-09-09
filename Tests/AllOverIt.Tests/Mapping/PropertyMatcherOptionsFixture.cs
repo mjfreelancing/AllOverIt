@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Mapping;
@@ -21,15 +22,16 @@ namespace AllOverIt.Tests.Mapping
         public class Constructor : PropertyMatcherOptionsFixture
         {
             [Fact]
-            public void Should_Have_Default_Binding()
+            public void Should_Have_Default_Settings()
             {
-                _options.Binding.Should().Be(BindingOptions.Default);
-            }
+                var expected = new
+                {
+                    DeepCopy = false,
+                    Binding = BindingOptions.Default,
+                    Filter = (Func<PropertyInfo, bool>) null
+                };
 
-            [Fact]
-            public void Should_Have_Null_Filter()
-            {
-                _options.Filter.Should().BeNull();
+                expected.Should().BeEquivalentTo(_options);
             }
         }
 
@@ -371,7 +373,6 @@ namespace AllOverIt.Tests.Mapping
             {
                 var propName = Create<string>();
 
-                // ObjectMapperOptions allows a null mapper, this test ensures it is provided if constructed with one
                 IObjectMapper actual = null;
 
                 _options.WithConversion(propName, (mapper, value) =>

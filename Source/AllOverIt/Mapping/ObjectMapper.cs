@@ -11,7 +11,7 @@ namespace AllOverIt.Mapping
     /// <summary>Implements an object mapper that will copy property values from a source onto a target.</summary>
     public sealed class ObjectMapper : IObjectMapper
     {
-        private readonly ObjectMapperConfiguration _objectMapperConfigurator;
+        internal readonly ObjectMapperConfiguration _configuration;
 
         /// <summary>Constructor. A default constructed <see cref="ObjectMapperConfiguration"/> will be used.</summary>
         public ObjectMapper()
@@ -20,9 +20,32 @@ namespace AllOverIt.Mapping
         }
 
         /// <summary>Constructor.</summary>
-        public ObjectMapper(ObjectMapperConfiguration objectMapperConfigurator)
+        /// <param name="configuration">The configuration to be used by the mapper.</param>
+        public ObjectMapper(ObjectMapperConfiguration configuration)
         {
-            _objectMapperConfigurator = objectMapperConfigurator.WhenNotNull(nameof(objectMapperConfigurator));
+            _configuration = configuration.WhenNotNull(nameof(configuration));
+        }
+
+        /// <summary>Constructor.</summary>
+        /// <param name="configuration">Provides the ability to configure the mapper at the time of construction.</param>
+        public ObjectMapper(Action<ObjectMapperConfiguration> configuration)
+        {
+            _ = configuration.WhenNotNull(nameof(configuration));
+
+            _configuration = new ObjectMapperConfiguration();
+            configuration.Invoke(_configuration);
+        }
+
+        /// <summary>Constructor.</summary>
+        /// <param name="defaultOptions">Provides the ability to specify default options for all mapping operations.</param>
+        /// <param name="configuration">Provides the ability to configure the mapper at the time of construction.</param>
+        public ObjectMapper(Action<ObjectMapperOptions> defaultOptions, Action<ObjectMapperConfiguration> configuration)
+        {
+            _ = defaultOptions.WhenNotNull(nameof(defaultOptions));
+            _ = configuration.WhenNotNull(nameof(configuration));
+
+            _configuration = new ObjectMapperConfiguration(defaultOptions);
+            configuration.Invoke(_configuration);
         }
 
         /// <inheritdoc />
@@ -51,7 +74,7 @@ namespace AllOverIt.Mapping
             var sourceType = source.GetType();
             var targetType = target.GetType();
 
-            var propertyMatcher = _objectMapperConfigurator.PropertyMatchers.GetOrCreateMapper(sourceType, targetType);
+            var propertyMatcher = _configuration._propertyMatcherCache.GetOrCreateMapper(sourceType, targetType);
 
             foreach (var match in propertyMatcher.Matches)
             {
@@ -89,7 +112,7 @@ namespace AllOverIt.Mapping
         {
             if (sourceValue is null)
             {
-                if (targetPropertyType.IsEnumerableType() && !propertyMatcher.MatcherOptions.AllowNullCollections)
+                if (targetPropertyType.IsEnumerableType() && !_configuration.Options.AllowNullCollections)
                 {
                     return CreateEmptyCollection(targetPropertyType);
                 }
@@ -121,6 +144,12 @@ namespace AllOverIt.Mapping
 
         private object CreateTargetFromSourceValue(object sourceValue, Type sourceValueType, Type sourcePropertyType, Type targetPropertyType, bool deepCopy)
         {
+            // Configuration via ConstructUsing() takes precedence over mapping properties
+            if (_configuration._typeFactory.TryGet(sourcePropertyType, targetPropertyType, out var factory))
+            {
+                return factory.Invoke(this, sourceValue);
+            }
+
             if (sourceValueType.IsEnumerableType())
             {
                 return sourceValue switch
@@ -129,11 +158,6 @@ namespace AllOverIt.Mapping
                     IEnumerable _ => MapToCollection(sourceValue, sourceValueType, targetPropertyType, deepCopy),
                     _ => throw new ObjectMapperException($"Cannot map type '{sourceValueType.GetFriendlyName()}'."),
                 };
-            }
-
-            if (_objectMapperConfigurator.TypeFactory.TryGet(sourcePropertyType, targetPropertyType, out var factory))
-            {
-                return factory.Invoke(this, sourceValue);
             }
 
             var targetInstance = CreateType(targetPropertyType);
@@ -167,7 +191,7 @@ namespace AllOverIt.Mapping
                 // error will be thrown and the caller should call ConstructUsing() to provide the required factory.
                 var targetElement = sourceElement;
 
-                if (_objectMapperConfigurator.TypeFactory.TryGet(sourceKvpType, targetKvpType, out var factory))
+                if (_configuration._typeFactory.TryGet(sourceKvpType, targetKvpType, out var factory))
                 {
                     targetElement = factory.Invoke(this, sourceElement);
                 }
@@ -315,11 +339,11 @@ namespace AllOverIt.Mapping
 
         private object CreateType(Type type)
         {
-            if (!_objectMapperConfigurator.TypeFactory.TryGet(type, out var factory))
+            if (!_configuration._typeFactory.TryGet(type, out var factory))
             {
                 factory = type.GetFactory();
 
-                _objectMapperConfigurator.TypeFactory.Add(type, factory);
+                _configuration._typeFactory.Add(type, factory);
             }
 
             return factory.Invoke();
