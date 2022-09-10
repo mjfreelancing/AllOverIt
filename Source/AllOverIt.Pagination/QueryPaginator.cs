@@ -50,6 +50,20 @@ namespace AllOverIt.Pagination
             _continuationTokenEncoderFactory = continuationTokenEncoderFactory.WhenNotNull(nameof(continuationTokenEncoderFactory));
         }
 
+        /// <summary>A factory method to create a query paginator when not using dependency injection. It is preferable to create a
+        /// paginator via <see cref="IQueryPaginatorFactory"/> (and dependency injection) as it will use fewer resources through
+        /// the use of internal singleton serializer and encoder factory instances.</summary>
+        /// <param name="query">The base query to apply pagination to.</param>
+        /// <param name="configuration">Provides paginator options that define how the paginated query will be generated.</param>
+        /// <returns>A new query paginator specific to the provided query and configuration.</returns>
+        public static QueryPaginator<TEntity> Create(IQueryable<TEntity> query, QueryPaginatorConfiguration configuration)
+        {
+            var serializerFactory = new ContinuationTokenSerializerFactory();
+            var encoderFactory = new ContinuationTokenEncoderFactory(serializerFactory);
+
+            return new QueryPaginator<TEntity>(query, configuration, encoderFactory);
+        }
+
         /// <inheritdoc />
         public IQueryPaginator<TEntity> ColumnAscending<TProperty>(Expression<Func<TEntity, TProperty>> expression)
         {

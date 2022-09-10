@@ -18,6 +18,7 @@ AllOverIt.Pagination
     - IContinuationTokenSerializerFactory
     - IContinuationTokenEncoderFactory
     - IQueryPaginatorFactory
+  * Added query paginator factory method for when not using DI
 
 
 09 Sep 2022

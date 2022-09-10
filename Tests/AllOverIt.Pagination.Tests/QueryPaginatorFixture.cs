@@ -109,6 +109,53 @@ namespace AllOverIt.Pagination.Tests
             }
         }
 
+        public class Create : QueryPaginatorFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Query_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = QueryPaginator<EntityDummy>.Create(null, Create<QueryPaginatorConfiguration>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("query");
+            }
+
+            [Fact]
+            public void Should_Set_BaseQuery()
+            {
+                var query = Array.Empty<EntityDummy>().AsQueryable();
+
+                var paginator = QueryPaginator<EntityDummy>.Create(query, Create<QueryPaginatorConfiguration>());
+
+                paginator.BaseQuery.Should().BeSameAs(query);
+            }
+
+            [Fact]
+            public void Should_Throw_When_Configuration_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = QueryPaginator<EntityDummy>.Create(Array.Empty<EntityDummy>().AsQueryable(), null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("configuration");
+            }
+
+            [Fact]
+            public void Should_Return_QueryPaginator()
+            {
+                var query = Array.Empty<EntityDummy>().AsQueryable();
+
+                var paginator = QueryPaginator<EntityDummy>.Create(query, Create<QueryPaginatorConfiguration>());
+
+                paginator.Should().BeOfType<QueryPaginator<EntityDummy>>();
+            }
+        }
+
         public class ColumnAscending : QueryPaginatorFixture
         {
             [Fact]
