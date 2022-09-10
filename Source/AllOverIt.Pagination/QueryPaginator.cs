@@ -28,7 +28,7 @@ namespace AllOverIt.Pagination
         private readonly List<ColumnDefinition<TEntity>> _columns = new();
         private readonly QueryPaginatorConfiguration _configuration;
 
-        private ContinuationTokenEncoder _continuationTokenEncoder;
+        private IContinuationTokenEncoder _continuationTokenEncoder;
         private IOrderedQueryable<TEntity> _directionQuery;                     // based on the _paginationDirection        
         private IOrderedQueryable<TEntity> _directionReverseQuery;              // based on the reverse _direction
 
@@ -71,7 +71,7 @@ namespace AllOverIt.Pagination
             AssertColumnsDefined();
 
             // Returns ContinuationToken.None if there is no token - which defaults to Forward
-            var decodedToken = GetContinuationTokenEncoder().Decode(continuationToken);
+            var decodedToken = TokenEncoder.Decode(continuationToken);
 
             var requiredDirection = decodedToken == ContinuationToken.None
                 ? _configuration.PaginationDirection
@@ -242,11 +242,15 @@ namespace AllOverIt.Pagination
             return _directionReverseQuery;
         }
 
-        private ContinuationTokenEncoder GetContinuationTokenEncoder()
+        private IContinuationTokenEncoder GetContinuationTokenEncoder()
         {
             AssertColumnsDefined();
 
-            _continuationTokenEncoder ??= new ContinuationTokenEncoder(_columns, _configuration.PaginationDirection, _configuration.ContinuationTokenOptions);
+            if (_continuationTokenEncoder is null)
+            {
+                var tokenSerializer = new ContinuationTokenSerializer(_configuration.ContinuationTokenOptions);
+                _continuationTokenEncoder = new ContinuationTokenEncoder(_columns, _configuration.PaginationDirection, tokenSerializer);
+            }
 
             return _continuationTokenEncoder;
         }
@@ -260,7 +264,7 @@ namespace AllOverIt.Pagination
                     : nextColumn.ThenApplyColumnOrderTo(currentQuery, direction));
         }
 
-        private IQueryable<TEntity> ApplyContinuationToken(IQueryable<TEntity> paginatedQuery, ContinuationToken continuationToken)
+        private IQueryable<TEntity> ApplyContinuationToken(IQueryable<TEntity> paginatedQuery, IContinuationToken continuationToken)
         {
             if (continuationToken.Values.IsNullOrEmpty())
             {

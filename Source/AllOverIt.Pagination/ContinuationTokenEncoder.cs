@@ -12,14 +12,15 @@ namespace AllOverIt.Pagination
     {
         private readonly IReadOnlyCollection<IColumnDefinition> _columns;
         private readonly PaginationDirection _paginationDirection;
-        private readonly IContinuationTokenOptions _continuationTokenOptions;
+        
+        public IContinuationTokenSerializer Serializer { get; }
 
-        public ContinuationTokenEncoder(IReadOnlyCollection<IColumnDefinition> columns, PaginationDirection paginationDirection,
-            IContinuationTokenOptions continuationTokenOptions)
+        internal ContinuationTokenEncoder(IReadOnlyCollection<IColumnDefinition> columns, PaginationDirection paginationDirection,
+            IContinuationTokenSerializer continuationTokenSerializer)
         {
             _columns = columns.WhenNotNullOrEmpty(nameof(columns)).AsReadOnlyCollection();
             _paginationDirection = paginationDirection;
-            _continuationTokenOptions = continuationTokenOptions.WhenNotNull(nameof(continuationTokenOptions));
+            Serializer = continuationTokenSerializer.WhenNotNull(nameof(continuationTokenSerializer));
         }
 
         public string EncodePreviousPage<TEntity>(IReadOnlyCollection<TEntity> references) where TEntity : class
@@ -58,7 +59,7 @@ namespace AllOverIt.Pagination
                 //Values = 
             };
 
-            return Encode(continuationToken);
+            return Serializer.Serialize(continuationToken);
         }
 
         private string Encode<TEntity>(ContinuationDirection continuationDirection, IReadOnlyCollection<TEntity> references)
@@ -104,17 +105,7 @@ namespace AllOverIt.Pagination
                 Values = columnValues
             };
 
-            return Encode(continuationToken);
-        }
-
-        internal string Encode(ContinuationToken continuationToken)
-        {
-            return ContinuationTokenSerializer.Serialize(continuationToken, _continuationTokenOptions);
-        }
-
-        internal ContinuationToken Decode(string continuationToken)
-        {
-            return ContinuationTokenSerializer.Deserialize(continuationToken, _continuationTokenOptions);
+            return Serializer.Serialize(continuationToken);
         }
     }
 }

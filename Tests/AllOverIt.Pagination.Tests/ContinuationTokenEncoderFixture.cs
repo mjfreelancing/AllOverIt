@@ -4,6 +4,7 @@ using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Pagination.Exceptions;
 using AllOverIt.Pagination.Extensions;
+using FakeItEasy;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
@@ -38,7 +39,7 @@ namespace AllOverIt.Pagination.Tests
             {
                 Invoking(() =>
                 {
-                    _ = new ContinuationTokenEncoder(null, Create<PaginationDirection>(), Create<ContinuationTokenOptions>());
+                    _ = new ContinuationTokenEncoder(null, Create<PaginationDirection>(), A.Fake<IContinuationTokenSerializer>());
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -51,7 +52,7 @@ namespace AllOverIt.Pagination.Tests
             [Fact]
             public void Should_Throw_When_References_Null()
             {
-                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward, Create<ContinuationTokenOptions>());
+                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward, A.Fake<IContinuationTokenSerializer>());
 
                 Invoking(() =>
                 {
@@ -65,7 +66,7 @@ namespace AllOverIt.Pagination.Tests
             [Fact]
             public void Should_Throw_When_References_Empty()
             {
-                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward, Create<ContinuationTokenOptions>());
+                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward, A.Fake<IContinuationTokenSerializer>());
 
                 Invoking(() =>
                 {
@@ -75,6 +76,7 @@ namespace AllOverIt.Pagination.Tests
                 .Throw<PaginationException>()
                 .WithMessage("At least one reference entity is required to create a continuation token.");
             }
+
 
             [Theory]
             [InlineData(PaginationDirection.Forward)]
@@ -96,7 +98,42 @@ namespace AllOverIt.Pagination.Tests
                     Values = new object[] { expectedReference.Name, expectedReference.Id }
                 };
 
-                var encoder = new ContinuationTokenEncoder(_columns, paginationDirection, Create<ContinuationTokenOptions>());
+                var serializerFake = A.Fake<IContinuationTokenSerializer>();
+
+                IContinuationToken actualToken = default;
+
+                A.CallTo(() => serializerFake.Serialize(A<IContinuationToken>.Ignored))
+                    .Invokes(call => actualToken = call.Arguments.Get<IContinuationToken>(0));
+
+                var encoder = new ContinuationTokenEncoder(_columns, paginationDirection, serializerFake);
+
+                _ = encoder.EncodePreviousPage(entities);
+
+                expected.Should().BeEquivalentTo(actualToken);
+            }
+
+            [Theory]
+            [InlineData(PaginationDirection.Forward)]
+            [InlineData(PaginationDirection.Backward)]
+            public void Should_Encode_Decode_Token(PaginationDirection paginationDirection)
+            {
+                var entities = CreateMany<EntityDummy>();
+
+                var expectedReference = paginationDirection switch
+                {
+                    PaginationDirection.Forward => entities.FirstElement(),
+                    PaginationDirection.Backward => entities.LastElement(),
+                    _ => throw new InvalidOperationException()
+                };
+
+                var expected = new
+                {
+                    Direction = paginationDirection.Reverse(),
+                    Values = new object[] { expectedReference.Name, expectedReference.Id }
+                };
+
+                var serializer = new ContinuationTokenSerializer(Create<ContinuationTokenOptions>());
+                var encoder = new ContinuationTokenEncoder(_columns, paginationDirection, serializer);
 
                 var actual = encoder.EncodePreviousPage(entities);
 
@@ -112,11 +149,13 @@ namespace AllOverIt.Pagination.Tests
             {
                 var entities = CreateMany<EntityDummy>();
                 var paginationDirection = Create<PaginationDirection>();
-                
-                var compressionEncoder = new ContinuationTokenEncoder(_columns, paginationDirection, new ContinuationTokenOptions { UseCompression = true });
+
+                var serializer = new ContinuationTokenSerializer(new ContinuationTokenOptions { UseCompression = true });
+                var compressionEncoder = new ContinuationTokenEncoder(_columns, paginationDirection, serializer);
                 var compressed = compressionEncoder.EncodeNextPage(entities[0]);
 
-                var nonCompressionEncoder = new ContinuationTokenEncoder(_columns, paginationDirection, new ContinuationTokenOptions { UseCompression = false });
+                serializer = new ContinuationTokenSerializer(new ContinuationTokenOptions { UseCompression = true });
+                var nonCompressionEncoder = new ContinuationTokenEncoder(_columns, paginationDirection, serializer);
                 var nonCompressed = nonCompressionEncoder.EncodeNextPage(entities[0]);
 
                 compressed.Should().NotBeSameAs(nonCompressed);
@@ -128,7 +167,7 @@ namespace AllOverIt.Pagination.Tests
             [Fact]
             public void Should_Throw_When_References_Null()
             {
-                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward, Create<ContinuationTokenOptions>());
+                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward, A.Fake<IContinuationTokenSerializer>());
 
                 Invoking(() =>
                 {
@@ -142,7 +181,7 @@ namespace AllOverIt.Pagination.Tests
             [Fact]
             public void Should_Throw_When_References_Empty()
             {
-                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward, Create<ContinuationTokenOptions>());
+                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward, A.Fake<IContinuationTokenSerializer>());
 
                 Invoking(() =>
                 {
@@ -173,7 +212,42 @@ namespace AllOverIt.Pagination.Tests
                     Values = new object[] { expectedReference.Name, expectedReference.Id }
                 };
 
-                var encoder = new ContinuationTokenEncoder(_columns, paginationDirection, Create<ContinuationTokenOptions>());
+                var serializerFake = A.Fake<IContinuationTokenSerializer>();
+
+                IContinuationToken actualToken = default;
+
+                A.CallTo(() => serializerFake.Serialize(A<IContinuationToken>.Ignored))
+                    .Invokes(call => actualToken = call.Arguments.Get<IContinuationToken>(0));
+
+                var encoder = new ContinuationTokenEncoder(_columns, paginationDirection, serializerFake);
+
+                _ = encoder.EncodeNextPage(entities);
+
+                expected.Should().BeEquivalentTo(actualToken);
+            }
+
+            [Theory]
+            [InlineData(PaginationDirection.Forward)]
+            [InlineData(PaginationDirection.Backward)]
+            public void Should_Encode_Decode_Token(PaginationDirection paginationDirection)
+            {
+                var entities = CreateMany<EntityDummy>();
+
+                var expectedReference = paginationDirection switch
+                {
+                    PaginationDirection.Forward => entities.LastElement(),
+                    PaginationDirection.Backward => entities.FirstElement(),
+                    _ => throw new InvalidOperationException()
+                };
+
+                var expected = new
+                {
+                    Direction = paginationDirection,
+                    Values = new object[] { expectedReference.Name, expectedReference.Id }
+                };
+
+                var serializer = new ContinuationTokenSerializer(Create<ContinuationTokenOptions>());
+                var encoder = new ContinuationTokenEncoder(_columns, paginationDirection, serializer);
 
                 var actual = encoder.EncodeNextPage(entities);
 
@@ -190,7 +264,7 @@ namespace AllOverIt.Pagination.Tests
             [Fact]
             public void Should_Throw_When_References_Null()
             {
-                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward, Create<ContinuationTokenOptions>());
+                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward, A.Fake<IContinuationTokenSerializer>());
 
                 Invoking(() =>
                 {
@@ -214,7 +288,35 @@ namespace AllOverIt.Pagination.Tests
                     Values = new object[] { entity.Name, entity.Id }
                 };
 
-                var encoder = new ContinuationTokenEncoder(_columns, paginationDirection, Create<ContinuationTokenOptions>());
+                var serializerFake = A.Fake<IContinuationTokenSerializer>();
+
+                IContinuationToken actualToken = default;
+
+                A.CallTo(() => serializerFake.Serialize(A<IContinuationToken>.Ignored))
+                    .Invokes(call => actualToken = call.Arguments.Get<IContinuationToken>(0));
+
+                var encoder = new ContinuationTokenEncoder(_columns, paginationDirection, serializerFake);
+
+                _ = encoder.EncodePreviousPage(entity);
+
+                expected.Should().BeEquivalentTo(actualToken);
+            }
+
+            [Theory]
+            [InlineData(PaginationDirection.Forward)]
+            [InlineData(PaginationDirection.Backward)]
+            public void Should_Encode_Decode_Token(PaginationDirection paginationDirection)
+            {
+                var entity = Create<EntityDummy>();
+
+                var expected = new
+                {
+                    Direction = paginationDirection.Reverse(),
+                    Values = new object[] { entity.Name, entity.Id }
+                };
+
+                var serializer = new ContinuationTokenSerializer(Create<ContinuationTokenOptions>());
+                var encoder = new ContinuationTokenEncoder(_columns, paginationDirection, serializer);
 
                 var actual = encoder.EncodePreviousPage(entity);
 
@@ -231,7 +333,7 @@ namespace AllOverIt.Pagination.Tests
             [Fact]
             public void Should_Throw_When_References_Null()
             {
-                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward, Create<ContinuationTokenOptions>());
+                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward, A.Fake<IContinuationTokenSerializer>());
 
                 Invoking(() =>
                 {
@@ -255,7 +357,35 @@ namespace AllOverIt.Pagination.Tests
                     Values = new object[] { entity.Name, entity.Id }
                 };
 
-                var encoder = new ContinuationTokenEncoder(_columns, paginationDirection, Create<ContinuationTokenOptions>());
+                var serializerFake = A.Fake<IContinuationTokenSerializer>();
+
+                IContinuationToken actualToken = default;
+
+                A.CallTo(() => serializerFake.Serialize(A<IContinuationToken>.Ignored))
+                    .Invokes(call => actualToken = call.Arguments.Get<IContinuationToken>(0));
+
+                var encoder = new ContinuationTokenEncoder(_columns, paginationDirection, serializerFake);
+
+                _ = encoder.EncodeNextPage(entity);
+
+                expected.Should().BeEquivalentTo(actualToken);
+            }
+
+            [Theory]
+            [InlineData(PaginationDirection.Forward)]
+            [InlineData(PaginationDirection.Backward)]
+            public void Should_Encode_Decode_Token(PaginationDirection paginationDirection)
+            {
+                var entity = Create<EntityDummy>();
+
+                var expected = new
+                {
+                    Direction = paginationDirection,
+                    Values = new object[] { entity.Name, entity.Id }
+                };
+
+                var serializer = new ContinuationTokenSerializer(Create<ContinuationTokenOptions>());
+                var encoder = new ContinuationTokenEncoder(_columns, paginationDirection, serializer);
 
                 var actual = encoder.EncodeNextPage(entity);
 
@@ -274,7 +404,8 @@ namespace AllOverIt.Pagination.Tests
             [InlineData(PaginationDirection.Backward)]
             public void Should_Encode_First_Page(PaginationDirection paginationDirection)
             {
-                var encoder = new ContinuationTokenEncoder(_columns, paginationDirection, Create<ContinuationTokenOptions>());
+                var serializer = new ContinuationTokenSerializer(Create<ContinuationTokenOptions>());
+                var encoder = new ContinuationTokenEncoder(_columns, paginationDirection, serializer);
 
                 var actual = encoder.EncodeFirstPage();
 
@@ -295,7 +426,33 @@ namespace AllOverIt.Pagination.Tests
                     Values = (object[])null
                 };
 
-                var encoder = new ContinuationTokenEncoder(_columns, paginationDirection, Create<ContinuationTokenOptions>());
+                var serializerFake = A.Fake<IContinuationTokenSerializer>();
+
+                IContinuationToken actualToken = default;
+
+                A.CallTo(() => serializerFake.Serialize(A<IContinuationToken>.Ignored))
+                    .Invokes(call => actualToken = call.Arguments.Get<IContinuationToken>(0));
+
+                var encoder = new ContinuationTokenEncoder(_columns, paginationDirection, serializerFake);
+
+                _ = encoder.EncodeLastPage();
+
+                expected.Should().BeEquivalentTo(actualToken);
+            }
+
+            [Theory]
+            [InlineData(PaginationDirection.Forward)]
+            [InlineData(PaginationDirection.Backward)]
+            public void Should_Encode_Decode_Last_Page(PaginationDirection paginationDirection)
+            {
+                var expected = new
+                {
+                    Direction = paginationDirection.Reverse(),
+                    Values = (object[]) null
+                };
+
+                var serializer = new ContinuationTokenSerializer(Create<ContinuationTokenOptions>());
+                var encoder = new ContinuationTokenEncoder(_columns, paginationDirection, serializer);
 
                 var actual = encoder.EncodeLastPage();
 

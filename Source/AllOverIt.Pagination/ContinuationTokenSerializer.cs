@@ -11,13 +11,92 @@ using System.Text;
 
 namespace AllOverIt.Pagination
 {
-    internal static class ContinuationTokenSerializer
+    internal sealed class ContinuationTokenSerializer : IContinuationTokenSerializer
     {
         private const int HashByteLength = 128 / 8;
+        private static Func<HashAlgorithm> HashFactory = () => MD5.Create();
 
-        public static bool TryDecodeTokenBytes(string continuationToken, IContinuationTokenOptions options, out byte[] continuationTokenBytes)
+        private readonly IObjectStreamer<IContinuationToken> _tokenStreamer;
+        private readonly IObjectStreamer<IContinuationToken> _tokenCompressor;
+        private readonly IContinuationTokenOptions _tokenOptions;
+
+        public ContinuationTokenSerializer(IContinuationTokenOptions tokenOptions)
+            : this(new ContinuationTokenStreamer(), tokenOptions)
         {
-            continuationTokenBytes = default;
+
+        }
+
+        internal ContinuationTokenSerializer(IObjectStreamer<IContinuationToken> tokenStreamer, IContinuationTokenOptions tokenOptions)
+            : this(tokenStreamer, new ContinuationTokenCompressor(tokenStreamer), tokenOptions)
+        {
+        }
+
+        internal ContinuationTokenSerializer(IObjectStreamer<IContinuationToken> tokenStreamer, IObjectStreamer<IContinuationToken> tokenCompressor,
+            IContinuationTokenOptions tokenOptions)
+        {
+            _tokenStreamer = tokenStreamer.WhenNotNull(nameof(tokenStreamer));
+            _tokenCompressor = tokenCompressor.WhenNotNull(nameof(tokenCompressor));
+            _tokenOptions = tokenOptions.WhenNotNull(nameof(tokenOptions));
+        }
+
+        public bool IsValidToken(string continuationToken)
+        {
+            _ = continuationToken.WhenNotNull(nameof(continuationToken));
+
+            return TryDeserialize(continuationToken, out _);
+        }
+
+        public string Serialize(IContinuationToken continuationToken)
+        {
+            _ = continuationToken.WhenNotNull(nameof(continuationToken));
+
+            using (var stream = new MemoryStream())
+            {
+                if (_tokenOptions.UseCompression)
+                {
+                    _tokenCompressor.SerializeToStream(continuationToken, stream);
+                }
+                else
+                {
+                    _tokenStreamer.SerializeToStream(continuationToken, stream);
+                }               
+
+                var bytes = stream.ToArray();
+
+                if (_tokenOptions.IncludeHash)
+                {
+                    using (var hashAlgorithm = HashFactory.Invoke())
+                    {
+                        var hash = hashAlgorithm.ComputeHash(bytes);
+                        bytes = hash.Concat(bytes).ToArray();
+                    }
+                }
+
+                return Convert.ToBase64String(bytes);
+            }
+        }
+
+        public IContinuationToken Deserialize(string continuationToken)
+        {
+            if (continuationToken.IsNullOrEmpty())
+            {
+                return ContinuationToken.None;
+            }
+
+            // Decompresses the stream if compression was used
+            if (!TryDeserialize(continuationToken, out var token))
+            {
+                throw new PaginationException("Invalid continuation token. Hash value mismatch.");
+            }
+
+            return token;
+        }
+
+        internal bool TryDeserialize(string continuationToken, out IContinuationToken token)
+        {
+            _ = continuationToken.WhenNotNull(nameof(continuationToken));
+
+            token = default;
 
             var buffer = new Span<byte>(new byte[continuationToken.Length]);
 
@@ -28,7 +107,7 @@ namespace AllOverIt.Pagination
 
             var bytes = buffer[..byteCount].ToArray();
 
-            if (options.IncludeHash)
+            if (_tokenOptions.IncludeHash)
             {
                 // Must have at least the hash value bytes + 1 byte of content
                 if (bytes.Length < HashByteLength + 1)
@@ -39,7 +118,7 @@ namespace AllOverIt.Pagination
                 var hashBytes = bytes[..HashByteLength];
                 var contentBytes = bytes[HashByteLength..];
 
-                using (var hashAlgorithm = MD5.Create())
+                using (var hashAlgorithm = HashFactory.Invoke())
                 {
                     var contentHash = hashAlgorithm.ComputeHash(contentBytes);
 
@@ -52,64 +131,31 @@ namespace AllOverIt.Pagination
                 bytes = contentBytes;
             }
 
-            continuationTokenBytes = bytes;
-            return true;
-        }
-
-        public static string Serialize(ContinuationToken continuationToken, IContinuationTokenOptions options)
-        {
-            _ = continuationToken.WhenNotNull(nameof(continuationToken));
-            _ = options.WhenNotNull(nameof(options));
-
-            using (var stream = new MemoryStream())
-            {
-                if (options.UseCompression)
-                {
-                    SerializeToStreamWithDeflate(continuationToken, stream);
-                }
-                else
-                {
-                    SerializeToStream(continuationToken, stream);
-                }               
-
-                var bytes = stream.ToArray();
-
-                if (options.IncludeHash)
-                {
-                    using (var hashAlgorithm = MD5.Create())
-                    {
-                        var hash = hashAlgorithm.ComputeHash(bytes);
-                        bytes = hash.Concat(bytes).ToArray();
-                    }
-                }
-
-                return Convert.ToBase64String(bytes);
-            }
-        }
-
-        public static ContinuationToken Deserialize(string continuationToken, IContinuationTokenOptions options)
-        {
-            if (continuationToken.IsNullOrEmpty())
-            {
-                return ContinuationToken.None;
-            }
-
-            _ = options.WhenNotNull(nameof(options));
-
-            if (!TryDecodeTokenBytes(continuationToken, options, out var bytes))
-            {
-                throw new PaginationException("Invalid continuation token. Hash value mismatch.");
-            }
-
             using (var stream = new MemoryStream(bytes))
             {
-                return options.UseCompression
-                    ? DeserializeFromStreamWithInflate(stream) 
-                    : DeserializeFromStream(stream);
+                token = _tokenOptions.UseCompression
+                    ? _tokenCompressor.DeserializeFromStream(stream)
+                    : _tokenStreamer.DeserializeFromStream(stream);
             }
-        }
 
-        private static void SerializeToStream(ContinuationToken continuationToken, Stream stream)
+            return true;
+        }
+    }
+
+
+
+
+
+    public interface IObjectStreamer<TType>
+    {
+        void SerializeToStream(TType @object, Stream stream);
+        TType DeserializeFromStream(Stream stream);
+    }
+
+
+    internal sealed class ContinuationTokenStreamer : IObjectStreamer<IContinuationToken>
+    {
+        public void SerializeToStream(IContinuationToken continuationToken, Stream stream)
         {
             using (var writer = new EnrichedBinaryWriter(stream, Encoding.UTF8, true))
             {
@@ -119,7 +165,7 @@ namespace AllOverIt.Pagination
             }
         }
 
-        private static ContinuationToken DeserializeFromStream(Stream stream)
+        public IContinuationToken DeserializeFromStream(Stream stream)
         {
             using (var reader = new EnrichedBinaryReader(stream, Encoding.UTF8, true))
             {
@@ -128,20 +174,32 @@ namespace AllOverIt.Pagination
                 return (ContinuationToken) reader.ReadObject();
             }
         }
+    }
 
-        private static void SerializeToStreamWithDeflate(ContinuationToken continuationToken, Stream stream)
+
+
+    internal sealed class ContinuationTokenCompressor : IObjectStreamer<IContinuationToken>
+    {
+        private readonly IObjectStreamer<IContinuationToken> _tokenStreamer;
+
+        public ContinuationTokenCompressor(IObjectStreamer<IContinuationToken> tokenStreamer)
+        {
+            _tokenStreamer = tokenStreamer.WhenNotNull(nameof(tokenStreamer));
+        }
+
+        public void SerializeToStream(IContinuationToken continuationToken, Stream stream)
         {
             using (var compressor = new DeflateStream(stream, CompressionMode.Compress, true))
             {
-                SerializeToStream(continuationToken, compressor);
+                _tokenStreamer.SerializeToStream(continuationToken, compressor);
             }
         }
 
-        private static ContinuationToken DeserializeFromStreamWithInflate(Stream stream)
+        public IContinuationToken DeserializeFromStream(Stream stream)
         {
             using (var decompressor = new DeflateStream(stream, CompressionMode.Decompress, true))
             {
-                return DeserializeFromStream(decompressor);
+                return _tokenStreamer.DeserializeFromStream(decompressor);
             }
         }
     }

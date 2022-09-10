@@ -14,7 +14,7 @@
         /// based queries as it will help with performance as well as avoid SQL Injection attacks.</summary>
         public bool UseParameterizedQueries { get; init; } = true;
 
-        /// <summary>Provides options that can be applied when serializing a <see cref="ContinuationToken"/>.</summary>
+        /// <summary>Provides options that can be applied when serializing a continuation token.</summary>
         public ContinuationTokenOptions ContinuationTokenOptions { get; init; } = new();
     }
 }

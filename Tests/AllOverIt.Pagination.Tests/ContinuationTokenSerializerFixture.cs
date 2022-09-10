@@ -3,20 +3,37 @@ using AllOverIt.Fixture.Extensions;
 using FakeItEasy;
 using FluentAssertions;
 using System;
+using System.Linq;
 using Xunit;
 
 namespace AllOverIt.Pagination.Tests
 {
     public class ContinuationTokenSerializerFixture : FixtureBase
     {
-        public class Serialize : ContinuationTokenSerializerFixture
+        public class Constructor : ContinuationTokenSerializerFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Options_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = new ContinuationTokenSerializer(null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("tokenOptions");
+            }
+        }
+
+        public class IsValidToken : ContinuationTokenSerializerFixture
         {
             [Fact]
             public void Should_Throw_When_Token_Null()
             {
                 Invoking(() =>
                 {
-                    _ = ContinuationTokenSerializer.Serialize(null, A.Fake<IContinuationTokenOptions>());
+                    var serializer = new ContinuationTokenSerializer(A.Fake<IContinuationTokenOptions>());
+                    _ = serializer.IsValidToken(null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -24,15 +41,72 @@ namespace AllOverIt.Pagination.Tests
             }
 
             [Fact]
-            public void Should_Throw_When_Options_Null()
+            public void Should_Return_False_When_Random_String()
+            {
+                var serializer = new ContinuationTokenSerializer(A.Fake<IContinuationTokenOptions>());
+                var actual = serializer.IsValidToken(Create<string>());
+
+                actual.Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Return_True_When_Valid_Token()
+            {
+                var continuationToken = new ContinuationToken
+                {
+                    Direction = Create<PaginationDirection>(),
+                    Values = new object[]
+                    {
+                        Create<bool>(),
+                        Create<int>()
+                    }
+                };
+
+                var serializer = new ContinuationTokenSerializer(ContinuationTokenOptions.None);
+
+                var token = serializer.Serialize(continuationToken);
+
+                var actual = serializer.IsValidToken(token);
+
+                actual.Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Return_False_When_Invalid_Token()
+            {
+                var continuationToken = new ContinuationToken
+                {
+                    Direction = Create<PaginationDirection>(),
+                    Values = new object[]
+                    {
+                        Create<bool>(),
+                        Create<int>()
+                    }
+                };
+
+                var serializer = new ContinuationTokenSerializer(ContinuationTokenOptions.None);
+
+                var token = serializer.Serialize(continuationToken);
+
+                var actual = serializer.IsValidToken($"12{token}34");
+
+                actual.Should().BeFalse();
+            }
+        }
+
+        public class Serialize : ContinuationTokenSerializerFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Token_Null()
             {
                 Invoking(() =>
                 {
-                    _ = ContinuationTokenSerializer.Serialize(Create<ContinuationToken>(), null);
+                    var serializer = new ContinuationTokenSerializer(A.Fake<IContinuationTokenOptions>());
+                    _ = serializer.Serialize(null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("options");
+                    .WithNamedMessageWhenNull("continuationToken");
             }
 
             [Fact]
@@ -70,8 +144,10 @@ namespace AllOverIt.Pagination.Tests
                     }
                 };
 
-                var serialized1 = ContinuationTokenSerializer.Serialize(continuationToken1, ContinuationTokenOptions.None);
-                var serialized2 = ContinuationTokenSerializer.Serialize(continuationToken2, ContinuationTokenOptions.None);
+                var serializer = new ContinuationTokenSerializer(ContinuationTokenOptions.None);
+
+                var serialized1 = serializer.Serialize(continuationToken1);
+                var serialized2 = serializer.Serialize(continuationToken2);
 
                 serialized1.Should().NotBe(serialized2);
             }
@@ -95,8 +171,11 @@ namespace AllOverIt.Pagination.Tests
                     }
                 };
 
-                var notCompressed = ContinuationTokenSerializer.Serialize(continuationToken, new ContinuationTokenOptions { UseCompression = false });
-                var compressed = ContinuationTokenSerializer.Serialize(continuationToken, new ContinuationTokenOptions { UseCompression = true });
+                var serializer = new ContinuationTokenSerializer(new ContinuationTokenOptions { UseCompression = false });
+                var notCompressed = serializer.Serialize(continuationToken);
+
+                serializer = new ContinuationTokenSerializer(new ContinuationTokenOptions { UseCompression = true });
+                var compressed = serializer.Serialize(continuationToken);
 
                 notCompressed.Length
                     .Should()
@@ -116,8 +195,11 @@ namespace AllOverIt.Pagination.Tests
                     }
                 };
 
-                var serialized1 = ContinuationTokenSerializer.Serialize(continuationToken, new ContinuationTokenOptions { IncludeHash = false });
-                var serialized2 = ContinuationTokenSerializer.Serialize(continuationToken, new ContinuationTokenOptions { IncludeHash = true });
+                var serializer = new ContinuationTokenSerializer(new ContinuationTokenOptions { IncludeHash = false });
+                var serialized1 = serializer.Serialize(continuationToken);
+
+                serializer = new ContinuationTokenSerializer(new ContinuationTokenOptions { IncludeHash = true });
+                var serialized2 = serializer.Serialize(continuationToken);
 
                 serialized1.Should().NotBe(serialized2);
             }
@@ -130,7 +212,8 @@ namespace AllOverIt.Pagination.Tests
             {
                 Invoking(() =>
                 {
-                    var actual = ContinuationTokenSerializer.Deserialize(null, A.Fake<IContinuationTokenOptions>());
+                    var serializer = new ContinuationTokenSerializer(ContinuationTokenOptions.None);
+                    var actual = serializer.Deserialize(null);
 
                     actual.Should().BeSameAs(ContinuationToken.None);
                 })
@@ -143,7 +226,8 @@ namespace AllOverIt.Pagination.Tests
             {
                 Invoking(() =>
                 {
-                    var actual = ContinuationTokenSerializer.Deserialize(string.Empty, A.Fake<IContinuationTokenOptions>());
+                    var serializer = new ContinuationTokenSerializer(ContinuationTokenOptions.None);
+                    var actual = serializer.Deserialize(string.Empty);
 
                     actual.Should().BeSameAs(ContinuationToken.None);
                 })
@@ -156,24 +240,13 @@ namespace AllOverIt.Pagination.Tests
             {
                 Invoking(() =>
                 {
-                    var actual = ContinuationTokenSerializer.Deserialize(" ", A.Fake<IContinuationTokenOptions>());
+                    var serializer = new ContinuationTokenSerializer(ContinuationTokenOptions.None);
+                    var actual = serializer.Deserialize(" ");
 
                     actual.Should().BeSameAs(ContinuationToken.None);
                 })
                     .Should()
                     .NotThrow();
-            }
-
-            [Fact]
-            public void Should_Throw_When_Options_Null()
-            {
-                Invoking(() =>
-                {
-                    _ = ContinuationTokenSerializer.Deserialize(Create<string>(), null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("options");
             }
         }
 
@@ -208,11 +281,139 @@ namespace AllOverIt.Pagination.Tests
                     UseCompression = useCompression
                 };
 
-                var encoded = ContinuationTokenSerializer.Serialize(continuationToken, tokenOptions);
+                var serializer = new ContinuationTokenSerializer(tokenOptions);
 
-                var decoded = ContinuationTokenSerializer.Deserialize(encoded, tokenOptions);
+                var encoded = serializer.Serialize(continuationToken);
+                var decoded = serializer.Deserialize(encoded);
 
                 decoded.Should().BeEquivalentTo(continuationToken);
+            }
+        }
+
+        public class TryDeserialize : ContinuationTokenSerializerFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Token_Null()
+            {
+                Invoking(() =>
+                {
+                    var serializer = new ContinuationTokenSerializer(A.Fake<IContinuationTokenOptions>());
+                    _ = serializer.TryDeserialize(null, out var _);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("continuationToken");
+            }
+
+            [Fact]
+            public void Should_Return_False_When_Random_String()
+            {
+                var serializer = new ContinuationTokenSerializer(A.Fake<IContinuationTokenOptions>());
+                var actual = serializer.TryDeserialize(Create<string>(), out var _);
+
+                actual.Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Return_True_When_Valid_Token()
+            {
+                var continuationToken = new ContinuationToken
+                {
+                    Direction = Create<PaginationDirection>(),
+                    Values = new object[]
+                    {
+                        Create<bool>(),
+                        Create<int>()
+                    }
+                };
+
+                var serializer = new ContinuationTokenSerializer(ContinuationTokenOptions.None);
+
+                var tokenString = serializer.Serialize(continuationToken);
+
+                var actual = serializer.TryDeserialize(tokenString, out var _);
+
+                actual.Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Return_False_When_Invalid_Token()
+            {
+                var continuationToken = new ContinuationToken
+                {
+                    Direction = Create<PaginationDirection>(),
+                    Values = new object[]
+                    {
+                        Create<bool>(),
+                        Create<int>()
+                    }
+                };
+
+                var serializer = new ContinuationTokenSerializer(ContinuationTokenOptions.None);
+
+                var tokenString = serializer.Serialize(continuationToken);
+
+                var actual = serializer.TryDeserialize($"12{tokenString}34", out var token);
+
+                actual.Should().BeFalse();
+                token.Should().BeNull();
+            }
+
+            [Fact]
+            public void Should_Deserialize_Token()
+            {
+                var continuationToken = new ContinuationToken
+                {
+                    Direction = Create<PaginationDirection>(),
+                    Values = new object[]
+                    {
+                        Create<bool>(),
+                        Create<int>()
+                    }
+                };
+
+                var serializer = new ContinuationTokenSerializer(ContinuationTokenOptions.None);
+
+                var tokenString = serializer.Serialize(continuationToken);
+
+                _ = serializer.TryDeserialize(tokenString, out var token);
+
+                token.Should().BeEquivalentTo(continuationToken);
+            }
+
+            [Theory]
+            [InlineData(true, true)]
+            [InlineData(true, false)]
+            [InlineData(false, true)]
+            [InlineData(false, false)]
+            public void Should_Deserialize_Token_When_Using_Options(bool includeHash, bool useCompression)
+            {
+                var continuationToken = new ContinuationToken
+                {
+                    Direction = Create<PaginationDirection>(),
+                    Values = new object[]
+                    {
+                        Create<bool>(),
+                        Create<int>()
+                    }
+                };
+
+                var serializer1 = new ContinuationTokenSerializer(ContinuationTokenOptions.None);
+
+                var serializer2 = new ContinuationTokenSerializer(new ContinuationTokenOptions
+                {
+                    IncludeHash = includeHash,
+                    UseCompression = useCompression
+                });
+
+                var token1String = serializer1.Serialize(continuationToken);
+                var token2String = serializer2.Serialize(continuationToken);
+
+                _ = serializer1.TryDeserialize(token1String, out var token1);
+                _ = serializer2.TryDeserialize(token2String, out var token2);
+
+                token1.Should().BeEquivalentTo(continuationToken);
+                token2.Should().BeEquivalentTo(continuationToken);
             }
         }
     }

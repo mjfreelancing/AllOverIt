@@ -5,6 +5,9 @@ namespace AllOverIt.Pagination
     /// <summary>Describes a token generator that simplifies requesting next and previous page queries.</summary>
     public interface IContinuationTokenEncoder
     {
+        /// <summary>The serializer responsible for encoding continuation tokens.</summary>
+        IContinuationTokenSerializer Serializer { get; }
+
         /// <summary>Creates a continuation token encoded with information that indicates the required pagination direction and
         /// the column values from a reference entity that identify the record immediately adjacent to the requiredprevious page.</summary>
         /// <typeparam name="TEntity">The entity type the query is based on.</typeparam>

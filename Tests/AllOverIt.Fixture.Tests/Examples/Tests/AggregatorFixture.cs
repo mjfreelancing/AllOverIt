@@ -31,10 +31,10 @@ namespace AllOverIt.Fixture.Tests.Examples.Tests
             {
                 // Arrange
                 var values = CreateMany<double>();
-                var calculator = this.CreateStub<ICalculator>();
+                var calculatorFake = this.CreateStub<ICalculator>();
 
                 // register the calculator so it will be auto-injected when we 'create' an aggregator
-                Register(() => calculator);
+                Register(() => calculatorFake);
 
                 // creates the aggregator, injecting the fake calculator
                 var aggregator = Create<Aggregator>();
@@ -44,7 +44,7 @@ namespace AllOverIt.Fixture.Tests.Examples.Tests
                 aggregator.Summate(values.ToArray());
 
                 // Assert
-                A.CallTo(() => calculator.Add(A<double>.Ignored, A<double>.Ignored))
+                A.CallTo(() => calculatorFake.Add(A<double>.Ignored, A<double>.Ignored))
                   .MustHaveHappenedANumberOfTimesMatching(count => count == values.Count);
             }
         }
@@ -91,13 +91,13 @@ namespace AllOverIt.Fixture.Tests.Examples.Tests
                 var addResults = CreateMany<double>();
 
                 // the fake calculator
-                var calculator = this.CreateStub<ICalculator>();
+                var calculatorFake = this.CreateStub<ICalculator>();
 
                 // register the calculator so it will be auto-injected when we 'create' an aggregator
-                Inject(calculator);
+                Inject(calculatorFake);
 
                 // configure the fake calculator to sequentially return values from addResults irrespective of the input values
-                A.CallTo(() => calculator.Add(A<double>.Ignored, A<double>.Ignored))
+                A.CallTo(() => calculatorFake.Add(A<double>.Ignored, A<double>.Ignored))
                   .ReturnsNextFromSequence(addResults.ToArray());
 
                 // Create the aggregator - the fake calculator will be injected
