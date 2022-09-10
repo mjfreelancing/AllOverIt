@@ -1,0 +1,141 @@
+﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
+using AllOverIt.Pagination.TokenEncoding;
+using FakeItEasy;
+using FluentAssertions;
+using Newtonsoft.Json.Linq;
+using System;
+using Xunit;
+
+namespace AllOverIt.Pagination.Tests.TokenEncoding
+{
+    public class ContinuationTokenValidatorFixture : FixtureBase
+    {
+        public class Constructor : ContinuationTokenValidatorFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Serializer_Factoiry_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = new ContinuationTokenValidator(null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("serializerFactory");
+            }
+        }
+
+        public class IsValidToken : ContinuationTokenValidatorFixture
+        {            
+            [Fact]
+            public void Should_Throw_When_Options_Null()
+            {
+                Invoking(() =>
+                {
+                    var validator = new ContinuationTokenValidator(A.Fake<IContinuationTokenSerializerFactory>());
+                    validator.IsValidToken(Create<string>(), null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("tokenOptions");
+            }
+
+            [Fact]
+            public void Should_Return_False_When_Random_String()
+            {
+                var validator = new ContinuationTokenValidator(A.Fake<IContinuationTokenSerializerFactory>());
+                var actual = validator.IsValidToken(Create<string>(), A.Fake<IContinuationTokenOptions>());
+
+                actual.Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Return_True_When_Valid_Token()
+            {
+                var continuationToken = new ContinuationToken
+                {
+                    Direction = Create<PaginationDirection>(),
+                    Values = new object[]
+                    {
+                        Create<bool>(),
+                        Create<int>()
+                    }
+                };
+
+                var options = Create<ContinuationTokenOptions>();
+
+                var serializer = new ContinuationTokenSerializer(options);
+
+                var token = serializer.Serialize(continuationToken);
+
+                var serializerFactory = new ContinuationTokenSerializerFactory();
+                var validator = new ContinuationTokenValidator(serializerFactory);
+
+                var actual = validator.IsValidToken(token, options);
+
+                actual.Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Return_False_When_Invalid_Token()
+            {
+                var continuationToken = new ContinuationToken
+                {
+                    Direction = Create<PaginationDirection>(),
+                    Values = new object[]
+                    {
+                        Create<bool>(),
+                        Create<int>()
+                    }
+                };
+
+                var options = Create<ContinuationTokenOptions>();
+
+                var serializer = new ContinuationTokenSerializer(options);
+
+                var token = serializer.Serialize(continuationToken);
+
+                var serializerFactory = new ContinuationTokenSerializerFactory();
+                var validator = new ContinuationTokenValidator(serializerFactory);
+
+                var actual = validator.IsValidToken($"12{token}34", options);
+
+                actual.Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Return_True_When_Token_Null()
+            {
+                var serializerFactory = new ContinuationTokenSerializerFactory();
+                var validator = new ContinuationTokenValidator(serializerFactory);
+
+                var actual = validator.IsValidToken(null, A.Fake<IContinuationTokenOptions>());
+
+                actual.Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Return_True_When_Token_Empty()
+            {
+                var serializerFactory = new ContinuationTokenSerializerFactory();
+                var validator = new ContinuationTokenValidator(serializerFactory);
+
+                var actual = validator.IsValidToken(string.Empty, A.Fake<IContinuationTokenOptions>());
+
+                actual.Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Return_True_When_Token_Whitespace()
+            {
+                var serializerFactory = new ContinuationTokenSerializerFactory();
+                var validator = new ContinuationTokenValidator(serializerFactory);
+
+                var actual = validator.IsValidToken(" ", A.Fake<IContinuationTokenOptions>());
+
+                actual.Should().BeTrue();
+            }
+        }
+    }
+}

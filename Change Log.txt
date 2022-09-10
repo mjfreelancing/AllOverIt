@@ -12,6 +12,12 @@ AllOverIt.Pagination
     option, have moved to a ContinuationTokenOptions class.
   * Internal refactoring to make code more extendable and testable
   * Renamed AddQueryPaginatorFactory() extension method to AddQueryPagination()
+  * Added IContinuationTokenValidator
+  * Updated service collection extension to register a number of paginated interfaces:
+    - IContinuationTokenValidator
+    - IContinuationTokenSerializerFactory
+    - IContinuationTokenEncoderFactory
+    - IQueryPaginatorFactory
 
 
 09 Sep 2022

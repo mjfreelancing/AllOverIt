@@ -52,7 +52,13 @@ namespace AllOverIt.Pagination.Tests
             public Status Status { get; set; }
         }
 
-        private readonly IContinuationTokenEncoderFactory _continuationTokenEncoderFactory = new ContinuationTokenEncoderFactory();
+        private readonly IContinuationTokenEncoderFactory _continuationTokenEncoderFactory;
+
+        public QueryPaginatorFixture()
+        {
+            var serializerFactory = new ContinuationTokenSerializerFactory();
+            _continuationTokenEncoderFactory = new ContinuationTokenEncoderFactory(serializerFactory);
+        }
 
         public class Constructor : QueryPaginatorFixture
         {

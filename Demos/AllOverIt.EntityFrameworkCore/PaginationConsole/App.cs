@@ -6,6 +6,7 @@ using AllOverIt.Filtering.Options;
 using AllOverIt.GenericHost;
 using AllOverIt.Pagination;
 using AllOverIt.Pagination.Extensions;
+using AllOverIt.Pagination.TokenEncoding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Npgsql;
@@ -24,12 +25,15 @@ namespace PaginationConsole
     {
         private readonly IDbContextFactory<BloggingContext> _dbContextFactory;
         private readonly IQueryPaginatorFactory _queryPaginatorFactory;
+        private readonly IContinuationTokenValidator _continuationTokenValidator;
         private readonly ILogger<App> _logger;
 
-        public App(IDbContextFactory<BloggingContext> dbContextFactory, IQueryPaginatorFactory queryPaginatorFactory, ILogger<App> logger)
+        public App(IDbContextFactory<BloggingContext> dbContextFactory, IQueryPaginatorFactory queryPaginatorFactory,
+            IContinuationTokenValidator continuationTokenValidator, ILogger<App> logger)
         {
             _dbContextFactory = dbContextFactory.WhenNotNull(nameof(dbContextFactory));
             _queryPaginatorFactory = queryPaginatorFactory.WhenNotNull(nameof(queryPaginatorFactory));
+            _continuationTokenValidator = continuationTokenValidator.WhenNotNull(nameof(continuationTokenValidator));
             _logger = logger.WhenNotNull(nameof(logger));
         }
 
@@ -204,8 +208,11 @@ namespace PaginationConsole
                             Console.WriteLine($"ContinuationToken Generation time: {lastTokenGenerationTime}ms");
                         }
 
+                        var isValidToken = _continuationTokenValidator.IsValidToken(continuationToken, paginatorConfig.ContinuationTokenOptions);
+                        var validString = isValidToken ? "VALID" : "INVALID";
+
                         Console.WriteLine();
-                        Console.WriteLine($"Using ContinuationToken:");
+                        Console.WriteLine($"Using ContinuationToken: {validString}");
                         Console.WriteLine(continuationToken);
                         Console.WriteLine();
 

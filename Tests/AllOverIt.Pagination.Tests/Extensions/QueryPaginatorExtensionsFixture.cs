@@ -73,7 +73,8 @@ namespace AllOverIt.Pagination.Tests.Extensions
                 from entity in _entities
                 select entity;
 
-            var continuationTokenEncoderFactory = new ContinuationTokenEncoderFactory();
+            var serializerFactory = new ContinuationTokenSerializerFactory();
+            var continuationTokenEncoderFactory = new ContinuationTokenEncoderFactory(serializerFactory);
 
             _paginatorFactory = configuration => new QueryPaginator<EntityDummy>(query.AsQueryable(), configuration, continuationTokenEncoderFactory);
         }
