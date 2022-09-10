@@ -4,6 +4,7 @@ using System.IO.Compression;
 
 namespace AllOverIt.Pagination.TokenEncoding
 {
+    // Decorates another IContinuationTokenStreamer to compress a stream containing the binary version of a IContinuationTokenStreamer
     internal sealed class ContinuationTokenCompressor : IContinuationTokenStreamer
     {
         private readonly IContinuationTokenStreamer _tokenStreamer;

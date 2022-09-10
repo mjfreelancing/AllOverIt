@@ -5,6 +5,7 @@ using System.Text;
 
 namespace AllOverIt.Pagination.TokenEncoding
 {
+    // Uses an EnrichedBinaryWriter to serialize a IContinuationToken to a stream
     internal sealed class ContinuationTokenBinaryStreamer : IContinuationTokenStreamer
     {
         private static readonly IEnrichedBinaryValueReader _reader = new ContinuationTokenReader();

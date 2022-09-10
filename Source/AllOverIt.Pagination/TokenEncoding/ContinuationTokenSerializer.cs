@@ -8,33 +8,6 @@ using System.Security.Cryptography;
 
 namespace AllOverIt.Pagination.TokenEncoding
 {
-
-    /// <summary>Validates a serialized continuation token.</summary>
-    public sealed class ContinuationTokenValidator : IContinuationTokenValidator
-    {
-        private readonly IContinuationTokenSerializerFactory _serializerFactory;
-
-        public ContinuationTokenValidator(IContinuationTokenSerializerFactory serializerFactory)
-        {
-            _serializerFactory = serializerFactory.WhenNotNull(nameof(serializerFactory));
-        }
-
-        /// <inheritdoc />
-        public bool IsValidToken(string continuationToken, IContinuationTokenOptions tokenOptions)
-        {
-            _ = tokenOptions.WhenNotNull(nameof(tokenOptions));
-
-            if (continuationToken.IsNullOrEmpty())
-            {
-                return true;
-            }
-
-            var serializer = _serializerFactory.CreateContinuationTokenSerializer(tokenOptions);
-
-            return serializer.TryDeserialize(continuationToken, out _);
-        }
-    }
-
     internal sealed class ContinuationTokenSerializer : IContinuationTokenSerializer
     {
         private const int HashByteLength = 128 / 8;
@@ -55,7 +28,7 @@ namespace AllOverIt.Pagination.TokenEncoding
 
             if (_tokenOptions.UseCompression)
             {
-                // decorate the binary streamer with compression
+                // Decorate the binary streamer with compression
                 _tokenStreamer = new ContinuationTokenCompressor(tokenStreamer);
             }
         }       

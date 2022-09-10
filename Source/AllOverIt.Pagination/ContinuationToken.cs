@@ -6,10 +6,7 @@ namespace AllOverIt.Pagination
     {
         public static readonly ContinuationToken None = new();
 
-        /// <Inheritdoc />
         public PaginationDirection Direction { get; init; }
-
-        /// <Inheritdoc />
         public IReadOnlyCollection<object> Values { get; init; }
     }
 }
