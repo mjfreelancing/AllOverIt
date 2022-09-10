@@ -59,7 +59,7 @@ namespace AllOverIt.Pagination
                 //Values = 
             };
 
-            return Serializer.Serialize(continuationToken);
+            return this.Encode(continuationToken);
         }
 
         private string Encode<TEntity>(ContinuationDirection continuationDirection, IReadOnlyCollection<TEntity> references)
@@ -105,7 +105,7 @@ namespace AllOverIt.Pagination
                 Values = columnValues
             };
 
-            return Serializer.Serialize(continuationToken);
+            return this.Encode(continuationToken);
         }
     }
 }

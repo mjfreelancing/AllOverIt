@@ -1,4 +1,6 @@
-﻿using AllOverIt.Fixture.Extensions;
+﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
+using FakeItEasy;
 using FluentAssertions;
 using System;
 using System.Linq;
@@ -6,7 +8,7 @@ using Xunit;
 
 namespace AllOverIt.Pagination.Tests
 {
-    public class QueryPaginatorFactoryFixture : QueryPaginatorFixture
+    public class QueryPaginatorFactoryFixture : FixtureBase
     {
         private class DummyEntity
         {
@@ -16,42 +18,60 @@ namespace AllOverIt.Pagination.Tests
 
         public QueryPaginatorFactoryFixture()
         {
-            _factory = new QueryPaginatorFactory();
+            _factory = new QueryPaginatorFactory(A.Fake<IContinuationTokenEncoderFactory>());
         }
 
-        [Fact]
-        public void Should_Throw_When_Query_Null()
+        public class Constructor : QueryPaginatorFactoryFixture
         {
-            Invoking(() =>
+            [Fact]
+            public void Should_Throw_When_Token_Encoder_Factory_Null()
             {
-                _ = _factory.CreatePaginator<DummyEntity>(null, Create<QueryPaginatorConfiguration>());
-            })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("query");
+                Invoking(() =>
+                {
+                    _ = new QueryPaginatorFactory(null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("continuationTokenEncoderFactory");
+            }
         }
 
-        [Fact]
-        public void Should_Throw_When_Configuration_Null()
+        public class CreatePaginator : QueryPaginatorFactoryFixture
         {
-            Invoking(() =>
+            [Fact]
+            public void Should_Throw_When_Query_Null()
             {
-                _ = _factory.CreatePaginator<DummyEntity>(Array.Empty<DummyEntity>().AsQueryable(), null);
-            })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("configuration");
-        }
+                Invoking(() =>
+                {
+                    _ = _factory.CreatePaginator<DummyEntity>(null, Create<QueryPaginatorConfiguration>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("query");
+            }
 
-        [Fact]
-        public void Should_Create_Paginator()
-        {
-            var query = Array.Empty<DummyEntity>().AsQueryable();
-            var config = Create<QueryPaginatorConfiguration>();
+            [Fact]
+            public void Should_Throw_When_Configuration_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = _factory.CreatePaginator<DummyEntity>(Array.Empty<DummyEntity>().AsQueryable(), null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("configuration");
+            }
 
-            var paginator = _factory.CreatePaginator<DummyEntity>(query, config);
+            [Fact]
+            public void Should_Create_Paginator()
+            {
+                var query = Array.Empty<DummyEntity>().AsQueryable();
+                var config = Create<QueryPaginatorConfiguration>();
 
-            paginator.Should().BeAssignableTo<IQueryPaginator<DummyEntity>>();
+                var paginator = _factory.CreatePaginator<DummyEntity>(query, config);
+
+                paginator.Should().BeAssignableTo<IQueryPaginator<DummyEntity>>();
+            }
         }
     }
 }

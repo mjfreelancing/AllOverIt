@@ -27,7 +27,7 @@ class Program
             .CreateConsoleHostBuilder<App>(args)
             .ConfigureServices((hostContext, services) =>
             {
-                services.AddQueryPaginatorFactory();
+                services.AddQueryPagination();
                 services.AddDbContextFactory<BloggingContext>();
             });
     }

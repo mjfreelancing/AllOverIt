@@ -27,6 +27,7 @@ namespace AllOverIt.Pagination
 
         private readonly List<ColumnDefinition<TEntity>> _columns = new();
         private readonly QueryPaginatorConfiguration _configuration;
+        private readonly IContinuationTokenEncoderFactory _continuationTokenEncoderFactory;
 
         private IContinuationTokenEncoder _continuationTokenEncoder;
         private IOrderedQueryable<TEntity> _directionQuery;                     // based on the _paginationDirection        
@@ -41,10 +42,11 @@ namespace AllOverIt.Pagination
         /// <summary>Constructor.</summary>
         /// <param name="query">The base query to apply pagination to.</param>
         /// <param name="configuration">Provides paginator options that define how the paginated query will be generated.</param>
-        public QueryPaginator(IQueryable<TEntity> query, QueryPaginatorConfiguration configuration)
+        public QueryPaginator(IQueryable<TEntity> query, QueryPaginatorConfiguration configuration, IContinuationTokenEncoderFactory continuationTokenEncoderFactory)
         {
             BaseQuery = query.WhenNotNull(nameof(query));
             _configuration = configuration.WhenNotNull(nameof(configuration));
+            _continuationTokenEncoderFactory = continuationTokenEncoderFactory.WhenNotNull(nameof(continuationTokenEncoderFactory));
         }
 
         /// <inheritdoc />
@@ -246,11 +248,8 @@ namespace AllOverIt.Pagination
         {
             AssertColumnsDefined();
 
-            if (_continuationTokenEncoder is null)
-            {
-                var tokenSerializer = new ContinuationTokenSerializer(_configuration.ContinuationTokenOptions);
-                _continuationTokenEncoder = new ContinuationTokenEncoder(_columns, _configuration.PaginationDirection, tokenSerializer);
-            }
+            _continuationTokenEncoder ??= _continuationTokenEncoderFactory.CreateContinuationTokenEncoder(
+                _columns, _configuration.PaginationDirection, _configuration.ContinuationTokenOptions);
 
             return _continuationTokenEncoder;
         }

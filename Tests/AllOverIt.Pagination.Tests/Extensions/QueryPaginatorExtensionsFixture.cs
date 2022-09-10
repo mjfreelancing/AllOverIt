@@ -72,7 +72,9 @@ namespace AllOverIt.Pagination.Tests.Extensions
                 from entity in _entities
                 select entity;
 
-            _paginatorFactory = configuration => new QueryPaginator<EntityDummy>(query.AsQueryable(), configuration);
+            var continuationTokenEncoderFactory = new ContinuationTokenEncoderFactory();
+
+            _paginatorFactory = configuration => new QueryPaginator<EntityDummy>(query.AsQueryable(), configuration, continuationTokenEncoderFactory);
         }
 
         public class ColumnAscending_2 : QueryPaginatorExtensionsFixture

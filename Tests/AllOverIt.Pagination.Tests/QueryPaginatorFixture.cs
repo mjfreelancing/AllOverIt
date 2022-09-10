@@ -53,6 +53,8 @@ namespace AllOverIt.Pagination.Tests
             public Status Status { get; set; }
         }
 
+        private readonly IContinuationTokenEncoderFactory _continuationTokenEncoderFactory = new ContinuationTokenEncoderFactory();
+
         public class Constructor : QueryPaginatorFixture
         {
             [Fact]
@@ -60,7 +62,7 @@ namespace AllOverIt.Pagination.Tests
             {
                 Invoking(() =>
                 {
-                    _ = new QueryPaginator<EntityDummy>(null, Create<QueryPaginatorConfiguration>());
+                    _ = new QueryPaginator<EntityDummy>(null, Create<QueryPaginatorConfiguration>(), _continuationTokenEncoderFactory);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -72,7 +74,7 @@ namespace AllOverIt.Pagination.Tests
             {
                 var query = Array.Empty<EntityDummy>().AsQueryable();
 
-                var paginator = new QueryPaginator<EntityDummy>(query, Create<QueryPaginatorConfiguration>());
+                var paginator = new QueryPaginator<EntityDummy>(query, Create<QueryPaginatorConfiguration>(), _continuationTokenEncoderFactory);
 
                 paginator.BaseQuery.Should().BeSameAs(query);
             }
@@ -82,11 +84,23 @@ namespace AllOverIt.Pagination.Tests
             {
                 Invoking(() =>
                 {
-                    _ = new QueryPaginator<EntityDummy>(Array.Empty<EntityDummy>().AsQueryable(), null);
+                    _ = new QueryPaginator<EntityDummy>(Array.Empty<EntityDummy>().AsQueryable(), null, _continuationTokenEncoderFactory);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("configuration");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Token_Encoder_Factory_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = new QueryPaginator<EntityDummy>(Array.Empty<EntityDummy>().AsQueryable(), Create<QueryPaginatorConfiguration>(), null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("continuationTokenEncoderFactory");
             }
         }
 
@@ -99,7 +113,7 @@ namespace AllOverIt.Pagination.Tests
                 {
                     var query = Array.Empty<EntityDummy>().AsQueryable();
 
-                    _ = new QueryPaginator<EntityDummy>(query, Create<QueryPaginatorConfiguration>())
+                    _ = new QueryPaginator<EntityDummy>(query, Create<QueryPaginatorConfiguration>(), _continuationTokenEncoderFactory)
                         .ColumnAscending<EntityDummy>(null);
                 })
                     .Should()
@@ -112,7 +126,7 @@ namespace AllOverIt.Pagination.Tests
             {
                 var query = Array.Empty<EntityDummy>().AsQueryable();
 
-                var expected = new QueryPaginator<EntityDummy>(query, Create<QueryPaginatorConfiguration>());
+                var expected = new QueryPaginator<EntityDummy>(query, Create<QueryPaginatorConfiguration>(), _continuationTokenEncoderFactory);
 
                 var actual = expected.ColumnAscending(entity => entity.FirstName);
 
@@ -124,7 +138,7 @@ namespace AllOverIt.Pagination.Tests
             {
                 var query = Array.Empty<EntityDummy>().AsQueryable();
 
-                var paginator = new QueryPaginator<EntityDummy>(query, new QueryPaginatorConfiguration())
+                var paginator = new QueryPaginator<EntityDummy>(query, new QueryPaginatorConfiguration(), _continuationTokenEncoderFactory)
                     .ColumnAscending(entity => entity.FirstName);
 
                 query = paginator.GetPageQuery();
@@ -145,7 +159,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Backward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnAscending(entity => entity.FirstName);
 
                 query = paginator.GetPageQuery();
@@ -165,7 +179,7 @@ namespace AllOverIt.Pagination.Tests
                 {
                     var query = Array.Empty<EntityDummy>().AsQueryable();
 
-                    _ = new QueryPaginator<EntityDummy>(query, Create<QueryPaginatorConfiguration>())
+                    _ = new QueryPaginator<EntityDummy>(query, Create<QueryPaginatorConfiguration>(), _continuationTokenEncoderFactory)
                         .ColumnDescending<EntityDummy>(null);
                 })
                     .Should()
@@ -178,7 +192,7 @@ namespace AllOverIt.Pagination.Tests
             {
                 var query = Array.Empty<EntityDummy>().AsQueryable();
 
-                var expected = new QueryPaginator<EntityDummy>(query, Create<QueryPaginatorConfiguration>());
+                var expected = new QueryPaginator<EntityDummy>(query, Create<QueryPaginatorConfiguration>(), _continuationTokenEncoderFactory);
 
                 var actual = expected.ColumnDescending(entity => entity.FirstName);
 
@@ -190,7 +204,7 @@ namespace AllOverIt.Pagination.Tests
             {
                 var query = Array.Empty<EntityDummy>().AsQueryable();
 
-                var paginator = new QueryPaginator<EntityDummy>(query, new QueryPaginatorConfiguration())
+                var paginator = new QueryPaginator<EntityDummy>(query, new QueryPaginatorConfiguration(), _continuationTokenEncoderFactory)
                     .ColumnDescending(entity => entity.FirstName);
 
                 query = paginator.GetPageQuery();
@@ -211,7 +225,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Backward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnDescending(entity => entity.FirstName);
 
                 query = paginator.GetPageQuery();
@@ -233,7 +247,7 @@ namespace AllOverIt.Pagination.Tests
 
                     var config = Create<QueryPaginatorConfiguration>();
 
-                    var paginator = new QueryPaginator<EntityDummy>(query, config);
+                    var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory);
 
                     _ = paginator.GetPageQuery();
                 })
@@ -253,7 +267,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Forward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnAscending(entity => entity.FirstName);
 
                 query = paginator.GetPageQuery();
@@ -274,7 +288,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Backward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnDescending(entity => entity.FirstName);
 
                 query = paginator.GetPageQuery();
@@ -295,7 +309,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Backward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnAscending(entity => entity.FirstName);
 
                 query = paginator.GetPageQuery();
@@ -316,7 +330,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Forward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnDescending(entity => entity.FirstName);
 
                 query = paginator.GetPageQuery();
@@ -338,7 +352,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Forward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnAscending(entity => entity.Id);
 
                 var page1 = paginator.GetPageQuery().ToList();
@@ -362,7 +376,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Backward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnAscending(entity => entity.Id);
 
                 var page1 = paginator.GetPageQuery().ToList();
@@ -386,7 +400,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Forward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnDescending(entity => entity.Id);
 
                 var page1 = paginator.GetPageQuery().ToList();
@@ -410,7 +424,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Backward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnDescending(entity => entity.Id);
 
                 var page1 = paginator.GetPageQuery().ToList();
@@ -434,7 +448,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Forward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnAscending(entity => entity.Id);
 
                 var page = paginator.GetPageQuery().ToList();
@@ -461,7 +475,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Backward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnAscending(entity => entity.Id);
 
                 var page = paginator.GetPageQuery().ToList();
@@ -488,7 +502,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Forward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnDescending(entity => entity.Id);
 
                 var page = paginator.GetPageQuery().ToList();
@@ -515,7 +529,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Backward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnDescending(entity => entity.Id);
 
                 var page = paginator.GetPageQuery().ToList();
@@ -542,7 +556,7 @@ namespace AllOverIt.Pagination.Tests
 
                     var config = Create<QueryPaginatorConfiguration>();
 
-                    var paginator = new QueryPaginator<EntityDummy>(query, config);
+                    var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory);
 
                     _ = paginator.GetPreviousPageQuery(null);
                 })
@@ -563,7 +577,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Forward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnAscending(entity => entity.Id);
 
                 var page = paginator.GetPreviousPageQuery(null).ToList();
@@ -583,7 +597,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Backward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnAscending(entity => entity.Id);
 
                 var page = paginator.GetPreviousPageQuery(null).ToList();
@@ -603,7 +617,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Forward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnDescending(entity => entity.Id);
 
                 var page = paginator.GetPreviousPageQuery(null).ToList();
@@ -623,7 +637,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Backward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnDescending(entity => entity.Id);
 
                 var page = paginator.GetPreviousPageQuery(null).ToList();
@@ -643,7 +657,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Forward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnAscending(entity => entity.Id);
 
                 var page = paginator.GetPageQuery().ToList();
@@ -669,7 +683,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Backward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnAscending(entity => entity.Id);
 
                 var page = paginator.GetPageQuery().ToList();
@@ -695,7 +709,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Forward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnDescending(entity => entity.Id);
 
                 var page = paginator.GetPageQuery().ToList();
@@ -721,7 +735,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Backward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnDescending(entity => entity.Id);
 
                 var page = paginator.GetPageQuery().ToList();
@@ -747,7 +761,7 @@ namespace AllOverIt.Pagination.Tests
 
                     var config = Create<QueryPaginatorConfiguration>();
 
-                    var paginator = new QueryPaginator<EntityDummy>(query, config);
+                    var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory);
 
                     _ = paginator.GetNextPageQuery(null);
                 })
@@ -768,7 +782,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Forward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnAscending(entity => entity.Id);
 
                 var page = paginator.GetNextPageQuery(null).ToList();
@@ -788,7 +802,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Backward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnAscending(entity => entity.Id);
 
                 var page = paginator.GetNextPageQuery(null).ToList();
@@ -808,7 +822,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Forward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnDescending(entity => entity.Id);
 
                 var page = paginator.GetNextPageQuery(null).ToList();
@@ -828,7 +842,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Backward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnDescending(entity => entity.Id);
 
                 var page = paginator.GetNextPageQuery(null).ToList();
@@ -848,7 +862,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Forward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnAscending(entity => entity.Id);
 
                 var page1 = paginator.GetPageQuery().ToList();
@@ -870,7 +884,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Backward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnAscending(entity => entity.Id);
 
                 var page1 = paginator.GetPageQuery().ToList();
@@ -892,7 +906,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Forward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnDescending(entity => entity.Id);
 
                 var page1 = paginator.GetPageQuery().ToList();
@@ -914,7 +928,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Backward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnDescending(entity => entity.Id);
 
                 var page1 = paginator.GetPageQuery().ToList();
@@ -940,7 +954,7 @@ namespace AllOverIt.Pagination.Tests
                         PaginationDirection = PaginationDirection.Forward
                     };
 
-                    var paginator = new QueryPaginator<EntityDummy>(query, config);
+                    var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory);
 
                     _ = paginator.HasPreviousPage(null);
                 })
@@ -958,7 +972,7 @@ namespace AllOverIt.Pagination.Tests
 
                     var config = Create<QueryPaginatorConfiguration>();
 
-                    var paginator = new QueryPaginator<EntityDummy>(query, config);
+                    var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory);
 
                     _ = paginator.HasPreviousPage(Create<EntityDummy>());
                 })
@@ -980,7 +994,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Forward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnAscending(entity => entity.Id);
 
                 var actual = paginator.HasPreviousPage(p1.First());
@@ -1001,7 +1015,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Forward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnAscending(entity => entity.Id);
 
                 var actual = paginator.HasPreviousPage(p1.Skip(1).First());
@@ -1025,7 +1039,7 @@ namespace AllOverIt.Pagination.Tests
                         PaginationDirection = PaginationDirection.Forward
                     };
 
-                    var paginator = new QueryPaginator<EntityDummy>(query, config);
+                    var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory);
 
                     _ = await paginator.HasPreviousPageAsync(
                         null,
@@ -1046,7 +1060,7 @@ namespace AllOverIt.Pagination.Tests
 
                     var config = Create<QueryPaginatorConfiguration>();
 
-                    var paginator = new QueryPaginator<EntityDummy>(query, config);
+                    var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory);
 
                     _ = await paginator.HasPreviousPageAsync(
                         Create<EntityDummy>(),
@@ -1069,7 +1083,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Forward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnAscending(entity => entity.Id);
 
                 var actual = await paginator.HasPreviousPageAsync(
@@ -1091,7 +1105,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Forward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnAscending(entity => entity.Id);
 
                 var actual = await paginator.HasPreviousPageAsync(
@@ -1118,7 +1132,7 @@ namespace AllOverIt.Pagination.Tests
                         PaginationDirection = PaginationDirection.Forward
                     };
 
-                    var paginator = new QueryPaginator<EntityDummy>(query, config);
+                    var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory);
 
                     _ = paginator.HasNextPage(null);
                 })
@@ -1136,7 +1150,7 @@ namespace AllOverIt.Pagination.Tests
 
                     var config = Create<QueryPaginatorConfiguration>();
 
-                    var paginator = new QueryPaginator<EntityDummy>(query, config);
+                    var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory);
 
                     _ = paginator.HasNextPage(Create<EntityDummy>());
                 })
@@ -1158,7 +1172,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Forward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnAscending(entity => entity.Id);
 
                 var actual = paginator.HasNextPage(p4.Last());
@@ -1179,7 +1193,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Forward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnAscending(entity => entity.Id);
 
                 var actual = paginator.HasNextPage(p4.Skip(1).First());
@@ -1203,7 +1217,7 @@ namespace AllOverIt.Pagination.Tests
                         PaginationDirection = PaginationDirection.Forward
                     };
 
-                    var paginator = new QueryPaginator<EntityDummy>(query, config);
+                    var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory);
 
                     _ = await paginator.HasNextPageAsync(
                         null,
@@ -1224,7 +1238,7 @@ namespace AllOverIt.Pagination.Tests
 
                     var config = Create<QueryPaginatorConfiguration>();
 
-                    var paginator = new QueryPaginator<EntityDummy>(query, config);
+                    var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory);
 
                     _ = await paginator.HasNextPageAsync(
                         Create<EntityDummy>(),
@@ -1247,7 +1261,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Forward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnAscending(entity => entity.Id);
 
                 var actual = await paginator.HasNextPageAsync(
@@ -1269,7 +1283,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Forward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnAscending(entity => entity.Id);
 
                 var actual = await paginator.HasNextPageAsync(
@@ -1295,7 +1309,7 @@ namespace AllOverIt.Pagination.Tests
                     PaginationDirection = PaginationDirection.Forward
                 };
 
-                var paginator = new QueryPaginator<EntityDummy>(query, config)
+                var paginator = new QueryPaginator<EntityDummy>(query, config, _continuationTokenEncoderFactory)
                     .ColumnAscending(entity => entity.Status)
                     .ColumnAscending(entity => entity.Reference);
 

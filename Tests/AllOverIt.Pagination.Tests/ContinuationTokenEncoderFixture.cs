@@ -35,7 +35,7 @@ namespace AllOverIt.Pagination.Tests
         public class Constructor : ContinuationTokenEncoderFixture
         {
             [Fact]
-            public void Should_Throw_When_Columns_null()
+            public void Should_Throw_When_Columns_Null()
             {
                 Invoking(() =>
                 {
@@ -44,6 +44,18 @@ namespace AllOverIt.Pagination.Tests
                 .Should()
                 .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("columns");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Columns_Empty()
+            {
+                Invoking(() =>
+                {
+                    _ = new ContinuationTokenEncoder(new List<IColumnDefinition>(), Create<PaginationDirection>(), A.Fake<IContinuationTokenSerializer>());
+                })
+                .Should()
+                .Throw<ArgumentException>()
+                .WithNamedMessageWhenEmpty("columns");
             }
         }
 
