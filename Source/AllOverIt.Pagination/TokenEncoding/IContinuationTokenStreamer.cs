@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace AllOverIt.Pagination
+namespace AllOverIt.Pagination.TokenEncoding
 {
     internal interface IContinuationTokenStreamer
     {

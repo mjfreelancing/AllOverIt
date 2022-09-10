@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Assertion;
+using AllOverIt.Pagination.TokenEncoding;
 
 namespace AllOverIt.Pagination.Extensions
 {

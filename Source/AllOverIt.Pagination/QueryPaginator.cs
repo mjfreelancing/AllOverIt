@@ -3,6 +3,7 @@ using AllOverIt.Expressions;
 using AllOverIt.Extensions;
 using AllOverIt.Pagination.Exceptions;
 using AllOverIt.Pagination.Extensions;
+using AllOverIt.Pagination.TokenEncoding;
 using System;
 using System.Collections.Generic;
 using System.Linq;

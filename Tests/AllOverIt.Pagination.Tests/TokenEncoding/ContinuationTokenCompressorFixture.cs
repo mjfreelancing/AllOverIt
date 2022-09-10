@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
+using AllOverIt.Pagination.TokenEncoding;
 using FakeItEasy;
 using FluentAssertions;
 using System;
@@ -7,7 +8,7 @@ using System.IO;
 using System.IO.Compression;
 using Xunit;
 
-namespace AllOverIt.Pagination.Tests
+namespace AllOverIt.Pagination.Tests.TokenEncoding
 {
     public class ContinuationTokenCompressorFixture : FixtureBase
     {

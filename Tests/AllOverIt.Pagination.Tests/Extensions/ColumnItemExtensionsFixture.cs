@@ -1,11 +1,11 @@
-using System;
-using System.Collections.Generic;
 using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using Xunit;
 using AllOverIt.Pagination.Extensions;
 using FluentAssertions;
+using System;
+using System.Collections.Generic;
+using Xunit;
 
 namespace AllOverIt.Pagination.Tests.Extensions
 {

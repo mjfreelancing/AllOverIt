@@ -3,7 +3,7 @@ using AllOverIt.Serialization.Binary;
 using System.IO;
 using System.Text;
 
-namespace AllOverIt.Pagination
+namespace AllOverIt.Pagination.TokenEncoding
 {
     internal sealed class ContinuationTokenBinaryStreamer : IContinuationTokenStreamer
     {

@@ -1,16 +1,13 @@
-﻿using AllOverIt.Collections;
-using AllOverIt.Fixture;
+﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
-using FakeItEasy;
+using AllOverIt.Pagination.TokenEncoding;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
 using Xunit;
 
-namespace AllOverIt.Pagination.Tests
+namespace AllOverIt.Pagination.Tests.TokenEncoding
 {
     public class ContinuationTokenEncoderFactoryFixture : FixtureBase
     {
@@ -23,7 +20,7 @@ namespace AllOverIt.Pagination.Tests
             {
                 Invoking(() =>
                 {
-                    _= _continuationTokenEncoderFactory.CreateContinuationTokenEncoder(null, Create<PaginationDirection>(), Create<ContinuationTokenOptions>());
+                    _ = _continuationTokenEncoderFactory.CreateContinuationTokenEncoder(null, Create<PaginationDirection>(), Create<ContinuationTokenOptions>());
                 })
                 .Should()
                 .Throw<ArgumentNullException>()

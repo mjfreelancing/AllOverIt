@@ -2,6 +2,7 @@
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Pagination.Extensions;
+using AllOverIt.Pagination.TokenEncoding;
 using FakeItEasy;
 using FluentAssertions;
 using System;
@@ -9,17 +10,6 @@ using Xunit;
 
 namespace AllOverIt.Pagination.Tests.Extensions
 {
-
-    //public static string Encode(this IContinuationTokenEncoder encoder, IContinuationToken continuationToken)
-    //{
-    //    return encoder.Serializer.Serialize(continuationToken);
-    //}
-
-    //public static IContinuationToken Decode(this IContinuationTokenEncoder encoder, string continuationToken)
-    //{
-    //    return encoder.Serializer.Deserialize(continuationToken);
-    //}
-
     public class ContinuationTokenEncoderExtensionsExtensions : FixtureBase
     {
         private readonly IContinuationTokenEncoder _continuationTokenEncoder;

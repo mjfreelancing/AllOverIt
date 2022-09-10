@@ -1,12 +1,12 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
+using AllOverIt.Pagination.TokenEncoding;
 using FakeItEasy;
 using FluentAssertions;
 using System;
-using System.Linq;
 using Xunit;
 
-namespace AllOverIt.Pagination.Tests
+namespace AllOverIt.Pagination.Tests.TokenEncoding
 {
     public class ContinuationTokenSerializerFixture : FixtureBase
     {
@@ -276,7 +276,7 @@ namespace AllOverIt.Pagination.Tests
                 };
 
                 var tokenOptions = new ContinuationTokenOptions
-                { 
+                {
                     IncludeHash = includeHash,
                     UseCompression = useCompression
                 };

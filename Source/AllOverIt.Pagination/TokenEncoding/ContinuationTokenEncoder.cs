@@ -6,13 +6,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AllOverIt.Pagination
+namespace AllOverIt.Pagination.TokenEncoding
 {
     internal sealed class ContinuationTokenEncoder : IContinuationTokenEncoder
     {
         private readonly IReadOnlyCollection<IColumnDefinition> _columns;
         private readonly PaginationDirection _paginationDirection;
-        
+
         public IContinuationTokenSerializer Serializer { get; }
 
         internal ContinuationTokenEncoder(IReadOnlyCollection<IColumnDefinition> columns, PaginationDirection paginationDirection,

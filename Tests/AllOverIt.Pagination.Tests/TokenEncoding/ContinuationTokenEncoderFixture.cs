@@ -4,6 +4,7 @@ using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Pagination.Exceptions;
 using AllOverIt.Pagination.Extensions;
+using AllOverIt.Pagination.TokenEncoding;
 using FakeItEasy;
 using FluentAssertions;
 using System;
@@ -11,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace AllOverIt.Pagination.Tests
+namespace AllOverIt.Pagination.Tests.TokenEncoding
 {
     public class ContinuationTokenEncoderFixture : FixtureBase
     {
@@ -280,7 +281,7 @@ namespace AllOverIt.Pagination.Tests
 
                 Invoking(() =>
                 {
-                    _ = encoder.EncodePreviousPage((object) null);
+                    _ = encoder.EncodePreviousPage( null);
                 })
                 .Should()
                 .Throw<PaginationException>()
@@ -349,7 +350,7 @@ namespace AllOverIt.Pagination.Tests
 
                 Invoking(() =>
                 {
-                    _ = encoder.EncodeNextPage((object) null);
+                    _ = encoder.EncodeNextPage( null);
                 })
                 .Should()
                 .Throw<PaginationException>()
@@ -435,7 +436,7 @@ namespace AllOverIt.Pagination.Tests
                 var expected = new
                 {
                     Direction = paginationDirection.Reverse(),
-                    Values = (object[])null
+                    Values = (object[]) null
                 };
 
                 var serializerFake = A.Fake<IContinuationTokenSerializer>();

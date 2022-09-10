@@ -3,7 +3,7 @@ using AllOverIt.Serialization.Binary;
 using System;
 using System.Collections.Generic;
 
-namespace AllOverIt.Pagination
+namespace AllOverIt.Pagination.TokenEncoding
 {
     internal sealed class ContinuationTokenWriter : EnrichedBinaryValueWriter<ContinuationToken>
     {

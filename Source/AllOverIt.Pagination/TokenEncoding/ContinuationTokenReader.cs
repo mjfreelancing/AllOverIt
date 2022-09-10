@@ -4,7 +4,7 @@ using AllOverIt.Serialization.Binary;
 using AllOverIt.Serialization.Binary.Extensions;
 using System.Collections.Generic;
 
-namespace AllOverIt.Pagination
+namespace AllOverIt.Pagination.TokenEncoding
 {
     internal sealed class ContinuationTokenReader : EnrichedBinaryValueReader<ContinuationToken>
     {

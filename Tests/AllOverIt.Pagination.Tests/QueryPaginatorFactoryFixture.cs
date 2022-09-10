@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
+using AllOverIt.Pagination.TokenEncoding;
 using FakeItEasy;
 using FluentAssertions;
 using System;

@@ -2,10 +2,9 @@
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Pagination.Exceptions;
-using FakeItEasy;
+using AllOverIt.Pagination.TokenEncoding;
 using FluentAssertions;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;

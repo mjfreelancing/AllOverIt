@@ -1,4 +1,4 @@
-﻿namespace AllOverIt.Pagination
+﻿namespace AllOverIt.Pagination.TokenEncoding
 {
     /// <summary>Serializes and deserializes <see cref="IContinuationToken"/> instances.</summary>
     public interface IContinuationTokenSerializer

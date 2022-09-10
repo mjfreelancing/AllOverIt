@@ -1,6 +1,7 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
+using AllOverIt.Pagination.TokenEncoding;
 using AllOverIt.Serialization.Binary;
 using FakeItEasy;
 using FluentAssertions;
@@ -8,7 +9,7 @@ using System;
 using System.Linq;
 using Xunit;
 
-namespace AllOverIt.Pagination.Tests
+namespace AllOverIt.Pagination.Tests.TokenEncoding
 {
     public class ContinuationTokenReaderFixture : FixtureBase
     {
@@ -43,10 +44,10 @@ namespace AllOverIt.Pagination.Tests
 
                 _binaryReader
                     .CallsTo(call => call.ReadByte())
-                    .Returns((byte)direction);
+                    .Returns((byte) direction);
 
                 var values = CreateMany<int>()
-                    .Select(item => (object)item)
+                    .Select(item => (object) item)
                     .ToList();
 
                 _binaryReader

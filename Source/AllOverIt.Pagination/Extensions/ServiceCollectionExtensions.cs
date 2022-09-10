@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using AllOverIt.Pagination.TokenEncoding;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AllOverIt.Pagination.Extensions
 {
