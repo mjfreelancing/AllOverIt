@@ -50,8 +50,12 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 actual.Should().BeFalse();
             }
 
-            [Fact]
-            public void Should_Return_True_When_Valid_Token()
+            [Theory]
+            [InlineData(true, true)]
+            [InlineData(true, false)]
+            [InlineData(false, true)]
+            [InlineData(false, false)]
+            public void Should_Return_True_When_Valid_Token(bool includeHash, bool useCompression)
             {
                 var continuationToken = new ContinuationToken
                 {
@@ -63,7 +67,11 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                     }
                 };
 
-                var options = Create<ContinuationTokenOptions>();
+                var options = new ContinuationTokenOptions
+                {
+                    IncludeHash = includeHash,
+                    UseCompression = useCompression
+                };
 
                 var serializer = new ContinuationTokenSerializer(options);
 
