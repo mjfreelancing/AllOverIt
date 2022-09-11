@@ -43,6 +43,7 @@ namespace AllOverIt.Pagination
         /// <summary>Constructor.</summary>
         /// <param name="query">The base query to apply pagination to.</param>
         /// <param name="configuration">Provides paginator options that define how the paginated query will be generated.</param>
+        /// <param name="continuationTokenEncoderFactory">A factory to create a continuation token encoder..</param>
         public QueryPaginator(IQueryable<TEntity> query, QueryPaginatorConfiguration configuration, IContinuationTokenEncoderFactory continuationTokenEncoderFactory)
         {
             BaseQuery = query.WhenNotNull(nameof(query));

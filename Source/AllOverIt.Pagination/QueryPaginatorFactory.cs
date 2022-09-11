@@ -9,6 +9,8 @@ namespace AllOverIt.Pagination
     {
         private readonly IContinuationTokenEncoderFactory _continuationTokenEncoderFactory;
 
+        /// <summary>Constructor.</summary>
+        /// <param name="continuationTokenEncoderFactory">A factory to create a continuation token encoder..</param>
         public QueryPaginatorFactory(IContinuationTokenEncoderFactory continuationTokenEncoderFactory)
         {
             _continuationTokenEncoderFactory = continuationTokenEncoderFactory.WhenNotNull(nameof(continuationTokenEncoderFactory));
