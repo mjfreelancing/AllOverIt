@@ -75,7 +75,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                     }
                 };
 
-                var serializer = new ContinuationTokenSerializer(ContinuationTokenOptions.None);
+                var serializer = new ContinuationTokenSerializer(ContinuationTokenOptions.Default);
 
                 var serialized1 = serializer.Serialize(continuationToken1);
                 var serialized2 = serializer.Serialize(continuationToken2);
@@ -143,7 +143,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
             {
                 Invoking(() =>
                 {
-                    var serializer = new ContinuationTokenSerializer(ContinuationTokenOptions.None);
+                    var serializer = new ContinuationTokenSerializer(ContinuationTokenOptions.Default);
                     var actual = serializer.Deserialize(null);
 
                     actual.Should().BeSameAs(ContinuationToken.None);
@@ -157,7 +157,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
             {
                 Invoking(() =>
                 {
-                    var serializer = new ContinuationTokenSerializer(ContinuationTokenOptions.None);
+                    var serializer = new ContinuationTokenSerializer(ContinuationTokenOptions.Default);
                     var actual = serializer.Deserialize(string.Empty);
 
                     actual.Should().BeSameAs(ContinuationToken.None);
@@ -171,7 +171,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
             {
                 Invoking(() =>
                 {
-                    var serializer = new ContinuationTokenSerializer(ContinuationTokenOptions.None);
+                    var serializer = new ContinuationTokenSerializer(ContinuationTokenOptions.Default);
                     var actual = serializer.Deserialize(" ");
 
                     actual.Should().BeSameAs(ContinuationToken.None);
@@ -258,7 +258,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                     }
                 };
 
-                var serializer = new ContinuationTokenSerializer(ContinuationTokenOptions.None);
+                var serializer = new ContinuationTokenSerializer(ContinuationTokenOptions.Default);
 
                 var tokenString = serializer.Serialize(continuationToken);
 
@@ -280,7 +280,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                     }
                 };
 
-                var serializer = new ContinuationTokenSerializer(ContinuationTokenOptions.None);
+                var serializer = new ContinuationTokenSerializer(ContinuationTokenOptions.Default);
 
                 var tokenString = serializer.Serialize(continuationToken);
 
@@ -303,7 +303,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                     }
                 };
 
-                var serializer = new ContinuationTokenSerializer(ContinuationTokenOptions.None);
+                var serializer = new ContinuationTokenSerializer(ContinuationTokenOptions.Default);
 
                 var tokenString = serializer.Serialize(continuationToken);
 
@@ -329,7 +329,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                     }
                 };
 
-                var serializer1 = new ContinuationTokenSerializer(ContinuationTokenOptions.None);
+                var serializer1 = new ContinuationTokenSerializer(ContinuationTokenOptions.Default);
 
                 var serializer2 = new ContinuationTokenSerializer(new ContinuationTokenOptions
                 {

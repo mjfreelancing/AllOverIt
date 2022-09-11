@@ -3,7 +3,8 @@
     /// <summary>Provides options that can be applied when serializing a <see cref="ContinuationToken"/>.</summary>
     public sealed class ContinuationTokenOptions : IContinuationTokenOptions
     {
-        public static readonly ContinuationTokenOptions None = new();
+        /// <summary>A default <see cref="ContinuationTokenOptions"/> instance.</summary>
+        public static readonly ContinuationTokenOptions Default = new();
 
         /// <inheritdoc />
         public bool IncludeHash { get; set; }
