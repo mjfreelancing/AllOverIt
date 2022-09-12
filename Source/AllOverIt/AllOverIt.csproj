@@ -10,4 +10,8 @@
     <ItemGroup>
         <ProjectReference Include="..\AllOverIt.Assertion\AllOverIt.Assertion.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="AllOverIt.Tests" />
+    </ItemGroup>
 </Project>

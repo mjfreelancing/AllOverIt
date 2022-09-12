@@ -11,4 +11,9 @@
         <ProjectReference Include="..\AllOverIt\AllOverIt.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
+        <InternalsVisibleTo Include="AllOverIt.Evaluator.Tests" />
+    </ItemGroup>
+
 </Project>

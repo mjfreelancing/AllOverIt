@@ -11,4 +11,8 @@
         <ProjectReference Include="..\AllOverIt\AllOverIt.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <InternalsVisibleTo Include="AllOverIt.Filtering.Tests" />
+    </ItemGroup>
+
 </Project>

@@ -4,4 +4,8 @@
         <ProjectReference Include="..\..\Source\AllOverIt.DependencyInjection\AllOverIt.DependencyInjection.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <InternalsVisibleTo Include="AllOverIt.DependencyInjection.Tests" />
+    </ItemGroup>
+
 </Project>

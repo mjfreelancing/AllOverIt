@@ -19,4 +19,9 @@
         </Content>
     </ItemGroup>
 
+    <ItemGroup>
+        <InternalsVisibleTo Include="AllOverIt.Fixture.FakeItEasy" />
+        <InternalsVisibleTo Include="AllOverIt.Fixture.Tests" />
+    </ItemGroup>
+
 </Project>

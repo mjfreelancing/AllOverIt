@@ -21,4 +21,8 @@
         <ProjectReference Include="..\AllOverIt.Serialization.Abstractions\AllOverIt.Serialization.Abstractions.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <InternalsVisibleTo Include="AllOverIt.Serialization.SystemTextJson.Tests" />
+    </ItemGroup>
+
 </Project>
