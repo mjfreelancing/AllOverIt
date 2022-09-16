@@ -33,6 +33,7 @@ namespace ObjectMappingBenchmarking
      */
 
     [MemoryDiagnoser(true)]
+    [HideColumns("Error", "StdDev", "Median")]
     //[SimpleJob(RuntimeMoniker.NetCoreApp31)]
     //[SimpleJob(RuntimeMoniker.Net50)]
     [SimpleJob(RuntimeMoniker.Net60)]
