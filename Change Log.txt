@@ -7,6 +7,15 @@ AllOverIt
   * Dispose a breadcrumbs enumerator
   * Unsealed PageResult<TResult> so it can be augmented with additional information through inheritance.
 
+AllOverIt.Aws.Cdk.AppSync
+  * Updated Amazon.CDK.AWS.AppSync to v1.176.0
+
+AllOverIt.Csv
+  * Updated CsvHelper to v29.0.0
+
+AllOverIt.Aws.AppSync.Client
+  * Updated Microsoft.Extensions.DependencyInjection to v6.0.1
+
 
 16 Sep 2022
 Version 6.0.0-RC.13
