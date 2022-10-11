@@ -2,10 +2,12 @@
 
 namespace AllOverIt.Pagination
 {
+    // NOTE: Unsealed this class so it can be augmented with additional information through inheritance.
+
     /// <summary>Contains a page of results and token information that can be used to execute a query using an <see cref="IQueryPaginator{TResult}"/>
     /// that obtains the previous or next page of data.</summary>
     /// <typeparam name="TResult"></typeparam>
-    public sealed class PageResult<TResult>
+    public class PageResult<TResult>
     {
         /// <summary>A page of results.</summary>
         public IReadOnlyCollection<TResult> Results { get; init; }

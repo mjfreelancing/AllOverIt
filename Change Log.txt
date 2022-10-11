@@ -1,10 +1,11 @@
 ======================================================================================================================
 
-XX XXX 2022
-Version 6.0.0 XXXXXXXXX
+12 Oct 2022
+Version 6.0.0-RC.14
 ======================================================================================================================
 AllOverIt
   * Dispose a breadcrumbs enumerator
+  * Unsealed PageResult<TResult> so it can be augmented with additional information through inheritance.
 
 
 16 Sep 2022
