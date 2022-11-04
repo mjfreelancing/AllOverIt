@@ -1,0 +1,1 @@
+powershell -ExecutionPolicy Bypass -File cdk-synth-graphql-schema.ps1
