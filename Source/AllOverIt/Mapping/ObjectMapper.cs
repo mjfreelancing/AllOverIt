@@ -99,7 +99,7 @@ namespace AllOverIt.Mapping
                 var deepCopySource = isDeepCopy || propertyMatcher.MatcherOptions.IsDeepCopy(match.SourceInfo.Name);
 
                 // Handles null source values, including the creation of empty collections if required
-                var targetValue = GetMappedSourceValue(sourceValue, sourcePropertyType, targetPropertyType, deepCopySource, propertyMatcher);
+                var targetValue = GetMappedSourceValue(sourceValue, sourcePropertyType, targetPropertyType, deepCopySource);
 
                 match.TargetSetter.Invoke(target, targetValue);
             }
@@ -107,8 +107,7 @@ namespace AllOverIt.Mapping
             return target;
         }
 
-        private object GetMappedSourceValue(object sourceValue, Type sourcePropertyType, Type targetPropertyType, bool deepCopy,
-            ObjectPropertyMatcher propertyMatcher)
+        private object GetMappedSourceValue(object sourceValue, Type sourcePropertyType, Type targetPropertyType, bool deepCopy)
         {
             if (sourceValue is null)
             {
@@ -272,7 +271,7 @@ namespace AllOverIt.Mapping
             return null;
         }
 
-        private object GetAsListOrArray(Type listType, IList listInstance, Type targetPropertyType)
+        private static object GetAsListOrArray(Type listType, IList listInstance, Type targetPropertyType)
         {
             if (targetPropertyType.IsArray)
             {
