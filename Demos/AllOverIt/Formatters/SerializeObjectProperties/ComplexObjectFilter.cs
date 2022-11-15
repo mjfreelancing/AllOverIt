@@ -10,7 +10,7 @@ namespace SerializeObjectProperties
         }
 
         public string OnFormatValue(string value)
-{
+        {
             return Name == nameof(ComplexObject.ComplexItem.ComplexItemData.Timestamp)
                 ? $"[{value}]"
                 : value;

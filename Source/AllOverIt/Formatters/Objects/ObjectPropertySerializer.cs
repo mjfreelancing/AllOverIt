@@ -71,7 +71,7 @@ namespace AllOverIt.Formatters.Objects
                         }
 #pragma warning restore IDE0074 // Use compound assignment
 
-                        values.Add(prefix, string.Join(Options.EnumerableOptions.Separator, arrayValues.Values));
+                        values.Add(prefix, string.Join(GetEnumerableOptions().Separator, arrayValues.Values));
                     }
                     break;
 
@@ -379,7 +379,7 @@ namespace AllOverIt.Formatters.Objects
             }
 
             // Check if the filter indicates collation is required
-            var collateValues = (Options.Filter?.EnumerableOptions ?? Options.EnumerableOptions).CollateValues;
+            var collateValues = GetEnumerableOptions().CollateValues;
 
             if (!collateValues)
             {
@@ -396,6 +396,12 @@ namespace AllOverIt.Formatters.Objects
             }
 
             return collateValues;
+        }
+
+        private ObjectPropertyEnumerableOptions GetEnumerableOptions()
+        {
+            // If there's a filter, its options override the serializer's global array handling options
+            return Options.Filter?.EnumerableOptions ?? Options.EnumerableOptions;
         }
     }
 }

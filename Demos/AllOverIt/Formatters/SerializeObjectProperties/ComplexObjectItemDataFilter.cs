@@ -9,6 +9,16 @@ namespace SerializeObjectProperties
     {
         private const int MaxItemCount = 3;
 
+        public ComplexObjectItemDataFilter()
+        {
+            // A filter's EnumerableOptions overrides the serializer global options.
+            // The demo explicitly sets a path that will be auto-collated. If that was not provided then setting CollateValues
+            // to true here will achieve the same outcome.
+            //
+            //EnumerableOptions.CollateValues = true;
+            EnumerableOptions.Separator = ",";
+        }
+
         public bool CanFilter(object @object)
         {
             return @object is ComplexObject;
