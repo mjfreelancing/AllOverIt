@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Threading;
-using Castle.Core.Internal;
 using FluentAssertions;
 using System;
 using System.Threading;
