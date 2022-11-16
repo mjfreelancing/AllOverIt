@@ -169,7 +169,7 @@ namespace AllOverIt.Mapping
                 !sourceValueType.IsGenericType || !targetPropertyType.IsGenericType,
                 "Non-generic dictionary mapping is not supported.");
 
-            // get types for the source dictionary
+            // Get types for the source dictionary
             var sourceTypeArgs = sourceValueType.GenericTypeArguments;
             var sourceDictionaryKeyType = sourceTypeArgs[0];
             var sourceDictionaryValueType = sourceTypeArgs[1];
@@ -180,7 +180,7 @@ namespace AllOverIt.Mapping
 
             var dictionaryAddMethod = CommonTypes.ICollectionGenericType
                 .MakeGenericType(targetKvpType)
-                .GetMethod("Add", new[] { targetKvpType });                             // todo: cache this
+                .GetMethod("Add", new[] { targetKvpType });                             // TODO: ? worth caching this
 
             var sourceElements = GetSourceElements(sourceValue);
 
@@ -231,7 +231,7 @@ namespace AllOverIt.Mapping
                 }
                 else if (sourceElementType != CommonTypes.StringType)
                 {
-                    var targetCtor = targetElementType.GetConstructor(Type.EmptyTypes);     // TODO: Cache a compiled factory
+                    var targetCtor = targetElementType.GetConstructor(Type.EmptyTypes);     // TODO: ? worth caching a compiled factory
 
                     Throw<ObjectMapperException>.WhenNull(
                         targetCtor,
@@ -275,7 +275,7 @@ namespace AllOverIt.Mapping
         {
             if (targetPropertyType.IsArray)
             {
-                var toArrayMethod = listType.GetMethod("ToArray");                          // TODO: Cache this
+                var toArrayMethod = listType.GetMethod("ToArray");                          // TODO: ? worth caching this
                 return toArrayMethod.Invoke(listInstance, Type.EmptyTypes);
             }
 
