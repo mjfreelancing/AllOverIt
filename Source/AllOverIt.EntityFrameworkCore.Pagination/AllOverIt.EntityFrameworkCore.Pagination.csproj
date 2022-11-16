@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net6.0;net5.0;netcoreapp3.1;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>net7.0;net6.0;net5.0;netcoreapp3.1;netstandard2.1</TargetFrameworks>
         <Copyright>Copyright © 2022</Copyright>
         <Description>A library providing pagination utilities for use with Entity Framework Core.</Description>
         <PackageTags>utilities;query;entityframework;pagination</PackageTags>

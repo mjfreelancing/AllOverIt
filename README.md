@@ -10,6 +10,7 @@ A general purpose library containing a variety of classes, utilities, and helper
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
 | net6.0         |    Yes    |
+| net7.0         |    Yes    |
 
 Refer to the online [Documentation](https://mjfreelancing.github.io/AllOverIt/) for usage information.
 
@@ -26,6 +27,7 @@ Provides additional features for use in ASP .NET Core applications.
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
 | net6.0         |    Yes    |
+| net7.0         |    Yes    |
 
 
 # AllOverIt.Assertion
@@ -40,6 +42,7 @@ A library of pre and post condition assertion helper methods.
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
 | net6.0         |    Yes    |
+| net7.0         |    Yes    |
 
 
 # AllOverIt.Aws.AppSync.Client
@@ -54,6 +57,7 @@ Provides an AWS AppSync Graphql Subscription client.
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
 | net6.0         |    Yes    |
+| net7.0         |    Yes    |
 
 
 # AllOverIt.Aws.Cdk.AppSync
@@ -64,10 +68,13 @@ Includes a code-first graphql schema generator that also provides support for bi
 
 | Target         | Supported |
 |----------------|-----------|
-| netstandard2.1 |    No     |
+| netstandard2.1 |    No \*  |
 | netcoreapp3.1  |    Yes    |
-| net5.0         |    No     |
-| net6.0         |    No     |
+| net5.0         |    No \*  |
+| net6.0         |    No \*  |
+| net7.0         |    No \*  |
+
+\* Although not explicitly built for all platforms, the AWS CDK supports Net Core 3.1 and above.
 
 
 # AllOverIt.Csv
@@ -82,6 +89,7 @@ A library to assist with CSV export using CsvHelper.
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
 | net6.0         |    Yes    |
+| net7.0         |    Yes    |
 
 
 # AllOverIt.DependencyInjection
@@ -96,6 +104,7 @@ A library containing useful dependency injection related utilities.
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
 | net6.0         |    Yes    |
+| net7.0         |    Yes    |
 
 
 # AllOverIt.EntityFrameworkCore
@@ -110,6 +119,7 @@ Provides additional features for use in Entity Framework Core applications.
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
 | net6.0         |    Yes    |
+| net7.0         |    Yes    |
 
 
 # AllOverIt.EntityFrameworkCore.Pagination
@@ -124,6 +134,7 @@ A library providing pagination utilities for use with Entity Framework Core.
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
 | net6.0         |    Yes    |
+| net7.0         |    Yes    |
 
 
 # AllOverIt.Evaluator
@@ -138,6 +149,7 @@ A library designed to parse and evaluate mathemtical expressions. It provides su
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
 | net6.0         |    Yes    |
+| net7.0         |    Yes    |
 
 
 # AllOverIt.Filtering
@@ -152,6 +164,7 @@ A library providing queryable filtering utilities.
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
 | net6.0         |    Yes    |
+| net7.0         |    Yes    |
 
 
 # AllOverIt.Fixture
@@ -166,6 +179,7 @@ Contains a base Fixture class that includes a number of helpful utility methods.
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
 | net6.0         |    Yes    |
+| net7.0         |    Yes    |
 
 
 # AllOverIt.Fixture.FakeItEasy
@@ -180,6 +194,7 @@ Extends **AllOverIt.Fixture** to assist with the creation of single/multiple stu
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
 | net6.0         |    Yes    |
+| net7.0         |    Yes    |
 
 
 # AllOverIt.GenericHost
@@ -194,6 +209,7 @@ Provides the ability to quickly create console applications that support depende
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
 | net6.0         |    Yes    |
+| net7.0         |    Yes    |
 
 
 # AllOverIt.Pagination
@@ -208,6 +224,7 @@ A library providing queryable pagination utilities.
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
 | net6.0         |    Yes    |
+| net7.0         |    Yes    |
 
 
 # AllOverIt.Reactive
@@ -222,6 +239,7 @@ Provides utility extensions for use with System.Reactive.
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
 | net6.0         |    Yes    |
+| net7.0         |    Yes    |
 
 
 # AllOverIt.ReactiveUI
@@ -236,6 +254,7 @@ Provides utility extensions for use with ReactiveUI.
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
 | net6.0         |    Yes    |
+| net7.0         |    Yes    |
 
 
 # AllOverIt.Serialization
@@ -250,6 +269,7 @@ Provides common serialization helpers.
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
 | net6.0         |    Yes    |
+| net7.0         |    Yes    |
 
 
 # AllOverIt.Serialization.Abstractions
@@ -264,6 +284,7 @@ Provides abstractions for JSON serialization.
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
 | net6.0         |    Yes    |
+| net7.0         |    Yes    |
 
 
 # AllOverIt.Serialization.NewtonSoftJson
@@ -278,6 +299,7 @@ A JSON serialization wrapper around NewtsonSoft.Json (an implementation for AllO
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
 | net6.0         |    Yes    |
+| net7.0         |    Yes    |
 
 
 # AllOverIt.Serialization.SystemTextJson
@@ -292,6 +314,7 @@ A JSON serialization wrapper around System.Text.Json (an implementation for AllO
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
 | net6.0         |    Yes    |
+| net7.0         |    Yes    |
 
 
 # AllOverIt.Validation
@@ -306,3 +329,4 @@ Provides additional validators and extensions for use with FluentValidation.
 | netcoreapp3.1  |    Yes    |
 | net5.0         |    Yes    |
 | net6.0         |    Yes    |
+| net7.0         |    Yes    |

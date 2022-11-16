@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net6.0;net5.0;netcoreapp3.1;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>net7.0;net6.0;net5.0;netcoreapp3.1;netstandard2.1</TargetFrameworks>
         <Copyright>Copyright © 2015</Copyright>
         <Description>A general purpose library containing a variety of classes, utilities, and helpers to fill in regularly occuring software development gaps.</Description>
         <PackageTags>utilities</PackageTags>

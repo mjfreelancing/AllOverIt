@@ -3,6 +3,9 @@
 XX XXX 2022
 Version 6.0.0-RC.15
 ======================================================================================================================
+All except AllOverIt.Aws.Cdk.AppSync
+  * Added support for NET 7.0
+
 AllOverIt
   * ObjectPropertySerializer now correctly applies enumerable collation seperator when there is a filter (which
     overrides the global enumerable options).

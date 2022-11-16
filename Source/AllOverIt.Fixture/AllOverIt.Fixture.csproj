@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net6.0;net5.0;netcoreapp3.1;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>net7.0;net6.0;net5.0;netcoreapp3.1;netstandard2.1</TargetFrameworks>
         <Copyright>Copyright © 2019</Copyright>
         <Description>AllOverIt.Fixture provides a base fixture class with numerous helper methods to assist with creating unit test scaffolding. Utilizes AutoFixture to do most of the hard work.</Description>
         <PackageTags>unittesting;fakes;faking;mocks;mocking;stubs;stubbing;TDD;BDD;fluent;NUnit;xUnit;netstandard;netcore</PackageTags>
