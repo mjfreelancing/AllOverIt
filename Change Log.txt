@@ -12,6 +12,9 @@ AllOverIt
   * ObjectMapper's Map<TTarget>(object source) now returns null if the source is null.
     ObjectMapper's Map<TSource, TTarget>(TSource source, TTarget target) is now constrained to 'class' types.
 
+AllOverIt.Pagination
+  * Updated PageResult<T> to allow the secondary set of results to come from an IEnumerable.
+
 
 12 Oct 2022
 Version 6.0.0-RC.14

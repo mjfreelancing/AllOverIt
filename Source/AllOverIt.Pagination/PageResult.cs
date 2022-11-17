@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using AllOverIt.Extensions;
+using System.Collections.Generic;
 
 namespace AllOverIt.Pagination
 {
@@ -26,21 +27,22 @@ namespace AllOverIt.Pagination
         /// If null, there are no next pages.</summary>
         public string NextToken { get; init; }
 
-        /// <summary>A factory method to create a <see cref="PageResult{TResult}"/> based on another set of results. This is typically
-        /// used when one query is used to obtain a page of Id's, for example, and then a secondary query is used to obtain more detailed
-        /// information. The more detailed results are returned but the pagination information from the first query is included.</summary>
-        /// <typeparam name="TOther">The object type associated with <paramref name="otherResults"/>.</typeparam>
-        /// <param name="otherResults">The 'other' page of results containing the total record count and continuation tokens.</param>
+        /// <summary>A factory method to create a <see cref="PageResult{TResult}"/> based on another set of initial (first) results.
+        /// This is typically used when one query is used to obtain a page of Id's, for example, and then a secondary query is used
+        /// to obtain more detailed information. The more detailed results are returned but the pagination information from the first
+        /// query is included.</summary>
+        /// <typeparam name="TFirst">The object type associated with <paramref name="firstResults"/>.</typeparam>
+        /// <param name="firstResults">The 'first' page of results containing the total record count and continuation tokens.</param>
         /// <param name="results">The page of results to be returned.</param>
-        public static PageResult<TResult> CreateFrom<TOther>(PageResult<TOther> otherResults, IReadOnlyCollection<TResult> results)
+        public static PageResult<TResult> CreateFrom<TFirst>(PageResult<TFirst> firstResults, IEnumerable<TResult> results)
         {
             return new PageResult<TResult>
             {
-                Results = results,
-                TotalCount = otherResults.TotalCount,
-                CurrentToken = otherResults.CurrentToken,
-                PreviousToken = otherResults.PreviousToken,
-                NextToken = otherResults.NextToken
+                Results = results.AsReadOnlyCollection(),
+                TotalCount = firstResults.TotalCount,
+                CurrentToken = firstResults.CurrentToken,
+                PreviousToken = firstResults.PreviousToken,
+                NextToken = firstResults.NextToken
             };
         }
     }
