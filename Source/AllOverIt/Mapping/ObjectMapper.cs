@@ -54,7 +54,10 @@ namespace AllOverIt.Mapping
         public TTarget Map<TTarget>(object source)
             where TTarget : class, new()
         {
-            _ = source.WhenNotNull(nameof(source));
+            if (source is null)
+            {
+                return null;
+            }
 
             var target = new TTarget();
 
@@ -65,12 +68,22 @@ namespace AllOverIt.Mapping
         /// <remarks>If mapping configuration is not performed in advance then default configuration will be applied. The configuration
         /// cannot be changed later.</remarks>
         public TTarget Map<TSource, TTarget>(TSource source, TTarget target)
+            where TSource : class
+            where TTarget : class
         {
+            _ = source.WhenNotNull(nameof(source));
+            _ = target.WhenNotNull(nameof(target));
+
             return (TTarget) MapSourceToTarget(source, target, false);
         }
 
         private object MapSourceToTarget(object source, object target, bool isDeepCopy)
         {
+            if (source is null)
+            {
+                return null;
+            }
+
             var sourceType = source.GetType();
             var targetType = target.GetType();
 

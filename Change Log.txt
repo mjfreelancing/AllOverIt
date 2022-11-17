@@ -9,6 +9,8 @@ All except AllOverIt.Aws.Cdk.AppSync
 AllOverIt
   * ObjectPropertySerializer now correctly applies enumerable collation seperator when there is a filter (which
     overrides the global enumerable options).
+  * ObjectMapper's Map<TTarget>(object source) now returns null if the source is null.
+    ObjectMapper's Map<TSource, TTarget>(TSource source, TTarget target) is now constrained to 'class' types.
 
 
 12 Oct 2022

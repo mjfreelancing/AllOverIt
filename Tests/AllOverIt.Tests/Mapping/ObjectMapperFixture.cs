@@ -236,19 +236,15 @@ namespace AllOverIt.Tests.Mapping
         public class Map_Target : ObjectMapperFixture
         {
             [Fact]
-            public void Should_Throw_When_Source_Null()
+            public void Should_Return_Null_When_Source_Null()
             {
                 var configuration = GetCommonMapperConfiguration();
 
                 var mapper = new ObjectMapper(configuration);
 
-                Invoking(() =>
-                    {
-                        _ = mapper.Map<DummyTarget>(null);
-                    })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithParameterName("source");
+                var actual = mapper.Map<DummyTarget>(null);
+
+                actual.Should().BeNull();
             }
 
             [Fact]
@@ -965,6 +961,34 @@ namespace AllOverIt.Tests.Mapping
 
         public class Map_Source_Target : ObjectMapperFixture
         {
+            [Fact]
+            public void Should_Throw_When_Source_Null()
+            {
+                Invoking(() =>
+                {
+                    var mapper = new ObjectMapper();
+
+                    _ = mapper.Map<DummySource1, DummyTarget>(null, _target);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithParameterName("source");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Target_Null()
+            {
+                Invoking(() =>
+                {
+                    var mapper = new ObjectMapper();
+
+                    _ = mapper.Map<DummySource1, DummyTarget>(_source1, null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithParameterName("target");
+            }
+
             [Fact]
             public void Should_Return_Same_Target()
             {
