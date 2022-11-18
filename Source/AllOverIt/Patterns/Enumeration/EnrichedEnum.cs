@@ -97,6 +97,8 @@ namespace AllOverIt.Patterns.Enumeration
         /// <exception cref="EnrichedEnumException">If the name or integer value does not match any of the enumeration instances.</exception>
         public static TEnum From(string value)
         {
+            _ = value.WhenNotNullOrEmpty(nameof(value));
+
             // assume parsing a name
             if (TryParse(item => item.Name.Equals(value, StringComparison.OrdinalIgnoreCase), out var enumeration))
             {
@@ -127,6 +129,8 @@ namespace AllOverIt.Patterns.Enumeration
         /// <returns>True if the conversion was successful, otherwise false.</returns>
         public static bool TryFromName(string name, out TEnum enumeration)
         {
+            _ = name.WhenNotNullOrEmpty(nameof(name));
+
             return TryParse(item => item.Name.Equals(name, StringComparison.OrdinalIgnoreCase), out enumeration);
         }
 
@@ -136,6 +140,8 @@ namespace AllOverIt.Patterns.Enumeration
         /// <returns>True if the conversion was successful, otherwise false.</returns>
         public static bool TryFromNameOrValue(string nameOrValue, out TEnum enumeration)
         {
+            _ = nameOrValue.WhenNotNullOrEmpty(nameof(nameOrValue));
+
             // assume parsing a name
             if (TryParse(item => item.Name.Equals(nameOrValue, StringComparison.OrdinalIgnoreCase), out enumeration))
             {
