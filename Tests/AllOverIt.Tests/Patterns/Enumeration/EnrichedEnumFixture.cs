@@ -156,7 +156,6 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 Invoking(() =>
                     {
-                        // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
                         EnrichedEnumDummy.Value2.CompareTo(null);
                     })
                     .Should()
@@ -715,7 +714,6 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 EnrichedEnumDummy enumNull = null;
 
-                // ReSharper disable once ExpressionIsAlwaysNull
                 var actual = EnrichedEnumDummy.Value1 != enumNull;
 
                 actual.Should().BeTrue();

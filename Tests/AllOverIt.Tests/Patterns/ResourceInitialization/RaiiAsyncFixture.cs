@@ -170,7 +170,6 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                         return value;
                     }
 
-                    // ReSharper disable oce ConvertToUsingDeclaration
                     await using (var raii = new RaiiAsync<int>(Initialize, _ => Task.CompletedTask))
                     {
                         raii.Context.Should().Be(value);

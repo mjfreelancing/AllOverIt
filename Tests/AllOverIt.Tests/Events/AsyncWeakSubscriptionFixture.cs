@@ -41,7 +41,6 @@ namespace AllOverIt.Tests.Events
                 var expected = Create<int>();
                 var actual = -expected;
 
-                // ReSharper disable once ConvertToLocalFunction
                 Func<int, Task> handler = value =>
                 {
                     actual = value;
@@ -65,7 +64,6 @@ namespace AllOverIt.Tests.Events
             //  var expected = Create<int>();
             //  var actual = -expected;
 
-            //  // ReSharper disable once ConvertToLocalFunction
             //  Func<int, Task> handler = value =>
             //  {
             //    actual = value;
@@ -90,7 +88,6 @@ namespace AllOverIt.Tests.Events
             {
                 var expected = Create<int>();
 
-                // ReSharper disable once ConvertToLocalFunction
                 Func<int, Task> handler = DummyHandler.StaticHandler;
 
                 var subscription = new AsyncWeakSubscription(handler);
@@ -113,7 +110,6 @@ namespace AllOverIt.Tests.Events
                 var expected = Create<int>();
                 int actual = -expected;
 
-                // ReSharper disable once ConvertToLocalFunction
                 Func<int, Task> handler = value =>
                 {
                     actual = value;

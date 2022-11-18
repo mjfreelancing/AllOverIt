@@ -169,7 +169,6 @@ namespace AllOverIt.Tests.Patterns.ValueObject
                 {
                     var value = new StringValueObject(Create<string>());
 
-                    // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
                     value.CompareTo(null);
                 })
                 .Should()

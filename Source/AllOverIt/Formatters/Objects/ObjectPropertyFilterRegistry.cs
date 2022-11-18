@@ -77,7 +77,6 @@ namespace AllOverIt.Formatters.Objects
         {
             foreach (var filterSerializer in _filters)
             {
-                // ReSharper disable once SuspiciousTypeConversion.Global
                 if (filterSerializer.Filter is IRegisteredObjectPropertyFilter filterable &&
                     filterable.CanFilter(@object))
                 {

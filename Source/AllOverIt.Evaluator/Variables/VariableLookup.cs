@@ -31,13 +31,11 @@ namespace AllOverIt.Evaluator.Variables
         {
             var variables = new List<IVariable>();
 
-            // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (var keyValue in _variableRegistry.Variables)
             {
                 var registryVariable = keyValue.Value;
                 var referencedVariables = GetReferencedVariables(registryVariable, lookupMode);
 
-                // ReSharper disable once LoopCanBeConvertedToQuery
                 foreach (var referenced in referencedVariables)
                 {
                     if (ReferenceEquals(variable, referenced))

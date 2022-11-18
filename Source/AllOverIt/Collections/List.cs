@@ -2,11 +2,9 @@
 
 namespace AllOverIt.Collections
 {
-    // ReSharper disable once ClassNeverInstantiated.Global
     /// <summary>Provides static methods related to list types.</summary>
     public static class List
     {
-        // ReSharper disable once ClassNeverInstantiated.Local
         private sealed class EmptyReadOnlyList<TType>
         {
             internal static readonly IReadOnlyList<TType> Instance = new ReadOnlyList<TType>();

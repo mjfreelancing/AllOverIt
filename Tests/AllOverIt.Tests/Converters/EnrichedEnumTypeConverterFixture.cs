@@ -20,7 +20,6 @@ namespace AllOverIt.Tests.Converters
         {
             public static readonly EnrichedEnumDummy Value1 = new(1);
 
-            // ReSharper disable once ExplicitCallerInfoArgument
             public static readonly EnrichedEnumDummy Value2 = new(2, "Value 2");
 
             private EnrichedEnumDummy(int value, [CallerMemberName] string name = null)

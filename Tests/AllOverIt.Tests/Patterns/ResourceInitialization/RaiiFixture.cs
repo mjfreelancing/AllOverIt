@@ -165,7 +165,6 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                         return value;
                     }
 
-                    // ReSharper disable once ConvertToUsingDeclaration
                     using (var raii = new Raii<int>(Initialize, _ => { }))
                     {
                         raii.Context.Should().Be(value);

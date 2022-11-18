@@ -26,7 +26,6 @@ namespace AllOverIt.Tests.Events
             [Fact]
             public void Should_Get_Handler()
             {
-                // ReSharper disable once ConvertToLocalFunction
                 Action<int> handler = SubscriptionHandler;
 
                 var subscription = new Subscription(handler);
@@ -39,7 +38,6 @@ namespace AllOverIt.Tests.Events
             [Fact]
             public void Should_Get_Static_Handler()
             {
-                // ReSharper disable once ConvertToLocalFunction
                 Action<int> handler = StaticSubscriptionHandler;
 
                 var subscription = new Subscription(handler);
@@ -58,7 +56,6 @@ namespace AllOverIt.Tests.Events
                 var expected = Create<int>();
                 var actual = -expected;
 
-                // ReSharper disable once ConvertToLocalFunction
                 Action<int> handler = value =>
                 {
                     actual = value;

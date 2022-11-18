@@ -144,7 +144,6 @@ namespace AllOverIt.Caching
         }
 
 #if NET5_0_OR_GREATER
-        // ReSharper disable once UseDeconstructionOnParameter (not available in all .NET versions)
         /// <inheritdoc />
         public bool TryRemove<TValue>(KeyValuePair<GenericCacheKeyBase, TValue> item)
         {

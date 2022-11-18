@@ -4,7 +4,6 @@ using System.Collections.Generic;
 namespace AllOverIt.Caching
 {
     /// <summary>Represents a generic cache for storing any object type based on a custom key.</summary>
-    // ReSharper disable once PossibleInterfaceMemberAmbiguity
     public interface IGenericCache : IDictionary<GenericCacheKeyBase, object>, IReadOnlyDictionary<GenericCacheKeyBase, object>
     {
         // Properties and methods defined on both ICollection<KeyValuePair<GenericCacheKeyBase, object>> and IReadOnlyCollection<KeyValuePair<GenericCacheKeyBase, object>>  or
