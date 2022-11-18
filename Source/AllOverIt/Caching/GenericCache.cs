@@ -14,19 +14,19 @@ namespace AllOverIt.Caching
         {
             public static readonly GenericCacheKeyComparer Instance = new();
 
-            public bool Equals(GenericCacheKeyBase x, GenericCacheKeyBase y)
+            public bool Equals(GenericCacheKeyBase lhs, GenericCacheKeyBase rhs)
             {
-                if (x is null && y is null)
+                if (lhs is null && rhs is null)
                 {
                     return true;
                 }
 
-                if (x is null || y is null)
+                if (lhs is null || rhs is null)
                 {
                     return false;
                 }
 
-                return x.Key.GetType() == y.Key.GetType() && x.Key.Equals(y.Key);
+                return lhs.Key.GetType() == rhs.Key.GetType() && lhs.Key.Equals(rhs.Key);
             }
 
             public int GetHashCode(GenericCacheKeyBase obj)
