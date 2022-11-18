@@ -1,7 +1,7 @@
 {
   "version": 1,
   "dependencies": {
-    "net6.0": {
+    "net7.0": {
       "Amazon.CDK": {
         "type": "Transitive",
         "resolved": "1.176.0",
@@ -692,7 +692,7 @@
       "alloverit": {
         "type": "Project",
         "dependencies": {
-          "AllOverIt.Assertion": "[6.0.0-rc.13, )"
+          "AllOverIt.Assertion": "[6.0.0-rc.14, )"
         }
       },
       "alloverit.assertion": {
@@ -701,7 +701,7 @@
       "alloverit.aws.cdk.appsync": {
         "type": "Project",
         "dependencies": {
-          "AllOverIt": "[6.0.0-rc.13, )",
+          "AllOverIt": "[6.0.0-rc.14, )",
           "Amazon.CDK.AWS.AppSync": "[1.176.0, )"
         }
       }
