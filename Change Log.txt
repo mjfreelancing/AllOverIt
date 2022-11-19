@@ -1,7 +1,7 @@
 ======================================================================================================================
 
 XX XXX 2022
-Version 6.0.0-RC.15
+Version 6.0.0
 ======================================================================================================================
 All except AllOverIt.Aws.Cdk.AppSync
   * Added support for NET 7.0
@@ -11,6 +11,7 @@ AllOverIt
     overrides the global enumerable options).
   * ObjectMapper's Map<TTarget>(object source) now returns null if the source is null.
     ObjectMapper's Map<TSource, TTarget>(TSource source, TTarget target) is now constrained to 'class' types.
+  * Added ExceptionExtensions.Walk() to traverse an exception and its' inner exceptions.
 
 AllOverIt.Pagination
   * Updated PageResult<T> to allow the secondary set of results to come from an IEnumerable.
