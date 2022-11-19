@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>Invoking Should Not Throw</Title>
+      <Author>Malcolm Smith</Author>
+      <Description>Creates a Test Invoking() statement expecting to throw an ArgumentNullException</Description>
+      <HelpUrl></HelpUrl>
+      <Shortcut>testinvnotthrow</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="CSharp" Delimiter="$" Kind="method body"><![CDATA[
+	    Invoking(() =>
+        {
+        })
+        .Should()
+        .NotThrow();]]>
+      </Code>
+      <Imports>
+        <Import>
+          <Namespace>AllOverIt.Fixture</Namespace>
+        </Import>
+        <Import>
+          <Namespace>FluentAssertions</Namespace>
+        </Import>
+      </Imports>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

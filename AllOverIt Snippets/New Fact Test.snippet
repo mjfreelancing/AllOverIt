@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>New Fact Test</Title>
+      <Author>Malcolm Smith</Author>
+      <Description>Creates a blank [Fact] test</Description>
+      <HelpUrl></HelpUrl>
+      <Shortcut>testfact</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="CSharp" Delimiter="$" Kind="method body"><![CDATA[
+        [Fact]
+        public void Should_$end$()
+        {
+
+        }]]>
+      </Code>
+      <Imports>
+        <Import>
+          <Namespace>Xunit</Namespace>
+        </Import>
+      </Imports>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
