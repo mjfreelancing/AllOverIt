@@ -7,7 +7,7 @@
         <PackageTags>utilities;reactive</PackageTags>
     </PropertyGroup>
 
-    <ItemGroup Condition="'$(TargetFramework)' != 'net6.0' ">
+    <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1' or '$(TargetFramework)' == 'netcoreapp3.1' or '$(TargetFramework)' == 'net5.0'">
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
         <PackageReference Include="ReactiveUI" Version="16.4.15" />
         <PackageReference Include="ReactiveUI.Fody" Version="16.4.15" />
