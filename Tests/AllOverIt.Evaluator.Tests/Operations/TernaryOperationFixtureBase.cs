@@ -19,16 +19,16 @@ namespace AllOverIt.Evaluator.Tests.Operations
                 Expression.Constant(Create<double>())
             };
 
-            var creator = Operation.Creator;
+            var creator = Operation._creator;
 
             var operation = creator.Invoke(operands);
             operation.Should().BeOfType(OperatorType);
 
             var symbol = operation as TernaryOperator;
 
-            symbol!.Operand1.Should().BeSameAs(operands[0]);
-            symbol!.Operand2.Should().BeSameAs(operands[1]);
-            symbol.Operand3.Should().BeSameAs(operands[2]);
+            symbol!._operand1.Should().BeSameAs(operands[0]);
+            symbol!._operand2.Should().BeSameAs(operands[1]);
+            symbol._operand3.Should().BeSameAs(operands[2]);
         }
 
         [Fact]

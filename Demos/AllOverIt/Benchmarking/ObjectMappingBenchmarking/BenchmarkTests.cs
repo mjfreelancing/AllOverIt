@@ -45,19 +45,19 @@ namespace ObjectMappingBenchmarking
 
         private readonly IObjectMapper _objectMapper;
 
-        private static readonly SimpleSource _simpleSource;
-        private static readonly SimpleTarget _simpleTarget;
+        private static readonly SimpleSource SimpleSource;
+        private static readonly SimpleTarget SimpleTarget;
 
         static MappingTests()
         {
-            _simpleSource = new SimpleSource
+            SimpleSource = new SimpleSource
             {
                 Prop1 = 1,
                 Prop2 = "Some Text",
                 TimestampUtc = DateTime.UtcNow
             };
 
-            _simpleTarget = new SimpleTarget();
+            SimpleTarget = new SimpleTarget();
         }
 
         public MappingTests()
@@ -89,19 +89,19 @@ namespace ObjectMappingBenchmarking
 
             var autoMapper = new Mapper(mapperConfig);
 
-            _ = _autoMapper.Map<SimpleTarget>(_simpleSource);
+            _ = _autoMapper.Map<SimpleTarget>(SimpleSource);
         }
 
         [Benchmark]
         public void AutoMapper_Create_Target()
         {
-            _ = _autoMapper.Map<SimpleTarget>(_simpleSource);
+            _ = _autoMapper.Map<SimpleTarget>(SimpleSource);
         }
 
         [Benchmark]
         public void AutoMapper_CopyTo_Target()
         {
-            _ = _autoMapper.Map(_simpleSource, _simpleTarget);
+            _ = _autoMapper.Map(SimpleSource, SimpleTarget);
         }
 #endif
 
@@ -114,7 +114,7 @@ namespace ObjectMappingBenchmarking
 
             var objectMapper = new ObjectMapper(mapperConfiguration);
 
-            _ = objectMapper.Map(_simpleSource, _simpleTarget);
+            _ = objectMapper.Map(SimpleSource, SimpleTarget);
         }
 
         [Benchmark]     // for speed comparison
@@ -123,19 +123,19 @@ namespace ObjectMappingBenchmarking
             var objectMapper = new ObjectMapper();
             // not mapping => objectMapper.Configure<SimpleSource, SimpleTarget>();
 
-            _ = objectMapper.Map(_simpleSource, _simpleTarget);
+            _ = objectMapper.Map(SimpleSource, SimpleTarget);
         }
 
         [Benchmark]
         public void ObjectMapper_PreConfigured_Create_Target()
         {
-            _ = _objectMapper.Map<SimpleTarget>(_simpleSource);
+            _ = _objectMapper.Map<SimpleTarget>(SimpleSource);
         }
 
         [Benchmark]
         public void ObjectMapper_PreConfigured_CopyTo_Target()
         {
-            _ = _objectMapper.Map(_simpleSource, _simpleTarget);
+            _ = _objectMapper.Map(SimpleSource, SimpleTarget);
         }
     }
 }

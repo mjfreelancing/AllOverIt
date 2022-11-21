@@ -13,7 +13,7 @@ namespace AllOverIt.Patterns.Specification.Utils
     /// <summary>Converts the expression of an <see cref="ILinqSpecification{TType}"/> to a query-like string.</summary>
     public sealed class LinqSpecificationVisitor : ExpressionVisitor
     {
-        private static readonly IDictionary<ExpressionType, string> _expressionTypeMapping = new Dictionary<ExpressionType, string>
+        private static readonly IDictionary<ExpressionType, string> ExpressionTypeMapping = new Dictionary<ExpressionType, string>
         {
             [ExpressionType.Not] = "NOT",
             [ExpressionType.GreaterThan] = ">",
@@ -26,7 +26,7 @@ namespace AllOverIt.Patterns.Specification.Utils
             [ExpressionType.OrElse] = "OR"
         };
 
-        private static readonly IDictionary<Type, Func<object, string>> _valueConverters = new Dictionary<Type, Func<object, string>>
+        private static readonly IDictionary<Type, Func<object, string>> TypeValueConverters = new Dictionary<Type, Func<object, string>>
         {
             [CommonTypes.StringType] = value => $"'{value}'",
             [CommonTypes.DateTimeType] = value => $"'{((DateTime) value).ToUniversalTime():yyyy-MM-ddTHH:mm:ss.fffZ}'",
@@ -113,7 +113,7 @@ namespace AllOverIt.Patterns.Specification.Utils
                     return node;
 
                 case ExpressionType.Not:
-                    _queryStringBuilder.Append($"{_expressionTypeMapping[node.NodeType]} ");
+                    _queryStringBuilder.Append($"{ExpressionTypeMapping[node.NodeType]} ");
                     _queryStringBuilder.Append('(');
 
                     Visit(node.Operand);
@@ -133,7 +133,7 @@ namespace AllOverIt.Patterns.Specification.Utils
             _queryStringBuilder.Append('(');
             Visit(node.Left);
 
-            _queryStringBuilder.Append($" {_expressionTypeMapping[node.NodeType]} ");
+            _queryStringBuilder.Append($" {ExpressionTypeMapping[node.NodeType]} ");
 
             Visit(node.Right);
             _queryStringBuilder.Append(')');
@@ -204,7 +204,7 @@ namespace AllOverIt.Patterns.Specification.Utils
             }
             else
             {
-                return _valueConverters.TryGetValue(type, out var converter)
+                return TypeValueConverters.TryGetValue(type, out var converter)
                     ? converter.Invoke(input)
                     : input.ToString();
             }

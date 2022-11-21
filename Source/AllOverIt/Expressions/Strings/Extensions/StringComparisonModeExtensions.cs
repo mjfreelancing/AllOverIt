@@ -5,7 +5,7 @@ namespace AllOverIt.Expressions.Strings.Extensions
 {
     internal static class StringComparisonModeExtensions
     {
-        private static readonly IReadOnlyDictionary<StringComparisonMode, StringComparison> _comparisonModes = new Dictionary<StringComparisonMode, StringComparison>
+        private static readonly IReadOnlyDictionary<StringComparisonMode, StringComparison> ComparisonModes = new Dictionary<StringComparisonMode, StringComparison>
         {
             { StringComparisonMode.CurrentCulture, StringComparison.CurrentCulture},
             { StringComparisonMode.CurrentCultureIgnoreCase, StringComparison.CurrentCultureIgnoreCase},
@@ -17,7 +17,7 @@ namespace AllOverIt.Expressions.Strings.Extensions
 
         public static StringComparison GetStringComparison(this StringComparisonMode stringComparisonMode)
         {
-            if (_comparisonModes.TryGetValue(stringComparisonMode, out var stringComparison))
+            if (ComparisonModes.TryGetValue(stringComparisonMode, out var stringComparison))
             {
                 return stringComparison;
             }

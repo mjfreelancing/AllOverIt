@@ -18,15 +18,15 @@ namespace AllOverIt.Evaluator.Tests.Operations
                 Expression.Constant(Create<double>())
             };
 
-            var creator = Operation.Creator;
+            var creator = Operation._creator;
 
             var operation = creator.Invoke(operands);
             operation.Should().BeOfType(OperatorType);
 
             var symbol = operation as BinaryOperator;
 
-            symbol!.LeftOperand.Should().BeSameAs(operands[0]);
-            symbol.RightOperand.Should().BeSameAs(operands[1]);
+            symbol!._leftOperand.Should().BeSameAs(operands[0]);
+            symbol._rightOperand.Should().BeSameAs(operands[1]);
         }
 
         [Fact]

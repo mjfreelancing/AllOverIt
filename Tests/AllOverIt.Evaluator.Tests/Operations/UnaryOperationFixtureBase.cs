@@ -20,14 +20,14 @@ namespace AllOverIt.Evaluator.Tests.Operations
         public void Should_Create_Expected_Operator()
         {
             var operand = this.CreateStub<Expression>();
-            var creator = Operation.Creator;
+            var creator = Operation._creator;
 
             var operation = creator.Invoke(new[] { operand });
             operation.Should().BeOfType(OperatorType);
 
             var symbol = operation as UnaryOperator;
 
-            symbol!.Operand.Should().BeSameAs(operand);
+            symbol!._operand.Should().BeSameAs(operand);
         }
     }
 }

@@ -21,7 +21,7 @@ namespace AllOverIt.Filtering.Builders
         where TType : class
         where TFilter : class
     {
-        private static readonly GenericCache _operationTypePropertyGetters = new();
+        private static readonly GenericCache OperationTypePropertyGetters = new();
 
         private readonly IReadOnlyDictionary<Type, Type> _filterOperations = new Dictionary<Type, Type>
             {
@@ -374,7 +374,7 @@ namespace AllOverIt.Filtering.Builders
         {
             var key = new GenericCacheKey<Type>(operationType);
 
-            var propertyGetter = _operationTypePropertyGetters.GetOrAdd(key, cacheKey =>
+            var propertyGetter = OperationTypePropertyGetters.GetOrAdd(key, cacheKey =>
             {
                 var opType = ((GenericCacheKey<Type>) cacheKey).Key1;
                 var propInfo = opType.GetProperty(nameof(IFilterOperationType<TProperty>.Value));

@@ -11,7 +11,7 @@ namespace AllOverIt.Pagination
     public abstract class QueryPaginatorBase
     {
         // base class mainly exists to keep non-generic statics out of the generic implementations
-        private static readonly ConcurrentDictionary<Type, MethodInfo> _comparisonMethods;
+        private static readonly ConcurrentDictionary<Type, MethodInfo> ComparisonMethods;
 
         static QueryPaginatorBase()
         {
@@ -35,7 +35,7 @@ namespace AllOverIt.Pagination
                 registry.TryAdd(type, compareTo);
             }
 
-            _comparisonMethods = registry;
+            ComparisonMethods = registry;
         }
 
         internal static bool TryGetComparisonMethodInfo(Type type, out MethodInfo methodInfo)
@@ -43,7 +43,7 @@ namespace AllOverIt.Pagination
             // Enum's are IComparable but we can't pre-register the types we don't know about - so register them as they arrive
             if (type.IsEnum)
             {
-                methodInfo = _comparisonMethods.GetOrAdd(type, key =>
+                methodInfo = ComparisonMethods.GetOrAdd(type, key =>
                 {
                     return type
                         .GetTypeInfo()
@@ -53,7 +53,7 @@ namespace AllOverIt.Pagination
                 return true;
             }
 
-            return _comparisonMethods.TryGetValue(type, out methodInfo);
+            return ComparisonMethods.TryGetValue(type, out methodInfo);
         }
     }
 }

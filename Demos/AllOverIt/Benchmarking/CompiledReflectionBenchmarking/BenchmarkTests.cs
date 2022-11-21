@@ -14,16 +14,16 @@ namespace CompiledReflectionBenchmarking
     public class BenchmarkTests
     {
         // Reflection
-        private static readonly PropertyInfo dummyPropInfo = typeof(DummyType).GetProperty(nameof(DummyType.Value));
+        private static readonly PropertyInfo DummyPropInfo = typeof(DummyType).GetProperty(nameof(DummyType.Value));
 
         // Compiled
-        private static readonly Func<object, object> _objectPropertyGetterInfo = PropertyHelper.CreatePropertyGetter(dummyPropInfo);
-        private static readonly Func<DummyType, object> _typedPropertyGetterInfo = PropertyHelper.CreatePropertyGetter<DummyType>(dummyPropInfo);
-        private static readonly Func<DummyType, object> _typedPropertyGetterName = PropertyHelper.CreatePropertyGetter<DummyType>(nameof(DummyType.Value));
+        private static readonly Func<object, object> ObjectPropertyGetterInfo = PropertyHelper.CreatePropertyGetter(DummyPropInfo);
+        private static readonly Func<DummyType, object> TypedPropertyGetterInfo = PropertyHelper.CreatePropertyGetter<DummyType>(DummyPropInfo);
+        private static readonly Func<DummyType, object> TypedPropertyGetterName = PropertyHelper.CreatePropertyGetter<DummyType>(nameof(DummyType.Value));
 
-        private static readonly Action<object, object> _objectPropertySetterInfo = PropertyHelper.CreatePropertySetter(dummyPropInfo);
-        private static readonly Action<DummyType, object> _typedPropertySetterInfo = PropertyHelper.CreatePropertySetter<DummyType>(dummyPropInfo);
-        private static readonly Action<DummyType, object> _typedPropertySetterName = PropertyHelper.CreatePropertySetter<DummyType>(nameof(DummyType.Value));
+        private static readonly Action<object, object> ObjectPropertySetterInfo = PropertyHelper.CreatePropertySetter(DummyPropInfo);
+        private static readonly Action<DummyType, object> TypedPropertySetterInfo = PropertyHelper.CreatePropertySetter<DummyType>(DummyPropInfo);
+        private static readonly Action<DummyType, object> TypedPropertySetterName = PropertyHelper.CreatePropertySetter<DummyType>(nameof(DummyType.Value));
 
         [Params(4)]
         public int IterationCount;
@@ -35,7 +35,7 @@ namespace CompiledReflectionBenchmarking
 
             for (var i = 0; i < IterationCount; i++)
             {
-                _ = dummyPropInfo.GetValue(instance);
+                _ = DummyPropInfo.GetValue(instance);
             }
         }
 
@@ -46,7 +46,7 @@ namespace CompiledReflectionBenchmarking
 
             for (var i = 0; i < IterationCount; i++)
             {
-                _ = _objectPropertyGetterInfo.Invoke(instance);
+                _ = ObjectPropertyGetterInfo.Invoke(instance);
             }
         }
 
@@ -57,7 +57,7 @@ namespace CompiledReflectionBenchmarking
 
             for (var i = 0; i < IterationCount; i++)
             {
-                _ = _typedPropertyGetterInfo.Invoke(instance);
+                _ = TypedPropertyGetterInfo.Invoke(instance);
             }
         }
 
@@ -68,7 +68,7 @@ namespace CompiledReflectionBenchmarking
 
             for (var i = 0; i < IterationCount; i++)
             {
-                _ = _typedPropertyGetterName.Invoke(instance);
+                _ = TypedPropertyGetterName.Invoke(instance);
             }
         }
 
@@ -79,7 +79,7 @@ namespace CompiledReflectionBenchmarking
 
             for (var i = 0; i < IterationCount; i++)
             {
-                dummyPropInfo.SetValue(instance, 20);
+                DummyPropInfo.SetValue(instance, 20);
             }
         }
 
@@ -90,7 +90,7 @@ namespace CompiledReflectionBenchmarking
 
             for (var i = 0; i < IterationCount; i++)
             {
-                _objectPropertySetterInfo.Invoke(instance, 20);
+                ObjectPropertySetterInfo.Invoke(instance, 20);
             }
         }
 
@@ -101,7 +101,7 @@ namespace CompiledReflectionBenchmarking
 
             for (var i = 0; i < IterationCount; i++)
             {
-                _typedPropertySetterInfo.Invoke(instance, 20);
+                TypedPropertySetterInfo.Invoke(instance, 20);
             }
         }
 
@@ -112,7 +112,7 @@ namespace CompiledReflectionBenchmarking
 
             for (var i = 0; i < IterationCount; i++)
             {
-                _typedPropertySetterName.Invoke(instance, 20);
+                TypedPropertySetterName.Invoke(instance, 20);
             }
         }
 

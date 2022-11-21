@@ -8,8 +8,8 @@ namespace AllOverIt.Pagination.TokenEncoding
     // Uses an EnrichedBinaryWriter to serialize a IContinuationToken to a stream
     internal sealed class ContinuationTokenBinaryStreamer : IContinuationTokenStreamer
     {
-        private static readonly IEnrichedBinaryValueReader _reader = new ContinuationTokenReader();
-        private static readonly IEnrichedBinaryValueWriter _writer = new ContinuationTokenWriter();
+        private static readonly IEnrichedBinaryValueReader Reader = new ContinuationTokenReader();
+        private static readonly IEnrichedBinaryValueWriter Writer = new ContinuationTokenWriter();
 
         public void SerializeToStream(IContinuationToken continuationToken, Stream stream)
         {
@@ -18,7 +18,7 @@ namespace AllOverIt.Pagination.TokenEncoding
 
             using (var writer = new EnrichedBinaryWriter(stream, Encoding.UTF8, true))
             {
-                writer.Writers.Add(_writer);
+                writer.Writers.Add(Writer);
                 writer.WriteObject(continuationToken);
             }
         }
@@ -29,7 +29,7 @@ namespace AllOverIt.Pagination.TokenEncoding
 
             using (var reader = new EnrichedBinaryReader(stream, Encoding.UTF8, true))
             {
-                reader.Readers.Add(_reader);
+                reader.Readers.Add(Reader);
 
                 return (ContinuationToken) reader.ReadObject();
             }

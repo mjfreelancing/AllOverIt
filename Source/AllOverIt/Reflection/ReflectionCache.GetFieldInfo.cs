@@ -9,7 +9,7 @@ namespace AllOverIt.Reflection
     /// <summary>Provides a default, static, cache to help improve performance where reflection is used extensively.</summary>
     public static partial class ReflectionCache
     {
-        private static readonly GenericCache _fieldInfoCache = new();
+        private static readonly GenericCache FieldInfoCache = new();
 
         /// <summary>Gets the <see cref="FieldInfo"/> (property metadata) for a given property on a <typeparamref name="TType"/> from the default cache.
         /// If the <see cref="FieldInfo"/> is not in the cache then it will be obtained using the <paramref name="valueResolver"/> and added to the
@@ -49,7 +49,7 @@ namespace AllOverIt.Reflection
         {
             var key = new GenericCacheKey<TypeInfo, string>(typeInfo, propertyName);
 
-            return _fieldInfoCache.GetOrAdd(key, valueResolver ?? GetFieldInfoFromTypeInfoPropertyName());
+            return FieldInfoCache.GetOrAdd(key, valueResolver ?? GetFieldInfoFromTypeInfoPropertyName());
         }
 
         /// <summary>Gets <see cref="FieldInfo"/> (property metadata) for a given <typeparamref name="TType"/> and options from the default cache.
@@ -82,7 +82,7 @@ namespace AllOverIt.Reflection
         {
             var key = new GenericCacheKey<Type, BindingOptions, bool>(type, bindingOptions, declaredOnly);
 
-            return _fieldInfoCache.GetOrAdd(key, valueResolver ?? GetFieldInfoFromTypeBindingDeclaredOnly());
+            return FieldInfoCache.GetOrAdd(key, valueResolver ?? GetFieldInfoFromTypeBindingDeclaredOnly());
         }
 
         /// <summary>Gets all <see cref="FieldInfo"/> for a given <see cref="Type"/> and options from the default cache. If the <see cref="FieldInfo"/>
@@ -97,7 +97,7 @@ namespace AllOverIt.Reflection
         {
             var key = new GenericCacheKey<TypeInfo, bool>(typeInfo, declaredOnly);
 
-            return _fieldInfoCache.GetOrAdd(key, valueResolver ?? GetFieldInfoFromTypeInfoDeclaredOnly());
+            return FieldInfoCache.GetOrAdd(key, valueResolver ?? GetFieldInfoFromTypeInfoDeclaredOnly());
         }
 
         private static Func<GenericCacheKeyBase, IEnumerable<FieldInfo>> GetFieldInfoFromTypeBindingDeclaredOnly()

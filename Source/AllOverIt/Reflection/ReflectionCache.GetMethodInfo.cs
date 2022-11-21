@@ -9,7 +9,7 @@ namespace AllOverIt.Reflection
     /// <summary>Provides a default, static, cache to help improve performance where reflection is used extensively.</summary>
     public static partial class ReflectionCache
     {
-        private static readonly GenericCache _methodInfoCache = new();
+        private static readonly GenericCache MethodInfoCache = new();
 
         /// <summary>Gets <see cref="MethodInfo"/> (method metadata) for a given <typeparamref name="TType"/> and binding options.</summary>
         /// <typeparam name="TType">The type to obtain method metadata for.</typeparam>
@@ -40,7 +40,7 @@ namespace AllOverIt.Reflection
         {
             var key = new GenericCacheKey<Type, BindingOptions, bool>(type, bindingOptions, declaredOnly);
 
-            return _methodInfoCache.GetOrAdd(key, valueResolver ?? GetMethodInfoFromTypeBindingDeclaredOnly());
+            return MethodInfoCache.GetOrAdd(key, valueResolver ?? GetMethodInfoFromTypeBindingDeclaredOnly());
         }
 
         /// <summary>Gets <see cref="MethodInfo"/> (method metadata) for a given <typeparamref name="TType"/> and method name.</summary>
@@ -88,7 +88,7 @@ namespace AllOverIt.Reflection
         {
             var key = new GenericCacheKey<Type, string, Type[]>(type, name, types);
 
-            return _methodInfoCache.GetOrAdd(key, valueResolver ?? GetMethodInfoFromTypeMethodNameArgTypes());
+            return MethodInfoCache.GetOrAdd(key, valueResolver ?? GetMethodInfoFromTypeMethodNameArgTypes());
         }
 
         private static Func<GenericCacheKeyBase, IEnumerable<MethodInfo>> GetMethodInfoFromTypeBindingDeclaredOnly()

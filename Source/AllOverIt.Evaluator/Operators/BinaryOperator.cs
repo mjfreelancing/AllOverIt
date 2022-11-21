@@ -7,8 +7,8 @@ namespace AllOverIt.Evaluator.Operators
     /// <summary>An expression operator that operates on two operands.</summary>
     public abstract class BinaryOperator : Operator<Func<Expression, Expression, Expression>>
     {
-        internal readonly Expression LeftOperand;
-        internal readonly Expression RightOperand;
+        internal readonly Expression _leftOperand;
+        internal readonly Expression _rightOperand;
 
         /// <summary>
         /// 
@@ -19,14 +19,14 @@ namespace AllOverIt.Evaluator.Operators
         protected BinaryOperator(Func<Expression, Expression, Expression> operatorType, Expression leftOperand, Expression rightOperand)
             : base(operatorType)
         {
-            LeftOperand = leftOperand.WhenNotNull(nameof(leftOperand));
-            RightOperand = rightOperand.WhenNotNull(nameof(rightOperand));
+            _leftOperand = leftOperand.WhenNotNull(nameof(leftOperand));
+            _rightOperand = rightOperand.WhenNotNull(nameof(rightOperand));
         }
 
         /// <inheritdoc />
         public override Expression GetExpression()
         {
-            return OperatorType.Invoke(LeftOperand, RightOperand);
+            return OperatorType.Invoke(_leftOperand, _rightOperand);
         }
     }
 }

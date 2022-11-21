@@ -8,14 +8,14 @@ namespace AllOverIt.Reflection
 {
     internal static class BindingOptionsHelper
     {
-        private static readonly GenericCache _methodBaseCache = new();
-        private static readonly GenericCache _fieldInfoCache = new();
+        private static readonly GenericCache MethodBaseCache = new();
+        private static readonly GenericCache FieldInfoCache = new();
 
         internal static Func<MethodBase, bool> BuildPropertyOrMethodBindingPredicate(BindingOptions bindingOptions)
         {
             var key = new GenericCacheKey<BindingOptions>(bindingOptions);
 
-            return _methodBaseCache.GetOrAdd(key, cacheKey =>
+            return MethodBaseCache.GetOrAdd(key, cacheKey =>
             {
                 var options = ((GenericCacheKey<BindingOptions>) cacheKey).Key1;
 
@@ -56,7 +56,7 @@ namespace AllOverIt.Reflection
         {
             var key = new GenericCacheKey<BindingOptions>(bindingOptions);
 
-            return _fieldInfoCache.GetOrAdd(key, cacheKey =>
+            return FieldInfoCache.GetOrAdd(key, cacheKey =>
             {
                 var options = ((GenericCacheKey<BindingOptions>) cacheKey).Key1;
 
