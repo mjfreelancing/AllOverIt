@@ -1,9 +1,9 @@
 ======================================================================================================================
 
-XX XXX 2022
-Version 6.0.0
+21 Nov 2022
+Version 6.0.0-RC.15
 ======================================================================================================================
-All except AllOverIt.Aws.Cdk.AppSync
+All except AllOverIt.Aws.Cdk.AppSync and AllOverIt.ReactiveUI
   * Added support for NET 7.0
 
 AllOverIt
@@ -15,6 +15,12 @@ AllOverIt
 
 AllOverIt.Pagination
   * Updated PageResult<T> to allow the secondary set of results to come from an IEnumerable.
+
+AllOverIt.Csv
+  * Updated CsvHelper to v30.0.1
+
+AllOverIt.Aws.Cdk.AppSync
+  * Updated Amazon.CDK.AWS.AppSync to v1.181.0
 
 
 12 Oct 2022
