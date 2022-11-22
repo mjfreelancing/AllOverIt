@@ -96,7 +96,7 @@ namespace AllOverIt.Evaluator.Tests
 
                 var expected = new
                 {
-                    Operand = expression,
+                    _operand = expression,
                     OperatorType = default(Func<Expression, Expression>)
                 };
 

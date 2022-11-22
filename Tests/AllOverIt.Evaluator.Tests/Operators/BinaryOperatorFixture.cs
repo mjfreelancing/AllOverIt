@@ -62,8 +62,8 @@ namespace AllOverIt.Evaluator.Tests.Operators
             {
                 var expected = new
                 {
-                    LeftOperand = _leftOperand,
-                    RightOperand = _rightOperand,
+                    _leftOperand = _leftOperand,
+                    _rightOperand = _rightOperand,
                     OperatorType = _operatorType
                 };
 
