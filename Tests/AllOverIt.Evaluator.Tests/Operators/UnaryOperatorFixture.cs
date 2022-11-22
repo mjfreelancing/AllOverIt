@@ -49,11 +49,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
             [Fact]
             public void Should_Set_Members()
             {
-                _operator.Should().BeEquivalentTo(new
-                {
-                    Operand = _operand,
-                    OperatorType = _operatorType
-                });
+                _operator._operand.Should().BeSameAs(_operand);
             }
         }
 
