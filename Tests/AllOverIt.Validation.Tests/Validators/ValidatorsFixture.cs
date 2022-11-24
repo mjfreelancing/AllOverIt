@@ -1,6 +1,7 @@
 ﻿using AllOverIt.Fixture;
 using FluentAssertions;
 using FluentValidation;
+using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,26 +28,51 @@ namespace AllOverIt.Validation.Tests.Validators
             public bool ANameThatCanBeSplit { get; set; }
         }
 
-        private class DummyValidator : ValidatorBase<DummyModel>
+        private class DummyValidator1 : ValidatorBase<DummyModel>
         {
-            static DummyValidator()
+            static DummyValidator1()
             {
                 DisablePropertyNameSplitting();
             }
 
-            public DummyValidator()
+            public DummyValidator1()
             {
                 RuleFor(model => model.ANameThatCanBeSplit).Equal(true);
             }
         }
-       
+
+        private class DummyValidator2 : ValidatorBase<DummyModel>
+        {
+            public string PropertyName { get; }
+            public string ErrorMessage { get; }
+
+            static DummyValidator2()
+            {
+                DisablePropertyNameSplitting();
+            }
+
+            public DummyValidator2(string propertyName, string errorMessage)
+            {
+                PropertyName = propertyName;
+                ErrorMessage = errorMessage;
+
+                RuleFor(model => model)
+                    .Custom((model, context) =>
+                    {
+                        var failure = new ValidationFailure(PropertyName, ErrorMessage);
+
+                        context.AddFailure(failure);
+                    });
+            }
+        }
+
         public class PropertyNameSplitting : ValidatorsFixture
         {
             [Fact]
             public void Should_Not_Split_Property_Names()
             {
                 var model = new DummyModel();
-                var validator = new DummyValidator();
+                var validator = new DummyValidator1();
 
                 var result = validator.Validate(model);
 
@@ -56,6 +82,30 @@ namespace AllOverIt.Validation.Tests.Validators
                     .ErrorMessage
                     .Should()
                     .Be("'ANameThatCanBeSplit' must be equal to 'True'.");
+            }
+
+            [Fact]
+            public void Should_Handle_Rule_For_Model()
+            {
+                var propertyName = Create<string>();
+                var errorMessage = Create<string>();
+
+                var model = new DummyModel();
+                var validator = new DummyValidator2(propertyName, errorMessage);
+
+                var result = validator.Validate(model);
+
+                var error = result.Errors.Single();
+
+                error
+                    .PropertyName
+                    .Should()
+                    .Be(propertyName);
+
+                error
+                    .ErrorMessage
+                    .Should()
+                    .Be(errorMessage);
             }
 
             // Not running this test as parallel execution can cause other tests to fail. Not concerned with
