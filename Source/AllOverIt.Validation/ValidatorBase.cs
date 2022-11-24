@@ -13,7 +13,7 @@ namespace AllOverIt.Validation
         /// <summary>Prevents Pascal property name splitting.</summary>
         public static void DisablePropertyNameSplitting()
         {
-            ValidatorOptions.Global.DisplayNameResolver = (type, info, expression) => info.Name;
+            ValidatorOptions.Global.DisplayNameResolver = (type, info, expression) => info?.Name;
         }
 
         /// <summary>Validates a model instance. Additional context data is associated with the request that
