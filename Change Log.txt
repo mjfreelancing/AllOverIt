@@ -2,22 +2,16 @@
 XX XXX 2022
 Version 6.x
 ======================================================================================================================
-Tests
-  * Corrected naming changes after code styling applied
-
 AllOverIt.EntityFrameworkCore
   * Updated to Microsoft.EntityFrameworkCore.Relational v6.0.11 for NET 6
-
-
-22 Nov 2022
-Version 6.0.0
-======================================================================================================================
-  * Published v6.0.0.
 
 
 24 Nov 2022
 Version 6.0.1
 ======================================================================================================================
+Tests
+  * Corrected naming changes after code styling applied
+
 AllOverIt.Validation
   * Fixed null reference issue for the case when creating a RuleFor(model => model)...
 
