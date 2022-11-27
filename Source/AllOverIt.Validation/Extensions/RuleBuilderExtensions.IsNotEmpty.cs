@@ -6,7 +6,7 @@ namespace AllOverIt.Validation.Extensions
     public static partial class RuleBuilderExtensions
     {
         /// <summary>Defines a validator on the current rule builder that will fail if the value of the property is null, an empty string, whitespace,
-        /// an empty collection or the default value of the type.</summary>
+        /// an empty collection or the default value of the type. The error code is set to <see cref="ValidationErrorCode.NotEmpty"/>.</summary>
         /// <typeparam name="TType">The model type containing the property to be validated.</typeparam>
         /// <typeparam name="TProperty">The property type.</typeparam>
         /// <param name="ruleBuilder">The rule builder.</param>

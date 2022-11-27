@@ -7,7 +7,8 @@ namespace AllOverIt.Validation.Extensions
     /// <summary>Provides a variety of extension methods for <see cref="IRuleBuilder{TType, TProperty}"/>.</summary>
     public static partial class RuleBuilderExtensions
     {
-        /// <summary>Defines a validator on the current rule builder that will fail if the value of the property is less than a specified value.</summary>
+        /// <summary>Defines a validator on the current rule builder that will fail if the value of the property is less
+        /// than a specified value. The error code is set to <see cref="ValidationErrorCode.OutOfRange"/>.</summary>
         /// <typeparam name="TType">The model type containing the property to be validated.</typeparam>
         /// <typeparam name="TProperty">The property type.</typeparam>
         /// <param name="ruleBuilder">The rule builder.</param>
@@ -22,7 +23,8 @@ namespace AllOverIt.Validation.Extensions
                 .WithErrorCode(ValidationErrorCode.OutOfRange);
         }
 
-        /// <summary>Defines a validator on the current rule builder that will fail if the value of the property is less than a specified value.</summary>
+        /// <summary>Defines a validator on the current rule builder that will fail if the value of the property is less
+        /// than a specified value. The error code is set to <see cref="ValidationErrorCode.OutOfRange"/>.</summary>
         /// <typeparam name="TType">The model type containing the property to be validated.</typeparam>
         /// <typeparam name="TProperty">The property type.</typeparam>
         /// <param name="ruleBuilder">The rule builder.</param>
@@ -37,8 +39,9 @@ namespace AllOverIt.Validation.Extensions
                 .WithErrorCode(ValidationErrorCode.OutOfRange);
         }
 
-        /// <summary>Defines a validator on the current rule builder that will fail if the value of the property is less than the value provided
-        /// by a resolver that has access to the root context data.</summary>
+        /// <summary>Defines a validator on the current rule builder that will fail if the value of the property is less
+        /// than the value provided by a resolver that has access to the root context data.
+        /// The error code is set to <see cref="ValidationErrorCode.OutOfRange"/>.</summary>
         /// <typeparam name="TType">The model type containing the property to be validated.</typeparam>
         /// <typeparam name="TProperty">The property type.</typeparam>
         /// <typeparam name="TContext">The root context type.</typeparam>
@@ -53,8 +56,9 @@ namespace AllOverIt.Validation.Extensions
                 .WithErrorCode(ValidationErrorCode.OutOfRange);
         }
 
-        /// <summary>Defines a validator on the current rule builder that will fail if the value of the property is less than the value provided
-        /// by a resolver that has access to the root context data.</summary>
+        /// <summary>Defines a validator on the current rule builder that will fail if the value of the property is less
+        /// than the value provided by a resolver that has access to the root context data.
+        /// The error code is set to <see cref="ValidationErrorCode.OutOfRange"/>.</summary>
         /// <typeparam name="TType">The model type containing the property to be validated.</typeparam>
         /// <typeparam name="TProperty">The property type.</typeparam>
         /// <typeparam name="TContext">The root context type.</typeparam>
