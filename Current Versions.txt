@@ -10,7 +10,7 @@
         - Targets                                - netstandard2.1;netcoreapp3.1;net5.0;net6.0;net7.0
         - AllOverIt dependencies:                - [1]
                                                  - [16]
-        - External dependencies:                 - FluentValidation v11.3.0
+        - External dependencies:                 - FluentValidation v11.4.0
 
 
   [3]  AllOverIt.Aws.Cdk.AppSync                
@@ -64,7 +64,7 @@
         - AllOverIt dependencies:                - [1]
                                                  - [8]
                                                  - [16]
-        - External dependencies:                 - Newtonsoft.Json v13.0.1
+        - External dependencies:                 - Newtonsoft.Json v13.0.2
 
 
 
@@ -165,7 +165,7 @@
                                                                                                          v6.0.0 for target net6.0
                                                                                                          v7.0.0 for target net7.0
                                                  - ReactiveUI v16.4.15 for targets netstandard2.1;netcoreapp3.1;net5.0
-                                                              v18.3.1 for targets net6.0;net7.0
+                                                              v18.4.1 for targets net6.0;net7.0
 
 
   [22] AllOverIt.Filtering
