@@ -41,7 +41,7 @@ namespace AllOverIt.Formatters.Objects
 
         /// <summary>Provides options that define root level value key names for objects that cannot be serialized due
         /// to the lack of properties.</summary>
-        public ObjectPropertyRootValueOptions RootValueOptions { get; set; } = new();
+        public ObjectPropertyRootValueOptions RootValueOptions { get; } = new();
 
         /// <summary>An optional filter that can be implemented to exclude properties by name or value. Values can be
         /// modified, or formatted if the filter implements <see cref="IFormattableObjectPropertyFilter"/>.</summary>

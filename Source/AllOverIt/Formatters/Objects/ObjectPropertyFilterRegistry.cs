@@ -1,6 +1,6 @@
-﻿using System;
+﻿using AllOverIt.Assertion;
+using System;
 using System.Collections.Generic;
-using AllOverIt.Assertion;
 
 namespace AllOverIt.Formatters.Objects
 {
@@ -8,85 +8,93 @@ namespace AllOverIt.Formatters.Objects
     /// the properties of a given object during its serialization via an <see cref="IObjectPropertySerializer"/> instance.</summary>
     public sealed class ObjectPropertyFilterRegistry : IObjectPropertyFilterRegistry
     {
-        private sealed record FilterSerializer
-        {
-            public ObjectPropertyFilter Filter { get; init; }
-            public Lazy<IObjectPropertySerializer> Serializer { get; init; }
-        }
-
         private static readonly IObjectPropertySerializer DefaultSerializer = new ObjectPropertySerializer();
 
-        // The filters are only created once and re-used across all requests.
-        private readonly IList<FilterSerializer> _filters = new List<FilterSerializer>();
+        // A filter is created for each request due to the serializer managing state.
+        private readonly IDictionary<Type, Func<IObjectPropertySerializer>> _filterRegistry = new Dictionary<Type, Func<IObjectPropertySerializer>>();
 
         /// <inheritdoc />
-        public void Register<TFilter>(ObjectPropertySerializerOptions serializerOptions = null)
-            where TFilter : ObjectPropertyFilter, IRegisteredObjectPropertyFilter, new()
+        public void Register<TType, TFilter>(ObjectPropertySerializerOptions serializerOptions = default)
+            where TFilter : ObjectPropertyFilter, new()
         {
-            var filter = new TFilter();
-            Register(filter, serializerOptions);
-        }
+            var options = serializerOptions ?? new ObjectPropertySerializerOptions();
 
-        /// <inheritdoc />
-        public void Register<TFilter>(TFilter filter, ObjectPropertySerializerOptions serializerOptions = null)
-            where TFilter : ObjectPropertyFilter, IRegisteredObjectPropertyFilter
-        {
-            serializerOptions
-                ?.Filter
-                .CheckIsNull(nameof(serializerOptions.Filter), $"The {nameof(ObjectPropertyFilterRegistry)} expects the provided options to not include a filter.");
+            CheckOptionsHasNoFilter(options);
 
-            var lazySerializer = new Lazy<IObjectPropertySerializer>(() =>
+            _filterRegistry.Add(typeof(TType), () =>
             {
-                var options = serializerOptions ?? new ObjectPropertySerializerOptions();
-                options.Filter = filter;
-
-                return new ObjectPropertySerializer(options);
+                return CreateObjectPropertySerializer<TFilter>(options);
             });
+        }
 
-            var filterSerializer = new FilterSerializer
+        /// <inheritdoc />
+        public void Register<TType, TFilter>(Action<ObjectPropertySerializerOptions> serializerOptions)
+            where TFilter : ObjectPropertyFilter, new()
+        {
+            var options = serializerOptions;
+
+            _filterRegistry.Add(typeof(TType), () =>
             {
-                Filter = filter,
-                Serializer = lazySerializer
-            };
-
-            _filters.Add(filterSerializer);
-        }
-
-        /// <inheritdoc />
-        public void Register<TFilter>(Action<ObjectPropertySerializerOptions> serializerOptions)
-            where TFilter : ObjectPropertyFilter, IRegisteredObjectPropertyFilter, new()
-        {
-            var options = new ObjectPropertySerializerOptions();
-            serializerOptions.Invoke(options);
-
-            Register<TFilter>(options);
-        }
-
-        /// <inheritdoc />
-        public void Register<TFilter>(TFilter filter, Action<ObjectPropertySerializerOptions> serializerOptions)
-            where TFilter : ObjectPropertyFilter, IRegisteredObjectPropertyFilter
-        {
-            var options = new ObjectPropertySerializerOptions();
-            serializerOptions.Invoke(options);
-
-            Register(filter, options);
+                return CreateObjectPropertySerializer<TFilter>(options);
+            });
         }
 
         /// <inheritdoc />
         public bool GetObjectPropertySerializer(object @object, out IObjectPropertySerializer serializer)
         {
-            foreach (var filterSerializer in _filters)
+            _ = @object.WhenNotNull(nameof(@object));
+
+            return GetObjectPropertySerializer(@object.GetType(), out serializer);
+        }
+
+        /// <inheritdoc />
+        public bool GetObjectPropertySerializer<TType>(out IObjectPropertySerializer serializer)
+        {
+            return GetObjectPropertySerializer(typeof(TType), out serializer);
+        }
+
+        /// <inheritdoc />
+        public bool GetObjectPropertySerializer(Type type, out IObjectPropertySerializer serializer)
+        {
+            _ = type.WhenNotNull(nameof(type));
+
+            if (_filterRegistry.TryGetValue(type, out var serializerFactory))
             {
-                if (filterSerializer.Filter is IRegisteredObjectPropertyFilter filterable &&
-                    filterable.CanFilter(@object))
-                {
-                    serializer = filterSerializer.Serializer.Value;
-                    return true;
-                }
+                serializer = serializerFactory.Invoke();
+                return true;
             }
 
             serializer = DefaultSerializer;
             return false;
+        }
+
+        private static IObjectPropertySerializer CreateObjectPropertySerializer<TFilter>(ObjectPropertySerializerOptions serializerOptions)
+            where TFilter : ObjectPropertyFilter, new()
+        {
+            _ = serializerOptions.WhenNotNull(nameof(serializerOptions));
+
+            CheckOptionsHasNoFilter(serializerOptions);
+
+            var filter = new TFilter();
+            serializerOptions.Filter = filter;
+
+            return new ObjectPropertySerializer(serializerOptions);
+        }
+
+        private static IObjectPropertySerializer CreateObjectPropertySerializer<TFilter>(Action<ObjectPropertySerializerOptions> serializerOptions)
+            where TFilter : ObjectPropertyFilter, new()
+        {
+            var options = new ObjectPropertySerializerOptions();
+            serializerOptions.Invoke(options);
+
+            return CreateObjectPropertySerializer<TFilter>(options);
+        }
+
+        private static void CheckOptionsHasNoFilter(ObjectPropertySerializerOptions serializerOptions)
+        {
+            serializerOptions
+                ?.Filter
+                .CheckIsNull(nameof(ObjectPropertySerializerOptions.Filter), $"The {nameof(ObjectPropertyFilterRegistry)} expects the provided options to not include a filter.");
         }
     }
 }

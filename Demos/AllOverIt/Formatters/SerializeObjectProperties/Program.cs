@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 using AllOverIt.Formatters.Objects.Extensions;
 using AllOverIt.Helpers.PropertyNavigation;
 using AllOverIt.Helpers.PropertyNavigation.Extensions;
+using System.Text;
 
 namespace SerializeObjectProperties
 {
     class Program
     {
-        static void Main()
+        static async Task Main()
         {
             try
             {
@@ -28,6 +29,9 @@ namespace SerializeObjectProperties
 
                 Console.WriteLine();
                 SerializeFilteredItemDataViaRegistry();
+
+                Console.WriteLine();
+                await SerializeTaskedFilteredItemDataViaRegistryAsync();
 
                 Console.WriteLine();
                 SerializeDictionary1(serializer);
@@ -311,7 +315,7 @@ namespace SerializeObjectProperties
             options.EnumerableOptions.SetAutoCollatedPaths(propertyNodes);
 
             var registry = new ObjectPropertyFilterRegistry();
-            registry.Register<ComplexObjectItemDataFilter>(options);
+            registry.Register<ComplexObject, ComplexObjectItemDataFilter>(options);
 
             Console.WriteLine("Complex Object serialization values via a registry:");
             Console.WriteLine("===================================================");
@@ -323,6 +327,87 @@ namespace SerializeObjectProperties
             foreach (var item in items)
             {
                 Console.WriteLine($"  {item}");
+            }
+        }
+
+        private static async Task SerializeTaskedFilteredItemDataViaRegistryAsync()
+        {
+            var registry = new ObjectPropertyFilterRegistry();
+
+            // This approach ensures each created filter is assigned to a unique instance of the options
+            registry.Register<ComplexObject, ComplexObjectItemDataFilter>(options =>
+            {
+                // See SerializeFilteredItemDataViaRegistry() for a type-safe way that also checks the leaf node is not a class type
+                options.EnumerableOptions.AutoCollatedPaths = new[] { "Items.Data.Values" };
+            });
+
+            var tasks = Enumerable
+                .Range(0, 10)
+                .Select(value =>
+                {
+                    return Task.Factory.StartNew<StringBuilder>(() =>
+                    {
+                        var sb = new StringBuilder();
+
+                        var complexObject = new ComplexObject
+                        {
+                            Items = new ComplexObject.ComplexItem[]
+                            {
+                                new()
+                                {
+                                    Name = "Name 1",
+                                    Factor = value + 1.1,
+                                    Data = new ComplexObject.ComplexItem.ComplexItemData
+                                    {
+                                        Timestamp = DateTime.Now,
+                                        Values = Enumerable.Range(1, 5).SelectAsReadOnlyCollection(value => value)
+                                    }
+                                },
+                                new()
+                                {
+                                    Name = "Name 2",
+                                    Factor = value + 2.2,
+                                    Data = new ComplexObject.ComplexItem.ComplexItemData
+                                    {
+                                        Timestamp = DateTime.Now,
+                                        Values = Enumerable.Range(11, 5).SelectAsReadOnlyCollection(value => value)
+                                    }
+                                },
+                                new()
+                                {
+                                    Name = "Name 3",
+                                    Factor = value + 3.3,
+                                    Data = new ComplexObject.ComplexItem.ComplexItemData
+                                    {
+                                        Timestamp = DateTime.Now,
+                                        Values = Enumerable.Range(21, 5).SelectAsReadOnlyCollection(value => value)
+                                    }
+                                },
+                            }
+                        };
+
+                        _ = registry.GetObjectPropertySerializer(complexObject, out var serializer);
+
+                        var items = serializer.SerializeToDictionary(complexObject).SelectAsReadOnlyCollection(kvp => $"{kvp.Key} = {kvp.Value}");
+
+                        foreach (var item in items)
+                        {
+                            sb.AppendLine($"  {item}");
+                        }
+
+                        return sb;
+                    });
+                });
+
+            var stringBuilders = await Task.WhenAll(tasks);
+
+            foreach (var sb in stringBuilders)
+            {
+                Console.WriteLine("Complex Object serialization values via a registry (in a Task):");
+                Console.WriteLine("===============================================================");
+
+                Console.WriteLine(sb.ToString());
+                Console.WriteLine();
             }
         }
 
