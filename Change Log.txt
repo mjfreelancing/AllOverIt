@@ -6,6 +6,8 @@ Version 6.1.0
 AllOverIt
   * Re-worked the registration of the ObjectPropertySerializer filters as the process was not thread-saafe.
     Breaking change.
+  * Added helper methods to GenericCahe to create keys.
+  * Added a read-only property to provide the disposables contained in CompositeAsyncDisposable.
 
 
 24 Nov 2022

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
+using static AllOverIt.Tests.Async.CompositeAsyncDisposableFixture;
 
 namespace AllOverIt.Tests.Async
 {
@@ -33,6 +34,9 @@ namespace AllOverIt.Tests.Async
             [Fact]
             public void Should_Add_Disposables()
             {
+                // We could look at the Disposables property but better to actually make sure
+                // the disposables added are disosed of, and count them.
+
                 var count = 0;
                 var disposableFakes = this.CreateManyFakes<IAsyncDisposable>();
 
@@ -51,6 +55,20 @@ namespace AllOverIt.Tests.Async
 
                 disposableFakes.Count.Should().NotBe(0);
                 count.Should().Be(disposableFakes.Count);
+            }
+        }
+
+        public class Disposables : CompositeAsyncDisposableFixture
+        {
+            [Fact]
+            public void Should_Contain_All_Disposables()
+            {
+                var disposableFakes = this.CreateManyFakes<IAsyncDisposable>();
+                var expected = disposableFakes.Select(item => item.FakedObject).ToArray();
+
+                var composite = new CompositeAsyncDisposable(expected);
+
+                composite.Disposables.Should().BeEquivalentTo(expected);
             }
         }
 

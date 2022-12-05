@@ -11,6 +11,9 @@ namespace AllOverIt.Async
     {
         private readonly List<IAsyncDisposable> _disposables = new();
 
+        /// <summary>Returns the collection of disposables.</summary>
+        public IEnumerable<IAsyncDisposable> Disposables => _disposables;
+
         /// <summary>Constructor.</summary>
         /// <param name="disposables">Async disposables to add to the composite disposable.</param>
         public CompositeAsyncDisposable(params IAsyncDisposable[] disposables)
