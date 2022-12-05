@@ -58,6 +58,54 @@ namespace AllOverIt.Caching
             set => _cache[key] = value;
         }
 
+        /// <summary>A helper method to create a generic cache key based on 1 key type.</summary>
+        /// <typeparam name="TKey1">The key type.</typeparam>
+        /// <param name="key1">The key value.</param>
+        /// <returns>The generic cache key.</returns>
+        public static GenericCacheKeyBase CreateKey<TKey1>(TKey1 key1)
+        {
+            return new GenericCacheKey<TKey1>(key1);
+        }
+
+        /// <summary>A helper method to create a generic cache key based on 2 key types.</summary>
+        /// <typeparam name="TKey1">The first key type.</typeparam>
+        /// <typeparam name="TKey2">The second key type.</typeparam>
+        /// <param name="key1">The first key value.</param>
+        /// <param name="key2">The second key value.</param>
+        /// <returns>The generic cache key.</returns>
+        public static GenericCacheKeyBase CreateKey<TKey1, TKey2>(TKey1 key1, TKey2 key2)
+        {
+            return new GenericCacheKey<TKey1, TKey2>(key1, key2);
+        }
+
+        /// <summary>A helper method to create a generic cache key based on 3 key types.</summary>
+        /// <typeparam name="TKey1">The first key type.</typeparam>
+        /// <typeparam name="TKey2">The second key type.</typeparam>
+        /// <typeparam name="TKey3">The third key type.</typeparam>
+        /// <param name="key1">The first key value.</param>
+        /// <param name="key2">The second key value.</param>
+        /// <param name="key3">The third key value.</param>
+        /// <returns>The generic cache key.</returns>
+        public static GenericCacheKeyBase CreateKey<TKey1, TKey2, TKey3>(TKey1 key1, TKey2 key2, TKey3 key3)
+        {
+            return new GenericCacheKey<TKey1, TKey2, TKey3>(key1, key2, key3);
+        }
+
+        /// <summary>A helper method to create a generic cache key based on 4 key types.</summary>
+        /// <typeparam name="TKey1">The first key type.</typeparam>
+        /// <typeparam name="TKey2">The second key type.</typeparam>
+        /// <typeparam name="TKey3">The third key type.</typeparam>
+        /// <typeparam name="TKey4">The fourth key type.</typeparam>
+        /// <param name="key1">The first key value.</param>
+        /// <param name="key2">The second key value.</param>
+        /// <param name="key3">The third key value.</param>
+        /// <param name="key4">The fourth key value.</param>
+        /// <returns>The generic cache key.</returns>
+        public static GenericCacheKeyBase CreateKey<TKey1, TKey2, TKey3, TKey4>(TKey1 key1, TKey2 key2, TKey3 key3, TKey4 key4)
+        {
+            return new GenericCacheKey<TKey1, TKey2, TKey3, TKey4>(key1, key2, key3, key4);
+        }
+
         /// <inheritdoc />
         public IEnumerator<KeyValuePair<GenericCacheKeyBase, object>> GetEnumerator()
         {
@@ -121,7 +169,7 @@ namespace AllOverIt.Caching
             return success;
         }
 
-        /// <summary>Removes a key from the cache if it was found.</summary>
+        /// <summary>Attempts to remove a key and its associated value from the cache.</summary>
         /// <param name="item">The custom key and associated value.</param>
         /// <returns>True if the key was found in the cache, otherwise false.</returns>
         public bool Remove(KeyValuePair<GenericCacheKeyBase, object> item)

@@ -118,6 +118,95 @@ namespace AllOverIt.Tests.Caching
             }
         }
 
+        public class CreateKey_1 : GenericCacheFixture
+        {
+            [Fact]
+            public void Should_Create_Key()
+            {
+                var value = Create<int>();
+
+                var actual = GenericCache.CreateKey<int>(value);
+
+                actual.Should().BeOfType<GenericCacheKey<int>>();
+
+                actual.Key.Should().Be(value);
+
+                var typedKey = (GenericCacheKey<int>) actual;
+
+                typedKey.Key1.Should().Be(value);
+
+            }
+        }
+
+        public class CreateKey_2 : GenericCacheFixture
+        {
+            [Fact]
+            public void Should_Create_Key()
+            {
+                var value1 = Create<int>();
+                var value2 = Create<string>();
+
+                var actual = GenericCache.CreateKey<int, string>(value1, value2);
+
+                actual.Should().BeOfType<GenericCacheKey<int, string>>();
+
+                actual.Key.Should().Be((value1, value2));
+
+                var typedKey = (GenericCacheKey<int, string>) actual;
+
+                typedKey.Key1.Should().Be(value1);
+                typedKey.Key2.Should().Be(value2);
+            }
+        }
+
+        public class CreateKey_3 : GenericCacheFixture
+        {
+            [Fact]
+            public void Should_Create_Key()
+            {
+                var value1 = Create<int>();
+                var value2 = Create<string>();
+                var value3 = Create<double>();
+
+                var actual = GenericCache.CreateKey<int, string, double>(value1, value2, value3);
+
+                actual.Should().BeOfType<GenericCacheKey<int, string, double>>();
+
+                actual.Key.Should().Be((value1, value2, value3));
+
+                var typedKey = (GenericCacheKey<int, string, double>) actual;
+
+                typedKey.Key1.Should().Be(value1);
+                typedKey.Key2.Should().Be(value2);
+                typedKey.Key3.Should().Be(value3);
+            }
+        }
+
+        public class CreateKey_4 : GenericCacheFixture
+        {
+            [Fact]
+            public void Should_Create_Key()
+            {
+                var value1 = Create<int>();
+                var value2 = Create<string>();
+                var value3 = Create<double>();
+                var value4 = Create<string>();
+
+                var actual = GenericCache.CreateKey<int, string, double, string>(value1, value2, value3, value4);
+
+                actual.Should().BeOfType<GenericCacheKey<int, string, double, string>>();
+
+                actual.Key.Should().Be((value1, value2, value3, value4));
+
+                var typedKey = (GenericCacheKey<int, string, double, string>) actual;
+
+                typedKey.Key1.Should().Be(value1);
+                typedKey.Key2.Should().Be(value2);
+                typedKey.Key3.Should().Be(value3);
+                typedKey.Key4.Should().Be(value4);
+            }
+        }
+
         public class GetEnumerator : GenericCacheFixture
         {
             [Fact]
