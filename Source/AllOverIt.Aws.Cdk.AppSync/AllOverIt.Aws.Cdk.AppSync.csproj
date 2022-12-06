@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Amazon.CDK.AWS.AppSync" Version="1.181.0" />
+        <PackageReference Include="Amazon.CDK.AWS.AppSync" Version="1.181.1" />
     </ItemGroup>
 
     <ItemGroup>

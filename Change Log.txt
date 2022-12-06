@@ -1,6 +1,6 @@
 ======================================================================================================================
 
-XX XXX XXXX
+06 Dec 2022
 Version 6.1.0
 ======================================================================================================================
 AllOverIt
@@ -9,10 +9,19 @@ AllOverIt
   * Added helper methods to GenericCahe to create keys.
   * Added a read-only property to provide the disposables contained in CompositeAsyncDisposable.
 
+AllOverIt.*
+  * Updated to Microsoft.* v7.0.0 where applicable
+  
+AllOverIt.Aws.Cdk.AppSync
+  * Updated Amazon.CDK.AWS.AppSync to v1.181.1
+
 
 24 Nov 2022
 Version 6.0.1
 ======================================================================================================================
+Tests
+  * Corrected naming changes after code styling applied
+
 AllOverIt.Validation
   * Fixed null reference issue for the case when creating a RuleFor(model => model)...
 
