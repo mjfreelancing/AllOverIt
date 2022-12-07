@@ -19,11 +19,9 @@ namespace AllOverIt.Formatters.Objects
         public IEnumerable<Type> IgnoredTypes => _ignoredTypes;
 
         /// <summary>If true then null value properties will be included, otherwise they will be omitted.</summary>
-        /// <remarks>This takes priority over custom filters via the <see cref="Filter"/> option.</remarks>
         public bool IncludeNulls { get; set; }
 
         /// <summary>If true then empty collection properties will be included, otherwise they will be omitted.</summary>
-        /// <remarks>This takes priority over custom filters via the <see cref="Filter"/> option.</remarks>
         public bool IncludeEmptyCollections { get; set; }
 
         /// <summary>Binding options that determine how properties are resolved.</summary>
@@ -36,7 +34,8 @@ namespace AllOverIt.Formatters.Objects
         public string EmptyValueOutput { get; set; } = "<empty>";
 
         /// <summary>Provides options that allow array values to be collated to a single value.</summary>
-        /// <remarks>If a <see cref="Filter"/> has been assigned then its array options will override these settings.</remarks>
+        /// <remarks>If a <see cref="Filter"/> has been provided to the <see cref="ObjectPropertySerializer"/> then
+        /// its enumerable options will override these settings.</remarks>
         public ObjectPropertyEnumerableOptions EnumerableOptions { get; } = new();
 
         /// <summary>Provides options that define root level value key names for objects that cannot be serialized due
