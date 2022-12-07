@@ -771,16 +771,15 @@ namespace AllOverIt.Tests.Extensions
                 var dummy = Create<DummyType>();
                 dummy.Prop2 = Create<DummyType>();
 
+                var options = new ObjectPropertySerializerOptions();
+
                 // Prop2 is a class type so to include all values we need to check for "Prop2" as well as "Prop2.XXX"
                 // Checking for Prop2 is required to ensure the sub-properties are not filtered out.
-                var options = new ObjectPropertySerializerOptions
-                {
-                    Filter = new DummyTypePropertyNameFilter(name =>
-                        name is nameof(DummyType.Prop1) or nameof(DummyType.Prop2) ||
-                        name.StartsWith("Prop2.Prop4"))
-                };
+                var filter = new DummyTypePropertyNameFilter(name =>
+                    name is nameof(DummyType.Prop1) or nameof(DummyType.Prop2) ||
+                    name.StartsWith("Prop2.Prop4"));
 
-                var actual = dummy.ToSerializedDictionary(options);
+                var actual = dummy.ToSerializedDictionary(options, filter);     // can also pass null for options here
 
                 var expected = new Dictionary<string, string>
                 {
@@ -805,12 +804,10 @@ namespace AllOverIt.Tests.Extensions
                 dummy1.Prop2 = dummy2;
                 dummy2.Prop2 = dummy3;
 
-                var options = new ObjectPropertySerializerOptions
-                {
-                    Filter = new DummyTypePropertyNameFilter(name => name != nameof(DummyType.Prop2))
-                };
+                var options = new ObjectPropertySerializerOptions();
+                var filter = new DummyTypePropertyNameFilter(name => name != nameof(DummyType.Prop2));
 
-                var actual = dummy1.ToSerializedDictionary(options);
+                var actual = dummy1.ToSerializedDictionary(options, filter);     // can also pass null for options here
 
                 var expected = new Dictionary<string, string>
                 {
@@ -864,12 +861,10 @@ namespace AllOverIt.Tests.Extensions
 
                 var nameToFilter = $"Prop2.Prop5.{dummy2.Prop5.ElementAt(1).Key}";
 
-                var options = new ObjectPropertySerializerOptions
-                {
-                    Filter = new DummyTypePropertyNameFilter(name => name != nameToFilter)
-                };
+                var options = new ObjectPropertySerializerOptions();
+                var filter = new DummyTypePropertyNameFilter(name => name != nameToFilter);
 
-                var actual = dummy1.ToSerializedDictionary(options);
+                var actual = dummy1.ToSerializedDictionary(options, filter);     // can also pass null for options here
 
                 var expected = new Dictionary<string, string>
                 {
@@ -915,12 +910,10 @@ namespace AllOverIt.Tests.Extensions
             {
                 var dummy = Create<DummyType>();
 
-                var options = new ObjectPropertySerializerOptions
-                {
-                    Filter = new DummyTypePropertyPathFilter()
-                };
+                var options = new ObjectPropertySerializerOptions();
+                var filter = new DummyTypePropertyPathFilter();
 
-                var actual = dummy.ToSerializedDictionary(options);
+                var actual = dummy.ToSerializedDictionary(options, filter);     // can also pass null for options here
 
                 var expected = new Dictionary<string, string>
                 {
@@ -937,12 +930,10 @@ namespace AllOverIt.Tests.Extensions
             {
                 var dummy = Create<DummyType>();
 
-                var options = new ObjectPropertySerializerOptions
-                {
-                    Filter = new DummyTypePropertyValueFilter(nameof(dummy.Prop14), dummy.Prop14)
-                };
+                var options = new ObjectPropertySerializerOptions();
+                var filter = new DummyTypePropertyValueFilter(nameof(dummy.Prop14), dummy.Prop14);
 
-                var actual = dummy.ToSerializedDictionary(options);
+                var actual = dummy.ToSerializedDictionary(options, filter);     // can also pass null for options here;
 
                 var expected = new Dictionary<string, string>
                 {
@@ -961,12 +952,10 @@ namespace AllOverIt.Tests.Extensions
                 var dummy2 = Create<DummyType>();
                 dummy.Prop2 = dummy2;
 
-                var options = new ObjectPropertySerializerOptions
-                {
-                    Filter = new DummyTypePropertyNameValueFilter()
-                };
+                var options = new ObjectPropertySerializerOptions();
+                var filter = new DummyTypePropertyNameValueFilter();
 
-                var actual = dummy.ToSerializedDictionary(options);
+                var actual = dummy.ToSerializedDictionary(options, filter);     // can also pass null for options here
 
                 var expected = new Dictionary<string, string>
                 {
@@ -1024,15 +1013,14 @@ namespace AllOverIt.Tests.Extensions
                     dummy.Prop4 = dummy.Prop4.ToList();
                     dummy.Prop2.Prop4 = dummy.Prop2.Prop4.ToList();
 
-                    var filter = new DummyTypeTrackingFilter();
-
                     var options = new ObjectPropertySerializerOptions
                     {
-                        IncludeEmptyCollections = true,
-                        Filter = filter
+                        IncludeEmptyCollections = true
                     };
 
-                    dummy.ToSerializedDictionary(options);
+                    var filter = new DummyTypeTrackingFilter();
+
+                    dummy.ToSerializedDictionary(options, filter);
 
                     filter.Types.Should().HaveCount(25);
 
@@ -1075,15 +1063,14 @@ namespace AllOverIt.Tests.Extensions
                     var dummy2 = Create<DummyType>();
                     dummy.Prop2 = dummy2;
 
-                    var filter = new DummyTypeTrackingFilter();
-
                     var options = new ObjectPropertySerializerOptions
                     {
                         IncludeEmptyCollections = true,
-                        Filter = filter
                     };
 
-                    dummy.ToSerializedDictionary(options);
+                    var filter = new DummyTypeTrackingFilter();
+
+                    dummy.ToSerializedDictionary(options, filter);
 
                     filter.Names.Should().HaveCount(25);
 
@@ -1110,15 +1097,14 @@ namespace AllOverIt.Tests.Extensions
                     var dummy2 = Create<DummyType>();
                     dummy.Prop2 = dummy2;
 
-                    var filter = new DummyTypeTrackingFilter();
-
                     var options = new ObjectPropertySerializerOptions
                     {
                         IncludeEmptyCollections = true,
-                        Filter = filter
                     };
 
-                    dummy.ToSerializedDictionary(options);
+                    var filter = new DummyTypeTrackingFilter();
+
+                    dummy.ToSerializedDictionary(options, filter);
 
                     filter.Paths.Should().HaveCount(25);
 
@@ -1151,15 +1137,14 @@ namespace AllOverIt.Tests.Extensions
                     var dummy2 = Create<DummyType>();
                     dummy.Prop2 = dummy2;
 
-                    var filter = new DummyTypeTrackingFilter();
-
                     var options = new ObjectPropertySerializerOptions
                     {
                         IncludeEmptyCollections = true,
-                        Filter = filter
                     };
 
-                    dummy.ToSerializedDictionary(options);
+                    var filter = new DummyTypeTrackingFilter();
+
+                    dummy.ToSerializedDictionary(options, filter);
 
                     filter.Indexes.Should().HaveCount(25);
 

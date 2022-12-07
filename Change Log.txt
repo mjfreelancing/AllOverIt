@@ -1,5 +1,14 @@
 ======================================================================================================================
 
+07 Dec 2022
+Version 6.2.0
+======================================================================================================================
+AllOverIt
+  * Re-worked the ObjectPropertySerializer so it contains the optional filter instead of being a property on the Options.
+    This now means multiple serializers can be requested from the registry such that they all use their own filter instance
+    while sharing a Singleton options.
+
+
 06 Dec 2022
 Version 6.1.0
 ======================================================================================================================

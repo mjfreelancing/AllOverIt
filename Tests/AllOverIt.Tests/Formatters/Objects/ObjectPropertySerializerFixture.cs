@@ -471,16 +471,16 @@ namespace AllOverIt.Tests.Formatters.Objects
                 var dummy = Create<DummyType>();
                 dummy.Prop2 = Create<DummyType>();
 
-                var serializer = GetSerializer();
+                // Prop2 is a class type so to include all values we need to check for "Prop2" as well as "Prop2.XXX"
+                // Checking for Prop2 is required to ensure the sub-properties are not filtered out.
+                var filter = new DummyTypePropertyNameFilter(name =>
+                    name is nameof(DummyType.Prop1) or nameof(DummyType.Prop2) ||
+                    name.StartsWith("Prop2.Prop4"));
+
+                var serializer = GetSerializer(filter);
 
                 // Will be ignored because the filter's options is not set to collate enumerables
                 serializer.Options.EnumerableOptions.CollateValues = true;
-
-                // Prop2 is a class type so to include all values we need to check for "Prop2" as well as "Prop2.XXX"
-                // Checking for Prop2 is required to ensure the sub-properties are not filtered out.
-                serializer.Options.Filter = new DummyTypePropertyNameFilter(name =>
-                    name is nameof(DummyType.Prop1) or nameof(DummyType.Prop2) ||
-                    name.StartsWith("Prop2.Prop4"));
 
                 var actual = serializer.SerializeToDictionary(dummy);
 
@@ -503,16 +503,15 @@ namespace AllOverIt.Tests.Formatters.Objects
                 var dummy = Create<DummyType>();
                 dummy.Prop2 = Create<DummyType>();
 
-                var serializer = GetSerializer();
-
-
                 // Prop2 is a class type so to include all values we need to check for "Prop2" as well as "Prop2.XXX"
                 // Checking for Prop2 is required to ensure the sub-properties are not filtered out.
-                serializer.Options.Filter = new DummyTypePropertyNameFilter(name =>
+                var filter = new DummyTypePropertyNameFilter(name =>
                     name is nameof(DummyType.Prop1) or nameof(DummyType.Prop2) ||
                     name.StartsWith("Prop2.Prop4"));
 
-                serializer.Options.Filter.EnumerableOptions.CollateValues = true;
+                filter.EnumerableOptions.CollateValues = true;
+
+                var serializer = GetSerializer(filter);
 
                 var actual = serializer.SerializeToDictionary(dummy);
 
@@ -532,13 +531,13 @@ namespace AllOverIt.Tests.Formatters.Objects
             {
                 var dummy = Create<DummyNestedParent>();
 
-                var serializer = GetSerializer();
+                var filter = new DummyNestedParentFilter(false);
 
-                serializer.Options.Filter = new DummyNestedParentFilter(false);
-
-                serializer.Options.Filter.EnumerableOptions.AutoCollatedPaths
+                filter.EnumerableOptions.AutoCollatedPaths
                     .Should()
                     .BeNull();
+
+                var serializer = GetSerializer(filter);
 
                 var actual = serializer.SerializeToDictionary(dummy);
 
@@ -565,14 +564,14 @@ namespace AllOverIt.Tests.Formatters.Objects
             {
                 var dummy = Create<DummyNestedParent>();
 
-                var serializer = GetSerializer();
-
                 // Sets the filter's AutoCollatedPaths to 'Children.Info.TopNumbers'
-                serializer.Options.Filter = new DummyNestedParentFilter(true);
+                var filter = new DummyNestedParentFilter(true);
 
-                serializer.Options.Filter.EnumerableOptions.AutoCollatedPaths
+                filter.EnumerableOptions.AutoCollatedPaths
                     .Should()
                     .NotBeNullOrEmpty();
+
+                var serializer = GetSerializer(filter);
 
                 var actual = serializer.SerializeToDictionary(dummy);
 
@@ -599,16 +598,16 @@ namespace AllOverIt.Tests.Formatters.Objects
             {
                 var dummy = Create<DummyWithNestedChildren>();
 
-                var serializer = GetSerializer();
-
-                serializer.Options.EnumerableOptions.AutoCollatedPaths = new[] {"Numbers"};
-
                 // Sets the filter's AutoCollatedPaths to 'Children.Info.TopNumbers'
-                serializer.Options.Filter = new DummyNestedParentFilter(true);
+                var filter = new DummyNestedParentFilter(true);
 
-                serializer.Options.Filter.EnumerableOptions.AutoCollatedPaths
+                filter.EnumerableOptions.AutoCollatedPaths
                     .Should()
                     .NotBeNullOrEmpty();
+
+                var serializer = GetSerializer(filter);
+
+                serializer.Options.EnumerableOptions.AutoCollatedPaths = new[] {"Numbers"};
 
                 var actual = serializer.SerializeToDictionary(dummy);
 
@@ -1167,13 +1166,13 @@ namespace AllOverIt.Tests.Formatters.Objects
                 var dummy = Create<DummyType>();
                 dummy.Prop2 = Create<DummyType>();
 
-                var serializer = GetSerializer();
-
                 // Prop2 is a class type so to include all values we need to check for "Prop2" as well as "Prop2.XXX"
                 // Checking for Prop2 is required to ensure the sub-properties are not filtered out.
-                serializer.Options.Filter = new DummyTypePropertyNameFilter(name =>
+                var filter = new DummyTypePropertyNameFilter(name =>
                     name is nameof(DummyType.Prop1) or nameof(DummyType.Prop2) ||
                     name.StartsWith("Prop2.Prop4"));
+
+                var serializer = GetSerializer(filter);
 
                 var actual = serializer.SerializeToDictionary(dummy);
 
@@ -1200,8 +1199,9 @@ namespace AllOverIt.Tests.Formatters.Objects
                 dummy1.Prop2 = dummy2;
                 dummy2.Prop2 = dummy3;
 
-                var serializer = GetSerializer();
-                serializer.Options.Filter = new DummyTypePropertyNameFilter(name => name != nameof(DummyType.Prop2));
+                var filter = new DummyTypePropertyNameFilter(name => name != nameof(DummyType.Prop2));
+                
+                var serializer = GetSerializer(filter);
 
                 var actual = serializer.SerializeToDictionary(dummy1);
 
@@ -1257,8 +1257,9 @@ namespace AllOverIt.Tests.Formatters.Objects
 
                 var nameToFilter = $"Prop2.Prop5.{dummy2.Prop5.ElementAt(1).Key}";
 
-                var serializer = GetSerializer();
-                serializer.Options.Filter = new DummyTypePropertyNameFilter(name => name != nameToFilter);
+                var filter = new DummyTypePropertyNameFilter(name => name != nameToFilter);
+
+                var serializer = GetSerializer(filter);
 
                 var actual = serializer.SerializeToDictionary(dummy1);
 
@@ -1306,8 +1307,9 @@ namespace AllOverIt.Tests.Formatters.Objects
             {
                 var dummy = Create<DummyType>();
 
-                var serializer = GetSerializer();
-                serializer.Options.Filter = new DummyTypePropertyValueFilter();
+                var filter = new DummyTypePropertyValueFilter();
+
+                var serializer = GetSerializer(filter);
 
                 var actual = serializer.SerializeToDictionary(dummy);
 
@@ -1328,8 +1330,9 @@ namespace AllOverIt.Tests.Formatters.Objects
                 var dummy2 = Create<DummyType>();
                 dummy.Prop2 = dummy2;
 
-                var serializer = GetSerializer();
-                serializer.Options.Filter = new DummyTypePropertyNameValueFilter();
+                var filter = new DummyTypePropertyNameValueFilter();
+
+                var serializer = GetSerializer(filter);
 
                 var actual = serializer.SerializeToDictionary(dummy);
 
@@ -1393,10 +1396,9 @@ namespace AllOverIt.Tests.Formatters.Objects
 
                     var filter = new DummyTypeTrackingFilter();
 
-                    var serializer = GetSerializer();
+                    var serializer = GetSerializer(filter);
 
                     serializer.Options.IncludeEmptyCollections = true;
-                    serializer.Options.Filter = filter;
 
                     _ = serializer.SerializeToDictionary(dummy);
 
@@ -1443,10 +1445,9 @@ namespace AllOverIt.Tests.Formatters.Objects
 
                     var filter = new DummyTypeTrackingFilter();
 
-                    var serializer = GetSerializer();
+                    var serializer = GetSerializer(filter);
 
                     serializer.Options.IncludeEmptyCollections = true;
-                    serializer.Options.Filter = filter;
 
                     _ = serializer.SerializeToDictionary(dummy);
 
@@ -1477,10 +1478,9 @@ namespace AllOverIt.Tests.Formatters.Objects
 
                     var filter = new DummyTypeTrackingFilter();
 
-                    var serializer = GetSerializer();
+                    var serializer = GetSerializer(filter);
 
                     serializer.Options.IncludeEmptyCollections = true;
-                    serializer.Options.Filter = filter;
 
                     _ = serializer.SerializeToDictionary(dummy);
 
@@ -1517,10 +1517,9 @@ namespace AllOverIt.Tests.Formatters.Objects
 
                     var filter = new DummyTypeTrackingFilter();
 
-                    var serializer = GetSerializer();
+                    var serializer = GetSerializer(filter);
 
                     serializer.Options.IncludeEmptyCollections = true;
-                    serializer.Options.Filter = filter;
 
                     _ = serializer.SerializeToDictionary(dummy);
 
@@ -1554,10 +1553,9 @@ namespace AllOverIt.Tests.Formatters.Objects
 
                     var filter = new DummyTypeTrackingFilter();
 
-                    var serializer = GetSerializer();
+                    var serializer = GetSerializer(filter);
 
                     serializer.Options.IncludeEmptyCollections = true;
-                    serializer.Options.Filter = filter;
 
                     _ = serializer.SerializeToDictionary(dummy);
 
@@ -1575,9 +1573,9 @@ namespace AllOverIt.Tests.Formatters.Objects
                 }
             }
 
-            private static ObjectPropertySerializer GetSerializer()
+            private static ObjectPropertySerializer GetSerializer(ObjectPropertyFilter filter = default)
             {
-                return new();
+                return new(null, filter);
             }
         }
     }

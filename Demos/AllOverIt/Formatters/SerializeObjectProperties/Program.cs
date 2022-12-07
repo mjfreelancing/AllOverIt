@@ -19,13 +19,13 @@ namespace SerializeObjectProperties
             {
                 var serializer = new ObjectPropertySerializer();
 
-                SerializeObject(serializer, false);
+                SerializeObject(false);
 
                 Console.WriteLine();
-                SerializeObject(serializer, true);
+                SerializeObject(true);
 
                 Console.WriteLine();
-                SerializeFilteredObject(serializer);
+                SerializeFilteredObject();
 
                 Console.WriteLine();
                 SerializeFilteredItemDataViaRegistry();
@@ -34,13 +34,13 @@ namespace SerializeObjectProperties
                 await SerializeTaskedFilteredItemDataViaRegistryAsync();
 
                 Console.WriteLine();
-                SerializeDictionary1(serializer);
+                SerializeDictionary1();
 
                 Console.WriteLine();
-                SerializeDictionary2(serializer);
+                SerializeDictionary2();
 
                 Console.WriteLine();
-                SerializeList(serializer);
+                SerializeList();
             }
             catch (Exception exception)
             {
@@ -52,8 +52,10 @@ namespace SerializeObjectProperties
             Console.ReadKey();
         }
 
-        private static void SerializeObject(IObjectPropertySerializer serializer, bool collateArrayValues)
+        private static void SerializeObject(bool collateArrayValues)
         {
+            var serializer = new ObjectPropertySerializer();
+
             var dummy1 = new Dummy();
             var dummy2 = new Dummy { Prop11 = dummy1 };
             // un-comment to test a self-referencing exception
@@ -167,35 +169,30 @@ namespace SerializeObjectProperties
             Console.WriteLine($"Object serialization values (collate array values = {collateArrayValues}):");
             Console.WriteLine("===========================================================");
 
-            try
-            {
-                serializer.Options.EnumerableOptions.CollateValues = collateArrayValues;
+            serializer.Options.EnumerableOptions.CollateValues = collateArrayValues;
 
-                if (!collateArrayValues)
+            if (!collateArrayValues)
+            {
+                serializer.Options.EnumerableOptions.AutoCollatedPaths = new[]
                 {
-                    serializer.Options.EnumerableOptions.AutoCollatedPaths = new[]
-                    {
                         "Prop30.Prop12",
                         "Prop30.Prop13.Prop12"
                     };
-                }
-
-                var items = serializer.SerializeToDictionary(metadataRoot).Select(kvp => $"{kvp.Key} = {kvp.Value}");
-
-                foreach (var item in items)
-                {
-                    Console.WriteLine($"  {item}");
-                }
             }
-            finally
+
+            var items = serializer.SerializeToDictionary(metadataRoot).Select(kvp => $"{kvp.Key} = {kvp.Value}");
+
+            foreach (var item in items)
             {
-                serializer.Options.EnumerableOptions.CollateValues = false;
-                serializer.Options.EnumerableOptions.AutoCollatedPaths = null;
+                Console.WriteLine($"  {item}");
             }
         }
 
-        private static void SerializeFilteredObject(IObjectPropertySerializer serializer)
+        private static void SerializeFilteredObject()
         {
+            var filter = new ComplexObjectFilter();
+            var serializer = new ObjectPropertySerializer(null, filter);
+
             var complexObject = new ComplexObject
             {
                 Items = new ComplexObject.ComplexItem[]
@@ -233,23 +230,14 @@ namespace SerializeObjectProperties
                 }
             };
 
-            serializer.Options.Filter = new ComplexObjectFilter();
+            Console.WriteLine("Filtered Object serialization values:");
+            Console.WriteLine("====================================");
 
-            try
+            var items = serializer.SerializeToDictionary(complexObject).Select(kvp => $"{kvp.Key} = {kvp.Value}");
+
+            foreach (var item in items)
             {
-                Console.WriteLine("Filtered Object serialization values:");
-                Console.WriteLine("====================================");
-
-                var items = serializer.SerializeToDictionary(complexObject).Select(kvp => $"{kvp.Key} = {kvp.Value}");
-
-                foreach (var item in items)
-                {
-                    Console.WriteLine($"  {item}");
-                }
-            }
-            finally
-            {
-                serializer.Options.Filter = null;
+                Console.WriteLine($"  {item}");
             }
         }
 
@@ -328,18 +316,32 @@ namespace SerializeObjectProperties
             {
                 Console.WriteLine($"  {item}");
             }
+
+            Console.WriteLine();
+            Console.WriteLine("  >> And do it again to ensure we can request the same filter type");
+            Console.WriteLine();
+
+            _ = registry.GetObjectPropertySerializer(complexObject, out serializer);
+
+            items = serializer.SerializeToDictionary(complexObject).Select(kvp => $"{kvp.Key} = {kvp.Value}");
+
+            foreach (var item in items)
+            {
+                Console.WriteLine($"  {item}");
+            }
         }
 
         private static async Task SerializeTaskedFilteredItemDataViaRegistryAsync()
         {
             var registry = new ObjectPropertyFilterRegistry();
 
-            // This approach ensures each created filter is assigned to a unique instance of the options
-            registry.Register<ComplexObject, ComplexObjectItemDataFilter>(options =>
-            {
-                // See SerializeFilteredItemDataViaRegistry() for a type-safe way that also checks the leaf node is not a class type
-                options.EnumerableOptions.AutoCollatedPaths = new[] { "Items.Data.Values" };
-            });
+            var options = new ObjectPropertySerializerOptions();
+
+            // See SerializeFilteredItemDataViaRegistry() for a type-safe way that also checks the leaf node is not a class type
+            options.EnumerableOptions.AutoCollatedPaths = new[] { "Items.Data.Values" };
+
+            // Options can be safely shared
+            registry.Register<ComplexObject, ComplexObjectItemDataFilter>(options);
 
             var tasks = Enumerable
                 .Range(0, 10)
@@ -411,8 +413,10 @@ namespace SerializeObjectProperties
             }
         }
 
-        private static void SerializeDictionary1(IObjectPropertySerializer serializer)
+        private static void SerializeDictionary1()
         {
+            var serializer = new ObjectPropertySerializer();
+
             var dictionary = new Dictionary<string, int>
             {
                 { "one", 1 },
@@ -432,8 +436,10 @@ namespace SerializeObjectProperties
             }
         }
 
-        private static void SerializeDictionary2(IObjectPropertySerializer serializer)
+        private static void SerializeDictionary2()
         {
+            var serializer = new ObjectPropertySerializer();
+
             var dictionary = new Dictionary<TypedDummy<bool>, int>
             {
                 // only the class name is serialized because it is a key within the dictionary
@@ -454,8 +460,10 @@ namespace SerializeObjectProperties
             }
         }
 
-        private static void SerializeList(IObjectPropertySerializer serializer)
+        private static void SerializeList()
         {
+            var serializer = new ObjectPropertySerializer();
+
             var list = Enumerable.Range(1, 4).Select(value => $"Value {value}").ToList();
 
             Console.WriteLine("List serialization values:");

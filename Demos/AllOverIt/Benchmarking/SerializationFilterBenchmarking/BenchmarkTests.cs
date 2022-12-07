@@ -51,12 +51,8 @@ namespace SerializationFilterBenchmarking
                 }
             };
 
-            var options = new ObjectPropertySerializerOptions
-            {
-                Filter = new ComplexObjectFilter()
-            };
-
-            _serializer = new ObjectPropertySerializer(options);
+            var filter = new ComplexObjectFilter();
+            _serializer = new ObjectPropertySerializer(null, filter);
         }
 
         [Benchmark]

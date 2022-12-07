@@ -15,11 +15,15 @@ namespace AllOverIt.Formatters.Objects
         /// <inheritdoc />
         public ObjectPropertySerializerOptions Options { get; }
 
+        /// <inheritdoc />
+        public ObjectPropertyFilter Filter { get; }
+
         /// <summary>Constructor.</summary>
         /// <param name="options">Specifies options that determine how serialization of properties and their values are handled.
         /// If null, a default set of options will be used.</param>
-        public ObjectPropertySerializer(ObjectPropertySerializerOptions options = default)
+        public ObjectPropertySerializer(ObjectPropertySerializerOptions options = default, ObjectPropertyFilter filter = default)
         {
+            Filter = filter;
             Options = options ?? new ObjectPropertySerializerOptions();
         }
 
@@ -217,14 +221,14 @@ namespace AllOverIt.Formatters.Objects
                 {
                     var valueStr = value.ToString();
 
-                    if (Options.Filter != null)
+                    if (Filter is not null)
                     {
                         if (!IncludePropertyValue(type, value, path, name, index, references))
                         {
                             return;
                         }
 
-                        if (Options.Filter is IFormattableObjectPropertyFilter formattable)
+                        if (Filter is IFormattableObjectPropertyFilter formattable)
                         {
                             valueStr = formattable.OnFormatValue(valueStr);
                         }
@@ -244,7 +248,7 @@ namespace AllOverIt.Formatters.Objects
                         throw new SelfReferenceException($"Self referencing detected at '{path}' of type '{type.GetFriendlyName()}'.");
                     }
 
-                    if (Options.Filter != null)
+                    if (Filter is not null)
                     {
                         if (ExcludeValueType(value) || !IncludeProperty(type, value, path, name, index, references))
                         {
@@ -326,25 +330,25 @@ namespace AllOverIt.Formatters.Objects
                     : $"{propertyPath}.{name}";
             }
 
-            Options.Filter.Type = type;
-            Options.Filter.Value = value;
-            Options.Filter.Path = path;
-            Options.Filter.PropertyPath = propertyPath;
-            Options.Filter.Name = name;     // Is null when iterating over a collection (Index will be non-null)
-            Options.Filter.Index = index;
-            Options.Filter.Parents = references.Values.AsReadOnlyCollection();
+            Filter.Type = type;
+            Filter.Value = value;
+            Filter.Path = path;
+            Filter.PropertyPath = propertyPath;
+            Filter.Name = name;     // Is null when iterating over a collection (Index will be non-null)
+            Filter.Index = index;
+            Filter.Parents = references.Values.AsReadOnlyCollection();
         }
 
         private bool IncludeProperty(Type type, object value, string path, string name, int? index, IDictionary<object, ObjectPropertyParent> references)
         {
             SetFilterAttributes(type, value, path, name, index, references);
 
-            return Options.Filter.OnIncludeProperty();
+            return Filter.OnIncludeProperty();
         }
 
         private bool IncludePropertyValue(Type type, object value, string path, string name, int? index, IDictionary<object, ObjectPropertyParent> references)
         {
-            return IncludeProperty(type, value, path, name, index, references) && Options.Filter.OnIncludeValue();
+            return IncludeProperty(type, value, path, name, index, references) && Filter.OnIncludeValue();
         }
 
         private static string GetPropertyPath(IDictionary<object, ObjectPropertyParent> references)
@@ -384,7 +388,7 @@ namespace AllOverIt.Formatters.Objects
             if (!collateValues)
             {
                 var globalCollatePaths = Options.EnumerableOptions.AutoCollatedPaths ?? Enumerable.Empty<string>();
-                var filterCollatePaths = Options.Filter?.EnumerableOptions.AutoCollatedPaths ?? Enumerable.Empty<string>();
+                var filterCollatePaths = Filter?.EnumerableOptions.AutoCollatedPaths ?? Enumerable.Empty<string>();
                 var collationPaths = globalCollatePaths.Concat(filterCollatePaths).AsReadOnlyCollection();
 
                 if (collationPaths.Any())
@@ -401,7 +405,7 @@ namespace AllOverIt.Formatters.Objects
         private ObjectPropertyEnumerableOptions GetEnumerableOptions()
         {
             // If there's a filter, its options override the serializer's global array handling options
-            return Options.Filter?.EnumerableOptions ?? Options.EnumerableOptions;
+            return Filter?.EnumerableOptions ?? Options.EnumerableOptions;
         }
     }
 }

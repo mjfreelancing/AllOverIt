@@ -43,10 +43,6 @@ namespace AllOverIt.Formatters.Objects
         /// to the lack of properties.</summary>
         public ObjectPropertyRootValueOptions RootValueOptions { get; } = new();
 
-        /// <summary>An optional filter that can be implemented to exclude properties by name or value. Values can be
-        /// modified, or formatted if the filter implements <see cref="IFormattableObjectPropertyFilter"/>.</summary>
-        public ObjectPropertyFilter Filter { get; set; }
-
         /// <summary>Clears the current list of ignored types.</summary>
         public void ClearIgnoredTypes()
         {

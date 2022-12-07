@@ -19,8 +19,6 @@ namespace AllOverIt.Formatters.Objects
         {
             var options = serializerOptions ?? new ObjectPropertySerializerOptions();
 
-            CheckOptionsHasNoFilter(options);
-
             _filterRegistry.Add(typeof(TType), () =>
             {
                 return CreateObjectPropertySerializer<TFilter>(options);
@@ -73,12 +71,9 @@ namespace AllOverIt.Formatters.Objects
         {
             _ = serializerOptions.WhenNotNull(nameof(serializerOptions));
 
-            CheckOptionsHasNoFilter(serializerOptions);
-
             var filter = new TFilter();
-            serializerOptions.Filter = filter;
 
-            return new ObjectPropertySerializer(serializerOptions);
+            return new ObjectPropertySerializer(serializerOptions, filter);
         }
 
         private static IObjectPropertySerializer CreateObjectPropertySerializer<TFilter>(Action<ObjectPropertySerializerOptions> serializerOptions)
@@ -88,13 +83,6 @@ namespace AllOverIt.Formatters.Objects
             serializerOptions.Invoke(options);
 
             return CreateObjectPropertySerializer<TFilter>(options);
-        }
-
-        private static void CheckOptionsHasNoFilter(ObjectPropertySerializerOptions serializerOptions)
-        {
-            serializerOptions
-                ?.Filter
-                .CheckIsNull(nameof(ObjectPropertySerializerOptions.Filter), $"The {nameof(ObjectPropertyFilterRegistry)} expects the provided options to not include a filter.");
         }
     }
 }
