@@ -238,7 +238,7 @@ namespace AllOverIt.Validation.Tests
                     }
                 };
 
-                expected.Should().BeEquivalentTo(result.Errors, options => options.ExcludingMissingMembers());
+                expected.Should().BeEquivalentTo(result.Errors, option => option.ExcludingMissingMembers());
             }
         }
 
@@ -282,7 +282,7 @@ namespace AllOverIt.Validation.Tests
                     }
                 };
 
-                expected.Should().BeEquivalentTo(result.Errors, options => options.ExcludingMissingMembers());
+                expected.Should().BeEquivalentTo(result.Errors, option => option.ExcludingMissingMembers());
             }
         }
 
@@ -313,7 +313,7 @@ namespace AllOverIt.Validation.Tests
                     }
                 };
 
-                expected.Should().BeEquivalentTo(result.Errors, options => options.ExcludingMissingMembers());
+                expected.Should().BeEquivalentTo(result.Errors, option => option.ExcludingMissingMembers());
             }
         }
 
@@ -344,7 +344,7 @@ namespace AllOverIt.Validation.Tests
                     }
                 };
 
-                expected.Should().BeEquivalentTo(result.Errors, options => options.ExcludingMissingMembers());
+                expected.Should().BeEquivalentTo(result.Errors, option => option.ExcludingMissingMembers());
             }
         }
 

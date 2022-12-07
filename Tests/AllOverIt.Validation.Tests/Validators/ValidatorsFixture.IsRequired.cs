@@ -81,7 +81,7 @@ namespace AllOverIt.Validation.Tests.Validators
                     }
                 };
 
-                expected.Should().BeEquivalentTo(result.Errors, options => options.ExcludingMissingMembers());
+                expected.Should().BeEquivalentTo(result.Errors, option => option.ExcludingMissingMembers());
             }
         }
     }

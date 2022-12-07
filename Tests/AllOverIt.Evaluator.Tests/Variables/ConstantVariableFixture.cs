@@ -61,7 +61,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                     ReferencedVariables = default(IEnumerable<string>)
                 };
 
-                expected.Should().BeEquivalentTo(_variable, option => option.Excluding(prop => prop.ReferencedVariables));
+                expected.Should().BeEquivalentTo(_variable, option => option.Excluding(subject => subject.ReferencedVariables));
             }
 
             [Fact]
@@ -79,7 +79,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                     ReferencedVariables = default(IEnumerable<string>)
                 };
 
-                expected.Should().BeEquivalentTo(_variable, option => option.Excluding(prop => prop.ReferencedVariables));
+                expected.Should().BeEquivalentTo(_variable, option => option.Excluding(subject => subject.ReferencedVariables));
             }
         }
     }
