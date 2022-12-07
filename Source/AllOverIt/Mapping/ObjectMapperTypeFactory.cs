@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace AllOverIt.Mapping
@@ -7,26 +8,12 @@ namespace AllOverIt.Mapping
     internal sealed class ObjectMapperTypeFactory
     {
         // Factories for any given type not associated with configuration
-        private readonly IDictionary<Type, Func<object>> _typeFactories = new Dictionary<Type, Func<object>>();
+        private readonly ConcurrentDictionary<Type, Func<object>> _typeFactories = new();
 
         // Source => Target factories provided via configuration
+        // Not a ConcurrentDictionary because this is only populated via explicit configuration
         private readonly IDictionary<(Type, Type), Func<IObjectMapper, object, object>> _sourceTargetFactories
             = new Dictionary<(Type, Type), Func<IObjectMapper, object, object>>();
-
-        public void Add(Type type, Func<object> factory)
-        {
-            _ = type.WhenNotNull(nameof(type));
-            _ = factory.WhenNotNull(nameof(factory));
-
-            _typeFactories.Add(type, factory);
-        }
-
-        public bool TryGet(Type type, out Func<object> factory)
-        {
-            _ = type.WhenNotNull(nameof(type));
-
-            return _typeFactories.TryGetValue(type, out factory);
-        }
 
         public void Add(Type sourceType, Type targetType, Func<IObjectMapper, object, object> factory)
         {
@@ -47,6 +34,14 @@ namespace AllOverIt.Mapping
             var factoryKey = (sourceType, targetType);
 
             return _sourceTargetFactories.TryGetValue(factoryKey, out factory);
+        }
+
+        public Func<object> GetOrAdd(Type type, Func<object> factory)
+        {
+            _ = type.WhenNotNull(nameof(type));
+            _ = factory.WhenNotNull(nameof(factory));
+
+            return _typeFactories.GetOrAdd(type, factory);
         }
     }
 }

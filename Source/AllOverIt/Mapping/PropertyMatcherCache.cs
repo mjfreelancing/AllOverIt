@@ -2,14 +2,14 @@
 using AllOverIt.Extensions;
 using AllOverIt.Mapping.Exceptions;
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 
 namespace AllOverIt.Mapping
 {
     internal sealed class PropertyMatcherCache
     {
         // Maps source/target types to the property matcher configuration
-        private readonly IDictionary<(Type, Type), ObjectPropertyMatcher> _matcherCache = new Dictionary<(Type, Type), ObjectPropertyMatcher>();
+        private readonly ConcurrentDictionary<(Type, Type), ObjectPropertyMatcher> _matcherCache = new();
 
         public ObjectPropertyMatcher CreateMapper(Type sourceType, Type targetType, PropertyMatcherOptions matcherOptions)
         {
@@ -17,21 +17,12 @@ namespace AllOverIt.Mapping
             _ = targetType.WhenNotNull(nameof(targetType));
             _ = matcherOptions.WhenNotNull(nameof(matcherOptions));
 
-            var matcherKey = (sourceType, targetType);
-
-            if (_matcherCache.TryGetValue(matcherKey, out _))
+            if (TryGetMapper(sourceType, targetType, out _))
             {
                 throw new ObjectMapperException($"Mapping already exists between {sourceType.GetFriendlyName()} and {targetType.GetFriendlyName()}.");
             }
 
-            var propertyMatcher = new ObjectPropertyMatcher(
-                sourceType,
-                targetType,
-                matcherOptions);
-
-            _matcherCache.Add(matcherKey, propertyMatcher);
-
-            return propertyMatcher;
+            return GetOrCreate(sourceType, targetType, matcherOptions);
         }
 
         public ObjectPropertyMatcher GetOrCreateMapper(Type sourceType, Type targetType)
@@ -39,9 +30,7 @@ namespace AllOverIt.Mapping
             _ = sourceType.WhenNotNull(nameof(sourceType));
             _ = targetType.WhenNotNull(nameof(targetType));
 
-            return TryGetMapper(sourceType, targetType, out var matcher)
-                ? matcher
-                : CreateMapper(sourceType, targetType, PropertyMatcherOptions.None);
+            return GetOrCreate(sourceType, targetType, PropertyMatcherOptions.None);
         }
 
         internal bool TryGetMapper(Type sourceType, Type targetType, out ObjectPropertyMatcher matcher)
@@ -52,6 +41,20 @@ namespace AllOverIt.Mapping
             var matcherKey = (sourceType, targetType);
 
             return _matcherCache.TryGetValue(matcherKey, out matcher);
+        }
+
+        private ObjectPropertyMatcher GetOrCreate(Type sourceType, Type targetType, PropertyMatcherOptions matcherOptions)
+        {
+            var matcherKey = (sourceType, targetType);
+
+            // Not too concerned about atomicity
+            return _matcherCache.GetOrAdd(matcherKey, _ =>
+            {
+                return new ObjectPropertyMatcher(
+                    sourceType,
+                    targetType,
+                    matcherOptions);
+            });
         }
     }
 }

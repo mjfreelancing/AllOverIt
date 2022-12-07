@@ -1,4 +1,4 @@
-﻿#define AUTOMAPPER
+﻿//#define AUTOMAPPER
 using AllOverIt.Mapping;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Jobs;
@@ -11,32 +11,22 @@ using System;
 namespace ObjectMappingBenchmarking
 {
     /*
-    |                                     Method |          Mean |         Error |        StdDev |        Median | Allocated |
-    |------------------------------------------- |--------------:|--------------:|--------------:|--------------:|----------:|
-    |                      AutoMapper_New_Mapper | 107,214.25 ns |  2,129.132 ns |  4,934.587 ns | 105,570.74 ns |  43,366 B |
-    | ObjectMapper_New_Mapper_Explicit_Configure | 669,252.49 ns | 12,229.540 ns | 12,558.837 ns | 671,961.04 ns |  33,114 B |
-    | ObjectMapper_New_Mapper_Implicit_Configure | 668,595.91 ns | 13,110.411 ns | 15,097.968 ns | 669,269.04 ns |  33,114 B |
-    |                   AutoMapper_Create_Target |      74.85 ns |      1.466 ns |      1.630 ns |      75.19 ns |      40 B |
-    |                 ObjectMapper_Create_Target |     241.69 ns |      4.485 ns |      4.195 ns |     242.39 ns |      88 B |
-    |                 ObjectMapper_CopyTo_Target |     238.05 ns |      4.116 ns |      3.850 ns |     237.60 ns |      48 B |
+    // 07/12/2022
 
-
-    |                                     Method |          Mean |         Error |        StdDev |        Median | Allocated |
-    |------------------------------------------- |--------------:|--------------:|--------------:|--------------:|----------:|
-    |                      AutoMapper_New_Mapper | 127,781.94 ns |  9,108.572 ns | 26,856.830 ns | 110,726.37 ns |  43,366 B |
-    |                   AutoMapper_Create_Target |      77.25 ns |      1.538 ns |      1.646 ns |      76.69 ns |      40 B |
-    |                   AutoMapper_CopyTo_Target |      73.76 ns |      1.405 ns |      1.246 ns |      73.16 ns |         - |
-    | ObjectMapper_New_Mapper_Explicit_Configure | 677,466.63 ns | 11,923.769 ns | 11,153.501 ns | 678,157.76 ns |  33,170 B |
-    | ObjectMapper_New_Mapper_Implicit_Configure | 678,204.01 ns | 12,919.114 ns | 13,823.307 ns | 674,865.33 ns |  33,170 B |
-    |   ObjectMapper_PreConfigured_Create_Target |     316.85 ns |      5.596 ns |      4.369 ns |     317.21 ns |     128 B |
-    |   ObjectMapper_PreConfigured_CopyTo_Target |     300.11 ns |      5.766 ns |      4.815 ns |     299.16 ns |      88 B |    
+    |                                     Method |         Mean |   Gen0 |   Gen1 | Allocated |
+    |------------------------------------------- |-------------:|-------:|-------:|----------:|
+    | ObjectMapper_New_Mapper_Explicit_Configure | 773,364.1 ns | 3.9063 | 1.9531 |   34451 B |
+    | ObjectMapper_New_Mapper_Implicit_Configure | 569,549.5 ns | 4.8828 | 3.9063 |   34372 B |
+    |   ObjectMapper_PreConfigured_Create_Target |     279.6 ns | 0.0367 |      - |     232 B |
+    |   ObjectMapper_PreConfigured_CopyTo_Target |     264.8 ns | 0.0305 |      - |     192 B |
      */
 
     [MemoryDiagnoser(true)]
     [HideColumns("Error", "StdDev", "Median")]
     //[SimpleJob(RuntimeMoniker.NetCoreApp31)]
     //[SimpleJob(RuntimeMoniker.Net50)]
-    [SimpleJob(RuntimeMoniker.Net60)]
+    //[SimpleJob(RuntimeMoniker.Net60)]
+    //[SimpleJob(RuntimeMoniker.Net70)]
     public class MappingTests
     {
 #if AUTOMAPPER

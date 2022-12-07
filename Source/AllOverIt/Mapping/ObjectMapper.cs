@@ -351,12 +351,7 @@ namespace AllOverIt.Mapping
 
         private object CreateType(Type type)
         {
-            if (!_configuration._typeFactory.TryGet(type, out var factory))
-            {
-                factory = type.GetFactory();
-
-                _configuration._typeFactory.Add(type, factory);
-            }
+            var factory = _configuration._typeFactory.GetOrAdd(type, type.GetFactory());
 
             return factory.Invoke();
         }

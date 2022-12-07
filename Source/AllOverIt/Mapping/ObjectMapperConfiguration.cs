@@ -39,10 +39,7 @@ namespace AllOverIt.Mapping
 
             if (configure is not null)
             {
-                var typedMatcherOptions = new TypedPropertyMatcherOptions<TSource, TTarget>((sourceType, targetType, factory) =>
-                {
-                    _typeFactory.Add(sourceType, targetType, factory);
-                });
+                var typedMatcherOptions = new TypedPropertyMatcherOptions<TSource, TTarget>(_typeFactory.Add);
 
                 configure.Invoke(typedMatcherOptions);
 

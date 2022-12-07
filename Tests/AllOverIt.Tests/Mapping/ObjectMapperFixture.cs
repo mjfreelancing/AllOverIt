@@ -1,18 +1,17 @@
-﻿using AllOverIt.Fixture;
+﻿using AllOverIt.Extensions;
+using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Mapping;
 using AllOverIt.Mapping.Exceptions;
+using AllOverIt.Mapping.Extensions;
 using AllOverIt.Reflection;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using AllOverIt.Extensions;
-using Xunit;
-using AllOverIt.Mapping.Extensions;
 using System.Collections.ObjectModel;
-using AllOverIt.Fixture.Extensions;
-
+using System.Linq;
+using System.Threading.Tasks;
+using Xunit;
 using static AllOverIt.Tests.Mapping.ObjectMapperTypes;
 
 namespace AllOverIt.Tests.Mapping
@@ -173,7 +172,7 @@ namespace AllOverIt.Tests.Mapping
                 objectMapper._configuration.Options.AllowNullCollections.Should().Be(allowNullCollections);
 
                 actual.Should().NotBeNull();
-               
+
                 actual.TryGetMapper(typeof(DummySource1), typeof(DummyTarget), out var mapper).Should().BeTrue();
 
                 var actualMatches = GetMatchesNameAndType(mapper.Matches);
@@ -304,6 +303,50 @@ namespace AllOverIt.Tests.Mapping
             }
 
             [Fact]
+            public async Task Should_Default_Map_In_Multiple_Threads()
+            {
+                var configuration = GetCommonMapperConfiguration();
+
+                var mapper = new ObjectMapper(configuration);
+
+                var expected = new
+                {
+                    _source1.Prop1,
+                    Prop2 = default(int),
+                    _source1.Prop3,
+                    _source1.Prop4,
+                    _source1.Prop5,
+                    _source1.Prop6,
+                    Prop7b = default(string),
+                    Prop8 = default(int),
+                    _source1.Prop9,
+                    Prop10 = default(IEnumerable<string>),
+                    Prop11 = default(IReadOnlyCollection<string>),
+                    Prop12 = (int) _source1.Prop12,
+                    Prop13 = (DummyEnum) _source1.Prop13
+                };
+
+                var tasks = Enumerable
+                    .Range(1, 100)
+                    .Select(_ =>
+                    {
+                        return Task.Run(() =>
+                        {
+                            return mapper.Map<DummyTarget>(_source1);
+                        });
+                    });
+
+                var results = await Task.WhenAll(tasks).ConfigureAwait(false);
+
+                foreach (var actual in results)
+                {
+                    expected
+                        .Should()
+                        .BeEquivalentTo(actual);
+                }
+            }
+
+            [Fact]
             public void Should_Map_Using_Filter()
             {
                 var configuration = new ObjectMapperConfiguration();
@@ -313,7 +356,7 @@ namespace AllOverIt.Tests.Mapping
                     options.Filter = propInfo =>
                         !new[] { nameof(DummySource2.Prop10), nameof(DummySource2.Prop8), nameof(DummySource2.Prop11) }.Contains(propInfo.Name);
 
-                    options.WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value);                    
+                    options.WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value);
                 });
 
                 var mapper = new ObjectMapper(configuration);
@@ -357,7 +400,7 @@ namespace AllOverIt.Tests.Mapping
                     options
                         .WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value)
                         .Exclude(src => src.Prop10)
-                        .Exclude(src => src.Prop11);                    
+                        .Exclude(src => src.Prop11);
                 });
 
                 var mapper = new ObjectMapper(configuration);
@@ -539,7 +582,7 @@ namespace AllOverIt.Tests.Mapping
                     _source2.Prop10,
                     Prop11 = default(IReadOnlyCollection<string>),
                     Prop12 = (int) _source2.Prop12,
-                    Prop13 = default (DummyEnum)
+                    Prop13 = default(DummyEnum)
                 };
 
                 expected.Should().BeEquivalentTo(actual);
@@ -687,6 +730,90 @@ namespace AllOverIt.Tests.Mapping
                 };
 
                 expected.Should().BeEquivalentTo(actual);
+            }
+
+            [Fact]
+            public async Task Should_Deep_Clone_Nested_Properties_In_Multiple_Threads()
+            {
+                var configuration = new ObjectMapperConfiguration();
+
+                configuration.Configure<DummyRootParentSource, DummyRootParentTarget>(opt =>
+                {
+                    opt.DeepCopy(src => src.RootA);
+                });
+
+                var mapper = new ObjectMapper(configuration);
+
+                var source = new DummyRootParentSource();
+
+                var expected = new
+                {
+                    RootA = new
+                    {
+                        Prop1 = source.RootA.Prop1,
+                        Prop2a = new
+                        {
+                            Prop2 = source.RootA.Prop2a.Prop2,
+                            Prop3 = source.RootA.Prop2a.Prop3
+                        },
+                        Prop2b = new
+                        {
+                            Prop2 = source.RootA.Prop2b.Prop2,
+                            Prop3 = source.RootA.Prop2b.Prop3
+                        }
+                    },
+                    RootB = new
+                    {
+                        Prop1 = source.RootB.Prop1,
+                        Prop2a = new
+                        {
+                            Prop2 = source.RootB.Prop2a.Prop2,
+                            Prop3 = source.RootB.Prop2a.Prop3
+                        },
+                        Prop2b = new
+                        {
+                            Prop2 = source.RootB.Prop2b.Prop2,
+                            Prop3 = source.RootB.Prop2b.Prop3
+                        }
+                    },
+                    RootC = new
+                    {
+                        Prop1 = source.RootC.Prop1,
+                        Prop2a = new
+                        {
+                            Prop2 = source.RootC.Prop2a.Prop2,
+                            Prop3 = source.RootC.Prop2a.Prop3
+                        },
+                        Prop2b = new
+                        {
+                            Prop2 = source.RootC.Prop2b.Prop2,
+                            Prop3 = source.RootC.Prop2b.Prop3
+                        }
+                    }
+                };
+
+                // Testing a single mapper used across multiple threads
+                var tasks = Enumerable
+                    .Range(1, 100)
+                    .Select(_ =>
+                    {
+                        return Task.Run(() =>
+                        {
+                            return mapper.Map<DummyRootParentTarget>(source);
+                        });
+                    });
+
+                var results = await Task.WhenAll(tasks).ConfigureAwait(false);
+
+                foreach (var actual in results)
+                {
+                    actual.RootA.Should().NotBeSameAs(source.RootA);                // deep cloned
+                    actual.RootA.Prop2a.Should().NotBeSameAs(source.RootA.Prop2a);  // deep cloned
+                    actual.RootB.Should().NotBeSameAs(source.RootB);                // source and target types are different
+                    actual.RootC.Should().BeSameAs(source.RootC);                   // not deep cloned
+
+                    expected.Should().BeEquivalentTo(actual);
+                }
             }
 
             [Fact]
@@ -1709,6 +1836,130 @@ namespace AllOverIt.Tests.Mapping
                     .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
                 expected.Should().BeEquivalentTo(actual.Prop2);
+            }
+        }
+
+        public class Functional : ObjectMapperFixture
+        {
+            [Fact]
+            public async void Should_Implicit_Configure_In_Different_Threads()
+            {
+                var objectMapper = new ObjectMapper();
+
+                var task1 = Task.Run(() =>
+                {
+                    var source = Create<DummySource1>();
+
+                    var target = objectMapper.Map<DummySource1>(source);
+
+                    target.Should().BeEquivalentTo(source);
+                });
+
+                var task2 = Task.Run(() =>
+                {
+                    var source = Create<DummySource2>();
+
+                    var target = objectMapper.Map<DummySource2>(source);
+
+                    target.Should().BeEquivalentTo(source);
+                });
+
+                var task3 = Task.Run(() =>
+                {
+                    var source = Create<DummySource1>();
+
+                    var target = objectMapper.Map<DummySource2>(source);
+
+                    target.Should().BeEquivalentTo(source);
+                });
+
+                var task4 = Task.Run(() =>
+                {
+                    var source = Create<DummySource2>();
+
+                    var target = objectMapper.Map<DummySource1>(source);
+
+                    target
+                        .Should()
+                        .BeEquivalentTo(source, opt => opt.Excluding(subject => subject.Prop10)
+                                                           .Excluding(subject => subject.Prop11));
+                });
+
+                var task5 = Task.Run(() =>
+                {
+                    var source = Create<DummyRootGrandChildSource>();
+
+                    var target = objectMapper.Map<DummyRootGrandChildSource>(source);
+
+                    target.Should().BeEquivalentTo(source);
+                });
+
+                var task6 = Task.Run(() =>
+                {
+                    var source = Create<DummyRootGrandChildTarget>();
+
+                    var target = objectMapper.Map<DummyRootGrandChildTarget>(source);
+
+                    target.Should().BeEquivalentTo(source);
+                });
+
+                var task7 = Task.Run(() =>
+                {
+                    var source = Create<DummyRootChildSource>();
+
+                    var target = objectMapper.Map<DummyRootChildSource>(source);
+
+                    target.Should().BeEquivalentTo(source);
+                });
+
+                var task8 = Task.Run(() =>
+                {
+                    var source = Create<DummyRootParentSource>();
+
+                    var target = objectMapper.Map<DummyRootParentSource>(source);
+
+                    target.Should().BeEquivalentTo(source);
+                });
+
+                var task9 = Task.Run(() =>
+                {
+                    var source = Create<DummyConcrete1>();
+
+                    var target = objectMapper.Map<DummyConcrete1>(source);
+
+                    target.Should().BeEquivalentTo(source);
+                });
+
+                var task10 = Task.Run(() =>
+                {
+                    var source = Create<DummyConcrete2>();
+
+                    var target = objectMapper.Map<DummyConcrete2>(source);
+
+                    target.Should().BeEquivalentTo(source);
+                });
+
+                var task11 = Task.Run(() =>
+                {
+                    var source = Create<DummyConcrete1>();
+
+                    var target = objectMapper.Map<DummyConcrete2>(source);
+
+                    target.Should().BeEquivalentTo(source);
+                });
+
+                var task12 = Task.Run(() =>
+                {
+                    var source = Create<DummyConcrete2>();
+
+                    var target = objectMapper.Map<DummyConcrete1>(source);
+
+                    target.Should().BeEquivalentTo(source);
+                });
+
+                await Task
+                    .WhenAll(task1, task2, task3, task4, task5, task6, task7, task8, task9, task10, task11, task12)
+                    .ConfigureAwait(false);
             }
         }
 
