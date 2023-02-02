@@ -6,6 +6,7 @@ using System.IO;
 using System.Threading.Tasks;
 using AllOverIt.Assertion;
 using AllOverIt.Extensions;
+using System.Threading;
 
 namespace AllOverIt.Csv
 {
@@ -60,27 +61,67 @@ namespace AllOverIt.Csv
         }
 
         /// <inheritdoc />
-        public async Task SerializeAsync(TextWriter writer, IEnumerable<TCsvData> data, bool includeHeader = true)
+        public async Task SerializeAsync(TextWriter writer, IEnumerable<TCsvData> data, bool includeHeader = true, bool leaveOpen = false,
+            CancellationToken cancellationToken = default)
         {
             _ = writer.WhenNotNull(nameof(writer));
-            var csvData = data.WhenNotNull(nameof(data)).AsReadOnlyCollection();
+            _ = data.WhenNotNull(nameof(data));
 
-            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            // Prepares the writer, streams the header (if required), and then calls back to stream the data
+            await SerializeDataAsync(
+                writer,
+                async csv =>
+                {
+                    foreach (var row in data)
+                    {
+                        await WriteRowAsync(row, csv, cancellationToken).ConfigureAwait(false);
+                    }
+                },
+                includeHeader,
+                leaveOpen,
+                cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task SerializeAsync(TextWriter writer, IAsyncEnumerable<TCsvData> data, bool includeHeader = true, bool leaveOpen = false,
+            CancellationToken cancellationToken = default)
+        {
+            _ = writer.WhenNotNull(nameof(writer));
+            _ = data.WhenNotNull(nameof(data));
+
+            // Prepares the writer, streams the header (if required), and then calls back to stream the data
+            await SerializeDataAsync(
+                writer, async csv =>
+                {
+                    await foreach (var row in data.WithCancellation(cancellationToken).ConfigureAwait(false))
+                    {
+                        await WriteRowAsync(row, csv, cancellationToken).ConfigureAwait(false);
+                    }
+                },
+                includeHeader,
+                leaveOpen,
+                cancellationToken).ConfigureAwait(false);
+        }
+
+        private async Task SerializeDataAsync(TextWriter writer, Func<CsvWriter, Task> action, bool includeHeader, bool leaveOpen, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture, leaveOpen))
             {
                 if (includeHeader)
                 {
-                    await WriteHeaderAsync(csv).ConfigureAwait(false);
+                    await WriteHeaderAsync(csv, cancellationToken).ConfigureAwait(false);
                 }
 
-                foreach (var row in csvData)
-                {
-                    await WriteRowAsync(row, csv).ConfigureAwait(false);
-                }
+                await action.Invoke(csv).ConfigureAwait(false);
             }
         }
 
-        private Task WriteHeaderAsync(IWriter csv)
+        private Task WriteHeaderAsync(IWriter csv, CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             foreach (var item in _fieldResolvers)
             {
                 foreach (var headerName in item.HeaderNames)
@@ -92,8 +133,10 @@ namespace AllOverIt.Csv
             return csv.NextRecordAsync();
         }
 
-        private async Task WriteRowAsync(TCsvData data, IWriter csv)
+        private async Task WriteRowAsync(TCsvData data, IWriter csv, CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             foreach (var item in _fieldResolvers)
             {
                 var values = item.GetValues(data);

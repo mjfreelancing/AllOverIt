@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FakeItEasy;
 using Xunit;
+using System.Threading;
 
 namespace AllOverIt.Csv.Tests
 {
@@ -284,7 +285,7 @@ namespace AllOverIt.Csv.Tests
             }
         }
 
-        public class SerializeAsync : CsvSerializerFixture
+        public class SerializeAsync_Enumerable : CsvSerializerFixture
         {
             [Fact]
             public async Task Should_Throw_When_Writer_Null()
@@ -303,7 +304,7 @@ namespace AllOverIt.Csv.Tests
             {
                 await Invoking(async () =>
                     {
-                        await _serializer.SerializeAsync(A.Fake<TextWriter>(), null);
+                        await _serializer.SerializeAsync(A.Fake<TextWriter>(), (IEnumerable<SampleDataDummy>) null);
                     })
                     .Should()
                     .ThrowAsync<ArgumentNullException>()
@@ -331,6 +332,147 @@ namespace AllOverIt.Csv.Tests
 
                 expected.Should().Be(actual);
             }
+
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public async Task Should_Leave_Writer_Open(bool withHeader)
+            {
+                var sampleData = CreateSampleDataWithNames();
+                var batches = sampleData.Batch(2).AsReadOnlyCollection();
+                var batchCount = batches.Count;
+
+                _serializer.AddField(nameof(SampleDataDummy.Name), data => data.Name);
+
+                string actual;
+
+                using (var writer = new StringWriter())
+                {
+                    await batches.ForEachAsync(async (batch, index) =>
+                    {
+                        var leaveOpen = index != batchCount - 1;
+                        await _serializer.SerializeAsync(writer, batch, withHeader && index == 0, leaveOpen);
+                    });
+
+                    actual = writer.ToString();
+                }
+
+                var expected = GetExpectedOutputForDataWithNames(sampleData, withHeader);
+
+                expected.Should().Be(actual);
+            }
+
+            [Fact]
+            public async Task Should_Cancel()
+            {
+                await Invoking(async () =>
+                {
+                    var cts = new CancellationTokenSource();
+                    cts.Cancel();
+
+                    using (var writer = new StringWriter())
+                    {
+                        await _serializer.SerializeAsync(writer, CreateMany<SampleDataDummy>(), cancellationToken: cts.Token);
+                    }
+                })
+                .Should()
+                .ThrowAsync<OperationCanceledException>();
+            }
+        }
+
+        public class SerializeAsync_AsyncEnumerable : CsvSerializerFixture
+        {
+            [Fact]
+            public async Task Should_Throw_When_Writer_Null()
+            {
+                await Invoking(async () =>
+                {
+                    await _serializer.SerializeAsync(null, AsAsyncEnumerable(CreateMany<SampleDataDummy>()));
+                })
+                    .Should()
+                    .ThrowAsync<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("writer");
+            }
+
+            [Fact]
+            public async Task Should_Throw_When_Data_Null()
+            {
+                await Invoking(async () =>
+                {
+                    await _serializer.SerializeAsync(A.Fake<TextWriter>(), (IAsyncEnumerable<SampleDataDummy>) null);
+                })
+                    .Should()
+                    .ThrowAsync<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("data");
+            }
+
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public async Task Should_Serialize_Data(bool withHeader)
+            {
+                var sampleData = CreateSampleDataWithNames();
+
+                _serializer.AddField(nameof(SampleDataDummy.Name), data => data.Name);
+
+                string actual;
+
+                using (var writer = new StringWriter())
+                {
+                    await _serializer.SerializeAsync(writer, AsAsyncEnumerable(sampleData), withHeader);
+                    actual = writer.ToString();
+                }
+
+                var expected = GetExpectedOutputForDataWithNames(sampleData, withHeader);
+
+                expected.Should().Be(actual);
+            }
+
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public async Task Should_Leave_Writer_Open(bool withHeader)
+            {
+                var sampleData = CreateSampleDataWithNames();
+                var batches = sampleData.Batch(2).AsReadOnlyCollection();
+                var batchCount = batches.Count;
+
+                _serializer.AddField(nameof(SampleDataDummy.Name), data => data.Name);
+
+                string actual;
+
+                using (var writer = new StringWriter())
+                {
+                    await batches.ForEachAsync(async (batch, index) =>
+                    {
+                        var leaveOpen = index != batchCount - 1;
+                        await _serializer.SerializeAsync(writer, AsAsyncEnumerable(batch), withHeader && index == 0, leaveOpen);
+                    });
+
+                    actual = writer.ToString();
+                }
+
+                var expected = GetExpectedOutputForDataWithNames(sampleData, withHeader);
+
+                expected.Should().Be(actual);
+            }
+
+            [Fact]
+            public async Task Should_Cancel()
+            {
+                await Invoking(async () =>
+                {
+                    var cts = new CancellationTokenSource();
+                    cts.Cancel();
+
+                    using (var writer = new StringWriter())
+                    {
+                        await _serializer.SerializeAsync(writer, AsAsyncEnumerable(CreateMany<SampleDataDummy>()), cancellationToken: cts.Token);
+                    }
+                })
+                .Should()
+                .ThrowAsync<OperationCanceledException>();
+            }
         }
 
         private IReadOnlyCollection<SampleDataDummy> CreateSampleDataWithNames()
@@ -355,6 +497,16 @@ namespace AllOverIt.Csv.Tests
             }
 
             return sb.ToString();
+        }
+
+        private static async IAsyncEnumerable<SampleDataDummy> AsAsyncEnumerable(IEnumerable<SampleDataDummy> items)
+        {
+            foreach (var item in items)
+            {
+                yield return item;
+            }
+
+            await Task.CompletedTask;
         }
     }
 }

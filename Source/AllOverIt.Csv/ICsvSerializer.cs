@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AllOverIt.Csv
@@ -27,7 +28,18 @@ namespace AllOverIt.Csv
         /// <param name="writer">Writes the exported data to CSV format.</param>
         /// <param name="data">The data to be exported.</param>
         /// <param name="includeHeader">Indicates if the header names are to be exported.</param>
+        /// <param name="leaveOpen">Indicates if the <paramref name="writer"/> should be left open after writing the data.</param>
         /// <returns>A task that completes when the export is completed.</returns>
-        Task SerializeAsync(TextWriter writer, IEnumerable<TCsvData> data, bool includeHeader = true);
+        Task SerializeAsync(TextWriter writer, IEnumerable<TCsvData> data, bool includeHeader = true, bool leaveOpen = false,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>Serializes data to CSV format.</summary>
+        /// <param name="writer">Writes the exported data to CSV format.</param>
+        /// <param name="data">The data to be exported.</param>
+        /// <param name="includeHeader">Indicates if the header names are to be exported.</param>
+        /// <param name="leaveOpen">Indicates if the <paramref name="writer"/> should be left open after writing the data.</param>
+        /// <returns>A task that completes when the export is completed.</returns>
+        Task SerializeAsync(TextWriter writer, IAsyncEnumerable<TCsvData> data, bool includeHeader = true, bool leaveOpen = false,
+            CancellationToken cancellationToken = default);
     }
 }
