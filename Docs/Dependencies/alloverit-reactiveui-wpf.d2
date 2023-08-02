@@ -1,0 +1,26 @@
+direction: left
+
+aoi: AllOverIt
+aoi.alloverit-reactiveui-wpf: AllOverIt.ReactiveUI.Wpf
+aoi.alloverit-reactiveui: AllOverIt.ReactiveUI
+microsoft-extensions-dependencyinjection-abstractions_7-0-0: Microsoft.Extensions.DependencyInjection.Abstractions\nv7.0.0
+microsoft-extensions-dependencyinjection-abstractions_7-0-0.style.fill: "#ADD8E6"
+microsoft-extensions-dependencyinjection-abstractions_7-0-0.style.opacity: 0.8
+microsoft-extensions-dependencyinjection-abstractions_7-0-0 <- aoi.alloverit-reactiveui
+reactiveui_19-4-1: ReactiveUI\nv19.4.1
+reactiveui_19-4-1.style.fill: "#ADD8E6"
+reactiveui_19-4-1.style.opacity: 0.8
+dynamicdata_7-14-2: DynamicData\nv7.14.2
+dynamicdata_7-14-2.style.fill: "#FFEC96"
+dynamicdata_7-14-2.style.opacity: 0.8
+dynamicdata_7-14-2 <- reactiveui_19-4-1
+splat_14-6-37: Splat\nv14.6.37
+splat_14-6-37.style.fill: "#FFEC96"
+splat_14-6-37.style.opacity: 0.8
+splat_14-6-37 <- reactiveui_19-4-1
+reactiveui_19-4-1 <- aoi.alloverit-reactiveui
+aoi.alloverit: AllOverIt
+aoi.alloverit-assertion: AllOverIt.Assertion
+aoi.alloverit-assertion <- aoi.alloverit
+aoi.alloverit <- aoi.alloverit-reactiveui
+aoi.alloverit-reactiveui <- aoi.alloverit-reactiveui-wpf

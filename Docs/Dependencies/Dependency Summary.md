@@ -392,6 +392,26 @@
 
 <br>
 
+## AllOverIt.ReactiveUI.Wpf
+
+![](https://img.shields.io/badge/.NET-7.0--windows-55A9EE.svg) ![](https://img.shields.io/badge/.NET-6.0--windows-FF8C67.svg)
+
+### Dependencies
+
+* AllOverIt
+* AllOverIt.Assertion
+* AllOverIt.ReactiveUI
+* DynamicData v7.14.2
+* Microsoft.Extensions.DependencyInjection.Abstractions v7.0.0
+* ReactiveUI v19.4.1
+* Splat v14.6.37
+
+<br>
+
+---
+
+<br>
+
 ## AllOverIt.Serialization.Binary
 
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg) ![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
