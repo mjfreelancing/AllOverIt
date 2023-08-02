@@ -105,12 +105,16 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
             return endpointSource switch
             {
                 EndpointSource.Explicit => endpointKey,
+                
                 EndpointSource.ImportValue => Fn.ImportValue(endpointKey),
-                EndpointSource.EnvironmentVariable => SystemEnvironment.GetEnvironmentVariable(endpointKey) ?? 
-                    throw new KeyNotFoundException($"Environment variable key '{endpointKey}' not found."),
-                EndpointSource.Lookup => _endpointLookup.ContainsKey(endpointKey) 
-                    ? _endpointLookup[endpointKey] 
+                
+                EndpointSource.EnvironmentVariable => SystemEnvironment.GetEnvironmentVariable(endpointKey)
+                    ?? throw new KeyNotFoundException($"Environment variable key '{endpointKey}' not found."),
+                
+                EndpointSource.Lookup => _endpointLookup.TryGetValue(endpointKey, out var lookupValue) 
+                    ? lookupValue
                     : throw new KeyNotFoundException($"Lookup key '{endpointKey}' not found."),
+
                 _ => throw new InvalidOperationException($"Unknown EndpointSource type '{endpointSource}'")
             };
         }

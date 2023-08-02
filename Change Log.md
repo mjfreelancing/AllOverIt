@@ -52,6 +52,7 @@
 
 ## AllOverIt.Aws.Cdk.Appsync
 * Updated from Amazon CDK v1 to Amazon.CDK.Lib v2
+* Added an EndpointSource of type "Lookup" that allows for custom values to be looked up when creating a HttpDataSource
 
 
 ## AllOverIt.Cryptography :new:
