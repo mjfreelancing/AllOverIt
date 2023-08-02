@@ -1,17 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>net7.0-windows;net6.0-windows</TargetFrameworks>
-      <Description>A library containing useful WPF controls.</Description>
-    <UseWPF>true</UseWPF>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFrameworks>net7.0-windows;net6.0-windows</TargetFrameworks>
+        <Description>A library containing useful WPF controls.</Description>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\AllOverIt\AllOverIt.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\AllOverIt\AllOverIt.csproj" />
+    </ItemGroup>
 
 </Project>

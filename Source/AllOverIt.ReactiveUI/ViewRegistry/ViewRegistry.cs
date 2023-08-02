@@ -1,8 +1,10 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
 using AllOverIt.ReactiveUI.Factories;
+using AllOverIt.ReactiveUI.ViewRegistry.Events;
 using ReactiveUI;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,18 +12,20 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
 {
     public abstract class ViewRegistry<TViewId> : IViewRegistry<TViewId>
     {
-        private class WindowRegistryItem
+        private class ViewRegistryItem
         {
+            private readonly Type _viewModelType;
             private readonly IViewHandler _viewHandler;
             private readonly IList<ViewItem<TViewId>> _viewItems = new List<ViewItem<TViewId>>();
 
-            public event EventHandler OnChange;     // raised when a view is added or removed
+            public event ViewRegistryEventHandler OnChange;     // raised when a view is added or removed
 
             public IReadOnlyCollection<ViewItem<TViewId>> Views => _viewItems.AsReadOnlyCollection();
             public int ViewCount => _viewItems.Count;
 
-            public WindowRegistryItem(IViewHandler viewHandler)
+            public ViewRegistryItem(Type viewModelType, IViewHandler viewHandler)
             {
+                _viewModelType = viewModelType.WhenNotNull(nameof(viewModelType));
                 _viewHandler = viewHandler.WhenNotNull(nameof(viewHandler));
             }
 
@@ -29,17 +33,19 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
             {
                 _ = view.WhenNotNull(nameof(view));
 
-                var viewItem = GetView(view, false);
+                _ = GetView(view, false);
                 
-                var vieItem = new ViewItem<TViewId>
+                var viewItem = new ViewItem<TViewId>
                 {
                     View = view,
                     Id = id
                 };
 
-                _viewItems.Add(vieItem);
+                _viewItems.Add(viewItem);
 
-                OnChange?.Invoke(this, EventArgs.Empty);
+                var eventArgs = new ViewRegistryEventArgs(_viewModelType, view);
+
+                OnChange?.Invoke(this, eventArgs);
             }
 
             // returns true if there is at least one view remaining
@@ -51,7 +57,9 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
 
                 _ = _viewItems.Remove(viewItem);
 
-                OnChange?.Invoke(this, EventArgs.Empty);
+                var eventArgs = new ViewRegistryEventArgs(_viewModelType, view);
+
+                OnChange?.Invoke(this, eventArgs);
 
                 return _viewItems.Count > 0;
             }
@@ -81,13 +89,13 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
             }
         }
 
-        private readonly IDictionary<Type, WindowRegistryItem> _viewCache = new Dictionary<Type, WindowRegistryItem>();
+        private readonly IDictionary<Type, ViewRegistryItem> _viewRegistry = new Dictionary<Type, ViewRegistryItem>();
         private readonly IViewFactory _viewFactory;
         private readonly IViewHandler _viewHandler;
 
-        public event EventHandler OnUpdate;     // raised when a view is added or removed
+        public event ViewRegistryEventHandler OnUpdate;     // raised when a view is added or removed
 
-        public bool IsEmpty => !_viewCache.Any();
+        public bool IsEmpty => !_viewRegistry.Any();
 
         protected ViewRegistry(IViewFactory viewFactory, IViewHandler viewHandler)
         {
@@ -97,28 +105,48 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
 
         public int GetViewCountFor<TViewModel>() where TViewModel : class
         {
+            return GetViewsFor<TViewModel>().Count;
+        }
+
+        public int GetViewCountFor(Type viewModelType)
+        {
+            return GetViewsFor(viewModelType).Count;
+        }
+
+        public IReadOnlyCollection<Type> GetViewModelTypes()
+        {
+            return _viewRegistry.Keys.AsReadOnlyCollection();
+        }
+
+        public IReadOnlyCollection<ViewItem<TViewId>> GetViewsFor<TViewModel>() where TViewModel : class
+        {
             var viewModelType = typeof(TViewModel);
 
-            if (!_viewCache.TryGetValue(viewModelType, out var cacheItem))
+            return GetViewsFor(viewModelType);
+        }
+
+        public IReadOnlyCollection<ViewItem<TViewId>> GetViewsFor(Type viewModelType)
+        {
+            if (!_viewRegistry.TryGetValue(viewModelType, out var registryItem))
             {
-                return 0;
+                return Collections.Collection.EmptyReadOnly<ViewItem<TViewId>>();
             }
 
-            return cacheItem.ViewCount;
+            return registryItem.Views;
         }
 
         public void CreateOrActivateFor<TViewModel>(int maxCount, Func<IReadOnlyCollection<ViewItem<TViewId>>, TViewId> nextViewId,
-            Action<TViewModel> configure = default) where TViewModel : class
+            Action<TViewModel, TViewId> configure = default) where TViewModel : class
         {
             _ = nextViewId.WhenNotNull(nameof(nextViewId));
 
             var viewModelType = typeof(TViewModel);
 
             // If the view model type already exists and the maximum number of views is already present then just restore them all.
-            if (_viewCache.TryGetValue(viewModelType, out var cacheItem) && cacheItem.ViewCount >= maxCount)
+            if (_viewRegistry.TryGetValue(viewModelType, out var registryItem) && registryItem.ViewCount >= maxCount)
             {
                 // Activate all instances of this view type.
-                cacheItem.ActivateAll();
+                registryItem.ActivateAll();
 
                 return;
             }
@@ -127,43 +155,75 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
             var view = _viewFactory.CreateViewFor<TViewModel>();
             var viewModel = view.ViewModel;
 
-            configure?.Invoke(viewModel);
-
             // If there were no instances of the view then create the initial cache item.
-            if (cacheItem is null)
+            if (registryItem is null)
             {
-                cacheItem = new WindowRegistryItem(_viewHandler);
+                registryItem = new ViewRegistryItem(viewModelType, _viewHandler);
 
-                cacheItem.OnChange += OnCacheItemUpdate;
+                registryItem.OnChange += OnCacheItemUpdate;
 
-                _viewCache.Add(viewModelType, cacheItem);
+                _viewRegistry.Add(viewModelType, registryItem);
             }
 
-            var viewId = nextViewId.Invoke(cacheItem.Views);
+            var viewId = nextViewId.Invoke(registryItem.Views);
 
-            cacheItem.AddView(view, viewId);
+            configure?.Invoke(viewModel, viewId);
 
-            void OnViewClosedHandler(object sender, EventArgs eventArgs)
-            {
-                _viewHandler.SetOnClosedHandler(view, OnViewClosedHandler, false);
-
-                // Remove the window instance and if there's no more instances then remove the view type from the cache.
-                if (!cacheItem.RemoveView(view))
-                {
-                    cacheItem.OnChange -= OnCacheItemUpdate;
-
-                    _viewCache.Remove(viewModelType);
-                }
-            }
+            registryItem.AddView(view, viewId);
 
             _viewHandler.SetOnClosedHandler(view, OnViewClosedHandler, true);
 
             _viewHandler.Show(view);
         }
 
+        public IEnumerator<ViewModelViewItem<TViewId>> GetEnumerator()
+        {
+            foreach (var kvp in _viewRegistry)
+            {
+                var viewModelType = kvp.Key;
+
+                foreach (var view in kvp.Value.Views)
+                {
+                    yield return new ViewModelViewItem<TViewId>
+                    {
+                        ViewModelType = viewModelType,
+                        View = view.View,
+                        Id = view.Id
+                    };
+                }
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        private void OnViewClosedHandler(object sender, EventArgs eventArgs)
+        {
+            var view = sender as IViewFor;
+
+            _viewHandler.SetOnClosedHandler(view, OnViewClosedHandler, false);
+
+            var viewModelType = view.GetType().BaseType.GenericTypeArguments[0];
+
+            if (!_viewRegistry.TryGetValue(viewModelType, out var registryItem))
+            {
+                throw new InvalidOperationException("Did not find the required view in the registry.");
+            }
+
+            // Remove the window instance and if there's no more instances then remove the view type from the cache.
+            if (!registryItem.RemoveView(view))
+            {
+                registryItem.OnChange -= OnCacheItemUpdate;
+
+                _viewRegistry.Remove(viewModelType);
+            }
+        }
+
         private void OnCacheItemUpdate(object sender, EventArgs eventArgs)
         {
-            OnUpdate?.Invoke(sender, eventArgs);
+            OnUpdate?.Invoke(sender, eventArgs as ViewRegistryEventArgs);
         }
     }
 }

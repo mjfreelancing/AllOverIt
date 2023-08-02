@@ -10,7 +10,7 @@ namespace AesRsaHybridEncryptionDemo
 {
     internal class Program
     {
-        private const string _plainText = """
+        private const string PlainText = """
             Using an RSA key with a size of 3072 bits offers a level of security roughly equivalent
             to that of a 128-bit symmetric key.
             
@@ -89,10 +89,10 @@ namespace AesRsaHybridEncryptionDemo
 
             logger.WriteLine(ConsoleColor.White, "The phrase to be processed is:");
 
-            logger.WriteLine(ConsoleColor.Yellow, _plainText);
+            logger.WriteLine(ConsoleColor.Yellow, PlainText);
 
             // This extension method uses RsaAesHybridEncryptor.Encrypt(byte[], buyte[]).
-            var encryptedBase64 = encryptor.EncryptPlainTextToBase64(_plainText);
+            var encryptedBase64 = encryptor.EncryptPlainTextToBase64(PlainText);
 
             logger.WriteLine();
             logger.WriteLine(ConsoleColor.White, "Encrypted using RSA-AES (random Key and IV):");

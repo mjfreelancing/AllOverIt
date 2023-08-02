@@ -122,7 +122,11 @@
 ## AllOverIt.ReactiveUI
 * Added support for a `ReactiveCommand` based pipeline (with support for chaining other sync / async pipeline steps)
 * Added ReactiveProxy
-* Added ViewRegistry so multiple view instances of the same view model type can be tracked
+* Added ViewRegistry so multiple view instances of various viewmodel types can be created and tracked
+
+
+## AllOverIt.ReactiveUI.Wpf :new:
+* Added WpfViewHandler for use with ViewRegistry in AllOverIt.ReactiveUI
 
 
 ## AllOverIt.Serialization.Binary :new:
