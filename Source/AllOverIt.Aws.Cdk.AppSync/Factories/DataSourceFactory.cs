@@ -15,10 +15,12 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
         private readonly IDictionary<string, BaseDataSource> _dataSourceCache = new Dictionary<string, BaseDataSource>();
 
         private readonly IGraphqlApi _graphQlApi;
+        private readonly IReadOnlyDictionary<string, string> _endpointLookup;
 
-        public DataSourceFactory(IGraphqlApi graphQlApi)
+        public DataSourceFactory(IGraphqlApi graphQlApi, IReadOnlyDictionary<string, string> endpointLookup)
         {
             _graphQlApi = graphQlApi.WhenNotNull(nameof(graphQlApi));
+            _endpointLookup = endpointLookup ?? new Dictionary<string, string>();
         }
 
         public BaseDataSource CreateDataSource(DataSourceAttribute attribute)
@@ -98,13 +100,17 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
             });
         }
 
-        private static string GetHttpEndpoint(EndpointSource endpointSource, string endpointKey)
+        private string GetHttpEndpoint(EndpointSource endpointSource, string endpointKey)
         {
             return endpointSource switch
             {
                 EndpointSource.Explicit => endpointKey,
                 EndpointSource.ImportValue => Fn.ImportValue(endpointKey),
-                EndpointSource.EnvironmentVariable => SystemEnvironment.GetEnvironmentVariable(endpointKey) ?? string.Empty,
+                EndpointSource.EnvironmentVariable => SystemEnvironment.GetEnvironmentVariable(endpointKey) ?? 
+                    throw new KeyNotFoundException($"Environment variable key '{endpointKey}' not found."),
+                EndpointSource.Lookup => _endpointLookup.ContainsKey(endpointKey) 
+                    ? _endpointLookup[endpointKey] 
+                    : throw new KeyNotFoundException($"Lookup key '{endpointKey}' not found."),
                 _ => throw new InvalidOperationException($"Unknown EndpointSource type '{endpointSource}'")
             };
         }

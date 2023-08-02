@@ -23,5 +23,10 @@
         {
             internal const string GetCountriesUrlImportName = "GetCountriesImport";
         }
+
+        internal static class Lookup
+        {
+            internal const string GetCountriesUrlKey = "GetCountriesLookup";
+        }
     }
 }

@@ -29,7 +29,7 @@ namespace GraphqlSchema.Schema.Types.Globe
         ICountry[] Countries();
 
         // sharing this http datasource - just for testing the schema generator
-        [HttpDataSource(EndpointSource.ImportValue, Constants.Import.GetCountriesUrlImportName, typeof(ContinentsCountryCodesMapping))]
+        [HttpDataSource(EndpointSource.Lookup, Constants.Lookup.GetCountriesUrlKey, typeof(ContinentsCountryCodesMapping))]
 
 #if DEBUG   // Using RELEASE mode to deploy without these (DEBUG mode is used to check Synth output)
         [AuthIamDirective]

@@ -33,7 +33,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
             mappingTemplates ??= new MappingTemplates();
             mappingTypeFactory ??= new MappingTypeFactory();
 
-            var dataSourceFactory = new DataSourceFactory(this);
+            var dataSourceFactory = new DataSourceFactory(this, apiProps.EndpointLookup);
 
             var schema = apiProps.GetCodeFirstSchema();
 

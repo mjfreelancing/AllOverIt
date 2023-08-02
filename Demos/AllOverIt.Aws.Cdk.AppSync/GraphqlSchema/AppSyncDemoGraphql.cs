@@ -79,6 +79,10 @@ namespace GraphqlSchema
                         }
                     }
 #endif
+                },
+                EndpointLookup = new Dictionary<string, string>
+                {
+                    [Constants.Lookup.GetCountriesUrlKey] = Fn.ImportValue(Constants.Import.GetCountriesUrlImportName)
                 }
             };
         }
