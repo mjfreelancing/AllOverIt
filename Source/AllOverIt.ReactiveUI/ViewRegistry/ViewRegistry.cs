@@ -29,11 +29,8 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
             {
                 _ = view.WhenNotNull(nameof(view));
 
-                var viewItem = GetView(view);
+                var viewItem = GetView(view, false);
                 
-                // TODO: Custom exception
-                Throw<InvalidOperationException>.WhenNotNull(viewItem, "The view is already present in the view registry.");
-
                 var vieItem = new ViewItem<TViewId>
                 {
                     View = view,
@@ -50,7 +47,7 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
             {
                 _ = view.WhenNotNull(nameof(view));
 
-                var viewItem = GetView(view);
+                var viewItem = GetView(view, true);
 
                 _ = _viewItems.Remove(viewItem);
 
@@ -67,12 +64,18 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
                 }
             }
 
-            private ViewItem<TViewId> GetView(IViewFor view)
+            private ViewItem<TViewId> GetView(IViewFor view, bool shouldExist)
             {
                 var viewItem = _viewItems.SingleOrDefault(item => item.View == view);
 
                 // TODO: Custom exception
-                Throw<InvalidOperationException>.WhenNull(viewItem, "The view was not found in the view registry.");
+                Throw<InvalidOperationException>.When(
+                    !shouldExist && viewItem is not null,
+                    "The view is already present in the view registry.");
+
+                Throw<InvalidOperationException>.When(
+                    shouldExist && viewItem is null, 
+                    "The view was not found in the view registry.");
 
                 return viewItem;
             }
@@ -142,6 +145,8 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
 
             void OnViewClosedHandler(object sender, EventArgs eventArgs)
             {
+                _viewHandler.SetOnClosedHandler(view, OnViewClosedHandler, false);
+
                 // Remove the window instance and if there's no more instances then remove the view type from the cache.
                 if (!cacheItem.RemoveView(view))
                 {
@@ -151,7 +156,7 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
                 }
             }
 
-            _viewHandler.SetOnClosedHandler(view, OnViewClosedHandler);
+            _viewHandler.SetOnClosedHandler(view, OnViewClosedHandler, true);
 
             _viewHandler.Show(view);
         }

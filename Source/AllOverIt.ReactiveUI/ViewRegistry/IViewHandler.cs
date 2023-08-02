@@ -8,8 +8,10 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
     {
         void Activate(IViewFor view);
         void Show(IViewFor view);
-        void SetOnActivatedHandler(IViewFor view, EventHandler eventHandler);           // pass null to unregister
-        void SetOnDeactivatedHandler(IViewFor view, EventHandler eventHandler);         // pass null to unregister
-        void SetOnClosedHandler(IViewFor view, EventHandler eventHandler);              // pass null to unregister
+
+        // 'register' indicates whether the event handler is subscribing or unsubscribing
+        void SetOnActivatedHandler(IViewFor view, EventHandler eventHandler, bool register);
+        void SetOnDeactivatedHandler(IViewFor view, EventHandler eventHandler, bool register);
+        void SetOnClosedHandler(IViewFor view, EventHandler eventHandler, bool register);
     }
 }
