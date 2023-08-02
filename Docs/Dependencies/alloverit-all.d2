@@ -13,10 +13,27 @@ aoi.alloverit-aws-appsync-client: AllOverIt.Aws.AppSync.Client
 microsoft-extensions-dependencyinjection_7-0-0: Microsoft.Extensions.DependencyInjection\nv7.0.0
 microsoft-extensions-dependencyinjection_7-0-0.style.fill: "#ADD8E6"
 microsoft-extensions-dependencyinjection_7-0-0.style.opacity: 0.8
+microsoft-extensions-dependencyinjection-abstractions_7-0-0: Microsoft.Extensions.DependencyInjection.Abstractions\nv7.0.0
+microsoft-extensions-dependencyinjection-abstractions_7-0-0.style.opacity: 0.8
+microsoft-extensions-dependencyinjection-abstractions_7-0-0.style.fill: "#ADD8E6"
+microsoft-extensions-dependencyinjection-abstractions_7-0-0 <- microsoft-extensions-dependencyinjection_7-0-0
 microsoft-extensions-dependencyinjection_7-0-0 <- aoi.alloverit-aws-appsync-client
 microsoft-extensions-http_7-0-0: Microsoft.Extensions.Http\nv7.0.0
 microsoft-extensions-http_7-0-0.style.fill: "#ADD8E6"
 microsoft-extensions-http_7-0-0.style.opacity: 0.8
+microsoft-extensions-dependencyinjection-abstractions_7-0-0 <- microsoft-extensions-http_7-0-0
+microsoft-extensions-logging-abstractions_7-0-0: Microsoft.Extensions.Logging.Abstractions\nv7.0.0
+microsoft-extensions-logging-abstractions_7-0-0.style.fill: "#FFEC96"
+microsoft-extensions-logging-abstractions_7-0-0.style.opacity: 0.8
+microsoft-extensions-logging-abstractions_7-0-0 <- microsoft-extensions-http_7-0-0
+microsoft-extensions-logging_7-0-0: Microsoft.Extensions.Logging\nv7.0.0
+microsoft-extensions-logging_7-0-0.style.fill: "#FFEC96"
+microsoft-extensions-logging_7-0-0.style.opacity: 0.8
+microsoft-extensions-logging_7-0-0 <- microsoft-extensions-http_7-0-0
+microsoft-extensions-options_7-0-0: Microsoft.Extensions.Options\nv7.0.0
+microsoft-extensions-options_7-0-0.style.fill: "#FFEC96"
+microsoft-extensions-options_7-0-0.style.opacity: 0.8
+microsoft-extensions-options_7-0-0 <- microsoft-extensions-http_7-0-0
 microsoft-extensions-http_7-0-0 <- aoi.alloverit-aws-appsync-client
 aoi.alloverit-reactive: AllOverIt.Reactive
 system-reactive_6-0-0: System.Reactive\nv6.0.0
@@ -33,10 +50,44 @@ amazon-cdk-lib-group: ""
 amazon-cdk-lib-group.amazon-cdk-lib_2-87-0: Amazon.CDK.Lib\nv2.87.0
 amazon-cdk-lib-group.amazon-cdk-lib_2-87-0.style.fill: "#ADD8E6"
 amazon-cdk-lib-group.amazon-cdk-lib_2-87-0.style.opacity: 0.8
+amazon-cdk-asset-awscliv1_2-2-177: Amazon.CDK.Asset.AwsCliV1\nv2.2.177
+amazon-cdk-asset-awscliv1_2-2-177.style.fill: "#FFEC96"
+amazon-cdk-asset-awscliv1_2-2-177.style.opacity: 0.8
+amazon-cdk-asset-awscliv1_2-2-177 <- amazon-cdk-lib-group.amazon-cdk-lib_2-87-0
+amazon-cdk-asset-kubectlv20_2-1-1: Amazon.CDK.Asset.KubectlV20\nv2.1.1
+amazon-cdk-asset-kubectlv20_2-1-1.style.fill: "#FFEC96"
+amazon-cdk-asset-kubectlv20_2-1-1.style.opacity: 0.8
+amazon-cdk-asset-kubectlv20_2-1-1 <- amazon-cdk-lib-group.amazon-cdk-lib_2-87-0
+amazon-cdk-asset-nodeproxyagentv5_2-0-148: Amazon.CDK.Asset.NodeProxyAgentV5\nv2.0.148
+amazon-cdk-asset-nodeproxyagentv5_2-0-148.style.fill: "#FFEC96"
+amazon-cdk-asset-nodeproxyagentv5_2-0-148.style.opacity: 0.8
+amazon-cdk-asset-nodeproxyagentv5_2-0-148 <- amazon-cdk-lib-group.amazon-cdk-lib_2-87-0
+amazon-jsii-runtime-group: ""
+amazon-jsii-runtime-group.amazon-jsii-runtime_1-82-0: Amazon.JSII.Runtime\nv1.82.0
+amazon-jsii-runtime-group.amazon-jsii-runtime_1-82-0.style.fill: "#FFEC96"
+amazon-jsii-runtime-group.amazon-jsii-runtime_1-82-0.style.opacity: 0.8
+amazon-jsii-runtime-group.amazon-jsii-runtime_1-82-0 <- amazon-cdk-lib-group.amazon-cdk-lib_2-87-0
+constructs-group: ""
+constructs-group.constructs_10-0-0: Constructs\nv10.0.0
+constructs-group.constructs_10-0-0.style.fill: "#FFEC96"
+constructs-group.constructs_10-0-0.style.opacity: 0.8
+constructs-group.constructs_10-0-0 <- amazon-cdk-lib-group.amazon-cdk-lib_2-87-0
 amazon-cdk-lib-group.amazon-cdk-lib_2-87-0 <- aoi.alloverit-aws-cdk-appsync
 cdklabs-awscdkappsyncutils_0-0-152: Cdklabs.AwsCdkAppsyncUtils\nv0.0.152
 cdklabs-awscdkappsyncutils_0-0-152.style.fill: "#ADD8E6"
 cdklabs-awscdkappsyncutils_0-0-152.style.opacity: 0.8
+amazon-cdk-lib-group.amazon-cdk-lib_2-60-0: Amazon.CDK.Lib\nv2.60.0
+amazon-cdk-lib-group.amazon-cdk-lib_2-60-0.style.fill: "#FFEC96"
+amazon-cdk-lib-group.amazon-cdk-lib_2-60-0.style.opacity: 0.8
+amazon-cdk-lib-group.amazon-cdk-lib_2-60-0 <- cdklabs-awscdkappsyncutils_0-0-152
+amazon-jsii-runtime-group.amazon-jsii-runtime_1-85-0: Amazon.JSII.Runtime\nv1.85.0
+amazon-jsii-runtime-group.amazon-jsii-runtime_1-85-0.style.fill: "#FFEC96"
+amazon-jsii-runtime-group.amazon-jsii-runtime_1-85-0.style.opacity: 0.8
+amazon-jsii-runtime-group.amazon-jsii-runtime_1-85-0 <- cdklabs-awscdkappsyncutils_0-0-152
+constructs-group.constructs_10-0-5: Constructs\nv10.0.5
+constructs-group.constructs_10-0-5.style.fill: "#FFEC96"
+constructs-group.constructs_10-0-5.style.opacity: 0.8
+constructs-group.constructs_10-0-5 <- cdklabs-awscdkappsyncutils_0-0-152
 cdklabs-awscdkappsyncutils_0-0-152 <- aoi.alloverit-aws-cdk-appsync
 aoi.alloverit <- aoi.alloverit-aws-cdk-appsync
 aoi.alloverit-cryptography: AllOverIt.Cryptography
@@ -48,15 +99,20 @@ csvhelper_30-0-1.style.opacity: 0.8
 csvhelper_30-0-1 <- aoi.alloverit-csv
 aoi.alloverit <- aoi.alloverit-csv
 aoi.alloverit-dependencyinjection: AllOverIt.DependencyInjection
-microsoft-extensions-dependencyinjection-abstractions_7-0-0: Microsoft.Extensions.DependencyInjection.Abstractions\nv7.0.0
-microsoft-extensions-dependencyinjection-abstractions_7-0-0.style.fill: "#ADD8E6"
-microsoft-extensions-dependencyinjection-abstractions_7-0-0.style.opacity: 0.8
 microsoft-extensions-dependencyinjection-abstractions_7-0-0 <- aoi.alloverit-dependencyinjection
 aoi.alloverit <- aoi.alloverit-dependencyinjection
 aoi.alloverit-entityframeworkcore: AllOverIt.EntityFrameworkCore
 microsoft-entityframeworkcore-relational_7-0-9: Microsoft.EntityFrameworkCore.Relational\nv7.0.9
 microsoft-entityframeworkcore-relational_7-0-9.style.fill: "#ADD8E6"
 microsoft-entityframeworkcore-relational_7-0-9.style.opacity: 0.8
+microsoft-entityframeworkcore_7-0-9: Microsoft.EntityFrameworkCore\nv7.0.9
+microsoft-entityframeworkcore_7-0-9.style.fill: "#FFEC96"
+microsoft-entityframeworkcore_7-0-9.style.opacity: 0.8
+microsoft-entityframeworkcore_7-0-9 <- microsoft-entityframeworkcore-relational_7-0-9
+microsoft-extensions-configuration-abstractions_7-0-0: Microsoft.Extensions.Configuration.Abstractions\nv7.0.0
+microsoft-extensions-configuration-abstractions_7-0-0.style.fill: "#FFEC96"
+microsoft-extensions-configuration-abstractions_7-0-0.style.opacity: 0.8
+microsoft-extensions-configuration-abstractions_7-0-0 <- microsoft-entityframeworkcore-relational_7-0-9
 microsoft-entityframeworkcore-relational_7-0-9 <- aoi.alloverit-entityframeworkcore
 aoi.alloverit <- aoi.alloverit-entityframeworkcore
 aoi.alloverit-entityframeworkcore-diagrams: AllOverIt.EntityFrameworkCore.Diagrams
@@ -78,26 +134,120 @@ aoi.alloverit-fixture: AllOverIt.Fixture
 autofixture_4-18-0: AutoFixture\nv4.18.0
 autofixture_4-18-0.style.fill: "#ADD8E6"
 autofixture_4-18-0.style.opacity: 0.8
+fare_2-1-1: Fare\nv2.1.1
+fare_2-1-1.style.fill: "#FFEC96"
+fare_2-1-1.style.opacity: 0.8
+fare_2-1-1 <- autofixture_4-18-0
+system-componentmodel-annotations_4-3-0: System.ComponentModel.Annotations\nv4.3.0
+system-componentmodel-annotations_4-3-0.style.fill: "#FFEC96"
+system-componentmodel-annotations_4-3-0.style.opacity: 0.8
+system-componentmodel-annotations_4-3-0 <- autofixture_4-18-0
 autofixture_4-18-0 <- aoi.alloverit-fixture
 fluentassertions_6-11-0: FluentAssertions\nv6.11.0
 fluentassertions_6-11-0.style.fill: "#ADD8E6"
 fluentassertions_6-11-0.style.opacity: 0.8
+system-configuration-configurationmanager_4-4-0: System.Configuration.ConfigurationManager\nv4.4.0
+system-configuration-configurationmanager_4-4-0.style.fill: "#FFEC96"
+system-configuration-configurationmanager_4-4-0.style.opacity: 0.8
+system-configuration-configurationmanager_4-4-0 <- fluentassertions_6-11-0
 fluentassertions_6-11-0 <- aoi.alloverit-fixture
 aoi.alloverit-fixture-fakeiteasy: AllOverIt.Fixture.FakeItEasy
 autofixture-autofakeiteasy_4-18-0: AutoFixture.AutoFakeItEasy\nv4.18.0
 autofixture-autofakeiteasy_4-18-0.style.fill: "#ADD8E6"
 autofixture-autofakeiteasy_4-18-0.style.opacity: 0.8
-autofixture-autofakeiteasy_4-18-0 <- aoi.alloverit-fixture-fakeiteasy
+autofixture_4-18-0 <- autofixture-autofakeiteasy_4-18-0
 fakeiteasy-group: ""
+fakeiteasy-group.fakeiteasy_4-9-0: FakeItEasy\nv4.9.0
+fakeiteasy-group.fakeiteasy_4-9-0.style.fill: "#FFEC96"
+fakeiteasy-group.fakeiteasy_4-9-0.style.opacity: 0.8
+fakeiteasy-group.fakeiteasy_4-9-0 <- autofixture-autofakeiteasy_4-18-0
+autofixture-autofakeiteasy_4-18-0 <- aoi.alloverit-fixture-fakeiteasy
 fakeiteasy-group.fakeiteasy_7-4-0: FakeItEasy\nv7.4.0
 fakeiteasy-group.fakeiteasy_7-4-0.style.fill: "#ADD8E6"
 fakeiteasy-group.fakeiteasy_7-4-0.style.opacity: 0.8
+castle-core_4-3-1: Castle.Core\nv4.3.1
+castle-core_4-3-1.style.fill: "#FFEC96"
+castle-core_4-3-1.style.opacity: 0.8
+castle-core_4-3-1 <- fakeiteasy-group.fakeiteasy_7-4-0
 fakeiteasy-group.fakeiteasy_7-4-0 <- aoi.alloverit-fixture-fakeiteasy
 aoi.alloverit-fixture <- aoi.alloverit-fixture-fakeiteasy
 aoi.alloverit-generichost: AllOverIt.GenericHost
 microsoft-extensions-hosting_7-0-1: Microsoft.Extensions.Hosting\nv7.0.1
 microsoft-extensions-hosting_7-0-1.style.fill: "#ADD8E6"
 microsoft-extensions-hosting_7-0-1.style.opacity: 0.8
+microsoft-extensions-configuration-abstractions_7-0-0 <- microsoft-extensions-hosting_7-0-1
+microsoft-extensions-configuration-binder_7-0-3: Microsoft.Extensions.Configuration.Binder\nv7.0.3
+microsoft-extensions-configuration-binder_7-0-3.style.fill: "#FFEC96"
+microsoft-extensions-configuration-binder_7-0-3.style.opacity: 0.8
+microsoft-extensions-configuration-binder_7-0-3 <- microsoft-extensions-hosting_7-0-1
+microsoft-extensions-configuration-commandline_7-0-0: Microsoft.Extensions.Configuration.CommandLine\nv7.0.0
+microsoft-extensions-configuration-commandline_7-0-0.style.fill: "#FFEC96"
+microsoft-extensions-configuration-commandline_7-0-0.style.opacity: 0.8
+microsoft-extensions-configuration-commandline_7-0-0 <- microsoft-extensions-hosting_7-0-1
+microsoft-extensions-configuration-environmentvariables_7-0-0: Microsoft.Extensions.Configuration.EnvironmentVariables\nv7.0.0
+microsoft-extensions-configuration-environmentvariables_7-0-0.style.fill: "#FFEC96"
+microsoft-extensions-configuration-environmentvariables_7-0-0.style.opacity: 0.8
+microsoft-extensions-configuration-environmentvariables_7-0-0 <- microsoft-extensions-hosting_7-0-1
+microsoft-extensions-configuration-fileextensions_7-0-0: Microsoft.Extensions.Configuration.FileExtensions\nv7.0.0
+microsoft-extensions-configuration-fileextensions_7-0-0.style.fill: "#FFEC96"
+microsoft-extensions-configuration-fileextensions_7-0-0.style.opacity: 0.8
+microsoft-extensions-configuration-fileextensions_7-0-0 <- microsoft-extensions-hosting_7-0-1
+microsoft-extensions-configuration-json_7-0-0: Microsoft.Extensions.Configuration.Json\nv7.0.0
+microsoft-extensions-configuration-json_7-0-0.style.fill: "#FFEC96"
+microsoft-extensions-configuration-json_7-0-0.style.opacity: 0.8
+microsoft-extensions-configuration-json_7-0-0 <- microsoft-extensions-hosting_7-0-1
+microsoft-extensions-configuration-usersecrets_7-0-0: Microsoft.Extensions.Configuration.UserSecrets\nv7.0.0
+microsoft-extensions-configuration-usersecrets_7-0-0.style.fill: "#FFEC96"
+microsoft-extensions-configuration-usersecrets_7-0-0.style.opacity: 0.8
+microsoft-extensions-configuration-usersecrets_7-0-0 <- microsoft-extensions-hosting_7-0-1
+microsoft-extensions-configuration_7-0-0: Microsoft.Extensions.Configuration\nv7.0.0
+microsoft-extensions-configuration_7-0-0.style.fill: "#FFEC96"
+microsoft-extensions-configuration_7-0-0.style.opacity: 0.8
+microsoft-extensions-configuration_7-0-0 <- microsoft-extensions-hosting_7-0-1
+microsoft-extensions-dependencyinjection-abstractions_7-0-0 <- microsoft-extensions-hosting_7-0-1
+microsoft-extensions-dependencyinjection_7-0-0 <- microsoft-extensions-hosting_7-0-1
+microsoft-extensions-fileproviders-abstractions_7-0-0: Microsoft.Extensions.FileProviders.Abstractions\nv7.0.0
+microsoft-extensions-fileproviders-abstractions_7-0-0.style.fill: "#FFEC96"
+microsoft-extensions-fileproviders-abstractions_7-0-0.style.opacity: 0.8
+microsoft-extensions-fileproviders-abstractions_7-0-0 <- microsoft-extensions-hosting_7-0-1
+microsoft-extensions-fileproviders-physical_7-0-0: Microsoft.Extensions.FileProviders.Physical\nv7.0.0
+microsoft-extensions-fileproviders-physical_7-0-0.style.fill: "#FFEC96"
+microsoft-extensions-fileproviders-physical_7-0-0.style.opacity: 0.8
+microsoft-extensions-fileproviders-physical_7-0-0 <- microsoft-extensions-hosting_7-0-1
+microsoft-extensions-hosting-abstractions_7-0-0: Microsoft.Extensions.Hosting.Abstractions\nv7.0.0
+microsoft-extensions-hosting-abstractions_7-0-0.style.fill: "#FFEC96"
+microsoft-extensions-hosting-abstractions_7-0-0.style.opacity: 0.8
+microsoft-extensions-hosting-abstractions_7-0-0 <- microsoft-extensions-hosting_7-0-1
+microsoft-extensions-logging-abstractions_7-0-0 <- microsoft-extensions-hosting_7-0-1
+microsoft-extensions-logging-configuration_7-0-0: Microsoft.Extensions.Logging.Configuration\nv7.0.0
+microsoft-extensions-logging-configuration_7-0-0.style.fill: "#FFEC96"
+microsoft-extensions-logging-configuration_7-0-0.style.opacity: 0.8
+microsoft-extensions-logging-configuration_7-0-0 <- microsoft-extensions-hosting_7-0-1
+microsoft-extensions-logging-console_7-0-0: Microsoft.Extensions.Logging.Console\nv7.0.0
+microsoft-extensions-logging-console_7-0-0.style.fill: "#FFEC96"
+microsoft-extensions-logging-console_7-0-0.style.opacity: 0.8
+microsoft-extensions-logging-console_7-0-0 <- microsoft-extensions-hosting_7-0-1
+microsoft-extensions-logging-debug_7-0-0: Microsoft.Extensions.Logging.Debug\nv7.0.0
+microsoft-extensions-logging-debug_7-0-0.style.fill: "#FFEC96"
+microsoft-extensions-logging-debug_7-0-0.style.opacity: 0.8
+microsoft-extensions-logging-debug_7-0-0 <- microsoft-extensions-hosting_7-0-1
+microsoft-extensions-logging-eventlog_7-0-0: Microsoft.Extensions.Logging.EventLog\nv7.0.0
+microsoft-extensions-logging-eventlog_7-0-0.style.fill: "#FFEC96"
+microsoft-extensions-logging-eventlog_7-0-0.style.opacity: 0.8
+microsoft-extensions-logging-eventlog_7-0-0 <- microsoft-extensions-hosting_7-0-1
+microsoft-extensions-logging-eventsource_7-0-0: Microsoft.Extensions.Logging.EventSource\nv7.0.0
+microsoft-extensions-logging-eventsource_7-0-0.style.fill: "#FFEC96"
+microsoft-extensions-logging-eventsource_7-0-0.style.opacity: 0.8
+microsoft-extensions-logging-eventsource_7-0-0 <- microsoft-extensions-hosting_7-0-1
+microsoft-extensions-logging_7-0-0 <- microsoft-extensions-hosting_7-0-1
+microsoft-extensions-options_7-0-1: Microsoft.Extensions.Options\nv7.0.1
+microsoft-extensions-options_7-0-1.style.opacity: 0.8
+microsoft-extensions-options_7-0-1.style.fill: "#ADD8E6"
+microsoft-extensions-options_7-0-1 <- microsoft-extensions-hosting_7-0-1
+system-diagnostics-diagnosticsource_7-0-1: System.Diagnostics.DiagnosticSource\nv7.0.1
+system-diagnostics-diagnosticsource_7-0-1.style.fill: "#FFEC96"
+system-diagnostics-diagnosticsource_7-0-1.style.opacity: 0.8
+system-diagnostics-diagnosticsource_7-0-1 <- microsoft-extensions-hosting_7-0-1
 microsoft-extensions-hosting_7-0-1 <- aoi.alloverit-generichost
 aoi.alloverit <- aoi.alloverit-generichost
 aoi.alloverit-mapping: AllOverIt.Mapping
@@ -110,6 +260,14 @@ microsoft-extensions-dependencyinjection-abstractions_7-0-0 <- aoi.alloverit-rea
 reactiveui_19-4-1: ReactiveUI\nv19.4.1
 reactiveui_19-4-1.style.fill: "#ADD8E6"
 reactiveui_19-4-1.style.opacity: 0.8
+dynamicdata_7-14-2: DynamicData\nv7.14.2
+dynamicdata_7-14-2.style.fill: "#FFEC96"
+dynamicdata_7-14-2.style.opacity: 0.8
+dynamicdata_7-14-2 <- reactiveui_19-4-1
+splat_14-6-37: Splat\nv14.6.37
+splat_14-6-37.style.fill: "#FFEC96"
+splat_14-6-37.style.opacity: 0.8
+splat_14-6-37 <- reactiveui_19-4-1
 reactiveui_19-4-1 <- aoi.alloverit-reactiveui
 aoi.alloverit <- aoi.alloverit-reactiveui
 aoi.alloverit-serialization-json-newtonsoft: AllOverIt.Serialization.Json.Newtonsoft
@@ -122,6 +280,10 @@ aoi.alloverit-serialization-json-systemtext: AllOverIt.Serialization.Json.System
 system-text-json_7-0-3: System.Text.Json\nv7.0.3
 system-text-json_7-0-3.style.fill: "#ADD8E6"
 system-text-json_7-0-3.style.opacity: 0.8
+system-text-encodings-web_7-0-0: System.Text.Encodings.Web\nv7.0.0
+system-text-encodings-web_7-0-0.style.fill: "#FFEC96"
+system-text-encodings-web_7-0-0.style.opacity: 0.8
+system-text-encodings-web_7-0-0 <- system-text-json_7-0-3
 system-text-json_7-0-3 <- aoi.alloverit-serialization-json-systemtext
 aoi.alloverit-serialization-json-abstractions <- aoi.alloverit-serialization-json-systemtext
 aoi.alloverit-validation: AllOverIt.Validation
@@ -131,9 +293,11 @@ fluentvalidation_11-6-0.style.opacity: 0.8
 fluentvalidation_11-6-0 <- aoi.alloverit-validation
 aoi.alloverit <- aoi.alloverit-validation
 aoi.alloverit-validation-options: AllOverIt.Validation.Options
-microsoft-extensions-options_7-0-1: Microsoft.Extensions.Options\nv7.0.1
-microsoft-extensions-options_7-0-1.style.fill: "#ADD8E6"
-microsoft-extensions-options_7-0-1.style.opacity: 0.8
+microsoft-extensions-dependencyinjection-abstractions_7-0-0 <- microsoft-extensions-options_7-0-1
+microsoft-extensions-primitives_7-0-0: Microsoft.Extensions.Primitives\nv7.0.0
+microsoft-extensions-primitives_7-0-0.style.fill: "#FFEC96"
+microsoft-extensions-primitives_7-0-0.style.opacity: 0.8
+microsoft-extensions-primitives_7-0-0 <- microsoft-extensions-options_7-0-1
 microsoft-extensions-options_7-0-1 <- aoi.alloverit-validation-options
 aoi.alloverit-validation <- aoi.alloverit-validation-options
 aoi.alloverit-wpf: AllOverIt.Wpf
