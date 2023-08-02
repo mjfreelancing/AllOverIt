@@ -122,6 +122,7 @@
 ## AllOverIt.ReactiveUI
 * Added support for a `ReactiveCommand` based pipeline (with support for chaining other sync / async pipeline steps)
 * Added ReactiveProxy
+* Added ViewRegistry so multiple view instances of the same view model type can be tracked
 
 
 ## AllOverIt.Serialization.Binary :new:
