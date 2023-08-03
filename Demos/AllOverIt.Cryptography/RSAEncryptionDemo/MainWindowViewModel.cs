@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Cryptography.Extensions;
 using AllOverIt.Cryptography.RSA;
 using AllOverIt.Reactive;
-using System;
 
 namespace RSAEncryptionDemo
 {

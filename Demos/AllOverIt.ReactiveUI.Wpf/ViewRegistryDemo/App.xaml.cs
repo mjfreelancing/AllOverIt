@@ -1,11 +1,10 @@
 ﻿using AllOverIt.ReactiveUI.Factories;
 using AllOverIt.ReactiveUI.ViewRegistry;
 using AllOverIt.ReactiveUI.Wpf;
+using AllOverIt.ReactiveUI.Wpf.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ReactiveUI;
 using System.Windows;
-using ViewRegistryDemo.Extensions;
 using ViewRegistryDemo.ViewModels;
 using ViewRegistryDemo.ViewRegistry;
 using ViewRegistryDemo.Views;
