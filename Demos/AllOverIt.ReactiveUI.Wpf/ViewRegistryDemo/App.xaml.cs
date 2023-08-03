@@ -24,9 +24,9 @@ namespace ViewRegistryDemo
                             services.AddSingleton<IViewFactory, ViewFactory>();
                             services.AddSingleton<IViewHandler, WpfViewHandler>();
                             services.AddSingleton<IDemoViewRegistry, DemoViewRegistry>();                              
-                            services.RegisterViewTransient<View1ViewModel, View1>();
-                            services.RegisterViewTransient<View2ViewModel, View2>();
-                            services.RegisterViewTransient<View3ViewModel, View3>();
+                            services.RegisterWindowTransient<View1ViewModel, View1>();
+                            services.RegisterWindowTransient<View2ViewModel, View2>();
+                            services.RegisterWindowTransient<View3ViewModel, View3>();
                         })
                         .Build();
         }

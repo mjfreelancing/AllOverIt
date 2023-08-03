@@ -127,7 +127,7 @@
 
 ## AllOverIt.ReactiveUI.Wpf :new:
 * Added WpfViewHandler for use with ViewRegistry in AllOverIt.ReactiveUI
-* Added helpers to register views and their associated viewmodel with IServiceCollection
+* Added helpers to register ReactiveWindow / ReactiveUserControl and their associated viewmodel with IServiceCollection
 
 
 ## AllOverIt.Serialization.Binary :new:
