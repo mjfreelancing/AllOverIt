@@ -95,8 +95,6 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
 
         public event ViewRegistryEventHandler OnUpdate;     // raised when a view is added or removed
 
-        public bool IsEmpty => !_viewRegistry.Any();
-
         protected ViewRegistry(IViewFactory viewFactory, IViewHandler viewHandler)
         {
             _viewFactory = viewFactory.WhenNotNull(nameof(viewFactory));
@@ -174,6 +172,19 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
             _viewHandler.SetOnClosedHandler(view, OnViewClosedHandler, true);
 
             _viewHandler.Show(view);
+        }
+
+        public bool TryCloseAllViews()
+        {
+            // Need to get all views in advance as they cannot be closed during iteration (the collection will be modified)
+            var views = this.SelectAsReadOnlyCollection(item => item.View);
+
+            foreach (var view in views)
+            {
+                _viewHandler.Close(view);
+            }
+
+            return !this.Any();
         }
 
         public IEnumerator<ViewModelViewItem<TViewId>> GetEnumerator()

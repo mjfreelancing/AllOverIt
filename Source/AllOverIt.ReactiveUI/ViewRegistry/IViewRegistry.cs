@@ -9,8 +9,6 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
     {
         event ViewRegistryEventHandler OnUpdate;
 
-        bool IsEmpty { get; }
-
         int GetViewCountFor<TViewModel>() where TViewModel : class;
 
         int GetViewCountFor(Type viewModelType);
@@ -23,5 +21,7 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
 
         void CreateOrActivateFor<TViewModel>(int maxCount, Func<IReadOnlyCollection<ViewItem<TViewId>>, TViewId> nextViewId,
             Action<TViewModel, TViewId> configure = default) where TViewModel : class;
+
+        bool TryCloseAllViews();
     }
 }

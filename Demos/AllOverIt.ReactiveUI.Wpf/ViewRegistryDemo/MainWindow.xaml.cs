@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using AllOverIt.Extensions;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using ViewRegistryDemo.ViewModels;
@@ -19,15 +20,7 @@ namespace ViewRegistryDemo
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            // Use the _viewRegistry iterator to close all views - note, cannot use foreach() because
-            // the underlying collection will be modified as the forms are closed.
-            while (!_viewRegistry.IsEmpty)
-            {
-                var window = _viewRegistry.First().View as Window;
-
-                // There's an internal handler that will automatically remove the associated item from the registry
-                window.Close();
-            }
+            e.Cancel = !_viewRegistry.TryCloseAllViews();
         }
 
         private void View1Click(object sender, RoutedEventArgs e)
