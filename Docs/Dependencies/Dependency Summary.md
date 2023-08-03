@@ -404,6 +404,7 @@
 * DynamicData v7.14.2
 * Microsoft.Extensions.DependencyInjection.Abstractions v7.0.0
 * ReactiveUI v19.4.1
+* ReactiveUI.WPF v19.4.1
 * Splat v14.6.37
 
 <br>
