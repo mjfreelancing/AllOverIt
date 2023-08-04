@@ -1,14 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net7.0;net6.0</TargetFrameworks>
+        <!--Targeting 'windows' because not all pipe features are available on other platforms-->
+        <TargetFrameworks>net7.0-windows;net6.0-windows</TargetFrameworks>
         <Description>A library providing support for pipe based communication.</Description>
         <PackageTags>AllOverIt;Utilities;Async;Threading;IO;Pipes;NamedPipes</PackageTags>
-    </PropertyGroup>
-
-    <PropertyGroup>
-        <!--Platform compatibility - related to the use of PipeSecurity only available on Windows-->
-        <NoWarn>CA1416</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>

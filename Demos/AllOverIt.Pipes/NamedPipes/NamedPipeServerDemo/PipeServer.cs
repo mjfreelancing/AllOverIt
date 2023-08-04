@@ -100,9 +100,7 @@ namespace NamedPipeServerDemo
 
                         server.Start(pipeSecurity =>
                         {
-#pragma warning disable CA1416 // Validate platform compatibility
                             pipeSecurity.AddIdentityAccessRule(WellKnownSidType.BuiltinUsersSid, PipeAccessRights.ReadWrite, AccessControlType.Allow);
-#pragma warning restore CA1416 // Validate platform compatibility
                         });
 
                         PipeLogger.Append(ConsoleColor.Gray, "Server is started!");

@@ -111,7 +111,7 @@
 
 
 ## AllOverIt.Pipes
-* Provides support for named client and server pipes.
+* Provides support for named client and server pipes (Windows only).
 
 
 ## AllOverIt.Reactive
