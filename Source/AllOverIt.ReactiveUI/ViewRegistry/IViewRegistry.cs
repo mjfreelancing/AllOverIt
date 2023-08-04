@@ -52,9 +52,9 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
         /// <param name="nextViewId">A callback that allows the caller to provide an identifier for each newly created view. The callback provides
         /// a readonly collection of all currently registered views for the specified <typeparamref name="TViewModel"/> type.</param>
         /// <param name="configure">An optional callback that allows the caller to configure the view model associated with each newly
-        /// created view. The callback also includes the the Id provided by the <paramref name="nextViewId"/> callback.</param>
+        /// created view. The callback also includes the view instance and its' Id as provided by the <paramref name="nextViewId"/> callback.</param>
         void CreateOrActivateFor<TViewModel>(int maxCount, Func<IReadOnlyCollection<ViewItem<TViewId>>, TViewId> nextViewId,
-            Action<TViewModel, TViewId> configure = default) where TViewModel : class;
+            Action<TViewModel, IViewFor, TViewId> configure = default) where TViewModel : class;
 
         /// <summary>Attempts to close all currently registered views. Views that cancel being closed will remain registered.</summary>
         /// <returns><see langword="True"/> if all views were closed, otherwise <see langword="False"/>.</returns>

@@ -153,7 +153,7 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
 
         /// <inheritdoc />
         public void CreateOrActivateFor<TViewModel>(int maxCount, Func<IReadOnlyCollection<ViewItem<TViewId>>, TViewId> nextViewId,
-            Action<TViewModel, TViewId> configure = default) where TViewModel : class
+            Action<TViewModel, IViewFor, TViewId> configure = default) where TViewModel : class
         {
             _ = nextViewId.WhenNotNull(nameof(nextViewId));
 
@@ -184,7 +184,7 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
 
             var viewId = nextViewId.Invoke(registryItem.Views);
 
-            configure?.Invoke(viewModel, viewId);
+            configure?.Invoke(viewModel, view, viewId);
 
             registryItem.AddView(view, viewId);
 

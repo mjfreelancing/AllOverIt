@@ -26,8 +26,10 @@ namespace ViewRegistryDemo
         private void View1Click(object sender, RoutedEventArgs e)
         {
             // Maximum 1 window, starting with an Id of 1
-            _viewRegistry.CreateOrActivateFor<View1ViewModel>(1, _ => 1, (vm, id) =>
+            _viewRegistry.CreateOrActivateFor<View1ViewModel>(1, _ => 1, (vm, view, id) =>
             {
+                (view as Window).Owner = this;
+
                 // Set the new Id on the view model so it will be displayed on the Window
                 vm.Id = id;
             });
@@ -55,8 +57,10 @@ namespace ViewRegistryDemo
 
                 return id;
             },
-            (vm, id) =>
+            (vm, view, id) =>
             {
+                (view as Window).Owner = this;
+
                 // Set the new Id on the view model so it will be displayed on the Window
                 vm.Id = id;
             });
@@ -71,8 +75,10 @@ namespace ViewRegistryDemo
                     ? viewItems.Max(item => item.Id) + 1
                     : 1; 
             },
-            (vm, id) =>
+            (vm, view, id) =>
             {
+                (view as Window).Owner = this;
+
                 // Set the new Id on the view model so it will be displayed on the Window
                 vm.Id = id;
             });
