@@ -22,7 +22,7 @@ namespace ViewRegistryDemo
                         {
                             services.AddSingleton<MainWindow>();
                             services.AddSingleton<IViewFactory, ViewFactory>();
-                            services.AddSingleton<IViewHandler, WpfViewHandler>();
+                            services.AddSingleton<IViewHandler, ReactiveWindowViewHandler>();
                             services.AddSingleton<IDemoViewRegistry, DemoViewRegistry>();                              
                             services.RegisterWindowTransient<View1ViewModel, View1>();
                             services.RegisterWindowTransient<View2ViewModel, View2>();
