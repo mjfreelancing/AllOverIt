@@ -207,6 +207,8 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
             return !this.Any();
         }
 
+        /// <summary>Provides support for enumerating the registered views.</summary>
+        /// <returns>An <see cref="IEnumerator"/> that allows for iteration of the registered views.</returns>
         public IEnumerator<ViewModelViewItem<TViewId>> GetEnumerator()
         {
             foreach (var kvp in _viewRegistry)
@@ -225,8 +227,6 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
             }
         }
 
-        /// <summary>Provides support for enumerating the registered views.</summary>
-        /// <returns>An <see cref="IEnumerator"/> that allows for iteration of the registered views.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
