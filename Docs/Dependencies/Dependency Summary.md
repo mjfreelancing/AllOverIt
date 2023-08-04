@@ -341,7 +341,7 @@
 
 ## AllOverIt.Pipes
 
-![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
+![](https://img.shields.io/badge/.NET-7.0--windows-55A9EE.svg) ![](https://img.shields.io/badge/.NET-6.0--windows-FF8C67.svg)
 
 ### Dependencies
 
