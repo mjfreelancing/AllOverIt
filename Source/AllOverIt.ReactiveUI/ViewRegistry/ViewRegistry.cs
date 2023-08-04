@@ -10,7 +10,11 @@ using System.Linq;
 
 namespace AllOverIt.ReactiveUI.ViewRegistry
 {
-    public abstract class ViewRegistry<TViewId> : IViewRegistry<TViewId>
+    /// <summary>A registry of views (typically windows) associated with a view model type. The views are expected
+    /// to implement <see cref="IViewFor{T}"/>, where <c>T</c> is any view model type. The registry is enumerable to provide
+    /// easy access to each of the currently registered view models and associated views.</summary>
+    /// <typeparam name="TViewId">The type used for identifying each view within the registry.</typeparam>
+    public class ViewRegistry<TViewId> : IViewRegistry<TViewId>
     {
         private class ViewRegistryItem
         {
@@ -21,6 +25,7 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
             public event ViewRegistryEventHandler OnChange;     // raised when a view is added or removed
 
             public IReadOnlyCollection<ViewItem<TViewId>> Views => _viewItems.AsReadOnlyCollection();
+
             public int ViewCount => _viewItems.Count;
 
             public ViewRegistryItem(Type viewModelType, IViewHandler viewHandler)
@@ -93,29 +98,41 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
         private readonly IViewFactory _viewFactory;
         private readonly IViewHandler _viewHandler;
 
+        /// <inheritdoc />
         public event ViewRegistryEventHandler OnUpdate;     // raised when a view is added or removed
 
-        protected ViewRegistry(IViewFactory viewFactory, IViewHandler viewHandler)
+        /// <inheritdoc />
+        public bool IsEmpty => _viewRegistry.Keys.Count == 0;
+
+        /// <summary>Constructor.</summary>
+        /// <param name="viewFactory">The view factory used to create each new view.</param>
+        /// <param name="viewHandler">The view handler used for activating, showing, and closing views. This handler
+        /// will be platform specific.</param>
+        public ViewRegistry(IViewFactory viewFactory, IViewHandler viewHandler)
         {
             _viewFactory = viewFactory.WhenNotNull(nameof(viewFactory));
             _viewHandler = viewHandler.WhenNotNull(nameof(viewHandler));
         }
 
+        /// <inheritdoc />
         public int GetViewCountFor<TViewModel>() where TViewModel : class
         {
             return GetViewsFor<TViewModel>().Count;
         }
 
+        /// <inheritdoc />
         public int GetViewCountFor(Type viewModelType)
         {
             return GetViewsFor(viewModelType).Count;
         }
 
+        /// <inheritdoc />
         public IReadOnlyCollection<Type> GetViewModelTypes()
         {
             return _viewRegistry.Keys.AsReadOnlyCollection();
         }
 
+        /// <inheritdoc />
         public IReadOnlyCollection<ViewItem<TViewId>> GetViewsFor<TViewModel>() where TViewModel : class
         {
             var viewModelType = typeof(TViewModel);
@@ -123,6 +140,7 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
             return GetViewsFor(viewModelType);
         }
 
+        /// <inheritdoc />
         public IReadOnlyCollection<ViewItem<TViewId>> GetViewsFor(Type viewModelType)
         {
             if (!_viewRegistry.TryGetValue(viewModelType, out var registryItem))
@@ -133,6 +151,7 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
             return registryItem.Views;
         }
 
+        /// <inheritdoc />
         public void CreateOrActivateFor<TViewModel>(int maxCount, Func<IReadOnlyCollection<ViewItem<TViewId>>, TViewId> nextViewId,
             Action<TViewModel, TViewId> configure = default) where TViewModel : class
         {
@@ -174,6 +193,7 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
             _viewHandler.Show(view);
         }
 
+        /// <inheritdoc />
         public bool TryCloseAllViews()
         {
             // Need to get all views in advance as they cannot be closed during iteration (the collection will be modified)
@@ -205,6 +225,8 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
             }
         }
 
+        /// <summary>Provides support for enumerating the registered views.</summary>
+        /// <returns>An <see cref="IEnumerator"/> that allows for iteration of the registered views.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
