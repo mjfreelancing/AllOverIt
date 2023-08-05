@@ -48,9 +48,9 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
 
                 _viewItems.Add(viewItem);
 
-                var eventArgs = new ViewRegistryEventArgs(_viewModelType, view);
+                var eventArgs = new ViewRegistryEventArgs(_viewModelType, view, ViewItemUpdateType.Add);
 
-                OnChange?.Invoke(this, eventArgs);
+                OnChange.Invoke(this, eventArgs);
             }
 
             // returns true if there is at least one view remaining
@@ -62,9 +62,9 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
 
                 _ = _viewItems.Remove(viewItem);
 
-                var eventArgs = new ViewRegistryEventArgs(_viewModelType, view);
+                var eventArgs = new ViewRegistryEventArgs(_viewModelType, view, ViewItemUpdateType.Remove);
 
-                OnChange?.Invoke(this, eventArgs);
+                OnChange.Invoke(this, eventArgs);
 
                 return _viewItems.Count > 0;
             }
@@ -177,7 +177,7 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
             {
                 registryItem = new ViewRegistryItem(viewModelType, _viewHandler);
 
-                registryItem.OnChange += OnCacheItemUpdate;
+                registryItem.OnChange += OnViewRegistryUpdate;
 
                 _viewRegistry.Add(viewModelType, registryItem);
             }
@@ -238,23 +238,22 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
 
             _viewHandler.SetOnClosedHandler(view, OnViewClosedHandler, false);
 
-            var viewModelType = view.GetType().BaseType.GenericTypeArguments[0];
+            var viewModelType = view.GetType()
+                .GetBaseGenericTypeDefinition(typeof(IViewFor<>))
+                .GenericTypeArguments[0];
 
-            if (!_viewRegistry.TryGetValue(viewModelType, out var registryItem))
-            {
-                throw new InvalidOperationException("Did not find the required view in the registry.");
-            }
+            var registryItem = _viewRegistry[viewModelType];
 
             // Remove the window instance and if there's no more instances then remove the view type from the cache.
             if (!registryItem.RemoveView(view))
             {
-                registryItem.OnChange -= OnCacheItemUpdate;
+                registryItem.OnChange -= OnViewRegistryUpdate;
 
                 _viewRegistry.Remove(viewModelType);
             }
         }
 
-        private void OnCacheItemUpdate(object sender, EventArgs eventArgs)
+        private void OnViewRegistryUpdate(object sender, EventArgs eventArgs)
         {
             OnUpdate?.Invoke(sender, eventArgs as ViewRegistryEventArgs);
         }

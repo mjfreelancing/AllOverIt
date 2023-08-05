@@ -373,6 +373,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllOverIt.ReactiveUI.Wpf", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewRegistryDemo", "Demos\AllOverIt.ReactiveUI.Wpf\ViewRegistryDemo\ViewRegistryDemo.csproj", "{FEFADDDE-96E0-49E2-93BE-839D30C20503}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllOverIt.Cryptography.Tests", "Tests\AllOverIt.Cryptography.Tests\AllOverIt.Cryptography.Tests.csproj", "{09651A78-A071-4B40-8785-47CFBF79B9BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -883,6 +885,10 @@ Global
 		{FEFADDDE-96E0-49E2-93BE-839D30C20503}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEFADDDE-96E0-49E2-93BE-839D30C20503}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEFADDDE-96E0-49E2-93BE-839D30C20503}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09651A78-A071-4B40-8785-47CFBF79B9BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09651A78-A071-4B40-8785-47CFBF79B9BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09651A78-A071-4B40-8785-47CFBF79B9BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09651A78-A071-4B40-8785-47CFBF79B9BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1061,6 +1067,7 @@ Global
 		{CE6F9127-41C5-4E6E-8EA2-72091AD7A391} = {FC8E8DB2-1299-44F4-A233-0EDCE225BB8C}
 		{1E23DEE8-EA2C-43C7-88DC-7051ED67C097} = {D9F6B8A1-4B01-4708-8851-741FC19F2440}
 		{FEFADDDE-96E0-49E2-93BE-839D30C20503} = {1E23DEE8-EA2C-43C7-88DC-7051ED67C097}
+		{09651A78-A071-4B40-8785-47CFBF79B9BB} = {0C08FAE6-4CD9-4C7B-A849-EB0DB9BD1451}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19DD11B3-596E-4862-B5C4-1FFFFB173106}

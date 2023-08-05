@@ -783,7 +783,7 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
-        public class IsGenericNullableType : TypeExtensionsFixture
+        public class IsNullableType : TypeExtensionsFixture
         {
             [Theory]
             [InlineData(typeof(int), false)]
@@ -798,6 +798,85 @@ namespace AllOverIt.Tests.Extensions
                 var actual = AllOverIt.Extensions.TypeExtensions.IsNullableType(type);
 
                 actual.Should().Be(expected);
+            }
+        }
+
+        public class GetBaseGenericTypeDefinition : TypeExtensionsFixture
+        {
+            private class DummyList : List<int>
+            {
+            }
+
+            private class DummyParentList : DummyList
+            {
+            }
+
+            private class DummyDictionary : Dictionary<int, DummyList>
+            {
+            }
+
+            [Fact]
+            public void Should_Find_IEnumerable_From_List()
+            {
+                var actual = AllOverIt.Extensions.TypeExtensions.GetBaseGenericTypeDefinition(typeof(List<int>), typeof(IEnumerable<>));
+
+                actual.Should().BeSameAs(typeof(IEnumerable<int>));
+            }
+
+            [Fact]
+            public void Should_Find_List_Class()
+            {
+                var actual = AllOverIt.Extensions.TypeExtensions.GetBaseGenericTypeDefinition(typeof(DummyList), typeof(List<>));
+
+                actual.Should().BeSameAs(typeof(List<int>));
+            }
+
+            [Fact]
+            public void Should_Find_List_Class_From_Parent()
+            {
+                var actual = AllOverIt.Extensions.TypeExtensions.GetBaseGenericTypeDefinition(typeof(DummyParentList), typeof(List<>));
+
+                actual.Should().BeSameAs(typeof(List<int>));
+            }
+
+            [Fact]
+            public void Should_Find_IEnumerable()
+            {
+                var actual = AllOverIt.Extensions.TypeExtensions.GetBaseGenericTypeDefinition(typeof(DummyList), typeof(IEnumerable<>));
+
+                actual.Should().BeSameAs(typeof(IEnumerable<int>));
+            }
+
+            [Fact]
+            public void Should_Find_IEnumerable_From_Parent()
+            {
+                var actual = AllOverIt.Extensions.TypeExtensions.GetBaseGenericTypeDefinition(typeof(DummyParentList), typeof(IEnumerable<>));
+
+                actual.Should().BeSameAs(typeof(IEnumerable<int>));
+            }
+
+            [Fact]
+            public void Should_Find_Dictionary()
+            {
+                var actual = AllOverIt.Extensions.TypeExtensions.GetBaseGenericTypeDefinition(typeof(DummyDictionary), typeof(Dictionary<,>));
+
+                actual.Should().BeSameAs(typeof(Dictionary<int, DummyList>));
+            }
+
+            [Fact]
+            public void Should_Find_IDictionary()
+            {
+                var actual = AllOverIt.Extensions.TypeExtensions.GetBaseGenericTypeDefinition(typeof(DummyDictionary), typeof(IDictionary<,>));
+
+                actual.Should().BeSameAs(typeof(IDictionary<int, DummyList>));
+            }
+
+            [Fact]
+            public void Should_Find_IEnumerable_In_Dictionary()
+            {
+                var actual = AllOverIt.Extensions.TypeExtensions.GetBaseGenericTypeDefinition(typeof(DummyDictionary), typeof(IEnumerable<>));
+
+                actual.Should().BeSameAs(typeof(IEnumerable<KeyValuePair<int, DummyList>>));
             }
         }
 

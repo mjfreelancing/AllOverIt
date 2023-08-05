@@ -1,4 +1,5 @@
-﻿using ReactiveUI;
+﻿using AllOverIt.Assertion;
+using ReactiveUI;
 using System;
 
 namespace AllOverIt.ReactiveUI.ViewRegistry.Events
@@ -6,6 +7,9 @@ namespace AllOverIt.ReactiveUI.ViewRegistry.Events
     /// <summary>Event arguments provided to a <see cref="ViewRegistryEventHandler"/>.</summary>
     public sealed class ViewRegistryEventArgs : EventArgs
     {
+        /// <summary>Indicates the update type for this event.</summary>
+        public ViewItemUpdateType UpdateType { get; }
+
         /// <summary>The view model type associated with the <see cref="View"/>.</summary>
         public Type ViewModelType { get; }
 
@@ -15,10 +19,12 @@ namespace AllOverIt.ReactiveUI.ViewRegistry.Events
         /// <summary>Constructor.</summary>
         /// <param name="viewModelType">The view model type associated with the <see cref="View"/>.</param>
         /// <param name="view">The view associated with the raised event.</param>
-        public ViewRegistryEventArgs(Type viewModelType, IViewFor view)
+        /// /// <param name="updateType">Indicates the update type for this event.</param>
+        public ViewRegistryEventArgs(Type viewModelType, IViewFor view, ViewItemUpdateType updateType)
         {
-            ViewModelType = viewModelType;
-            View = view;
+            ViewModelType = viewModelType.WhenNotNull(nameof(viewModelType));
+            View = view.WhenNotNull(nameof(view));
+            UpdateType = updateType;
         }
     }
 
