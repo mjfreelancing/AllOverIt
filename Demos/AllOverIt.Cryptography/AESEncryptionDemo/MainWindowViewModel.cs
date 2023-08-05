@@ -48,8 +48,8 @@ namespace AESEncryptionDemo
         {
             _encryptor = new AesEncryptor();
 
-            Key = Convert.ToBase64String(_encryptor.Key);
-            IV = Convert.ToBase64String(_encryptor.IV);
+            Key = Convert.ToBase64String(_encryptor.Configuration.Key);
+            IV = Convert.ToBase64String(_encryptor.Configuration.IV);
             TextInput = $"Enter some text here to see it encrypted";
         }
 

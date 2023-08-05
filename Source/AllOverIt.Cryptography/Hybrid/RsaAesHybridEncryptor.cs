@@ -78,12 +78,12 @@ namespace AllOverIt.Cryptography.Hybrid
             var aesEncryptor = _aesEncryptorFactory.Create();
 
             // RSA encrypt the AES key
-            var rsaEncryptedAesKey = _rsaEncryptor.Encrypt(aesEncryptor.Key);
+            var rsaEncryptedAesKey = _rsaEncryptor.Encrypt(aesEncryptor.Configuration.Key);
 
             // Write the data to the stream
             cipherTextStream.Write(signature);
             cipherTextStream.Write(hash);
-            cipherTextStream.Write(aesEncryptor.IV);
+            cipherTextStream.Write(aesEncryptor.Configuration.IV);
             cipherTextStream.Write(rsaEncryptedAesKey);
 
             plainTextStream.Position = 0;

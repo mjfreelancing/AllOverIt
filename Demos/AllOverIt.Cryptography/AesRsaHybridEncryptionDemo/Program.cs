@@ -91,7 +91,7 @@ namespace AesRsaHybridEncryptionDemo
 
             logger.WriteLine(ConsoleColor.Yellow, PlainText);
 
-            // This extension method uses RsaAesHybridEncryptor.Encrypt(byte[], buyte[]).
+            // This extension method uses RsaAesHybridEncryptor.Encrypt(byte[], byte[]).
             var encryptedBase64 = encryptor.EncryptPlainTextToBase64(PlainText);
 
             logger.WriteLine();

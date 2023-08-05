@@ -1,6 +1,8 @@
 ﻿using AllOverIt.Cryptography.Extensions;
 using System.Security.Cryptography;
 
+using RSAAlgorithm = System.Security.Cryptography.RSA;
+
 namespace AllOverIt.Cryptography.RSA
 {
     public static class RsaUtils
@@ -43,6 +45,19 @@ namespace AllOverIt.Cryptography.RSA
             var hashLength = padding.OaepHashAlgorithm.GetHashSize() / 8;
 
             return keySizeBytes - (2 * hashLength) - 2;
+        }
+
+        public static KeySizes[] GetLegalKeySizes()
+        {
+            using (var rsa = RSAAlgorithm.Create())
+            {
+                return rsa.LegalKeySizes;
+            }
+        }
+
+        public static bool IsKeySizeValid(int keySize)
+        {
+            return CryptoUtils.IsKeySizeValid(GetLegalKeySizes(), keySize);
         }
     }
 }
