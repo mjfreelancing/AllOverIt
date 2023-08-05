@@ -77,15 +77,6 @@ namespace AesRsaHybridEncryptionDemo
             logger.WriteLine(ConsoleColor.White, "RSA Private Key:");
             logger.WriteLine(ConsoleColor.Blue, Convert.ToBase64String(rsaKeyPair.PrivateKey));
             logger.WriteLine();
-            //logger.WriteLine(ConsoleColor.Blue, $"AES Key: {Convert.ToBase64String()}");
-
-
-
-            // TODO: Add a decode method that can accept encrypted bytes, base64, or stream
-            //       and extract the embedded hash, signature, AES key, AES IV
-
-
-
 
             logger.WriteLine(ConsoleColor.White, "The phrase to be processed is:");
 
@@ -113,33 +104,6 @@ namespace AesRsaHybridEncryptionDemo
                     logger.WriteLine(ConsoleColor.Yellow, decryptedText);
                 }
             }
-
-
-
-                //var e1 = new RsaAesHybridEncryptor(configuration);
-                //var hybridEncrypted1 = e1.EncryptPlainTextToBytes(plainText);
-                //var hybridDecrypted1 = e1.DecryptBytesToPlainText(hybridEncrypted1);
-
-
-
-                //var e2 = new RsaAesHybridEncryptor(configuration);
-                //var ms1 = new MemoryStream(e2.EncryptPlainTextToBytes(plainText));
-                //var ms2 = new MemoryStream();
-                //e2.Decrypt(ms1, ms2);
-                //ms2.Position = 0;
-                //var hybridDecrypted2 = Encoding.UTF8.GetString(ms2.ToArray());    //e2.DecryptBytesToPlainText(ms.ToArray());
-
-
-
-                //var b = e2.EncryptStreamToBytes(new MemoryStream(Encoding.UTF8.GetBytes(plainText)));       // encrypt plain text in a stream
-                //var t1 = e2.DecryptBytesToPlainText(b);
-
-                //var ms3 = new MemoryStream();
-                //e2.DecryptBytesToStream(b, ms3);
-                //var t2 = Encoding.UTF8.GetString(ms3.ToArray());
-
-
-
 
             logger.WriteLine();
             logger.WriteLine("All Over It.");
