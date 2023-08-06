@@ -5,34 +5,43 @@ using System.Security.Cryptography;
 
 namespace AllOverIt.Cryptography.AES
 {
+    /// <summary>A cryptographic implementation providing AES encryption and decryption operations.</summary>
     public sealed class AesEncryptor : IAesEncryptor
     {
         private readonly IAesFactory _aesFactory;
 
+        /// <summary>Contains the AES encryption and decryption configuration options.</summary>
         public IAesEncryptionConfiguration Configuration { get; }
 
+        /// <summary>Constructor. Uses a default configuration and a new random secret key and IV.</summary>
         public AesEncryptor()
             : this(AesFactory.Instance, new AesEncryptionConfiguration())
         {
         }
 
+        /// <summary>Constructor. Uses a default configuration and the provided secret key and IV.</summary>
+        /// <param name="key">The secret key to use.</param>
+        /// <param name="iv">The initialization vector to use.</param>
         public AesEncryptor(byte[] key, byte[] iv)
             : this(AesFactory.Instance, new AesEncryptionConfiguration(key, iv))
         {
         }
 
+        /// <summary>Constructor. Uses the provided configuration.</summary>
+        /// <param name="configuration">The AES configuration to use.</param>
         public AesEncryptor(IAesEncryptionConfiguration configuration)
             : this(AesFactory.Instance, configuration)
         {
         }
 
-        public AesEncryptor(IAesFactory aesFactory, IAesEncryptionConfiguration configuration)
+        internal AesEncryptor(IAesFactory aesFactory, IAesEncryptionConfiguration configuration)
         {
             _aesFactory = aesFactory.WhenNotNull(nameof(aesFactory));
             Configuration = configuration.WhenNotNull(nameof(configuration));
         }
 
 #if !NETSTANDARD2_1
+        /// <inheritdoc />
         public int GetCipherTextLength(int plainTextLength)
         {
             using (var aes = _aesFactory.Create(Configuration))
@@ -50,6 +59,7 @@ namespace AllOverIt.Cryptography.AES
         }
 #endif
 
+        /// <inheritdoc />
         public byte[] Encrypt(byte[] plainText)
         {
             using (var memoryStream = new MemoryStream())
@@ -68,10 +78,9 @@ namespace AllOverIt.Cryptography.AES
             }
         }
 
+        /// <inheritdoc />
         public byte[] Decrypt(byte[] cipherText)
         {
-            // TODO: Throw id Key / IV have not been set
-
             using (var memoryStream = new MemoryStream())
             {
                 using (var aes = _aesFactory.Create(Configuration))
@@ -88,6 +97,7 @@ namespace AllOverIt.Cryptography.AES
             }
         }
 
+        /// <inheritdoc />
         public void Encrypt(Stream source, Stream destination)
         {
             using (var aes = _aesFactory.Create(Configuration))
@@ -101,10 +111,9 @@ namespace AllOverIt.Cryptography.AES
             }
         }
 
+        /// <inheritdoc />
         public void Decrypt(Stream source, Stream destination)
         {
-            // TODO: Throw if Key / IV have not been set
-
             using (var aes = _aesFactory.Create(Configuration))
             {
                 var decryptor = aes.CreateDecryptor();

@@ -8,6 +8,7 @@ using System.Linq;
 
 namespace AllOverIt.Cryptography.Hybrid
 {
+    /// <summary>A cryptographic implementation providing RSA-AES hybrid encryption and decryption operations.</summary>
     public sealed class RsaAesHybridEncryptor : IRsaAesHybridEncryptor
     {
         private readonly IRsaFactory _rsaFactory;
