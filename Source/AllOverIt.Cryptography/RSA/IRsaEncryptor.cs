@@ -1,15 +1,11 @@
-﻿using System.Security.Cryptography;
-
-namespace AllOverIt.Cryptography.RSA
+﻿namespace AllOverIt.Cryptography.RSA
 {
-    public interface IRsaEncryptor : IEncryptor
+    /// <summary>Represents a cryptographic implementation providing RSA encryption and decryption operations.</summary>
+    public interface IRsaEncryptor : IEncryptor, IStreamEncryptor
     {
         IRsaEncryptionConfiguration Configuration { get; }
 
-        // Derived from the key used for encryption (typically the public key)
+        // Derived from the public key used for encryption
         int GetMaxInputLength();
-
-        byte[] Encrypt(byte[] plainText, RSAParameters parameters);
-        byte[] Decrypt(byte[] cipherText, RSAParameters parameters);
     }
 }

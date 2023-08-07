@@ -1,8 +1,11 @@
 ﻿using AllOverIt.Assertion;
+using AllOverIt.Extensions;
+using System.IO;
 using System.Security.Cryptography;
 
 namespace AllOverIt.Cryptography.RSA
 {
+    /// <summary>A cryptographic implementation providing RSA encryption and decryption operations.</summary>
     public sealed class RsaEncryptor : IRsaEncryptor
     {
         private readonly IRsaFactory _rsaFactory;
@@ -10,6 +13,11 @@ namespace AllOverIt.Cryptography.RSA
         private int? _maxInputLength;
 
         public IRsaEncryptionConfiguration Configuration { get; }
+
+        public RsaEncryptor()
+            : this(new RsaFactory(), new RsaEncryptionConfiguration())
+        {
+        }
 
         public RsaEncryptor(IRsaEncryptionConfiguration configuration)
             : this(new RsaFactory(), configuration)
@@ -53,18 +61,6 @@ namespace AllOverIt.Cryptography.RSA
             }
         }
 
-        public byte[] Encrypt(byte[] plainText, RSAParameters parameters)
-        {
-            _ = plainText.WhenNotNullOrEmpty(nameof(plainText));
-
-            using (var rsa = _rsaFactory.Create())
-            {
-                rsa.ImportParameters(parameters);
-
-                return rsa.Encrypt(plainText, Configuration.Padding);
-            }
-        }
-
         public byte[] Decrypt(byte[] cipherText)
         {
             _ = cipherText.WhenNotNullOrEmpty(nameof(cipherText));
@@ -79,16 +75,22 @@ namespace AllOverIt.Cryptography.RSA
             }
         }
 
-        public byte[] Decrypt(byte[] cipherText, RSAParameters parameters)
+        public void Encrypt(Stream plainTextStream, Stream cipherTextStream)
         {
-            _ = cipherText.WhenNotNullOrEmpty(nameof(cipherText));
+            var plainTextBytes = plainTextStream.ToByteArray();
 
-            using (var rsa = _rsaFactory.Create())
-            {
-                rsa.ImportParameters(parameters);
+            var cipherTextBytes = Encrypt(plainTextBytes);
 
-                return rsa.Decrypt(cipherText, Configuration.Padding);
-            }
+            cipherTextStream.FromByteArray(cipherTextBytes);
+        }
+
+        public void Decrypt(Stream cipherTextStream, Stream plainTextStream)
+        {
+            var cipherTextBytes = cipherTextStream.ToByteArray();
+
+            var plainTextBytes = Decrypt(cipherTextBytes);
+
+            plainTextStream.FromByteArray(plainTextBytes);
         }
 
         public static IRsaEncryptor Create(string publicKeyBase64, string privateKeyBase64)

@@ -4,6 +4,9 @@ using System.Text;
 
 namespace AllOverIt.Cryptography.Extensions
 {
+    /// <summary>The <see cref="IEncryptor"/> and <see cref="IStreamEncryptor"/> provides support for encrypting and decrypting
+    /// between byte arrays and streams respectively. This class contains extension methods that simplify the encryption and decryption
+    /// of higher level constructs, such as plain text (strings) and base64 encoded versions of plain text and cipher text.</summary>
     public static class EncryptorExtensions
     {
         // Encrypt                                          Decrypt
@@ -28,6 +31,8 @@ namespace AllOverIt.Cryptography.Extensions
         // Base64           CipherText          N/A         Base64          PlainText           Yes
         // Base64           Stream              Yes         Base64          Stream              Yes
 
+        #region Encrypt from stream to ...
+
         public static byte[] EncryptStreamToBytes(this IStreamEncryptor encrypter, Stream plainTextStream)
         {
             using (var cipherTextStream = new MemoryStream())
@@ -45,6 +50,10 @@ namespace AllOverIt.Cryptography.Extensions
             return Convert.ToBase64String(cipherTextBytes);
         }
 
+        #endregion
+
+        #region Encrypt from bytes to ...
+
         public static string EncryptBytesToBase64(this IEncryptor encrypter, byte[] plainTextBytes)
         {
             var cipherTextBytes = encrypter.Encrypt(plainTextBytes);
@@ -59,6 +68,10 @@ namespace AllOverIt.Cryptography.Extensions
                 encrypter.Encrypt(plainTextStream, cipherTextStream);
             }
         }
+
+        #endregion
+
+        #region Encrypt from plain text to ...
 
         public static byte[] EncryptPlainTextToBytes(this IEncryptor encrypter, string plainText)
         {
@@ -81,6 +94,10 @@ namespace AllOverIt.Cryptography.Extensions
             EncryptBytesToStream(encrypter, plainTextBytes, cipherTextStream);
         }
 
+        #endregion
+
+        #region Encrypt from base64 to ...
+
         public static byte[] EncryptBase64ToBytes(this IEncryptor encrypter, string plainTextBase64)
         {
             var plainTextBytes = Convert.FromBase64String(plainTextBase64);
@@ -95,11 +112,9 @@ namespace AllOverIt.Cryptography.Extensions
             DecryptBytesToStream(encrypter, plainTextBytes, cipherTextStream);
         }
 
+        #endregion
 
-
-
-
-
+        #region Decrypt from stream to ...
 
         public static byte[] DecryptStreamToBytes(this IStreamEncryptor encrypter, Stream cipherTextStream)
         {
@@ -121,9 +136,13 @@ namespace AllOverIt.Cryptography.Extensions
         public static string DecryptStreamToPlainText(this IStreamEncryptor encrypter, Stream cipherTextStream)
         {
             var plainTextBytes = DecryptStreamToBytes(encrypter, cipherTextStream);
-            
+
             return Encoding.UTF8.GetString(plainTextBytes);
         }
+
+        #endregion
+
+        #region Decrypt from bytes to ...
 
         public static string DecryptBytesToBase64(this IEncryptor encrypter, byte[] cipherTextBytes)
         {
@@ -147,6 +166,10 @@ namespace AllOverIt.Cryptography.Extensions
             }
         }
 
+        #endregion
+
+        #region Decrypt from base64 to ...
+
         public static byte[] DecryptBase64ToBytes(this IEncryptor encrypter, string cipherTextBase64)
         {
             var cipherTextBytes = Convert.FromBase64String(cipherTextBase64);
@@ -167,5 +190,7 @@ namespace AllOverIt.Cryptography.Extensions
 
             DecryptBytesToStream(encrypter, cipherTextBytes, plainTextStream);
         }
+
+        #endregion
     }
 }
