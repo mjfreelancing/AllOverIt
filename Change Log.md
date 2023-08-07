@@ -36,6 +36,7 @@
 * Added SelectManyAsync() extension method
 * Added support for executing a Process and not wait for it to complete
 * Added RSA, AES and RSA-AES hybrid encryption helpers
+* Added Stream extensions to convert to and from a byte array
 
 
 ## AllOverIt.AspNetCore
