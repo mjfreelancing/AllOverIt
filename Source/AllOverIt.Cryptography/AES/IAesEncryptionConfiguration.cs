@@ -16,10 +16,16 @@ namespace AllOverIt.Cryptography.AES
         /// <see cref="AesUtils.GetLegalKeySizes"/>. The default is 256.</summary>
         int KeySize { get; }
 
-        /// <summary>The block size, in bits, of the cryptographic operation. The default is 128.</summary>
+        /// <summary>The block size, in bits, of the cryptographic operation. For AES, the only valid block size is 128 bits
+        /// so this value cannot be changed.</summary>
         int BlockSize { get; }
 
-        /// <summary>The feedback size, in bits, of the cryptographic operation. The default is 8.</summary>
+        /// <summary>The feedback size, in bits, is associated with cipher block modes such as Cipher Feedback (CFB) and
+        /// Output Feedback (OFB) (not supported by AES) where it determines how many bits of the output are fed back into
+        /// the encryption process in each iteration. The current implementation allows for a feedback size of 8 or 128.
+        /// The feedback size used offers a trade-off between security and efficiency. Larger feedback sizes can provide
+        /// better security, but may introduce more overhead in terms of data processing and may require additional padding
+        /// for inputs that are not a multiple of the feedback size. The default is 8.</summary>
         int FeedbackSize { get; }
 
         /// <summary>The secret key for the AES algorithm.</summary>

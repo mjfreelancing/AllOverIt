@@ -18,7 +18,7 @@ namespace AllOverIt.Cryptography.AES
         public int KeySize { get; init; } = 256;
 
         /// <inheritdoc />
-        public int BlockSize { get; init; } = 128;
+        public int BlockSize => 128;
 
         /// <inheritdoc />
         public int FeedbackSize { get; init; } = 8;

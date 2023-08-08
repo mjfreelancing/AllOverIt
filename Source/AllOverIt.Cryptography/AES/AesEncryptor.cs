@@ -34,7 +34,7 @@ namespace AllOverIt.Cryptography.AES
         {
         }
 
-        internal AesEncryptor(IAesFactory aesFactory, IAesEncryptionConfiguration configuration)
+        private AesEncryptor(IAesFactory aesFactory, IAesEncryptionConfiguration configuration)
         {
             _aesFactory = aesFactory.WhenNotNull(nameof(aesFactory));
             Configuration = configuration.WhenNotNull(nameof(configuration));
@@ -46,14 +46,15 @@ namespace AllOverIt.Cryptography.AES
         {
             using (var aes = _aesFactory.Create(Configuration))
             {
+                // AES cannot be created for modes other than those listed below
                 return Configuration.Mode switch
                 {
                     CipherMode.CBC => aes.GetCiphertextLengthCbc(plainTextLength, Configuration.Padding),
                     CipherMode.CFB => aes.GetCiphertextLengthCfb(plainTextLength, Configuration.Padding),
                     CipherMode.ECB => aes.GetCiphertextLengthEcb(plainTextLength, Configuration.Padding),
 
-                    // TODO: custom exception
-                    _ => throw new InvalidOperationException($"The {Configuration.Mode} cipher mode is not valid for the AES algorithm."),
+                    // Suitable for UnreachableException Net 7 and above
+                    _ => throw new InvalidOperationException($"Unexpected cipher mode '{Configuration.Mode}' for the AES algorithm."),
                 };
             }
         }
@@ -104,7 +105,7 @@ namespace AllOverIt.Cryptography.AES
             {
                 var encryptor = aes.CreateEncryptor();
 
-                using (var cryptoStream = new CryptoStream(destination, encryptor, CryptoStreamMode.Write))
+                using (var cryptoStream = new CryptoStream(destination, encryptor, CryptoStreamMode.Write, true))
                 {
                     source.CopyTo(cryptoStream);
                 }
@@ -118,11 +119,11 @@ namespace AllOverIt.Cryptography.AES
             {
                 var decryptor = aes.CreateDecryptor();
 
-                using (var cryptoStream = new CryptoStream(destination, decryptor, CryptoStreamMode.Write))
+                using (var cryptoStream = new CryptoStream(source, decryptor, CryptoStreamMode.Read, true))
                 {
-                    source.CopyTo(cryptoStream);
+                    cryptoStream.CopyTo(destination);
                 }
             }
-        }       
+        }
     }
 }
