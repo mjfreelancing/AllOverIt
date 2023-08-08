@@ -107,7 +107,7 @@ namespace AllOverIt.Pipes.Tests.Named
 
                         if (connected)
                         {
-                            await client.ConnectAsync(ConnectTimeout);
+                            await client.ConnectAsync(ConnectTimeout).ConfigureAwait(false);
                         }
 
                         client.IsConnected.Should().Be(connected);
@@ -131,11 +131,11 @@ namespace AllOverIt.Pipes.Tests.Named
                 {
                     await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
                     {
-                        await client.ConnectAsync(ConnectTimeout);
+                        await client.ConnectAsync(ConnectTimeout).ConfigureAwait(false);
 
                         await Invoking(async () =>
                         {
-                            await client.ConnectAsync(ConnectTimeout);
+                            await client.ConnectAsync(ConnectTimeout).ConfigureAwait(false);
                         })
                             .Should()
                             .ThrowAsync<PipeException>()
@@ -162,7 +162,7 @@ namespace AllOverIt.Pipes.Tests.Named
                 {
                     await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
                     {
-                        await client.ConnectAsync(ConnectTimeout);
+                        await client.ConnectAsync(ConnectTimeout).ConfigureAwait(false);
 
                         client.IsConnected.Should().BeTrue();
 
@@ -228,7 +228,7 @@ namespace AllOverIt.Pipes.Tests.Named
                 {
                     await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
                     {
-                        await client.ConnectAsync(ConnectTimeout);
+                        await client.ConnectAsync(ConnectTimeout).ConfigureAwait(false);
 
                         // Wait for the server to update the connection list
                         await tcs.Task;
@@ -262,7 +262,7 @@ namespace AllOverIt.Pipes.Tests.Named
                 {
                     await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
                     {
-                        await client.ConnectAsync(ConnectTimeout);
+                        await client.ConnectAsync(ConnectTimeout).ConfigureAwait(false);
 
                         // Wait for the server to update the connection list
                         await tcs.Task;
@@ -299,7 +299,7 @@ namespace AllOverIt.Pipes.Tests.Named
                 {
                     await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
                     {
-                        await client.ConnectAsync(ConnectTimeout);
+                        await client.ConnectAsync(ConnectTimeout).ConfigureAwait(false);
 
                         await server.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
 
@@ -342,7 +342,7 @@ namespace AllOverIt.Pipes.Tests.Named
 
                         client.OnException += Client_OnException;
 
-                        await client.ConnectAsync(ConnectTimeout);
+                        await client.ConnectAsync(ConnectTimeout).ConfigureAwait(false);
 
                         actual = await tcs.Task;
                     }
@@ -375,7 +375,7 @@ namespace AllOverIt.Pipes.Tests.Named
                 {
                     await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
                     {
-                        await client.ConnectAsync(ConnectTimeout);
+                        await client.ConnectAsync(ConnectTimeout).ConfigureAwait(false);
 
                         // Wait for the server to update the connection list
                         await tcs.Task;
@@ -416,7 +416,7 @@ namespace AllOverIt.Pipes.Tests.Named
                 {
                     await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
                     {
-                        await client.ConnectAsync(ConnectTimeout);
+                        await client.ConnectAsync(ConnectTimeout).ConfigureAwait(false);
 
                         await client.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
 
@@ -455,7 +455,7 @@ namespace AllOverIt.Pipes.Tests.Named
 
                         client.OnMessageReceived += Client_OnMessageReceived;
 
-                        await client.ConnectAsync(ConnectTimeout);
+                        await client.ConnectAsync(ConnectTimeout).ConfigureAwait(false);
 
                         await server.WriteAsync(expected, CancellationToken.None);
 
@@ -498,7 +498,7 @@ namespace AllOverIt.Pipes.Tests.Named
                     composites.Add(client);
 
                     client.OnMessageReceived += Client_OnMessageReceived;
-                    await client.ConnectAsync(ConnectTimeout);
+                    await client.ConnectAsync(ConnectTimeout).ConfigureAwait(false);
 
                     return client;
                 }
@@ -575,7 +575,7 @@ namespace AllOverIt.Pipes.Tests.Named
                 {
                     await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
                     {
-                        await client.ConnectAsync(ConnectTimeout);
+                        await client.ConnectAsync(ConnectTimeout).ConfigureAwait(false);
 
                         await client.WriteAsync(expected, CancellationToken.None);
 
@@ -643,7 +643,7 @@ namespace AllOverIt.Pipes.Tests.Named
 
                         client.OnConnected += Client_OnConnected;
 
-                        await client.ConnectAsync(ConnectTimeout);
+                        await client.ConnectAsync(ConnectTimeout).ConfigureAwait(false);
 
                         actual = await tcs.Task;
                     }
@@ -677,7 +677,7 @@ namespace AllOverIt.Pipes.Tests.Named
 
                         client.OnDisconnected += Client_OnDisconnected;
 
-                        await client.ConnectAsync(ConnectTimeout);
+                        await client.ConnectAsync(ConnectTimeout).ConfigureAwait(false);
 
                         await server.StopAsync();
 
@@ -713,7 +713,7 @@ namespace AllOverIt.Pipes.Tests.Named
 
                         client.OnMessageReceived += Client_OnMessageReceived;
 
-                        await client.ConnectAsync(ConnectTimeout);
+                        await client.ConnectAsync(ConnectTimeout).ConfigureAwait(false);
 
                         await server.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
 
@@ -756,7 +756,7 @@ namespace AllOverIt.Pipes.Tests.Named
                         client.OnMessageReceived += Client_OnMessageReceived;
                         client.OnException += Client_OnException;
 
-                        await client.ConnectAsync(ConnectTimeout);
+                        await client.ConnectAsync(ConnectTimeout).ConfigureAwait(false);
 
                         await server.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
 
@@ -799,7 +799,7 @@ namespace AllOverIt.Pipes.Tests.Named
                         client.OnDisconnected += Client_OnDisconnected;
                         client.OnException += Client_OnException;
 
-                        await client.ConnectAsync(ConnectTimeout);
+                        await client.ConnectAsync(ConnectTimeout).ConfigureAwait(false);
 
                         await server.StopAsync();
 
@@ -837,7 +837,7 @@ namespace AllOverIt.Pipes.Tests.Named
                 {
                     await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
                     {
-                        await client.ConnectAsync(ConnectTimeout);
+                        await client.ConnectAsync(ConnectTimeout).ConfigureAwait(false);
 
                         actual = await tcs.Task;
                     }
@@ -878,7 +878,7 @@ namespace AllOverIt.Pipes.Tests.Named
                 {
                     await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
                     {
-                        await client.ConnectAsync(ConnectTimeout);
+                        await client.ConnectAsync(ConnectTimeout).ConfigureAwait(false);
 
                         actual = await tcs.Task;
 
@@ -913,7 +913,7 @@ namespace AllOverIt.Pipes.Tests.Named
                 {
                     await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
                     {
-                        await client.ConnectAsync(ConnectTimeout);
+                        await client.ConnectAsync(ConnectTimeout).ConfigureAwait(false);
 
                         await client.DisconnectAsync();
 
@@ -948,7 +948,7 @@ namespace AllOverIt.Pipes.Tests.Named
                 {
                     await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
                     {
-                        await client.ConnectAsync(ConnectTimeout);
+                        await client.ConnectAsync(ConnectTimeout).ConfigureAwait(false);
 
                         await client.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
 
@@ -985,7 +985,7 @@ namespace AllOverIt.Pipes.Tests.Named
                 {
                     await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
                     {
-                        await client.ConnectAsync(ConnectTimeout);
+                        await client.ConnectAsync(ConnectTimeout).ConfigureAwait(false);
 
                         // Code path testing when OnMessageReceived is not assigned
                         await client.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
@@ -1038,7 +1038,7 @@ namespace AllOverIt.Pipes.Tests.Named
                 {
                     await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
                     {
-                        await client.ConnectAsync(ConnectTimeout);
+                        await client.ConnectAsync(ConnectTimeout).ConfigureAwait(false);
 
                         await client.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
 
