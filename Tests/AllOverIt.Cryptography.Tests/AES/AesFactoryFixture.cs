@@ -7,7 +7,7 @@ using Xunit;
 
 namespace AllOverIt.Cryptography.Tests.AES
 {
-    public class AesFactoryFixture : FixtureBase
+    public class AesFactoryFixture : AesFixtureBase
     {
         private readonly AesFactory _factory = new();
 
@@ -34,31 +34,6 @@ namespace AllOverIt.Cryptography.Tests.AES
                     IV = configuration.IV
                 });
             }
-        }
-
-        private CipherMode GetCipherMode()
-        {
-            return CreateExcluding(CipherMode.CTS, CipherMode.OFB);
-        }
-
-        private AesEncryptionConfiguration CreateAesConfiguration()
-        {
-            var cipherMode = GetCipherMode();
-
-            return new AesEncryptionConfiguration
-            {
-                Mode = cipherMode,
-
-                Padding = CreateExcluding<PaddingMode>(PaddingMode.None),
-
-                FeedbackSize = cipherMode == CipherMode.CFB
-                        ? Create<bool>() ? 8 : 128
-                        : 8,
-
-                KeySize = Create<bool>()
-                    ? AesUtils.GetLegalKeySizes()[0].MinSize
-                    : AesUtils.GetLegalKeySizes()[0].MaxSize
-            };
         }
     }
 }

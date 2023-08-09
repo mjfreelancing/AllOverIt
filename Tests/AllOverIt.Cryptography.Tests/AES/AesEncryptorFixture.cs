@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Cryptography.AES;
-using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
@@ -10,7 +9,7 @@ using Xunit;
 
 namespace AllOverIt.Cryptography.Tests.AES
 {
-    public class AesEncryptorFixture : FixtureBase
+    public class AesEncryptorFixture : AesFixtureBase
     {
         public class Constructor_Key_IV : AesEncryptorFixture
         {
@@ -64,7 +63,7 @@ namespace AllOverIt.Cryptography.Tests.AES
             public void Should_Get_Expected_Length(CipherMode cipherMode)
             {
                 var plainTextLength = Create<int>();
-                var paddingMode = CreateExcluding(PaddingMode.None);
+                var paddingMode = GetPaddingMode();
                 var expected = -1;
 
                 using (var aes = Aes.Create())
@@ -185,31 +184,6 @@ namespace AllOverIt.Cryptography.Tests.AES
                     }
                 }
             }
-        }
-
-        private CipherMode GetCipherMode()
-        {
-            return CreateExcluding(CipherMode.CTS, CipherMode.OFB);
-        }
-
-        private AesEncryptionConfiguration CreateAesConfiguration()
-        {
-            var cipherMode = GetCipherMode();
-
-            return new AesEncryptionConfiguration
-            {
-                Mode = cipherMode,
-
-                Padding = CreateExcluding<PaddingMode>(PaddingMode.None),
-
-                FeedbackSize = cipherMode == CipherMode.CFB
-                        ? Create<bool>() ? 8 : 128
-                        : 8,
-
-                KeySize = Create<bool>()
-                        ? AesUtils.GetLegalKeySizes()[0].MinSize
-                        : AesUtils.GetLegalKeySizes()[0].MaxSize
-            };
         }
     }
 }
