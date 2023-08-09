@@ -45,7 +45,7 @@ namespace AllOverIt.Cryptography.AES
         /// a random secrey key and initialization vector.</summary>
         public AesEncryptionConfiguration()
         {
-            KeySize = 256;
+            _keySize = 256;                     // Using _keySize to avoid the Key being generated
             RegenerateKeyAndIV();
         }
 
@@ -62,9 +62,8 @@ namespace AllOverIt.Cryptography.AES
             Throw<AesException>.When(!AesUtils.IsKeySizeValid(keySizeBits), $"AES Key size {keySizeBits} is invalid.");
             Throw<AesException>.When(iv.Length != 16, "The AES Initialization Vector must be 16 bytes.");
 
-            Key = key;                      // The length will be validated
-            KeySize = keySizeBits;
-
+            _keySize = keySizeBits;             // Using _keySize to avoid the Key being generated
+            Key = key;
             IV = iv;
         }
 
