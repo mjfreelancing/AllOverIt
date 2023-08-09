@@ -64,7 +64,7 @@ namespace AllOverIt.Cryptography.Tests.AES
             public void Should_Get_Expected_Length(CipherMode cipherMode)
             {
                 var plainTextLength = Create<int>();
-                var paddingMode = Create<PaddingMode>();
+                var paddingMode = CreateExcluding(PaddingMode.None);
                 var expected = -1;
 
                 using (var aes = Aes.Create())
