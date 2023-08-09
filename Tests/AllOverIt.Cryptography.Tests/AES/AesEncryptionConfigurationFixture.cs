@@ -45,6 +45,32 @@ namespace AllOverIt.Cryptography.Tests.AES
                 expected.Should().BeEquivalentTo(actual);
             }
 
+            [Theory]
+            [InlineData(128)]
+            [InlineData(256)]
+            public void Should_Set_Key_Length_Based_On_KeySize(int keySize)
+            {
+                var actual = new AesEncryptionConfiguration
+                {
+                    KeySize = keySize
+                };
+
+                var expected = new
+                {
+                    Mode = CipherMode.CBC,
+                    Padding = PaddingMode.PKCS7,
+                    KeySize = keySize,
+                    BlockSize = 128,
+                    FeedbackSize = 8,
+
+                    // these are random - setting here to keep the test happy - see other tests for randomness
+                    actual.Key,
+                    actual.IV
+                };
+
+                expected.Should().BeEquivalentTo(actual);
+            }
+
             [Fact]
             public void Should_Have_Random_Key_And_IV()
             {

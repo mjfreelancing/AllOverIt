@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Cryptography.AES.Exceptions;
-using System;
 using System.Security.Cryptography;
 
 namespace AllOverIt.Cryptography.AES
@@ -14,8 +13,21 @@ namespace AllOverIt.Cryptography.AES
         /// <inheritdoc />
         public PaddingMode Padding { get; init; } = PaddingMode.PKCS7;
 
+        private int _keySize;
+
         /// <inheritdoc />
-        public int KeySize { get; init; } = 256;
+        public int KeySize
+        {
+            get => _keySize;
+            init 
+            {
+                if (_keySize != value)
+                {
+                    _keySize = value;
+                    RegenerateKey();
+                }
+            }
+        }
 
         /// <inheritdoc />
         public int BlockSize => 128;
@@ -33,6 +45,7 @@ namespace AllOverIt.Cryptography.AES
         /// a random secrey key and initialization vector.</summary>
         public AesEncryptionConfiguration()
         {
+            KeySize = 256;
             RegenerateKeyAndIV();
         }
 

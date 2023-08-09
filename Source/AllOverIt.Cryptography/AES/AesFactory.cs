@@ -18,7 +18,7 @@ namespace AllOverIt.Cryptography.AES
 
             aes.Mode = configuration.Mode;                  // For reference, CTS and OFB are not valid for AES
             aes.Padding = configuration.Padding;
-            aes.KeySize = configuration.KeySize;            // The aes.Key will be updated if this is not the default
+            aes.KeySize = configuration.KeySize;
             aes.BlockSize = configuration.BlockSize;
             aes.FeedbackSize = configuration.FeedbackSize;
             aes.Key = configuration.Key;
