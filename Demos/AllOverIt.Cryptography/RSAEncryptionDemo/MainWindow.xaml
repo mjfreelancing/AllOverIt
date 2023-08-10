@@ -32,7 +32,6 @@
         <TextBlock Grid.Row="0" Grid.Column="0">Public Key:</TextBlock>
 
         <TextBlock
-            x:Name="PublicKey"
             Grid.Row="0"
             Grid.Column="1"
             Text="{Binding PublicKey, Mode=OneTime}"
@@ -47,7 +46,6 @@
         </TextBlock>
 
         <TextBlock
-            x:Name="PrivateKey"
             Grid.Row="1"
             Grid.Column="1"
             Margin="0,16"
@@ -63,13 +61,12 @@
         </TextBlock>
 
         <TextBox
-            x:Name="TextInput"
             Grid.Row="2"
             Grid.Column="1"
-            MaxLength="{Binding MaxInputLength, Mode=OneTime}"
             Margin="0,16"
             Background="AliceBlue"
             FontWeight="Bold"
+            MaxLength="{Binding MaxInputLength, Mode=OneTime}"
             Text="{Binding TextInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             TextWrapping="Wrap" />
 
@@ -82,7 +79,6 @@
         </TextBlock>
 
         <TextBlock
-            x:Name="TextEncrypted"
             Grid.Row="3"
             Grid.Column="1"
             Margin="0,16"
@@ -98,7 +94,6 @@
         </TextBlock>
 
         <TextBlock
-            x:Name="TextDecrypted"
             Grid.Row="4"
             Grid.Column="1"
             Margin="0,16"

@@ -63,7 +63,6 @@
         </TextBlock>
 
         <TextBox
-            x:Name="TextInput"
             Grid.Row="2"
             Grid.Column="1"
             Margin="0,16"
@@ -81,7 +80,6 @@
         </TextBlock>
 
         <TextBlock
-            x:Name="TextEncrypted"
             Grid.Row="3"
             Grid.Column="1"
             Margin="0,16"
@@ -97,7 +95,6 @@
         </TextBlock>
 
         <TextBlock
-            x:Name="TextDecrypted"
             Grid.Row="4"
             Grid.Column="1"
             Margin="0,16"
