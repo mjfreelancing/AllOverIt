@@ -1,4 +1,6 @@
 ﻿using AllOverIt.Extensions;
+using AllOverIt.Wpf.Extensions;
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
@@ -10,6 +12,7 @@ namespace ViewRegistryDemo
     public partial class MainWindow : Window
     {
         private readonly IDemoViewRegistry _viewRegistry;
+        private IDisposable _windowWrapper;
 
         public MainWindow(IDemoViewRegistry viewRegistry)
         {
@@ -18,9 +21,25 @@ namespace ViewRegistryDemo
             InitializeComponent();
         }
 
-        protected override void OnClosing(CancelEventArgs e)
+        protected override void OnActivated(EventArgs eventArgs)
         {
-            e.Cancel = !_viewRegistry.TryCloseAllViews();
+            base.OnActivated(eventArgs);
+
+            _windowWrapper = this
+                .WrapWindow()
+                .DisableMaximizeButton();
+        }
+
+        protected override void OnClosing(CancelEventArgs eventArgs)
+        {
+            eventArgs.Cancel = !_viewRegistry.TryCloseAllViews();
+        }
+
+        protected override void OnClosed(EventArgs eventArgs)
+        {
+            base.OnClosed(eventArgs);
+
+            _windowWrapper.Dispose();
         }
 
         private void View1Click(object sender, RoutedEventArgs e)
@@ -35,7 +54,7 @@ namespace ViewRegistryDemo
             });
         }
 
-        private void View2Click(object sender, RoutedEventArgs e)
+        private void View2Click(object sender, RoutedEventArgs eventArgs)
         {
             // Maximum 2 windows, maintaining Id of already open windows (will only ever be 1 or 2)
             _viewRegistry.CreateOrActivateFor<View2ViewModel>(2, viewItems =>
@@ -66,7 +85,7 @@ namespace ViewRegistryDemo
             });
         }
 
-        private void View3Click(object sender, RoutedEventArgs e)
+        private void View3Click(object sender, RoutedEventArgs eventArgs)
         {
             // Maximum 3 windows, each new Id is always 1 more than the existing max
             _viewRegistry.CreateOrActivateFor<View3ViewModel>(3, viewItems =>

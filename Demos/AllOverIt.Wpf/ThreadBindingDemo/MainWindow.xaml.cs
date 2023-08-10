@@ -18,9 +18,9 @@ namespace ThreadBindingDemo
             InitializeComponent();
         }
 
-        protected override void OnActivated(EventArgs e)
+        protected override void OnActivated(EventArgs eventArgs)
         {
-            base.OnActivated(e);
+            base.OnActivated(eventArgs);
 
             if (_initialized)
             {

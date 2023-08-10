@@ -9,19 +9,19 @@ namespace AllOverIt.Wpf.Utils
     public sealed class WindowWrapper : IDisposable
     {
         [DllImport("user32.dll")]
-        private static extern int GetWindowLong(nint hWnd, int nIndex);
+        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
 
         [DllImport("user32.dll")]
-        private static extern int SetWindowLong(nint hWnd, int nIndex, int dwNewLong);
+        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
         [DllImport("user32.dll")]
-        private static extern nint GetSystemMenu(nint hWnd, bool bRevert);
+        private static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
 
         [DllImport("user32.dll")]
-        private static extern bool EnableMenuItem(nint hMenu, uint uIDEnableItem, uint uEnable);
+        private static extern bool EnableMenuItem(IntPtr hMenu, uint uIDEnableItem, uint uEnable);
 
         [DllImport("user32.dll")]
-        private static extern nint DestroyMenu(nint hWnd);
+        private static extern IntPtr DestroyMenu(IntPtr hWnd);
 
         private const int GWL_STYLE = -16;
 
@@ -34,8 +34,8 @@ namespace AllOverIt.Wpf.Utils
         private const uint MF_ENABLED = 0x00000000;
         private const uint SC_CLOSE = 0xF060;
 
-        private readonly nint _windowHandle;
-        private nint _menuHandle;
+        private readonly IntPtr _windowHandle;
+        private IntPtr _menuHandle;
 
         public WindowWrapper(Window window)
         {
@@ -88,7 +88,7 @@ namespace AllOverIt.Wpf.Utils
 
         public WindowWrapper EnableCloseButton()
         {
-            if (_menuHandle != nint.Zero)
+            if (_menuHandle != IntPtr.Zero)
             {
                 EnableMenuItem(_menuHandle, SC_CLOSE, MF_BYCOMMAND | MF_ENABLED);
             }
@@ -101,7 +101,7 @@ namespace AllOverIt.Wpf.Utils
             // Capture the existing menu handle so it can be used when later enabling the button again
             _menuHandle = GetSystemMenu(_windowHandle, false);
 
-            if (_menuHandle != nint.Zero)
+            if (_menuHandle != IntPtr.Zero)
             {
                 EnableMenuItem(_menuHandle, SC_CLOSE, MF_BYCOMMAND | MF_GRAYED);
             }
@@ -125,10 +125,11 @@ namespace AllOverIt.Wpf.Utils
 
         public void Dispose()
         {
-            if (_menuHandle != nint.Zero)
+            if (_menuHandle != IntPtr.Zero)
             {
-                DestroyMenu(_menuHandle);
-                _menuHandle = nint.Zero;
+                _ = DestroyMenu(_menuHandle);
+
+                _menuHandle = IntPtr.Zero;
             }
         }
     }
