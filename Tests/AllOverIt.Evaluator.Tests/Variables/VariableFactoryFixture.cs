@@ -331,10 +331,6 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 _registryFake = new Fake<IVariableRegistry>();
 
-                _registryFake
-                  .CallsTo(fake => fake.Variables)
-                  .Returns(variableDictionary);
-
                 for (var idx = 0; idx < _count; idx++)
                 {
                     var name = _names.ElementAt(idx);
@@ -345,6 +341,10 @@ namespace AllOverIt.Evaluator.Tests.Variables
                         .CallsTo(fake => fake.GetValue(name))
                         .Returns(_values.ElementAt(idx));
                 }
+
+                _registryFake
+                  .CallsTo(fake => ((IEnumerable<KeyValuePair<string, IVariable>>) fake).GetEnumerator())
+                  .Returns(variableDictionary.GetEnumerator());
 
                 _variable = _variableFactory.CreateAggregateVariable(_name, _registryFake.FakedObject);
             }

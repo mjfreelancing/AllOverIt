@@ -1,8 +1,6 @@
 using AllOverIt.Assertion;
 using AllOverIt.Evaluator.Variables.Extensions;
-using AllOverIt.Extensions;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AllOverIt.Evaluator.Variables
 {
@@ -31,7 +29,7 @@ namespace AllOverIt.Evaluator.Variables
         {
             var variables = new List<IVariable>();
 
-            foreach (var keyValue in _variableRegistry.Variables)
+            foreach (var keyValue in _variableRegistry)
             {
                 var registryVariable = keyValue.Value;
                 var referencedVariables = GetReferencedVariables(registryVariable, lookupMode);

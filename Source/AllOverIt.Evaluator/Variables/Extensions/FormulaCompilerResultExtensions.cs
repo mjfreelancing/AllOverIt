@@ -16,7 +16,7 @@ namespace AllOverIt.Evaluator.Variables.Extensions
             var referencedNames = compilerResult.ReferencedVariableNames;
 
             return referencedNames.SelectAsReadOnlyCollection(variableName =>
-                registry.Variables.Single(item => item.Key == variableName).Value);
+                registry.Single(item => item.Key == variableName).Value);
         }
     }
 }

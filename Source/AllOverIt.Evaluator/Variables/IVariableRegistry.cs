@@ -1,7 +1,9 @@
+using System.Collections.Generic;
+
 namespace AllOverIt.Evaluator.Variables
 {
     /// <summary>Represents a registry of variables referenced by one or more formula.</summary>
-    public interface IVariableRegistry : IReadableVariableRegistry
+    public interface IVariableRegistry : IReadableVariableRegistry, IEnumerable<KeyValuePair<string, IVariable>>
     {
         /// <summary>Adds a new variable to the registry.</summary>
         /// <param name="variable">The variable to add to the registry.</param>
@@ -18,5 +20,11 @@ namespace AllOverIt.Evaluator.Variables
 
         /// <summary>Clears all variables from the registry.</summary>
         void Clear();
+
+        bool TryGetVariable(string name, out IVariable variable);
+
+        IVariable GetVariable(string name);
+
+        bool ContainsVariable(string name);
     }
 }

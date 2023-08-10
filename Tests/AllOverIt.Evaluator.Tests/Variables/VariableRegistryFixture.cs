@@ -6,9 +6,7 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using FakeItEasy;
 using FluentAssertions;
-using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Variables
@@ -61,9 +59,9 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 _registry = new VariableRegistry();
                 _registry.AddVariable(variable.FakedObject);
 
-                var expected = new Dictionary<string, IVariable> { [name] = variable.FakedObject };
+                _registry.TryGetVariable(name, out var actual).Should().BeTrue();
 
-                expected.Should().BeEquivalentTo(_registry.Variables);
+                actual.Should().BeSameAs(variable.FakedObject);
             }
 
             [Fact]
@@ -214,11 +212,11 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 _registry.AddVariable(variable);
 
-                _registry.Variables.Should().HaveCount(1);
+                _registry.Should().HaveCount(1);
 
                 _registry.Clear();
 
-                _registry.Variables.Should().HaveCount(0);
+                _registry.Should().HaveCount(0);
             }
         }
     }

@@ -82,7 +82,8 @@
 
 
 ## AllOverIt.Evaluator
-* Unchanged
+* Modified VariableRegistry to be enumerable (removed Variables property)
+* Added methods to IVariableRegistry: TryGetVariable(), GetVariable(), ContainsVariable()
 
 
 ## AllOverIt.Filtering

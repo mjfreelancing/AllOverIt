@@ -1,6 +1,7 @@
 using AllOverIt.Assertion;
 using AllOverIt.Evaluator.Exceptions;
 using AllOverIt.Evaluator.Variables.Extensions;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace AllOverIt.Evaluator.Variables
@@ -9,9 +10,6 @@ namespace AllOverIt.Evaluator.Variables
     public sealed class VariableRegistry : IVariableRegistry
     {
         private readonly IDictionary<string, IVariable> _variableRegistry = new Dictionary<string, IVariable>();
-
-        /// <summary>Contains a key-value collection of all registered variables, keyed by their name.</summary>
-        public IEnumerable<KeyValuePair<string, IVariable>> Variables => _variableRegistry;
 
         /// <inheritdoc />
         public void AddVariable(IVariable variable)
@@ -67,14 +65,37 @@ namespace AllOverIt.Evaluator.Variables
             _variableRegistry.Clear();
         }
 
-        private IVariable GetVariable(string name)
+        /// <inheritdoc />
+        public bool TryGetVariable(string name, out IVariable variable)
         {
-            if (!_variableRegistry.TryGetValue(name, out var variable))
+            return _variableRegistry.TryGetValue(name, out variable);
+        }
+
+        /// <inheritdoc />
+        public IVariable GetVariable(string name)
+        {
+            if (!TryGetVariable(name, out var variable))
             {
                 throw new VariableException($"The variable '{name}' is not registered");
             }
 
             return variable;
+        }
+
+        /// <inheritdoc />
+        public bool ContainsVariable(string name)
+        {
+            return _variableRegistry.ContainsKey(name);
+        }
+
+        public IEnumerator<KeyValuePair<string, IVariable>> GetEnumerator()
+        {
+            return _variableRegistry.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }
