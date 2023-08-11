@@ -28,12 +28,20 @@ namespace AllOverIt.Evaluator.Variables
         /// <returns>The new variable instance.</returns>
         IVariable CreateDelegateVariable(string name, Func<double> valueResolver);
 
+
+        IVariable CreateDelegateVariable(string name, FormulaCompilerResult compilerResult);
+
+
         /// <summary>Creates a new lazily-evaluated delegate variable.</summary>
         /// <param name="name">The name to be assigned to the variable.</param>
         /// <param name="valueResolver">The initial lazily-evaluated delegate to be assigned to the variable.</param>
         /// <param name="threadSafe">Indicates if the underlying lazy-evaluator should evaluate in a thread safe manner.</param>
         /// <returns>The new variable instance.</returns>
         ILazyVariable CreateLazyVariable(string name, Func<double> valueResolver, bool threadSafe = false);
+
+
+        ILazyVariable CreateLazyVariable(string name, FormulaCompilerResult compilerResult, bool threadSafe = false);
+
 
         /// <summary>Creates a delegate-based variable that will invoke one or more value resolvers and aggregate their values.</summary>
         /// <param name="name">The name to be assigned to the variable.</param>

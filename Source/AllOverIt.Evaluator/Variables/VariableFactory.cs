@@ -34,9 +34,21 @@ namespace AllOverIt.Evaluator.Variables
         }
 
         /// <inheritdoc />
+        public IVariable CreateDelegateVariable(string name, FormulaCompilerResult compilerResult)
+        {
+            return new DelegateVariable(name, compilerResult);
+        }
+
+        /// <inheritdoc />
         public ILazyVariable CreateLazyVariable(string name, Func<double> valueResolver, bool threadSafe = false)
         {
             return new LazyVariable(name, valueResolver, threadSafe);
+        }
+
+        /// <inheritdoc />
+        public ILazyVariable CreateLazyVariable(string name, FormulaCompilerResult compilerResult, bool threadSafe = false)
+        {
+            return new LazyVariable(name, compilerResult, threadSafe);
         }
 
         /// <inheritdoc />
