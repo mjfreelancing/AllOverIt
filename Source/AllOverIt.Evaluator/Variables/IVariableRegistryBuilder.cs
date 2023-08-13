@@ -17,6 +17,7 @@ namespace AllOverIt.Evaluator.Variables
         VariableRegistryBuilder AddLazyVariable(string name, Func<IVariableRegistry, FormulaCompilerResult> compilerResultResolver, bool threadSafe = false);
         VariableRegistryBuilder AddMutableVariable(string name, double value = 0);
         VariableRegistryBuilder AddMutableVariable(string name, Func<IVariableRegistry, double> value);
+        bool TryBuild(out IVariableRegistry variableRegistry);
         IVariableRegistry Build();
         IReadOnlyCollection<string> GetUnregisteredVariableNames();
     }

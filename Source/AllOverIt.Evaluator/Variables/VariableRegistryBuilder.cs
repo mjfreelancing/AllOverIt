@@ -15,7 +15,7 @@ namespace AllOverIt.Evaluator.Variables
         private readonly IVariableRegistry _variableRegistry;
         private readonly IVariableFactory _variableFactory;
 
-        private VariableRegistryBuilder()
+        public VariableRegistryBuilder()
             : this(new VariableRegistry(), new VariableFactory())
         {
         }
