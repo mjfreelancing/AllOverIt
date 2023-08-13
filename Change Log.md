@@ -38,6 +38,7 @@
 * Added RSA, AES and RSA-AES hybrid encryption helpers
 * Added Stream extensions to convert to and from a byte array
 * Added HashSetExtensions
+* Added ProgressUpdater
 
 
 ## AllOverIt.AspNetCore
