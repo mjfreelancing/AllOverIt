@@ -4,6 +4,7 @@ using AllOverIt.ReactiveUI.CommandPipeline;
 using FluentAssertions;
 using ReactiveUI;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -38,9 +39,27 @@ namespace AllOverIt.ReactiveUI.Tests.CommandPipeline
 
                 var step = new ReactiveCommandPipelineStep<double, string>(command);
 
-                var actual = await step.ExecuteAsync(input);
+                var actual = await step.ExecuteAsync(input, CancellationToken.None);
 
                 expected.Should().Be(actual);
+            }
+
+            [Fact]
+            public async Task Should_Throw_When_Cancelled()
+            {
+                await Invoking(async () =>
+                {
+                    var cts = new CancellationTokenSource();
+                    cts.Cancel();
+
+                    var command = ReactiveCommand.Create<double, string>(_ => Create<string>());
+
+                    var step = new ReactiveCommandPipelineStep<double, string>(command);
+
+                    _ = await step.ExecuteAsync(Create<double>(), cts.Token);
+                })
+                .Should()
+                .ThrowAsync<OperationCanceledException>();
             }
         }
     }

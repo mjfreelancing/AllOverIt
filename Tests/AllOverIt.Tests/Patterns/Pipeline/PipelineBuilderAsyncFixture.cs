@@ -5,6 +5,7 @@ using AllOverIt.Patterns.Pipeline;
 using FakeItEasy;
 using FluentAssertions;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -19,7 +20,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
             {
                 Invoking(() =>
                 {
-                    Func<int, Task<double>> step = null;
+                    Func<int, CancellationToken, Task<double>> step = null;
 
                     _ = new PipelineBuilderAsync<int, double>(step);
                 })
@@ -34,7 +35,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
             [Fact]
             public void Should_Return_Func()
             {
-                Func<int, Task<double>> step = value => Task.FromResult((double) value);
+                Func<int, CancellationToken, Task<double>> step = (value, cancellationToken) => Task.FromResult((double) value);
 
                 var builder = new PipelineBuilderAsync<int, double>(step);
 
@@ -54,7 +55,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
             {
                 Invoking(() =>
                 {
-                    Func<double, Task<string>> step = value => Task.FromResult(value.ToString());
+                    Func<double, CancellationToken, Task<string>> step = (value, cancellationToken) => Task.FromResult(value.ToString());
 
                     _ = new PipelineBuilderAsync<int, double, string>(null, step);
                 })
@@ -86,16 +87,16 @@ namespace AllOverIt.Tests.Patterns.Pipeline
                 var factor = Create<double>();
 
                 // IPipelineBuilderAsync<int, double>
-                var builder1 = PipelineBuilder.PipeAsync<int, double>(value => Task.FromResult(value * factor));
+                var builder1 = PipelineBuilder.PipeAsync<int, double>((value, cancellationToken) => Task.FromResult(value * factor));
 
-                var builder2 = new PipelineBuilderAsync<int, double, string>(builder1, value => Task.FromResult($"{value}"));
+                var builder2 = new PipelineBuilderAsync<int, double, string>(builder1, (value, cancellationToken) => Task.FromResult($"{value}"));
 
                 var func = builder2.Build();
 
                 var input = Create<int>();
                 var expected = $"{input * factor}";
 
-                var actual = await func.Invoke(input);
+                var actual = await func.Invoke(input, CancellationToken.None);
 
                 expected.Should().Be(actual);
             }

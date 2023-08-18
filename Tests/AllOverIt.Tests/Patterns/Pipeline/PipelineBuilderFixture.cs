@@ -7,6 +7,7 @@ using FakeItEasy;
 using FluentAssertions;
 using System;
 using System.Numerics;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 using Xunit.Sdk;
@@ -75,7 +76,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
                 _factor = factor;
             }
 
-            public Task<double> ExecuteAsync(int input)
+            public Task<double> ExecuteAsync(int input, CancellationToken cancellationToken)
             {
                 return Task.FromResult(input + _factor);
             }
@@ -97,7 +98,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
                 _factor = factor;
             }
 
-            public Task<string> ExecuteAsync(double input)
+            public Task<string> ExecuteAsync(double input, CancellationToken cancellationToken)
             {
                 return Task.FromResult((input * _factor).ToString());
             }
@@ -364,7 +365,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
             [Fact]
             public void Should_Throw_When_Func_Null()
             {
-                Func<Task<double>> step = null;
+                Func<CancellationToken, Task<double>> step = null;
 
                 Invoking(() =>
                 {
@@ -378,7 +379,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
             [Fact]
             public void Should_Return_Pipeline_Builder()
             {
-                Func<Task<double>> step = () => Task.FromResult(Create<double>());
+                Func<CancellationToken, Task<double>> step = cancellationToken => Task.FromResult(Create<double>());
 
                 var actual = PipelineBuilder.PipeAsync(step);
 
@@ -390,7 +391,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
             {
                 var invoked = false;
 
-                Func<Task<double>> step = () =>
+                Func<CancellationToken, Task<double>> step = cancellationToken =>
                 {
                     invoked = true;
                     return Task.FromResult(Create<double>());
@@ -398,7 +399,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                 var actual = PipelineBuilder.PipeAsync(step);
 
-                await actual.Build().Invoke();
+                await actual.Build().Invoke(CancellationToken.None);
 
                 invoked.Should().BeTrue();
             }
@@ -410,14 +411,14 @@ namespace AllOverIt.Tests.Patterns.Pipeline
                 var invoked1 = 0;
                 var invoked2 = 0;
 
-                Func<Task<double>> step1 = () =>
+                Func<CancellationToken, Task<double>> step1 = cancellationToken =>
                 {
                     counter++;
                     invoked1 = counter;
                     return Task.FromResult(Create<double>());
                 };
 
-                Func<double, Task<string>> step2 = value =>
+                Func<double, CancellationToken, Task<string>> step2 = (value, cancellationToken) =>
                 {
                     counter++;
                     invoked2 = counter;
@@ -426,7 +427,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                 var actual = PipelineBuilder.PipeAsync(step1).PipeAsync(step2);
 
-                actual.Build().Invoke();
+                actual.Build().Invoke(CancellationToken.None);
 
                 invoked1.Should().Be(1);
                 invoked2.Should().Be(2);
@@ -438,7 +439,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
             [Fact]
             public void Should_Throw_When_Func_Null()
             {
-                Func<int, Task<double>> step = null;
+                Func<int, CancellationToken, Task<double>> step = null;
 
                 Invoking(() =>
                 {
@@ -452,7 +453,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
             [Fact]
             public void Should_Return_Pipeline_Builder()
             {
-                Func<int, Task<double>> step = value => Task.FromResult((double) value);
+                Func<int, CancellationToken, Task<double>> step = (value, cancellationToken) => Task.FromResult((double) value);
 
                 var actual = PipelineBuilder.PipeAsync(step);
 
@@ -464,7 +465,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
             {
                 var invoked = false;
 
-                Func<int, Task<double>> step = value =>
+                Func<int, CancellationToken, Task<double>> step = (value, cancellationToken) =>
                 {
                     invoked = true;
                     return Task.FromResult((double) value);
@@ -472,7 +473,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                 var actual = PipelineBuilder.PipeAsync(step);
 
-                await actual.Build().Invoke(Create<int>());
+                await actual.Build().Invoke(Create<int>(), CancellationToken.None);
 
                 invoked.Should().BeTrue();
             }
@@ -484,14 +485,14 @@ namespace AllOverIt.Tests.Patterns.Pipeline
                 var invoked1 = 0;
                 var invoked2 = 0;
 
-                Func<int, Task<double>> step1 = value =>
+                Func<int, CancellationToken, Task<double>> step1 = (value, cancellationToken) =>
                 {
                     counter++;
                     invoked1 = counter;
                     return Task.FromResult((double) value);
                 };
 
-                Func<double, Task<string>> step2 = value =>
+                Func<double, CancellationToken, Task<string>> step2 = (value, cancellationToken) =>
                 {
                     counter++;
                     invoked2 = counter;
@@ -500,7 +501,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                 var actual = PipelineBuilder.PipeAsync(step1).PipeAsync(step2);
 
-                actual.Build().Invoke(Create<int>());
+                actual.Build().Invoke(Create<int>(), CancellationToken.None);
 
                 invoked1.Should().Be(1);
                 invoked2.Should().Be(2);
@@ -542,7 +543,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
                 var actual = PipelineBuilder.PipeAsync(step);
 
                 var input = Create<int>();
-                var result = await actual.Build().Invoke(input);
+                var result = await actual.Build().Invoke(input, CancellationToken.None);
 
                 var expected = input + factor;
 
@@ -561,7 +562,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
                 var actual = PipelineBuilder.PipeAsync(step1).PipeAsync(step2);
 
                 var input = Create<int>();
-                var result = await actual.Build().Invoke(input);
+                var result = await actual.Build().Invoke(input, CancellationToken.None);
 
                 var expected = $"{(input + factor1) * factor2}";
 
@@ -587,7 +588,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
                 var actual = PipelineBuilder.PipeAsync<PipelineStep1AsyncDummy, int, double>();
 
                 var input = Create<int>();
-                var result = await actual.Build().Invoke(input);
+                var result = await actual.Build().Invoke(input, CancellationToken.None);
 
                 var expected = input + factor;
 
@@ -605,7 +606,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
                     .PipeAsync<PipelineStep2AsyncDummy, int, double, string>();
 
                 var input = Create<int>();
-                var result = await actual.Build().Invoke(input);
+                var result = await actual.Build().Invoke(input, CancellationToken.None);
 
                 var expected = $"{(input + factor1) * factor2}";
 

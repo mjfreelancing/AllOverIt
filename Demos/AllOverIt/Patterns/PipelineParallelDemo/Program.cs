@@ -5,6 +5,7 @@ using AllOverIt.Patterns.Pipeline.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace PipelineParallelDemo
@@ -14,37 +15,37 @@ namespace PipelineParallelDemo
         static async Task Main()
         {
             // These represent what could be more complex pipelines (with multiple steps), running in background threads or tasks
-            var minValuePipeline = PipelineBuilder.PipeAsync<IEnumerable<double>, double>(numbers => Task.FromResult(numbers.Min())).Build();
-            var maxValuePipeline = PipelineBuilder.PipeAsync<IEnumerable<double>, double>(numbers => Task.FromResult(numbers.Max())).Build();
-            var avgValuePipeline = PipelineBuilder.PipeAsync<IEnumerable<double>, double>(numbers => Task.FromResult(numbers.Average())).Build();
+            var minValuePipeline = PipelineBuilder.PipeAsync<IEnumerable<double>, double>((numbers, cancellationToken) => Task.FromResult(numbers.Min())).Build();
+            var maxValuePipeline = PipelineBuilder.PipeAsync<IEnumerable<double>, double>((numbers, cancellationToken) => Task.FromResult(numbers.Max())).Build();
+            var avgValuePipeline = PipelineBuilder.PipeAsync<IEnumerable<double>, double>((numbers, cancellationToken) => Task.FromResult(numbers.Average())).Build();
 
             // calculateStats could have been created as a pipeline as shown in the commented block
-            /*
-                var statsPipeline = PipelineBuilder.PipeAsync<IEnumerable<double>, Stats>(async data =>
-                {
-                    var numbers = data.AsReadOnlyCollection();
+            //
+            //var statsPipeline = PipelineBuilder.PipeAsync<IEnumerable<double>, Stats>(async (data, cancellationToken) =>
+            //{
+            //    var numbers = data.AsReadOnlyCollection();
 
-                    var (min, max, avg) = await TaskHelper
-                        .WhenAll(
-                            minValuePipeline.Invoke(numbers),
-                            maxValuePipeline.Invoke(numbers),
-                            avgValuePipeline.Invoke(numbers)
-                        ).ConfigureAwait(false);
+            //    var (min, max, avg) = await TaskHelper
+            //        .WhenAll(
+            //            minValuePipeline.Invoke(numbers, cancellationToken),
+            //            maxValuePipeline.Invoke(numbers, cancellationToken),
+            //            avgValuePipeline.Invoke(numbers, cancellationToken)
+            //        ).ConfigureAwait(false);
 
-                    return new Stats(min, max, avg);
-                });
-            */
+            //    return new Stats(min, max, avg);
+            //});
+
 
 #pragma warning disable IDE0039 // Use local function
-            Func<IEnumerable<double>, Task<Stats>> calculateStats = async data =>
+            Func<IEnumerable<double>, CancellationToken, Task<Stats>> calculateStats = async (data, cancellationToken) =>
             {
                 var numbers = data.AsReadOnlyCollection();
 
                 var (min, max, avg) = await TaskHelper
                     .WhenAll(
-                        minValuePipeline.Invoke(numbers),
-                        maxValuePipeline.Invoke(numbers),
-                        avgValuePipeline.Invoke(numbers)
+                        minValuePipeline.Invoke(numbers, cancellationToken),
+                        maxValuePipeline.Invoke(numbers, cancellationToken),
+                        avgValuePipeline.Invoke(numbers, cancellationToken)
                     ).ConfigureAwait(false);
 
                 return new Stats(min, max, avg);
@@ -54,7 +55,7 @@ namespace PipelineParallelDemo
             var pipeline = PipelineBuilder
 
                 // Scale all numbers between 0 and 1 - assuming all values > 0
-                .PipeAsync<IEnumerable<double>, IReadOnlyCollection<double>>(data =>
+                .PipeAsync<IEnumerable<double>, IReadOnlyCollection<double>>((data, cancellationToken) =>
                 {
                     var numbers = data.AsReadOnlyCollection();
 
@@ -74,7 +75,7 @@ namespace PipelineParallelDemo
                 .Range(1, 100)
                 .Select(value => (double) value);
 
-            var result = await pipeline.Invoke(input);
+            var result = await pipeline.Invoke(input, CancellationToken.None);
 
             Console.WriteLine(result.ToString());
 

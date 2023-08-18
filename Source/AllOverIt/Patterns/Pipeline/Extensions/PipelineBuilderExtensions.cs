@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AllOverIt.Patterns.Pipeline.Extensions
@@ -65,7 +66,7 @@ namespace AllOverIt.Patterns.Pipeline.Extensions
         /// <param name="step">The step to be added to the pipeline builder.</param>
         /// <returns>A new pipeline builder representing the asynchronous step just added to the pipeline.</returns>
         public static IPipelineBuilderAsync<TIn, TNextOut> PipeAsync<TIn, TPrevOut, TNextOut>(
-           this IPipelineBuilderAsync<TIn, TPrevOut> prevStep, Func<TPrevOut, Task<TNextOut>> step)
+           this IPipelineBuilderAsync<TIn, TPrevOut> prevStep, Func<TPrevOut, CancellationToken, Task<TNextOut>> step)
         {
             return new PipelineBuilderAsync<TIn, TPrevOut, TNextOut>(prevStep, step);
         }
@@ -116,7 +117,7 @@ namespace AllOverIt.Patterns.Pipeline.Extensions
         {
             _ = step.WhenNotNull(nameof(step));
 
-            Task<TNextOut> stepAsync(TPrevOut result) => Task.FromResult(step.Invoke(result));
+            Task<TNextOut> stepAsync(TPrevOut result, CancellationToken _) => Task.FromResult(step.Invoke(result));
 
             return new PipelineBuilderAsync<TIn, TPrevOut, TNextOut>(prevStep, stepAsync);
         }
@@ -206,7 +207,7 @@ namespace AllOverIt.Patterns.Pipeline.Extensions
         /// <param name="step">The step to be added to the pipeline builder.</param>
         /// <returns>A new pipeline builder representing the asynchronous step just added to the pipeline.</returns>
         public static IPipelineBuilderAsync<TNextOut> PipeAsync<TPrevOut, TNextOut>(
-           this IPipelineBuilderAsync<TPrevOut> prevStep, Func<TPrevOut, Task<TNextOut>> step)
+           this IPipelineBuilderAsync<TPrevOut> prevStep, Func<TPrevOut, CancellationToken, Task<TNextOut>> step)
         {
             return new PipelineNoInputBuilderAsync<TPrevOut, TNextOut>(prevStep, step);
         }
@@ -231,8 +232,8 @@ namespace AllOverIt.Patterns.Pipeline.Extensions
         /// <typeparam name="TNextOut">The output type for the step being added to the pipeline.</typeparam>
         /// <param name="prevStep">The builder instance representing the previous step in the pipeline.</param>
         /// <returns>A new pipeline builder representing all steps currently added to the pipeline.</returns>
-        public static IPipelineBuilderAsync<TNextOut> PipeAsync<TPipelineStep, TPrevOut, TNextOut>(
-            this IPipelineBuilderAsync<TPrevOut> prevStep) where TPipelineStep : IPipelineStepAsync<TPrevOut, TNextOut>, new()
+        public static IPipelineBuilderAsync<TNextOut> PipeAsync<TPipelineStep, TPrevOut, TNextOut>(this IPipelineBuilderAsync<TPrevOut> prevStep)
+            where TPipelineStep : IPipelineStepAsync<TPrevOut, TNextOut>, new()
         {
             var step = new TPipelineStep();
 
@@ -254,7 +255,7 @@ namespace AllOverIt.Patterns.Pipeline.Extensions
         {
             _ = step.WhenNotNull(nameof(step));
 
-            Task<TNextOut> stepAsync(TPrevOut result) => Task.FromResult(step.Invoke(result));
+            Task<TNextOut> stepAsync(TPrevOut result, CancellationToken _) => Task.FromResult(step.Invoke(result));
 
             return new PipelineNoInputBuilderAsync<TPrevOut, TNextOut>(prevStep, stepAsync);
         }

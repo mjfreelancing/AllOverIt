@@ -49,7 +49,7 @@ namespace AllOverIt.ReactiveUI.Tests.Extensions
             public void Should_Return_PipelineBuilderAsync()
             {
                 // IPipelineBuilderAsync<int, double>
-                var prevStep = PipelineBuilder.PipeAsync<int, double>(_ => Task.FromResult(Create<double>()));
+                var prevStep = PipelineBuilder.PipeAsync<int, double>((_, cancellationToken) => Task.FromResult(Create<double>()));
 
                 var command = ReactiveCommand.Create<double, string>(_ => string.Empty);
 

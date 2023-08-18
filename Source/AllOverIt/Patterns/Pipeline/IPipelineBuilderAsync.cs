@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AllOverIt.Patterns.Pipeline
@@ -9,7 +10,7 @@ namespace AllOverIt.Patterns.Pipeline
     {
         /// <summary>Builds the pipeline's steps into a Func that can later be invoked.</summary>
         /// <returns>The pipeline's steps composed to a single Func that can later be invoked.</returns>
-        Func<Task<TOut>> Build();
+        Func<CancellationToken, Task<TOut>> Build();
     }
 
     /// <summary>Represents an asynchronous pipeline builder.</summary>
@@ -19,6 +20,6 @@ namespace AllOverIt.Patterns.Pipeline
     {
         /// <summary>Builds the pipeline's steps into a Func that can later be invoked.</summary>
         /// <returns>The pipeline's steps composed to a single Func that can later be invoked.</returns>
-        Func<TIn, Task<TOut>> Build();
+        Func<TIn, CancellationToken, Task<TOut>> Build();
     }
 }

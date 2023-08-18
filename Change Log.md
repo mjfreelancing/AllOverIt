@@ -39,6 +39,7 @@
 * Added Stream extensions to convert to and from a byte array
 * Added HashSetExtensions
 * Added ProgressUpdater
+* Added cancellation support in the async pipeline builder
 
 
 ## AllOverIt.AspNetCore

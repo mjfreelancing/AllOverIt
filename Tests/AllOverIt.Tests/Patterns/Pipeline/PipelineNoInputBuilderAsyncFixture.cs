@@ -5,6 +5,7 @@ using AllOverIt.Patterns.Pipeline;
 using FakeItEasy;
 using FluentAssertions;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -19,7 +20,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
             {
                 Invoking(() =>
                 {
-                    Func<Task<double>> step = null;
+                    Func<CancellationToken, Task<double>> step = null;
 
                     _ = new PipelineNoInputBuilderAsync<double>(step);
                 })
@@ -34,7 +35,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
             [Fact]
             public void Should_Return_Func()
             {
-                Func<Task<double>> step = () => Task.FromResult(Create<double>());
+                Func<CancellationToken, Task<double>> step = cancellationToken => Task.FromResult(Create<double>());
 
                 var builder = new PipelineNoInputBuilderAsync<double>(step);
 
@@ -54,7 +55,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
             {
                 Invoking(() =>
                 {
-                    Func<double, Task<string>> step = value => Task.FromResult(value.ToString());
+                    Func<double, CancellationToken, Task<string>> step = (value, cancellationToken) => Task.FromResult(value.ToString());
 
                     _ = new PipelineNoInputBuilderAsync<double, string>(null, step);
                 })
@@ -86,15 +87,15 @@ namespace AllOverIt.Tests.Patterns.Pipeline
                 var value = Create<double>();
 
                 // IPipelineBuilderAsync<double>
-                var builder1 = PipelineBuilder.PipeAsync<double>(() => Task.FromResult(value));
+                var builder1 = PipelineBuilder.PipeAsync<double>(cancellationToken => Task.FromResult(value));
 
-                var builder2 = new PipelineNoInputBuilderAsync<double, string>(builder1, value => Task.FromResult($"{value}"));
+                var builder2 = new PipelineNoInputBuilderAsync<double, string>(builder1, (value, cancellationToken) => Task.FromResult($"{value}"));
 
                 var func = builder2.Build();
 
                 var expected = $"{value}";
 
-                var actual = await func.Invoke();
+                var actual = await func.Invoke(CancellationToken.None);
 
                 expected.Should().Be(actual);
             }

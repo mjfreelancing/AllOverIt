@@ -5,6 +5,7 @@ using AllOverIt.Patterns.Pipeline.Extensions;
 using FluentAssertions;
 using System;
 using System.Numerics;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -71,7 +72,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                     _factor = factor;
                 }
 
-                public Task<double> ExecuteAsync(int input)
+                public Task<double> ExecuteAsync(int input, CancellationToken cancellationToken)
                 {
                     return Task.FromResult(input + _factor);
                 }
@@ -103,7 +104,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 var input = Create<int>();
                 var expected = input + factor;
 
-                var actual = await func.Invoke(input);
+                var actual = await func.Invoke(input, CancellationToken.None);
                 expected.Should().Be(actual);
             }
         }

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace AllOverIt.Patterns.Pipeline
 {
@@ -21,6 +22,6 @@ namespace AllOverIt.Patterns.Pipeline
         /// <summary>Asynchronously executes this step within a pipeline sequence.</summary>
         /// <param name="input">The input provided to the pipeline step.</param>
         /// <returns>The output of the pipeline step.</returns>
-        Task<TOut> ExecuteAsync(TIn input);
+        Task<TOut> ExecuteAsync(TIn input, CancellationToken cancellationToken);
     }
 }

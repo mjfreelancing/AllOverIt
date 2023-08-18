@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AllOverIt.Patterns.Pipeline.Extensions
@@ -25,7 +26,7 @@ namespace AllOverIt.Patterns.Pipeline.Extensions
         /// <typeparam name="TOut">The output type for the provided pipeline step.</typeparam>
         /// <param name="step">The pipeline step to get the underlying asynchronous Func for.</param>
         /// <returns>The underlying asynchronous Func for a provided <see cref="IPipelineStepAsync{TIn, TOut}"/>.</returns>
-        public static Func<TIn, Task<TOut>> AsFunc<TIn, TOut>(this IPipelineStepAsync<TIn, TOut> step)
+        public static Func<TIn, CancellationToken, Task<TOut>> AsFunc<TIn, TOut>(this IPipelineStepAsync<TIn, TOut> step)
         {
             _ = step.WhenNotNull(nameof(step));
 

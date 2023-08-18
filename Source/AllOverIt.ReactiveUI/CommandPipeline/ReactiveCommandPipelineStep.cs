@@ -2,6 +2,7 @@
 using AllOverIt.Patterns.Pipeline;
 using ReactiveUI;
 using System.Reactive.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AllOverIt.ReactiveUI.CommandPipeline
@@ -16,8 +17,10 @@ namespace AllOverIt.ReactiveUI.CommandPipeline
             _command = command.WhenNotNull(nameof(command));
         }
 
-        public async Task<TOut> ExecuteAsync(TIn input)
+        public async Task<TOut> ExecuteAsync(TIn input, CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             return await _command.Execute(input);
         }
     }

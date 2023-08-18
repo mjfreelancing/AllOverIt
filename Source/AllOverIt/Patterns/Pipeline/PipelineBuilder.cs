@@ -1,6 +1,7 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Patterns.Pipeline.Extensions;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AllOverIt.Patterns.Pipeline
@@ -55,7 +56,7 @@ namespace AllOverIt.Patterns.Pipeline
         /// <typeparam name="TOut">The output type for the pipeline step.</typeparam>
         /// <param name="step">The pipeline step to be appended.</param>
         /// <returns>A new pipeline builder instance that can have additional pipeline steps appended.</returns>
-        public static IPipelineBuilderAsync<TOut> PipeAsync<TOut>(Func<Task<TOut>> step)
+        public static IPipelineBuilderAsync<TOut> PipeAsync<TOut>(Func<CancellationToken, Task<TOut>> step)
         {
             return new PipelineNoInputBuilderAsync<TOut>(step);
         }
@@ -65,7 +66,7 @@ namespace AllOverIt.Patterns.Pipeline
         /// <typeparam name="TOut">The output type for the pipeline step.</typeparam>
         /// <param name="step">The pipeline step to be appended.</param>
         /// <returns>A new pipeline builder instance that can have additional pipeline steps appended.</returns>
-        public static IPipelineBuilderAsync<TIn, TOut> PipeAsync<TIn, TOut>(Func<TIn, Task<TOut>> step)
+        public static IPipelineBuilderAsync<TIn, TOut> PipeAsync<TIn, TOut>(Func<TIn, CancellationToken, Task<TOut>> step)
         {
             return new PipelineBuilderAsync<TIn, TOut>(step);
         }

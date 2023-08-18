@@ -6,6 +6,7 @@ using System;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CommandPipelineDemo
@@ -26,7 +27,7 @@ namespace CommandPipelineDemo
 
             // Using ReactiveCommandPipelineBuilder
             var pipeline1 = CreatePipelineUsingReactiveCommandPipelineBuilder(produceIntegerCommand, addFractionCommand, convertToStringCommand);
-            var result1 = await pipeline1.Invoke(Unit.Default);
+            var result1 = await pipeline1.Invoke(Unit.Default, CancellationToken.None);
 
             // This may output before all of the subscription based logs do
             Console.WriteLine();
@@ -38,7 +39,7 @@ namespace CommandPipelineDemo
 
             // Using extension method
             var pipeline2 = CreatePipelineUsingExtensionMethod(produceIntegerCommand, addFractionCommand, convertToStringCommand);
-            var result2 = await pipeline2.Invoke(Unit.Default);
+            var result2 = await pipeline2.Invoke(Unit.Default, CancellationToken.None);
 
             // This may output before all of the subscription based logs do
             Console.WriteLine();
@@ -101,9 +102,9 @@ namespace CommandPipelineDemo
             return command;
         }
 
-        private static Func<double, Task<double>> MultiplyDoubleByThreeAsync()
+        private static Func<double, CancellationToken, Task<double>> MultiplyDoubleByThreeAsync()
         {
-            static Task<double> func(double value)
+            static Task<double> func(double value, CancellationToken cancellationToken)
             {
                 Console.WriteLine(" - Multiple by 3");
                 return Task.FromResult(value * 3.0d);
@@ -134,7 +135,7 @@ namespace CommandPipelineDemo
             return func;
         }
 
-        private static Func<Unit, Task<double>> CreatePipelineUsingReactiveCommandPipelineBuilder(ReactiveCommand<Unit, int> produceIntegerCommand,
+        private static Func<Unit, CancellationToken, Task<double>> CreatePipelineUsingReactiveCommandPipelineBuilder(ReactiveCommand<Unit, int> produceIntegerCommand,
             ReactiveCommand<int, double> addFractionCommand, ReactiveCommand<double, string> convertToStringCommand)
         {
             return ReactiveCommandPipelineBuilder
@@ -148,7 +149,7 @@ namespace CommandPipelineDemo
                 .Build();
         }
 
-        private static Func<Unit, Task<double>> CreatePipelineUsingExtensionMethod(ReactiveCommand<Unit, int> produceIntegerCommand,
+        private static Func<Unit, CancellationToken, Task<double>> CreatePipelineUsingExtensionMethod(ReactiveCommand<Unit, int> produceIntegerCommand,
             ReactiveCommand<int, double> addFractionCommand, ReactiveCommand<double, string> convertToStringCommand)
         {
             return produceIntegerCommand

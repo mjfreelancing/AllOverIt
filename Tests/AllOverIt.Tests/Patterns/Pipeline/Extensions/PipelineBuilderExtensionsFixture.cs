@@ -4,6 +4,7 @@ using AllOverIt.Patterns.Pipeline;
 using AllOverIt.Patterns.Pipeline.Extensions;
 using FluentAssertions;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -37,7 +38,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
 
         internal class PipelineBuilderAsyncDummy : IPipelineBuilderAsync<int, double>
         {
-            public Func<int, Task<double>> Build()
+            public Func<int, CancellationToken, Task<double>> Build()
             {
                 throw new NotImplementedException();
             }
@@ -45,7 +46,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
 
         internal class PipelineBuilderNoInputAsyncDummy : IPipelineBuilderAsync<double>
         {
-            public Func<Task<double>> Build()
+            public Func<CancellationToken, Task<double>> Build()
             {
                 throw new NotImplementedException();
             }
@@ -53,7 +54,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
 
         internal class StepAsyncDummy : IPipelineStepAsync<double, string>
         {
-            public Task<string> ExecuteAsync(double input)
+            public Task<string> ExecuteAsync(double input, CancellationToken vancellationToken)
             {
                 throw new NotImplementedException();
             }
@@ -66,7 +67,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
 
         private readonly PipelineBuilderAsyncDummy _builderAsyncDummy = new();
         private readonly PipelineBuilderNoInputAsyncDummy _builderNoInputAsyncDummy = new();
-        private readonly Func<double, Task<string>> _funcStepAsync = value => Task.FromResult(value.ToString());
+        private readonly Func<double, CancellationToken, Task<string>> _funcStepAsync = (value, cancellationToken) => Task.FromResult(value.ToString());
         private readonly StepAsyncDummy _stepAsyncDummy = new();
 
         #region Pipe - with input, synchronous, return IPipelineBuilder<TIn, TNextOut>
@@ -187,7 +188,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
             {
                 Invoking(() =>
                 {
-                    _ = _builderAsyncDummy.PipeAsync((Func<double, Task<string>>) null);
+                    _ = _builderAsyncDummy.PipeAsync((Func<double, CancellationToken, Task<string>>) null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -305,13 +306,13 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 var value = Create<int>();
 
                 var pipe = PipelineBuilder
-                   .PipeAsync<int, int>(value => Task.FromResult(value + 1))
+                   .PipeAsync<int, int>((value, cancellationToken) => Task.FromResult(value + 1))
                    .Pipe(v => v * 3)
                    .Build();
 
                 var expected = (value + 1) * 3;
 
-                var actual = await pipe.Invoke(value);
+                var actual = await pipe.Invoke(value, CancellationToken.None);
 
                 expected.Should().Be(actual);
             }
@@ -495,7 +496,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
             {
                 Invoking(() =>
                 {
-                    _ = _builderNoInputAsyncDummy.PipeAsync((Func<double, Task<string>>) null);
+                    _ = _builderNoInputAsyncDummy.PipeAsync((Func<double, CancellationToken, Task<string>>) null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -613,13 +614,13 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 var value = Create<int>();
 
                 var pipe = PipelineBuilder
-                   .PipeAsync(() => Task.FromResult(value + 1))
+                   .PipeAsync(cancellationToken => Task.FromResult(value + 1))
                    .Pipe(v => v * 3)
                    .Build();
 
                 var expected = (value + 1) * 3;
 
-                var actual = await pipe.Invoke();
+                var actual = await pipe.Invoke(CancellationToken.None);
 
                 expected.Should().Be(actual);
             }
