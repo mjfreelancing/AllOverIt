@@ -4,6 +4,7 @@ using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Xunit;
 
@@ -213,6 +214,33 @@ namespace AllOverIt.Tests.Extensions
                 })
                     .Should()
                     .NotThrow();
+            }
+
+            [Fact]
+            public void Should_Add_To_List()
+            {
+                IList<int> list = new List<int>(CreateMany<int>());
+                var items = CreateMany<int>();
+
+                var expected = list.Concat(items).ToList();
+
+                list.AddRange(items);
+
+                list.Should().BeEquivalentTo(expected);
+            }
+
+            [Fact]
+            public void Should_Add_To_Non_List()
+            {
+                IList<int> list = new BindingList<int>();
+
+                var items = CreateMany<int>();
+
+                var expected = list.Concat(items).ToList();
+
+                list.AddRange(items);
+
+                list.Should().BeEquivalentTo(expected);
             }
         }
     }
