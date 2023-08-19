@@ -37,7 +37,6 @@
 * Added support for executing a Process and not wait for it to complete
 * Added RSA, AES and RSA-AES hybrid encryption helpers
 * Added Stream extensions to convert to and from a byte array
-* Added HashSetExtensions
 * Added ProgressUpdater
 * Added cancellation support in the async pipeline builder
 

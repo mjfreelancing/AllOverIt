@@ -166,7 +166,7 @@ namespace AllOverIt.Evaluator.Variables
 
                 if (missingVariableNames.Count > 0)
                 {
-                    getMissingVariableNames?.AddRange(missingVariableNames);
+                    getMissingVariableNames?.UnionWith(missingVariableNames);
 
                     return false;
                 }
