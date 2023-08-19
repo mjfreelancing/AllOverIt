@@ -100,6 +100,27 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                 expected.Should().Be(actual);
             }
+
+            [Fact]
+            public async Task Should_Throw_When_Cancelled()
+            {
+                await Invoking(async () =>
+                {
+                    var cts = new CancellationTokenSource();
+                    cts.Cancel();
+
+                    // IPipelineBuilderAsync<int, double>
+                    var builder1 = PipelineBuilder.PipeAsync<int, double>((value, cancellationToken) => Task.FromResult(Create<double>()));
+
+                    var builder2 = new PipelineBuilderAsync<int, double, string>(builder1, (value, cancellationToken) => Task.FromResult($"{value}"));
+
+                    var func = builder2.Build();
+
+                    _ = await func.Invoke(Create<int>(), cts.Token);
+                })
+                .Should()
+                .ThrowAsync<OperationCanceledException>();
+            }
         }
     }
 }

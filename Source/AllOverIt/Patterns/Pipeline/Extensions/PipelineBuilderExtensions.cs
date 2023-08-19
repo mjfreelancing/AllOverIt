@@ -117,7 +117,12 @@ namespace AllOverIt.Patterns.Pipeline.Extensions
         {
             _ = step.WhenNotNull(nameof(step));
 
-            Task<TNextOut> stepAsync(TPrevOut result, CancellationToken _) => Task.FromResult(step.Invoke(result));
+            Task<TNextOut> stepAsync(TPrevOut result, CancellationToken cancellationToken)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                
+                return Task.FromResult(step.Invoke(result));
+            };
 
             return new PipelineBuilderAsync<TIn, TPrevOut, TNextOut>(prevStep, stepAsync);
         }
@@ -255,7 +260,12 @@ namespace AllOverIt.Patterns.Pipeline.Extensions
         {
             _ = step.WhenNotNull(nameof(step));
 
-            Task<TNextOut> stepAsync(TPrevOut result, CancellationToken _) => Task.FromResult(step.Invoke(result));
+            Task<TNextOut> stepAsync(TPrevOut result, CancellationToken cancellationToken)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                return Task.FromResult(step.Invoke(result));
+            };
 
             return new PipelineNoInputBuilderAsync<TPrevOut, TNextOut>(prevStep, stepAsync);
         }

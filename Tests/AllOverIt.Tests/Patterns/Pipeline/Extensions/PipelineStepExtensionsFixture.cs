@@ -4,7 +4,6 @@ using AllOverIt.Patterns.Pipeline;
 using AllOverIt.Patterns.Pipeline.Extensions;
 using FluentAssertions;
 using System;
-using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -92,7 +91,6 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                     .WithNamedMessageWhenNull("step");
             }
 
-
             [Fact]
             public async Task Should_Return_Func()
             {
@@ -107,6 +105,8 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 var actual = await func.Invoke(input, CancellationToken.None);
                 expected.Should().Be(actual);
             }
+
+            // Cannot test 'Throw_When_Cancelled' since it is up to the 'step' implementation to throw
         }
     }
 }

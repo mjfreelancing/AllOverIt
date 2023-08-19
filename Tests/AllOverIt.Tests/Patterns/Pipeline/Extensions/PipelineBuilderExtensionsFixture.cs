@@ -316,6 +316,25 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
 
                 expected.Should().Be(actual);
             }
+
+            [Fact]
+            public async Task Should_Throw_When_Cancelled()
+            {
+                await Invoking(async () =>
+                {
+                    var cts = new CancellationTokenSource();
+                    cts.Cancel();
+
+                    var pipe = PipelineBuilder
+                       .PipeAsync<int, int>((value, cancellationToken) => Task.FromResult(Create<int>()))
+                       .Pipe(v => v)
+                       .Build();
+
+                    _ = await pipe.Invoke(Create<int>(), cts.Token);
+                })
+                .Should()
+                .ThrowAsync<OperationCanceledException>();
+            }
         }
 
         public class Pipe_Step_Instance_BuilderAsync : PipelineBuilderExtensionsFixture
@@ -623,6 +642,25 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 var actual = await pipe.Invoke(CancellationToken.None);
 
                 expected.Should().Be(actual);
+            }
+
+            [Fact]
+            public async Task Should_Throw_When_Cancelled()
+            {
+                await Invoking(async () =>
+                {
+                    var cts = new CancellationTokenSource();
+                    cts.Cancel();
+
+                    var pipe = PipelineBuilder
+                       .PipeAsync(cancellationToken => Task.FromResult(Create<int>()))
+                       .Pipe(v => v)
+                       .Build();
+
+                    var actual = await pipe.Invoke(cts.Token);
+                })
+                .Should()
+                .ThrowAsync<OperationCanceledException>();
             }
         }
 

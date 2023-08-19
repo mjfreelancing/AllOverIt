@@ -404,6 +404,8 @@ namespace AllOverIt.Tests.Patterns.Pipeline
                 invoked.Should().BeTrue();
             }
 
+            // Cannot test 'Throw_When_Cancelled' since the 'step' is responsible for throwing
+
             [Fact]
             public void Should_Create_Pipeline_Sequence()
             {
@@ -459,6 +461,8 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                 actual.Should().BeOfType<PipelineBuilderAsync<int, double>>();
             }
+
+            // Cannot test 'Throw_When_Cancelled' since the 'step' is responsible for throwing
 
             [Fact]
             public async Task Should_Create_Pipeline_Step()
@@ -579,6 +583,8 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                 actual.Should().BeOfType<PipelineBuilderAsync<int, double>>();
             }
+
+            // Cannot test 'Throw_When_Cancelled' since the 'step' is responsible for throwing
 
             [Fact]
             public async Task Should_Create_Pipeline_Step()

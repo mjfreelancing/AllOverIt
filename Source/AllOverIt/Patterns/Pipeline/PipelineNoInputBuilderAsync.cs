@@ -38,6 +38,8 @@ namespace AllOverIt.Patterns.Pipeline
         {
             async Task<TNextOut> func(CancellationToken cancellationToken)
             {
+                cancellationToken.ThrowIfCancellationRequested();
+
                 var prevOutput = await _prevStep
                     .Build()
                     .Invoke(cancellationToken)
