@@ -457,7 +457,9 @@ namespace AllOverIt.Pipes.Tests.Named
 
                         await client.ConnectAsync(ConnectTimeout).ConfigureAwait(false);
 
-                        await server.WriteAsync(expected, CancellationToken.None);
+                        await Task.Yield();
+
+                        await server.WriteAsync(expected, CancellationToken.None).ConfigureAwait(false);
 
                         actual = await tcs.Task;
                     }
