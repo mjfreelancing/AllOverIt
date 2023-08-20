@@ -93,15 +93,23 @@ namespace AllOverIt.Cryptography.Extensions
 
         #region Encrypt from plain text to ...
 
+        // done
         public static byte[] EncryptPlainTextToBytes(this IEncryptor encryptor, string plainText)
         {
+            _ = encryptor.WhenNotNull(nameof(encryptor));
+            _ = plainText.WhenNotNull(nameof(plainText));
+
             var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
 
             return encryptor.Encrypt(plainTextBytes);
         }
 
+        // done
         public static string EncryptPlainTextToBase64(this IEncryptor encryptor, string plainText)
         {
+            _ = encryptor.WhenNotNull(nameof(encryptor));
+            _ = plainText.WhenNotNull(nameof(plainText));
+
             var cipherTextBytes = EncryptPlainTextToBytes(encryptor, plainText);
 
             return Convert.ToBase64String(cipherTextBytes);
@@ -175,8 +183,12 @@ namespace AllOverIt.Cryptography.Extensions
             return Convert.ToBase64String(plainTextBytes);
         }
 
+        // done
         public static string DecryptBytesToPlainText(this IEncryptor encryptor, byte[] cipherTextBytes)
         {
+            _ = encryptor.WhenNotNull(nameof(encryptor));
+            _ = cipherTextBytes.WhenNotNull(nameof(cipherTextBytes));
+
             var plainTextBytes = encryptor.Decrypt(cipherTextBytes);
 
             return Encoding.UTF8.GetString(plainTextBytes);
@@ -210,8 +222,12 @@ namespace AllOverIt.Cryptography.Extensions
             return encryptor.Decrypt(cipherTextBytes);
         }
 
+        // done
         public static string DecryptBase64ToPlainText(this IEncryptor encryptor, string cipherTextBase64)
         {
+            _ = encryptor.WhenNotNull(nameof(encryptor));
+            _ = cipherTextBase64.WhenNotNull(nameof(cipherTextBase64));
+
             var cipherTextBytes = Convert.FromBase64String(cipherTextBase64);
 
             return DecryptBytesToPlainText(encryptor, cipherTextBytes);

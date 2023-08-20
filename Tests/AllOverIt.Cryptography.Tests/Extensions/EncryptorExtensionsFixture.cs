@@ -9,6 +9,7 @@ using System;
 using System.Buffers.Text;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Xunit;
 
 namespace AllOverIt.Cryptography.Tests.Extensions
@@ -324,7 +325,7 @@ namespace AllOverIt.Cryptography.Tests.Extensions
                 }
 
                 [Fact]
-                public void Should_Throw_When_CipherTextBase64_Null()
+                public void Should_Throw_When_CipherTextStream_Null()
                 {
                     Invoking(() =>
                     {
@@ -356,6 +357,151 @@ namespace AllOverIt.Cryptography.Tests.Extensions
             }
         }
 
+        public class EncryptPlainTextToBytes_DecryptBytesToPlainText : EncryptorExtensionsFixture
+        {
+            public class EncryptPlainTextToBytes : EncryptBytesToStream_DecryptStreamToBytes
+            {
+                [Fact]
+                public void Should_Throw_When_Encryptor_Null()
+                {
+                    Invoking(() =>
+                    {
+                        EncryptorExtensions.EncryptPlainTextToBytes(null, Create<string>());
+                    })
+                   .Should()
+                   .Throw<ArgumentNullException>()
+                   .WithNamedMessageWhenNull("encryptor");
+                }
+
+                [Fact]
+                public void Should_Throw_When_PlainText_Null()
+                {
+                    Invoking(() =>
+                    {
+                        EncryptorExtensions.EncryptPlainTextToBytes(A.Fake<IEncryptor>(), null);
+                    })
+                   .Should()
+                   .Throw<ArgumentNullException>()
+                   .WithNamedMessageWhenNull("plainText");
+                }
+            }
+
+            public class DecryptBytesToPlainText : EncryptBytesToStream_DecryptStreamToBytes
+            {
+                [Fact]
+                public void Should_Throw_When_Encryptor_Null()
+                {
+                    Invoking(() =>
+                    {
+                        _ = EncryptorExtensions.DecryptBytesToPlainText(null, CreateRandomBytes());
+                    })
+                   .Should()
+                   .Throw<ArgumentNullException>()
+                   .WithNamedMessageWhenNull("encryptor");
+                }
+
+                [Fact]
+                public void Should_Throw_When_CipherTextBytes_Null()
+                {
+                    Invoking(() =>
+                    {
+                        _ = EncryptorExtensions.DecryptBytesToPlainText(A.Fake<IEncryptor>(), null);
+                    })
+                   .Should()
+                   .Throw<ArgumentNullException>()
+                   .WithNamedMessageWhenNull("cipherTextBytes");
+                }
+            }
+
+            [Fact]
+            public void Should_Encrypt_Decrpyt()
+            {
+                var aes = new AesEncryptorFactory().Create();
+
+                var sourceString = Create<string>();
+
+                var cipherTextBytes = aes.EncryptPlainTextToBytes(sourceString);
+
+                var plainTextString = aes.DecryptBytesToPlainText(cipherTextBytes);
+
+                plainTextString.Should().BeEquivalentTo(sourceString);
+            }
+        }
+
+        public class EncryptPlainTextToBase64_DecryptBase64ToPlainText : EncryptorExtensionsFixture
+        {
+            public class EncryptPlainTextToBase64 : EncryptBytesToStream_DecryptStreamToBytes
+            {
+                [Fact]
+                public void Should_Throw_When_Encryptor_Null()
+                {
+                    Invoking(() =>
+                    {
+                        EncryptorExtensions.EncryptPlainTextToBase64(null, Create<string>());
+                    })
+                   .Should()
+                   .Throw<ArgumentNullException>()
+                   .WithNamedMessageWhenNull("encryptor");
+                }
+
+                [Fact]
+                public void Should_Throw_When_PlainText_Null()
+                {
+                    Invoking(() =>
+                    {
+                        EncryptorExtensions.EncryptPlainTextToBase64(A.Fake<IEncryptor>(), null);
+                    })
+                   .Should()
+                   .Throw<ArgumentNullException>()
+                   .WithNamedMessageWhenNull("plainText");
+                }
+            }
+
+            public class DecryptBase64ToPlainText : EncryptBytesToStream_DecryptStreamToBytes
+            {
+                [Fact]
+                public void Should_Throw_When_Encryptor_Null()
+                {
+                    Invoking(() =>
+                    {
+                        _ = EncryptorExtensions.DecryptBase64ToPlainText(null, CreateRandomBase64());
+                    })
+                   .Should()
+                   .Throw<ArgumentNullException>()
+                   .WithNamedMessageWhenNull("encryptor");
+                }
+
+                [Fact]
+                public void Should_Throw_When_CipherTextBytes_Null()
+                {
+                    Invoking(() =>
+                    {
+                        _ = EncryptorExtensions.DecryptBase64ToPlainText(A.Fake<IEncryptor>(), null);
+                    })
+                   .Should()
+                   .Throw<ArgumentNullException>()
+                   .WithNamedMessageWhenNull("cipherTextBase64");
+                }
+            }
+
+            [Fact]
+            public void Should_Encrypt_Decrpyt()
+            {
+                var aes = new AesEncryptorFactory().Create();
+
+                var sourceString = Create<string>();
+
+                var cipherTextString = aes.EncryptPlainTextToBase64(sourceString);
+
+                IsValidBase64(cipherTextString).Should().BeTrue();
+
+                var plainTextString = aes.DecryptBase64ToPlainText(cipherTextString);
+
+                plainTextString.Should().BeEquivalentTo(sourceString);
+            }
+        }
+
+
 
 
 
@@ -378,5 +524,12 @@ namespace AllOverIt.Cryptography.Tests.Extensions
 
             return Convert.TryFromBase64String(base64, buffer, out var _);
         }
+
+        //private bool IsValidBase64(byte[] base64)
+        //{
+        //    var base64Str = Encoding.UTF8.GetString(base64);
+
+        //    return IsValidBase64(base64Str);
+        //}
     }
 }
