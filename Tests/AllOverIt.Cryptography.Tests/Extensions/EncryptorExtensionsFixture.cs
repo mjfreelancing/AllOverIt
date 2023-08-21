@@ -505,89 +505,86 @@ namespace AllOverIt.Cryptography.Tests.Extensions
         {
             public class EncryptPlainTextToStream : EncryptPlainTextToStream_DecryptStreamToPlainText
             {
-                public class EncryptBytesToStream : EncryptBytesToStream_DecryptStreamToBytes
+                [Fact]
+                public void Should_Throw_When_Encryptor_Null()
                 {
-                    [Fact]
-                    public void Should_Throw_When_Encryptor_Null()
+                    Invoking(() =>
                     {
-                        Invoking(() =>
-                        {
-                            EncryptorExtensions.EncryptPlainTextToStream(null, Create<string>(), Stream.Null);
-                        })
-                       .Should()
-                       .Throw<ArgumentNullException>()
-                       .WithNamedMessageWhenNull("encryptor");
-                    }
-
-                    [Fact]
-                    public void Should_Throw_When_PlainTextString_Null()
-                    {
-                        Invoking(() =>
-                        {
-                            EncryptorExtensions.EncryptPlainTextToStream(A.Fake<IStreamEncryptor>(), null, Stream.Null);
-                        })
-                       .Should()
-                       .Throw<ArgumentNullException>()
-                       .WithNamedMessageWhenNull("plainText");
-                    }
-
-                    [Fact]
-                    public void Should_Throw_When_CipherTextStream_Null()
-                    {
-                        Invoking(() =>
-                        {
-                            EncryptorExtensions.EncryptPlainTextToStream(A.Fake<IStreamEncryptor>(), Create<string>(), null);
-                        })
-                       .Should()
-                       .Throw<ArgumentNullException>()
-                       .WithNamedMessageWhenNull("cipherTextStream");
-                    }
-                }
-
-                public class DecryptStreamToPlainText : EncryptPlainTextToStream_DecryptStreamToPlainText
-                {
-                    [Fact]
-                    public void Should_Throw_When_Encryptor_Null()
-                    {
-                        Invoking(() =>
-                        {
-                            _ = EncryptorExtensions.DecryptStreamToPlainText(null, Stream.Null);
-                        })
-                       .Should()
-                       .Throw<ArgumentNullException>()
-                       .WithNamedMessageWhenNull("encryptor");
-                    }
-
-                    [Fact]
-                    public void Should_Throw_When_CipherTextStream_Null()
-                    {
-                        Invoking(() =>
-                        {
-                            _ = EncryptorExtensions.DecryptStreamToPlainText(A.Fake<IStreamEncryptor>(), null);
-                        })
-                       .Should()
-                       .Throw<ArgumentNullException>()
-                       .WithNamedMessageWhenNull("cipherTextStream");
-                    }
+                        EncryptorExtensions.EncryptPlainTextToStream(null, Create<string>(), Stream.Null);
+                    })
+                   .Should()
+                   .Throw<ArgumentNullException>()
+                   .WithNamedMessageWhenNull("encryptor");
                 }
 
                 [Fact]
-                public void Should_Encrypt_Decrpyt()
+                public void Should_Throw_When_PlainTextString_Null()
                 {
-                    var aes = new AesEncryptorFactory().Create();
-
-                    var sourceString = Create<string>();
-
-                    using (var cipherText = new MemoryStream())
+                    Invoking(() =>
                     {
-                        aes.EncryptPlainTextToStream(sourceString, cipherText);
+                        EncryptorExtensions.EncryptPlainTextToStream(A.Fake<IStreamEncryptor>(), null, Stream.Null);
+                    })
+                   .Should()
+                   .Throw<ArgumentNullException>()
+                   .WithNamedMessageWhenNull("plainText");
+                }
 
-                        cipherText.Position = 0;
+                [Fact]
+                public void Should_Throw_When_CipherTextStream_Null()
+                {
+                    Invoking(() =>
+                    {
+                        EncryptorExtensions.EncryptPlainTextToStream(A.Fake<IStreamEncryptor>(), Create<string>(), null);
+                    })
+                   .Should()
+                   .Throw<ArgumentNullException>()
+                   .WithNamedMessageWhenNull("cipherTextStream");
+                }
+            }
 
-                        var plainTextString = aes.DecryptStreamToPlainText(cipherText);
+            public class DecryptStreamToPlainText : EncryptPlainTextToStream_DecryptStreamToPlainText
+            {
+                [Fact]
+                public void Should_Throw_When_Encryptor_Null()
+                {
+                    Invoking(() =>
+                    {
+                        _ = EncryptorExtensions.DecryptStreamToPlainText(null, Stream.Null);
+                    })
+                   .Should()
+                   .Throw<ArgumentNullException>()
+                   .WithNamedMessageWhenNull("encryptor");
+                }
 
-                        plainTextString.Should().BeEquivalentTo(sourceString);
-                    }
+                [Fact]
+                public void Should_Throw_When_CipherTextStream_Null()
+                {
+                    Invoking(() =>
+                    {
+                        _ = EncryptorExtensions.DecryptStreamToPlainText(A.Fake<IStreamEncryptor>(), null);
+                    })
+                   .Should()
+                   .Throw<ArgumentNullException>()
+                   .WithNamedMessageWhenNull("cipherTextStream");
+                }
+            }
+
+            [Fact]
+            public void Should_Encrypt_Decrpyt()
+            {
+                var aes = new AesEncryptorFactory().Create();
+
+                var sourceString = Create<string>();
+
+                using (var cipherTextStream = new MemoryStream())
+                {
+                    aes.EncryptPlainTextToStream(sourceString, cipherTextStream);
+
+                    cipherTextStream.Position = 0;
+
+                    var plainTextString = aes.DecryptStreamToPlainText(cipherTextStream);
+
+                    plainTextString.Should().BeEquivalentTo(sourceString);
                 }
             }
         }
@@ -663,6 +660,93 @@ namespace AllOverIt.Cryptography.Tests.Extensions
             }
         }
 
+        public class EncryptBase64ToStream_DecryptStreamToBase64 : EncryptorExtensionsFixture
+        {
+            public class EncryptBase64ToStream : EncryptBase64ToStream_DecryptStreamToBase64
+            {
+                [Fact]
+                public void Should_Throw_When_Encryptor_Null()
+                {
+                    Invoking(() =>
+                    {
+                        EncryptorExtensions.EncryptBase64ToStream(null, Create<string>(), Stream.Null);
+                    })
+                   .Should()
+                   .Throw<ArgumentNullException>()
+                   .WithNamedMessageWhenNull("encryptor");
+                }
+
+                [Fact]
+                public void Should_Throw_When_PlainTextBase64String_Null()
+                {
+                    Invoking(() =>
+                    {
+                        EncryptorExtensions.EncryptBase64ToStream(A.Fake<IStreamEncryptor>(), null, Stream.Null);
+                    })
+                   .Should()
+                   .Throw<ArgumentNullException>()
+                   .WithNamedMessageWhenNull("plainTextBase64");
+                }
+
+                [Fact]
+                public void Should_Throw_When_CipherTextStream_Null()
+                {
+                    Invoking(() =>
+                    {
+                        EncryptorExtensions.EncryptBase64ToStream(A.Fake<IStreamEncryptor>(), Create<string>(), null);
+                    })
+                   .Should()
+                   .Throw<ArgumentNullException>()
+                   .WithNamedMessageWhenNull("cipherTextStream");
+                }
+            }
+
+            public class DecryptStreamToBase64 : EncryptBase64ToStream_DecryptStreamToBase64
+            {
+                [Fact]
+                public void Should_Throw_When_Encryptor_Null()
+                {
+                    Invoking(() =>
+                    {
+                        _ = EncryptorExtensions.DecryptStreamToBase64(null, Stream.Null);
+                    })
+                   .Should()
+                   .Throw<ArgumentNullException>()
+                   .WithNamedMessageWhenNull("encryptor");
+                }
+
+                [Fact]
+                public void Should_Throw_When_CipherTextStream_Null()
+                {
+                    Invoking(() =>
+                    {
+                        _ = EncryptorExtensions.DecryptStreamToBase64(A.Fake<IStreamEncryptor>(), null);
+                    })
+                   .Should()
+                   .Throw<ArgumentNullException>()
+                   .WithNamedMessageWhenNull("cipherTextStream");
+                }
+            }
+
+            [Fact]
+            public void Should_Encrypt_Decrpyt()
+            {
+                var aes = new AesEncryptorFactory().Create();
+
+                var sourceBase64 = CreateRandomBase64();
+
+                using (var cipherTextStream = new MemoryStream())
+                {
+                    aes.EncryptBase64ToStream(sourceBase64, cipherTextStream);
+
+                    cipherTextStream.Position = 0;
+
+                    var plainTextBase64 = aes.DecryptStreamToBase64(cipherTextStream);
+
+                    plainTextBase64.Should().BeEquivalentTo(sourceBase64);
+                }
+            }
+        }
 
 
 

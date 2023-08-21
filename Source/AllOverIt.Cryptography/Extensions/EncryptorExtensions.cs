@@ -142,11 +142,16 @@ namespace AllOverIt.Cryptography.Extensions
             return encryptor.Encrypt(plainTextBytes);
         }
 
+        // done
         public static void EncryptBase64ToStream(this IStreamEncryptor encryptor, string plainTextBase64, Stream cipherTextStream)
         {
+            _ = encryptor.WhenNotNull(nameof(encryptor));
+            _ = plainTextBase64.WhenNotNull(nameof(plainTextBase64));
+            _ = cipherTextStream.WhenNotNull(nameof(cipherTextStream));
+
             var plainTextBytes = Convert.FromBase64String(plainTextBase64);
 
-            DecryptBytesToStream(encryptor, plainTextBytes, cipherTextStream);
+            EncryptBytesToStream(encryptor, plainTextBytes, cipherTextStream);
         }
 
         #endregion
@@ -167,8 +172,12 @@ namespace AllOverIt.Cryptography.Extensions
             }
         }
 
+        // done
         public static string DecryptStreamToBase64(this IStreamEncryptor encryptor, Stream cipherTextStream)
         {
+            _ = encryptor.WhenNotNull(nameof(encryptor));
+            _ = cipherTextStream.WhenNotNull(nameof(cipherTextStream));
+
             var plainTextBytes = DecryptStreamToBytes(encryptor, cipherTextStream);
 
             return Convert.ToBase64String(plainTextBytes);
