@@ -748,10 +748,6 @@ namespace AllOverIt.Cryptography.Tests.Extensions
             }
         }
 
-
-
-
-
         private byte[] CreateRandomBytes()
         {
             return CreateMany<byte>().ToArray();
