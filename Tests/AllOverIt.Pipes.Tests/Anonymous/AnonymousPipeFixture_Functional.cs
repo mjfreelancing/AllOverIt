@@ -33,15 +33,17 @@ namespace AllOverIt.Pipes.Tests.Anonymous
                         server.WaitForPipeDrain();
                     });
 
+                    await Task.Yield();
+
                     var clientTask = Task.Run(() =>
                     {
                         actual = client.Reader.ReadLine();
                     });
 
+                    await Task.Yield();
+
                     await serverTask;
                     await clientTask;
-
-                    //await Task.WhenAll(clientTask, serverTask);
                 }
             }
 

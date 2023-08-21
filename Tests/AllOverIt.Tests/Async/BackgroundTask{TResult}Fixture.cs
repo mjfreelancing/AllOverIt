@@ -105,6 +105,8 @@ namespace AllOverIt.Tests.Async
                     return Create<bool>();
                 }, edi => handled, cts.Token);
 
+                await Task.Yield();
+
                 cts.Cancel();
 
                 await Invoking(async () =>
