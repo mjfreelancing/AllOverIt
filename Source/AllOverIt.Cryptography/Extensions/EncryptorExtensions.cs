@@ -115,8 +115,13 @@ namespace AllOverIt.Cryptography.Extensions
             return Convert.ToBase64String(cipherTextBytes);
         }
 
+        // done
         public static void EncryptPlainTextToStream(this IStreamEncryptor encryptor, string plainText, Stream cipherTextStream)
         {
+            _ = encryptor.WhenNotNull(nameof(encryptor));
+            _ = plainText.WhenNotNull(nameof(plainText));
+            _ = cipherTextStream.WhenNotNull(nameof(cipherTextStream));
+
             var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
 
             EncryptBytesToStream(encryptor, plainTextBytes, cipherTextStream);
@@ -126,8 +131,12 @@ namespace AllOverIt.Cryptography.Extensions
 
         #region Encrypt from base64 to ...
 
+        // done
         public static byte[] EncryptBase64ToBytes(this IEncryptor encryptor, string plainTextBase64)
         {
+            _ = encryptor.WhenNotNull(nameof(encryptor));
+            _ = plainTextBase64.WhenNotNull(nameof(plainTextBase64));
+
             var plainTextBytes = Convert.FromBase64String(plainTextBase64);
 
             return encryptor.Encrypt(plainTextBytes);
@@ -165,8 +174,12 @@ namespace AllOverIt.Cryptography.Extensions
             return Convert.ToBase64String(plainTextBytes);
         }
 
+        // done
         public static string DecryptStreamToPlainText(this IStreamEncryptor encryptor, Stream cipherTextStream)
         {
+            _ = encryptor.WhenNotNull(nameof(encryptor));
+            _ = cipherTextStream.WhenNotNull(nameof(cipherTextStream));
+            
             var plainTextBytes = DecryptStreamToBytes(encryptor, cipherTextStream);
 
             return Encoding.UTF8.GetString(plainTextBytes);
@@ -176,8 +189,12 @@ namespace AllOverIt.Cryptography.Extensions
 
         #region Decrypt from bytes to ...
 
+        // done
         public static string DecryptBytesToBase64(this IEncryptor encryptor, byte[] cipherTextBytes)
         {
+            _ = encryptor.WhenNotNull(nameof(encryptor));
+            _ = cipherTextBytes.WhenNotNull(nameof(cipherTextBytes));
+
             var plainTextBytes = encryptor.Decrypt(cipherTextBytes);
 
             return Convert.ToBase64String(plainTextBytes);
