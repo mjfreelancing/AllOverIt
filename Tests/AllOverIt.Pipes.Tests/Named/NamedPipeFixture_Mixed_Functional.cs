@@ -295,6 +295,8 @@ namespace AllOverIt.Pipes.Tests.Named
 
                 server.Start();
 
+                await Task.Yield();
+
                 await Task.Run(async () =>
                 {
                     await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
@@ -302,6 +304,8 @@ namespace AllOverIt.Pipes.Tests.Named
                         await client.ConnectAsync(ConnectTimeout).ConfigureAwait(false);
 
                         await server.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
+
+                        await Task.Yield();
 
                         actual = await tcs.Task;
                     }
@@ -508,6 +512,8 @@ namespace AllOverIt.Pipes.Tests.Named
                 var client1 = await CreateClientAsync();
                 var client2 = await CreateClientAsync();
 
+                await Task.Yield();
+
                 await using (composites)
                 {
                     await Task.Run(async () =>
@@ -634,6 +640,8 @@ namespace AllOverIt.Pipes.Tests.Named
             {
                 server.Start();
 
+                await Task.Yield();
+
                 await Task.Run(async () =>
                 {
                     await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
@@ -646,6 +654,8 @@ namespace AllOverIt.Pipes.Tests.Named
                         client.OnConnected += Client_OnConnected;
 
                         await client.ConnectAsync(ConnectTimeout).ConfigureAwait(false);
+
+                        await Task.Yield();
 
                         actual = await tcs.Task;
                     }
@@ -703,6 +713,8 @@ namespace AllOverIt.Pipes.Tests.Named
             await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
             {
                 server.Start();
+
+                await Task.Yield();
 
                 await Task.Run(async () =>
                 {
@@ -876,11 +888,15 @@ namespace AllOverIt.Pipes.Tests.Named
 
                 server.Start();
 
+                await Task.Yield();
+
                 await Task.Run(async () =>
                 {
                     await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
                     {
                         await client.ConnectAsync(ConnectTimeout).ConfigureAwait(false);
+
+                        await Task.Yield();
 
                         actual = await tcs.Task;
 

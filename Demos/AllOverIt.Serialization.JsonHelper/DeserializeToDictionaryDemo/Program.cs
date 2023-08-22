@@ -24,6 +24,9 @@ namespace DeserializeToDictionaryDemo
             ProcessObject2();
             Console.WriteLine();
 
+            ProcessObject3();
+            Console.WriteLine();
+
             Console.WriteLine();
             Console.WriteLine("All Over It.");
             Console.ReadKey();
@@ -96,6 +99,31 @@ namespace DeserializeToDictionaryDemo
             {
                 Console.WriteLine(error);
             }
+        }
+
+        private static void ProcessObject3()
+        {
+            var anonymousObject = GetObject3ToProcess();
+
+            var jsonHelper = new JsonHelper(anonymousObject);
+
+            var arguments = jsonHelper.GetDescendantObjectArray(new[] { "arguments" });
+
+            // Use IEnumerable<> to find the 'arguments' element where the property 'Name' has a value of 'id'
+            var idArgument = arguments
+                .Where(argument => argument.GetValue("name").As<string>().Equals("id", StringComparison.CurrentCultureIgnoreCase))
+                .Single();
+
+            // The returned element has a 'Name' and 'Value' property - we can search (as above) and get values with case-insensitivity.
+            // This gets the 'Value' property (as 'value')
+            var currentValue = idArgument.GetValue("value");
+
+            // Change the value of 'value' (only in this representation of the anonymous object originally parsed
+            idArgument.SetValue("value", "A new Id value");
+
+            var newValue = idArgument.GetValue("value");
+
+            Console.WriteLine($"The 'Value' was changed from '{currentValue}' to '{newValue}'");
         }
 
         private static object GetObject1ToProcess()
@@ -177,6 +205,27 @@ namespace DeserializeToDictionaryDemo
                             attemptedValue = "00-00-0000",
                             ErrorMessage = "A bad value #2"             // <<== querying for this - note the name is UpperCamelCase here
                         }
+                    }
+                }
+            };
+        }
+
+        private static object GetObject3ToProcess()
+        {
+            return new
+            {
+                Id = 1,
+                Arguments = new []
+                {
+                    new
+                    {
+                        Name = "id",
+                        Value = "Value Id"
+                    },
+                    new
+                    {
+                        Name = "type",
+                        Value = "Value Type"
                     }
                 }
             };

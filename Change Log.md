@@ -39,6 +39,7 @@
 * Added Stream extensions to convert to and from a byte array
 * Added ProgressUpdater
 * Added cancellation support in the async pipeline builder
+* Updated IElementDictionary to be enumerable, provide Names and Values, and the ability to change values within the json helper
 
 
 ## AllOverIt.AspNetCore
