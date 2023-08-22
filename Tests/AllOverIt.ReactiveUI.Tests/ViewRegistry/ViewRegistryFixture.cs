@@ -316,7 +316,7 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
             [Fact]
             public void Should_Return_Views()
             {
-                var ids = CreateMany<int>().ToArray();
+                var ids = CreateMany<int>(3).ToArray();
 
                 _viewRegistry.CreateOrActivateFor<DummyViewModel1>(Create<int>(), viewItems => ids[0]);
                 _viewRegistry.CreateOrActivateFor<DummyViewModel1>(Create<int>(), viewItems => ids[1]);

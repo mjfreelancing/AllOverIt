@@ -105,12 +105,10 @@ namespace AllOverIt.Tests.Async
                     return Create<bool>();
                 }, edi => handled, cts.Token);
 
-                await Task.Yield();
-
-                cts.Cancel();
-
                 await Invoking(async () =>
                 {
+                    cts.Cancel();
+
                     await backgroundTask;
                 })
                 .Should()
@@ -123,11 +121,14 @@ namespace AllOverIt.Tests.Async
                 var expected = new Exception();
                 Exception actual = null;
 
-                var backgroundTask = new BackgroundTask<bool>(token => throw expected, edi =>
-                {
-                    actual = edi.SourceException;
-                    return true;
-                }, CancellationToken.None);
+                var backgroundTask = new BackgroundTask<bool>(
+                    token => throw expected,
+                    edi =>
+                    {
+                        actual = edi.SourceException;
+                        return true;
+                    },
+                    CancellationToken.None);
 
                 await Invoking(async () =>
                 {
@@ -145,11 +146,14 @@ namespace AllOverIt.Tests.Async
                 var expected = new Exception(Create<string>());
                 Exception actual = null;
 
-                var backgroundTask = new BackgroundTask<bool>(token => throw expected, edi =>
-                {
-                    actual = edi.SourceException;
-                    return false;
-                }, CancellationToken.None);
+                var backgroundTask = new BackgroundTask<bool>(
+                    token => throw expected,
+                    edi =>
+                    {
+                        actual = edi.SourceException;
+                        return false;
+                    },
+                    CancellationToken.None);
 
                 await Invoking(async () =>
                 {

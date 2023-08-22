@@ -39,11 +39,9 @@ namespace AllOverIt.Async
             var taskToken = CreateTaskCancellationToken(cancellationToken);
 
             _task = Task.Factory
-                .StartNew(async () =>
+                .StartNew(() =>
                 {
-                    // ConfigureAwait() isn't strictly required here as there is no synchronization context,
-                    // but it keeps all code consistent.
-                    return await InvokeActionAsync(action, exceptionHandler, taskToken).ConfigureAwait(false);
+                    return InvokeActionAsync(action, exceptionHandler, taskToken);
                 }, taskToken)
                 .Unwrap();
         }
@@ -77,11 +75,9 @@ namespace AllOverIt.Async
             var taskToken = CreateTaskCancellationToken(cancellationToken);
 
             _task = Task.Factory
-                .StartNew(async () =>
+                .StartNew(() =>
                 {
-                    // ConfigureAwait() isn't strictly required here as there is no synchronization context,
-                    // but it keeps all code consistent.
-                    return await InvokeActionAsync(action, exceptionHandler, taskToken).ConfigureAwait(false);
+                    return InvokeActionAsync(action, exceptionHandler, taskToken);
                 }, taskToken, creationOptions, scheduler)
                 .Unwrap();
         }
