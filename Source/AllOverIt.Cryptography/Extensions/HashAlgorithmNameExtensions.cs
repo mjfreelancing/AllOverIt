@@ -6,30 +6,18 @@ namespace AllOverIt.Cryptography.Extensions
 {
     public static class HashAlgorithmNameExtensions
     {
-        public static HashAlgorithm CreateHashAlgorithm(this HashAlgorithmName algorithmName)
-        {
-            var registry = new Dictionary<HashAlgorithmName, Func<HashAlgorithm>>
+        private static readonly IDictionary<HashAlgorithmName, Func<HashAlgorithm>> AlgorithmRegistry
+            = new Dictionary<HashAlgorithmName, Func<HashAlgorithm>>
             {
                 { HashAlgorithmName.MD5, () => MD5.Create() },
                 { HashAlgorithmName.SHA1, () => SHA1.Create() },
                 { HashAlgorithmName.SHA256, () => SHA256.Create() },
-                { HashAlgorithmName.SHA384 ,() => SHA384.Create() },
-                { HashAlgorithmName.SHA512,() => SHA512.Create() }
+                { HashAlgorithmName.SHA384, () => SHA384.Create() },
+                { HashAlgorithmName.SHA512, () => SHA512.Create() }
             };
 
-            if (registry.TryGetValue(algorithmName, out var factory))
-            {
-                return factory.Invoke();
-            }
-
-            // TODO: Custom exception
-            throw new InvalidOperationException($"Unknown hash algorithm {algorithmName.Name}.");
-        }
-
-        // In bits
-        public static int GetHashSize(this HashAlgorithmName algorithmName)
-        {
-            var registry = new Dictionary<HashAlgorithmName, int>
+        private static readonly IDictionary<HashAlgorithmName, int> HashRegistry
+            = new Dictionary<HashAlgorithmName, int>
             {
                 { HashAlgorithmName.MD5, 128 },
                 { HashAlgorithmName.SHA1, 160 },
@@ -38,13 +26,17 @@ namespace AllOverIt.Cryptography.Extensions
                 { HashAlgorithmName.SHA512, 512 }
             };
 
-            if (registry.TryGetValue(algorithmName, out var sizeInBits))
-            {
-                return sizeInBits;
-            }
+        public static HashAlgorithm CreateHashAlgorithm(this HashAlgorithmName algorithmName)
+        {
+            // Let it throw if the algorithm isn't registered
+            return AlgorithmRegistry[algorithmName].Invoke();
+        }
 
-            // TODO: Custom exception
-            throw new InvalidOperationException($"Unknown hash algorithm {algorithmName.Name}.");
+        // In bits
+        public static int GetHashSize(this HashAlgorithmName algorithmName)
+        {
+            // Let it throw if the algorithm isn't registered
+            return HashRegistry[algorithmName];
         }
     }
 }
