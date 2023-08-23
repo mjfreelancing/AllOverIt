@@ -627,6 +627,12 @@ namespace AllOverIt.Pipes.Tests.Named
             .ThrowAsync<TimeoutException>();
         }
 
+
+
+
+
+        // UPDATE ALL TESTS TO USE THIS APPROACH
+
         [Fact]
         public async Task Should_Raise_Client_OnConnected()
         {
@@ -636,34 +642,43 @@ namespace AllOverIt.Pipes.Tests.Named
 
             var tcs = new TaskCompletionSource<bool>();
 
-            await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
+            var serverTask = Task.Run(async () =>
             {
-                server.Start();
-
-                await Task.Yield();
-
-                await Task.Run(async () =>
+                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
                 {
-                    await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
+                    server.Start();
+
+                    await tcs.Task;
+                }
+            });
+
+            var clientTask = Task.Run(async () =>
+            {
+                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
+                {
+                    void Client_OnConnected(object sender, Pipes.Named.Events.NamedPipeConnectionEventArgs<DummyMessage, INamedPipeClientConnection<DummyMessage>> eventArgs)
                     {
-                        void Client_OnConnected(object sender, Pipes.Named.Events.NamedPipeConnectionEventArgs<DummyMessage, INamedPipeClientConnection<DummyMessage>> eventArgs)
-                        {
-                            tcs.SetResult(true);
-                        }
-
-                        client.OnConnected += Client_OnConnected;
-
-                        await client.ConnectAsync(ConnectTimeout).ConfigureAwait(false);
-
-                        await Task.Yield();
-
-                        actual = await tcs.Task;
+                        tcs.SetResult(true);
                     }
-                });
-            }
+
+                    client.OnConnected += Client_OnConnected;
+
+                    await client.ConnectAsync(ConnectTimeout).ConfigureAwait(false);
+
+                    actual = await tcs.Task;
+                }
+            });
+
+            await Task.WhenAll(serverTask, clientTask);
 
             actual.Should().BeTrue();
         }
+
+
+
+
+
+
 
         [Fact]
         public async Task Should_Raise_Client_OnDisconnected()
