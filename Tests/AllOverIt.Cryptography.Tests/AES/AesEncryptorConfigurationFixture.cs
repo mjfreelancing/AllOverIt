@@ -11,23 +11,23 @@ using Xunit;
 
 namespace AllOverIt.Cryptography.Tests.AES
 {
-    public class AesEncryptionConfigurationFixture : FixtureBase
+    public class AesEncryptorConfigurationFixture : FixtureBase
     {
         private readonly byte[] _key;
         private readonly byte[] _iv;
 
-        public AesEncryptionConfigurationFixture()
+        public AesEncryptorConfigurationFixture()
         {
             _key = CreateMany<byte>(32).ToArray();
             _iv = CreateMany<byte>(16).ToArray();
         }
 
-        public class Constructor : AesEncryptionConfigurationFixture
+        public class Constructor : AesEncryptorConfigurationFixture
         {
             [Fact]
             public void Should_Default_Initialize()
             {
-                var actual = new AesEncryptionConfiguration();
+                var actual = new AesEncryptorConfiguration();
 
                 var expected = new
                 {
@@ -50,7 +50,7 @@ namespace AllOverIt.Cryptography.Tests.AES
             [InlineData(256)]
             public void Should_Set_Key_Length_Based_On_KeySize(int keySize)
             {
-                var actual = new AesEncryptionConfiguration
+                var actual = new AesEncryptorConfiguration
                 {
                     KeySize = keySize
                 };
@@ -74,12 +74,12 @@ namespace AllOverIt.Cryptography.Tests.AES
             [Fact]
             public void Should_Have_Random_Key_And_IV()
             {
-                var actual1 = new AesEncryptionConfiguration();
+                var actual1 = new AesEncryptorConfiguration();
 
                 actual1.Key.Should().NotBeEmpty();
                 actual1.IV.Should().NotBeEmpty();
 
-                var actual2 = new AesEncryptionConfiguration();
+                var actual2 = new AesEncryptorConfiguration();
 
                 actual1.Key.Should().NotBeEquivalentTo(actual2.Key);
                 actual1.IV.Should().NotBeEquivalentTo(actual2.IV);
@@ -87,14 +87,14 @@ namespace AllOverIt.Cryptography.Tests.AES
 
         }
 
-        public class Constructor_Key_IV : AesEncryptionConfigurationFixture
+        public class Constructor_Key_IV : AesEncryptorConfigurationFixture
         {
             [Fact]
             public void Should_Throw_When_Key_Null()
             {
                 Invoking(() =>
                 {
-                    _ = new AesEncryptionConfiguration(null, _iv);
+                    _ = new AesEncryptorConfiguration(null, _iv);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -110,7 +110,7 @@ namespace AllOverIt.Cryptography.Tests.AES
                 {
                     var key = CreateMany<byte>(keySize).ToArray();
 
-                    _ = new AesEncryptionConfiguration(key, _iv);
+                    _ = new AesEncryptorConfiguration(key, _iv);
                 })
                 .Should()
                 .Throw<AesException>()
@@ -122,7 +122,7 @@ namespace AllOverIt.Cryptography.Tests.AES
             {
                 Invoking(() =>
                 {
-                    _ = new AesEncryptionConfiguration(_key, null);
+                    _ = new AesEncryptorConfiguration(_key, null);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -137,7 +137,7 @@ namespace AllOverIt.Cryptography.Tests.AES
                     // A valid IV is 16 bytes
                     var iv = CreateMany<byte>(15).ToArray();
 
-                    _ = new AesEncryptionConfiguration(_key, iv);
+                    _ = new AesEncryptorConfiguration(_key, iv);
                 })
                 .Should()
                 .Throw<AesException>()
@@ -147,7 +147,7 @@ namespace AllOverIt.Cryptography.Tests.AES
             [Fact]
             public void Should_Default_Initialize_With_Provided_Key_And_IV()
             {
-                var actual = new AesEncryptionConfiguration(_key, _iv);
+                var actual = new AesEncryptorConfiguration(_key, _iv);
 
                 var expected = new
                 {
@@ -169,24 +169,24 @@ namespace AllOverIt.Cryptography.Tests.AES
                 var legalKeySize = AesUtils.GetLegalKeySizes().First();
                 var keySize = legalKeySize.MinSize;
                 
-                var actual = new AesEncryptionConfiguration(_key, _iv);
+                var actual = new AesEncryptorConfiguration(_key, _iv);
 
                 actual.KeySize.Should().NotBe(keySize);
 
                 var key = CreateMany<byte>(keySize / 8).ToArray();
 
-                actual = new AesEncryptionConfiguration(key, _iv);
+                actual = new AesEncryptorConfiguration(key, _iv);
 
                 actual.KeySize.Should().Be(keySize);
             }
         }
 
-        public class RegenerateKey : AesEncryptionConfigurationFixture
+        public class RegenerateKey : AesEncryptorConfigurationFixture
         {
             [Fact]
             public void Should_Regenerate_Key()
             {
-                var actual = new AesEncryptionConfiguration(_key, _iv);
+                var actual = new AesEncryptorConfiguration(_key, _iv);
 
                 actual.RegenerateKey();
 
@@ -195,12 +195,12 @@ namespace AllOverIt.Cryptography.Tests.AES
             }
         }
 
-        public class RegenerateIV : AesEncryptionConfigurationFixture
+        public class RegenerateIV : AesEncryptorConfigurationFixture
         {
             [Fact]
             public void Should_Regenerate_IV()
             {
-                var actual = new AesEncryptionConfiguration(_key, _iv);
+                var actual = new AesEncryptorConfiguration(_key, _iv);
 
                 actual.RegenerateIV();
 
@@ -209,12 +209,12 @@ namespace AllOverIt.Cryptography.Tests.AES
             }
         }
 
-        public class RegenerateKeyAndIV : AesEncryptionConfigurationFixture
+        public class RegenerateKeyAndIV : AesEncryptorConfigurationFixture
         {
             [Fact]
             public void Should_Regenerate_Key_And_IV()
             {
-                var actual = new AesEncryptionConfiguration(_key, _iv);
+                var actual = new AesEncryptorConfiguration(_key, _iv);
 
                 actual.RegenerateKeyAndIV();
 

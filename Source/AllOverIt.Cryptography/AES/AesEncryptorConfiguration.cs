@@ -5,7 +5,8 @@ using System.Security.Cryptography;
 namespace AllOverIt.Cryptography.AES
 {
     /// <summary>Provides configuration options for AES encryption and decryption.</summary>
-    public sealed class AesEncryptionConfiguration : IAesEncryptionConfiguration
+    public sealed class AesEncryptorConfiguration : IAesEncryptorConfiguration
+
     {
         /// <inheritdoc />
         public CipherMode Mode { get; init; } = CipherMode.CBC;
@@ -43,7 +44,7 @@ namespace AllOverIt.Cryptography.AES
 
         /// <summary>Constructor. Uses a default configuration (see <see cref="IAesEncryptionConfiguration"/>) with
         /// a random secrey key and initialization vector.</summary>
-        public AesEncryptionConfiguration()
+        public AesEncryptorConfiguration()
         {
             _keySize = 256;                     // Using _keySize to avoid the Key being generated
             RegenerateKeyAndIV();
@@ -52,7 +53,7 @@ namespace AllOverIt.Cryptography.AES
         /// <summary>Constructor. Uses a default configuration (see <see cref="IAesEncryptionConfiguration"/>) with
         /// the provided secrey key and initialization vector. The key size will be updated to match the length of
         /// the secret key.</summary>
-        public AesEncryptionConfiguration(byte[] key, byte[] iv)
+        public AesEncryptorConfiguration(byte[] key, byte[] iv)
         {
             _ = iv.WhenNotNull(nameof(iv));
             _ = key.WhenNotNull(nameof(key));

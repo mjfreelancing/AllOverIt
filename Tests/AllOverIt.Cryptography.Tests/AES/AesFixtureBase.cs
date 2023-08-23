@@ -18,11 +18,11 @@ namespace AllOverIt.Cryptography.Tests.AES
             return CreateExcluding(PaddingMode.None, PaddingMode.Zeros);
         }
 
-        public AesEncryptionConfiguration CreateAesConfiguration()
+        public AesEncryptorConfiguration CreateAesConfiguration()
         {
             var cipherMode = GetCipherMode();
 
-            return new AesEncryptionConfiguration
+            return new AesEncryptorConfiguration
             {
                 Mode = cipherMode,
 

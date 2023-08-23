@@ -12,19 +12,19 @@ namespace AllOverIt.Cryptography.RSA
         
         private int? _maxInputLength;
 
-        public IRsaEncryptionConfiguration Configuration { get; }
+        public IRsaEncryptorConfiguration Configuration { get; }
 
         public RsaEncryptor()
-            : this(new RsaFactory(), new RsaEncryptionConfiguration())
+            : this(new RsaFactory(), new RsaEncryptorConfiguration())
         {
         }
 
-        public RsaEncryptor(IRsaEncryptionConfiguration configuration)
+        public RsaEncryptor(IRsaEncryptorConfiguration configuration)
             : this(new RsaFactory(), configuration)
         {
         }
 
-        internal RsaEncryptor(IRsaFactory rsaFactory, IRsaEncryptionConfiguration configuration)
+        internal RsaEncryptor(IRsaFactory rsaFactory, IRsaEncryptorConfiguration configuration)
         {
             _rsaFactory = rsaFactory.WhenNotNull(nameof(rsaFactory));
             Configuration = configuration.WhenNotNull(nameof(configuration));
@@ -98,7 +98,7 @@ namespace AllOverIt.Cryptography.RSA
             _ = publicKeyBase64.WhenNotNull(nameof(publicKeyBase64));
             _ = privateKeyBase64.WhenNotNull(nameof(privateKeyBase64));
 
-            var configuration = new RsaEncryptionConfiguration
+            var configuration = new RsaEncryptorConfiguration
             {
                 Keys = new RsaKeyPair(publicKeyBase64, privateKeyBase64)
             };
@@ -110,7 +110,7 @@ namespace AllOverIt.Cryptography.RSA
         {
             _ = rsaKeyPair.WhenNotNull(nameof(rsaKeyPair));
 
-            var configuration = new RsaEncryptionConfiguration
+            var configuration = new RsaEncryptorConfiguration
             {
                 Keys = rsaKeyPair
             };
@@ -120,7 +120,7 @@ namespace AllOverIt.Cryptography.RSA
 
         public static IRsaEncryptor Create(RSAParameters parameters)
         {
-            var configuration = new RsaEncryptionConfiguration
+            var configuration = new RsaEncryptorConfiguration
             {
                 Keys = RsaKeyPair.Create(parameters)
             };
@@ -128,7 +128,7 @@ namespace AllOverIt.Cryptography.RSA
             return new RsaEncryptor(configuration);
         }
 
-        public static IRsaEncryptor Create(IRsaEncryptionConfiguration configuration)
+        public static IRsaEncryptor Create(IRsaEncryptorConfiguration configuration)
         {
             return new RsaEncryptor(configuration);
         }

@@ -45,7 +45,7 @@ namespace AllOverIt.Cryptography.Tests.AES
             {
                 Invoking(() =>
                 {
-                    _ = new AesEncryptor((IAesEncryptionConfiguration) null);
+                    _ = new AesEncryptor((IAesEncryptorConfiguration) null);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -80,7 +80,7 @@ namespace AllOverIt.Cryptography.Tests.AES
                     };
                 }
 
-                var configuration = new AesEncryptionConfiguration
+                var configuration = new AesEncryptorConfiguration
                 {
                     Mode = cipherMode,
                     Padding = paddingMode

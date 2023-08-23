@@ -10,9 +10,9 @@ namespace AllOverIt.Cryptography.AES
         public static readonly AesFactory Instance = new();
 
         /// <inheritdoc />
-        public Aes Create(IAesEncryptionConfiguration configuration = default)
+        public Aes Create(IAesEncryptorConfiguration configuration = default)
         {
-            configuration ??= new AesEncryptionConfiguration();
+            configuration ??= new AesEncryptorConfiguration();
 
             var aes = Aes.Create();
 

@@ -40,8 +40,9 @@ namespace AesRsaHybridEncryptionDemo
 
         private static void Main()
         {
-            // Creates a new public/private key pair with 128-bit security
-            var rsaKeyPair = RsaKeyPair.Create();
+            // Creates a new public/private key pair with
+            var encryptionKeys = RsaKeyPair.Create();
+            var signingKeys = RsaKeyPair.Create();
 
             // This shows all options with defaults:
             //
@@ -49,12 +50,13 @@ namespace AesRsaHybridEncryptionDemo
             // {
             //     Encryption = new RsaEncryptionConfiguration
             //     {
-            //         Keys = rsaKeyPair,
+            //         Keys = encryptionKeys,
             //         Padding = RSAEncryptionPadding.OaepSHA256
             //     },
 
             //     Signing = new RsaSigningConfiguration
             //     {
+            //         Keys = signingKeys,
             //         HashAlgorithmName = HashAlgorithmName.SHA256,
             //         Padding = RSASignaturePadding.Pkcs1
             //     }
@@ -62,7 +64,8 @@ namespace AesRsaHybridEncryptionDemo
 
             var configuration = new RsaAesHybridEncryptorConfiguration
             {
-                Encryption = new RsaEncryptionConfiguration(rsaKeyPair)
+                Encryption = new RsaEncryptorConfiguration(encryptionKeys),
+                Signing = new RsaSigningConfiguration(signingKeys)
             };
 
             // There's several extension methods that allow for encryption / decryption between bytes, plain text,
@@ -72,10 +75,10 @@ namespace AesRsaHybridEncryptionDemo
             var logger = new ColorConsoleLogger();
 
             logger.WriteLine(ConsoleColor.White, "RSA Public Key:");
-            logger.WriteLine(ConsoleColor.Blue, Convert.ToBase64String(rsaKeyPair.PublicKey));
+            logger.WriteLine(ConsoleColor.Blue, Convert.ToBase64String(encryptionKeys.PublicKey));
             logger.WriteLine();
             logger.WriteLine(ConsoleColor.White, "RSA Private Key:");
-            logger.WriteLine(ConsoleColor.Blue, Convert.ToBase64String(rsaKeyPair.PrivateKey));
+            logger.WriteLine(ConsoleColor.Blue, Convert.ToBase64String(encryptionKeys.PrivateKey));
             logger.WriteLine();
 
             logger.WriteLine(ConsoleColor.White, "The phrase to be processed is:");

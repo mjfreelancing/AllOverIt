@@ -16,7 +16,7 @@ namespace AllOverIt.Cryptography.Tests.AES
             [Fact]
             public void Should_Create_Aes_With_Default_Configuration()
             {
-                var configuration = new AesEncryptionConfiguration();
+                var configuration = new AesEncryptorConfiguration();
 
                 var expected = _factory.Create(configuration);
                 var actual = _factory.Create();

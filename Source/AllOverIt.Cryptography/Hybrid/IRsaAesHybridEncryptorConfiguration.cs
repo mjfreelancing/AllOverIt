@@ -4,7 +4,8 @@ namespace AllOverIt.Cryptography.Hybrid
 {
     public interface IRsaAesHybridEncryptorConfiguration
     {
-        public IRsaEncryptionConfiguration Encryption { get; }
+        // The public / private keys are used for encrypting / decrypting the AES session key, respectively
+        IRsaEncryptorConfiguration Encryption { get; }
         IRsaSigningConfiguration Signing { get; }
     }
 }

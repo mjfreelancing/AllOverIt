@@ -14,16 +14,11 @@ namespace AllOverIt.Cryptography.Hybrid
         private readonly IRsaFactory _rsaFactory;
         private readonly IRsaEncryptor _rsaEncryptor;
         private readonly IAesEncryptorFactory _aesEncryptorFactory;
-
-
         private readonly IRsaSigningConfiguration _signingConfiguration;
         
         public RsaAesHybridEncryptor(IRsaAesHybridEncryptorConfiguration configuration)
-            : this(
-                  new RsaFactory(),
-                  RsaEncryptor.Create(configuration.Encryption),
-                  new AesEncryptorFactory(),
-                  configuration.Signing)
+            : this(new RsaFactory(), RsaEncryptor.Create(configuration.Encryption),
+                  new AesEncryptorFactory(), configuration.Signing)
         {
         }
 
@@ -38,9 +33,6 @@ namespace AllOverIt.Cryptography.Hybrid
 
         public byte[] Encrypt(byte[] plainText)
         {
-            // TODO: Throw if there's no RSA private key
-            // TODO: Add an option to choose public/private or private/public keys for encryption/decryption
-
             using (var cipherTextStream = new MemoryStream())
             {
                 using (var plainTextStream = new MemoryStream(plainText))
@@ -65,7 +57,12 @@ namespace AllOverIt.Cryptography.Hybrid
             }
         }
 
-        // The plainTextStream must be random access and the entire stream will be processed
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="plainTextStream"></param>
+        /// <param name="cipherTextStream"></param>
+        /// <remarks>The plainTextStream must be random access and the entire stream will be processed.</remarks>
         public void Encrypt(Stream plainTextStream, Stream cipherTextStream)
         {
             // Calculate the hash for the plain text
@@ -75,7 +72,7 @@ namespace AllOverIt.Cryptography.Hybrid
             // Sign the plain text hash
             var signature = SignHash(hash);
 
-            // Prepare AES encryptor with a random Key and IV
+            // Prepare AES encryptor with a random session Key and IV
             var aesEncryptor = _aesEncryptorFactory.Create();
 
             // RSA encrypt the AES key
@@ -125,15 +122,7 @@ namespace AllOverIt.Cryptography.Hybrid
             }
 
             // Verify the signature
-            using (var rsa = _rsaFactory.Create())
-            {
-                rsa.ImportRSAPublicKey(_rsaEncryptor.Configuration.Keys.PublicKey, out _);
-
-                var isValid = rsa.VerifyHash(plainTextHash, signature, _signingConfiguration.HashAlgorithmName, _signingConfiguration.Padding);
-
-                // TODO: Custom exception
-                Throw<InvalidOperationException>.WhenNot(isValid, "The digital signature is invalid.");
-            }
+            VerifyHash(plainTextHash, signature);
 
             plainTextStream.Write(plainText);
         }
@@ -158,11 +147,24 @@ namespace AllOverIt.Cryptography.Hybrid
         {
             using (var rsa = _rsaFactory.Create())
             {
-                var rsaPrivateKey = _rsaEncryptor.Configuration.Keys.PrivateKey;
+                var rsaPrivateKey = _signingConfiguration.Keys.PrivateKey;
 
                 rsa.ImportRSAPrivateKey(rsaPrivateKey, out _);
 
                 return rsa.SignHash(hash, _signingConfiguration.HashAlgorithmName, _signingConfiguration.Padding);
+            }
+        }
+
+        private void VerifyHash(byte[] plainTextHash, byte[] signature)
+        {
+            using (var rsa = _rsaFactory.Create())
+            {
+                rsa.ImportRSAPublicKey(_signingConfiguration.Keys.PublicKey, out _);
+
+                var isValid = rsa.VerifyHash(plainTextHash, signature, _signingConfiguration.HashAlgorithmName, _signingConfiguration.Padding);
+
+                // TODO: Custom exception
+                Throw<InvalidOperationException>.WhenNot(isValid, "The digital signature is invalid.");
             }
         }
 

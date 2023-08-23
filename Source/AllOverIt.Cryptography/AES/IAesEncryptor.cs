@@ -4,7 +4,7 @@
     public interface IAesEncryptor : IEncryptor, IStreamEncryptor
     {
         /// <summary>The AES configuration.</summary>
-        IAesEncryptionConfiguration Configuration { get; }
+        IAesEncryptorConfiguration Configuration { get; }
 
 #if !NETSTANDARD2_1
         /// <summary>Gets the cipher text length for the specified plain text length and the current <see cref="Configuration"/>.</summary>

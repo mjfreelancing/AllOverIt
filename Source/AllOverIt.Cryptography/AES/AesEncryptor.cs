@@ -11,11 +11,11 @@ namespace AllOverIt.Cryptography.AES
         private readonly IAesFactory _aesFactory;
 
         /// <summary>Contains the AES encryption and decryption configuration options.</summary>
-        public IAesEncryptionConfiguration Configuration { get; }
+        public IAesEncryptorConfiguration Configuration { get; }
 
         /// <summary>Constructor. Uses a default configuration and a new random secret key and IV.</summary>
         public AesEncryptor()
-            : this(AesFactory.Instance, new AesEncryptionConfiguration())
+            : this(AesFactory.Instance, new AesEncryptorConfiguration())
         {
         }
 
@@ -23,18 +23,18 @@ namespace AllOverIt.Cryptography.AES
         /// <param name="key">The secret key to use.</param>
         /// <param name="iv">The initialization vector to use.</param>
         public AesEncryptor(byte[] key, byte[] iv)
-            : this(AesFactory.Instance, new AesEncryptionConfiguration(key, iv))
+            : this(AesFactory.Instance, new AesEncryptorConfiguration(key, iv))
         {
         }
 
         /// <summary>Constructor. Uses the provided configuration.</summary>
         /// <param name="configuration">The AES configuration to use.</param>
-        public AesEncryptor(IAesEncryptionConfiguration configuration)
+        public AesEncryptor(IAesEncryptorConfiguration configuration)
             : this(AesFactory.Instance, configuration)
         {
         }
 
-        private AesEncryptor(IAesFactory aesFactory, IAesEncryptionConfiguration configuration)
+        private AesEncryptor(IAesFactory aesFactory, IAesEncryptorConfiguration configuration)
         {
             _aesFactory = aesFactory.WhenNotNull(nameof(aesFactory));
             Configuration = configuration.WhenNotNull(nameof(configuration));

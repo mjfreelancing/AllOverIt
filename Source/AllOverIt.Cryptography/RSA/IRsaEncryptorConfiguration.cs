@@ -2,7 +2,7 @@
 
 namespace AllOverIt.Cryptography.RSA
 {
-    public interface IRsaEncryptionConfiguration
+    public interface IRsaEncryptorConfiguration
     {
         RsaKeyPair Keys { get; }
         RSAEncryptionPadding Padding { get; }

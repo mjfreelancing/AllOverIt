@@ -3,7 +3,7 @@
 namespace AllOverIt.Cryptography.AES
 {
     /// <summary>Provides configuration options for AES encryption and decryption.</summary>
-    public interface IAesEncryptionConfiguration
+    public interface IAesEncryptorConfiguration
     {
         /// <summary>Specifies the block cipher mode to use. The default is <see cref="CipherMode.CBC"/>.</summary>
         CipherMode Mode { get; }

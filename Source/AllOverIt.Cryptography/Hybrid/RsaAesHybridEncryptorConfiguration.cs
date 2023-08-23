@@ -4,7 +4,7 @@ namespace AllOverIt.Cryptography.Hybrid
 {
     public sealed class RsaAesHybridEncryptorConfiguration : IRsaAesHybridEncryptorConfiguration
     {
-        public IRsaEncryptionConfiguration Encryption { get; init; } = new RsaEncryptionConfiguration();
+        public IRsaEncryptorConfiguration Encryption { get; init; } = new RsaEncryptorConfiguration();
         public IRsaSigningConfiguration Signing { get; init; } = new RsaSigningConfiguration();
     }
 }
