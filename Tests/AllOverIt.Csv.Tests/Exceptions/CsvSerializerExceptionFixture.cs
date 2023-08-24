@@ -4,24 +4,24 @@ using Xunit;
 
 namespace AllOverIt.Csv.Tests.Exceptions
 {
-    public class CsvExportExceptionFixture : FixtureBase
+    public class CsvSerializerExceptionFixture : FixtureBase
     {
         [Fact]
         public void Should_Have_Default_Constructor()
         {
-            AssertDefaultConstructor<CsvExportException>();
+            AssertDefaultConstructor<CsvSerializerException>();
         }
 
         [Fact]
         public void Should_Have_Constructor_With_Message()
         {
-            AssertConstructorWithMessage<CsvExportException>();
+            AssertConstructorWithMessage<CsvSerializerException>();
         }
 
         [Fact]
         public void Should_Have_Constructor_With_Message_And_InnerException()
         {
-            AssertConstructorWithMessageAndInnerException<CsvExportException>();
+            AssertConstructorWithMessageAndInnerException<CsvSerializerException>();
         }
     }
 }

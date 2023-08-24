@@ -470,7 +470,7 @@ namespace AllOverIt.Csv.Tests.Extensions
                         }
                     })
                     .Should()
-                    .ThrowAsync<CsvExportException>()
+                    .ThrowAsync<CsvSerializerException>()
                     .WithMessage("Column count mismatch. Expected 2, found 1.");
             }
         }
