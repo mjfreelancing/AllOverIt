@@ -1,15 +1,19 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AllOverIt.Csv;
+﻿using AllOverIt.Csv;
+using AllOverIt.Csv.Exporter;
 using AllOverIt.Csv.Extensions;
-using CsvExportDemo.Data;
+using CsvExporterDemo.Data;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace CsvExportDemo.Extensions
+namespace CsvExporterDemo
 {
-    public static class SampleDataExtensions
+    internal sealed class SampleDataExporter : MemoryCsvExporterBase<SampleData>
     {
-        public static void ConfigureCsvExport(this IReadOnlyCollection<SampleData> sampleData, ICsvSerializer<SampleData> serializer)
+        // Only need to pass in as much data is as required to configure the dynamic headers
+        protected override ICsvSerializer<SampleData> CreateSerializer(IEnumerable<SampleData> sampleData)
         {
+            var serializer = new CsvSerializer<SampleData>();
+
             // Add fixed, known, columns
             serializer.AddField(nameof(SampleData.Name), item => item.Name);
             serializer.AddField(nameof(SampleData.Count), item => item.Count);
@@ -94,6 +98,8 @@ namespace CsvExportDemo.Extensions
                             metadata.Value
                         };
                 });
+
+            return serializer;
         }
     }
 }

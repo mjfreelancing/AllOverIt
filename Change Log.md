@@ -65,7 +65,7 @@
 
 ## AllOverIt.Csv
 * Renamed CsvExportException to CsvSerializerException
-* Added a buffered CSV serializer
+* Added buffered CSV exporter base classes
 
 
 ## AllOverIt.DependencyInjection

@@ -1,4 +1,4 @@
-﻿namespace CsvExportDemo.Data
+﻿namespace CsvExporterDemo.Data
 {
     public sealed class Coordinates
     {

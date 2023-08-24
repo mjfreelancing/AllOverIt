@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CsvExportDemo.Data
+namespace CsvSerializerDemo.Data
 {
     public sealed class SampleData
     {

@@ -1,4 +1,4 @@
-﻿namespace CsvExportDemo.Data
+﻿namespace CsvSerializerDemo.Data
 {
     public sealed class SampleMetadata
     {

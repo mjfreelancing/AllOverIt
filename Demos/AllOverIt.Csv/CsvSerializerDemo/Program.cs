@@ -1,14 +1,14 @@
 ﻿using AllOverIt.Csv;
 using AllOverIt.Extensions;
-using CsvExportDemo.Data;
-using CsvExportDemo.Extensions;
+using CsvSerializerDemo.Data;
+using CsvSerializerDemo.Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CsvExportDemo
+namespace CsvSerializerDemo
 {
     /*
         Will be exported as:
