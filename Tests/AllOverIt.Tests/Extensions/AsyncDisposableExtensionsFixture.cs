@@ -1,4 +1,5 @@
-﻿using AllOverIt.Extensions;
+﻿using AllOverIt.Async;
+using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.ResourceInitialization;
@@ -11,6 +12,55 @@ namespace AllOverIt.Tests.Extensions
 {
     public class AsyncDisposableExtensionsFixture : FixtureBase
     {
+        public class DisposeWith : AsyncDisposableExtensionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Null()
+            {
+                Invoking(() =>
+                {
+                    var disposable1 = new RaiiAsync(() => { }, () => { return Task.CompletedTask; });
+
+                    _ = AsyncDisposableExtensions.DisposeWith(disposable1, null);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("disposables");
+            }
+
+            [Fact]
+            public async Task Should_Dispose_Disposabls()
+            {
+                var expected = Create<int>();
+                var actual = 0;
+
+                var disposables = new CompositeAsyncDisposable();
+                var disposable1 = new RaiiAsync(() => { }, () => { actual = expected; return Task.CompletedTask; });
+
+                // Normally used as: disposable1.DisposeWith(disposables);
+                AsyncDisposableExtensions.DisposeWith(disposable1, disposables);
+
+                await disposables.DisposeAsync();
+
+                actual.Should().Be(expected);
+            }
+
+            [Fact]
+            public async Task Should_Return_Same_Disposable()
+            {
+                var disposables = new CompositeAsyncDisposable();
+                var disposable1 = new RaiiAsync(() => { }, () => { return Task.CompletedTask; });
+
+                // Normally used as: disposable1.DisposeWith(disposables);
+                var actual = AsyncDisposableExtensions.DisposeWith(disposable1, disposables);
+
+                actual.Should().Be(disposable1);
+
+                // cleanup only
+                await disposables.DisposeAsync();
+            }
+        }
+
         public class DisposeAllAsync : AsyncDisposableExtensionsFixture
         {
             [Fact]
