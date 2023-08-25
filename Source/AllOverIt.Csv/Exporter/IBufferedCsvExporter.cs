@@ -7,14 +7,14 @@ namespace AllOverIt.Csv.Exporter
 {
     /// <summary>Represents a buffered CSV exporter that caches rows of data that are flushed when the buffer is full.</summary>
     /// <typeparam name="TModel">The model type representing the columns of each row to be exported.</typeparam>
-    public interface IBufferedCsvExporter<TModel> : IAsyncDisposable
+    public interface IBufferedCsvExporter<TModel> : IAsyncDisposable where TModel : class
     {
         /// <summary>Configures the underlying <see cref="CsvSerializer{TCsvData}"/>. This method must be called before adding data.</summary>
-        /// <param name="dynamicData"><see cref="CsvSerializer{TCsvData}"/> supports the dynamic generation of columns based on the provided data.
+        /// <param name="configData"><see cref="CsvSerializer{TCsvData}"/> supports the dynamic generation of columns based on the provided data.
         /// If all columns are fixed / well-known then this parameter will be <see langword="null"/>. When not <see langword="null"/>, the provided
         /// data will be used to establish the names of the dyanmic columns, through the use of calls to one of the <see cref="ICsvSerializer{TCsvData}"/>
         /// extension methods <c>AddDynamicFields()</c>.</param>
-        void Configure(IEnumerable<TModel> dynamicData = default);
+        void Configure(IEnumerable<TModel> configData = default);
 
         /// <summary>Adds a row of data to the CSV content. Each.</summary>
         /// <param name="data">The model containing the data for each column to be exported, as configured via <see cref="Configure(IEnumerable{TModel})"/>.</param>

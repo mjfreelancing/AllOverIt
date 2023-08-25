@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Assertion;
+using AllOverIt.Csv.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,7 +11,7 @@ namespace AllOverIt.Csv.Exporter
     /// <summary>Abstract class providing support for buffering CSV data and writing it to the underlying CSV writer
     /// as the buffer fills.</summary>
     /// <typeparam name="TModel">The model type representing the columns of each row to be exported.</typeparam>
-    public abstract class BufferedCsvExporterBase<TModel> : IBufferedCsvExporter<TModel>
+    public abstract class BufferedCsvExporterBase<TModel> : IBufferedCsvExporter<TModel> where TModel : class
     {
         private readonly BufferedCsvExporterConfiguration _configuration;
         private readonly ICollection<TModel> _data;
@@ -39,16 +40,18 @@ namespace AllOverIt.Csv.Exporter
         }
 
         /// <inheritdoc />
-        public void Configure(IEnumerable<TModel> dynamicData = default)
+        public void Configure(IEnumerable<TModel> configData = default)
         {
-            Throw<InvalidOperationException>.WhenNotNull(_csvSerializer, "The CSV serializer is already configured.");
+            Throw<CsvExporterException>.WhenNotNull(_csvSerializer, "The CSV serializer is already configured.");
 
-            _csvSerializer = CreateSerializer(dynamicData);
+            _csvSerializer = CreateSerializer(configData);
         }
 
         /// <inheritdoc />
         public Task AddDataAsync(TModel data, CancellationToken cancellationToken)
         {
+            _ = data.WhenNotNull(nameof(data));
+
             _data.Add(data);
 
             return ProcessBufferAsync(false, cancellationToken);
@@ -69,10 +72,11 @@ namespace AllOverIt.Csv.Exporter
         /// <inheritdoc />
         public async Task CloseAsync(CancellationToken cancellationToken)
         {
+            // Force the _writer to be created and data flushed if the buffer has not been exhausted
+            await FlushAsync(cancellationToken);
+
             if (_writer is not null)
             {
-                await FlushAsync(CancellationToken.None);
-
                 await _writer.DisposeAsync();
                 _writer = null;
 
@@ -96,12 +100,12 @@ namespace AllOverIt.Csv.Exporter
 
         /// <summary> This method is called at the time of calling <see cref="Configure(IEnumerable{TModel})"/>. The method
         /// must return a newly instantiated serializer that has been completely configured.</summary>
-        /// <param name="dynamicData"><see cref="CsvSerializer{TCsvData}"/> supports the dynamic generation of columns based on the provided data.
+        /// <param name="configData"><see cref="CsvSerializer{TCsvData}"/> supports the dynamic generation of columns based on the provided data.
         /// If all columns are fixed / well-known then this parameter will be <see langword="null"/>. When not <see langword="null"/>, the provided
         /// data will be used to establish the names of the dyanmic columns, through the use of calls to one of the <see cref="ICsvSerializer{TCsvData}"/>
         /// extension methods <c>AddDynamicFields()</c>.</param>
         /// <returns>The newly instantiated, and configured, CSV serializer.</returns>
-        protected abstract ICsvSerializer<TModel> CreateSerializer(IEnumerable<TModel> dynamicData = default);
+        protected abstract ICsvSerializer<TModel> CreateSerializer(IEnumerable<TModel> configData = default);
 
         /// <summary>Disposed of internal resources.</summary>
         /// <returns>A <see cref="ValueTask"/> that completes when all resources have been disposed of.</returns>
@@ -112,7 +116,9 @@ namespace AllOverIt.Csv.Exporter
 
         private async Task ProcessBufferAsync(bool force, CancellationToken cancellationToken)
         {
-            Throw<InvalidOperationException>.WhenNull(_csvSerializer, "The CSV serializer is not configured.");
+            Throw<CsvExporterException>.WhenNull(_csvSerializer, "The CSV serializer is not configured.");
+
+            cancellationToken.ThrowIfCancellationRequested();
 
             if (force || _data.Count == _configuration.BufferSize)
             {

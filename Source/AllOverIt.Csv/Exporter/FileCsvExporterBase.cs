@@ -1,11 +1,12 @@
 ﻿using AllOverIt.Assertion;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
 namespace AllOverIt.Csv.Exporter
 {
     /// <summary>Implements a buffered CSV exporter that writes the content to a file.</summary>
     /// <typeparam name="TModel">The model type representing the columns of each row to be exported.</typeparam>
-    public abstract class FileCsvExporterBase<TModel> : BufferedCsvExporterBase<TModel>
+    public abstract class FileCsvExporterBase<TModel> : BufferedCsvExporterBase<TModel> where TModel : class
     {
         private readonly string _filePath;
         private readonly FileMode _fileMode;
@@ -29,6 +30,7 @@ namespace AllOverIt.Csv.Exporter
             _fileMode = fileMode;
         }
 
+        [ExcludeFromCodeCoverage]
         /// <inheritdoc />
         protected override Stream CreateStream()
         {

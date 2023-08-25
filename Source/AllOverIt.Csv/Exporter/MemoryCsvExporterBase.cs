@@ -6,7 +6,7 @@ namespace AllOverIt.Csv.Exporter
 {
     /// <summary>Implements a buffered CSV exporter that writes the content to a memory stream.</summary>
     /// <typeparam name="TModel">The model type representing the columns of each row to be exported.</typeparam>
-    public abstract class MemoryCsvExporterBase<TModel> : BufferedCsvExporterBase<TModel>, IMemoryCsvExporter<TModel>
+    public abstract class MemoryCsvExporterBase<TModel> : BufferedCsvExporterBase<TModel>, IMemoryCsvExporter<TModel> where TModel : class
     {
         /// <summary>Constructor.</summary>
         /// <param name="configuration">The configuration to use. If <see langword="null"/> then a default

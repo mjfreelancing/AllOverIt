@@ -2,17 +2,17 @@
 
 namespace AllOverIt.Csv.Exceptions
 {
-    /// <summary>Represents an error that occurs during the serialization of data to CSV.</summary>
-    public sealed class CsvSerializerException : Exception
+    /// <summary>Represents an error that occurs during the export of data to CSV.</summary>
+    public sealed class CsvExporterException : Exception
     {
         /// <summary>Default constructor.</summary>
-        public CsvSerializerException()
+        public CsvExporterException()
         {
         }
 
         /// <summary>Constructor.</summary>
         /// <param name="message">The exception message.</param>
-        public CsvSerializerException(string message)
+        public CsvExporterException(string message)
             : base(message)
         {
         }
@@ -20,7 +20,7 @@ namespace AllOverIt.Csv.Exceptions
         /// <summary>Constructor.</summary>
         /// <param name="message">The exception message.</param>
         /// <param name="innerException">The inner exception.</param>
-        public CsvSerializerException(string message, Exception innerException)
+        public CsvExporterException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
