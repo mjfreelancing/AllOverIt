@@ -6,9 +6,7 @@ namespace AllOverIt.Async
 {
     // Original source: https://devblogs.microsoft.com/pfxteam/asynclazyt/
 
-    /// <summary>
-    /// Provides support for lazy initialization using a factory that returns a Task{TType}.
-    /// </summary>
+    /// <summary>Provides support for lazy initialization using a factory that returns a Task{TType}.</summary>
     /// <typeparam name="TType">The type that is lazily initialized.</typeparam>
     public class AsyncLazy<TType> : Lazy<Task<TType>>
     {
