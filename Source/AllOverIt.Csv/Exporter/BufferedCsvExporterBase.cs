@@ -7,21 +7,30 @@ using System.Threading.Tasks;
 
 namespace AllOverIt.Csv.Exporter
 {
+    /// <summary>Abstract class providing support for buffering CSV data and writing it to the underlying CSV writer
+    /// as the buffer fills.</summary>
+    /// <typeparam name="TModel">The model type representing the columns of each row to be exported.</typeparam>
     public abstract class BufferedCsvExporterBase<TModel> : IBufferedCsvExporter<TModel>
     {
         private readonly BufferedCsvExporterConfiguration _configuration;
-        private readonly IList<TModel> _data;
+        private readonly ICollection<TModel> _data;
 
         private StreamWriter _writer;
         private ICsvSerializer<TModel> _csvSerializer;
 
-        protected Stream Stream { get; private set; }       // The underlying stream passed to the StreamWriter
+        /// <summary>The underlying stream provided to the CSV writer. This stream is created on demand when the buffer
+        /// is first flushed, including during a call to <see cref="FlushAsync(CancellationToken)"/> when there is data
+        /// available for writing.</summary>
+        protected Stream Stream { get; private set; }
 
+        /// <summary>Constructor. Initialized with a default <see cref="BufferedCsvExporterConfiguration"/>.</summary>
         protected BufferedCsvExporterBase()
             : this(new BufferedCsvExporterConfiguration())
         {
         }
 
+        /// <summary>Constructor.</summary>
+        /// <param name="configuration">The configuration to use.</param>
         protected BufferedCsvExporterBase(BufferedCsvExporterConfiguration configuration)
         {
             _configuration = configuration.WhenNotNull(nameof(configuration));
@@ -29,6 +38,7 @@ namespace AllOverIt.Csv.Exporter
             _data = new List<TModel>(_configuration.BufferSize);
         }
 
+        /// <inheritdoc />
         public void Configure(IEnumerable<TModel> dynamicData = default)
         {
             Throw<InvalidOperationException>.WhenNotNull(_csvSerializer, "The CSV serializer is already configured.");
@@ -36,6 +46,7 @@ namespace AllOverIt.Csv.Exporter
             _csvSerializer = CreateSerializer(dynamicData);
         }
 
+        /// <inheritdoc />
         public Task AddDataAsync(TModel data, CancellationToken cancellationToken)
         {
             _data.Add(data);
@@ -43,25 +54,20 @@ namespace AllOverIt.Csv.Exporter
             return ProcessBufferAsync(false, cancellationToken);
         }
 
-        public async ValueTask DisposeAsync()
-        {
-            await DisposeAsyncCore().ConfigureAwait(false);
-
-            GC.SuppressFinalize(this);
-        }
-
-        protected abstract Stream CreateStream();
-
-        protected abstract ICsvSerializer<TModel> CreateSerializer(IEnumerable<TModel> dynamicData = default);
-
-        protected async Task FlushAsync(CancellationToken cancellationToken)
+        /// <inheritdoc />
+        public async Task FlushAsync(CancellationToken cancellationToken)
         {
             await ProcessBufferAsync(true, cancellationToken);
 
-            await _writer.FlushAsync();
+            // _writer will be null if there was no data to process
+            if (_writer is not null)
+            {
+                await _writer.FlushAsync();
+            }
         }
 
-        protected virtual async ValueTask DisposeAsyncCore()
+        /// <inheritdoc />
+        public async Task CloseAsync(CancellationToken cancellationToken)
         {
             if (_writer is not null)
             {
@@ -69,7 +75,39 @@ namespace AllOverIt.Csv.Exporter
 
                 await _writer.DisposeAsync();
                 _writer = null;
+
+                _csvSerializer = null;
             }
+        }
+
+        /// <inheritdoc />
+        public async ValueTask DisposeAsync()
+        {
+            await DisposeAsyncCore().ConfigureAwait(false);
+
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>This method is called when the stream is required to initialize the underlying CSV writer. This occurs
+        /// when the buffer is first flushed, including during a call to <see cref="FlushAsync(CancellationToken)"/> when there
+        /// is data available for writing.</summary>
+        /// <returns>The newly created stream. This will be disposed when the underlying writer is disposed of.</returns>
+        protected abstract Stream CreateStream();
+
+        /// <summary> This method is called at the time of calling <see cref="Configure(IEnumerable{TModel})"/>. The method
+        /// must return a newly instantiated serializer that has been completely configured.</summary>
+        /// <param name="dynamicData"><see cref="CsvSerializer{TCsvData}"/> supports the dynamic generation of columns based on the provided data.
+        /// If all columns are fixed / well-known then this parameter will be <see langword="null"/>. When not <see langword="null"/>, the provided
+        /// data will be used to establish the names of the dyanmic columns, through the use of calls to one of the <see cref="ICsvSerializer{TCsvData}"/>
+        /// extension methods <c>AddDynamicFields()</c>.</param>
+        /// <returns>The newly instantiated, and configured, CSV serializer.</returns>
+        protected abstract ICsvSerializer<TModel> CreateSerializer(IEnumerable<TModel> dynamicData = default);
+
+        /// <summary>Disposed of internal resources.</summary>
+        /// <returns>A <see cref="ValueTask"/> that completes when all resources have been disposed of.</returns>
+        protected virtual async ValueTask DisposeAsyncCore()
+        {
+            await CloseAsync(CancellationToken.None);
         }
 
         private async Task ProcessBufferAsync(bool force, CancellationToken cancellationToken)
