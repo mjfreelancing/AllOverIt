@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text;
 using Xunit;
 
 namespace AllOverIt.Tests.Extensions
@@ -424,6 +425,46 @@ namespace AllOverIt.Tests.Extensions
                 base64.FromBase64()
                     .Should()
                     .Be(phrase);
+            }
+        }
+
+        public class ToMemoryStream : StringExtensionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Null()
+            {
+                string value = null;
+
+                Invoking(() =>
+                {
+                    value.ToMemoryStream();
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("value");
+            }
+
+            [Fact]
+            public void Should_Be_Empty_When_Empty()
+            {
+                var value = string.Empty;
+
+                value.ToMemoryStream()
+                    .Length
+                    .Should()
+                    .Be(0);
+            }
+
+            [Fact]
+            public void Should_Copy_To_Stream()
+            {
+                var expected = Create<string>();
+
+                var stream = expected.ToMemoryStream();
+
+                var actual = Encoding.UTF8.GetString(stream.ToArray());
+
+                actual.Should().Be(expected);
             }
         }
 

@@ -2,6 +2,7 @@
 using AllOverIt.Reflection;
 using System;
 using System.ComponentModel;
+using System.IO;
 using System.Text;
 
 namespace AllOverIt.Extensions
@@ -129,6 +130,17 @@ namespace AllOverIt.Extensions
 
             var bytes = Convert.FromBase64String(value);
             return Encoding.UTF8.GetString(bytes);
+        }
+
+        /// <summary>Copies, and returns, a specified string to a memory stream.</summary>
+        /// <param name="value">The string content to copy to the memory stream.</param>
+        /// <returns></returns>
+        public static MemoryStream ToMemoryStream(this string value)
+        {
+            _ = value.WhenNotNull(nameof(value));
+
+            var bytes = Encoding.UTF8.GetBytes(value);
+            return new MemoryStream(bytes);
         }
     }
 }

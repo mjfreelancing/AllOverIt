@@ -41,6 +41,8 @@
 * Added cancellation support in the async pipeline builder
 * Updated IElementDictionary to be enumerable, provide Names and Values, and the ability to change values within the json helper
 * Added DisposeWith() for any IAsyncDisposable, using CompositeAsyncDisposable
+* Removed TextStreamer since System.IO.StringWriter provides an almost identical interface
+* Added ToMemoryStream() extension method for string.
 
 
 ## AllOverIt.AspNetCore
