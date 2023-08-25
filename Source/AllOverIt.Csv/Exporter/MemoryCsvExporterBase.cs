@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -8,10 +9,14 @@ namespace AllOverIt.Csv.Exporter
     /// <typeparam name="TModel">The model type representing the columns of each row to be exported.</typeparam>
     public abstract class MemoryCsvExporterBase<TModel> : BufferedCsvExporterBase<TModel>, IMemoryCsvExporter<TModel> where TModel : class
     {
+        /// <summary>Constructor. Initialized with a default <see cref="BufferedCsvExporterConfiguration"/>.</summary>
+        public MemoryCsvExporterBase()
+        {
+        }
+
         /// <summary>Constructor.</summary>
-        /// <param name="configuration">The configuration to use. If <see langword="null"/> then a default
-        /// <see cref="BufferedCsvExporterConfiguration"/> will be used.</param>
-        public MemoryCsvExporterBase(BufferedCsvExporterConfiguration configuration = default)
+        /// <param name="configuration">The configuration to use.</param>
+        public MemoryCsvExporterBase(BufferedCsvExporterConfiguration configuration)
             : base(configuration)
         {
         }
@@ -21,7 +26,9 @@ namespace AllOverIt.Csv.Exporter
         {
             await FlushAsync(cancellationToken);
 
-            return ((MemoryStream) Stream).ToArray();
+            return Stream is null
+                ? Array.Empty<byte>() 
+                : ((MemoryStream) Stream).ToArray();
         }
 
         /// <inheritdoc />

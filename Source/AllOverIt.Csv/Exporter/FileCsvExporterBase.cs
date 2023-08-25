@@ -15,7 +15,7 @@ namespace AllOverIt.Csv.Exporter
         /// <param name="filePath">The path to the file to be created and written to.</param>
         /// <param name="fileMode">Controls whether the file should be created new, replaced, or appended. The default is <see cref="FileMode.Create"/>.</param>
         public FileCsvExporterBase(string filePath, FileMode fileMode = FileMode.Create)
-            : this(filePath, fileMode, null)
+            : this(filePath, fileMode, new BufferedCsvExporterConfiguration())
         {
         }
 

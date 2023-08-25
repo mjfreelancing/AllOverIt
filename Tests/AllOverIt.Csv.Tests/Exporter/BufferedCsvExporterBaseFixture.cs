@@ -7,6 +7,7 @@ using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -60,7 +61,7 @@ namespace AllOverIt.Csv.Tests.Exporter
             }
         }
 
-        private readonly DummyBufferedCsvExporter _exporter = new DummyBufferedCsvExporter();
+        private readonly DummyBufferedCsvExporter _exporter = new();
 
         public class Constructor_Configuration : BufferedCsvExporterBaseFixture
         {
@@ -255,7 +256,7 @@ namespace AllOverIt.Csv.Tests.Exporter
             }
 
             [Fact]
-            public async Task Should_Throw_When_Cancelled()
+            public async Task Should_Throw_When_Cancelled_With_Data()
             {
                 _exporter.Configure();
 
