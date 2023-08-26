@@ -8,6 +8,8 @@ using AllOverIt.Fixture.FakeItEasy;
 using FakeItEasy;
 using FluentAssertions;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
@@ -392,6 +394,38 @@ namespace AllOverIt.Evaluator.Tests.Variables
                     var actual = kvp.Value;
 
                     actual.Should().BeSameAs(variables[index]);
+                }
+            }
+        }
+
+        public class GetEnumerator_Explicit : VariableRegistryFixture
+        {
+            [Fact]
+            public void Should_Enumerate_Variablea()
+            {
+                var names = CreateMany<string>();
+
+                var variables = names
+                    .Select(name =>
+                    {
+                        var variable = new Fake<IVariable>();
+                        variable.CallsTo(fake => fake.Name).Returns(name);
+
+                        return variable.FakedObject;
+                    })
+                    .ToArray();
+
+                _registry.AddVariables(variables);
+
+                var index = 0;
+
+                foreach (var kvp in ((IEnumerable) _registry))
+                {
+                    var item = (KeyValuePair<string, IVariable>) kvp;
+
+                    var actual = item.Value;
+
+                    actual.Should().BeSameAs(variables[index++]);
                 }
             }
         }
