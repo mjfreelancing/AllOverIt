@@ -30,6 +30,8 @@ namespace AllOverIt.Evaluator.Variables
         /// <inheritdoc />
         public void AddVariables(params IVariable[] variables)
         {
+            _ = variables.WhenNotNull(nameof(variables));
+
             foreach (var variable in variables)
             {
                 AddVariable(variable);
@@ -68,12 +70,16 @@ namespace AllOverIt.Evaluator.Variables
         /// <inheritdoc />
         public bool TryGetVariable(string name, out IVariable variable)
         {
+            _ = name.WhenNotNullOrEmpty(nameof(name));
+
             return _variableRegistry.TryGetValue(name, out variable);
         }
 
         /// <inheritdoc />
         public IVariable GetVariable(string name)
         {
+            _ = name.WhenNotNullOrEmpty(nameof(name));
+
             if (!TryGetVariable(name, out var variable))
             {
                 throw new VariableException($"The variable '{name}' is not registered");
@@ -85,6 +91,8 @@ namespace AllOverIt.Evaluator.Variables
         /// <inheritdoc />
         public bool ContainsVariable(string name)
         {
+            _ = name.WhenNotNullOrEmpty(nameof(name));
+
             return _variableRegistry.ContainsKey(name);
         }
 
