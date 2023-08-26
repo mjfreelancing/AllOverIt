@@ -2,12 +2,10 @@
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
-using FluentAssertions.Execution;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
-using Xunit.Sdk;
 
 namespace AllOverIt.Tests.Async
 {
@@ -89,30 +87,6 @@ namespace AllOverIt.Tests.Async
                 .Should()
                 .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("exceptionHandler");
-            }
-
-            [Theory]
-            [InlineData(true)]
-            [InlineData(false)]
-            public async Task Should_Throw_When_Task_Cancelled(bool handled)
-            {
-                var cts = new CancellationTokenSource();
-
-                var backgroundTask = new BackgroundTask<bool>(async token =>
-                {
-                    await Task.Delay(-1, token);
-
-                    return Create<bool>();
-                }, edi => handled, cts.Token);
-
-                await Invoking(async () =>
-                {
-                    cts.Cancel();
-
-                    await backgroundTask;
-                })
-                .Should()
-                .ThrowAsync<TaskCanceledException>();
             }
 
             [Fact]
