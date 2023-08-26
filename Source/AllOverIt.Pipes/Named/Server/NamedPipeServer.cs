@@ -147,7 +147,9 @@ namespace AllOverIt.Pipes.Named.Server
                 _backgroundTask = null;
             }
 
-            // We don't need to lock since no new connections are possible.
+            // We cannot lock here since the OnDisconnected event handler will be called - and apply the lock
+            // New connections are not possible now the background thread has been disposed of.
+
             if (Connections.Any())
             {
                 // DoOnConnectionDisconnected() will be called for each connection where
