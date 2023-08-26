@@ -142,7 +142,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
             }
         }
 
-        public class CreateFuncVariable : VariableFactoryFixture
+        public class CreateDelegateVariable_Func : VariableFactoryFixture
         {
             [Fact]
             public void Should_Throw_When_Name_Null()
@@ -187,7 +187,60 @@ namespace AllOverIt.Evaluator.Tests.Variables
             }
         }
 
-        public class CreateLazyVariable : VariableFactoryFixture
+        public class CreateDelegateVariable_FormulaCompilerResult : VariableFactoryFixture
+        {
+            private FormulaCompilerResult _formulaCompilerResult;
+
+            public CreateDelegateVariable_FormulaCompilerResult()
+            {
+                var formulaCompiler = new FormulaCompiler();
+                _formulaCompilerResult = formulaCompiler.Compile($"{_value}");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Name_Null()
+            {
+                Invoking(() => _variableFactory.CreateDelegateVariable(null, _formulaCompilerResult))
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("name");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Name_Empty()
+            {
+                Invoking(() => _variableFactory.CreateDelegateVariable(string.Empty, _formulaCompilerResult))
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("name");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Name_Whitespace()
+            {
+                Invoking(() => _variableFactory.CreateDelegateVariable(" ", _formulaCompilerResult))
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("name");
+            }
+
+            [Fact]
+            public void Should_Create_Func_Variable()
+            {
+                var variable = _variableFactory.CreateDelegateVariable(_name, _formulaCompilerResult);
+
+                var expected = new
+                {
+                    Name = _name,
+                    Value = _value,
+                    ReferencedVariables = Enumerable.Empty<string>()
+                };
+
+                expected.Should().BeEquivalentTo(variable);
+            }
+        }
+
+        public class CreateLazyVariable_Func : VariableFactoryFixture
         {
             [Fact]
             public void Should_Throw_When_Name_Null()
@@ -220,6 +273,59 @@ namespace AllOverIt.Evaluator.Tests.Variables
             public void Should_Create_Lazy_Variable()
             {
                 var variable = _variableFactory.CreateLazyVariable(_name, () => _value, Create<bool>());
+
+                var expected = new
+                {
+                    Name = _name,
+                    Value = _value,
+                    ReferencedVariables = Enumerable.Empty<string>()
+                };
+
+                expected.Should().BeEquivalentTo(variable);
+            }
+        }
+
+        public class CreateLazyVariable_FormulaCompilerResult : VariableFactoryFixture
+        {
+            private FormulaCompilerResult _formulaCompilerResult;
+
+            public CreateLazyVariable_FormulaCompilerResult()
+            {
+                var formulaCompiler = new FormulaCompiler();
+                _formulaCompilerResult = formulaCompiler.Compile($"{_value}");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Name_Null()
+            {
+                Invoking(() => _variableFactory.CreateLazyVariable(null, _formulaCompilerResult, Create<bool>()))
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("name");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Name_Empty()
+            {
+                Invoking(() => _variableFactory.CreateLazyVariable(string.Empty, _formulaCompilerResult, Create<bool>()))
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("name");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Name_Whitespace()
+            {
+                Invoking(() => _variableFactory.CreateLazyVariable(" ", _formulaCompilerResult, Create<bool>()))
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("name");
+            }
+
+            [Fact]
+            public void Should_Create_Lazy_Variable()
+            {
+                var variable = _variableFactory.CreateLazyVariable(_name, _formulaCompilerResult, Create<bool>());
 
                 var expected = new
                 {
