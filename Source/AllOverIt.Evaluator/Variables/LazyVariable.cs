@@ -32,13 +32,13 @@ namespace AllOverIt.Evaluator.Variables
 
         /// <summary>Constructor.</summary>
         /// <param name="name">The variable's name.</param>
-        /// <param name="compilerResult">The compiled result of a formula. The associated resolver will be evaluated
+        /// <param name="formulaCompilerResult">The compiled result of a formula. The associated resolver will be evaluated
         /// the first time the <see cref="Value"/> is read.</param>
         /// <param name="threadSafe">Indicates if the underlying lazy-evaluator should evaluate in a thread safe ammner.</param>
-        public LazyVariable(string name, FormulaCompilerResult compilerResult, bool threadSafe = false)
-            : this(name, compilerResult.Resolver, threadSafe)
+        public LazyVariable(string name, FormulaCompilerResult formulaCompilerResult, bool threadSafe = false)
+            : this(name, formulaCompilerResult.Resolver, threadSafe)
         {
-            ReferencedVariables = compilerResult.GetReferencedVariables();
+            ReferencedVariables = formulaCompilerResult.GetReferencedVariables();
         }
 
         /// <inheritdoc />

@@ -26,12 +26,12 @@ namespace AllOverIt.Evaluator.Variables
 
         /// <summary>Constructor.</summary>
         /// <param name="name">The variable's name.</param>
-        /// <param name="compilerResult">The compiled result of a formula. The associated resolver will be re-evaluated
+        /// <param name="formulaCompilerResult">The compiled result of a formula. The associated resolver will be re-evaluated
         /// each time the <see cref="Value"/> is read.</param>
-        public DelegateVariable(string name, FormulaCompilerResult compilerResult)
-            : this(name, compilerResult.Resolver)
+        public DelegateVariable(string name, FormulaCompilerResult formulaCompilerResult)
+            : this(name, formulaCompilerResult.Resolver)
         {
-            ReferencedVariables = compilerResult.GetReferencedVariables();
+            ReferencedVariables = formulaCompilerResult.GetReferencedVariables();
         }
     }
 }

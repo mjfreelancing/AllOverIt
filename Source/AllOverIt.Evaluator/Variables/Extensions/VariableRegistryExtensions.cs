@@ -88,15 +88,15 @@ namespace AllOverIt.Evaluator.Variables.Extensions
         /// <summary>Creates, and adds, a new <see cref="DelegateVariable"/> to the variable registry.</summary>
         /// <param name="registry">The variable registry to add the newly created variable to.</param>
         /// <param name="name">The name to be assigned to the variable.</param>
-        /// <param name="compilerResult">The compiled result of a formula. The associated resolver will be assigned to the
+        /// <param name="formulaCompilerResult">The compiled result of a formula. The associated resolver will be assigned to the
         /// new variable's delegate.</param>
         /// <returns>The new variable instance.</returns>
-        public static IVariable AddDelegateVariable(this IVariableRegistry registry, string name, FormulaCompilerResult compilerResult)
+        public static IVariable AddDelegateVariable(this IVariableRegistry registry, string name, FormulaCompilerResult formulaCompilerResult)
         {
             _ = registry.WhenNotNull(nameof(registry));
             _ = name.WhenNotNullOrEmpty(nameof(name));
 
-            var variable = new DelegateVariable(name, compilerResult);
+            var variable = new DelegateVariable(name, formulaCompilerResult);
             registry.AddVariable(variable);
 
             return variable;
@@ -121,15 +121,15 @@ namespace AllOverIt.Evaluator.Variables.Extensions
         /// <summary>Creates, and adds, a new <see cref="LazyVariable"/> to the variable registry.</summary>
         /// <param name="registry">The variable registry to add the newly created variable to.</param>
         /// <param name="name">The name to be assigned to the variable.</param>
-        /// <param name="compilerResult">The compiled result of a formula. The associated resolver will be assigned to the
+        /// <param name="formulaCompilerResult">The compiled result of a formula. The associated resolver will be assigned to the
         /// new variable's lazily-evaluated delegate.</param>
         /// <returns>The new variable instance.</returns>
-        public static IVariable AddLazyVariable(this IVariableRegistry registry, string name, FormulaCompilerResult compilerResult)
+        public static IVariable AddLazyVariable(this IVariableRegistry registry, string name, FormulaCompilerResult formulaCompilerResult)
         {
             _ = registry.WhenNotNull(nameof(registry));
             _ = name.WhenNotNullOrEmpty(nameof(name));
 
-            var variable = new LazyVariable(name, compilerResult);
+            var variable = new LazyVariable(name, formulaCompilerResult);
             registry.AddVariable(variable);
 
             return variable;
