@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Assertion;
+using AllOverIt.Evaluator.Exceptions;
 using AllOverIt.Extensions;
 using AllOverIt.Patterns.Specification.Extensions;
 using System;
@@ -158,6 +159,20 @@ namespace AllOverIt.Evaluator.Variables
 
 
 
+
+        public IVariableRegistry Build()
+        {
+            var success = TryBuild(out var variableRegistry);
+
+            Throw<VariableRegistryBuilderException>.WhenNot(success, "Cannot build the variable registry due to missing variable referrences.");
+
+            return variableRegistry;
+        }
+
+
+
+
+
         public bool TryBuild(out IVariableRegistry variableRegistry)
         {
             ProcessPendingRegistrations(null);
@@ -167,16 +182,6 @@ namespace AllOverIt.Evaluator.Variables
                 : null;
 
             return variableRegistry is not null;
-        }
-
-        public IVariableRegistry Build()
-        {
-            var success = TryBuild(out var variableRegistry);
-
-            // TODO: Custom exception
-            Throw<InvalidOperationException>.WhenNot(success, "Cannot build the variable registry due to missing variable referrences.");
-
-            return variableRegistry;
         }
 
         public IReadOnlyCollection<string> GetUnregisteredVariableNames()

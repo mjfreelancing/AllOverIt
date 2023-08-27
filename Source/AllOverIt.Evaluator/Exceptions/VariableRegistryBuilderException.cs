@@ -1,19 +1,19 @@
-using System;
+﻿using System;
 using AllOverIt.Evaluator.Variables;
 
 namespace AllOverIt.Evaluator.Exceptions
 {
-    /// <summary>An exception that can be thrown by a concrete IVariable.</summary>
-    public class VariableException : Exception
+    /// <summary>An exception that can be thrown while attempting to build an <see cref="IVariableRegistry"/> via an <see cref="IVariableRegistryBuilder"/>.</summary>
+    public class VariableRegistryBuilderException : Exception
     {
         /// <summary>Default constructor.</summary>
-        public VariableException()
+        public VariableRegistryBuilderException()
         {
         }
 
         /// <summary>Constructor.</summary>
         /// <param name="message">The exception message.</param>
-        public VariableException(string message)
+        public VariableRegistryBuilderException(string message)
             : base(message)
         {
         }
@@ -21,7 +21,7 @@ namespace AllOverIt.Evaluator.Exceptions
         /// <summary>Constructor.</summary>
         /// <param name="message">The exception message.</param>
         /// <param name="innerException">The inner exception.</param>
-        public VariableException(string message, Exception innerException)
+        public VariableRegistryBuilderException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
