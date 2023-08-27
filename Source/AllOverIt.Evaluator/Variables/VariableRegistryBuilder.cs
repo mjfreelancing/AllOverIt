@@ -10,8 +10,14 @@ namespace AllOverIt.Evaluator.Variables
 {
     public sealed class VariableRegistryBuilder : IVariableRegistryBuilder
     {
-        // The List<string> input is an optional collection that will be populated with referenced variable names that are not registered.
-        private readonly IList<Func<HashSet<string>, bool>> _pendingRegistrations = new List<Func<HashSet<string>, bool>>();
+        private sealed class PendingRegistrationState
+        {
+            public IList<string> PendingNames { get; } = new List<string>();            // Variable names being registered (but cannot due to missing referenced variables)
+            public HashSet<string> MissingNames { get; } = new HashSet<string>();
+        }
+
+        // The PendingRegistrationState input is optional. When not null it will be populated with unregistered and associated referenced variable names that are also not registered.
+        private readonly IList<Func<PendingRegistrationState, bool>> _pendingRegistrations = new List<Func<PendingRegistrationState, bool>>();
 
         private readonly IVariableRegistry _variableRegistry;
         private readonly IVariableFactory _variableFactory;
@@ -153,25 +159,14 @@ namespace AllOverIt.Evaluator.Variables
             return this;
         }
 
-
-
-
-
-
-
-
         public IVariableRegistry Build()
         {
             var success = TryBuild(out var variableRegistry);
 
-            Throw<VariableRegistryBuilderException>.WhenNot(success, "Cannot build the variable registry due to missing variable referrences.");
+            Throw<VariableRegistryBuilderException>.WhenNot(success, "Cannot build the variable registry due to missing variable references.");
 
             return variableRegistry;
         }
-
-
-
-
 
         public bool TryBuild(out IVariableRegistry variableRegistry)
         {
@@ -186,22 +181,36 @@ namespace AllOverIt.Evaluator.Variables
 
         public IReadOnlyCollection<string> GetUnregisteredVariableNames()
         {
-            var missingVariableNames = new HashSet<string>();
+            // There may have been pending variables that have since been added as variable types that don't have references,
+            // such as constant / mutable variables so we must first process the pending list.
+            ProcessPendingRegistrations(null);
+
+            var pendingState = new PendingRegistrationState();
 
             foreach (var pendingRegistration in _pendingRegistrations)
             {
-                pendingRegistration.Invoke(missingVariableNames);
+                pendingRegistration.Invoke(pendingState);
             }
 
-            return missingVariableNames;
+            // Exclude variables in the pending list, just in case they are referenced by another variable that also cannot be resolved.
+            // For example:
+            //     a = 0
+            //     b = a + e * f
+            //     d = c - b + g
+            //
+            // Above, b is pending registration since e and f cannot be resolved - only e, f, c, g will be reported as unregistered
+            // despite b not yet being present in the variable registry.
+            return pendingState.MissingNames
+                .Except(pendingState.PendingNames)
+                .AsReadOnlyCollection();
         }
 
         private VariableRegistryBuilder TryRegisterVariable(string name, Func<IVariableRegistry, FormulaCompilerResult> formulaCompilerResultResolver,
-          Func<string, FormulaCompilerResult, IVariable> variableResolver)
+            Func<string, FormulaCompilerResult, IVariable> variableResolver)
         {
             var formulaCompilerResult = formulaCompilerResultResolver.Invoke(_variableRegistry);
 
-            bool TryRegisterVariable(HashSet<string> getMissingVariableNames)
+            bool TryRegisterVariable(PendingRegistrationState getMissingVariableNames)
             {
                 var referencedVariables = formulaCompilerResult.ReferencedVariableNames;
 
@@ -211,7 +220,8 @@ namespace AllOverIt.Evaluator.Variables
 
                 if (missingVariableNames.Count > 0)
                 {
-                    getMissingVariableNames?.UnionWith(missingVariableNames);
+                    getMissingVariableNames?.PendingNames.Add(name);
+                    getMissingVariableNames?.MissingNames.UnionWith(missingVariableNames);
 
                     return false;
                 }
@@ -232,18 +242,18 @@ namespace AllOverIt.Evaluator.Variables
             return this;
         }
 
-        private void ProcessPendingRegistrations(HashSet<string> missingVariableNmes)
+        private void ProcessPendingRegistrations(PendingRegistrationState pendingState)
         {
             if (_pendingRegistrations.Count == 0)
             {
                 return;
             }
 
-            Func<HashSet<string>, bool> next;
+            Func<PendingRegistrationState, bool> next;
 
             do
             {
-                next = _pendingRegistrations.FirstOrDefault(pendingItem => pendingItem.Invoke(missingVariableNmes));
+                next = _pendingRegistrations.FirstOrDefault(pendingItem => pendingItem.Invoke(pendingState));
 
                 if (next is not null)
                 {

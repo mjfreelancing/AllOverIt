@@ -1,4 +1,5 @@
-﻿using AllOverIt.Evaluator.Variables;
+﻿using AllOverIt.Evaluator.Exceptions;
+using AllOverIt.Evaluator.Variables;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
@@ -978,14 +979,257 @@ namespace AllOverIt.Evaluator.Tests.Variables
             }
         }
 
+        public class Build : VariableRegistryBuilderFixture
+        {
+            [Fact]
+            public void Should_Build_Functional_1()
+            {
+                _variableRegistryBuilder.Build().Should().BeOfType<VariableRegistry>();
+            }
 
+            [Fact]
+            public void Should_Build_Functional_2()
+            {
+                _variableRegistryBuilder.AddConstantVariable(Create<string>());
 
+                var registry = _variableRegistryBuilder.Build();
 
+                registry.Should().HaveCount(1);
+            }
 
+            [Fact]
+            public void Should_Build_Functional_3()
+            {
+                var formulaCompiler = new FormulaCompiler();
 
+                _variableRegistryBuilder.AddConstantVariable("a", Create<double>());
+                _variableRegistryBuilder.AddDelegateVariable("b", registry => formulaCompiler.Compile("a + 1", registry));
 
+                var registry = _variableRegistryBuilder.Build();
 
+                registry.Should().HaveCount(2);
+            }
 
+            [Fact]
+            public void Should_Build_Functional_4()
+            {
+                var formulaCompiler = new FormulaCompiler();
 
+                _variableRegistryBuilder.AddConstantVariable("a", Create<double>());
+                _variableRegistryBuilder.AddDelegateVariable("b", registry => formulaCompiler.Compile("a + 1", registry));
+                _variableRegistryBuilder.AddDelegateVariable("d", registry => formulaCompiler.Compile("c - b", registry));
+                _variableRegistryBuilder.AddDelegateVariable("c", registry => formulaCompiler.Compile("a * b", registry));
+
+                var registry = _variableRegistryBuilder.Build();
+
+                registry.Should().HaveCount(4);
+            }
+
+            [Fact]
+            public void Should_Throw_When_Cannot_Build_Functional_1()
+            {
+                var formulaCompiler = new FormulaCompiler();
+
+                _variableRegistryBuilder.AddConstantVariable("a", Create<double>());
+                _variableRegistryBuilder.AddDelegateVariable("b", registry => formulaCompiler.Compile("a + 1", registry));
+                _variableRegistryBuilder.AddDelegateVariable("d", registry => formulaCompiler.Compile("c - b", registry));
+
+                Invoking(() =>
+                {
+                    _ = _variableRegistryBuilder.Build();
+                })
+                    .Should()
+                    .Throw<VariableRegistryBuilderException>()
+                    .WithMessage("Cannot build the variable registry due to missing variable references.");
+
+                _variableRegistryBuilder.GetUnregisteredVariableNames()
+                    .Should()
+                    .BeEquivalentTo(new[] { "c" });
+            }
+
+            [Fact]
+            public void Should_Throw_When_Cannot_Build_Functional_2()
+            {
+                var formulaCompiler = new FormulaCompiler();
+
+                _variableRegistryBuilder.AddConstantVariable("a", Create<double>());
+                _variableRegistryBuilder.AddDelegateVariable("b", registry => formulaCompiler.Compile("a + e * f", registry));
+                _variableRegistryBuilder.AddDelegateVariable("d", registry => formulaCompiler.Compile("c - b + g", registry));       // b is registered but cannot be resolved - won't be in the list of unregistered variables
+
+                Invoking(() =>
+                    {
+                        _ = _variableRegistryBuilder.Build();
+                    })
+                    .Should()
+                    .Throw<VariableRegistryBuilderException>()
+                    .WithMessage("Cannot build the variable registry due to missing variable references.");
+
+                _variableRegistryBuilder.GetUnregisteredVariableNames()
+                    .Should()
+                    .BeEquivalentTo(new[] { "e", "f", "c", "g" });
+            }
+        }
+
+        public class TryBuild : VariableRegistryBuilderFixture
+        {
+            [Fact]
+            public void Should_Build_Functional_1()
+            {
+                var suucess = _variableRegistryBuilder.TryBuild(out var variableRegistry);
+
+                suucess.Should().BeTrue();
+                variableRegistry.Should().BeOfType<VariableRegistry>();
+            }
+
+            [Fact]
+            public void Should_Build_Functional_2()
+            {
+                _variableRegistryBuilder.AddConstantVariable(Create<string>());
+
+                _ = _variableRegistryBuilder.TryBuild(out var variableRegistry);
+
+                variableRegistry.Should().HaveCount(1);
+            }
+
+            [Fact]
+            public void Should_Build_Functional_3()
+            {
+                var formulaCompiler = new FormulaCompiler();
+
+                _variableRegistryBuilder.AddConstantVariable("a", Create<double>());
+                _variableRegistryBuilder.AddDelegateVariable("b", registry => formulaCompiler.Compile("a + 1", registry));
+
+                _ = _variableRegistryBuilder.TryBuild(out var variableRegistry);
+
+                variableRegistry.Should().HaveCount(2);
+            }
+
+            [Fact]
+            public void Should_Build_Functional_4()
+            {
+                var formulaCompiler = new FormulaCompiler();
+
+                _variableRegistryBuilder.AddConstantVariable("a", Create<double>());
+                _variableRegistryBuilder.AddDelegateVariable("b", registry => formulaCompiler.Compile("a + 1", registry));
+                _variableRegistryBuilder.AddDelegateVariable("d", registry => formulaCompiler.Compile("c - b", registry));
+                _variableRegistryBuilder.AddDelegateVariable("c", registry => formulaCompiler.Compile("a * b", registry));
+
+                _ = _variableRegistryBuilder.TryBuild(out var variableRegistry);
+
+                variableRegistry.Should().HaveCount(4);
+            }
+
+            [Fact]
+            public void Should_Fail_When_Cannot_Build_Functional_1()
+            {
+                var formulaCompiler = new FormulaCompiler();
+
+                _variableRegistryBuilder.AddConstantVariable("a", Create<double>());
+                _variableRegistryBuilder.AddDelegateVariable("b", registry => formulaCompiler.Compile("a + 1", registry));
+                _variableRegistryBuilder.AddDelegateVariable("d", registry => formulaCompiler.Compile("c - b", registry));
+
+                _variableRegistryBuilder.TryBuild(out _).Should().BeFalse();
+
+                _variableRegistryBuilder.GetUnregisteredVariableNames()
+                    .Should()
+                    .BeEquivalentTo(new[] { "c" });
+            }
+
+            [Fact]
+            public void Should_Throw_When_Cannot_Build_Functional_2()
+            {
+                var formulaCompiler = new FormulaCompiler();
+
+                _variableRegistryBuilder.AddConstantVariable("a", Create<double>());
+                _variableRegistryBuilder.AddDelegateVariable("b", registry => formulaCompiler.Compile("a + e * f", registry));
+                _variableRegistryBuilder.AddDelegateVariable("d", registry => formulaCompiler.Compile("c - b + g", registry));       // b is registered but cannot be resolved - won't be in the list of unregistered variables
+
+                _variableRegistryBuilder.TryBuild(out _).Should().BeFalse();
+
+                _variableRegistryBuilder.GetUnregisteredVariableNames()
+                    .Should()
+                    .BeEquivalentTo(new[] { "e", "f", "c", "g" });
+            }
+        }
+
+        public class GetUnregisteredVariableNames : VariableRegistryBuilderFixture
+        {
+            [Fact]
+            public void Should_Return_Empty_Names()
+            {
+                _variableRegistryBuilder.GetUnregisteredVariableNames().Should().BeEmpty();
+            }
+
+            [Fact]
+            public void Should_Return_Expected_Names_Functional_1()
+            {
+                var formulaCompiler = new FormulaCompiler();
+
+                _variableRegistryBuilder.AddConstantVariable("a", Create<double>());
+                _variableRegistryBuilder.AddDelegateVariable("b", registry => formulaCompiler.Compile("a + e * f", registry));
+                _variableRegistryBuilder.AddDelegateVariable("d", registry => formulaCompiler.Compile("c - b + g", registry));
+
+                // Above, b is pending registration since e and f cannot be resolved - only e, f, c, g will be reported as unregistered
+                // despite b not yet being present in the variable registry.
+
+                _variableRegistryBuilder.GetUnregisteredVariableNames()
+                    .Should()
+                    .BeEquivalentTo(new[] { "e", "f", "c", "g" });
+
+                _variableRegistryBuilder.AddConstantVariable("f", Create<double>());
+                _variableRegistryBuilder.AddConstantVariable("e", Create<double>());
+
+                _variableRegistryBuilder.GetUnregisteredVariableNames()
+                    .Should()
+                    .BeEquivalentTo(new[] { "c", "g" });
+
+                _variableRegistryBuilder.AddConstantVariable("c", Create<double>());
+                _variableRegistryBuilder.AddConstantVariable("g", Create<double>());
+
+                _variableRegistryBuilder.GetUnregisteredVariableNames()
+                    .Should()
+                    .BeEmpty();
+            }
+
+            [Fact]
+            public void Should_Return_Expected_Names_Functional_2()
+            {
+                var formulaCompiler = new FormulaCompiler();
+
+                _variableRegistryBuilder.AddDelegateVariable("a", registry => formulaCompiler.Compile("j + k", registry));
+                _variableRegistryBuilder.AddDelegateVariable("b", registry => formulaCompiler.Compile("a + e * f", registry));
+                _variableRegistryBuilder.AddDelegateVariable("e", registry => formulaCompiler.Compile("g + h", registry));
+
+                // Above, b is pending registration since e and f cannot be resolved - only e, f, c, g will be reported as unregistered
+                // despite b not yet being present in the variable registry.
+
+                _variableRegistryBuilder.GetUnregisteredVariableNames()
+                    .Should()
+                    .BeEquivalentTo(new[] { "j", "k", "f", "g", "h" });
+
+                _variableRegistryBuilder.AddConstantVariable("g", Create<double>());
+                _variableRegistryBuilder.AddConstantVariable("h", Create<double>());
+
+                _variableRegistryBuilder.GetUnregisteredVariableNames()
+                    .Should()
+                    .BeEquivalentTo(new[] { "j", "k", "f" });
+
+                _variableRegistryBuilder.AddDelegateVariable("m", registry => formulaCompiler.Compile("n + p", registry));
+
+                _variableRegistryBuilder.GetUnregisteredVariableNames()
+                    .Should()
+                    .BeEquivalentTo(new[] { "j", "k", "f", "n", "p" });
+
+                _variableRegistryBuilder.AddConstantVariable("j", Create<double>());
+                _variableRegistryBuilder.AddConstantVariable("k", Create<double>());
+                _variableRegistryBuilder.AddConstantVariable("p", Create<double>());
+                _variableRegistryBuilder.AddConstantVariable("f", Create<double>());
+                _variableRegistryBuilder.AddConstantVariable("n", Create<double>());
+
+                _variableRegistryBuilder.GetUnregisteredVariableNames()
+                    .Should()
+                    .BeEmpty();
+            }
+        }
     }
 }
