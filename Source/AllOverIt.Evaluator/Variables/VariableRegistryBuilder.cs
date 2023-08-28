@@ -8,6 +8,9 @@ using System.Linq;
 
 namespace AllOverIt.Evaluator.Variables
 {
+    /// <summary>A builder for an <see cref="IVariableRegistry"/> that will only allow the registry to be
+    /// constructed if all variables referenced by all formulae are registered. If none of the variables are
+    /// formula based then <see cref="IVariableRegistry"/> can be used directly.</summary>
     public sealed class VariableRegistryBuilder : IVariableRegistryBuilder
     {
         private sealed class PendingRegistrationState
@@ -22,6 +25,7 @@ namespace AllOverIt.Evaluator.Variables
         private readonly IVariableRegistry _variableRegistry;
         private readonly IVariableFactory _variableFactory;
 
+        /// <summary>Constructor.</summary>
         public VariableRegistryBuilder()
             : this(new VariableRegistry(), new VariableFactory())
         {
@@ -33,31 +37,28 @@ namespace AllOverIt.Evaluator.Variables
             _variableFactory = variableFactory.WhenNotNull(nameof(variableFactory));
         }
 
+        /// <summary>A factory method to create a new <see cref="VariableRegistryBuilder"/> instance. This method primarily exists
+        /// so it can be chained with other methods to help provide a more fluent syntax.</summary>
+        /// <returns>A new <see cref="VariableRegistryBuilder"/> instance.</returns>
         public static VariableRegistryBuilder Create()
         {
             return new VariableRegistryBuilder();
         }
 
-        public VariableRegistryBuilder AddConstantVariable(string name, double value = default)
+        /// <inheritdoc />
+        public IVariableRegistryBuilder AddConstantVariable(string name, double value)
         {
             _ = name.WhenNotNullOrEmpty(nameof(name));
 
-            return AddConstantVariable(name, _ => value);
-        }
-
-        public VariableRegistryBuilder AddConstantVariable(string name, Func<IVariableRegistry, double> valueResolver)
-        {
-            _ = name.WhenNotNullOrEmpty(nameof(name));
-            _ = valueResolver.WhenNotNull(nameof(valueResolver));
-
-            var variable = _variableFactory.CreateConstantVariable(name, valueResolver.Invoke(_variableRegistry));
+            var variable = _variableFactory.CreateConstantVariable(name, value);
 
             _variableRegistry.AddVariable(variable);
 
             return this;
         }
 
-        public VariableRegistryBuilder AddDelegateVariable(string name, Func<double> valueResolver)
+        /// <inheritdoc />
+        public IVariableRegistryBuilder AddDelegateVariable(string name, Func<double> valueResolver)
         {
             _ = name.WhenNotNullOrEmpty(nameof(name));
             _ = valueResolver.WhenNotNull(nameof(valueResolver));
@@ -69,7 +70,8 @@ namespace AllOverIt.Evaluator.Variables
             return this;
         }
 
-        public VariableRegistryBuilder AddDelegateVariable(string name, Func<IVariableRegistry, double> valueResolver)
+        /// <inheritdoc />
+        public IVariableRegistryBuilder AddDelegateVariable(string name, Func<IVariableRegistry, double> valueResolver)
         {
             _ = name.WhenNotNullOrEmpty(nameof(name));
             _ = valueResolver.WhenNotNull(nameof(valueResolver));
@@ -81,7 +83,8 @@ namespace AllOverIt.Evaluator.Variables
             return this;
         }
 
-        public VariableRegistryBuilder AddDelegateVariable(string name, FormulaCompilerResult formulaCompilerResultResolver)
+        /// <inheritdoc />
+        public IVariableRegistryBuilder AddDelegateVariable(string name, FormulaCompilerResult formulaCompilerResultResolver)
         {
             _ = name.WhenNotNullOrEmpty(nameof(name));
             _ = formulaCompilerResultResolver.WhenNotNull(nameof(formulaCompilerResultResolver));
@@ -89,7 +92,8 @@ namespace AllOverIt.Evaluator.Variables
             return AddDelegateVariable(name, _ => formulaCompilerResultResolver);
         }
 
-        public VariableRegistryBuilder AddDelegateVariable(string name, Func<IVariableRegistry, FormulaCompilerResult> formulaCompilerResultResolver)
+        /// <inheritdoc />
+        public IVariableRegistryBuilder AddDelegateVariable(string name, Func<IVariableRegistry, FormulaCompilerResult> formulaCompilerResultResolver)
         {
             _ = name.WhenNotNullOrEmpty(nameof(name));
             _ = formulaCompilerResultResolver.WhenNotNull(nameof(formulaCompilerResultResolver));
@@ -97,7 +101,8 @@ namespace AllOverIt.Evaluator.Variables
             return TryRegisterVariable(name, formulaCompilerResultResolver, _variableFactory.CreateDelegateVariable);
         }
 
-        public VariableRegistryBuilder AddLazyVariable(string name, Func<double> valueResolver, bool threadSafe = false)
+        /// <inheritdoc />
+        public IVariableRegistryBuilder AddLazyVariable(string name, Func<double> valueResolver, bool threadSafe = false)
         {
             _ = name.WhenNotNullOrEmpty(nameof(name));
             _ = valueResolver.WhenNotNull(nameof(valueResolver));
@@ -109,19 +114,8 @@ namespace AllOverIt.Evaluator.Variables
             return this;
         }
 
-        public VariableRegistryBuilder AddLazyVariable(string name, Func<IVariableRegistry, double> valueResolver, bool threadSafe = false)
-        {
-            _ = name.WhenNotNullOrEmpty(nameof(name));
-            _ = valueResolver.WhenNotNull(nameof(valueResolver));
-
-            var variable = _variableFactory.CreateLazyVariable(name, () => valueResolver.Invoke(_variableRegistry), threadSafe);
-
-            _variableRegistry.AddVariable(variable);
-
-            return this;
-        }
-
-        public VariableRegistryBuilder AddLazyVariable(string name, FormulaCompilerResult formulaCompilerResultResolver, bool threadSafe = false)
+        /// <inheritdoc />
+        public IVariableRegistryBuilder AddLazyVariable(string name, FormulaCompilerResult formulaCompilerResultResolver, bool threadSafe = false)
         {
             _ = name.WhenNotNullOrEmpty(nameof(name));
             _ = formulaCompilerResultResolver.WhenNotNull(nameof(formulaCompilerResultResolver));
@@ -129,7 +123,8 @@ namespace AllOverIt.Evaluator.Variables
             return AddLazyVariable(name, _ => formulaCompilerResultResolver, threadSafe);
         }
 
-        public VariableRegistryBuilder AddLazyVariable(string name, Func<IVariableRegistry, FormulaCompilerResult> formulaCompilerResultResolver, bool threadSafe = false)
+        /// <inheritdoc />
+        public IVariableRegistryBuilder AddLazyVariable(string name, Func<IVariableRegistry, FormulaCompilerResult> formulaCompilerResultResolver, bool threadSafe = false)
         {
             _ = name.WhenNotNullOrEmpty(nameof(name));
             _ = formulaCompilerResultResolver.WhenNotNull(nameof(formulaCompilerResultResolver));
@@ -140,25 +135,19 @@ namespace AllOverIt.Evaluator.Variables
                 (variableName, compilerResult) => _variableFactory.CreateLazyVariable(variableName, compilerResult, threadSafe));
         }
 
-        public VariableRegistryBuilder AddMutableVariable(string name, double value = default)
+        /// <inheritdoc />
+        public IVariableRegistryBuilder AddMutableVariable(string name, double value = default)
         {
             _ = name.WhenNotNullOrEmpty(nameof(name));
 
-            return AddMutableVariable(name, _ => value);
-        }
-
-        public VariableRegistryBuilder AddMutableVariable(string name, Func<IVariableRegistry, double> valueResolver)
-        {
-            _ = name.WhenNotNullOrEmpty(nameof(name));
-            _ = valueResolver.WhenNotNull(nameof(valueResolver));
-
-            var variable = _variableFactory.CreateMutableVariable(name, valueResolver.Invoke(_variableRegistry));
+            var variable = _variableFactory.CreateMutableVariable(name, value);
 
             _variableRegistry.AddVariable(variable);
 
             return this;
         }
 
+        /// <inheritdoc />
         public IVariableRegistry Build()
         {
             var success = TryBuild(out var variableRegistry);
@@ -168,6 +157,7 @@ namespace AllOverIt.Evaluator.Variables
             return variableRegistry;
         }
 
+        /// <inheritdoc />
         public bool TryBuild(out IVariableRegistry variableRegistry)
         {
             ProcessPendingRegistrations(null);
@@ -179,6 +169,7 @@ namespace AllOverIt.Evaluator.Variables
             return variableRegistry is not null;
         }
 
+        /// <inheritdoc />
         public IReadOnlyCollection<string> GetUnregisteredVariableNames()
         {
             // There may have been pending variables that have since been added as variable types that don't have references,

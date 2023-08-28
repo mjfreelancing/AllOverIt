@@ -614,7 +614,7 @@ namespace AllOverIt.Pipes.Tests.Named
             var pipeName = Create<string>();
             var serializer = new NamedPipeSerializer<DummyMessage>();
             var expected = Create<DummyMessage>();
-            var actual = new List<string>();
+            string actual = default;
 
             var tcs1 = new TaskCompletionSource<string>();
             var tcs2 = new TaskCompletionSource<bool>();
@@ -656,12 +656,15 @@ namespace AllOverIt.Pipes.Tests.Named
 
                         expected.Value = filteredId;
 
-                        await server.WriteAsync(expected, connection => connection.ConnectionId == filteredId, CancellationToken.None);
+                        await server.WriteAsync(
+                            expected,
+                            connection => connection.ConnectionId == filteredId,
+                            CancellationToken.None);
                     }
 
                     var result = await tcs1.Task;
 
-                    actual.Add(result);
+                    actual = result;
 
                     if (connectionIndex != 2)
                     {
@@ -704,7 +707,7 @@ namespace AllOverIt.Pipes.Tests.Named
 
             await Task.WhenAll(serverTask, clientTask);
 
-            actual.Should().HaveCount(1);
+            actual.Should().Be(expected.Value);
         }
 
         [Fact]
@@ -826,6 +829,8 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     actual = await tcs1.Task;
                 }
+
+                await Task.Delay(10);
 
                 tcs2.SetResult(true);
             });

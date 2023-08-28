@@ -16,7 +16,7 @@ namespace VariableEvaluationDemo
             var compiler = new FormulaCompiler();
             var slope = compiler.Compile("(y2 - y1) / (x2 - x1)", registry).Resolver;
 
-            var x1 = factory.CreateConstantVariable("x1");
+            var x1 = factory.CreateConstantVariable("x1", 0.0d);
             var y1 = factory.CreateConstantVariable("y1", 1.0d);
 
             var x2 = factory.CreateMutableVariable("x2");

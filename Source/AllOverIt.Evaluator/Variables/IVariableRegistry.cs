@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace AllOverIt.Evaluator.Variables
 {
-    /// <summary>Represents a registry of variables referenced by one or more formula.</summary>
+    /// <summary>Represents a registry of variables that may be explicitly evaluated, or implicitly referenced by one or more formula.</summary>
     public interface IVariableRegistry : IReadableVariableRegistry, IEnumerable<KeyValuePair<string, IVariable>>
     {
         /// <summary>Adds a new variable to the registry.</summary>

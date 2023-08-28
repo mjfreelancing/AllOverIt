@@ -16,7 +16,7 @@ namespace AllOverIt.Evaluator.Variables
         }
 
         /// <inheritdoc />
-        public IVariable CreateConstantVariable(string name, double value = default)
+        public IVariable CreateConstantVariable(string name, double value)
         {
             return new ConstantVariable(name, value);
         }
@@ -34,9 +34,9 @@ namespace AllOverIt.Evaluator.Variables
         }
 
         /// <inheritdoc />
-        public IVariable CreateDelegateVariable(string name, FormulaCompilerResult compilerResult)
+        public IVariable CreateDelegateVariable(string name, FormulaCompilerResult formulaCompilerResult)
         {
-            return new DelegateVariable(name, compilerResult);
+            return new DelegateVariable(name, formulaCompilerResult);
         }
 
         /// <inheritdoc />
@@ -46,9 +46,9 @@ namespace AllOverIt.Evaluator.Variables
         }
 
         /// <inheritdoc />
-        public ILazyVariable CreateLazyVariable(string name, FormulaCompilerResult compilerResult, bool threadSafe = false)
+        public ILazyVariable CreateLazyVariable(string name, FormulaCompilerResult formulaCompilerResult, bool threadSafe = false)
         {
-            return new LazyVariable(name, compilerResult, threadSafe);
+            return new LazyVariable(name, formulaCompilerResult, threadSafe);
         }
 
         /// <inheritdoc />

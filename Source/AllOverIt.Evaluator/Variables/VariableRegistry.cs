@@ -6,7 +6,11 @@ using System.Collections.Generic;
 
 namespace AllOverIt.Evaluator.Variables
 {
-    /// <summary>A registry of variables referenced by one or more formula.</summary>
+    /// <summary>A registry of variables that may be explicitly evaluated, or implicitly referenced by one or more formula.
+    /// It is expected that if a variable is formula based then all referenced variables will also exist in the registry at
+    /// the time that variable is evaluated. If there's uncertainty that all referenced variables will be registered then
+    /// it's recommended to use <see cref="VariableRegistryBuilder"/> as this will ensure the registry can only be built
+    /// when all referenced variables have been registered.</summary>
     public sealed class VariableRegistry : IVariableRegistry
     {
         private readonly IDictionary<string, IVariable> _variableRegistry = new Dictionary<string, IVariable>();

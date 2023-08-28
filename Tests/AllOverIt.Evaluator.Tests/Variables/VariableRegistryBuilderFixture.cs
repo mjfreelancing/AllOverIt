@@ -30,7 +30,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
             {
                 Invoking(() =>
                 {
-                    _ = _variableRegistryBuilder.AddConstantVariable(null);
+                    _ = _variableRegistryBuilder.AddConstantVariable(null, Create<double>());
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -42,7 +42,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
             {
                 Invoking(() =>
                 {
-                    _ = _variableRegistryBuilder.AddConstantVariable(string.Empty);
+                    _ = _variableRegistryBuilder.AddConstantVariable(string.Empty, Create<double>());
                 })
                 .Should()
                 .Throw<ArgumentException>()
@@ -54,7 +54,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
             {
                 Invoking(() =>
                 {
-                    _ = _variableRegistryBuilder.AddConstantVariable("  ");
+                    _ = _variableRegistryBuilder.AddConstantVariable("  ", Create<double>());
                 })
                 .Should()
                 .Throw<ArgumentException>()
@@ -77,95 +77,6 @@ namespace AllOverIt.Evaluator.Tests.Variables
                     .GetValue(name)
                     .Should()
                     .Be(value);
-            }
-        }
-
-        public class AddConstantVariable_Registry_Resolver : VariableRegistryBuilderFixture
-        {
-            [Fact]
-            public void Should_Throw_When_Name_Null()
-            {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddConstantVariable(null, registry => Create<double>());
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddConstantVariable(string.Empty, registry => Create<double>());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddConstantVariable("  ", registry => Create<double>());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Resolver_Null()
-            {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddConstantVariable(Create<string>(), null);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("valueResolver");
-            }
-
-            [Fact]
-            public void Should_Add_Variable()
-            {
-                var name = Create<string>();
-                var value = Create<double>();
-
-                _ = _variableRegistryBuilder.AddConstantVariable(name, registry => value);
-
-                var registry = _variableRegistryBuilder.Build();
-
-                registry.GetVariable(name).Should().BeOfType<ConstantVariable>();
-
-                registry
-                    .GetValue(name)
-                    .Should()
-                    .Be(value);
-            }
-
-            [Fact]
-            public void Should_Provide_Registry()
-            {
-                var name = Create<string>();
-                IVariableRegistry actual = null;
-
-                _ = _variableRegistryBuilder.AddConstantVariable(name, registry =>
-                {
-                    actual = registry;
-
-                    return Create<double>();
-                });
-
-                var expected = _variableRegistryBuilder.Build();
-
-                _ = expected.GetValue(name);
-
-                actual.Should().BeSameAs(expected);
             }
         }
 
@@ -570,95 +481,6 @@ namespace AllOverIt.Evaluator.Tests.Variables
             }
         }
 
-        public class AddLazyVariable_Registry_Resolver : VariableRegistryBuilderFixture
-        {
-            [Fact]
-            public void Should_Throw_When_Name_Null()
-            {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddLazyVariable(null, registry => Create<double>(), Create<bool>());
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddLazyVariable(string.Empty, registry => Create<double>(), Create<bool>());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddLazyVariable("  ", registry => Create<double>(), Create<bool>());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Resolver_Null()
-            {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddLazyVariable(Create<string>(), (Func<IVariableRegistry, double>) null, Create<bool>());
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("valueResolver");
-            }
-
-            [Fact]
-            public void Should_Add_Variable()
-            {
-                var name = Create<string>();
-                var value = Create<double>();
-
-                _ = _variableRegistryBuilder.AddLazyVariable(name, registry => value, Create<bool>());
-
-                var registry = _variableRegistryBuilder.Build();
-
-                registry.GetVariable(name).Should().BeOfType<LazyVariable>();
-
-                registry
-                    .GetValue(name)
-                    .Should()
-                    .Be(value);
-            }
-
-            [Fact]
-            public void Should_Provide_Registry()
-            {
-                var name = Create<string>();
-                IVariableRegistry actual = null;
-
-                _ = _variableRegistryBuilder.AddLazyVariable(name, registry =>
-                {
-                    actual = registry;
-
-                    return Create<double>();
-                }, Create<bool>());
-
-                var expected = _variableRegistryBuilder.Build();
-
-                _ = expected.GetValue(name);
-
-                actual.Should().BeSameAs(expected);
-            }
-        }
-
         public class AddLazyVariable_FormulaCompilerResult : VariableRegistryBuilderFixture
         {
             private readonly double _value;
@@ -890,95 +712,6 @@ namespace AllOverIt.Evaluator.Tests.Variables
             }
         }
 
-        public class AddMutableVariable_Registry_Resolver : VariableRegistryBuilderFixture
-        {
-            [Fact]
-            public void Should_Throw_When_Name_Null()
-            {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddMutableVariable(null, registry => Create<double>());
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddMutableVariable(string.Empty, registry => Create<double>());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddMutableVariable("  ", registry => Create<double>());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Resolver_Null()
-            {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddMutableVariable(Create<string>(), null);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("valueResolver");
-            }
-
-            [Fact]
-            public void Should_Add_Variable()
-            {
-                var name = Create<string>();
-                var value = Create<double>();
-
-                _ = _variableRegistryBuilder.AddMutableVariable(name, registry => value);
-
-                var registry = _variableRegistryBuilder.Build();
-
-                registry.GetVariable(name).Should().BeOfType<MutableVariable>();
-
-                registry
-                    .GetValue(name)
-                    .Should()
-                    .Be(value);
-            }
-
-            [Fact]
-            public void Should_Provide_Registry()
-            {
-                var name = Create<string>();
-                IVariableRegistry actual = null;
-
-                _ = _variableRegistryBuilder.AddMutableVariable(name, registry =>
-                {
-                    actual = registry;
-
-                    return Create<double>();
-                });
-
-                var expected = _variableRegistryBuilder.Build();
-
-                _ = expected.GetValue(name);
-
-                actual.Should().BeSameAs(expected);
-            }
-        }
-
         public class Build : VariableRegistryBuilderFixture
         {
             [Fact]
@@ -990,7 +723,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
             [Fact]
             public void Should_Build_Functional_2()
             {
-                _variableRegistryBuilder.AddConstantVariable(Create<string>());
+                _variableRegistryBuilder.AddConstantVariable(Create<string>(), Create<double>());
 
                 var registry = _variableRegistryBuilder.Build();
 
@@ -1084,7 +817,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
             [Fact]
             public void Should_Build_Functional_2()
             {
-                _variableRegistryBuilder.AddConstantVariable(Create<string>());
+                _variableRegistryBuilder.AddConstantVariable(Create<string>(), Create<double>());
 
                 _ = _variableRegistryBuilder.TryBuild(out var variableRegistry);
 

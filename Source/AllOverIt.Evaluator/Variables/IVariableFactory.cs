@@ -14,7 +14,7 @@ namespace AllOverIt.Evaluator.Variables
         /// <param name="name">The name to be assigned to the variable.</param>
         /// <param name="value">The constant value to be assigned to the variable.</param>
         /// <returns>The new variable instance.</returns>
-        IVariable CreateConstantVariable(string name, double value = default);
+        IVariable CreateConstantVariable(string name, double value);
 
         /// <summary>Creates a new mutable variable.</summary>
         /// <param name="name">The name to be assigned to the variable.</param>
