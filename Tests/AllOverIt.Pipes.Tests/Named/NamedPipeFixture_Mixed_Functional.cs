@@ -701,9 +701,9 @@ namespace AllOverIt.Pipes.Tests.Named
                 await tcs3.Task;
 
                 await composites.DisposeAsync();
-
-                tcs4.SetResult(true);
             });
+
+            tcs4.SetResult(true);
 
             await Task.WhenAll(serverTask, clientTask);
 
