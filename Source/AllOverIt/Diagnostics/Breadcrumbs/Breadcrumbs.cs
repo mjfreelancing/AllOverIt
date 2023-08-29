@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace AllOverIt.Diagnostics.Breadcrumbs
 {
-    /// <summary>Stores a collection of breadcrumb messages and metadata.</summary>
+    /// <inheritdoc cref="IBreadcrumbs" />
     public sealed class Breadcrumbs : IBreadcrumbs
     {
         private interface IEnumerableWrapper

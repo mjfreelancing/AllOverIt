@@ -3,7 +3,7 @@ using AllOverIt.Serialization.Json.Abstractions;
 
 namespace AllOverIt.Aws.AppSync.Client.Configuration
 {
-    /// <summary>Represents configuration details for the AppSync Graphql subscription client.</summary>
+    /// <summary>Contains configuration details for the AppSync Graphql subscription client.</summary>
     public interface ISubscriptionClientConfiguration
     {
         /// <summary>AppSync's graphql host Url without the https:// prefix or /graphql suffix.</summary>

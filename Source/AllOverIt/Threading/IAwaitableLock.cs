@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace AllOverIt.Threading
 {
-    /// <summary>Represents a lock that limits the number of threads that can access a resource within an asynchronous context.</summary>
+    /// <summary>A lock that limits the number of threads that can access a resource within an asynchronous context.</summary>
     public interface IAwaitableLock : IDisposable
     {
         /// <summary>Asynchronously waits indefinitely to obtain the lock.</summary>

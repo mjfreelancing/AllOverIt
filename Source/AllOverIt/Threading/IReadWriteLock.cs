@@ -2,9 +2,9 @@
 
 namespace AllOverIt.Threading
 {
-    /// <summary>Represents a lock that is used to manage access to a resource, allowing multiple threads
-    /// for reading or exclusive access for writing. Unlike <see cref="IAwaitableLock"/>, this cannot be used
-    /// with async methods.</summary>
+    /// <summary>A lock that is used to manage access to a resource, allowing multiple threads for reading
+    /// or exclusive access for writing. Unlike <see cref="IAwaitableLock"/>, this cannot be used with
+    /// async methods.</summary>
     public interface IReadWriteLock : IDisposable
     {
         /// <summary>Blocks the calling thread until a read lock is acquired. The lock will be acquired immediately

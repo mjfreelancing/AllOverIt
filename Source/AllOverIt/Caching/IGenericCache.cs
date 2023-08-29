@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 namespace AllOverIt.Caching
 {
-    /// <summary>Represents a generic cache for storing any object type based on a custom key.</summary>
+    /// <summary>A generic cache capable of storing different key/value types. Each key type must inherit <see cref="GenericCacheKeyBase"/>
+    /// and each of the key elements must support equality comparison.</summary>
     public interface IGenericCache : IDictionary<GenericCacheKeyBase, object>, IReadOnlyDictionary<GenericCacheKeyBase, object>
     {
         // Properties and methods defined on both ICollection<KeyValuePair<GenericCacheKeyBase, object>> and IReadOnlyCollection<KeyValuePair<GenericCacheKeyBase, object>>  or

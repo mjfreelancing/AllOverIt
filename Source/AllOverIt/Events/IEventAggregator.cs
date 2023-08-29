@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace AllOverIt.Events
 {
-    /// <summary>Represents a mechanism for produces to publish messages and consumers to subscribe for notification of those messages.</summary>
+    /// <summary>Provides a mechanism for produces to publish messages and consumers to subscribe for notification of those messages.</summary>
     public interface IEventAggregator
     {
         /// <summary>Publishes a message and delivers it to all subscribers.</summary>

@@ -3,7 +3,7 @@ using AllOverIt.Serialization.Json.Abstractions;
 
 namespace AllOverIt.Aws.AppSync.Client.Configuration
 {
-    /// <summary>Contains configuration details for AppSync Graphql query and mutation operations.</summary>
+    /// <inheritdoc cref="IAppSyncClientConfiguration" />
     public sealed record AppSyncClientConfiguration : IAppSyncClientConfiguration
     {
         /// <inheritdoc />

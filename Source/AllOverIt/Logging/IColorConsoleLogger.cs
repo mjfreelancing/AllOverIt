@@ -2,7 +2,7 @@
 
 namespace AllOverIt.Logging
 {
-    /// <summary>Represents a console logger capable of generating output in color.</summary>
+    /// <summary>A console logger capable of generating output in color.</summary>
     public interface IColorConsoleLogger
     {
         /// <summary>Writes <paramref name="formattedText"/> to the console at the current position.</summary>

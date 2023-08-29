@@ -4,8 +4,7 @@ using System.Collections.Generic;
 
 namespace AllOverIt.Formatters.Objects
 {
-    /// <summary>Provides a registry of <see cref="ObjectPropertyFilter"/> types that can later be retrieved to filter
-    /// the properties of a given object during its serialization via an <see cref="IObjectPropertySerializer"/> instance.</summary>
+    /// <inheritdoc cref="IObjectPropertyFilterRegistry" />
     public sealed class ObjectPropertyFilterRegistry : IObjectPropertyFilterRegistry
     {
         private static readonly IObjectPropertySerializer DefaultSerializer = new ObjectPropertySerializer();

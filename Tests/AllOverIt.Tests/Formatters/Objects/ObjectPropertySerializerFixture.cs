@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using AllOverIt.Formatters.Exceptions;
 using AllOverIt.Formatters.Objects;
 using AllOverIt.Formatters.Objects.Exceptions;
 using AllOverIt.Reflection;

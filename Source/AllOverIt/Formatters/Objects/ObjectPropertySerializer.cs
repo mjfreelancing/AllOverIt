@@ -1,6 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
-using AllOverIt.Formatters.Exceptions;
+using AllOverIt.Formatters.Objects.Exceptions;
 using AllOverIt.Reflection;
 using System;
 using System.Collections;
@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace AllOverIt.Formatters.Objects
 {
-    /// <summary>Converts an object to an IDictionary&lt;string, string&gt; using a dot notation for nested members.</summary>
+    /// <inheritdoc cref="IObjectPropertySerializer" />
     public sealed class ObjectPropertySerializer : IObjectPropertySerializer
     {
         /// <inheritdoc />

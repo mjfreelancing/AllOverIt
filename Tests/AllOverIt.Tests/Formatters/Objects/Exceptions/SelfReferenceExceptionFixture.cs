@@ -1,8 +1,8 @@
 ﻿using AllOverIt.Fixture;
-using AllOverIt.Formatters.Exceptions;
+using AllOverIt.Formatters.Objects.Exceptions;
 using Xunit;
 
-namespace AllOverIt.Tests.Formatters.Exceptions
+namespace AllOverIt.Tests.Formatters.Objects.Exceptions
 {
     public class SelfReferenceExceptionFixture : FixtureBase
     {

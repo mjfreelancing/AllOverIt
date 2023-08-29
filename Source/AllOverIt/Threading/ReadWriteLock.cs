@@ -7,8 +7,7 @@ namespace AllOverIt.Threading
     // Refer to http://msdn.microsoft.com/en-us/library/system.threading.readerwriterlockslim(v=vs.110).aspx for more
     // information on the semantics of this lock type.
 
-    /// <summary>Represents a lock that is used to manage access to a resource, allowing multiple threads for reading or
-    /// exclusive access for writing. This cannot be used with async methods.</summary>
+    /// <inheritdoc cref="IReadWriteLock" />
     public sealed class ReadWriteLock : IReadWriteLock
     {
         // Many threads can enter the read lock simultaneously.

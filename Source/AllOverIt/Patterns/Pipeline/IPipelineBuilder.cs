@@ -2,7 +2,7 @@
 
 namespace AllOverIt.Patterns.Pipeline
 {
-    /// <summary>Represents a synchronous pipeline builder that takes no initial input.</summary>
+    /// <summary>An synchronous pipeline builder that takes no initial input.</summary>
     /// <typeparam name="TOut">The output type for the pipeline.</typeparam>
     public interface IPipelineBuilder<TOut>
     {
@@ -11,7 +11,7 @@ namespace AllOverIt.Patterns.Pipeline
         Func<TOut> Build();
     }
 
-    /// <summary>Represents a synchronous pipeline builder.</summary>
+    /// <summary>An synchronous pipeline builder.</summary>
     /// <typeparam name="TIn">The input type for the pipeline.</typeparam>
     /// <typeparam name="TOut">The output type for the pipeline.</typeparam>
     public interface IPipelineBuilder<TIn, TOut>

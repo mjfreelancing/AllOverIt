@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace AllOverIt.Logging
 {
-    /// <summary>A console logger capable of generating output in color.</summary>
+    /// <inheritdoc cref="IColorConsoleLogger" />
     [ExcludeFromCodeCoverage]
     public sealed class ColorConsoleLogger : IColorConsoleLogger
     {

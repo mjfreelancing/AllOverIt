@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AllOverIt.Events
 {
-    /// <summary>Provides support for produces to publish messages and consumers to subscribe for notification of those messages.</summary>
+    /// <inheritdoc cref="IEventAggregator" />
     public sealed class EventAggregator : IEventAggregator
     {
         private readonly IDictionary<Type, IList<ISubscription>> _subscriptions = new Dictionary<Type, IList<ISubscription>>();

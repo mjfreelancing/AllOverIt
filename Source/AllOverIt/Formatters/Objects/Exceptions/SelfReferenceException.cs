@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AllOverIt.Formatters.Exceptions
+namespace AllOverIt.Formatters.Objects.Exceptions
 {
     /// <summary>Represents an object self-reference error.</summary>
     public sealed class SelfReferenceException : Exception

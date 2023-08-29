@@ -7,7 +7,7 @@
         {
         }
 
-        /// <summary>Represents a state with no value.</summary>
+        /// <summary>An interceptor state with no value.</summary>
         public static InterceptorState None => new Unit();
     }
 }
