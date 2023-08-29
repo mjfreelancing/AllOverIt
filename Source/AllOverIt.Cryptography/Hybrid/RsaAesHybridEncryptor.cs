@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace AllOverIt.Cryptography.Hybrid
 {
-    /// <summary>A cryptographic implementation providing RSA-AES hybrid encryption and decryption operations.</summary>
+    /// <inheritdoc cref="IRsaAesHybridEncryptor" />
     public sealed class RsaAesHybridEncryptor : IRsaAesHybridEncryptor
     {
         private readonly IRsaFactory _rsaFactory;
@@ -37,14 +37,14 @@ namespace AllOverIt.Cryptography.Hybrid
         /// <summary>
         /// The encryption process includes:
         /// 
-        /// <para>1. Calculating a hash of the provided 'plain text' using the hash algorithm specified on the
+        /// <para>1. Calculate a hash of the provided 'plain text' using the hash algorithm specified on the
         ///          <see cref="IRsaAesHybridEncryptorConfiguration.Signing"/> configuration provided to the constructor.</para>
-        /// <para>2. Computing the RSA signature of the hash using the private key from the <see cref="IRsaAesHybridEncryptorConfiguration.Signing"/>
+        /// <para>2. Compute the RSA signature of the hash using the sender's private key from the <see cref="IRsaAesHybridEncryptorConfiguration.Signing"/>
         ///          configuration provided to the constructor.</para>
-        /// <para>3. Create a random AES session Key and initialization vector (IV) and use it to encrypt the 'plain text'.</para>
-        /// <para>4. RSA encrypt the AES session Key using the public key on the <see cref="IRsaAesHybridEncryptorConfiguration.Encryption"/> configuration
-        ///          provided to the constructor.</para>
-        /// <para>5. Encrypt the 'plain text' using the random AES session Key and (IV).</para>
+        /// <para>3. Create a random AES session key and initialization vector (IV).</para>
+        /// <para>4. RSA encrypt the AES session key using the recipient's public key on the <see cref="IRsaAesHybridEncryptorConfiguration.Encryption"/>
+        ///          configuration provided to the constructor.</para>
+        /// <para>5. Encrypt the 'plain text' using the random AES session key and (IV).</para>
         /// 
         /// The resultant ciphertext includes:
         /// 
@@ -72,11 +72,11 @@ namespace AllOverIt.Cryptography.Hybrid
         /// <summary>
         /// The decryption process reads the content written to the 'cipher text' and performs the following:
         /// 
-        /// <para>* Decrypts the embedded AES session key using the private key on the <see cref="IRsaAesHybridEncryptorConfiguration.Encryption"/>
+        /// <para>* Decrypt the embedded AES session key using the recipient's private RSA key on the <see cref="IRsaAesHybridEncryptorConfiguration.Encryption"/>
         ///         configuration provided to the constructor.</para>
-        /// <para>* Decrypts the previously AES encrypted 'plain text'.</para>
-        /// <para>* Calculates the hash of the determined 'plain text' and compares it to the hash embedded in the 'cipher text'.</para>
-        /// <para>* Verifies the signature using the public key from the <see cref="IRsaAesHybridEncryptorConfiguration.Signing"/>
+        /// <para>* Decrypt the previously AES encrypted 'plain text' data.</para>
+        /// <para>* Calculates the hash of the determined 'plain text' data and compares it to the hash embedded in the 'cipher text'.</para>
+        /// <para>* Verifies the signature using the sender's public RSA key from the <see cref="IRsaAesHybridEncryptorConfiguration.Signing"/>
         ///         configuration provided to the constructor.</para>
         /// </summary>
         /// <param name="cipherText">The byte array containing the 'cipher text'.</param>
@@ -103,13 +103,13 @@ namespace AllOverIt.Cryptography.Hybrid
             plainTextStream.Position = 0;
             var hash = CalculateHash(plainTextStream);
 
-            // Sign the plain text hash
+            // Sign the plain text hash (using the sender's private RSA key)
             var signature = SignHash(hash);
 
             // Prepare AES encryptor with a random session Key and IV
             var aesEncryptor = _aesEncryptorFactory.Create();
 
-            // RSA encrypt the AES key
+            // RSA encrypt the AES key (using the recipient's public RSA key)
             var rsaEncryptedAesKey = _rsaEncryptor.Encrypt(aesEncryptor.Configuration.Key);
 
             // Write the data to the stream
@@ -133,7 +133,7 @@ namespace AllOverIt.Cryptography.Hybrid
 
             // Determine the AES key
             var rsaEncryptedAesKey = ReadFromStream(cipherTextStream, _rsaEncryptor.Configuration.Keys.KeySize / 8);
-            var aesKey = _rsaEncryptor.Decrypt(rsaEncryptedAesKey);
+            var aesKey = _rsaEncryptor.Decrypt(rsaEncryptedAesKey);     // using the recipient's private key
 
             // Read the AES IV
             var iv = ReadFromStream(cipherTextStream, 16);
@@ -154,8 +154,8 @@ namespace AllOverIt.Cryptography.Hybrid
 
             Throw<RsaAesHybridException>.WhenNot(isValid, "Hash mismatch.");
 
-            // Verify the signature
-            VerifyHash(plainTextHash, signature);
+            // Verify the signature (using the sender's public key)
+            VerifyHashSignature(plainTextHash, signature);
 
             plainTextStream.Write(plainText);
         }
@@ -188,7 +188,7 @@ namespace AllOverIt.Cryptography.Hybrid
             }
         }
 
-        private void VerifyHash(byte[] plainTextHash, byte[] signature)
+        private void VerifyHashSignature(byte[] plainTextHash, byte[] signature)
         {
             using (var rsa = _rsaFactory.Create())
             {

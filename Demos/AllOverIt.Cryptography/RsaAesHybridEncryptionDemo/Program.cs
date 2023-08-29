@@ -6,7 +6,7 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace AesRsaHybridEncryptionDemo
+namespace RsaAesHybridEncryptionDemo
 {
     internal class Program
     {
