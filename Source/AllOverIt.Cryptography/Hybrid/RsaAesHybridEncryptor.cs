@@ -9,6 +9,42 @@ using System.Linq;
 
 namespace AllOverIt.Cryptography.Hybrid
 {
+    /*
+         Sender                                                                         Receiver
+           |                                                                                |
+           | 1. Generate hash of data                                                       |
+           |------------------------------------------------------------------------------->|
+           |                                                                                |
+           | 2. Create RSA signature of hash using sender's private key                     |
+           |------------------------------------------------------------------------------->|
+           |                                                                                |
+           | 3. Generate AES key                                                            |
+           |------------------------------------------------------------------------------->|
+           |                                                                                |
+           | 4. Encrypt AES key with recipient's RSA public key                             |
+           |------------------------------------------------------------------------------->|
+           |                                                                                |
+           | 5. Encrypt data with AES key                                                   |
+           |------------------------------------------------------------------------------->|
+           |                                                                                |
+           | 6. Send encrypted AES key, encrypted data, hash, and RSA signature to receiver |
+           |------------------------------------------------------------------------------->|
+           |                                                                                |
+
+  
+         Sender                                                                         Receiver
+           |                                                                                |
+           | 7. Decrypt AES key using recipient's RSA private key                           |
+           |<-------------------------------------------------------------------------------|
+           |                                                                                |
+           | 8. Decrypt data using AES key                                                  |
+           |<-------------------------------------------------------------------------------|
+           |                                                                                |
+           | 9. Verify RSA signature of hash using sender's RSA public key                  |
+           |<-------------------------------------------------------------------------------|
+           |                                                                                |     
+     */
+
     /// <inheritdoc cref="IRsaAesHybridEncryptor" />
     public sealed class RsaAesHybridEncryptor : IRsaAesHybridEncryptor
     {
@@ -20,18 +56,15 @@ namespace AllOverIt.Cryptography.Hybrid
         /// <summary>Constructor.</summary>
         /// <param name="configuration">The configuration providing the required encryption and signing options.</param>
         public RsaAesHybridEncryptor(IRsaAesHybridEncryptorConfiguration configuration)
-            : this(new RsaFactory(), RsaEncryptor.Create(configuration.Encryption),
-                  new AesEncryptorFactory(), configuration.Signing)
         {
-        }
+            _ = configuration.WhenNotNull(nameof(configuration));
 
-        private RsaAesHybridEncryptor(IRsaFactory rsaFactory, IRsaEncryptor rsaEncryptor,
-            IAesEncryptorFactory aesEncryptorFactory, IRsaSigningConfiguration signingConfiguration)
-        {
-            _rsaFactory = rsaFactory.WhenNotNull(nameof(rsaFactory));
-            _rsaEncryptor = rsaEncryptor.WhenNotNull(nameof(rsaEncryptor));
-            _aesEncryptorFactory = aesEncryptorFactory.WhenNotNull(nameof(aesEncryptorFactory));
-            _signingConfiguration = signingConfiguration.WhenNotNull(nameof(signingConfiguration));
+            // The current tests are functional and there's no current need to make these
+            // injectable but a new constructor is easy enough to add if this is required.
+            _rsaFactory = new RsaFactory();
+            _rsaEncryptor = new RsaEncryptor(configuration.Encryption);
+            _aesEncryptorFactory = new AesEncryptorFactory();
+            _signingConfiguration = configuration.Signing;
         }
 
         /// <summary>
@@ -58,6 +91,8 @@ namespace AllOverIt.Cryptography.Hybrid
         /// <returns>The byte array populated with the resulting 'cipher text'.</returns>
         public byte[] Encrypt(byte[] plainText)
         {
+            _ = plainText.WhenNotNull(nameof(plainText));
+
             using (var cipherTextStream = new MemoryStream())
             {
                 using (var plainTextStream = new MemoryStream(plainText))
@@ -84,6 +119,8 @@ namespace AllOverIt.Cryptography.Hybrid
         /// <exception cref="RsaAesHybridException">The hash or its signature are invalid.</exception>
         public byte[] Decrypt(byte[] cipherText)
         {
+            _ = cipherText.WhenNotNull(nameof(cipherText));
+
             using (var cipherTextStream = new MemoryStream(cipherText))
             {
                 using (var plainTextStream = new MemoryStream())
@@ -99,6 +136,9 @@ namespace AllOverIt.Cryptography.Hybrid
         /// <remarks>The plainTextStream must be random access and the entire stream will be processed.</remarks>
         public void Encrypt(Stream plainTextStream, Stream cipherTextStream)
         {
+            _ = plainTextStream.WhenNotNull(nameof(plainTextStream));
+            _ = cipherTextStream.WhenNotNull(nameof(cipherTextStream));
+
             // Calculate the hash for the plain text
             plainTextStream.Position = 0;
             var hash = CalculateHash(plainTextStream);
@@ -125,6 +165,9 @@ namespace AllOverIt.Cryptography.Hybrid
         /// <inheritdoc cref="Decrypt(byte[])" />
         public void Decrypt(Stream cipherTextStream, Stream plainTextStream)
         {
+            _ = cipherTextStream.WhenNotNull(nameof(cipherTextStream));
+            _ = plainTextStream.WhenNotNull(nameof(plainTextStream));
+
             // Read the expected hash of the plain text
             var expectedHash = ReadFromStream(cipherTextStream, _signingConfiguration.HashAlgorithmName.GetHashSize() / 8);
 

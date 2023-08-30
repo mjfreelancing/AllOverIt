@@ -4,6 +4,7 @@ using AllOverIt.Cryptography.RSA;
 using AllOverIt.Logging;
 using System;
 using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace RsaAesHybridEncryptionDemo
@@ -40,64 +41,85 @@ namespace RsaAesHybridEncryptionDemo
 
         private static void Main()
         {
-            // Creates a new public/private key pair with
-            var encryptionKeys = RsaKeyPair.Create();
-            var signingKeys = RsaKeyPair.Create();
-
-            // This shows all options with defaults:
-            //
-            // var configuration = new RsaAesHybridEncryptorConfiguration
-            // {
-            //     Encryption = new RsaEncryptionConfiguration
-            //     {
-            //         Keys = encryptionKeys,
-            //         Padding = RSAEncryptionPadding.OaepSHA256
-            //     },
-
-            //     Signing = new RsaSigningConfiguration
-            //     {
-            //         Keys = signingKeys,
-            //         HashAlgorithmName = HashAlgorithmName.SHA256,
-            //         Padding = RSASignaturePadding.Pkcs1
-            //     }
-            // };
-
-            var configuration = new RsaAesHybridEncryptorConfiguration
-            {
-                Encryption = new RsaEncryptorConfiguration(encryptionKeys),
-                Signing = new RsaSigningConfiguration(signingKeys)
-            };
-
             // There's several extension methods that allow for encryption / decryption between bytes, plain text,
             // base64 (plain and cipher text), and streams. This demo only shows a couple of these in use.
-            var encryptor = new RsaAesHybridEncryptor(configuration);
 
             var logger = new ColorConsoleLogger();
 
-            logger.WriteLine(ConsoleColor.White, "RSA Public Key:");
-            logger.WriteLine(ConsoleColor.Blue, Convert.ToBase64String(encryptionKeys.PublicKey));
-            logger.WriteLine();
-            logger.WriteLine(ConsoleColor.White, "RSA Private Key:");
-            logger.WriteLine(ConsoleColor.Blue, Convert.ToBase64String(encryptionKeys.PrivateKey));
-            logger.WriteLine();
+            var senderRsaKeys = RsaKeyPair.Create();
+            var recipientRsaKeys = RsaKeyPair.Create();
 
+            var encryptedBase64 = Encrypt(PlainText, recipientRsaKeys.PublicKey, senderRsaKeys.PrivateKey, logger);
+
+            Decrypt(encryptedBase64, senderRsaKeys.PublicKey, recipientRsaKeys.PrivateKey, logger);
+
+            logger.WriteLine();
+            logger.WriteLine("All Over It.");
+
+            Console.ReadKey();
+        }
+
+        private static string Encrypt(string plainText, byte[] publicKey, byte[] privateKey, IColorConsoleLogger logger)
+        {
             logger.WriteLine(ConsoleColor.White, "The phrase to be processed is:");
+            logger.WriteLine(ConsoleColor.Yellow, plainText);
+            logger.WriteLine();
 
-            logger.WriteLine(ConsoleColor.Yellow, PlainText);
+            var encryptorConfiguration = new RsaAesHybridEncryptorConfiguration
+            {
+                Encryption = new RsaEncryptorConfiguration
+                {
+                    Keys = new RsaKeyPair(publicKey, null),         // PublicKey is used to encrypt the AES key
+                    Padding = RSAEncryptionPadding.OaepSHA256
+                },
+
+                Signing = new RsaSigningConfiguration
+                {
+                    Keys = new RsaKeyPair(null, privateKey),        // PrivateKey is used to RSA sign the hash
+                    HashAlgorithmName = HashAlgorithmName.SHA256,
+                    Padding = RSASignaturePadding.Pkcs1
+                }
+            };
+
+            var encryptor = new RsaAesHybridEncryptor(encryptorConfiguration);
 
             // This extension method uses RsaAesHybridEncryptor.Encrypt(byte[], byte[]).
-            var encryptedBase64 = encryptor.EncryptPlainTextToBase64(PlainText);
+            var encryptedBase64 = encryptor.EncryptPlainTextToBase64(plainText);
 
-            logger.WriteLine();
             logger.WriteLine(ConsoleColor.White, "Encrypted using RSA-AES (random Key and IV):");
             logger.WriteLine(ConsoleColor.Green, encryptedBase64);
+
+            return encryptedBase64;
+        }
+
+        private static void Decrypt(string encryptedBase64, byte[] publicKey, byte[] privateKey, IColorConsoleLogger logger)
+        {
+            var decryptorConfiguration = new RsaAesHybridEncryptorConfiguration
+            {
+                Encryption = new RsaEncryptorConfiguration
+                {
+                    Keys = new RsaKeyPair(null, privateKey),        // PrivateKey is used to decrypt the AES key
+
+                    Padding = RSAEncryptionPadding.OaepSHA256
+                },
+
+                Signing = new RsaSigningConfiguration
+                {
+                    Keys = new RsaKeyPair(publicKey, null),         // PublicKey is used to verify the RSA signature
+                    HashAlgorithmName = HashAlgorithmName.SHA256,
+                    Padding = RSASignaturePadding.Pkcs1
+                }
+            };
+
+            var decryptor = new RsaAesHybridEncryptor(decryptorConfiguration);
+
 
             // Demonstrating this base64 string can be copied to a stream and decrypted from that
             using (var cipherStream = new MemoryStream(Convert.FromBase64String(encryptedBase64)))
             {
                 using (var plainTextStream = new MemoryStream())
                 {
-                    encryptor.Decrypt(cipherStream, plainTextStream);
+                    decryptor.Decrypt(cipherStream, plainTextStream);
 
                     var decryptedFromBase64 = plainTextStream.ToArray();
                     var decryptedText = Encoding.UTF8.GetString(decryptedFromBase64);
@@ -107,11 +129,6 @@ namespace RsaAesHybridEncryptionDemo
                     logger.WriteLine(ConsoleColor.Yellow, decryptedText);
                 }
             }
-
-            logger.WriteLine();
-            logger.WriteLine("All Over It.");
-
-            Console.ReadKey();
         }
     }
 }

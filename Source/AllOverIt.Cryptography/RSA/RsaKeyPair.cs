@@ -42,10 +42,16 @@ namespace AllOverIt.Cryptography.RSA
             SetKeys(publicKey, privateKey);
         }
 
-        // these values can be null / empty
+        // one of these values can be null / empty
         public RsaKeyPair(string publicKeyBase64, string privateKeyBase64)
         {
             SetKeys(publicKeyBase64, privateKeyBase64);
+        }
+
+        // one of these values can be null / empty
+        public RsaKeyPair(byte[] publicKey, byte[] privateKey)
+        {
+            SetKeys(publicKey, privateKey);
         }
 
         public void SetKeys(string publicKeyBase64, string privateKeyBase64)
