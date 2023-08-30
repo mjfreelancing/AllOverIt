@@ -2,6 +2,7 @@
 
 namespace AllOverIt.Cryptography.Hybrid.Exceptions
 {
+    /// <summary>An error raised while performing RSA-AES hybrid encryption / decryption.</summary>
     public class RsaAesHybridException : Exception
     {
         /// <summary>Default constructor.</summary>
