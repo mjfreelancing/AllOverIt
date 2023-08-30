@@ -59,7 +59,7 @@ namespace RsaAesHybridEncryptionDemo
             Console.ReadKey();
         }
 
-        private static string Encrypt(string plainText, byte[] publicKey, byte[] privateKey, IColorConsoleLogger logger)
+        private static string Encrypt(string plainText, byte[] recipientPublicKey, byte[] senderPrivateKey, IColorConsoleLogger logger)
         {
             logger.WriteLine(ConsoleColor.White, "The phrase to be processed is:");
             logger.WriteLine(ConsoleColor.Yellow, plainText);
@@ -69,13 +69,13 @@ namespace RsaAesHybridEncryptionDemo
             {
                 Encryption = new RsaEncryptorConfiguration
                 {
-                    Keys = new RsaKeyPair(publicKey, null),         // PublicKey is used to encrypt the AES key
+                    Keys = new RsaKeyPair(recipientPublicKey, null),    // PublicKey is used to encrypt the AES key
                     Padding = RSAEncryptionPadding.OaepSHA256
                 },
 
                 Signing = new RsaSigningConfiguration
                 {
-                    Keys = new RsaKeyPair(null, privateKey),        // PrivateKey is used to RSA sign the hash
+                    Keys = new RsaKeyPair(null, senderPrivateKey),      // PrivateKey is used to RSA sign the hash
                     HashAlgorithmName = HashAlgorithmName.SHA256,
                     Padding = RSASignaturePadding.Pkcs1
                 }
@@ -92,20 +92,20 @@ namespace RsaAesHybridEncryptionDemo
             return encryptedBase64;
         }
 
-        private static void Decrypt(string encryptedBase64, byte[] publicKey, byte[] privateKey, IColorConsoleLogger logger)
+        private static void Decrypt(string encryptedBase64, byte[] senderPublicKey, byte[] recipientPrivateKey, IColorConsoleLogger logger)
         {
             var decryptorConfiguration = new RsaAesHybridEncryptorConfiguration
             {
                 Encryption = new RsaEncryptorConfiguration
                 {
-                    Keys = new RsaKeyPair(null, privateKey),        // PrivateKey is used to decrypt the AES key
+                    Keys = new RsaKeyPair(null, recipientPrivateKey),   // PrivateKey is used to decrypt the AES key
 
                     Padding = RSAEncryptionPadding.OaepSHA256
                 },
 
                 Signing = new RsaSigningConfiguration
                 {
-                    Keys = new RsaKeyPair(publicKey, null),         // PublicKey is used to verify the RSA signature
+                    Keys = new RsaKeyPair(senderPublicKey, null),        // PublicKey is used to verify the RSA signature
                     HashAlgorithmName = HashAlgorithmName.SHA256,
                     Padding = RSASignaturePadding.Pkcs1
                 }
