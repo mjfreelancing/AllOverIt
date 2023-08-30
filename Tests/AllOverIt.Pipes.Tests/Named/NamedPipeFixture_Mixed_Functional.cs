@@ -674,6 +674,8 @@ namespace AllOverIt.Pipes.Tests.Named
                     tcs3.SetResult(true);
 
                     await tcs4.Task;
+
+                    await server.StopAsync();
                 }                
             });
 
