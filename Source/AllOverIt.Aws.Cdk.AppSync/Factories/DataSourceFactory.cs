@@ -31,10 +31,10 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
             {
                 dataSource = attribute switch
                 {
-                    LambdaDataSourceAttribute lambda => CreateLambdaDataSource(dataSourceId, lambda),
-                    HttpDataSourceAttribute http => CreateHttpDataSource(dataSourceId, http),
-                    NoneDataSourceAttribute none => CreateNoneDataSource(dataSourceId, "None", none),
-                    SubscriptionDataSourceAttribute subscription => CreateNoneDataSource(dataSourceId, "Subscription", subscription),
+                    LambdaDataSourceAttribute lambda => CreateLambdaDataSource(dataSourceId, lambda.FunctionName, lambda.Description),
+                    HttpDataSourceAttribute http => CreateHttpDataSource(dataSourceId, http.DataSourceName, http.EndpointSource, http.EndpointKey, http.Description),
+                    NoneDataSourceAttribute none => CreateNoneDataSource(dataSourceId, "None", none.DataSourceName, none.Description),
+                    SubscriptionDataSourceAttribute subscription => CreateNoneDataSource(dataSourceId, "Subscription", subscription.DataSourceName, subscription.Description),
                     _ => throw new ArgumentOutOfRangeException($"Unknown DataSource type '{attribute.GetType().Name}'")
                 };
 
@@ -60,43 +60,43 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
             return Regex.Replace(value, @"[^\w]", "", RegexOptions.None);
         }
 
-        private BaseDataSource CreateLambdaDataSource(string dataSourceId, LambdaDataSourceAttribute attribute)
+        private BaseDataSource CreateLambdaDataSource(string dataSourceId, string functionName, string description)
         {
             var stack = Stack.Of(_graphQlApi);
 
             return new LambdaDataSource(stack, dataSourceId, new LambdaDataSourceProps
             {
                 Api = _graphQlApi,
-                Name = GetFullDataSourceName("Lambda", attribute.DataSourceName),
-                Description = attribute.Description,
-                LambdaFunction = Function.FromFunctionArn(stack, $"{attribute.FunctionName}Function",
-                    $"arn:aws:lambda:{stack.Region}:{stack.Account}:function:{attribute.FunctionName}")
+                Name = GetFullDataSourceName("Lambda", functionName),       // Using functionName as the DataSourceName
+                Description = description,
+                LambdaFunction = Function.FromFunctionArn(stack, $"{functionName}Function",
+                    $"arn:aws:lambda:{stack.Region}:{stack.Account}:function:{functionName}")
             });
         }
 
-        private BaseDataSource CreateHttpDataSource(string dataSourceId, HttpDataSourceAttribute attribute)
+        private BaseDataSource CreateHttpDataSource(string dataSourceId, string datasourceName, EndpointSource endpointSource, string endpointKey, string description)
         {
             var stack = Stack.Of(_graphQlApi);
 
             return new HttpDataSource(stack, dataSourceId, new HttpDataSourceProps
             {
                 Api = _graphQlApi,
-                Name = GetFullDataSourceName("Http", attribute.DataSourceName),
-                Description = attribute.Description,
-                Endpoint = GetHttpEndpoint(attribute.EndpointSource, attribute.EndpointKey)
+                Name = GetFullDataSourceName("Http", datasourceName),
+                Description = description,
+                Endpoint = GetHttpEndpoint(endpointSource, endpointKey)
             });
         }
 
         // Applicable to NoneDataSourceAttribute and SubscriptionDataSourceAttribute
-        private BaseDataSource CreateNoneDataSource(string dataSourceId, string dataSourceNamePrefix, DataSourceAttribute attribute)
+        private BaseDataSource CreateNoneDataSource(string dataSourceId, string dataSourceNamePrefix, string dataSourceName, string description)
         {
             var stack = Stack.Of(_graphQlApi);
 
             return new NoneDataSource(stack, dataSourceId, new NoneDataSourceProps
             {
                 Api = _graphQlApi,
-                Name = GetFullDataSourceName(dataSourceNamePrefix, attribute.DataSourceName),
-                Description = attribute.Description
+                Name = GetFullDataSourceName(dataSourceNamePrefix, dataSourceName),
+                Description = description
             });
         }
 

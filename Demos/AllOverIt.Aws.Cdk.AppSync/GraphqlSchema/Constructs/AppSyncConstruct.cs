@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync.Factories;
 using AllOverIt.Aws.Cdk.AppSync.Mapping;
-using Amazon.CDK;
 using Amazon.CDK.AWS.AppSync;
 using Constructs;
 using GraphqlSchema.Schema;
