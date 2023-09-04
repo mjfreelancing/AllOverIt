@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Assertion;
+using AllOverIt.Cryptography.RSA.Exceptions;
 using AllOverIt.Extensions;
 using System;
 using System.Security.Cryptography;
@@ -7,57 +8,82 @@ using RSAAlgorithm = System.Security.Cryptography.RSA;
 
 namespace AllOverIt.Cryptography.RSA
 {
-    // Using an RSA key with a size of 3072 bits offers a level of security roughly equivalent to that of a 128-bit symmetric key.
-    //
-    // The determination of RSA key size being "roughly equivalent to a 128-bit symmetric key" is based on the estimation of the computational
-    // effort required to break each encryption scheme. The key size in symmetric encryption algorithms (e.g., AES) and asymmetric encryption
-    // algorithms (e.g., RSA) is measured in bits and directly impacts the strength of the encryption.
+    /*
+        Using an RSA key with a size of 3072 bits offers a level of security roughly equivalent to that of a 128-bit symmetric key.
 
-    // In symmetric encryption, the security primarily relies on the secrecy of the encryption key, and the same key is used for both encryption
-    // and decryption.The key length directly affects the number of possible keys, and a longer key makes exhaustive search attacks more computationally
-    // intensive.For example, a 128-bit symmetric key has 2^128 possible combinations, making brute-force attacks infeasible with current technology.
+        The determination of RSA key size being "roughly equivalent to a 128-bit symmetric key" is based on the estimation of the computational
+        effort required to break each encryption scheme.The key size in symmetric encryption algorithms(e.g., AES) and asymmetric encryption
+        algorithms(e.g., RSA) is measured in bits and directly impacts the strength of the encryption.
+
+        In symmetric encryption, the security primarily relies on the secrecy of the encryption key, and the same key is used for both encryption
+        and decryption.The key length directly affects the number of possible keys, and a longer key makes exhaustive search attacks more computationally
+        intensive.For example, a 128-bit symmetric key has 2^128 possible combinations, making brute-force attacks infeasible with current technology.
+
+        In asymmetric encryption (like RSA), the security is based on the mathematical relationship between the public and private keys.The key length
+        here influences the size of the modulus used in RSA calculations, and it determines the number of possible keys and the difficulty of factoring
+        the modulus.Longer RSA key sizes increase the difficulty of factoring, making it more secure against attacks like integer factorization.
+
+        The approximate equivalence between RSA key size and symmetric key size is derived from the current understanding of the best known algorithms
+        for factoring large numbers (used in breaking RSA) and the best known attacks against symmetric encryption algorithms.It is also based on the
+        assumption that the effort required to break RSA is about the same as the effort required to perform a brute-force search on a symmetric key.
+   */
 
 
-    // In asymmetric encryption (like RSA), the security is based on the mathematical relationship between the public and private keys.The key length
-    // here influences the size of the modulus used in RSA calculations, and it determines the number of possible keys and the difficulty of factoring
-    // the modulus.Longer RSA key sizes increase the difficulty of factoring, making it more secure against attacks like integer factorization.
-
-    // The approximate equivalence between RSA key size and symmetric key size is derived from the current understanding of the best known algorithms
-    // for factoring large numbers (used in breaking RSA) and the best known attacks against symmetric encryption algorithms. It is also based on the
-    // assumption that the effort required to break RSA is about the same as the effort required to perform a brute-force search on a symmetric key.
-
+    /// <summary>A container for an RSA public and provate key.</summary>
     public sealed class RsaKeyPair
     {
+        /// <summary>An RSA public key. This can be <see langword="null"/> if it is not required, such as when performing a decryption operation.</summary>
         public byte[] PublicKey { get; private set; }
+
+        /// <summary>An RSA private key. This can be <see langword="null"/> if it is not required, such as when performing an encryption operation.</summary>
         public byte[] PrivateKey { get; private set; }
 
-        /// <summary>Gets the size, in bits, of the key modulus use by the RSA algorithm.</summary>
+        /// <summary>Gets the size, in bits, of the key used by the RSA algorithm.</summary>
         public int KeySize { get; private set; }
 
+        /// <summary>Constructor.</summary>
+        /// <param name="rsa">An instance of the <see cref="RSAAlgorithm"/> algorithm.</param>      // TEST WHAT HAPPENS WHEN THERE IS NO PUBLIC/PRIVATE KEY
         public RsaKeyPair(RSAAlgorithm rsa)
         {
+            _ = rsa.WhenNotNull(nameof(rsa));
+
             var publicKey = rsa.ExportRSAPublicKey();
             var privateKey = rsa.ExportRSAPrivateKey();
 
             SetKeys(publicKey, privateKey);
         }
 
-        // one of these values can be null / empty
+        /// <summary>Constructor.</summary>
+        /// <param name="publicKeyBase64">The RSA public key to use, in base64 format. This can be <see langword="null"/> (or empty) if it is not required,
+        /// such as when performing a decryption operation.</param>
+        /// <param name="privateKeyBase64">The RSA private key to use, in base64 format. This can be <see langword="null"/> (or empty) if it is not required,
+        /// such as when performing an encryption operation.</param>
+        /// <remarks>At least one of the public / private keys must be provided.</remarks>
         public RsaKeyPair(string publicKeyBase64, string privateKeyBase64)
         {
             SetKeys(publicKeyBase64, privateKeyBase64);
         }
 
-        // one of these values can be null / empty
+        /// <summary>Constructor.</summary>
+        /// <param name="publicKey">The RSA public key to use. This can be <see langword="null"/> (or empty) if it is not required, such as when performing a
+        /// decryption operation.</param>
+        /// <param name="privateKey">>The RSA private key to use. This can be <see langword="null"/> (or empty) if it is not required, such as when performing
+        /// an encryption operation.</param>
+        /// <remarks>At least one of the public / private keys must be provided.</remarks>
         public RsaKeyPair(byte[] publicKey, byte[] privateKey)
         {
             SetKeys(publicKey, privateKey);
         }
 
+        /// <summary>Sets the public and private keys to be used by the RSA algorithm.</summary>
+        /// <param name="publicKeyBase64">The RSA public key to use, in base64 format. This can be <see langword="null"/> (or empty) if it is not required,
+        /// such as when performing a decryption operation.</param>
+        /// <param name="privateKeyBase64">The RSA private key to use, in base64 format. This can be <see langword="null"/> (or empty) if it is not required,
+        /// such as when performing an encryption operation.</param>
+        /// <remarks>At least one of the public / private keys must be provided.</remarks>
         public void SetKeys(string publicKeyBase64, string privateKeyBase64)
         {
-            // TODO: Custom exception
-            Throw<InvalidOperationException>.When(
+            Throw<RsaException>.When(
                 publicKeyBase64.IsNullOrEmpty() && privateKeyBase64.IsNullOrEmpty(),
                 "At least one RSA key is required.");
 
@@ -67,10 +93,15 @@ namespace AllOverIt.Cryptography.RSA
             SetKeys(publicKey, privateKey);
         }
 
+        /// <summary>Sets the public and private keys to be used by the RSA algorithm.</summary>
+        /// <param name="publicKey">The RSA public key to use. This can be <see langword="null"/> (or empty) if it is not required, such as when performing a
+        /// decryption operation.</param>
+        /// <param name="privateKey">>The RSA private key to use. This can be <see langword="null"/> (or empty) if it is not required, such as when performing
+        /// an encryption operation.</param>
+        /// <remarks>At least one of the public / private keys must be provided.</remarks>
         public void SetKeys(byte[] publicKeyBase64, byte[] privateKeyBase64)
         {
-            // TODO: Custom exception
-            Throw<InvalidOperationException>.When(
+            Throw<RsaException>.When(
                 publicKeyBase64.IsNullOrEmpty() && privateKeyBase64.IsNullOrEmpty(),
                 "At least one RSA key is required.");
 
@@ -79,11 +110,17 @@ namespace AllOverIt.Cryptography.RSA
             KeySize = GetKeySize();
         }
 
+        /// <summary>Creates a new <see cref="RsaKeyPair"/> based on the keys being used by an existing <see cref="RSAAlgorithm"/> instance.</summary>
+        /// <param name="rsa">An existing <see cref="RSAAlgorithm"/> instance.</param>
+        /// <returns>A new <see cref="RsaKeyPair"/> based on the keys being used by an existing <see cref="RSAAlgorithm"/> instance.</returns>
         public static RsaKeyPair Create(RSAAlgorithm rsa)
         {
             return new RsaKeyPair(rsa);
         }
 
+        /// <summary>Creates a new <see cref="RsaKeyPair"/> with a key size, in bits, specified by <paramref name="keySizeInBits"/>.</summary>
+        /// <param name="keySizeInBits">The key size, in bits.</param>
+        /// <returns>A new <see cref="RsaKeyPair"/> with a key size, in bits, specified by <paramref name="keySizeInBits"/>.</returns>
         public static RsaKeyPair Create(int keySizeInBits = 3072)
         {
             using (var rsa = RSAAlgorithm.Create(keySizeInBits))
@@ -92,6 +129,9 @@ namespace AllOverIt.Cryptography.RSA
             }
         }
 
+        /// <summary>Creates a new <see cref="RsaKeyPair"/> with key parameters as specified by <paramref name="parameters"/>.</summary>
+        /// <param name="parameters">The parameters for the <see cref="RSAAlgorithm"/> algorithm.</param>
+        /// <returns>A new <see cref="RsaKeyPair"/> with key parameters as specified by <paramref name="parameters"/>.</returns>
         public static RsaKeyPair Create(RSAParameters parameters)
         {
             using (var rsa = RSAAlgorithm.Create(parameters))
@@ -100,6 +140,9 @@ namespace AllOverIt.Cryptography.RSA
             }
         }
 
+        /// <summary>Creates a new <see cref="RsaKeyPair"/> with the key information from an XML string.</summary>
+        /// <param name="xmlKeys">The XML string containing the <see cref="RSAAlgorithm"/> algorithm key information.</param>
+        /// <returns> a new <see cref="RsaKeyPair"/> with the key information from the specified <paramref name="xmlKeys"/>.</returns>
         public static RsaKeyPair Create(string xmlKeys)
         {
             using (var rsa = RSAAlgorithm.Create())

@@ -11,17 +11,17 @@ namespace AllOverIt.Cryptography.RSA
         /// <returns>A new instance of the default implementation of the <see cref="RSAAlgorithm"/> algorithm.</returns>
         RSAAlgorithm Create();
 
-        /// <summary>Creates a new instance of the <see cref="RSAAlgorithm"/> algorithm with an ephemeral key with
+        /// <summary>Creates a new instance of the <see cref="RSAAlgorithm"/> algorithm with a key with
         /// the specified key size, in bits.</summary>
         /// <param name="keySizeInBits">The RSA key size, in bits.</param>
-        /// <returns>A new instance of the <see cref="RSAAlgorithm"/> algorithm with an ephemeral key with
+        /// <returns>A new instance of the <see cref="RSAAlgorithm"/> algorithm with a key with
         /// the specified key size, in bits.</returns>
         RSAAlgorithm Create(int keySizeInBits);
 
-        /// <summary>Creates a new instance of the <see cref="RSAAlgorithm"/> algorithm with an ephemeral key with
+        /// <summary>Creates a new instance of the <see cref="RSAAlgorithm"/> algorithm with a key with
         /// the specified parameters.</summary>
         /// <param name="parameters">The parameters for the <see cref="RSAAlgorithm"/> algorithm.</param>
-        /// <returns>A new instance of the <see cref="RSAAlgorithm"/> algorithm with an ephemeral key with
+        /// <returns>A new instance of the <see cref="RSAAlgorithm"/> algorithm with a key with
         /// the specified parameters.</returns>
         RSAAlgorithm Create(RSAParameters parameters);
     }
