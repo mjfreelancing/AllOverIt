@@ -43,6 +43,8 @@
 * Added DisposeWith() for any IAsyncDisposable, using CompositeAsyncDisposable
 * Removed TextStreamer since System.IO.StringWriter provides an almost identical interface
 * Added ToMemoryStream() extension method for string.
+* Renamed IDictionary extension method from Concat() to Combine() to avoid namespace clashes
+* Renamed IList extension method from AddRange() to AddMany() to avoid namespace clashes
 
 
 ## AllOverIt.AspNetCore
