@@ -39,13 +39,13 @@ namespace AllOverIt.Extensions
             return value;
         }
 
-        /// <summary>Concatenates two dictionaries.</summary>
+        /// <summary>Combines (concatenates) two dictionaries. It is assumed all keys are unique.</summary>
         /// <typeparam name="TKey">The dictionary key type.</typeparam>
         /// <typeparam name="TValue">The dictionary value type.</typeparam>
         /// <param name="first">The first dictionary.</param>
         /// <param name="second">The second dictionary.</param>
         /// <returns>A new dictionary that contains elements from two source dictionaries.</returns>
-        public static IDictionary<TKey, TValue> Concat<TKey, TValue>(this IDictionary<TKey, TValue> first, IDictionary<TKey, TValue> second)
+        public static IDictionary<TKey, TValue> Combine<TKey, TValue>(this IDictionary<TKey, TValue> first, IDictionary<TKey, TValue> second)
         {
             return Enumerable
                 .Concat(first, second)
