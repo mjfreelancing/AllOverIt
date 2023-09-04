@@ -50,11 +50,11 @@ namespace AllOverIt.Extensions
             return list[list.Count - 1];
         }
 
-        /// <summary>Appends a collection of elements to an  <see cref="IList{TType}"/>.</summary>
+        /// <summary>Appends a collection of elements to an existing <see cref="IList{TType}"/>.</summary>
         /// <typeparam name="TType">The element type.</typeparam>
         /// <param name="list">The source list.</param>
         /// <param name="items">The collection of elements to append to the source list.</param>
-        public static void AddRange<TType>(this IList<TType> list, IEnumerable<TType> items)
+        public static void AddMany<TType>(this IList<TType> list, IEnumerable<TType> items)
         {
             _ = list.WhenNotNull(nameof(list));
             _ = items.WhenNotNull(nameof(items));

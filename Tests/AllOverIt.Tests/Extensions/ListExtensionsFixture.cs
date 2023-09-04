@@ -168,14 +168,14 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
-        public class AddRange : ListExtensionsFixture
+        public class AddMany : ListExtensionsFixture
         {
             [Fact]
             public void Should_Throw_When_List_Null()
             {
                 Invoking(() =>
                 {
-                    ListExtensions.AddRange((IList<int>) null, CreateMany<int>());
+                    ListExtensions.AddMany((IList<int>) null, CreateMany<int>());
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -187,7 +187,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 Invoking(() =>
                 {
-                    ListExtensions.AddRange(new List<int>(), CreateMany<int>());
+                    ListExtensions.AddMany(new List<int>(), CreateMany<int>());
                 })
                     .Should()
                     .NotThrow();
@@ -198,7 +198,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 Invoking(() =>
                 {
-                    ListExtensions.AddRange(new List<int>(), null);
+                    ListExtensions.AddMany(new List<int>(), null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -210,7 +210,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 Invoking(() =>
                 {
-                    ListExtensions.AddRange(CreateMany<int>().AsList(), Array.Empty<int>());
+                    ListExtensions.AddMany(CreateMany<int>().AsList(), Array.Empty<int>());
                 })
                     .Should()
                     .NotThrow();
@@ -224,7 +224,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = list.Concat(items).ToList();
 
-                list.AddRange(items);
+                list.AddMany(items);
 
                 list.Should().BeEquivalentTo(expected);
             }
@@ -238,7 +238,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = list.Concat(items).ToList();
 
-                list.AddRange(items);
+                list.AddMany(items);
 
                 list.Should().BeEquivalentTo(expected);
             }
