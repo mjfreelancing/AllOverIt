@@ -1,24 +1,29 @@
 ﻿using AllOverIt.Assertion;
+using AllOverIt.Cryptography.AES.Exceptions;
 using AllOverIt.Extensions;
 using System.IO;
 using System.Security.Cryptography;
 
 namespace AllOverIt.Cryptography.RSA
 {
-    /// <summary>A cryptographic implementation providing RSA encryption and decryption operations.</summary>
+    /// <inheritdoc cref="IRsaEncryptor"/>
     public sealed class RsaEncryptor : IRsaEncryptor
     {
         private readonly IRsaFactory _rsaFactory;
         
         private int? _maxInputLength;
 
+        /// <inheritdoc />
         public IRsaEncryptorConfiguration Configuration { get; }
 
+        /// <summary>Constructor.</summary>
         public RsaEncryptor()
             : this(new RsaFactory(), new RsaEncryptorConfiguration())
         {
         }
 
+        /// <summary>Constructor.</summary>
+        /// <param name="configuration">Provides the RSA encryption / decryption options.</param>
         public RsaEncryptor(IRsaEncryptorConfiguration configuration)
             : this(new RsaFactory(), configuration)
         {
@@ -30,9 +35,10 @@ namespace AllOverIt.Cryptography.RSA
             Configuration = configuration.WhenNotNull(nameof(configuration));
         }
 
+        /// <inheritdoc />
         public int GetMaxInputLength()
         {
-            // TODO: Throw if _rsaKeyPair.PublicKey is null
+            Throw<RsaException>.WhenNull(Configuration.Keys.PublicKey, "An RSA public key has not been configured.");
 
             if (!_maxInputLength.HasValue)
             {
@@ -47,11 +53,12 @@ namespace AllOverIt.Cryptography.RSA
             return _maxInputLength.Value;
         }
 
+        /// <inheritdoc />
         public byte[] Encrypt(byte[] plainText)
         {
             _ = plainText.WhenNotNullOrEmpty(nameof(plainText));
 
-            // TODO: Throw if _rsaKeyPair.PublicKey is null
+            Throw<RsaException>.WhenNull(Configuration.Keys.PublicKey, "An RSA public key has not been configured.");
 
             using (var rsa = _rsaFactory.Create())
             {
@@ -61,34 +68,43 @@ namespace AllOverIt.Cryptography.RSA
             }
         }
 
+        /// <inheritdoc />
         public byte[] Decrypt(byte[] cipherText)
         {
             _ = cipherText.WhenNotNullOrEmpty(nameof(cipherText));
 
+            Throw<RsaException>.WhenNull(Configuration.Keys.PublicKey, "An RSA private key has not been configured.");
+
             using (var rsa = _rsaFactory.Create())
             {
-                // TODO: Throw if _rsaKeyPair.PrivateKey is null
-
                 rsa.ImportRSAPrivateKey(Configuration.Keys.PrivateKey, out _);
 
                 return rsa.Decrypt(cipherText, Configuration.Padding);
             }
         }
 
+        /// <inheritdoc />
         public void Encrypt(Stream plainTextStream, Stream cipherTextStream)
         {
+            _ = plainTextStream.WhenNotNull(nameof(plainTextStream));
+            _ = cipherTextStream.WhenNotNull(nameof(cipherTextStream));
+
             var plainTextBytes = plainTextStream.ToByteArray();
 
-            var cipherTextBytes = Encrypt(plainTextBytes);
+            var cipherTextBytes = Encrypt(plainTextBytes);              // May throw RsaException
 
             cipherTextStream.FromByteArray(cipherTextBytes);
         }
 
+        /// <inheritdoc />
         public void Decrypt(Stream cipherTextStream, Stream plainTextStream)
         {
+            _ = cipherTextStream.WhenNotNull(nameof(cipherTextStream));
+            _ = plainTextStream.WhenNotNull(nameof(plainTextStream));
+
             var cipherTextBytes = cipherTextStream.ToByteArray();
 
-            var plainTextBytes = Decrypt(cipherTextBytes);
+            var plainTextBytes = Decrypt(cipherTextBytes);              // May throw RsaException
 
             plainTextStream.FromByteArray(plainTextBytes);
         }

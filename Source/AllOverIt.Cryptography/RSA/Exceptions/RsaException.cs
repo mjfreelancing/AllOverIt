@@ -1,18 +1,18 @@
 ﻿using System;
 
-namespace AllOverIt.Cryptography.Hybrid.Exceptions
+namespace AllOverIt.Cryptography.AES.Exceptions
 {
-    /// <summary>Exception raised during an RSA-AES hybrid encryption or decryption operation.</summary>
-    public class RsaAesHybridException : Exception
+    /// <summary>Exception raised during an RSA encryption or decryption operation.</summary>
+    public class RsaException : Exception
     {
         /// <summary>Default constructor.</summary>
-        public RsaAesHybridException()
+        public RsaException()
         {
         }
 
         /// <summary>Constructor.</summary>
         /// <param name="message">The exception message.</param>
-        public RsaAesHybridException(string message)
+        public RsaException(string message)
             : base(message)
         {
         }
@@ -20,7 +20,7 @@ namespace AllOverIt.Cryptography.Hybrid.Exceptions
         /// <summary>Constructor.</summary>
         /// <param name="message">The exception message.</param>
         /// <param name="innerException">The inner exception.</param>
-        public RsaAesHybridException(string message, Exception innerException)
+        public RsaException(string message, Exception innerException)
             : base(message, innerException)
         {
         }

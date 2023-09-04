@@ -2,6 +2,7 @@
 
 namespace AllOverIt.Cryptography.AES.Exceptions
 {
+    /// <summary>Exception raised during an AES encryption or decryption operation.</summary>
     public class AesException : Exception
     {
         /// <summary>Default constructor.</summary>

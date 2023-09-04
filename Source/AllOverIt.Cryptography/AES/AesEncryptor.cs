@@ -63,8 +63,11 @@ namespace AllOverIt.Cryptography.AES
         /// <inheritdoc />
         public byte[] Encrypt(byte[] plainText)
         {
+            _ = plainText.WhenNotNull(nameof(plainText));
+
             using (var memoryStream = new MemoryStream())
             {
+                // Aes will throw if not appropriately configured
                 using (var aes = _aesFactory.Create(Configuration))
                 {
                     var encryptor = aes.CreateEncryptor();
@@ -82,8 +85,11 @@ namespace AllOverIt.Cryptography.AES
         /// <inheritdoc />
         public byte[] Decrypt(byte[] cipherText)
         {
+            _ = cipherText.WhenNotNullOrEmpty(nameof(cipherText));
+
             using (var memoryStream = new MemoryStream())
             {
+                // Aes will throw if not appropriately configured
                 using (var aes = _aesFactory.Create(Configuration))
                 {
                     var decryptor = aes.CreateDecryptor();
@@ -99,29 +105,37 @@ namespace AllOverIt.Cryptography.AES
         }
 
         /// <inheritdoc />
-        public void Encrypt(Stream source, Stream destination)
+        public void Encrypt(Stream plainTextStream, Stream cipherTextStream)
         {
+            _ = plainTextStream.WhenNotNull(nameof(plainTextStream));
+            _ = cipherTextStream.WhenNotNull(nameof(cipherTextStream));
+
+            // Aes will throw if not appropriately configured
             using (var aes = _aesFactory.Create(Configuration))
             {
                 var encryptor = aes.CreateEncryptor();
 
-                using (var cryptoStream = new CryptoStream(destination, encryptor, CryptoStreamMode.Write, true))
+                using (var cryptoStream = new CryptoStream(cipherTextStream, encryptor, CryptoStreamMode.Write, true))
                 {
-                    source.CopyTo(cryptoStream);
+                    plainTextStream.CopyTo(cryptoStream);
                 }
             }
         }
 
         /// <inheritdoc />
-        public void Decrypt(Stream source, Stream destination)
+        public void Decrypt(Stream cipherTextStream, Stream plainTextStream)
         {
+            _ = cipherTextStream.WhenNotNull(nameof(cipherTextStream));
+            _ = plainTextStream.WhenNotNull(nameof(plainTextStream));
+
+            // Aes will throw if not appropriately configured
             using (var aes = _aesFactory.Create(Configuration))
             {
                 var decryptor = aes.CreateDecryptor();
 
-                using (var cryptoStream = new CryptoStream(source, decryptor, CryptoStreamMode.Read, true))
+                using (var cryptoStream = new CryptoStream(cipherTextStream, decryptor, CryptoStreamMode.Read, true))
                 {
-                    cryptoStream.CopyTo(destination);
+                    cryptoStream.CopyTo(plainTextStream);
                 }
             }
         }

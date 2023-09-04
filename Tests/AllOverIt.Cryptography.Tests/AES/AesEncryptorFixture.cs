@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Cryptography.AES;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
@@ -94,10 +95,106 @@ namespace AllOverIt.Cryptography.Tests.AES
             }
         }
 
+        public class Encrypt_Byte : AesEncryptorFixture
+        {
+            [Fact]
+            public void Should_Throw_When_PlainText_Null()
+            {
+                Invoking(() =>
+                {
+                    var encryptor = new AesEncryptor();
+
+                    _ = encryptor.Encrypt(null);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("plainText");
+            }
+        }
+
+        public class Decrypt_Byte : AesEncryptorFixture
+        {
+            [Fact]
+            public void Should_Throw_When_PlainText_Null()
+            {
+                Invoking(() =>
+                {
+                    var encryptor = new AesEncryptor();
+
+                    _ = encryptor.Decrypt(null);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("cipherText");
+            }
+        }
+
+        public class Encrypt_Stream : AesEncryptorFixture
+        {
+            [Fact]
+            public void Should_Throw_When_PlainText_Null()
+            {
+                Invoking(() =>
+                {
+                    var encryptor = new AesEncryptor();
+
+                    encryptor.Encrypt(null, Stream.Null);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("plainTextStream");
+            }
+
+            [Fact]
+            public void Should_Throw_When_CipherText_Null()
+            {
+                Invoking(() =>
+                {
+                    var encryptor = new AesEncryptor();
+
+                    encryptor.Encrypt(Stream.Null, null);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("cipherTextStream");
+            }
+        }
+
+        public class Decrypt_Stream : AesEncryptorFixture
+        {
+            [Fact]
+            public void Should_Throw_When_PlainText_Null()
+            {
+                Invoking(() =>
+                {
+                    var encryptor = new AesEncryptor();
+
+                    encryptor.Decrypt(Stream.Null, null);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("plainTextStream");
+            }
+
+            [Fact]
+            public void Should_Throw_When_CipherText_Null()
+            {
+                Invoking(() =>
+                {
+                    var encryptor = new AesEncryptor();
+
+                    encryptor.Decrypt(null, Stream.Null);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("cipherTextStream");
+            }
+        }
+
         public class Encrypt_Decrypt_Byte : AesEncryptorFixture
         {
             [Fact]
-            public void Should_Encrypt_Decrypt_Default_AndKey_IV()
+            public void Should_Encrypt_Decrypt_Default_Key_IV()
             {
                 var plainText = CreateMany<byte>().ToArray();
 
