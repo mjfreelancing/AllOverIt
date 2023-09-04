@@ -1,5 +1,5 @@
 ﻿using AllOverIt.Assertion;
-using AllOverIt.Cryptography.AES.Exceptions;
+using AllOverIt.Cryptography.RSA.Exceptions;
 using AllOverIt.Extensions;
 using System.IO;
 using System.Security.Cryptography;
@@ -73,7 +73,7 @@ namespace AllOverIt.Cryptography.RSA
         {
             _ = cipherText.WhenNotNullOrEmpty(nameof(cipherText));
 
-            Throw<RsaException>.WhenNull(Configuration.Keys.PublicKey, "An RSA private key has not been configured.");
+            Throw<RsaException>.WhenNull(Configuration.Keys.PrivateKey, "An RSA private key has not been configured.");
 
             using (var rsa = _rsaFactory.Create())
             {

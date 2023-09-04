@@ -133,7 +133,7 @@ namespace AllOverIt.Cryptography.Hybrid
         }
 
         /// <inheritdoc cref="Encrypt(byte[])"/>
-        /// <remarks>The plainTextStream must be random access and the entire stream will be processed.</remarks>
+        /// <remarks>The <paramref name="plainTextStream"/> must be random access and the entire stream will be processed.</remarks>
         public void Encrypt(Stream plainTextStream, Stream cipherTextStream)
         {
             _ = plainTextStream.WhenNotNull(nameof(plainTextStream));
