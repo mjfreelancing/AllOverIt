@@ -16,7 +16,7 @@ namespace AllOverIt.Cryptography.RSA
         /// <inheritdoc />
         public IRsaEncryptorConfiguration Configuration { get; }
 
-        /// <summary>Constructor.</summary>
+        /// <summary>Constructor. Applies a default <see cref="RsaEncryptorConfiguration"/> with ephemeral RSA public and private keys.</summary>
         public RsaEncryptor()
             : this(new RsaFactory(), new RsaEncryptorConfiguration())
         {
@@ -109,6 +109,19 @@ namespace AllOverIt.Cryptography.RSA
             plainTextStream.FromByteArray(plainTextBytes);
         }
 
+        public static IRsaEncryptor Create(byte[] publicKey, byte[] privateKey)
+        {
+            _ = publicKey.WhenNotNull(nameof(publicKey));
+            _ = privateKey.WhenNotNull(nameof(privateKey));
+
+            var configuration = new RsaEncryptorConfiguration
+            {
+                Keys = new RsaKeyPair(publicKey, privateKey)
+            };
+
+            return new RsaEncryptor(configuration);
+        }
+
         public static IRsaEncryptor Create(string publicKeyBase64, string privateKeyBase64)
         {
             _ = publicKeyBase64.WhenNotNull(nameof(publicKeyBase64));
@@ -146,6 +159,8 @@ namespace AllOverIt.Cryptography.RSA
 
         public static IRsaEncryptor Create(IRsaEncryptorConfiguration configuration)
         {
+            _ = configuration.WhenNotNull(nameof(configuration));
+
             return new RsaEncryptor(configuration);
         }
     }

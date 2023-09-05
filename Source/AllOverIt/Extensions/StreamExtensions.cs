@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using System.IO;
+using System.Text;
 
 namespace AllOverIt.Extensions
 {
@@ -28,7 +29,7 @@ namespace AllOverIt.Extensions
             _ = stream.WhenNotNull(nameof(stream));
             _ = bytes.WhenNotNull(nameof(bytes));
 
-            using (var writer = new BinaryWriter(stream))
+            using (var writer = new BinaryWriter(stream, Encoding.UTF8, true))
             {
                 writer.Write(bytes);
             }

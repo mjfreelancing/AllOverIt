@@ -86,6 +86,23 @@ namespace AllOverIt.Tests.Extensions
                     actual.Should().BeEquivalentTo(expected);
                 }
             }
+
+            [Fact]
+            public void Should_Leave_Stream_Open()
+            {
+                var expected = Encoding.UTF8.GetBytes(Create<string>());
+
+                using (var stream = new MemoryStream())
+                {
+                    StreamExtensions.FromByteArray(stream, expected);
+
+                    stream.Position = 0;                // Will throw of the stream has been closed
+
+                    var actual = stream.ToArray();
+
+                    actual.Should().BeEquivalentTo(expected);
+                }
+            }
         }
     }
 }
