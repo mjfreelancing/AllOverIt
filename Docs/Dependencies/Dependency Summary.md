@@ -76,14 +76,13 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* Amazon.CDK.Asset.AwsCliV1 v2.2.177
-* Amazon.CDK.Asset.KubectlV20 v2.1.1
-* Amazon.CDK.Asset.NodeProxyAgentV5 v2.0.148
+* Amazon.CDK.Asset.AwsCliV1 v2.2.200
+* Amazon.CDK.Asset.KubectlV20 v2.1.2
+* Amazon.CDK.Asset.NodeProxyAgentV6 v2.0.1
 * Amazon.CDK.Lib v2.60.0
-* Amazon.CDK.Lib v2.87.0
-* Amazon.JSII.Runtime v1.82.0
-* Amazon.JSII.Runtime v1.85.0
-* Cdklabs.AwsCdkAppsyncUtils v0.0.152
+* Amazon.CDK.Lib v2.94.0
+* Amazon.JSII.Runtime v1.88.0
+* Cdklabs.AwsCdkAppsyncUtils v0.0.201
 * Constructs v10.0.0
 * Constructs v10.0.5
 
@@ -236,7 +235,7 @@
 
 * AutoFixture v4.18.0
 * Fare v2.1.1
-* FluentAssertions v6.11.0
+* FluentAssertions v6.12.0
 * System.ComponentModel.Annotations v4.3.0
 * System.Configuration.ConfigurationManager v4.4.0
 
@@ -259,7 +258,7 @@
 * FakeItEasy v4.9.0
 * FakeItEasy v7.4.0
 * Fare v2.1.1
-* FluentAssertions v6.11.0
+* FluentAssertions v6.12.0
 * System.ComponentModel.Annotations v4.3.0
 * System.Configuration.ConfigurationManager v4.4.0
 
@@ -486,7 +485,7 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* FluentValidation v11.6.0
+* FluentValidation v11.7.1
 
 <br>
 
@@ -503,7 +502,7 @@
 * AllOverIt
 * AllOverIt.Assertion
 * AllOverIt.Validation
-* FluentValidation v11.6.0
+* FluentValidation v11.7.1
 * Microsoft.Extensions.DependencyInjection.Abstractions v7.0.0
 * Microsoft.Extensions.Options v7.0.1
 * Microsoft.Extensions.Primitives v7.0.0
