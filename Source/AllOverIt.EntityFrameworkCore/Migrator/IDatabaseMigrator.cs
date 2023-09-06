@@ -11,7 +11,8 @@ namespace AllOverIt.EntityFrameworkCore.Migrator
         event EventHandler<MigrationEventArgs> OnNewMigration;
 
         /// <summary>Applies pending migrations to a database. If the database does not exist then it will be created.</summary>
+        /// <param name="options">Provides migration options.</param>
         /// <returns>A task that completes when the migration is completely applied.</returns>
-        Task MigrateAsync();
+        Task MigrateAsync(MigrationOptions options = default);
     }
 }
