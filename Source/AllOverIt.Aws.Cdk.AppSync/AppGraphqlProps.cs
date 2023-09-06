@@ -14,12 +14,12 @@ namespace AllOverIt.Aws.Cdk.AppSync
         /// <summary>Constructor.</summary>
         public AppGraphqlProps()
         {
-            Schema = new CodeFirstSchema();
+            Definition = Definition.FromSchema(new CodeFirstSchema());
         }
 
         internal CodeFirstSchema GetCodeFirstSchema()
         {
-            return Schema as CodeFirstSchema;
+            return Definition.Schema as CodeFirstSchema;
         }
     }
 }
