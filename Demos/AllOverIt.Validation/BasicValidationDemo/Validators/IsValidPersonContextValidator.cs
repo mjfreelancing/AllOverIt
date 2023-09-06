@@ -23,7 +23,7 @@ namespace BasicValidationDemo.Validators
 
                     if (!personContext.LastNameIsOptional && value.IsNullOrEmpty())
                     {
-                        context.AddFailure($"'{context.PropertyName}' requires a value (not optional).");
+                        context.AddFailure($"'{context.PropertyPath}' requires a value (not optional).");
                     }
                 });
 

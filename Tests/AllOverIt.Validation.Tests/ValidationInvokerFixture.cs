@@ -43,8 +43,8 @@ namespace AllOverIt.Validation.Tests
                             if (value != comparison)
                             {
                                 var failure = new ValidationFailure(
-                                    context.PropertyName,
-                                    $"'{context.PropertyName}' has a value of {value} when expecting {comparison}.",
+                                    context.PropertyPath,
+                                    $"'{context.PropertyPath}' has a value of {value} when expecting {comparison}.",
                                     comparison
                                 );
 
