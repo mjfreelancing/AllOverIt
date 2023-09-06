@@ -8,7 +8,7 @@ namespace AllOverIt.Cryptography.Hybrid
     public sealed class RsaSigningConfiguration : IRsaSigningConfiguration
     {
         /// <inheritdoc />
-        public RsaKeyPair Keys { get; init; } = RsaKeyPair.Create();
+        public RsaKeyPair Keys { get; init; } = new RsaKeyPair();
 
         /// <inheritdoc />
         /// <remarks>The default is <see cref="HashAlgorithmName.SHA256"/>.</remarks>

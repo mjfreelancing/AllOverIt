@@ -53,7 +53,7 @@ namespace RSAEncryptionDemo
         public MainWindowViewModel()
         {
             // Creates a new public/private key pair with 128-bit security
-            var rsaKeyPair = RsaKeyPair.Create();
+            var rsaKeyPair = new RsaKeyPair();
 
             _encryptor = RsaEncryptor.Create(rsaKeyPair);
 

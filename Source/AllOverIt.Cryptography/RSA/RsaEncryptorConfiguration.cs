@@ -7,7 +7,7 @@ namespace AllOverIt.Cryptography.RSA
     public sealed class RsaEncryptorConfiguration : IRsaEncryptorConfiguration
     {
         /// <inheritdoc />
-        public RsaKeyPair Keys { get; init; } = RsaKeyPair.Create();
+        public RsaKeyPair Keys { get; init; } = new RsaKeyPair();
 
         /// <inheritdoc />
         /// <remarks>The default padding mode is <see cref="RSAEncryptionPadding.OaepSHA256"/>.</remarks>

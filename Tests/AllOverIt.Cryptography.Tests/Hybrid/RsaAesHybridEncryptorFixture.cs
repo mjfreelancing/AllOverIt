@@ -19,8 +19,8 @@ namespace AllOverIt.Cryptography.Tests.Hybrid
 
         public RsaAesHybridEncryptorFixture()
         {
-            var senderRsaKeys = RsaKeyPair.Create();        // encrypter
-            var recipientRsaKeys = RsaKeyPair.Create();     // decrypter
+            var senderRsaKeys = new RsaKeyPair();        // encrypter
+            var recipientRsaKeys = new RsaKeyPair();     // decrypter
 
             var encryptionConfiguration = new RsaAesHybridEncryptorConfiguration
             {

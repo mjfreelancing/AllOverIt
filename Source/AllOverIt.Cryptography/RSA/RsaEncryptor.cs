@@ -151,7 +151,7 @@ namespace AllOverIt.Cryptography.RSA
         {
             var configuration = new RsaEncryptorConfiguration
             {
-                Keys = RsaKeyPair.Create(parameters)
+                Keys = new RsaKeyPair(parameters)
             };
 
             return new RsaEncryptor(configuration);

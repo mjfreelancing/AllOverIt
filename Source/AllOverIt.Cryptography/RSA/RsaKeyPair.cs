@@ -28,7 +28,6 @@ namespace AllOverIt.Cryptography.RSA
         assumption that the effort required to break RSA is about the same as the effort required to perform a brute-force search on a symmetric key.
    */
 
-
     /// <summary>A container for an RSA public and provate key.</summary>
     public sealed class RsaKeyPair
     {
@@ -42,14 +41,20 @@ namespace AllOverIt.Cryptography.RSA
         public int KeySize { get; private set; }
 
         /// <summary>Constructor.</summary>
-        /// <param name="rsa">An instance of the <see cref="RSAAlgorithm"/> algorithm.</param>      // TEST WHAT HAPPENS WHEN THERE IS NO PUBLIC/PRIVATE KEY
-        public RsaKeyPair(RSAAlgorithm rsa)
+        /// <param name="keySizeInBits">The key size, in bits.</param>
+        public RsaKeyPair(int keySizeInBits = 3072)
+            : this(RSAAlgorithm.Create(keySizeInBits))
         {
-            _ = rsa.WhenNotNull(nameof(rsa));
+        }
 
-            var publicKey = rsa.ExportRSAPublicKey();
-            var privateKey = rsa.ExportRSAPrivateKey();
-
+        /// <summary>Constructor.</summary>
+        /// <param name="publicKey">The RSA public key to use. This can be <see langword="null"/> (or empty) if it is not required, such as when performing a
+        /// decryption operation.</param>
+        /// <param name="privateKey">>The RSA private key to use. This can be <see langword="null"/> (or empty) if it is not required, such as when performing
+        /// an encryption operation.</param>
+        /// <remarks>At least one of the public / private keys must be provided.</remarks>
+        public RsaKeyPair(byte[] publicKey, byte[] privateKey)
+        {
             SetKeys(publicKey, privateKey);
         }
 
@@ -65,14 +70,46 @@ namespace AllOverIt.Cryptography.RSA
         }
 
         /// <summary>Constructor.</summary>
+        /// <param name="rsa">An instance of the <see cref="RSAAlgorithm"/> algorithm.</param>      // TEST WHAT HAPPENS WHEN THERE IS NO PUBLIC/PRIVATE KEY
+        public RsaKeyPair(RSAAlgorithm rsa)
+        {
+            _ = rsa.WhenNotNull(nameof(rsa));
+
+            var publicKey = rsa.ExportRSAPublicKey();
+            var privateKey = rsa.ExportRSAPrivateKey();
+
+            SetKeys(publicKey, privateKey);
+        }
+
+        /// <summary>Constructor.</summary>
+        /// <param name="parameters">The parameters for the <see cref="RSAAlgorithm"/> algorithm.</param>
+        public RsaKeyPair(RSAParameters parameters)
+            : this(RSAAlgorithm.Create(parameters))
+        {
+        }
+
+        /// <summary>Constructor.</summary>
+        /// <param name="xmlKeys">The XML string containing the <see cref="RSAAlgorithm"/> algorithm key information.</param>
+        public RsaKeyPair(string xmlKeys)
+            : this(CreateRsaFromXml(xmlKeys))
+        {
+        }
+
+        /// <summary>Sets the public and private keys to be used by the RSA algorithm.</summary>
         /// <param name="publicKey">The RSA public key to use. This can be <see langword="null"/> (or empty) if it is not required, such as when performing a
         /// decryption operation.</param>
         /// <param name="privateKey">>The RSA private key to use. This can be <see langword="null"/> (or empty) if it is not required, such as when performing
         /// an encryption operation.</param>
         /// <remarks>At least one of the public / private keys must be provided.</remarks>
-        public RsaKeyPair(byte[] publicKey, byte[] privateKey)
+        public void SetKeys(byte[] publicKey, byte[] privateKey)
         {
-            SetKeys(publicKey, privateKey);
+            Throw<RsaException>.When(
+                publicKey.IsNullOrEmpty() && privateKey.IsNullOrEmpty(),
+                "At least one RSA key is required.");
+
+            PublicKey = publicKey;
+            PrivateKey = privateKey;
+            KeySize = GetKeySize();
         }
 
         /// <summary>Sets the public and private keys to be used by the RSA algorithm.</summary>
@@ -91,66 +128,6 @@ namespace AllOverIt.Cryptography.RSA
             var privateKey = GetAsBytes(privateKeyBase64);
 
             SetKeys(publicKey, privateKey);
-        }
-
-        /// <summary>Sets the public and private keys to be used by the RSA algorithm.</summary>
-        /// <param name="publicKey">The RSA public key to use. This can be <see langword="null"/> (or empty) if it is not required, such as when performing a
-        /// decryption operation.</param>
-        /// <param name="privateKey">>The RSA private key to use. This can be <see langword="null"/> (or empty) if it is not required, such as when performing
-        /// an encryption operation.</param>
-        /// <remarks>At least one of the public / private keys must be provided.</remarks>
-        public void SetKeys(byte[] publicKeyBase64, byte[] privateKeyBase64)
-        {
-            Throw<RsaException>.When(
-                publicKeyBase64.IsNullOrEmpty() && privateKeyBase64.IsNullOrEmpty(),
-                "At least one RSA key is required.");
-
-            PublicKey = publicKeyBase64;
-            PrivateKey = privateKeyBase64;
-            KeySize = GetKeySize();
-        }
-
-        /// <summary>Creates a new <see cref="RsaKeyPair"/> based on the keys being used by an existing <see cref="RSAAlgorithm"/> instance.</summary>
-        /// <param name="rsa">An existing <see cref="RSAAlgorithm"/> instance.</param>
-        /// <returns>A new <see cref="RsaKeyPair"/> based on the keys being used by an existing <see cref="RSAAlgorithm"/> instance.</returns>
-        public static RsaKeyPair Create(RSAAlgorithm rsa)
-        {
-            return new RsaKeyPair(rsa);
-        }
-
-        /// <summary>Creates a new <see cref="RsaKeyPair"/> with a key size, in bits, specified by <paramref name="keySizeInBits"/>.</summary>
-        /// <param name="keySizeInBits">The key size, in bits.</param>
-        /// <returns>A new <see cref="RsaKeyPair"/> with a key size, in bits, specified by <paramref name="keySizeInBits"/>.</returns>
-        public static RsaKeyPair Create(int keySizeInBits = 3072)
-        {
-            using (var rsa = RSAAlgorithm.Create(keySizeInBits))
-            {
-                return new RsaKeyPair(rsa);
-            }
-        }
-
-        /// <summary>Creates a new <see cref="RsaKeyPair"/> with key parameters as specified by <paramref name="parameters"/>.</summary>
-        /// <param name="parameters">The parameters for the <see cref="RSAAlgorithm"/> algorithm.</param>
-        /// <returns>A new <see cref="RsaKeyPair"/> with key parameters as specified by <paramref name="parameters"/>.</returns>
-        public static RsaKeyPair Create(RSAParameters parameters)
-        {
-            using (var rsa = RSAAlgorithm.Create(parameters))
-            {
-                return new RsaKeyPair(rsa);
-            }
-        }
-
-        /// <summary>Creates a new <see cref="RsaKeyPair"/> with the key information from an XML string.</summary>
-        /// <param name="xmlKeys">The XML string containing the <see cref="RSAAlgorithm"/> algorithm key information.</param>
-        /// <returns> a new <see cref="RsaKeyPair"/> with the key information from the specified <paramref name="xmlKeys"/>.</returns>
-        public static RsaKeyPair Create(string xmlKeys)
-        {
-            using (var rsa = RSAAlgorithm.Create())
-            {
-                rsa.FromXmlString(xmlKeys);
-
-                return new RsaKeyPair(rsa);
-            }
         }
 
         private static byte[] GetAsBytes(string key)
@@ -178,6 +155,15 @@ namespace AllOverIt.Cryptography.RSA
 
                 return rsa.KeySize;
             }
+        }
+
+        private static RSAAlgorithm CreateRsaFromXml(string xmlKeys)
+        {
+            var rsa = RSAAlgorithm.Create();
+
+            rsa.FromXmlString(xmlKeys);
+
+            return rsa;
         }
     }
 }

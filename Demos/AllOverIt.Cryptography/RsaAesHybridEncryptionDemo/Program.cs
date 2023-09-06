@@ -46,8 +46,8 @@ namespace RsaAesHybridEncryptionDemo
 
             var logger = new ColorConsoleLogger();
 
-            var senderRsaKeys = RsaKeyPair.Create();
-            var recipientRsaKeys = RsaKeyPair.Create();
+            var senderRsaKeys = new RsaKeyPair();
+            var recipientRsaKeys = new RsaKeyPair();
 
             var encryptedBase64 = Encrypt(PlainText, recipientRsaKeys.PublicKey, senderRsaKeys.PrivateKey, logger);
 

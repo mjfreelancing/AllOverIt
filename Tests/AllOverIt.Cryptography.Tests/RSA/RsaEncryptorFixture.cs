@@ -64,7 +64,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
             {
                 Invoking(() =>
                 {
-                    var rsaKeyPair = RsaKeyPair.Create();
+                    var rsaKeyPair = new RsaKeyPair();
 
                     var config = new RsaEncryptorConfiguration
                     {
@@ -85,7 +85,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
             {
                 Invoking(() =>
                 {
-                    var rsaKeyPair = RsaKeyPair.Create();
+                    var rsaKeyPair = new RsaKeyPair();
 
                     var config = new RsaEncryptorConfiguration
                     {
@@ -153,7 +153,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
             {
                 Invoking(() =>
                 {
-                    var rsaKeyPair = RsaKeyPair.Create();
+                    var rsaKeyPair = new RsaKeyPair();
 
                     var config = new RsaEncryptorConfiguration
                     {
@@ -191,7 +191,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
             {
                 Invoking(() =>
                 {
-                    var rsaKeyPair = RsaKeyPair.Create();
+                    var rsaKeyPair = new RsaKeyPair();
 
                     var config = new RsaEncryptorConfiguration
                     {
@@ -243,7 +243,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
             {
                 Invoking(() =>
                 {
-                    var rsaKeyPair = RsaKeyPair.Create();
+                    var rsaKeyPair = new RsaKeyPair();
 
                     var config = new RsaEncryptorConfiguration
                     {
@@ -295,7 +295,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
             {
                 Invoking(() =>
                 {
-                    var rsaKeyPair = RsaKeyPair.Create();
+                    var rsaKeyPair = new RsaKeyPair();
 
                     var config = new RsaEncryptorConfiguration
                     {
@@ -356,7 +356,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
 
         public class Create_Keys_Bytes : RsaEncryptorFixture
         {
-            private RsaKeyPair _rsaKeyPair = RsaKeyPair.Create();
+            private RsaKeyPair _rsaKeyPair = new RsaKeyPair();
 
             [Fact]
             public void Should_Throw_When_PublicKey_Null()
@@ -396,7 +396,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
 
         public class Create_Keys_Base64 : RsaEncryptorFixture
         {
-            private RsaKeyPair _rsaKeyPair = RsaKeyPair.Create();
+            private RsaKeyPair _rsaKeyPair = new RsaKeyPair();
 
             private readonly string _publicKeyBase64;
 
@@ -461,7 +461,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
             [Fact]
             public void Should_Return_Configured_Encryptor()
             {
-                var rsaKeyPair = RsaKeyPair.Create();
+                var rsaKeyPair = new RsaKeyPair();
 
                 var encryptor = RsaEncryptor.Create(rsaKeyPair);
 

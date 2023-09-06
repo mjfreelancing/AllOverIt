@@ -27,7 +27,7 @@ namespace AllOverIt.Cryptography.Tests.Hybrid
             [Fact]
             public void Should_Have_Defaults_With_Keys()
             {
-                var keys = RsaKeyPair.Create();
+                var keys = new RsaKeyPair();
                 var actual = new RsaSigningConfiguration(keys);
 
                 actual.Keys.Should().BeSameAs(keys);
