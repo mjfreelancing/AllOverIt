@@ -3,7 +3,6 @@ using AllOverIt.Cryptography.RSA.Exceptions;
 using AllOverIt.Extensions;
 using System.IO;
 using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 
 namespace AllOverIt.Cryptography.RSA
 {

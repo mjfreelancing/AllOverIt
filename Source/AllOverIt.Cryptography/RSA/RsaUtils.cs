@@ -57,7 +57,7 @@ namespace AllOverIt.Cryptography.RSA
 
         public static bool IsKeySizeValid(int keySize)
         {
-            return CryptoUtils.IsKeySizeValid(GetLegalKeySizes(), keySize);
+            return GetLegalKeySizes().IsKeySizeValid(keySize);
         }
     }
 }

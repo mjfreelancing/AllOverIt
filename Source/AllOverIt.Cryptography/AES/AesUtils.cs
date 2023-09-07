@@ -21,7 +21,7 @@ namespace AllOverIt.Cryptography.AES
         /// <returns><see langword="True"/> if the key size is valid, otherwise false.</returns>
         public static bool IsKeySizeValid(int keySize)
         {
-            return CryptoUtils.IsKeySizeValid(GetLegalKeySizes(), keySize);
+            return GetLegalKeySizes().IsKeySizeValid(keySize);
         }
 
         /// <summary>Generates a random key using the provided key size, in bits, for use with the AES algorithm.</summary>

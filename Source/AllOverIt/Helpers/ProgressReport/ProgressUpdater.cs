@@ -16,11 +16,11 @@ namespace AllOverIt.Helpers.ProgressReport
         /// If the calculated progress is an increment of <paramref name="incrementToReport"/> or has a value of 100 then the <paramref name="notifier"/>
         /// will be invoked. This callback is only ever called once per unique increment.</summary>
         /// <param name="total">The expected total number of times the returned Action will be invoked.</param>
-        /// <param name="incrementToReport">Invokes the <paramref name="notifier"/> at (percentage) increments specified by this argument.</param>
-        /// <param name="notifier">The callback to be invoked as progress occurs. The input argument is an optional callback to get the desired status
-        /// text. Pass <see langword="null"/> to use the most recent status text.</param>
-        /// <returns>An action that should be invoked up to <paramref name="total"/> times. This action will invoke <paramref name="notifier"/> at
-        /// percentage increments as specified by <paramref name="incrementToReport"/>.</returns>
+        /// <param name="incrementToReport">Invokes the <paramref name="notifier"/> at (percentage) specified increments.</param>
+        /// <param name="notifier">The callback to be invoked as progress occurs.</param>
+        /// <returns>An action that should be invoked up to <paramref name="total"/> times. The input argument provides the current progress and it
+        /// returns the desired status text to notify (or <see langword="null"/> to use the most recent status text). This action will invoke
+        /// <paramref name="notifier"/> at percentage increments as specified by <paramref name="incrementToReport"/>.</returns>
         /// <remarks>No validation is performed on the calculated progress. If the returned action is invoked more than <paramref name="total"/> times
         /// then a value greater than 100 may be returned (depending on the value of <paramref name="incrementToReport"/>).</remarks>
         public static Action<GetProgressText> Create(int total, int incrementToReport, Action<ProgressState> notifier)

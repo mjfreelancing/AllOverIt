@@ -30,8 +30,8 @@ namespace AllOverIt.Csv.Exporter
             _fileMode = fileMode;
         }
 
-        [ExcludeFromCodeCoverage]
         /// <inheritdoc />
+        [ExcludeFromCodeCoverage]
         protected override Stream CreateStream()
         {
             return new FileStream(_filePath, _fileMode);

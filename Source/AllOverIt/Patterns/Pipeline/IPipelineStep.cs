@@ -21,6 +21,7 @@ namespace AllOverIt.Patterns.Pipeline
     {
         /// <summary>Asynchronously executes this step within a pipeline sequence.</summary>
         /// <param name="input">The input provided to the pipeline step.</param>
+        /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns>The output of the pipeline step.</returns>
         Task<TOut> ExecuteAsync(TIn input, CancellationToken cancellationToken);
     }

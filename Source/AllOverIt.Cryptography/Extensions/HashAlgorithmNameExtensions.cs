@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 
 namespace AllOverIt.Cryptography.Extensions
 {
+    /// <summary>Contains hash algorithm related extensions.</summary>
     public static class HashAlgorithmNameExtensions
     {
         private static readonly IDictionary<HashAlgorithmName, Func<HashAlgorithm>> AlgorithmRegistry
@@ -26,13 +27,18 @@ namespace AllOverIt.Cryptography.Extensions
                 { HashAlgorithmName.SHA512, 512 }
             };
 
+        /// <summary>Gets the <see cref="HashAlgorithm"/> for a specified <see cref="HashAlgorithmName"/>.</summary>
+        /// <param name="algorithmName">The name of the hash algorithm.</param>
+        /// <returns>The <see cref="HashAlgorithm"/> for a specified <see cref="HashAlgorithmName"/>.</returns>
         public static HashAlgorithm CreateHashAlgorithm(this HashAlgorithmName algorithmName)
         {
             // Let it throw if the algorithm isn't registered
             return AlgorithmRegistry[algorithmName].Invoke();
         }
 
-        // In bits
+        /// <summary>Gets the hash size, in bits, of a specified <see cref="HashAlgorithmName"/>.</summary>
+        /// <param name="algorithmName">The name of the hash algorithm.</param>
+        /// <returns>The hash size, in bits, of a specified <see cref="HashAlgorithmName"/>.</returns>
         public static int GetHashSize(this HashAlgorithmName algorithmName)
         {
             // Let it throw if the algorithm isn't registered

@@ -1,4 +1,5 @@
-﻿using AllOverIt.Cryptography.RSA;
+﻿using AllOverIt.Cryptography.Extensions;
+using AllOverIt.Cryptography.RSA;
 using AllOverIt.Cryptography.RSA.Exceptions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
@@ -18,8 +19,8 @@ namespace AllOverIt.Cryptography.Tests.RSA
 
         public RsaKeyPairFixture()
         {
-            _publicKeyBase64 = Convert.ToBase64String(_rsaKeyPair.PublicKey);
-            _privateKeyBase64 = Convert.ToBase64String(_rsaKeyPair.PrivateKey);
+            _publicKeyBase64 = _rsaKeyPair.GetPublicKeyAsBase64();
+            _privateKeyBase64 = _rsaKeyPair.GetPrivateKeyAsBase64();
         }
 
         public class Constructor_KeySize : RsaKeyPairFixture
