@@ -62,7 +62,7 @@ namespace AllOverIt.Pipes.Tests.Named
             }
         }
 
-        [Theory]
+        [StaTheory]
         [InlineData(true)]
         [InlineData(false)]
         public async Task Should_Return_Server_Connected_Status(bool connected)
@@ -83,7 +83,7 @@ namespace AllOverIt.Pipes.Tests.Named
             }
         }
 
-        [Theory]
+        [StaTheory]
         [InlineData(true)]
         [InlineData(false)]
         public async Task Should_Return_Client_Connected_Status(bool connected)
@@ -124,7 +124,7 @@ namespace AllOverIt.Pipes.Tests.Named
             await Task.WhenAll(serverTask, clientTask);
         }
 
-        [Fact]
+        [StaFact]
         public async Task Should_Throw_When_Already_Connected()
         {
             var pipeName = Create<string>();
@@ -166,7 +166,7 @@ namespace AllOverIt.Pipes.Tests.Named
             await Task.WhenAll(serverTask, clientTask);
         }
 
-        [Fact]
+        [StaFact]
         public async Task Should_Disconnect_Client_From_Server()
         {
             var pipeName = Create<string>();
@@ -204,7 +204,7 @@ namespace AllOverIt.Pipes.Tests.Named
             await Task.WhenAll(serverTask, clientTask);
         }
 
-        [Fact]
+        [StaFact]
         public async Task Should_Return_Server_PipeName()
         {
             var pipeName = Create<string>();
@@ -216,7 +216,7 @@ namespace AllOverIt.Pipes.Tests.Named
             }
         }
 
-        [Fact]
+        [StaFact]
         public async Task Should_Return_Client_PipeName()
         {
             var pipeName = Create<string>();
@@ -247,7 +247,7 @@ namespace AllOverIt.Pipes.Tests.Named
             await Task.WhenAll(serverTask, clientTask);
         }
 
-        [Fact]
+        [StaFact]
         public async Task Should_Get_Server_Client_Connection_IsConnected()
         {
             var pipeName = Create<string>();
@@ -293,7 +293,7 @@ namespace AllOverIt.Pipes.Tests.Named
             await Task.WhenAll(serverTask, clientTask);
         }
 
-        [Fact]
+        [StaFact]
         public async Task Should_Get_No_Server_Client_Connections_After_Client_Disconnects()
         {
             var pipeName = Create<string>();
@@ -341,7 +341,7 @@ namespace AllOverIt.Pipes.Tests.Named
             await Task.WhenAll(serverTask, clientTask);
         }
 
-        [Fact]
+        [StaFact]
         public async Task Should_Catch_Exception_When_Serializing()
         {
             var pipeName = Create<string>();
@@ -392,7 +392,7 @@ namespace AllOverIt.Pipes.Tests.Named
             actual.Should().BeAssignableTo<Exception>();
         }
 
-        [Fact]
+        [StaFact]
         public async Task Should_Catch_Exception_When_Deserializing()
         {
             var pipeName = Create<string>();
@@ -443,7 +443,7 @@ namespace AllOverIt.Pipes.Tests.Named
             actual.Should().BeAssignableTo<Exception>();
         }
 
-        [Fact]
+        [StaFact]
         public async Task Should_Throw_When_Cannot_Get_Impersonation_User_Name()
         {
             var pipeName = Create<string>();
@@ -498,7 +498,7 @@ namespace AllOverIt.Pipes.Tests.Named
             await Task.WhenAll(serverTask, clientTask);
         }
 
-        [Fact]
+        [StaFact]
         public async Task Should_Get_Impersonation_User_Name()
         {
             var pipeName = Create<string>();
@@ -550,7 +550,7 @@ namespace AllOverIt.Pipes.Tests.Named
             await Task.WhenAll(serverTask, clientTask);
         }
 
-        [Fact]
+        [StaFact]
         public async Task Should_Send_Message_From_Server_To_Client()
         {
             var pipeName = Create<string>();
@@ -602,7 +602,7 @@ namespace AllOverIt.Pipes.Tests.Named
             expected.Should().BeEquivalentTo(actual);
         }
 
-        [Theory]
+        [StaTheory]
         [InlineData(0)]
         [InlineData(1)]
         [InlineData(2)]
@@ -711,7 +711,7 @@ namespace AllOverIt.Pipes.Tests.Named
             actual.Should().Be(expected.Value);
         }
 
-        [Fact]
+        [StaFact]
         public async Task Should_Send_Message_From_Client_To_Server()
         {
             var pipeName = Create<string>();
@@ -763,7 +763,7 @@ namespace AllOverIt.Pipes.Tests.Named
             expected.Should().BeEquivalentTo(actual);
         }
 
-        [Fact]
+        [StaFact]
         public async Task Should_Not_Throw_When_Write_While_Disconnected()
         {
             await Invoking(async () =>
@@ -779,7 +779,7 @@ namespace AllOverIt.Pipes.Tests.Named
             .NotThrowAsync();
         }
 
-        [Fact]
+        [StaFact]
         public async Task Should_Throw_TimeoutException_When_Cannot_Find_Server()
         {
             await Invoking(async () =>
@@ -795,7 +795,7 @@ namespace AllOverIt.Pipes.Tests.Named
             .ThrowAsync<TimeoutException>();
         }
 
-        [Fact]
+        [StaFact]
         public async Task Should_Raise_Client_OnConnected()
         {
             var pipeName = Create<string>();
@@ -841,7 +841,7 @@ namespace AllOverIt.Pipes.Tests.Named
             actual.Should().BeTrue();
         }
 
-        [Fact]
+        [StaFact]
         public async Task Should_Raise_Client_OnDisconnected()
         {
             var pipeName = Create<string>();
@@ -892,7 +892,7 @@ namespace AllOverIt.Pipes.Tests.Named
             actual.Should().BeTrue();
         }
 
-        [Fact]
+        [StaFact]
         public async Task Should_Raise_Client_OnMessageReceived()
         {
             var pipeName = Create<string>();
@@ -943,7 +943,7 @@ namespace AllOverIt.Pipes.Tests.Named
             actual.Should().BeTrue();
         }
 
-        [Fact]
+        [StaFact]
         public async Task Should_Raise_Client_OnException()
         {
             var pipeName = Create<string>();
@@ -1001,7 +1001,7 @@ namespace AllOverIt.Pipes.Tests.Named
             actual.Should().BeSameAs(expected);
         }
 
-        [Fact]
+        [StaFact]
         public async Task Should_Raise_Client_OnException_When_OnDisconnected_Throws()
         {
             var pipeName = Create<string>();
@@ -1061,7 +1061,7 @@ namespace AllOverIt.Pipes.Tests.Named
             actual.Should().BeSameAs(expected);
         }
 
-        [Fact]
+        [StaFact]
         public async Task Should_Raise_Server_OnClientConnected()
         {
             var pipeName = Create<string>();
@@ -1105,7 +1105,7 @@ namespace AllOverIt.Pipes.Tests.Named
             actual.Should().BeTrue();
         }
 
-        [Fact]
+        [StaFact]
         public async Task Should_Disconnect_When_OnClientConnected_Throws()
         {
             var pipeName = Create<string>();
@@ -1160,7 +1160,7 @@ namespace AllOverIt.Pipes.Tests.Named
             actual.Should().BeSameAs(expected);
         }
 
-        [Fact]
+        [StaFact]
         public async Task Should_Raise_Server_OnClientDisconnected()
         {
             var pipeName = Create<string>();
@@ -1206,7 +1206,7 @@ namespace AllOverIt.Pipes.Tests.Named
             actual.Should().BeTrue();
         }
 
-        [Fact]
+        [StaFact]
         public async Task Should_Raise_Server_OnMessageReceived()
         {
             var pipeName = Create<string>();
@@ -1252,7 +1252,7 @@ namespace AllOverIt.Pipes.Tests.Named
             actual.Should().BeTrue();
         }
 
-        [Fact]
+        [StaFact]
         public async Task Should_Not_Throw_When_Server_OnMessageReceived_Not_Assigned()
         {
             var pipeName = Create<string>();
@@ -1319,7 +1319,7 @@ namespace AllOverIt.Pipes.Tests.Named
             actual.Should().BeEquivalentTo(expected);
         }
 
-        [Fact]
+        [StaFact]
         public async Task Should_Raise_Server_OnException_And_Disconnect()
         {
             var pipeName = Create<string>();

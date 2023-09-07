@@ -12,7 +12,7 @@ namespace AllOverIt.Pipes.Tests.Anonymous
 {
     public class AnonymousPipeFixture_Functional : FixtureBase
     {
-        [Fact]
+        [StaFact]
         public async Task Server_Should_Write_To_Client()
         {
             var expected = Create<string>();
@@ -45,7 +45,7 @@ namespace AllOverIt.Pipes.Tests.Anonymous
             actual.Should().Be(expected);
         }
 
-        [Fact]
+        [StaFact]
         public async Task Server_Should_Read_From_Client()
         {
             var expected = Create<string>();
