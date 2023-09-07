@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace AllOverIt.EntityFrameworkCore.Migrator
 {
-
     /// <summary>An abstract class providing the ability to report and apply pending migrations to a database.
     /// If the database does not exist then it will be created.</summary>
     /// <typeparam name="TDbContext">The <see cref="DbContext"/> representing the database to be updated.</typeparam>

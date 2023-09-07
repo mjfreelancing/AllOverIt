@@ -8,9 +8,6 @@ using FluentAssertions;
 using System;
 using System.IO;
 using System.Linq;
-using System.Reflection.Metadata;
-using System.Security.Cryptography;
-using System.Text;
 using Xunit;
 
 using RSAAlgorithm = System.Security.Cryptography.RSA;
@@ -40,7 +37,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
             {
                 Invoking(() =>
                 {
-                    _ = new RsaEncryptor(null);
+                    _ = new RsaEncryptor((IRsaEncryptorConfiguration) null);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -54,6 +51,142 @@ namespace AllOverIt.Cryptography.Tests.RSA
                 var encryptor = new RsaEncryptor(config);
 
                 encryptor.Configuration.Should().BeSameAs(config);
+            }
+        }
+
+        public class Constructor_Keys_Bytes : RsaEncryptorFixture
+        {
+            private RsaKeyPair _rsaKeyPair = new RsaKeyPair();
+
+            [Fact]
+            public void Should_Throw_When_PublicKey_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = new RsaEncryptor(null, _rsaKeyPair.PrivateKey);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("publicKey");
+            }
+
+            [Fact]
+            public void Should_Throw_When_PrivateKey_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = new RsaEncryptor(_rsaKeyPair.PublicKey, null);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("privateKey");
+            }
+
+            [Fact]
+            public void Should_Return_Configured_Encryptor()
+            {
+                var encryptor = new RsaEncryptor(_rsaKeyPair.PublicKey, _rsaKeyPair.PrivateKey);
+
+                encryptor.Should().BeOfType<RsaEncryptor>();
+
+                encryptor.Configuration.Keys.PublicKey.Should().BeEquivalentTo(_rsaKeyPair.PublicKey);
+                encryptor.Configuration.Keys.PrivateKey.Should().BeEquivalentTo(_rsaKeyPair.PrivateKey);
+            }
+        }
+
+        public class Constructor_Keys_Base64 : RsaEncryptorFixture
+        {
+            private RsaKeyPair _rsaKeyPair = new RsaKeyPair();
+
+            private readonly string _publicKeyBase64;
+            private readonly string _privateKeyBase64;
+
+            public Constructor_Keys_Base64()
+            {
+                _publicKeyBase64 = Convert.ToBase64String(_rsaKeyPair.PublicKey);
+                _privateKeyBase64 = Convert.ToBase64String(_rsaKeyPair.PrivateKey);
+            }
+
+            [Fact]
+            public void Should_Throw_When_PublicKey_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = new RsaEncryptor(null, _privateKeyBase64);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("publicKeyBase64");
+            }
+
+            [Fact]
+            public void Should_Throw_When_PrivateKey_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = new RsaEncryptor(_publicKeyBase64, null);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("privateKeyBase64");
+            }
+
+            [Fact]
+            public void Should_Return_Configured_Encryptor()
+            {
+                var encryptor = new RsaEncryptor(_publicKeyBase64, _privateKeyBase64);
+
+                encryptor.Should().BeOfType<RsaEncryptor>();
+
+                encryptor.Configuration.Keys.PublicKey.Should().BeEquivalentTo(_rsaKeyPair.PublicKey);
+                encryptor.Configuration.Keys.PrivateKey.Should().BeEquivalentTo(_rsaKeyPair.PrivateKey);
+            }
+        }
+
+        public class Constructor_RSAParameters : RsaEncryptorFixture
+        {
+            [Fact]
+            public void Should_Return_Configured_Encryptor()
+            {
+                var rsa = RSAAlgorithm.Create();
+                var parameters = rsa.ExportParameters(true);
+
+                var encryptor = new RsaEncryptor(parameters);
+
+                encryptor.Should().BeOfType<RsaEncryptor>();
+
+                var rsaKeyPair = new RsaKeyPair(rsa);
+
+                encryptor.Configuration.Keys.PublicKey.Should().BeEquivalentTo(rsaKeyPair.PublicKey);
+                encryptor.Configuration.Keys.PrivateKey.Should().BeEquivalentTo(rsaKeyPair.PrivateKey);
+            }
+        }
+
+        public class Constructor_RsaKeyPair : RsaEncryptorFixture
+        {
+            [Fact]
+            public void Should_Throw_When_RsaKeyPair_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = new RsaEncryptor((RsaKeyPair) null);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("rsaKeyPair");
+            }
+
+            [Fact]
+            public void Should_Return_Configured_Encryptor()
+            {
+                var rsaKeyPair = new RsaKeyPair();
+
+                var encryptor = new RsaEncryptor(rsaKeyPair);
+
+                encryptor.Should().BeOfType<RsaEncryptor>();
+
+                encryptor.Configuration.Keys.PublicKey.Should().BeEquivalentTo(rsaKeyPair.PublicKey);
+                encryptor.Configuration.Keys.PrivateKey.Should().BeEquivalentTo(rsaKeyPair.PrivateKey);
             }
         }
 
@@ -351,171 +484,6 @@ namespace AllOverIt.Cryptography.Tests.RSA
                 var actual = plainTextStream.ToArray();
 
                 actual.Should().BeEquivalentTo(plainText);
-            }
-        }
-
-        public class Create_Keys_Bytes : RsaEncryptorFixture
-        {
-            private RsaKeyPair _rsaKeyPair = new RsaKeyPair();
-
-            [Fact]
-            public void Should_Throw_When_PublicKey_Null()
-            {
-                Invoking(() =>
-                {
-                    _ = RsaEncryptor.Create(null, _rsaKeyPair.PrivateKey);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("publicKey");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PrivateKey_Null()
-            {
-                Invoking(() =>
-                {
-                    _ = RsaEncryptor.Create(_rsaKeyPair.PublicKey, null);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("privateKey");
-            }
-
-            [Fact]
-            public void Should_Return_Configured_Encryptor()
-            {
-                var encryptor = RsaEncryptor.Create(_rsaKeyPair.PublicKey, _rsaKeyPair.PrivateKey);
-
-                encryptor.Should().BeOfType<RsaEncryptor>();
-
-                encryptor.Configuration.Keys.PublicKey.Should().BeEquivalentTo(_rsaKeyPair.PublicKey);
-                encryptor.Configuration.Keys.PrivateKey.Should().BeEquivalentTo(_rsaKeyPair.PrivateKey);
-            }
-        }
-
-        public class Create_Keys_Base64 : RsaEncryptorFixture
-        {
-            private RsaKeyPair _rsaKeyPair = new RsaKeyPair();
-
-            private readonly string _publicKeyBase64;
-
-            private readonly string _privateKeyBase64;
-
-            public Create_Keys_Base64()
-            {
-                _publicKeyBase64 = Convert.ToBase64String(_rsaKeyPair.PublicKey);
-                _privateKeyBase64 = Convert.ToBase64String(_rsaKeyPair.PrivateKey);
-            }
-
-            [Fact]
-            public void Should_Throw_When_PublicKey_Null()
-            {
-                Invoking(() =>
-                {
-                    _ = RsaEncryptor.Create(null, _privateKeyBase64);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("publicKeyBase64");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PrivateKey_Null()
-            {
-                Invoking(() =>
-                {
-                    _ = RsaEncryptor.Create(_publicKeyBase64, null);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("privateKeyBase64");
-            }
-
-            [Fact]
-            public void Should_Return_Configured_Encryptor()
-            {
-                var encryptor = RsaEncryptor.Create(_publicKeyBase64, _privateKeyBase64);
-
-                encryptor.Should().BeOfType<RsaEncryptor>();
-
-                encryptor.Configuration.Keys.PublicKey.Should().BeEquivalentTo(_rsaKeyPair.PublicKey);
-                encryptor.Configuration.Keys.PrivateKey.Should().BeEquivalentTo(_rsaKeyPair.PrivateKey);
-            }
-        }
-
-        public class Create_RsaKeyPair : RsaEncryptorFixture
-        {
-            [Fact]
-            public void Should_Throw_When_RsaKeyPair_Null()
-            {
-                Invoking(() =>
-                {
-                    _ = RsaEncryptor.Create((RsaKeyPair) null);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("rsaKeyPair");
-            }
-
-            [Fact]
-            public void Should_Return_Configured_Encryptor()
-            {
-                var rsaKeyPair = new RsaKeyPair();
-
-                var encryptor = RsaEncryptor.Create(rsaKeyPair);
-
-                encryptor.Should().BeOfType<RsaEncryptor>();
-
-                encryptor.Configuration.Keys.PublicKey.Should().BeEquivalentTo(rsaKeyPair.PublicKey);
-                encryptor.Configuration.Keys.PrivateKey.Should().BeEquivalentTo(rsaKeyPair.PrivateKey);
-            }
-        }
-
-        public class Create_RSAParameters : RsaEncryptorFixture
-        {
-            [Fact]
-            public void Should_Return_Configured_Encryptor()
-            {
-                var rsa = RSAAlgorithm.Create();
-                var parameters = rsa.ExportParameters(true);
-
-                var encryptor = RsaEncryptor.Create(parameters);
-
-                encryptor.Should().BeOfType<RsaEncryptor>();
-
-                var rsaKeyPair = new RsaKeyPair(rsa);
-
-                encryptor.Configuration.Keys.PublicKey.Should().BeEquivalentTo(rsaKeyPair.PublicKey);
-                encryptor.Configuration.Keys.PrivateKey.Should().BeEquivalentTo(rsaKeyPair.PrivateKey);
-            }
-        }
-
-        public class Create_Configuration : RsaEncryptorFixture
-        {
-            [Fact]
-            public void Should_Throw_When_Configuration_Null()
-            {
-                Invoking(() =>
-                {
-                    _ = RsaEncryptor.Create((IRsaEncryptorConfiguration) null);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("configuration");
-            }
-
-            [Fact]
-            public void Should_Return_Configured_Encryptor()
-            {
-                var configuration = new RsaEncryptorConfiguration();
-
-                var encryptor = RsaEncryptor.Create(configuration);
-
-                encryptor.Should().BeOfType<RsaEncryptor>();
-
-                encryptor.Configuration.Keys.PublicKey.Should().BeEquivalentTo(configuration.Keys.PublicKey);
-                encryptor.Configuration.Keys.PrivateKey.Should().BeEquivalentTo(configuration.Keys.PrivateKey);
             }
         }
     }

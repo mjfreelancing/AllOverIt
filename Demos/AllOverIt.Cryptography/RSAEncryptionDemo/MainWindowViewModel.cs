@@ -55,7 +55,7 @@ namespace RSAEncryptionDemo
             // Creates a new public/private key pair with 128-bit security
             var rsaKeyPair = new RsaKeyPair();
 
-            _encryptor = RsaEncryptor.Create(rsaKeyPair);
+            _encryptor = new RsaEncryptor(rsaKeyPair);
 
             PublicKey = rsaKeyPair.GetPublicKeyAsBase64();
             PrivateKey = rsaKeyPair.GetPrivateKeyAsBase64();

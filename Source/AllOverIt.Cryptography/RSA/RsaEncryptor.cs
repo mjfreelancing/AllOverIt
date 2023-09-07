@@ -3,6 +3,7 @@ using AllOverIt.Cryptography.RSA.Exceptions;
 using AllOverIt.Extensions;
 using System.IO;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 
 namespace AllOverIt.Cryptography.RSA
 {
@@ -26,6 +27,42 @@ namespace AllOverIt.Cryptography.RSA
         /// <param name="configuration">Provides the RSA encryption / decryption options.</param>
         public RsaEncryptor(IRsaEncryptorConfiguration configuration)
             : this(new RsaFactory(), configuration)
+        {
+        }
+
+        /// <summary>Constructor.</summary>
+        /// <param name="publicKey">The RSA public key to use. This can be <see langword="null"/> (or empty) if it is not required, such as when performing a
+        /// decryption operation.</param>
+        /// <param name="privateKey">>The RSA private key to use. This can be <see langword="null"/> (or empty) if it is not required, such as when performing
+        /// an encryption operation.</param>
+        /// <remarks>At least one of the public / private keys must be provided.</remarks>
+        public RsaEncryptor(byte[] publicKey, byte[] privateKey)
+            : this(new RsaEncryptorConfiguration(publicKey, privateKey))
+        {
+        }
+
+        /// <summary>Constructor.</summary>
+        /// <param name="publicKeyBase64">The RSA public key to use, in base64 format. This can be <see langword="null"/> (or empty) if it is not required,
+        /// such as when performing a decryption operation.</param>
+        /// <param name="privateKeyBase64">The RSA private key to use, in base64 format. This can be <see langword="null"/> (or empty) if it is not required,
+        /// such as when performing an encryption operation.</param>
+        /// <remarks>At least one of the public / private keys must be provided.</remarks>
+        public RsaEncryptor(string publicKeyBase64, string privateKeyBase64)
+            : this(new RsaEncryptorConfiguration(publicKeyBase64, privateKeyBase64))
+        {
+        }
+
+        /// <summary>Constructor.</summary>
+        /// <param name="rsaKeyPair">The RSA public / private key pair to use with encryption or decryption operations.</param>
+        public RsaEncryptor(RsaKeyPair rsaKeyPair)
+            : this(new RsaEncryptorConfiguration(rsaKeyPair))
+        {
+        }
+
+        /// <summary>Constructor.</summary>
+        /// <param name="parameters">The parameters for the <see cref="RSAAlgorithm"/> algorithm.</param>
+        public RsaEncryptor(RSAParameters parameters)
+            : this(new RsaEncryptorConfiguration(parameters))
         {
         }
 
@@ -107,61 +144,6 @@ namespace AllOverIt.Cryptography.RSA
             var plainTextBytes = Decrypt(cipherTextBytes);              // May throw RsaException
 
             plainTextStream.FromByteArray(plainTextBytes);
-        }
-
-        public static IRsaEncryptor Create(byte[] publicKey, byte[] privateKey)
-        {
-            _ = publicKey.WhenNotNull(nameof(publicKey));
-            _ = privateKey.WhenNotNull(nameof(privateKey));
-
-            var configuration = new RsaEncryptorConfiguration
-            {
-                Keys = new RsaKeyPair(publicKey, privateKey)
-            };
-
-            return new RsaEncryptor(configuration);
-        }
-
-        public static IRsaEncryptor Create(string publicKeyBase64, string privateKeyBase64)
-        {
-            _ = publicKeyBase64.WhenNotNull(nameof(publicKeyBase64));
-            _ = privateKeyBase64.WhenNotNull(nameof(privateKeyBase64));
-
-            var configuration = new RsaEncryptorConfiguration
-            {
-                Keys = new RsaKeyPair(publicKeyBase64, privateKeyBase64)
-            };
-
-            return new RsaEncryptor(configuration);
-        }
-
-        public static IRsaEncryptor Create(RsaKeyPair rsaKeyPair)
-        {
-            _ = rsaKeyPair.WhenNotNull(nameof(rsaKeyPair));
-
-            var configuration = new RsaEncryptorConfiguration
-            {
-                Keys = rsaKeyPair
-            };
-
-            return new RsaEncryptor(configuration);
-        }
-
-        public static IRsaEncryptor Create(RSAParameters parameters)
-        {
-            var configuration = new RsaEncryptorConfiguration
-            {
-                Keys = new RsaKeyPair(parameters)
-            };
-
-            return new RsaEncryptor(configuration);
-        }
-
-        public static IRsaEncryptor Create(IRsaEncryptorConfiguration configuration)
-        {
-            _ = configuration.WhenNotNull(nameof(configuration));
-
-            return new RsaEncryptor(configuration);
         }
     }
 }
