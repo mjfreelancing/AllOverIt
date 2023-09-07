@@ -6,12 +6,9 @@ using AllOverIt.Pipes.Named.Serialization;
 using AllOverIt.Pipes.Named.Server;
 using FluentAssertions;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics.Tracing;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
-using System.Reactive;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -335,7 +332,7 @@ namespace AllOverIt.Pipes.Tests.Named
                     await client.ConnectAsync(ConnectTimeout).ConfigureAwait(false);
 
                     // Wait for the server to update the connection list
-                    await tcs1.Task;                    
+                    await tcs1.Task;
                 }
 
                 tcs2.SetResult(true);
@@ -676,7 +673,7 @@ namespace AllOverIt.Pipes.Tests.Named
                     await tcs4.Task;
 
                     await server.StopAsync();
-                }                
+                }
             });
 
             var clientTask = Task.Run(async () =>
@@ -705,9 +702,11 @@ namespace AllOverIt.Pipes.Tests.Named
                 await composites.DisposeAsync();
             });
 
+            await clientTask;
+
             tcs4.SetResult(true);
 
-            await Task.WhenAll(serverTask, clientTask);
+            await serverTask;
 
             actual.Should().Be(expected.Value);
         }
@@ -1150,11 +1149,13 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     client.IsConnected.Should().BeFalse();
                 }
-
-                tcs2.SetResult(true);
             });
 
-            await Task.WhenAll(serverTask, clientTask);
+            await clientTask;
+
+            tcs2.SetResult(true);
+
+            await serverTask;
 
             actual.Should().BeSameAs(expected);
         }

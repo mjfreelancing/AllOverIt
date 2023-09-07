@@ -26,6 +26,11 @@ namespace AllOverIt.Pipes.Tests.Anonymous
                 {
                     client.Start(PipeDirection.In, clientHandle);
 
+                    var clientTask = Task.Run(() =>
+                    {
+                        actual = client.Reader.ReadLine();
+                    });
+
                     var serverTask = Task.Run(() =>
                     {
                         server.Writer.WriteLine(expected);
@@ -33,17 +38,7 @@ namespace AllOverIt.Pipes.Tests.Anonymous
                         server.WaitForPipeDrain();
                     });
 
-                    await Task.Yield();
-
-                    var clientTask = Task.Run(() =>
-                    {
-                        actual = client.Reader.ReadLine();
-                    });
-
-                    await Task.Yield();
-
-                    await serverTask;
-                    await clientTask;
+                    await Task.WhenAll(clientTask, serverTask);
                 }
             }
 
