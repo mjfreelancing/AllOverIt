@@ -3,6 +3,7 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Serialization.Json.Abstractions.Exceptions;
 using FluentAssertions;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
@@ -312,6 +313,35 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests
                 _elementDictionary.SetValue(key, expected);
 
                 _elementDictionary.GetValue(key).Should().Be(expected);
+            }
+        }
+
+        public class GetEnumerator_Generic : ElementDictionaryFixture
+        {
+            [Fact]
+            public void Should_Enumerate_Keys()
+            {
+                var actual = _elementDictionary.Select(kvp => kvp.Value);
+
+                actual.Should().BeEquivalentTo(_elementDictionary.Values);
+            }
+        }
+
+        public class GetEnumerator : ElementDictionaryFixture
+        {
+            [Fact]
+            public void Should_Enumerate_Keys()
+            {
+                var actual = new List<object>();
+
+                var enumerator = ((IEnumerable) _elementDictionary).GetEnumerator();
+
+                while (enumerator.MoveNext())
+                {
+                    actual.Add(enumerator.Current);
+                }
+
+                actual.Should().BeEquivalentTo(_dictionary);
             }
         }
     }
