@@ -4,7 +4,7 @@ using System;
 namespace AllOverIt.Evaluator
 {
     /// <summary>Contains context information about a formula token and an associated processor.</summary>
-    internal sealed record FormulaTokenProcessorContext
+    internal sealed class FormulaTokenProcessorContext
     {
         /// <summary>The predicate that determines if the processor should be invoked for the provided token.</summary>
         /// <remarks>The input arguments of the predicate include the next token to be read and a flag to indicate if the
