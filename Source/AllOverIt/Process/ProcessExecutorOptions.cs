@@ -6,11 +6,9 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace AllOverIt.Process
 {
-    // Using a record so 'with' can be used to change state
-
     /// <summary>Specifies options used for configuring the execution of a process.</summary>
     [ExcludeFromCodeCoverage]
-    public sealed record ProcessExecutorOptions
+    public sealed record ProcessExecutorOptions     // A record so 'with' can be used to change state
     {
         /// <summary>The name of the process being executed.</summary>
         public string ProcessFileName { get; }

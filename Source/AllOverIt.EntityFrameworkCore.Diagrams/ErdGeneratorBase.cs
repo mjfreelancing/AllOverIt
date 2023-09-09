@@ -9,7 +9,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
     /// <summary>Identifies an entity type.</summary>
     /// <param name="Type">The entity type.</param>
     /// <param name="TableName">The entity's associated table name.</param>
-    public sealed record EntityIdentifier(Type Type, string TableName);
+    public sealed record EntityIdentifier(Type Type, string TableName);     // A record as it is used as a key in a dictionary
 
     /// <summary>Base class for an entity relationship diagram generator.</summary>
     public abstract class ErdGeneratorBase : IErdGenerator
