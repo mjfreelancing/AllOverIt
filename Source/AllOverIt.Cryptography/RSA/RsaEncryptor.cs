@@ -4,6 +4,8 @@ using AllOverIt.Extensions;
 using System.IO;
 using System.Security.Cryptography;
 
+using RSAAlgorithm = System.Security.Cryptography.RSA;
+
 namespace AllOverIt.Cryptography.RSA
 {
     /// <inheritdoc cref="IRsaEncryptor"/>

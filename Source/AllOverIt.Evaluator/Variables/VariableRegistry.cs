@@ -100,6 +100,7 @@ namespace AllOverIt.Evaluator.Variables
             return _variableRegistry.ContainsKey(name);
         }
 
+        /// <inheritdoc />
         public IEnumerator<KeyValuePair<string, IVariable>> GetEnumerator()
         {
             return _variableRegistry.GetEnumerator();

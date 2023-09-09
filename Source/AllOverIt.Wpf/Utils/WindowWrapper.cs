@@ -6,6 +6,7 @@ using System.Windows.Interop;
 
 namespace AllOverIt.Wpf.Utils
 {
+    /// <summary>Provides P/Invoke based wrapping operations for a <see cref="Window"/>.</summary>
     public sealed class WindowWrapper : IDisposable
     {
         [DllImport("user32.dll")]
@@ -37,6 +38,8 @@ namespace AllOverIt.Wpf.Utils
         private readonly IntPtr _windowHandle;
         private IntPtr _menuHandle;
 
+        /// <summary>Constructor. Initializes the wrapper for a specified <see cref="Window"/>.</summary>
+        /// <param name="window">The <see cref="Window"/> being wrapped.</param>
         public WindowWrapper(Window window)
         {
             _ = window.WhenNotNull();
@@ -44,6 +47,8 @@ namespace AllOverIt.Wpf.Utils
             _windowHandle = new WindowInteropHelper(window).Handle;
         }
 
+        /// <summary>Enables the Minimize button for the wrapped <see cref="Window"/>.</summary>
+        /// <returns>The same <see cref="WindowWrapper"/> instance, allowing for a fluent syntax.</returns>
         public WindowWrapper EnableMinimizeButton()
         {
             _ = SetWindowLong(_windowHandle, GWL_STYLE, GetWindowLong(_windowHandle, GWL_STYLE) | WS_MINIMIZEBOX);
@@ -51,6 +56,8 @@ namespace AllOverIt.Wpf.Utils
             return this;
         }
 
+        /// <summary>Disables the Minimize button for the wrapped <see cref="Window"/>.</summary>
+        /// <returns>The same <see cref="WindowWrapper"/> instance, allowing for a fluent syntax.</returns>
         public WindowWrapper DisableMinimizeButton()
         {
             _ = SetWindowLong(_windowHandle, GWL_STYLE, GetWindowLong(_windowHandle, GWL_STYLE) & ~WS_MINIMIZEBOX);
@@ -58,6 +65,8 @@ namespace AllOverIt.Wpf.Utils
             return this;
         }
 
+        /// <summary>Enables the Maximize button for the wrapped <see cref="Window"/>.</summary>
+        /// <returns>The same <see cref="WindowWrapper"/> instance, allowing for a fluent syntax.</returns>
         public WindowWrapper EnableMaximizeButton()
         {
             _ = SetWindowLong(_windowHandle, GWL_STYLE, GetWindowLong(_windowHandle, GWL_STYLE) | WS_MAXIMIZEBOX);
@@ -65,6 +74,8 @@ namespace AllOverIt.Wpf.Utils
             return this;
         }
 
+        /// <summary>Disables the Maximize button for the wrapped <see cref="Window"/>.</summary>
+        /// <returns>The same <see cref="WindowWrapper"/> instance, allowing for a fluent syntax.</returns>
         public WindowWrapper DisableMaximizeButton()
         {
             _ = SetWindowLong(_windowHandle, GWL_STYLE, GetWindowLong(_windowHandle, GWL_STYLE) & ~WS_MAXIMIZEBOX);
@@ -72,20 +83,26 @@ namespace AllOverIt.Wpf.Utils
             return this;
         }
 
+        /// <summary>Shows the Minimize and Maximize buttons for the wrapped <see cref="Window"/>.</summary>
+        /// <returns>The same <see cref="WindowWrapper"/> instance, allowing for a fluent syntax.</returns>
         public WindowWrapper ShowMinimizeAndMaximizeButtons()
         {
-            _ = SetWindowLong(_windowHandle, GWL_STYLE, GetWindowLong(_windowHandle, GWL_STYLE) | WS_MAXIMIZEBOX | WS_MINIMIZEBOX);
+            _ = SetWindowLong(_windowHandle, GWL_STYLE, GetWindowLong(_windowHandle, GWL_STYLE) | WS_MINIMIZEBOX | WS_MAXIMIZEBOX);
 
             return this;
         }
 
+        /// <summary>Hides the Minimize and Maximize buttons for the wrapped <see cref="Window"/>.</summary>
+        /// <returns>The same <see cref="WindowWrapper"/> instance, allowing for a fluent syntax.</returns>
         public WindowWrapper HideMinimizeAndMaximizeButtons()
         {
-            _ = SetWindowLong(_windowHandle, GWL_STYLE, GetWindowLong(_windowHandle, GWL_STYLE) & ~WS_MAXIMIZEBOX & ~WS_MINIMIZEBOX);
+            _ = SetWindowLong(_windowHandle, GWL_STYLE, GetWindowLong(_windowHandle, GWL_STYLE) & ~WS_MINIMIZEBOX & ~WS_MAXIMIZEBOX);
 
             return this;
         }
 
+        /// <summary>Enables the Close button for the wrapped <see cref="Window"/>.</summary>
+        /// <returns>The same <see cref="WindowWrapper"/> instance, allowing for a fluent syntax.</returns>
         public WindowWrapper EnableCloseButton()
         {
             if (_menuHandle != IntPtr.Zero)
@@ -96,6 +113,8 @@ namespace AllOverIt.Wpf.Utils
             return this;
         }
 
+        /// <summary>Disables the Close button for the wrapped <see cref="Window"/>.</summary>
+        /// <returns>The same <see cref="WindowWrapper"/> instance, allowing for a fluent syntax.</returns>
         public WindowWrapper DisableCloseButton()
         {
             // Capture the existing menu handle so it can be used when later enabling the button again
@@ -109,6 +128,8 @@ namespace AllOverIt.Wpf.Utils
             return this;
         }
 
+        /// <summary>Hides all buttons for the wrapped <see cref="Window"/>.</summary>
+        /// <returns>The same <see cref="WindowWrapper"/> instance, allowing for a fluent syntax.</returns>
         public WindowWrapper HideAllButtons()
         {
             _ = SetWindowLong(_windowHandle, GWL_STYLE, GetWindowLong(_windowHandle, GWL_STYLE) & ~WS_SYSMENU);
@@ -116,6 +137,8 @@ namespace AllOverIt.Wpf.Utils
             return this;
         }
 
+        /// <summary>Shows all buttons for the wrapped <see cref="Window"/>.</summary>
+        /// <returns>The same <see cref="WindowWrapper"/> instance, allowing for a fluent syntax.</returns>
         public WindowWrapper ShowAllButtons()
         {
             _ = SetWindowLong(_windowHandle, GWL_STYLE, GetWindowLong(_windowHandle, GWL_STYLE) | WS_SYSMENU);
@@ -123,6 +146,7 @@ namespace AllOverIt.Wpf.Utils
             return this;
         }
 
+        /// <summary>Disposes internal resources.</summary>
         public void Dispose()
         {
             if (_menuHandle != IntPtr.Zero)

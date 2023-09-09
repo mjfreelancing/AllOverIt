@@ -9,7 +9,7 @@ namespace DelegateEvaluationDemo
             return DoCalculate(Value);
         }
 
-        private double DoCalculate(uint value)
+        private static double DoCalculate(uint value)
         {
             return value <= 1
               ? 1.0d

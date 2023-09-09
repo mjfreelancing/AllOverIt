@@ -5,6 +5,7 @@ using RSAAlgorithm = System.Security.Cryptography.RSA;
 
 namespace AllOverIt.Cryptography.RSA
 {
+    /// <summary>Provides RSA related utilities.</summary>
     public static class RsaUtils
     {
         // Valid key sizes are dependent on the cryptographic service provider (CSP) that is used by the RSACryptoServiceProvider instance.
@@ -47,6 +48,8 @@ namespace AllOverIt.Cryptography.RSA
             return keySizeBytes - (2 * hashLength) - 2;
         }
 
+        /// <summary>Gets the key size, in bits, that are supported by the RSA algorithm.</summary>
+        /// <returns>An array that contains the supported key sizes.</returns>
         public static KeySizes[] GetLegalKeySizes()
         {
             using (var rsa = RSAAlgorithm.Create())
@@ -55,6 +58,9 @@ namespace AllOverIt.Cryptography.RSA
             }
         }
 
+        /// <summary>Indicates if the provided key size, in bits, is valid for the RSA algorithm.</summary>
+        /// <param name="keySize">The key size, in bits.</param>
+        /// <returns><see langword="True"/> if the key size is valid, otherwise false.</returns>
         public static bool IsKeySizeValid(int keySize)
         {
             return GetLegalKeySizes().IsKeySizeValid(keySize);
