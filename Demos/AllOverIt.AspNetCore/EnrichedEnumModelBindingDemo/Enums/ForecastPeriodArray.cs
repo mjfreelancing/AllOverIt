@@ -6,7 +6,7 @@ namespace EnrichedEnumModelBindingDemo.Enums
 {
     // Only applicable for models used to bind from a query string
     [ModelBinder(typeof(ValueArrayModelBinder<ForecastPeriodArray, ForecastPeriod>))]
-    public sealed record ForecastPeriodArray : ValueArray<ForecastPeriod>
+    public sealed class ForecastPeriodArray : ValueArray<ForecastPeriod>
     {
     }
 }

@@ -4,7 +4,7 @@ namespace AllOverIt.Aws.AppSync.Client.Response
 {
     /// <summary>A base class for all graphql responses.</summary>
     /// <typeparam name="TResponse">The response type populated with the expected response data.</typeparam>
-    public abstract record GraphqlResponseBase<TResponse>
+    public abstract class GraphqlResponseBase<TResponse>
     {
         /// <summary>In the absence of errors, this contains the response data.</summary>
         public TResponse Data { get; init; }

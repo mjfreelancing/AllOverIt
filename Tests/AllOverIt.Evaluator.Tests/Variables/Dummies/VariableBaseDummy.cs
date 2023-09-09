@@ -2,7 +2,7 @@ using AllOverIt.Evaluator.Variables;
 
 namespace AllOverIt.Evaluator.Tests.Variables.Dummies
 {
-    internal record VariableBaseDummy : VariableBase
+    internal class VariableBaseDummy : VariableBase
     {
         private double _value;
 

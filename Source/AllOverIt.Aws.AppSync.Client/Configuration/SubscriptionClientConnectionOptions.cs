@@ -3,7 +3,7 @@
 namespace AllOverIt.Aws.AppSync.Client.Configuration
 {
     /// <summary>Provides subscription client connection options.</summary>
-    public sealed record SubscriptionClientConnectionOptions
+    public sealed class SubscriptionClientConnectionOptions
     {
         private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(5);
 

@@ -1,13 +1,7 @@
 namespace AllOverIt.Evaluator.Variables
 {
-    // TODO: Think about how to best make variables aware of change to avoid potential recalculation. Applies to:
-    //       (i) variables dependent on other mutable variables (when a new value is set)
-    //       (ii) potentially delegates (they could call out to another provider)
-
-
-
     /// <summary>A variable that can have its value changed.</summary>
-    public sealed record MutableVariable : VariableBase, IMutableVariable
+    public sealed class MutableVariable : VariableBase, IMutableVariable
     {
         private double _value;
 

@@ -6,7 +6,6 @@ using System.Collections.Generic;
 
 namespace AllOverIt.EntityFrameworkCore.Diagrams
 {
-
     /// <summary>Identifies an entity type.</summary>
     /// <param name="Type">The entity type.</param>
     /// <param name="TableName">The entity's associated table name.</param>

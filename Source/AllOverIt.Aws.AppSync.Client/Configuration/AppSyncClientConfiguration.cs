@@ -4,7 +4,7 @@ using AllOverIt.Serialization.Json.Abstractions;
 namespace AllOverIt.Aws.AppSync.Client.Configuration
 {
     /// <inheritdoc cref="IAppSyncClientConfiguration" />
-    public sealed record AppSyncClientConfiguration : IAppSyncClientConfiguration
+    public sealed class AppSyncClientConfiguration : IAppSyncClientConfiguration
     {
         /// <inheritdoc />
         public string EndPoint { get; init; }

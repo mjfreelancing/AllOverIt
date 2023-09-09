@@ -1,7 +1,7 @@
 ﻿namespace AllOverIt.EntityFrameworkCore.Diagrams
 {
     /// <summary>Provides styling options for a shape on the generated diagram.</summary>
-    public sealed record ShapeStyle
+    public sealed class ShapeStyle
     {
         private static readonly ShapeStyle Default = new();
 

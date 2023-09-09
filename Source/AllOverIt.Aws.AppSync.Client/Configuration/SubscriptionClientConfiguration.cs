@@ -4,7 +4,7 @@ using AllOverIt.Serialization.Json.Abstractions;
 namespace AllOverIt.Aws.AppSync.Client.Configuration
 {
     /// <inheritdoc cref="ISubscriptionClientConfiguration" />
-    public sealed record SubscriptionClientConfiguration : ISubscriptionClientConfiguration
+    public sealed class SubscriptionClientConfiguration : ISubscriptionClientConfiguration
     {
         private string _realTimeUrl;
 

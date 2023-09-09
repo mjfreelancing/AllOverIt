@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 namespace AllOverIt.Evaluator
 {
     /// <summary>Contains the result of parsing and processing a formula.</summary>
-    public sealed record FormulaProcessorResult
+    public sealed class FormulaProcessorResult
     {
         private readonly IReadOnlyCollection<string> _referencedVariableNames;
 

@@ -7,7 +7,7 @@ namespace AllOverIt.Evaluator.Variables
     /// <summary>A delegate based variable that is re-evaluated each time the <see cref="Value"/> is read.</summary>
     /// <remarks>For a delegate based variable that is only evaluated the first time the <see cref="Value"/> is read,
     /// see <see cref="LazyVariable"/>.</remarks>
-    public sealed record DelegateVariable : VariableBase
+    public sealed class DelegateVariable : VariableBase
     {
         private readonly Func<double> _valueResolver;
 

@@ -5,7 +5,7 @@ using System.Linq;
 namespace AllOverIt.Evaluator.Variables
 {
     /// <summary>An abstract base class for a named variable.</summary>
-    public abstract record VariableBase : IVariable
+    public abstract class VariableBase : IVariable
     {
         internal IVariableRegistry VariableRegistry { get; set; }
 

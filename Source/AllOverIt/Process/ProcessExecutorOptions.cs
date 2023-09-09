@@ -6,6 +6,8 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace AllOverIt.Process
 {
+    // Using a record so 'with' can be used to change state
+
     /// <summary>Specifies options used for configuring the execution of a process.</summary>
     [ExcludeFromCodeCoverage]
     public sealed record ProcessExecutorOptions
