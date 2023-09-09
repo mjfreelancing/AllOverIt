@@ -1,6 +1,8 @@
 ﻿using AllOverIt.Assertion;
 using System.Security.Cryptography;
 
+using RSAAlgorithm = System.Security.Cryptography.RSA;
+
 namespace AllOverIt.Cryptography.RSA
 {
     /// <inheritdoc cref="IRsaEncryptorConfiguration" />
