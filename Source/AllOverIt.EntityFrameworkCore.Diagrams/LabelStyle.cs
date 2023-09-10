@@ -1,7 +1,7 @@
 ﻿namespace AllOverIt.EntityFrameworkCore.Diagrams
 {
     /// <summary>Provides styling options for a label on the generated diagram.</summary>
-    public sealed class LabelStyle
+    public sealed record LabelStyle     // A record so they can be compared - see IsDefault()
     {
         private static readonly LabelStyle Default = new();
 
