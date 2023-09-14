@@ -56,7 +56,7 @@
 
 
 ## AllOverIt.Aws.Appsync.Client
-* Unchanged
+* Update to detection of execution timeout due to AWS changes
 
 
 ## AllOverIt.Aws.Cdk.Appsync
