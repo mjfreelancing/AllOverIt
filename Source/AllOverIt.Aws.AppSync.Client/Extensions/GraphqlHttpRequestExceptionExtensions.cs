@@ -6,7 +6,7 @@ namespace AllOverIt.Aws.AppSync.Client.Extensions
     /// <summary>Provides a variety of extension methods for <see cref="GraphqlHttpRequestException"/>.</summary>
     public static class GraphqlHttpRequestExceptionExtensions
     {
-        private const string ExecutionTimeoutErrorType = "ExecutionTimeout";
+        private const string ExecutionTimeoutErrorType = "Http:ExecutionTimeoutException";
 
         /// <summary>Determines if the exception contains any errors with an error type of 'ExecutionTimeout",
         /// as reported by AppSync.</summary>
