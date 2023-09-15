@@ -20,20 +20,20 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
         private sealed class SingleThreadListWrapper : IEnumerableWrapper
         {
             private readonly List<BreadcrumbData> _breadcrumbs = new();
-            private readonly int _maxCapactiy;
+            private readonly int _maxCapacity;
 
             public SingleThreadListWrapper(BreadcrumbsOptions options)
             {
-                _maxCapactiy = options.MaxCapacity;
+                _maxCapacity = options.MaxCapacity;
             }
 
             public void Add(BreadcrumbData breadcrumb)
             {
                 _breadcrumbs.Add(breadcrumb);
 
-                if (_maxCapactiy > 0 && _breadcrumbs.Count > _maxCapactiy)
+                if (_maxCapacity > 0 && _breadcrumbs.Count > _maxCapacity)
                 {
-                    _breadcrumbs.RemoveRange(0, _breadcrumbs.Count - _maxCapactiy);
+                    _breadcrumbs.RemoveRange(0, _breadcrumbs.Count - _maxCapacity);
                 }
             }
 
