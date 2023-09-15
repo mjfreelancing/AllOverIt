@@ -1,0 +1,24 @@
+- name: About
+  items:
+    - name: Who Am I?
+      href: about/whoami.md
+    - name: Dependencies
+      href: about/dependencies.md
+    - name: Versioning
+      href: about/versioning.md
+- name: Documentation
+  items:
+    - name: Introduction
+      href: docs/intro.md
+    - name: Expressions
+      href: docs/expressions.md
+    - name: Event Aggregation
+      href: docs/eventaggregator.md
+    - name: Extension Methods
+      href: docs/extensions.md
+    - name: Helpers
+      href: docs/helpers.md
+    - name: Reflection
+      href: docs/reflection.md
+    - name: Tasks
+      href: docs/tasks.md
