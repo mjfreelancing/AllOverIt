@@ -2,21 +2,20 @@
   "metadata": [
     {
       "src": [
-        {		
-	  "src": "../AllOverIt",
-          "files": [
-            "AllOverIt.csproj"
-          ],
-	  "exclude": [
-            "**/bin/**",
-            "**/obj/**",
-            "_site/**"
-          ]
+        {       
+          "src": "../Source",
+          "files": ["**.csproj"]
         }
       ],
       "dest": "api",
+      "includePrivateMembers": false,
       "disableGitFeatures": false,
-      "disableDefaultFilter": false
+      "disableDefaultFilter": false,
+      "noRestore": false,
+      "namespaceLayout": "flattened",
+      "memberLayout": "samePage",
+      "EnumSortOrder": "alphabetic",
+      "allowCompilationErrors": false
     }
   ],
   "build": {
@@ -29,8 +28,8 @@
       },
       {
         "files": [
-          "library/**.md",
-          "library/**/toc.yml",
+          "articles/**.md",
+          "articles/**/toc.yml",
           "toc.yml",
           "*.md"
         ]
@@ -40,24 +39,10 @@
       {
         "files": [
           "images/**"
-        ],
-        "exclude": [
-          "images/psd/**"
-        ]            
-      }
-    ],
-    "overwrite": [
-      {
-        "files": [
-          "apidoc/**.md"
-        ],
-        "exclude": [
-          "obj/**",
-          "_site/**"
         ]
       }
     ],
-    "dest": "_site",
+    "output": "_site",
     "globalMetadata":
     {
       "_appTitle": "AllOverIt",
@@ -71,13 +56,10 @@
     "fileMetadataFiles": [],
     "template": [
       "default",
-      "templates/material"
+      "modern"
     ],
-    "postProcessors": ["ExtractSearchIndex"],
-    "markdownEngineName": "markdig",
-    "noLangKeyword": false,
+    "postProcessors": [],
     "keepFileLink": false,
-    "cleanupCacheHistory": false,
     "disableGitFeatures": false
   }
 }

@@ -1,2 +1,2 @@
-# AllOverIt
-The documentation in this section has been auto-generated from comments in the source code, available from [GitHub](https://github.com/mjfreelancing/AllOverIt).
+# PLACEHOLDER
+TODO: Add .NET projects to the *src* folder and run `docfx` to generate **REAL** *API Documentation*!
