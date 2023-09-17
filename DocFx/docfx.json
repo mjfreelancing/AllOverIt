@@ -2,9 +2,11 @@
   "metadata": [
     {
       "src": [
-        {       
+        {
           "src": "../Source",
-          "files": ["**.csproj"]
+          "files": [
+            "**/bin/Release/net7.0/**.dll"
+          ]
         }
       ],
       "dest": "api",
@@ -28,8 +30,8 @@
       },
       {
         "files": [
-          "articles/**.md",
-          "articles/**/toc.yml",
+          "packages/**.md",
+          "packages/**/toc.yml",
           "toc.yml",
           "*.md"
         ]
@@ -39,18 +41,20 @@
       {
         "files": [
           "images/**"
+        ],
+        "exclude": [
+          "images/psd/**"
         ]
       }
     ],
     "output": "_site",
-    "globalMetadata":
-    {
+    "globalMetadata": {
       "_appTitle": "AllOverIt",
       "_appFooter": "Copyright © MJ Freelancing",
       "_enableNewTab": true,
       "_disableContribution": true,
-      "_appLogoPath": "images/logo50.png",
-      "_appFaviconPath": "images/logo128.png"
+      "_appLogoPath": "images/appLogo.png",
+      "_appFaviconPath": "images/appFavicon.png"
     },
     "globalMetadataFiles": [],
     "fileMetadataFiles": [],
