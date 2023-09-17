@@ -13,7 +13,7 @@ namespace AllOverIt.Tests.Caching
 {
     public class GenericCacheFixture : FixtureBase
     {
-        private class KeyType1 : GenericCacheKey<int, string>
+        private record KeyType1 : GenericCacheKey<int, string>
         {
             public KeyType1(int val1, string val2)
                 : base(val1, val2)
@@ -21,7 +21,7 @@ namespace AllOverIt.Tests.Caching
             }
         }
 
-        private class KeyType2 : GenericCacheKey<bool, int?, string>
+        private record KeyType2 : GenericCacheKey<bool, int?, string>
         {
             public KeyType2(bool val1, int? val2, string val3)
                 : base(val1, val2, val3)
@@ -38,40 +38,6 @@ namespace AllOverIt.Tests.Caching
         {
             _cache = new GenericCache();
             PopulateCache(_cache);
-        }
-
-        public class KeyComparer : GenericCacheFixture
-        {
-            [Theory]
-            [InlineData(false)]
-            [InlineData(true)]
-            public void Should_Compare_Same_Key_Type(bool same)
-            {
-                var key1 = new KeyType1(Create<int>(), Create<string>());
-
-                var key2 = new KeyType1(
-                    same ? key1.Key1 : Create<int>(),
-                    same ? key1.Key2 : Create<string>());
-
-                var comparer = GenericCache.GenericCacheKeyComparer.Instance;
-
-                var actual = comparer.Equals(key1, key2);
-
-                actual.Should().Be(same);
-            }
-
-            [Fact]
-            public void Should_Compare_Different_Key_Type()
-            {
-                var key1 = new KeyType1(Create<int>(), Create<string>());
-                var key2 = new KeyType2(Create<bool>(), Create<int>(), Create<string>());
-
-                var comparer = GenericCache.GenericCacheKeyComparer.Instance;
-
-                var actual = comparer.Equals(key1, key2);
-
-                actual.Should().BeFalse();
-            }
         }
 
         public class Default : GenericCacheFixture

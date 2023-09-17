@@ -7,7 +7,7 @@ namespace AllOverIt.Tests.Caching
 {
     public class GenericCacheKeyFixture : FixtureBase
     {
-        private class DummyCacheKey1 : GenericCacheKey<string>
+        private record DummyCacheKey1 : GenericCacheKey<string>
         {
             public DummyCacheKey1(string key1)
                 : base(key1)
@@ -15,7 +15,7 @@ namespace AllOverIt.Tests.Caching
             }
         }
 
-        private class DummyCacheKey2 : GenericCacheKey<string, int?>
+        private record DummyCacheKey2 : GenericCacheKey<string, int?>
         {
             public DummyCacheKey2(string key1, int? key2)
                 : base(key1, key2)
@@ -23,7 +23,7 @@ namespace AllOverIt.Tests.Caching
             }
         }
 
-        private class DummyCacheKey3 : GenericCacheKey<string, int?, bool?>
+        private record DummyCacheKey3 : GenericCacheKey<string, int?, bool?>
         {
             public DummyCacheKey3(string key1, int? key2, bool? key3)
                 : base(key1, key2, key3)
@@ -31,7 +31,7 @@ namespace AllOverIt.Tests.Caching
             }
         }
 
-        private class DummyCacheKey4 : GenericCacheKey<string, int?, bool?, double?>
+        private record DummyCacheKey4 : GenericCacheKey<string, int?, bool?, double?>
         {
             public DummyCacheKey4(string key1, int? key2, bool? key3, double? key4)
                 : base(key1, key2, key3, key4)

@@ -102,7 +102,7 @@ namespace GenericCacheDemo
 
             if (failedReads.IsEmpty)
             {
-                Console.WriteLine("    All data for values 1 - 10000 was read without fail");
+                Console.WriteLine($"    All data for values 1 - {count} was read without fail");
             }
             else
             {

@@ -9,35 +9,8 @@ namespace AllOverIt.Caching
     /// <inheritdoc cref="IGenericCache" />
     public class GenericCache : IGenericCache
     {
-        internal class GenericCacheKeyComparer : IEqualityComparer<GenericCacheKeyBase>
-        {
-            public static readonly GenericCacheKeyComparer Instance = new();
-
-            public bool Equals(GenericCacheKeyBase lhs, GenericCacheKeyBase rhs)
-            {
-                /* Null keys cannot be added to the cache, so these 'typical' checks are not required:
-                 
-                    if (lhs is null && rhs is null)
-                    {
-                        return true;
-                    }
-
-                    if (lhs is null || rhs is null)
-                    {
-                        return false;
-                    }
-                */
-
-                return lhs.Key.GetType() == rhs.Key.GetType() && lhs.Key.Equals(rhs.Key);
-            }
-
-            public int GetHashCode(GenericCacheKeyBase obj)
-            {
-                return obj.Key.GetHashCode();
-            }
-        }
-
-        private readonly ConcurrentDictionary<GenericCacheKeyBase, object> _cache = new (GenericCacheKeyComparer.Instance);
+        // GenericCacheKeyBase is a record so a custom comparer for the dictionary is not required
+        private readonly ConcurrentDictionary<GenericCacheKeyBase, object> _cache = new();
 
         /// <summary>A static instance of a <see cref="GenericCache"/>.</summary>
         public static readonly GenericCache Default = new();

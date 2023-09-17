@@ -7,7 +7,7 @@ namespace AllOverIt.Tests.Caching
 {
     public class GenericCacheKeyBaseFixture : FixtureBase
     {
-        private class CacheKeyDummy : GenericCacheKeyBase
+        private record CacheKeyDummy : GenericCacheKeyBase
         {
             public CacheKeyDummy(object key)
                 : base(key)

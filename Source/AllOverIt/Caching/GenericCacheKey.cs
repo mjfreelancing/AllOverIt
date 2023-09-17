@@ -2,7 +2,7 @@
 {
     /// <summary>A <see cref="GenericCache"/> key based on one strongly-typed key type.</summary>
     /// <typeparam name="TKey1">The key type.</typeparam>
-    public class GenericCacheKey<TKey1> : GenericCacheKeyBase
+    public record GenericCacheKey<TKey1> : GenericCacheKeyBase
     {
         /// <summary>The value of the key.</summary>
         public TKey1 Key1 { get; init; }
@@ -21,7 +21,7 @@
     /// <summary>A <see cref="GenericCache"/> key based on one strongly-typed key type.</summary>
     /// <typeparam name="TKey1">The first key type.</typeparam>
     /// <typeparam name="TKey2">The second key type.</typeparam>
-    public class GenericCacheKey<TKey1, TKey2> : GenericCacheKeyBase
+    public record GenericCacheKey<TKey1, TKey2> : GenericCacheKeyBase
     {
         /// <summary>The value of the first key.</summary>
         public TKey1 Key1 { get; init; }
@@ -54,7 +54,7 @@
     /// <typeparam name="TKey1">The first key type.</typeparam>
     /// <typeparam name="TKey2">The second key type.</typeparam>
     /// <typeparam name="TKey3">The third key type.</typeparam>
-    public class GenericCacheKey<TKey1, TKey2, TKey3> : GenericCacheKeyBase
+    public record GenericCacheKey<TKey1, TKey2, TKey3> : GenericCacheKeyBase
     {
         /// <summary>The value of the first key.</summary>
         public TKey1 Key1 { get; init; }
@@ -95,7 +95,7 @@
     /// <typeparam name="TKey2">The second key type.</typeparam>
     /// <typeparam name="TKey3">The third key type.</typeparam>
     /// <typeparam name="TKey4">The fourth key type.</typeparam>
-    public class GenericCacheKey<TKey1, TKey2, TKey3, TKey4> : GenericCacheKeyBase
+    public record GenericCacheKey<TKey1, TKey2, TKey3, TKey4> : GenericCacheKeyBase
     {
         /// <summary>The value of the first key.</summary>
         public TKey1 Key1 { get; init; }

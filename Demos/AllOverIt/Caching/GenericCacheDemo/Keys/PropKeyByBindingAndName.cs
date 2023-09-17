@@ -3,7 +3,7 @@ using AllOverIt.Reflection;
 
 namespace GenericCacheDemo.Keys
 {
-    internal sealed class PropKeyByBindingAndName : GenericCacheKey<BindingOptions, string>
+    internal sealed record PropKeyByBindingAndName : GenericCacheKey<BindingOptions, string>
     {
         public PropKeyByBindingAndName(BindingOptions bindingOptions, string name)
             : base(bindingOptions, name)
