@@ -393,7 +393,7 @@ namespace AllOverIt.Fixture
         {
             var message = Create<string>();
 
-            var constructor = typeof(TException).GetConstructor(new Type[] { typeof(string) });
+            var constructor = typeof(TException).GetConstructor([ typeof(string) ]);
 
             constructor.Should().NotBeNull();
 
@@ -407,7 +407,7 @@ namespace AllOverIt.Fixture
         /// <typeparam name="TException">The exception type.</typeparam>
         protected static void AssertNoConstructorWithMessage<TException>() where TException : Exception
         {
-            var constructor = typeof(TException).GetConstructor(new Type[] { typeof(string) });
+            var constructor = typeof(TException).GetConstructor([ typeof(string) ]);
 
             constructor.Should().BeNull();
         }
@@ -420,11 +420,11 @@ namespace AllOverIt.Fixture
             var message = Create<string>();
             var innerException = new Exception();
 
-            var constructor = typeof(TException).GetConstructor(new Type[] { typeof(string), typeof(Exception) });
+            var constructor = typeof(TException).GetConstructor([ typeof(string), typeof(Exception) ]);
 
             constructor.Should().NotBeNull();
 
-            var exception = (Exception) constructor.Invoke(new object[] { message, innerException });
+            var exception = (Exception) constructor.Invoke([ message, innerException ]);
 
             exception.Message
                 .Should()

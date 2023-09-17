@@ -27,7 +27,7 @@ namespace AllOverIt.Csv.Exporter
             await FlushAsync(cancellationToken);
 
             return Stream is null
-                ? Array.Empty<byte>() 
+                ? []
                 : ((MemoryStream) Stream).ToArray();
         }
 

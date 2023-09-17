@@ -50,14 +50,13 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
 
         private sealed class MultiThreadListWrapper : IEnumerableWrapper
         {
-            private readonly SortedList<long, BreadcrumbData> _breadcrumbs;
+            private readonly SortedList<long, BreadcrumbData> _breadcrumbs = new();
             private readonly object _syncRoot;
             private readonly int _maxCapactiy;
 
             public MultiThreadListWrapper(BreadcrumbsOptions options)
             {
                 _maxCapactiy = options.MaxCapacity;
-                _breadcrumbs = new SortedList<long, BreadcrumbData>();
                 _syncRoot = ((ICollection)_breadcrumbs).SyncRoot;
             }
 

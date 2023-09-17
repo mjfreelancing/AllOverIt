@@ -136,8 +136,7 @@ namespace AllOverIt.Evaluator
 
         private FormulaTokenProcessorContext[] GetFormulaTokenProcessors()
         {
-            return new FormulaTokenProcessorContext[]
-            {
+            return [
                 // args are (token, isUserDefined)
 
                 // The predicate is used to determine if the associated processor will be invoked. The input arguments of the predicate include the
@@ -206,7 +205,7 @@ namespace AllOverIt.Evaluator
                         ProcessNamedOperand();
                         return true;
                     })
-            };
+            ];
         }
 
         private void PushOperator(string operatorToken)
@@ -296,7 +295,7 @@ namespace AllOverIt.Evaluator
                 {
                     var next = _operatorStack.Peek();
 
-                    return next != CustomTokens.OpenScope && 
+                    return next != CustomTokens.OpenScope &&
                            currentOperation.Precedence >= _operationFactory.GetOperation(next).Precedence;
                 });
             }

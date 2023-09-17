@@ -424,7 +424,7 @@ namespace AllOverIt.Extensions
         /// <returns>A new list instance.</returns>
         public static IList CreateList(this Type type)
         {
-            var listType = CommonTypes.ListGenericType.MakeGenericType(new[] { type });
+            var listType = CommonTypes.ListGenericType.MakeGenericType([type]);
 
             return (IList) Activator.CreateInstance(listType);
         }

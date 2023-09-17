@@ -25,7 +25,7 @@ namespace AllOverIt.Pipes.Named.Connection
             var length = await ReadLengthAsync(cancellationToken).ConfigureAwait(false);
 
             return length == 0
-                ? Array.Empty<byte>()
+                ? []
                 : await ReadAsync(length, true, cancellationToken).ConfigureAwait(false);
         }
 
@@ -52,7 +52,7 @@ namespace AllOverIt.Pipes.Named.Connection
             {
                 return throwIfInsufficientBytes
                     ? throw new IOException($"Expected {length} bytes but read {bytesRead}")
-                    : Array.Empty<byte>();
+                    : [];
             }
 
             return buffer;

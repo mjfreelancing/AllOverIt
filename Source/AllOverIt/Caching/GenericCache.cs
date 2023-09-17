@@ -214,7 +214,7 @@ namespace AllOverIt.Caching
         /// <inheritdoc />
         public KeyValuePair<GenericCacheKeyBase, object>[] ToArray()
         {
-            return _cache.ToArray();
+            return [.. _cache];
         }
 
         /// <inheritdoc />

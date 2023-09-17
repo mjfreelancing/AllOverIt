@@ -7,7 +7,7 @@ namespace AllOverIt.Evaluator.Operators
     /// <summary>An expression operator that calculates the angle (in radians) of a cosine value.</summary>
     public sealed class AcosOperator : UnaryOperator
     {
-        private static readonly MethodInfo OperatorMethodInfo = typeof(Math).GetMethod("Acos", new[] { typeof(double) });
+        private static readonly MethodInfo OperatorMethodInfo = typeof(Math).GetMethod("Acos", [typeof(double)]);
 
         /// <summary>Constructor.</summary>
         /// <param name="operand">The operand (argument) to be evaluated.</param>

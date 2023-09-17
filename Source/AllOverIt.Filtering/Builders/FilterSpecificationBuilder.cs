@@ -325,13 +325,9 @@ namespace AllOverIt.Filtering.Builders
             Expression<Func<TType, TProperty>> propertyExpression, object value, IOperationFilterOptions options)
         {
             // No special consideration is required when the value is double (for example) and TProperty is double?
-            var ctor = genericOperation.GetConstructor(new[] {
-                        typeof(Expression<Func<TType, TProperty>>),
-                        typeof(TProperty),
-                        typeof(IOperationFilterOptions)
-                    });
+            var ctor = genericOperation.GetConstructor([typeof(Expression<Func<TType, TProperty>>), typeof(TProperty), typeof(IOperationFilterOptions)]);
 
-            return (ILinqSpecification<TType>) ctor.Invoke(new object[] { propertyExpression, value, options });
+            return (ILinqSpecification<TType>) ctor.Invoke([propertyExpression, value, options]);
         }
 
         private static ILinqSpecification<TType> CreateArraySpecificationOperation<TProperty>(Type genericOperation,
@@ -349,14 +345,9 @@ namespace AllOverIt.Filtering.Builders
                 values = ConvertListElements((IEnumerable) values, typeof(TProperty));
             }
 
-            var ctor = genericOperation.GetConstructor(new[]
-            {
-                typeof(Expression<Func<TType, TProperty>>),
-                typeof(IList<TProperty>),
-                typeof(IOperationFilterOptions)
-            });
+            var ctor = genericOperation.GetConstructor([typeof(Expression<Func<TType, TProperty>>), typeof(IList<TProperty>), typeof(IOperationFilterOptions)]);
 
-            return (ILinqSpecification<TType>) ctor.Invoke(new object[] { propertyExpression, values, options });
+            return (ILinqSpecification<TType>) ctor.Invoke([propertyExpression, values, options]);
         }
 
         private static ILinqSpecification<TType> CombineSpecifications(ILinqSpecification<TType> specification1, ILinqSpecification<TType> specification2,

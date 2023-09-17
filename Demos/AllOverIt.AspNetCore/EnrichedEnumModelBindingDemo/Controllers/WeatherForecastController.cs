@@ -16,10 +16,10 @@ namespace EnrichedEnumModelBindingDemo.Controllers
     {
         private readonly Random _random = new();
 
-        private static readonly string[] Summaries = new[]
-        {
+        private static readonly string[] Summaries =
+        [
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
+        ];
 
         // Sample requests: http://localhost:5000/weatherforecast?period=1
         //                : http://localhost:5000/weatherforecast?period=nextweek

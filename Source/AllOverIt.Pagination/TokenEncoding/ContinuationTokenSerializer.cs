@@ -48,7 +48,7 @@ namespace AllOverIt.Pagination.TokenEncoding
                     using (var hashAlgorithm = HashFactory.Invoke())
                     {
                         var hash = hashAlgorithm.ComputeHash(bytes);
-                        bytes = hash.Concat(bytes).ToArray();
+                        bytes = [.. hash, .. bytes];
                     }
                 }
 

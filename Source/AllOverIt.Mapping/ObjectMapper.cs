@@ -178,14 +178,14 @@ namespace AllOverIt.Mapping
             var sourceTypeArgs = sourceValueType.GenericTypeArguments;
             var sourceDictionaryKeyType = sourceTypeArgs[0];
             var sourceDictionaryValueType = sourceTypeArgs[1];
-            var sourceKvpType = CommonTypes.KeyValuePairType.MakeGenericType(new[] { sourceDictionaryKeyType, sourceDictionaryValueType });
+            var sourceKvpType = CommonTypes.KeyValuePairType.MakeGenericType([sourceDictionaryKeyType, sourceDictionaryValueType]);
 
             // Create the target dictionary
             var (dictionaryInstance, targetKvpType) = CreateDictionary(targetPropertyType);
 
             var dictionaryAddMethod = CommonTypes.ICollectionGenericType
                 .MakeGenericType(targetKvpType)
-                .GetMethod("Add", new[] { targetKvpType });                             // TODO: ? worth caching this
+                .GetMethod("Add", [targetKvpType]);                             // TODO: ? worth caching this
 
             var sourceElements = sourceValue.GetObjectElements();
 
@@ -206,7 +206,7 @@ namespace AllOverIt.Mapping
                     targetKvpType != targetElementType,
                     $"The type '{targetElementType.GetFriendlyName()}' cannot be assigned to type '{targetKvpType.GetFriendlyName()}'.");
 
-                dictionaryAddMethod.Invoke(dictionaryInstance, new[] { targetElement });
+                dictionaryAddMethod.Invoke(dictionaryInstance, [targetElement]);
             }
 
             return dictionaryInstance;
@@ -308,7 +308,7 @@ namespace AllOverIt.Mapping
             var targetValueType = targetTypeArgs[1];
 
             var dictionaryInstance = CreatedTypedDictionary(targetKeyType, targetValueType);
-            var targetKvpType = CommonTypes.KeyValuePairType.MakeGenericType(new[] { targetKeyType, targetValueType });
+            var targetKvpType = CommonTypes.KeyValuePairType.MakeGenericType([targetKeyType, targetValueType]);
 
             return (dictionaryInstance, targetKvpType);
         }
@@ -316,7 +316,7 @@ namespace AllOverIt.Mapping
         private (Type ListType, IList ListInstance) CreateTypedList(Type targetPropertyType, Type targetElementType)
         {
             var listType = targetPropertyType.IsInterface || targetPropertyType.IsArray
-                ? CommonTypes.ListGenericType.MakeGenericType(new[] { targetElementType })
+                ? CommonTypes.ListGenericType.MakeGenericType([targetElementType])
                 : targetPropertyType;   // Special cases, such as ArrayList (assuming it implements IList)
 
             var listInstance = (IList) CreateType(listType);
@@ -326,7 +326,7 @@ namespace AllOverIt.Mapping
 
         private object CreatedTypedDictionary(Type keyType, Type valueType)
         {
-            var dictionaryType = CommonTypes.DictionaryGenericType.MakeGenericType(new[] { keyType, valueType });
+            var dictionaryType = CommonTypes.DictionaryGenericType.MakeGenericType([keyType, valueType]);
 
             return CreateType(dictionaryType);
         }

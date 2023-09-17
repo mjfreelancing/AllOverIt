@@ -89,20 +89,20 @@ namespace BinarySerializationDemo
                 },
                 Students = new List<Student>
             {
-                new Student
+                new()
                 {
                     FirstName = "Mary",
                     LastName = "Lamb",
                     Gender = Gender.Female,
                     Age = 12
                 },
-                new Student
+                new()
                 {
                     FirstName = "Charlette",
                     LastName = "Web",
                     Gender = Gender.Female
                 },
-                new Student
+                new()
                 {
                     FirstName = "Shrek",
                     Gender = Gender.Male,

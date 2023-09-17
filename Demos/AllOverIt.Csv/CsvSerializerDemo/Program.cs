@@ -96,29 +96,29 @@ namespace CsvSerializerDemo
                             },
                             Coordinates = new List<Coordinates>
                             {
-                                new Coordinates(100.1, 120.2)
+                                new(100.1, 120.2)
                             },
                             Metadata = new List<SampleMetadata>
                             {
-                                new SampleMetadata
+                                new()
                                 {
                                     Type = MetadataType.Environment,
                                     Name = "Temperature",
                                     Value = "30"
                                 },
-                                new SampleMetadata
+                                new()
                                 {
                                     Type = MetadataType.Quality,
                                     Name = "Colour",
                                     Value = "8"
                                 },
-                                new SampleMetadata
+                                new()
                                 {
                                     Type = MetadataType.Quality,
                                     Name = "Clarity",
                                     Value = "3"
                                 },
-                                new SampleMetadata
+                                new()
                                 {
                                     Type = MetadataType.Environment,
                                     Name = "pH",
@@ -139,19 +139,19 @@ namespace CsvSerializerDemo
                             },
                             Coordinates = new List<Coordinates>
                             {
-                                new Coordinates(100.4, 119.8),
-                                new Coordinates(100.7, 120.0),
-                                new Coordinates(100.3, 119.2),
+                                new(100.4, 119.8),
+                                new(100.7, 120.0),
+                                new(100.3, 119.2),
                             },
                             Metadata = new List<SampleMetadata>
                             {
-                                new SampleMetadata
+                                new()
                                 {
                                     Type = MetadataType.Environment,
                                     Name = "Temperature",
                                     Value = "28"
                                 },
-                                new SampleMetadata
+                                new()
                                 {
                                     Type = MetadataType.Environment,
                                     Name = "pH",
@@ -171,24 +171,24 @@ namespace CsvSerializerDemo
                             },
                             Coordinates = new List<Coordinates>
                             {
-                                new Coordinates(100.1, 121.3),
-                                new Coordinates(100.8, 120.5),
+                                new(100.1, 121.3),
+                                new(100.8, 120.5),
                             },
                             Metadata = new List<SampleMetadata>
                             {
-                                new SampleMetadata
+                                new()
                                 {
                                     Type = MetadataType.Quality,
                                     Name = "Colour",
                                     Value = "9"
                                 },
-                                new SampleMetadata
+                                new()
                                 {
                                     Type = MetadataType.Quality,
                                     Name = "Clarity",
                                     Value = "2"
                                 },
-                                new SampleMetadata
+                                new()
                                 {
                                     Type = MetadataType.Environment,
                                     Name = "pH",

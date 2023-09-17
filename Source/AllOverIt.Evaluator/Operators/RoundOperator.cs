@@ -7,7 +7,7 @@ namespace AllOverIt.Evaluator.Operators
     /// <summary>An expression operator that rounds the value of one operand to the number of decimal places provided by another.</summary>
     public sealed class RoundOperator : BinaryOperator
     {
-        private static readonly MethodInfo OperatorMethodInfo = typeof(Math).GetMethod("Round", new[] { typeof(double), typeof(int), typeof(MidpointRounding) });
+        private static readonly MethodInfo OperatorMethodInfo = typeof(Math).GetMethod("Round", [typeof(double), typeof(int), typeof(MidpointRounding)]);
         private static readonly ConstantExpression MidpointRoundingExpression = Expression.Constant(MidpointRounding.AwayFromZero);
 
         /// <summary>Constructor.</summary>

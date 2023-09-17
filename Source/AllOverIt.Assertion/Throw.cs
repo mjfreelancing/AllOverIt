@@ -478,22 +478,22 @@ namespace AllOverIt.Assertion
 
         private static Exception CreateException<TArg1>(TArg1 arg1)
         {
-            return (Exception) Activator.CreateInstance(typeof(TException), new object[] { arg1 });
+            return (Exception) Activator.CreateInstance(typeof(TException), [ arg1 ]);
         }
 
         private static Exception CreateException<TArg1, TArg2>(TArg1 arg1, TArg2 arg2)
         {
-            return (Exception) Activator.CreateInstance(typeof(TException), new object[] { arg1, arg2 });
+            return (Exception) Activator.CreateInstance(typeof(TException), [ arg1, arg2 ]);
         }
 
         private static Exception CreateException<TArg1, TArg2, TArg3>(TArg1 arg1, TArg2 arg2, TArg3 arg3)
         {
-            return (Exception) Activator.CreateInstance(typeof(TException), new object[] { arg1, arg2, arg3 });
+            return (Exception) Activator.CreateInstance(typeof(TException), [ arg1, arg2, arg3 ]);
         }
 
         private static Exception CreateException<TArg1, TArg2, TArg3, TArg4>(TArg1 arg1, TArg2 arg2, TArg3 arg3, TArg4 arg4)
         {
-            return (Exception) Activator.CreateInstance(typeof(TException), new object[] { arg1, arg2, arg3, arg4 });
+            return (Exception) Activator.CreateInstance(typeof(TException), [ arg1, arg2, arg3, arg4 ]);
         }
         #endregion
 

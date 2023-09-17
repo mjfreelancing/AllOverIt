@@ -4,7 +4,7 @@ namespace ExternalDependencies
 {
     internal sealed class NameRepository : IRepository
     {
-        private static readonly string[] Names = new[] {"Peter", "Billy", "Mary", "Lisa", "Joseph", "Bernadette"};
+        private static readonly string[] Names = ["Peter", "Billy", "Mary", "Lisa", "Joseph", "Bernadette"];
         private readonly Random _rnd = new();
 
         public string GetRandomName()

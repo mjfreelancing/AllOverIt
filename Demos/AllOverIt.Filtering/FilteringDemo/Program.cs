@@ -79,8 +79,7 @@ namespace FilteringDemo
         {
             var today = DateTime.UtcNow.Date;
 
-            return new Product[]
-            {
+            return [
                 new Product
                 {
                     Active = true,
@@ -177,7 +176,7 @@ namespace FilteringDemo
                     Price = 18,
                     LastUpdated = today.AddDays(-1)
                 }
-            };
+            ];
         }
     }
 }

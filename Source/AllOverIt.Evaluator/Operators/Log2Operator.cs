@@ -7,7 +7,7 @@ namespace AllOverIt.Evaluator.Operators
     /// <summary>An expression operator that calculates log2 of a given operand.</summary>
     public sealed class Log2Operator : UnaryOperator
     {
-        private static readonly MethodInfo OperatorMethodInfo = typeof(Math).GetMethod("Log2", new[] { typeof(double) });
+        private static readonly MethodInfo OperatorMethodInfo = typeof(Math).GetMethod("Log2", [typeof(double)]);
 
         /// <summary>Constructor.</summary>
         /// <param name="operand">The operand (argument) to be evaluated.</param>

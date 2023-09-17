@@ -7,7 +7,7 @@ namespace AllOverIt.Evaluator.Operators
     /// <summary>An expression operator that returns the minimum of two values.</summary>
     public sealed class MinOperator : BinaryOperator
     {
-        private static readonly MethodInfo OperatorMethodInfo = typeof(Math).GetMethod("Min", new[] { typeof(double), typeof(double) });
+        private static readonly MethodInfo OperatorMethodInfo = typeof(Math).GetMethod("Min", [typeof(double), typeof(double)]);
 
         /// <summary>Constructor.</summary>
         /// <param name="leftOperand">The left operand (argument) of the operator.</param>
