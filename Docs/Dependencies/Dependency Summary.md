@@ -80,9 +80,9 @@
 * Amazon.CDK.Asset.KubectlV20 v2.1.2
 * Amazon.CDK.Asset.NodeProxyAgentV6 v2.0.1
 * Amazon.CDK.Lib v2.60.0
-* Amazon.CDK.Lib v2.96.1
+* Amazon.CDK.Lib v2.96.2
 * Amazon.JSII.Runtime v1.88.0
-* Cdklabs.AwsCdkAppsyncUtils v0.0.209
+* Cdklabs.AwsCdkAppsyncUtils v0.0.212
 * Constructs v10.0.0
 * Constructs v10.0.5
 

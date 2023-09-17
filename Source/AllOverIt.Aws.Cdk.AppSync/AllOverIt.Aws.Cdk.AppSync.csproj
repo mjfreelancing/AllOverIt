@@ -7,8 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Amazon.CDK.Lib" Version="2.96.1" />
-        <PackageReference Include="Cdklabs.AwsCdkAppsyncUtils" Version="0.0.209" />
+        <PackageReference Include="Amazon.CDK.Lib" Version="2.96.2" />
+        <PackageReference Include="Cdklabs.AwsCdkAppsyncUtils" Version="0.0.212" />
     </ItemGroup>
 
     <ItemGroup>
