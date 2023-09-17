@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Caching;
 using AllOverIt.Fixture;
+using Castle.DynamicProxy.Generators;
 using FluentAssertions;
 using Xunit;
 
@@ -60,6 +61,22 @@ namespace AllOverIt.Tests.Caching
 
                     actual.Key1.Should().Be(key1);
                 }
+
+                [Fact]
+                public void Should_Compare_Equality()
+                {
+                    var key1 = Create<string>();
+
+                    var cacheKey1 = new DummyCacheKey1(key1);
+                    var cacheKey2 = new DummyCacheKey1(key1);
+                    var cacheKey3 = new DummyCacheKey1(Create<string>());
+
+                    (cacheKey1 == cacheKey2).Should().BeTrue();
+                    (cacheKey1 == cacheKey3).Should().BeFalse();
+
+                    cacheKey1.Equals(cacheKey2).Should().BeTrue();
+                    cacheKey1.Equals(cacheKey3).Should().BeFalse();
+                }
             }
         }
 
@@ -105,6 +122,23 @@ namespace AllOverIt.Tests.Caching
 
                     actualKey1.Should().Be(key1);
                     actualKey2.Should().Be(key2);
+                }
+
+                [Fact]
+                public void Should_Compare_Equality()
+                {
+                    var key1 = Create<string>();
+                    var key2 = Create<int>();
+
+                    var cacheKey1 = new DummyCacheKey2(key1, key2);
+                    var cacheKey2 = new DummyCacheKey2(key1, key2);
+                    var cacheKey3 = new DummyCacheKey2(Create<string>(), Create<int>());
+
+                    (cacheKey1 == cacheKey2).Should().BeTrue();
+                    (cacheKey1 == cacheKey3).Should().BeFalse();
+
+                    cacheKey1.Equals(cacheKey2).Should().BeTrue();
+                    cacheKey1.Equals(cacheKey3).Should().BeFalse();
                 }
             }
         }
@@ -163,6 +197,24 @@ namespace AllOverIt.Tests.Caching
                     actualKey1.Should().Be(key1);
                     actualKey2.Should().Be(key2);
                     actualKey3.Should().Be(key3);
+                }
+
+                [Fact]
+                public void Should_Compare_Equality()
+                {
+                    var key1 = Create<string>();
+                    var key2 = Create<int>();
+                    var key3 = Create<bool>();
+
+                    var cacheKey1 = new DummyCacheKey3(key1, key2, key3);
+                    var cacheKey2 = new DummyCacheKey3(key1, key2, key3);
+                    var cacheKey3 = new DummyCacheKey3(Create<string>(), Create<int>(), Create<bool>());
+
+                    (cacheKey1 == cacheKey2).Should().BeTrue();
+                    (cacheKey1 == cacheKey3).Should().BeFalse();
+
+                    cacheKey1.Equals(cacheKey2).Should().BeTrue();
+                    cacheKey1.Equals(cacheKey3).Should().BeFalse();
                 }
             }
         }
@@ -233,6 +285,25 @@ namespace AllOverIt.Tests.Caching
                     actualKey2.Should().Be(key2);
                     actualKey3.Should().Be(key3);
                     actualKey4.Should().Be(key4);
+                }
+
+                [Fact]
+                public void Should_Compare_Equality()
+                {
+                    var key1 = Create<string>();
+                    var key2 = Create<int>();
+                    var key3 = Create<bool>();
+                    var key4 = Create<double>();
+
+                    var cacheKey1 = new DummyCacheKey4(key1, key2, key3, key4);
+                    var cacheKey2 = new DummyCacheKey4(key1, key2, key3, key4);
+                    var cacheKey3 = new DummyCacheKey4(Create<string>(), Create<int>(), Create<bool>(), Create<double>());
+
+                    (cacheKey1 == cacheKey2).Should().BeTrue();
+                    (cacheKey1 == cacheKey3).Should().BeFalse();
+
+                    cacheKey1.Equals(cacheKey2).Should().BeTrue();
+                    cacheKey1.Equals(cacheKey3).Should().BeFalse();
                 }
             }
         }
