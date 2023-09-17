@@ -288,32 +288,6 @@ A library providing support for pipe based communication.
 ---
 
 
-## AllOverIt.Pipes.Serialization
-[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Pipes.Serialization?style=for-the-badge)](https://www.nuget.org/packages/AllOverIt.Pipes.Serialization/)
-[![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Pipes.Serialization?style=for-the-badge)](https://www.nuget.org/packages/AllOverIt.Pipes.Serialization/)
-
-Provides serialization abstractions for AllOverIt.Pipes.
-
-![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
-![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
-
-
----
-
-
-## AllOverIt.Pipes.Serialization.Binary
-[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Pipes.Serialization.Binary?style=for-the-badge)](https://www.nuget.org/packages/AllOverIt.Pipes.Serialization.Binary/)
-[![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Pipes.Serialization.Binary?style=for-the-badge)](https://www.nuget.org/packages/AllOverIt.Pipes.Serialization.Binary/)
-
-Provides binary message serialization support for AllOverIt.Pipes.
-
-![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
-![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
-
-
----
-
-
 ## AllOverIt.Reactive
 [![NuGet](https://img.shields.io/nuget/v/AllOverIt.Reactive?style=for-the-badge)](https://www.nuget.org/packages/AllOverIt.Reactive/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Reactive?style=for-the-badge)](https://www.nuget.org/packages/AllOverIt.Reactive/)
