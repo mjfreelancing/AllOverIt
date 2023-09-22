@@ -199,11 +199,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             {
                 public Action<int> Callback { get; set; }
 
-                protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, object[] args)
+                protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, object[] args, ref object result)
                 {
                     Callback.Invoke((int)args[0]);
 
-                    return base.BeforeInvoke(targetMethod, args);
+                    return base.BeforeInvoke(targetMethod, args, ref result);
                 }
             }
 

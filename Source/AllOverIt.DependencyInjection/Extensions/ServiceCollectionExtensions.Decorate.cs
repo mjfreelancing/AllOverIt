@@ -77,7 +77,7 @@ namespace AllOverIt.DependencyInjection.Extensions
                 provider =>
                 {
                     var instance = (TServiceType) GetInstance(provider, descriptor);
-                    return InterceptorFactory.CreateInterceptor<TServiceType, TInterceptor>(instance, configure);
+                    return InterceptorFactory.CreateInterceptor(instance, configure);
                 },
                 descriptor.Lifetime);
         }

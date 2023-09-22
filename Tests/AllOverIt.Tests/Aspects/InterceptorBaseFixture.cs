@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Aspects.Interceptor;
+using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using Castle.DynamicProxy;
 using FluentAssertions;
@@ -36,8 +37,8 @@ namespace AllOverIt.Tests.Aspects
             }
         }
 
-        // Must be public and non-sealed
-        public class DummyInterceptor : InterceptorBase<IDummyService>
+        // Must be non-sealed
+        public class DummyInterceptor1 : InterceptorBase<IDummyService>
         {
             // Determines how values are assigned to DummyState when calling BeforeInvoke() and AfterInvoke()
             public bool LowerBeforeValue { get; set; }
@@ -58,10 +59,8 @@ namespace AllOverIt.Tests.Aspects
                 }
             }
 
-            protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, object[] args)
+            protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, object[] args, ref object result)
             {
-                _ = base.BeforeInvoke(targetMethod, args);
-
                 var value = (string) (args[0]);
 
                 if (LowerBeforeValue)
@@ -75,16 +74,8 @@ namespace AllOverIt.Tests.Aspects
                 return _state;
             }
 
-            protected override object Invoke(MethodInfo targetMethod, object[] args)
+            protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, ref object result)
             {
-                // Wouldn't normally mutate the result - would have to cater for void, T and Task<T>
-                return base.Invoke(targetMethod, args);
-            }
-
-            protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
-            {
-                base.AfterInvoke(targetMethod, args, state);
-
                 var value = (string) (args[0]);
 
                 ((DummyState) state).AfterValue = UpperAfterValue ? value.ToUpperInvariant() : value;
@@ -92,9 +83,36 @@ namespace AllOverIt.Tests.Aspects
 
             protected override void Faulted(MethodInfo targetMethod, object[] args, InterceptorState state, Exception exception)
             {
-                base.Faulted(targetMethod, args, state, exception);
-
                 ((DummyState) state).Fault = exception;
+            }
+        }
+
+        // Must be non-sealed
+        public class DummyInterceptor2 : InterceptorBase<IDummyService>
+        {
+            // Determines how values are assigned to DummyState when calling BeforeInvoke() and AfterInvoke()
+            public object HandleBeforeResult { get; set; }
+            public object HandleAfterResult { get; set; }
+
+            protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, object[] args, ref object result)
+            {
+                var state = new InterceptorState();
+
+                if (HandleBeforeResult is not null)
+                {
+                    result = HandleBeforeResult;
+                    state.Handled = true;
+                }
+
+                return state;
+            }
+
+            protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, ref object result)
+            {
+                if (HandleAfterResult is not null)
+                {
+                    result = HandleAfterResult;
+                }
             }
         }
 
@@ -103,7 +121,7 @@ namespace AllOverIt.Tests.Aspects
         [InlineData(true)]
         public void Should_Call_Before_Invoke(bool lowerBeforeValue)
         {
-            var (proxiedService, actualInterceptor) = CreateProxiedService(interceptor =>
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor1(interceptor =>
             {
                 interceptor.LowerBeforeValue = lowerBeforeValue;
             });
@@ -126,7 +144,7 @@ namespace AllOverIt.Tests.Aspects
         [InlineData(true)]
         public async Task Should_Call_Before_Invoke_Async(bool lowerBeforeValue)
         {
-            var (proxiedService, actualInterceptor) = CreateProxiedService(interceptor =>
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor1(interceptor =>
             {
                 interceptor.LowerBeforeValue = lowerBeforeValue;
             });
@@ -145,9 +163,45 @@ namespace AllOverIt.Tests.Aspects
         }
 
         [Fact]
+        public void Should_Handle_When_Before_Invoke()
+        {
+            var expected = Create<string>();
+
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor2(interceptor =>
+            {
+                interceptor.HandleBeforeResult = expected;
+            });
+
+            var input = Create<string>();
+            var value = $"A{input}b";
+
+            var actual = proxiedService.GetValue(value, false);
+
+            actual.Should().Be(expected);
+        }
+
+        [Fact]
+        public async Task Should_Handle_When_Before_InvokeAsync()
+        {
+            var expected = Create<string>();
+
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor2(interceptor =>
+            {
+                interceptor.HandleBeforeResult = Task.FromResult(expected);
+            });
+
+            var input = Create<string>();
+            var value = $"A{input}b";
+
+            var actual = await proxiedService.GetValueAsync(value, false);
+
+            actual.Should().Be(expected);
+        }
+
+        [Fact]
         public void Should_Return_Invoke_Result()
         {
-            var (proxiedService, actualInterceptor) = CreateProxiedService();
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor1();
 
             var input = Create<string>();
             var value = $"A{input}b";
@@ -163,7 +217,7 @@ namespace AllOverIt.Tests.Aspects
         [InlineData(true)]
         public void Should_Call_After_Invoke(bool upperAfterValue)
         {
-            var (proxiedService, actualInterceptor) = CreateProxiedService(interceptor =>
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor1(interceptor =>
             {
                 interceptor.UpperAfterValue = upperAfterValue;
             });
@@ -186,7 +240,7 @@ namespace AllOverIt.Tests.Aspects
         [InlineData(true)]
         public async Task Should_Call_After_Invoke_Async(bool upperAfterValue)
         {
-            var (proxiedService, actualInterceptor) = CreateProxiedService(interceptor =>
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor1(interceptor =>
             {
                 interceptor.UpperAfterValue = upperAfterValue;
             });
@@ -205,9 +259,45 @@ namespace AllOverIt.Tests.Aspects
         }
 
         [Fact]
-        public void Should_Fault()
+        public void Should_Handle_When_After_Invoke()
         {
-            var (proxiedService, actualInterceptor) = CreateProxiedService();
+            var expected = Create<string>();
+
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor2(interceptor =>
+            {
+                interceptor.HandleAfterResult = expected;
+            });
+
+            var input = Create<string>();
+            var value = $"A{input}b";
+
+            var actual = proxiedService.GetValue(value, false);
+
+            actual.Should().Be(expected);
+        }
+
+        [Fact]
+        public async Task Should_Handle_When_After_InvokeAsync()
+        {
+            var expected = Create<string>();
+
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor2(interceptor =>
+            {
+                interceptor.HandleAfterResult = Task.FromResult(expected);
+            });
+
+            var input = Create<string>();
+            var value = $"A{input}b";
+
+            var actual = await proxiedService.GetValueAsync(value, false);
+
+            actual.Should().Be(expected);
+        }
+
+        [Fact]
+        public void Should_Default_Fault()      // When the Fault() method is not overriden
+        {
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor2();
 
             try
             {
@@ -218,6 +308,23 @@ namespace AllOverIt.Tests.Aspects
             catch(Exception exception)
             {
                 exception.Message.Should().Be("Dummy Exception");
+            }
+        }
+
+        [Fact]
+        public void Should_Fault()
+        {
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor1();
+
+            try
+            {
+                _ = proxiedService.GetValue(Create<string>(), true);
+
+                Assert.Fail("The invocation should have faulted");
+            }
+            catch (Exception exception)
+            {
+                exception.Message.Should().Be("Dummy Exception");
                 actualInterceptor._state.Fault.Should().BeSameAs(exception);
             }
         }
@@ -225,7 +332,7 @@ namespace AllOverIt.Tests.Aspects
         [Fact]
         public async Task Should_Fault_Async()
         {
-            var (proxiedService, actualInterceptor) = CreateProxiedService();
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor1();
 
             try
             {
@@ -240,39 +347,26 @@ namespace AllOverIt.Tests.Aspects
             }
         }
 
-        //[Fact]
-        //public async Task Should_Fault_Async_2()
-        //{
-        //    var (proxiedService, actualInterceptor) = CreateProxiedService();
-
-        //    try
-        //    {
-        //        var task = proxiedService.GetValueAsync(Create<string>(), true);
-
-        //        task = task.ContinueWith(t => "");
-
-        //        await Task.Delay(100);
-
-        //        await task;
-
-        //        Assert.Fail("The invocation should have faulted");
-        //    }
-        //    catch (Exception exception)
-        //    {
-        //        exception.Message.Should().Be("Dummy Exception");
-        //        actualInterceptor._state.Fault.Should().BeSameAs(exception);
-        //    }
-        //}
-
-        private static (IDummyService, DummyInterceptor) CreateProxiedService(Action<DummyInterceptor> configure = default)
+        private static (IDummyService, DummyInterceptor1) CreateDummyInterceptor1(Action<DummyInterceptor1> configure = default)
         {
             var service = new DummyService();
 
             // Interceptors cannot be new'd up - can only be created via this factory method.
             // This method returns a proxied IDummyService this is a DummyInterceptor.
-            var proxy = InterceptorFactory.CreateInterceptor<IDummyService, DummyInterceptor>(service, configure);
+            var proxy = InterceptorFactory.CreateInterceptor<IDummyService, DummyInterceptor1>(service, configure);
 
-            return (proxy, (DummyInterceptor) proxy);
+            return (proxy, (DummyInterceptor1) proxy);
+        }
+
+        private static (IDummyService, DummyInterceptor2) CreateDummyInterceptor2(Action<DummyInterceptor2> configure = default)
+        {
+            var service = new DummyService();
+
+            // Interceptors cannot be new'd up - can only be created via this factory method.
+            // This method returns a proxied IDummyService this is a DummyInterceptor.
+            var proxy = InterceptorFactory.CreateInterceptor<IDummyService, DummyInterceptor2>(service, configure);
+
+            return (proxy, (DummyInterceptor2) proxy);
         }
     }
 }
