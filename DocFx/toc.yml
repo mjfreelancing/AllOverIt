@@ -1,5 +1,4 @@
-- name: Packages
+- name: Package Reference
   href: packages/
-- name: Api
+- name: API Reference
   href: api/
-  homepage: api/index.md
