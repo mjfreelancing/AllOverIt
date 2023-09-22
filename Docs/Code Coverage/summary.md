@@ -1,31 +1,31 @@
 # Summary
 |||
 |:---|:---|
-| Generated on: | 17/09/2023 - 11:15:53 PM |
-| Coverage date: | 17/09/2023 - 11:14:31 PM - 17/09/2023 - 11:15:44 PM |
+| Generated on: | 22/09/2023 - 11:54:25 PM |
+| Coverage date: | 22/09/2023 - 11:52:43 PM - 22/09/2023 - 11:54:15 PM |
 | Parser: | MultiReport (17x Cobertura) |
 | Assemblies: | 18 |
 | Classes: | 433 |
 | Files: | 442 |
-| **Line coverage:** | 99.5% (12769 of 12823) |
-| Covered lines: | 12769 |
+| **Line coverage:** | 99.5% (12773 of 12827) |
+| Covered lines: | 12773 |
 | Uncovered lines: | 54 |
-| Coverable lines: | 12823 |
-| Total lines: | 32289 |
-| **Branch coverage:** | 96.4% (2502 of 2593) |
-| Covered branches: | 2502 |
-| Total branches: | 2593 |
+| Coverable lines: | 12827 |
+| Total lines: | 32307 |
+| **Branch coverage:** | 96.4% (2504 of 2595) |
+| Covered branches: | 2504 |
+| Total branches: | 2595 |
 | **Method coverage:** | [Feature is only available for sponsors](https://reportgenerator.io/pro) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|
-|**AllOverIt**|**5222**|**17**|**5239**|**14318**|**99.6%**|**1019**|**1042**|**97.7%**|
-|AllOverIt.Aspects.Interceptor.InterceptorBase`1|41|0|41|100|100%|2|2|100%|
+|**AllOverIt**|**5226**|**17**|**5243**|**14336**|**99.6%**|**1021**|**1044**|**97.7%**|
+|AllOverIt.Aspects.Interceptor.InterceptorBase`1|44|0|44|111|100%|4|4|100%|
 |AllOverIt.Aspects.Interceptor.InterceptorFactory|11|0|11|35|100%|2|2|100%|
-|AllOverIt.Aspects.Interceptor.InterceptorState|1|0|1|13|100%|0|0||
+|AllOverIt.Aspects.Interceptor.InterceptorState|2|0|2|20|100%|0|0||
 |AllOverIt.Async.AsyncLazy`1|9|0|9|36|100%|0|0||
-|AllOverIt.Async.BackgroundTask|85|0|85|165|100%|13|14|92.8%|
-|AllOverIt.Async.BackgroundTask`1|77|3|80|165|96.2%|16|18|88.8%|
+|AllOverIt.Async.BackgroundTask|83|2|85|165|97.6%|12|14|85.7%|
+|AllOverIt.Async.BackgroundTask`1|79|1|80|165|98.7%|17|18|94.4%|
 |AllOverIt.Async.CompositeAsyncDisposable|51|0|51|95|100%|6|6|100%|
 |AllOverIt.Async.RepeatingTask|82|2|84|166|97.6%|0|0||
 |AllOverIt.Async.TaskHelper|37|0|37|224|100%|0|0||
