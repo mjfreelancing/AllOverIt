@@ -50,7 +50,9 @@ namespace AllOverIt.EntityFrameworkCore.Migrator
                 }
 
                 // This will create the database if it does not exist
-                await dbContext.Database.MigrateAsync(CancellationToken.None);
+                await dbContext.Database
+                    .MigrateAsync(CancellationToken.None)
+                    .ConfigureAwait(false);
             }
         }
 
