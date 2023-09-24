@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFrameworks>net7.0;net6.0</TargetFrameworks>
-        <Description>A library providing keyset-based pagination for use with EntityFramework Core.</Description>
+        <Description>Using AllOverIt.Pagination as the basis for advanced keyset-based pagination, this library provides additional extensions for use with EntityFramework Core.</Description>
         <PackageTags>AllOverIt;Utilities;Query;EntityFramework;Pagination;KeySet</PackageTags>
     </PropertyGroup>
 

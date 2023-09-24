@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFrameworks>net7.0;net6.0</TargetFrameworks>
-        <Description>A library providing utilities for use with EntityFramework Core.</Description>
+        <Description>A library providing EntityFramework Core utilities such as a database migration helper and a value converter for AllOverIt based enriched enums.</Description>
         <PackageTags>AllOverIt;Utilities;Query;EntityFramework</PackageTags>
     </PropertyGroup>
 

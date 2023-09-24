@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFrameworks>net7.0;net6.0;netstandard2.1</TargetFrameworks>
-        <Description>A library to assist with CSV export using CsvHelper.</Description>
+        <Description>Using CsvHelper to perform the actual writing of CSV content, this library provides a configuration based serializer that can export data using a model with fixed columns as well as dynamic columns derived from complex or array type properties.</Description>
         <PackageTags>AllOverIt;Utilities;CSV;Export</PackageTags>
     </PropertyGroup>
 

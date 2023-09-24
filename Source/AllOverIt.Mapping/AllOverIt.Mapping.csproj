@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFrameworks>net7.0;net6.0;netstandard2.1</TargetFrameworks>
-        <Description>A library containing an object mapper that is mostly configuration free.</Description>
+        <Description>A library containing an object mapper that is mostly configuration free but also capable of property exclusion, aliasing, null replacement, value conversion, and deep copying.</Description>
         <PackageTags>AllOverIt;Utilities;Mapping</PackageTags>
     </PropertyGroup>
 

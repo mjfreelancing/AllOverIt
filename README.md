@@ -1,11 +1,7 @@
 # Overview
-**AllOverIt** began as a general purpose library in 2015 and has since evolved into a suite of libraries
-aimed at providing a simplified and consistent approach to cross-cutting and functional concerns such as
-caching, serialization, threading, reflection, conversions, mapping, event messaging, validation,
-AWS AppSync, data (`IEnumable<T>` and `IQueryable<T>`) filtering and pagination, and much more.
+**AllOverIt** began as a single nuget package of the same name in 2015. Since then, the library has broadened and deepened in functionality, resulting in a comprehensive set of dedicated nuget packages.
 
-The suite has an ever growing list of behavioural and functional unit tests. The coverage details can
-be found below.
+The suite has an ever growing list of behavioural and functional unit tests. The coverage details can be found below.
 
 | Line Coverage                                     | Branch Coverage                                     | Method Coverage                                     |
 | --------------------------------------------------|-----------------------------------------------------|---------------------------------------------------- |
@@ -311,6 +307,19 @@ A library containing utility extensions for use with ReactiveUI.
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
 ![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
+
+
+---
+
+
+## AllOverIt.ReactiveUI.Wpf
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.ReactiveUI.Wpf?style=for-the-badge)](https://www.nuget.org/packages/AllOverIt.ReactiveUI/)
+[![NuGet](https://img.shields.io/nuget/dt/AllOverIt.ReactiveUI.Wpf?style=for-the-badge)](https://www.nuget.org/packages/AllOverIt.ReactiveUI/)
+
+A library containing utility extensions for use with ReactiveUI and WPF.
+
+![](https://img.shields.io/badge/.NET-7.0--windows-55A9EE.svg)
+![](https://img.shields.io/badge/.NET-6.0--windows-FF8C67.svg)
 
 
 ---

@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFrameworks>net7.0;net6.0</TargetFrameworks>
-        <Description>A library providing formatters to generate ERD diagrams using EntityFramework Core.</Description>
+        <Description>In conjunction with D2, this library will generate entity relationship diagrams for an EntityFramework Core DbContext.</Description>
         <PackageTags>AllOverIt;Utilities;Query;EntityFramework;D2;Diagrams</PackageTags>
     </PropertyGroup>
 

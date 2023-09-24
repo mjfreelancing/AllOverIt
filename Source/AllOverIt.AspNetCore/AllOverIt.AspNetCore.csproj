@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFrameworks>net7.0;net6.0</TargetFrameworks>
-        <Description>A library containing ASP.NET Core utilities.</Description>
+        <Description>Provides useful ASP.NET Core utilities such as custom model binding for AllOverIt based enriched enum types and arrays of values in a query string.</Description>
         <PackageTags>AllOverIt;Utilities;AspNetCore</PackageTags>
     </PropertyGroup>
 

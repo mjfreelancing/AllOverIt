@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFrameworks>net7.0;net6.0;netstandard2.1</TargetFrameworks>
-        <Description>Contains a number of helper classes and utilities to provide easy access to commonly used encryption and decryption algorthims.</Description>
+        <Description>A library providing byte-array and stream-based interfaces for encryption algorithms such as AES, RSA and an RSA-AES hybrid. It also includes useful extension methods that greatly simplifies the encryption and decryption between byte-arrays, streams, plain text and base64 encoded versions of plain text and cipher text.</Description>
         <PackageTags>AllOverIt;Utilities;Cryptography;Encryption;Decryption;Hash;Signing</PackageTags>
     </PropertyGroup>
 

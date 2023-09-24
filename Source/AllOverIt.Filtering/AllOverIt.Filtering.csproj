@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFrameworks>net7.0;net6.0;netstandard2.1</TargetFrameworks>
-        <Description>A library providing queryable filtering utilities.</Description>
+        <Description>Adds comprehensive filtering support to any IQueryable with built-in provision for operations such as Contains, StartsWith, EndsWith, In, NotIn, EqualTo, NotEqualTo, GreaterThan, LessThan, GreaterThanOrEqual, LessThanOrEqual, as well as being able to create a custom predicate based on a Specification. This library provides options such as ignoring default (null) filter values and parameterizing query inputs, making it ideal for use with EntityFramework Core.</Description>
         <PackageTags>AllOverIt;Utilities;Query;Filtering</PackageTags>
     </PropertyGroup>
 

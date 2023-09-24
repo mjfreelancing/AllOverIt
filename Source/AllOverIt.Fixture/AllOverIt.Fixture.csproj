@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFrameworks>net7.0;net6.0;netstandard2.1</TargetFrameworks>
-        <Description>A library containing a base fixture class with numerous helper methods to assist with creating unit test scaffolding. Utilizes AutoFixture to do most of the hard work.</Description>
+        <Description>A library containing a base fixture class with numerous helper methods to assist with scaffolding unit tests. Utilizes AutoFixture to do most of the hard work.</Description>
         <PackageTags>AllOverIt;Utilities;UnitTesting;Fakes;Faking;Mocks;Mocking;Stubs;Stubbing;TDD;BDD;NUnit</PackageTags>
     </PropertyGroup>
 

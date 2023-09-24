@@ -8,7 +8,7 @@ namespace AllOverIt.GenericHost
     /// <summary>Provides static methods to create host builders.</summary>
     public sealed class GenericHost
     {
-        /// <summary>Create a host builder for a hosted console application.</summary>
+        /// <summary>Creates a host builder for a hosted console application.</summary>
         /// <param name="args">The application's command line arguments.</param>
         /// <returns>A <see cref="IHostBuilder"/> instance.</returns>
         /// <remarks>This overload requires a call to <see cref="IHostBuilder.ConfigureServices"/> to register a Singleton <see cref="IConsoleApp"/> instance.</remarks>
@@ -18,7 +18,7 @@ namespace AllOverIt.GenericHost
             return CreateHostedConsoleServiceBuilder(args);
         }
 
-        /// <summary>Create a host builder for a hosted console application.</summary>
+        /// <summary>Creates a host builder for a hosted console application.</summary>
         /// <typeparam name="TConsoleApp">An <see cref="IConsoleApp"/> derived class that will be registered as a Singleton for injection into the hosted service.</typeparam>
         /// <param name="args">The application's command line arguments.</param>
         /// <returns>A <see cref="IHostBuilder"/> instance.</returns>

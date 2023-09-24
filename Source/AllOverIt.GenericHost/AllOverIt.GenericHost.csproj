@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFrameworks>net7.0;net6.0;netstandard2.1</TargetFrameworks>
-        <Description>A library containing a convenient wrapper for building console applications that support dependency injection.</Description>
+        <Description>A library containing generic host helpers and convenience methods for setting up console applications that support dependency injection.</Description>
         <PackageTags>AllOverIt;Utilities;GenericHost</PackageTags>
     </PropertyGroup>
 
