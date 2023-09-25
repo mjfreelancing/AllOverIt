@@ -3,7 +3,7 @@
     <PropertyGroup>
         <!--Targeting 'windows' because not all pipe features are available on other platforms-->
         <TargetFrameworks>net7.0-windows;net6.0-windows</TargetFrameworks>
-        <Description>A library providing support for pipe based communication.</Description>
+        <Description>This package provides support for communication over anonymous pipes using StreamReader and StreamWriter, and strongly-typed message-based communication over named pipes using a binary serializer. The named pipes can use the binary serializer from AllOverIt.Serialization.Binary or you can create your own.</Description>
         <PackageTags>AllOverIt;Utilities;Async;Threading;IO;Pipes;NamedPipes</PackageTags>
     </PropertyGroup>
 

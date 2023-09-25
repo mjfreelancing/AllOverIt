@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFrameworks>net7.0;net6.0</TargetFrameworks>
-        <Description>Using AllOverIt.Pagination as the basis for advanced keyset-based pagination, this library provides additional extensions for use with EntityFramework Core.</Description>
+        <Description>Using AllOverIt.Pagination as the basis for advanced keyset-based pagination, this package provides additional extensions for use with EntityFramework Core.</Description>
         <PackageTags>AllOverIt;Utilities;Query;EntityFramework;Pagination;KeySet</PackageTags>
     </PropertyGroup>
 

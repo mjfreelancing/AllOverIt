@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFrameworks>net7.0;net6.0;netstandard2.1</TargetFrameworks>
-        <Description>A comprehensive library containing a diverse range of classes and utility functions, intended to tackle a wide array of commonly encountered issues. Key areas of concern include threading, tasks, generic caching, event (message) aggregation, expression and reflection utilities, plugin contexts, enriched enums, pipelines, value objects, specifications, and dozens of extensions.</Description>
+        <Description>This package contains a diverse range of classes and utility functions, intended to tackle a wide array of commonly encountered issues. Key areas of concern include threading, tasks, generic caching, event (message) aggregation, expression and reflection utilities, plugin contexts, enriched enums, pipelines, value objects, specifications, and dozens of extensions.</Description>
         <PackageTags>AllOverIt;Utilities;Async;Threading;Diagnostics;Patterns;IO;Reflection;Process;Collections;Caching;Conversions</PackageTags>
     </PropertyGroup>
 

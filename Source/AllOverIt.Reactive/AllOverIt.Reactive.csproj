@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFrameworks>net7.0;net6.0;netstandard2.1</TargetFrameworks>
-        <Description>A library containing utility extensions for use with System.Reactive.</Description>
+        <Description>This package contains utility extensions for use with System.Reactive.</Description>
         <PackageTags>AllOverIt;Utilities;Reactive</PackageTags>
     </PropertyGroup>
 

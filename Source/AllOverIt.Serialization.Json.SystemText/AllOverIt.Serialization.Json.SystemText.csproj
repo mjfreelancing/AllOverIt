@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFrameworks>net7.0;net6.0;netstandard2.1</TargetFrameworks>
-        <Description>A library containing a wrapper for System.Text.Json serialization based on AllOverIt.Serialization.Json.Abstractions.</Description>
+        <Description>This package contains a wrapper for System.Text.Json serialization based on AllOverIt.Serialization.Json.Abstractions.</Description>
         <PackageTags>AllOverIt;Utilities;Serialization;Deserialization;JSON;SystemText</PackageTags>
     </PropertyGroup>
 

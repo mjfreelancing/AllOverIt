@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFrameworks>net7.0;net6.0</TargetFrameworks>
-        <Description>A library providing EntityFramework Core utilities such as a database migration helper and a value converter for AllOverIt based enriched enums.</Description>
+        <Description>This package provides EntityFramework Core utilities such as a database migration helper and a value converter for AllOverIt based enriched enums.</Description>
         <PackageTags>AllOverIt;Utilities;Query;EntityFramework</PackageTags>
     </PropertyGroup>
 

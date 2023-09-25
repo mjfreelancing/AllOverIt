@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFrameworks>net7.0;net6.0;netstandard2.1</TargetFrameworks>
-        <Description>A library containing generic host helpers and convenience methods for setting up console applications that support dependency injection.</Description>
+        <Description>This package contains generic host helpers and convenience methods for setting up console applications that support dependency injection.</Description>
         <PackageTags>AllOverIt;Utilities;GenericHost</PackageTags>
     </PropertyGroup>
 

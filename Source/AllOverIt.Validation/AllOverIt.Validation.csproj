@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFrameworks>net7.0;net6.0;netstandard2.1</TargetFrameworks>
-        <Description>A library containing additional validators and extensions for use with FluentValidation.</Description>
+        <Description>This package contains additional validators and extensions for use with FluentValidation. It includes an invoker that will select, and invoke, a registered validator based on a provided model. Synchronous and Asynchronous validation is supported, along with extensions that make it easier to pass context information into a validator to keep it stateless. Also available is a validation registrar that makes it possible to auto-register all validators within the same assembly. Validators can also be filtered based on a predicate.</Description>
         <PackageTags>AllOverIt;Utilities;Serialization;Deserialization;JSON;Validation</PackageTags>
     </PropertyGroup>
 

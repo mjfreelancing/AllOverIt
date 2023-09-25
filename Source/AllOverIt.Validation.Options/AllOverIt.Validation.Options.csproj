@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFrameworks>net7.0;net6.0;netstandard2.1</TargetFrameworks>
-        <Description>A library containing Options validation using FluentValidation.</Description>
+        <Description>This package contains Microsoft.Extensions.Options validation using FluentValidation.</Description>
         <PackageTags>AllOverIt;Utilities;Validation</PackageTags>
     </PropertyGroup>
 

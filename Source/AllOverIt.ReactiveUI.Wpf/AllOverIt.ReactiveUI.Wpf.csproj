@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFrameworks>net7.0-windows;net6.0-windows</TargetFrameworks>
-        <Description>A library containing utility extensions for use with ReactiveUI and WPF.</Description>
+        <Description>This package contains utility extensions for use with ReactiveUI and WPF.</Description>
         <PackageTags>AllOverIt;Utilities;Reactive;ReactiveUI;WPF</PackageTags>
         <UseWPF>true</UseWPF>
     </PropertyGroup>

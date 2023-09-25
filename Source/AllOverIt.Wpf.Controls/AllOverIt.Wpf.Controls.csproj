@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFrameworks>net7.0-windows;net6.0-windows</TargetFrameworks>
-        <Description>A library containing useful WPF controls.</Description>
+        <Description>This package contains useful WPF controls.</Description>
         <UseWPF>true</UseWPF>
     </PropertyGroup>
 
