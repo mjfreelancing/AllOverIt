@@ -30,8 +30,8 @@
       },
       {
         "files": [
-          "packages/**.md",
-          "packages/**/toc.yml",
+          "docs/**.md",
+          "docs/**/toc.yml",
           "toc.yml",
           "*.md"
         ]

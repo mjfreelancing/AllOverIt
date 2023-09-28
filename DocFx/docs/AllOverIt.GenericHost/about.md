@@ -1,0 +1,8 @@
+# AllOverIt.GenericHost
+---
+**AllOverIt.GenericHost**
+
+# Dependencies
+In the following diagram, explicit dependencies of **AllOverIt.GenericHost** are shown in blue, and implicit dependencies (if any) are shown in yellow.
+
+<img src="../../images/dependencies/alloverit-generichost.png" width="800"/>
