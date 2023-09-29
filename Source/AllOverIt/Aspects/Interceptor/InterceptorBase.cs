@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -24,7 +23,7 @@ namespace AllOverIt.Aspects.Interceptor
         {
             object result = default;
 
-            var state = BeforeInvoke(targetMethod, args, ref result);
+            var state = BeforeInvoke(targetMethod, ref args, ref result);
 
             try
             {
@@ -71,7 +70,7 @@ namespace AllOverIt.Aspects.Interceptor
 
         /// <summary>Called before the decorated instance method is called.</summary>
         /// <param name="targetMethod">The info for the method being intercepted.</param>
-        /// <param name="args">The arguments passed to the intercepted method.</param>
+        /// <param name="args">The arguments passed to the intercepted method, passed by ref.</param>
         /// <param name="result">Can be set to a result compatible with the method call. If the method being intercepted
         /// returns a <see cref="Task{T}"/> be sure to wrap the value in a call to <c>Task.FromResult()</c>.
         /// If the <see cref="InterceptorState.Handled"/> property is set to <see langword="True"/> then this result will
@@ -80,7 +79,7 @@ namespace AllOverIt.Aspects.Interceptor
         /// <returns>A state object that will be passed to the <see cref="AfterInvoke(MethodInfo, object[], InterceptorState, ref object)"/>
         /// or <see cref="Faulted(MethodInfo, object[], InterceptorState, Exception)"/> method, as applicable.
         /// If no state is required then return <see cref="InterceptorState.Unit"/>.</returns>
-        protected virtual InterceptorState BeforeInvoke(MethodInfo targetMethod, object[] args, ref object result)
+        protected virtual InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
         {
             return InterceptorState.None;
         }

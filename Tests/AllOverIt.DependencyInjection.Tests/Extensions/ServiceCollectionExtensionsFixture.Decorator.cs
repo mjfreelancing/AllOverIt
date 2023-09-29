@@ -3,10 +3,8 @@ using AllOverIt.DependencyInjection.Exceptions;
 using AllOverIt.DependencyInjection.Extensions;
 using AllOverIt.DependencyInjection.Tests.Helpers;
 using AllOverIt.Extensions;
-using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
-using FluentAssertions.Common;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -34,7 +32,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
 
         private sealed class DummyDecorator3 : IDummyDecoratorInterface
         {
-            public IDummyDecoratorInterface Decorated{ get; }
+            public IDummyDecoratorInterface Decorated { get; }
 
             public DummyDecorator3(IDummyDecoratorInterface dummy)
             {
@@ -197,13 +195,21 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
         {
             private class DummyInterceptor : InterceptorBase<IDummyDecoratorInterface>
             {
-                public Action<int> Callback { get; set; }
+                public Func<int, int> Callback { get; set; }
+                public int Actual { get; private set; }
 
-                protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, object[] args, ref object result)
+                protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
                 {
-                    Callback.Invoke((int)args[0]);
+                    args[0] = Callback.Invoke((int)args[0]);
 
-                    return base.BeforeInvoke(targetMethod, args, ref result);
+                    return base.BeforeInvoke(targetMethod, ref args, ref result);
+                }
+
+                protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, ref object result)
+                {
+                    base.AfterInvoke(targetMethod, args, state, ref result);
+
+                    Actual = (int) args[0];
                 }
             }
 
@@ -276,7 +282,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
 
                 int actual = 0;
 
-                Action<int> updater = value => actual = value;
+                int updater(int value)
+                {
+                    actual = value;
+                    return value;
+                }
 
                 _ = ServiceCollectionExtensions.DecorateWithInterceptor<IDummyDecoratorInterface, DummyInterceptor>(services, interceptor =>
                 {
@@ -292,6 +302,36 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                 service.SetValue(expected);
 
                 actual.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Modify_Input_Args()
+            {
+                var services = new ServiceCollection();
+
+                services.AddSingleton<IDummyDecoratorInterface, DummyDecorator1>();
+
+                int updater(int value)
+                {
+                    return value * 2;
+                }
+
+                _ = ServiceCollectionExtensions.DecorateWithInterceptor<IDummyDecoratorInterface, DummyInterceptor>(services, interceptor =>
+                {
+                    // Used to double the input argument
+                    interceptor.Callback = updater;
+                });
+
+                var provider = services.BuildServiceProvider();
+
+                var service = provider.GetRequiredService<IDummyDecoratorInterface>();
+
+                var input = Create<int>();
+                var expected = input * 2;
+
+                service.SetValue(input);
+
+                (service as DummyInterceptor).Actual.Should().Be(expected);
             }
         }
     }

@@ -4,7 +4,7 @@ namespace InterceptorDemo
 {
     public interface ISecretService
     {
-        string GetSecret();
-        Task<string> GetSecretAsync(bool shouldThrow);
+        string GetSecret(string accessKey);
+        Task<string> GetSecretAsync(string accessKey, bool shouldThrow);
     }
 }

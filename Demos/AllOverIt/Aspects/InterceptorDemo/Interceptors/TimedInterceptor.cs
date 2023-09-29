@@ -16,9 +16,13 @@ namespace InterceptorDemo.Interceptors
             public Stopwatch Stopwatch { get; } = Stopwatch.StartNew();
         }
 
-        protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, object[] args, ref object result)
+        protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
         {
-            Console.WriteLine($"Before {targetMethod.Name}()");
+            var accessKey = (string) args[0];
+
+            args[0] = accessKey.ToUpperInvariant();
+
+            Console.WriteLine($"Before {targetMethod.Name}({accessKey})");
 
             // Can return InterceptorState.None if no state is required
             return new TimedState();
@@ -26,14 +30,18 @@ namespace InterceptorDemo.Interceptors
 
         protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, ref object result)
         {
-            Console.WriteLine($"After {targetMethod.Name}()");
+            var accessKey = (string) args[0];
+
+            Console.WriteLine($"After {targetMethod.Name}({accessKey})");
 
             CheckElapsedPeriod(state);
         }
 
         protected override void Faulted(MethodInfo targetMethod, object[] args, InterceptorState state, Exception exception)
         {
-            Console.WriteLine($"FAULTED {targetMethod.Name}() : {exception.GetType().GetFriendlyName()} - {exception.Message}");
+            var accessKey = (string) args[0];
+
+            Console.WriteLine($"FAULTED {targetMethod.Name}({accessKey}) : {exception.GetType().GetFriendlyName()} - {exception.Message}");
 
             CheckElapsedPeriod(state);
         }

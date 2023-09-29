@@ -26,7 +26,8 @@ public sealed class SecretService : ISecretService
 
     public Task<string> GetSecretAsync()
     {
-        return SecurityManager.GetSecretAsync();  // Some async method implemented elsewhere
+        // Some async method implemented elsewhere
+        return SecurityManager.GetSecretAsync();
     }
 }
 ```
@@ -48,7 +49,7 @@ internal class TimedInterceptor : InterceptorBase<ISecretService>
 {
     protected override InterceptorState BeforeInvoke(
         MethodInfo targetMethod,
-        object[] args,
+        ref object[] args,
         ref object result)
     {
         // Custom code here
@@ -90,7 +91,7 @@ internal class TimedInterceptor : InterceptorBase<ISecretService>
 
     protected override InterceptorState BeforeInvoke(
         MethodInfo targetMethod,
-        object[] args,
+        ref object[] args,
         ref object result)
     {
         return new TimedState();

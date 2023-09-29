@@ -25,20 +25,22 @@ namespace InterceptorDemo
 
                 var dispatchProxy = serviceProvider.GetRequiredService<ISecretService>();
 
-                var secret = dispatchProxy.GetSecret();
-                Console.WriteLine(secret);                          // should be reported as 0-1ms
+                var accessKey = "some_key";
+
+                var secret = dispatchProxy.GetSecret(accessKey);
+                Console.WriteLine(secret);      // should be reported as 0-1ms
 
                 // Adding this to make sure this time is not included in the time period reported by the proxy
                 await Task.Delay(2000);
 
                 Console.WriteLine();
 
-                secret = await dispatchProxy.GetSecretAsync(false);
-                Console.WriteLine(secret);                          // should be reported as approx. 1000ms
+                secret = await dispatchProxy.GetSecretAsync(accessKey, false);
+                Console.WriteLine(secret);      // should be reported as approx. 1000ms
 
                 Console.WriteLine();
 
-                secret = await dispatchProxy.GetSecretAsync(true);          // will throw
+                secret = await dispatchProxy.GetSecretAsync(accessKey, true);   // will throw
             }
             catch (Exception exception)
             {

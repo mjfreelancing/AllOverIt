@@ -5,12 +5,12 @@ namespace InterceptorDemo
 {
     internal sealed class SecretService : ISecretService
     {
-        public string GetSecret()
+        public string GetSecret(string accessKey)
         {
-            return Guid.NewGuid().ToString();
+            return $"{accessKey}-{Guid.NewGuid()}";
         }
 
-        public async Task<string> GetSecretAsync(bool shouldThrow)
+        public async Task<string> GetSecretAsync(string accessKey, bool shouldThrow)
         {
             await Task.Delay(1000);
 
@@ -19,7 +19,7 @@ namespace InterceptorDemo
                 throw new Exception("Test Exception");
             }
 
-            return GetSecret();
+            return GetSecret(accessKey);
         }
     }
 }

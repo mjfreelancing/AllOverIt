@@ -59,7 +59,7 @@ namespace AllOverIt.Tests.Aspects
                 }
             }
 
-            protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, object[] args, ref object result)
+            protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
             {
                 var value = (string) (args[0]);
 
@@ -94,7 +94,7 @@ namespace AllOverIt.Tests.Aspects
             public object HandleBeforeResult { get; set; }
             public object HandleAfterResult { get; set; }
 
-            protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, object[] args, ref object result)
+            protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
             {
                 var state = new InterceptorState();
 
@@ -113,6 +113,24 @@ namespace AllOverIt.Tests.Aspects
                 {
                     result = HandleAfterResult;
                 }
+            }
+        }
+
+        // Must be non-sealed
+        public class DummyInterceptor3 : InterceptorBase<IDummyService>
+        {
+            public string AfterArgs { get; set; }
+
+            protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
+            {
+                args[0] = ((string) args[0]).ToUpper();
+
+                return InterceptorState.None;
+            }
+
+            protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, ref object result)
+            {
+                AfterArgs = (string) args[0];
             }
         }
 
@@ -160,6 +178,32 @@ namespace AllOverIt.Tests.Aspects
             actualInterceptor._state.Fault.Should().BeNull();
 
             actual.Should().Be(value);
+        }
+
+        [Fact]
+        public void Should_Mutate_Input_Args()
+        {
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor3();
+
+            var input = Create<string>().ToLower();
+            var expected = input.ToUpper();
+
+            var actual = proxiedService.GetValue(input, false);
+
+            actual.Should().Be(expected);
+        }
+
+        [Fact]
+        public async Task Should_Mutate_Input_Args_Async()
+        {
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor3();
+
+            var input = Create<string>().ToLower();
+            var expected = input.ToUpper();
+
+            var actual = await proxiedService.GetValueAsync(input, false);
+
+            actual.Should().Be(expected);
         }
 
         [Fact]
@@ -367,6 +411,17 @@ namespace AllOverIt.Tests.Aspects
             var proxy = InterceptorFactory.CreateInterceptor<IDummyService, DummyInterceptor2>(service, configure);
 
             return (proxy, (DummyInterceptor2) proxy);
+        }
+
+        private static (IDummyService, DummyInterceptor3) CreateDummyInterceptor3()
+        {
+            var service = new DummyService();
+
+            // Interceptors cannot be new'd up - can only be created via this factory method.
+            // This method returns a proxied IDummyService this is a DummyInterceptor.
+            var proxy = InterceptorFactory.CreateInterceptor<IDummyService, DummyInterceptor3>(service);
+
+            return (proxy, (DummyInterceptor3) proxy);
         }
     }
 }
