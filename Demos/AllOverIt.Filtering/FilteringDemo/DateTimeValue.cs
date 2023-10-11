@@ -11,9 +11,14 @@ namespace FilteringDemo
 
         public static bool operator >=(DateTimeValue left, DateTimeValue right)
         {
-            if (left == null || right == null)
+            if (left is null && right is null)
             {
-                return false;
+                return true;
+            }
+
+            if (left is null || right is null)
+            {
+                return left is not null;
             }
 
             return left.Value >= right.Value;
@@ -21,9 +26,14 @@ namespace FilteringDemo
 
         public static bool operator <=(DateTimeValue left, DateTimeValue right)
         {
+            if (left is null && right is null)
+            {
+                return true;
+            }
+
             if (left == null || right == null)
             {
-                return false;
+                return right is not null;
             }
 
             return left.Value <= right.Value;
@@ -31,9 +41,14 @@ namespace FilteringDemo
 
         public static bool operator >(DateTimeValue left, DateTimeValue right)
         {
-            if (left == null || right == null)
+            if (left is null && right is null)
             {
                 return false;
+            }
+
+            if (left == null || right == null)
+            {
+                return left is not null;
             }
 
             return left.Value > right.Value;
@@ -41,9 +56,14 @@ namespace FilteringDemo
 
         public static bool operator <(DateTimeValue left, DateTimeValue right)
         {
-            if (left == null || right == null)
+            if (left is null && right is null)
             {
                 return false;
+            }
+
+            if (left == null || right == null)
+            {
+                return right is not null;
             }
 
             return left.Value < right.Value;
