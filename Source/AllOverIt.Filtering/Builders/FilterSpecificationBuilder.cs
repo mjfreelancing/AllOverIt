@@ -256,8 +256,11 @@ namespace AllOverIt.Filtering.Builders
             {
                 var genericArgumentType = operationType.GetGenericArguments()[0];
 
-                // Looking for typeof(string) and not IStringFilterOperation because other non (explicit) string operations support strings
-                var argTypeIsNullable = genericArgumentType == CommonTypes.StringType || genericArgumentType.IsNullableType();
+                // Looking for typeof(string) and not IStringFilterOperation because other non (explicit) string operations support strings.
+                // genericArgumentType.IsClass caters for 'value types' (wrappers)
+                var argTypeIsNullable = genericArgumentType == CommonTypes.StringType ||
+                                        genericArgumentType.IsClass ||
+                                        genericArgumentType.IsNullableType();
 
                 var operationIsArray = operationType.IsDerivedFrom(typeof(IArrayFilterOperation));
 

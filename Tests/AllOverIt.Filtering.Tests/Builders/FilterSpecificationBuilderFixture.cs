@@ -27,6 +27,77 @@ namespace AllOverIt.Filtering.Tests.Builders
             Stationary
         }
 
+        public sealed class DateTimeValue
+        {
+            public DateTime Value { get; set; }
+
+            public static implicit operator DateTime?(DateTimeValue dateTimeValue) => dateTimeValue?.Value;
+            public static explicit operator DateTimeValue(DateTime value) => new() { Value = value };
+
+            // Used for custom value conversion when converting a LINQ expression to a query string
+            public override string ToString() => Value.ToString();
+
+            public static bool operator >=(DateTimeValue left, DateTimeValue right)
+            {
+                if (left is null && right is null)
+                {
+                    return true;
+                }
+
+                if (left is null || right is null)
+                {
+                    return right is null;
+                }
+
+                return left.Value >= right.Value;
+            }
+
+            public static bool operator <=(DateTimeValue left, DateTimeValue right)
+            {
+                if (left is null && right is null)
+                {
+                    return true;
+                }
+
+                if (left == null || right == null)
+                {
+                    return left is null;
+                }
+
+                return left.Value <= right.Value;
+            }
+
+            public static bool operator >(DateTimeValue left, DateTimeValue right)
+            {
+                if (left is null && right is null)
+                {
+                    return false;
+                }
+
+                if (left == null || right == null)
+                {
+                    return right is null;
+                }
+
+                return left.Value > right.Value;
+            }
+
+            public static bool operator <(DateTimeValue left, DateTimeValue right)
+            {
+                if (left is null && right is null)
+                {
+                    return false;
+                }
+
+                if (left == null || right == null)
+                {
+                    return left is null;
+                }
+
+                return left.Value < right.Value;
+            }
+        }
+
         private sealed class DummyEntity
         {
             public bool Active { get; set; }
@@ -34,6 +105,7 @@ namespace AllOverIt.Filtering.Tests.Builders
             public string Name { get; set; }
             public double? Price { get; set; }
             public DateTime? LastUpdated { get; set; }
+            public DateTimeValue OtherUpdated { get; set; }
         }
 
         public sealed class DummyEntityFilter
@@ -83,11 +155,17 @@ namespace AllOverIt.Filtering.Tests.Builders
                 public GreaterThanOrEqual<DateTime?> GreaterThanOrEqual { get; set; } = new();
             }
 
+            public sealed class OtherUpdatedFilter
+            {
+                public EqualTo<DateTimeValue> EqualTo { get; set; } = new();
+            }
+
             public ActiveFilter Active { get; init; } = new();
             public CategoryFilter Category { get; init; } = new();
             public NameFilter Name { get; init; } = new();
             public PriceFilter Price { get; init; } = new();
             public LastUpdatedFilter LastUpdated { get; init; } = new();
+            public OtherUpdatedFilter OtherUpdated { get; init; } = new();
         }
 
         private DummyEntityFilter _filter;
@@ -137,7 +215,11 @@ namespace AllOverIt.Filtering.Tests.Builders
                 {
                     LessThanOrEqual = DateTime.UtcNow,
                     GreaterThanOrEqual = DateTime.UtcNow.AddDays(-7)
-                }
+                },
+                //OtherUpdated =
+                //{
+                //    GreaterThanOrEqual = (DateTimeValue)DateTime.UtcNow.AddDays(-7)
+                //}
             };
 
             _options = new DefaultQueryFilterOptions
@@ -1074,6 +1156,76 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 specification.IsSatisfiedBy(entities[0]).Should().BeTrue();
                 specification.IsSatisfiedBy(entities[1]).Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Ignore_Null_Filter_For_ValueType()
+            {
+                _options = new DefaultQueryFilterOptions
+                {
+                    IgnoreDefaultFilterValues = true
+                };
+
+                _filter.OtherUpdated.EqualTo.Value = null;
+
+                _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                var specification = _specificationBuilder.Create(entity => entity.OtherUpdated, filter => filter.OtherUpdated.EqualTo);
+
+                var entity = new DummyEntity
+                {
+                    OtherUpdated = (DateTimeValue) DateTime.Now
+                };
+
+                specification.IsSatisfiedBy(entity).Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Apply_Null_Filter_For_ValueType()
+            {
+                _filter.OtherUpdated.EqualTo.Value = null;
+
+                _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                var specification = _specificationBuilder.Create(entity => entity.OtherUpdated, filter => filter.OtherUpdated.EqualTo);
+
+                var entity = new DummyEntity
+                {
+                    OtherUpdated = (DateTimeValue) DateTime.Now
+                };
+
+                specification.IsSatisfiedBy(entity).Should().BeFalse();
+
+                entity = new DummyEntity
+                {
+                    OtherUpdated = null
+                };
+
+                specification.IsSatisfiedBy(entity).Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Apply_Non_Null_Filter_For_ValueType()
+            {
+                _filter.OtherUpdated.EqualTo.Value = (DateTimeValue) DateTime.Now;
+
+                _specificationBuilder = new FilterSpecificationBuilder<DummyEntity, DummyEntityFilter>(_filter, _options);
+
+                var specification = _specificationBuilder.Create(entity => entity.OtherUpdated, filter => filter.OtherUpdated.EqualTo);
+
+                var entity = new DummyEntity
+                {
+                    OtherUpdated = _filter.OtherUpdated.EqualTo.Value
+                };
+
+                specification.IsSatisfiedBy(entity).Should().BeTrue();
+
+                entity = new DummyEntity
+                {
+                    OtherUpdated = null
+                };
+
+                specification.IsSatisfiedBy(entity).Should().BeFalse();
             }
         }
 
