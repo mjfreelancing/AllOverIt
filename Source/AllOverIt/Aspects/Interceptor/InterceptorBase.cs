@@ -12,7 +12,7 @@ namespace AllOverIt.Aspects.Interceptor
     {
         internal TServiceType _serviceInstance;
 
-        /// <summary>The <see cref="BeforeInvoke(MethodInfo, object[], ref object)"/> method is called before calling the decorated
+        /// <summary>The <see cref="BeforeInvoke(MethodInfo, ref object[], ref object)"/> method is called before calling the decorated
         /// object's method, and ends with calling <see cref="AfterInvoke(MethodInfo, object[], InterceptorState, ref object)"/> if
         /// no exception is raised, otherwise <see cref="Faulted(MethodInfo, object[], InterceptorState, Exception)"/>
         /// is called.</summary>
@@ -87,8 +87,8 @@ namespace AllOverIt.Aspects.Interceptor
         /// <summary>Called after the instance method has completed execution without faulting (throwing an exception).</summary>
         /// <param name="targetMethod">The info for the method being intercepted.</param>
         /// <param name="args">The arguments passed to the intercepted method.</param>
-        /// <param name="state">The state object returned by <see cref="BeforeInvoke(MethodInfo, object[], ref object)"/>.
-        /// If the <see cref="BeforeInvoke(MethodInfo, object[], ref object)"/> method is not overriden then this will
+        /// <param name="state">The state object returned by <see cref="BeforeInvoke(MethodInfo, ref object[], ref object)"/>.
+        /// If the <see cref="BeforeInvoke(MethodInfo, ref object[], ref object)"/> method is not overriden then this will
         /// be <see cref="InterceptorState.Unit"/>.</param>
         /// <param name="result">Can be set to a result compatible with the method call. If the method being intercepted
         /// returns a <see cref="Task{T}"/> be sure to wrap the value in a call to <c>Task.FromResult()</c>.</param>
@@ -99,8 +99,8 @@ namespace AllOverIt.Aspects.Interceptor
         /// <summary>Called when the decorated instance method invocation faults (throws an exception).</summary>
         /// <param name="targetMethod">The info for the method being intercepted.</param>
         /// <param name="args">The arguments passed to the intercepted method.</param>
-        /// <param name="state">The state object returned by <see cref="BeforeInvoke(MethodInfo, object[], ref object)"/>.
-        /// If the <see cref="BeforeInvoke(MethodInfo, object[], ref object)"/> method is not overriden then this will
+        /// <param name="state">The state object returned by <see cref="BeforeInvoke(MethodInfo, ref object[], ref object)"/>.
+        /// If the <see cref="BeforeInvoke(MethodInfo, ref object[], ref object)"/> method is not overriden then this will
         /// be <see cref="InterceptorState.Unit"/>.</param>
         /// <param name="exception">The exception that was thrown by the instance method.</param>
         protected virtual void Faulted(MethodInfo targetMethod, object[] args, InterceptorState state, Exception exception)
