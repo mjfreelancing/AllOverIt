@@ -36,6 +36,10 @@ namespace AllOverIt.Patterns.Specification.Utils
         private readonly StringBuilder _queryStringBuilder = new();
         private readonly Stack<string> _fieldNames = new();
 
+        /// <summary>Adds a value converter for a custom type. This converter is used when needing to convert
+        /// the value of an expression to a string.</summary>
+        /// <param name="type">The custom type.</param>
+        /// <param name="converter">The action used to convert the value to a string.</param>
         public void AddTypeValueConverter(Type type, Func<object, string> converter)
         {
             _customTypeValueConverters ??= new Dictionary<Type, Func<object, string>>();
