@@ -79,10 +79,11 @@
 * Amazon.CDK.Asset.AwsCliV1 v2.2.200
 * Amazon.CDK.Asset.KubectlV20 v2.1.2
 * Amazon.CDK.Asset.NodeProxyAgentV6 v2.0.1
-* Amazon.CDK.Lib v2.60.0
-* Amazon.CDK.Lib v2.96.2
-* Amazon.JSII.Runtime v1.88.0
-* Cdklabs.AwsCdkAppsyncUtils v0.0.212
+* Amazon.CDK.Lib v2.100.0
+* Amazon.CDK.Lib v2.99.0
+* Amazon.JSII.Runtime v1.89.0
+* Amazon.JSII.Runtime v1.90.0
+* Cdklabs.AwsCdkAppsyncUtils v0.0.238
 * Constructs v10.0.0
 * Constructs v10.0.5
 
@@ -147,8 +148,8 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* Microsoft.EntityFrameworkCore v7.0.11
-* Microsoft.EntityFrameworkCore.Relational v7.0.11
+* Microsoft.EntityFrameworkCore v7.0.12
+* Microsoft.EntityFrameworkCore.Relational v7.0.12
 * Microsoft.Extensions.Configuration.Abstractions v7.0.0
 
 <br>
@@ -165,8 +166,8 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* Microsoft.EntityFrameworkCore v7.0.11
-* Microsoft.EntityFrameworkCore.Relational v7.0.11
+* Microsoft.EntityFrameworkCore v7.0.12
+* Microsoft.EntityFrameworkCore.Relational v7.0.12
 * Microsoft.Extensions.Configuration.Abstractions v7.0.0
 
 <br>
@@ -186,8 +187,8 @@
 * AllOverIt.EntityFrameworkCore
 * AllOverIt.Pagination
 * AllOverIt.Serialization.Binary
-* Microsoft.EntityFrameworkCore v7.0.11
-* Microsoft.EntityFrameworkCore.Relational v7.0.11
+* Microsoft.EntityFrameworkCore v7.0.12
+* Microsoft.EntityFrameworkCore.Relational v7.0.12
 * Microsoft.Extensions.Configuration.Abstractions v7.0.0
 * Microsoft.Extensions.DependencyInjection.Abstractions v7.0.0
 
@@ -380,10 +381,10 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* DynamicData v7.14.2
+* DynamicData v8.0.2
 * Microsoft.Extensions.DependencyInjection.Abstractions v7.0.0
-* ReactiveUI v19.4.1
-* Splat v14.6.37
+* ReactiveUI v19.5.1
+* Splat v14.7.1
 
 <br>
 
@@ -400,11 +401,11 @@
 * AllOverIt
 * AllOverIt.Assertion
 * AllOverIt.ReactiveUI
-* DynamicData v7.14.2
+* DynamicData v8.0.2
 * Microsoft.Extensions.DependencyInjection.Abstractions v7.0.0
-* ReactiveUI v19.4.1
-* ReactiveUI.WPF v19.4.1
-* Splat v14.6.37
+* ReactiveUI v19.5.1
+* ReactiveUI.WPF v19.5.1
+* Splat v14.7.1
 
 <br>
 

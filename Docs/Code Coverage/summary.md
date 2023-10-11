@@ -1,26 +1,26 @@
 # Summary
 |||
 |:---|:---|
-| Generated on: | 22/09/2023 - 11:54:25 PM |
-| Coverage date: | 22/09/2023 - 11:52:43 PM - 22/09/2023 - 11:54:15 PM |
+| Generated on: | 11/10/2023 - 8:42:12 PM |
+| Coverage date: | 11/10/2023 - 8:40:15 PM - 11/10/2023 - 8:41:56 PM |
 | Parser: | MultiReport (17x Cobertura) |
 | Assemblies: | 18 |
 | Classes: | 433 |
 | Files: | 442 |
-| **Line coverage:** | 99.5% (12773 of 12827) |
-| Covered lines: | 12773 |
-| Uncovered lines: | 54 |
-| Coverable lines: | 12827 |
-| Total lines: | 32307 |
-| **Branch coverage:** | 96.4% (2504 of 2595) |
-| Covered branches: | 2504 |
-| Total branches: | 2595 |
+| **Line coverage:** | 99.5% (12782 of 12834) |
+| Covered lines: | 12782 |
+| Uncovered lines: | 52 |
+| Coverable lines: | 12834 |
+| Total lines: | 32321 |
+| **Branch coverage:** | 96.5% (2513 of 2603) |
+| Covered branches: | 2513 |
+| Total branches: | 2603 |
 | **Method coverage:** | [Feature is only available for sponsors](https://reportgenerator.io/pro) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|
-|**AllOverIt**|**5226**|**17**|**5243**|**14336**|**99.6%**|**1021**|**1044**|**97.7%**|
-|AllOverIt.Aspects.Interceptor.InterceptorBase`1|44|0|44|111|100%|4|4|100%|
+|**AllOverIt**|**5238**|**12**|**5250**|**14349**|**99.7%**|**1027**|**1050**|**97.8%**|
+|AllOverIt.Aspects.Interceptor.InterceptorBase`1|44|0|44|110|100%|4|4|100%|
 |AllOverIt.Aspects.Interceptor.InterceptorFactory|11|0|11|35|100%|2|2|100%|
 |AllOverIt.Aspects.Interceptor.InterceptorState|2|0|2|20|100%|0|0||
 |AllOverIt.Async.AsyncLazy`1|9|0|9|36|100%|0|0||
@@ -30,11 +30,11 @@
 |AllOverIt.Async.RepeatingTask|82|2|84|166|97.6%|0|0||
 |AllOverIt.Async.TaskHelper|37|0|37|224|100%|0|0||
 |AllOverIt.Caching.GenericCache|152|0|152|341|100%|6|6|100%|
-|AllOverIt.Caching.GenericCacheKey`1|5|1|6|140|83.3%|0|0||
-|AllOverIt.Caching.GenericCacheKey`2|11|1|12|140|91.6%|0|0||
-|AllOverIt.Caching.GenericCacheKey`3|14|1|15|140|93.3%|0|0||
-|AllOverIt.Caching.GenericCacheKey`4|17|1|18|140|94.4%|0|0||
-|AllOverIt.Caching.GenericCacheKeyBase|5|1|6|17|83.3%|0|0||
+|AllOverIt.Caching.GenericCacheKey`1|6|0|6|140|100%|0|0||
+|AllOverIt.Caching.GenericCacheKey`2|12|0|12|140|100%|0|0||
+|AllOverIt.Caching.GenericCacheKey`3|15|0|15|140|100%|0|0||
+|AllOverIt.Caching.GenericCacheKey`4|18|0|18|140|100%|0|0||
+|AllOverIt.Caching.GenericCacheKeyBase|6|0|6|17|100%|0|0||
 |AllOverIt.Collections.Collection|4|0|4|21|100%|0|0||
 |AllOverIt.Collections.Dictionary|4|0|4|22|100%|0|0||
 |AllOverIt.Collections.List|4|0|4|21|100%|0|0||
@@ -150,7 +150,7 @@
 |AllOverIt.Patterns.Specification.Specification`1|19|0|19|58|100%|0|0||
 |AllOverIt.Patterns.Specification.SpecificationBase`1|6|0|6|26|100%|0|0||
 |AllOverIt.Patterns.Specification.UnarySpecification`1|7|0|7|24|100%|0|0||
-|AllOverIt.Patterns.Specification.Utils.LinqSpecificationVisitor|117|3|120|208|97.5%|31|34|91.1%|
+|AllOverIt.Patterns.Specification.Utils.LinqSpecificationVisitor|124|3|127|222|97.6%|37|40|92.5%|
 |AllOverIt.Patterns.ValueObject.Exceptions.ValueObjectValidationException|5|0|5|20|100%|0|0||
 |AllOverIt.Patterns.ValueObject.ValueObject`2|47|0|47|134|100%|10|10|100%|
 |AllOverIt.Plugin.Exceptions.CannotLoadPluginTypeException|9|0|9|32|100%|0|0||
@@ -310,12 +310,12 @@
 |AllOverIt.Evaluator.Variables.VariableLookup|25|0|25|59|100%|8|8|100%|
 |AllOverIt.Evaluator.Variables.VariableRegistry|52|0|52|114|100%|8|8|100%|
 |AllOverIt.Evaluator.Variables.VariableRegistryBuilder|127|0|127|256|100%|18|18|100%|
-|**AllOverIt.Filtering**|**637**|**1**|**638**|**1606**|**99.8%**|**116**|**130**|**89.2%**|
-|AllOverIt.Filtering.Builders.FilterBuilder`2|71|0|71|159|100%|18|24|75%|
+|**AllOverIt.Filtering**|**637**|**1**|**638**|**1607**|**99.8%**|**119**|**132**|**90.1%**|
+|AllOverIt.Filtering.Builders.FilterBuilder`2|71|0|71|159|100%|19|24|79.1%|
 |AllOverIt.Filtering.Builders.FilterSpecificationBuilder`2|210|1|211|401|99.5%|48|56|85.7%|
 |AllOverIt.Filtering.Exceptions.NullNotSupportedException|9|0|9|28|100%|0|0||
 |AllOverIt.Filtering.Extensions.FilterExtensions|12|0|12|42|100%|2|2|100%|
-|AllOverIt.Filtering.Extensions.FilterSpecificationExtensions|5|0|5|27|100%|0|0||
+|AllOverIt.Filtering.Extensions.FilterSpecificationExtensions|5|0|5|28|100%|2|2|100%|
 |AllOverIt.Filtering.Extensions.QueryableExtensions|9|0|9|50|100%|2|2|100%|
 |AllOverIt.Filtering.Filters.Contains|17|0|17|39|100%|0|0||
 |AllOverIt.Filtering.Filters.EndsWith|17|0|17|39|100%|0|0||
@@ -394,7 +394,7 @@
 |AllOverIt.Reactive.Extensions.PropertyNotifyExtensions|24|0|24|59|100%|0|0||
 |AllOverIt.Reactive.ObservableObject|32|0|32|104|100%|12|12|100%|
 |AllOverIt.Reactive.ObservableProxy`1|23|0|23|92|100%|8|8|100%|
-|**AllOverIt.ReactiveUI**|**304**|**0**|**304**|**765**|**100%**|**53**|**54**|**98.1%**|
+|**AllOverIt.ReactiveUI**|**301**|**3**|**304**|**765**|**99%**|**53**|**54**|**98.1%**|
 |AllOverIt.ReactiveUI.ActivatableViewModel|12|0|12|39|100%|0|0||
 |AllOverIt.ReactiveUI.CommandPipeline.ReactiveCommandPipelineBuilder|5|0|5|24|100%|0|0||
 |AllOverIt.ReactiveUI.CommandPipeline.ReactiveCommandPipelineStep`2|8|0|8|27|100%|1|2|50%|
@@ -406,7 +406,7 @@
 |AllOverIt.ReactiveUI.ViewRegistry.Events.ViewRegistryEventArgs|9|0|9|35|100%|0|0||
 |AllOverIt.ReactiveUI.ViewRegistry.ViewItem`1|2|0|2|15|100%|0|0||
 |AllOverIt.ReactiveUI.ViewRegistry.ViewModelViewItem`1|3|0|3|19|100%|0|0||
-|AllOverIt.ReactiveUI.ViewRegistry.ViewRegistry`1|133|0|133|261|100%|28|28|100%|
+|AllOverIt.ReactiveUI.ViewRegistry.ViewRegistry`1|130|3|133|261|97.7%|28|28|100%|
 |**AllOverIt.Serialization.Binary**|**592**|**1**|**593**|**1320**|**99.8%**|**101**|**110**|**91.8%**|
 |AllOverIt.Serialization.Binary.Exceptions.BinaryReaderException|9|0|9|30|100%|0|0||
 |AllOverIt.Serialization.Binary.Exceptions.BinaryWriterException|9|0|9|30|100%|0|0||

@@ -46,6 +46,7 @@
 * Renamed IDictionary extension method from Concat() to Combine() to avoid namespace clashes
 * Renamed IList extension method from AddRange() to AddMany() to avoid namespace clashes
 * Changed generic cache keys to be records
+* Added support for custom value converters in LinqSpecificationVisitor
 
 
 ## AllOverIt.AspNetCore
