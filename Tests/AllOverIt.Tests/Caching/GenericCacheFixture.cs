@@ -155,7 +155,6 @@ namespace AllOverIt.Tests.Caching
                 var typedKey = (GenericCacheKey<int>) actual;
 
                 typedKey.Key1.Should().Be(value);
-
             }
         }
 

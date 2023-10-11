@@ -77,6 +77,23 @@ namespace AllOverIt.Tests.Caching
                     cacheKey1.Equals(cacheKey2).Should().BeTrue();
                     cacheKey1.Equals(cacheKey3).Should().BeFalse();
                 }
+
+                [Fact]
+                public void Should_Set_Values()         // required for full code coverage
+                {
+                    var cacheKey1 = Create<DummyCacheKey1>();
+                    var cacheKey2 = Create<DummyCacheKey1>();
+
+                    cacheKey1.Equals(cacheKey2).Should().BeFalse();
+
+                    cacheKey2 = cacheKey2 with
+                    {
+                        Key = cacheKey1.Key,
+                        Key1 = cacheKey1.Key1
+                    };
+
+                    cacheKey1.Equals(cacheKey2).Should().BeTrue();
+                }
             }
         }
 
@@ -139,6 +156,24 @@ namespace AllOverIt.Tests.Caching
 
                     cacheKey1.Equals(cacheKey2).Should().BeTrue();
                     cacheKey1.Equals(cacheKey3).Should().BeFalse();
+                }
+
+                [Fact]
+                public void Should_Set_Values()         // required for full code coverage
+                {
+                    var cacheKey1 = Create<DummyCacheKey2>();
+                    var cacheKey2 = Create<DummyCacheKey2>();
+
+                    cacheKey1.Equals(cacheKey2).Should().BeFalse();
+
+                    cacheKey2 = cacheKey2 with
+                    {
+                        Key = cacheKey1.Key,
+                        Key1 = cacheKey1.Key1,
+                        Key2 = cacheKey1.Key2
+                    };
+
+                    cacheKey1.Equals(cacheKey2).Should().BeTrue();
                 }
             }
         }
@@ -215,6 +250,25 @@ namespace AllOverIt.Tests.Caching
 
                     cacheKey1.Equals(cacheKey2).Should().BeTrue();
                     cacheKey1.Equals(cacheKey3).Should().BeFalse();
+                }
+
+                [Fact]
+                public void Should_Set_Values()         // required for full code coverage
+                {
+                    var cacheKey1 = Create<DummyCacheKey3>();
+                    var cacheKey2 = Create<DummyCacheKey3>();
+
+                    cacheKey1.Equals(cacheKey2).Should().BeFalse();
+
+                    cacheKey2 = cacheKey2 with
+                    {
+                        Key = cacheKey1.Key,
+                        Key1 = cacheKey1.Key1,
+                        Key2 = cacheKey1.Key2,
+                        Key3 = cacheKey1.Key3
+                    };
+
+                    cacheKey1.Equals(cacheKey2).Should().BeTrue();
                 }
             }
         }
@@ -304,6 +358,26 @@ namespace AllOverIt.Tests.Caching
 
                     cacheKey1.Equals(cacheKey2).Should().BeTrue();
                     cacheKey1.Equals(cacheKey3).Should().BeFalse();
+                }
+
+                [Fact]
+                public void Should_Set_Values()         // required for full code coverage
+                {
+                    var cacheKey1 = Create<DummyCacheKey4>();
+                    var cacheKey2 = Create<DummyCacheKey4>();
+
+                    cacheKey1.Equals(cacheKey2).Should().BeFalse();
+
+                    cacheKey2 = cacheKey2 with
+                    {
+                        Key = cacheKey1.Key,
+                        Key1 = cacheKey1.Key1,
+                        Key2 = cacheKey1.Key2,
+                        Key3 = cacheKey1.Key3,
+                        Key4 = cacheKey1.Key4
+                    };
+
+                    cacheKey1.Equals(cacheKey2).Should().BeTrue();
                 }
             }
         }
