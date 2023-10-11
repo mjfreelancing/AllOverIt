@@ -9,7 +9,7 @@ namespace AllOverIt.Reflection
     /// <summary>Provides a default, static, cache to help improve performance where reflection is used extensively.</summary>
     public static partial class ReflectionCache
     {
-        private static readonly GenericCache MethodInfoCache = new();
+        private static readonly GenericCache MethodInfoCache = [];
 
         /// <summary>Gets <see cref="MethodInfo"/> (method metadata) for a given <typeparamref name="TType"/> and binding options.</summary>
         /// <typeparam name="TType">The type to obtain method metadata for.</typeparam>

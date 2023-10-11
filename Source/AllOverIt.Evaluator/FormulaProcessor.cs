@@ -35,7 +35,7 @@ namespace AllOverIt.Evaluator
 
         private readonly Stack<string> _operatorStack = new();
         private readonly Stack<Expression> _expressionStack = new();
-        private readonly HashSet<string> _referencedVariableNames = new();
+        private readonly HashSet<string> _referencedVariableNames = [];
         private readonly IArithmeticOperationFactory _operationFactory;
         private readonly IUserDefinedMethodFactory _userDefinedMethodFactory;
 

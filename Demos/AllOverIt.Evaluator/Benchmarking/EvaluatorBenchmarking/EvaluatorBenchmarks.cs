@@ -33,7 +33,7 @@ namespace EvaluatorBenchmarking
         private readonly IList<double> _lhs;
         private readonly IList<double> _rhs;
         private readonly FormulaCompiler _compiler = new();
-        private readonly VariableRegistry _variableRegistry = new();
+        private readonly VariableRegistry _variableRegistry = [];
 
         public EvaluatorBenchmarks()
         {

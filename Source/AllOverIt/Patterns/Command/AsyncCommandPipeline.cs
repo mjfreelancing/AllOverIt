@@ -20,7 +20,7 @@ namespace AllOverIt.Patterns.Command
     /// <typeparam name="TOutput">The output type to be returned from the command.</typeparam>
     public class AsyncCommandPipeline<TInput, TOutput> where TOutput : TInput
     {
-        private readonly List<IAsyncCommand<TInput, TOutput>> _commands = new ();
+        private readonly List<IAsyncCommand<TInput, TOutput>> _commands = [];
 
         /// <summary>Constructor.</summary>
         public AsyncCommandPipeline()

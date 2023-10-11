@@ -7,7 +7,7 @@ namespace AllOverIt.Aws.AppSync.Client.Utils
     // Used to capture exceptions. Cannot use the reactive ToList() because the sequence does not complete.
     internal sealed class ObservableExceptionCollector : IDisposable
     {
-        private readonly List<Exception> _exceptions = new();
+        private readonly List<Exception> _exceptions = [];
         private IDisposable _subscription;
 
         public IEnumerable<Exception> Exceptions => _exceptions;

@@ -13,7 +13,7 @@ namespace AllOverIt.Caching
         private readonly ConcurrentDictionary<GenericCacheKeyBase, object> _cache = new();
 
         /// <summary>A static instance of a <see cref="GenericCache"/>.</summary>
-        public static readonly GenericCache Default = new();
+        public static readonly GenericCache Default = [];
 
         /// <summary>The number of elements in the cache.</summary>
         public int Count => _cache.Count;

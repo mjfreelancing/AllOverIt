@@ -26,7 +26,7 @@ namespace AllOverIt.Pagination
             public Expression ReferenceValue { get; set; }
         }
 
-        private readonly List<ColumnDefinition<TEntity>> _columns = new();
+        private readonly List<ColumnDefinition<TEntity>> _columns = [];
         private readonly QueryPaginatorConfiguration _configuration;
         private readonly IContinuationTokenEncoderFactory _continuationTokenEncoderFactory;
 

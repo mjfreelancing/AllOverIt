@@ -8,11 +8,11 @@ namespace AllOverIt.Formatters.Objects
     /// <summary>Provides options that determine how serialization of properties and their values are handled by <see cref="ObjectPropertySerializer"/>.</summary>
     public sealed class ObjectPropertySerializerOptions
     {
-        private readonly List<Type> _ignoredTypes = new()
-        {
+        private readonly List<Type> _ignoredTypes =
+        [
             typeof(Task),
             typeof(Task<>)
-        };
+        ];
 
         /// <summary>Includes types that will be explicitly excluded during serialization.</summary>
         /// <remarks>Excludes {Task} and {Task&lt;>} by default.</remarks>

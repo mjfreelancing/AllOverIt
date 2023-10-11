@@ -9,7 +9,7 @@ namespace AllOverIt.Async
     /// <summary>A composite that caters for asynchronous disposal of multiple IAsyncDisposable's using a synchronous Dispose().</summary>
     public sealed class CompositeAsyncDisposable : IDisposable, IAsyncDisposable
     {
-        private readonly List<IAsyncDisposable> _disposables = new();
+        private readonly List<IAsyncDisposable> _disposables = [];
 
         /// <summary>Returns the collection of disposables.</summary>
         public IEnumerable<IAsyncDisposable> Disposables => _disposables;

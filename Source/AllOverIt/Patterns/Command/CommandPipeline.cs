@@ -18,7 +18,7 @@ namespace AllOverIt.Patterns.Command
     /// <typeparam name="TOutput">The output type to be returned from the command.</typeparam>
     public class CommandPipeline<TInput, TOutput> where TOutput : TInput
     {
-        private readonly List<ICommand<TInput, TOutput>> _commands = new ();
+        private readonly List<ICommand<TInput, TOutput>> _commands = [];
 
         /// <summary>Constructor.</summary>
         public CommandPipeline()

@@ -8,8 +8,8 @@ namespace AllOverIt.Reflection
 {
     internal static class BindingOptionsHelper
     {
-        private static readonly GenericCache MethodBaseCache = new();
-        private static readonly GenericCache FieldInfoCache = new();
+        private static readonly GenericCache MethodBaseCache = [];
+        private static readonly GenericCache FieldInfoCache = [];
 
         internal static Func<MethodBase, bool> BuildPropertyOrMethodBindingPredicate(BindingOptions bindingOptions)
         {

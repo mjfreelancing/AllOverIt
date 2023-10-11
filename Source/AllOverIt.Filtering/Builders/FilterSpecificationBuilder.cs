@@ -21,7 +21,7 @@ namespace AllOverIt.Filtering.Builders
         where TType : class
         where TFilter : class
     {
-        private static readonly GenericCache OperationTypePropertyGetters = new();
+        private static readonly GenericCache OperationTypePropertyGetters = [];
 
         private readonly IReadOnlyDictionary<Type, Type> _filterOperations = new Dictionary<Type, Type>
             {

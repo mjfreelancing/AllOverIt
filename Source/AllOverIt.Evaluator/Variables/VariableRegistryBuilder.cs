@@ -16,7 +16,7 @@ namespace AllOverIt.Evaluator.Variables
         private sealed class PendingRegistrationState
         {
             public IList<string> PendingNames { get; } = new List<string>();            // Variable names being registered (but cannot due to missing referenced variables)
-            public HashSet<string> MissingNames { get; } = new HashSet<string>();
+            public HashSet<string> MissingNames { get; } = [];
         }
 
         // The PendingRegistrationState input is optional. When not null it will be populated with unregistered and associated referenced variable names that are also not registered.
