@@ -2,6 +2,7 @@
 using AllOverIt.Filtering.Extensions;
 using AllOverIt.Filtering.Options;
 using AllOverIt.Patterns.Specification.Extensions;
+using AllOverIt.Patterns.Specification.Utils;
 using System;
 using System.Linq;
 
@@ -15,12 +16,12 @@ namespace FilteringDemo
 
             var productFilter = new ProductFilter
             {
-                Active =
-                {
-                    //EqualTo = true
-                },
+                //Active =
+                //{
+                //    EqualTo = true
+                //},
                 Category = {
-                    //StartsWith = "fu"
+                    StartsWith = "fu"
                 },
                 Name = {
                     Contains = "r"
@@ -30,7 +31,7 @@ namespace FilteringDemo
                     LessThanOrEqual = 700.0
                 },
                 LastUpdated = {
-                    GreaterThanOrEqual = DateTime.UtcNow.Date.AddDays(-10),     // Change to 14 to see two records return
+                    GreaterThanOrEqual = (DateTimeValue)DateTime.UtcNow.Date.AddDays(-10),     // Change to 14 to see two records return
                 }
             };
 
@@ -41,6 +42,9 @@ namespace FilteringDemo
                 IgnoreDefaultFilterValues = false
             };
 
+            var customVisitor = new LinqSpecificationVisitor();
+            customVisitor.AddTypeValueConverter(typeof(DateTimeValue), value => value.ToString());      // returns DateTimeValue.Value
+
             var results = products
                 .AsQueryable()
                 .ApplyFilter(productFilter, (specificationBuilder, filterBuilder) =>
@@ -50,17 +54,18 @@ namespace FilteringDemo
 
                     filterBuilder
                         .Where(product => product.Active, filter => filter.Active.EqualTo)
-                        .And(product => product.Category, filter => filter.Category.StartsWith)
+                        //.And(product => product.Category, filter => filter.Category.StartsWith)
                         .And(product => product.Name, filter => filter.Name.Contains)
                         .And(priceGte.And(priceLte))
                         .And(product => product.LastUpdated, filter => filter.LastUpdated.GreaterThanOrEqual);
 
                     // Output the generated query as readable text, such as:
                     // (((Category StartsWith 'fu' AND Name Contains 'r') AND ((Price >= 15) AND (Price <= 700))) AND (LastUpdated >= '2022-07-07T00:00:00.000Z'))
-                    var queryString = filterBuilder.ToQueryString();
+                    var queryString = filterBuilder.ToQueryString(customVisitor);
 
                     Console.WriteLine();
-                    Console.WriteLine($"Filter as query string: {queryString}");
+                    Console.WriteLine("Filter as query string:");
+                    Console.WriteLine($"  {queryString}");
                     Console.WriteLine();
                 }, filterOptions)
                 .ToList();
@@ -86,7 +91,7 @@ namespace FilteringDemo
                     Category = "Furniture",
                     Name = "Chairs",
                     Price = 1000,
-                    LastUpdated = today.AddDays(-1)
+                    LastUpdated = (DateTimeValue)today.AddDays(-1)
                 },
                 new Product
                 {
@@ -94,7 +99,7 @@ namespace FilteringDemo
                     Category = "Furniture",
                     Name = "Table",
                     Price = 800,
-                    LastUpdated = today
+                    LastUpdated = (DateTimeValue) today
                 },
                 new Product
                 {
@@ -102,7 +107,7 @@ namespace FilteringDemo
                     Category = "Furniture",
                     Name = "Cupboard",
                     Price = 500,
-                    LastUpdated = today.AddDays(-7)
+                    LastUpdated = (DateTimeValue) today.AddDays(-7)
                 },
                 new Product
                 {
@@ -110,7 +115,7 @@ namespace FilteringDemo
                     Category = "Furniture",
                     Name = "Dresser",
                     Price = 250,
-                    LastUpdated = today.AddDays(-14)
+                    LastUpdated = (DateTimeValue) today.AddDays(-14)
                 },
                 new Product
                 {
@@ -118,7 +123,7 @@ namespace FilteringDemo
                     Category = "Furniture",
                     Name = "Lamp",
                     Price = 50,
-                    LastUpdated = today.AddDays(-1)
+                    LastUpdated = (DateTimeValue) today.AddDays(-1)
                 },
                 new Product
                 {
@@ -126,7 +131,7 @@ namespace FilteringDemo
                     Category = "Clothing",
                     Name = "Shirt",
                     Price = 10,
-                    LastUpdated = today.AddDays(-3)
+                    LastUpdated = (DateTimeValue) today.AddDays(-3)
                 },
                 new Product
                 {
@@ -134,7 +139,7 @@ namespace FilteringDemo
                     Category = "Clothing",
                     Name = "Trousers",
                     Price = 15,
-                    LastUpdated = today.AddDays(-1)
+                    LastUpdated = (DateTimeValue) today.AddDays(-1)
                 },
                 new Product
                 {
@@ -142,7 +147,7 @@ namespace FilteringDemo
                     Category = "Clothing",
                     Name = "Jumper",
                     Price = 20,
-                    LastUpdated = today.AddDays(-1)
+                    LastUpdated = (DateTimeValue) today.AddDays(-1)
                 },
                 new Product
                 {
@@ -150,7 +155,7 @@ namespace FilteringDemo
                     Category = "Clothing",
                     Name = "Jacket",
                     Price = 20,
-                    LastUpdated = today.AddDays(-1)
+                    LastUpdated = (DateTimeValue) today.AddDays(-1)
                 },
                 new Product
                 {
@@ -158,7 +163,7 @@ namespace FilteringDemo
                     Category = "Clothing",
                     Name = "Shoes",
                     Price = 200,
-                    LastUpdated = today.AddDays(-1)
+                    LastUpdated = (DateTimeValue) today.AddDays(-1)
                 },
                 new Product
                 {
@@ -166,7 +171,7 @@ namespace FilteringDemo
                     Category = "Clothing",
                     Name = "Socks",
                     Price = 25,
-                    LastUpdated = today.AddDays(-1)
+                    LastUpdated = (DateTimeValue) today.AddDays(-1)
                 },
                 new Product
                 {
@@ -174,7 +179,7 @@ namespace FilteringDemo
                     Category = "Clothing",
                     Name = "Underwear",
                     Price = 18,
-                    LastUpdated = today.AddDays(-1)
+                    LastUpdated = (DateTimeValue) today.AddDays(-1)
                 }
             ];
         }

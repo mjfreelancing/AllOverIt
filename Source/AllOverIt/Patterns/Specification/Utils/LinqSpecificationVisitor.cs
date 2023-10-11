@@ -32,8 +32,16 @@ namespace AllOverIt.Patterns.Specification.Utils
             [CommonTypes.BoolType] = value => value.ToString()
         };
 
+        private IDictionary<Type, Func<object, string>> _customTypeValueConverters;
         private readonly StringBuilder _queryStringBuilder = new();
         private readonly Stack<string> _fieldNames = new();
+
+        public void AddTypeValueConverter(Type type, Func<object, string> converter)
+        {
+            _customTypeValueConverters ??= new Dictionary<Type, Func<object, string>>();
+
+            _customTypeValueConverters.Add(type, converter);
+        }
 
         /// <summary>Converts the expression of the provided <see cref="ILinqSpecification{TType}"/> to a query-like string.</summary>
         /// <typeparam name="TType">The candidate type the specification applies to.</typeparam>
@@ -172,6 +180,16 @@ namespace AllOverIt.Patterns.Specification.Utils
 
             var type = input.GetType();
 
+            if (TypeValueConverters.TryGetValue(type, out var converter))
+            {
+                return converter.Invoke(input);
+            }
+
+            if (_customTypeValueConverters?.TryGetValue(type, out var customConverter) ?? false)
+            {
+                return customConverter.Invoke(input);
+            }
+
             if (type.IsClass && type != CommonTypes.StringType)
             {
                 if (input is ICollection collection)
@@ -197,12 +215,8 @@ namespace AllOverIt.Patterns.Specification.Utils
                     return GetValue(value);
                 }
             }
-            else
-            {
-                return TypeValueConverters.TryGetValue(type, out var converter)
-                    ? converter.Invoke(input)
-                    : input.ToString();
-            }
+
+            return input.ToString();
         }
     }
 }

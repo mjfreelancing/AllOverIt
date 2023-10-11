@@ -11,6 +11,77 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
 {
     public class LinqSpecificationVisitorFixture : FixtureBase
     {
+        private sealed class DateTimeValue
+        {
+            public DateTime Value { get; set; }
+
+            public static implicit operator DateTime?(DateTimeValue dateTimeValue) => dateTimeValue?.Value;
+            public static explicit operator DateTimeValue(DateTime value) => new() { Value = value };
+
+            // Used for custom value conversion when converting a LINQ expression to a query string
+            public override string ToString() => $"'{Value.ToString()}'";
+
+            public static bool operator >=(DateTimeValue left, DateTimeValue right)
+            {
+                if (left is null && right is null)
+                {
+                    return true;
+                }
+
+                if (left is null || right is null)
+                {
+                    return right is null;
+                }
+
+                return left.Value >= right.Value;
+            }
+
+            public static bool operator <=(DateTimeValue left, DateTimeValue right)
+            {
+                if (left is null && right is null)
+                {
+                    return true;
+                }
+
+                if (left == null || right == null)
+                {
+                    return left is null;
+                }
+
+                return left.Value <= right.Value;
+            }
+
+            public static bool operator >(DateTimeValue left, DateTimeValue right)
+            {
+                if (left is null && right is null)
+                {
+                    return false;
+                }
+
+                if (left == null || right == null)
+                {
+                    return right is null;
+                }
+
+                return left.Value > right.Value;
+            }
+
+            public static bool operator <(DateTimeValue left, DateTimeValue right)
+            {
+                if (left is null && right is null)
+                {
+                    return false;
+                }
+
+                if (left == null || right == null)
+                {
+                    return left is null;
+                }
+
+                return left.Value < right.Value;
+            }
+        }
+
         private class DummyType
         {
             public int Value1 { get; set; }
@@ -18,6 +89,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
             public string Value3 { get; set; }
             public DateTime Value4 { get; set; }
             public bool Value5 { get; set; }
+            public DateTimeValue Value6 { get; set; }       // Testing 'value types'
         }
 
         private readonly LinqSpecificationVisitor _visitor = new();
@@ -201,12 +273,39 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
             {
                 var value = Create<DateTime>().ToUniversalTime();
 
-                // Has to be a comparison, can't just use 'item => item.Value5' as this only retrieves the property name
                 var specification = LinqSpecification<DummyType>.Create(item => item.Value4 == value);
 
                 var actual = _visitor.AsQueryString(specification);
 
                 actual.Should().Be($"(Value4 == '{value:yyyy-MM-ddTHH:mm:ss.fffZ}')");
+            }
+
+            [Fact]
+            public void Should_Output_DateTimeValue_DateTime_Comparison()
+            {
+                var value = Create<DateTime>().ToUniversalTime();
+
+                var specification = LinqSpecification<DummyType>.Create(item => item.Value6 == value);
+
+                var actual = _visitor.AsQueryString(specification);
+
+                actual.Should().Be($"(Value6 == '{value:yyyy-MM-ddTHH:mm:ss.fffZ}')");
+            }
+
+            [Fact]
+            public void Should_Output_DateTimeValue_DateTimeValue_Comparison_Using_Custom_Visitor()
+            {
+                var value = (DateTimeValue) Create<DateTime>().ToUniversalTime();
+
+                var specification = LinqSpecification<DummyType>.Create(item => item.Value6 == value);
+
+                // need a custom visitor for 'value types'
+                var visitor = new LinqSpecificationVisitor();
+                visitor.AddTypeValueConverter(typeof(DateTimeValue), value => value.ToString());
+
+                var actual = visitor.AsQueryString(specification);
+
+                actual.Should().Be($"(Value6 == '{value.Value}')");
             }
 
             [Fact]
