@@ -1,7 +1,7 @@
 ﻿namespace AllOverIt.Aspects.Interceptor
 {
     /// <summary>Represents interceptor state that can be provided to intercepted methods.</summary>
-    public class InterceptorState
+    public abstract class InterceptorState
     {
         private class Unit : InterceptorState
         {

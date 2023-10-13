@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AllOverIt.Extensions;
+using AllOverIt.Reflection;
+using System;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -23,6 +25,7 @@ namespace AllOverIt.Aspects.Interceptor
         {
             object result = default;
 
+            // For async results - the caller currently needs to send it back wrapped in a Task - which is different to AfterInvoke() - NEED TO THINK ABOUT HOW THIS SHOULD BE HANDLED
             var state = BeforeInvoke(targetMethod, ref args, ref result);
 
             try
@@ -34,21 +37,7 @@ namespace AllOverIt.Aspects.Interceptor
 
                 if (result is Task taskResult)
                 {
-                    taskResult.ContinueWith(task =>
-                    {
-                        // Haven't come across a scenario for this yet - all faults go to the catch block
-
-                        //if (task.IsFaulted)
-                        //{
-                        //    Faulted(targetMethod, args, state, task.Exception);
-                        //}
-                        //else
-                        //{
-                        //    AfterInvoke(targetMethod, args, state);
-                        //}
-
-                        AfterInvoke(targetMethod, args, state, ref result);
-                    }, TaskContinuationOptions.ExecuteSynchronously);
+                    result = GetAsyncResult(targetMethod, args, state, taskResult);
                 }
                 else
                 {
@@ -105,6 +94,61 @@ namespace AllOverIt.Aspects.Interceptor
         /// <param name="exception">The exception that was thrown by the instance method.</param>
         protected virtual void Faulted(MethodInfo targetMethod, object[] args, InterceptorState state, Exception exception)
         {
+        }
+
+        private object GetAsyncResult(MethodInfo targetMethod, object[] args, InterceptorState state, Task taskResult)
+        {
+            // Without interception, taskResult is what would normally be awaited by the caller. We need to call AfterInvoke()
+            // before that await completes so we need to instead return a different task; one that is backed by a
+            // TaskCompletionSource<>. For the case where a method as a void or Task return type we will use a
+            // TaskCompletionSource<object>, and for all other cases we'll create a TaskCompletionSource<TResult> based on
+            // the intercepted method's return type.
+            //
+            // The original 'taskResult' can then have a continuation appended that allows for the Faulted() / AfterInvoke()
+            // calls, followed by setting the final result.
+
+            var methodReturnType = targetMethod.ReturnType;
+
+            var tcsReturnType = methodReturnType.IsDerivedFrom(typeof(Task<>))
+                ? methodReturnType.GetGenericArguments()[0]
+                : CommonTypes.ObjectType;
+
+            // Get TaskCompletionSource<T> Type (where T could be object or the method's return type).
+            var tcsType = typeof(TaskCompletionSource<>).MakeGenericType(tcsReturnType);
+
+            // Create an instance of TaskCompletionSource<T>.
+            var tcs = Activator.CreateInstance(tcsType);
+
+            // Get the Task from the TaskCompletionSource<T> that the caller will now be awaiting.
+            var result = tcsType.GetProperty("Task").GetValue(tcs, null);
+
+            // Add a continuation so we can call Faulted() / AfterInvoke() before setting the final result to be returned.
+            taskResult
+                .ContinueWith(task =>
+                {
+                    object value = default;
+
+                    if (task.IsFaulted)
+                    {
+                        Faulted(targetMethod, args, state, task.Exception);
+                    }
+                    else
+                    {
+                        if (tcsReturnType != CommonTypes.ObjectType)
+                        {
+                            // Get the result returned by the decorated service.
+                            value = task.GetPropertyValue(methodReturnType, "Result");
+                        }
+
+                        AfterInvoke(targetMethod, args, state, ref value);
+                    }
+
+                    // Set the final result (may have been modified by AfterInvoke()).
+                    tcs.InvokeMethod(tcsType, "SetResult", [value]);
+
+                }, TaskContinuationOptions.ExecuteSynchronously);
+
+            return result;
         }
     }
 }
