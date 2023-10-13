@@ -47,6 +47,7 @@
 * Renamed IList extension method from AddRange() to AddMany() to avoid namespace clashes
 * Changed generic cache keys to be records
 * Added support for custom value converters in LinqSpecificationVisitor
+* Added object extensions to invoke methods using reflection
 
 
 ## AllOverIt.AspNetCore

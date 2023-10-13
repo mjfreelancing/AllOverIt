@@ -20,7 +20,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Extensions
 {
-    public class ObjectExtensionsFixture : FixtureBase
+    public partial class ObjectExtensionsFixture : FixtureBase
     {
         private class DummyClassBase
         {

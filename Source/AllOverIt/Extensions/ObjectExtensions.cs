@@ -12,7 +12,7 @@ using System.Reflection;
 namespace AllOverIt.Extensions
 {
     /// <summary>Provides a variety of extension methods for object types.</summary>
-    public static class ObjectExtensions
+    public static partial class ObjectExtensions
     {
         private static class ObjectConversionHelper
         {
