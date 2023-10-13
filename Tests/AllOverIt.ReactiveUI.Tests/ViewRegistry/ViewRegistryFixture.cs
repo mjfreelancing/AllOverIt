@@ -443,9 +443,11 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
             [Fact]
             public void Should_Enumerate()
             {
-                _viewRegistry.CreateOrActivateFor<DummyViewModel1>(Create<int>(), viewItems => { return Create<int>(); });
-                _viewRegistry.CreateOrActivateFor<DummyViewModel1>(Create<int>(), viewItems => { return Create<int>(); });
-                _viewRegistry.CreateOrActivateFor<DummyViewModel1>(Create<int>(), viewItems => { return Create<int>(); });
+                var maxCount = 3 + Create<int>();
+
+                _viewRegistry.CreateOrActivateFor<DummyViewModel1>(maxCount, viewItems => { return Create<int>(); });
+                _viewRegistry.CreateOrActivateFor<DummyViewModel1>(maxCount, viewItems => { return Create<int>(); });
+                _viewRegistry.CreateOrActivateFor<DummyViewModel1>(maxCount, viewItems => { return Create<int>(); });
 
                 _viewRegistry.Count().Should().Be(3);           // also using the enumerator for this
 
@@ -460,9 +462,11 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
             [Fact]
             public void Should_Enumerate_Explicit()
             {
-                _viewRegistry.CreateOrActivateFor<DummyViewModel1>(Create<int>(), viewItems => { return Create<int>(); });
-                _viewRegistry.CreateOrActivateFor<DummyViewModel1>(Create<int>(), viewItems => { return Create<int>(); });
-                _viewRegistry.CreateOrActivateFor<DummyViewModel1>(Create<int>(), viewItems => { return Create<int>(); });
+                var maxCount = 3 + Create<int>();
+
+                _viewRegistry.CreateOrActivateFor<DummyViewModel1>(maxCount, viewItems => { return Create<int>(); });
+                _viewRegistry.CreateOrActivateFor<DummyViewModel1>(maxCount, viewItems => { return Create<int>(); });
+                _viewRegistry.CreateOrActivateFor<DummyViewModel1>(maxCount, viewItems => { return Create<int>(); });
 
                 _viewRegistry.Count().Should().Be(3);           // also using the enumerator for this
 
