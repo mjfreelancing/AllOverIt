@@ -185,9 +185,6 @@ namespace AllOverIt.Extensions
             // More efficient than LINQ
             foreach (var propInfo in propertyInfo)
             {
-                // This line should never throw, hence it cannot be tested
-                Throw<InvalidOperationException>.When(!propInfo.CanRead, $"Not expecting the property {propInfo.Name} as it doesn't have a getter.");
-
                 if (propInfo.IsIndexer())
                 {
                     continue;
