@@ -36,7 +36,14 @@ namespace AllOverIt.Tests.Aspects
 
             public Task<string> GetValueAsync(string value, bool shouldThrow)
             {
-                return Task.FromResult(GetValue(value, shouldThrow));
+                if (shouldThrow)
+                {
+                    // Returning a faulted exception rather than throwing (different code coverage)
+                    var exception = new Exception("Dummy Exception");
+                    return Task.FromException<string>(exception);
+                }
+
+                return Task.FromResult(GetValue(value, false));
             }
 
             public void SetValue(string value)
@@ -429,6 +436,9 @@ namespace AllOverIt.Tests.Aspects
 
             try
             {
+                // The interceptor's async version of this method returns a faulted task rather than
+                // throwing an exception. The base class ensures this exception is raised when the
+                // returned task is awaited, thereby behaving the same as the non-async version.
                 _ = await proxiedService.GetValueAsync(Create<string>(), true);
 
                 Assert.Fail("The invocation should have faulted");

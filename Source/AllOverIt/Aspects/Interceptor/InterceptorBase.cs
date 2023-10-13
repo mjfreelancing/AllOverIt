@@ -128,11 +128,14 @@ namespace AllOverIt.Aspects.Interceptor
             taskResult
                 .ContinueWith(task =>
                 {
-                    object returnValue = null;
-
                     if (task.IsFaulted)
                     {
-                        Faulted(targetMethod, args, state, task.Exception.InnerException);
+                        var exception = task.Exception.InnerException;
+
+                        Faulted(targetMethod, args, state, exception);
+
+                        // Make sure the task throws when it is awaited
+                        tcs.InvokeMethod(tcsType, "SetException", [typeof(Exception)], [exception]);
                     }
                     else
                     {
@@ -143,13 +146,13 @@ namespace AllOverIt.Aspects.Interceptor
 
                         // The TaskCompletionSource needs to be set the result returned by the decorated service / interceptor,
                         // or null if the method's return type is void or Task.
-                        returnValue = hasReturnType
+                        var returnValue = hasReturnType
                             ? completion.GetPropertyValue(methodReturnType, "Result")
                             : null;
-                    }
 
-                    // Set the final result.
-                    tcs.InvokeMethod(tcsType, "SetResult", [returnValue]);
+                        // Set the final result.
+                        tcs.InvokeMethod(tcsType, "SetResult", [returnValue]);
+                    }
 
                 }, TaskContinuationOptions.ExecuteSynchronously);
 
