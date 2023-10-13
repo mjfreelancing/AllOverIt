@@ -17,6 +17,9 @@ namespace AllOverIt.Tests.Aspects
         {
             string GetValue(string value, bool shouldThrow);
             Task<string> GetValueAsync(string value, bool shouldThrow);
+
+            void SetValue(string value);
+            Task SetValueAsync(string value);
         }
 
         private sealed class DummyService : IDummyService
@@ -34,6 +37,15 @@ namespace AllOverIt.Tests.Aspects
             public Task<string> GetValueAsync(string value, bool shouldThrow)
             {
                 return Task.FromResult(GetValue(value, shouldThrow));
+            }
+
+            public void SetValue(string value)
+            {
+            }
+
+            public Task SetValueAsync(string value)
+            {
+                return Task.CompletedTask;
             }
         }
 
@@ -90,13 +102,17 @@ namespace AllOverIt.Tests.Aspects
         // Must be non-sealed
         public class DummyInterceptor2 : InterceptorBase<IDummyService>
         {
+            private class DummyInterceptorState : InterceptorState
+            {
+            }
+
             // Determines how values are assigned to DummyState when calling BeforeInvoke() and AfterInvoke()
             public object HandleBeforeResult { get; set; }
             public object HandleAfterResult { get; set; }
 
             protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
             {
-                var state = new InterceptorState();
+                var state = new DummyInterceptorState();
 
                 if (HandleBeforeResult is not null)
                 {
@@ -124,6 +140,25 @@ namespace AllOverIt.Tests.Aspects
             protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
             {
                 args[0] = ((string) args[0]).ToUpper();
+
+                return InterceptorState.None;
+            }
+
+            protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, ref object result)
+            {
+                AfterArgs = (string) args[0];
+            }
+        }
+
+        // Must be non-sealed
+        public class DummyInterceptor4 : InterceptorBase<IDummyService>
+        {
+            public string BeforeArgs { get; set; }
+            public string AfterArgs { get; set; }
+
+            protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
+            {
+                BeforeArgs = (string) args[0];
 
                 return InterceptorState.None;
             }
@@ -251,6 +286,20 @@ namespace AllOverIt.Tests.Aspects
             var value = $"A{input}b";
 
             var actual = proxiedService.GetValue(value, false);
+
+            actualInterceptor._state.Fault.Should().BeNull();
+            actual.Should().Be(value);
+        }
+
+        [Fact]
+        public async Task Should_Return_Invoke_Result_Async()
+        {
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor1();
+
+            var input = Create<string>();
+            var value = $"A{input}b";
+
+            var actual = await proxiedService.GetValueAsync(value, false);
 
             actualInterceptor._state.Fault.Should().BeNull();
             actual.Should().Be(value);
@@ -391,6 +440,38 @@ namespace AllOverIt.Tests.Aspects
             }
         }
 
+        [Fact]
+        public void Should_Invoke_Method_With_Void_Return_Type()
+        {
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor4();
+
+            actualInterceptor.BeforeArgs.Should().BeNull();
+            actualInterceptor.AfterArgs.Should().BeNull();
+
+            var expected = Create<string>();
+
+            proxiedService.SetValue(expected);
+
+            actualInterceptor.BeforeArgs.Should().Be(expected);
+            actualInterceptor.AfterArgs.Should().Be(expected);
+        }
+
+        [Fact]
+        public async Task Should_Invoke_Method_With_Task_Return_Type()
+        {
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor4();
+
+            actualInterceptor.BeforeArgs.Should().BeNull();
+            actualInterceptor.AfterArgs.Should().BeNull();
+
+            var expected = Create<string>();
+
+            await proxiedService.SetValueAsync(expected);
+
+            actualInterceptor.BeforeArgs.Should().Be(expected);
+            actualInterceptor.AfterArgs.Should().Be(expected);
+        }
+
         private static (IDummyService, DummyInterceptor1) CreateDummyInterceptor1(Action<DummyInterceptor1> configure = default)
         {
             var service = new DummyService();
@@ -422,6 +503,17 @@ namespace AllOverIt.Tests.Aspects
             var proxy = InterceptorFactory.CreateInterceptor<IDummyService, DummyInterceptor3>(service);
 
             return (proxy, (DummyInterceptor3) proxy);
+        }
+
+        private static (IDummyService, DummyInterceptor4) CreateDummyInterceptor4()
+        {
+            var service = new DummyService();
+
+            // Interceptors cannot be new'd up - can only be created via this factory method.
+            // This method returns a proxied IDummyService this is a DummyInterceptor.
+            var proxy = InterceptorFactory.CreateInterceptor<IDummyService, DummyInterceptor4>(service);
+
+            return (proxy, (DummyInterceptor4) proxy);
         }
     }
 }

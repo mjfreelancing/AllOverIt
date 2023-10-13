@@ -28,7 +28,7 @@ namespace InterceptorDemo
                 var accessKey = "some_key";
 
                 var secret = dispatchProxy.GetSecret(accessKey);
-                Console.WriteLine(secret);      // should be reported as 0-1ms
+                Console.WriteLine($"FINAL Result: {secret}");      // should be reported as 0-1ms
 
                 // Adding this to make sure this time is not included in the time period reported by the proxy
                 await Task.Delay(2000);
@@ -36,7 +36,7 @@ namespace InterceptorDemo
                 Console.WriteLine();
 
                 secret = await dispatchProxy.GetSecretAsync(accessKey, false);
-                Console.WriteLine(secret);      // should be reported as approx. 1000ms
+                Console.WriteLine($"FINAL Result: {secret}");      // should be reported as approx. 1000ms
 
                 Console.WriteLine();
 

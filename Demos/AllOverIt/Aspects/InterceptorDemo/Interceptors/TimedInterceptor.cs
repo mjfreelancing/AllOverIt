@@ -3,6 +3,7 @@ using AllOverIt.Extensions;
 using System;
 using System.Diagnostics;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace InterceptorDemo.Interceptors
 {
@@ -32,7 +33,23 @@ namespace InterceptorDemo.Interceptors
         {
             var accessKey = (string) args[0];
 
-            Console.WriteLine($"After {targetMethod.Name}({accessKey})");
+            var taskResult = result as Task<string>;
+
+            // Cater for GetSecret() and GetSecretAsync()
+            var value = taskResult is not null
+                   ? taskResult.Result
+                   : (string) result;
+
+            Console.WriteLine($"After {targetMethod.Name}({accessKey}), result = {value}");
+
+            value = value.ToLowerInvariant();
+
+            // Cater for GetSecret() and GetSecretAsync()
+            result = taskResult is not null
+                ? Task.FromResult(value)
+                : value;
+
+            Console.WriteLine($"  => Result modified to {value}");
 
             CheckElapsedPeriod(state);
         }
