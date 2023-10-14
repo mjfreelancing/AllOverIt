@@ -11,11 +11,11 @@ namespace AllOverIt.DependencyInjection.Extensions
 {
     public static partial class ServiceCollectionExtensions
     {
-        /// <summary>Decorates all registered <typeparamref name="TServiceType"/> types with <typeparamref name="TDecoratorType"/> types. Decoration is only applied
-        /// to services already registered at the time of making the call.</summary>
+        /// <summary>Decorates all registered <typeparamref name="TServiceType"/> types with <typeparamref name="TDecoratorType"/> types.
+        /// Decoration is only applied to services already registered at the time of making the call.</summary>
         /// <typeparam name="TServiceType">The service type to be decorated.</typeparam>
-        /// <typeparam name="TDecoratorType">The type decorating the service type. This type's constructor is expected to accept an argument of type <typeparamref name="TServiceType"/>
-        /// in addition to any other dependencies it requires.</typeparam>
+        /// <typeparam name="TDecoratorType">The type decorating the service type. This type's constructor is expected to accept an argument
+        /// of type <typeparamref name="TServiceType"/> in addition to any other dependencies it requires.</typeparam>
         /// <param name="serviceCollection">The service collection.</param>
         /// <returns>The original service collection to allow for a fluent syntax.</returns>
         public static IServiceCollection Decorate<TServiceType, TDecoratorType>(this IServiceCollection serviceCollection)
@@ -36,7 +36,7 @@ namespace AllOverIt.DependencyInjection.Extensions
         /// <param name="serviceCollection">The service collection.</param>
         /// <param name="configure">An optional action that can be used to configure the interceptor instance decorating the <typeparamref name="TServiceType"/>.</param>
         /// <returns>The original service collection to allow for a fluent syntax.</returns>
-        public static IServiceCollection DecorateWithInterceptor<TServiceType, TInterceptor>(this IServiceCollection serviceCollection, Action<TInterceptor> configure = default)
+        public static IServiceCollection DecorateWithInterceptor<TServiceType, TInterceptor>(this IServiceCollection serviceCollection, Action<IServiceProvider, TInterceptor> configure = default)
             where TInterceptor : InterceptorBase<TServiceType>
         {
             _ = serviceCollection.WhenNotNull(nameof(serviceCollection));
@@ -69,7 +69,7 @@ namespace AllOverIt.DependencyInjection.Extensions
                 descriptor.Lifetime);
         }
 
-        private static ServiceDescriptor DecorateWithInterceptor<TServiceType, TInterceptor>(ServiceDescriptor descriptor, Action<TInterceptor> configure)
+        private static ServiceDescriptor DecorateWithInterceptor<TServiceType, TInterceptor>(ServiceDescriptor descriptor, Action<IServiceProvider, TInterceptor> configure)
             where TInterceptor : InterceptorBase<TServiceType>
         {
             return ServiceDescriptor.Describe(
@@ -77,7 +77,7 @@ namespace AllOverIt.DependencyInjection.Extensions
                 provider =>
                 {
                     var instance = (TServiceType) GetInstance(provider, descriptor);
-                    return InterceptorFactory.CreateInterceptor(instance, configure);
+                    return InterceptorFactory.CreateInterceptor(instance, provider, configure);
                 },
                 descriptor.Lifetime);
         }
