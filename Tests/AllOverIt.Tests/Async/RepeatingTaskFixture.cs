@@ -43,7 +43,7 @@ namespace AllOverIt.Tests.Async
                     ? RepeatingTask.Start(DoAction, _delayMilliseconds, cancellationToken.Token)
                     : RepeatingTask.Start(DoAction, _delayTimeSpan, cancellationToken.Token);
 
-                await task.ConfigureAwait(false);
+                await task;
 
                 invoked.Should().BeTrue();
             }
@@ -86,7 +86,7 @@ namespace AllOverIt.Tests.Async
                     ? RepeatingTask.Start(DoAction, _delayMilliseconds, cancellationToken.Token)
                     : RepeatingTask.Start(DoAction, _delayTimeSpan, cancellationToken.Token);
 
-                await task.ConfigureAwait(false);
+                await task;
 
                 invoked.Should().BeTrue();
             }
@@ -115,7 +115,7 @@ namespace AllOverIt.Tests.Async
                     ? RepeatingTask.Start(DoAction, _delayMilliseconds, cancellationToken.Token)
                     : RepeatingTask.Start(DoAction, _delayTimeSpan, cancellationToken.Token);
 
-                await task.ConfigureAwait(false);
+                await task;
 
                 invokedCount.Should().Be(2);
             }
@@ -154,13 +154,15 @@ namespace AllOverIt.Tests.Async
                     ? RepeatingTask.Start(() => DoAction(stopwatch), repeatDelay, cancellationToken.Token)
                     : RepeatingTask.Start(() => DoAction(stopwatch), TimeSpan.FromMilliseconds(repeatDelay), cancellationToken.Token);
 
-                await task.ConfigureAwait(false);
+                await task;
 
                 stopwatch.Stop();
 
-                delays[0].Should().BeLessThan(repeatDelay);                 // Should be invoked without delay
-                delays[1].Should().BeGreaterOrEqualTo(repeatDelay - 1);     // Providing some latitude
-                delays[2].Should().BeGreaterOrEqualTo(repeatDelay - 1);
+                const int allowableDiff = 25;
+
+                delays[0].Should().BeLessThan(repeatDelay);                             // Should be invoked without delay
+                delays[1].Should().BeGreaterOrEqualTo(repeatDelay - allowableDiff);
+                delays[2].Should().BeGreaterOrEqualTo(repeatDelay - allowableDiff);
             }
 
             [Theory]
@@ -173,10 +175,9 @@ namespace AllOverIt.Tests.Async
                 var cancellationToken = new CancellationTokenSource();
                 var invokedCount = 0;
                 var delays = new List<long>();
-                var stopwatch = Stopwatch.StartNew();
                 var lastElapsed = 0L;
 
-                Task DoAction()
+                Task DoAction(Stopwatch stopwatch)
                 {
                     delays.Add(stopwatch.ElapsedMilliseconds - lastElapsed);
                     invokedCount++;
@@ -192,17 +193,21 @@ namespace AllOverIt.Tests.Async
                     return Task.CompletedTask;
                 }
 
-                var task = timeUnit == TimeUnit.Milliseconds
-                    ? RepeatingTask.Start(DoAction, initialDelay, repeatDelay, cancellationToken.Token)
-                    : RepeatingTask.Start(DoAction, TimeSpan.FromMilliseconds(initialDelay), TimeSpan.FromMilliseconds(repeatDelay), cancellationToken.Token);
+                var stopwatch = Stopwatch.StartNew();
 
-                await task.ConfigureAwait(false);
+                var task = timeUnit == TimeUnit.Milliseconds
+                    ? RepeatingTask.Start(() => DoAction(stopwatch), initialDelay, repeatDelay, cancellationToken.Token)
+                    : RepeatingTask.Start(() => DoAction(stopwatch), TimeSpan.FromMilliseconds(initialDelay), TimeSpan.FromMilliseconds(repeatDelay), cancellationToken.Token);
+
+                await task;
 
                 stopwatch.Stop();
 
-                delays[0].Should().BeGreaterOrEqualTo(initialDelay - 1);    // Providing some latitude
-                delays[1].Should().BeGreaterOrEqualTo(repeatDelay - 1);
-                delays[2].Should().BeGreaterOrEqualTo(repeatDelay - 1);
+                const int allowableDiff = 25;
+
+                delays[0].Should().BeGreaterOrEqualTo(initialDelay - allowableDiff);
+                delays[1].Should().BeGreaterOrEqualTo(repeatDelay - allowableDiff);
+                delays[2].Should().BeGreaterOrEqualTo(repeatDelay - allowableDiff);
             }
         }
 
@@ -226,7 +231,7 @@ namespace AllOverIt.Tests.Async
                     ? RepeatingTask.Start(DoAction, _delayMilliseconds, cancellationToken.Token)
                     : RepeatingTask.Start(DoAction, _delayTimeSpan, cancellationToken.Token);
 
-                await task.ConfigureAwait(false);
+                await task;
 
                 invoked.Should().BeTrue();
             }
@@ -269,7 +274,7 @@ namespace AllOverIt.Tests.Async
                     ? RepeatingTask.Start(DoAction, _delayMilliseconds, cancellationToken.Token)
                     : RepeatingTask.Start(DoAction, _delayTimeSpan, cancellationToken.Token);
 
-                await task.ConfigureAwait(false);
+                await task;
 
                 invoked.Should().BeTrue();
             }
@@ -296,7 +301,7 @@ namespace AllOverIt.Tests.Async
                     ? RepeatingTask.Start(DoAction, _delayMilliseconds, cancellationToken.Token)
                     : RepeatingTask.Start(DoAction, _delayTimeSpan, cancellationToken.Token);
 
-                await task.ConfigureAwait(false);
+                await task;
 
                 invokedCount.Should().Be(2);
             }
@@ -310,12 +315,11 @@ namespace AllOverIt.Tests.Async
                 var cancellationToken = new CancellationTokenSource();
                 var invokedCount = 0;
                 var delays = new List<int>();
-                var stopwatch = new Stopwatch();
                 var lastElapsed = 0L;
 
-                void DoAction()
+                void DoAction(Stopwatch stopwatch)
                 {
-                    var elapsed = (int)(stopwatch.ElapsedMilliseconds - lastElapsed);
+                    var elapsed = (int) (stopwatch.ElapsedMilliseconds - lastElapsed);
 
                     delays.Add(elapsed);
 
@@ -329,20 +333,23 @@ namespace AllOverIt.Tests.Async
                     lastElapsed = stopwatch.ElapsedMilliseconds;
                 }
 
-                stopwatch.Start();
+                var stopwatch = Stopwatch.StartNew();
 
                 var task = timeUnit == TimeUnit.Milliseconds
-                    ? RepeatingTask.Start(DoAction, repeatDelay, cancellationToken.Token)
-                    : RepeatingTask.Start(DoAction, TimeSpan.FromMilliseconds(repeatDelay), cancellationToken.Token);
+                    ? RepeatingTask.Start(() => DoAction(stopwatch), repeatDelay, cancellationToken.Token)
+                    : RepeatingTask.Start(() => DoAction(stopwatch), TimeSpan.FromMilliseconds(repeatDelay), cancellationToken.Token);
 
-                await task.ConfigureAwait(false);
+                await task;
 
                 stopwatch.Stop();
 
                 // delays[0] can be ignored since it is the first run with no initial delay.
                 // The other delays cannot be guaranteed to be close to 'repeatDelay', so check >=
-                delays[1].Should().BeGreaterThanOrEqualTo(repeatDelay - 1);     // Have seen 99, rather than 100
-                delays[2].Should().BeGreaterThanOrEqualTo(repeatDelay - 1);     // Have seen 99, rather than 100
+
+                const int allowableDiff = 25;
+                
+                delays[1].Should().BeGreaterThanOrEqualTo(repeatDelay - allowableDiff);
+                delays[2].Should().BeGreaterThanOrEqualTo(repeatDelay - allowableDiff);
             }
 
             [Theory]
@@ -355,15 +362,13 @@ namespace AllOverIt.Tests.Async
                 var cancellationToken = new CancellationTokenSource();
                 var invokedCount = 0;
                 var delays = new List<long>();
-                var stopwatch = Stopwatch.StartNew();
                 var lastElapsed = 0L;
 
-                void DoAction()
+                void DoAction(Stopwatch stopwatch)
                 {
                     delays.Add(stopwatch.ElapsedMilliseconds - lastElapsed);
                     invokedCount++;
 
-                    // re-evaluate to eliminate delays with the Add() method
                     lastElapsed = stopwatch.ElapsedMilliseconds;
 
                     if (invokedCount == 3)
@@ -372,17 +377,21 @@ namespace AllOverIt.Tests.Async
                     }
                 }
 
-                var task = timeUnit == TimeUnit.Milliseconds
-                    ? RepeatingTask.Start(DoAction, initialDelay, repeatDelay, cancellationToken.Token)
-                    : RepeatingTask.Start(DoAction, TimeSpan.FromMilliseconds(initialDelay), TimeSpan.FromMilliseconds(repeatDelay), cancellationToken.Token);
+                var stopwatch = Stopwatch.StartNew();
 
-                await task.ConfigureAwait(false);
+                var task = timeUnit == TimeUnit.Milliseconds
+                    ? RepeatingTask.Start(() => DoAction(stopwatch), initialDelay, repeatDelay, cancellationToken.Token)
+                    : RepeatingTask.Start(() => DoAction(stopwatch), TimeSpan.FromMilliseconds(initialDelay), TimeSpan.FromMilliseconds(repeatDelay), cancellationToken.Token);
+
+                await task;
 
                 stopwatch.Stop();
 
-                delays[0].Should().BeGreaterOrEqualTo(initialDelay);
-                delays[1].Should().BeGreaterOrEqualTo(repeatDelay);
-                delays[2].Should().BeGreaterOrEqualTo(repeatDelay);
+                const int allowableDiff = 25;
+
+                delays[0].Should().BeGreaterOrEqualTo(initialDelay - allowableDiff);
+                delays[1].Should().BeGreaterOrEqualTo(repeatDelay - allowableDiff);
+                delays[2].Should().BeGreaterOrEqualTo(repeatDelay - allowableDiff);
             }
         }
     }

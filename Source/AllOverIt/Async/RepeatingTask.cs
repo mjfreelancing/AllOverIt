@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -61,7 +62,7 @@ namespace AllOverIt.Async
         /// <returns>A task that completes when the <paramref name="cancellationToken"/> is cancelled.</returns>
         public static Task Start(Action action, int repeatDelay, CancellationToken cancellationToken)
         {
-            return StartImpl(action, 0, repeatDelay, cancellationToken);
+            return StartImpl(action, TimeSpan.FromMilliseconds(0), TimeSpan.FromMilliseconds(repeatDelay), cancellationToken);
         }
 
         /// <summary>Creates and starts a new task that repeatedly invokes a function.</summary>
@@ -72,7 +73,7 @@ namespace AllOverIt.Async
         /// <returns>A task that completes when the <paramref name="cancellationToken"/> is cancelled.</returns>
         public static Task Start(Action action, TimeSpan repeatDelay, CancellationToken cancellationToken)
         {
-            return StartImpl(action, 0, (int)repeatDelay.TotalMilliseconds, cancellationToken);
+            return StartImpl(action, TimeSpan.FromMilliseconds(0), repeatDelay, cancellationToken);
         }
 
         /// <summary>Creates and starts a new task after an initial delay that repeatedly invokes a function.</summary>
@@ -84,7 +85,7 @@ namespace AllOverIt.Async
         /// <returns>A task that completes when the <paramref name="cancellationToken"/> is cancelled.</returns>
         public static Task Start(Action action, int initialDelay, int repeatDelay, CancellationToken cancellationToken)
         {
-            return StartImpl(action, initialDelay, repeatDelay, cancellationToken);
+            return StartImpl(action, TimeSpan.FromMilliseconds(initialDelay), TimeSpan.FromMilliseconds(repeatDelay), cancellationToken);
         }
 
         /// <summary>Creates and starts a new task after an initial delay that repeatedly invokes a function.</summary>
@@ -96,7 +97,7 @@ namespace AllOverIt.Async
         /// <returns>A task that completes when the <paramref name="cancellationToken"/> is cancelled.</returns>
         public static Task Start(Action action, TimeSpan initialDelay, TimeSpan repeatDelay, CancellationToken cancellationToken)
         {
-            return StartImpl(action, (int)initialDelay.TotalMilliseconds, (int) repeatDelay.TotalMilliseconds, cancellationToken);
+            return StartImpl(action, initialDelay, repeatDelay, cancellationToken);
         }
 
         private static Task StartImpl(Func<Task> action, int initialDelay, int repeatDelay, CancellationToken cancellationToken)
@@ -131,36 +132,49 @@ namespace AllOverIt.Async
             }, cancellationToken, TaskCreationOptions.None, TaskScheduler.Default).Unwrap();
         }
 
-        private static Task StartImpl(Action action, int initialDelay, int repeatDelay, CancellationToken cancellationToken)
+        private static Task StartImpl(Action action, TimeSpan initialDelay, TimeSpan repeatDelay, CancellationToken cancellationToken)
         {
-            return Task.Factory.StartNew(async () =>
-            {
-                // ConfigureAwait() isn't strictly required here as there is no synchronization context,
-                // but it keeps all code consistent.
-
-                try
+            return Task.Factory
+                .StartNew(async () =>
                 {
-                    if (initialDelay > 0)
+                    // ConfigureAwait() isn't strictly required here as there is no synchronization context,
+                    // but it keeps all code consistent.
+
+                    try
                     {
-                        cancellationToken.ThrowIfCancellationRequested();
+                        if (initialDelay.TotalMilliseconds > 0)
+                        {
+                            cancellationToken.ThrowIfCancellationRequested();
 
-                        await Task.Delay(initialDelay, cancellationToken).ConfigureAwait(false);
+                            await Task.Delay(initialDelay, cancellationToken);
+                        }
+
+#if NETSTANDARD2_1_OR_GREATER
+                        while (!cancellationToken.IsCancellationRequested)
+                        {
+                            action.Invoke();
+
+                            cancellationToken.ThrowIfCancellationRequested();
+
+                            await Task.Delay(repeatDelay, cancellationToken);
+                        }
+
+#else
+                        using (var timer = new PeriodicTimer(repeatDelay))
+                        {
+                            while (await timer.WaitForNextTickAsync(cancellationToken))
+                            {
+                                action.Invoke();
+                            }
+                        }
+#endif
                     }
-
-                    while (!cancellationToken.IsCancellationRequested)
+                    catch (OperationCanceledException)
                     {
-                        action.Invoke();
-
-                        cancellationToken.ThrowIfCancellationRequested();
-
-                        await Task.Delay(repeatDelay, cancellationToken).ConfigureAwait(false);
+                        // break out
                     }
-                }
-                catch (OperationCanceledException)
-                {
-                    // break out
-                }
-            }, cancellationToken, TaskCreationOptions.LongRunning, TaskScheduler.Default).Unwrap();
+                }, cancellationToken, TaskCreationOptions.LongRunning, TaskScheduler.Default)
+                .Unwrap();
         }
     }
 }
