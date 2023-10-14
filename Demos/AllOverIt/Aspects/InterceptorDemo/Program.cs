@@ -1,4 +1,5 @@
-﻿using AllOverIt.DependencyInjection.Extensions;
+﻿using AllOverIt.Aspects.Interceptor;
+using AllOverIt.DependencyInjection.Extensions;
 using InterceptorDemo.Interceptors;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -16,10 +17,19 @@ namespace InterceptorDemo
 
                 services
                     .AddScoped<ISecretService, SecretService>()
-                    .DecorateWithInterceptor<ISecretService, TimedInterceptor>(inteceptor =>
+                    .DecorateWithInterceptor<ISecretService, MethodInterceptor<ISecretService>>((serviceProvider, inteceptor) =>
                     {
-                        inteceptor.MinimimReportableMilliseconds = 1000;
+                        inteceptor
+                            .AddMethodHandler(new GetSecretHandler(1000))
+                            .AddMethodHandler(new GetSecretAsyncHandler(1000));
+
+
+                        //inteceptor.MinimimReportableMilliseconds = 1000;
                     });
+                //.DecorateWithInterceptor<ISecretService, TimedInterceptor>(inteceptor =>
+                //{
+                //    inteceptor.MinimimReportableMilliseconds = 1000;
+                //});
 
                 var serviceProvider = services.BuildServiceProvider();
 

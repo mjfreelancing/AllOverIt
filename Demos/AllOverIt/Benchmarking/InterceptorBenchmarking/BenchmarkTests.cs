@@ -5,19 +5,19 @@ using System.Threading.Tasks;
 namespace InterceptorBenchmarking
 {
     /*
-    |                          Method |        Mean |     Error |    StdDev |   Gen0 | Allocated |
-    |-------------------------------- |------------:|----------:|----------:|-------:|----------:|
-    |          Call_Service_GetSecret |   0.8919 ns | 0.1043 ns | 0.2748 ns |      - |         - |
-    |     Call_Service_GetSecretAsync |  19.5539 ns | 0.3875 ns | 0.6987 ns | 0.0115 |      72 B |
-    |      Call_Interceptor_GetSecret |  43.1708 ns | 0.8595 ns | 1.0232 ns | 0.0153 |      96 B |
-    | Call_Interceptor_GetSecretAsync | 193.2915 ns | 3.8214 ns | 5.6014 ns | 0.0598 |     376 B |
+    | Method                          | Mean          | Error       | StdDev      | Gen0   | Allocated |
+    |-------------------------------- |--------------:|------------:|------------:|-------:|----------:|
+    | Call_Service_GetSecret          |      2.063 ns |   0.0700 ns |   0.0749 ns |      - |         - |
+    | Call_Service_GetSecretAsync     |     17.383 ns |   0.2721 ns |   0.2272 ns | 0.0172 |      72 B |
+    | Call_Interceptor_GetSecret      |     31.480 ns |   0.3878 ns |   0.3628 ns | 0.0114 |      48 B |
+    | Call_Interceptor_GetSecretAsync | 15,725.459 ns | 264.3216 ns | 247.2466 ns | 2.1057 |    8890 B |
      */
 
     [MemoryDiagnoser]
     public class BenchmarkTests
     {
         private readonly IService _service = new Service();
-        private readonly IService _serviceInterceptor = InterceptorFactory.CreateInterceptor<IService, ServiceInterceptor>(new Service(), interceptor => { });
+        private readonly IService _serviceInterceptor = InterceptorFactory.CreateInterceptor<IService, ServiceInterceptor>(new Service(), null, (_, interceptor) => { });
 
         [Benchmark]
         public void Call_Service_GetSecret()

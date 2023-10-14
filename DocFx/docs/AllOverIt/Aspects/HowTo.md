@@ -118,16 +118,76 @@ The `proxy.GetSecret()` call will result in the following sequence:
 
 
 ## Modifying input arguments
+Consider this method on `ISecretService`:
 
+```csharp
+string GetSecret(string accessKey);
+```
 
+Imagine a scenario where the service retrieves the secret from an external store where the access keys must be lower-cased and you want to intercept this method to ensure the argument is modified before the external store is accessed. To achieve this, the argument can be modified like so:
 
+```csharp
+protected override InterceptorState BeforeInvoke(
+    MethodInfo targetMethod,
+    object[] args,
+    ref object result)
+{
+    // The 'accessKey' passed to GetSecret() is at index 0.
+    var accessKey = (string) args[0];
 
+    // This will mutate the argument before sending it to the decorated service.
+    // Note: The mutation is limited to the service call. The argument sent by the caller
+    //       will remain unmodified.
+    args[0] = accessKey.ToLowerInvariant();
 
+    // Remainder of implementation here...
+}
+```
+
+The `accessKey` argument provided to `GetSecret()` will now be lower-cased before being sent to the decorated service.
 
 
 ## Modifying return values
+Consider this method on `ISecretService`:
 
+```csharp
+string GetSecret(string accessKey);
+```
 
+Imagine a scenario where you want to ensure the returned result is always lower-cased. This can be achieved by overriding the `AfterInvoke()` method like so:
+
+```csharp
+// Implementation for intercepting a call to GetSecret():
+protected override void AfterInvoke(
+    MethodInfo targetMethod,
+    object[] args,
+    InterceptorState state,
+    ref object result)
+{
+    var secret = (string) result;
+
+    result = secret.ToLowerInvariant();
+
+    // Remainder of implementation here...
+}
+
+// Implementation for intercepting a call to GetSecretAsync():
+protected override void AfterInvoke(
+    MethodInfo targetMethod,
+    object[] args,
+    InterceptorState state,
+    ref object result)
+{
+    var secretTask = (Task<string>) result;
+
+    // This is safe. The AfterInvoke() method will not be called if the Task result is in a faulted state.
+    var secret = secretTask.Result.ToLowerInvariant();
+
+    result = Task.FromResult(secret);
+
+    // Remainder of implementation here...
+}
+```
 
 
 

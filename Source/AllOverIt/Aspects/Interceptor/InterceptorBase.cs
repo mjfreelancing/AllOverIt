@@ -1,12 +1,60 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Reflection;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 
 namespace AllOverIt.Aspects.Interceptor
 {
+
+
+
+
+
+
+
+
+
+    public class MethodInterceptor<TService> : InterceptorBase<TService>
+    {
+        private readonly IDictionary<MethodInfo, IInterceptorHandler> _methodInterceptors = new Dictionary<MethodInfo, IInterceptorHandler>();
+
+        public MethodInterceptor<TService> AddMethodHandler(IInterceptorHandler methodInterceptor)
+        {
+            foreach (var targetMethod in methodInterceptor.TargetMethods)
+            {
+                _methodInterceptors.Add(targetMethod, methodInterceptor);
+            }
+
+            return this;
+        }
+
+        protected override bool ShouldInterceptMethod(MethodInfo targetMethod)
+        {
+            return _methodInterceptors.ContainsKey(targetMethod);
+        }
+
+        protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
+        {
+            var methodInterceptor = _methodInterceptors[targetMethod];
+
+            return methodInterceptor.BeforeInvoke(targetMethod, ref args, ref result);
+        }
+
+        protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, ref object result)
+        {
+            var methodInterceptor = _methodInterceptors[targetMethod];
+
+            methodInterceptor.AfterInvoke(targetMethod, args, state, ref result);
+        }
+    }
+
+
+
+
+
     /// <summary>Provides a base class for all interceptors (dispatch proxies) created via
     /// <see cref="InterceptorFactory.CreateInterceptor{TServiceType, TInterceptor}(TServiceType, Action{TInterceptor})"/>.
     /// Derived Interceptors must be public and non-sealed as they are the base class for the generated proxy.</summary>
@@ -15,24 +63,40 @@ namespace AllOverIt.Aspects.Interceptor
     {
         internal TServiceType _serviceInstance;
 
+        /// <summary>Determines if this interceptor should be invoked for the provided target method. All methods will pass
+        /// through this interceptor if not overriden.</summary>
+        /// <param name="targetMethod">The method info for the method being intercepted.</param>
+        /// <returns><see langword="True"/> if the interceptor can handle the method, otherwise <see langword="False"/>.</returns>
+        protected virtual bool ShouldInterceptMethod(MethodInfo targetMethod)
+        {
+            return true;
+        }
+
         /// <summary>The <see cref="BeforeInvoke(MethodInfo, ref object[], ref object)"/> method is called before calling the decorated
         /// object's method, and ends with calling <see cref="AfterInvoke(MethodInfo, object[], InterceptorState, ref object)"/> if
         /// no exception is raised, otherwise <see cref="Faulted(MethodInfo, object[], InterceptorState, Exception)"/>
         /// is called.</summary>
-        /// <param name="targetMethod">The info for the method being intercepted.</param>
+        /// <param name="targetMethod">The <see cref="MethodInfo"/> for the method being intercepted.</param>
         /// <param name="args">The arguments passed to the intercepted method.</param>
         /// <returns>The result of the method invoked on the decorated instance.</returns>
         protected override object Invoke(MethodInfo targetMethod, object[] args)
         {
+            if (!ShouldInterceptMethod(targetMethod))
+            {
+                return InvokeServiceInstance(targetMethod, args);
+            }
+
             object result = default;
 
             var state = BeforeInvoke(targetMethod, ref args, ref result);
 
             try
             {
-                if (!state.Handled)
+                var resultHandled = result is not null;
+
+                if (!resultHandled)
                 {
-                    result = targetMethod.Invoke(_serviceInstance, args);
+                    result = InvokeServiceInstance(targetMethod, args);
                 }
 
                 if (result is Task taskResult)
@@ -58,7 +122,7 @@ namespace AllOverIt.Aspects.Interceptor
         }
 
         /// <summary>Called before the decorated instance method is called.</summary>
-        /// <param name="targetMethod">The info for the method being intercepted.</param>
+        /// <param name="targetMethod">The <see cref="MethodInfo"/> for the method being intercepted.</param>
         /// <param name="args">The arguments passed to the intercepted method, passed by ref.</param>
         /// <param name="result">Can be set to a result compatible with the method call. If the method being intercepted
         /// returns a <see cref="Task{T}"/> be sure to wrap the value in a call to <c>Task.FromResult()</c>.
@@ -74,7 +138,7 @@ namespace AllOverIt.Aspects.Interceptor
         }
 
         /// <summary>Called after the instance method has completed execution without faulting (throwing an exception).</summary>
-        /// <param name="targetMethod">The info for the method being intercepted.</param>
+        /// <param name="targetMethod">The <see cref="MethodInfo"/> for the method being intercepted.</param>
         /// <param name="args">The arguments passed to the intercepted method.</param>
         /// <param name="state">The state object returned by <see cref="BeforeInvoke(MethodInfo, ref object[], ref object)"/>.
         /// If the <see cref="BeforeInvoke(MethodInfo, ref object[], ref object)"/> method is not overriden then this will
@@ -86,7 +150,7 @@ namespace AllOverIt.Aspects.Interceptor
         }
 
         /// <summary>Called when the decorated instance method invocation faults (throws an exception).</summary>
-        /// <param name="targetMethod">The info for the method being intercepted.</param>
+        /// <param name="targetMethod">The <see cref="MethodInfo"/> for the method being intercepted.</param>
         /// <param name="args">The arguments passed to the intercepted method.</param>
         /// <param name="state">The state object returned by <see cref="BeforeInvoke(MethodInfo, ref object[], ref object)"/>.
         /// If the <see cref="BeforeInvoke(MethodInfo, ref object[], ref object)"/> method is not overriden then this will
@@ -157,6 +221,11 @@ namespace AllOverIt.Aspects.Interceptor
                 }, TaskContinuationOptions.ExecuteSynchronously);
 
             return result;
+        }
+
+        private object InvokeServiceInstance(MethodInfo targetMethod, object[] args)
+        {
+            return targetMethod.Invoke(_serviceInstance, args);
         }
     }
 }

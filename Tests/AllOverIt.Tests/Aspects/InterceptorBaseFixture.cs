@@ -123,8 +123,8 @@ namespace AllOverIt.Tests.Aspects
 
                 if (HandleBeforeResult is not null)
                 {
+                    // Setting the result will consider the method 'handled' - the decorated instance method will not be called
                     result = HandleBeforeResult;
-                    state.Handled = true;
                 }
 
                 return state;
@@ -176,12 +176,36 @@ namespace AllOverIt.Tests.Aspects
             }
         }
 
+        // Must be non-sealed
+        public class DummyInterceptor5 : InterceptorBase<IDummyService>
+        {
+            public string BeforeArgs { get; set; }
+            public string AfterArgs { get; set; }
+
+            protected override bool ShouldInterceptMethod(MethodInfo targetMethod)
+            {
+                return false;
+            }
+
+            protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
+            {
+                BeforeArgs = (string) args[0];
+
+                return InterceptorState.None;
+            }
+
+            protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, ref object result)
+            {
+                AfterArgs = (string) args[0];
+            }
+        }
+
         [Theory]
         [InlineData(false)]
         [InlineData(true)]
         public void Should_Call_Before_Invoke(bool lowerBeforeValue)
         {
-            var (proxiedService, actualInterceptor) = CreateDummyInterceptor1(interceptor =>
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor<DummyInterceptor1>((_, interceptor) =>
             {
                 interceptor.LowerBeforeValue = lowerBeforeValue;
             });
@@ -204,7 +228,7 @@ namespace AllOverIt.Tests.Aspects
         [InlineData(true)]
         public async Task Should_Call_Before_Invoke_Async(bool lowerBeforeValue)
         {
-            var (proxiedService, actualInterceptor) = CreateDummyInterceptor1(interceptor =>
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor<DummyInterceptor1>((_, interceptor) =>
             {
                 interceptor.LowerBeforeValue = lowerBeforeValue;
             });
@@ -225,7 +249,7 @@ namespace AllOverIt.Tests.Aspects
         [Fact]
         public void Should_Mutate_Input_Args()
         {
-            var (proxiedService, actualInterceptor) = CreateDummyInterceptor3();
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor<DummyInterceptor3>();
 
             var input = Create<string>().ToLower();
             var expected = input.ToUpper();
@@ -238,7 +262,7 @@ namespace AllOverIt.Tests.Aspects
         [Fact]
         public async Task Should_Mutate_Input_Args_Async()
         {
-            var (proxiedService, actualInterceptor) = CreateDummyInterceptor3();
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor<DummyInterceptor3>();
 
             var input = Create<string>().ToLower();
             var expected = input.ToUpper();
@@ -253,7 +277,7 @@ namespace AllOverIt.Tests.Aspects
         {
             var expected = Create<string>();
 
-            var (proxiedService, actualInterceptor) = CreateDummyInterceptor2(interceptor =>
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor<DummyInterceptor2>((_, interceptor) =>
             {
                 interceptor.HandleBeforeResult = expected;
             });
@@ -271,7 +295,7 @@ namespace AllOverIt.Tests.Aspects
         {
             var expected = Create<string>();
 
-            var (proxiedService, actualInterceptor) = CreateDummyInterceptor2(interceptor =>
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor<DummyInterceptor2>((_, interceptor) =>
             {
                 interceptor.HandleBeforeResult = Task.FromResult(expected);
             });
@@ -287,7 +311,7 @@ namespace AllOverIt.Tests.Aspects
         [Fact]
         public void Should_Return_Invoke_Result()
         {
-            var (proxiedService, actualInterceptor) = CreateDummyInterceptor1();
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor<DummyInterceptor1>();
 
             var input = Create<string>();
             var value = $"A{input}b";
@@ -301,7 +325,7 @@ namespace AllOverIt.Tests.Aspects
         [Fact]
         public async Task Should_Return_Invoke_Result_Async()
         {
-            var (proxiedService, actualInterceptor) = CreateDummyInterceptor1();
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor<DummyInterceptor1>();
 
             var input = Create<string>();
             var value = $"A{input}b";
@@ -317,7 +341,7 @@ namespace AllOverIt.Tests.Aspects
         [InlineData(true)]
         public void Should_Call_After_Invoke(bool upperAfterValue)
         {
-            var (proxiedService, actualInterceptor) = CreateDummyInterceptor1(interceptor =>
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor<DummyInterceptor1>((_, interceptor) =>
             {
                 interceptor.UpperAfterValue = upperAfterValue;
             });
@@ -340,7 +364,7 @@ namespace AllOverIt.Tests.Aspects
         [InlineData(true)]
         public async Task Should_Call_After_Invoke_Async(bool upperAfterValue)
         {
-            var (proxiedService, actualInterceptor) = CreateDummyInterceptor1(interceptor =>
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor<DummyInterceptor1>((_, interceptor) =>
             {
                 interceptor.UpperAfterValue = upperAfterValue;
             });
@@ -363,7 +387,7 @@ namespace AllOverIt.Tests.Aspects
         {
             var expected = Create<string>();
 
-            var (proxiedService, actualInterceptor) = CreateDummyInterceptor2(interceptor =>
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor<DummyInterceptor2>((_, interceptor) =>
             {
                 interceptor.HandleAfterResult = expected;
             });
@@ -381,7 +405,7 @@ namespace AllOverIt.Tests.Aspects
         {
             var expected = Create<string>();
 
-            var (proxiedService, actualInterceptor) = CreateDummyInterceptor2(interceptor =>
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor<DummyInterceptor2>((_, interceptor) =>
             {
                 interceptor.HandleAfterResult = Task.FromResult(expected);
             });
@@ -397,7 +421,7 @@ namespace AllOverIt.Tests.Aspects
         [Fact]
         public void Should_Default_Fault()      // When the Fault() method is not overriden
         {
-            var (proxiedService, actualInterceptor) = CreateDummyInterceptor2();
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor<DummyInterceptor2>();
 
             try
             {
@@ -414,7 +438,7 @@ namespace AllOverIt.Tests.Aspects
         [Fact]
         public void Should_Fault()
         {
-            var (proxiedService, actualInterceptor) = CreateDummyInterceptor1();
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor<DummyInterceptor1>();
 
             try
             {
@@ -432,7 +456,7 @@ namespace AllOverIt.Tests.Aspects
         [Fact]
         public async Task Should_Fault_Async()
         {
-            var (proxiedService, actualInterceptor) = CreateDummyInterceptor1();
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor<DummyInterceptor1>();
 
             try
             {
@@ -453,7 +477,7 @@ namespace AllOverIt.Tests.Aspects
         [Fact]
         public void Should_Invoke_Method_With_Void_Return_Type()
         {
-            var (proxiedService, actualInterceptor) = CreateDummyInterceptor4();
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor<DummyInterceptor4>();
 
             actualInterceptor.BeforeArgs.Should().BeNull();
             actualInterceptor.AfterArgs.Should().BeNull();
@@ -469,7 +493,7 @@ namespace AllOverIt.Tests.Aspects
         [Fact]
         public async Task Should_Invoke_Method_With_Task_Return_Type()
         {
-            var (proxiedService, actualInterceptor) = CreateDummyInterceptor4();
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor<DummyInterceptor4>();
 
             actualInterceptor.BeforeArgs.Should().BeNull();
             actualInterceptor.AfterArgs.Should().BeNull();
@@ -482,48 +506,44 @@ namespace AllOverIt.Tests.Aspects
             actualInterceptor.AfterArgs.Should().Be(expected);
         }
 
-        private static (IDummyService, DummyInterceptor1) CreateDummyInterceptor1(Action<DummyInterceptor1> configure = default)
+        [Fact]
+        public void Should_Not_Invoke_Method()
         {
-            var service = new DummyService();
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor<DummyInterceptor5>();
 
-            // Interceptors cannot be new'd up - can only be created via this factory method.
-            // This method returns a proxied IDummyService this is a DummyInterceptor.
-            var proxy = InterceptorFactory.CreateInterceptor<IDummyService, DummyInterceptor1>(service, configure);
+            actualInterceptor.BeforeArgs.Should().BeNull();
+            actualInterceptor.AfterArgs.Should().BeNull();
 
-            return (proxy, (DummyInterceptor1) proxy);
+            proxiedService.SetValue(Create<string>());
+
+            actualInterceptor.BeforeArgs.Should().BeNull();
+            actualInterceptor.AfterArgs.Should().BeNull();
         }
 
-        private static (IDummyService, DummyInterceptor2) CreateDummyInterceptor2(Action<DummyInterceptor2> configure = default)
+        [Fact]
+        public async Task Should_Not_Invoke_Async_Method()
         {
-            var service = new DummyService();
+            var (proxiedService, actualInterceptor) = CreateDummyInterceptor<DummyInterceptor5>();
 
-            // Interceptors cannot be new'd up - can only be created via this factory method.
-            // This method returns a proxied IDummyService this is a DummyInterceptor.
-            var proxy = InterceptorFactory.CreateInterceptor<IDummyService, DummyInterceptor2>(service, configure);
+            actualInterceptor.BeforeArgs.Should().BeNull();
+            actualInterceptor.AfterArgs.Should().BeNull();
 
-            return (proxy, (DummyInterceptor2) proxy);
+            await proxiedService.SetValueAsync(Create<string>());
+
+            actualInterceptor.BeforeArgs.Should().BeNull();
+            actualInterceptor.AfterArgs.Should().BeNull();
         }
 
-        private static (IDummyService, DummyInterceptor3) CreateDummyInterceptor3()
+        private static (IDummyService, TInterceptor) CreateDummyInterceptor<TInterceptor>(Action<IServiceProvider, TInterceptor> configure = default)
+            where TInterceptor : InterceptorBase<IDummyService>
         {
             var service = new DummyService();
 
             // Interceptors cannot be new'd up - can only be created via this factory method.
-            // This method returns a proxied IDummyService this is a DummyInterceptor.
-            var proxy = InterceptorFactory.CreateInterceptor<IDummyService, DummyInterceptor3>(service);
+            // This method returns a proxied IDummyService.
+            var proxy = InterceptorFactory.CreateInterceptor<IDummyService, TInterceptor>(service, null, configure);
 
-            return (proxy, (DummyInterceptor3) proxy);
-        }
-
-        private static (IDummyService, DummyInterceptor4) CreateDummyInterceptor4()
-        {
-            var service = new DummyService();
-
-            // Interceptors cannot be new'd up - can only be created via this factory method.
-            // This method returns a proxied IDummyService this is a DummyInterceptor.
-            var proxy = InterceptorFactory.CreateInterceptor<IDummyService, DummyInterceptor4>(service);
-
-            return (proxy, (DummyInterceptor4) proxy);
+            return (proxy, (TInterceptor) proxy);
         }
     }
 }

@@ -261,7 +261,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
 
                 DummyInterceptor actual = default;
 
-                _ = ServiceCollectionExtensions.DecorateWithInterceptor<IDummyDecoratorInterface, DummyInterceptor>(services, interceptor =>
+                _ = ServiceCollectionExtensions.DecorateWithInterceptor<IDummyDecoratorInterface, DummyInterceptor>(services, (_, interceptor) =>
                 {
                     actual = interceptor;
                 });
@@ -288,7 +288,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                     return value;
                 }
 
-                _ = ServiceCollectionExtensions.DecorateWithInterceptor<IDummyDecoratorInterface, DummyInterceptor>(services, interceptor =>
+                _ = ServiceCollectionExtensions.DecorateWithInterceptor<IDummyDecoratorInterface, DummyInterceptor>(services, (_, interceptor) =>
                 {
                     interceptor.Callback = updater;
                 });
@@ -316,7 +316,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                     return value * 2;
                 }
 
-                _ = ServiceCollectionExtensions.DecorateWithInterceptor<IDummyDecoratorInterface, DummyInterceptor>(services, interceptor =>
+                _ = ServiceCollectionExtensions.DecorateWithInterceptor<IDummyDecoratorInterface, DummyInterceptor>(services, (_, interceptor) =>
                 {
                     // Used to double the input argument
                     interceptor.Callback = updater;
