@@ -5,7 +5,6 @@ using Xunit;
 
 namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 {
-    [Collection("GlobalBreadcrumbs")]
     public class GlobalBreadcrumbsFixture : FixtureBase
     {
         [Fact]
