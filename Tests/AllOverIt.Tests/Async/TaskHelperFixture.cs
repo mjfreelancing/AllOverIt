@@ -19,7 +19,7 @@ namespace AllOverIt.Tests.Async
                 var task1 = Task.FromResult(value1);
                 var task2 = Task.FromResult(value2);
 
-                var (actual1, actual2) = await TaskHelper.WhenAll(task1, task2).ConfigureAwait(false);
+                var (actual1, actual2) = await TaskHelper.WhenAll(task1, task2);
 
                 actual1.Should().Be(value1);
                 actual2.Should().Be(value2);
@@ -36,7 +36,7 @@ namespace AllOverIt.Tests.Async
                 var task2 = Task.FromResult(value2);
                 var task3 = Task.FromResult(value3);
 
-                var (actual1, actual2, actual3) = await TaskHelper.WhenAll(task1, task2, task3).ConfigureAwait(false);
+                var (actual1, actual2, actual3) = await TaskHelper.WhenAll(task1, task2, task3);
 
                 actual1.Should().Be(value1);
                 actual2.Should().Be(value2);
@@ -56,7 +56,7 @@ namespace AllOverIt.Tests.Async
                 var task3 = Task.FromResult(value3);
                 var task4 = Task.FromResult(value4);
 
-                var (actual1, actual2, actual3, actual4) = await TaskHelper.WhenAll(task1, task2, task3, task4).ConfigureAwait(false);
+                var (actual1, actual2, actual3, actual4) = await TaskHelper.WhenAll(task1, task2, task3, task4);
 
                 actual1.Should().Be(value1);
                 actual2.Should().Be(value2);
@@ -79,7 +79,7 @@ namespace AllOverIt.Tests.Async
                 var task4 = Task.FromResult(value4);
                 var task5 = Task.FromResult(value5);
 
-                var (actual1, actual2, actual3, actual4, actual5) = await TaskHelper.WhenAll(task1, task2, task3, task4, task5).ConfigureAwait(false);
+                var (actual1, actual2, actual3, actual4, actual5) = await TaskHelper.WhenAll(task1, task2, task3, task4, task5);
 
                 actual1.Should().Be(value1);
                 actual2.Should().Be(value2);
@@ -108,7 +108,7 @@ namespace AllOverIt.Tests.Async
                 var (actual1, actual2, actual3, actual4, actual5, actual6) =
                   await TaskHelper
                     .WhenAll(task1, task2, task3, task4, task5, task6)
-                    .ConfigureAwait(false);
+                    ;
 
                 actual1.Should().Be(value1);
                 actual2.Should().Be(value2);
@@ -140,7 +140,7 @@ namespace AllOverIt.Tests.Async
                 var (actual1, actual2, actual3, actual4, actual5, actual6, actual7)
                   = await TaskHelper
                     .WhenAll(task1, task2, task3, task4, task5, task6, task7)
-                    .ConfigureAwait(false);
+                    ;
 
                 actual1.Should().Be(value1);
                 actual2.Should().Be(value2);
@@ -175,7 +175,7 @@ namespace AllOverIt.Tests.Async
                 var (actual1, actual2, actual3, actual4, actual5, actual6, actual7, actual8)
                   = await TaskHelper
                     .WhenAll(task1, task2, task3, task4, task5, task6, task7, task8)
-                    .ConfigureAwait(false);
+                    ;
 
                 actual1.Should().Be(value1);
                 actual2.Should().Be(value2);
@@ -213,7 +213,7 @@ namespace AllOverIt.Tests.Async
                 var (actual1, actual2, actual3, actual4, actual5, actual6, actual7, actual8, actual9)
                   = await TaskHelper
                     .WhenAll(task1, task2, task3, task4, task5, task6, task7, task8, task9)
-                    .ConfigureAwait(false);
+                    ;
 
                 actual1.Should().Be(value1);
                 actual2.Should().Be(value2);
@@ -254,7 +254,7 @@ namespace AllOverIt.Tests.Async
                 var (actual1, actual2, actual3, actual4, actual5, actual6, actual7, actual8, actual9, actual10)
                   = await TaskHelper
                     .WhenAll(task1, task2, task3, task4, task5, task6, task7, task8, task9, task10)
-                    .ConfigureAwait(false);
+                    ;
 
                 actual1.Should().Be(value1);
                 actual2.Should().Be(value2);

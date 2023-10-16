@@ -8,12 +8,7 @@ using System.Threading.Tasks;
 
 namespace AllOverIt.Aspects.Interceptor
 {
-
-
-
-
-
-
+    // A more advanced implementation: https://github.com/castleproject/Core/blob/master/docs/dynamicproxy.md
 
 
 

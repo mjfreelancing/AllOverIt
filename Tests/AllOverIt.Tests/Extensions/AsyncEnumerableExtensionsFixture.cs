@@ -182,10 +182,8 @@ namespace AllOverIt.Tests.Extensions
             public async Task Should_Convert_To_List()
             {
                 var expected = CreateMany<string>();
-                
-                var actual = await GetStrings(expected)
-                    .ToListAsync()
-                    .ConfigureAwait(false);
+
+                var actual = await GetStrings(expected).ToListAsync();
 
                 expected.Should().BeEquivalentTo(actual);
             }
@@ -195,9 +193,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var expected = CreateMany<string>();
 
-                var actual = await GetStrings(expected)
-                    .ToListAsync()
-                    .ConfigureAwait(false);
+                var actual = await GetStrings(expected).ToListAsync();
 
                 actual.Should().BeAssignableTo(typeof(IList<string>));
             }
@@ -210,9 +206,7 @@ namespace AllOverIt.Tests.Extensions
 
                 await Invoking(async () =>
                     {
-                        await GetStrings(CreateMany<string>())
-                            .ToListAsync(cancellationTokenSource.Token)
-                            .ConfigureAwait(false);
+                        await GetStrings(CreateMany<string>()).ToListAsync(cancellationTokenSource.Token);
                     })
                     .Should()
                     .ThrowAsync<OperationCanceledException>();
@@ -229,7 +223,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = await GetStrings(items)
                     .SelectAsListAsync(item => Task.FromResult(expected[item]))
-                    .ConfigureAwait(false);
+                    ;
 
                 expected.Values.Should().BeEquivalentTo(actual);
             }
@@ -242,7 +236,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = await GetStrings(items)
                     .SelectAsListAsync(item => Task.FromResult(expected[item]))
-                    .ConfigureAwait(false);
+                    ;
 
                 actual.Should().BeAssignableTo(typeof(IList<string>));
             }
@@ -257,7 +251,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         await GetStrings(CreateMany<string>())
                             .SelectAsListAsync(item => Task.FromResult(item), cancellationTokenSource.Token)
-                            .ConfigureAwait(false);
+                            ;
                     })
                     .Should()
                     .ThrowAsync<OperationCanceledException>();
@@ -274,7 +268,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = await GetStrings(items)
                     .SelectAsReadOnlyCollectionAsync(item => Task.FromResult(expected[item]))
-                    .ConfigureAwait(false);
+                    ;
 
                 expected.Values.Should().BeEquivalentTo(actual);
             }
@@ -287,7 +281,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = await GetStrings(items)
                     .SelectAsReadOnlyCollectionAsync(item => Task.FromResult(expected[item]))
-                    .ConfigureAwait(false);
+                    ;
 
                 actual.Should().BeAssignableTo(typeof(IReadOnlyCollection<string>));
             }
@@ -302,7 +296,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         await GetStrings(CreateMany<string>())
                             .SelectAsReadOnlyCollectionAsync(item => Task.FromResult(item), cancellationTokenSource.Token)
-                            .ConfigureAwait(false);
+                            ;
                     })
                     .Should()
                     .ThrowAsync<OperationCanceledException>();
@@ -319,7 +313,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = await GetStrings(items)
                     .SelectAsReadOnlyListAsync(item => Task.FromResult(expected[item]))
-                    .ConfigureAwait(false);
+                    ;
 
                 expected.Values.Should().BeEquivalentTo(actual);
             }
@@ -332,7 +326,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = await GetStrings(items)
                     .SelectAsReadOnlyListAsync(item => Task.FromResult(expected[item]))
-                    .ConfigureAwait(false);
+                    ;
 
                 actual.Should().BeAssignableTo(typeof(IReadOnlyList<string>));
             }
@@ -347,7 +341,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         await GetStrings(CreateMany<string>())
                             .SelectAsReadOnlyListAsync(item => Task.FromResult(item), cancellationTokenSource.Token)
-                            .ConfigureAwait(false);
+                            ;
                     })
                     .Should()
                     .ThrowAsync<OperationCanceledException>();

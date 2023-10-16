@@ -99,7 +99,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                         });
                     });
 
-                    await Task.WhenAll(tasks).ConfigureAwait(false);
+                    await Task.WhenAll(tasks);
                 }
                 else
                 {
@@ -131,7 +131,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                         });
                     });
 
-                    await Task.WhenAll(tasks).ConfigureAwait(false);
+                    await Task.WhenAll(tasks);
                 }
                 else
                 {

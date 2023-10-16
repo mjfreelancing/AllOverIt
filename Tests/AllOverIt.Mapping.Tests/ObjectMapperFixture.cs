@@ -394,7 +394,7 @@ namespace AllOverIt.Mapping.Tests
                         });
                     });
 
-                var results = await Task.WhenAll(tasks).ConfigureAwait(false);
+                var results = await Task.WhenAll(tasks);
 
                 foreach (var actual in results)
                 {
@@ -862,7 +862,7 @@ namespace AllOverIt.Mapping.Tests
                         });
                     });
 
-                var results = await Task.WhenAll(tasks).ConfigureAwait(false);
+                var results = await Task.WhenAll(tasks);
 
                 foreach (var actual in results)
                 {
@@ -2018,7 +2018,7 @@ namespace AllOverIt.Mapping.Tests
 
                 await Task
                     .WhenAll(task1, task2, task3, task4, task5, task6, task7, task8, task9, task10, task11, task12)
-                    .ConfigureAwait(false);
+                    ;
             }
         }
 

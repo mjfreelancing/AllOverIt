@@ -347,7 +347,7 @@ namespace AllOverIt.Tests.Async
                 // The other delays cannot be guaranteed to be close to 'repeatDelay', so check >=
 
                 const int allowableDiff = 25;
-                
+
                 delays[1].Should().BeGreaterThanOrEqualTo(repeatDelay - allowableDiff);
                 delays[2].Should().BeGreaterThanOrEqualTo(repeatDelay - allowableDiff);
             }

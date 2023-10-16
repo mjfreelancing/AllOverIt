@@ -48,7 +48,6 @@
 * Changed generic cache keys to be records
 * Added support for custom value converters in LinqSpecificationVisitor
 * Added object extensions to invoke methods using reflection
-* Updated RepeatingTask to use PeriodicTimer in NET 6 and above. NET Standard 2.1 remains unchanged, at the expense of less precision.
 
 
 ## AllOverIt.AspNetCore

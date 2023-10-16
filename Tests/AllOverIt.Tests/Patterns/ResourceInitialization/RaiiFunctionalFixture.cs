@@ -61,7 +61,7 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
 
             using (logger.GetProfiler(title))
             {
-                await Task.Delay(100).ConfigureAwait(false);
+                await Task.Delay(100);
             }
 
             actual.Should().StartWith($"{title} took ");

@@ -210,11 +210,13 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
             [Fact]
             public void Should_Get_Expected_Count()
             {
+                var maxCount = 3 + Create<int>();
+
                 var count = GetWithinRange(1, 5);
 
                 for (var i = 0; i < count; i++)
                 {
-                    _viewRegistry.CreateOrActivateFor<DummyViewModel1>(Create<int>(), viewItems => Create<int>());
+                    _viewRegistry.CreateOrActivateFor<DummyViewModel1>(maxCount, viewItems => Create<int>());
                 }
 
                 var actual1 = _viewRegistry.GetViewCountFor<DummyViewModel1>();
@@ -238,11 +240,13 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
             [Fact]
             public void Should_Get_Expected_Count()
             {
+                var maxCount = 3 + Create<int>();
+
                 var count = GetWithinRange(1, 5);
 
                 for (var i = 0; i < count; i++)
                 {
-                    _viewRegistry.CreateOrActivateFor<DummyViewModel1>(Create<int>(), viewItems => Create<int>());
+                    _viewRegistry.CreateOrActivateFor<DummyViewModel1>(maxCount, viewItems => Create<int>());
                 }
 
                 var actual1 = _viewRegistry.GetViewCountFor(typeof(DummyViewModel1));
@@ -289,9 +293,11 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
             {
                 var ids = CreateMany<int>().ToArray();
 
-                _viewRegistry.CreateOrActivateFor<DummyViewModel1>(Create<int>(), viewItems => ids[0]);
-                _viewRegistry.CreateOrActivateFor<DummyViewModel1>(Create<int>(), viewItems => ids[1]);
-                _viewRegistry.CreateOrActivateFor<DummyViewModel1>(Create<int>(), viewItems => ids[2]);
+                var maxCount = 3 + Create<int>();
+
+                _viewRegistry.CreateOrActivateFor<DummyViewModel1>(maxCount, viewItems => ids[0]);
+                _viewRegistry.CreateOrActivateFor<DummyViewModel1>(maxCount, viewItems => ids[1]);
+                _viewRegistry.CreateOrActivateFor<DummyViewModel1>(maxCount, viewItems => ids[2]);
 
                 var actual = _viewRegistry.GetViewsFor<DummyViewModel1>().ToArray();
 
@@ -316,11 +322,12 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
             [Fact]
             public void Should_Return_Views()
             {
+                var maxCount = Create<int>();
                 var ids = CreateMany<int>(3).ToArray();
 
-                _viewRegistry.CreateOrActivateFor<DummyViewModel1>(Create<int>(), viewItems => ids[0]);
-                _viewRegistry.CreateOrActivateFor<DummyViewModel1>(Create<int>(), viewItems => ids[1]);
-                _viewRegistry.CreateOrActivateFor<DummyViewModel1>(Create<int>(), viewItems => ids[2]);
+                _viewRegistry.CreateOrActivateFor<DummyViewModel1>(maxCount, viewItems => ids[0]);
+                _viewRegistry.CreateOrActivateFor<DummyViewModel1>(maxCount, viewItems => ids[1]);
+                _viewRegistry.CreateOrActivateFor<DummyViewModel1>(maxCount, viewItems => ids[2]);
 
                 var actual = _viewRegistry.GetViewsFor(typeof(DummyViewModel1)).ToArray();
 
@@ -416,9 +423,11 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
 
                 _viewRegistry.IsEmpty.Should().BeTrue();
 
-                _viewRegistry.CreateOrActivateFor<DummyViewModel1>(Create<int>(), viewItems => { return Create<int>(); });
-                _viewRegistry.CreateOrActivateFor<DummyViewModel1>(Create<int>(), viewItems => { return Create<int>(); });
-                _viewRegistry.CreateOrActivateFor<DummyViewModel1>(Create<int>(), viewItems => { return Create<int>(); });
+                var maxCount = 3 + Create<int>();
+
+                _viewRegistry.CreateOrActivateFor<DummyViewModel1>(maxCount, viewItems => { return Create<int>(); });
+                _viewRegistry.CreateOrActivateFor<DummyViewModel1>(maxCount, viewItems => { return Create<int>(); });
+                _viewRegistry.CreateOrActivateFor<DummyViewModel1>(maxCount, viewItems => { return Create<int>(); });
 
                 _viewRegistry.IsEmpty.Should().BeFalse();
 
