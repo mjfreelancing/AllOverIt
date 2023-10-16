@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -137,9 +136,7 @@ namespace AllOverIt.Async
             return Task.Factory
                 .StartNew(async () =>
                 {
-                    // ConfigureAwait() isn't strictly required here as there is no synchronization context,
-                    // but it keeps all code consistent.
-
+                    // ConfigureAwait() isn't strictly required here as there is no synchronization context.
                     try
                     {
                         if (initialDelay.TotalMilliseconds > 0)
@@ -149,7 +146,6 @@ namespace AllOverIt.Async
                             await Task.Delay(initialDelay, cancellationToken);
                         }
 
-#if NETSTANDARD2_1_OR_GREATER
                         while (!cancellationToken.IsCancellationRequested)
                         {
                             action.Invoke();
@@ -158,16 +154,6 @@ namespace AllOverIt.Async
 
                             await Task.Delay(repeatDelay, cancellationToken);
                         }
-
-#else
-                        using (var timer = new PeriodicTimer(repeatDelay))
-                        {
-                            while (await timer.WaitForNextTickAsync(cancellationToken))
-                            {
-                                action.Invoke();
-                            }
-                        }
-#endif
                     }
                     catch (OperationCanceledException)
                     {
