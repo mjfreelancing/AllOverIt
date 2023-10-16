@@ -26,6 +26,7 @@ namespace AllOverIt.Pipes.Tests.Named.Server
             }
         }
 
+        [Collection("Pipes")]
         public class Constructor : NamedPipeServerConnectionFixture
         {
             [Fact]
@@ -89,6 +90,7 @@ namespace AllOverIt.Pipes.Tests.Named.Server
             }
         }
 
+        [Collection("Pipes")]
         public class GetImpersonationUserName : NamedPipeServerConnectionFixture
         {
             [Fact]

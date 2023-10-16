@@ -43,6 +43,7 @@ namespace AllOverIt.Pipes.Tests.Serializer
 
         private readonly NamedPipeSerializer<DummyMessage> _serializer = new();
 
+        [Collection("Pipes")]
         public class Serialize_Deserialize : NamedPipeSerializerFixture_Functional
         {
             [Fact]

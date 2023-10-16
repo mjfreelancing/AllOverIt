@@ -20,6 +20,7 @@ namespace AllOverIt.Pipes.Tests.Named.Client
             public int Id { get; set; }
         }
 
+        [Collection("Pipes")]
         public class Constructor_PipeName_Serializer : NamedPipeClientFixture
         {
             [Fact]
@@ -72,6 +73,7 @@ namespace AllOverIt.Pipes.Tests.Named.Client
             }
         }
 
+        [Collection("Pipes")]
         public class Constructor_PipeName_DomainName_Serializer : NamedPipeClientFixture
         {
             [Fact]
@@ -159,6 +161,7 @@ namespace AllOverIt.Pipes.Tests.Named.Client
             }
         }
 
+        [Collection("Pipes")]
         public class WriteAsync : NamedPipeClientFixture
         {
             [Fact]

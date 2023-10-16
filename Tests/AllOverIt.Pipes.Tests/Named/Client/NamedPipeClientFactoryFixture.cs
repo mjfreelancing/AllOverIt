@@ -33,6 +33,7 @@ namespace AllOverIt.Pipes.Tests.Named.Client
             }
         }
 
+        [Collection("Pipes")]
         public class CreateNamedPipeClient_PipeName : NamedPipeClientFactoryFixture
         {
             [Fact]
@@ -91,6 +92,7 @@ namespace AllOverIt.Pipes.Tests.Named.Client
             }
         }
 
+        [Collection("Pipes")]
         public class CreateNamedPipeClient_PipeName_ServerName : NamedPipeClientFactoryFixture
         {
             [Fact]

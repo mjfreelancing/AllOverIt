@@ -21,6 +21,7 @@ namespace AllOverIt.Pipes.Tests.Named.Server
             public int Id { get; set; }
         }
 
+        [Collection("Pipes")]
         public class Constructor : NamedPipeServerFixture
         {
             [Fact]
@@ -73,6 +74,7 @@ namespace AllOverIt.Pipes.Tests.Named.Server
             }
         }
 
+        [Collection("Pipes")]
         public class Start_Action : NamedPipeServerFixture
         {
             [Fact]
@@ -117,6 +119,7 @@ namespace AllOverIt.Pipes.Tests.Named.Server
             }
         }
 
+        [Collection("Pipes")]
         public class Start_PipeSecurity : NamedPipeServerFixture
         {
             [Fact]
@@ -133,6 +136,7 @@ namespace AllOverIt.Pipes.Tests.Named.Server
             }
         }
 
+        [Collection("Pipes")]
         public class Stop : NamedPipeServerFixture
         {
             [Fact]
@@ -152,7 +156,7 @@ namespace AllOverIt.Pipes.Tests.Named.Server
             }
         }
 
-        // NamedPipeFixture_Functional contains additional tests
+        [Collection("Pipes")]
         public class WriteAsync : NamedPipeServerFixture
         {
             private readonly string _pipeName;
@@ -303,4 +307,6 @@ namespace AllOverIt.Pipes.Tests.Named.Server
             }
         }
     }
+
+    // NamedPipeFixture_Functional contains additional tests
 }
