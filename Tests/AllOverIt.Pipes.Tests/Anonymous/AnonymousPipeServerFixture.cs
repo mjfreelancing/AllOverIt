@@ -10,6 +10,7 @@ namespace AllOverIt.Pipes.Tests.Anonymous
 {
     public class AnonymousPipeServerFixture : FixtureBase
     {
+        [Collection("Pipes")]
         public class Start : AnonymousPipeServerFixture
         {
             [Fact]
@@ -41,6 +42,7 @@ namespace AllOverIt.Pipes.Tests.Anonymous
             }
         }
 
+        [Collection("Pipes")]
         public class Reader : AnonymousPipeServerFixture
         {
             [Fact]
@@ -78,6 +80,7 @@ namespace AllOverIt.Pipes.Tests.Anonymous
             }
         }
 
+        [Collection("Pipes")]
         public class Writer : AnonymousPipeServerFixture
         {
             [Fact]
@@ -115,6 +118,7 @@ namespace AllOverIt.Pipes.Tests.Anonymous
             }
         }
 
+        [Collection("Pipes")]
         public class WaitForPipeDrain : AnonymousPipeServerFixture
         {
             [Fact]

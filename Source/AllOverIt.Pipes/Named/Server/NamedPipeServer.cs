@@ -189,17 +189,16 @@ namespace AllOverIt.Pipes.Named.Server
             cancellationToken.ThrowIfCancellationRequested();
 
             // Get potential connections synchronously
-            IEnumerable<INamedPipeConnection<TMessage>> connections = null;
+            IEnumerable<INamedPipeConnection<TMessage>> connectionsSnapshot = null;
 
             using (await _connectionsLock.GetLockAsync(cancellationToken))
             {
-                connections = Connections
+                connectionsSnapshot = Connections
                     .Where(connection => connection.IsConnected && predicate.Invoke(connection))
                     .AsReadOnlyCollection();
             }
 
-            // TODO: Make the degree of parallelism configurable
-            await connections.ForEachAsParallelAsync(async connection =>
+            foreach (var connection in connectionsSnapshot)
             {
                 try
                 {
@@ -209,8 +208,7 @@ namespace AllOverIt.Pipes.Named.Server
                 {
                     DoOnException(exception);
                 }
-
-            }, 4, cancellationToken);
+            }
         }
 
         /// <summary>Stops the pipe server and releases resources.</summary>

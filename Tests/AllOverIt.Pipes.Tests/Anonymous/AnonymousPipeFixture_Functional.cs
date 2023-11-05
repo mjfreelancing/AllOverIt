@@ -1,8 +1,6 @@
 using AllOverIt.Fixture;
-using AllOverIt.Fixture.Extensions;
 using AllOverIt.Pipes.Anonymous;
 using FluentAssertions;
-using System;
 using System.IO;
 using System.IO.Pipes;
 using System.Threading.Tasks;
@@ -10,9 +8,10 @@ using Xunit;
 
 namespace AllOverIt.Pipes.Tests.Anonymous
 {
+    [Collection("Pipes")]
     public class AnonymousPipeFixture_Functional : FixtureBase
     {
-        [StaFact]
+        [Fact]
         public async Task Server_Should_Write_To_Client()
         {
             var expected = Create<string>();
@@ -45,7 +44,7 @@ namespace AllOverIt.Pipes.Tests.Anonymous
             actual.Should().Be(expected);
         }
 
-        [StaFact]
+        [Fact]
         public async Task Server_Should_Read_From_Client()
         {
             var expected = Create<string>();

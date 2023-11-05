@@ -18,6 +18,7 @@ namespace AllOverIt.Pipes.Tests.Named.Client
 
         private readonly NamedPipeClientFactory<DummyMessage> _factory = new(A.Fake<INamedPipeSerializer<DummyMessage>>());
 
+        [Collection("Pipes")]
         public class Constructor : NamedPipeClientFactoryFixture
         {
             [Fact]
