@@ -348,10 +348,10 @@ namespace AllOverIt.Csv.Tests
 
                 using (var writer = new StringWriter())
                 {
-                    await batches.ForEachAsync(async (batch, index) =>
+                    await batches.ForEachAsync(async (batch, index, token) =>
                     {
                         var leaveOpen = index != batchCount - 1;
-                        await _serializer.SerializeAsync(writer, batch, withHeader && index == 0, leaveOpen);
+                        await _serializer.SerializeAsync(writer, batch, withHeader && index == 0, leaveOpen, token);
                     });
 
                     actual = writer.ToString();
@@ -443,10 +443,10 @@ namespace AllOverIt.Csv.Tests
 
                 using (var writer = new StringWriter())
                 {
-                    await batches.ForEachAsync(async (batch, index) =>
+                    await batches.ForEachAsync(async (batch, index, token) =>
                     {
                         var leaveOpen = index != batchCount - 1;
-                        await _serializer.SerializeAsync(writer, AsAsyncEnumerable(batch), withHeader && index == 0, leaveOpen);
+                        await _serializer.SerializeAsync(writer, AsAsyncEnumerable(batch), withHeader && index == 0, leaveOpen, token);
                     });
 
                     actual = writer.ToString();

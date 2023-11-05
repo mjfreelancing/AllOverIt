@@ -8,6 +8,7 @@ using AllOverIt.Pagination;
 using AllOverIt.Pagination.Extensions;
 using AllOverIt.Pagination.TokenEncoding;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
 using Npgsql;
 using PaginationConsoleDemo.Entities;
@@ -300,7 +301,7 @@ namespace PaginationConsoleDemo
 
             await Enumerable
                 .Range(1, batchCount)
-                .ForEachAsParallelAsync(async index =>
+                .ForEachAsParallelAsync(async (index, cancellationToken) =>
                 {
                     var rows = index * batchSize > totalCount
                         ? totalCount - (index - 1) * batchSize

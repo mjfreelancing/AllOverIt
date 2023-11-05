@@ -236,7 +236,7 @@ namespace AllOverIt.Extensions
         /// <param name="action">The asynchronous action to invoke against each element in the sequence.</param>
         /// <param name="cancellationToken">An optional cancellation token.</param>
         /// <returns>An awaitable task that completes when the iteration is complete.</returns>
-        public static async Task ForEachAsync<TType>(this IEnumerable<TType> items, Func<TType, int, Task> action, CancellationToken cancellationToken = default)
+        public static async Task ForEachAsync<TType>(this IEnumerable<TType> items, Func<TType, int, CancellationToken, Task> action, CancellationToken cancellationToken = default)
         {
             _ = items.WhenNotNull(nameof(items));
 
@@ -246,7 +246,7 @@ namespace AllOverIt.Extensions
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                await action.Invoke(item, index++).ConfigureAwait(false);
+                await action.Invoke(item, index++, cancellationToken).ConfigureAwait(false);
             }
         }
 

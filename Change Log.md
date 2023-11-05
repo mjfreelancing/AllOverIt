@@ -31,7 +31,7 @@
 * Add overloads for RepeatingTask that accept a Timespan
 * Added BackgroundTask and BackgroundTask\<TResult>
 * Added SemaphoreSlim DisposableWaitAsync() extension method
-* Added a CancellationToken to ForEachAsync()
+* Added a CancellationToken to ForEachAsync(), ForEachAsTaskAsync(), ForEachAsParallelAsync()
 * Added Type extension methods GetEnumerableElementType(), CreateList()
 * Added SelectManyAsync() extension method
 * Added support for executing a Process and not wait for it to complete

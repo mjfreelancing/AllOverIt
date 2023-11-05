@@ -682,7 +682,7 @@ namespace AllOverIt.Tests.Extensions
                         {
                             IEnumerable<object> items = null;
 
-                            await items.ForEachAsync((_, _) => Task.CompletedTask);
+                            await items.ForEachAsync((_, _, _) => Task.CompletedTask);
                         })
                     .Should()
                     .ThrowAsync<ArgumentNullException>()
@@ -695,7 +695,7 @@ namespace AllOverIt.Tests.Extensions
                 var values = Create<string>();
                 var count = 0;
 
-                await values.ForEachAsync(async (item, index) =>
+                await values.ForEachAsync(async (item, index, _) =>
                 {
                     await Task.CompletedTask;
 
@@ -717,10 +717,29 @@ namespace AllOverIt.Tests.Extensions
 
                             IEnumerable<int> items = new[] { 1, 2, 3 };
 
-                            await items.ForEachAsync((_, _) => Task.CompletedTask, cts.Token);
+                            await items.ForEachAsync((_, _, _) => Task.CompletedTask, cts.Token);
                         })
                     .Should()
                     .ThrowAsync<OperationCanceledException>();
+            }
+
+            [Fact]
+            public async Task Should_Pass_CancellationToken()
+            {
+                var cts = new CancellationTokenSource();
+
+                CancellationToken actual = default;
+
+                IEnumerable<int> items = new[] { 1 };
+
+                await items.ForEachAsync((_, _, token) =>
+                {
+                    actual = token;
+
+                    return Task.CompletedTask;
+                }, cts.Token);
+
+                actual.Should().Be(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
             }
         }
 

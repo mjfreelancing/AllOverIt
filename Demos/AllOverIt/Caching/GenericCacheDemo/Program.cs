@@ -37,7 +37,7 @@ namespace GenericCacheDemo
 
             await Enumerable
                 .Range(1, 10)
-                .ForEachAsTaskAsync(value =>
+                .ForEachAsTaskAsync((value, cancellationToken) =>
                     {
                         var key = new IntCacheKey(value);
                         cache.TryAdd(key, value * value);
@@ -48,7 +48,7 @@ namespace GenericCacheDemo
 
             await Enumerable
                 .Range(1, 10)
-                .ForEachAsTaskAsync(value =>
+                .ForEachAsTaskAsync((value, cancellationToken) =>
                     {
                         var key = new IntCacheKey(value);
 
@@ -74,7 +74,7 @@ namespace GenericCacheDemo
 
             var readData = Enumerable
                 .Range(1, count)
-                .ForEachAsTaskAsync(value =>
+                .ForEachAsTaskAsync((value, cancellationToken) =>
                     {
                         var key = new IntCacheKey(value);
 
@@ -89,7 +89,7 @@ namespace GenericCacheDemo
 
             var writeData = Enumerable
                 .Range(1, count)
-                .ForEachAsTaskAsync(value =>
+                .ForEachAsTaskAsync((value, cancellationToken) =>
                     {
                         var key = new IntCacheKey(value);
                         cache.TryAdd(key, value * value);

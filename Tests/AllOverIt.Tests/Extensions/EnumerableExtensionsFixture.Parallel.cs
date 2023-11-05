@@ -4,6 +4,7 @@ using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 Invoking(() =>
                 {
-                    EnumerableExtensions.ForEachAsTaskAsync<int>(null, _ => Task.CompletedTask, Create<int>());
+                    EnumerableExtensions.ForEachAsTaskAsync<int>(null, (_, _) => Task.CompletedTask, Create<int>());
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -48,7 +49,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 Invoking(() =>
                 {
-                    EnumerableExtensions.ForEachAsTaskAsync<int>(new[] { Create<int>() }, _ => Task.CompletedTask, degreeOfParallelism);
+                    EnumerableExtensions.ForEachAsTaskAsync<int>(new[] { Create<int>() }, (_, _) => Task.CompletedTask, degreeOfParallelism);
                 })
                 .Should()
                 .Throw<ArgumentOutOfRangeException>()
@@ -62,7 +63,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = new ConcurrentQueue<int>();
 
-                await EnumerableExtensions.ForEachAsTaskAsync<int>(expected, value =>
+                await EnumerableExtensions.ForEachAsTaskAsync<int>(expected, (value, token) =>
                 {
                     actual.Enqueue(value);
 
@@ -80,10 +81,27 @@ namespace AllOverIt.Tests.Extensions
                     var cts = new CancellationTokenSource();
                     cts.Cancel();
 
-                    await EnumerableExtensions.ForEachAsTaskAsync<int>(new[] { Create<int>() }, _ => Task.CompletedTask, 1, cts.Token);
+                    await EnumerableExtensions.ForEachAsTaskAsync<int>(new[] { Create<int>() }, (_, _) => Task.CompletedTask, 1, cts.Token);
                 })
                 .Should()
                 .ThrowAsync<OperationCanceledException>();
+            }
+
+            [Fact]
+            public async Task Should_Pass_CancellationToken()
+            {
+                var cts = new CancellationTokenSource();
+
+                CancellationToken actual = default;
+
+                await EnumerableExtensions.ForEachAsTaskAsync(new[] { Create<int>() }, (_, token) =>
+                {
+                    actual = token;
+
+                    return Task.CompletedTask;
+                }, 1, cts.Token);
+
+                actual.Should().Be(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
             }
         }
 
@@ -101,7 +119,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 Invoking(() =>
                 {
-                    EnumerableExtensions.ForEachAsTaskAsync<int, double>(null, (value, input1) => Task.CompletedTask, _input1, Create<int>());
+                    EnumerableExtensions.ForEachAsTaskAsync<int, double>(null, (value, input1, token) => Task.CompletedTask, _input1, Create<int>());
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -127,7 +145,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 Invoking(() =>
                 {
-                    EnumerableExtensions.ForEachAsTaskAsync<int, double>(new[] { Create<int>() }, (value, input1) => Task.CompletedTask, _input1, degreeOfParallelism);
+                    EnumerableExtensions.ForEachAsTaskAsync<int, double>(new[] { Create<int>() }, (value, input1, token) => Task.CompletedTask, _input1, degreeOfParallelism);
                 })
                 .Should()
                 .Throw<ArgumentOutOfRangeException>()
@@ -141,7 +159,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = new ConcurrentQueue<int>();
 
-                await EnumerableExtensions.ForEachAsTaskAsync<int, double>(expected, (value, input1) =>
+                await EnumerableExtensions.ForEachAsTaskAsync<int, double>(expected, (value, input1, token) =>
                 {
                     input1.Should().Be(_input1);
 
@@ -161,10 +179,27 @@ namespace AllOverIt.Tests.Extensions
                     var cts = new CancellationTokenSource();
                     cts.Cancel();
 
-                    await EnumerableExtensions.ForEachAsTaskAsync<int, double>(new[] { Create<int>() }, (value, input1) => Task.CompletedTask, _input1, 1, cts.Token);
+                    await EnumerableExtensions.ForEachAsTaskAsync<int, double>(new[] { Create<int>() }, (value, input1, token) => Task.CompletedTask, _input1, 1, cts.Token);
                 })
                 .Should()
                 .ThrowAsync<OperationCanceledException>();
+            }
+
+            [Fact]
+            public async Task Should_Pass_CancellationToken()
+            {
+                var cts = new CancellationTokenSource();
+
+                CancellationToken actual = default;
+
+                await EnumerableExtensions.ForEachAsTaskAsync<int, double>(new[] { Create<int>() }, (value, input1, token) =>
+                {
+                    actual = token;
+
+                    return Task.CompletedTask;
+                }, _input1, 1, cts.Token);
+
+                actual.Should().Be(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
             }
         }
 
@@ -184,7 +219,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 Invoking(() =>
                 {
-                    EnumerableExtensions.ForEachAsTaskAsync<int, double, double>(null, (value, input1, input2) => Task.CompletedTask, _input1, _input2, Create<int>());
+                    EnumerableExtensions.ForEachAsTaskAsync<int, double, double>(null, (value, input1, input2, token) => Task.CompletedTask, _input1, _input2, Create<int>());
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -210,7 +245,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 Invoking(() =>
                 {
-                    EnumerableExtensions.ForEachAsTaskAsync<int, double, double>(new[] { Create<int>() }, (value, input1, input2) => Task.CompletedTask, _input1, _input2, degreeOfParallelism);
+                    EnumerableExtensions.ForEachAsTaskAsync<int, double, double>(new[] { Create<int>() }, (value, input1, input2, token) => Task.CompletedTask, _input1, _input2, degreeOfParallelism);
                 })
                 .Should()
                 .Throw<ArgumentOutOfRangeException>()
@@ -224,7 +259,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = new ConcurrentQueue<int>();
 
-                await EnumerableExtensions.ForEachAsTaskAsync<int, double, double>(expected, (value, input1, input2) =>
+                await EnumerableExtensions.ForEachAsTaskAsync<int, double, double>(expected, (value, input1, input2, token) =>
                 {
                     input1.Should().Be(_input1);
                     input2.Should().Be(_input2);
@@ -245,10 +280,27 @@ namespace AllOverIt.Tests.Extensions
                     var cts = new CancellationTokenSource();
                     cts.Cancel();
 
-                    await EnumerableExtensions.ForEachAsTaskAsync<int, double, double>(new[] { Create<int>() }, (value, input1, input2) => Task.CompletedTask, _input1, _input2, 1, cts.Token);
+                    await EnumerableExtensions.ForEachAsTaskAsync<int, double, double>(new[] { Create<int>() }, (value, input1, input2, token) => Task.CompletedTask, _input1, _input2, 1, cts.Token);
                 })
                 .Should()
                 .ThrowAsync<OperationCanceledException>();
+            }
+
+            [Fact]
+            public async Task Should_Pass_CancellationToken()
+            {
+                var cts = new CancellationTokenSource();
+
+                CancellationToken actual = default;
+
+                await EnumerableExtensions.ForEachAsTaskAsync<int, double, double>(new[] { Create<int>() }, (value, input1, input2, token) =>
+                {
+                    actual = token;
+
+                    return Task.CompletedTask;
+                }, _input1, _input2, 1, cts.Token);
+
+                actual.Should().Be(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
             }
         }
 
@@ -271,7 +323,7 @@ namespace AllOverIt.Tests.Extensions
                 Invoking(() =>
                 {
                     EnumerableExtensions.ForEachAsTaskAsync<int, double, double, double>(null,
-                        (value, input1, input2, input3) => Task.CompletedTask, _input1, _input2, _input3, Create<int>());
+                        (value, input1, input2, input3, token) => Task.CompletedTask, _input1, _input2, _input3, Create<int>());
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -298,7 +350,7 @@ namespace AllOverIt.Tests.Extensions
                 Invoking(() =>
                 {
                     EnumerableExtensions.ForEachAsTaskAsync<int, double, double, double>(new[] { Create<int>() },
-                        (value, input1, input2, input3) => Task.CompletedTask, _input1, _input2, _input3, degreeOfParallelism);
+                        (value, input1, input2, input3, token) => Task.CompletedTask, _input1, _input2, _input3, degreeOfParallelism);
                 })
                 .Should()
                 .Throw<ArgumentOutOfRangeException>()
@@ -312,7 +364,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = new ConcurrentQueue<int>();
 
-                await EnumerableExtensions.ForEachAsTaskAsync<int, double, double, double>(expected, (value, input1, input2, input3) =>
+                await EnumerableExtensions.ForEachAsTaskAsync<int, double, double, double>(expected, (value, input1, input2, input3, token) =>
                 {
                     input1.Should().Be(_input1);
                     input2.Should().Be(_input2);
@@ -335,10 +387,27 @@ namespace AllOverIt.Tests.Extensions
                     cts.Cancel();
 
                     await EnumerableExtensions.ForEachAsTaskAsync<int, double, double, double>(new[] { Create<int>() },
-                        (value, input1, input2, input3) => Task.CompletedTask, _input1, _input2, _input3, 1, cts.Token);
+                        (value, input1, input2, input3, token) => Task.CompletedTask, _input1, _input2, _input3, 1, cts.Token);
                 })
                 .Should()
                 .ThrowAsync<OperationCanceledException>();
+            }
+
+            [Fact]
+            public async Task Should_Pass_CancellationToken()
+            {
+                var cts = new CancellationTokenSource();
+
+                CancellationToken actual = default;
+
+                await EnumerableExtensions.ForEachAsTaskAsync<int, double, double, double>(new[] { Create<int>() }, (value, input1, input2, input3, token) =>
+                {
+                    actual = token;
+
+                    return Task.CompletedTask;
+                }, _input1, _input2, _input3, 1, cts.Token);
+
+                actual.Should().Be(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
             }
         }
 
@@ -363,7 +432,7 @@ namespace AllOverIt.Tests.Extensions
                 Invoking(() =>
                 {
                     EnumerableExtensions.ForEachAsTaskAsync<int, double, double, double, double>(null,
-                        (value, input1, input2, input3, input4) => Task.CompletedTask, _input1, _input2, _input3, _input4, Create<int>());
+                        (value, input1, input2, input3, input4, token) => Task.CompletedTask, _input1, _input2, _input3, _input4, Create<int>());
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -390,7 +459,7 @@ namespace AllOverIt.Tests.Extensions
                 Invoking(() =>
                 {
                     EnumerableExtensions.ForEachAsTaskAsync<int, double, double, double, double>(new[] { Create<int>() },
-                        (value, input1, input2, input3, input4) => Task.CompletedTask, _input1, _input2, _input3, _input4, degreeOfParallelism);
+                        (value, input1, input2, input3, input4, token) => Task.CompletedTask, _input1, _input2, _input3, _input4, degreeOfParallelism);
                 })
                 .Should()
                 .Throw<ArgumentOutOfRangeException>()
@@ -404,7 +473,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = new ConcurrentQueue<int>();
 
-                await EnumerableExtensions.ForEachAsTaskAsync<int, double, double, double, double>(expected, (value, input1, input2, input3, input4) =>
+                await EnumerableExtensions.ForEachAsTaskAsync<int, double, double, double, double>(expected, (value, input1, input2, input3, input4, token) =>
                 {
                     input1.Should().Be(_input1);
                     input2.Should().Be(_input2);
@@ -428,10 +497,27 @@ namespace AllOverIt.Tests.Extensions
                     cts.Cancel();
 
                     await EnumerableExtensions.ForEachAsTaskAsync<int, double, double, double, double>(new[] { Create<int>() },
-                        (value, input1, input2, input3, input4) => Task.CompletedTask, _input1, _input2, _input3, _input4, 1, cts.Token);
+                        (value, input1, input2, input3, input4, token) => Task.CompletedTask, _input1, _input2, _input3, _input4, 1, cts.Token);
                 })
                 .Should()
                 .ThrowAsync<OperationCanceledException>();
+            }
+
+            [Fact]
+            public async Task Should_Pass_CancellationToken()
+            {
+                var cts = new CancellationTokenSource();
+
+                CancellationToken actual = default;
+
+                await EnumerableExtensions.ForEachAsTaskAsync<int, double, double, double, double>(new[] { Create<int>() }, (value, input1, input2, input3, input4, token) =>
+                {
+                    actual = token;
+
+                    return Task.CompletedTask;
+                }, _input1, _input2, _input3, _input4, 1, cts.Token);
+
+                actual.Should().Be(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
             }
         }
 
@@ -446,7 +532,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 Invoking(() =>
                 {
-                    EnumerableExtensions.ForEachAsParallelAsync<int>(null, _ => Task.CompletedTask, Create<int>());
+                    EnumerableExtensions.ForEachAsParallelAsync<int>(null, (_, _) => Task.CompletedTask, Create<int>());
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -472,7 +558,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 Invoking(() =>
                 {
-                    EnumerableExtensions.ForEachAsParallelAsync<int>(new[] { Create<int>() }, _ => Task.CompletedTask, degreeOfParallelism);
+                    EnumerableExtensions.ForEachAsParallelAsync<int>(new[] { Create<int>() }, (_, _) => Task.CompletedTask, degreeOfParallelism);
                 })
                 .Should()
                 .Throw<ArgumentOutOfRangeException>()
@@ -486,7 +572,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = new ConcurrentQueue<int>();
 
-                await EnumerableExtensions.ForEachAsParallelAsync<int>(expected, value =>
+                await EnumerableExtensions.ForEachAsParallelAsync<int>(expected, (value, token) =>
                 {
                     actual.Enqueue(value);
 
@@ -504,10 +590,27 @@ namespace AllOverIt.Tests.Extensions
                     var cts = new CancellationTokenSource();
                     cts.Cancel();
 
-                    await EnumerableExtensions.ForEachAsParallelAsync<int>(new[] { Create<int>() }, _ => Task.CompletedTask, 1, cts.Token);
+                    await EnumerableExtensions.ForEachAsParallelAsync<int>(new[] { Create<int>() }, (_, _) => Task.CompletedTask, 1, cts.Token);
                 })
                 .Should()
                 .ThrowAsync<OperationCanceledException>();
+            }
+
+            [Fact]
+            public async Task Should_Pass_CancellationToken()
+            {
+                var cts = new CancellationTokenSource();
+
+                CancellationToken actual = default;
+
+                await EnumerableExtensions.ForEachAsParallelAsync<int>(new[] { Create<int>() }, (value, token) =>
+                {
+                    actual = token;
+
+                    return Task.CompletedTask;
+                }, 1, cts.Token);
+
+                actual.Should().Be(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
             }
         }
         public class ForEachAsParallelAsync_Input_1 : EnumerableExtensionsFixture
@@ -524,7 +627,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 Invoking(() =>
                 {
-                    EnumerableExtensions.ForEachAsParallelAsync<int, double>(null, (value, input1) => Task.CompletedTask, _input1, Create<int>());
+                    EnumerableExtensions.ForEachAsParallelAsync<int, double>(null, (value, input1, token) => Task.CompletedTask, _input1, Create<int>());
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -550,7 +653,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 Invoking(() =>
                 {
-                    EnumerableExtensions.ForEachAsParallelAsync<int, double>(new[] { Create<int>() }, (value, input1) => Task.CompletedTask, _input1, degreeOfParallelism);
+                    EnumerableExtensions.ForEachAsParallelAsync<int, double>(new[] { Create<int>() }, (value, input1, token) => Task.CompletedTask, _input1, degreeOfParallelism);
                 })
                 .Should()
                 .Throw<ArgumentOutOfRangeException>()
@@ -564,7 +667,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = new ConcurrentQueue<int>();
 
-                await EnumerableExtensions.ForEachAsParallelAsync<int, double>(expected, (value, input1) =>
+                await EnumerableExtensions.ForEachAsParallelAsync<int, double>(expected, (value, input1, token) =>
                 {
                     input1.Should().Be(_input1);
 
@@ -584,10 +687,27 @@ namespace AllOverIt.Tests.Extensions
                     var cts = new CancellationTokenSource();
                     cts.Cancel();
 
-                    await EnumerableExtensions.ForEachAsParallelAsync<int, double>(new[] { Create<int>() }, (value, input1) => Task.CompletedTask, _input1, 1, cts.Token);
+                    await EnumerableExtensions.ForEachAsParallelAsync<int, double>(new[] { Create<int>() }, (value, input1, token) => Task.CompletedTask, _input1, 1, cts.Token);
                 })
                 .Should()
                 .ThrowAsync<OperationCanceledException>();
+            }
+
+            [Fact]
+            public async Task Should_Pass_CancellationToken()
+            {
+                var cts = new CancellationTokenSource();
+
+                CancellationToken actual = default;
+
+                await EnumerableExtensions.ForEachAsParallelAsync<int, double>(new[] { Create<int>() }, (value, input1, token) =>
+                {
+                    actual = token;
+
+                    return Task.CompletedTask;
+                }, _input1, 1, cts.Token);
+
+                actual.Should().Be(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
             }
         }
 
@@ -607,7 +727,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 Invoking(() =>
                 {
-                    EnumerableExtensions.ForEachAsParallelAsync<int, double, double>(null, (value, input1, input2) => Task.CompletedTask, _input1, _input2, Create<int>());
+                    EnumerableExtensions.ForEachAsParallelAsync<int, double, double>(null, (value, input1, input2, token) => Task.CompletedTask, _input1, _input2, Create<int>());
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -633,7 +753,8 @@ namespace AllOverIt.Tests.Extensions
             {
                 Invoking(() =>
                 {
-                    EnumerableExtensions.ForEachAsParallelAsync<int, double, double>(new[] { Create<int>() }, (value, input1, input2) => Task.CompletedTask, _input1, _input2, degreeOfParallelism);
+                    EnumerableExtensions.ForEachAsParallelAsync<int, double, double>(new[] { Create<int>() },
+                        (value, input1, input2, token) => Task.CompletedTask, _input1, _input2, degreeOfParallelism);
                 })
                 .Should()
                 .Throw<ArgumentOutOfRangeException>()
@@ -647,7 +768,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = new ConcurrentQueue<int>();
 
-                await EnumerableExtensions.ForEachAsParallelAsync<int, double, double>(expected, (value, input1, input2) =>
+                await EnumerableExtensions.ForEachAsParallelAsync<int, double, double>(expected, (value, input1, input2, token) =>
                 {
                     input1.Should().Be(_input1);
                     input2.Should().Be(_input2);
@@ -668,10 +789,28 @@ namespace AllOverIt.Tests.Extensions
                     var cts = new CancellationTokenSource();
                     cts.Cancel();
 
-                    await EnumerableExtensions.ForEachAsParallelAsync<int, double, double>(new[] { Create<int>() }, (value, input1, input2) => Task.CompletedTask, _input1, _input2, 1, cts.Token);
+                    await EnumerableExtensions.ForEachAsParallelAsync<int, double, double>(new[] { Create<int>() },
+                        (value, input1, input2, token) => Task.CompletedTask, _input1, _input2, 1, cts.Token);
                 })
                 .Should()
                 .ThrowAsync<OperationCanceledException>();
+            }
+
+            [Fact]
+            public async Task Should_Pass_CancellationToken()
+            {
+                var cts = new CancellationTokenSource();
+
+                CancellationToken actual = default;
+
+                await EnumerableExtensions.ForEachAsParallelAsync<int, double, double>(new[] { Create<int>() }, (value, input1, input2, token) =>
+                {
+                    actual = token;
+
+                    return Task.CompletedTask;
+                }, _input1, _input2, 1, cts.Token);
+
+                actual.Should().Be(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
             }
         }
 
@@ -694,7 +833,7 @@ namespace AllOverIt.Tests.Extensions
                 Invoking(() =>
                 {
                     EnumerableExtensions.ForEachAsParallelAsync<int, double, double, double>(null,
-                        (value, input1, input2, input3) => Task.CompletedTask, _input1, _input2, _input3, Create<int>());
+                        (value, input1, input2, input3, token) => Task.CompletedTask, _input1, _input2, _input3, Create<int>());
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -721,7 +860,7 @@ namespace AllOverIt.Tests.Extensions
                 Invoking(() =>
                 {
                     EnumerableExtensions.ForEachAsParallelAsync<int, double, double, double>(new[] { Create<int>() },
-                        (value, input1, input2, input3) => Task.CompletedTask, _input1, _input2, _input3, degreeOfParallelism);
+                        (value, input1, input2, input3, token) => Task.CompletedTask, _input1, _input2, _input3, degreeOfParallelism);
                 })
                 .Should()
                 .Throw<ArgumentOutOfRangeException>()
@@ -735,7 +874,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = new ConcurrentQueue<int>();
 
-                await EnumerableExtensions.ForEachAsParallelAsync<int, double, double, double>(expected, (value, input1, input2, input3) =>
+                await EnumerableExtensions.ForEachAsParallelAsync<int, double, double, double>(expected, (value, input1, input2, input3, token) =>
                 {
                     input1.Should().Be(_input1);
                     input2.Should().Be(_input2);
@@ -758,10 +897,27 @@ namespace AllOverIt.Tests.Extensions
                     cts.Cancel();
 
                     await EnumerableExtensions.ForEachAsParallelAsync<int, double, double, double>(new[] { Create<int>() },
-                        (value, input1, input2, input3) => Task.CompletedTask, _input1, _input2, _input3, 1, cts.Token);
+                        (value, input1, input2, input3, token) => Task.CompletedTask, _input1, _input2, _input3, 1, cts.Token);
                 })
                 .Should()
                 .ThrowAsync<OperationCanceledException>();
+            }
+
+            [Fact]
+            public async Task Should_Pass_CancellationToken()
+            {
+                var cts = new CancellationTokenSource();
+
+                CancellationToken actual = default;
+
+                await EnumerableExtensions.ForEachAsParallelAsync<int, double, double, double>(new[] { Create<int>() }, (value, input1, input2, input3, token) =>
+                {
+                    actual = token;
+
+                    return Task.CompletedTask;
+                }, _input1, _input2, _input3, 1, cts.Token);
+
+                actual.Should().Be(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
             }
         }
 
@@ -786,7 +942,7 @@ namespace AllOverIt.Tests.Extensions
                 Invoking(() =>
                 {
                     EnumerableExtensions.ForEachAsParallelAsync<int, double, double, double, double>(null,
-                        (value, input1, input2, input3, input4) => Task.CompletedTask, _input1, _input2, _input3, _input4, Create<int>());
+                        (value, input1, input2, input3, input4, token) => Task.CompletedTask, _input1, _input2, _input3, _input4, Create<int>());
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -813,7 +969,7 @@ namespace AllOverIt.Tests.Extensions
                 Invoking(() =>
                 {
                     EnumerableExtensions.ForEachAsParallelAsync<int, double, double, double, double>(new[] { Create<int>() },
-                        (value, input1, input2, input3, input4) => Task.CompletedTask, _input1, _input2, _input3, _input4, degreeOfParallelism);
+                        (value, input1, input2, input3, input4, token) => Task.CompletedTask, _input1, _input2, _input3, _input4, degreeOfParallelism);
                 })
                 .Should()
                 .Throw<ArgumentOutOfRangeException>()
@@ -827,7 +983,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = new ConcurrentQueue<int>();
 
-                await EnumerableExtensions.ForEachAsParallelAsync<int, double, double, double, double>(expected, (value, input1, input2, input3, input4) =>
+                await EnumerableExtensions.ForEachAsParallelAsync<int, double, double, double, double>(expected, (value, input1, input2, input3, input4, token) =>
                 {
                     input1.Should().Be(_input1);
                     input2.Should().Be(_input2);
@@ -851,10 +1007,27 @@ namespace AllOverIt.Tests.Extensions
                     cts.Cancel();
 
                     await EnumerableExtensions.ForEachAsParallelAsync<int, double, double, double, double>(new[] { Create<int>() },
-                        (value, input1, input2, input3, input4) => Task.CompletedTask, _input1, _input2, _input3, _input4, 1, cts.Token);
+                        (value, input1, input2, input3, input4, token) => Task.CompletedTask, _input1, _input2, _input3, _input4, 1, cts.Token);
                 })
                 .Should()
                 .ThrowAsync<OperationCanceledException>();
+            }
+
+            [Fact]
+            public async Task Should_Pass_CancellationToken()
+            {
+                var cts = new CancellationTokenSource();
+
+                CancellationToken actual = default;
+
+                await EnumerableExtensions.ForEachAsParallelAsync<int, double, double, double, double>(new[] { Create<int>() }, (value, input1, input2, input3, input4, token) =>
+                {
+                    actual = token;
+
+                    return Task.CompletedTask;
+                }, _input1, _input2, _input3, _input4, 1, cts.Token);
+
+                actual.Should().Be(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
             }
         }
 

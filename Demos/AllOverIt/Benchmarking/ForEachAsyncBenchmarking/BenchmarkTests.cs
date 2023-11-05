@@ -2,6 +2,7 @@
 using BenchmarkDotNet.Attributes;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ForEachAsyncBenchmarking
@@ -16,7 +17,7 @@ namespace ForEachAsyncBenchmarking
         {
             foreach (var input in Inputs)
             {
-                await Multiply(input);
+                await Multiply(input, CancellationToken.None);
             }
         }
 
@@ -52,10 +53,11 @@ namespace ForEachAsyncBenchmarking
                 select(input1, input2);
         }
         
-        private static Task Multiply((int input1, int input2) input)
+        private static Task Multiply((int input1, int input2) input, CancellationToken cancellationToken)
         {
             _ = input.input1 * input.input2;
-            return Task.Delay(1);
+
+            return Task.Delay(1, cancellationToken);
         }
     }
 }

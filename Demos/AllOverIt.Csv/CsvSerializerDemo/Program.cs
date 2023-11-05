@@ -37,13 +37,13 @@ namespace CsvSerializerDemo
             // local function - for convenience (has access to dataBatches and batchCount)
             async Task WriteDataAsync(TextWriter writer)
             {
-                await dataBatches.ForEachAsync(async (data, index) =>
+                await dataBatches.ForEachAsync(async (data, index, cancellationToken) =>
                 {
                     var includeHeader = index == 0;
                     var leaveOpen = index != batchCount - 1;
 
                     await serializer
-                        .SerializeAsync(writer, data, includeHeader, leaveOpen)
+                        .SerializeAsync(writer, data, includeHeader, leaveOpen, cancellationToken)
                         .ConfigureAwait(false);
                 });
             }
