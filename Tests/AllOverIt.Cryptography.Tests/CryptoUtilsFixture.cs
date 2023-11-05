@@ -12,8 +12,8 @@ namespace AllOverIt.Cryptography.Tests
             [Fact]
             public void Should_Determine_If_Key_Size_Is_Valid()
             {
-                var minSize1 = Create<int>();
-                var skipSize = GetWithinRange(4, 256);
+                var minSize1 = GetWithinRange(1, 16) * 8;
+                var skipSize = GetWithinRange(1, 4) * 4;
                 var maxSize1 = minSize1 + GetWithinRange(1, 4) * skipSize;
 
                 var minSize2 = minSize1 * 2;
