@@ -79,11 +79,11 @@
 * Amazon.CDK.Asset.AwsCliV1 v2.2.200
 * Amazon.CDK.Asset.KubectlV20 v2.1.2
 * Amazon.CDK.Asset.NodeProxyAgentV6 v2.0.1
-* Amazon.CDK.Lib v2.100.0
+* Amazon.CDK.Lib v2.104.0
 * Amazon.CDK.Lib v2.99.0
 * Amazon.JSII.Runtime v1.89.0
-* Amazon.JSII.Runtime v1.90.0
-* Cdklabs.AwsCdkAppsyncUtils v0.0.238
+* Amazon.JSII.Runtime v1.91.0
+* Cdklabs.AwsCdkAppsyncUtils v0.0.264
 * Constructs v10.0.0
 * Constructs v10.0.5
 
@@ -148,8 +148,8 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* Microsoft.EntityFrameworkCore v7.0.12
-* Microsoft.EntityFrameworkCore.Relational v7.0.12
+* Microsoft.EntityFrameworkCore v7.0.13
+* Microsoft.EntityFrameworkCore.Relational v7.0.13
 * Microsoft.Extensions.Configuration.Abstractions v7.0.0
 
 <br>
@@ -166,8 +166,8 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* Microsoft.EntityFrameworkCore v7.0.12
-* Microsoft.EntityFrameworkCore.Relational v7.0.12
+* Microsoft.EntityFrameworkCore v7.0.13
+* Microsoft.EntityFrameworkCore.Relational v7.0.13
 * Microsoft.Extensions.Configuration.Abstractions v7.0.0
 
 <br>
@@ -187,8 +187,8 @@
 * AllOverIt.EntityFrameworkCore
 * AllOverIt.Pagination
 * AllOverIt.Serialization.Binary
-* Microsoft.EntityFrameworkCore v7.0.12
-* Microsoft.EntityFrameworkCore.Relational v7.0.12
+* Microsoft.EntityFrameworkCore v7.0.13
+* Microsoft.EntityFrameworkCore.Relational v7.0.13
 * Microsoft.Extensions.Configuration.Abstractions v7.0.0
 * Microsoft.Extensions.DependencyInjection.Abstractions v7.0.0
 
@@ -486,7 +486,7 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* FluentValidation v11.7.1
+* FluentValidation v11.8.0
 
 <br>
 
@@ -503,7 +503,7 @@
 * AllOverIt
 * AllOverIt.Assertion
 * AllOverIt.Validation
-* FluentValidation v11.7.1
+* FluentValidation v11.8.0
 * Microsoft.Extensions.DependencyInjection.Abstractions v7.0.0
 * Microsoft.Extensions.Options v7.0.1
 * Microsoft.Extensions.Primitives v7.0.0
@@ -537,7 +537,7 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* Microsoft.Xaml.Behaviors.Wpf v1.1.39
+* Microsoft.Xaml.Behaviors.Wpf v1.1.77
 
 <br>
 
