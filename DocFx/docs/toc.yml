@@ -1,15 +1,6 @@
 - name: Introduction
   href: ../index.md
 
-
-
-
-
-
-
-
-
-
 - name: AllOverIt
   items:
     - name: Overview
@@ -27,9 +18,6 @@
           href: AllOverIt/Aspects/return-a-handled-result.md
         - name: Modify Return Value
           href: AllOverIt/Aspects/modify-return-value.md
-
-
-
 
     - name: Async
       items:
@@ -61,8 +49,6 @@
 
         - name: ValueObject
           href: AllOverIt/Patterns/ValueObject/overview.md
-
-
 
 
 
