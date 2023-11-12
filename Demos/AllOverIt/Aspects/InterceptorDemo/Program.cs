@@ -15,20 +15,25 @@ namespace InterceptorDemo
             {
                 var services = new ServiceCollection();
 
-                services
-                    .AddScoped<ISecretService, SecretService>()
-                    .DecorateWithInterceptor<ISecretService, MethodInterceptor<ISecretService>>((serviceProvider, inteceptor) =>
-                    {
-                        inteceptor
-                            .AddMethodHandler(new GetSecretHandler(1000))
-                            .AddMethodHandler(new GetSecretAsyncHandler(1000));
+                // 'SecretService' is the real service to be decorated / intercepted
+                services.AddScoped<ISecretService, SecretService>();
 
+                // Method 1: Use MethodInterceptor<T> to provide support for filtering the methods to be intercepted.
+                services.DecorateWithInterceptor<ISecretService, MethodInterceptor<ISecretService>>((provider, interceptor) =>
+                {
+                    // Demonstrating how to return a result from BeforeInvoke() and hence not calling the decorated service
+                    var useCache = true;
 
-                        //inteceptor.MinimimReportableMilliseconds = 1000;
-                    });
-                //.DecorateWithInterceptor<ISecretService, TimedInterceptor>(inteceptor =>
+                    // Each handler can be configured via its' 'TargetMethods' property to indicate which method(s) it will handle.
+                    interceptor
+                        .AddMethodHandler(new GetSecretHandler(1000, useCache))
+                        .AddMethodHandler(new GetSecretAsyncHandler(1000));
+                });
+
+                // Method 2: Register an interceptor without any filtering.
+                //services.DecorateWithInterceptor<ISecretService, TimedInterceptor>((provider, interceptor) =>
                 //{
-                //    inteceptor.MinimimReportableMilliseconds = 1000;
+                //    interceptor.MinimimReportableMilliseconds = 1000;
                 //});
 
                 var serviceProvider = services.BuildServiceProvider();

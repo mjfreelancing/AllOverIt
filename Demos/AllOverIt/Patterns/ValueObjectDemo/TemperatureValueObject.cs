@@ -1,12 +1,11 @@
 ﻿using AllOverIt.Patterns.ValueObject;
-using System;
 using ValueObjectDemo.Extensions;
 
 namespace ValueObjectDemo
 {
     internal sealed class TemperatureValueObject : ValueObject<EnrichedTemperature, TemperatureValueObject>
     {
-        public TemperatureUnits Units { get;}
+        public TemperatureUnits Units { get; }
         public double Temperature => Value.Temperature;
 
         public TemperatureValueObject(double celcius)

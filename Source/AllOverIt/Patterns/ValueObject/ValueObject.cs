@@ -108,7 +108,7 @@ namespace AllOverIt.Patterns.ValueObject
 
         /// <summary>Explicit operator to convert an underlying type to its ValueObject equivalent.</summary>
         /// <param name="value">The value to explicitly convert.</param>
-        public static explicit operator ValueObject<TValue, TType>(TValue value) => new (value);
+        public static explicit operator ValueObject<TValue, TType>(TValue value) => new(value);
 
         /// <inheritdoc />
         public override int GetHashCode()

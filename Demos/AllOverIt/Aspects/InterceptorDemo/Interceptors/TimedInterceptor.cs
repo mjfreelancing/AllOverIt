@@ -12,7 +12,7 @@ namespace InterceptorDemo.Interceptors
     {
         public long? MinimimReportableMilliseconds { get; set; }
 
-        private class TimedState : InterceptorState
+        private sealed class TimedState : InterceptorState
         {
             public Stopwatch Stopwatch { get; } = Stopwatch.StartNew();
         }

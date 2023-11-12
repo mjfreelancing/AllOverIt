@@ -121,9 +121,9 @@ namespace AllOverIt.Aspects.Interceptor
         /// <param name="args">The arguments passed to the intercepted method, passed by ref.</param>
         /// <param name="result">Can be set to a result compatible with the method call. If the method being intercepted
         /// returns a <see cref="Task{T}"/> be sure to wrap the value in a call to <c>Task.FromResult()</c>.
-        /// If the <see cref="InterceptorState.Handled"/> property is set to <see langword="True"/> then this result will
-        /// be returned to the caller without invoking the actual service that is being decorated, although the
-        /// <see cref="AfterInvoke(MethodInfo, object[], InterceptorState, ref object)"/> method will be called.</param>
+        /// When <c>result</c> is set to a non  <see langword="null"/> value then this result will be returned to the caller
+        /// without invoking the actual service that is being decorated, although the <see cref="AfterInvoke(MethodInfo, object[], InterceptorState, ref object)"/>
+        /// method will be called first.</param>
         /// <returns>A state object that will be passed to the <see cref="AfterInvoke(MethodInfo, object[], InterceptorState, ref object)"/>
         /// or <see cref="Faulted(MethodInfo, object[], InterceptorState, Exception)"/> method, as applicable.
         /// If no state is required then return <see cref="InterceptorState.Unit"/>.</returns>

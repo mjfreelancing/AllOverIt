@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Aspects.Interceptor;
 using System;
+using System.Linq;
 using System.Reflection;
 
 namespace InterceptorDemo.Interceptors
@@ -7,12 +8,14 @@ namespace InterceptorDemo.Interceptors
     internal sealed class GetSecretHandler : InterceptorHandlerBase<string>
     {
         private readonly long _minimimReportableMilliseconds;
+        private readonly bool _useCache;
 
         public override MethodInfo[] TargetMethods { get; } = [typeof(ISecretService).GetMethod(nameof(ISecretService.GetSecret))];
 
-        public GetSecretHandler(long minimimReportableMilliseconds)
+        public GetSecretHandler(long minimimReportableMilliseconds, bool useCache)
         {
             _minimimReportableMilliseconds = minimimReportableMilliseconds;
+            _useCache = useCache;
         }
 
         protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref string result)
@@ -21,7 +24,20 @@ namespace InterceptorDemo.Interceptors
 
             args[0] = accessKey.ToUpperInvariant();
 
-            Console.WriteLine($"Before {targetMethod.Name}({accessKey})");
+            if (_useCache)
+            {
+                // Get the result from a cache here - just setting a value
+                var cachedValue = ((string) args[0]).ToArray();
+                Array.Reverse(cachedValue);
+
+                result = new string(cachedValue).ToLowerInvariant();
+
+                Console.WriteLine($"Before {targetMethod.Name}({accessKey}) - using a cache");
+            }
+            else
+            {
+                Console.WriteLine($"Before {targetMethod.Name}({accessKey}) - not using a cache");
+            }
 
             return new TimedInterceptorState();
         }
