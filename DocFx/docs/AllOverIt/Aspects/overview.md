@@ -35,10 +35,10 @@ internal sealed class SecretService : ISecretService
 
 There are two approaches to intercepting method calls:
 - Intercept all methods by implementing an interceptor that inherits `InterceptorBase<TService>`.
-- Filter the methods to be intercepted by implementing one or more method intercept handlers that inherit `MethodInterceptor<TService>`.
+- Filter the methods to be intercepted by implementing one or more method-level intercept handlers that inherit `MethodInterceptor<TService>`.
 
 
-## Class Interceptors
+## Class-Level Interceptors
 For scenarios that require appying the same logic to all methods on a class, create an interceptor that inherits from `InterceptorBase<TService>`, such as:
 
 ```csharp
@@ -122,13 +122,13 @@ In this example, a new `TimedState` instance is created before every method is c
 > The custom interceptor cannot be sealed and it must have a default constructor.
 
 
-## Method Interceptor Handlers
+## Method-Level Interceptors
 It isn't always desirable to use a single interceptor for a given class.
 - You may only want to intercept a subset of the methods available on the class.
 - Trying to apply a strategy within `BeforeInvoke()` and `AfterInvoke()` can become quite difficult to manage over time.
 - Using a different interceptor for each method is preferred as it takes on the "Single Responsibility Principle". Your code will not only be cleaner but it will also be easier to test.
 
-Class interceptors implement `InterceptorBase<TService>` but these will have their  `BeforeInvoke()` and `AfterInvoke()` methods called for every method that is invoked on the class being decorated. Method filtering is achieved by instead using `MethodInterceptor<TService>` and registering one or more method handlers.
+Class-level interceptors implement `InterceptorBase<TService>` but these will have their  `BeforeInvoke()` and `AfterInvoke()` methods called for every method that is invoked on the class being decorated. Method filtering is achieved by instead using `MethodInterceptor<TService>` and registering one or more method handlers.
 
 Consider the scenario where you want to register a handler per method on this `ISecretService` interface:
 

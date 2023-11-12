@@ -3,7 +3,7 @@
 
 This section describes how to instantiate class and method level interceptors, with and without using dependency injection.
 
-## Class Interceptors
+## Class-Level Interceptors
 Assume this `TimedInterceptor` is used to decorate an implementation of `ISecretService`.
 
 ```csharp
@@ -39,7 +39,7 @@ internal class TimedInterceptor : InterceptorBase<ISecretService>
 This interceptor can be instantiated explicitly or resolved via dependency injection as described next.
 
 ### Without dependency injection
-To decorate a service with a class interceptor called `TimedInterceptor`, the proxy is created like so:
+To decorate a service with a class-level interceptor called `TimedInterceptor`, the proxy is created like so:
 
 ```csharp
 var secretService = new SecretService();
@@ -96,7 +96,7 @@ var secret = proxy.GetSecret();
 > Since custom interceptors cannot be sealed and must have a default constructor, if your interceptor requires additional dependencies they will need to be provided via property or method injection rather than constructor injection, as shown in the above example.
 
 
-## Method Interceptor Handlers
+## Method-Level Interceptors
 Assume this method-level interceptor handler is used to intercept the `GetSecret()` method on `ISecretService`.
 
 ```csharp
@@ -143,7 +143,7 @@ internal sealed class GetSecretHandler : InterceptorHandlerBase<string>
 
 
 ### Without dependency injection
-To decorate a service with a method interceptor called `GetSecretHandler`, the proxy is created like so:
+To decorate a service with a method-level interceptor called `GetSecretHandler`, the proxy is created like so:
 
 ```csharp
 var secretService = new SecretService();

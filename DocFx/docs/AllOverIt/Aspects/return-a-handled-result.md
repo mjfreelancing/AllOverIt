@@ -1,7 +1,7 @@
-# Aspects - Return a handled result
+# Aspects - Return A Handled Result
 ---
 
-A common use case for interceptors is to provide a level of caching in order to improve performance. Class and method interceptors support this via the `ref object result` argument on the `BeforeInvoke()` method.
+A common use case for interceptors is to provide a level of caching in order to improve performance. Class and method-level interceptors support this via the `ref object result` argument on the `BeforeInvoke()` method.
 
 ```csharp
 InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)

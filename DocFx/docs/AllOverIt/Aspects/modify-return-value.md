@@ -1,4 +1,4 @@
-# Aspects - Modify return value
+# Aspects - Modify Return Value
 ---
 
 Consider these methods on `ISecretService`:
@@ -10,10 +10,10 @@ Task<string> GetSecretAsync(string accessKey);
 
 Imagine a scenario where you want to ensure the returned result is always lower-cased. This can be achieved by overriding the `AfterInvoke()` method like so:
 
-Below are some possible class and method interceptor implementations for `GetSecret(string accessKey)`.
+Below are some possible class-level and method-level interceptor implementations for `GetSecret(string accessKey)`.
 
 ```csharp
-// An example class interceptor that implements InterceptorBase<ISecretService>.
+// An example class-level interceptor that implements InterceptorBase<ISecretService>.
 protected override void AfterInvoke(
     MethodInfo targetMethod,
     object[] args,
@@ -27,7 +27,7 @@ protected override void AfterInvoke(
 ```
 
 ```csharp
-// An example method interceptor that implements InterceptorHandlerBase<string>.
+// An example method-level interceptor that implements InterceptorHandlerBase<string>.
 protected override string AfterInvoke(
     MethodInfo targetMethod,
     object[] args,
@@ -40,10 +40,10 @@ protected override string AfterInvoke(
 }
 ```
 
-Below are some possible class and method interceptor implementations for `GetSecretAsync(string accessKey)`.
+Below are some possible class-level and method-level interceptor implementations for `GetSecretAsync(string accessKey)`.
 
 ```csharp
-// An example class interceptor that implements InterceptorBase<ISecretService>.
+// An example class-level interceptor that implements InterceptorBase<ISecretService>.
 protected override void AfterInvoke(
     MethodInfo targetMethod,
     object[] args,
@@ -62,7 +62,7 @@ protected override void AfterInvoke(
 ```
 
 ```csharp
-// An example method interceptor that implements InterceptorHandlerBase<string>.
+// An example method-level interceptor that implements InterceptorHandlerBase<string>.
 protected override Task<string> AfterInvoke(
     MethodInfo targetMethod,
     object[] args,

@@ -1,4 +1,4 @@
-# Aspects - Modify input arguments
+# Aspects - Modify Input Arguments
 ---
 
 Consider this method on `ISecretService`:
@@ -9,7 +9,7 @@ string GetSecret(string accessKey);
 
 Imagine a scenario where the service retrieves the secret from an external store where the access keys must be lower-cased and you want to intercept this method to ensure the argument is modified before the external store is accessed. To achieve this, the argument can be modified as shown in the following examples.
 
-An example for a class interceptor implementing `InterceptorBase<ISecretService>`:
+An example for a class-level interceptor implementing `InterceptorBase<ISecretService>`:
 
 ```csharp
 protected override InterceptorState BeforeInvoke(
@@ -29,7 +29,7 @@ protected override InterceptorState BeforeInvoke(
 }
 ```
 
-An example for a method interceptor implementing `InterceptorHandlerBase<string>`:
+An example for a method-level interceptor implementing `InterceptorHandlerBase<string>`:
 
 ```csharp
 protected override InterceptorState BeforeInvoke(
