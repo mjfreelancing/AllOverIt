@@ -52,7 +52,9 @@
       "_appTitle": "AllOverIt",
       "_appFooter": "Copyright © MJ Freelancing",
       "_enableNewTab": true,
+      "_enableSearch": true,
       "_disableContribution": true,
+      "_disableBreadcrumb": false,
       "_appLogoPath": "images/appLogo.png",
       "_appFaviconPath": "images/appFavicon.png"
     },
@@ -60,7 +62,8 @@
     "fileMetadataFiles": [],
     "template": [
       "default",
-      "modern"
+      "modern",
+      "template"
     ],
     "postProcessors": [],
     "keepFileLink": false,

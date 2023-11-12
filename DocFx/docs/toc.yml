@@ -1,13 +1,69 @@
 - name: Introduction
   href: ../index.md
 
+
+
+
+
+
+
+
+
+
 - name: AllOverIt
-  href: AllOverIt/about.md
   items:
+    - name: Overview
+      href: AllOverIt/overview.md
+
     - name: Aspects
-      href: AllOverIt/Aspects/toc.yml
+      items:
+        - name: Overview
+          href: AllOverIt/Aspects/overview.md
+        - name: Instantiating Interceptors
+          href: AllOverIt/Aspects/instantiating-interceptors.md
+        - name: Modify Input Arguments
+          href: AllOverIt/Aspects/modify-input-arguments.md
+        - name: Return A Handled Result
+          href: AllOverIt/Aspects/return-a-handled-result.md
+        - name: Modify Return Value
+          href: AllOverIt/Aspects/modify-return-value.md
+
+
+
+
     - name: Async
-      href: AllOverIt/Async/toc.yml
+      items:
+        - name: Overview
+          href: AllOverIt/Async/overview.md
+
+
+
+
+    - name: Patterns
+      items:
+        - name: ChainOfResponsibility
+          href: AllOverIt/Patterns/ChainOfResponsibility/overview.md
+
+        - name: Command
+          href: AllOverIt/Patterns/Command/overview.md
+
+        - name: Enumeration
+          href: AllOverIt/Patterns/Enumeration/overview.md
+
+        - name: Pipeline
+          href: AllOverIt/Patterns/Pipeline/overview.md
+
+        - name: ResourceInitialization
+          href: AllOverIt/Patterns/ResourceInitialization/overview.md
+
+        - name: Specification
+          href: AllOverIt/Patterns/Specification/overview.md
+
+        - name: ValueObject
+          href: AllOverIt/Patterns/ValueObject/overview.md
+
+
+
 
 
 
