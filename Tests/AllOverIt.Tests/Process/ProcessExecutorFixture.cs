@@ -4,10 +4,8 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Process;
 using FluentAssertions;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using System.Security;
@@ -65,6 +63,12 @@ namespace AllOverIt.Tests.Process
                 LoadUserProfile = false,
                 ErrorDialog = false,
                 ErrorDialogParentHandle = (IntPtr) default
+
+#if NET8_0_OR_GREATER
+                ,
+                UseCredentialsForNetworkingOnly = false
+#endif
+
             };
 
             expected.Should().BeEquivalentTo(actual, options =>
@@ -118,6 +122,12 @@ namespace AllOverIt.Tests.Process
                 LoadUserProfile = false,
                 ErrorDialog = false,
                 ErrorDialogParentHandle = (IntPtr) default
+
+#if NET8_0_OR_GREATER
+                ,
+                UseCredentialsForNetworkingOnly = false
+#endif
+
             };
 
             expected.Should().BeEquivalentTo(actual, options =>
@@ -136,7 +146,7 @@ namespace AllOverIt.Tests.Process
 
             while (actualKeysEnumerator.MoveNext())
             {
-                actualKeys.Add((string)actualKeysEnumerator.Current);
+                actualKeys.Add((string) actualKeysEnumerator.Current);
             }
 
             var actualEnvironmentVariables = actualKeys
