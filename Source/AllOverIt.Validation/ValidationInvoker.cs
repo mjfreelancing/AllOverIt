@@ -14,7 +14,7 @@ namespace AllOverIt.Validation
     public class ValidationInvoker : IValidationRegistry, IValidationInvoker
     {
         // can only re-use validators that don't store state (context)
-        private readonly IDictionary<Type, Lazy<IValidator>> _validatorCache = new Dictionary<Type, Lazy<IValidator>>();
+        private readonly Dictionary<Type, Lazy<IValidator>> _validatorCache = [];
 
         /// <inheritdoc />
         public IValidationRegistry Register<TType, TValidator>()
@@ -136,7 +136,7 @@ namespace AllOverIt.Validation
                 ThrowValidatorNotRegistered<TType>();
             }
 
-            return (ValidatorBase<TType>)resolver!.Value;
+            return (ValidatorBase<TType>) resolver!.Value;
         }
 
         private static void ThrowValidatorNotRegistered<TType>()

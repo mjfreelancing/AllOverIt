@@ -20,7 +20,7 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
         {
             private readonly Type _viewModelType;
             private readonly IViewHandler _viewHandler;
-            private readonly IList<ViewItem<TViewId>> _viewItems = new List<ViewItem<TViewId>>();
+            private readonly List<ViewItem<TViewId>> _viewItems = [];
 
             public event ViewRegistryEventHandler OnChange;     // raised when a view is added or removed
 
@@ -39,7 +39,7 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
                 _ = view.WhenNotNull(nameof(view));
 
                 _ = GetView(view, false);
-                
+
                 var viewItem = new ViewItem<TViewId>
                 {
                     View = view,
@@ -87,14 +87,14 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
                     "The view is already present in the view registry.");
 
                 Throw<InvalidOperationException>.When(
-                    shouldExist && viewItem is null, 
+                    shouldExist && viewItem is null,
                     "The view was not found in the view registry.");
 
                 return viewItem;
             }
         }
 
-        private readonly IDictionary<Type, ViewRegistryItem> _viewRegistry = new Dictionary<Type, ViewRegistryItem>();
+        private readonly Dictionary<Type, ViewRegistryItem> _viewRegistry = [];
         private readonly IViewFactory _viewFactory;
         private readonly IViewHandler _viewHandler;
 
@@ -204,7 +204,7 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
                 _viewHandler.Close(view);
             }
 
-            return !this.Any();
+            return IsEmpty;
         }
 
         /// <summary>Provides support for enumerating the registered views.</summary>

@@ -12,8 +12,7 @@ namespace AllOverIt.Mapping
 
         // Source => Target factories provided via configuration
         // Not a ConcurrentDictionary because this is only populated via explicit configuration
-        private readonly IDictionary<(Type, Type), Func<IObjectMapper, object, object>> _sourceTargetFactories
-            = new Dictionary<(Type, Type), Func<IObjectMapper, object, object>>();
+        private readonly Dictionary<(Type, Type), Func<IObjectMapper, object, object>> _sourceTargetFactories = [];
 
         public void Add(Type sourceType, Type targetType, Func<IObjectMapper, object, object> factory)
         {

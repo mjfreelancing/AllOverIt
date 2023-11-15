@@ -14,7 +14,7 @@ namespace AllOverIt.Csv.Exporter
     public abstract class BufferedCsvExporterBase<TModel> : IBufferedCsvExporter<TModel> where TModel : class
     {
         private readonly BufferedCsvExporterConfiguration _configuration;
-        private readonly ICollection<TModel> _data;
+        private readonly List<TModel> _data;
 
         private StreamWriter _writer;
         private ICsvSerializer<TModel> _csvSerializer;
@@ -65,7 +65,11 @@ namespace AllOverIt.Csv.Exporter
             // _writer will be null if there was no data to process
             if (_writer is not null)
             {
+#if NET8_0_OR_GREATER
+                await _writer.FlushAsync(cancellationToken);
+#else
                 await _writer.FlushAsync();
+#endif
             }
         }
 

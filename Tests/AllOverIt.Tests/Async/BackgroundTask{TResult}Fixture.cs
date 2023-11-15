@@ -263,14 +263,19 @@ namespace AllOverIt.Tests.Async
             [InlineData(false)]
             public async Task Should_Handle_When_Task_Cancelled(bool handled)
             {
+                var tcs = new TaskCompletionSource<bool>();
                 var cts = new CancellationTokenSource();
 
                 var backgroundTask = new BackgroundTask<bool>(async token =>
                 {
+                    tcs.SetResult(true);
+
                     await Task.Delay(-1, token);
 
                     return Create<bool>();
                 }, TaskCreationOptions.None, TaskScheduler.Current, edi => handled, cts.Token);
+
+                await tcs.Task;
 
                 await Task.Delay(10);
 

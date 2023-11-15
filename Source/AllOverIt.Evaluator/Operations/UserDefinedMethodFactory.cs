@@ -1,5 +1,4 @@
-﻿using AllOverIt.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -34,10 +33,10 @@ namespace AllOverIt.Evaluator.Operations
     public sealed class UserDefinedMethodFactory : IUserDefinedMethodFactory
     {
         // shared across all instances
-        private static readonly IDictionary<string, Lazy<ArithmeticOperationBase>> BuiltInMethodsRegistry = new Dictionary<string, Lazy<ArithmeticOperationBase>>();
+        private static readonly Dictionary<string, Lazy<ArithmeticOperationBase>> BuiltInMethodsRegistry = [];
 
         // unique to each instance created (unless created as a Singleton of course) - created when the first method is registered
-        private IDictionary<string, Lazy<ArithmeticOperationBase>> _userMethodsRegistry;
+        private Dictionary<string, Lazy<ArithmeticOperationBase>> _userMethodsRegistry;
 
         /// <summary>Provides a list of all built-in and custom registered methods.</summary>
         public IEnumerable<string> RegisteredMethods => GetRegisteredMethods();
@@ -81,7 +80,7 @@ namespace AllOverIt.Evaluator.Operations
         /// <remarks>The operation type is expected to be thread-safe and should therefore not store state.</remarks>
         public void RegisterMethod<TOperationType>(string methodName) where TOperationType : ArithmeticOperationBase, new()
         {
-            _userMethodsRegistry ??= new Dictionary<string, Lazy<ArithmeticOperationBase>>();
+            _userMethodsRegistry ??= [];
 
             RegisterMethod<TOperationType>(_userMethodsRegistry, methodName, true);
         }
@@ -130,7 +129,7 @@ namespace AllOverIt.Evaluator.Operations
             return keys;
         }
 
-        private static void RegisterMethod<TOperationType>(IDictionary<string, Lazy<ArithmeticOperationBase>> operationRegistry, string methodName,
+        private static void RegisterMethod<TOperationType>(Dictionary<string, Lazy<ArithmeticOperationBase>> operationRegistry, string methodName,
             bool requiresUppercase = false)
             where TOperationType : ArithmeticOperationBase, new()
         {

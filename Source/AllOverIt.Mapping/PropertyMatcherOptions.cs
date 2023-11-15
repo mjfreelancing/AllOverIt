@@ -1,8 +1,8 @@
-﻿using System;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Reflection;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-using AllOverIt.Assertion;
-using AllOverIt.Reflection;
 
 namespace AllOverIt.Mapping
 {
@@ -20,7 +20,7 @@ namespace AllOverIt.Mapping
         }
 
         // Source property to target options
-        private readonly IDictionary<string, TargetOptions> _sourceTargetOptions = new Dictionary<string, TargetOptions>();
+        private readonly Dictionary<string, TargetOptions> _sourceTargetOptions = [];
 
         internal static readonly PropertyMatcherOptions None = new();
 

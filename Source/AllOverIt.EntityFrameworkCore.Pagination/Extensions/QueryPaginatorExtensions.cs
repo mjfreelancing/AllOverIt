@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Pagination;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -51,8 +50,8 @@ namespace AllOverIt.EntityFrameworkCore.Pagination.Extensions
             var totalCount = await queryPaginator.BaseQuery.CountAsync(cancellationToken).ConfigureAwait(false);
             var pageQuery = queryPaginator.GetPageQuery(continuationToken);
             var pageResults = await pageQuery.ToListAsync(cancellationToken).ConfigureAwait(false);
+            var hasResults = pageResults.Count != 0;
 
-            var hasResults = pageResults.Any();
             string previousToken = default;
             string nextToken = default;
 

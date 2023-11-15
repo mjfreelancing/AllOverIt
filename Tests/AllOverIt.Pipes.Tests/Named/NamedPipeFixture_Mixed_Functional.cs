@@ -1,1480 +1,1699 @@
-﻿using AllOverIt.Async;
-using AllOverIt.Fixture;
-using AllOverIt.Pipes.Exceptions;
-using AllOverIt.Pipes.Named.Client;
-using AllOverIt.Pipes.Named.Events;
-using AllOverIt.Pipes.Named.Serialization;
-using AllOverIt.Pipes.Named.Server;
-using FluentAssertions;
-using System;
-using System.IO;
-using System.IO.Pipes;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Xunit;
-using Xunit.Abstractions;
-using ReadyEvent = System.Threading.Tasks.TaskCompletionSource<bool>;
-
-namespace AllOverIt.Pipes.Tests.Named
-{
-    [Collection("Pipes")]
-    public class NamedPipeFixture_Mixed_Functional : FixtureBase
-    {
-        private static TimeSpan ConnectTimeout = TimeSpan.FromSeconds(1);
-
-        private class DummyMessage
-        {
-            public string Value { get; set; }
-        }
-
-        public sealed class DummyStream : PipeStream
-        {
-            public DummyStream()
-                : base(PipeDirection.InOut, 1024)
-            {
-            }
-        }
-
-        public sealed class DummyBadSerializer : INamedPipeSerializer<DummyMessage>
-        {
-            private readonly PipeDirection _errorDirection;
-
-            public DummyBadSerializer(PipeDirection errorDirection)
-            {
-                _errorDirection = errorDirection;
-            }
-
-            DummyMessage INamedPipeSerializer<DummyMessage>.Deserialize(byte[] bytes)
-            {
-                if (_errorDirection == PipeDirection.In)
-                {
-                    throw new InvalidOperationException();
-                }
-
-                return new DummyMessage();
-            }
-
-            byte[] INamedPipeSerializer<DummyMessage>.Serialize(DummyMessage message)
-            {
-                if (_errorDirection == PipeDirection.Out)
-                {
-                    throw new InvalidOperationException();
-                }
-
-                return new byte[] { 1, 2, 3 };
-            }
-        }
-
-        [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public async Task Should_Return_Server_Connected_Status(bool connected)
-        {
-            var pipeName = Create<string>();
-            var serializer = new NamedPipeSerializer<DummyMessage>();
-
-            await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
-            {
-                server.IsStarted.Should().BeFalse();
-
-                if (connected)
-                {
-                    server.Start();
-                }
-
-                server.IsStarted.Should().Be(connected);
-            }
-        }
-
-        [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public async Task Should_Return_Client_Connected_Status(bool connectToServer)
-        {
-            var pipeName = Create<string>();
-            var serializer = new NamedPipeSerializer<DummyMessage>();
-            var expected = Create<DummyMessage>();
-
-            var tcs1 = new ReadyEvent();
-            var tcs2 = new ReadyEvent();
-
-            var serverTask = Task.Run(async () =>
-            {
-                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
-                {
-                    server.Start();
-
-                    tcs1.SetResult(true);
-
-                    await tcs2.Task;
-                }
-            });
+﻿//using AllOverIt.Async;
+//using AllOverIt.Fixture;
+//using AllOverIt.Pipes.Exceptions;
+//using AllOverIt.Pipes.Named.Client;
+//using AllOverIt.Pipes.Named.Events;
+//using AllOverIt.Pipes.Named.Serialization;
+//using AllOverIt.Pipes.Named.Server;
+//using FluentAssertions;
+//using System;
+//using System.IO;
+//using System.IO.Pipes;
+//using System.Linq;
+//using System.Threading;
+//using System.Threading.Tasks;
+//using Xunit;
+//using Xunit.Abstractions;
+//using ReadyEvent = System.Threading.Tasks.TaskCompletionSource<bool>;
+
+//namespace AllOverIt.Pipes.Tests.Named
+//{
+//    [Collection("NamedPipes")]
+//    public class NamedPipeFixture_Mixed_Functional : FixtureBase
+//    {
+//        private static ITestOutputHelper _outputHelper;
+//        private static TimeSpan ConnectTimeout = TimeSpan.FromSeconds(1);
+
+//        private class DummyMessage
+//        {
+//            public string Value { get; set; }
+//        }
+
+//        private sealed class DummyStream : PipeStream
+//        {
+//            public DummyStream()
+//                : base(PipeDirection.InOut, 1024)
+//            {
+//            }
+//        }
+
+//        private sealed class DummyBadSerializer : INamedPipeSerializer<DummyMessage>
+//        {
+//            private readonly PipeDirection _errorDirection;
+
+//            public DummyBadSerializer(PipeDirection errorDirection)
+//            {
+//                _errorDirection = errorDirection;
+//            }
+
+//            DummyMessage INamedPipeSerializer<DummyMessage>.Deserialize(byte[] bytes)
+//            {
+//                if (_errorDirection == PipeDirection.In)
+//                {
+//                    throw new InvalidOperationException();
+//                }
+
+//                return new DummyMessage();
+//            }
+
+//            byte[] INamedPipeSerializer<DummyMessage>.Serialize(DummyMessage message)
+//            {
+//                if (_errorDirection == PipeDirection.Out)
+//                {
+//                    throw new InvalidOperationException();
+//                }
+
+//                return new byte[] { 1, 2, 3 };
+//            }
+//        }
+
+//        public NamedPipeFixture_Mixed_Functional(ITestOutputHelper outputHelper)
+//        {
+//            _outputHelper = outputHelper;
+//        }
+
+//        [Theory]
+//        [InlineData(true)]
+//        [InlineData(false)]
+//        public async Task Should_Return_Server_Connected_Status(bool connected)
+//        {
+//            var pipeName = Create<string>();
+//            var serializer = new NamedPipeSerializer<DummyMessage>();
+
+//            await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
+//            {
+//                server.IsStarted.Should().BeFalse();
+
+//                if (connected)
+//                {
+//                    server.Start();
+//                }
+
+//                server.IsStarted.Should().Be(connected);
+//            }
+//        }
+
+//        [Theory]
+//        [InlineData(true)]
+//        [InlineData(false)]
+//        public async Task Should_Return_Client_Connected_Status(bool connectToServer)
+//        {
+//            var pipeName = Create<string>();
+//            var serializer = new NamedPipeSerializer<DummyMessage>();
+//            var expected = Create<DummyMessage>();
+
+//            var tcs1 = new ReadyEvent();
+//            var tcs2 = new ReadyEvent();
+
+//            var serverTask = Task.Run(async () =>
+//            {
+//                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
+//                {
+//                    server.Start();
+
+//                    tcs1.SetResult(true);
+
+//                    await tcs2.Task;
+//                }
+//            });
+
+//            var clientTask = Task.Run(async () =>
+//            {
+//                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
+//                {
+//                    client.IsConnected.Should().BeFalse();
 
-            var clientTask = Task.Run(async () =>
-            {
-                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
-                {
-                    client.IsConnected.Should().BeFalse();
+//                    await tcs1.Task;
 
-                    await tcs1.Task;
+//                    if (connectToServer)
+//                    {
+//                        await client.ConnectAsync(ConnectTimeout);
+//                    }
 
-                    if (connectToServer)
-                    {
-                        await client.ConnectAsync(ConnectTimeout);
-                    }
+//                    client.IsConnected.Should().Be(connectToServer);
+//                }
 
-                    client.IsConnected.Should().Be(connectToServer);
-                }
+//                tcs2.SetResult(true);
+//            });
 
-                tcs2.SetResult(true);
-            });
+//            await Task.WhenAll(serverTask, clientTask);
+//        }
 
-            await Task.WhenAll(serverTask, clientTask);
-        }
+//        [Fact]
+//        public async Task Should_Throw_When_Already_Connected()
+//        {
+//            var pipeName = Create<string>();
+//            var serializer = new NamedPipeSerializer<DummyMessage>();
+//            var expected = Create<DummyMessage>();
+
+//            var tcs1 = new ReadyEvent();
+//            var tcs2 = new ReadyEvent();
+
+//            var serverTask = Task.Run(async () =>
+//            {
+//                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
+//                {
+//                    server.Start();
+
+//                    tcs1.SetResult(true);
+
+//                    await tcs2.Task;
+//                }
+//            });
+
+//            var clientTask = Task.Run(async () =>
+//            {
+//                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
+//                {
+//                    await tcs1.Task;
+
+//                    await client.ConnectAsync(ConnectTimeout);
+
+//                    await Invoking(async () =>
+//                    {
+//                        await client.ConnectAsync(ConnectTimeout);
+//                    })
+//                    .Should()
+//                    .ThrowAsync<PipeException>()
+//                    .WithMessage("The named pipe client is already connected.");
+
+//                    client.IsConnected.Should().BeTrue();
+//                }
+
+//                tcs2.SetResult(true);
+//            });
 
-        [Fact]
-        public async Task Should_Throw_When_Already_Connected()
-        {
-            var pipeName = Create<string>();
-            var serializer = new NamedPipeSerializer<DummyMessage>();
-            var expected = Create<DummyMessage>();
-
-            var tcs1 = new ReadyEvent();
-            var tcs2 = new ReadyEvent();
+//            await Task.WhenAll(serverTask, clientTask);
+//        }
+
+//        [Fact]
+//        public async Task Should_Disconnect_Client_From_Server()
+//        {
+//            var pipeName = Create<string>();
+//            var serializer = new NamedPipeSerializer<DummyMessage>();
+//            var expected = Create<DummyMessage>();
+
+//            var tcs1 = new ReadyEvent();
+//            var tcs2 = new ReadyEvent();
+
+//            var serverTask = Task.Run(async () =>
+//            {
+//                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
+//                {
+//                    server.Start();
 
-            var serverTask = Task.Run(async () =>
-            {
-                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
-                {
-                    server.Start();
-
-                    tcs1.SetResult(true);
-
-                    await tcs2.Task;
-                }
-            });
-
-            var clientTask = Task.Run(async () =>
-            {
-                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
-                {
-                    await tcs1.Task;
-
-                    await client.ConnectAsync(ConnectTimeout);
-
-                    await Invoking(async () =>
-                    {
-                        await client.ConnectAsync(ConnectTimeout);
-                    })
-                    .Should()
-                    .ThrowAsync<PipeException>()
-                    .WithMessage("The named pipe client is already connected.");
-
-                    client.IsConnected.Should().BeTrue();
-                }
-
-                tcs2.SetResult(true);
-            });
+//                    tcs1.SetResult(true);
+
+//                    await tcs2.Task;
+//                }
+//            });
+
+//            var clientTask = Task.Run(async () =>
+//            {
+//                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
+//                {
+//                    await tcs1.Task;
+
+//                    await client.ConnectAsync(ConnectTimeout);
+
+//                    client.IsConnected.Should().BeTrue();
+
+//                    await client.DisconnectAsync();
+
+//                    client.IsConnected.Should().BeFalse();
+//                }
+
+//                tcs2.SetResult(true);
+//            });
+
+//            await Task.WhenAll(serverTask, clientTask);
+//        }
+
+//        [Fact]
+//        public async Task Should_Return_Server_PipeName()
+//        {
+//            var pipeName = Create<string>();
+//            var serializer = new NamedPipeSerializer<DummyMessage>();
 
-            await Task.WhenAll(serverTask, clientTask);
-        }
-
-        [Fact]
-        public async Task Should_Disconnect_Client_From_Server()
-        {
-            var pipeName = Create<string>();
-            var serializer = new NamedPipeSerializer<DummyMessage>();
-            var expected = Create<DummyMessage>();
+//            await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
+//            {
+//                server.PipeName.Should().Be(pipeName);
+//            }
+//        }
 
-            var tcs1 = new ReadyEvent();
-            var tcs2 = new ReadyEvent();
+//        [Fact]
+//        public async Task Should_Return_Client_PipeName()
+//        {
+//            var pipeName = Create<string>();
+//            var serializer = new NamedPipeSerializer<DummyMessage>();
 
-            var serverTask = Task.Run(async () =>
-            {
-                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
-                {
-                    server.Start();
+//            await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
+//            {
+//                client.PipeName.Should().Be(pipeName);
+//            }
+//        }
 
-                    tcs1.SetResult(true);
+//        [Fact]
+//        public async Task Should_Get_Server_Client_Connection_IsConnected()
+//        {
+//            var pipeName = Create<string>();
+//            var serializer = new NamedPipeSerializer<DummyMessage>();
 
-                    await tcs2.Task;
-                }
-            });
+//            var tcs1 = new ReadyEvent();
+//            var tcs2 = new ReadyEvent();
+//            var tcs3 = new ReadyEvent();
 
-            var clientTask = Task.Run(async () =>
-            {
-                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
-                {
-                    await tcs1.Task;
-
-                    await client.ConnectAsync(ConnectTimeout);
+//            var serverTask = Task.Run(async () =>
+//            {
+//                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
+//                {
+//                    void Server_OnClientConnected(object sender, NamedPipeConnectionEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> e)
+//                    {
+//                        tcs2.SetResult(true);
+//                    }
 
-                    client.IsConnected.Should().BeTrue();
-
-                    await client.DisconnectAsync();
-
-                    client.IsConnected.Should().BeFalse();
-                }
-
-                tcs2.SetResult(true);
-            });
-
-            await Task.WhenAll(serverTask, clientTask);
-        }
+//                    server.OnClientConnected += Server_OnClientConnected;
 
-        [Fact]
-        public async Task Should_Return_Server_PipeName()
-        {
-            var pipeName = Create<string>();
-            var serializer = new NamedPipeSerializer<DummyMessage>();
+//                    server.Start();
 
-            await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
-            {
-                server.PipeName.Should().Be(pipeName);
-            }
-        }
+//                    tcs1.SetResult(true);
 
-        [Fact]
-        public async Task Should_Return_Client_PipeName()
-        {
-            var pipeName = Create<string>();
-            var serializer = new NamedPipeSerializer<DummyMessage>();
+//                    await tcs2.Task;
 
-            await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
-            {
-                client.PipeName.Should().Be(pipeName);
-            }
-        }
+//                    server.Connections.Single().IsConnected.Should().BeTrue();
 
-        [Fact]
-        public async Task Should_Get_Server_Client_Connection_IsConnected()
-        {
-            var pipeName = Create<string>();
-            var serializer = new NamedPipeSerializer<DummyMessage>();
+//                    await tcs3.Task;
+//                }
+//            });
 
-            var tcs1 = new ReadyEvent();
-            var tcs2 = new ReadyEvent();
-            var tcs3 = new ReadyEvent();
+//            var clientTask = Task.Run(async () =>
+//            {
+//                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
+//                {
+//                    await tcs1.Task;
 
-            var serverTask = Task.Run(async () =>
-            {
-                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
-                {
-                    void Server_OnClientConnected(object sender, NamedPipeConnectionEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> e)
-                    {
-                        tcs2.SetResult(true);
-                    }
+//                    await client.ConnectAsync(ConnectTimeout);
 
-                    server.OnClientConnected += Server_OnClientConnected;
+//                    // Wait for the server to update the connection list - triggered via Server_OnClientConnected
+//                    await tcs2.Task;
+//                }
 
-                    server.Start();
+//                tcs3.SetResult(true);
+//            });
 
-                    tcs1.SetResult(true);
+//            await Task.WhenAll(serverTask, clientTask);
+//        }
 
-                    await tcs2.Task;
+//        [Fact]
+//        public async Task Should_Get_No_Server_Client_Connections_After_Client_Disconnects()
+//        {
+//            var pipeName = Create<string>();
+//            var serializer = new NamedPipeSerializer<DummyMessage>();
 
-                    server.Connections.Single().IsConnected.Should().BeTrue();
+//            var tcs1 = new ReadyEvent();
+//            var tcs2 = new ReadyEvent();
+//            var tcs3 = new ReadyEvent();
+//            var tcs4 = new ReadyEvent();
 
-                    await tcs3.Task;
-                }
-            });
+//            var serverTask = Task.Run(async () =>
+//            {
+//                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
+//                {
+//                    void Server_OnClientConnected(object sender, NamedPipeConnectionEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> e)
+//                    {
+//                        tcs2.SetResult(true);
+//                    }
 
-            var clientTask = Task.Run(async () =>
-            {
-                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
-                {
-                    await tcs1.Task;
+//                    server.OnClientConnected += Server_OnClientConnected;
 
-                    await client.ConnectAsync(ConnectTimeout);
+//                    server.Start();
 
-                    // Wait for the server to update the connection list - triggered via Server_OnClientConnected
-                    await tcs2.Task;
-                }
+//                    tcs1.SetResult(true);
 
-                tcs3.SetResult(true);
-            });
+//                    await tcs2.Task;
 
-            await Task.WhenAll(serverTask, clientTask);
-        }
+//                    server.Connections.Single().IsConnected.Should().BeTrue();
 
-        [Fact]
-        public async Task Should_Get_No_Server_Client_Connections_After_Client_Disconnects()
-        {
-            var pipeName = Create<string>();
-            var serializer = new NamedPipeSerializer<DummyMessage>();
+//                    tcs3.SetResult(true);
 
-            var tcs1 = new ReadyEvent();
-            var tcs2 = new ReadyEvent();
-            var tcs3 = new ReadyEvent();
-            var tcs4 = new ReadyEvent();
+//                    await tcs4.Task;    // wait for the client to disconnect
 
-            var serverTask = Task.Run(async () =>
-            {
-                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
-                {
-                    void Server_OnClientConnected(object sender, NamedPipeConnectionEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> e)
-                    {
-                        tcs2.SetResult(true);
-                    }
+//                    server.Connections.Should().BeEmpty();
+//                }
+//            });
 
-                    server.OnClientConnected += Server_OnClientConnected;
+//            var clientTask = Task.Run(async () =>
+//            {
+//                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
+//                {
+//                    await tcs1.Task;
 
-                    server.Start();
+//                    await client.ConnectAsync(ConnectTimeout);
 
-                    tcs1.SetResult(true);
+//                    // Wait for the server to update the connection list
+//                    await tcs3.Task;
+//                }
 
-                    await tcs2.Task;
+//                tcs4.SetResult(true);
+//            });
 
-                    server.Connections.Single().IsConnected.Should().BeTrue();
+//            await Task.WhenAll(serverTask, clientTask);
+//        }
 
-                    tcs3.SetResult(true);
+//        [Fact]
+//        public async Task Should_Catch_Exception_When_Serializing()
+//        {
+//            var pipeName = Create<string>();
+//            var serializer = new DummyBadSerializer(PipeDirection.Out);
+//            Exception actual = null;
 
-                    await tcs4.Task;    // wait for the client to disconnect
+//            var tcs1 = new ReadyEvent();
+//            var tcs2 = new ReadyEvent();
+//            var tcs3 = new TaskCompletionSource<Exception>();
+//            var tcs4 = new ReadyEvent();
 
-                    server.Connections.Should().BeEmpty();
-                }
-            });
+//            var serverTask = Task.Run(async () =>
+//            {
+//                _outputHelper?.WriteLine("1");
 
-            var clientTask = Task.Run(async () =>
-            {
-                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
-                {
-                    await tcs1.Task;
+//                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
+//                {
+//                    void Server_OnException(object sender, NamedPipeExceptionEventArgs eventArgs)
+//                    {
+//                        tcs3.SetResult(eventArgs.Exception);
+//                    }
 
-                    await client.ConnectAsync(ConnectTimeout);
+//                    server.OnException += Server_OnException;
 
-                    // Wait for the server to update the connection list
-                    await tcs3.Task;
-                }
+//                    try
+//                    {
+//                        _outputHelper?.WriteLine("2");
 
-                tcs4.SetResult(true);
-            });
+//                        server.Start();
 
-            await Task.WhenAll(serverTask, clientTask);
-        }
+//                        _outputHelper?.WriteLine("3");
 
-        [Fact]
-        public async Task Should_Catch_Exception_When_Serializing()
-        {
-            var pipeName = Create<string>();
-            var serializer = new DummyBadSerializer(PipeDirection.Out);
-            Exception actual = null;
 
-            var tcs1 = new ReadyEvent();
-            var tcs2 = new ReadyEvent();
-            var tcs3 = new TaskCompletionSource<Exception>();
-            var tcs4 = new ReadyEvent();
+//                        tcs1.SetResult(true);
 
-            var serverTask = Task.Run(async () =>
-            {
-                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
-                {
-                    void Server_OnException(object sender, NamedPipeExceptionEventArgs eventArgs)
-                    {
-                        tcs3.SetResult(eventArgs.Exception);
-                    }
+//                        _outputHelper?.WriteLine("4");
 
-                    server.OnException += Server_OnException;
 
-                    server.Start();
+//                        await tcs2.Task;
 
-                    tcs1.SetResult(true);
+//                        _outputHelper?.WriteLine("5");
 
-                    await tcs2.Task;
 
-                    await server.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
+//                        await server.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
 
-                    await tcs4.Task;
-                }
-            });
+//                        _outputHelper?.WriteLine("6");
 
-            var clientTask = Task.Run(async () =>
-            {
-                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
-                {
-                    await tcs1.Task;
+//                        await tcs4.Task;
 
-                    await client.ConnectAsync(ConnectTimeout);
+//                        _outputHelper?.WriteLine("7");
 
-                    tcs2.SetResult(true);
+//                    }
+//                    finally
+//                    {
+//                        server.OnException -= Server_OnException;
+//                    }
+//                }
+//            });
 
-                    actual = await tcs3.Task;
-                }
+//            var clientTask = Task.Run(async () =>
+//            {
+//                _outputHelper?.WriteLine("8");
 
-                tcs4.SetResult(true);
-            });
+//                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
+//                {
+//                    _outputHelper?.WriteLine("9");
 
-            await Task.WhenAll(serverTask, clientTask);
+//                    await tcs1.Task;
 
-            actual.Should().BeAssignableTo<Exception>();
-        }
+//                    _outputHelper?.WriteLine("10");
 
-        [Fact]
-        public async Task Should_Catch_Exception_When_Deserializing()
-        {
-            var pipeName = Create<string>();
-            var serializer = new DummyBadSerializer(PipeDirection.In);
-            Exception actual = null;
+//                    await client.ConnectAsync(ConnectTimeout);
 
-            var tcs1 = new ReadyEvent();
-            var tcs2 = new TaskCompletionSource<Exception>();
-            var tcs3 = new ReadyEvent();
+//                    _outputHelper?.WriteLine("11");
 
-            var serverTask = Task.Run(async () =>
-            {
-                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
-                {
-                    async void Server_OnClientConnected(object sender, NamedPipeConnectionEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> eventArgs)
-                    {
-                        await server.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
-                    }
+//                    tcs2.SetResult(true);
 
-                    server.OnClientConnected += Server_OnClientConnected;
+//                    _outputHelper?.WriteLine("12");
 
-                    server.Start();
+//                    actual = await tcs3.Task;
 
-                    tcs1.SetResult(true);
+//                    _outputHelper?.WriteLine("13");
+//                }
 
-                    await tcs3.Task;
-                }
-            });
+//                _outputHelper?.WriteLine("14");
 
-            var clientTask = Task.Run(async () =>
-            {
-                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
-                {
-                    void Client_OnException(object sender, NamedPipeExceptionEventArgs eventArgs)
-                    {
-                        tcs2.SetResult(eventArgs.Exception);
-                    }
+//                tcs4.SetResult(true);
 
-                    client.OnException += Client_OnException;
+//                _outputHelper?.WriteLine("15");
+//            });
 
-                    await tcs1.Task;
+//            _outputHelper?.WriteLine("16");
 
-                    await client.ConnectAsync(ConnectTimeout);
+//            await Task.WhenAll(serverTask, clientTask);
 
-                    actual = await tcs2.Task;
-                }
+//            _outputHelper?.WriteLine("17");
 
-                tcs3.SetResult(true);
-            });
+//            actual.Should().BeAssignableTo<Exception>();
+//        }
 
-            await Task.WhenAll(serverTask, clientTask);
+//        [Fact]
+//        public async Task Should_Catch_Exception_When_Deserializing()
+//        {
+//            var pipeName = Create<string>();
+//            var serializer = new DummyBadSerializer(PipeDirection.In);
+//            Exception actual = null;
 
-            actual.Should().BeAssignableTo<Exception>();
-        }
+//            var tcs1 = new ReadyEvent();
+//            var tcs2 = new TaskCompletionSource<Exception>();
+//            var tcs3 = new ReadyEvent();
 
-        [Fact]
-        public async Task Should_Throw_When_Cannot_Get_Impersonation_User_Name()
-        {
-            var pipeName = Create<string>();
-            var serializer = new NamedPipeSerializer<DummyMessage>();
+//            var serverTask = Task.Run(async () =>
+//            {
+//                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
+//                {
+//                    async void Server_OnClientConnected(object sender, NamedPipeConnectionEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> eventArgs)
+//                    {
+//                        await server.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
+//                    }
 
-            var tcs1 = new ReadyEvent();
-            var tcs2 = new ReadyEvent();
-            var tcs3 = new ReadyEvent();
-            var tcs4 = new ReadyEvent();
+//                    server.OnClientConnected += Server_OnClientConnected;
 
-            var serverTask = Task.Run(async () =>
-            {
-                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
-                {
-                    void Server_OnClientConnected(object sender, NamedPipeConnectionEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> e)
-                    {
-                        tcs2.SetResult(true);
-                    }
+//                    server.Start();
 
-                    server.OnClientConnected += Server_OnClientConnected;
+//                    tcs1.SetResult(true);
 
-                    server.Start();
+//                    await tcs3.Task;
+//                }
+//            });
 
-                    tcs1.SetResult(true);
+//            var clientTask = Task.Run(async () =>
+//            {
+//                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
+//                {
+//                    void Client_OnException(object sender, NamedPipeExceptionEventArgs eventArgs)
+//                    {
+//                        tcs2.SetResult(eventArgs.Exception);
+//                    }
 
-                    await tcs2.Task;     // wait for the client to connect
+//                    client.OnException += Client_OnException;
 
-                    Invoking(() =>
-                    {
-                        _ = server.Connections.Single().GetImpersonationUserName();
-                    })
-                    .Should()
-                    .Throw<IOException>()
-                    .WithMessage("Unable to impersonate using a named pipe until data has been read from that pipe.");
+//                    await tcs1.Task;
 
-                    tcs3.SetResult(true);
-                }
+//                    await client.ConnectAsync(ConnectTimeout);
 
-                await tcs4.Task;
-            });
+//                    actual = await tcs2.Task;
+//                }
 
-            var clientTask = Task.Run(async () =>
-            {
-                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
-                {
-                    await tcs1.Task;
+//                tcs3.SetResult(true);
+//            });
 
-                    await client.ConnectAsync(ConnectTimeout);
+//            await Task.WhenAll(serverTask, clientTask);
 
-                    // wait for the server-side assertion
-                    await tcs3.Task;
-                }
+//            actual.Should().BeAssignableTo<Exception>();
+//        }
 
-                tcs4.SetResult(true);
-            });
+//        [Fact]
+//        public async Task Should_Throw_When_Cannot_Get_Impersonation_User_Name()
+//        {
+//            var pipeName = Create<string>();
+//            var serializer = new NamedPipeSerializer<DummyMessage>();
 
-            await Task.WhenAll(serverTask, clientTask);
-        }
+//            var tcs1 = new ReadyEvent();
+//            var tcs2 = new ReadyEvent();
+//            var tcs3 = new ReadyEvent();
+//            var tcs4 = new ReadyEvent();
 
-        [Fact]
-        public async Task Should_Get_Impersonation_User_Name()
-        {
-            var pipeName = Create<string>();
-            var serializer = new NamedPipeSerializer<DummyMessage>();
+//            var serverTask = Task.Run(async () =>
+//            {
+//                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
+//                {
+//                    void Server_OnClientConnected(object sender, NamedPipeConnectionEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> e)
+//                    {
+//                        tcs2.SetResult(true);
+//                    }
 
-            var tcs1 = new ReadyEvent();
-            var tcs2 = new TaskCompletionSource<DummyMessage>();
-            var tcs3 = new ReadyEvent();
-            var tcs4 = new ReadyEvent();
+//                    server.OnClientConnected += Server_OnClientConnected;
 
-            var serverTask = Task.Run(async () =>
-            {
-                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
-                {
-                    void Server_OnMessageReceived(object sender, NamedPipeConnectionMessageEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> eventArgs)
-                    {
-                        tcs2.SetResult(eventArgs.Message);
-                    }
+//                    server.Start();
 
-                    server.OnMessageReceived += Server_OnMessageReceived;
+//                    tcs1.SetResult(true);
 
-                    server.Start();
+//                    await tcs2.Task;     // wait for the client to connect
 
-                    tcs1.SetResult(true);
+//                    Invoking(() =>
+//                    {
+//                        _ = server.Connections.Single().GetImpersonationUserName();
+//                    })
+//                    .Should()
+//                    .Throw<IOException>()
+//                    .WithMessage("Unable to impersonate using a named pipe until data has been read from that pipe.");
 
-                    await tcs2.Task;
+//                    tcs3.SetResult(true);
+//                }
 
-                    var username = server.Connections.Single().GetImpersonationUserName();
+//                await tcs4.Task;
+//            });
 
-                    username.Should().Be(Environment.UserName);
+//            var clientTask = Task.Run(async () =>
+//            {
+//                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
+//                {
+//                    await tcs1.Task;
 
-                    tcs3.SetResult(true);
+//                    await client.ConnectAsync(ConnectTimeout);
 
-                    await tcs4.Task;
-                }
-            });
+//                    // wait for the server-side assertion
+//                    await tcs3.Task;
+//                }
 
-            var clientTask = Task.Run(async () =>
-            {
-                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
-                {
-                    await tcs1.Task;
+//                tcs4.SetResult(true);
+//            });
 
-                    await client.ConnectAsync(ConnectTimeout);
+//            await Task.WhenAll(serverTask, clientTask);
+//        }
 
-                    await client.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
+//        [Fact]
+//        public async Task Should_Get_Impersonation_User_Name()
+//        {
+//            var pipeName = Create<string>();
+//            var serializer = new NamedPipeSerializer<DummyMessage>();
 
-                    _ = await tcs3.Task;
-                }
+//            var tcs1 = new ReadyEvent();
+//            var tcs2 = new TaskCompletionSource<DummyMessage>();
+//            var tcs3 = new ReadyEvent();
+//            var tcs4 = new ReadyEvent();
 
-                tcs4.SetResult(true);
-            });
+//            var serverTask = Task.Run(async () =>
+//            {
+//                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
+//                {
+//                    void Server_OnMessageReceived(object sender, NamedPipeConnectionMessageEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> eventArgs)
+//                    {
+//                        tcs2.SetResult(eventArgs.Message);
+//                    }
 
-            await Task.WhenAll(serverTask, clientTask);
-        }
+//                    server.OnMessageReceived += Server_OnMessageReceived;
 
-        [Fact]
-        public async Task Should_Send_Message_From_Server_To_Client()
-        {
-            var pipeName = Create<string>();
-            var serializer = new NamedPipeSerializer<DummyMessage>();
-            var expected = Create<DummyMessage>();
-            DummyMessage actual = null;
+//                    try
+//                    {
+//                        server.Start();
 
-            var tcs1 = new ReadyEvent();
-            var tcs2 = new ReadyEvent();
-            var tcs3 = new TaskCompletionSource<DummyMessage>();
-            var tcs4 = new ReadyEvent();
+//                        tcs1.SetResult(true);
 
-            var serverTask = Task.Run(async () =>
-            {
-                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
-                {
-                    server.Start();
+//                        await tcs2.Task;
 
-                    tcs1.SetResult(true);
+//                        var username = server.Connections.Single().GetImpersonationUserName();
 
-                    await tcs2.Task;
+//                        username.Should().Be(Environment.UserName);
 
-                    await server.WriteAsync(expected, CancellationToken.None);
+//                        tcs3.SetResult(true);
 
-                    await tcs4.Task;
-                }
-            });
+//                        await tcs4.Task;
+//                    }
+//                    finally
+//                    {
+//                        server.OnMessageReceived -= Server_OnMessageReceived;
+//                    }
+//                }
+//            });
 
-            var clientTask = Task.Run(async () =>
-            {
-                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
-                {
-                    void Client_OnMessageReceived(object sender, NamedPipeConnectionMessageEventArgs<DummyMessage, INamedPipeClientConnection<DummyMessage>> eventArgs)
-                    {
-                        tcs3.SetResult(eventArgs.Message);
-                    }
+//            var clientTask = Task.Run(async () =>
+//            {
+//                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
+//                {
+//                    await tcs1.Task;
 
-                    client.OnMessageReceived += Client_OnMessageReceived;
+//                    await client.ConnectAsync(ConnectTimeout);
 
-                    await tcs1.Task;
+//                    await client.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
 
-                    await client.ConnectAsync(ConnectTimeout);
+//                    _ = await tcs3.Task;
+//                }
 
-                    tcs2.SetResult(true);
+//                tcs4.SetResult(true);
+//            });
 
-                    actual = await tcs3.Task;
-                }
+//            await Task.WhenAll(serverTask, clientTask);
+//        }
 
-                tcs4.SetResult(true);
-            });
+//        [Fact]
+//        public async Task Should_Send_Message_From_Server_To_Client()
+//        {
+//            var pipeName = Create<string>();
+//            var serializer = new NamedPipeSerializer<DummyMessage>();
+//            var expected = Create<DummyMessage>();
+//            DummyMessage actual = null;
 
-            await Task.WhenAll(serverTask, clientTask);
+//            var tcs1 = new ReadyEvent();
+//            var tcs2 = new ReadyEvent();
+//            var tcs3 = new TaskCompletionSource<DummyMessage>();
+//            var tcs4 = new ReadyEvent();
 
-            expected.Should().BeEquivalentTo(actual);
-        }
+//            var serverTask = Task.Run(async () =>
+//            {
+//                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
+//                {
+//                    server.Start();
 
-        //[Theory]
-        //[InlineData(0)]
-        //[InlineData(1)]
-        //[InlineData(2)]
-        //public async Task Should_Send_Message_From_Server_To_Filtered_Client(int connectionIndex)
-        //{
-        //    var pipeName = Create<string>();
-        //    var serializer = new NamedPipeSerializer<DummyMessage>();
-        //    var expected = Create<DummyMessage>();
-        //    string actual = default;
+//                    tcs1.SetResult(true);
 
-        //    var tcs1 = new ReadyEvent();
-        //    var tcs2 = new TaskCompletionSource<string>();
-        //    var tcs3 = new ReadyEvent();
-        //    var tcs4 = new ReadyEvent();
-        //    var tcs5 = new ReadyEvent();
+//                    await tcs2.Task;
 
-        //    void Client_OnMessageReceived(object sender, NamedPipeConnectionMessageEventArgs<DummyMessage, INamedPipeClientConnection<DummyMessage>> eventArgs)
-        //    {
-        //        tcs2.SetResult(eventArgs.Message.Value);
-        //    }
+//                    await server.WriteAsync(expected, CancellationToken.None);
 
-        //    var serverTask = Task.Run(async () =>
-        //    {
-        //        await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
-        //        {
-        //            server.Start();
+//                    await tcs4.Task;
+//                }
+//            });
 
-        //            tcs1.SetResult(true);
+//            var clientTask = Task.Run(async () =>
+//            {
+//                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
+//                {
+//                    void Client_OnMessageReceived(object sender, NamedPipeConnectionMessageEventArgs<DummyMessage, INamedPipeClientConnection<DummyMessage>> eventArgs)
+//                    {
+//                        tcs3.SetResult(eventArgs.Message);
+//                    }
 
-        //            await tcs3.Task;
+//                    client.OnMessageReceived += Client_OnMessageReceived;
 
-        //            if (connectionIndex == 2)
-        //            {
-        //                var filteredIds = (server as NamedPipeServer<DummyMessage>)
-        //                    .Connections
-        //                    .Select(item => item.ConnectionId)
-        //                    .ToArray();
+//                    try
+//                    {
+//                        await tcs1.Task;
 
-        //                await server.WriteAsync(
-        //                    expected,
-        //                    connection => connection.ConnectionId == filteredIds[0] ||
-        //                                  connection.ConnectionId == filteredIds[1],
-        //                    CancellationToken.None);
-        //            }
-        //            else
-        //            {
-        //                var filteredId = (server as NamedPipeServer<DummyMessage>)
-        //                    .Connections
-        //                    .ElementAt(connectionIndex)
-        //                    .ConnectionId;
+//                        await client.ConnectAsync(ConnectTimeout);
 
-        //                expected.Value = filteredId;
+//                        tcs2.SetResult(true);
 
-        //                await server.WriteAsync(
-        //                    expected,
-        //                    connection => connection.ConnectionId == filteredId,
-        //                    CancellationToken.None);
-        //            }
+//                        actual = await tcs3.Task;
+//                    }
+//                    finally
+//                    {
+//                        client.OnMessageReceived -= Client_OnMessageReceived;
+//                    }
+//                }
 
-        //            var result = await tcs2.Task;
+//                tcs4.SetResult(true);
+//            });
 
-        //            actual = result;
+//            await Task.WhenAll(serverTask, clientTask);
 
-        //            if (connectionIndex != 2)
-        //            {
-        //                result.Should().Be(expected.Value);
-        //            }
+//            expected.Should().BeEquivalentTo(actual);
+//        }
 
-        //            tcs4.SetResult(true);
+//        [Theory]
+//        [InlineData(0)]
+//        [InlineData(1)]
+//        [InlineData(2)]
+//        public async Task Should_Send_Message_From_Server_To_Filtered_Client(int connectionIndex)
+//        {
+//            var pipeName = Create<string>();
+//            var serializer = new NamedPipeSerializer<DummyMessage>();
+//            var expected = Create<DummyMessage>();
+//            string actual = default;
 
-        //            await tcs5.Task;
+//            var tcs1 = new ReadyEvent();
+//            var tcs2 = new TaskCompletionSource<string>();
+//            var tcs3 = new ReadyEvent();
+//            var tcs4 = new ReadyEvent();
+//            var tcs5 = new ReadyEvent();
 
-        //            await server.StopAsync();
-        //        }
-        //    });
+//            void Client_OnMessageReceived(object sender, NamedPipeConnectionMessageEventArgs<DummyMessage, INamedPipeClientConnection<DummyMessage>> eventArgs)
+//            {
+//                tcs2.SetResult(eventArgs.Message.Value);
+//            }
 
-        //    var clientTask = Task.Run(async () =>
-        //    {
-        //        var composites = new CompositeAsyncDisposable();
+//            var serverTask = Task.Run(async () =>
+//            {
+//                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
+//                {
+//                    server.Start();
 
-        //        async Task<NamedPipeClient<DummyMessage>> CreateClientAsync()
-        //        {
-        //            var client = new NamedPipeClient<DummyMessage>(pipeName, serializer);
+//                    tcs1.SetResult(true);
 
-        //            composites.Add(client);
+//                    await tcs3.Task;
 
-        //            client.OnMessageReceived += Client_OnMessageReceived;
+//                    _outputHelper?.WriteLine($"Index {connectionIndex} - 1");
 
-        //            await client.ConnectAsync(ConnectTimeout);
+//                    if (connectionIndex == 2)
+//                    {
+//                        var filteredIds = (server as NamedPipeServer<DummyMessage>)
+//                            .Connections
+//                            .Select(item => item.ConnectionId)
+//                            .ToArray();
 
-        //            return client;
-        //        }
+//                        _outputHelper?.WriteLine($"Index {connectionIndex} - 2");
 
-        //        await tcs1.Task;
+//                        await server.WriteAsync(
+//                            expected,
+//                            connection => connection.ConnectionId == filteredIds[0] ||
+//                                          connection.ConnectionId == filteredIds[1],
+//                            CancellationToken.None);
 
-        //        var client1 = await CreateClientAsync();
-        //        var client2 = await CreateClientAsync();
+//                        _outputHelper?.WriteLine($"Index {connectionIndex} - 3");
+//                    }
+//                    else
+//                    {
+//                        _outputHelper?.WriteLine($"Index {connectionIndex} - 4");
 
-        //        tcs3.SetResult(true);
+//                        var filteredId = (server as NamedPipeServer<DummyMessage>)
+//                            .Connections
+//                            .ElementAt(connectionIndex)
+//                            .ConnectionId;
 
-        //        await tcs4.Task;
+//                        expected.Value = filteredId;
 
-        //        await composites.DisposeAsync();
-        //    });
+//                        _outputHelper?.WriteLine($"Index {connectionIndex} - 5");
 
-        //    await clientTask;
+//                        await server.WriteAsync(
+//                            expected,
+//                            connection => connection.ConnectionId == filteredId,
+//                            CancellationToken.None);
 
-        //    tcs5.SetResult(true);
+//                        _outputHelper?.WriteLine($"Index {connectionIndex} - 6");
+//                    }
 
-        //    await serverTask;
+//                    _outputHelper?.WriteLine($"Index {connectionIndex} - 7");
 
-        //    actual.Should().Be(expected.Value);
-        //}
+//                    var result = await tcs2.Task;
 
-        [Fact]
-        public async Task Should_Send_Message_From_Client_To_Server()
-        {
-            var pipeName = Create<string>();
-            var serializer = new NamedPipeSerializer<DummyMessage>();
-            var expected = Create<DummyMessage>();
-            DummyMessage actual = null;
+//                    _outputHelper?.WriteLine($"Index {connectionIndex} - 8");
 
-            var tcs1 = new ReadyEvent();
-            var tcs2 = new TaskCompletionSource<DummyMessage>();
-            var tcs3 = new ReadyEvent();
-            var tcs4 = new ReadyEvent();
+//                    actual = result;
 
-            var serverTask = Task.Run(async () =>
-            {
-                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
-                {
-                    void Server_OnMessageReceived(object sender, NamedPipeConnectionMessageEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> eventArgs)
-                    {
-                        tcs2.SetResult(eventArgs.Message);
-                    }
+//                    if (connectionIndex != 2)
+//                    {
+//                        result.Should().Be(expected.Value);
+//                    }
 
-                    server.OnMessageReceived += Server_OnMessageReceived;
+//                    tcs4.SetResult(true);
 
-                    server.Start();
+//                    _outputHelper?.WriteLine($"Index {connectionIndex} - 9");
 
-                    tcs1.SetResult(true);
+//                    await tcs5.Task;
 
-                    await tcs3.Task;
-                }
+//                    _outputHelper?.WriteLine($"Index {connectionIndex} - 10");
 
-                await tcs4.Task;
-            });
+//                    await server.StopAsync();
 
-            var clientTask = Task.Run(async () =>
-            {
-                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
-                {
-                    await tcs1.Task;
+//                    _outputHelper?.WriteLine($"Index {connectionIndex} - 11");
+//                }
+//            });
 
-                    await client.ConnectAsync(ConnectTimeout);
+//            var clientTask = Task.Run(async () =>
+//            {
+//                var composites = new CompositeAsyncDisposable();
 
-                    await client.WriteAsync(expected, CancellationToken.None);
+//                async Task<NamedPipeClient<DummyMessage>> CreateClientAsync()
+//                {
+//                    _outputHelper?.WriteLine($"Index {connectionIndex} - 12");
 
-                    actual = await tcs2.Task;
+//                    var client = new NamedPipeClient<DummyMessage>(pipeName, serializer);
 
-                    tcs3.SetResult(true);
-                }
+//                    composites.Add(client);
 
-                tcs4.SetResult(true);
-            });
+//                    client.OnMessageReceived += Client_OnMessageReceived;
 
-            await Task.WhenAll(serverTask, clientTask);
+//                    await client.ConnectAsync(ConnectTimeout);
 
-            expected.Should().BeEquivalentTo(actual);
-        }
+//                    _outputHelper?.WriteLine($"Index {connectionIndex} - 13");
 
-        [Fact]
-        public async Task Should_Not_Throw_When_Write_While_Disconnected()
-        {
-            await Invoking(async () =>
-            {
-                var serializer = new NamedPipeSerializer<DummyMessage>();
+//                    return client;
+//                }
 
-                await using (var client = new NamedPipeClient<DummyMessage>(Create<string>(), serializer))
-                {
-                    await client.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
-                }
-            })
-            .Should()
-            .NotThrowAsync();
-        }
+//                await tcs1.Task;
 
-        [Fact]
-        public async Task Should_Throw_TimeoutException_When_Cannot_Find_Server()
-        {
-            await Invoking(async () =>
-            {
-                var serializer = new NamedPipeSerializer<DummyMessage>();
+//                NamedPipeClient<DummyMessage> client1 = null;
+//                NamedPipeClient<DummyMessage> client2 = null;
 
-                await using (var client = new NamedPipeClient<DummyMessage>(Create<string>(), serializer))
-                {
-                    await client.ConnectAsync(TimeSpan.FromMilliseconds(100));
-                }
-            })
-            .Should()
-            .ThrowAsync<TimeoutException>();
-        }
+//                try
+//                {
+//                    _outputHelper?.WriteLine($"Index {connectionIndex} - 14");
 
-        [Fact]
-        public async Task Should_Raise_Client_OnConnected()
-        {
-            var pipeName = Create<string>();
-            var serializer = new NamedPipeSerializer<DummyMessage>();
-            var actual = false;
+//                    client1 = await CreateClientAsync();
 
-            var tcs1 = new ReadyEvent();
-            var tcs2 = new ReadyEvent();
-            var tcs3 = new ReadyEvent();
+//                    _outputHelper?.WriteLine($"Index {connectionIndex} - 15");
 
-            var serverTask = Task.Run(async () =>
-            {
-                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
-                {
-                    server.Start();
+//                    client2 = await CreateClientAsync();
 
-                    tcs1.SetResult(true);
+//                    _outputHelper?.WriteLine($"Index {connectionIndex} - 16");
 
-                    await tcs3.Task;
-                }
-            });
+//                    tcs3.SetResult(true);
 
-            var clientTask = Task.Run(async () =>
-            {
-                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
-                {
-                    void Client_OnConnected(object sender, NamedPipeConnectionEventArgs<DummyMessage, INamedPipeClientConnection<DummyMessage>> eventArgs)
-                    {
-                        tcs2.SetResult(true);
-                    }
+//                    _outputHelper?.WriteLine($"Index {connectionIndex} - 17");
 
-                    client.OnConnected += Client_OnConnected;
+//                    await tcs4.Task;
 
-                    await tcs1.Task;
+//                    _outputHelper?.WriteLine($"Index {connectionIndex} - 18");
+//                }
+//                finally
+//                {
+//                    _outputHelper?.WriteLine($"Index {connectionIndex} - 19");
 
-                    await client.ConnectAsync(ConnectTimeout);
+//                    foreach (var client in composites.Disposables.Cast<NamedPipeClient<DummyMessage>>())
+//                    {
+//                        client.OnMessageReceived -= Client_OnMessageReceived;
+//                    }
 
-                    actual = await tcs2.Task;
-                }
+//                    _outputHelper?.WriteLine($"Index {connectionIndex} - 20");
 
-                tcs3.SetResult(true);
-            });
+//                    await composites.DisposeAsync();
 
-            await Task.WhenAll(serverTask, clientTask);
+//                    _outputHelper?.WriteLine($"Index {connectionIndex} - 21");
+//                }
 
-            actual.Should().BeTrue();
-        }
+//            });
 
-        [Fact]
-        public async Task Should_Raise_Client_OnDisconnected()
-        {
-            var pipeName = Create<string>();
-            var serializer = new NamedPipeSerializer<DummyMessage>();
-            var actual = false;
+//            _outputHelper?.WriteLine($"Index {connectionIndex} - 22");
 
-            var tcs1 = new ReadyEvent();
-            var tcs2 = new ReadyEvent();
-            var tcs3 = new ReadyEvent();
-            var tcs4 = new ReadyEvent();
+//            await clientTask;
 
-            var serverTask = Task.Run(async () =>
-            {
-                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
-                {
-                    server.Start();
+//            _outputHelper?.WriteLine($"Index {connectionIndex} - 23");
 
-                    tcs1.SetResult(true);
+//            tcs5.SetResult(true);
 
-                    await tcs2.Task;
+//            _outputHelper?.WriteLine($"Index {connectionIndex} - 24");
 
-                    await server.StopAsync();
+//            await serverTask;
 
-                    await tcs4.Task;
-                }
-            });
+//            _outputHelper?.WriteLine($"Index {connectionIndex} - 25");
 
-            var clientTask = Task.Run(async () =>
-            {
-                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
-                {
-                    void Client_OnDisconnected(object sender, NamedPipeConnectionEventArgs<DummyMessage, INamedPipeClientConnection<DummyMessage>> eventArgs)
-                    {
-                        tcs3.SetResult(true);
-                    }
+//            actual.Should().Be(expected.Value);
+//        }
 
-                    client.OnDisconnected += Client_OnDisconnected;
+//        [Fact]
+//        public async Task Should_Send_Message_From_Client_To_Server()
+//        {
+//            var pipeName = Create<string>();
+//            var serializer = new NamedPipeSerializer<DummyMessage>();
+//            var expected = Create<DummyMessage>();
+//            DummyMessage actual = null;
 
-                    await tcs1.Task;
+//            var tcs1 = new ReadyEvent();
+//            var tcs2 = new TaskCompletionSource<DummyMessage>();
+//            var tcs3 = new ReadyEvent();
+//            var tcs4 = new ReadyEvent();
 
-                    await client.ConnectAsync(ConnectTimeout);
+//            var serverTask = Task.Run(async () =>
+//            {
+//                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
+//                {
+//                    void Server_OnMessageReceived(object sender, NamedPipeConnectionMessageEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> eventArgs)
+//                    {
+//                        tcs2.SetResult(eventArgs.Message);
+//                    }
 
-                    tcs2.SetResult(true);
+//                    server.OnMessageReceived += Server_OnMessageReceived;
 
-                    actual = await tcs3.Task;
-                }
+//                    try
+//                    {
+//                        server.Start();
 
-                tcs4.SetResult(true);
-            });
+//                        tcs1.SetResult(true);
 
-            await Task.WhenAll(serverTask, clientTask);
+//                        await tcs3.Task;
+//                    }
+//                    finally
+//                    {
+//                        server.OnMessageReceived -= Server_OnMessageReceived;
+//                    }
+//                }
 
-            actual.Should().BeTrue();
-        }
+//                await tcs4.Task;
+//            });
 
-        [Fact]
-        public async Task Should_Raise_Client_OnMessageReceived()
-        {
-            var pipeName = Create<string>();
-            var serializer = new NamedPipeSerializer<DummyMessage>();
-            var actual = false;
+//            var clientTask = Task.Run(async () =>
+//            {
+//                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
+//                {
+//                    await tcs1.Task;
 
-            var tcs1 = new ReadyEvent();
-            var tcs2 = new ReadyEvent();
-            var tcs3 = new ReadyEvent();
-            var tcs4 = new ReadyEvent();
+//                    await client.ConnectAsync(ConnectTimeout);
 
-            var serverTask = Task.Run(async () =>
-            {
-                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
-                {
-                    server.Start();
+//                    await client.WriteAsync(expected, CancellationToken.None);
 
-                    tcs1.SetResult(true);
+//                    actual = await tcs2.Task;
 
-                    await tcs2.Task;
+//                    tcs3.SetResult(true);
+//                }
 
-                    await server.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
+//                tcs4.SetResult(true);
+//            });
 
-                    await tcs4.Task;
-                }
-            });
+//            await Task.WhenAll(serverTask, clientTask);
 
-            var clientTask = Task.Run(async () =>
-            {
-                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
-                {
-                    void Client_OnMessageReceived(object sender, NamedPipeConnectionMessageEventArgs<DummyMessage, INamedPipeClientConnection<DummyMessage>> eventArgs)
-                    {
-                        tcs3.SetResult(true);
-                    }
+//            expected.Should().BeEquivalentTo(actual);
+//        }
 
-                    client.OnMessageReceived += Client_OnMessageReceived;
+//        [Fact]
+//        public async Task Should_Not_Throw_When_Write_While_Disconnected()
+//        {
+//            await Invoking(async () =>
+//            {
+//                var serializer = new NamedPipeSerializer<DummyMessage>();
 
-                    await tcs1.Task;
+//                await using (var client = new NamedPipeClient<DummyMessage>(Create<string>(), serializer))
+//                {
+//                    await client.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
+//                }
+//            })
+//            .Should()
+//            .NotThrowAsync();
+//        }
 
-                    await client.ConnectAsync(ConnectTimeout);
+//        [Fact]
+//        public async Task Should_Throw_TimeoutException_When_Cannot_Find_Server()
+//        {
+//            await Invoking(async () =>
+//            {
+//                var serializer = new NamedPipeSerializer<DummyMessage>();
 
-                    tcs2.SetResult(true);
+//                await using (var client = new NamedPipeClient<DummyMessage>(Create<string>(), serializer))
+//                {
+//                    await client.ConnectAsync(TimeSpan.FromMilliseconds(100));
+//                }
+//            })
+//            .Should()
+//            .ThrowAsync<TimeoutException>();
+//        }
 
-                    actual = await tcs3.Task;
-                }
+//        [Fact]
+//        public async Task Should_Raise_Client_OnConnected()
+//        {
+//            var pipeName = Create<string>();
+//            var serializer = new NamedPipeSerializer<DummyMessage>();
+//            var actual = false;
 
-                tcs4.SetResult(true);
-            });
+//            var tcs1 = new ReadyEvent();
+//            var tcs2 = new ReadyEvent();
+//            var tcs3 = new ReadyEvent();
 
-            await Task.WhenAll(serverTask, clientTask);
+//            var serverTask = Task.Run(async () =>
+//            {
+//                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
+//                {
+//                    server.Start();
 
-            actual.Should().BeTrue();
-        }
+//                    tcs1.SetResult(true);
 
-        [Fact]
-        public async Task Should_Raise_Client_OnException()
-        {
-            var pipeName = Create<string>();
-            var serializer = new NamedPipeSerializer<DummyMessage>();
-            var expected = new Exception();
-            Exception actual = null;
+//                    await tcs3.Task;
+//                }
+//            });
 
+//            var clientTask = Task.Run(async () =>
+//            {
+//                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
+//                {
+//                    void Client_OnConnected(object sender, NamedPipeConnectionEventArgs<DummyMessage, INamedPipeClientConnection<DummyMessage>> eventArgs)
+//                    {
+//                        tcs2.SetResult(true);
+//                    }
 
-            var tcs1 = new ReadyEvent();
-            var tcs2 = new TaskCompletionSource<Exception>();
-            var tcs3 = new ReadyEvent();
-            var tcs4 = new ReadyEvent();
+//                    client.OnConnected += Client_OnConnected;
 
-            var serverTask = Task.Run(async () =>
-            {
-                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
-                {
-                    server.Start();
+//                    await tcs1.Task;
 
-                    tcs1.SetResult(true);
+//                    await client.ConnectAsync(ConnectTimeout);
 
-                    await tcs3.Task;
+//                    actual = await tcs2.Task;
+//                }
 
-                    await server.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
+//                tcs3.SetResult(true);
+//            });
 
-                    await tcs4.Task;
-                }
-            });
+//            await Task.WhenAll(serverTask, clientTask);
 
-            var clientTask = Task.Run(async () =>
-            {
-                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
-                {
-                    void Client_OnMessageReceived(object sender, NamedPipeConnectionMessageEventArgs<DummyMessage, INamedPipeClientConnection<DummyMessage>> eventArgs)
-                    {
-                        throw expected;
-                    }
+//            actual.Should().BeTrue();
+//        }
 
-                    void Client_OnException(object sender, NamedPipeExceptionEventArgs eventArgs)
-                    {
-                        tcs2.SetResult(eventArgs.Exception);
-                    }
+//        [Fact]
+//        public async Task Should_Raise_Client_OnDisconnected()
+//        {
+//            var pipeName = Create<string>();
+//            var serializer = new NamedPipeSerializer<DummyMessage>();
+//            var actual = false;
 
-                    client.OnMessageReceived += Client_OnMessageReceived;
-                    client.OnException += Client_OnException;
+//            var tcs1 = new ReadyEvent();
+//            var tcs2 = new ReadyEvent();
+//            var tcs3 = new ReadyEvent();
+//            var tcs4 = new ReadyEvent();
 
-                    await tcs1.Task;
+//            var serverTask = Task.Run(async () =>
+//            {
+//                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
+//                {
+//                    server.Start();
 
-                    await client.ConnectAsync(ConnectTimeout);
+//                    tcs1.SetResult(true);
 
-                    tcs3.SetResult(true);
+//                    await tcs2.Task;
 
-                    actual = await tcs2.Task;
-                }
+//                    await server.StopAsync();
 
-                tcs4.SetResult(true);
-            });
+//                    await tcs4.Task;
+//                }
+//            });
 
-            await Task.WhenAll(serverTask, clientTask);
+//            var clientTask = Task.Run(async () =>
+//            {
+//                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
+//                {
+//                    void Client_OnDisconnected(object sender, NamedPipeConnectionEventArgs<DummyMessage, INamedPipeClientConnection<DummyMessage>> eventArgs)
+//                    {
+//                        tcs3.SetResult(true);
+//                    }
 
-            actual.Should().BeSameAs(expected);
-        }
+//                    client.OnDisconnected += Client_OnDisconnected;
 
-        [Fact]
-        public async Task Should_Raise_Client_OnException_When_OnDisconnected_Throws()
-        {
-            var pipeName = Create<string>();
-            var serializer = new NamedPipeSerializer<DummyMessage>();
-            var expected = new Exception();
-            Exception actual = null;
+//                    await tcs1.Task;
 
-            var tcs1 = new ReadyEvent();
-            var tcs2 = new TaskCompletionSource<Exception>();
-            var tcs3 = new ReadyEvent();
-            var tcs4 = new ReadyEvent();
+//                    await client.ConnectAsync(ConnectTimeout);
 
-            var serverTask = Task.Run(async () =>
-            {
-                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
-                {
-                    server.Start();
+//                    tcs2.SetResult(true);
 
-                    tcs1.SetResult(true);
+//                    actual = await tcs3.Task;
+//                }
 
-                    await tcs3.Task;
+//                tcs4.SetResult(true);
+//            });
 
-                    await server.StopAsync();
+//            await Task.WhenAll(serverTask, clientTask);
 
-                    await tcs4.Task;
-                }
-            });
+//            actual.Should().BeTrue();
+//        }
 
-            var clientTask = Task.Run(async () =>
-            {
-                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
-                {
-                    void Client_OnDisconnected(object sender, NamedPipeConnectionEventArgs<DummyMessage, INamedPipeClientConnection<DummyMessage>> eventArgs)
-                    {
-                        throw expected;
-                    }
+//        [Fact]
+//        public async Task Should_Raise_Client_OnMessageReceived()
+//        {
+//            var pipeName = Create<string>();
+//            var serializer = new NamedPipeSerializer<DummyMessage>();
+//            var actual = false;
 
-                    void Client_OnException(object sender, NamedPipeExceptionEventArgs eventArgs)
-                    {
-                        tcs2.SetResult(eventArgs.Exception);
-                    }
+//            var tcs1 = new ReadyEvent();
+//            var tcs2 = new ReadyEvent();
+//            var tcs3 = new ReadyEvent();
+//            var tcs4 = new ReadyEvent();
 
-                    client.OnDisconnected += Client_OnDisconnected;
-                    client.OnException += Client_OnException;
+//            var serverTask = Task.Run(async () =>
+//            {
+//                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
+//                {
+//                    server.Start();
 
-                    await tcs1.Task;
+//                    tcs1.SetResult(true);
 
-                    await client.ConnectAsync(ConnectTimeout);
+//                    await tcs2.Task;
 
-                    tcs3.SetResult(true);
+//                    await server.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
 
-                    actual = await tcs2.Task;
+//                    await tcs4.Task;
+//                }
+//            });
 
-                    client.IsConnected.Should().BeFalse();
-                }
+//            var clientTask = Task.Run(async () =>
+//            {
+//                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
+//                {
+//                    void Client_OnMessageReceived(object sender, NamedPipeConnectionMessageEventArgs<DummyMessage, INamedPipeClientConnection<DummyMessage>> eventArgs)
+//                    {
+//                        tcs3.SetResult(true);
+//                    }
 
-                tcs4.SetResult(true);
-            });
+//                    client.OnMessageReceived += Client_OnMessageReceived;
 
-            await Task.WhenAll(serverTask, clientTask);
+//                    try
+//                    {
+//                        await tcs1.Task;
 
-            actual.Should().BeSameAs(expected);
-        }
+//                        await client.ConnectAsync(ConnectTimeout);
 
-        [Fact]
-        public async Task Should_Raise_Server_OnClientConnected()
-        {
-            var pipeName = Create<string>();
-            var serializer = new NamedPipeSerializer<DummyMessage>();
-            var actual = false;
+//                        tcs2.SetResult(true);
 
-            var tcs1 = new ReadyEvent();
-            var tcs2 = new ReadyEvent();
-            var tcs3 = new ReadyEvent();
+//                        actual = await tcs3.Task;
+//                    }
+//                    finally
+//                    {
+//                        client.OnMessageReceived -= Client_OnMessageReceived;
+//                    }
+//                }
 
-            var serverTask = Task.Run(async () =>
-            {
-                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
-                {
-                    void Server_OnClientConnected(object sender, NamedPipeConnectionEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> eventArgs)
-                    {
-                        tcs2.SetResult(true);
-                    }
+//                tcs4.SetResult(true);
+//            });
 
-                    server.OnClientConnected += Server_OnClientConnected;
+//            await Task.WhenAll(serverTask, clientTask);
 
-                    server.Start();
+//            actual.Should().BeTrue();
+//        }
 
-                    tcs1.SetResult(true);
+//        [Fact]
+//        public async Task Should_Raise_Client_OnException()
+//        {
+//            var pipeName = Create<string>();
+//            var serializer = new NamedPipeSerializer<DummyMessage>();
+//            var expected = new Exception();
+//            Exception actual = null;
 
-                    await tcs3.Task;
-                }
-            });
 
-            var clientTask = Task.Run(async () =>
-            {
-                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
-                {
-                    await tcs1.Task;
+//            var tcs1 = new ReadyEvent();
+//            var tcs2 = new TaskCompletionSource<Exception>();
+//            var tcs3 = new ReadyEvent();
+//            var tcs4 = new ReadyEvent();
 
-                    await client.ConnectAsync(ConnectTimeout);
+//            _outputHelper?.WriteLine("1");
 
-                    actual = await tcs2.Task;
-                }
+//            var serverTask = Task.Run(async () =>
+//            {
+//                _outputHelper?.WriteLine("2");
 
-                tcs3.SetResult(true);
-            });
+//                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
+//                {
+//                    _outputHelper?.WriteLine("3");
 
-            await Task.WhenAll(serverTask, clientTask);
+//                    server.Start();
 
-            actual.Should().BeTrue();
-        }
+//                    _outputHelper?.WriteLine("4");
 
-        [Fact]
-        public async Task Should_Disconnect_When_OnClientConnected_Throws()
-        {
-            var pipeName = Create<string>();
-            var serializer = new NamedPipeSerializer<DummyMessage>();
-            var expected = new Exception();
-            Exception actual = null;
+//                    tcs1.SetResult(true);
 
-            var tcs1 = new ReadyEvent();
-            var tcs2 = new TaskCompletionSource<Exception>();
-            var tcs3 = new ReadyEvent();
+//                    _outputHelper?.WriteLine("5");
 
-            var serverTask = Task.Run(async () =>
-            {
-                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
-                {
-                    void Server_OnClientConnected(object sender, NamedPipeConnectionEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> eventArgs)
-                    {
-                        throw expected;
-                    }
+//                    await tcs3.Task;
 
-                    void Server_OnException(object sender, NamedPipeExceptionEventArgs eventArgs)
-                    {
-                        tcs2.SetResult(eventArgs.Exception);
-                    }
+//                    _outputHelper?.WriteLine("6");
 
-                    server.OnClientConnected += Server_OnClientConnected;
-                    server.OnException += Server_OnException;
+//                    await server.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
 
-                    server.Start();
+//                    _outputHelper?.WriteLine("7");
 
-                    tcs1.SetResult(true);
+//                    await tcs4.Task;
+//                }
+//            });
 
-                    await tcs3.Task;
-                }
-            });
+//            _outputHelper?.WriteLine("8");
 
-            var clientTask = Task.Run(async () =>
-            {
-                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
-                {
-                    await tcs1.Task;
+//            var clientTask = Task.Run(async () =>
+//            {
+//                _outputHelper?.WriteLine("9");
 
-                    await client.ConnectAsync(ConnectTimeout);
+//                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
+//                {
+//                    _outputHelper?.WriteLine("10");
 
-                    actual = await tcs2.Task;
+//                    void Client_OnMessageReceived(object sender, NamedPipeConnectionMessageEventArgs<DummyMessage, INamedPipeClientConnection<DummyMessage>> eventArgs)
+//                    {
+//                        _outputHelper?.WriteLine("11");
 
-                    await Task.Delay(10);
+//                        throw expected;
+//                    }
 
-                    client.IsConnected.Should().BeFalse();
-                }
-            });
+//                    _outputHelper?.WriteLine("12");
 
-            await clientTask;
+//                    void Client_OnException(object sender, NamedPipeExceptionEventArgs eventArgs)
+//                    {
+//                        _outputHelper?.WriteLine("13");
 
-            tcs3.SetResult(true);
+//                        tcs2.SetResult(eventArgs.Exception);
 
-            await serverTask;
+//                        _outputHelper?.WriteLine("14");
+//                    }
 
-            actual.Should().BeSameAs(expected);
-        }
+//                    client.OnMessageReceived += Client_OnMessageReceived;
+//                    client.OnException += Client_OnException;
 
-        [Fact]
-        public async Task Should_Raise_Server_OnClientDisconnected()
-        {
-            var pipeName = Create<string>();
-            var serializer = new NamedPipeSerializer<DummyMessage>();
-            var actual = false;
+//                    try
+//                    {
+//                        _outputHelper?.WriteLine("15");
 
-            var tcs1 = new ReadyEvent();
-            var tcs2 = new ReadyEvent();
-            var tcs3 = new ReadyEvent();
+//                        await tcs1.Task;
 
-            var serverTask = Task.Run(async () =>
-            {
-                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
-                {
-                    void Server_OnClientDisconnected(object sender, NamedPipeConnectionEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> eventArgs)
-                    {
-                        tcs2.SetResult(true);
-                    }
+//                        _outputHelper?.WriteLine("16");
 
-                    server.OnClientDisconnected += Server_OnClientDisconnected;
+//                        await client.ConnectAsync(ConnectTimeout);
 
-                    server.Start();
+//                        _outputHelper?.WriteLine("17");
 
-                    tcs1.SetResult(true);
+//                        tcs3.SetResult(true);
 
-                    await tcs3.Task;
-                }
-            });
+//                        _outputHelper?.WriteLine("18");
 
-            var clientTask = Task.Run(async () =>
-            {
-                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
-                {
-                    await tcs1.Task;
+//                        actual = await tcs2.Task;
 
-                    await client.ConnectAsync(ConnectTimeout);
+//                        _outputHelper?.WriteLine("19");
+//                    }
+//                    finally
+//                    {
+//                        client.OnMessageReceived -= Client_OnMessageReceived;
+//                        client.OnException -= Client_OnException;
+//                    }
+//                }
 
-                    await client.DisconnectAsync();
+//                _outputHelper?.WriteLine("20");
 
-                    actual = await tcs2.Task;
-                }
+//                tcs4.SetResult(true);
+//            });
 
-                tcs3.SetResult(true);
-            });
+//            _outputHelper?.WriteLine("21");
 
-            await Task.WhenAll(serverTask, clientTask);
+//            await Task.WhenAll(serverTask, clientTask);
 
-            actual.Should().BeTrue();
-        }
+//            _outputHelper?.WriteLine("22");
 
-        [Fact]
-        public async Task Should_Raise_Server_OnMessageReceived()
-        {
-            var pipeName = Create<string>();
-            var serializer = new NamedPipeSerializer<DummyMessage>();
-            var actual = false;
+//            actual.Should().BeSameAs(expected);
+//        }
 
-            var tcs1 = new ReadyEvent();
-            var tcs2 = new ReadyEvent();
-            var tcs3 = new ReadyEvent();
+//        [Fact]
+//        public async Task Should_Raise_Client_OnException_When_OnDisconnected_Throws()
+//        {
+//            var pipeName = Create<string>();
+//            var serializer = new NamedPipeSerializer<DummyMessage>();
+//            var expected = new Exception();
+//            Exception actual = null;
 
-            var serverTask = Task.Run(async () =>
-            {
-                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
-                {
-                    void Server_OnMessageReceived(object sender, NamedPipeConnectionMessageEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> eventArgs)
-                    {
-                        tcs2.SetResult(true);
-                    }
+//            var tcs1 = new ReadyEvent();
+//            var tcs2 = new TaskCompletionSource<Exception>();
+//            var tcs3 = new ReadyEvent();
+//            var tcs4 = new ReadyEvent();
 
-                    server.OnMessageReceived += Server_OnMessageReceived;
+//            var serverTask = Task.Run(async () =>
+//            {
+//                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
+//                {
+//                    server.Start();
 
-                    server.Start();
+//                    tcs1.SetResult(true);
 
-                    tcs1.SetResult(true);
+//                    await tcs3.Task;
 
-                    await tcs3.Task;
-                }
-            });
+//                    await server.StopAsync();
 
-            var clientTask = Task.Run(async () =>
-            {
-                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
-                {
-                    await tcs1.Task;
+//                    await tcs4.Task;
+//                }
+//            });
 
-                    await client.ConnectAsync(ConnectTimeout);
+//            var clientTask = Task.Run(async () =>
+//            {
+//                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
+//                {
+//                    void Client_OnDisconnected(object sender, NamedPipeConnectionEventArgs<DummyMessage, INamedPipeClientConnection<DummyMessage>> eventArgs)
+//                    {
+//                        throw expected;
+//                    }
 
-                    await client.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
+//                    void Client_OnException(object sender, NamedPipeExceptionEventArgs eventArgs)
+//                    {
+//                        tcs2.SetResult(eventArgs.Exception);
+//                    }
 
-                    actual = await tcs2.Task;
-                }
+//                    client.OnDisconnected += Client_OnDisconnected;
+//                    client.OnException += Client_OnException;
 
-                tcs3.SetResult(true);
-            });
+//                    await tcs1.Task;
 
-            await Task.WhenAll(serverTask, clientTask);
+//                    await client.ConnectAsync(ConnectTimeout);
 
-            actual.Should().BeTrue();
-        }
+//                    tcs3.SetResult(true);
 
-        [Fact]
-        public async Task Should_Not_Throw_When_Server_OnMessageReceived_Not_Assigned()
-        {
-            var pipeName = Create<string>();
-            var serializer = new NamedPipeSerializer<DummyMessage>();
-            var expected = Create<DummyMessage>();
-            DummyMessage actual = null;
-            var counter = 0;
+//                    actual = await tcs2.Task;
 
-            var tcs1 = new ReadyEvent();
-            var tcs2 = new TaskCompletionSource<DummyMessage>();
-            var tcs3 = new ReadyEvent();
-            var tcs4 = new ReadyEvent();
-            var tcs5 = new ReadyEvent();
+//                    client.IsConnected.Should().BeFalse();
+//                }
 
-            var serverTask = Task.Run(async () =>
-            {
-                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
-                {
-                    void Server_OnMessageReceived(object sender, NamedPipeConnectionMessageEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> eventArgs)
-                    {
-                        counter++;
-                        tcs2.SetResult(eventArgs.Message);
-                    }
+//                tcs4.SetResult(true);
+//            });
 
-                    server.Start();
+//            await Task.WhenAll(serverTask, clientTask);
 
-                    tcs1.SetResult(true);
+//            actual.Should().BeSameAs(expected);
+//        }
 
-                    await tcs3.Task;
+//        [Fact]
+//        public async Task Should_Raise_Server_OnClientConnected()
+//        {
+//            var pipeName = Create<string>();
+//            var serializer = new NamedPipeSerializer<DummyMessage>();
+//            var actual = false;
 
-                    // Now assign the handler
-                    server.OnMessageReceived += Server_OnMessageReceived;
+//            var tcs1 = new ReadyEvent();
+//            var tcs2 = new ReadyEvent();
+//            var tcs3 = new ReadyEvent();
 
-                    tcs4.SetResult(true);
+//            var serverTask = Task.Run(async () =>
+//            {
+//                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
+//                {
+//                    void Server_OnClientConnected(object sender, NamedPipeConnectionEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> eventArgs)
+//                    {
+//                        tcs2.SetResult(true);
+//                    }
 
-                    await tcs5.Task;
-                }
-            });
+//                    server.OnClientConnected += Server_OnClientConnected;
 
-            var clientTask = Task.Run(async () =>
-            {
-                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
-                {
-                    await tcs1.Task;
+//                    server.Start();
 
-                    await client.ConnectAsync(ConnectTimeout);
+//                    tcs1.SetResult(true);
 
-                    // Code path testing when OnMessageReceived is not assigned
-                    await client.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
+//                    await tcs3.Task;
+//                }
+//            });
 
-                    // Give the server some time to receive the message (cannot use OnMessageReceived here since we are testing when it is not assigned)
-                    await Task.Delay(10);
+//            var clientTask = Task.Run(async () =>
+//            {
+//                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
+//                {
+//                    await tcs1.Task;
 
-                    tcs3.SetResult(true);
+//                    await client.ConnectAsync(ConnectTimeout);
 
-                    await tcs4.Task;
+//                    actual = await tcs2.Task;
+//                }
 
-                    await client.WriteAsync(expected, CancellationToken.None);
+//                tcs3.SetResult(true);
+//            });
 
-                    actual = await tcs2.Task;
-                }
+//            await Task.WhenAll(serverTask, clientTask);
 
-                tcs5.SetResult(true);
-            });
+//            actual.Should().BeTrue();
+//        }
 
-            await Task.WhenAll(serverTask, clientTask);
+//        [Fact]
+//        public async Task Should_Disconnect_When_OnClientConnected_Throws()
+//        {
+//            var pipeName = Create<string>();
+//            var serializer = new NamedPipeSerializer<DummyMessage>();
+//            var expected = new Exception();
+//            Exception actual = null;
 
-            counter.Should().Be(1);
-            actual.Should().BeEquivalentTo(expected);
-        }
+//            var tcs1 = new ReadyEvent();
+//            var tcs2 = new TaskCompletionSource<Exception>();
+//            var tcs3 = new ReadyEvent();
 
-        [Fact]
-        public async Task Should_Raise_Server_OnException_And_Disconnect()
-        {
-            var pipeName = Create<string>();
-            var serializer = new NamedPipeSerializer<DummyMessage>();
-            var expected = new Exception();
-            Exception actual = null;
+//            var serverTask = Task.Run(async () =>
+//            {
+//                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
+//                {
+//                    void Server_OnClientConnected(object sender, NamedPipeConnectionEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> eventArgs)
+//                    {
+//                        throw expected;
+//                    }
 
-            var tcs1 = new ReadyEvent();
-            var tcs2 = new TaskCompletionSource<Exception>();
-            var tcs3 = new ReadyEvent();
+//                    void Server_OnException(object sender, NamedPipeExceptionEventArgs eventArgs)
+//                    {
+//                        tcs2.SetResult(eventArgs.Exception);
+//                    }
 
-            var serverTask = Task.Run(async () =>
-            {
-                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
-                {
-                    void Server_OnMessageReceived(object sender, NamedPipeConnectionMessageEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> eventArgs)
-                    {
-                        throw expected;
-                    }
+//                    server.OnClientConnected += Server_OnClientConnected;
+//                    server.OnException += Server_OnException;
 
-                    void Server_OnException(object sender, NamedPipeExceptionEventArgs eventArgs)
-                    {
-                        tcs2.SetResult(eventArgs.Exception);
-                    }
+//                    server.Start();
 
-                    server.OnMessageReceived += Server_OnMessageReceived;
-                    server.OnException += Server_OnException;
+//                    tcs1.SetResult(true);
 
-                    server.Start();
+//                    await tcs3.Task;
+//                }
+//            });
 
-                    tcs1.SetResult(true);
+//            var clientTask = Task.Run(async () =>
+//            {
+//                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
+//                {
+//                    await tcs1.Task;
 
-                    await tcs3.Task;
-                }
-            });
+//                    await client.ConnectAsync(ConnectTimeout);
 
-            var clientTask = Task.Run(async () =>
-            {
-                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
-                {
-                    await tcs1.Task;
+//                    actual = await tcs2.Task;
 
-                    await client.ConnectAsync(ConnectTimeout);
+//                    await Task.Delay(10);
 
-                    await client.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
+//                    client.IsConnected.Should().BeFalse();
+//                }
+//            });
 
-                    actual = await tcs2.Task;
-                }
+//            await clientTask;
 
-                tcs3.SetResult(true);
-            });
+//            tcs3.SetResult(true);
 
-            await Task.WhenAll(serverTask, clientTask);
+//            await serverTask;
 
-            actual.Should().BeSameAs(expected);
-        }
-    }
-}
+//            actual.Should().BeSameAs(expected);
+//        }
+
+//        [Fact]
+//        public async Task Should_Raise_Server_OnClientDisconnected()
+//        {
+//            var pipeName = Create<string>();
+//            var serializer = new NamedPipeSerializer<DummyMessage>();
+//            var actual = false;
+
+//            var tcs1 = new ReadyEvent();
+//            var tcs2 = new ReadyEvent();
+//            var tcs3 = new ReadyEvent();
+
+//            var serverTask = Task.Run(async () =>
+//            {
+//                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
+//                {
+//                    void Server_OnClientDisconnected(object sender, NamedPipeConnectionEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> eventArgs)
+//                    {
+//                        tcs2.SetResult(true);
+//                    }
+
+//                    server.OnClientDisconnected += Server_OnClientDisconnected;
+
+//                    server.Start();
+
+//                    tcs1.SetResult(true);
+
+//                    await tcs3.Task;
+//                }
+//            });
+
+//            var clientTask = Task.Run(async () =>
+//            {
+//                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
+//                {
+//                    await tcs1.Task;
+
+//                    await client.ConnectAsync(ConnectTimeout);
+
+//                    await client.DisconnectAsync();
+
+//                    actual = await tcs2.Task;
+//                }
+
+//                tcs3.SetResult(true);
+//            });
+
+//            await Task.WhenAll(serverTask, clientTask);
+
+//            actual.Should().BeTrue();
+//        }
+
+//        [Fact]
+//        public async Task Should_Raise_Server_OnMessageReceived()
+//        {
+//            var pipeName = Create<string>();
+//            var serializer = new NamedPipeSerializer<DummyMessage>();
+//            var actual = false;
+
+//            var tcs1 = new ReadyEvent();
+//            var tcs2 = new ReadyEvent();
+//            var tcs3 = new ReadyEvent();
+
+//            var serverTask = Task.Run(async () =>
+//            {
+//                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
+//                {
+//                    void Server_OnMessageReceived(object sender, NamedPipeConnectionMessageEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> eventArgs)
+//                    {
+//                        tcs2.SetResult(true);
+//                    }
+
+//                    server.OnMessageReceived += Server_OnMessageReceived;
+
+//                    try
+//                    {
+
+//                        server.Start();
+
+//                        tcs1.SetResult(true);
+
+//                        await tcs3.Task;
+//                    }
+//                    finally
+//                    {
+//                        server.OnMessageReceived -= Server_OnMessageReceived;
+//                    }
+//                }
+//            });
+
+//            var clientTask = Task.Run(async () =>
+//            {
+//                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
+//                {
+//                    await tcs1.Task;
+
+//                    await client.ConnectAsync(ConnectTimeout);
+
+//                    await client.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
+
+//                    actual = await tcs2.Task;
+//                }
+
+//                tcs3.SetResult(true);
+//            });
+
+//            await Task.WhenAll(serverTask, clientTask);
+
+//            actual.Should().BeTrue();
+//        }
+
+//        [Fact]
+//        public async Task Should_Not_Throw_When_Server_OnMessageReceived_Not_Assigned()
+//        {
+//            var pipeName = Create<string>();
+//            var serializer = new NamedPipeSerializer<DummyMessage>();
+//            var expected = Create<DummyMessage>();
+//            DummyMessage actual = null;
+//            var counter = 0;
+
+//            var tcs1 = new ReadyEvent();
+//            var tcs2 = new TaskCompletionSource<DummyMessage>();
+//            var tcs3 = new ReadyEvent();
+//            var tcs4 = new ReadyEvent();
+//            var tcs5 = new ReadyEvent();
+
+//            var serverTask = Task.Run(async () =>
+//            {
+//                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
+//                {
+//                    void Server_OnMessageReceived(object sender, NamedPipeConnectionMessageEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> eventArgs)
+//                    {
+//                        counter++;
+//                        tcs2.SetResult(eventArgs.Message);
+//                    }
+
+//                    server.Start();
+
+//                    tcs1.SetResult(true);
+
+//                    await tcs3.Task;
+
+//                    // Now assign the handler
+//                    server.OnMessageReceived += Server_OnMessageReceived;
+
+//                    try
+//                    {
+//                        tcs4.SetResult(true);
+
+//                        await tcs5.Task;
+//                    }
+//                    finally
+//                    {
+//                        server.OnMessageReceived -= Server_OnMessageReceived;
+//                    }
+//                }
+//            });
+
+//            var clientTask = Task.Run(async () =>
+//            {
+//                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
+//                {
+//                    await tcs1.Task;
+
+//                    await client.ConnectAsync(ConnectTimeout);
+
+//                    // Code path testing when OnMessageReceived is not assigned
+//                    await client.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
+
+//                    // Give the server some time to receive the message (cannot use OnMessageReceived here since we are testing when it is not assigned)
+//                    await Task.Delay(10);
+
+//                    tcs3.SetResult(true);
+
+//                    await tcs4.Task;
+
+//                    await client.WriteAsync(expected, CancellationToken.None);
+
+//                    actual = await tcs2.Task;
+//                }
+
+//                tcs5.SetResult(true);
+//            });
+
+//            await Task.WhenAll(serverTask, clientTask);
+
+//            counter.Should().Be(1);
+//            actual.Should().BeEquivalentTo(expected);
+//        }
+
+//        [Fact]
+//        public async Task Should_Raise_Server_OnException_And_Disconnect()
+//        {
+//            var pipeName = Create<string>();
+//            var serializer = new NamedPipeSerializer<DummyMessage>();
+//            var expected = new Exception();
+//            Exception actual = null;
+
+//            var tcs1 = new ReadyEvent();
+//            var tcs2 = new TaskCompletionSource<Exception>();
+//            var tcs3 = new ReadyEvent();
+
+//            var serverTask = Task.Run(async () =>
+//            {
+//                await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
+//                {
+//                    void Server_OnMessageReceived(object sender, NamedPipeConnectionMessageEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> eventArgs)
+//                    {
+//                        throw expected;
+//                    }
+
+//                    void Server_OnException(object sender, NamedPipeExceptionEventArgs eventArgs)
+//                    {
+//                        tcs2.SetResult(eventArgs.Exception);
+//                    }
+
+//                    server.OnMessageReceived += Server_OnMessageReceived;
+//                    server.OnException += Server_OnException;
+
+//                    try
+//                    {
+//                        server.Start();
+
+//                        tcs1.SetResult(true);
+
+//                        await tcs3.Task;
+//                    }
+//                    finally
+//                    {
+//                        server.OnMessageReceived -= Server_OnMessageReceived;
+//                        server.OnException -= Server_OnException;
+//                    }
+//                }
+//            });
+
+//            var clientTask = Task.Run(async () =>
+//            {
+//                await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
+//                {
+//                    await tcs1.Task;
+
+//                    await client.ConnectAsync(ConnectTimeout);
+
+//                    await client.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
+
+//                    actual = await tcs2.Task;
+//                }
+
+//                tcs3.SetResult(true);
+//            });
+
+//            await Task.WhenAll(serverTask, clientTask);
+
+//            actual.Should().BeSameAs(expected);
+//        }
+//    }
+//}

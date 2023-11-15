@@ -10,7 +10,7 @@ namespace AllOverIt.Formatters.Objects
         private static readonly IObjectPropertySerializer DefaultSerializer = new ObjectPropertySerializer();
 
         // A filter is created for each request due to the serializer managing state.
-        private readonly IDictionary<Type, Func<IObjectPropertySerializer>> _filterRegistry = new Dictionary<Type, Func<IObjectPropertySerializer>>();
+        private readonly Dictionary<Type, Func<IObjectPropertySerializer>> _filterRegistry = [];
 
         /// <inheritdoc />
         public void Register<TType, TFilter>(ObjectPropertySerializerOptions serializerOptions = default)
@@ -65,7 +65,7 @@ namespace AllOverIt.Formatters.Objects
             return false;
         }
 
-        private static IObjectPropertySerializer CreateObjectPropertySerializer<TFilter>(ObjectPropertySerializerOptions serializerOptions)
+        private static ObjectPropertySerializer CreateObjectPropertySerializer<TFilter>(ObjectPropertySerializerOptions serializerOptions)
             where TFilter : ObjectPropertyFilter, new()
         {
             _ = serializerOptions.WhenNotNull(nameof(serializerOptions));
@@ -75,7 +75,7 @@ namespace AllOverIt.Formatters.Objects
             return new ObjectPropertySerializer(serializerOptions, filter);
         }
 
-        private static IObjectPropertySerializer CreateObjectPropertySerializer<TFilter>(Action<ObjectPropertySerializerOptions> serializerOptions)
+        private static ObjectPropertySerializer CreateObjectPropertySerializer<TFilter>(Action<ObjectPropertySerializerOptions> serializerOptions)
             where TFilter : ObjectPropertyFilter, new()
         {
             var options = new ObjectPropertySerializerOptions();

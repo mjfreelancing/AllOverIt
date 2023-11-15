@@ -8,8 +8,8 @@ namespace AllOverIt.Aws.Cdk.AppSync.Mapping
     /// <summary>A registry of AppSync datasource request and response mappings.</summary>
     public sealed class MappingTemplates
     {
-        private readonly IDictionary<string, string> _functionRequestMappings = new Dictionary<string, string>();
-        private readonly IDictionary<string, string> _functionResponseMappings = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> _functionRequestMappings = [];
+        private readonly Dictionary<string, string> _functionResponseMappings = [];
 
         /// <summary>Registers a request and response mapping against a specified key.</summary>
         /// <param name="mappingKey">The key to register the mappings against.</param>

@@ -2,7 +2,6 @@
 using Cdklabs.AwsCdkAppsyncUtils;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AllOverIt.Aws.Cdk.AppSync.Extensions
 {
@@ -27,7 +26,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
                 directives.Add(directive);
             }
 
-            return directives.Any()
+            return directives.Count != 0
                 ? [.. directives]
                 : null;
         }

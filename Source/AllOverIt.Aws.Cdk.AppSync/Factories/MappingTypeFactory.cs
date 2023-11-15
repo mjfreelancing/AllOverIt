@@ -9,8 +9,8 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
     /// <summary>A factory that creates an <see cref="IRequestResponseMapping"/> instance based on a registered type.</summary>
     public sealed class MappingTypeFactory
     {
-        private readonly IDictionary<SystemType, Func<IRequestResponseMapping>> _exactMappingRegistry = new Dictionary<SystemType, Func<IRequestResponseMapping>>();
-        private readonly IDictionary<SystemType, Func<SystemType, IRequestResponseMapping>> _inheritedMappingRegistry = new Dictionary<SystemType, Func<SystemType, IRequestResponseMapping>>();
+        private readonly Dictionary<SystemType, Func<IRequestResponseMapping>> _exactMappingRegistry = [];
+        private readonly Dictionary<SystemType, Func<SystemType, IRequestResponseMapping>> _inheritedMappingRegistry = [];
 
         /// <summary>Registers an exact mapping type (declared on a concrete <see cref="Attributes.DataSources.DataSourceAttribute"/> attribute)
         /// against a factory method to create an <see cref="IRequestResponseMapping"/> instance, which would typically be a <typeparamref name="TType"/>.</summary>

@@ -93,7 +93,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Converters
             };
         }
 
-        private object ReadArray(ref Utf8JsonReader reader, JsonSerializerOptions options)
+        private List<object> ReadArray(ref Utf8JsonReader reader, JsonSerializerOptions options)
         {
             var list = new List<object>();
 
@@ -196,7 +196,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Converters
         }
 
         [ExcludeFromCodeCoverage]
-        private static Exception CreateJsonSerializationException(JsonTokenType? tokenType = default)
+        private static JsonException CreateJsonSerializationException(JsonTokenType? tokenType = default)
         {
             var message = tokenType.HasValue
                 ? $"Unexpected token '{tokenType}' while {nameof(NestedDictionaryConverter)} was reading."

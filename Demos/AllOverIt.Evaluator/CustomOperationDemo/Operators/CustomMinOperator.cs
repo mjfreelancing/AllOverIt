@@ -13,7 +13,7 @@ namespace CustomOperationDemo.Operators
 
         private static Expression CreateExpression(Expression value1, Expression value2)
         {
-            var method = typeof(CustomMath).GetMethod("CustomMin", new[] { typeof(double), typeof(double) });
+            var method = typeof(CustomMath).GetMethod("CustomMin", [typeof(double), typeof(double)]);
             return Expression.Call(method!, value1, value2);
         }
     }

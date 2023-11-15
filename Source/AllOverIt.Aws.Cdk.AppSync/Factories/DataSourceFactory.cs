@@ -12,7 +12,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
 {
     internal sealed class DataSourceFactory
     {
-        private readonly IDictionary<string, BaseDataSource> _dataSourceCache = new Dictionary<string, BaseDataSource>();
+        private readonly Dictionary<string, BaseDataSource> _dataSourceCache = [];
 
         private readonly IGraphqlApi _graphQlApi;
         private readonly IReadOnlyDictionary<string, string> _endpointLookup;
@@ -60,7 +60,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
             return Regex.Replace(value, @"[^\w]", "", RegexOptions.None);
         }
 
-        private BaseDataSource CreateLambdaDataSource(string dataSourceId, string functionName, string description)
+        private LambdaDataSource CreateLambdaDataSource(string dataSourceId, string functionName, string description)
         {
             var stack = Stack.Of(_graphQlApi);
 
@@ -74,7 +74,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
             });
         }
 
-        private BaseDataSource CreateHttpDataSource(string dataSourceId, string datasourceName, EndpointSource endpointSource, string endpointKey, string description)
+        private HttpDataSource CreateHttpDataSource(string dataSourceId, string datasourceName, EndpointSource endpointSource, string endpointKey, string description)
         {
             var stack = Stack.Of(_graphQlApi);
 
@@ -88,7 +88,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
         }
 
         // Applicable to NoneDataSourceAttribute and SubscriptionDataSourceAttribute
-        private BaseDataSource CreateNoneDataSource(string dataSourceId, string dataSourceNamePrefix, string dataSourceName, string description)
+        private NoneDataSource CreateNoneDataSource(string dataSourceId, string dataSourceNamePrefix, string dataSourceName, string description)
         {
             var stack = Stack.Of(_graphQlApi);
 
@@ -105,13 +105,13 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
             return endpointSource switch
             {
                 EndpointSource.Explicit => endpointKey,
-                
+
                 EndpointSource.ImportValue => Fn.ImportValue(endpointKey),
-                
+
                 EndpointSource.EnvironmentVariable => SystemEnvironment.GetEnvironmentVariable(endpointKey)
                     ?? throw new KeyNotFoundException($"Environment variable key '{endpointKey}' not found."),
-                
-                EndpointSource.Lookup => _endpointLookup.TryGetValue(endpointKey, out var lookupValue) 
+
+                EndpointSource.Lookup => _endpointLookup.TryGetValue(endpointKey, out var lookupValue)
                     ? lookupValue
                     : throw new KeyNotFoundException($"Lookup key '{endpointKey}' not found."),
 

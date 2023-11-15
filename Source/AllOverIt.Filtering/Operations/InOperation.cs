@@ -16,7 +16,7 @@ namespace AllOverIt.Filtering.Operations
         {
         }
 
-        private static SystemExpression CreatePredicate(SystemExpression member, SystemExpression constant)
+        private static MethodCallExpression CreatePredicate(SystemExpression member, SystemExpression constant)
         {
             return SystemExpression.Call(constant, ContainsMethod, member);
         }

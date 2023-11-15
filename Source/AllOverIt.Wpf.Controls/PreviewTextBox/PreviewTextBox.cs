@@ -1,10 +1,10 @@
-﻿using System;
+﻿using AllOverIt.Wpf.Controls.PreviewTextBox.Handlers;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
-using AllOverIt.Wpf.Controls.PreviewTextBox.Handlers;
 
 namespace AllOverIt.Wpf.Controls.PreviewTextBox
 {
@@ -13,7 +13,7 @@ namespace AllOverIt.Wpf.Controls.PreviewTextBox
     /// <see cref="OnPreviewTextChanged(PreviewTextChangedEventArgs)"/> event handler.</summary>
     public class PreviewTextBox : TextBox
     {
-        private readonly IDictionary<ICommand, Action<RoutedEventArgs>> _commandHandlers = new Dictionary<ICommand, Action<RoutedEventArgs>>();
+        private readonly Dictionary<ICommand, Action<RoutedEventArgs>> _commandHandlers = [];
 
         /// <summary>The <see cref="PreviewTextChanged"/> routed event.</summary>
         public static readonly RoutedEvent PreviewTextChangedEvent = EventManager.RegisterRoutedEvent(

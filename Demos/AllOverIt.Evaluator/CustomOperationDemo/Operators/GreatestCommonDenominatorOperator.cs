@@ -13,7 +13,7 @@ namespace CustomOperationDemo.Operators
 
         private static Expression CreateExpression(Expression value1, Expression value2)
         {
-            var method = typeof(CustomMath).GetMethod("GreatestCommonDenominator", new[] { typeof(int), typeof(int) });
+            var method = typeof(CustomMath).GetMethod("GreatestCommonDenominator", [typeof(int), typeof(int)]);
 
             var val1 = Expression.Convert(value1, typeof(int));
             var val2 = Expression.Convert(value2, typeof(int));

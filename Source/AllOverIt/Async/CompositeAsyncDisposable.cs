@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -33,7 +32,7 @@ namespace AllOverIt.Async
         /// perform the disposal on the calling thread.</remarks>
         public void Dispose()
         {
-            if (_disposables.Any())
+            if (_disposables.Count != 0)
             {
                 // Dispose should not throw, so it is assumed this will not throw
                 DisposeResources();
@@ -45,7 +44,7 @@ namespace AllOverIt.Async
         /// perform the disposal on the calling thread.</remarks>
         public async ValueTask DisposeAsync()
         {
-            if (_disposables.Any())
+            if (_disposables.Count != 0)
             {
                 // Dispose should not throw, so it is assumed this will not throw
                 await DisposeResourcesAsync().ConfigureAwait(false);

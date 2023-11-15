@@ -85,7 +85,7 @@ namespace AllOverIt.Logging
             return this;
         }
 
-        private IColorConsoleLogger AddFragment(ConsoleColor? foreColor, ConsoleColor? backColor, string text)
+        private ColorConsoleLogger AddFragment(ConsoleColor? foreColor, ConsoleColor? backColor, string text)
         {
             if (foreColor.HasValue)
             {
@@ -119,8 +119,8 @@ namespace AllOverIt.Logging
                     .Matches(message)
                     .Cast<Match>()
                     .AsReadOnlyCollection();
-                
-                if (!matches.Any())
+
+                if (matches.Count == 0)
                 {
                     Console.Write(message);
                     return;

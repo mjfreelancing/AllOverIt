@@ -1,9 +1,7 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Pipes.Named.Client;
 using AllOverIt.Pipes.Named.Serialization;
-using AllOverIt.Pipes.Named.Server;
 using FakeItEasy;
 using FluentAssertions;
 using System;
@@ -20,7 +18,7 @@ namespace AllOverIt.Pipes.Tests.Named.Client
             public int Id { get; set; }
         }
 
-        [Collection("Pipes")]
+        [Collection("NamedPipes")]
         public class Constructor_PipeName_Serializer : NamedPipeClientFixture
         {
             [Fact]
@@ -73,7 +71,7 @@ namespace AllOverIt.Pipes.Tests.Named.Client
             }
         }
 
-        [Collection("Pipes")]
+        [Collection("NamedPipes")]
         public class Constructor_PipeName_DomainName_Serializer : NamedPipeClientFixture
         {
             [Fact]
@@ -161,7 +159,7 @@ namespace AllOverIt.Pipes.Tests.Named.Client
             }
         }
 
-        [Collection("Pipes")]
+        [Collection("NamedPipes")]
         public class WriteAsync : NamedPipeClientFixture
         {
             [Fact]

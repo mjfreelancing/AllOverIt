@@ -5,7 +5,6 @@ using AllOverIt.Aws.Cdk.AppSync.Extensions;
 using AllOverIt.Aws.Cdk.AppSync.Factories;
 using AllOverIt.Aws.Cdk.AppSync.Mapping;
 using AllOverIt.Aws.Cdk.AppSync.Schema;
-using Amazon.CDK.AWS.AppSync;
 using Cdklabs.AwsCdkAppsyncUtils;
 using System;
 using System.Collections.Generic;
@@ -82,10 +81,9 @@ namespace AllOverIt.Aws.Cdk.AppSync
                             DataSource = dataSource,
                             RequestMappingTemplate = _mappingTemplates.GetRequestMapping(fieldMapping),
                             ResponseMappingTemplate = _mappingTemplates.GetResponseMapping(fieldMapping),
-                            Directives = new[]
-                            {
+                            Directives = [
                                 Directive.Subscribe(GetSubscriptionMutations(methodInfo).ToArray())
-                            },
+                            ],
                             Args = methodInfo.GetMethodArgs(_schema, _typeStore),
                             ReturnType = returnObjectType
                         })

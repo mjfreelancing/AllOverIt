@@ -7,11 +7,9 @@ using AllOverIt.Aws.Cdk.AppSync.Factories;
 using AllOverIt.Aws.Cdk.AppSync.Mapping;
 using AllOverIt.Collections;
 using AllOverIt.Extensions;
-using Amazon.CDK.AWS.AppSync;
 using Cdklabs.AwsCdkAppsyncUtils;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using SystemType = System.Type;
 
@@ -49,7 +47,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
         {
             var parameters = methodInfo.GetParameters();
 
-            if (!parameters.Any())
+            if (parameters.Length == 0)
             {
                 return null;
             }

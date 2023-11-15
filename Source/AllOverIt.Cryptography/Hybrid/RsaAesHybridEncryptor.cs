@@ -48,11 +48,11 @@ namespace AllOverIt.Cryptography.Hybrid
     /// <inheritdoc cref="IRsaAesHybridEncryptor" />
     public sealed class RsaAesHybridEncryptor : IRsaAesHybridEncryptor
     {
-        private readonly IRsaFactory _rsaFactory;
-        private readonly IRsaEncryptor _rsaEncryptor;
-        private readonly IAesEncryptorFactory _aesEncryptorFactory;
+        private readonly RsaFactory _rsaFactory;
+        private readonly RsaEncryptor _rsaEncryptor;
+        private readonly AesEncryptorFactory _aesEncryptorFactory;
         private readonly IRsaSigningConfiguration _signingConfiguration;
-        
+
         /// <summary>Constructor.</summary>
         /// <param name="configuration">The configuration providing the required encryption and signing options.</param>
         public RsaAesHybridEncryptor(IRsaAesHybridEncryptorConfiguration configuration)

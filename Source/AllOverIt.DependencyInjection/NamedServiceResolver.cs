@@ -11,14 +11,14 @@ namespace AllOverIt.DependencyInjection
     internal sealed class NamedServiceResolver<TService> : INamedServiceRegistration<TService>,
                                                            INamedServiceResolver<TService> where TService : class
     {
-        private readonly IDictionary<string, Type> _namedImplementations = new Dictionary<string, Type>();
+        private readonly Dictionary<string, Type> _namedImplementations = [];
         internal IServiceProvider _provider;        // assigned through field injection
 
         void INamedServiceRegistration<TService>.Register<TImplementation>(string name)
         {
             _ = name.WhenNotNullOrEmpty(nameof(name));
 
-            ((INamedServiceRegistration<TService>)this).Register(name, typeof(TImplementation));
+            ((INamedServiceRegistration<TService>) this).Register(name, typeof(TImplementation));
         }
 
         void INamedServiceRegistration<TService>.Register(string name, Type implementationType)

@@ -50,7 +50,7 @@ namespace AllOverIt.Patterns.Command
         /// <exception cref="CommandException">Thrown when there are no commands to execute.</exception>
         public TOutput Execute(TInput input)
         {
-            if (!_commands.Any())
+            if (_commands.Count == 0)
             {
                 throw new CommandException("There are no commands to execute.");
             }

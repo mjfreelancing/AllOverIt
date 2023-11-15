@@ -7,7 +7,6 @@ using FakeItEasy;
 using FluentAssertions;
 using System;
 using System.IO.Pipes;
-using System.Security.AccessControl;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -21,7 +20,7 @@ namespace AllOverIt.Pipes.Tests.Named.Server
             public int Id { get; set; }
         }
 
-        [Collection("Pipes")]
+        [Collection("NamedPipes")]
         public class Constructor : NamedPipeServerFixture
         {
             [Fact]
@@ -74,7 +73,7 @@ namespace AllOverIt.Pipes.Tests.Named.Server
             }
         }
 
-        [Collection("Pipes")]
+        [Collection("NamedPipes")]
         public class Start_Action : NamedPipeServerFixture
         {
             [Fact]
@@ -119,7 +118,7 @@ namespace AllOverIt.Pipes.Tests.Named.Server
             }
         }
 
-        [Collection("Pipes")]
+        [Collection("NamedPipes")]
         public class Start_PipeSecurity : NamedPipeServerFixture
         {
             [Fact]
@@ -136,7 +135,7 @@ namespace AllOverIt.Pipes.Tests.Named.Server
             }
         }
 
-        [Collection("Pipes")]
+        [Collection("NamedPipes")]
         public class Stop : NamedPipeServerFixture
         {
             [Fact]
@@ -156,7 +155,7 @@ namespace AllOverIt.Pipes.Tests.Named.Server
             }
         }
 
-        [Collection("Pipes")]
+        [Collection("NamedPipes")]
         public class WriteAsync : NamedPipeServerFixture
         {
             private readonly string _pipeName;

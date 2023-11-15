@@ -60,7 +60,7 @@ namespace AllOverIt.Pipes.Tests.Connection
             }
         }
 
-        [Collection("Pipes")]
+        [Collection("NamedPipes")]
         public class Constructor : NamedPipeStreamWriterFixture
         {
             [Fact]
@@ -76,7 +76,7 @@ namespace AllOverIt.Pipes.Tests.Connection
             }
         }
 
-        [Collection("Pipes")]
+        [Collection("NamedPipes")]
         public class WriteAsync : NamedPipeStreamWriterFixture
         {
             private PipeStream _pipeStream = new DummyPipeStream();

@@ -49,7 +49,7 @@ namespace PaginationConsole.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Blogs_Description_Id",
                 table: "Blogs",
-                columns: new[] { "Description", "Id" });
+                columns: ["Description", "Id"]);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_BlogId",
@@ -59,7 +59,7 @@ namespace PaginationConsole.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_Title_Id",
                 table: "Posts",
-                columns: new[] { "Title", "Id" });
+                columns: ["Title", "Id"]);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

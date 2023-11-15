@@ -39,7 +39,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2.Extensions
             return FileUtils.CreateFileWithContentAsync(content, options.DiagramFileName, cancellationToken);
         }
 
-        private static Task FormatDiagramFileAsync(D2ErdExportOptions options, CancellationToken cancellationToken)
+        private static Task<ProcessExecutorResult> FormatDiagramFileAsync(D2ErdExportOptions options, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -71,7 +71,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2.Extensions
 
                 var export = ProcessBuilder
                    .For("d2.exe")
-                   .WithArguments("-l", layoutEngine, "-t", $"{(int)options.Theme}", options.DiagramFileName, exportFileName)
+                   .WithArguments("-l", layoutEngine, "-t", $"{(int) options.Theme}", options.DiagramFileName, exportFileName)
                    .WithStandardOutputHandler(options.StandardOutputHandler)    // null is OK
                    .WithErrorOutputHandler(options.ErrorOutputHandler)          // null is OK
                    .BuildProcessExecutor();

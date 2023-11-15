@@ -1,14 +1,13 @@
 ﻿using AllOverIt.Patterns.Enumeration;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
 {
     /// <summary>Provides model builder options to configure entities containing properties that inherit <see cref="EnrichedEnum{TEnum}"/>.</summary>
     public sealed class EnrichedEnumModelBuilderOptions
     {
-        private readonly IList<EnrichedEnumEntityOptions> _entityOptions = new List<EnrichedEnumEntityOptions>();
+        private readonly List<EnrichedEnumEntityOptions> _entityOptions = [];
 
         // Ensures implicitly default configuration options are provided.
         internal IEnumerable<EnrichedEnumEntityOptions> EntityOptions => GetEntityOptions();
@@ -62,10 +61,10 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
             }
         }
 
-        private IEnumerable<EnrichedEnumEntityOptions> GetEntityOptions()
+        private List<EnrichedEnumEntityOptions> GetEntityOptions()
         {
             // If nothing has been configured then add a default that will process all properties on all entities as integer values
-            if (!_entityOptions.Any())
+            if (_entityOptions.Count == 0)
             {
                 var options = new EnrichedEnumEntityOptions();
                 _entityOptions.Add(options);

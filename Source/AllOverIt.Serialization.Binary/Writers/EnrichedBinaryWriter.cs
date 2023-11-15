@@ -15,7 +15,7 @@ namespace AllOverIt.Serialization.Binary.Writers
     /// <inheritdoc cref="IEnrichedBinaryWriter"/>
     public sealed class EnrichedBinaryWriter : BinaryWriter, IEnrichedBinaryWriter
     {
-        private static readonly IDictionary<Type, TypeIdentifier> TypeIdRegistry = new Dictionary<Type, TypeIdentifier>
+        private static readonly Dictionary<Type, TypeIdentifier> TypeIdRegistry = new()
         {
             { CommonTypes.BoolType, TypeIdentifier.Bool },
             { CommonTypes.ByteType, TypeIdentifier.Byte },
@@ -92,7 +92,7 @@ namespace AllOverIt.Serialization.Binary.Writers
             }
         };
 
-        private readonly IDictionary<string, int> _userDefinedTypeCache = new Dictionary<string, int>();
+        private readonly Dictionary<string, int> _userDefinedTypeCache = [];
         private readonly IReadOnlyCollection<Func<Type, TypeIdentifier?>> _typeIdLookups;
 
         /// <inheritdoc />
@@ -160,10 +160,9 @@ namespace AllOverIt.Serialization.Binary.Writers
             }
         }
 
-        private IReadOnlyCollection<Func<Type, TypeIdentifier?>> GetTypeIdLookups()
+        private Func<Type, TypeIdentifier?>[] GetTypeIdLookups()
         {
-            return new[]
-            {
+            return [
                 IsTypeRegistered,
                 IsTypeEnum,
                 IsTypeNullable,
@@ -171,7 +170,7 @@ namespace AllOverIt.Serialization.Binary.Writers
                 IsDictionary,               // Above IsEnumerable, since IDictionary is IEnumerable
                 IsEnumerable,
                 AddDynamicWriter            // Must be last in the list
-            };
+            ];
         }
 
         private TypeIdentifier GetRawTypeId(Type type)

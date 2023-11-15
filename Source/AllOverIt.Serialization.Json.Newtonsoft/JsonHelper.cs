@@ -26,7 +26,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft
         {
         }
 
-        private static IJsonSerializer CreateJsonSerializer(JsonSerializerSettings settings)
+        private static NewtonsoftJsonSerializer CreateJsonSerializer(JsonSerializerSettings settings)
         {
             settings ??= new JsonSerializerSettings();
 

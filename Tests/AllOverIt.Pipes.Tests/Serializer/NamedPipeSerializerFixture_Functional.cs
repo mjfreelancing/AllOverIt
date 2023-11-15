@@ -35,15 +35,15 @@ namespace AllOverIt.Pipes.Tests.Serializer
 
             public void WriteValue(IEnrichedBinaryWriter writer, object value)
             {
-                var message = (DummyMessage)value;
-                
+                var message = (DummyMessage) value;
+
                 writer.WriteInt32(message.Id);
             }
         }
 
         private readonly NamedPipeSerializer<DummyMessage> _serializer = new();
 
-        [Collection("Pipes")]
+        [Collection("NamedPipes")]
         public class Serialize_Deserialize : NamedPipeSerializerFixture_Functional
         {
             [Fact]

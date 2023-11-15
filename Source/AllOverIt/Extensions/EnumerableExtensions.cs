@@ -197,7 +197,7 @@ namespace AllOverIt.Extensions
                 }
             }
 
-            if (batch.Any())
+            if (batch.Count != 0)
             {
                 yield return batch;
             }

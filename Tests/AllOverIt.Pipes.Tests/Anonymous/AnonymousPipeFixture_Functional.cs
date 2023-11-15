@@ -8,7 +8,7 @@ using Xunit;
 
 namespace AllOverIt.Pipes.Tests.Anonymous
 {
-    [Collection("Pipes")]
+    [Collection("AnonymousPipes")]
     public class AnonymousPipeFixture_Functional : FixtureBase
     {
         [Fact]

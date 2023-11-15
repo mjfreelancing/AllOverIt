@@ -25,7 +25,7 @@ namespace AllOverIt.Pipes.Tests.Named.Client
             }
         }
 
-        [Collection("Pipes")]
+        [Collection("NamedPipes")]
         public class Constructor : NamedPipeClientConnectionFixture
         {
             [Fact]
@@ -125,7 +125,7 @@ namespace AllOverIt.Pipes.Tests.Named.Client
             }
         }
 
-        [Collection("Pipes")]
+        [Collection("NamedPipes")]
         public class ServerName : NamedPipeClientConnectionFixture
         {
             [Fact]

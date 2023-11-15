@@ -269,7 +269,7 @@ namespace AllOverIt.Pagination.Extensions
             var totalCount = queryPaginator.BaseQuery.Count();
             var pageQuery = queryPaginator.GetPageQuery(continuationToken);
             var pageResults = pageQuery.ToList();
-            var hasResults = pageResults.Any(); 
+            var hasResults = pageResults.Count != 0;
 
             string previousToken = default;
             string nextToken = default;

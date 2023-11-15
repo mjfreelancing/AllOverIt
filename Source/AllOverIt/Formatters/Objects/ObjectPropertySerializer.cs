@@ -214,7 +214,7 @@ namespace AllOverIt.Formatters.Objects
 
                 var isString = type == CommonTypes.StringType;
 
-                if (isString && ((string)value).IsNullOrEmpty())        // null was already checked, so this only applies to empty values
+                if (isString && ((string) value).IsNullOrEmpty())        // null was already checked, so this only applies to empty values
                 {
                     values.Add(path, Options.EmptyValueOutput);
                 }
@@ -317,7 +317,8 @@ namespace AllOverIt.Formatters.Objects
         private bool ExcludeEnumerable(IEnumerable enumerable)
         {
             var args = enumerable.GetType().GetGenericArguments();
-            return args.Any() && IgnoreType(args[0]);
+
+            return args.Length != 0 && IgnoreType(args[0]);
         }
 
         private void SetFilterAttributes(Type type, object value, string path, string name, int? index, IDictionary<object, ObjectPropertyParent> references)
@@ -392,7 +393,7 @@ namespace AllOverIt.Formatters.Objects
                 var filterCollatePaths = Filter?.EnumerableOptions.AutoCollatedPaths ?? Enumerable.Empty<string>();
                 var collationPaths = globalCollatePaths.Concat(filterCollatePaths).AsReadOnlyCollection();
 
-                if (collationPaths.Any())
+                if (collationPaths.Count != 0)
                 {
                     // Check if the current path is registered for auto-collation
                     var flatPath = GetPropertyPath(references);

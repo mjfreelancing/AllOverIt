@@ -30,7 +30,7 @@ namespace AllOverIt.Mapping
             return options.GetAliasName(sourceName) ?? sourceName;
         }
 
-        private static IEnumerable<PropertyInfo> GetFilteredSourcePropertyInfo(Type sourceType, PropertyMatcherOptions options)
+        private static List<PropertyInfo> GetFilteredSourcePropertyInfo(Type sourceType, PropertyMatcherOptions options)
         {
             var propertyInfo = ReflectionCache
                 .GetPropertyInfo(sourceType, options.Binding)
@@ -56,7 +56,7 @@ namespace AllOverIt.Mapping
             return sourceProps;
         }
 
-        private static IEnumerable<PropertyInfo> GetFilteredTargetPropertyInfo(Type targetType, PropertyMatcherOptions options)
+        private static List<PropertyInfo> GetFilteredTargetPropertyInfo(Type targetType, PropertyMatcherOptions options)
         {
             var propertyInfo = ReflectionCache
                 .GetPropertyInfo(targetType, options.Binding)

@@ -39,7 +39,7 @@ namespace AllOverIt.EntityFrameworkCore.Migrator
 
                 var onNewMigration = OnNewMigration;
 
-                if (onNewMigration is not null && pendingMigrations.Any())
+                if (onNewMigration is not null && pendingMigrations.Count != 0)
                 {
                     foreach (var migration in pendingMigrations)
                     {

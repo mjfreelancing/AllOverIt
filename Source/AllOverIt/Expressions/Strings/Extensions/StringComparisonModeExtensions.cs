@@ -5,7 +5,7 @@ namespace AllOverIt.Expressions.Strings.Extensions
 {
     internal static class StringComparisonModeExtensions
     {
-        private static readonly IReadOnlyDictionary<StringComparisonMode, StringComparison> ComparisonModes = new Dictionary<StringComparisonMode, StringComparison>
+        private static readonly Dictionary<StringComparisonMode, StringComparison> ComparisonModes = new()
         {
             { StringComparisonMode.CurrentCulture, StringComparison.CurrentCulture},
             { StringComparisonMode.CurrentCultureIgnoreCase, StringComparison.CurrentCultureIgnoreCase},

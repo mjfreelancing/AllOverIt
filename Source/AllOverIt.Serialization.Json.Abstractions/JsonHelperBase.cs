@@ -11,7 +11,7 @@ namespace AllOverIt.Serialization.Json.Abstractions
     public abstract class JsonHelperBase
     {
         private readonly IJsonSerializer _jsonSerializer;
-        private readonly IElementDictionary _element;
+        private readonly ElementDictionary _element;
 
         /// <summary>Constructor.</summary>
         /// <param name="value">An object, typically anonymous, that is to be queried for property values.</param>
@@ -203,15 +203,17 @@ namespace AllOverIt.Serialization.Json.Abstractions
             return _element.GetDescendantObjectArrayValues<TValue>(allPropertyNames, childPropertyName);
         }
 
-        private IElementDictionary CreateElementDictionary(object value)
+        private ElementDictionary CreateElementDictionary(object value)
         {
             var serialized = _jsonSerializer.SerializeObject(value);
+
             return CreateElementDictionary(serialized);
         }
 
-        private IElementDictionary CreateElementDictionary(string value)
+        private ElementDictionary CreateElementDictionary(string value)
         {
             var dictionary = _jsonSerializer.DeserializeObject<Dictionary<string, object>>(value);
+
             return new ElementDictionary(dictionary);
         }
     }

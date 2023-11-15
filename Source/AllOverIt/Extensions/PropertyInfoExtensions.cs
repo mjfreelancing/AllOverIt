@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Assertion;
 using System;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -86,7 +85,7 @@ namespace AllOverIt.Extensions
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
 
-            return propertyInfo.GetIndexParameters().Any();
+            return propertyInfo.GetIndexParameters().Length != 0;
         }
 
         /// <summary>Creates a lambda expression that represents accessing a property on an object of type <typeparamref name="TType"/>.

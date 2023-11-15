@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AllOverIt.Helpers
 {
@@ -28,7 +27,7 @@ namespace AllOverIt.Helpers
         /// into the resulting AggregateException thrown. Default is <see langword="true" />.</param>
         public void ThrowIfAnyExceptions(bool flatten = true)
         {
-            if (_exceptions.Any())
+            if (_exceptions.Count != 0)
             {
                 var aggregate = new AggregateException(_exceptions);
 

@@ -58,7 +58,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
             return new ColumnDescriptor(column);
         }
 
-        private static IReadOnlyCollection<PrincipalForeignKey> GetForeignKeys(IProperty column)
+        private static List<PrincipalForeignKey> GetForeignKeys(IProperty column)
         {
             var foreignKeys = new List<PrincipalForeignKey>();
 

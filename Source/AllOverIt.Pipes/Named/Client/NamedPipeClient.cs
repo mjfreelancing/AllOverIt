@@ -3,7 +3,6 @@ using AllOverIt.Pipes.Exceptions;
 using AllOverIt.Pipes.Named.Events;
 using AllOverIt.Pipes.Named.Serialization;
 using System;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,7 +16,7 @@ namespace AllOverIt.Pipes.Named.Client
         private const string LocalServer = ".";
 
         private readonly INamedPipeSerializer<TMessage> _serializer;
-        private INamedPipeClientConnection<TMessage> _connection;
+        private NamedPipeClientConnection<TMessage> _connection;
 
         /// <inheritdoc/>
         public bool IsConnected => _connection?.IsConnected ?? false;
@@ -118,7 +117,7 @@ namespace AllOverIt.Pipes.Named.Client
             {
                 var bytes = await reader.ReadAsync(cancellationToken).ConfigureAwait(false);
 
-                Throw<PipeException>.When(!bytes.Any(), "Failed to get Connection Id.");
+                Throw<PipeException>.When(bytes.Length == 0, "Failed to get Connection Id.");
 
                 return Encoding.UTF8.GetString(bytes);
             }

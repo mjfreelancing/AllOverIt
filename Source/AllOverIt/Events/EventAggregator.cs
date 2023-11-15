@@ -9,8 +9,8 @@ namespace AllOverIt.Events
     /// <inheritdoc cref="IEventAggregator" />
     public sealed class EventAggregator : IEventAggregator
     {
-        private readonly IDictionary<Type, IList<ISubscription>> _subscriptions = new Dictionary<Type, IList<ISubscription>>();
-        private readonly IDictionary<Type, IList<IAsyncSubscription>> _asyncSubscriptions = new Dictionary<Type, IList<IAsyncSubscription>>();
+        private readonly Dictionary<Type, IList<ISubscription>> _subscriptions = [];
+        private readonly Dictionary<Type, IList<IAsyncSubscription>> _asyncSubscriptions = [];
 
         /// <inheritdoc />
         /// <remarks>Cannot be used when there are registered async subscriptions for the provided message type. Use

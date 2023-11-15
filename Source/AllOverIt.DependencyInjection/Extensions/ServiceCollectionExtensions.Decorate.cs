@@ -87,7 +87,7 @@ namespace AllOverIt.DependencyInjection.Extensions
             var serviceType = typeof(TServiceType);
             var descriptors = services.Where(service => service.ServiceType == serviceType).AsReadOnlyCollection();
 
-            if (!descriptors.Any())
+            if (descriptors.Count == 0)
             {
                 throw new DependencyRegistrationException($"No registered services found for the type '{serviceType.GetFriendlyName()}'.");
             }

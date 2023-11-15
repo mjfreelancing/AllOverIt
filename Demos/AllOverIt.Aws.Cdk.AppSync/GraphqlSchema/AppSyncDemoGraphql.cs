@@ -3,9 +3,6 @@ using AllOverIt.Aws.Cdk.AppSync.Factories;
 using AllOverIt.Aws.Cdk.AppSync.Mapping;
 using Amazon.CDK;
 using Amazon.CDK.AWS.AppSync;
-using Amazon.CDK.AWS.Cognito;
-using Amazon.CDK.AWS.Lambda;
-using Amazon.CDK.AWS.S3;
 using Constructs;
 using System.Collections.Generic;
 using SystemType = System.Type;
@@ -82,7 +79,7 @@ namespace GraphqlSchema
                 },
                 EndpointLookup = new Dictionary<string, string>
                 {
-                    [Constants.Lookup.GetCountriesUrlKey] = Fn.Join("/", new[] { Fn.ImportValue(Constants.Import.GetCountriesUrlImportName), "lookup" })
+                    [Constants.Lookup.GetCountriesUrlKey] = Fn.Join("/", [Fn.ImportValue(Constants.Import.GetCountriesUrlImportName), "lookup"])
                 }
             };
         }

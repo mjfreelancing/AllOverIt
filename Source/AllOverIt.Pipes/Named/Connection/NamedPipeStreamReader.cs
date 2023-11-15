@@ -2,7 +2,6 @@
 using System;
 using System.IO;
 using System.IO.Pipes;
-using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,7 +32,7 @@ namespace AllOverIt.Pipes.Named.Connection
         {
             var bytes = await ReadAsync(sizeof(int), false, cancellationToken).ConfigureAwait(false);
 
-            if (!bytes.Any())
+            if (bytes.Length == 0)
             {
                 return 0;
             }

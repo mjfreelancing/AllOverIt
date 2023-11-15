@@ -24,7 +24,7 @@ namespace AllOverIt.Pipes.Named.Server
     {
         private readonly INamedPipeSerializer<TMessage> _serializer;
         internal IList<INamedPipeServerConnection<TMessage>> Connections { get; } = new List<INamedPipeServerConnection<TMessage>>();
-        private IAwaitableLock _connectionsLock = new AwaitableLock();
+        private AwaitableLock _connectionsLock = new();
         private BackgroundTask _backgroundTask;
 
         /// <inheritdoc />
@@ -69,7 +69,7 @@ namespace AllOverIt.Pipes.Named.Server
             _ = pipeSecurity.WhenNotNull(nameof(pipeSecurity));
 
             var security = new PipeSecurity();
-            
+
             pipeSecurity.Invoke(security);
 
             Start(security);
@@ -262,7 +262,7 @@ namespace AllOverIt.Pipes.Named.Server
                     Connections.Remove(connection);
                 }
             }
-            catch ( Exception exception)
+            catch (Exception exception)
             {
                 DoOnException(exception);
             }

@@ -72,7 +72,7 @@ namespace AllOverIt.Serialization.Binary.Readers
             }
         };
 
-        private readonly IDictionary<int, string> _userDefinedTypeCache = new Dictionary<int, string>();
+        private readonly Dictionary<int, string> _userDefinedTypeCache = [];
 
         /// <inheritdoc />
         /// <remarks>If a property type doesn't have a registered reader the <see cref="EnrichedBinaryReader"/> will use a

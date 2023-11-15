@@ -16,7 +16,7 @@ namespace AllOverIt.Filtering.Operations
         {
         }
 
-        private static SystemExpression CreatePredicate(SystemExpression member, SystemExpression constant)
+        private static UnaryExpression CreatePredicate(SystemExpression member, SystemExpression constant)
         {
             var contains = SystemExpression.Call(constant, ContainsMethod, member);
 

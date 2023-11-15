@@ -10,7 +10,7 @@ namespace AllOverIt.Fixture
     /// <summary>A base class for all fixtures, providing access to a variety of useful methods that help generate automated input values.</summary>
     public abstract class FixtureBase
     {
-        private readonly Random _random = new((int)DateTime.Now.Ticks);
+        private readonly Random _random = new((int) DateTime.Now.Ticks);
 
         /// <summary> Provides access to the AutoFixture.Fixture being used.</summary>
         protected internal IFixture Fixture { get; }
@@ -53,10 +53,14 @@ namespace AllOverIt.Fixture
         /// <returns>The same action passed to the method.</returns>
         protected static Action Invoking(Action action)
         {
+#if NET8_0_OR_GREATER
+            ArgumentNullException.ThrowIfNull(action);
+#else
             if (action == null)
             {
                 throw new ArgumentNullException(nameof(action));
             }
+#endif
 
             return action;
         }
@@ -67,10 +71,14 @@ namespace AllOverIt.Fixture
         /// <returns>The result of the invoked action.</returns>
         protected static Func<TResult> Invoking<TResult>(Func<TResult> action)
         {
+#if NET8_0_OR_GREATER
+            ArgumentNullException.ThrowIfNull(action);
+#else
             if (action == null)
             {
                 throw new ArgumentNullException(nameof(action));
             }
+#endif
 
             return action;
         }
@@ -393,7 +401,7 @@ namespace AllOverIt.Fixture
         {
             var message = Create<string>();
 
-            var constructor = typeof(TException).GetConstructor([ typeof(string) ]);
+            var constructor = typeof(TException).GetConstructor([typeof(string)]);
 
             constructor.Should().NotBeNull();
 
@@ -407,7 +415,7 @@ namespace AllOverIt.Fixture
         /// <typeparam name="TException">The exception type.</typeparam>
         protected static void AssertNoConstructorWithMessage<TException>() where TException : Exception
         {
-            var constructor = typeof(TException).GetConstructor([ typeof(string) ]);
+            var constructor = typeof(TException).GetConstructor([typeof(string)]);
 
             constructor.Should().BeNull();
         }
@@ -420,11 +428,11 @@ namespace AllOverIt.Fixture
             var message = Create<string>();
             var innerException = new Exception();
 
-            var constructor = typeof(TException).GetConstructor([ typeof(string), typeof(Exception) ]);
+            var constructor = typeof(TException).GetConstructor([typeof(string), typeof(Exception)]);
 
             constructor.Should().NotBeNull();
 
-            var exception = (Exception) constructor.Invoke([ message, innerException ]);
+            var exception = (Exception) constructor.Invoke([message, innerException]);
 
             exception.Message
                 .Should()
@@ -441,6 +449,10 @@ namespace AllOverIt.Fixture
         /// <param name="exceptionHandler">The handler invoked with each exception contained within an aggregate exception.</param>
         protected static void AssertHandledAggregateException(Action action, Func<Exception, bool> exceptionHandler)
         {
+#if NET8_0_OR_GREATER
+            ArgumentNullException.ThrowIfNull(action);
+            ArgumentNullException.ThrowIfNull(exceptionHandler);
+#else
             if (action == null)
             {
                 throw new ArgumentNullException(nameof(action));
@@ -450,6 +462,7 @@ namespace AllOverIt.Fixture
             {
                 throw new ArgumentNullException(nameof(exceptionHandler));
             }
+#endif
 
             try
             {
@@ -496,10 +509,10 @@ namespace AllOverIt.Fixture
             var enumCount = enumValues.Length;
             var index = _random.Next(1000) % enumCount;
 
-            return (TType)enumValues.GetValue(index);
+            return (TType) enumValues.GetValue(index);
         }
 
-        private IReadOnlyList<TType> CreateManyType<TType>(int count)
+        private List<TType> CreateManyType<TType>(int count)
         {
             // Fixture.CreateMany() doesn't randomize enum values - it uses a round-robin approach.
             if (!typeof(TType).IsEnum)
@@ -515,7 +528,7 @@ namespace AllOverIt.Fixture
               .Select(_ =>
               {
                   var index = _random.Next(1000) % enumCount;
-                  return (TType)enumValues.GetValue(index);
+                  return (TType) enumValues.GetValue(index);
               })
               .ToList();
         }

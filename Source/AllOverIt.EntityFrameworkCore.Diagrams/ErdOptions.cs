@@ -24,7 +24,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
         private const string DefaultIsNullLabel = "[NULL]";
         private const string DefaultNotNullLabel = "[NOT NULL]";
 
-        private readonly IDictionary<Type, EntityOptions> _entityOptions = new Dictionary<Type, EntityOptions>();
+        private readonly Dictionary<Type, EntityOptions> _entityOptions = [];
 
         /// <summary>Provides options that specify how a column's nullability is depicted on the generated diagram.</summary>
         public sealed class NullableColumn

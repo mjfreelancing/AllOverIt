@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using AllOverIt.Pipes.Named.Client;
 using AllOverIt.Pipes.Named.Serialization;
 using AllOverIt.Pipes.Named.Server;
 using FakeItEasy;
@@ -19,7 +18,7 @@ namespace AllOverIt.Pipes.Tests.Named.Server
 
         private readonly NamedPipeServerFactory<DummyMessage> _factory = new(A.Fake<INamedPipeSerializer<DummyMessage>>());
 
-        [Collection("Pipes")]
+        [Collection("NamedPipes")]
         public class Constructor : NamedPipeServerFactoryFixture
         {
             [Fact]
@@ -35,7 +34,7 @@ namespace AllOverIt.Pipes.Tests.Named.Server
             }
         }
 
-        [Collection("Pipes")]
+        [Collection("NamedPipes")]
         public class CreateNamedPipeServer_PipeName : NamedPipeServerFactoryFixture
         {
             [Fact]

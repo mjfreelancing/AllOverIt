@@ -26,7 +26,7 @@ namespace AllOverIt.Serialization.Json.SystemText
         {
         }
 
-        private static IJsonSerializer CreateJsonSerializer(JsonSerializerOptions options)
+        private static SystemTextJsonSerializer CreateJsonSerializer(JsonSerializerOptions options)
         {
             options ??= new JsonSerializerOptions();
 

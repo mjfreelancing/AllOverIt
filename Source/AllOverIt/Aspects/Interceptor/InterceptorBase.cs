@@ -14,7 +14,7 @@ namespace AllOverIt.Aspects.Interceptor
 
     public class MethodInterceptor<TService> : InterceptorBase<TService>
     {
-        private readonly IDictionary<MethodInfo, IInterceptorHandler> _methodInterceptors = new Dictionary<MethodInfo, IInterceptorHandler>();
+        private readonly Dictionary<MethodInfo, IInterceptorHandler> _methodInterceptors = [];
 
         public MethodInterceptor<TService> AddMethodHandler(IInterceptorHandler methodInterceptor)
         {

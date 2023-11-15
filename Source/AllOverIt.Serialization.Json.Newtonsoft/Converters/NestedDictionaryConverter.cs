@@ -46,7 +46,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
             };
         }
 
-        private object ReadArray(JsonReader reader)
+        private List<object> ReadArray(JsonReader reader)
         {
             var list = new List<object>();
 
@@ -67,7 +67,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
             throw CreateJsonSerializationException();
         }
 
-        private object ReadObject(JsonReader reader)
+        private Dictionary<string, object> ReadObject(JsonReader reader)
         {
             var dictionary = new Dictionary<string, object>(StringComparer.InvariantCultureIgnoreCase);
 
@@ -160,7 +160,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
         }
 
         [ExcludeFromCodeCoverage]
-        private static Exception CreateJsonSerializationException(JsonToken? tokenType = default)
+        private static JsonSerializationException CreateJsonSerializationException(JsonToken? tokenType = default)
         {
             var message = tokenType.HasValue
                 ? $"Unexpected token '{tokenType}' while {nameof(NestedDictionaryConverter)} was reading."

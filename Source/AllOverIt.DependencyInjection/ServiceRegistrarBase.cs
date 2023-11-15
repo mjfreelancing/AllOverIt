@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AllOverIt.Assertion;
+﻿using AllOverIt.Assertion;
 using AllOverIt.DependencyInjection.Exceptions;
 using AllOverIt.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AllOverIt.DependencyInjection
 {
     /// <summary>Base class for service registrars that scan for, and register, service and implementation types located in the containing assembly.</summary>
     public abstract class ServiceRegistrarBase : IServiceRegistrar, IServiceRegistrarOptions
     {
-        private readonly Lazy<IReadOnlyCollection<Type>> _implementationCandidates;        
+        private readonly Lazy<IReadOnlyCollection<Type>> _implementationCandidates;
         private Func<Type, Type, bool> _registrationFilter;
 
         private IReadOnlyCollection<Type> ImplementationCandidates => _implementationCandidates.Value;
@@ -55,7 +55,7 @@ namespace AllOverIt.DependencyInjection
                 .Where(serviceType => !serviceType.IsInterface && !serviceType.IsAbstract)
                 .AsReadOnlyCollection();
 
-            if (invalidServiceTypes.Any())
+            if (invalidServiceTypes.Count != 0)
             {
                 var invalidTypes = string.Join(", ", invalidServiceTypes.Select(serviceType => serviceType.GetFriendlyName()));
                 throw new DependencyRegistrationException($"Cannot register {invalidTypes}. All service types must be an interface or abstract type.");

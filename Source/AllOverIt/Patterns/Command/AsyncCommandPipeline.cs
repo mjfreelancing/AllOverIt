@@ -53,7 +53,7 @@ namespace AllOverIt.Patterns.Command
         /// <exception cref="CommandException">Thrown when there are no commands to execute.</exception>
         public async Task<TOutput> ExecuteAsync(TInput input, CancellationToken cancellationToken)
         {
-            if (!_commands.Any())
+            if (_commands.Count == 0)
             {
                 throw new CommandException("There are no commands to execute.");
             }

@@ -4,7 +4,6 @@ using AllOverIt.Pipes.Exceptions;
 using AllOverIt.Pipes.Named.Serialization;
 using System;
 using System.IO.Pipes;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -52,7 +51,7 @@ namespace AllOverIt.Pipes.Named.Connection
                             .ReadAsync(cancellationToken)
                             .ConfigureAwait(false);
 
-                        if (!bytes.Any() || !IsConnected)
+                        if (bytes.Length == 0 || !IsConnected)
                         {
                             break;
                         }
