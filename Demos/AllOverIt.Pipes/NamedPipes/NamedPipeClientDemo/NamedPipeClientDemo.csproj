@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <!--Targeting 'windows' because not all pipe features are available on other platforms-->
-        <TargetFramework>net7.0-windows</TargetFramework>
+        <TargetFramework>net8.0-windows</TargetFramework>
         <OutputType>Exe</OutputType>
     </PropertyGroup>
 
