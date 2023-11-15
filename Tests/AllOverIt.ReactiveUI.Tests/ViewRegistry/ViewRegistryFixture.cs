@@ -12,7 +12,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Xunit;
 
 namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
@@ -322,7 +321,7 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
             [Fact]
             public void Should_Return_Views()
             {
-                var maxCount = Create<int>();
+                var maxCount = 3 + Create<int>();
                 var ids = CreateMany<int>(3).ToArray();
 
                 _viewRegistry.CreateOrActivateFor<DummyViewModel1>(maxCount, viewItems => ids[0]);
@@ -411,7 +410,7 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
                 {
                     shownViews.Should().Contain(dummyView);
                 }
-            }            
+            }
         }
 
         public class TryCloseAllViews : ViewRegistryFixture
@@ -481,9 +480,9 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
 
                 var index = 0;
 
-                foreach (var viewItem in (IEnumerable)_viewRegistry)
+                foreach (var viewItem in (IEnumerable) _viewRegistry)
                 {
-                    ((ViewModelViewItem<int>)viewItem).View.Should().BeSameAs(_dummyViews[index++]);
+                    ((ViewModelViewItem<int>) viewItem).View.Should().BeSameAs(_dummyViews[index++]);
                 }
             }
         }
