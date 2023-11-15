@@ -1,7 +1,6 @@
 ﻿//#define AUTOMAPPER
 using AllOverIt.Mapping;
 using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Jobs;
 using System;
 
 #if AUTOMAPPER
@@ -31,7 +30,7 @@ namespace ObjectMappingBenchmarking
         private readonly IMapper _autoMapper;
 #endif
 
-        private readonly IObjectMapper _objectMapper;
+        private readonly ObjectMapper _objectMapper;
 
         private static readonly SimpleSource SimpleSource;
         private static readonly SimpleTarget SimpleTarget;

@@ -137,7 +137,7 @@ namespace AppSyncSubscriptionDemo
                 .GroupBy(item => item.Id)
                 .AsReadOnlyCollection();
 
-            if (subscriptionErrors.Any())
+            if (subscriptionErrors.Count != 0)
             {
                 LogMessage("Subscription errors received:");
 

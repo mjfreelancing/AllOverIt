@@ -49,7 +49,7 @@ namespace VariableLookupDemo
             Console.ReadKey();
         }
 
-        private static void ReportVariables(IVariableLookup lookup, IVariable variable)
+        private static void ReportVariables(VariableLookup lookup, IVariable variable)
         {
             var explicitReferences = lookup.GetReferencedVariables(variable, VariableLookupMode.Explicit);
             var allReferences = lookup.GetReferencedVariables(variable, VariableLookupMode.All);

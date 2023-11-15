@@ -43,7 +43,7 @@ namespace MemoryPaginationDemo
             public string Previous { get; set; }
         }
 
-        private readonly IQueryPaginatorFactory _queryPaginatorFactory; 
+        private readonly IQueryPaginatorFactory _queryPaginatorFactory;
 
         public App(IQueryPaginatorFactory queryPaginatorFactory)
         {
@@ -63,7 +63,7 @@ namespace MemoryPaginationDemo
             var paginatorConfig = new QueryPaginatorConfiguration
             {
                 PageSize = pageSize,
-                PaginationDirection =   PaginationDirection.Forward,    // This is the default
+                PaginationDirection = PaginationDirection.Forward,    // This is the default
                 UseParameterizedQueries = false                         // Not required for memory based pagination
             };
 
@@ -145,7 +145,7 @@ namespace MemoryPaginationDemo
             return Task.CompletedTask;
         }
 
-        private static IReadOnlyCollection<PersonModel> GetData(int dataSize)
+        private static List<PersonModel> GetData(int dataSize)
         {
             Console.WriteLine();
             Console.WriteLine("Adding data...");

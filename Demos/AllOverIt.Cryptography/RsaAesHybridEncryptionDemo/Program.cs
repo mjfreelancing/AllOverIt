@@ -59,7 +59,7 @@ namespace RsaAesHybridEncryptionDemo
             Console.ReadKey();
         }
 
-        private static string Encrypt(string plainText, byte[] recipientPublicKey, byte[] senderPrivateKey, IColorConsoleLogger logger)
+        private static string Encrypt(string plainText, byte[] recipientPublicKey, byte[] senderPrivateKey, ColorConsoleLogger logger)
         {
             logger.WriteLine(ConsoleColor.White, "The phrase to be processed is:");
             logger.WriteLine(ConsoleColor.Yellow, plainText);
@@ -92,7 +92,7 @@ namespace RsaAesHybridEncryptionDemo
             return encryptedBase64;
         }
 
-        private static void Decrypt(string encryptedBase64, byte[] senderPublicKey, byte[] recipientPrivateKey, IColorConsoleLogger logger)
+        private static void Decrypt(string encryptedBase64, byte[] senderPublicKey, byte[] recipientPrivateKey, ColorConsoleLogger logger)
         {
             var decryptorConfiguration = new RsaAesHybridEncryptorConfiguration
             {

@@ -39,7 +39,7 @@ namespace SpecificationDemo
 
         #region Show Simple Specification
 
-        private static void ShowIndividualResults(ISpecification<int> twoOrThreeSpecification, ISpecification<int> twoAndThreeSpecification)
+        private static void ShowIndividualResults(Specification<int> twoOrThreeSpecification, Specification<int> twoAndThreeSpecification)
         {
             // test all numbers 1..10 individually
             foreach (var i in Enumerable.Range(1, 10))

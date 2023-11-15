@@ -25,11 +25,13 @@ namespace BinarySerializationDemo
 
         private static void OutputObjectAsJson(string prefix, object @object)
         {
+#pragma warning disable CA1869 // Cache and reuse 'JsonSerializerOptions' instances
             var options = new JsonSerializerOptions
             {
                 WriteIndented = true,
                 Converters = { new JsonStringEnumConverter() }
             };
+#pragma warning restore CA1869 // Cache and reuse 'JsonSerializerOptions' instances
 
             var output = JsonSerializer.Serialize(@object, options);
 

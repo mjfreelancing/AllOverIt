@@ -11,12 +11,11 @@ namespace EnrichedEnumModelBindingDemo.Problems
 {
     internal static class ProblemDetailsSetup
     {
-        private static readonly IList<Type> IgnoredExceptions = new List<Type>
-        {
+        private static readonly List<Type> IgnoredExceptions = [
             typeof(OperationCanceledException)
-        };
+        ];
 
-        private static readonly IDictionary<Type, Func<Exception, ProblemDetails>> CustomExceptionProblems = new Dictionary<Type, Func<Exception, ProblemDetails>>
+        private static readonly Dictionary<Type, Func<Exception, ProblemDetails>> CustomExceptionProblems = new()
         {
             {
                 typeof(ValidationException),

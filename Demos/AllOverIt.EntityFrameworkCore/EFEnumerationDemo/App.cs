@@ -48,8 +48,13 @@ namespace EFEnumerationDemo
                         GreaterThanOrEqual = 15,
                         LessThan = 5,
                         LessThanOrEqual = 7,
+                        
+                        #pragma warning disable CA1861 // Avoid constant arrays as arguments
+
                         //In = new List<int>(new[]{1, 2, 3}),         // implicit conversion  (commented out to test a null filter option)
                         NotIn = new NotIn<int>(new[]{4, 5, 6})      // constructor
+
+                        #pragma warning restore CA1861 // Avoid constant arrays as arguments
                     },
                     Description = {
                         EqualTo = "#10",

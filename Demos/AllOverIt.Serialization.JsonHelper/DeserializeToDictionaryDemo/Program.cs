@@ -64,7 +64,9 @@ namespace DeserializeToDictionaryDemo
             //    .GetChildArray("errors", "errorInfo")
             //    .SelectAsReadOnlyCollection(errorInfo => errorInfo.GetValue<string>("errorMessage"));
 
+#pragma warning disable CA1861 // Avoid constant arrays as arguments
             var errorMessages = jsonHelper.GetDescendantObjectArrayValues<string>(new[] { "errors", "errorInfo" }, "errorMessage");
+#pragma warning restore CA1861 // Avoid constant arrays as arguments
 
             foreach (var error in errorMessages)
             {
@@ -87,6 +89,8 @@ namespace DeserializeToDictionaryDemo
             // This will get ALL 'errorMessage' properties
             // var errorMessages = jsonHelper.GetDescendantObjectArrayValues<string>(new[] { "errors", "errorInfo" }, "errorMessage");
 
+#pragma warning disable CA1861 // Avoid constant arrays as arguments
+
             // This demonstrates how to query and drill down
             var objectArray = jsonHelper.GetDescendantObjectArray(new[] { "errors" });
 
@@ -94,6 +98,8 @@ namespace DeserializeToDictionaryDemo
                 from element in objectArray
                 where element.GetValue("errorCode").As<int>() == 401
                 select element.GetDescendantObjectArrayValues<string>(new[] { "errorInfo" }, "errorMessage");
+
+#pragma warning restore CA1861 // Avoid constant arrays as arguments
 
             foreach (var error in errorMessages.SelectMany(item => item))
             {
@@ -107,7 +113,9 @@ namespace DeserializeToDictionaryDemo
 
             var jsonHelper = new JsonHelper(anonymousObject);
 
+#pragma warning disable CA1861 // Avoid constant arrays as arguments
             var arguments = jsonHelper.GetDescendantObjectArray(new[] { "arguments" });
+#pragma warning restore CA1861 // Avoid constant arrays as arguments
 
             // Use IEnumerable<> to find the 'arguments' element where the property 'Name' has a value of 'id'
             var idArgument = arguments
@@ -164,7 +172,9 @@ namespace DeserializeToDictionaryDemo
             };
         }
 
+#pragma warning disable CA1859 // Use concrete types when possible for improved performance
         private static object GetObject2ToProcess()
+#pragma warning restore CA1859 // Use concrete types when possible for improved performance
         {
             // Note: This is an array - not an array property
             return new[]
@@ -215,7 +225,7 @@ namespace DeserializeToDictionaryDemo
             return new
             {
                 Id = 1,
-                Arguments = new []
+                Arguments = new[]
                 {
                     new
                     {

@@ -7,7 +7,7 @@ namespace ParallelEvaluationDemo
 {
     internal sealed class RGBCalculator
     {
-        private static readonly IVariableFactory VariableFactory = new VariableFactory();       // thread safe
+        private static readonly VariableFactory VariableFactory = new();       // thread safe
         private readonly IVariableRegistry _variables;
         private readonly Func<double> _redFunc;
         private readonly Func<double> _greenFunc;

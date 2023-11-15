@@ -1,5 +1,5 @@
-﻿using AllOverIt.Extensions;
-using AllOverIt.Wpf.Extensions;
+﻿using AllOverIt.Wpf.Extensions;
+using AllOverIt.Wpf.Utils;
 using System;
 using System.ComponentModel;
 using System.Linq;
@@ -12,7 +12,7 @@ namespace ViewRegistryDemo
     public partial class MainWindow : Window
     {
         private readonly IDemoViewRegistry _viewRegistry;
-        private IDisposable _windowWrapper;
+        private WindowWrapper _windowWrapper;
 
         public MainWindow(IDemoViewRegistry viewRegistry)
         {
@@ -90,9 +90,9 @@ namespace ViewRegistryDemo
             // Maximum 3 windows, each new Id is always 1 more than the existing max
             _viewRegistry.CreateOrActivateFor<View3ViewModel>(3, viewItems =>
             {
-                return viewItems.Any()
+                return viewItems.Count != 0
                     ? viewItems.Max(item => item.Id) + 1
-                    : 1; 
+                    : 1;
             },
             (vm, view, id) =>
             {

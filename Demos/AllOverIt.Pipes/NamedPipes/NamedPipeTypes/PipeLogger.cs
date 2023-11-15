@@ -5,7 +5,7 @@ namespace NamedPipeTypes
 {
     public static class PipeLogger
     {
-        private static readonly IColorConsoleLogger Logger = new ColorConsoleLogger();
+        private static readonly ColorConsoleLogger Logger = new();
 
         public static void Append(ConsoleColor color, string message)
         {

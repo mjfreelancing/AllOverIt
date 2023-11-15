@@ -16,7 +16,7 @@ namespace InterceptorBenchmarking
     [MemoryDiagnoser]
     public class BenchmarkTests
     {
-        private readonly IService _service = new Service();
+        private readonly Service _service = new();
         private readonly IService _serviceInterceptor = InterceptorFactory.CreateInterceptor<IService, ServiceInterceptor>(new Service(), null, (_, interceptor) => { });
 
         [Benchmark]

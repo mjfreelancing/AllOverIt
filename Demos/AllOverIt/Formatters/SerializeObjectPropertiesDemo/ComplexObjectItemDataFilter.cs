@@ -43,7 +43,7 @@ namespace SerializeObjectPropertiesDemo
 
         private bool AtValuesNode(out ObjectPropertyParent lastParent)
         {
-            if (Parents.Any())
+            if (Parents.Count != 0)
             {
                 lastParent = Parents.Last();
 

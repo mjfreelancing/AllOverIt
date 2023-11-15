@@ -142,7 +142,7 @@ namespace AppSyncSubscriptionDemo
         }
 
         // Created per-client in this demo. Could also create a single configured instance for all clients.
-        private static IJsonSerializer CreateJsonJsonSerializer()
+        private static NewtonsoftJsonSerializer CreateJsonJsonSerializer()
         {
             // take your pick...
             var serializer = new NewtonsoftJsonSerializer();

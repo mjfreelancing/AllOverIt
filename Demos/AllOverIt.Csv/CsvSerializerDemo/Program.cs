@@ -67,7 +67,7 @@ namespace CsvSerializerDemo
             Console.ReadKey();
         }
 
-        private static IReadOnlyCollection<SampleData> CreateSampleData()
+        private static List<SampleData> CreateSampleData()
         {
             return Enumerable
                 .Range(0, 10)

@@ -8,7 +8,6 @@ using AllOverIt.Pagination;
 using AllOverIt.Pagination.Extensions;
 using AllOverIt.Pagination.TokenEncoding;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
 using Npgsql;
 using PaginationConsoleDemo.Entities;
@@ -183,13 +182,15 @@ namespace PaginationConsoleDemo
                     stopwatch.Restart();
 
                     // HasPreviousPageAsync() is EF specific - faster than using HasPreviousPage() as it won't need to return all rows
-                    var hasPrevious = pageResults.Any() && await queryPaginator.HasPreviousPageAsync(pageResults.First(), cancellationToken);
+                    var hasPrevious = pageResults.Count != 0 &&
+                                      await queryPaginator.HasPreviousPageAsync(pageResults.First(), cancellationToken);
 
                     var previousElapsed = stopwatch.ElapsedMilliseconds;
                     stopwatch.Restart();
 
                     // HasNextPageAsync() is EF specific - faster than using HasNextPage() as it won't need to return all rows
-                    var hasNext = pageResults.Any() && await queryPaginator.HasNextPageAsync(pageResults.Last(), cancellationToken);
+                    var hasNext = pageResults.Count != 0 &&
+                                  await queryPaginator.HasNextPageAsync(pageResults.Last(), cancellationToken);
 
                     var nextElapsed = stopwatch.ElapsedMilliseconds;
                     stopwatch.Restart();

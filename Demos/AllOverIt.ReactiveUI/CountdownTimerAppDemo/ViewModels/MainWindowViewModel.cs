@@ -11,7 +11,7 @@ namespace CountdownTimerAppDemo.ViewModels
     public class MainWindowViewModel : ActivatableViewModel
     {
         private const int CountdownSeconds = 10;
-        private ICountdownTimer _countdownTimer;
+        private CountdownTimer _countdownTimer;
 
         [Reactive]
         public double RemainingSeconds { get; private set; }

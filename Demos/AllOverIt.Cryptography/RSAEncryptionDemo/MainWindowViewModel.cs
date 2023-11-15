@@ -6,7 +6,7 @@ namespace RSAEncryptionDemo
 {
     public sealed class MainWindowViewModel : ObservableObject
     {
-        private readonly IRsaEncryptor _encryptor;
+        private readonly RsaEncryptor _encryptor;
 
         private string _publicKey;
         public string PublicKey
