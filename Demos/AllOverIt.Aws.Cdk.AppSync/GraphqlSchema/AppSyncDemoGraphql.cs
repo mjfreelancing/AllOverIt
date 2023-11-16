@@ -7,6 +7,12 @@ using Constructs;
 using System.Collections.Generic;
 using SystemType = System.Type;
 
+#if DEBUG
+using Amazon.CDK.AWS.Cognito;
+using Amazon.CDK.AWS.Lambda;
+using Amazon.CDK.AWS.S3;
+#endif
+
 namespace GraphqlSchema
 {
     internal sealed class AppSyncDemoGraphql : AppGraphqlBase
