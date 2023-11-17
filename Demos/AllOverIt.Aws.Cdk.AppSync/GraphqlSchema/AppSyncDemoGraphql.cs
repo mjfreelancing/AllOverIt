@@ -36,8 +36,8 @@ namespace GraphqlSchema
 #if DEBUG   // Using RELEASE mode to deploy without these (DEBUG mode is used to check Synth output)
 
                     // would normally pass in the additional auth modes - these have been added to show the auth directive attributes work
-                    AdditionalAuthorizationModes = new IAuthorizationMode[]
-                    {
+                    AdditionalAuthorizationModes =
+                    [
                         new AuthorizationMode
                         {
                             AuthorizationType = AuthorizationType.USER_POOL,
@@ -80,7 +80,7 @@ namespace GraphqlSchema
                                 })
                             }
                         }
-                    }
+                    ]
 #endif
                 },
                 EndpointLookup = new Dictionary<string, string>
