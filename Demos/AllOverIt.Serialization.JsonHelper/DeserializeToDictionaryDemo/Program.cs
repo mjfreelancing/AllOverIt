@@ -64,9 +64,7 @@ namespace DeserializeToDictionaryDemo
             //    .GetChildArray("errors", "errorInfo")
             //    .SelectAsReadOnlyCollection(errorInfo => errorInfo.GetValue<string>("errorMessage"));
 
-#pragma warning disable CA1861 // Avoid constant arrays as arguments
-            var errorMessages = jsonHelper.GetDescendantObjectArrayValues<string>(new[] { "errors", "errorInfo" }, "errorMessage");
-#pragma warning restore CA1861 // Avoid constant arrays as arguments
+            var errorMessages = jsonHelper.GetDescendantObjectArrayValues<string>(["errors", "errorInfo"], "errorMessage");
 
             foreach (var error in errorMessages)
             {
@@ -89,17 +87,13 @@ namespace DeserializeToDictionaryDemo
             // This will get ALL 'errorMessage' properties
             // var errorMessages = jsonHelper.GetDescendantObjectArrayValues<string>(new[] { "errors", "errorInfo" }, "errorMessage");
 
-#pragma warning disable CA1861 // Avoid constant arrays as arguments
-
             // This demonstrates how to query and drill down
-            var objectArray = jsonHelper.GetDescendantObjectArray(new[] { "errors" });
+            var objectArray = jsonHelper.GetDescendantObjectArray(["errors"]);
 
             var errorMessages =
                 from element in objectArray
                 where element.GetValue("errorCode").As<int>() == 401
-                select element.GetDescendantObjectArrayValues<string>(new[] { "errorInfo" }, "errorMessage");
-
-#pragma warning restore CA1861 // Avoid constant arrays as arguments
+                select element.GetDescendantObjectArrayValues<string>(["errorInfo"], "errorMessage");
 
             foreach (var error in errorMessages.SelectMany(item => item))
             {
@@ -113,9 +107,7 @@ namespace DeserializeToDictionaryDemo
 
             var jsonHelper = new JsonHelper(anonymousObject);
 
-#pragma warning disable CA1861 // Avoid constant arrays as arguments
-            var arguments = jsonHelper.GetDescendantObjectArray(new[] { "arguments" });
-#pragma warning restore CA1861 // Avoid constant arrays as arguments
+            var arguments = jsonHelper.GetDescendantObjectArray(["arguments"]);
 
             // Use IEnumerable<> to find the 'arguments' element where the property 'Name' has a value of 'id'
             var idArgument = arguments

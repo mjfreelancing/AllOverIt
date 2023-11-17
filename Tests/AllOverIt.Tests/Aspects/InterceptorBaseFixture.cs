@@ -179,7 +179,7 @@ namespace AllOverIt.Tests.Aspects
             public string BeforeArgs { get; set; }
             public string AfterArgs { get; set; }
 
-            protected override bool ShouldInterceptMethod(MethodInfo targetMethod)
+            protected override bool CanInterceptMethod(MethodInfo targetMethod)
             {
                 return false;
             }

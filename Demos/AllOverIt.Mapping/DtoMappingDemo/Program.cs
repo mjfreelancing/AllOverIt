@@ -25,10 +25,8 @@ namespace DtoMappingDemo
             {
                 Prop1 = 10,
                 Prop2 = true,
-#pragma warning disable CA1861 // Avoid constant arrays as arguments
-                Prop3 = new List<string>(new[] { "1", "2", "3" }),
-                Prop3b = new List<string>(new[] { "4", "5", "6" }),
-#pragma warning restore CA1861 // Avoid constant arrays as arguments
+                Prop3 = new List<string>(["1", "2", "3"]),
+                Prop3b = new List<string>(["4", "5", "6"]),
                 Prop5a = 20,
                 Prop7 = null,
                 Prop8 =
