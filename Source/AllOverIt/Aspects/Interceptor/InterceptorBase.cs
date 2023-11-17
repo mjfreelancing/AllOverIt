@@ -1,55 +1,12 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Reflection;
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 
 namespace AllOverIt.Aspects.Interceptor
 {
-    // A more advanced implementation: https://github.com/castleproject/Core/blob/master/docs/dynamicproxy.md
-
-
-
-    public class MethodInterceptor<TService> : InterceptorBase<TService>
-    {
-        private readonly Dictionary<MethodInfo, IInterceptorHandler> _methodInterceptors = [];
-
-        public MethodInterceptor<TService> AddMethodHandler(IInterceptorHandler methodInterceptor)
-        {
-            foreach (var targetMethod in methodInterceptor.TargetMethods)
-            {
-                _methodInterceptors.Add(targetMethod, methodInterceptor);
-            }
-
-            return this;
-        }
-
-        protected override bool ShouldInterceptMethod(MethodInfo targetMethod)
-        {
-            return _methodInterceptors.ContainsKey(targetMethod);
-        }
-
-        protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
-        {
-            var methodInterceptor = _methodInterceptors[targetMethod];
-
-            return methodInterceptor.BeforeInvoke(targetMethod, ref args, ref result);
-        }
-
-        protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, ref object result)
-        {
-            var methodInterceptor = _methodInterceptors[targetMethod];
-
-            methodInterceptor.AfterInvoke(targetMethod, args, state, ref result);
-        }
-    }
-
-
-
-
-
     /// <summary>Provides a base class for all interceptors (dispatch proxies) created via
     /// <see cref="InterceptorFactory.CreateInterceptor{TServiceType, TInterceptor}(TServiceType, Action{TInterceptor})"/>.
     /// Derived Interceptors must be public and non-sealed as they are the base class for the generated proxy.</summary>
@@ -62,7 +19,7 @@ namespace AllOverIt.Aspects.Interceptor
         /// through this interceptor if not overriden.</summary>
         /// <param name="targetMethod">The method info for the method being intercepted.</param>
         /// <returns><see langword="True"/> if the interceptor can handle the method, otherwise <see langword="False"/>.</returns>
-        protected virtual bool ShouldInterceptMethod(MethodInfo targetMethod)
+        protected virtual bool CanInterceptMethod(MethodInfo targetMethod)
         {
             return true;
         }
@@ -76,7 +33,7 @@ namespace AllOverIt.Aspects.Interceptor
         /// <returns>The result of the method invoked on the decorated instance.</returns>
         protected override object Invoke(MethodInfo targetMethod, object[] args)
         {
-            if (!ShouldInterceptMethod(targetMethod))
+            if (!CanInterceptMethod(targetMethod))
             {
                 return InvokeServiceInstance(targetMethod, args);
             }

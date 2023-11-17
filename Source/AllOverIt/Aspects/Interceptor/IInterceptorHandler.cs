@@ -21,7 +21,8 @@ namespace AllOverIt.Aspects.Interceptor
         /// <param name="targetMethod">The <see cref="MethodInfo"/> for the method being intercepted.</param>
         /// <param name="args">The arguments provided to the method being intercepted.</param>
         /// <param name="state">The interceptor state returned from the <see cref="BeforeInvoke(MethodInfo, ref object[], ref object)"/> method.</param>
-        /// <param name="result">The final result to be returned from the caller. This is the final opportunity to change the result, if required.</param>
+        /// <param name="result">The result returned from the decorated service, or the <see cref="BeforeInvoke(MethodInfo, ref object[], ref object)"/>
+        /// method if it was 'handled' there. This is the final opportunity to change the result, if required.</param>
         void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, ref object result);
     }
 }
