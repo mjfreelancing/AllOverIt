@@ -70,7 +70,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
 
                 Throw<InvalidOperationException>.WhenNull(
                     parentToChildNavigation,
-                    $"A parent to child navigation property exists between {principalEntity.DisplayName()} and {column.DeclaringEntityType.DisplayName()}, but not the reverse.");
+                    $"A parent to child navigation property exists between {principalEntity.DisplayName()} and {column.DeclaringType.DisplayName()}, but not the reverse.");
 
                 var isOneToMany = parentToChildNavigation.IsCollection;
 
