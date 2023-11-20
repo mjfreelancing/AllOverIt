@@ -1,4 +1,4 @@
-﻿using AllOverIt.Aspects.Interceptor;
+﻿using AllOverIt.Aspects;
 using AllOverIt.Fixture;
 using Castle.DynamicProxy;
 using FluentAssertions;

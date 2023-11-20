@@ -1,4 +1,4 @@
-﻿using AllOverIt.Aspects.Interceptor;
+﻿using AllOverIt.Aspects;
 using AllOverIt.DependencyInjection.Extensions;
 using InterceptorDemo.Interceptors;
 using Microsoft.Extensions.DependencyInjection;

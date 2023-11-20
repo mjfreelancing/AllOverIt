@@ -1,4 +1,4 @@
-﻿using AllOverIt.Aspects.Interceptor;
+﻿using AllOverIt.Aspects;
 using AllOverIt.Assertion;
 using AllOverIt.DependencyInjection.Exceptions;
 using AllOverIt.Extensions;

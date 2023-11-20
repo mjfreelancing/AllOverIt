@@ -1,4 +1,4 @@
-﻿using AllOverIt.Aspects.Interceptor;
+﻿using AllOverIt.Aspects;
 using BenchmarkDotNet.Attributes;
 using System.Threading.Tasks;
 

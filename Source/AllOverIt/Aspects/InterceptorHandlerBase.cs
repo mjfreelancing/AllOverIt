@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Threading.Tasks;
 
-namespace AllOverIt.Aspects.Interceptor
+namespace AllOverIt.Aspects
 {
     /// <summary>Provides a base class for implementing a method-level interceptor that has a void return type.</summary>
     public abstract class InterceptorHandlerBase : IInterceptorHandler

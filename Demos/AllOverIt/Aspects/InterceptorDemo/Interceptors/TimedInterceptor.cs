@@ -1,4 +1,4 @@
-﻿using AllOverIt.Aspects.Interceptor;
+﻿using AllOverIt.Aspects;
 using AllOverIt.Extensions;
 using System;
 using System.Diagnostics;

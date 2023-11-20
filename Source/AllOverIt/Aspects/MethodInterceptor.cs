@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 
-namespace AllOverIt.Aspects.Interceptor
+namespace AllOverIt.Aspects
 {
     // A more advanced implementation: https://github.com/castleproject/Core/blob/master/docs/dynamicproxy.md
 

@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace AllOverIt.Aspects.Interceptor
+namespace AllOverIt.Aspects
 {
     /// <summary>Represents a interceptor (dispatch proxy) handler for one or more methods on an object.</summary>
     public interface IInterceptorHandler

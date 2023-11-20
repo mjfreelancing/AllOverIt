@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace AllOverIt.Aspects.Interceptor
+namespace AllOverIt.Aspects
 {
     /// <summary>Provides a factory that creates an interceptor (proxy) for a provided service instance.</summary>
     public static class InterceptorFactory
