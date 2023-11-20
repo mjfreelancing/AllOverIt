@@ -84,7 +84,7 @@
 * Amazon.CDK.Lib v2.99.0
 * Amazon.JSII.Runtime v1.91.0
 * Amazon.JSII.Runtime v1.92.0
-* Cdklabs.AwsCdkAppsyncUtils v0.0.275
+* Cdklabs.AwsCdkAppsyncUtils v0.0.278
 * Constructs v10.0.0
 * Constructs v10.0.5
 
