@@ -1,4 +1,0 @@
-# ResourceInitialization
----
-
-Includes...

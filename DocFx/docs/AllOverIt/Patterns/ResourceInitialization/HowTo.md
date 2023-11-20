@@ -1,1 +1,0 @@
-# ResourceInitialization - How To

@@ -1,4 +1,0 @@
-# ChainOfResponsibility
----
-
-Includes...

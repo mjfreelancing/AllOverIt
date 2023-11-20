@@ -1,26 +1,23 @@
 # Async
 ---
 
-Includes utilities such as......
+The `Async` namespace includes the following utilities:
+
+## [AsyncLazy](asynclazy.md)
+Similar to how  `Lazy<TType>` provides lazy initialization of a type, `TType`, via a factory, the `AsyncLazy<TType>` provides an asynchronous version.
 
 
-## AsyncLazy<T>
-an async version of `Lazy<T>`
+## [BackgroundTask](backgroundtask.md)
+Provides support for executing an action asynchronously in an awaitable background task with automatic cancellation when disposed.
 
 
-## BackgroundTask
-an awaitable background task that can be disposed to cancel the operation
+## [CompositeAsyncDisposable](compositeasyncdisposable.md)
+A wrapper over multiple `IAsyncDisposable` instances that can be collectively disposed of (synchronously or asynchronously).
 
 
-## CompositeAsyncDisposable
-a wrapper over multiple `IAsyncDisposable` instances that can be collectively disposed of (synchronously or asynchronously)
+## [RepeatingTask](repeatingtask.md)
+Provides static factory methods to create a cancellable task that repeatedly invokes an asynchronous action with initial and interval delay options.
 
 
-## RepeatingTask
-a static factory that creates a task to repeatedly invoke an asynchronous action with delay options until cancelled
-
-
-## TaskHelper
-provides the ability to await for tasks that return different types and have their results available as a tuple
-
-
+## [TaskHelper](taskhelper.md)
+Provides the ability to await for tasks that return different types and have their results available as a tuple.

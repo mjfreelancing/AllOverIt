@@ -1,4 +1,3 @@
-# ValueObject
+# ValueObject - Overview
 ---
 
-Includes...

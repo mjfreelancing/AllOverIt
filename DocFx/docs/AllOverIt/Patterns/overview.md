@@ -1,4 +1,3 @@
-# Patterns
+# Patterns - Overview
 ---
 
-Includes ...

@@ -1,4 +1,0 @@
-# Specification
----
-
-Includes...
