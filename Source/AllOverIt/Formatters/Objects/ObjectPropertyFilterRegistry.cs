@@ -7,10 +7,19 @@ namespace AllOverIt.Formatters.Objects
     /// <inheritdoc cref="IObjectPropertyFilterRegistry" />
     public sealed class ObjectPropertyFilterRegistry : IObjectPropertyFilterRegistry
     {
-        private static readonly IObjectPropertySerializer DefaultSerializer = new ObjectPropertySerializer();
+        private readonly Lazy<IObjectPropertySerializer> _defaultSerializer;
 
         // A filter is created for each request due to the serializer managing state.
         private readonly Dictionary<Type, Func<IObjectPropertySerializer>> _filterRegistry = [];
+
+        public ObjectPropertyFilterRegistry(Func<IObjectPropertySerializer> defaultSerializerFactory = default)
+        {
+            var serializerFactory = defaultSerializerFactory is not null
+                ? defaultSerializerFactory
+                : () => new ObjectPropertySerializer();
+
+            _defaultSerializer = new Lazy<IObjectPropertySerializer>(serializerFactory);
+        }
 
         /// <inheritdoc />
         public void Register<TType, TFilter>(ObjectPropertySerializerOptions serializerOptions = default)
@@ -61,7 +70,8 @@ namespace AllOverIt.Formatters.Objects
                 return true;
             }
 
-            serializer = DefaultSerializer;
+            serializer = _defaultSerializer.Value;
+
             return false;
         }
 

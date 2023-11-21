@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Formatters.Objects;
 using FluentAssertions;
-using System;
 using Xunit;
 
 namespace AllOverIt.Tests.Formatters.Objects
@@ -14,6 +13,21 @@ namespace AllOverIt.Tests.Formatters.Objects
 
         private sealed class DummyObjectFilter : ObjectPropertyFilter
         {
+        }
+
+        public class Constructor : ObjectPropertyFilterRegistryFixture
+        {
+            [Fact]
+            public void Should_Not_Throw_When_Null_Factory()
+            {
+
+                Invoking(() =>
+                {
+                    _ = new ObjectPropertyFilterRegistry(null);
+                })
+                .Should()
+                .NotThrow();
+            }
         }
 
         public class Register_With_Options : ObjectPropertyFilterRegistryFixture
