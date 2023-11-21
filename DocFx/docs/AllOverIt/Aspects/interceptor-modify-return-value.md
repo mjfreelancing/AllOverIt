@@ -1,4 +1,4 @@
-# Aspects - Modify Return Value
+# Modify Interceptor Return Value
 ---
 
 Consider these methods on `ISecretService`:

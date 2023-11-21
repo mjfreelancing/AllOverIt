@@ -1,9 +1,9 @@
-# Aspects - Overview
+# Aspects - Interceptors
 ---
 
 Aspect-Oriented Programming (AOP) addresses the challenge of managing "cross-cutting concerns" of your application like logging, security, or error handling. AOP introduces the concept of an "aspect" which is a modular unit specifically designed to handle one of these cross-cutting concerns.
 
-The implementation provided by this library is limited to intercepting methods on classes that inherit from an interface as it uses [DispatchProxy](https://learn.microsoft.com/en-us/dotnet/api/system.reflection.dispatchproxy/) under the hood. Interception is based on reflection so it's important to consider any performance concerns. This approach can be useful, however, when you need to intercept methods on a class that you don't have access to due to coming from a third-party library.
+**AllOverIt** provides these aspects in the form of class-level and method-level interceptors. The implementation provided by this library is limited to intercepting methods on classes that inherit from an interface as it uses [DispatchProxy](https://learn.microsoft.com/en-us/dotnet/api/system.reflection.dispatchproxy/) under the hood. Interception is based on reflection so it's important to consider any performance concerns. This approach can be useful, however, when you need to intercept methods on a class that you don't have access to due to coming from a third-party library.
 
 Consider the following `interface` representing a service that returns a 'secret value':
 

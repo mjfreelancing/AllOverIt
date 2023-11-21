@@ -1,4 +1,4 @@
-# Aspects - Modify Input Arguments
+# Modify Interceptor Input Arguments
 ---
 
 Consider this method on `ISecretService`:

@@ -1,4 +1,4 @@
-# Aspects - Instantiating Interceptors
+# Instantiating Interceptors
 ---
 
 This section describes how to instantiate class and method level interceptors, with and without using dependency injection.

@@ -1,3 +1,3 @@
-# Async - CompositeAsyncDisposable
+# CompositeAsyncDisposable
 ---
 

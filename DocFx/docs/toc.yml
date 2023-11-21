@@ -8,8 +8,8 @@
 
     - name: Aspects
       items:
-        - name: Overview
-          href: AllOverIt/Aspects/overview.md
+        - name: Interceptors
+          href: AllOverIt/Aspects/interceptors.md
         - name: Instantiating Interceptors
           href: AllOverIt/Aspects/interceptor-instantiating.md
         - name: Modify Input Arguments
