@@ -1,9 +1,9 @@
 ﻿using AllOverIt.ReactiveUI.Factories;
-using CountdownTimerAppDemo.Views;
+using AllOverIt.ReactiveUI.Wpf.Extensions;
 using CountdownTimerAppDemo.ViewModels;
+using CountdownTimerAppDemo.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ReactiveUI;
 using System.Windows;
 
 namespace CountdownTimerAppDemo
@@ -19,7 +19,12 @@ namespace CountdownTimerAppDemo
                         {
                             services.AddSingleton<MainWindow>();
                             services.AddSingleton<IViewFactory, ViewFactory>();
-                            services.AddTransient<IViewFor<DoneWindowViewModel>, DoneWindow>();
+
+                            // Without AllOverIt.ReactiveUI.Wpf, the call to RegisterWindowTransient() is the same as:
+                            //
+                            //   services.AddTransient<DoneWindowViewModel>();
+                            //   services.AddTransient<IViewFor<DoneWindowViewModel>, DoneWindow>();
+                            services.RegisterWindowTransient<DoneWindowViewModel, DoneWindow>();
                         })
                         .Build();
         }

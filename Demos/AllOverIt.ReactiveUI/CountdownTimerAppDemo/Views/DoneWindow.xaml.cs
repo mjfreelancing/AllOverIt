@@ -5,8 +5,10 @@ namespace CountdownTimerAppDemo.Views
 {
     public partial class DoneWindow : ReactiveWindow<DoneWindowViewModel>
     {
-        public DoneWindow()
+        public DoneWindow(DoneWindowViewModel viewModel)
         {
+            ViewModel = viewModel;      // Not actually used
+
             InitializeComponent();
         }
     }
