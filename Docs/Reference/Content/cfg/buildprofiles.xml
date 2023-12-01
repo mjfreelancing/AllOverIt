@@ -3,7 +3,16 @@
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <build-profile instance="ar">
         <variables>
-            <noindex-content>false</noindex-content>
+            <noindex-content>true</noindex-content>
+
+            <!--Header logo-->
+            <header-logo>site-logo.png</header-logo>
+
+            <!--The link associated with the header logo-->
+            <product-web-url>https://alloverit.mjfreelancing.com</product-web-url>
+
+            <!--FavIcon-->
+            <custom-favicons>site-logo.png</custom-favicons>
         </variables>
     </build-profile>
     <footer>

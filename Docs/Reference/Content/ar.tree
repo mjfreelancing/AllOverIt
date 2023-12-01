@@ -9,4 +9,8 @@
         <toc-element topic="getting-started-packages.topic"/>
         <toc-element topic="getting-started-installation.topic"/>
     </toc-element>
+
+    <toc-element toc-title="Packages">
+        <toc-element topic="packages-alloverit.topic"/>
+    </toc-element>
 </instance-profile>
