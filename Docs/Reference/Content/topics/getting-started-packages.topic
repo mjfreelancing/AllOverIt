@@ -6,4 +6,10 @@
        title="Packages" id="getting-started-packages" help-id="Getting-Started;Available-Packages;Packages">
 
     <p><b>%aoi%</b> began as a single nuget package of the same name in 2015. Since then, the library has broadened and deepened in functionality, resulting in a comprehensive set of dedicated nuget packages. Each of the available packages is described below, along with a link to the relevant section of the documentation where more usage related content can be found.</p>
+
+    <seealso>
+        <category ref="related">
+            <a href="getting-started-installation.topic"/>
+        </category>
+    </seealso>
 </topic>
