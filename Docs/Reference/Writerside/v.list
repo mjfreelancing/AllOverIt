@@ -1,0 +1,6 @@
+<vars>
+    <var name="aoi"
+         instance="ar"
+         value="AllOverIt"
+         type="string" />
+</vars>
