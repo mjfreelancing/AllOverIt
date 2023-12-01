@@ -3,7 +3,7 @@
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <build-profile instance="ar">
         <variables>
-            <noindex-content>true</noindex-content>
+            <noindex-content>false</noindex-content>
 
             <!--Header logo-->
             <header-logo>site-logo.png</header-logo>
