@@ -3,7 +3,7 @@
         SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
 <topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
-       title="Packages" id="getting-started-packages" help-id="Getting-Started;Available-Packages;Packages">
+       title="Introduction" id="getting-started-introduction" help-id="getting-started-introduction;getting-started-packages">
 
     <p>
         <format style="bold">%aoi%</format> began as a single nuget package of the same name in 2015. Since then, the library has broadened and deepened in functionality, resulting in a comprehensive set of dedicated nuget packages. Each of the available packages is described below, along with a link to the relevant section of the documentation where more usage related content can be found.
@@ -21,7 +21,7 @@
             <!--Package Name-->
             <td>
                 <p>
-                    <a href="packages-alloverit.topic">
+                    <a href="intro-alloverit.topic">
                         <format style="bold" color="DeepSkyBlue">AllOverIt</format>
                     </a>
                 </p>
@@ -72,7 +72,7 @@
             <!--Package Name-->
             <td>
                 <p>
-                    <a href="packages-alloverit-aspnetcore.topic">
+                    <a href="intro-alloverit-aspnetcore.topic">
                         <format style="bold" color="DeepSkyBlue">AllOverIt.AspNetCore</format>
                     </a>
                 </p>
@@ -117,7 +117,7 @@
             <!--Package Name-->
             <td>
                 <p>
-                    <a href="packages-alloverit-assertion.topic">
+                    <a href="intro-alloverit-assertion.topic">
                         <format style="bold" color="DeepSkyBlue">AllOverIt.Assertion</format>
                     </a>
                 </p>
@@ -165,7 +165,7 @@
             <!--Package Name-->
             <td>
                 <p>
-                    <a href="packages-alloverit-aws-appsync-client.topic">
+                    <a href="intro-alloverit-aws-appsync-client.topic">
                         <format style="bold" color="DeepSkyBlue">AllOverIt.Aws.AppSync.Client</format>
                     </a>
                 </p>
@@ -213,7 +213,7 @@
             <!--Package Name-->
             <td>
                 <p>
-                    <a href="packages-alloverit-aws-cdk-appsync.topic">
+                    <a href="intro-alloverit-aws-cdk-appsync.topic">
                         <format style="bold" color="DeepSkyBlue">AllOverIt.Aws.Cdk.AppSync</format>
                     </a>
                 </p>
@@ -258,7 +258,7 @@
             <!--Package Name-->
             <td>
                 <p>
-                    <a href="packages-alloverit-cryptography.topic">
+                    <a href="intro-alloverit-cryptography.topic">
                         <format style="bold" color="DeepSkyBlue">AllOverIt.Cryptography</format>
                     </a>
                 </p>
@@ -306,7 +306,7 @@
             <!--Package Name-->
             <td>
                 <p>
-                    <a href="packages-alloverit-csv.topic">
+                    <a href="intro-alloverit-csv.topic">
                         <format style="bold" color="DeepSkyBlue">AllOverIt.Csv</format>
                     </a>
                 </p>
