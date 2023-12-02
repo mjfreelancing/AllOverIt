@@ -5,6 +5,10 @@
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
        title="AllOverIt.Validation.Options" id="packages-alloverit-validation-options">
 
+    <link-summary>
+        Contains Microsoft.Extensions.Options validation using FluentValidation.
+    </link-summary>
+
     <p>Start typing here...</p>
 
     <tabs>

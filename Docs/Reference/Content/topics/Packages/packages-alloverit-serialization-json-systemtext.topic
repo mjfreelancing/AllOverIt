@@ -5,6 +5,10 @@
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
        title="AllOverIt.Serialization.Json.SystemText" id="packages-alloverit-serialization-json-systemtext">
 
+    <link-summary>
+        Contains a wrapper for System.Text JSON serialization based on AllOverIt.Serialization.Json.Abstractions.
+    </link-summary>
+
     <p>Start typing here...</p>
 
     <tabs>

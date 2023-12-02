@@ -3,7 +3,7 @@
         SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
 <topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
-       title="Introduction" id="getting-started-introduction" help-id="getting-started-introduction;getting-started-packages">
+       title="Introduction" id="getting-started-introduction">
 
     <p>
         <format style="bold">%aoi%</format> began as a single nuget package of the same name in 2015. Since then, the library has broadened and deepened in functionality, resulting in a comprehensive set of dedicated nuget packages. Each of the available packages is described below, along with a link to the relevant section of the documentation where more usage related content can be found.
@@ -77,7 +77,7 @@
                     </a>
                 </p>
                 <p>
-                    This package provides useful ASP.NET Core utilities such as custom model binding for <format style="bold">%aoi%</format> based enriched enum types and arrays of values in a query string.
+                    This package provides useful ASP.NET Core utilities such as custom model binding for <format style="bold">%aoi%</format> based enriched enum types, and arrays of values in a query string.
                 </p>
             </td>
 
@@ -122,7 +122,7 @@
                     </a>
                 </p>
                 <p>
-                    This package contains a useful collection of pre- and post-condition assertion extension methods and a fluent-like approach to throwing exceptions based on a given condition or custom predicate.
+                    This package contains a useful collection of pre- and post-condition assertion extension methods, and a fluent-like approach to throwing exceptions based on a given condition or custom predicate.
                 </p>
             </td>
 
@@ -407,7 +407,7 @@
                     </a>
                 </p>
                 <p>
-                    This package provides EntityFramework Core utilities such as a database migration helper and a value converter for <format style="bold">%aoi%</format> based enriched enums.
+                    This package provides EntityFramework Core utilities such as a database migration helper and a value converter for <format style="bold">%aoi%</format> based enriched enum types.
                 </p>
             </td>
 
@@ -785,7 +785,7 @@
                     </a>
                 </p>
                 <p>
-                    This package contains an object mapper that is mostly configuration free but also capable of property exclusion, aliasing, null replacement, value conversion, and deep copying.
+                    This package contains an object mapper that is mostly configuration free, but also capable of property exclusion, aliasing, null replacement, value conversion, and deep copying.
                 </p>
             </td>
 
@@ -1451,6 +1451,7 @@
 
     <seealso>
         <category ref="related">
+            <a href="getting-started-dependencies.topic"/>
             <a href="getting-started-installation.topic"/>
         </category>
     </seealso>

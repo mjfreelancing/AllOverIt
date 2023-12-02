@@ -3,7 +3,11 @@
         SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
 <topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
-       title="AllOverIt.Assertion" id="packages-alloverit-assertion" help-id="packages-alloverit-assertion">
+       title="AllOverIt.Assertion" id="packages-alloverit-assertion">
+
+    <link-summary>
+        Contains a collection of pre- and post-condition assertion extension methods, and the ability to throw exceptions using a fluent-like syntax.
+    </link-summary>
 
     <p>Start typing here...</p>
 

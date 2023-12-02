@@ -5,6 +5,10 @@
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
        title="AllOverIt.Reactive" id="packages-alloverit-reactive">
 
+    <link-summary>
+        Contains utility extensions for use with System.Reactive.
+    </link-summary>
+
     <p>Start typing here...</p>
 
     <tabs>

@@ -7,8 +7,8 @@
 
     <toc-element toc-title="Getting Started">
         <toc-element topic="getting-started-introduction.topic"/>
-        <toc-element topic="getting-started-installation.topic"/>
         <toc-element topic="getting-started-dependencies.topic"/>
+        <toc-element topic="getting-started-installation.topic"/>
     </toc-element>
 
     <toc-element toc-title="Packages">

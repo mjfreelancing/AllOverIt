@@ -5,6 +5,10 @@
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
        title="AllOverIt.Mapping" id="packages-alloverit-mapping">
 
+    <link-summary>
+        Contains an object mapper that is mostly configuration free, but also capable of property exclusion, aliasing, null replacement, value conversion, and deep copying.
+    </link-summary>
+
     <p>Start typing here...</p>
 
     <tabs>

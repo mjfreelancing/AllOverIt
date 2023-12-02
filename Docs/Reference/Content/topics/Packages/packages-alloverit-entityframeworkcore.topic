@@ -3,8 +3,11 @@
         SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
 <topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
-       title="AllOverIt.EntityFrameworkCore" id="packages-alloverit-entityframeworkcore"
-       help-id="packages-alloverit-entityframeworkcore">
+       title="AllOverIt.EntityFrameworkCore" id="packages-alloverit-entityframeworkcore">
+
+    <link-summary>
+        Provides EntityFramework Core utilities such as a database migration helper and a value converter for enriched enum types.
+    </link-summary>
 
     <p>Start typing here...</p>
 

@@ -5,7 +5,13 @@
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
        title="AllOverIt" id="packages-alloverit" help-id="packages-alloverit">
 
-    <p>Start typing here...</p>
+    <link-summary>
+        This is the core package within the %aoi% suite, containing a diverse range of general-purpose classes and utility functions.
+    </link-summary>
+
+    <p>
+        <format style="bold">%aoi%</format> began as a single nuget package of the same name in 2015. Since then, the library has broadened and deepened in functionality, resulting in a comprehensive set of dedicated nuget packages. Each of the available packages is described below, along with a link to the relevant section of the documentation where more usage related content can be found.
+    </p>
 
     <tabs>
         <tab title="NET 6">

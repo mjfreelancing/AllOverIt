@@ -5,6 +5,10 @@
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
        title="AllOverIt.Fixture.FakeItEasy" id="packages-alloverit-fixture-fakeiteasy">
 
+    <link-summary>
+        Extends AllOverIt.Fixture to support FakeItEasy integration.
+    </link-summary>
+
     <p>Start typing here...</p>
 
     <tabs>

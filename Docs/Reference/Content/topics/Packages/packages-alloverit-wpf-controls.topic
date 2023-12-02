@@ -5,6 +5,10 @@
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
        title="AllOverIt.Wpf.Controls" id="packages-alloverit-wpf-controls">
 
+    <link-summary>
+        Contains useful WPF controls.
+    </link-summary>
+
     <p>Start typing here...</p>
 
     <tabs>

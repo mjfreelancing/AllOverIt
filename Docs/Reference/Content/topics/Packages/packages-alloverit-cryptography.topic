@@ -3,7 +3,11 @@
         SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
 <topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
-       title="AllOverIt.Cryptography" id="packages-alloverit-cryptography" help-id="packages-alloverit-cryptography">
+       title="AllOverIt.Cryptography" id="packages-alloverit-cryptography">
+
+    <link-summary>
+        Provides byte-array and stream-based interfaces for encryption algorithms such as AES, RSA and an RSA-AES hybrid.
+    </link-summary>
 
     <p>Start typing here...</p>
 

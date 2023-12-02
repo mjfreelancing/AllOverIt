@@ -5,6 +5,10 @@
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
        title="AllOverIt.Pagination" id="packages-alloverit-pagination">
 
+    <link-summary>
+        Provides advanced keyset-based pagination that uses a fluent-style builder to create queries that cater for forward and backward navigation for any given deterministic base query.
+    </link-summary>
+
     <p>Start typing here...</p>
 
     <tabs>

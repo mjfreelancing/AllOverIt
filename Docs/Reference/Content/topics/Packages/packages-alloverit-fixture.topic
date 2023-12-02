@@ -5,6 +5,10 @@
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
        title="AllOverIt.Fixture" id="packages-alloverit-fixture">
 
+    <link-summary>
+        Contains a base fixture class with numerous helper methods to assist with scaffolding unit tests.
+    </link-summary>
+
     <p>Start typing here...</p>
 
     <tabs>
