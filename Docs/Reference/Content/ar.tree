@@ -12,5 +12,11 @@
 
     <toc-element toc-title="Packages">
         <toc-element topic="packages-alloverit.topic"/>
+        <toc-element topic="packages-alloverit-aspnetcore.topic"/>
+        <toc-element topic="packages-alloverit-assertion.topic"/>
+        <toc-element topic="packages-alloverit-aws-appsync-client.topic"/>
+        <toc-element topic="packages-alloverit-aws-cdk-appsync.topic"/>
+        <toc-element topic="packages-alloverit-cryptography.topic"/>
+        <toc-element topic="packages-alloverit-csv.topic"/>
     </toc-element>
 </instance-profile>

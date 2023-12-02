@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Packages" id="getting-started-packages" help-id="Getting-Started;Available-Packages;Packages">
+
+    <p>
+        <format style="bold">%aoi%</format> began as a single nuget package of the same name in 2015. Since then, the library has broadened and deepened in functionality, resulting in a comprehensive set of dedicated nuget packages. Each of the available packages is described below, along with a link to the relevant section of the documentation where more usage related content can be found.
+    </p>
+
+    <table>
+        <tr>
+            <td><b>Package Name</b></td>
+            <td><b>Latest Release</b></td>
+            <td><b>Target Frameworks</b></td>
+        </tr>
+
+        <!--AllOverIt-->
+        <tr>
+            <!--Package Name-->
+            <td>
+                <p>
+                    <a href="packages-alloverit.topic">
+                        <format style="bold" color="DeepSkyBlue">AllOverIt</format>
+                    </a>
+                </p>
+                <p>
+                    This package contains a diverse range of classes and utility functions, intended to tackle a wide array of commonly encountered issues.
+                </p>
+                <p>
+                    Key areas of concern include threading, tasks, generic caching, event (message) aggregation, expression and reflection utilities, plugin contexts, enriched enums, pipelines, value objects, specifications, and dozens of extensions.
+                </p>
+            </td>
+
+            <!--Latest Release-->
+            <td>
+                <p>
+                    <a href="https://www.nuget.org/packages/AllOverIt/absoluteLatest/">
+                        <img src="https://img.shields.io/nuget/vpre/AllOverIt?color=E3505C" alt="AllOverIt"/>
+                    </a>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/nuget/dt/AllOverIt?color=FFC33C" alt="AllOverIt"/>
+                </p>
+                <p>
+                    <a href="https://github.com/mjfreelancing/AllOverIt/blob/main/LICENSE">
+                        <img src="https://img.shields.io/github/license/mjfreelancing/alloverit" alt="MIT License"/>
+                    </a>
+                </p>
+            </td>
+
+            <!--Target Frameworks-->
+            <td>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-8.0-C56EE0.svg" alt="NET 8.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-7.0-55A9EE.svg" alt="NET 7.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-6.0-FF8C67.svg" alt="NET 6.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg" alt="NET Standard 2.1"/>
+                </p>
+            </td>
+        </tr>
+
+        <!--AllOverIt.AspNetCore-->
+        <tr>
+            <!--Package Name-->
+            <td>
+                <p>
+                    <a href="packages-alloverit-aspnetcore.topic">
+                        <format style="bold" color="DeepSkyBlue">AllOverIt.AspNetCore</format>
+                    </a>
+                </p>
+                <p>
+                    This package provides useful ASP.NET Core utilities such as custom model binding for <format style="bold">%aoi%</format> based enriched enum types and arrays of values in a query string.
+                </p>
+            </td>
+
+            <!--Latest Release-->
+            <td>
+                <p>
+                    <a href="https://www.nuget.org/packages/AllOverIt.AspNetCore/absoluteLatest/">
+                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.AspNetCore?color=E3505C" alt="AllOverIt"/>
+                    </a>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/nuget/dt/AllOverIt.AspNetCore?color=FFC33C" alt="AllOverIt.AspNetCore"/>
+                </p>
+                <p>
+                    <a href="https://github.com/mjfreelancing/AllOverIt/blob/main/LICENSE">
+                        <img src="https://img.shields.io/github/license/mjfreelancing/alloverit" alt="MIT License"/>
+                    </a>
+                </p>
+            </td>
+
+            <!--Target Frameworks-->
+            <td>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-8.0-C56EE0.svg" alt="NET 8.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-7.0-55A9EE.svg" alt="NET 7.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-6.0-FF8C67.svg" alt="NET 6.0"/>
+                </p>
+            </td>
+        </tr>
+
+        <!--AllOverIt.Assertion-->
+        <tr>
+            <!--Package Name-->
+            <td>
+                <p>
+                    <a href="packages-alloverit-assertion.topic">
+                        <format style="bold" color="DeepSkyBlue">AllOverIt.Assertion</format>
+                    </a>
+                </p>
+                <p>
+                    This package contains a useful collection of pre- and post-condition assertion extension methods and a fluent-like approach to throwing exceptions based on a given condition or custom predicate.
+                </p>
+            </td>
+
+            <!--Latest Release-->
+            <td>
+                <p>
+                    <a href="https://www.nuget.org/packages/AllOverIt.Assertion/absoluteLatest">
+                        <img src="https://img.shields.io/nuget/vpre/AllOverIt?color=E3505C" alt="AllOverIt.Assertion"/>
+                    </a>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/nuget/dt/AllOverIt.Assertion?color=FFC33C" alt="AllOverIt.Assertion"/>
+                </p>
+                <p>
+                    <a href="https://github.com/mjfreelancing/AllOverIt/blob/main/LICENSE">
+                        <img src="https://img.shields.io/github/license/mjfreelancing/alloverit" alt="MIT License"/>
+                    </a>
+                </p>
+            </td>
+
+            <!--Target Frameworks-->
+            <td>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-8.0-C56EE0.svg" alt="NET 8.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-7.0-55A9EE.svg" alt="NET 7.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-6.0-FF8C67.svg" alt="NET 6.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg" alt="NET Standard 2.1"/>
+                </p>
+            </td>
+        </tr>
+
+        <!--AllOverIt.Aws.AppSync.Client-->
+        <tr>
+            <!--Package Name-->
+            <td>
+                <p>
+                    <a href="packages-alloverit-aws-appsync-client.topic">
+                        <format style="bold" color="DeepSkyBlue">AllOverIt.Aws.AppSync.Client</format>
+                    </a>
+                </p>
+                <p>
+                    This package contains AWS AppSync GraphQL and Subscription clients with support for serialization using Newtonsoft or System.Text, including serialization of <format style="bold">%aoi%</format> based enriched enums.
+                </p>
+            </td>
+
+            <!--Latest Release-->
+            <td>
+                <p>
+                    <a href="https://www.nuget.org/packages/AllOverIt.Aws.AppSync.Client/absoluteLatest">
+                        <img src="https://img.shields.io/nuget/vpre/AllOverIt?color=E3505C" alt="AllOverIt.Aws.AppSync.Client"/>
+                    </a>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/nuget/dt/AllOverIt.Aws.AppSync.Client?color=FFC33C" alt="AllOverIt.Aws.AppSync.Client"/>
+                </p>
+                <p>
+                    <a href="https://github.com/mjfreelancing/AllOverIt/blob/main/LICENSE">
+                        <img src="https://img.shields.io/github/license/mjfreelancing/alloverit" alt="MIT License"/>
+                    </a>
+                </p>
+            </td>
+
+            <!--Target Frameworks-->
+            <td>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-8.0-C56EE0.svg" alt="NET 8.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-7.0-55A9EE.svg" alt="NET 7.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-6.0-FF8C67.svg" alt="NET 6.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg" alt="NET Standard 2.1"/>
+                </p>
+            </td>
+        </tr>
+
+        <!--AllOverIt.Aws.Cdk.AppSync-->
+        <tr>
+            <!--Package Name-->
+            <td>
+                <p>
+                    <a href="packages-alloverit-aws-cdk-appsync.topic">
+                        <format style="bold" color="DeepSkyBlue">AllOverIt.Aws.Cdk.AppSync</format>
+                    </a>
+                </p>
+                <p>
+                    This package greatly simplifies the generation of AWS Graphql schemas, including their associated mapping and resolver configuration, using a code-first approach.
+                </p>
+            </td>
+
+            <!--Latest Release-->
+            <td>
+                <p>
+                    <a href="https://www.nuget.org/packages/AllOverIt.Aws.Cdk.AppSync/absoluteLatest">
+                        <img src="https://img.shields.io/nuget/vpre/AllOverIt?color=E3505C" alt="AllOverIt.Aws.Cdk.AppSync"/>
+                    </a>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/nuget/dt/AllOverIt.Aws.Cdk.AppSync?color=FFC33C" alt="AllOverIt.Aws.Cdk.AppSync"/>
+                </p>
+                <p>
+                    <a href="https://github.com/mjfreelancing/AllOverIt/blob/main/LICENSE">
+                        <img src="https://img.shields.io/github/license/mjfreelancing/alloverit" alt="MIT License"/>
+                    </a>
+                </p>
+            </td>
+
+            <!--Target Frameworks-->
+            <td>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-8.0-C56EE0.svg" alt="NET 8.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-7.0-55A9EE.svg" alt="NET 7.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-6.0-FF8C67.svg" alt="NET 6.0"/>
+                </p>
+            </td>
+        </tr>
+
+        <!--AllOverIt.Cryptography-->
+        <tr>
+            <!--Package Name-->
+            <td>
+                <p>
+                    <a href="packages-alloverit-cryptography.topic">
+                        <format style="bold" color="DeepSkyBlue">AllOverIt.Cryptography</format>
+                    </a>
+                </p>
+                <p>
+                    This package provides byte-array and stream-based interfaces for encryption algorithms such as AES, RSA and an RSA-AES hybrid. It also includes useful extension methods that greatly simplifies the encryption and decryption between byte-arrays, streams, plain text and base64 encoded versions of plain text and cipher text.
+                </p>
+            </td>
+
+            <!--Latest Release-->
+            <td>
+                <p>
+                    <a href="https://www.nuget.org/packages/AllOverIt.Cryptography/absoluteLatest/">
+                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Cryptography?color=E3505C" alt="AllOverIt.Cryptography"/>
+                    </a>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/nuget/dt/AllOverIt.Cryptography?color=FFC33C" alt="AllOverIt.Cryptography"/>
+                </p>
+                <p>
+                    <a href="https://github.com/mjfreelancing/AllOverIt/blob/main/LICENSE">
+                        <img src="https://img.shields.io/github/license/mjfreelancing/alloverit" alt="MIT License"/>
+                    </a>
+                </p>
+            </td>
+
+            <!--Target Frameworks-->
+            <td>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-8.0-C56EE0.svg" alt="NET 8.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-7.0-55A9EE.svg" alt="NET 7.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-6.0-FF8C67.svg" alt="NET 6.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg" alt="NET Standard 2.1"/>
+                </p>
+            </td>
+        </tr>
+
+        <!--AllOverIt.Csv-->
+        <tr>
+            <!--Package Name-->
+            <td>
+                <p>
+                    <a href="packages-alloverit-csv.topic">
+                        <format style="bold" color="DeepSkyBlue">AllOverIt.Csv</format>
+                    </a>
+                </p>
+                <p>
+                    Using <a href="https://joshclose.github.io/CsvHelper/">CsvHelper</a> to perform the actual writing of CSV content, this package provides a configuration based serializer that can export data using a model with fixed columns as well as dynamic columns derived from complex or array type properties.
+                </p>
+            </td>
+
+            <!--Latest Release-->
+            <td>
+                <p>
+                    <a href="https://www.nuget.org/packages/AllOverIt.Csv/absoluteLatest/">
+                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Csv?color=E3505C" alt="AllOverIt.Csv"/>
+                    </a>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/nuget/dt/AllOverIt.Csv?color=FFC33C" alt="AllOverIt.Csv"/>
+                </p>
+                <p>
+                    <a href="https://github.com/mjfreelancing/AllOverIt/blob/main/LICENSE">
+                        <img src="https://img.shields.io/github/license/mjfreelancing/alloverit" alt="MIT License"/>
+                    </a>
+                </p>
+            </td>
+
+            <!--Target Frameworks-->
+            <td>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-8.0-C56EE0.svg" alt="NET 8.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-7.0-55A9EE.svg" alt="NET 7.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-6.0-FF8C67.svg" alt="NET 6.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg" alt="NET Standard 2.1"/>
+                </p>
+            </td>
+        </tr>
+
+    </table>
+
+    <seealso>
+        <category ref="related">
+            <a href="getting-started-installation.topic"/>
+        </category>
+    </seealso>
+</topic>
