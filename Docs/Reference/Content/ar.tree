@@ -21,5 +21,26 @@
         <toc-element topic="packages-alloverit-csv.topic"/>
         <toc-element topic="packages-alloverit-dependency-injection.topic"/>
         <toc-element topic="packages-alloverit-entityframeworkcore.topic"/>
+        <toc-element topic="packages-alloverit-entityframeworkcore-diagrams.topic"/>
+        <toc-element topic="packages-alloverit-entityframeworkcore-pagination.topic"/>
+        <toc-element topic="packages-alloverit-evaluator.topic"/>
+        <toc-element topic="packages-alloverit-filtering.topic"/>
+        <toc-element topic="packages-alloverit-fixture.topic"/>
+        <toc-element topic="packages-alloverit-fixture-fakeiteasy.topic"/>
+        <toc-element topic="packages-alloverit-generichost.topic"/>
+        <toc-element topic="packages-alloverit-mapping.topic"/>
+        <toc-element topic="packages-alloverit-pagination.topic"/>
+        <toc-element topic="packages-alloverit-pipes.topic"/>
+        <toc-element topic="packages-alloverit-reactive.topic"/>
+        <toc-element topic="packages-alloverit-reactiveui.topic"/>
+        <toc-element topic="packages-alloverit-reactiveui-wpf.topic"/>
+        <toc-element topic="packages-alloverit-serialization-binary.topic"/>
+        <toc-element topic="packages-alloverit-serialization-json-abstractions.topic"/>
+        <toc-element topic="packages-alloverit-serialization-json-newtonsoft.topic"/>
+        <toc-element topic="packages-alloverit-serialization-json-systemtext.topic"/>
+        <toc-element topic="packages-alloverit-validation.topic"/>
+        <toc-element topic="packages-alloverit-validation-options.topic"/>
+        <toc-element topic="packages-alloverit-wpf.topic"/>
+        <toc-element topic="packages-alloverit-wpf-controls.topic"/>
     </toc-element>
 </instance-profile>

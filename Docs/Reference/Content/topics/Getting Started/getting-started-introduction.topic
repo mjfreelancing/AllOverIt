@@ -442,6 +442,1011 @@
             </td>
         </tr>
 
+        <!--AllOverIt.EntityFrameworkCore.Diagrams-->
+        <tr>
+            <!--Package Name-->
+            <td>
+                <p>
+                    <a href="packages-alloverit-entityframeworkcore-diagrams.topic">
+                        <format style="bold" color="DeepSkyBlue">AllOverIt.EntityFrameworkCore.Diagrams</format>
+                    </a>
+                </p>
+                <p>
+                    In conjunction with <a href="https://d2lang.com/">D2</a>, this package will generate entity relationship diagrams for an EntityFramework Core <code>DbContext</code>.
+                </p>
+            </td>
+
+            <!--Latest Release-->
+            <td>
+                <p>
+                    <a href="https://www.nuget.org/packages/AllOverIt.EntityFrameworkCore.Diagrams/absoluteLatest/">
+                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.EntityFrameworkCore.Diagrams?color=E3505C" alt="AllOverIt.EntityFrameworkCore.Diagrams"/>
+                    </a>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/nuget/dt/AllOverIt.EntityFrameworkCore.Diagrams?color=FFC33C" alt="AllOverIt.EntityFrameworkCore.Diagrams"/>
+                </p>
+                <p>
+                    <a href="https://github.com/mjfreelancing/AllOverIt/blob/main/LICENSE">
+                        <img src="https://img.shields.io/github/license/mjfreelancing/alloverit" alt="MIT License"/>
+                    </a>
+                </p>
+            </td>
+
+            <!--Target Frameworks-->
+            <td>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-8.0-C56EE0.svg" alt="NET 8.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-7.0-55A9EE.svg" alt="NET 7.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-6.0-FF8C67.svg" alt="NET 6.0"/>
+                </p>
+            </td>
+        </tr>
+
+        <!--AllOverIt.EntityFrameworkCore.Pagination-->
+        <tr>
+            <!--Package Name-->
+            <td>
+                <p>
+                    <a href="packages-alloverit-entityframeworkcore-pagination.topic">
+                        <format style="bold" color="DeepSkyBlue">AllOverIt.EntityFrameworkCore.Pagination</format>
+                    </a>
+                </p>
+                <p>
+                    Using <a href="packages-alloverit-pagination.topic"/> as the basis for advanced keyset-based pagination, this package provides additional extensions for use with EntityFramework Core.
+                </p>
+            </td>
+
+            <!--Latest Release-->
+            <td>
+                <p>
+                    <a href="https://www.nuget.org/packages/AllOverIt.EntityFrameworkCore.Pagination/absoluteLatest/">
+                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.EntityFrameworkCore.Pagination?color=E3505C" alt="AllOverIt.EntityFrameworkCore.Pagination"/>
+                    </a>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/nuget/dt/AllOverIt.EntityFrameworkCore.Pagination?color=FFC33C" alt="AllOverIt.EntityFrameworkCore.Pagination"/>
+                </p>
+                <p>
+                    <a href="https://github.com/mjfreelancing/AllOverIt/blob/main/LICENSE">
+                        <img src="https://img.shields.io/github/license/mjfreelancing/alloverit" alt="MIT License"/>
+                    </a>
+                </p>
+            </td>
+
+            <!--Target Frameworks-->
+            <td>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-8.0-C56EE0.svg" alt="NET 8.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-7.0-55A9EE.svg" alt="NET 7.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-6.0-FF8C67.svg" alt="NET 6.0"/>
+                </p>
+            </td>
+        </tr>
+
+        <!--AllOverIt.Evaluator-->
+        <tr>
+            <!--Package Name-->
+            <td>
+                <p>
+                    <a href="packages-alloverit-evaluator.topic">
+                        <format style="bold" color="DeepSkyBlue">AllOverIt.Evaluator</format>
+                    </a>
+                </p>
+                <p>
+                    This package contains a highly-extendable mathematical expression compiler and evaluator that includes constant, mutable, delegate, and lazily evaluated variables, offers implicit and explicit variable lookup, and supports custom arithmetic operators and operations.
+                </p>
+            </td>
+
+            <!--Latest Release-->
+            <td>
+                <p>
+                    <a href="https://www.nuget.org/packages/AllOverIt.Evaluator/absoluteLatest/">
+                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Evaluator?color=E3505C" alt="AllOverIt.Evaluator"/>
+                    </a>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/nuget/dt/AllOverIt.Evaluator?color=FFC33C" alt="AllOverIt.Evaluator"/>
+                </p>
+                <p>
+                    <a href="https://github.com/mjfreelancing/AllOverIt/blob/main/LICENSE">
+                        <img src="https://img.shields.io/github/license/mjfreelancing/alloverit" alt="MIT License"/>
+                    </a>
+                </p>
+            </td>
+
+            <!--Target Frameworks-->
+            <td>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-8.0-C56EE0.svg" alt="NET 8.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-7.0-55A9EE.svg" alt="NET 7.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-6.0-FF8C67.svg" alt="NET 6.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg" alt="NET Standard 2.1"/>
+                </p>
+            </td>
+        </tr>
+
+        <!--AllOverIt.Filtering-->
+        <tr>
+            <!--Package Name-->
+            <td>
+                <p>
+                    <a href="packages-alloverit-filtering.topic">
+                        <format style="bold" color="DeepSkyBlue">AllOverIt.Filtering</format>
+                    </a>
+                </p>
+                <p>
+                    This package adds comprehensive filtering support to any IQueryable with built-in provision for operations such as <code>Contains</code>, <code>StartsWith</code>, <code>EndsWith</code>, <code>In</code>, <code>NotIn</code>, <code>EqualTo</code>, <code>NotEqualTo</code>, <code>GreaterThan</code>, <code>LessThan</code>, <code>GreaterThanOrEqual</code>, and <code>LessThanOrEqual</code>.
+                </p>
+                <p>
+                    It's also possible to create a custom predicate based on a Specification and there are options such as ignoring default (<code>null</code>) filter values and parameterizing query inputs that makes it ideal for use with EntityFramework Core.
+                </p>
+            </td>
+
+            <!--Latest Release-->
+            <td>
+                <p>
+                    <a href="https://www.nuget.org/packages/AllOverIt.Filtering/absoluteLatest/">
+                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Filtering?color=E3505C" alt="AllOverIt.Filtering"/>
+                    </a>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/nuget/dt/AllOverIt.Filtering?color=FFC33C" alt="AllOverIt.Filtering"/>
+                </p>
+                <p>
+                    <a href="https://github.com/mjfreelancing/AllOverIt/blob/main/LICENSE">
+                        <img src="https://img.shields.io/github/license/mjfreelancing/alloverit" alt="MIT License"/>
+                    </a>
+                </p>
+            </td>
+
+            <!--Target Frameworks-->
+            <td>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-8.0-C56EE0.svg" alt="NET 8.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-7.0-55A9EE.svg" alt="NET 7.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-6.0-FF8C67.svg" alt="NET 6.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg" alt="NET Standard 2.1"/>
+                </p>
+            </td>
+        </tr>
+
+        <!--AllOverIt.Fixture-->
+        <tr>
+            <!--Package Name-->
+            <td>
+                <p>
+                    <a href="packages-alloverit-fixture.topic">
+                        <format style="bold" color="DeepSkyBlue">AllOverIt.Fixture</format>
+                    </a>
+                </p>
+                <p>
+                    This package contains a base fixture class with numerous helper methods to assist with scaffolding unit tests. Utilizes <a href="https://github.com/AutoFixture/AutoFixture">AutoFixture</a> to do most of the hard work.
+                </p>
+            </td>
+
+            <!--Latest Release-->
+            <td>
+                <p>
+                    <a href="https://www.nuget.org/packages/AllOverIt.Fixture/absoluteLatest/">
+                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Fixture?color=E3505C" alt="AllOverIt.Fixture"/>
+                    </a>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/nuget/dt/AllOverIt.Fixture?color=FFC33C" alt="AllOverIt.Fixture"/>
+                </p>
+                <p>
+                    <a href="https://github.com/mjfreelancing/AllOverIt/blob/main/LICENSE">
+                        <img src="https://img.shields.io/github/license/mjfreelancing/alloverit" alt="MIT License"/>
+                    </a>
+                </p>
+            </td>
+
+            <!--Target Frameworks-->
+            <td>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-8.0-C56EE0.svg" alt="NET 8.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-7.0-55A9EE.svg" alt="NET 7.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-6.0-FF8C67.svg" alt="NET 6.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg" alt="NET Standard 2.1"/>
+                </p>
+            </td>
+        </tr>
+
+        <!--AllOverIt.Fixture.FakeItEasy-->
+        <tr>
+            <!--Package Name-->
+            <td>
+                <p>
+                    <a href="packages-alloverit-fixture-fakeiteasy.topic">
+                        <format style="bold" color="DeepSkyBlue">AllOverIt.Fixture.FakeItEasy</format>
+                    </a>
+                </p>
+                <p>
+                    This package extends <a href="packages-alloverit-fixture.topic"/> to support <a href="https://fakeiteasy.github.io/">FakeItEasy</a> integration.
+                </p>
+            </td>
+
+            <!--Latest Release-->
+            <td>
+                <p>
+                    <a href="https://www.nuget.org/packages/AllOverIt.Fixture.FakeItEasy/absoluteLatest/">
+                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Fixture.FakeItEasy?color=E3505C" alt="AllOverIt.Fixture.FakeItEasy"/>
+                    </a>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/nuget/dt/AllOverIt.Fixture.FakeItEasy?color=FFC33C" alt="AllOverIt.Fixture.FakeItEasy"/>
+                </p>
+                <p>
+                    <a href="https://github.com/mjfreelancing/AllOverIt/blob/main/LICENSE">
+                        <img src="https://img.shields.io/github/license/mjfreelancing/alloverit" alt="MIT License"/>
+                    </a>
+                </p>
+            </td>
+
+            <!--Target Frameworks-->
+            <td>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-8.0-C56EE0.svg" alt="NET 8.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-7.0-55A9EE.svg" alt="NET 7.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-6.0-FF8C67.svg" alt="NET 6.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg" alt="NET Standard 2.1"/>
+                </p>
+            </td>
+        </tr>
+
+        <!--AllOverIt.GenericHost-->
+        <tr>
+            <!--Package Name-->
+            <td>
+                <p>
+                    <a href="packages-alloverit-generichost.topic">
+                        <format style="bold" color="DeepSkyBlue">AllOverIt.GenericHost</format>
+                    </a>
+                </p>
+                <p>
+                    This package contains generic host helpers and convenience methods for setting up console applications that support dependency injection.
+                </p>
+            </td>
+
+            <!--Latest Release-->
+            <td>
+                <p>
+                    <a href="https://www.nuget.org/packages/AllOverIt.GenericHost/absoluteLatest/">
+                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.GenericHost?color=E3505C" alt="AllOverIt.GenericHost"/>
+                    </a>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/nuget/dt/AllOverIt.GenericHost?color=FFC33C" alt="AllOverIt.GenericHost"/>
+                </p>
+                <p>
+                    <a href="https://github.com/mjfreelancing/AllOverIt/blob/main/LICENSE">
+                        <img src="https://img.shields.io/github/license/mjfreelancing/alloverit" alt="MIT License"/>
+                    </a>
+                </p>
+            </td>
+
+            <!--Target Frameworks-->
+            <td>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-8.0-C56EE0.svg" alt="NET 8.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-7.0-55A9EE.svg" alt="NET 7.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-6.0-FF8C67.svg" alt="NET 6.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg" alt="NET Standard 2.1"/>
+                </p>
+            </td>
+        </tr>
+
+        <!--AllOverIt.Mapping-->
+        <tr>
+            <!--Package Name-->
+            <td>
+                <p>
+                    <a href="packages-alloverit-mapping.topic">
+                        <format style="bold" color="DeepSkyBlue">AllOverIt.Mapping</format>
+                    </a>
+                </p>
+                <p>
+                    This package contains an object mapper that is mostly configuration free but also capable of property exclusion, aliasing, null replacement, value conversion, and deep copying.
+                </p>
+            </td>
+
+            <!--Latest Release-->
+            <td>
+                <p>
+                    <a href="https://www.nuget.org/packages/AllOverIt.Mapping/absoluteLatest/">
+                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Mapping?color=E3505C" alt="AllOverIt.Mapping"/>
+                    </a>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/nuget/dt/AllOverIt.Mapping?color=FFC33C" alt="AllOverIt.Mapping"/>
+                </p>
+                <p>
+                    <a href="https://github.com/mjfreelancing/AllOverIt/blob/main/LICENSE">
+                        <img src="https://img.shields.io/github/license/mjfreelancing/alloverit" alt="MIT License"/>
+                    </a>
+                </p>
+            </td>
+
+            <!--Target Frameworks-->
+            <td>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-8.0-C56EE0.svg" alt="NET 8.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-7.0-55A9EE.svg" alt="NET 7.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-6.0-FF8C67.svg" alt="NET 6.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg" alt="NET Standard 2.1"/>
+                </p>
+            </td>
+        </tr>
+
+        <!--AllOverIt.Pagination-->
+        <tr>
+            <!--Package Name-->
+            <td>
+                <p>
+                    <a href="packages-alloverit-pagination.topic">
+                        <format style="bold" color="DeepSkyBlue">AllOverIt.Pagination</format>
+                    </a>
+                </p>
+                <p>
+                    An advanced keyset-based pagination package that uses a fluent-style builder to create queries that cater for forward and backward navigation for any given deterministic base query.
+                </p>
+                <p>
+                    Each page of results includes a 'continuation token' for the current, next, and previous page. These tokens can be used at a later time to navigate to the same location within the dataset, thereby somewhat overcoming the inability of random access traditionally associated with keyset-based navigation.
+                </p>
+            </td>
+
+            <!--Latest Release-->
+            <td>
+                <p>
+                    <a href="https://www.nuget.org/packages/AllOverIt.Pagination/absoluteLatest/">
+                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Pagination?color=E3505C" alt="AllOverIt.Pagination"/>
+                    </a>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/nuget/dt/AllOverIt.Pagination?color=FFC33C" alt="AllOverIt.Pagination"/>
+                </p>
+                <p>
+                    <a href="https://github.com/mjfreelancing/AllOverIt/blob/main/LICENSE">
+                        <img src="https://img.shields.io/github/license/mjfreelancing/alloverit" alt="MIT License"/>
+                    </a>
+                </p>
+            </td>
+
+            <!--Target Frameworks-->
+            <td>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-8.0-C56EE0.svg" alt="NET 8.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-7.0-55A9EE.svg" alt="NET 7.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-6.0-FF8C67.svg" alt="NET 6.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg" alt="NET Standard 2.1"/>
+                </p>
+            </td>
+        </tr>
+
+        <!--AllOverIt.Pipes-->
+        <tr>
+            <!--Package Name-->
+            <td>
+                <p>
+                    <a href="packages-alloverit-pipes.topic">
+                        <format style="bold" color="DeepSkyBlue">AllOverIt.Pipes</format>
+                    </a>
+                </p>
+                <p>
+                    This package provides support for communication over anonymous pipes using <code>StreamReader</code> and <code>StreamWriter</code>, and strongly-typed message-based communication over named pipes using a binary serializer.
+                </p>
+                <p>
+                    The named pipes can use the binary serializer from <a href="packages-alloverit-serialization-binary.topic"/> or you can create your own.
+                </p>
+            </td>
+
+            <!--Latest Release-->
+            <td>
+                <p>
+                    <a href="https://www.nuget.org/packages/AllOverIt.Pipes/absoluteLatest/">
+                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Pipes?color=E3505C" alt="AllOverIt.Pipes"/>
+                    </a>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/nuget/dt/AllOverIt.Pipes?color=FFC33C" alt="AllOverIt.Pipes"/>
+                </p>
+                <p>
+                    <a href="https://github.com/mjfreelancing/AllOverIt/blob/main/LICENSE">
+                        <img src="https://img.shields.io/github/license/mjfreelancing/alloverit" alt="MIT License"/>
+                    </a>
+                </p>
+            </td>
+
+            <!--Target Frameworks-->
+            <td>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-8.0--windows-C56EE0.svg" alt="NET 8.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-7.0--windows-55A9EE.svg" alt="NET 7.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-6.0--windows-FF8C67.svg" alt="NET 6.0"/>
+                </p>
+            </td>
+        </tr>
+
+        <!--AllOverIt.Reactive-->
+        <tr>
+            <!--Package Name-->
+            <td>
+                <p>
+                    <a href="packages-alloverit-reactive.topic">
+                        <format style="bold" color="DeepSkyBlue">AllOverIt.Reactive</format>
+                    </a>
+                </p>
+                <p>
+                    This package contains utility extensions for use with <a href="https://github.com/dotnet/reactive">System.Reactive</a>.
+                </p>
+            </td>
+
+            <!--Latest Release-->
+            <td>
+                <p>
+                    <a href="https://www.nuget.org/packages/AllOverIt.Reactive/absoluteLatest/">
+                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Reactive?color=E3505C" alt="AllOverIt.Reactive"/>
+                    </a>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/nuget/dt/AllOverIt.Reactive?color=FFC33C" alt="AllOverIt.Reactive"/>
+                </p>
+                <p>
+                    <a href="https://github.com/mjfreelancing/AllOverIt/blob/main/LICENSE">
+                        <img src="https://img.shields.io/github/license/mjfreelancing/alloverit" alt="MIT License"/>
+                    </a>
+                </p>
+            </td>
+
+            <!--Target Frameworks-->
+            <td>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-8.0-C56EE0.svg" alt="NET 8.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-7.0-55A9EE.svg" alt="NET 7.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-6.0-FF8C67.svg" alt="NET 6.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg" alt="NET Standard 2.1"/>
+                </p>
+            </td>
+        </tr>
+
+        <!--AllOverIt.ReactiveUI-->
+        <tr>
+            <!--Package Name-->
+            <td>
+                <p>
+                    <a href="packages-alloverit-reactiveui.topic">
+                        <format style="bold" color="DeepSkyBlue">AllOverIt.ReactiveUI</format>
+                    </a>
+                </p>
+                <p>
+                    This package contains utility extensions for use with <a href="https://github.com/reactiveui/ReactiveUI">ReactiveUI</a>.
+                </p>
+            </td>
+
+            <!--Latest Release-->
+            <td>
+                <p>
+                    <a href="https://www.nuget.org/packages/AllOverIt.ReactiveUI/absoluteLatest/">
+                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.ReactiveUI?color=E3505C" alt="AllOverIt.ReactiveUI"/>
+                    </a>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/nuget/dt/AllOverIt.ReactiveUI?color=FFC33C" alt="AllOverIt.ReactiveUI"/>
+                </p>
+                <p>
+                    <a href="https://github.com/mjfreelancing/AllOverIt/blob/main/LICENSE">
+                        <img src="https://img.shields.io/github/license/mjfreelancing/alloverit" alt="MIT License"/>
+                    </a>
+                </p>
+            </td>
+
+            <!--Target Frameworks-->
+            <td>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-8.0-C56EE0.svg" alt="NET 8.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-7.0-55A9EE.svg" alt="NET 7.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-6.0-FF8C67.svg" alt="NET 6.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg" alt="NET Standard 2.1"/>
+                </p>
+            </td>
+        </tr>
+
+        <!--AllOverIt.ReactiveUI.Wpf-->
+        <tr>
+            <!--Package Name-->
+            <td>
+                <p>
+                    <a href="packages-alloverit-reactiveui-wpf.topic">
+                        <format style="bold" color="DeepSkyBlue">AllOverIt.ReactiveUI.Wpf</format>
+                    </a>
+                </p>
+                <p>
+                    This package contains utility extensions for use with <a href="https://github.com/reactiveui/ReactiveUI">ReactiveUI</a> and WPF.
+                </p>
+            </td>
+
+            <!--Latest Release-->
+            <td>
+                <p>
+                    <a href="https://www.nuget.org/packages/AllOverIt.ReactiveUI.Wpf/absoluteLatest/">
+                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.ReactiveUI.Wpf?color=E3505C" alt="AllOverIt.ReactiveUI.Wpf"/>
+                    </a>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/nuget/dt/AllOverIt.ReactiveUI.Wpf?color=FFC33C" alt="AllOverIt.ReactiveUI.Wpf"/>
+                </p>
+                <p>
+                    <a href="https://github.com/mjfreelancing/AllOverIt/blob/main/LICENSE">
+                        <img src="https://img.shields.io/github/license/mjfreelancing/alloverit" alt="MIT License"/>
+                    </a>
+                </p>
+            </td>
+
+            <!--Target Frameworks-->
+            <td>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-8.0--windows-C56EE0.svg" alt="NET 8.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-7.0--windows-55A9EE.svg" alt="NET 7.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-6.0--windows-FF8C67.svg" alt="NET 6.0"/>
+                </p>
+            </td>
+        </tr>
+
+        <!--AllOverIt.Serialization.Binary-->
+        <tr>
+            <!--Package Name-->
+            <td>
+                <p>
+                    <a href="packages-alloverit-serialization-binary.topic">
+                        <format style="bold" color="DeepSkyBlue">AllOverIt.Serialization.Binary</format>
+                    </a>
+                </p>
+                <p>
+                    This package provides enhanced support for binary serialization. Complex object graphs, lists, dictionaries and nullable values can all be dynamically serialized using reflection-based readers and writers or, for greater performance, a custom serializer per object within the graph.
+                </p>
+            </td>
+
+            <!--Latest Release-->
+            <td>
+                <p>
+                    <a href="https://www.nuget.org/packages/AllOverIt.Serialization.Binary/absoluteLatest/">
+                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Serialization.Binary?color=E3505C" alt="AllOverIt.Serialization.Binary"/>
+                    </a>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/nuget/dt/AllOverIt.Serialization.Binary?color=FFC33C" alt="AllOverIt.Serialization.Binary"/>
+                </p>
+                <p>
+                    <a href="https://github.com/mjfreelancing/AllOverIt/blob/main/LICENSE">
+                        <img src="https://img.shields.io/github/license/mjfreelancing/alloverit" alt="MIT License"/>
+                    </a>
+                </p>
+            </td>
+
+            <!--Target Frameworks-->
+            <td>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-8.0-C56EE0.svg" alt="NET 8.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-7.0-55A9EE.svg" alt="NET 7.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-6.0-FF8C67.svg" alt="NET 6.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg" alt="NET Standard 2.1"/>
+                </p>
+            </td>
+        </tr>
+
+        <!--AllOverIt.Serialization.Json.Abstractions-->
+        <tr>
+            <!--Package Name-->
+            <td>
+                <p>
+                    <a href="packages-alloverit-serialization-json-abstractions.topic">
+                        <format style="bold" color="DeepSkyBlue">AllOverIt.Serialization.Json.Abstractions</format>
+                    </a>
+                </p>
+                <p>
+                    This package contains <code>JSON</code> serialization abstractions.
+                </p>
+            </td>
+
+            <!--Latest Release-->
+            <td>
+                <p>
+                    <a href="https://www.nuget.org/packages/AllOverIt.Serialization.Json.Abstractions/absoluteLatest/">
+                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Serialization.Json.Abstractions?color=E3505C" alt="AllOverIt.Serialization.Json.Abstractions"/>
+                    </a>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/nuget/dt/AllOverIt.Serialization.Json.Abstractions?color=FFC33C" alt="AllOverIt.Serialization.Json.Abstractions"/>
+                </p>
+                <p>
+                    <a href="https://github.com/mjfreelancing/AllOverIt/blob/main/LICENSE">
+                        <img src="https://img.shields.io/github/license/mjfreelancing/alloverit" alt="MIT License"/>
+                    </a>
+                </p>
+            </td>
+
+            <!--Target Frameworks-->
+            <td>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-8.0-C56EE0.svg" alt="NET 8.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-7.0-55A9EE.svg" alt="NET 7.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-6.0-FF8C67.svg" alt="NET 6.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg" alt="NET Standard 2.1"/>
+                </p>
+            </td>
+        </tr>
+
+        <!--AllOverIt.Serialization.Json.Newtonsoft-->
+        <tr>
+            <!--Package Name-->
+            <td>
+                <p>
+                    <a href="packages-alloverit-serialization-json-newtonsoft.topic">
+                        <format style="bold" color="DeepSkyBlue">AllOverIt.Serialization.Json.Newtonsoft</format>
+                    </a>
+                </p>
+                <p>
+                    This package contains a wrapper for <a href="https://www.newtonsoft.com/json">Newtonsoft</a> <code>JSON</code> serialization based on <a href="packages-alloverit-serialization-json-abstractions.topic"/>.
+                </p>
+            </td>
+
+            <!--Latest Release-->
+            <td>
+                <p>
+                    <a href="https://www.nuget.org/packages/AllOverIt.Serialization.Json.Newtonsoft/absoluteLatest/">
+                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Serialization.Json.Newtonsoft?color=E3505C" alt="AllOverIt.Serialization.Json.Newtonsoft"/>
+                    </a>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/nuget/dt/AllOverIt.Serialization.Json.Newtonsoft?color=FFC33C" alt="AllOverIt.Serialization.Json.Newtonsoft"/>
+                </p>
+                <p>
+                    <a href="https://github.com/mjfreelancing/AllOverIt/blob/main/LICENSE">
+                        <img src="https://img.shields.io/github/license/mjfreelancing/alloverit" alt="MIT License"/>
+                    </a>
+                </p>
+            </td>
+
+            <!--Target Frameworks-->
+            <td>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-8.0-C56EE0.svg" alt="NET 8.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-7.0-55A9EE.svg" alt="NET 7.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-6.0-FF8C67.svg" alt="NET 6.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg" alt="NET Standard 2.1"/>
+                </p>
+            </td>
+        </tr>
+
+        <!--AllOverIt.Serialization.Json.SystemText-->
+        <tr>
+            <!--Package Name-->
+            <td>
+                <p>
+                    <a href="packages-alloverit-serialization-json-systemtext.topic">
+                        <format style="bold" color="DeepSkyBlue">AllOverIt.Serialization.Json.SystemText</format>
+                    </a>
+                </p>
+                <p>
+                    This package contains a wrapper for <a href="https://learn.microsoft.com/en-us/dotnet/api/system.text.json">System.Text</a> <code>JSON</code> serialization based on <a href="packages-alloverit-serialization-json-abstractions.topic"/>.
+                </p>
+            </td>
+
+            <!--Latest Release-->
+            <td>
+                <p>
+                    <a href="https://www.nuget.org/packages/AllOverIt.Serialization.Json.SystemText/absoluteLatest/">
+                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Serialization.Json.SystemText?color=E3505C" alt="AllOverIt.Serialization.Json.SystemText"/>
+                    </a>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/nuget/dt/AllOverIt.Serialization.Json.SystemText?color=FFC33C" alt="AllOverIt.Serialization.Json.SystemText"/>
+                </p>
+                <p>
+                    <a href="https://github.com/mjfreelancing/AllOverIt/blob/main/LICENSE">
+                        <img src="https://img.shields.io/github/license/mjfreelancing/alloverit" alt="MIT License"/>
+                    </a>
+                </p>
+            </td>
+
+            <!--Target Frameworks-->
+            <td>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-8.0-C56EE0.svg" alt="NET 8.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-7.0-55A9EE.svg" alt="NET 7.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-6.0-FF8C67.svg" alt="NET 6.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg" alt="NET Standard 2.1"/>
+                </p>
+            </td>
+        </tr>
+
+        <!--AllOverIt.Validation-->
+        <tr>
+            <!--Package Name-->
+            <td>
+                <p>
+                    <a href="packages-alloverit-validation.topic">
+                        <format style="bold" color="DeepSkyBlue">AllOverIt.Validation</format>
+                    </a>
+                </p>
+                <p>
+                    This package contains additional validators and extensions for use with FluentValidation. It includes an invoker that will select, and invoke, a registered validator based on a provided model.
+                </p>
+                <p>
+                    Synchronous and Asynchronous validation is supported, along with extensions that make it easier to pass context information into a validator to keep it stateless.
+                </p>
+                <p>
+                    Also available is a validation registrar that makes it possible to auto-register all validators within the same assembly. Validators can also be filtered based on a predicate.
+                </p>
+            </td>
+
+            <!--Latest Release-->
+            <td>
+                <p>
+                    <a href="https://www.nuget.org/packages/AllOverIt.Validation/absoluteLatest/">
+                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Validation?color=E3505C" alt="AllOverIt.Validation"/>
+                    </a>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/nuget/dt/AllOverIt.Validation?color=FFC33C" alt="AllOverIt.Validation"/>
+                </p>
+                <p>
+                    <a href="https://github.com/mjfreelancing/AllOverIt/blob/main/LICENSE">
+                        <img src="https://img.shields.io/github/license/mjfreelancing/alloverit" alt="MIT License"/>
+                    </a>
+                </p>
+            </td>
+
+            <!--Target Frameworks-->
+            <td>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-8.0-C56EE0.svg" alt="NET 8.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-7.0-55A9EE.svg" alt="NET 7.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-6.0-FF8C67.svg" alt="NET 6.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg" alt="NET Standard 2.1"/>
+                </p>
+            </td>
+        </tr>
+
+        <!--AllOverIt.Validation.Options-->
+        <tr>
+            <!--Package Name-->
+            <td>
+                <p>
+                    <a href="packages-alloverit-validation-options.topic">
+                        <format style="bold" color="DeepSkyBlue">AllOverIt.Validation.Options</format>
+                    </a>
+                </p>
+                <p>
+                    This package contains <code>Microsoft.Extensions.Options</code> validation using <a href="https://docs.fluentvalidation.net/en/latest/">FluentValidation</a>.
+                </p>
+            </td>
+
+            <!--Latest Release-->
+            <td>
+                <p>
+                    <a href="https://www.nuget.org/packages/AllOverIt.Validation.Options/absoluteLatest/">
+                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Validation.Options?color=E3505C" alt="AllOverIt.Validation.Options"/>
+                    </a>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/nuget/dt/AllOverIt.Validation.Options?color=FFC33C" alt="AllOverIt.Validation.Options"/>
+                </p>
+                <p>
+                    <a href="https://github.com/mjfreelancing/AllOverIt/blob/main/LICENSE">
+                        <img src="https://img.shields.io/github/license/mjfreelancing/alloverit" alt="MIT License"/>
+                    </a>
+                </p>
+            </td>
+
+            <!--Target Frameworks-->
+            <td>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-8.0-C56EE0.svg" alt="NET 8.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-7.0-55A9EE.svg" alt="NET 7.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-6.0-FF8C67.svg" alt="NET 6.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg" alt="NET Standard 2.1"/>
+                </p>
+            </td>
+        </tr>
+
+        <!--AllOverIt.Wpf-->
+        <tr>
+            <!--Package Name-->
+            <td>
+                <p>
+                    <a href="packages-alloverit-wpf.topic">
+                        <format style="bold" color="DeepSkyBlue">AllOverIt.Wpf</format>
+                    </a>
+                </p>
+                <p>
+                    This package contains general purpose WPF utilities.
+                </p>
+            </td>
+
+            <!--Latest Release-->
+            <td>
+                <p>
+                    <a href="https://www.nuget.org/packages/AllOverIt.Wpf/absoluteLatest/">
+                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Wpf?color=E3505C" alt="AllOverIt.Wpf"/>
+                    </a>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/nuget/dt/AllOverIt.Wpf?color=FFC33C" alt="AllOverIt.Wpf"/>
+                </p>
+                <p>
+                    <a href="https://github.com/mjfreelancing/AllOverIt/blob/main/LICENSE">
+                        <img src="https://img.shields.io/github/license/mjfreelancing/alloverit" alt="MIT License"/>
+                    </a>
+                </p>
+            </td>
+
+            <!--Target Frameworks-->
+            <td>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-8.0--windows-C56EE0.svg" alt="NET 8.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-7.0--windows-55A9EE.svg" alt="NET 7.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-6.0--windows-FF8C67.svg" alt="NET 6.0"/>
+                </p>
+            </td>
+        </tr>
+
+        <!--AllOverIt.Wpf.Controls-->
+        <tr>
+            <!--Package Name-->
+            <td>
+                <p>
+                    <a href="packages-alloverit-wpf-controls.topic">
+                        <format style="bold" color="DeepSkyBlue">AllOverIt.Wpf.Controls</format>
+                    </a>
+                </p>
+                <p>
+                    This package contains useful WPF controls.
+                </p>
+            </td>
+
+            <!--Latest Release-->
+            <td>
+                <p>
+                    <a href="https://www.nuget.org/packages/AllOverIt.Wpf.Controls/absoluteLatest/">
+                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Wpf.Controls?color=E3505C" alt="AllOverIt.Wpf.Controls"/>
+                    </a>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/nuget/dt/AllOverIt.Wpf.Controls?color=FFC33C" alt="AllOverIt.Wpf.Controls"/>
+                </p>
+                <p>
+                    <a href="https://github.com/mjfreelancing/AllOverIt/blob/main/LICENSE">
+                        <img src="https://img.shields.io/github/license/mjfreelancing/alloverit" alt="MIT License"/>
+                    </a>
+                </p>
+            </td>
+
+            <!--Target Frameworks-->
+            <td>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-8.0--windows-C56EE0.svg" alt="NET 8.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-7.0--windows-55A9EE.svg" alt="NET 7.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-6.0--windows-FF8C67.svg" alt="NET 6.0"/>
+                </p>
+            </td>
+        </tr>
+
     </table>
 
     <seealso>
