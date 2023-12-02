@@ -6,4 +6,16 @@
        title="AllOverIt.Wpf.Controls" id="packages-alloverit-wpf-controls">
 
     <p>Start typing here...</p>
+
+    <tabs>
+        <tab title="NET 6">
+            <img src="$WRS_MODULE$/images/dependencies/net6.0/alloverit-wpf-controls.png" alt="AllOverIt.Wpf.Controls" />
+        </tab>
+        <tab title="NET 7">
+            <img src="$WRS_MODULE$/images/dependencies/net7.0/alloverit-wpf-controls.png" alt="AllOverIt.Wpf.Controls" />
+        </tab>
+        <tab title="NET 8">
+            <img src="$WRS_MODULE$/images/dependencies/net8.0/alloverit-wpf-controls.png" alt="AllOverIt.Wpf.Controls" />
+        </tab>
+    </tabs>
 </topic>

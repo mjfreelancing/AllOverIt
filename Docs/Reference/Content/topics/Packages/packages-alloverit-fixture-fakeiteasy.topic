@@ -6,4 +6,16 @@
        title="AllOverIt.Fixture.FakeItEasy" id="packages-alloverit-fixture-fakeiteasy">
 
     <p>Start typing here...</p>
+
+    <tabs>
+        <tab title="NET 6">
+            <img src="$WRS_MODULE$/images/dependencies/net6.0/alloverit-fixture-fakeiteasy.png" alt="AllOverIt.Fixture.FakeItEasy" />
+        </tab>
+        <tab title="NET 7">
+            <img src="$WRS_MODULE$/images/dependencies/net7.0/alloverit-fixture-fakeiteasy.png" alt="AllOverIt.Fixture.FakeItEasy" />
+        </tab>
+        <tab title="NET 8">
+            <img src="$WRS_MODULE$/images/dependencies/net8.0/alloverit-fixture-fakeiteasy.png" alt="AllOverIt.Fixture.FakeItEasy" />
+        </tab>
+    </tabs>
 </topic>
