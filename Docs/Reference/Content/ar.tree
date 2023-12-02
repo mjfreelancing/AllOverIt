@@ -8,15 +8,18 @@
     <toc-element toc-title="Getting Started">
         <toc-element topic="getting-started-introduction.topic"/>
         <toc-element topic="getting-started-installation.topic"/>
+        <toc-element topic="getting-started-dependencies.topic"/>
     </toc-element>
 
-    <toc-element toc-title="Introduction">
-        <toc-element topic="intro-alloverit.topic"/>
-        <toc-element topic="intro-alloverit-aspnetcore.topic"/>
-        <toc-element topic="intro-alloverit-assertion.topic"/>
-        <toc-element topic="intro-alloverit-aws-appsync-client.topic"/>
-        <toc-element topic="intro-alloverit-aws-cdk-appsync.topic"/>
-        <toc-element topic="intro-alloverit-cryptography.topic"/>
-        <toc-element topic="intro-alloverit-csv.topic"/>
+    <toc-element toc-title="Packages">
+        <toc-element topic="packages-alloverit.topic"/>
+        <toc-element topic="packages-alloverit-aspnetcore.topic"/>
+        <toc-element topic="packages-alloverit-assertion.topic"/>
+        <toc-element topic="packages-alloverit-aws-appsync-client.topic"/>
+        <toc-element topic="packages-alloverit-aws-cdk-appsync.topic"/>
+        <toc-element topic="packages-alloverit-cryptography.topic"/>
+        <toc-element topic="packages-alloverit-csv.topic"/>
+        <toc-element topic="packages-alloverit-dependency-injection.topic"/>
+        <toc-element topic="packages-alloverit-entityframeworkcore.topic"/>
     </toc-element>
 </instance-profile>

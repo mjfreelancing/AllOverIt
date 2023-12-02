@@ -21,12 +21,12 @@
             <!--Package Name-->
             <td>
                 <p>
-                    <a href="intro-alloverit.topic">
+                    <a href="packages-alloverit.topic">
                         <format style="bold" color="DeepSkyBlue">AllOverIt</format>
                     </a>
                 </p>
                 <p>
-                    This package contains a diverse range of classes and utility functions, intended to tackle a wide array of commonly encountered issues.
+                    This general-purpose package contains a diverse range of classes and utility functions, intended to tackle a wide array of commonly encountered issues.
                 </p>
                 <p>
                     Key areas of concern include threading, tasks, generic caching, event (message) aggregation, expression and reflection utilities, plugin contexts, enriched enums, pipelines, value objects, specifications, and dozens of extensions.
@@ -72,7 +72,7 @@
             <!--Package Name-->
             <td>
                 <p>
-                    <a href="intro-alloverit-aspnetcore.topic">
+                    <a href="packages-alloverit-aspnetcore.topic">
                         <format style="bold" color="DeepSkyBlue">AllOverIt.AspNetCore</format>
                     </a>
                 </p>
@@ -117,7 +117,7 @@
             <!--Package Name-->
             <td>
                 <p>
-                    <a href="intro-alloverit-assertion.topic">
+                    <a href="packages-alloverit-assertion.topic">
                         <format style="bold" color="DeepSkyBlue">AllOverIt.Assertion</format>
                     </a>
                 </p>
@@ -165,7 +165,7 @@
             <!--Package Name-->
             <td>
                 <p>
-                    <a href="intro-alloverit-aws-appsync-client.topic">
+                    <a href="packages-alloverit-aws-appsync-client.topic">
                         <format style="bold" color="DeepSkyBlue">AllOverIt.Aws.AppSync.Client</format>
                     </a>
                 </p>
@@ -213,7 +213,7 @@
             <!--Package Name-->
             <td>
                 <p>
-                    <a href="intro-alloverit-aws-cdk-appsync.topic">
+                    <a href="packages-alloverit-aws-cdk-appsync.topic">
                         <format style="bold" color="DeepSkyBlue">AllOverIt.Aws.Cdk.AppSync</format>
                     </a>
                 </p>
@@ -258,7 +258,7 @@
             <!--Package Name-->
             <td>
                 <p>
-                    <a href="intro-alloverit-cryptography.topic">
+                    <a href="packages-alloverit-cryptography.topic">
                         <format style="bold" color="DeepSkyBlue">AllOverIt.Cryptography</format>
                     </a>
                 </p>
@@ -306,7 +306,7 @@
             <!--Package Name-->
             <td>
                 <p>
-                    <a href="intro-alloverit-csv.topic">
+                    <a href="packages-alloverit-csv.topic">
                         <format style="bold" color="DeepSkyBlue">AllOverIt.Csv</format>
                     </a>
                 </p>
@@ -345,6 +345,99 @@
                 </p>
                 <p>
                     <img src="https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg" alt="NET Standard 2.1"/>
+                </p>
+            </td>
+        </tr>
+
+        <!--AllOverIt.DependencyInjection-->
+        <tr>
+            <!--Package Name-->
+            <td>
+                <p>
+                    <a href="packages-alloverit-dependency-injection.topic">
+                        <format style="bold" color="DeepSkyBlue">AllOverIt.DependencyInjection</format>
+                    </a>
+                </p>
+                <p>
+                    This package provides useful dependency injection related utilities such as registering and resolving 'named' services, auto service discovery and registration via a service registrar, and service decoration.
+                </p>
+            </td>
+
+            <!--Latest Release-->
+            <td>
+                <p>
+                    <a href="https://www.nuget.org/packages/AllOverIt.DependencyInjection/absoluteLatest/">
+                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.DependencyInjection?color=E3505C" alt="AllOverIt.DependencyInjection"/>
+                    </a>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/nuget/dt/AllOverIt.DependencyInjection?color=FFC33C" alt="AllOverIt.DependencyInjection"/>
+                </p>
+                <p>
+                    <a href="https://github.com/mjfreelancing/AllOverIt/blob/main/LICENSE">
+                        <img src="https://img.shields.io/github/license/mjfreelancing/alloverit" alt="MIT License"/>
+                    </a>
+                </p>
+            </td>
+
+            <!--Target Frameworks-->
+            <td>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-8.0-C56EE0.svg" alt="NET 8.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-7.0-55A9EE.svg" alt="NET 7.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-6.0-FF8C67.svg" alt="NET 6.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg" alt="NET Standard 2.1"/>
+                </p>
+            </td>
+        </tr>
+
+        <!--AllOverIt.EntityFrameworkCore-->
+        <tr>
+            <!--Package Name-->
+            <td>
+                <p>
+                    <a href="packages-alloverit-entityframeworkcore.topic">
+                        <format style="bold" color="DeepSkyBlue">AllOverIt.EntityFrameworkCore</format>
+                    </a>
+                </p>
+                <p>
+                    This package provides EntityFramework Core utilities such as a database migration helper and a value converter for <format style="bold">%aoi%</format> based enriched enums.
+                </p>
+            </td>
+
+            <!--Latest Release-->
+            <td>
+                <p>
+                    <a href="https://www.nuget.org/packages/AllOverIt.EntityFrameworkCore/absoluteLatest/">
+                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.EntityFrameworkCore?color=E3505C" alt="AllOverIt.EntityFrameworkCore"/>
+                    </a>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/nuget/dt/AllOverIt.EntityFrameworkCore?color=FFC33C" alt="AllOverIt.EntityFrameworkCore"/>
+                </p>
+                <p>
+                    <a href="https://github.com/mjfreelancing/AllOverIt/blob/main/LICENSE">
+                        <img src="https://img.shields.io/github/license/mjfreelancing/alloverit" alt="MIT License"/>
+                    </a>
+                </p>
+            </td>
+
+            <!--Target Frameworks-->
+            <td>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-8.0-C56EE0.svg" alt="NET 8.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-7.0-55A9EE.svg" alt="NET 7.0"/>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/badge/.NET-6.0-FF8C67.svg" alt="NET 6.0"/>
                 </p>
             </td>
         </tr>
