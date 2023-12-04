@@ -9,31 +9,44 @@
         <format style="bold">%aoi%</format>, the suite, contains a large number of packages, some of which are dependent on others within the suite. Understandably, this can make it difficult to keep track of which packages need to be explicitly included in your projects, and which can be transitively (implicitly) included.
     </p>
     <p>
-        The diagram below shows the package dependencies within the <format style="bold">%aoi%</format> suite:
+        The diagram below shows the package dependencies across the entire <format style="bold">%aoi%</format> suite:
     </p>
 
     <!--All generated versions are identical as there's no dependencies included, so just using the latest-->
     <img src="$WRS_MODULE$/images/dependencies/net8.0/alloverit-all.png" alt="AllOverIt Dependencies" />
 
-    <chapter id="transitive-dependencies" title="Transitive Dependencies">
+    <chapter id="understanding-dependencies" title="Understanding Dependencies">
         <p>
-            When a package is added to a <code>csproj</code> project, all of its' dependencies are implicitly included. Consider the following dependency chain from the above diagram, where each package explicitly references the package below it:
+            The diagram in the previous section shows a simplified view of package dependencies. The intention of this diagram is to assist with determining which packages need to be explicitly referenced in your projects, and which can be transitively (implicitly) referenced.
         </p>
-        <code-block lang="mermaid">
-            graph TB
-            A[AllOverIt.EntityFrameworkCore.Pagination]
-            B[AllOverIt.Pagination]
-            C[AllOverIt.Serialization.Binary]
-            D[AllOverIt]
-            E[AllOverIt.Assertion]
-            A -- explicit --> B
-            B -- explicit --> C
-            C -- explicit --> D
-            D -- explicit --> E
+
+        <p>
+            To help explain this further, consider an application that explicitly adds <code>AllOverIt.EntityFrameworkCore.Pagination</code> to its' project using the Nuget Package Manager. The <code>csproj</code> file will be updated to contain a section similar to this:
+        </p>
+
+        <code-block lang="xml">
+            <![CDATA[
+                <ItemGroup>
+                    <PackageReference
+                        Include="AllOverIt.EntityFrameworkCore.Pagination"
+                        Version="%aoi-version%" />
+                </ItemGroup>
+            ]]>
         </code-block>
 
         <p>
-            If an application explicitly references <code>AllOverIt.EntityFrameworkCore.Pagination</code>, then this application is implicitly, or <emphasis>transitively</emphasis>, referencing the remaining packages.
+            You will notice there are no references to any of <code>AllOverIt.EntityFrameworkCore.Pagination</code>'s dependencies. This is because they will be transitively (implicitly) included.
+        </p>
+
+        <note>
+            While you could explicitly include all related dependencies to the <code>csproj</code> file, it serves no benefit. In fact, if you're using the Nuget Package Manager to review and update your packages, then this can have a negative impact on performance since the interface will be looking for updates to <emphasis>every</emphasis> package you've explicitly included.
+        </note>
+
+    </chapter>
+
+    <chapter id="dependency-example" title="Use explicit references">
+        <p>
+            The example in the previous section describes how an application that explicitly references <code>AllOverIt.EntityFrameworkCore.Pagination</code> will transitively reference each of its' dependencies. Diagrammatically, this would like the following:
         </p>
 
         <code-block lang="mermaid">
@@ -45,20 +58,124 @@
             E[AllOverIt]
             F[AllOverIt.Assertion]
             A -- explicit --> B
-            B --> C
-            C  --> D
-            D  --> E
-            E  --> F
-            A -- transitive --> C
-            A -- transitive --> D
-            A -- transitive --> E
-            A -- transitive --> F
+            B .-> C
+            C .-> D
+            D .-> E
+            E .-> F
+            A -. transitive .-> C
+            A -. transitive .-> D
+            A -. transitive .-> E
+            A -. transitive .-> F
         </code-block>
 
         <p>
-            This means your application ONLY needs to include <code>AllOverIt.EntityFrameworkCore.Pagination</code> in its' <code>csproj</code> file. All other packages will be implicitly available for use.
+            Let's now update the application to include an explicit reference to <code>AllOverIt.Reactive</code>. The <code>csproj</code> file would now contain:
         </p>
 
+        <code-block lang="xml">
+            <![CDATA[
+                <ItemGroup>
+                    <PackageReference
+                        Include="AllOverIt.EntityFrameworkCore.Pagination"
+                        Version="%aoi-version%" />
+                    <PackageReference
+                        Include="AllOverIt.Reactive"
+                        Version="%aoi-version%" />
+                </ItemGroup>
+            ]]>
+        </code-block>
+
+        <p>
+            And the application's dependencies would now look like the following:
+        </p>
+
+        <code-block lang="mermaid">
+            graph TB
+            A[Application]
+            B[AllOverIt.EntityFrameworkCore.Pagination]
+            C[AllOverIt.Pagination]
+            D[AllOverIt.Serialization.Binary]
+            E[AllOverIt]
+            F[AllOverIt.Assertion]
+            G[AllOverIt.Reactive]
+            A -- explicit --> B
+            A -- explicit --> G
+            B .-> C
+            C .-> D
+            D .-> E
+            E .-> F
+            A -. transitive .-> C
+            A -. transitive .-> D
+            A -. transitive .-> E
+            A -. transitive .-> F
+            G .-> E
+        </code-block>
+
+        <p>
+            As a final update, let's now add an explicit reference to <code>AllOverIt.Pipes</code>.
+        </p>
+
+        <code-block lang="xml">
+            <![CDATA[
+                <ItemGroup>
+                    <PackageReference
+                        Include="AllOverIt.EntityFrameworkCore.Pagination"
+                        Version="%aoi-version%" />
+                    <PackageReference
+                        Include="AllOverIt.Reactive"
+                        Version="%aoi-version%" />
+                    <PackageReference
+                        Include="AllOverIt.Pipes"
+                        Version="%aoi-version%" />
+                </ItemGroup>
+            ]]>
+        </code-block>
+
+        <p>
+            If you look back at the diagram showing all dependencies across <format style="bold">%aoi%</format> you will see that <code>AllOverIt.Pipes</code> has a dependency on <code>AllOverIt.Reactive</code>. This means the <code>csproj</code> file can be simplified to the following:
+        </p>
+
+        <code-block lang="xml">
+            <![CDATA[
+                <ItemGroup>
+                    <PackageReference
+                        Include="AllOverIt.EntityFrameworkCore.Pagination"
+                        Version="%aoi-version%" />
+                    <PackageReference
+                        Include="AllOverIt.Pipes"
+                        Version="%aoi-version%" />
+                </ItemGroup>
+            ]]>
+        </code-block>
+
+        <p>
+            And the application's dependencies would now look like the following:
+        </p>
+
+        <code-block lang="mermaid">
+            graph TB
+            A[Application]
+            B[AllOverIt.EntityFrameworkCore.Pagination]
+            C[AllOverIt.Pagination]
+            D[AllOverIt.Serialization.Binary]
+            E[AllOverIt]
+            F[AllOverIt.Assertion]
+            G[AllOverIt.Reactive]
+            H[AllOverIt.Pipes]
+            A -- explicit --> B
+            A -- explicit --> H
+            B .-> C
+            C .-> D
+            D .-> E
+            E .-> F
+            A -. transitive .-> C
+            A -. transitive .-> D
+            A -. transitive .-> E
+            A -. transitive .-> F
+            A -. transitive .-> G
+            G .-> E
+            H .-> G
+        </code-block>
     </chapter>
 
 </topic>

@@ -2,5 +2,6 @@
 <!DOCTYPE vars SYSTEM "https://resources.jetbrains.com/writerside/1.0/vars.dtd">
 <vars>
     <var name="aoi" instance="ar" value="AllOverIt" type="string" />
+    <var name="aoi-version" instance="ar" value="7.0" type="string" />
     <var name="net8-badge-url" instance="ar" value="https://img.shields.io/badge/.NET-8.0-C56EE0.svg" type="string"/>
 </vars>
