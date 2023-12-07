@@ -10,7 +10,25 @@
     </link-summary>
 
     <p>
-        <code>%aoi%</code> is a comprehensive library containing a diverse range of commonly-used classes and utility functions. Key areas catered for include threading, tasks, generic caching, event (message) aggregation, expression and reflection utilities, plugin contexts, enriched enums, pipelines, value objects, specifications, and dozens of extensions. A detailed explanation of usage for each of these areas is covered in subsequent chapters of this documentation.
+        <code>%aoi%</code> is a comprehensive library containing a diverse range of commonly-used classes and utility functions. Key areas catered for include:
+    </p>
+
+    <list columns="2">
+        <li>Threading</li>
+        <li>Tasks</li>
+        <li>Generic Caching</li>
+        <li>Event (message) aggregation</li>
+        <li>Expression and reflection utilities</li>
+        <li>Plugin contexts</li>
+        <li>Enriched enums</li>
+        <li>Pipelines</li>
+        <li>Value objects</li>
+        <li>Specifications</li>
+        <li>...and dozens of extensions</li>
+    </list>
+
+    <p>
+        Refer to the sections that follow for more detailed information.
     </p>
 
     <chapter id="dependencies" title="Dependencies">

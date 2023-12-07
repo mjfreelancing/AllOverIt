@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Interceptors" id="alloverit-aspects-interceptors" help-id="Interceptors">
+
+    <p>
+        Aspect-Oriented Programming (AOP) addresses the challenge of managing cross-cutting concerns of your application like logging, security, or error handling. AOP introduces the concept of an <emphasis>aspect</emphasis> which is a modular unit specifically designed to handle one of these cross-cutting concerns.
+    </p>
+
+    <p>
+        <format style="bold">%aoi%</format> provides these aspects in the form of class-level and method-level interceptors. The implementation provided by this library is limited to intercepting methods on classes that inherit from an interface as it uses <a href="https://learn.microsoft.com/en-us/dotnet/api/system.reflection.dispatchproxy/">DispatchProxy</a> under the hood. Interception is based on reflection, so it's important to consider any performance concerns. This approach can be useful, however, when you need to intercept methods on a class that you don't have access to due to coming from a third-party library.
+    </p>
+
+    <p>
+        Consider the following <code>interface</code> representing a service that returns a 'secret value':
+    </p>
+
+    <code-block lang="C#">
+        public interface ISecretService
+        {
+            string GetSecret();
+            Task&lt;string&gt; GetSecretAsync();
+        }
+    </code-block>
+
+    <p>
+        And here is an example implementation:
+    </p>
+
+    <code-block lang="C#">
+        internal sealed class SecretService : ISecretService
+        {
+            // Assuming SecurityManager is a static provider
+            // defined elsewhere.
+            public string GetSecret()
+            {
+                return SecurityManager.GetSecret();
+            }
+
+            public Task&lt;string&gt; GetSecretAsync()
+            {
+                return SecurityManager.GetSecretAsync();
+            }
+        }
+    </code-block>
+
+    <p>
+        There are two approaches to intercepting method calls:
+    </p>
+
+    <list>
+        <li>
+            Intercept all methods by implementing an interceptor that inherits <code>InterceptorBase&lt;TService&gt;</code>.
+        </li>
+        <li>
+            Filter the methods to be intercepted by implementing one or more method-level intercept handlers that inherit <code>MethodInterceptor&lt;TService&gt;
+        </code>.
+        </li>
+    </list>
+
+    <chapter title="Class-Level Interceptors" id="class-level-interceptors">
+        <p>
+            For scenarios that require applying the same logic to all methods on a class, create an interceptor that
+            inherits from <code>InterceptorBase&lt;TService&gt;</code>, such as:
+        </p>
+
+        <code-block lang="C#">
+            internal class TimedInterceptor : InterceptorBase&lt;ISecretService&gt;
+            {
+            }
+        </code-block>
+
+        <p>
+            <code>InterceptorBase&lt;TService&gt;</code> is an abstract class with virtual methods that can be overriden to invoke custom code before or after each method on the interface, or if a method faults (throws an <code>Exception</code>). An example implementation is shown below.
+        </p>
+
+        <code-block lang="C#">
+            internal class TimedInterceptor : InterceptorBase&lt;ISecretService&gt;
+            {
+                protected override InterceptorState BeforeInvoke(
+                    MethodInfo targetMethod,
+                    ref object[] args,
+                    ref object result)
+                {
+                    // Custom code here
+
+                    return new InterceptorState.None;
+                }
+
+                protected override void AfterInvoke(
+                    MethodInfo targetMethod,
+                    object[] args,
+                    InterceptorState state,
+                    ref object result)
+                {
+                    // Custom code here
+                }
+
+                protected override void Faulted(
+                    MethodInfo targetMethod,
+                    object[] args,
+                    InterceptorState state,
+                    Exception exception)
+                {
+                    // Custom code here
+                }
+            }
+        </code-block>
+
+        <p>
+            The <code>BeforeInvoke()</code> method returns an implementation of <code>InterceptorState</code> that is later provided to the <code>AfterInvoke()</code> method. If no state is required, use the static <code>InterceptorState.None</code> value.
+        </p>
+
+        <p>
+            Let's update this interceptor, so it determines how long each method call takes to execute.
+        </p>
+
+        <code-block lang="C#">
+            internal class TimedInterceptor : InterceptorBase&lt;ISecretService&gt;
+            {
+                private sealed class TimedState : InterceptorState
+                {
+                    public Stopwatch Stopwatch { get; }
+                        = Stopwatch.StartNew();
+                }
+
+                protected override InterceptorState BeforeInvoke(
+                    MethodInfo targetMethod,
+                    ref object[] args,
+                    ref object result)
+                {
+                    return new TimedState();
+                }
+
+                protected override void AfterInvoke(
+                    MethodInfo targetMethod,
+                    object[] args,
+                    InterceptorState state,
+                    ref object result)
+                {
+                    var timedState = state as TimedState;
+
+                    var elapsed = timedState.Stopwatch.ElapsedMilliseconds;
+
+                    // Do something here...
+                }
+            }
+        </code-block>
+
+        <p>
+            In this example, a new <code>TimedState</code> instance is created before every method is called and it is provided to <code>AfterInvoke()</code> when the decorated method returns.
+        </p>
+
+        <note>
+            The custom interceptor cannot be sealed, and it must have a default constructor.
+        </note>
+    </chapter>
+
+    <chapter title="Method-Level Interceptors" id="method-level-interceptors">
+        <p>
+            It isn't always desirable to use a single interceptor for a given class.
+        </p>
+
+        <list>
+            <li>
+                You may only want to intercept a subset of the methods available on the class.
+            </li>
+
+            <li>
+                Trying to apply a strategy within <code>BeforeInvoke()</code> and <code>AfterInvoke()</code> can become quite difficult to manage over time.
+            </li>
+
+            <li>Using a different interceptor for each method is preferred as it takes on the &quot;Single
+                Responsibility Principle&quot;. Your code will not only be cleaner, but it will also be easier to test.
+            </li>
+        </list>
+
+        <p>
+            Class-level interceptors implement <code>InterceptorBase&lt;TService&gt;</code> but these will have their <code>BeforeInvoke()</code> and <code>AfterInvoke()</code> methods called for every method that is invoked on the class being decorated. Method filtering is achieved by instead using <code>MethodInterceptor&lt;TService&gt;</code> and registering one or more method handlers.
+        </p>
+
+        <p>
+            Consider the scenario where you want to register a handler per method on this <code>ISecretService</code> interface:
+        </p>
+
+        <code-block lang="C#">
+            public interface ISecretService
+            {
+                string GetSecret(string accessKey);
+                Task&lt;string&gt; GetSecretAsync(string accessKey);
+            }
+        </code-block>
+
+        <p>
+            A handler can be created for each of these methods. Synchronous (non-async) method handlers must inherit <code>InterceptorHandlerBase&lt;TResult&gt;</code> and asynchronous method handlers must inherit <code>InterceptorHandlerAsyncBase&lt;TResult&gt;</code>.
+        </p>
+
+        <p>
+            Each handler then overrides the <code>TargetMethods</code> property to indicate which method, or methods, the handler should be invoked for.
+        </p>
+
+        <p>
+            The handler for <code>GetSecret()</code> may look something like this:
+        </p>
+
+        <code-block lang="C#">
+            internal sealed class GetSecretHandler : InterceptorHandlerBase&lt;string&gt;
+            {
+                private readonly ICache _cache;
+
+                // This handler will be invoked when ISecretService.GetSecret() is called.
+                public override MethodInfo[] TargetMethods { get; } =
+                    [typeof(ISecretService).GetMethod(nameof(ISecretService.GetSecret))];
+
+                public GetSecretHandler(ICache cache)
+                {
+                    _cache = cache;
+                }
+
+                protected override InterceptorState BeforeInvoke(
+                    MethodInfo targetMethod,
+                    ref object[] args,
+                    ref string result)
+                {
+                    var accessKey = (string) args[0];
+
+                    // Use _cache to see if there is a suitable value to assign
+                    // to 'result', otherwise just return.
+
+                    return InterceptorState.None;
+                }
+
+                protected override string AfterInvoke(
+                    MethodInfo targetMethod,
+                    object[] args,
+                    InterceptorState state,
+                    string result)
+                {
+                    var accessKey = (string) args[0];
+
+                    // Do something with the input argument(s) or final result.
+
+                    return result;
+                }
+            }
+        </code-block>
+
+        <p>
+            Note the <code>BeforeInvoke()</code> and <code>AfterInvoke()</code> methods are strongly typed to the <code>string</code> return type.
+        </p>
+
+        <p>
+            The handler for <code>GetSecretAsync()</code> may look something like this:
+        </p>
+
+        <code-block lang="C#">
+            internal sealed class GetSecretAsyncHandler
+                : InterceptorHandlerAsyncBase&lt;string&gt;
+            {
+                private readonly ICache _cache;
+
+                // This handler will be invoked when ISecretService.GetSecretAsync()
+                // is called.
+                public override MethodInfo[] TargetMethods { get; }
+                    = [typeof(ISecretService).GetMethod(
+                        nameof(ISecretService.GetSecretAsync))];
+
+                public GetSecretAsyncHandler(ICache cache)
+                {
+                    _cache = cache;
+                }
+
+                protected override InterceptorState BeforeInvoke(
+                    MethodInfo targetMethod,
+                    ref object[] args,
+                    ref Task&lt;string&gt; result)
+                {
+                    var accessKey = (string) args[0];
+
+                    // Use _cache to see if there is a suitable value to assign
+                    // to 'result', otherwise just return.
+
+                    return InterceptorState.None;
+                }
+
+                protected override Task&lt;string&gt; AfterInvoke(
+                    MethodInfo targetMethod,
+                    object[] args,
+                    InterceptorState state,
+                    Task&lt;string&gt; result)
+                {
+                    var accessKey = (string) args[0];
+
+                    // Using Task.Result is safe because AfterInvoke() is only
+                    // called if the Task completed successfully.
+                    var finalResult = result.Result;
+
+                    // Do something with the input argument(s) or final result.
+
+                    // The result must be returned as a Task&lt;TResult&gt;.
+                    return Task.FromResult(finalResult);
+                }
+            }
+        </code-block>
+
+        <p>
+            Note the <code>BeforeInvoke()</code> and <code>AfterInvoke()</code> methods are strongly typed to the <code>Task&lt;string&gt;</code> return type.
+        </p>
+    </chapter>
+</topic>

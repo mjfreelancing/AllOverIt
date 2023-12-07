@@ -6,7 +6,7 @@
        title="Dependencies" id="getting-started-dependencies">
 
     <p>
-        <format style="bold">%aoi%</format>, the suite, contains a large number of packages, some of which are dependent on others within the suite. Understandably, this can make it difficult to keep track of which packages need to be explicitly included in your projects, and which can be transitively (implicitly) included.
+        <format style="bold">%aoi%</format>, the suite, contains a large number of packages, some of which are dependent on others within the suite. Understandably, this can make it difficult to keep track of which packages need to be explicitly included in your projects, and which can be <tooltip term="transitive">transitively</tooltip> (implicitly) included.
     </p>
     <p>
         The diagram below shows the package dependencies across the entire <format style="bold">%aoi%</format> suite:
