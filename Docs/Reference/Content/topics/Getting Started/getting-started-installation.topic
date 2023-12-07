@@ -5,5 +5,953 @@
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
        title="Installation" id="getting-started-installation">
 
-    <p>Start typing here...</p>
+    <var name="aoi-pkg-1" value="AllOverIt"/>
+    <var name="aoi-pkg-2" value="AllOverIt.AspNetCore"/>
+    <var name="aoi-pkg-3" value="AllOverIt.Assertion"/>
+    <var name="aoi-pkg-4" value="AllOverIt.Aws.AppSync.Client"/>
+    <var name="aoi-pkg-5" value="AllOverItAws.Cdk.AppSync"/>
+    <var name="aoi-pkg-6" value="AllOverIt.Cryptography"/>
+    <var name="aoi-pkg-7" value="AllOverIt.Csv"/>
+    <var name="aoi-pkg-8" value="AllOverIt.DependencyInjection"/>
+    <var name="aoi-pkg-9" value="AllOverIt.EntityFrameworkCore"/>
+    <var name="aoi-pkg-10" value="AllOverIt.EntityFrameworkCore.Diagrams"/>
+    <var name="aoi-pkg-11" value="AllOverIt.EntityFrameworkCore.Pagination"/>
+    <var name="aoi-pkg-12" value="AllOverIt.Evaluator"/>
+    <var name="aoi-pkg-13" value="AllOverIt.Filtering"/>
+    <var name="aoi-pkg-14" value="AllOverIt.Fixture"/>
+    <var name="aoi-pkg-15" value="AllOverIt.Fixture.FakeItEasy"/>
+    <var name="aoi-pkg-16" value="AllOverIt.GenericHost"/>
+    <var name="aoi-pkg-17" value="AllOverIt.Mapping"/>
+    <var name="aoi-pkg-18" value="AllOverIt.Pagination"/>
+    <var name="aoi-pkg-19" value="AllOverIt.Pipes"/>
+    <var name="aoi-pkg-20" value="AllOverIt.Reactive"/>
+    <var name="aoi-pkg-21" value="AllOverIt.ReactiveUI"/>
+    <var name="aoi-pkg-22" value="AllOverIt.Reactive.Wpf"/>
+    <var name="aoi-pkg-23" value="AllOverIt.Serialization.Binary"/>
+    <var name="aoi-pkg-24" value="AllOverIt.Serialization.Json.Abstractions"/>
+    <var name="aoi-pkg-25" value="AllOverIt.Serialization.Json.Newtonsoft"/>
+    <var name="aoi-pkg-26" value="AllOverIt.Serialization.SystemText"/>
+    <var name="aoi-pkg-27" value="AllOverIt.Validation"/>
+    <var name="aoi-pkg-28" value="AllOverIt.ValidationOptions"/>
+    <var name="aoi-pkg-29" value="AllOverIt.Wpf"/>
+    <var name="aoi-pkg-30" value="AllOverIt.WpfControls"/>
+
+    <p>
+        The installation process for each of the <format style="bold">%aoi%</format> packages is identical, with the only difference being the name of the assembly being installed. The table below provides a list of all packages and their installation options.
+    </p>
+
+    <note>
+        The <code>PackageReference</code> commands below refer to version %aoi-version%; if required, swap it out with the specific version you want to install.
+    </note>
+
+    <table id="install-commands">
+        <tr>
+            <td>
+                Package Name
+            </td>
+            <td>
+                Command
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %aoi-pkg-1%
+            </td>
+            <td>
+                <tabs>
+                    <tab title=".NET CLI">
+                        <code-block lang="text">
+                            <![CDATA[
+                            dotnet add package %aoi-pkg-1%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="NuGet Package Manager">
+                        <code-block lang="text">
+                            <![CDATA[
+                            Install-Package %aoi-pkg-1%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="PackageReference">
+                        <code-block lang="text">
+                            <![CDATA[
+                            <PackageReference Include="%aoi-pkg-1%" Version="%aoi-version%" />
+                            ]]>
+                        </code-block>
+                    </tab>
+                </tabs>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %aoi-pkg-2%
+            </td>
+            <td>
+                <tabs>
+                    <tab title=".NET CLI">
+                        <code-block lang="text">
+                            <![CDATA[
+                            dotnet add package %aoi-pkg-2%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="NuGet Package Manager">
+                        <code-block lang="text">
+                            <![CDATA[
+                            Install-Package %aoi-pkg-2%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="PackageReference">
+                        <code-block lang="text">
+                            <![CDATA[
+                            <PackageReference Include="%aoi-pkg-2%" Version="%aoi-version%" />
+                            ]]>
+                        </code-block>
+                    </tab>
+                </tabs>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %aoi-pkg-3%
+            </td>
+            <td>
+                <tabs>
+                    <tab title=".NET CLI">
+                        <code-block lang="text">
+                            <![CDATA[
+                            dotnet add package %aoi-pkg-3%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="NuGet Package Manager">
+                        <code-block lang="text">
+                            <![CDATA[
+                            Install-Package %aoi-pkg-3%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="PackageReference">
+                        <code-block lang="text">
+                            <![CDATA[
+                            <PackageReference Include="%aoi-pkg-3%" Version="%aoi-version%" />
+                            ]]>
+                        </code-block>
+                    </tab>
+                </tabs>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %aoi-pkg-4%
+            </td>
+            <td>
+                <tabs>
+                    <tab title=".NET CLI">
+                        <code-block lang="text">
+                            <![CDATA[
+                            dotnet add package %aoi-pkg-4%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="NuGet Package Manager">
+                        <code-block lang="text">
+                            <![CDATA[
+                            Install-Package %aoi-pkg-4%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="PackageReference">
+                        <code-block lang="text">
+                            <![CDATA[
+                            <PackageReference Include="%aoi-pkg-4%" Version="%aoi-version%" />
+                            ]]>
+                        </code-block>
+                    </tab>
+                </tabs>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %aoi-pkg-5%
+            </td>
+            <td>
+                <tabs>
+                    <tab title=".NET CLI">
+                        <code-block lang="text">
+                            <![CDATA[
+                            dotnet add package %aoi-pkg-5%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="NuGet Package Manager">
+                        <code-block lang="text">
+                            <![CDATA[
+                            Install-Package %aoi-pkg-5%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="PackageReference">
+                        <code-block lang="text">
+                            <![CDATA[
+                            <PackageReference Include="%aoi-pkg-5%" Version="%aoi-version%" />
+                            ]]>
+                        </code-block>
+                    </tab>
+                </tabs>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %aoi-pkg-6%
+            </td>
+            <td>
+                <tabs>
+                    <tab title=".NET CLI">
+                        <code-block lang="text">
+                            <![CDATA[
+                            dotnet add package %aoi-pkg-6%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="NuGet Package Manager">
+                        <code-block lang="text">
+                            <![CDATA[
+                            Install-Package %aoi-pkg-6%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="PackageReference">
+                        <code-block lang="text">
+                            <![CDATA[
+                            <PackageReference Include="%aoi-pkg-6%" Version="%aoi-version%" />
+                            ]]>
+                        </code-block>
+                    </tab>
+                </tabs>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %aoi-pkg-7%
+            </td>
+            <td>
+                <tabs>
+                    <tab title=".NET CLI">
+                        <code-block lang="text">
+                            <![CDATA[
+                            dotnet add package %aoi-pkg-7%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="NuGet Package Manager">
+                        <code-block lang="text">
+                            <![CDATA[
+                            Install-Package %aoi-pkg-7%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="PackageReference">
+                        <code-block lang="text">
+                            <![CDATA[
+                            <PackageReference Include="%aoi-pkg-7%" Version="%aoi-version%" />
+                            ]]>
+                        </code-block>
+                    </tab>
+                </tabs>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %aoi-pkg-8%
+            </td>
+            <td>
+                <tabs>
+                    <tab title=".NET CLI">
+                        <code-block lang="text">
+                            <![CDATA[
+                            dotnet add package %aoi-pkg-8%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="NuGet Package Manager">
+                        <code-block lang="text">
+                            <![CDATA[
+                            Install-Package %aoi-pkg-8%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="PackageReference">
+                        <code-block lang="text">
+                            <![CDATA[
+                            <PackageReference Include="%aoi-pkg-8%" Version="%aoi-version%" />
+                            ]]>
+                        </code-block>
+                    </tab>
+                </tabs>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %aoi-pkg-9%
+            </td>
+            <td>
+                <tabs>
+                    <tab title=".NET CLI">
+                        <code-block lang="text">
+                            <![CDATA[
+                            dotnet add package %aoi-pkg-9%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="NuGet Package Manager">
+                        <code-block lang="text">
+                            <![CDATA[
+                            Install-Package %aoi-pkg-9%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="PackageReference">
+                        <code-block lang="text">
+                            <![CDATA[
+                            <PackageReference Include="%aoi-pkg-9%" Version="%aoi-version%" />
+                            ]]>
+                        </code-block>
+                    </tab>
+                </tabs>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %aoi-pkg-10%
+            </td>
+            <td>
+                <tabs>
+                    <tab title=".NET CLI">
+                        <code-block lang="text">
+                            <![CDATA[
+                            dotnet add package %aoi-pkg-10%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="NuGet Package Manager">
+                        <code-block lang="text">
+                            <![CDATA[
+                            Install-Package %aoi-pkg-10%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="PackageReference">
+                        <code-block lang="text">
+                            <![CDATA[
+                            <PackageReference Include="%aoi-pkg-10%" Version="%aoi-version%" />
+                            ]]>
+                        </code-block>
+                    </tab>
+                </tabs>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %aoi-pkg-11%
+            </td>
+            <td>
+                <tabs>
+                    <tab title=".NET CLI">
+                        <code-block lang="text">
+                            <![CDATA[
+                            dotnet add package %aoi-pkg-11%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="NuGet Package Manager">
+                        <code-block lang="text">
+                            <![CDATA[
+                            Install-Package %aoi-pkg-11%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="PackageReference">
+                        <code-block lang="text">
+                            <![CDATA[
+                            <PackageReference Include="%aoi-pkg-11%" Version="%aoi-version%" />
+                            ]]>
+                        </code-block>
+                    </tab>
+                </tabs>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %aoi-pkg-12%
+            </td>
+            <td>
+                <tabs>
+                    <tab title=".NET CLI">
+                        <code-block lang="text">
+                            <![CDATA[
+                            dotnet add package %aoi-pkg-12%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="NuGet Package Manager">
+                        <code-block lang="text">
+                            <![CDATA[
+                            Install-Package %aoi-pkg-12%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="PackageReference">
+                        <code-block lang="text">
+                            <![CDATA[
+                            <PackageReference Include="%aoi-pkg-12%" Version="%aoi-version%" />
+                            ]]>
+                        </code-block>
+                    </tab>
+                </tabs>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %aoi-pkg-13%
+            </td>
+            <td>
+                <tabs>
+                    <tab title=".NET CLI">
+                        <code-block lang="text">
+                            <![CDATA[
+                            dotnet add package %aoi-pkg-13%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="NuGet Package Manager">
+                        <code-block lang="text">
+                            <![CDATA[
+                            Install-Package %aoi-pkg-13%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="PackageReference">
+                        <code-block lang="text">
+                            <![CDATA[
+                            <PackageReference Include="%aoi-pkg-13%" Version="%aoi-version%" />
+                            ]]>
+                        </code-block>
+                    </tab>
+                </tabs>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %aoi-pkg-14%
+            </td>
+            <td>
+                <tabs>
+                    <tab title=".NET CLI">
+                        <code-block lang="text">
+                            <![CDATA[
+                            dotnet add package %aoi-pkg-14%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="NuGet Package Manager">
+                        <code-block lang="text">
+                            <![CDATA[
+                            Install-Package %aoi-pkg-14%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="PackageReference">
+                        <code-block lang="text">
+                            <![CDATA[
+                            <PackageReference Include="%aoi-pkg-14%" Version="%aoi-version%" />
+                            ]]>
+                        </code-block>
+                    </tab>
+                </tabs>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %aoi-pkg-15%
+            </td>
+            <td>
+                <tabs>
+                    <tab title=".NET CLI">
+                        <code-block lang="text">
+                            <![CDATA[
+                            dotnet add package %aoi-pkg-15%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="NuGet Package Manager">
+                        <code-block lang="text">
+                            <![CDATA[
+                            Install-Package %aoi-pkg-15%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="PackageReference">
+                        <code-block lang="text">
+                            <![CDATA[
+                            <PackageReference Include="%aoi-pkg-15%" Version="%aoi-version%" />
+                            ]]>
+                        </code-block>
+                    </tab>
+                </tabs>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %aoi-pkg-16%
+            </td>
+            <td>
+                <tabs>
+                    <tab title=".NET CLI">
+                        <code-block lang="text">
+                            <![CDATA[
+                            dotnet add package %aoi-pkg-16%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="NuGet Package Manager">
+                        <code-block lang="text">
+                            <![CDATA[
+                            Install-Package %aoi-pkg-16%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="PackageReference">
+                        <code-block lang="text">
+                            <![CDATA[
+                            <PackageReference Include="%aoi-pkg-16%" Version="%aoi-version%" />
+                            ]]>
+                        </code-block>
+                    </tab>
+                </tabs>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %aoi-pkg-17%
+            </td>
+            <td>
+                <tabs>
+                    <tab title=".NET CLI">
+                        <code-block lang="text">
+                            <![CDATA[
+                            dotnet add package %aoi-pkg-17%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="NuGet Package Manager">
+                        <code-block lang="text">
+                            <![CDATA[
+                            Install-Package %aoi-pkg-17%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="PackageReference">
+                        <code-block lang="text">
+                            <![CDATA[
+                            <PackageReference Include="%aoi-pkg-17%" Version="%aoi-version%" />
+                            ]]>
+                        </code-block>
+                    </tab>
+                </tabs>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %aoi-pkg-18%
+            </td>
+            <td>
+                <tabs>
+                    <tab title=".NET CLI">
+                        <code-block lang="text">
+                            <![CDATA[
+                            dotnet add package %aoi-pkg-18%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="NuGet Package Manager">
+                        <code-block lang="text">
+                            <![CDATA[
+                            Install-Package %aoi-pkg-18%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="PackageReference">
+                        <code-block lang="text">
+                            <![CDATA[
+                            <PackageReference Include="%aoi-pkg-18%" Version="%aoi-version%" />
+                            ]]>
+                        </code-block>
+                    </tab>
+                </tabs>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %aoi-pkg-19%
+            </td>
+            <td>
+                <tabs>
+                    <tab title=".NET CLI">
+                        <code-block lang="text">
+                            <![CDATA[
+                            dotnet add package %aoi-pkg-19%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="NuGet Package Manager">
+                        <code-block lang="text">
+                            <![CDATA[
+                            Install-Package %aoi-pkg-19%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="PackageReference">
+                        <code-block lang="text">
+                            <![CDATA[
+                            <PackageReference Include="%aoi-pkg-19%" Version="%aoi-version%" />
+                            ]]>
+                        </code-block>
+                    </tab>
+                </tabs>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %aoi-pkg-20%
+            </td>
+            <td>
+                <tabs>
+                    <tab title=".NET CLI">
+                        <code-block lang="text">
+                            <![CDATA[
+                            dotnet add package %aoi-pkg-20%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="NuGet Package Manager">
+                        <code-block lang="text">
+                            <![CDATA[
+                            Install-Package %aoi-pkg-20%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="PackageReference">
+                        <code-block lang="text">
+                            <![CDATA[
+                            <PackageReference Include="%aoi-pkg-20%" Version="%aoi-version%" />
+                            ]]>
+                        </code-block>
+                    </tab>
+                </tabs>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %aoi-pkg-21%
+            </td>
+            <td>
+                <tabs>
+                    <tab title=".NET CLI">
+                        <code-block lang="text">
+                            <![CDATA[
+                            dotnet add package %aoi-pkg-21%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="NuGet Package Manager">
+                        <code-block lang="text">
+                            <![CDATA[
+                            Install-Package %aoi-pkg-21%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="PackageReference">
+                        <code-block lang="text">
+                            <![CDATA[
+                            <PackageReference Include="%aoi-pkg-21%" Version="%aoi-version%" />
+                            ]]>
+                        </code-block>
+                    </tab>
+                </tabs>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %aoi-pkg-22%
+            </td>
+            <td>
+                <tabs>
+                    <tab title=".NET CLI">
+                        <code-block lang="text">
+                            <![CDATA[
+                            dotnet add package %aoi-pkg-22%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="NuGet Package Manager">
+                        <code-block lang="text">
+                            <![CDATA[
+                            Install-Package %aoi-pkg-22%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="PackageReference">
+                        <code-block lang="text">
+                            <![CDATA[
+                            <PackageReference Include="%aoi-pkg-22%" Version="%aoi-version%" />
+                            ]]>
+                        </code-block>
+                    </tab>
+                </tabs>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %aoi-pkg-23%
+            </td>
+            <td>
+                <tabs>
+                    <tab title=".NET CLI">
+                        <code-block lang="text">
+                            <![CDATA[
+                            dotnet add package %aoi-pkg-23%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="NuGet Package Manager">
+                        <code-block lang="text">
+                            <![CDATA[
+                            Install-Package %aoi-pkg-23%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="PackageReference">
+                        <code-block lang="text">
+                            <![CDATA[
+                            <PackageReference Include="%aoi-pkg-23%" Version="%aoi-version%" />
+                            ]]>
+                        </code-block>
+                    </tab>
+                </tabs>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %aoi-pkg-24%
+            </td>
+            <td>
+                <tabs>
+                    <tab title=".NET CLI">
+                        <code-block lang="text">
+                            <![CDATA[
+                            dotnet add package %aoi-pkg-24%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="NuGet Package Manager">
+                        <code-block lang="text">
+                            <![CDATA[
+                            Install-Package %aoi-pkg-24%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="PackageReference">
+                        <code-block lang="text">
+                            <![CDATA[
+                            <PackageReference Include="%aoi-pkg-24%" Version="%aoi-version%" />
+                            ]]>
+                        </code-block>
+                    </tab>
+                </tabs>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %aoi-pkg-25%
+            </td>
+            <td>
+                <tabs>
+                    <tab title=".NET CLI">
+                        <code-block lang="text">
+                            <![CDATA[
+                            dotnet add package %aoi-pkg-25%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="NuGet Package Manager">
+                        <code-block lang="text">
+                            <![CDATA[
+                            Install-Package %aoi-pkg-25%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="PackageReference">
+                        <code-block lang="text">
+                            <![CDATA[
+                            <PackageReference Include="%aoi-pkg-25%" Version="%aoi-version%" />
+                            ]]>
+                        </code-block>
+                    </tab>
+                </tabs>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %aoi-pkg-26%
+            </td>
+            <td>
+                <tabs>
+                    <tab title=".NET CLI">
+                        <code-block lang="text">
+                            <![CDATA[
+                            dotnet add package %aoi-pkg-26%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="NuGet Package Manager">
+                        <code-block lang="text">
+                            <![CDATA[
+                            Install-Package %aoi-pkg-26%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="PackageReference">
+                        <code-block lang="text">
+                            <![CDATA[
+                            <PackageReference Include="%aoi-pkg-26%" Version="%aoi-version%" />
+                            ]]>
+                        </code-block>
+                    </tab>
+                </tabs>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %aoi-pkg-27%
+            </td>
+            <td>
+                <tabs>
+                    <tab title=".NET CLI">
+                        <code-block lang="text">
+                            <![CDATA[
+                            dotnet add package %aoi-pkg-27%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="NuGet Package Manager">
+                        <code-block lang="text">
+                            <![CDATA[
+                            Install-Package %aoi-pkg-27%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="PackageReference">
+                        <code-block lang="text">
+                            <![CDATA[
+                            <PackageReference Include="%aoi-pkg-27%" Version="%aoi-version%" />
+                            ]]>
+                        </code-block>
+                    </tab>
+                </tabs>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %aoi-pkg-28%
+            </td>
+            <td>
+                <tabs>
+                    <tab title=".NET CLI">
+                        <code-block lang="text">
+                            <![CDATA[
+                            dotnet add package %aoi-pkg-28%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="NuGet Package Manager">
+                        <code-block lang="text">
+                            <![CDATA[
+                            Install-Package %aoi-pkg-28%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="PackageReference">
+                        <code-block lang="text">
+                            <![CDATA[
+                            <PackageReference Include="%aoi-pkg-28%" Version="%aoi-version%" />
+                            ]]>
+                        </code-block>
+                    </tab>
+                </tabs>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %aoi-pkg-29%
+            </td>
+            <td>
+                <tabs>
+                    <tab title=".NET CLI">
+                        <code-block lang="text">
+                            <![CDATA[
+                            dotnet add package %aoi-pkg-29%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="NuGet Package Manager">
+                        <code-block lang="text">
+                            <![CDATA[
+                            Install-Package %aoi-pkg-29%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="PackageReference">
+                        <code-block lang="text">
+                            <![CDATA[
+                            <PackageReference Include="%aoi-pkg-29%" Version="%aoi-version%" />
+                            ]]>
+                        </code-block>
+                    </tab>
+                </tabs>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %aoi-pkg-30%
+            </td>
+            <td>
+                <tabs>
+                    <tab title=".NET CLI">
+                        <code-block lang="text">
+                            <![CDATA[
+                            dotnet add package %aoi-pkg-30%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="NuGet Package Manager">
+                        <code-block lang="text">
+                            <![CDATA[
+                            Install-Package %aoi-pkg-30%
+                            ]]>
+                        </code-block>
+                    </tab>
+                    <tab title="PackageReference">
+                        <code-block lang="text">
+                            <![CDATA[
+                            <PackageReference Include="%aoi-pkg-30%" Version="%aoi-version%" />
+                            ]]>
+                        </code-block>
+                    </tab>
+                </tabs>
+            </td>
+        </tr>
+    </table>
 </topic>

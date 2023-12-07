@@ -6,7 +6,15 @@
        title="Introduction" id="getting-started-introduction">
 
     <p>
-        <format style="bold">%aoi%</format> began as a single nuget package of the same name in 2015. Since then, the library has broadened and deepened in functionality, resulting in a comprehensive set of dedicated nuget packages. Each of the available packages is described below, along with a link to the relevant section of the documentation where more usage related content can be found.
+        <format style="bold">%aoi%</format>, the suite, began as a single nuget package of the same name in 2015, and existed for the sole purpose of being able to apply commonly used code to multiple projects with the confidence of knowing they were backed by unit tests.
+    </p>
+
+    <p>
+        As the years passed, <code>%aoi%</code>, the package, began to feel bloated and was starting to depend on other third-party packages. As a consequence, <code>%aoi%</code> was split into domain-specific assemblies. The originally named <code>%aoi%</code> package still exists, but its' scope has been reduced to a collection of commonly used core classes and extension methods that are built upon the .NET runtime. It, along with its many supporting packages, are now collectively known as the <format style="bold">%aoi%</format> suite.
+    </p>
+
+    <p>
+        The individual packages that make up <format style="bold">%aoi%</format> is described below, along with a link to the relevant section of the documentation where more usage related content can be found.
     </p>
 
     <table>

@@ -11,15 +11,19 @@
 
     <p>Start typing here...</p>
 
-    <tabs>
-        <tab title="NET 6">
-            <img src="$WRS_MODULE$/images/dependencies/net6.0/alloverit-fixture.png" alt="AllOverIt.Fixture" />
-        </tab>
-        <tab title="NET 7">
-            <img src="$WRS_MODULE$/images/dependencies/net7.0/alloverit-fixture.png" alt="AllOverIt.Fixture" />
-        </tab>
-        <tab title="NET 8">
-            <img src="$WRS_MODULE$/images/dependencies/net8.0/alloverit-fixture.png" alt="AllOverIt.Fixture" />
-        </tab>
-    </tabs>
+    <chapter id="dependencies" title="Dependencies">
+        <include from="alloverit-library.md" element-id="dependency_diagram-target-comment"/>
+
+        <tabs>
+            <tab title="NET 6">
+                <img src="$WRS_MODULE$/images/dependencies/net6.0/alloverit-fixture.png" alt="AllOverIt.Fixture" />
+            </tab>
+            <tab title="NET 7">
+                <img src="$WRS_MODULE$/images/dependencies/net7.0/alloverit-fixture.png" alt="AllOverIt.Fixture" />
+            </tab>
+            <tab title="NET 8">
+                <img src="$WRS_MODULE$/images/dependencies/net8.0/alloverit-fixture.png" alt="AllOverIt.Fixture" />
+            </tab>
+        </tabs>
+    </chapter>
 </topic>

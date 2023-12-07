@@ -3,26 +3,29 @@
         SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
 <topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
-       title="AllOverIt" id="packages-alloverit" help-id="packages-alloverit">
+       title="AllOverIt" id="packages-alloverit">
 
     <link-summary>
         This is the core package within the %aoi% suite, containing a diverse range of general-purpose classes and utility functions.
     </link-summary>
 
     <p>
-        <format style="bold">%aoi%</format> began as a single nuget package of the same name in 2015. Since then, the library has broadened and deepened in functionality, resulting in a comprehensive set of dedicated nuget packages. Each of the available packages is described below, along with a link to the relevant section of the documentation where more usage related content can be found.
+        <code>%aoi%</code> is a comprehensive library containing a diverse range of commonly-used classes and utility functions. Key areas catered for include threading, tasks, generic caching, event (message) aggregation, expression and reflection utilities, plugin contexts, enriched enums, pipelines, value objects, specifications, and dozens of extensions. A detailed explanation of usage for each of these areas is covered in subsequent chapters of this documentation.
     </p>
 
-    <tabs>
-        <tab title="NET 6">
-            <img src="$WRS_MODULE$/images/dependencies/net6.0/alloverit.png" alt="AllOverIt" />
-        </tab>
-        <tab title="NET 7">
-            <img src="$WRS_MODULE$/images/dependencies/net7.0/alloverit.png" alt="AllOverIt" />
-        </tab>
-        <tab title="NET 8">
-            <img src="$WRS_MODULE$/images/dependencies/net8.0/alloverit.png" alt="AllOverIt" />
-        </tab>
-    </tabs>
+    <chapter id="dependencies" title="Dependencies">
+        <include from="alloverit-library.md" element-id="dependency_diagram-target-comment"/>
 
+        <tabs>
+            <tab title="NET 6">
+                <img src="$WRS_MODULE$/images/dependencies/net6.0/alloverit.png" alt="AllOverIt" />
+            </tab>
+            <tab title="NET 7">
+                <img src="$WRS_MODULE$/images/dependencies/net7.0/alloverit.png" alt="AllOverIt" />
+            </tab>
+            <tab title="NET 8">
+                <img src="$WRS_MODULE$/images/dependencies/net8.0/alloverit.png" alt="AllOverIt" />
+            </tab>
+        </tabs>
+    </chapter>
 </topic>

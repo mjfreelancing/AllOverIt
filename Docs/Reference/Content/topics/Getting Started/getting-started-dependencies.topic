@@ -44,7 +44,7 @@
 
     </chapter>
 
-    <chapter id="dependency-example" title="Use explicit references">
+    <chapter id="explicit-references" title="Explicit references">
         <p>
             The example in the previous section describes how an application that explicitly references <code>AllOverIt.EntityFrameworkCore.Pagination</code> will transitively reference each of its' dependencies. Diagrammatically, this would like the following:
         </p>
@@ -132,7 +132,7 @@
         </code-block>
 
         <p>
-            If you look back at the diagram showing all dependencies across <format style="bold">%aoi%</format> you will see that <code>AllOverIt.Pipes</code> has a dependency on <code>AllOverIt.Reactive</code>. This means the <code>csproj</code> file can be simplified to the following:
+            If you look back at the diagram showing all dependencies across <format style="bold">%aoi%</format> you will see that <code>AllOverIt.Pipes</code> has a dependency on <code>AllOverIt.Reactive</code>. This means it can be implicitly, rather than explicitly, referenced by the application so the <code>csproj</code> file can be simplified to the following:
         </p>
 
         <code-block lang="xml">
@@ -178,4 +178,43 @@
         </code-block>
     </chapter>
 
+    <chapter title="Package Dependencies" id="package-dependencies">
+        <p>
+            Each section within this documentation that describes an <format style="bold">%aoi%</format> package includes a dependency diagram that has been generated from the <format style="bold">%aoi%</format> solution. From the context of this solution, the diagram includes (where applicable):
+        </p>
+
+        <list type="bullet">
+            <li>
+                Explicit references to other <format style="bold">%aoi%</format> projects.
+            </li>
+            <li>
+                Explicit references to Microsoft or third-party packages.
+            </li>
+            <li>
+                Other transitive package references.
+            </li>
+        </list>
+
+        <p>
+            Consider the following diagram from the <code>AllOverIt.Validation.Options</code> package:
+        </p>
+
+        <img src="$WRS_MODULE$/images/dependencies/net8.0/alloverit-validation-options.png" alt="AllOverIt.Validation.Options" />
+
+        <p>
+            The purple-shaded box on the left contains the <format style="bold">%aoi%</format> packages that <code>AllOverIt.Validation.Options</code> has a dependency on.
+        </p>
+
+        <p>
+            The blue-shaded items are explicit package references made by the correspondingly linked <format style="bold">%aoi%</format> package.
+        </p>
+
+        <p>
+            The yellow-shaded items are the immediate transitive references made by the correspondingly linked explicit package reference. There could very well be more transitive references from these; the intent of these diagrams is to provide a high-level view of any additional dependencies required by the package in question.
+        </p>
+
+        <chapter title="The Take-Away" id="take-away">
+            Using the above example, the take-away from this is that if a project explicitly references <code>AllOverIt.Validation.Options</code>, then every other package in that diagram is a transitive reference and therefore does not need to be included in that project's <code>csproj</code> file.
+        </chapter>
+    </chapter>
 </topic>
