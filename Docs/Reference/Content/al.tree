@@ -4,7 +4,7 @@
 
 <instance-profile id="al"
                   name="AllOverIt Library"
-                  start-page="alloverit-library.md" is-library="true">
+                  start-page="dependency-diagram-prelude.topic" is-library="true">
 
-    <toc-element topic="alloverit-library.md"/>
+    <toc-element topic="dependency-diagram-prelude.topic"/>
 </instance-profile>

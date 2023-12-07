@@ -14,7 +14,7 @@
     </p>
 
     <chapter id="dependencies" title="Dependencies">
-        <include from="alloverit-library.md" element-id="dependency_diagram-target-comment"/>
+        <include from="dependency-diagram-prelude.topic" element-id="dependency_diagram-target-comment"/>
 
         <tabs>
             <tab title="NET 6">
@@ -28,4 +28,11 @@
             </tab>
         </tabs>
     </chapter>
+
+    <seealso>
+        <category ref="related">
+            <a href="getting-started-dependencies.topic"/>
+            <a href="getting-started-installation.topic"/>
+        </category>
+    </seealso>
 </topic>
