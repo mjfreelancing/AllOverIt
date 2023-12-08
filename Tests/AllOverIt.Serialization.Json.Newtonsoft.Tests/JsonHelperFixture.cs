@@ -194,7 +194,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
             {
                 Invoking(() =>
                 {
-                    _ = new JsonHelper( null);
+                    _ = new JsonHelper(null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()

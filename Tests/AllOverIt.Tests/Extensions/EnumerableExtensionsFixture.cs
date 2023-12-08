@@ -267,7 +267,7 @@ namespace AllOverIt.Tests.Extensions
         {
             [Fact]
             public async Task Should_Throw_When_Null()
-            {                
+            {
                 await Invoking(
                     async () =>
                     {
@@ -627,7 +627,7 @@ namespace AllOverIt.Tests.Extensions
                 var expectedValues = values.Select((item, index) => (item, index)).AsReadOnlyCollection();
 
                 var index = 0;
-                
+
                 foreach (var (value, idx) in values.WithIndex())
                 {
                     var expected = expectedValues.ElementAt(index++);
@@ -818,12 +818,12 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Find_Some_Matches()
             {
-                var first = new[] {1, 2, 3, 4, 5};
+                var first = new[] { 1, 2, 3, 4, 5 };
                 var second = new[] { 7, 8, 3, 4, 5 };
 
                 var matches = EnumerableExtensions.FindMatches(first, second, item => item, item => item);
 
-                var expected = new[] {3, 4, 5};
+                var expected = new[] { 3, 4, 5 };
 
                 expected.Should().BeEquivalentTo(matches);
             }
@@ -857,7 +857,7 @@ namespace AllOverIt.Tests.Extensions
             public void Should_Return_False_When_All_Keys_Not_Distinct()
             {
                 var duplicate = Create<string>();
-                var items = CreateMany<string>().Concat(new[] { duplicate , duplicate }).ToList();
+                var items = CreateMany<string>().Concat(new[] { duplicate, duplicate }).ToList();
 
                 var actual = items.HasDistinctGrouping(item => item);
 

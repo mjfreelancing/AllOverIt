@@ -1,11 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
-using AllOverIt.Fixture;
+﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using AllOverIt.Mapping;
 using AllOverIt.Reflection;
 using FluentAssertions;
+using System;
+using System.Linq;
+using System.Reflection;
 using Xunit;
 
 namespace AllOverIt.Mapping.Tests

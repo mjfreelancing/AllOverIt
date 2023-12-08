@@ -6,10 +6,8 @@ using AllOverIt.Fixture.Extensions;
 using FakeItEasy;
 using FluentAssertions;
 using System;
-using System.Buffers.Text;
 using System.IO;
 using System.Linq;
-using System.Text;
 using Xunit;
 
 namespace AllOverIt.Cryptography.Tests.Extensions

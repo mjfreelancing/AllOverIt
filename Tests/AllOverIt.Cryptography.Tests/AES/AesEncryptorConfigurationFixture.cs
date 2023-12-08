@@ -2,7 +2,6 @@ using AllOverIt.Cryptography.AES;
 using AllOverIt.Cryptography.AES.Exceptions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using AutoFixture;
 using FluentAssertions;
 using System;
 using System.Linq;
@@ -36,7 +35,7 @@ namespace AllOverIt.Cryptography.Tests.AES
                     KeySize = 256,
                     BlockSize = 128,
                     FeedbackSize = 8,
-                    
+
                     // these are random - setting here to keep the test happy - see other tests for randomness
                     actual.Key,
                     actual.IV
@@ -168,7 +167,7 @@ namespace AllOverIt.Cryptography.Tests.AES
             {
                 var legalKeySize = AesUtils.GetLegalKeySizes().First();
                 var keySize = legalKeySize.MinSize;
-                
+
                 var actual = new AesEncryptorConfiguration(_key, _iv);
 
                 actual.KeySize.Should().NotBe(keySize);

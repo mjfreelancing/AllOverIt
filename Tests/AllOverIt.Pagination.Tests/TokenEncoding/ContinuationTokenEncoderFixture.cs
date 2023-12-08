@@ -282,7 +282,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 Invoking(() =>
                 {
-                    _ = encoder.EncodePreviousPage( null);
+                    _ = encoder.EncodePreviousPage(null);
                 })
                 .Should()
                 .Throw<PaginationException>()
@@ -351,7 +351,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 Invoking(() =>
                 {
-                    _ = encoder.EncodeNextPage( null);
+                    _ = encoder.EncodeNextPage(null);
                 })
                 .Should()
                 .Throw<PaginationException>()

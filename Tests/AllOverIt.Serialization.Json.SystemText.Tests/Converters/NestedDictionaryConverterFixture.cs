@@ -171,7 +171,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests.Converters
                     Prop7 = Create<decimal>(),
                     Prop8 = Create<bool>(),
                     Prop9 = Create<DayOfWeek>(),
-                    Prop10 =  null
+                    Prop10 = null
                 };
 
                 var nested = new DummyNested
@@ -185,7 +185,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests.Converters
                     Prop7 = Create<decimal>(),
                     Prop8 = Create<bool>(),
                     Prop9 = Create<DayOfWeek>(),
-                    Prop10 =  null,
+                    Prop10 = null,
                     Prop11 = model.ToPropertyDictionary(true)
                 };
 

@@ -1,6 +1,4 @@
-using AllOverIt.Fixture;
 using AllOverIt.Fixture.Exceptions;
-using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Fixture.Tests.Dummies;
 using AutoFixture;
@@ -54,7 +52,7 @@ namespace AllOverIt.Fixture.Tests
             {
                 var fixtureFake = this.CreateStub<IFixture>();
                 var fixture = new FixtureDummy(fixtureFake);
-                
+
                 fixture.Fixture.Should().BeSameAs(fixtureFake);
             }
 
@@ -100,7 +98,7 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Throw_When_Action_Null()
             {
-                Action action = () => Invoking((Func<bool>)null);
+                Action action = () => Invoking((Func<bool>) null);
 
                 action
                   .Should()
@@ -1236,9 +1234,9 @@ namespace AllOverIt.Fixture.Tests
                     AssertHandledAggregateException(
               () =>
               {
-                        var exceptions = new[] { _exceptions[0], _exceptions[2] };
-                        throw new AggregateException(exceptions);
-                    },
+                  var exceptions = new[] { _exceptions[0], _exceptions[2] };
+                  throw new AggregateException(exceptions);
+              },
               exception => exception is InvalidOperationException);
                 };
 

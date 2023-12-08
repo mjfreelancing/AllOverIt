@@ -717,7 +717,7 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = mapper.Map<DummyRootParentTarget>(source);
 
-                actual.RootB.Prop1.Should().Be( source.RootB.Prop1);
+                actual.RootB.Prop1.Should().Be(source.RootB.Prop1);
             }
 
             [Fact]

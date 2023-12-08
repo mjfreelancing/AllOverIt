@@ -1,14 +1,13 @@
 ﻿using AllOverIt.Cryptography.Hybrid;
 using AllOverIt.Cryptography.RSA;
 using AllOverIt.Fixture;
-using System.Security.Cryptography.X509Certificates;
-using System.Security.Cryptography;
-using Xunit;
-using System;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
+using System;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using Xunit;
 
 namespace AllOverIt.Cryptography.Tests.Hybrid
 {

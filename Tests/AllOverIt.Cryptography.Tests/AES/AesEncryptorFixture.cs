@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Cryptography.AES;
-using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
