@@ -2,6 +2,7 @@
 using AllOverIt.Extensions;
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -10,6 +11,8 @@ namespace InterceptorDemo.Interceptors
     // Note: Interceptors cannot be sealed as they are the base class for the generated proxy.
     internal class TimedInterceptor : InterceptorBase<ISecretService>
     {
+        private static readonly MethodInfo[] FilteredMethods = [typeof(ISecretService).GetMethod(nameof(ISecretService.GetSecretId))];
+
         public long? MinimimReportableMilliseconds { get; set; }
 
         private sealed class TimedState : InterceptorState
@@ -19,6 +22,11 @@ namespace InterceptorDemo.Interceptors
 
         protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
         {
+            if (FilteredMethods.Contains(targetMethod))
+            {
+                return InterceptorState.None;
+            }
+
             var accessKey = (string) args[0];
 
             args[0] = accessKey.ToUpperInvariant();
@@ -31,6 +39,11 @@ namespace InterceptorDemo.Interceptors
 
         protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, ref object result)
         {
+            if (FilteredMethods.Contains(targetMethod))
+            {
+                return;
+            }
+
             var accessKey = (string) args[0];
 
             var taskResult = result as Task<string>;

@@ -48,7 +48,9 @@ namespace AllOverIt.Aspects
         /// <inheritdoc />
         public InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
         {
-            var typedResult = (TResult) result;
+            var typedResult = result is not null
+                ? (TResult) result
+                : default;
 
             var state = BeforeInvoke(targetMethod, ref args, ref typedResult);
 

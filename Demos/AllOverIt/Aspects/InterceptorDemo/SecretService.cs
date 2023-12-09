@@ -5,6 +5,11 @@ namespace InterceptorDemo
 {
     internal sealed class SecretService : ISecretService
     {
+        public int GetSecretId()
+        {
+            return 42;
+        }
+
         public string GetSecret(string accessKey)
         {
             return $"{accessKey}-{Guid.NewGuid()}";

@@ -51,22 +51,18 @@
 
     <list>
         <li>
-            Intercept all methods by implementing an interceptor that inherits <code>InterceptorBase&lt;TService&gt;</code>.
+            Intercept all methods by implementing a class-level interceptor that inherits <code>InterceptorBase&lt;TService&gt;</code>.
         </li>
         <li>
-            Filter the methods to be intercepted by implementing one or more method-level intercept handlers that inherit <code>MethodInterceptor&lt;TService&gt;
-        </code>.
+            Filter the methods to be intercepted by implementing one or more method-level intercept handlers that inherit <code>MethodInterceptor&lt;TService&gt;.
+        </code>
         </li>
     </list>
 
     <chapter title="Class-Level Interceptors" id="class-level-interceptors">
         <p>
-            For scenarios that require applying the same logic to all methods on a class, create an interceptor that inherits from <code>InterceptorBase&lt;TService&gt;</code>, like so:
+            For scenarios that require applying the same logic to all methods on a class, begin by creating an interceptor that inherits from <code>InterceptorBase&lt;TService&gt;</code>, like so:
         </p>
-
-        <note>
-            The custom interceptor cannot be sealed, and it must have a default constructor.
-        </note>
 
         <code-block lang="c#">
             internal class TimedInterceptor : InterceptorBase&lt;ISecretService&gt;
@@ -74,8 +70,12 @@
             }
         </code-block>
 
+        <note>
+            Class-level interceptors cannot be sealed, and must have a default constructor.
+        </note>
+
         <p>
-            <code>InterceptorBase&lt;TService&gt;</code> is an abstract class with virtual methods that can be overriden to invoke custom code before or after each method on the interface, or if a method faults (throws an <code>Exception</code>). An example implementation is shown below.
+            <code>InterceptorBase&lt;TService&gt;</code> is an abstract class with virtual methods that can be overriden to invoke custom code before or after each method on the interface, or if a method faults (throws an <code>Exception</code>). The available virtual methods are shown in the implementation below.
         </p>
 
         <code-block lang="c#">
@@ -139,7 +139,7 @@
         </code-block>
 
         <p>
-            In this example, a new <code>TimedState</code> instance is created before every method is called, and it is provided to <code>AfterInvoke()</code> when the decorated method returns.
+            In this example, a new <code>TimedState</code> instance is created for each intercepted method, and it is provided to <code>AfterInvoke()</code> when the decorated method returns.
         </p>
     </chapter>
 
@@ -163,11 +163,11 @@
         </p>
 
         <p>
-            Class-level interceptors implement <code>InterceptorBase&lt;TService&gt;</code> but these will have their <code>BeforeInvoke()</code> and <code>AfterInvoke()</code> methods called for every method that is invoked on the class being decorated. Method filtering is achieved by instead using <code>MethodInterceptor&lt;TService&gt;</code> and registering one or more method handlers.
+            Class-level interceptors implement <code>InterceptorBase&lt;TService&gt;</code> but these will have their <code>BeforeInvoke()</code> and <code>AfterInvoke()</code> methods called for every method that is invoked on the class being decorated. Method-level filtering is achieved by instead using <code>InterceptorHandlerBase&lt;TService&gt;</code>, and registering one or more method handlers.
         </p>
 
         <p>
-            Consider the scenario where you want to register a handler per method on this <code>ISecretService</code> interface:
+            Consider the scenario where you want to register a handler for each method on this <code>ISecretService</code> interface:
         </p>
 
         <code-block lang="c#">
@@ -178,21 +178,18 @@
             }
         </code-block>
 
-        <p>
-            A handler can be created for each of these methods. Synchronous (non-async) method handlers must inherit <code>InterceptorHandlerBase&lt;TResult&gt;</code> and asynchronous method handlers must inherit <code>InterceptorHandlerAsyncBase&lt;TResult&gt;</code>.
-        </p>
+        <list type="bullet">
+            <li>The handler for <code>GetSecret()</code>, a non-async method, must inherit <code>InterceptorHandlerBase&lt;TResult&gt;</code>.</li>
+            <li>The handler for <code>GetSecretAsync()</code>, an async method, must inherit <code>InterceptorHandlerAsyncBase&lt;TResult&gt;</code>.</li>
+        </list>
 
         <p>
-            Each handler then overrides the <code>TargetMethods</code> property to indicate which method, or methods, the handler should be invoked for.
+            Each handler will override the <code>TargetMethods</code> property to indicate which method, or methods, the handler should be invoked for.
         </p>
 
         <p>
             The handler for <code>GetSecret()</code> may look something like this:
         </p>
-
-        <tip>
-            Note the <code>BeforeInvoke()</code> and <code>AfterInvoke()</code> methods are strongly typed to the <code>string</code> return type.
-        </tip>
 
         <code-block lang="c#">
             internal sealed class GetSecretHandler : InterceptorHandlerBase&lt;string&gt;
@@ -233,13 +230,13 @@
             }
         </code-block>
 
+        <tip>
+            The <code>BeforeInvoke()</code> and <code>AfterInvoke()</code> methods are strongly typed to the <code>string</code> return type.
+        </tip>
+
         <p>
             The handler for <code>GetSecretAsync()</code> may look something like this:
         </p>
-
-        <tip>
-            Note the <code>BeforeInvoke()</code> and <code>AfterInvoke()</code> methods are strongly typed to the <code>Task&lt;string&gt;</code> return type.
-        </tip>
 
         <code-block lang="c#">
             internal sealed class GetSecretAsyncHandler
@@ -286,5 +283,9 @@
                 }
             }
         </code-block>
+
+        <tip>
+            The <code>BeforeInvoke()</code> and <code>AfterInvoke()</code> methods are strongly typed to the <code>Task&lt;string&gt;</code> return type.
+        </tip>
     </chapter>
 </topic>
