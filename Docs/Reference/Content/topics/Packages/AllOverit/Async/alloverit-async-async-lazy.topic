@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="AsyncLazy" id="alloverit-async-async-lazy" help-id="alloverit-async-asynclazy">
+
+    <p>
+        <code>AsyncLazy&lt;TType&gt;</code> is similar to <code>Lazy&lt;TType&gt;</code> in that it invokes a factory method, but asynchronously, to return a <code>TType</code> when its' <code>Value</code> property is awaited. All subsequent accesses to <code>Value</code> will then return the cached result.
+    </p>
+
+    <p>
+        Assume you have this code to create a <code>HttpClient</code>:
+    </p>
+
+    <code-block lang="c#">
+        private static HttpClient GetHttpClient()
+        {
+            return new()
+            {
+                BaseAddress = new Uri("https://jsonplaceholder.typicode.com")
+            };
+        }
+    </code-block>
+
+    <p>
+        And you use this with a <code>Lazy&lt;HttpClient&gt;</code> to create a single instance on first access:
+    </p>
+
+    <code-block lang="c#">
+        var httpClientFactory = new Lazy&lt;HttpClient&gt;(GetHttpClient);
+    </code-block>
+
+    <p>
+        You can then use an <code>AsyncLazy&lt;string&gt;</code> to call this endpoint exactly once, like so:
+    </p>
+
+    <code-block lang="c#">
+        var todoResult = new AsyncLazy&lt;string&gt;(async () =>
+        {
+            // Invoke the 'httpClientFactory' to get a new
+            // (or existing) HttpClient instance.
+            var httpClient = httpClientFactory.Value;
+
+            using (var response = await httpClient.GetAsync("todos/1"))
+            {
+                return await response.Content.ReadAsStringAsync();
+            }
+        });
+
+        var result = await todoResult;
+    </code-block>
+
+    <tip>
+        <list>
+            <li>
+                <code>todoResult.Value</code> returns a <code>Task&lt;string&gt;</code>
+            </li>
+
+            <li>
+                <code>await todoResult.Value</code> will await and return the <code>string</code> value
+            </li>
+
+            <li>
+                <code>await todoResult</code> behaves identically to <code>await todoResult.Value</code>
+            </li>
+        </list>
+    </tip>
+</topic>

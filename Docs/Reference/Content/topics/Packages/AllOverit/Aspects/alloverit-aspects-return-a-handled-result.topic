@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Return A Handled Result" id="alloverit-aspects-return-a-handled-result"
+       help-id="allover-aspects-return-a-handled-result">
+
+    <p>
+        A common use case for interceptors is to provide a level of caching in order to improve performance. Class and method-level interceptors support this via the <code>ref object result</code> argument on the <code>BeforeInvoke()</code> method.
+    </p>
+
+    <code-block lang="c#">
+        InterceptorState BeforeInvoke(MethodInfo targetMethod,
+            ref object[] args, ref object result)
+    </code-block>
+
+    <p>
+        When this method is called, <code>result</code> will be <code>null</code> since the decorated service hasn't yet been called. If the concrete interceptor sets this to a non-default (i.e., not <code>null</code>) value then that will be considered as a 'handled result', meaning this result will be immediately provided to the <code>AfterInvoke()</code> method, and ultimately returned to the caller. The method will not be called on the decorated service.
+    </p>
+
+    <note>
+        Refer to <a href="alloverit-patterns-value-object.topic"/> for a possible approach to creating a suitable value object.
+    </note>
+
+    <p>
+        Consider this method on <code>ISecretService</code>:
+    </p>
+
+    <code-block lang="c#">
+        string GetSecret(string accessKey);
+    </code-block>
+
+    <p>
+        The <code>BeforeInvoke()</code> method can be used to determine if a cached result is available, like so:
+    </p>
+
+    <code-block lang="c#">
+        protected override InterceptorState BeforeInvoke(MethodInfo targetMethod,
+            object[] args, ref object result)
+        {
+            // The 'accessKey' passed to GetSecret() is at index 0
+            // (it is the first argument).
+            var accessKey = (string) args[0];
+
+            if (_cache.TryGetValue(out var cacheResult))
+            {
+                // Setting 'result' to a non-null value will be interpreted as a
+                // 'handled result' so the decorated service will not be called.
+                // The AfterInvoke() method will still be called.
+                result = cacheResult;
+            }
+
+            return InterceptorState.None;
+        }
+    </code-block>
+</topic>

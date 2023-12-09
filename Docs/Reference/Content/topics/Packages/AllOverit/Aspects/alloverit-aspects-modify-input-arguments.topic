@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Modify Input Arguments" id="alloverit-aspects-modify-input-arguments">
+
+    <p>
+        Consider this method on <code>ISecretService</code>:
+    </p>
+
+    <code-block lang="c#">
+        string GetSecret(string accessKey);
+    </code-block>
+
+    <p>
+        Imagine a scenario where the service retrieves the secret from an external store where the access keys must be lower-cased and you want to intercept this method to ensure the argument is modified before the external store is accessed. To achieve this, the argument can be modified as shown in the following examples.
+    </p>
+
+    <p>
+        The example below demonstrates a class-level interceptor implementing <code>InterceptorBase&lt;ISecretService&gt;</code>:
+    </p>
+
+    <code-block lang="c#">
+        protected override InterceptorState BeforeInvoke(MethodInfo targetMethod,
+            object[] args, ref object result)
+        {
+            // The 'accessKey' passed to GetSecret() is at index 0
+            // (it is the first argument).
+            var accessKey = (string) args[0];
+
+            // This will mutate the argument before sending it to the
+            // decorated service.
+
+            // Note: The mutation is scoped to the service call. The argument
+            //       sent by the caller will remain unmodified.
+            args[0] = accessKey.ToLowerInvariant();
+
+            // Remainder of implementation here...
+        }
+    </code-block>
+
+    <p>
+        The example below demonstrates a method-level interceptor implementing <code>InterceptorHandlerBase&lt;string&gt;</code>:
+    </p>
+
+    <code-block lang="c#">
+        protected override InterceptorState BeforeInvoke(MethodInfo targetMethod,
+            object[] args, ref string result)
+        {
+            // The 'accessKey' passed to GetSecret() is at index 0
+            // (it is the first argument).
+            var accessKey = (string) args[0];
+
+            // This will mutate the argument before sending it to the
+            // decorated service.
+
+            // Note: The mutation is scoped to the service call. The argument
+            //       sent by the caller will remain unmodified.
+            args[0] = accessKey.ToLowerInvariant();
+
+            // Remainder of implementation here...
+        }
+    </code-block>
+
+    <p>
+        In both cases, the <code>accessKey</code> argument provided to <code>GetSecret()</code> will now be lower-cased before being sent to the decorated service.
+    </p>
+
+    <tip>
+        The only difference between the two previous examples is the method signature.
+    </tip>
+</topic>

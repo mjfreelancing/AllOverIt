@@ -16,6 +16,15 @@
             <toc-element toc-title="Aspects">
                 <toc-element topic="alloverit-aspects-interceptors.topic"/>
                 <toc-element topic="alloverit-aspects-Instantiating-Interceptors.topic"/>
+                <toc-element topic="alloverit-aspects-modify-input-arguments.topic"/>
+                <toc-element topic="alloverit-aspects-return-a-handled-result.topic"/>
+                <toc-element topic="alloverit-aspects-modify-return-value.topic"/>
+            </toc-element>
+            <toc-element toc-title="Async">
+                <toc-element topic="alloverit-async-async-lazy.topic"/>
+            </toc-element>
+            <toc-element toc-title="Patterns">
+                <toc-element topic="alloverit-patterns-value-object.topic"/>
             </toc-element>
         </toc-element>
         <toc-element topic="packages-alloverit-aspnetcore.topic"/>
