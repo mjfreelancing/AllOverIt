@@ -9,7 +9,7 @@ namespace AllOverIt.Aspects
     /// Use this in preference to <see cref="InterceptorBase{TServiceType}"/> when you require more granular control of your
     /// interceptors rather than execute the same code for all methods on the service.</summary>
     /// <typeparam name="TService"></typeparam>
-    public class MethodInterceptor<TService> : InterceptorBase<TService>
+    public class MethodInterceptor<TService> : InterceptorBase<TService>        // Cannot be sealed (required for the generated proxy)
     {
         private readonly Dictionary<MethodInfo, IInterceptorHandler> _methodInterceptors = [];
 

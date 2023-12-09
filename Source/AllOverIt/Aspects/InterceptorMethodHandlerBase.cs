@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace AllOverIt.Aspects
 {
     /// <summary>Provides a base class for implementing a method-level interceptor that has a void return type.</summary>
-    public abstract class InterceptorHandlerBase : IInterceptorHandler
+    public abstract class InterceptorMethodHandlerBase : IInterceptorHandler
     {
         /// <inheritdoc />
         public abstract MethodInfo[] TargetMethods { get; }
@@ -144,7 +144,7 @@ namespace AllOverIt.Aspects
     }
 
     /// <summary>Provides a base class for implementing a method-level interceptor that has a <seealso cref="Task{TResult}"/> return type.</summary>
-    public abstract class InterceptorHandlerAsyncBase<TResult> : IInterceptorHandler
+    public abstract class InterceptorMethodHandlerAsyncBase<TResult> : IInterceptorHandler
     {
         /// <inheritdoc />
         public abstract MethodInfo[] TargetMethods { get; }

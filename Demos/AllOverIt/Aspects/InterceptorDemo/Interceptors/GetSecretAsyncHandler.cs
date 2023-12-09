@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace InterceptorDemo.Interceptors
 {
-    internal sealed class GetSecretAsyncHandler : InterceptorHandlerAsyncBase<string>
+    internal sealed class GetSecretAsyncHandler : InterceptorMethodHandlerAsyncBase<string>
     {
         private readonly long _minimimReportableMilliseconds;
 

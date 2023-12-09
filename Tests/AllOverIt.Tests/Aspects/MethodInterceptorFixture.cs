@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Aspects;
 using AllOverIt.Fixture;
-using Castle.DynamicProxy;
 using FluentAssertions;
 using System;
 using System.Reflection;
@@ -77,8 +76,8 @@ namespace AllOverIt.Tests.Aspects
             }
         }
 
-        // InterceptorHandlerAsyncBase<T> is best suited (over InterceptorHandlerBase) for methods with a Task<T> return type.
-        private sealed class GetValueAsyncHandler : InterceptorHandlerAsyncBase<string>
+        // InterceptorMethodHandlerAsyncBase<T> is best suited (over InterceptorHandlerBase) for methods with a Task<T> return type.
+        private sealed class GetValueAsyncHandler : InterceptorMethodHandlerAsyncBase<string>
         {
             public bool BeforeHandlerCalled { get; private set; }
             public bool AfterHandlerCalled { get; private set; }
@@ -103,8 +102,8 @@ namespace AllOverIt.Tests.Aspects
             }
         }
 
-        // InterceptorHandlerBase is suitable for methods with a void return type.
-        private sealed class SetValueHandler : InterceptorHandlerBase
+        // InterceptorMethodHandlerBase is suitable for methods with a void return type.
+        private sealed class SetValueHandler : InterceptorMethodHandlerBase
         {
             public bool BeforeHandlerCalled { get; private set; }
             public bool AfterHandlerCalled { get; private set; }
