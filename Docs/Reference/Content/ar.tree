@@ -15,6 +15,7 @@
         <toc-element topic="packages-alloverit.topic">
             <toc-element toc-title="Aspects">
                 <toc-element topic="alloverit-aspects-interceptors.topic"/>
+                <toc-element topic="alloverit-aspects-Instantiating-Interceptors.topic"/>
             </toc-element>
         </toc-element>
         <toc-element topic="packages-alloverit-aspnetcore.topic"/>
