@@ -24,6 +24,8 @@ namespace InterceptorDemo.Interceptors
 
             args[0] = accessKey.ToUpperInvariant();
 
+            var isHandled = false;
+
             if (_useCache)
             {
                 // Get the result from a cache here - just setting a value
@@ -31,6 +33,7 @@ namespace InterceptorDemo.Interceptors
                 Array.Reverse(cachedValue);
 
                 result = new string(cachedValue).ToLowerInvariant();
+                isHandled = true;
 
                 Console.WriteLine($"Before {targetMethod.Name}({accessKey}) - using a cache");
             }
@@ -39,7 +42,10 @@ namespace InterceptorDemo.Interceptors
                 Console.WriteLine($"Before {targetMethod.Name}({accessKey}) - not using a cache");
             }
 
-            return new TimedInterceptorState();
+            return new TimedInterceptorState
+            {
+                IsHandled = isHandled
+            };
         }
 
         protected override string AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, string result)

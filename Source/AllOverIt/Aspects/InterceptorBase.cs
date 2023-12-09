@@ -44,9 +44,8 @@ namespace AllOverIt.Aspects
 
             try
             {
-                var resultHandled = result is not null;
 
-                if (!resultHandled)
+                if (!state.IsHandled)
                 {
                     result = InvokeServiceInstance(targetMethod, args);
                 }
