@@ -9,7 +9,7 @@ namespace AllOverIt.Aspects
 {
     /// <summary>Provides a base class for all interceptors (dispatch proxies) created via
     /// <see cref="InterceptorFactory.CreateInterceptor{TServiceType, TInterceptor}(TServiceType, Action{TInterceptor})"/>.
-    /// Derived Interceptors must be public and non-sealed as they are the base class for the generated proxy.</summary>
+    /// Derived Interceptors must be public and non-sealed, as they are the base class for the generated proxy.</summary>
     /// <typeparam name="TServiceType"></typeparam>
     public abstract class InterceptorBase<TServiceType> : DispatchProxy
     {
@@ -73,27 +73,17 @@ namespace AllOverIt.Aspects
         /// <summary>Called before the decorated instance method is called.</summary>
         /// <param name="targetMethod">The <see cref="MethodInfo"/> for the method being intercepted.</param>
         /// <param name="args">The arguments passed to the intercepted method, passed by ref.</param>
-        /// <param name="result">Can be set to a result compatible with the method call. If the method being intercepted
-        /// returns a <see cref="Task{T}"/> be sure to wrap the value in a call to <c>Task.FromResult()</c>.
-        /// When <c>result</c> is set to a non  <see langword="null"/> value then this result will be returned to the caller
-        /// without invoking the actual service that is being decorated, although the <see cref="AfterInvoke(MethodInfo, object[], InterceptorState, ref object)"/>
-        /// method will be called first.</param>
-        /// <returns>A state object that will be passed to the <see cref="AfterInvoke(MethodInfo, object[], InterceptorState, ref object)"/>
-        /// or <see cref="Faulted(MethodInfo, object[], InterceptorState, Exception)"/> method, as applicable.
-        /// If no state is required then return <see cref="InterceptorState.Unit"/>.</returns>
+        /// <returns>A state object that will be passed to the <see cref="AfterInvoke(MethodInfo, object[], InterceptorState)"/>
+        /// or <see cref="Faulted(MethodInfo, object[], InterceptorState, Exception)"/> method, as applicable.</returns>
         protected virtual InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args)
         {
             return new InterceptorState();
         }
 
-        /// <summary>Called after the instance method has completed execution without faulting (throwing an exception).</summary>
+        /// <summary>Called after the decorated instance method has completed execution without faulting (throwing an exception).</summary>
         /// <param name="targetMethod">The <see cref="MethodInfo"/> for the method being intercepted.</param>
         /// <param name="args">The arguments passed to the intercepted method.</param>
-        /// <param name="state">The state object returned by <see cref="BeforeInvoke(MethodInfo, ref object[], ref object)"/>.
-        /// If the <see cref="BeforeInvoke(MethodInfo, ref object[], ref object)"/> method is not overriden then this will
-        /// be <see cref="InterceptorState.Unit"/>.</param>
-        /// <param name="result">Can be set to a result compatible with the method call. If the method being intercepted
-        /// returns a <see cref="Task{T}"/> be sure to wrap the value in a call to <c>Task.FromResult()</c>.</param>
+        /// <param name="state">The state object returned by <see cref="BeforeInvoke(MethodInfo, ref object[])"/>.</param>
         protected virtual void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
         {
         }
@@ -101,9 +91,7 @@ namespace AllOverIt.Aspects
         /// <summary>Called when the decorated instance method invocation faults (throws an exception).</summary>
         /// <param name="targetMethod">The <see cref="MethodInfo"/> for the method being intercepted.</param>
         /// <param name="args">The arguments passed to the intercepted method.</param>
-        /// <param name="state">The state object returned by <see cref="BeforeInvoke(MethodInfo, ref object[], ref object)"/>.
-        /// If the <see cref="BeforeInvoke(MethodInfo, ref object[], ref object)"/> method is not overriden then this will
-        /// be <see cref="InterceptorState.Unit"/>.</param>
+        /// <param name="state">The state object returned by <see cref="BeforeInvoke(MethodInfo, ref object[])"/>.</param>
         /// <param name="exception">The exception that was thrown by the instance method.</param>
         protected virtual void Faulted(MethodInfo targetMethod, object[] args, InterceptorState state, Exception exception)
         {
@@ -111,14 +99,14 @@ namespace AllOverIt.Aspects
 
         private object GetAsyncResult(MethodInfo targetMethod, object[] args, InterceptorState state)
         {
-            // Without interception, taskResult is what would normally be awaited by the caller. We need to call AfterInvoke()
-            // before that await completes so we need to instead return a different task; one that is backed by a
-            // TaskCompletionSource<>. For the case where a method as a void or Task return type we will use a
-            // TaskCompletionSource<object>, and for all other cases we'll create a TaskCompletionSource<TResult> based on
-            // the intercepted method's return type.
+            // Without interception, the state's result (a Task) is what would normally be awaited by the caller.
+            // We need to call AfterInvoke() before that await completes so we need to instead return a different
+            // task; one that is backed by a TaskCompletionSource<>. For the case where a method has a void or Task
+            // return type we will use a TaskCompletionSource<object>, and for all other cases we'll create a
+            // TaskCompletionSource<TResult> based on the intercepted method's return type.
             //
-            // The original 'taskResult' can then have a continuation appended that allows for the Faulted() / AfterInvoke()
-            // calls, followed by setting the final result.
+            // The original Task (on state.Result) can then have a continuation appended that allows for the
+            // Faulted() / AfterInvoke() calls, followed by setting the final result.
 
             var methodReturnType = targetMethod.ReturnType;
 
@@ -159,8 +147,8 @@ namespace AllOverIt.Aspects
 
                         AfterInvoke(targetMethod, args, state);
 
-                        // The TaskCompletionSource needs to be set the result returned by the decorated service / interceptor,
-                        // or null if the method's return type is void or Task.
+                        // The TaskCompletionSource needs to be set the result returned by the decorated
+                        // service / interceptor, or null if the method's return type is void or Task.
                         var returnValue = hasReturnType
                             ? state.GetResult().GetPropertyValue(methodReturnType, "Result")
                             : null;
