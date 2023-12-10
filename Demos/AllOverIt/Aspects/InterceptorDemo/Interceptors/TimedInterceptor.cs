@@ -48,7 +48,8 @@ namespace InterceptorDemo.Interceptors
 
             var taskResult = result as Task<string>;
 
-            // Cater for GetSecret() and GetSecretAsync()
+            // Cater for GetSecret() and GetSecretAsync() - not ideal using class-level interceptors but this
+            // shows it is possible. Better to use level-method interceptor handlers.
             var value = taskResult is not null
                    ? taskResult.Result
                    : (string) result;
