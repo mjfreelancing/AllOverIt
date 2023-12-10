@@ -1,13 +1,15 @@
 ﻿#define METHOD_INTERCEPTOR
 
 using AllOverIt.DependencyInjection.Extensions;
-using InterceptorDemo.Interceptors;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 
 #if METHOD_INTERCEPTOR
 using AllOverIt.Aspects;
+using InterceptorDemo.Interceptors.MethodLevel;
+#else
+using InterceptorDemo.Interceptors.ClassLevel;
 #endif
 
 namespace InterceptorDemo
@@ -48,9 +50,13 @@ namespace InterceptorDemo
 
                 var dispatchProxy = serviceProvider.GetRequiredService<ISecretService>();
 
-                // The class-level interceptor filters out this method call
+                // The class-level interceptor filters out calls to Initialize(), InitializeAsync(), GetSecretId()
+                dispatchProxy.Initialize();
+                await dispatchProxy.InitializeAsync();
                 var id = dispatchProxy.GetSecretId();
                 Console.WriteLine($"Id: {id}");
+
+                Console.WriteLine();
 
                 var accessKey = "some_key";
 
@@ -58,7 +64,7 @@ namespace InterceptorDemo
                 Console.WriteLine($"FINAL Result: {secret}");      // should be reported as 0-1ms
 
                 // Adding this to make sure this time is not included in the time period reported by the proxy
-                await Task.Delay(2000);
+                await Task.Delay(750);
 
                 Console.WriteLine();
 

@@ -4,37 +4,37 @@ using System.Threading.Tasks;
 namespace AllOverIt.Aspects
 {
     /// <summary>Provides a base class for implementing a method-level interceptor that has a void return type.</summary>
-    public abstract class InterceptorMethodHandlerBase : IInterceptorMethodHandler
+    public abstract class InterceptorMethodHandlerBase : IInterceptorMethodHandler          // TODO: Can probablt get rid of interface and just keep abstract class
     {
         /// <inheritdoc />
         public abstract MethodInfo[] TargetMethods { get; }
 
         /// <inheritdoc />
-        public InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
+        InterceptorState IInterceptorMethodHandler.BeforeInvoke(MethodInfo targetMethod, ref object[] args)
         {
-            return BeforeInvoke(targetMethod, ref args);
+            return DoBeforeInvoke(targetMethod, ref args);
         }
 
         /// <inheritdoc />
-        public void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, ref object result)
+        void IInterceptorMethodHandler.AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
         {
-            AfterInvoke(targetMethod, args, state);
+            DoAfterInvoke(targetMethod, args, state);
         }
 
         /// <summary>This method is called before the intercepted method is called on the decorated instance.</summary>
         /// <param name="targetMethod">The <see cref="MethodInfo"/> for the method being intercepted.</param>
         /// <param name="args">The arguments provided to the method being intercepted.</param>
         /// <returns>The interceptor state that will be forwarded to the <see cref="AfterInvoke(MethodInfo, object[], InterceptorState, ref object)"/> method.</returns>
-        protected virtual InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args)
+        protected virtual InterceptorState DoBeforeInvoke(MethodInfo targetMethod, ref object[] args)
         {
-            return InterceptorState.None;
+            return new InterceptorState();
         }
 
         /// <summary>This method is called after the method interception has completed.</summary>
         /// <param name="targetMethod">The <see cref="MethodInfo"/> for the method being intercepted.</param>
         /// <param name="args">The arguments provided to the method being intercepted.</param>
         /// <param name="state">The interceptor state returned from the <see cref="BeforeInvoke(MethodInfo, ref object[], ref object)"/> method.</param>
-        protected virtual void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
+        protected virtual void DoAfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
         {
         }
     }
@@ -46,26 +46,15 @@ namespace AllOverIt.Aspects
         public abstract MethodInfo[] TargetMethods { get; }
 
         /// <inheritdoc />
-        InterceptorState IInterceptorMethodHandler.BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
+        InterceptorState IInterceptorMethodHandler.BeforeInvoke(MethodInfo targetMethod, ref object[] args)
         {
-            // result could be a value or reference type
-            var typedResult = result is not null
-                ? (TResult) result
-                : default;
-
-            var state = BeforeInvoke(targetMethod, ref args, ref typedResult);
-
-            result = typedResult;
-
-            return state;
+            return DoBeforeInvoke(targetMethod, ref args);
         }
 
         /// <inheritdoc />
-        void IInterceptorMethodHandler.AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, ref object result)
+        void IInterceptorMethodHandler.AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
         {
-            var typedResult = (TResult) result;
-
-            result = AfterInvoke(targetMethod, args, state, typedResult);
+            DoAfterInvoke(targetMethod, args, state as InterceptorState<TResult>);
         }
 
         /// <summary>This method is called before the intercepted method is called on the decorated instance.</summary>
@@ -75,9 +64,9 @@ namespace AllOverIt.Aspects
         /// alternative result then the intercepted method will be considered handled and the decorated instance method will not be called.
         /// The <see cref="AfterInvoke(MethodInfo, object[], InterceptorState, ref object)"/> method will still be called.</param>
         /// <returns>The interceptor state that will be forwarded to the <see cref="AfterInvoke(MethodInfo, object[], InterceptorState, ref object)"/> method.</returns>
-        protected virtual InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref TResult result)
+        protected virtual InterceptorState<TResult> DoBeforeInvoke(MethodInfo targetMethod, ref object[] args)
         {
-            return InterceptorState.None;
+            return new InterceptorState<TResult>();
         }
 
         /// <summary>This method is called after the method interception has completed.</summary>
@@ -87,9 +76,8 @@ namespace AllOverIt.Aspects
         /// <param name="result">The result returned from the decorated service, or the <see cref="BeforeInvoke(MethodInfo, ref object[], ref object)"/>
         /// method if it was 'handled' there. This is the final opportunity to change the result, if required.</param>
         /// <returns>The final result to be returned from the caller.</returns>
-        protected virtual TResult AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, TResult result)
+        protected virtual void DoAfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState<TResult> state)
         {
-            return result;
         }
     }
 
@@ -100,23 +88,15 @@ namespace AllOverIt.Aspects
         public abstract MethodInfo[] TargetMethods { get; }
 
         /// <inheritdoc />
-        InterceptorState IInterceptorMethodHandler.BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
+        InterceptorState IInterceptorMethodHandler.BeforeInvoke(MethodInfo targetMethod, ref object[] args)
         {
-            var typedResult = (Task) result;
-
-            var state = BeforeInvoke(targetMethod, ref args, ref typedResult);
-
-            result = typedResult;
-
-            return state;
+            return DoBeforeInvoke(targetMethod, ref args);
         }
 
         /// <inheritdoc />
-        void IInterceptorMethodHandler.AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, ref object result)
+        void IInterceptorMethodHandler.AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
         {
-            var typedResult = (Task) result;
-
-            result = AfterInvoke(targetMethod, args, state, typedResult);
+            DoAfterInvoke(targetMethod, args, state as InterceptorState<Task>);
         }
 
         /// <summary>This method is called before the intercepted method is called on the decorated instance.</summary>
@@ -126,9 +106,9 @@ namespace AllOverIt.Aspects
         /// alternative result then the intercepted method will be considered handled and the decorated instance method will not be called.
         /// The <see cref="AfterInvoke(MethodInfo, object[], InterceptorState, ref object)"/> method will still be called.</param>
         /// <returns>The interceptor state that will be forwarded to the <see cref="AfterInvoke(MethodInfo, object[], InterceptorState, ref object)"/> method.</returns>
-        protected virtual InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref Task result)
+        protected virtual InterceptorState<Task> DoBeforeInvoke(MethodInfo targetMethod, ref object[] args)
         {
-            return InterceptorState.None;
+            return new InterceptorState<Task>();
         }
 
         /// <summary>This method is called after the method interception has completed.</summary>
@@ -138,9 +118,8 @@ namespace AllOverIt.Aspects
         /// <param name="result">The result returned from the decorated service, or the <see cref="BeforeInvoke(MethodInfo, ref object[], ref Task)"/>
         /// method if it was 'handled' there. This is the final opportunity to change the result, if required.</param>
         /// <returns>The final result to be returned from the caller.</returns>
-        protected virtual Task AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, Task result)
+        protected virtual void DoAfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState<Task> state)
         {
-            return result;
         }
     }
 
@@ -151,23 +130,15 @@ namespace AllOverIt.Aspects
         public abstract MethodInfo[] TargetMethods { get; }
 
         /// <inheritdoc />
-        InterceptorState IInterceptorMethodHandler.BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
+        InterceptorState IInterceptorMethodHandler.BeforeInvoke(MethodInfo targetMethod, ref object[] args)
         {
-            var typedResult = (Task<TResult>) result;
-
-            var state = BeforeInvoke(targetMethod, ref args, ref typedResult);
-
-            result = typedResult;
-
-            return state;
+            return DoBeforeInvoke(targetMethod, ref args);
         }
 
         /// <inheritdoc />
-        void IInterceptorMethodHandler.AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, ref object result)
+        void IInterceptorMethodHandler.AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
         {
-            var typedResult = (Task<TResult>) result;
-
-            result = AfterInvoke(targetMethod, args, state, typedResult);
+            DoAfterInvoke(targetMethod, args, state as InterceptorState<Task<TResult>>);
         }
 
         /// <summary>This method is called before the intercepted method is called on the decorated instance.</summary>
@@ -177,9 +148,9 @@ namespace AllOverIt.Aspects
         /// method will be considered handled and the decorated instance method will not be called.
         /// The <see cref="AfterInvoke(MethodInfo, object[], InterceptorState, Task{TResult})"/> method will still be called.</param>
         /// <returns>The interceptor state that will be forwarded to the <see cref="AfterInvoke(MethodInfo, object[], InterceptorState, ref object)"/> method.</returns>
-        protected virtual InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref Task<TResult> result)
+        protected virtual InterceptorState<Task<TResult>> DoBeforeInvoke(MethodInfo targetMethod, ref object[] args)
         {
-            return InterceptorState.None;
+            return new InterceptorState<Task<TResult>>();
         }
 
         /// <summary>This method is called after the method interception has completed.</summary>
@@ -189,9 +160,8 @@ namespace AllOverIt.Aspects
         /// <param name="result">The result returned from the decorated service, or the <see cref="BeforeInvoke(MethodInfo, ref object[], ref Task{TResult})"/>
         /// method if it was 'handled' there. This is the final opportunity to change the result, if required.</param>
         /// <returns>The final result to be returned from the caller.</returns>
-        protected virtual Task<TResult> AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, Task<TResult> result)
+        protected virtual void DoAfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState<Task<TResult>> state)
         {
-            return result;
         }
     }
 }

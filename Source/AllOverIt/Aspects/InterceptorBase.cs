@@ -38,25 +38,23 @@ namespace AllOverIt.Aspects
                 return InvokeServiceInstance(targetMethod, args);
             }
 
-            object result = default;
-
-            var state = BeforeInvoke(targetMethod, ref args, ref result);
+            var state = BeforeInvoke(targetMethod, ref args);
 
             try
             {
 
                 if (!state.IsHandled)
                 {
-                    result = InvokeServiceInstance(targetMethod, args);
+                    state.SetResult(InvokeServiceInstance(targetMethod, args));
                 }
 
-                if (result is Task taskResult)
+                if (state.GetResult() is Task)
                 {
-                    result = GetAsyncResult(targetMethod, args, state, taskResult);
+                    state.SetResult(GetAsyncResult(targetMethod, args, state));
                 }
                 else
                 {
-                    AfterInvoke(targetMethod, args, state, ref result);
+                    AfterInvoke(targetMethod, args, state);
                 }
             }
             catch (TargetInvocationException exception)
@@ -69,7 +67,7 @@ namespace AllOverIt.Aspects
                 ExceptionDispatchInfo.Capture(fault).Throw();
             }
 
-            return result;
+            return state.GetResult();
         }
 
         /// <summary>Called before the decorated instance method is called.</summary>
@@ -83,9 +81,9 @@ namespace AllOverIt.Aspects
         /// <returns>A state object that will be passed to the <see cref="AfterInvoke(MethodInfo, object[], InterceptorState, ref object)"/>
         /// or <see cref="Faulted(MethodInfo, object[], InterceptorState, Exception)"/> method, as applicable.
         /// If no state is required then return <see cref="InterceptorState.Unit"/>.</returns>
-        protected virtual InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
+        protected virtual InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args)
         {
-            return InterceptorState.None;
+            return new InterceptorState();
         }
 
         /// <summary>Called after the instance method has completed execution without faulting (throwing an exception).</summary>
@@ -96,7 +94,7 @@ namespace AllOverIt.Aspects
         /// be <see cref="InterceptorState.Unit"/>.</param>
         /// <param name="result">Can be set to a result compatible with the method call. If the method being intercepted
         /// returns a <see cref="Task{T}"/> be sure to wrap the value in a call to <c>Task.FromResult()</c>.</param>
-        protected virtual void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, ref object result)
+        protected virtual void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
         {
         }
 
@@ -111,7 +109,7 @@ namespace AllOverIt.Aspects
         {
         }
 
-        private object GetAsyncResult(MethodInfo targetMethod, object[] args, InterceptorState state, Task taskResult)
+        private object GetAsyncResult(MethodInfo targetMethod, object[] args, InterceptorState state)
         {
             // Without interception, taskResult is what would normally be awaited by the caller. We need to call AfterInvoke()
             // before that await completes so we need to instead return a different task; one that is backed by a
@@ -140,6 +138,8 @@ namespace AllOverIt.Aspects
             var result = tcsType.GetProperty("Task").GetValue(tcs, null);
 
             // Add a continuation so we can call Faulted() / AfterInvoke() before setting the final result to be returned.
+            var taskResult = state.GetResult() as Task;
+
             taskResult
                 .ContinueWith(task =>
                 {
@@ -155,14 +155,14 @@ namespace AllOverIt.Aspects
                     else
                     {
                         // Start with either Task or Task<T>
-                        object completion = task;
+                        state.SetResult(task);
 
-                        AfterInvoke(targetMethod, args, state, ref completion);
+                        AfterInvoke(targetMethod, args, state);
 
                         // The TaskCompletionSource needs to be set the result returned by the decorated service / interceptor,
                         // or null if the method's return type is void or Task.
                         var returnValue = hasReturnType
-                            ? completion.GetPropertyValue(methodReturnType, "Result")
+                            ? state.GetResult().GetPropertyValue(methodReturnType, "Result")
                             : null;
 
                         // Set the final result.

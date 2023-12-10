@@ -5,6 +5,15 @@ namespace InterceptorDemo
 {
     internal sealed class SecretService : ISecretService
     {
+        public void Initialize()
+        {
+        }
+
+        public Task InitializeAsync()
+        {
+            return Task.CompletedTask;
+        }
+
         public int GetSecretId()
         {
             return 42;

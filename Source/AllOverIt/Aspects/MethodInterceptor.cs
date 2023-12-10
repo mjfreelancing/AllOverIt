@@ -36,19 +36,19 @@ namespace AllOverIt.Aspects
         }
 
         /// <inheritdoc />
-        protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
+        protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args)
         {
             var methodInterceptor = _methodInterceptors[targetMethod];
 
-            return methodInterceptor.BeforeInvoke(targetMethod, ref args, ref result);
+            return methodInterceptor.BeforeInvoke(targetMethod, ref args);
         }
 
         /// <inheritdoc />
-        protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, ref object result)
+        protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
         {
             var methodInterceptor = _methodInterceptors[targetMethod];
 
-            methodInterceptor.AfterInvoke(targetMethod, args, state, ref result);
+            methodInterceptor.AfterInvoke(targetMethod, args, state);
         }
     }
 }

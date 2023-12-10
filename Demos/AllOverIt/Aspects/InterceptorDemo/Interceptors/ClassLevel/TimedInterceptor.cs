@@ -6,12 +6,16 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace InterceptorDemo.Interceptors
+namespace InterceptorDemo.Interceptors.ClassLevel
 {
     // Note: Interceptors cannot be sealed as they are the base class for the generated proxy.
     internal class TimedInterceptor : InterceptorBase<ISecretService>
     {
-        private static readonly MethodInfo[] FilteredMethods = [typeof(ISecretService).GetMethod(nameof(ISecretService.GetSecretId))];
+        private static readonly MethodInfo[] FilteredMethods = [
+            typeof(ISecretService).GetMethod(nameof(ISecretService.GetSecretId)),
+            typeof(ISecretService).GetMethod(nameof(ISecretService.Initialize)),
+            typeof(ISecretService).GetMethod(nameof(ISecretService.InitializeAsync))
+            ];
 
         public long? MinimimReportableMilliseconds { get; set; }
 
@@ -20,11 +24,11 @@ namespace InterceptorDemo.Interceptors
             public Stopwatch Stopwatch { get; } = Stopwatch.StartNew();
         }
 
-        protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
+        protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args)
         {
             if (FilteredMethods.Contains(targetMethod))
             {
-                return InterceptorState.None;
+                return new InterceptorState();          // todo: create an immutable static
             }
 
             var accessKey = (string) args[0];
@@ -33,11 +37,10 @@ namespace InterceptorDemo.Interceptors
 
             Console.WriteLine($"Before {targetMethod.Name}({accessKey})");
 
-            // Can return InterceptorState.None if no state is required
             return new TimedState();
         }
 
-        protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, ref object result)
+        protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
         {
             if (FilteredMethods.Contains(targetMethod))
             {
@@ -46,22 +49,25 @@ namespace InterceptorDemo.Interceptors
 
             var accessKey = (string) args[0];
 
-            var taskResult = result as Task<string>;
+            var stateResult = state.GetResult();
+            var taskResult = stateResult as Task<string>;
 
             // Cater for GetSecret() and GetSecretAsync() - not ideal using class-level interceptors but this
             // shows it is possible. Better to use level-method interceptor handlers.
             var value = taskResult is not null
                    ? taskResult.Result
-                   : (string) result;
+                   : (string) stateResult;
 
             Console.WriteLine($"After {targetMethod.Name}({accessKey}), result = {value}");
 
             value = value.ToLowerInvariant();
 
-            // Cater for GetSecret() and GetSecretAsync()
-            result = taskResult is not null
+            // Cater for GetSecret() and GetSecretAsync() - not ideal using class-level interceptors but this
+            stateResult = taskResult is not null
                 ? Task.FromResult(value)
                 : value;
+
+            state.SetResult(stateResult);
 
             Console.WriteLine($"  => Result modified to {value}");
 

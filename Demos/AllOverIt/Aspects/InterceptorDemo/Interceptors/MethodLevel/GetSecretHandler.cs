@@ -1,29 +1,31 @@
 ﻿using AllOverIt.Aspects;
+using InterceptorDemo.Interceptors.ClassLevel;
 using System;
 using System.Linq;
 using System.Reflection;
 
-namespace InterceptorDemo.Interceptors
+namespace InterceptorDemo.Interceptors.MethodLevel
 {
     internal sealed class GetSecretHandler : InterceptorMethodHandlerBase<string>
     {
-        private readonly long _minimimReportableMilliseconds;
+        private readonly long _minimumReportableMilliseconds;
         private readonly bool _useCache;
 
         public override MethodInfo[] TargetMethods { get; } = [typeof(ISecretService).GetMethod(nameof(ISecretService.GetSecret))];
 
         public GetSecretHandler(long minimimReportableMilliseconds, bool useCache)
         {
-            _minimimReportableMilliseconds = minimimReportableMilliseconds;
+            _minimumReportableMilliseconds = minimimReportableMilliseconds;
             _useCache = useCache;
         }
 
-        protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref string result)
+        protected override InterceptorState<string> DoBeforeInvoke(MethodInfo targetMethod, ref object[] args)
         {
             var accessKey = (string) args[0];
 
             args[0] = accessKey.ToUpperInvariant();
 
+            string result = default;
             var isHandled = false;
 
             if (_useCache)
@@ -42,35 +44,34 @@ namespace InterceptorDemo.Interceptors
                 Console.WriteLine($"Before {targetMethod.Name}({accessKey}) - not using a cache");
             }
 
-            return new TimedInterceptorState
+            return new TimedInterceptorState<string>
             {
+                Result = result,
                 IsHandled = isHandled
             };
         }
 
-        protected override string AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, string result)
+        protected override void DoAfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState<string> state)
         {
             var accessKey = (string) args[0];
 
-            Console.WriteLine($"After {targetMethod.Name}({accessKey}), result = {result}");
+            Console.WriteLine($"After {targetMethod.Name}({accessKey}), result = {state.Result}");
 
-            result = result.ToLowerInvariant();
+            state.Result = state.Result.ToLowerInvariant();
 
-            Console.WriteLine($"  => Result modified to {result}");
+            Console.WriteLine($"  => Result modified to {state.Result}");
 
             CheckElapsedPeriod(state);
-
-            return result;
         }
 
-        private void CheckElapsedPeriod(InterceptorState state)
+        private void CheckElapsedPeriod(InterceptorState<string> state)
         {
-            var timedState = state as TimedInterceptorState;
+            var timedState = state as TimedInterceptorState<string>;
             var elapsed = timedState.Stopwatch.ElapsedMilliseconds;
 
-            if (elapsed >= _minimimReportableMilliseconds)
+            if (elapsed >= _minimumReportableMilliseconds)
             {
-                Console.WriteLine($" >> WARNING: Elapsed exceeded minimum {_minimimReportableMilliseconds}ms, actual = {elapsed}ms");
+                Console.WriteLine($" >> WARNING: Elapsed exceeded minimum {_minimumReportableMilliseconds}ms, actual = {elapsed}ms");
             }
             else
             {
