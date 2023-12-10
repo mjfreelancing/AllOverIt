@@ -83,7 +83,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                     decoratedTypes.Add(decorator!.Decorated.GetType());
                 }
 
-                decoratedTypes.Should().BeEquivalentTo(new[] {typeof(DummyDecorator1), typeof(DummyDecorator2)});
+                decoratedTypes.Should().BeEquivalentTo(new[] { typeof(DummyDecorator1), typeof(DummyDecorator2) });
             }
 
             [Theory]
@@ -111,7 +111,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                         services.AddTransient<IDummyDecoratorInterface, DummyDecorator2>();
                         break;
                 }
-                
+
                 ServiceCollectionExtensions.Decorate<IDummyDecoratorInterface, DummyDecorator3>(services);
 
                 var provider = services.BuildServiceProvider();
@@ -198,16 +198,16 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                 public Func<int, int> Callback { get; set; }
                 public int Actual { get; private set; }
 
-                protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
+                protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args)
                 {
-                    args[0] = Callback.Invoke((int)args[0]);
+                    args[0] = Callback.Invoke((int) args[0]);
 
-                    return base.BeforeInvoke(targetMethod, ref args, ref result);
+                    return base.BeforeInvoke(targetMethod, ref args);
                 }
 
-                protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, ref object result)
+                protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
                 {
-                    base.AfterInvoke(targetMethod, args, state, ref result);
+                    base.AfterInvoke(targetMethod, args, state);
 
                     Actual = (int) args[0];
                 }

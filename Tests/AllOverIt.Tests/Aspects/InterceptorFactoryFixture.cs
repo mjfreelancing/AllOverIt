@@ -76,7 +76,7 @@ namespace AllOverIt.Tests.Aspects
                 }
             }
 
-            protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
+            protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args)
             {
                 var value = (string) (args[0]);
 
@@ -85,13 +85,12 @@ namespace AllOverIt.Tests.Aspects
                     value = value.ToLowerInvariant();
                 }
 
-                // Would return InterceptorState.Unit if no state is required
                 _state = new DummyState(value);
 
                 return _state;
             }
 
-            protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, ref object result)
+            protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
             {
                 var value = (string) (args[0]);
 

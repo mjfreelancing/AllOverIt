@@ -61,18 +61,18 @@ namespace AllOverIt.Tests.Aspects
 
             public override MethodInfo[] TargetMethods { get; } = [typeof(IDummyService).GetMethod(nameof(IDummyService.GetValue))];
 
-            protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref string result)
+            protected override InterceptorState<string> DoBeforeInvoke(MethodInfo targetMethod, ref object[] args)
             {
                 BeforeHandlerCalled = true;
 
-                return base.BeforeInvoke(targetMethod, ref args, ref result);
+                return base.DoBeforeInvoke(targetMethod, ref args);
             }
 
-            protected override string AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, string result)
+            protected override void DoAfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState<string> state)
             {
-                AfterHandlerCalled = true;
+                base.DoAfterInvoke(targetMethod, args, state);
 
-                return base.AfterInvoke(targetMethod, args, state, result);
+                AfterHandlerCalled = true;
             }
         }
 
@@ -84,21 +84,18 @@ namespace AllOverIt.Tests.Aspects
 
             public override MethodInfo[] TargetMethods { get; } = [typeof(IDummyService).GetMethod(nameof(IDummyService.GetValueAsync))];
 
-            protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref Task<string> result)
+            protected override InterceptorState<Task<string>> DoBeforeInvoke(MethodInfo targetMethod, ref object[] args)
             {
                 BeforeHandlerCalled = true;
 
-                return base.BeforeInvoke(targetMethod, ref args, ref result);
+                return base.DoBeforeInvoke(targetMethod, ref args);
             }
 
-            protected override async Task<string> AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, Task<string> result)
+            protected override void DoAfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState<Task<string>> state)
             {
+                base.DoAfterInvoke(targetMethod, args, state);
+
                 AfterHandlerCalled = true;
-
-                // Only putting this in to test the async/await works as desired
-                await Task.Delay(1);
-
-                return await base.AfterInvoke(targetMethod, args, state, result);
             }
         }
 
@@ -110,18 +107,18 @@ namespace AllOverIt.Tests.Aspects
 
             public override MethodInfo[] TargetMethods { get; } = [typeof(IDummyService).GetMethod(nameof(IDummyService.SetValue))];
 
-            protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args)
+            protected override InterceptorState DoBeforeInvoke(MethodInfo targetMethod, ref object[] args)
             {
                 BeforeHandlerCalled = true;
 
-                return base.BeforeInvoke(targetMethod, ref args);
+                return base.DoBeforeInvoke(targetMethod, ref args);
             }
 
-            protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
+            protected override void DoAfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
             {
-                AfterHandlerCalled = true;
+                base.DoAfterInvoke(targetMethod, args, state);
 
-                base.AfterInvoke(targetMethod, args, state);
+                AfterHandlerCalled = true;
             }
         }
 
@@ -133,18 +130,18 @@ namespace AllOverIt.Tests.Aspects
 
             public override MethodInfo[] TargetMethods { get; } = [typeof(IDummyService).GetMethod(nameof(IDummyService.SetValueAsync))];
 
-            protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref Task result)
+            protected override InterceptorState<Task> DoBeforeInvoke(MethodInfo targetMethod, ref object[] args)
             {
                 BeforeHandlerCalled = true;
 
-                return base.BeforeInvoke(targetMethod, ref args, ref result);
+                return base.DoBeforeInvoke(targetMethod, ref args);
             }
 
-            protected override Task AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, Task result)
+            protected override void DoAfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState<Task> state)
             {
-                AfterHandlerCalled = true;
+                base.DoAfterInvoke(targetMethod, args, state);
 
-                return base.AfterInvoke(targetMethod, args, state, result);
+                AfterHandlerCalled = true;
             }
         }
 

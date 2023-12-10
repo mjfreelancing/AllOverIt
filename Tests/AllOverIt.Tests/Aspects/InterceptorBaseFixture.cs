@@ -75,7 +75,7 @@ namespace AllOverIt.Tests.Aspects
                 }
             }
 
-            protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
+            protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args)
             {
                 var value = (string) (args[0]);
 
@@ -84,13 +84,12 @@ namespace AllOverIt.Tests.Aspects
                     value = value.ToLowerInvariant();
                 }
 
-                // Would return InterceptorState.Unit if no state is required
                 _state = new DummyState(value);
 
                 return _state;
             }
 
-            protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, ref object result)
+            protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
             {
                 var value = (string) (args[0]);
 
@@ -114,24 +113,24 @@ namespace AllOverIt.Tests.Aspects
             public object HandleBeforeResult { get; set; }
             public object HandleAfterResult { get; set; }
 
-            protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
+            protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args)
             {
                 var state = new DummyInterceptorState();
 
                 if (HandleBeforeResult is not null)
                 {
-                    // Setting the result will consider the method 'handled' - the decorated instance method will not be called
-                    result = HandleBeforeResult;
+                    state.IsHandled = true;         // the decorated instance method will not be called
+                    state.SetResult(HandleBeforeResult);
                 }
 
                 return state;
             }
 
-            protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, ref object result)
+            protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
             {
                 if (HandleAfterResult is not null)
                 {
-                    result = HandleAfterResult;
+                    state.SetResult(HandleAfterResult);
                 }
             }
         }
@@ -141,14 +140,14 @@ namespace AllOverIt.Tests.Aspects
         {
             public string AfterArgs { get; set; }
 
-            protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
+            protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args)
             {
                 args[0] = ((string) args[0]).ToUpper();
 
-                return InterceptorState.None;
+                return new InterceptorState();
             }
 
-            protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, ref object result)
+            protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
             {
                 AfterArgs = (string) args[0];
             }
@@ -160,14 +159,14 @@ namespace AllOverIt.Tests.Aspects
             public string BeforeArgs { get; set; }
             public string AfterArgs { get; set; }
 
-            protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
+            protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args)
             {
                 BeforeArgs = (string) args[0];
 
-                return InterceptorState.None;
+                return new InterceptorState();
             }
 
-            protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, ref object result)
+            protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
             {
                 AfterArgs = (string) args[0];
             }
@@ -184,14 +183,14 @@ namespace AllOverIt.Tests.Aspects
                 return false;
             }
 
-            protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
+            protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args)
             {
                 BeforeArgs = (string) args[0];
 
-                return InterceptorState.None;
+                return new InterceptorState();
             }
 
-            protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, ref object result)
+            protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
             {
                 AfterArgs = (string) args[0];
             }
