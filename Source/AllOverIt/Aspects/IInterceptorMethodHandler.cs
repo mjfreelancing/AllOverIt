@@ -3,7 +3,8 @@
 namespace AllOverIt.Aspects
 {
     /// <summary>Represents a interceptor (dispatch proxy) handler for one or more methods on an object.</summary>
-    public interface IInterceptorHandler
+    public interface IInterceptorMethodHandler
+
     {
         /// <summary>The <see cref="MethodInfo"/> for the method(s) this handler supports.</summary>
         MethodInfo[] TargetMethods { get; }

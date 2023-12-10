@@ -54,7 +54,7 @@ namespace AllOverIt.Tests.Aspects
         }
 
         // InterceptorHandlerBase<T> (over InterceptorHandlerBase) is suitable for methods with a T return type.
-        private sealed class GetValueHandler : InterceptorHandlerBase<string>
+        private sealed class GetValueHandler : InterceptorMethodHandlerBase<string>
         {
             public bool BeforeHandlerCalled { get; private set; }
             public bool AfterHandlerCalled { get; private set; }
@@ -126,7 +126,7 @@ namespace AllOverIt.Tests.Aspects
         }
 
         // InterceptorHandlerAsyncBase is best suited (over InterceptorHandlerBase) for methods with a Task return type.
-        private sealed class SetValueAsyncHandler : InterceptorHandlerAsyncBase
+        private sealed class SetValueAsyncHandler : InterceptorMethodHandlerAsyncBase
         {
             public bool BeforeHandlerCalled { get; private set; }
             public bool AfterHandlerCalled { get; private set; }

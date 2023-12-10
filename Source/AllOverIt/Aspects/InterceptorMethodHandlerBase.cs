@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace AllOverIt.Aspects
 {
     /// <summary>Provides a base class for implementing a method-level interceptor that has a void return type.</summary>
-    public abstract class InterceptorMethodHandlerBase : IInterceptorHandler
+    public abstract class InterceptorMethodHandlerBase : IInterceptorMethodHandler
     {
         /// <inheritdoc />
         public abstract MethodInfo[] TargetMethods { get; }
@@ -40,14 +40,15 @@ namespace AllOverIt.Aspects
     }
 
     /// <summary>Provides a base class for implementing a method-level interceptor that has a <typeparamref name="TResult"/> return type.</summary>
-    public abstract class InterceptorHandlerBase<TResult> : IInterceptorHandler
+    public abstract class InterceptorMethodHandlerBase<TResult> : IInterceptorMethodHandler
     {
         /// <inheritdoc />
         public abstract MethodInfo[] TargetMethods { get; }
 
         /// <inheritdoc />
-        public InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
+        InterceptorState IInterceptorMethodHandler.BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
         {
+            // result could be a value or reference type
             var typedResult = result is not null
                 ? (TResult) result
                 : default;
@@ -60,7 +61,7 @@ namespace AllOverIt.Aspects
         }
 
         /// <inheritdoc />
-        public void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, ref object result)
+        void IInterceptorMethodHandler.AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, ref object result)
         {
             var typedResult = (TResult) result;
 
@@ -93,13 +94,13 @@ namespace AllOverIt.Aspects
     }
 
     /// <summary>Provides a base class for implementing a method-level interceptor that has a <seealso cref="Task"/> return type.</summary>
-    public abstract class InterceptorHandlerAsyncBase : IInterceptorHandler
+    public abstract class InterceptorMethodHandlerAsyncBase : IInterceptorMethodHandler
     {
         /// <inheritdoc />
         public abstract MethodInfo[] TargetMethods { get; }
 
         /// <inheritdoc />
-        public InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
+        InterceptorState IInterceptorMethodHandler.BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
         {
             var typedResult = (Task) result;
 
@@ -111,7 +112,7 @@ namespace AllOverIt.Aspects
         }
 
         /// <inheritdoc />
-        public void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, ref object result)
+        void IInterceptorMethodHandler.AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, ref object result)
         {
             var typedResult = (Task) result;
 
@@ -144,13 +145,13 @@ namespace AllOverIt.Aspects
     }
 
     /// <summary>Provides a base class for implementing a method-level interceptor that has a <seealso cref="Task{TResult}"/> return type.</summary>
-    public abstract class InterceptorMethodHandlerAsyncBase<TResult> : IInterceptorHandler
+    public abstract class InterceptorMethodHandlerAsyncBase<TResult> : IInterceptorMethodHandler
     {
         /// <inheritdoc />
         public abstract MethodInfo[] TargetMethods { get; }
 
         /// <inheritdoc />
-        public InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
+        InterceptorState IInterceptorMethodHandler.BeforeInvoke(MethodInfo targetMethod, ref object[] args, ref object result)
         {
             var typedResult = (Task<TResult>) result;
 
@@ -162,7 +163,7 @@ namespace AllOverIt.Aspects
         }
 
         /// <inheritdoc />
-        public void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, ref object result)
+        void IInterceptorMethodHandler.AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state, ref object result)
         {
             var typedResult = (Task<TResult>) result;
 

@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace InterceptorDemo.Interceptors
 {
-    internal sealed class GetSecretHandler : InterceptorHandlerBase<string>
+    internal sealed class GetSecretHandler : InterceptorMethodHandlerBase<string>
     {
         private readonly long _minimimReportableMilliseconds;
         private readonly bool _useCache;

@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace InterceptorDemo.Interceptors
 {
-    internal sealed class GetSecretIdHandler : InterceptorHandlerBase<int>
+    internal sealed class GetSecretIdHandler : InterceptorMethodHandlerBase<int>
     {
         public override MethodInfo[] TargetMethods { get; } = [typeof(ISecretService).GetMethod(nameof(ISecretService.GetSecretId))];
 

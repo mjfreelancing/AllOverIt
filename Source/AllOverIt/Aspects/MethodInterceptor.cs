@@ -11,13 +11,13 @@ namespace AllOverIt.Aspects
     /// <typeparam name="TService"></typeparam>
     public class MethodInterceptor<TService> : InterceptorBase<TService>        // Cannot be sealed (required for the generated proxy)
     {
-        private readonly Dictionary<MethodInfo, IInterceptorHandler> _methodInterceptors = [];
+        private readonly Dictionary<MethodInfo, IInterceptorMethodHandler> _methodInterceptors = [];
 
         /// <summary>Adds a method intercept handler that will be invoked when the method to be intercepted matches
         /// one of the associated the <see cref="IInterceptorHandler.TargetMethods"/>.</summary>
         /// <param name="methodInterceptor">The method intercept handler instance.</param>
         /// <returns>The same instance so method calls can be chained.</returns>
-        public MethodInterceptor<TService> AddMethodHandler(IInterceptorHandler methodInterceptor)
+        public MethodInterceptor<TService> AddMethodHandler(IInterceptorMethodHandler methodInterceptor)
         {
             foreach (var targetMethod in methodInterceptor.TargetMethods)
             {
