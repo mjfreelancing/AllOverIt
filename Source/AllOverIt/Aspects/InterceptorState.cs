@@ -1,6 +1,6 @@
 ﻿namespace AllOverIt.Aspects
 {
-    /// <summary>Represents class and method level interceptor state.</summary>
+    /// <summary>Contains the state of a class or method level interceptor.</summary>
     public class InterceptorState
     {
         private object _result;
@@ -11,18 +11,26 @@
         /// method will always be called.</summary>
         public bool IsHandled { get; set; }
 
+        /// <summary>Gets the current result.</summary>
         public object GetResult() => _result;
 
+        /// <summary>Gets the current result cast to a <typeparamref name="TResult"/>.</summary>
         public TResult GetResult<TResult>() => (TResult) _result;
 
+        /// <summary>Sets the current result.</summary>
+        /// <typeparam name="TResult">The result type.</typeparam>
+        /// <param name="result">The result value.</param>
         public void SetResult<TResult>(TResult result)
         {
             _result = result;
         }
     }
 
+    /// <summary>Contains the state of a class or method level interceptor.</summary>
+    /// <typeparam name="TResult">The state's result type.</typeparam>
     public class InterceptorState<TResult> : InterceptorState
     {
+        /// <summary>Contains the state's current result.</summary>
         public TResult Result
         {
             get => GetResult<TResult>();
