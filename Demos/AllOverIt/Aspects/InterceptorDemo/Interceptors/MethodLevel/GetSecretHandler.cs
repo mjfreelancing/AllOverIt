@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Aspects;
-using InterceptorDemo.Interceptors.ClassLevel;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -30,7 +29,7 @@ namespace InterceptorDemo.Interceptors.MethodLevel
 
             if (_useCache)
             {
-                // Get the result from a cache here - just setting a value
+                // Pretend to get the result from a cache here - just setting a value
                 var cachedValue = ((string) args[0]).ToArray();
                 Array.Reverse(cachedValue);
 
@@ -55,11 +54,11 @@ namespace InterceptorDemo.Interceptors.MethodLevel
         {
             var accessKey = (string) args[0];
 
-            Console.WriteLine($"After {targetMethod.Name}({accessKey}), result = {state.Result}");
+            Console.WriteLine($"After {targetMethod.Name}, arg[0] = {accessKey}, state result = {state.Result}");
 
             state.Result = state.Result.ToLowerInvariant();
 
-            Console.WriteLine($"  => Result modified to {state.Result}");
+            Console.WriteLine($"  => Modified state result rrto {state.Result}");
 
             CheckElapsedPeriod(state);
         }
@@ -71,11 +70,11 @@ namespace InterceptorDemo.Interceptors.MethodLevel
 
             if (elapsed >= _minimumReportableMilliseconds)
             {
-                Console.WriteLine($" >> WARNING: Elapsed exceeded minimum {_minimumReportableMilliseconds}ms, actual = {elapsed}ms");
+                Console.WriteLine($"  >> WARNING: Elapsed exceeded minimum {_minimumReportableMilliseconds}ms, actual = {elapsed}ms");
             }
             else
             {
-                Console.WriteLine($" >> Elapsed = {elapsed}ms");
+                Console.WriteLine($"  >> Elapsed = {elapsed}ms");
             }
         }
     }

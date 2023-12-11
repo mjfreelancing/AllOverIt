@@ -11,7 +11,7 @@ namespace InterceptorDemo
 
         public Task InitializeAsync()
         {
-            return Task.CompletedTask;
+            return Task.Delay(10);
         }
 
         public int GetSecretId()

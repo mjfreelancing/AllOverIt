@@ -1,16 +1,10 @@
-﻿#define METHOD_INTERCEPTOR
-
+﻿using AllOverIt.Aspects;
 using AllOverIt.DependencyInjection.Extensions;
+using InterceptorDemo.Interceptors.ClassLevel;
+using InterceptorDemo.Interceptors.MethodLevel;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
-
-#if METHOD_INTERCEPTOR
-using AllOverIt.Aspects;
-using InterceptorDemo.Interceptors.MethodLevel;
-#else
-using InterceptorDemo.Interceptors.ClassLevel;
-#endif
 
 namespace InterceptorDemo
 {
@@ -25,55 +19,12 @@ namespace InterceptorDemo
                 // 'SecretService' is the real service to be decorated / intercepted
                 services.AddScoped<ISecretService, SecretService>();
 
-#if METHOD_INTERCEPTOR
-                // Method 1: Use MethodInterceptor<T> to provide support for filtering the methods to be intercepted.
-                services.DecorateWithInterceptor<ISecretService, MethodInterceptor<ISecretService>>((provider, interceptor) =>
-                {
-                    // Demonstrating how to return a result from BeforeInvoke() and hence not calling the decorated service
-                    var useCache = true;
-
-                    // Each handler can be configured via its' 'TargetMethods' property to indicate which method(s) it will handle.
-                    interceptor
-                        .AddMethodHandler(new GetSecretIdHandler())
-                        .AddMethodHandler(new GetSecretHandler(1000, useCache))
-                        .AddMethodHandler(new GetSecretAsyncHandler(1000));
-                });
-#else
-                // Method 2: Register a class interceptor (any method filtering must be performed by the interceptor).
-                services.DecorateWithInterceptor<ISecretService, TimedInterceptor>((provider, interceptor) =>
-                {
-                    interceptor.MinimimReportableMilliseconds = 1000;
-                });
-#endif
-
-                var serviceProvider = services.BuildServiceProvider();
-
-                var dispatchProxy = serviceProvider.GetRequiredService<ISecretService>();
-
-                // The class-level interceptor filters out calls to Initialize(), InitializeAsync(), GetSecretId()
-                dispatchProxy.Initialize();
-                await dispatchProxy.InitializeAsync();
-                var id = dispatchProxy.GetSecretId();
-                Console.WriteLine($"Id: {id}");
-
-                Console.WriteLine();
-
-                var accessKey = "some_key";
-
-                var secret = dispatchProxy.GetSecret(accessKey);
-                Console.WriteLine($"FINAL Result: {secret}");      // should be reported as 0-1ms
-
-                // Adding this to make sure this time is not included in the time period reported by the proxy
-                await Task.Delay(750);
-
-                Console.WriteLine();
-
-                secret = await dispatchProxy.GetSecretAsync(accessKey, false);
-                Console.WriteLine($"FINAL Result: {secret}");      // should be reported as approx. 1000ms
-
-                Console.WriteLine();
-
-                secret = await dispatchProxy.GetSecretAsync(accessKey, true);   // will throw
+                // Multiple different examples
+                //await TimeAllMethodExecutionsUsingClassInterceptor(services);
+                //await ChangeInputArgUsingClassInterceptor(services);
+                //await HandleResultUsingClassInterceptor(services);
+                //await ChangeFinalResultUsingClassInterceptor(services);
+                await UseMethodInterceptors(services);
             }
             catch (Exception exception)
             {
@@ -83,6 +34,115 @@ namespace InterceptorDemo
             Console.WriteLine();
             Console.WriteLine("All Over It.");
             Console.ReadKey();
+        }
+
+        private static Task TimeAllMethodExecutionsUsingClassInterceptor(IServiceCollection services)
+        {
+            services.DecorateWithInterceptor<ISecretService, TimeAllMethodExecutionsInterceptor>((provider, interceptor) =>
+            {
+                interceptor.MinimimReportableMilliseconds = 1;
+            });
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            // Will return a dispatch Proxy
+            var dispatchProxy = serviceProvider.GetRequiredService<ISecretService>();
+
+            return Run(dispatchProxy);
+        }
+
+        private static Task ChangeInputArgUsingClassInterceptor(IServiceCollection services)
+        {
+            services.DecorateWithInterceptor<ISecretService, ChangeInputArgInterceptor>();
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            // Will return a dispatch Proxy
+            var dispatchProxy = serviceProvider.GetRequiredService<ISecretService>();
+
+            return Run(dispatchProxy);
+        }
+
+        private static Task HandleResultUsingClassInterceptor(IServiceCollection services)
+        {
+            services.DecorateWithInterceptor<ISecretService, HandleResultInterceptor>();
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            // Will return a dispatch Proxy
+            var dispatchProxy = serviceProvider.GetRequiredService<ISecretService>();
+
+            return Run(dispatchProxy);
+        }
+
+        private static Task ChangeFinalResultUsingClassInterceptor(IServiceCollection services)
+        {
+            services.DecorateWithInterceptor<ISecretService, ChangeFinalResultInterceptor>();
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            // Will return a dispatch Proxy
+            var dispatchProxy = serviceProvider.GetRequiredService<ISecretService>();
+
+            return Run(dispatchProxy);
+        }
+
+        private static Task UseMethodInterceptors(IServiceCollection services)
+        {
+            services.DecorateWithInterceptor<ISecretService, MethodInterceptor<ISecretService>>((provider, interceptor) =>
+            {
+                // Demonstrating how to return a result from BeforeInvoke() and hence not calling the decorated service
+                var useCache = true;
+
+                // Each handler can be configured via its' 'TargetMethods' property to indicate which method(s) it will handle.
+                interceptor
+                    .AddMethodHandler(new GetSecretIdHandler())
+                    .AddMethodHandler(new GetSecretHandler(1000, useCache))
+                    .AddMethodHandler(new GetSecretAsyncHandler(1000));
+            });
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            // Will return a dispatch Proxy
+            var dispatchProxy = serviceProvider.GetRequiredService<ISecretService>();
+
+            return Run(dispatchProxy);
+        }
+
+        private static async Task Run(ISecretService dispatchProxy)
+        {
+            try
+            {
+                dispatchProxy.Initialize();
+                Console.WriteLine();
+
+                await dispatchProxy.InitializeAsync();
+                Console.WriteLine();
+
+                var result1 = dispatchProxy.GetSecretId();
+                Console.WriteLine($"    => GetSecretId() Result = {result1}");
+                Console.WriteLine();
+
+                var result2 = dispatchProxy.GetSecret("secret access key");
+                Console.WriteLine($"    => GetSecret() Result = {result2}");
+                Console.WriteLine();
+
+                // Adding this to make sure this time is not included in the time period reported by the proxy
+                await Task.Delay(500);
+
+                var result3 = await dispatchProxy.GetSecretAsync("async secret access key (no throw)", false);
+                Console.WriteLine($"    => GetSecretAsync(no throw) Result = {result3}");
+                Console.WriteLine();
+
+                var result4 = await dispatchProxy.GetSecretAsync("async secret access key (throw)", true);
+                Console.WriteLine($"    => GetSecretAsync(throw) Result = {result4}");
+                Console.WriteLine();
+
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine($"CAUGHT: {exception.Message}");
+            }
         }
     }
 }

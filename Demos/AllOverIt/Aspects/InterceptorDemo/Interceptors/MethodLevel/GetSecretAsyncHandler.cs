@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Aspects;
-using InterceptorDemo.Interceptors.ClassLevel;
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -37,15 +36,15 @@ namespace InterceptorDemo.Interceptors.MethodLevel
             // Using Task.Result is safe because AfterInvoke() is only called if the Task completed successfully.
             var value = result.Result;
 
-            Console.WriteLine($"After {targetMethod.Name}({accessKey}), result = {value}");
+            Console.WriteLine($"After {targetMethod.Name}, arg[0] = {accessKey}, state result = {state.Result}");
 
             value = value.ToLowerInvariant();
 
-            Console.WriteLine($"  => Result modified to {value}");
+            state.Result = Task.FromResult(value);
+
+            Console.WriteLine($"  => Modified state result rrto {state.Result}");
 
             CheckElapsedPeriod(state);
-
-            state.Result = Task.FromResult(value);
         }
 
         private void CheckElapsedPeriod(InterceptorState<Task<string>> state)
@@ -55,11 +54,11 @@ namespace InterceptorDemo.Interceptors.MethodLevel
 
             if (elapsed >= _minimumReportableMilliseconds)
             {
-                Console.WriteLine($" >> WARNING: Elapsed exceeded minimum {_minimumReportableMilliseconds}ms, actual = {elapsed}ms");
+                Console.WriteLine($"  >> WARNING: Elapsed exceeded minimum {_minimumReportableMilliseconds}ms, actual = {elapsed}ms");
             }
             else
             {
-                Console.WriteLine($" >> Elapsed = {elapsed}ms");
+                Console.WriteLine($"  >> Elapsed = {elapsed}ms");
             }
         }
     }

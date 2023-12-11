@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Aspects;
+using System;
 using System.Reflection;
 
 namespace InterceptorDemo.Interceptors.MethodLevel
@@ -9,6 +10,8 @@ namespace InterceptorDemo.Interceptors.MethodLevel
 
         protected override InterceptorState<int> DoBeforeInvoke(MethodInfo targetMethod, ref object[] args)
         {
+            Console.WriteLine($"Before {targetMethod.Name} - returning a handled result");
+
             return new InterceptorState<int>
             {
                 Result = 21,
