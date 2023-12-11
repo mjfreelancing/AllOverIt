@@ -4,6 +4,7 @@ using InterceptorDemo.Interceptors.ClassLevel;
 using InterceptorDemo.Interceptors.MethodLevel;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace InterceptorDemo
@@ -20,10 +21,10 @@ namespace InterceptorDemo
                 services.AddScoped<ISecretService, SecretService>();
 
                 // Multiple different examples
-                //await TimeAllMethodExecutionsUsingClassInterceptor(services);
-                //await ChangeInputArgUsingClassInterceptor(services);
-                //await HandleResultUsingClassInterceptor(services);
-                //await ChangeFinalResultUsingClassInterceptor(services);
+                await TimeAllMethodExecutionsUsingClassInterceptor(services);
+                await ChangeInputArgUsingClassInterceptor(services);
+                await HandleResultUsingClassInterceptor(services);
+                await ChangeFinalResultUsingClassInterceptor(services);
                 await UseMethodInterceptors(services);
             }
             catch (Exception exception)
@@ -36,8 +37,16 @@ namespace InterceptorDemo
             Console.ReadKey();
         }
 
+        private static void LogCalledFrom([CallerMemberName] string callerName = "")
+        {
+            Console.WriteLine($"{callerName}:");
+            Console.WriteLine();
+        }
+
         private static Task TimeAllMethodExecutionsUsingClassInterceptor(IServiceCollection services)
         {
+            LogCalledFrom();
+
             services.DecorateWithInterceptor<ISecretService, TimeAllMethodExecutionsInterceptor>((provider, interceptor) =>
             {
                 interceptor.MinimimReportableMilliseconds = 1;
@@ -53,6 +62,8 @@ namespace InterceptorDemo
 
         private static Task ChangeInputArgUsingClassInterceptor(IServiceCollection services)
         {
+            LogCalledFrom();
+
             services.DecorateWithInterceptor<ISecretService, ChangeInputArgInterceptor>();
 
             var serviceProvider = services.BuildServiceProvider();
@@ -65,6 +76,8 @@ namespace InterceptorDemo
 
         private static Task HandleResultUsingClassInterceptor(IServiceCollection services)
         {
+            LogCalledFrom();
+
             services.DecorateWithInterceptor<ISecretService, HandleResultInterceptor>();
 
             var serviceProvider = services.BuildServiceProvider();
@@ -77,6 +90,8 @@ namespace InterceptorDemo
 
         private static Task ChangeFinalResultUsingClassInterceptor(IServiceCollection services)
         {
+            LogCalledFrom();
+
             services.DecorateWithInterceptor<ISecretService, ChangeFinalResultInterceptor>();
 
             var serviceProvider = services.BuildServiceProvider();
@@ -89,6 +104,8 @@ namespace InterceptorDemo
 
         private static Task UseMethodInterceptors(IServiceCollection services)
         {
+            LogCalledFrom();
+
             services.DecorateWithInterceptor<ISecretService, MethodInterceptor<ISecretService>>((provider, interceptor) =>
             {
                 // Demonstrating how to return a result from BeforeInvoke() and hence not calling the decorated service
@@ -143,6 +160,10 @@ namespace InterceptorDemo
             {
                 Console.WriteLine($"CAUGHT: {exception.Message}");
             }
+
+            Console.WriteLine();
+            Console.WriteLine("----------------------------------------------------------------------");
+            Console.WriteLine();
         }
     }
 }
