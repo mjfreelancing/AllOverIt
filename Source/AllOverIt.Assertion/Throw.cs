@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace AllOverIt.Assertion
 {
+    // TODO: Look at an alternative that accept a Func<> so the args are lazily evaluated - to avoid things like string interpolation.
+    //       Needs a review as it may end up being a different interface.
+
     /// <summary>Static helper class that will throw a specified exception type when a given criteria is satisfied.</summary>
     /// <typeparam name="TException">The exception type to be thrown.</typeparam>
     public static class Throw<TException> where TException : Exception
@@ -478,22 +481,22 @@ namespace AllOverIt.Assertion
 
         private static Exception CreateException<TArg1>(TArg1 arg1)
         {
-            return (Exception) Activator.CreateInstance(typeof(TException), [ arg1 ]);
+            return (Exception) Activator.CreateInstance(typeof(TException), [arg1]);
         }
 
         private static Exception CreateException<TArg1, TArg2>(TArg1 arg1, TArg2 arg2)
         {
-            return (Exception) Activator.CreateInstance(typeof(TException), [ arg1, arg2 ]);
+            return (Exception) Activator.CreateInstance(typeof(TException), [arg1, arg2]);
         }
 
         private static Exception CreateException<TArg1, TArg2, TArg3>(TArg1 arg1, TArg2 arg2, TArg3 arg3)
         {
-            return (Exception) Activator.CreateInstance(typeof(TException), [ arg1, arg2, arg3 ]);
+            return (Exception) Activator.CreateInstance(typeof(TException), [arg1, arg2, arg3]);
         }
 
         private static Exception CreateException<TArg1, TArg2, TArg3, TArg4>(TArg1 arg1, TArg2 arg2, TArg3 arg3, TArg4 arg4)
         {
-            return (Exception) Activator.CreateInstance(typeof(TException), [ arg1, arg2, arg3, arg4 ]);
+            return (Exception) Activator.CreateInstance(typeof(TException), [arg1, arg2, arg3, arg4]);
         }
         #endregion
 
