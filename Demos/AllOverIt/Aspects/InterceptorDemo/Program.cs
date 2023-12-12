@@ -128,10 +128,10 @@ namespace InterceptorDemo
 
             services.DecorateWithInterceptor<ISecretService, MethodInterceptor<ISecretService>>((provider, interceptor) =>
             {
-                // Demonstrating how to return a result from BeforeInvoke() and hence not calling the decorated service
+                // Demonstrating how to return a result from BeforeInvoke() and hence not calling the decorated service instance
                 var useCache = true;
 
-                // Each handler can be configured via its' 'TargetMethods' property to indicate which method(s) it will handle.
+                // Each handler can be configured via its 'TargetMethods' property to indicate which method(s) it will handle.
                 interceptor
                     .AddMethodHandler(new GetSecretIdHandler())
                     .AddMethodHandler(new GetSecretHandler(1000, useCache))
