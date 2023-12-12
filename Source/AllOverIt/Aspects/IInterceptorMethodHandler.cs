@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 
 namespace AllOverIt.Aspects
 {
@@ -19,5 +20,10 @@ namespace AllOverIt.Aspects
         /// <param name="args">The arguments provided to the method being intercepted.</param>
         /// <param name="state">The interceptor state returned from the <see cref="BeforeInvoke(MethodInfo, ref object[])"/> method.</param>
         void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state);
+
+
+
+
+        void Faulted(MethodInfo targetMethod, object[] args, InterceptorState state, Exception exception);
     }
 }

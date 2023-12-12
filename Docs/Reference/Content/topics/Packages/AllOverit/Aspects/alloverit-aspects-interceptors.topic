@@ -56,7 +56,7 @@
                 <format style="bold">Class level Interceptors</format>
             </p>
             <p>
-                Intercept all methods by implementing a class-level interceptor that inherits <code>InterceptorBase&lt;TService&gt;</code>.
+                Intercept all methods by implementing a class-level interceptor.
             </p>
 
         </li>
@@ -66,23 +66,22 @@
             </p>
 
             <p>
-                Filter the methods to be intercepted by implementing one or more method-level intercept handlers that:
+                Implement one or more method-level handlers to intercept only the methods of concern.
             </p>
-
-            <list type="bullet">
-                <li>
-                    Inherits <code>InterceptorMethodHandlerBase&lt;TService&gt;</code> for non-async methods
-                </li>
-                <li>
-                    Inherits <code>InterceptorMethodHandlerAsyncBase&lt;TService&gt;</code> for async methods
-                </li>
-            </list>
         </li>
     </list>
 
     <chapter title="Class-Level Interceptors" id="class-level-interceptors">
         <p>
-            For scenarios that require applying the same logic to all methods on a class, begin by creating an interceptor that inherits from <code>InterceptorBase&lt;TService&gt;</code>, like so:
+            A class-level interceptor provides the ability to intercept all methods invoked on a class instance. This can be useful for handling common cross-cutting concerns such as logging the performance of all methods.
+        </p>
+
+        <warning>
+            While it is possible to implement a class-level interceptor to handle each method differently via a strategy, this is highly discouraged. <a anchor="method-level-interceptors">Method-level interceptor</a> handlers are better suited for this scenario.
+        </warning>
+
+        <p>
+            To create a class-level interceptor, begin by creating a class that inherits from <code>InterceptorBase&lt;TService&gt;</code>:
         </p>
 
         <code-block lang="c#">
@@ -107,7 +106,7 @@
                 {
                     // Custom code here
 
-                    return new InterceptorState.None;
+                    return new InterceptorState();
                 }
 
                 protected override void AfterInvoke(MethodInfo targetMethod,
@@ -124,8 +123,18 @@
             }
         </code-block>
 
+        <tip>
+            <p>
+                The <code>BeforeInvoke()</code> method can return an <code>InterceptorState</code>, or any derived class. The same instance is forwarded to the <code>AfterInvoke()</code> method.
+            </p>
+
+            <p>
+                Refer to <a href="alloverit-aspects-interceptor-state.topic"/> for more detailed information on how to use <code>InterceptorState</code>, and it's derivatives.
+            </p>
+        </tip>
+
         <p>
-            The <code>BeforeInvoke()</code> method returns an implementation of <code>InterceptorState</code> that is later provided to the <code>AfterInvoke()</code> method. As an example, the above <code>TimedInterceptor</code> is updated to determine how long each method call takes to execute.
+            As an example, the above <code>TimedInterceptor</code> is updated below to determine how long each method call takes to execute.
         </p>
 
         <code-block lang="c#">
@@ -161,23 +170,87 @@
 
     <chapter title="Method-Level Interceptors" id="method-level-interceptors">
         <p>
-            It isn't always desirable to use a single interceptor for all methods on a given class.
+            Method-level interceptors provide the following benefits over class-level interceptors:
         </p>
 
-        <list>
-            <li>
-                You may only want to intercept a subset of the methods available on the class.
-            </li>
-
-            <li>
-                Trying to apply a strategy within <code>DoBeforeInvoke()</code> and <code>DoAfterInvoke()</code> can become quite difficult to manage over time.
-            </li>
+        <list type="bullet">
+            <li>Implementing a handler per method to be intercepted applies the &quot;Single
+                Responsibility Principle&quot;.</li>
+            <li>Individual handlers are testable. </li>
+            <li>Methods with a non- <code>void</code> return type use a strongly-type <code>Interceptor&lt;TResult&gt;</code>.</li>
         </list>
 
         <p>
-            Instead, by creating a method-specific interceptor handler you'll be taking on the &quot;Single
-            Responsibility Principle&quot;, not only making your code cleaner, but also testable.
+            Method intercept handlers are implemented by deriving from a base handler that is suited to the return type of the method signature, as described in the following table.
         </p>
+
+        <table>
+            <tr>
+                <td>
+                    Method return type
+                </td>
+                <td>
+                    Example
+                </td>
+                <td>
+                    Handler base class
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <code>void</code>
+                </td>
+                <td>
+                    <code>void Initialize()</code>
+                </td>
+                <td>
+                    <code>InterceptorMethodHandlerBase</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <code>TResult</code>
+                </td>
+                <td>
+                    <code>string GetSecret()</code>
+                </td>
+                <td>
+                    <code>InterceptorMethodHandlerBase&lt;string&gt;</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <code>Task</code>
+                </td>
+                <td>
+                    <code>Task InitializeAsync()</code>
+                </td>
+                <td>
+                    <code>InterceptorMethodHandlerAsyncBase</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <code>Task&lt;TResult&gt;</code>
+                </td>
+                <td>
+                    <code>Task&lt;string&gt; GetSecretAsync()</code>
+                </td>
+                <td>
+                    <code>InterceptorMethodHandlerAsyncBase&lt;TResult&gt;</code>
+                </td>
+            </tr>
+        </table>
+
+        <p>
+            Each handler provides
+        </p>
+
+
 
         <p>
             Consider the scenario where you want to register a handler for each method on this <code>ISecretService</code> interface:
@@ -191,57 +264,8 @@
             }
         </code-block>
 
-        <list type="bullet">
-            <li>The handler for <code>GetSecret()</code>, a non-async method, must inherit  <code>InterceptorMethodHandlerBase&lt;TResult&gt;</code>.</li>
-            <li>The handler for <code>GetSecretAsync()</code>, an async method, must inherit <code>InterceptorMethodHandlerAsyncBase&lt;TResult&gt;</code>.</li>
-        </list>
-
-        <tip>
-            <p>
-                Each interceptor handler must inherit from a base handler that is suited to the method signature:
-            </p>
-
-            <list type="bullet">
-                <li>
-                    <p>
-                        <code>void Initialize()</code>
-                    </p>
-                    <p>
-                        Methods with a <code>void</code> return type must have their handler inherit from <code>InterceptorMethodHandlerBase</code>.
-                    </p>
-                </li>
-
-                <li>
-                    <p>
-                        <code>string GetSecret()</code>
-                    </p>
-                    <p>
-                        Non- <code>async</code> methods with a non- <code>void</code> return type must have their handler inherit from <code>InterceptorMethodHandlerBase&lt;TResult&gt;</code>.
-                    </p>
-                </li>
-
-                <li>
-                    <p>
-                        <code>Task InitializeAsync()</code>
-                    </p>
-                    <p>
-                        Methods with a <code>Task</code> return type must have their handler inherit from <code>InterceptorMethodHandlerAsyncBase</code>.
-                    </p>
-                </li>
-
-                <li>
-                    <p>
-                        <code>Task&lt;string&gt; GetSecretAsync()</code>
-                    </p>
-                    <p>
-                        Methods with a <code>Task&lt;TResult&gt;</code> return type must have their handler inherit from <code>InterceptorMethodHandlerAsyncBase&lt;TResult&gt;</code>.
-                    </p>
-                </li>
-            </list>
-        </tip>
-
         <p>
-            Each handler will override the <code>TargetMethods</code> property to indicate which method, or methods, the handler should be invoked for.
+            Each handler contains a <code>TargetMethods</code> property that must be overridden to indicate which method, or methods, the handler is to be invoked for.
         </p>
 
         <p>
@@ -252,7 +276,7 @@
             internal sealed class GetSecretHandler
                 : InterceptorMethodHandlerBase&lt;string&gt;
             {
-                // An example cache - not part of this implementation
+                // An example cache for demonstration only
                 private readonly ICache _cache;
 
                 // This handler will be invoked when
@@ -300,6 +324,14 @@
                 }
             }
         </code-block>
+
+
+
+
+
+
+
+
 
         <tip>
             <p>

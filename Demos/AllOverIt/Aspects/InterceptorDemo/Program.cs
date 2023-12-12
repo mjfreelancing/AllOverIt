@@ -15,17 +15,12 @@ namespace InterceptorDemo
         {
             try
             {
-                var services = new ServiceCollection();
-
-                // 'SecretService' is the real service to be decorated / intercepted
-                services.AddScoped<ISecretService, SecretService>();
-
                 // Multiple different examples
-                await TimeAllMethodExecutionsUsingClassInterceptor(services);
-                await ChangeInputArgUsingClassInterceptor(services);
-                await HandleResultUsingClassInterceptor(services);
-                await ChangeFinalResultUsingClassInterceptor(services);
-                await UseMethodInterceptors(services);
+                await TimeAllMethodExecutionsUsingClassInterceptor();
+                await ChangeInputArgUsingClassInterceptor();
+                await HandleResultUsingClassInterceptor();
+                await ChangeFinalResultUsingClassInterceptor();
+                await UseMethodInterceptors();
             }
             catch (Exception exception)
             {
@@ -43,9 +38,14 @@ namespace InterceptorDemo
             Console.WriteLine();
         }
 
-        private static Task TimeAllMethodExecutionsUsingClassInterceptor(IServiceCollection services)
+        private static Task TimeAllMethodExecutionsUsingClassInterceptor()
         {
             LogCalledFrom();
+
+            var services = new ServiceCollection();
+
+            // 'SecretService' is the real service to be decorated / intercepted
+            services.AddScoped<ISecretService, SecretService>();
 
             services.DecorateWithInterceptor<ISecretService, TimeAllMethodExecutionsInterceptor>((provider, interceptor) =>
             {
@@ -60,9 +60,14 @@ namespace InterceptorDemo
             return Run(dispatchProxy);
         }
 
-        private static Task ChangeInputArgUsingClassInterceptor(IServiceCollection services)
+        private static Task ChangeInputArgUsingClassInterceptor()
         {
             LogCalledFrom();
+
+            var services = new ServiceCollection();
+
+            // 'SecretService' is the real service to be decorated / intercepted
+            services.AddScoped<ISecretService, SecretService>();
 
             services.DecorateWithInterceptor<ISecretService, ChangeInputArgInterceptor>();
 
@@ -74,9 +79,14 @@ namespace InterceptorDemo
             return Run(dispatchProxy);
         }
 
-        private static Task HandleResultUsingClassInterceptor(IServiceCollection services)
+        private static Task HandleResultUsingClassInterceptor()
         {
             LogCalledFrom();
+
+            var services = new ServiceCollection();
+
+            // 'SecretService' is the real service to be decorated / intercepted
+            services.AddScoped<ISecretService, SecretService>();
 
             services.DecorateWithInterceptor<ISecretService, HandleResultInterceptor>();
 
@@ -88,9 +98,14 @@ namespace InterceptorDemo
             return Run(dispatchProxy);
         }
 
-        private static Task ChangeFinalResultUsingClassInterceptor(IServiceCollection services)
+        private static Task ChangeFinalResultUsingClassInterceptor()
         {
             LogCalledFrom();
+
+            var services = new ServiceCollection();
+
+            // 'SecretService' is the real service to be decorated / intercepted
+            services.AddScoped<ISecretService, SecretService>();
 
             services.DecorateWithInterceptor<ISecretService, ChangeFinalResultInterceptor>();
 
@@ -102,9 +117,14 @@ namespace InterceptorDemo
             return Run(dispatchProxy);
         }
 
-        private static Task UseMethodInterceptors(IServiceCollection services)
+        private static Task UseMethodInterceptors()
         {
             LogCalledFrom();
+
+            var services = new ServiceCollection();
+
+            // 'SecretService' is the real service to be decorated / intercepted
+            services.AddScoped<ISecretService, SecretService>();
 
             services.DecorateWithInterceptor<ISecretService, MethodInterceptor<ISecretService>>((provider, interceptor) =>
             {

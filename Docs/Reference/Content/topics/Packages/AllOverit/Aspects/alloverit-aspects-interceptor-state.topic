@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Interceptor State" id="alloverit-aspects-interceptor-state">
+
+   <p>
+       InterceptorState on class level and method level for void methods
+   </p>
+
+    <p>
+        Typed InterceptorState on method level - related to the base class. Add a table that shows the base class and associated state type.
+    </p>
+
+</topic>

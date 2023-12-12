@@ -45,7 +45,9 @@ namespace AllOverIt.Aspects
 
                 if (!state.IsHandled)
                 {
-                    state.SetResult(InvokeServiceInstance(targetMethod, args));
+                    var instanceResult = InvokeServiceInstance(targetMethod, args);
+
+                    state.SetResult(instanceResult);
                 }
 
                 if (state.GetResult() is Task)

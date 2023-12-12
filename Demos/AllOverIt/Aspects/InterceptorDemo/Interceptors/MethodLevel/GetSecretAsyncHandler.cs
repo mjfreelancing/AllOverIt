@@ -42,9 +42,16 @@ namespace InterceptorDemo.Interceptors.MethodLevel
 
             state.Result = Task.FromResult(value);
 
-            Console.WriteLine($"  => Modified state result rrto {state.Result}");
+            Console.WriteLine($"  => Modified state result to {state.Result}");
 
             CheckElapsedPeriod(state);
+        }
+
+        protected override void DoOnFaulted(MethodInfo targetMethod, object[] args, InterceptorState<Task<string>> state, Exception exception)
+        {
+            base.DoOnFaulted(targetMethod, args, state, exception);
+
+            Console.WriteLine($"  => Faulted: {exception.Message}");
         }
 
         private void CheckElapsedPeriod(InterceptorState<Task<string>> state)

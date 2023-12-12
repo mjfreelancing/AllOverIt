@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace AllOverIt.Aspects
@@ -49,6 +50,13 @@ namespace AllOverIt.Aspects
             var methodInterceptor = _methodInterceptors[targetMethod];
 
             methodInterceptor.AfterInvoke(targetMethod, args, state);
+        }
+
+        protected override void Faulted(MethodInfo targetMethod, object[] args, InterceptorState state, Exception exception)
+        {
+            var methodInterceptor = _methodInterceptors[targetMethod];
+
+            methodInterceptor.Faulted(targetMethod, args, state, exception);
         }
     }
 }

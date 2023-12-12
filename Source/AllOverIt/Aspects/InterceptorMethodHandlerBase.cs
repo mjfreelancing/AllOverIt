@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace AllOverIt.Aspects
@@ -21,6 +22,12 @@ namespace AllOverIt.Aspects
             DoAfterInvoke(targetMethod, args, state);
         }
 
+        /// <inheritdoc />
+        void IInterceptorMethodHandler.Faulted(MethodInfo targetMethod, object[] args, InterceptorState state, Exception exception)
+        {
+            DoOnFaulted(targetMethod, args, state as InterceptorState, exception);
+        }
+
         /// <summary>This method is called before the intercepted method is called on the decorated instance.</summary>
         /// <param name="targetMethod">The <see cref="MethodInfo"/> for the method being intercepted.</param>
         /// <param name="args">The arguments provided to the method being intercepted.</param>
@@ -36,6 +43,10 @@ namespace AllOverIt.Aspects
         /// <param name="args">The arguments provided to the method being intercepted.</param>
         /// <param name="state">The interceptor state returned from the <see cref="DoBeforeInvoke(MethodInfo, ref object[])"/> method.</param>
         protected virtual void DoAfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
+        {
+        }
+
+        protected virtual void DoOnFaulted(MethodInfo targetMethod, object[] args, InterceptorState state, Exception exception)
         {
         }
     }
@@ -58,6 +69,12 @@ namespace AllOverIt.Aspects
             DoAfterInvoke(targetMethod, args, state as InterceptorState<TResult>);
         }
 
+        /// <inheritdoc />
+        void IInterceptorMethodHandler.Faulted(MethodInfo targetMethod, object[] args, InterceptorState state, Exception exception)
+        {
+            DoOnFaulted(targetMethod, args, state as InterceptorState<TResult>, exception);
+        }
+
         /// <summary>This method is called before the intercepted method is called on the decorated instance.</summary>
         /// <param name="targetMethod">The <see cref="MethodInfo"/> for the method being intercepted.</param>
         /// <param name="args">The arguments provided to the method being intercepted.</param>
@@ -74,6 +91,11 @@ namespace AllOverIt.Aspects
         /// <param name="state">The interceptor state returned from the <see cref="DoBeforeInvoke(MethodInfo, ref object[])"/> method.</param>
         protected virtual void DoAfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState<TResult> state)
         {
+        }
+
+        protected virtual void DoOnFaulted(MethodInfo targetMethod, object[] args, InterceptorState<TResult> state, Exception exception)
+        {
+
         }
     }
 
@@ -95,6 +117,12 @@ namespace AllOverIt.Aspects
             DoAfterInvoke(targetMethod, args, state as InterceptorState<Task>);
         }
 
+        /// <inheritdoc />
+        void IInterceptorMethodHandler.Faulted(MethodInfo targetMethod, object[] args, InterceptorState state, Exception exception)
+        {
+            DoOnFaulted(targetMethod, args, state as InterceptorState<Task>, exception);
+        }
+
         /// <summary>This method is called before the intercepted method is called on the decorated instance.</summary>
         /// <param name="targetMethod">The <see cref="MethodInfo"/> for the method being intercepted.</param>
         /// <param name="args">The arguments provided to the method being intercepted.</param>
@@ -111,6 +139,11 @@ namespace AllOverIt.Aspects
         /// <param name="state">The interceptor state returned from the <see cref="DoBeforeInvoke(MethodInfo, ref object[])"/> method.</param>
         protected virtual void DoAfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState<Task> state)
         {
+        }
+
+        protected virtual void DoOnFaulted(MethodInfo targetMethod, object[] args, InterceptorState<Task> state, Exception exception)
+        {
+
         }
     }
 
@@ -132,6 +165,12 @@ namespace AllOverIt.Aspects
             DoAfterInvoke(targetMethod, args, state as InterceptorState<Task<TResult>>);
         }
 
+        /// <inheritdoc />
+        void IInterceptorMethodHandler.Faulted(MethodInfo targetMethod, object[] args, InterceptorState state, Exception exception)
+        {
+            DoOnFaulted(targetMethod, args, state as InterceptorState<Task<TResult>>, exception);
+        }
+
         /// <summary>This method is called before the intercepted method is called on the decorated instance.</summary>
         /// <param name="targetMethod">The <see cref="MethodInfo"/> for the method being intercepted.</param>
         /// <param name="args">The arguments provided to the method being intercepted.</param>
@@ -148,6 +187,11 @@ namespace AllOverIt.Aspects
         /// <param name="state">The interceptor state returned from the <see cref="DoBeforeInvoke(MethodInfo, ref object[])"/> method.</param>
         protected virtual void DoAfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState<Task<TResult>> state)
         {
+        }
+
+        protected virtual void DoOnFaulted(MethodInfo targetMethod, object[] args, InterceptorState<Task<TResult>> state, Exception exception)
+        {
+
         }
     }
 }
