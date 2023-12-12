@@ -5,8 +5,10 @@ using System.Reactive.Subjects;
 
 namespace AllOverIt.Reactive
 {
+    // Note: Not sealed to cater for scenarios where differently scoped event buses are required.
+
     /// <summary>Implements a subscribable event aggregator / bus that consumers can subscribe to for notification of various event types.</summary>
-    public sealed class EventBus : IEventBus
+    public class EventBus : IEventBus
     {
         private Subject<object> _subject = new();
 
