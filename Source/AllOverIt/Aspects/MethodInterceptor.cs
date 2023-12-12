@@ -52,6 +52,7 @@ namespace AllOverIt.Aspects
             methodInterceptor.AfterInvoke(targetMethod, args, state);
         }
 
+        /// <inheritdoc />
         protected override void Faulted(MethodInfo targetMethod, object[] args, InterceptorState state, Exception exception)
         {
             var methodInterceptor = _methodInterceptors[targetMethod];

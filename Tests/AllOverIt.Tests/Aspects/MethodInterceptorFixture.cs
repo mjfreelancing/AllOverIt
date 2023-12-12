@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Aspects;
+using AllOverIt.Assertion;
 using AllOverIt.Fixture;
 using FluentAssertions;
 using System;
@@ -12,11 +13,11 @@ namespace AllOverIt.Tests.Aspects
     {
         public interface IDummyService
         {
-            string GetValue();
-            Task<string> GetValueAsync();
+            string GetValue(bool canThrow = false);
+            Task<string> GetValueAsync(bool canThrow = false);
 
-            void SetValue();
-            Task SetValueAsync();
+            void SetValue(bool canThrow = false);
+            Task SetValueAsync(bool canThrow = false);
         }
 
         private sealed class DummyService : IDummyService
@@ -26,27 +27,35 @@ namespace AllOverIt.Tests.Aspects
             public bool SetValueCalled { get; private set; }
             public bool SetValueAsyncCalled { get; private set; }
 
-            public string GetValue()
+            public string GetValue(bool canThrow = false)
             {
+                Throw<Exception>.When(canThrow, "GetValue has thrown.");
+
                 GetValueCalled = true;
 
                 return string.Empty;
             }
 
-            public Task<string> GetValueAsync()
+            public Task<string> GetValueAsync(bool canThrow = false)
             {
+                Throw<Exception>.When(canThrow, "GetValueAsync has thrown.");
+
                 GetValueAsyncCalled = true;
 
                 return Task.FromResult(string.Empty);
             }
 
-            public void SetValue()
+            public void SetValue(bool canThrow = false)
             {
+                Throw<Exception>.When(canThrow, "SetValue has thrown.");
+
                 SetValueCalled = true;
             }
 
-            public Task SetValueAsync()
+            public Task SetValueAsync(bool canThrow = false)
             {
+                Throw<Exception>.When(canThrow, "SetValueAsync has thrown.");
+
                 SetValueAsyncCalled = true;
 
                 return Task.CompletedTask;
@@ -58,6 +67,7 @@ namespace AllOverIt.Tests.Aspects
         {
             public bool BeforeHandlerCalled { get; private set; }
             public bool AfterHandlerCalled { get; private set; }
+            public Exception Exception { get; private set; }
 
             public override MethodInfo[] TargetMethods { get; } = [typeof(IDummyService).GetMethod(nameof(IDummyService.GetValue))];
 
@@ -74,6 +84,13 @@ namespace AllOverIt.Tests.Aspects
 
                 AfterHandlerCalled = true;
             }
+
+            protected override void DoOnFaulted(MethodInfo targetMethod, object[] args, InterceptorState<string> state, Exception exception)
+            {
+                base.DoOnFaulted(targetMethod, args, state, exception);
+
+                Exception = exception;
+            }
         }
 
         // InterceptorMethodHandlerAsyncBase<T> is best suited (over InterceptorHandlerBase) for methods with a Task<T> return type.
@@ -81,6 +98,7 @@ namespace AllOverIt.Tests.Aspects
         {
             public bool BeforeHandlerCalled { get; private set; }
             public bool AfterHandlerCalled { get; private set; }
+            public Exception Exception { get; private set; }
 
             public override MethodInfo[] TargetMethods { get; } = [typeof(IDummyService).GetMethod(nameof(IDummyService.GetValueAsync))];
 
@@ -97,6 +115,13 @@ namespace AllOverIt.Tests.Aspects
 
                 AfterHandlerCalled = true;
             }
+
+            protected override void DoOnFaulted(MethodInfo targetMethod, object[] args, InterceptorState<Task<string>> state, Exception exception)
+            {
+                base.DoOnFaulted(targetMethod, args, state, exception);
+
+                Exception = exception;
+            }
         }
 
         // InterceptorMethodHandlerBase is suitable for methods with a void return type.
@@ -104,6 +129,7 @@ namespace AllOverIt.Tests.Aspects
         {
             public bool BeforeHandlerCalled { get; private set; }
             public bool AfterHandlerCalled { get; private set; }
+            public Exception Exception { get; private set; }
 
             public override MethodInfo[] TargetMethods { get; } = [typeof(IDummyService).GetMethod(nameof(IDummyService.SetValue))];
 
@@ -120,6 +146,13 @@ namespace AllOverIt.Tests.Aspects
 
                 AfterHandlerCalled = true;
             }
+
+            protected override void DoOnFaulted(MethodInfo targetMethod, object[] args, InterceptorState state, Exception exception)
+            {
+                base.DoOnFaulted(targetMethod, args, state, exception);
+
+                Exception = exception;
+            }
         }
 
         // InterceptorHandlerAsyncBase is best suited (over InterceptorHandlerBase) for methods with a Task return type.
@@ -127,6 +160,7 @@ namespace AllOverIt.Tests.Aspects
         {
             public bool BeforeHandlerCalled { get; private set; }
             public bool AfterHandlerCalled { get; private set; }
+            public Exception Exception { get; private set; }
 
             public override MethodInfo[] TargetMethods { get; } = [typeof(IDummyService).GetMethod(nameof(IDummyService.SetValueAsync))];
 
@@ -142,6 +176,13 @@ namespace AllOverIt.Tests.Aspects
                 base.DoAfterInvoke(targetMethod, args, state);
 
                 AfterHandlerCalled = true;
+            }
+
+            protected override void DoOnFaulted(MethodInfo targetMethod, object[] args, InterceptorState<Task> state, Exception exception)
+            {
+                base.DoOnFaulted(targetMethod, args, state, exception);
+
+                Exception = exception;
             }
         }
 
@@ -173,6 +214,27 @@ namespace AllOverIt.Tests.Aspects
         }
 
         [Fact]
+        public void Should_Handle_GetValue_Fault()
+        {
+            var handler = new GetValueHandler();
+
+            var (service, proxy, methodInterceptor) = CreateMethodInterceptor((_, interceptor) =>
+            {
+                interceptor.AddMethodHandler(handler);
+            });
+
+            Invoking(() =>
+            {
+                proxy.GetValue(true);
+            })
+            .Should()
+            .Throw<Exception>()
+            .WithMessage("GetValue has thrown.");
+
+            handler.Exception.Message.Should().Be("GetValue has thrown.");
+        }
+
+        [Fact]
         public async Task Should_Handle_GetValueAsync()
         {
             var handler = new GetValueAsyncHandler();
@@ -197,6 +259,27 @@ namespace AllOverIt.Tests.Aspects
             service.GetValueAsyncCalled.Should().BeTrue();
             handler.BeforeHandlerCalled.Should().BeTrue();
             handler.AfterHandlerCalled.Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task Should_Handle_GetValueAsync_Fault()
+        {
+            var handler = new GetValueAsyncHandler();
+
+            var (service, proxy, methodInterceptor) = CreateMethodInterceptor((_, interceptor) =>
+            {
+                interceptor.AddMethodHandler(handler);
+            });
+
+            await Invoking(async () =>
+            {
+                await proxy.GetValueAsync(true);
+            })
+            .Should()
+            .ThrowAsync<Exception>()
+            .WithMessage("GetValueAsync has thrown.");
+
+            handler.Exception.Message.Should().Be("GetValueAsync has thrown.");
         }
 
         [Fact]
@@ -227,6 +310,27 @@ namespace AllOverIt.Tests.Aspects
         }
 
         [Fact]
+        public void Should_Handle_SetValue_Fault()
+        {
+            var handler = new SetValueHandler();
+
+            var (service, proxy, methodInterceptor) = CreateMethodInterceptor((_, interceptor) =>
+            {
+                interceptor.AddMethodHandler(handler);
+            });
+
+            Invoking(() =>
+            {
+                proxy.SetValue(true);
+            })
+            .Should()
+            .Throw<Exception>()
+            .WithMessage("SetValue has thrown.");
+
+            handler.Exception.Message.Should().Be("SetValue has thrown.");
+        }
+
+        [Fact]
         public async Task Should_Handle_SetValueAsync()
         {
             var handler = new SetValueAsyncHandler();
@@ -251,6 +355,27 @@ namespace AllOverIt.Tests.Aspects
             service.SetValueAsyncCalled.Should().BeTrue();
             handler.BeforeHandlerCalled.Should().BeTrue();
             handler.AfterHandlerCalled.Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task Should_Handle_SetValueAsync_Fault()
+        {
+            var handler = new SetValueAsyncHandler();
+
+            var (service, proxy, methodInterceptor) = CreateMethodInterceptor((_, interceptor) =>
+            {
+                interceptor.AddMethodHandler(handler);
+            });
+
+            await Invoking(async () =>
+            {
+                await proxy.SetValueAsync(true);
+            })
+            .Should()
+            .ThrowAsync<Exception>()
+            .WithMessage("SetValueAsync has thrown.");
+
+            handler.Exception.Message.Should().Be("SetValueAsync has thrown.");
         }
 
         private static (DummyService, IDummyService, MethodInterceptor<IDummyService>) CreateMethodInterceptor(Action<IServiceProvider, MethodInterceptor<IDummyService>> configure)
