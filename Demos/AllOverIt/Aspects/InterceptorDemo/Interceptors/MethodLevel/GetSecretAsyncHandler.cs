@@ -31,10 +31,10 @@ namespace InterceptorDemo.Interceptors.MethodLevel
         {
             var accessKey = (string) args[0];
 
-            var result = state.Result;
+            var stateResult = state.Result;
 
-            // Using Task.Result is safe because AfterInvoke() is only called if the Task completed successfully.
-            var value = result.Result;
+            // Using Task.Result is safe because DoAfterInvoke() is only called if the Task completed successfully.
+            var value = stateResult.Result;
 
             Console.WriteLine($"After {targetMethod.Name}, arg[0] = {accessKey}, state result = {state.Result}");
 

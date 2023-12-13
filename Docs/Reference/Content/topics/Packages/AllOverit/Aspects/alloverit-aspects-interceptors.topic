@@ -137,26 +137,26 @@
             <code-block lang="c#">
                 internal class TimedInterceptor : InterceptorBase&lt;ISecretService&gt;
                 {
-                private sealed class TimedState : InterceptorState
-                {
-                public Stopwatch Stopwatch { get; } = Stopwatch.StartNew();
-                }
+                    private sealed class TimedState : InterceptorState
+                    {
+                        public Stopwatch Stopwatch { get; } = Stopwatch.StartNew();
+                    }
 
-                protected override InterceptorState BeforeInvoke(
-                MethodInfo targetMethod, ref object[] args)
-                {
-                return new TimedState();
-                }
+                    protected override InterceptorState BeforeInvoke(
+                        MethodInfo targetMethod, ref object[] args)
+                    {
+                        return new TimedState();
+                    }
 
-                protected override void AfterInvoke(MethodInfo targetMethod,
-                object[] args, InterceptorState state)
-                {
-                var timedState = state as TimedState;
+                    protected override void AfterInvoke(MethodInfo targetMethod,
+                        object[] args, InterceptorState state)
+                    {
+                        var timedState = state as TimedState;
 
-                var elapsed = timedState.Stopwatch.ElapsedMilliseconds;
+                        var elapsed = timedState.Stopwatch.ElapsedMilliseconds;
 
-                // Do something here...
-                }
+                        // Do something here...
+                    }
                 }
             </code-block>
 
@@ -265,13 +265,13 @@
             <chapter title="InterceptorMethodHandlerBase" id="InterceptorMethodHandlerBase">
                 <code-block lang="c#">
                     InterceptorState DoBeforeInvoke(MethodInfo targetMethod,
-                    ref object[] args);
+                        ref object[] args);
 
                     void DoAfterInvoke(MethodInfo targetMethod, object[] args,
-                    InterceptorState state);
+                        InterceptorState state);
 
                     void DoOnFaulted(MethodInfo targetMethod, object[] args,
-                    InterceptorState state, Exception exception);
+                        InterceptorState state, Exception exception);
                 </code-block>
 
                 <p>
@@ -282,13 +282,13 @@
             <chapter title="InterceptorMethodHandlerBase<TResult>" id="InterceptorMethodHandlerBase-TResult">
                 <code-block lang="c#">
                     InterceptorState&lt;TResult&gt; DoBeforeInvoke(MethodInfo targetMethod,
-                    ref object[] args);
+                        ref object[] args);
 
                     void DoAfterInvoke(MethodInfo targetMethod, object[] args,
-                    InterceptorState&lt;TResult&gt; state);
+                        InterceptorState&lt;TResult&gt; state);
 
                     void DoOnFaulted(MethodInfo targetMethod, object[] args,
-                    InterceptorState&lt;TResult&gt; state, Exception exception);
+                        InterceptorState&lt;TResult&gt; state, Exception exception);
                 </code-block>
 
                 <p>
@@ -303,13 +303,13 @@
             <chapter title="InterceptorMethodHandlerAsyncBase" id="InterceptorMethodHandlerAsyncBase">
                 <code-block lang="c#">
                     InterceptorState&lt;Task&gt; DoBeforeInvoke(MethodInfo targetMethod,
-                    ref object[] args);
+                        ref object[] args);
 
                     void DoAfterInvoke(MethodInfo targetMethod, object[] args,
-                    InterceptorState&lt;Task&gt; state);
+                        InterceptorState&lt;Task&gt; state);
 
                     void DoOnFaulted(MethodInfo targetMethod, object[] args,
-                    InterceptorState&lt;Task&gt; state, Exception exception);
+                        InterceptorState&lt;Task&gt; state, Exception exception);
                 </code-block>
 
                 <p>
@@ -320,13 +320,13 @@
             <chapter title="InterceptorMethodHandlerAsyncBase<TResult>" id="InterceptorMethodHandlerAsyncBase-TResult">
                 <code-block lang="c#">
                     InterceptorState&lt;Task&lt;TResult&gt;&gt; DoBeforeInvoke(MethodInfo targetMethod,
-                    ref object[] args);
+                        ref object[] args);
 
                     void DoAfterInvoke(MethodInfo targetMethod, object[] args,
-                    InterceptorState&lt;Task&lt;TResult&gt;&gt; state);
+                        InterceptorState&lt;Task&lt;TResult&gt;&gt; state);
 
                     void DoOnFaulted(MethodInfo targetMethod, object[] args,
-                    InterceptorState&lt;Task&lt;TResult&gt;&gt; state, Exception exception);
+                        InterceptorState&lt;Task&lt;TResult&gt;&gt; state, Exception exception);
                 </code-block>
 
                 <p>

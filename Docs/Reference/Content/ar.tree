@@ -17,9 +17,8 @@
                 <toc-element topic="alloverit-aspects-interceptors.topic"/>
                 <toc-element topic="alloverit-aspects-Instantiating-Interceptors.topic"/>
                 <toc-element topic="alloverit-aspects-interceptor-state.topic"/>
-                <toc-element topic="alloverit-aspects-modify-input-arguments.topic"/>
-                <toc-element topic="alloverit-aspects-return-a-handled-result.topic"/>
-                <toc-element topic="alloverit-aspects-modify-return-value.topic"/>
+                <toc-element topic="alloverit-aspects-intercept-arguments.topic"/>
+                <toc-element topic="alloverit-aspects-intercept-results.topic"/>
             </toc-element>
             <toc-element toc-title="Async">
                 <toc-element topic="alloverit-async-async-lazy.topic"/>

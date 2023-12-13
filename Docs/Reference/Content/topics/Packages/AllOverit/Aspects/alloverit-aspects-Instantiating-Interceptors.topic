@@ -125,7 +125,8 @@
        </p>
 
         <code-block lang="c#">
-            internal sealed class GetSecretHandler : InterceptorHandlerBase&lt;string&gt;
+            internal sealed class GetSecretHandler
+                : InterceptorMethodHandlerBase&lt;string&gt;
             {
                 public override MethodInfo[] TargetMethods { get; }
                     = [typeof(ISecretService)
@@ -136,7 +137,7 @@
                     // implementation here...
                 }
 
-                protected override InterceptorState&lt;string&gt; BeforeInvoke(
+                protected override InterceptorState&lt;string&gt; DoBeforeInvoke(
                     MethodInfo targetMethod, ref object[] args)
                 {
                     // implementation here...
@@ -144,7 +145,7 @@
                     return new InterceptorState&lt;string&gt;();
                 }
 
-                protected override void AfterInvoke(MethodInfo targetMethod,
+                protected override void DoAfterInvoke(MethodInfo targetMethod,
                     object[] args, InterceptorState&lt;string&gt; state)
                 {
                     // implementation here...
