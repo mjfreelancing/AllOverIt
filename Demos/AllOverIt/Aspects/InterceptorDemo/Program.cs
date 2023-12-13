@@ -45,7 +45,8 @@ namespace InterceptorDemo
             var services = new ServiceCollection();
 
             // 'SecretService' is the real service to be decorated / intercepted
-            services.AddScoped<ISecretService, SecretService>();
+            services
+                .AddScoped<ISecretService, SecretService>();
 
             services.DecorateWithInterceptor<ISecretService, TimeAllMethodExecutionsInterceptor>((provider, interceptor) =>
             {
@@ -126,14 +127,19 @@ namespace InterceptorDemo
             // 'SecretService' is the real service to be decorated / intercepted
             services.AddScoped<ISecretService, SecretService>();
 
+            // Add for the code below that resolves it from the container
+            services.AddSingleton<GetSecretIdHandler>();
+
             services.DecorateWithInterceptor<ISecretService, MethodInterceptor<ISecretService>>((provider, interceptor) =>
             {
                 // Demonstrating how to return a result from BeforeInvoke() and hence not calling the decorated service instance
                 var useCache = true;
 
-                // Each handler can be configured via its 'TargetMethods' property to indicate which method(s) it will handle.
+                // Two approaches are possible - handlers can be resolved from the container or manually constructed:
+                var secretIdHandler = provider.GetRequiredService<GetSecretIdHandler>();
+
                 interceptor
-                    .AddMethodHandler(new GetSecretIdHandler())
+                    .AddMethodHandler(secretIdHandler)
                     .AddMethodHandler(new GetSecretHandler(1000, useCache))
                     .AddMethodHandler(new GetSecretAsyncHandler(1000));
             });

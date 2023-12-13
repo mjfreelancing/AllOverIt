@@ -3,8 +3,7 @@
         SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
 <topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
-       title="Return A Handled Result" id="alloverit-aspects-return-a-handled-result"
-       help-id="allover-aspects-return-a-handled-result">
+       title="Return A Handled Result" id="alloverit-aspects-return-a-handled-result">
 
     <p>
         A common use case for interceptors is to provide a level of caching in order to improve performance. Class and method-level interceptors support this via the <code>ref object result</code> argument on the <code>BeforeInvoke()</code> method.

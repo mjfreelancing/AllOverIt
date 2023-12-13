@@ -32,14 +32,14 @@
                     public Stopwatch Stopwatch { get; } = Stopwatch.StartNew();
                 }
 
-                protected override InterceptorState BeforeInvoke(MethodInfo targetMethod,
-                    ref object[] args, ref object result)
+                protected override InterceptorState BeforeInvoke(
+                    MethodInfo targetMethod, ref object[] args)
                 {
                     return new TimedState();
                 }
 
                 protected override void AfterInvoke(MethodInfo targetMethod,
-                    object[] args, InterceptorState state, ref object result)
+                    object[] args, InterceptorState state)
                 {
                     var timedState = state as TimedState;
                     var elapsed = timedState.Stopwatch.ElapsedMilliseconds;
@@ -82,7 +82,7 @@
             </p>
 
             <note>
-                Since custom interceptors cannot be sealed and must have a default constructor, if your interceptor requires additional dependencies they will need to be provided via property or method injection rather than constructor injection.
+                Since custom interceptors cannot be sealed and must have a default constructor, if your interceptor requires additional dependencies, they will need to be provided via property or method injection rather than constructor injection.
             </note>
 
             <code-block lang="c#">
@@ -127,45 +127,34 @@
         <code-block lang="c#">
             internal sealed class GetSecretHandler : InterceptorHandlerBase&lt;string&gt;
             {
-                private readonly ICache _cache;
-
-                // This handler will be invoked when ISecretService.GetSecret()
-                // is called.
                 public override MethodInfo[] TargetMethods { get; }
                     = [typeof(ISecretService)
                         .GetMethod(nameof(ISecretService.GetSecret))];
 
                 public GetSecretHandler(ICache cache)
                 {
-                    _cache = cache;
+                    // implementation here...
                 }
 
-                protected override InterceptorState BeforeInvoke(MethodInfo targetMethod,
-                    ref object[] args,ref string result)
+                protected override InterceptorState&lt;string&gt; BeforeInvoke(
+                    MethodInfo targetMethod, ref object[] args)
                 {
-                    var accessKey = (string) args[0];
+                    // implementation here...
 
-                    // Use _cache to see if there is a suitable value to assign
-                    // to 'result', otherwise just return.
-
-                    return InterceptorState.None;
+                    return new InterceptorState&lt;string&gt;();
                 }
 
-                protected override string AfterInvoke(MethodInfo targetMethod,
-                    object[] args, InterceptorState state, string result)
+                protected override void AfterInvoke(MethodInfo targetMethod,
+                    object[] args, InterceptorState&lt;string&gt; state)
                 {
-                    var accessKey = (string) args[0];
-
-                    // Do something with the input argument(s) or final result.
-
-                    return result;
+                    // implementation here...
                 }
             }
         </code-block>
 
         <chapter id="method-level-without-dependency-injection" title="Without dependency injection">
             <p>
-                To decorate a service with a method-level interceptor called <code>GetSecretHandler</code>, the proxy is created like so:
+                To intercept a service with a method-level handler called <code>GetSecretHandler</code>, the proxy is created like so:
             </p>
 
             <code-block lang="c#">
@@ -180,8 +169,11 @@
                         // Configure the interceptor.
                         interceptor =&gt;
                         {
+                            // Some cache that needs to be injected manually
+                            var cache = Cache.Global;
+
                             // Instantiate the method handler.
-                            var handler = new GetSecretHandler(1000, true);
+                            var handler = new GetSecretHandler(cache);
 
                             // Add it to the interceptor.
                             interceptor.AddMethodHandler(handler);
@@ -193,7 +185,7 @@
 
         <chapter id="method-level-using-dependency-injection" title="Using dependency injection">
             <p>
-                Registration involves decorating the service with <code>MethodInterceptor&lt;TService&gt;</code> and adding the required handlers, as shown in the following examples:
+                Dependency Injection registration involves decorating the service with <code>MethodInterceptor&lt;TService&gt;</code> and adding the required handlers, as shown in the following examples:
             </p>
 
             <code-block lang="c#">
