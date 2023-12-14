@@ -60,27 +60,27 @@ namespace AllOverIt.Aspects
         /// <inheritdoc />
         InterceptorState IInterceptorMethodHandler.BeforeInvoke(MethodInfo targetMethod, ref object[] args)
         {
-            return DoBeforeInvoke(targetMethod, ref args);
+            return BeforeMethodInvoke(targetMethod, ref args);
         }
 
         /// <inheritdoc />
         void IInterceptorMethodHandler.AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
         {
-            DoAfterInvoke(targetMethod, args, state as InterceptorState<TResult>);
+            AfterMethodInvoke(targetMethod, args, state as InterceptorState<TResult>);
         }
 
         /// <inheritdoc />
         void IInterceptorMethodHandler.Faulted(MethodInfo targetMethod, object[] args, InterceptorState state, Exception exception)
         {
-            DoOnFaulted(targetMethod, args, state as InterceptorState<TResult>, exception);
+            OnMethodFaulted(targetMethod, args, state as InterceptorState<TResult>, exception);
         }
 
         /// <summary>This method is called before the intercepted method is called on the decorated instance.</summary>
         /// <param name="targetMethod">The <see cref="MethodInfo"/> for the method being intercepted.</param>
         /// <param name="args">The arguments provided to the method being intercepted.</param>
-        /// <returns>The interceptor state that will be forwarded to the <see cref="DoAfterInvoke(MethodInfo, object[], InterceptorState{TResult})"/>
+        /// <returns>The interceptor state that will be forwarded to the <see cref="AfterMethodInvoke(MethodInfo, object[], InterceptorState{TResult})"/>
         /// method.</returns>
-        protected virtual InterceptorState<TResult> DoBeforeInvoke(MethodInfo targetMethod, ref object[] args)
+        protected virtual InterceptorState<TResult> BeforeMethodInvoke(MethodInfo targetMethod, ref object[] args)
         {
             return new InterceptorState<TResult>();
         }
@@ -88,12 +88,12 @@ namespace AllOverIt.Aspects
         /// <summary>This method is called after the method interception has completed.</summary>
         /// <param name="targetMethod">The <see cref="MethodInfo"/> for the method being intercepted.</param>
         /// <param name="args">The arguments provided to the method being intercepted.</param>
-        /// <param name="state">The interceptor state returned from the <see cref="DoBeforeInvoke(MethodInfo, ref object[])"/> method.</param>
-        protected virtual void DoAfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState<TResult> state)
+        /// <param name="state">The interceptor state returned from the <see cref="BeforeMethodInvoke(MethodInfo, ref object[])"/> method.</param>
+        protected virtual void AfterMethodInvoke(MethodInfo targetMethod, object[] args, InterceptorState<TResult> state)
         {
         }
 
-        protected virtual void DoOnFaulted(MethodInfo targetMethod, object[] args, InterceptorState<TResult> state, Exception exception)
+        protected virtual void OnMethodFaulted(MethodInfo targetMethod, object[] args, InterceptorState<TResult> state, Exception exception)
         {
 
         }

@@ -137,7 +137,7 @@
                     // implementation here...
                 }
 
-                protected override InterceptorState&lt;string&gt; DoBeforeInvoke(
+                protected override InterceptorState&lt;string&gt; BeforeMethodInvoke(
                     MethodInfo targetMethod, ref object[] args)
                 {
                     // implementation here...
@@ -145,7 +145,7 @@
                     return new InterceptorState&lt;string&gt;();
                 }
 
-                protected override void DoAfterInvoke(MethodInfo targetMethod,
+                protected override void AfterMethodInvoke(MethodInfo targetMethod,
                     object[] args, InterceptorState&lt;string&gt; state)
                 {
                     // implementation here...
@@ -189,61 +189,71 @@
                 Dependency Injection registration involves decorating the service with <code>MethodInterceptor&lt;TService&gt;</code> and adding the required handlers, as shown in the following examples:
             </p>
 
-            <code-block lang="c#">
-                // Option 1: When you need to manually construct the handlers because
-                //           you need to pass arguments that cannot be resolved from
-                //           the container.
-                var services = new ServiceCollection();
+            <deflist>
+                <def title="Manually construct the handlers">
+                    <p>
+                        When you need to manually construct the handlers because you need to pass arguments that cannot be resolved from the container.
+                    </p>
 
-                // Typical registration of the required service - this could have been
-                // performed by a third-party library. The key point is that
-                // ISecretService is registered somewhere with the DI container.
-                services.AddScoped&lt;ISecretService, SecretService&gt;();
+                    <code-block lang="c#">
+                        var services = new ServiceCollection();
 
-                services.DecorateWithInterceptor&lt;
-                    ISecretService, MethodInterceptor&lt;ISecretService&gt;&gt;(
+                        // Typical registration of the required service - this could have been
+                        // performed by a third-party library. The key point is that
+                        // ISecretService is registered somewhere with the DI container.
+                        services.AddScoped&lt;ISecretService, SecretService&gt;();
+
+                        services.DecorateWithInterceptor&lt;
+                        ISecretService, MethodInterceptor&lt;ISecretService&gt;&gt;(
                         (provider, interceptor) =&gt;
                         {
-                            // Cache.Global represents a static ICache that has not
-                            // been registered with the service collection.
-                            var cache = Cache.Global;
+                        // Cache.Global represents a static ICache that has not
+                        // been registered with the service collection.
+                        var cache = Cache.Global;
 
-                            interceptor
-                                .AddMethodHandler(new GetSecretHandler(cache))
-                                .AddMethodHandler(new GetSecretAsyncHandler(cache));
+                        interceptor
+                        .AddMethodHandler(new GetSecretHandler(cache))
+                        .AddMethodHandler(new GetSecretAsyncHandler(cache));
                         });
+                    </code-block>
+                </def>
+            </deflist>
 
-            </code-block>
+            <deflist>
+                <def title="Resolve the handlers">
+                    <p>
+                        When you can resolve the handlers directly from the DI container.
+                    </p>
 
-            <code-block lang="c#">
-                // Option 2: When you can resolve the handlers from the container.
-                var services = new ServiceCollection();
+                    <code-block lang="c#">
+                        var services = new ServiceCollection();
 
-                // Typical registration of the required service - this could have been
-                // performed by a third-party library. The key point is that
-                // ISecretService is registered somewhere with the DI container.
-                services.AddScoped&lt;ISecretService, SecretService&gt;();
+                        // Typical registration of the required service - this could have been
+                        // performed by a third-party library. The key point is that
+                        // ISecretService is registered somewhere with the DI container.
+                        services.AddScoped&lt;ISecretService, SecretService&gt;();
 
-                services.AddSingleton&lt;ICache&gt;(Cache.Global);
-                services.AddSingleton&lt;GetSecretHandler&gt;();
-                services.AddSingleton&lt;GetSecretAsyncHandler&gt;();
+                        services.AddSingleton&lt;ICache&gt;(Cache.Global);
+                        services.AddSingleton&lt;GetSecretHandler&gt;();
+                        services.AddSingleton&lt;GetSecretAsyncHandler&gt;();
 
-                services.DecorateWithInterceptor&lt;
-                    ISecretService, MethodInterceptor&lt;ISecretService&gt;&gt;(
+                        services.DecorateWithInterceptor&lt;
+                        ISecretService, MethodInterceptor&lt;ISecretService&gt;&gt;(
                         (provider, interceptor) =>
                         {
-                            var secretHandler = provider
-                                .GetRequiredService&lt;GetSecretHandler&gt;();
+                        var secretHandler = provider
+                        .GetRequiredService&lt;GetSecretHandler&gt;();
 
-                            interceptor.AddMethodHandler(secretHandler);
+                        interceptor.AddMethodHandler(secretHandler);
 
-                            var secretAsyncHandler = provider
-                                .GetRequiredService&lt;GetSecretAsyncHandler&gt;();
+                        var secretAsyncHandler = provider
+                        .GetRequiredService&lt;GetSecretAsyncHandler&gt;();
 
-                            interceptor.AddMethodHandler(secretAsyncHandler);
+                        interceptor.AddMethodHandler(secretAsyncHandler);
                         });
-
-            </code-block>
+                    </code-block>
+                </def>
+            </deflist>
         </chapter>
     </chapter>
 

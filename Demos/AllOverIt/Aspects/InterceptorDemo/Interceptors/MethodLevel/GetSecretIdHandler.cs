@@ -8,7 +8,7 @@ namespace InterceptorDemo.Interceptors.MethodLevel
     {
         public override MethodInfo[] TargetMethods { get; } = [typeof(ISecretService).GetMethod(nameof(ISecretService.GetSecretId))];
 
-        protected override InterceptorState<int> DoBeforeInvoke(MethodInfo targetMethod, ref object[] args)
+        protected override InterceptorState<int> BeforeMethodInvoke(MethodInfo targetMethod, ref object[] args)
         {
             Console.WriteLine($"Before {targetMethod.Name} - returning a handled result");
 

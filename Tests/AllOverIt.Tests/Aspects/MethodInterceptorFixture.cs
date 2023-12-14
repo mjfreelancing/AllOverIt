@@ -71,23 +71,23 @@ namespace AllOverIt.Tests.Aspects
 
             public override MethodInfo[] TargetMethods { get; } = [typeof(IDummyService).GetMethod(nameof(IDummyService.GetValue))];
 
-            protected override InterceptorState<string> DoBeforeInvoke(MethodInfo targetMethod, ref object[] args)
+            protected override InterceptorState<string> BeforeMethodInvoke(MethodInfo targetMethod, ref object[] args)
             {
                 BeforeHandlerCalled = true;
 
-                return base.DoBeforeInvoke(targetMethod, ref args);
+                return base.BeforeMethodInvoke(targetMethod, ref args);
             }
 
-            protected override void DoAfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState<string> state)
+            protected override void AfterMethodInvoke(MethodInfo targetMethod, object[] args, InterceptorState<string> state)
             {
-                base.DoAfterInvoke(targetMethod, args, state);
+                base.AfterMethodInvoke(targetMethod, args, state);
 
                 AfterHandlerCalled = true;
             }
 
-            protected override void DoOnFaulted(MethodInfo targetMethod, object[] args, InterceptorState<string> state, Exception exception)
+            protected override void OnMethodFaulted(MethodInfo targetMethod, object[] args, InterceptorState<string> state, Exception exception)
             {
-                base.DoOnFaulted(targetMethod, args, state, exception);
+                base.OnMethodFaulted(targetMethod, args, state, exception);
 
                 Exception = exception;
             }

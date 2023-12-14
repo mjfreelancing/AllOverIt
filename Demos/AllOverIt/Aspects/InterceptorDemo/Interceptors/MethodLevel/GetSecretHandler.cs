@@ -18,7 +18,7 @@ namespace InterceptorDemo.Interceptors.MethodLevel
             _useCache = useCache;
         }
 
-        protected override InterceptorState<string> DoBeforeInvoke(MethodInfo targetMethod, ref object[] args)
+        protected override InterceptorState<string> BeforeMethodInvoke(MethodInfo targetMethod, ref object[] args)
         {
             var accessKey = (string) args[0];
 
@@ -50,7 +50,7 @@ namespace InterceptorDemo.Interceptors.MethodLevel
             };
         }
 
-        protected override void DoAfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState<string> state)
+        protected override void AfterMethodInvoke(MethodInfo targetMethod, object[] args, InterceptorState<string> state)
         {
             var accessKey = (string) args[0];
 

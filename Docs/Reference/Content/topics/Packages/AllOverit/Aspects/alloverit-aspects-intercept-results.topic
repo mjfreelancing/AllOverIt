@@ -16,7 +16,7 @@
                 Set a 'handled' result before the method on the decorated service instance has had an opportunity to be called.
             </p>
             <p>
-                For class-level interceptors this is performed in the <code>BeforeInvoke()</code> method, and for method-level interceptor handlers this is performed in the <code>DoBeforeInvoke()</code> method.
+                For class-level interceptors this is performed in the <code>BeforeInvoke()</code> method, and for method-level interceptor handlers this is performed in the <code>BeforeMethodInvoke()</code> method.
             </p>
         </li>
         <li>
@@ -24,7 +24,7 @@
                 Modify the result returned after the method on the decorated service instance has executed.
             </p>
             <p>
-                For class-level interceptors this is performed in the <code>AfterInvoke()</code> method, and for method-level interceptor handlers this is performed in the <code>DoAfterInvoke()</code> method.
+                For class-level interceptors this is performed in the <code>AfterInvoke()</code> method, and for method-level interceptor handlers this is performed in the <code>AfterMethodInvoke()</code> method.
             </p>
         </li>
     </list>
@@ -67,7 +67,7 @@
 
         <chapter title="Method-level Interceptor" id="intercept-results-before-method-level">
             <p>
-                The following example shows the <code>DoBeforeInvoke()</code> method determining if a cached result is available. If it is, then the result is set on an <code>InterceptorState&lt;string&gt;</code> instance. Additionally, by setting the <code>IsHandled</code> property to <code>true</code>, the method on the decorated service instance will not be called.
+                The following example shows the <code>BeforeMethodInvoke()</code> method determining if a cached result is available. If it is, then the result is set on an <code>InterceptorState&lt;string&gt;</code> instance. Additionally, by setting the <code>IsHandled</code> property to <code>true</code>, the method on the decorated service instance will not be called.
             </p>
 
             <code-block lang="c#">
@@ -139,11 +139,11 @@
 
         <chapter title="Method-level Interceptor" id="intercept-results-after-method-level">
             <p>
-                The following example shows the <code>DoAfterInvoke()</code> method capturing the current result and updating it to be an uppercase version.
+                The following example shows the <code>AfterMethodInvoke()</code> method capturing the current result and updating it to be an uppercase version.
             </p>
 
             <code-block lang="c#">
-                protected override void DoAfterInvoke(MethodInfo targetMethod,
+                protected override void AfterMethodInvoke(MethodInfo targetMethod,
                     object[] args, InterceptorState&lt;Task&lt;string&gt;&gt; state)
                 {
                     // This is of type Task&lt;string&gt;
