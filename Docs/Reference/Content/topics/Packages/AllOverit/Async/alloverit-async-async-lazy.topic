@@ -6,7 +6,7 @@
        title="AsyncLazy" id="alloverit-async-async-lazy" help-id="alloverit-async-asynclazy">
 
     <p>
-        <code>AsyncLazy&lt;TType&gt;</code> is similar to <code>Lazy&lt;TType&gt;</code> in that it invokes a factory method, but asynchronously, to return a <code>TType</code> when its' <code>Value</code> property is awaited. All subsequent accesses to <code>Value</code> will then return the cached result.
+        <code>AsyncLazy&lt;TType&gt;</code> is similar to <code>Lazy&lt;TType&gt;</code> in that it invokes a factory method, but asynchronously, to return a <code>TType</code> when its' <code>Value</code> property is awaited. All subsequent access to <code>Value</code> will then return the cached result.
     </p>
 
     <p>
