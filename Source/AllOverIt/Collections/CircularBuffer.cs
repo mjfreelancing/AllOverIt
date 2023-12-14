@@ -106,22 +106,28 @@ namespace AllOverIt.Collections
             }
         }
 
-        public void PopFront()
+        public TType PopFront()
         {
-            Throw<InvalidOperationException>.When(IsEmpty, "The buffer is empty");
+            Throw<InvalidOperationException>.When(IsEmpty, "The buffer is empty.");
 
+            var value = _buffer[_start];
             _buffer[_start] = default;
             IncrementWithWrap(ref _start);
             --_size;
+
+            return value;
         }
 
-        public void PopBack()
+        public TType PopBack()
         {
-            Throw<InvalidOperationException>.When(IsEmpty, "The buffer is empty");
+            Throw<InvalidOperationException>.When(IsEmpty, "The buffer is empty.");
 
             DecrementWithWrap(ref _end);
+            var value = _buffer[_end];
             _buffer[_end] = default;
             --_size;
+
+            return value;
         }
 
         public void Clear()
