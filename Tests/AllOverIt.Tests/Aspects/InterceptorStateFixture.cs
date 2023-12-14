@@ -29,7 +29,7 @@ namespace AllOverIt.Tests.Aspects
         }
 
         [Fact]
-        public void Should_Set_Get_Typed_Result()
+        public void Should_Set_Get_Typed_Result_Method()
         {
             var expected = Create<string>();
             var state = new DummyStringState();
@@ -38,18 +38,18 @@ namespace AllOverIt.Tests.Aspects
 
             state.SetResult(expected);
 
-            state.GetResult().Should().Be(expected);
+            state.GetResult<string>().Should().Be(expected);
         }
 
         [Fact]
-        public void Should_Get_Typed_Result()
+        public void Should_Set_Get_Typed_Result_Property()
         {
             var expected = Create<string>();
             var state = new DummyStringState();
 
             state.GetResult().Should().BeNull();
 
-            state.SetResult(expected);
+            state.Result = expected;
 
             state.Result.Should().Be(expected);
         }
