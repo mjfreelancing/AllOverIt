@@ -1,35 +1,36 @@
 # Summary
 |||
 |:---|:---|
-| Generated on: | 19/11/2023 - 11:04:48 PM |
-| Coverage date: | 19/11/2023 - 11:03:10 PM - 19/11/2023 - 11:04:37 PM |
+| Generated on: | 14/12/2023 - 2:50:15 PM |
+| Coverage date: | 14/12/2023 - 2:47:35 PM - 14/12/2023 - 2:49:53 PM |
 | Parser: | MultiReport (17x Cobertura) |
 | Assemblies: | 18 |
-| Classes: | 438 |
-| Files: | 445 |
-| **Line coverage:** | 99.5% (12925 of 12977) |
-| Covered lines: | 12925 |
-| Uncovered lines: | 52 |
-| Coverable lines: | 12977 |
-| Total lines: | 32737 |
-| **Branch coverage:** | 96.5% (2526 of 2617) |
-| Covered branches: | 2526 |
-| Total branches: | 2617 |
+| Classes: | 440 |
+| Files: | 446 |
+| **Line coverage:** | 99.6% (13096 of 13146) |
+| Covered lines: | 13096 |
+| Uncovered lines: | 50 |
+| Coverable lines: | 13146 |
+| Total lines: | 33030 |
+| **Branch coverage:** | 96.4% (2550 of 2645) |
+| Covered branches: | 2550 |
+| Total branches: | 2645 |
 | **Method coverage:** | [Feature is only available for sponsors](https://reportgenerator.io/pro) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|
-|**AllOverIt**|**5378**|**15**|**5393**|**15328**|**99.7%**|**1038**|**1062**|**97.7%**|
-|AllOverIt.Aspects.Interceptor.InterceptorBase`1|81|1|82|183|98.7%|12|12|100%|
-|AllOverIt.Aspects.Interceptor.InterceptorFactory|24|0|24|62|100%|4|4|100%|
-|AllOverIt.Aspects.Interceptor.InterceptorHandlerAsyncBase|16|0|16|194|100%|0|0||
-|AllOverIt.Aspects.Interceptor.InterceptorHandlerAsyncBase`1|16|0|16|194|100%|0|0||
-|AllOverIt.Aspects.Interceptor.InterceptorHandlerBase|11|0|11|194|100%|0|0||
-|AllOverIt.Aspects.Interceptor.InterceptorHandlerBase`1|16|0|16|194|100%|0|0||
-|AllOverIt.Aspects.Interceptor.InterceptorState|1|0|1|13|100%|0|0||
-|AllOverIt.Aspects.Interceptor.MethodInterceptor`1|19|0|19|54|100%|2|2|100%|
+|**AllOverIt**|**5549**|**13**|**5562**|**15665**|**99.7%**|**1063**|**1090**|**97.5%**|
+|AllOverIt.Aspects.InterceptorBase`1|81|1|82|172|98.7%|12|12|100%|
+|AllOverIt.Aspects.InterceptorFactory|24|0|24|62|100%|4|4|100%|
+|AllOverIt.Aspects.InterceptorMethodHandlerAsyncBase|16|0|16|197|100%|0|0||
+|AllOverIt.Aspects.InterceptorMethodHandlerAsyncBase`1|16|0|16|197|100%|0|0||
+|AllOverIt.Aspects.InterceptorMethodHandlerBase|16|0|16|197|100%|0|0||
+|AllOverIt.Aspects.InterceptorMethodHandlerBase`1|16|0|16|197|100%|0|0||
+|AllOverIt.Aspects.InterceptorState|6|0|6|40|100%|0|0||
+|AllOverIt.Aspects.InterceptorState`1|2|0|2|40|100%|0|0||
+|AllOverIt.Aspects.MethodInterceptor`1|23|0|23|63|100%|2|2|100%|
 |AllOverIt.Async.AsyncLazy`1|9|0|9|36|100%|0|0||
-|AllOverIt.Async.BackgroundTask|83|2|85|165|97.6%|12|14|85.7%|
+|AllOverIt.Async.BackgroundTask|85|0|85|165|100%|13|14|92.8%|
 |AllOverIt.Async.BackgroundTask`1|77|3|80|165|96.2%|16|18|88.8%|
 |AllOverIt.Async.CompositeAsyncDisposable|51|0|51|94|100%|6|6|100%|
 |AllOverIt.Async.RepeatingTask|82|2|84|166|97.6%|0|0||
@@ -40,6 +41,7 @@
 |AllOverIt.Caching.GenericCacheKey`3|15|0|15|140|100%|0|0||
 |AllOverIt.Caching.GenericCacheKey`4|18|0|18|140|100%|0|0||
 |AllOverIt.Caching.GenericCacheKeyBase|6|0|6|17|100%|0|0||
+|AllOverIt.Collections.CircularBuffer`1|147|0|147|250|100%|23|26|88.4%|
 |AllOverIt.Collections.Collection|4|0|4|21|100%|0|0||
 |AllOverIt.Collections.Dictionary|4|0|4|22|100%|0|0||
 |AllOverIt.Collections.List|4|0|4|21|100%|0|0||
@@ -93,7 +95,7 @@
 |AllOverIt.Formatters.Objects.Extensions.ObjectPropertyEnumerableOptionsExtensions|38|0|38|63|100%|12|12|100%|
 |AllOverIt.Formatters.Objects.ObjectPropertyEnumerableOptions|3|0|3|20|100%|0|0||
 |AllOverIt.Formatters.Objects.ObjectPropertyFilter|14|0|14|47|100%|0|0||
-|AllOverIt.Formatters.Objects.ObjectPropertyFilterRegistry|42|0|42|87|100%|4|4|100%|
+|AllOverIt.Formatters.Objects.ObjectPropertyFilterRegistry|48|0|48|97|100%|5|6|83.3%|
 |AllOverIt.Formatters.Objects.ObjectPropertyParent|9|0|9|28|100%|2|2|100%|
 |AllOverIt.Formatters.Objects.ObjectPropertyRootValueOptions|2|0|2|13|100%|0|0||
 |AllOverIt.Formatters.Objects.ObjectPropertySerializer|257|0|257|413|100%|122|122|100%|
@@ -173,9 +175,9 @@
 |AllOverIt.Threading.Extensions.AwaitableLockExtensions|4|0|4|23|100%|0|0||
 |AllOverIt.Threading.Extensions.ReadWriteLockExtensions|6|0|6|26|100%|0|0||
 |AllOverIt.Threading.ReadWriteLock|57|0|57|117|100%|10|10|100%|
-|**AllOverIt.Assertion**|**296**|**0**|**296**|**975**|**100%**|**132**|**132**|**100%**|
+|**AllOverIt.Assertion**|**296**|**0**|**296**|**978**|**100%**|**132**|**132**|**100%**|
 |AllOverIt.Assertion.Guard|119|0|119|454|100%|70|70|100%|
-|AllOverIt.Assertion.Throw`1|177|0|177|521|100%|62|62|100%|
+|AllOverIt.Assertion.Throw`1|177|0|177|524|100%|62|62|100%|
 |**AllOverIt.Cryptography**|**650**|**1**|**651**|**1663**|**99.8%**|**25**|**27**|**92.5%**|
 |AllOverIt.Cryptography.AES.AesEncryptor|79|1|80|143|98.7%|3|5|60%|
 |AllOverIt.Cryptography.AES.AesEncryptorConfiguration|51|0|51|101|100%|2|2|100%|
@@ -315,8 +317,8 @@
 |AllOverIt.Evaluator.Variables.VariableLookup|25|0|25|59|100%|8|8|100%|
 |AllOverIt.Evaluator.Variables.VariableRegistry|52|0|52|114|100%|8|8|100%|
 |AllOverIt.Evaluator.Variables.VariableRegistryBuilder|127|0|127|256|100%|18|18|100%|
-|**AllOverIt.Filtering**|**639**|**1**|**640**|**1610**|**99.8%**|**121**|**134**|**90.2%**|
-|AllOverIt.Filtering.Builders.FilterBuilder`2|71|0|71|159|100%|19|24|79.1%|
+|**AllOverIt.Filtering**|**639**|**1**|**640**|**1610**|**99.8%**|**120**|**134**|**89.5%**|
+|AllOverIt.Filtering.Builders.FilterBuilder`2|71|0|71|159|100%|18|24|75%|
 |AllOverIt.Filtering.Builders.FilterSpecificationBuilder`2|212|1|213|404|99.5%|50|58|86.2%|
 |AllOverIt.Filtering.Exceptions.NullNotSupportedException|9|0|9|28|100%|0|0||
 |AllOverIt.Filtering.Extensions.FilterExtensions|12|0|12|42|100%|2|2|100%|
@@ -391,8 +393,8 @@
 |AllOverIt.Pagination.TokenEncoding.ContinuationTokenSerializerFactory|4|0|4|14|100%|0|0||
 |AllOverIt.Pagination.TokenEncoding.ContinuationTokenValidator|12|0|12|33|100%|2|2|100%|
 |AllOverIt.Pagination.TokenEncoding.ContinuationTokenWriter|7|0|7|27|100%|0|0||
-|**AllOverIt.Reactive**|**176**|**0**|**176**|**511**|**100%**|**35**|**36**|**97.2%**|
-|AllOverIt.Reactive.EventBus|10|0|10|39|100%|0|0||
+|**AllOverIt.Reactive**|**176**|**0**|**176**|**513**|**100%**|**35**|**36**|**97.2%**|
+|AllOverIt.Reactive.EventBus|10|0|10|41|100%|0|0||
 |AllOverIt.Reactive.EventBusHandler`1|40|0|40|89|100%|5|6|83.3%|
 |AllOverIt.Reactive.Extensions.DisposableExtensions|3|0|3|17|100%|0|0||
 |AllOverIt.Reactive.Extensions.ObservableExtensions|44|0|44|111|100%|10|10|100%|
