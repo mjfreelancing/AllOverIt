@@ -13,21 +13,31 @@ namespace AllOverIt.Collections
 
         private int _start;
         private int _end;
-        private int _size;
+        private int _length;
 
-        public int Size => _size;
+        /// <summary>Returns the number of items in the buffer. The length can be less than the <see cref="Capacity"/>.</summary>
+        public int Length => _length;
 
+        /// <summary>Indicates the maximum number of items that can be held by the buffer.</summary>
         public int Capacity => _buffer.Length;
 
-        public bool IsFull => Size == Capacity;
+        /// <summary>Indicates if the number of items in the buffer matches the <see cref="Capacity"/>.</summary>
+        public bool IsFull => Length == Capacity;
 
-        public bool IsEmpty => Size == 0;
+        /// <summary>Indicates if there are no items in the buffer.</summary>
+        public bool IsEmpty => Length == 0;
 
+        /// <summary>Constructs an empty circular buffer with a specified capacity.</summary>
+        /// <param name="capacity">The capacity to set. The capacity specifies the maximum number of items that can be held by the buffer.</param>
         public CircularBuffer(int capacity)
             : this(capacity, [])
         {
         }
 
+        /// <summary>Constructs a circular buffer with a specified capacity, and populates it with the specified items.</summary>
+        /// <param name="capacity">>The capacity to set. The capacity specifies the maximum number of items that can be held by the buffer.</param>
+        /// <param name="items">The initial collection of items to populate the buffer with. A call to <see cref="Front"/> will return
+        /// the first item, and a called to <see cref="Back"/> will return the last item.</param>
         public CircularBuffer(int capacity, TType[] items)
         {
             _ = items.WhenNotNull(nameof(items));
@@ -39,9 +49,9 @@ namespace AllOverIt.Collections
 
             Array.Copy(items, _buffer, items.Length);
 
-            _size = items.Length;
+            _length = items.Length;
             _start = 0;
-            _end = _size == capacity ? 0 : _size;
+            _end = _length == capacity ? 0 : _length;
         }
 
         public TType Front()
@@ -55,22 +65,24 @@ namespace AllOverIt.Collections
         {
             Throw<InvalidOperationException>.When(IsEmpty, "The buffer is empty.");
 
-            return _buffer[(_end != 0 ? _end : Capacity) - 1];
+            var index = (_end != 0 ? _end : Capacity) - 1;
+
+            return _buffer[index];
         }
 
         public TType this[int index]
         {
             get
             {
-                var actualIndex = InternalIndex(index);
+                var internalIndex = InternalIndex(index);
 
-                return _buffer[actualIndex];
+                return _buffer[internalIndex];
             }
             set
             {
-                var actualIndex = InternalIndex(index);
+                var internalIndex = InternalIndex(index);
 
-                _buffer[actualIndex] = value;
+                _buffer[internalIndex] = value;
             }
         }
 
@@ -86,7 +98,7 @@ namespace AllOverIt.Collections
             {
                 DecrementWithWrap(ref _start);
                 _buffer[_start] = item;
-                ++_size;
+                ++_length;
             }
         }
 
@@ -102,7 +114,7 @@ namespace AllOverIt.Collections
             {
                 _buffer[_end] = item;
                 IncrementWithWrap(ref _end);
-                ++_size;
+                ++_length;
             }
         }
 
@@ -113,7 +125,7 @@ namespace AllOverIt.Collections
             var value = _buffer[_start];
             _buffer[_start] = default;
             IncrementWithWrap(ref _start);
-            --_size;
+            --_length;
 
             return value;
         }
@@ -125,7 +137,7 @@ namespace AllOverIt.Collections
             DecrementWithWrap(ref _end);
             var value = _buffer[_end];
             _buffer[_end] = default;
-            --_size;
+            --_length;
 
             return value;
         }
@@ -134,14 +146,14 @@ namespace AllOverIt.Collections
         {
             _start = 0;
             _end = 0;
-            _size = 0;
+            _length = 0;
 
             Array.Clear(_buffer, 0, _buffer.Length);
         }
 
         public TType[] ToArray()
         {
-            var array = new TType[Size];
+            var array = new TType[Length];
             var offset = 0;
             var segments = GetArraySegments();
 
@@ -187,12 +199,12 @@ namespace AllOverIt.Collections
                 index = Capacity;
             }
 
-            index--;
+            --index;
         }
 
         private int InternalIndex(int index)
         {
-            Throw<IndexOutOfRangeException>.When(index >= _size, "The provided index exceeds the current buffer size.");
+            Throw<IndexOutOfRangeException>.When(index >= _length, "The provided index exceeds the current buffer size.");
 
             var offset = index < (Capacity - _start)
                 ? index
@@ -201,25 +213,9 @@ namespace AllOverIt.Collections
             return _start + offset;
         }
 
-
-
-
-        /// <summary>
-        /// Get the contents of the buffer as 2 ArraySegments.
-        /// Respects the logical contents of the buffer, where
-        /// each segment and items in each segment are ordered
-        /// according to insertion.
-        ///
-        /// Fast: does not copy the array elements.
-        /// Useful for methods like <c>Send(IList&lt;ArraySegment&lt;Byte&gt;&gt;)</c>.
-        /// 
-        /// <remarks>Segments may be empty.</remarks>
-        /// </summary>
-        /// <returns>An IList with 2 segments corresponding to the buffer content.</returns>
+        // There can be 1 or 2 segments, and one of them may be empty
         private IEnumerable<ArraySegment<TType>> GetArraySegments()
         {
-            // The array is composed by at most two non-contiguous segments, 
-
             if (IsEmpty)
             {
                 yield return new ArraySegment<TType>([]);

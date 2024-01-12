@@ -35,7 +35,7 @@ namespace AllOverIt.Tests.Collections
 
                 var buffer = new CircularBuffer<int>(capacity);
 
-                buffer.Size.Should().Be(0);
+                buffer.Length.Should().Be(0);
                 buffer.Capacity.Should().Be(capacity);
                 buffer.IsEmpty.Should().BeTrue();
                 buffer.IsFull.Should().BeFalse();
@@ -91,7 +91,7 @@ namespace AllOverIt.Tests.Collections
 
                 var buffer = new CircularBuffer<int>(capacity);
 
-                buffer.Size.Should().Be(0);
+                buffer.Length.Should().Be(0);
                 buffer.Capacity.Should().Be(capacity);
                 buffer.IsEmpty.Should().BeTrue();
                 buffer.IsFull.Should().BeFalse();
@@ -106,7 +106,7 @@ namespace AllOverIt.Tests.Collections
 
                 var buffer = new CircularBuffer<int>(capacity, items);
 
-                buffer.Size.Should().Be(size);
+                buffer.Length.Should().Be(size);
                 buffer.Capacity.Should().Be(capacity);
                 buffer.IsEmpty.Should().BeFalse();
                 buffer.IsFull.Should().BeFalse();
@@ -120,7 +120,7 @@ namespace AllOverIt.Tests.Collections
 
                 var buffer = new CircularBuffer<int>(capacity, items);
 
-                buffer.Size.Should().Be(capacity);
+                buffer.Length.Should().Be(capacity);
                 buffer.Capacity.Should().Be(capacity);
                 buffer.IsEmpty.Should().BeFalse();
                 buffer.IsFull.Should().BeTrue();
