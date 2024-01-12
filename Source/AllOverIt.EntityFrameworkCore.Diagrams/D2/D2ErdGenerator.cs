@@ -31,6 +31,9 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
                 ? _options.Entities.ShapeStyle.AsText(2)
                 : default;
 
+            sb.AppendLine($"direction: {_options.Direction}".ToLowerInvariant());
+            sb.AppendLine();
+
             var entityNodeGenerator = new EntityNodeGenerator(_options, dbContextEntityTypes, defaultShapeStyle);
 
             foreach (var (entityIdentifier, columns) in entityColumns)

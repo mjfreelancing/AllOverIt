@@ -6,6 +6,22 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
     /// <summary>Provides options that define how the entity relationship diagram will be created.</summary>
     public sealed class ErdOptions
     {
+        /// <summary>Diagram direction options.</summary>
+        public enum DiagramDirection
+        {
+            /// <summary>The direction flows towards left.</summary>
+            Left,
+
+            /// <summary>The direction flows towards right.</summary>
+            Right,
+
+            /// <summary>The direction flows towards up.</summary>
+            Up,
+
+            /// <summary>The direction flows towards down.</summary>
+            Down
+        }
+
         /// <summary>Provides entity specific options that can be applied to a single entity, or globally.</summary>
         public abstract class EntityOptionsBase
         {
@@ -70,6 +86,9 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
             /// <summary>The label text for one-to-many relationships.</summary>
             public string OneToManyLabel { get; set; } = DefaultOneToManyLabel;
         }
+
+        /// <summary>Specifies the direction the diagram flows towards.</summary>
+        public DiagramDirection Direction { get; set; } = DiagramDirection.Left;
 
         /// <summary>Defines global options for all entities generated in the diagram.</summary>
         public EntityGlobalOptions Entities { get; } = new();

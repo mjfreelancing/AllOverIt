@@ -23,6 +23,8 @@ namespace D2ErdDiagramDemo
             var erdFormatter = ErdGenerator
                 .Create<D2ErdGenerator>(options =>
                 {
+                    options.Direction = ErdOptions.DiagramDirection.Right;
+
                     options.Entities.Nullable.IsVisible = true;
                     options.Entities.Nullable.Mode = NullableColumnMode.NotNull;
 
@@ -119,7 +121,7 @@ namespace D2ErdDiagramDemo
             // This generates the diagram, saves it as a text file and exports to SVG, PNG, PDF
             var exportOptions = new D2ErdExportOptions
             {
-                DiagramFileName = "sample_erd.d2",
+                DiagramFileName = "..\\..\\..\\Output Examples\\sample_erd.d2",
                 LayoutEngine = "elk",
                 Theme = Theme.Neutral,
                 Formats = new[] { ExportFormat.Svg, ExportFormat.Png, ExportFormat.Pdf },
