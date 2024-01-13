@@ -54,22 +54,29 @@ namespace AllOverIt.Collections
             _end = _length == capacity ? 0 : _length;
         }
 
+        /// <summary>Gets the element at the front of the buffer.</summary>
+        /// <returns>The element at the front of the buffer.</returns>
         public TType Front()
         {
-            Throw<InvalidOperationException>.When(IsEmpty, "The buffer is empty.");
+            Throw<InvalidOperationException>.When(IsEmpty, "The circular buffer contains no elements.");
 
             return _buffer[_start];
         }
 
+        /// <summary>Gets the element at the end of the buffer.</summary>
+        /// <returns>The element at the end of the buffer.</returns>
         public TType Back()
         {
-            Throw<InvalidOperationException>.When(IsEmpty, "The buffer is empty.");
+            Throw<InvalidOperationException>.When(IsEmpty, "The circular buffer contains no elements.");
 
             var index = (_end != 0 ? _end : Capacity) - 1;
 
             return _buffer[index];
         }
 
+        /// <summary>Gets the element at the specified index.</summary>
+        /// <param name="index">The index of the element to get from the buffer.</param>
+        /// <returns>The element at the specified index.</returns>
         public TType this[int index]
         {
             get
@@ -86,6 +93,9 @@ namespace AllOverIt.Collections
             }
         }
 
+        /// <summary>Inserts a new element at the front of the buffer. If the buffer is full then the last
+        /// element in the buffer will be removed to make room for the element being inserted.</summary>
+        /// <param name="item">The new element to be inserted at the front of the buffer.</param>
         public void PushFront(TType item)
         {
             if (IsFull)
@@ -102,6 +112,9 @@ namespace AllOverIt.Collections
             }
         }
 
+        /// <summary>Inserts a new element at the back of the buffer. If the buffer is full then the first
+        /// element in the buffer will be removed to make room for the element being inserted.</summary>
+        /// <param name="item">The new element to be inserted at the back of the buffer.</param>
         public void PushBack(TType item)
         {
             if (IsFull)
@@ -118,9 +131,11 @@ namespace AllOverIt.Collections
             }
         }
 
+        /// <summary>Removes and returns the element at the front of the buffer.</summary>
+        /// <returns>The element removed from the front of the buffer.</returns>
         public TType PopFront()
         {
-            Throw<InvalidOperationException>.When(IsEmpty, "The buffer is empty.");
+            Throw<InvalidOperationException>.When(IsEmpty, "The circular buffer contains no elements.");
 
             var value = _buffer[_start];
             _buffer[_start] = default;
@@ -130,9 +145,11 @@ namespace AllOverIt.Collections
             return value;
         }
 
+        /// <summary>Removes and returns the element at the back of the buffer.</summary>
+        /// <returns>The element removed from the back of the buffer.</returns>
         public TType PopBack()
         {
-            Throw<InvalidOperationException>.When(IsEmpty, "The buffer is empty.");
+            Throw<InvalidOperationException>.When(IsEmpty, "The circular buffer contains no elements.");
 
             DecrementWithWrap(ref _end);
             var value = _buffer[_end];
@@ -142,6 +159,7 @@ namespace AllOverIt.Collections
             return value;
         }
 
+        /// <summary>Clears the buffer.</summary>
         public void Clear()
         {
             _start = 0;
@@ -151,6 +169,8 @@ namespace AllOverIt.Collections
             Array.Clear(_buffer, 0, _buffer.Length);
         }
 
+        /// <summary>Copies the <see cref="CircularBuffer{TType}"/> to a new array.</summary>
+        /// <returns>A new array containing copies of the elements of the <see cref="CircularBuffer{TType}"/>.</returns>
         public TType[] ToArray()
         {
             var array = new TType[Length];
@@ -166,6 +186,8 @@ namespace AllOverIt.Collections
             return array;
         }
 
+        /// <summary>Gets an enumerator for the <see cref="CircularBuffer{TType}"/>.</summary>
+        /// <returns>An enumerator for the <see cref="CircularBuffer{TType}"/>.</returns>
         public IEnumerator<TType> GetEnumerator()
         {
             var segments = GetArraySegments();

@@ -139,7 +139,7 @@ namespace AllOverIt.Tests.Collections
                 })
                 .Should()
                 .Throw<InvalidOperationException>()
-                .WithMessage("The buffer is empty.");
+                .WithMessage("The circular buffer contains no elements.");
             }
 
             [Fact]
@@ -194,7 +194,7 @@ namespace AllOverIt.Tests.Collections
                 })
                 .Should()
                 .Throw<InvalidOperationException>()
-                .WithMessage("The buffer is empty.");
+                .WithMessage("The circular buffer contains no elements.");
             }
 
             [Fact]
@@ -394,7 +394,7 @@ namespace AllOverIt.Tests.Collections
                 })
                     .Should().
                     Throw<InvalidOperationException>()
-                    .WithMessage("The buffer is empty.");
+                    .WithMessage("The circular buffer contains no elements.");
             }
         }
 
@@ -423,7 +423,7 @@ namespace AllOverIt.Tests.Collections
                 })
                     .Should().
                     Throw<InvalidOperationException>()
-                    .WithMessage("The buffer is empty.");
+                    .WithMessage("The circular buffer contains no elements.");
             }
         }
 
