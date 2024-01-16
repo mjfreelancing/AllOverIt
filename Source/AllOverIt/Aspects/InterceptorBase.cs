@@ -25,7 +25,7 @@ namespace AllOverIt.Aspects
         }
 
         /// <summary>The <see cref="BeforeInvoke(MethodInfo, ref object[])"/> method is called before calling the decorated
-        /// object's method, and ends with calling <see cref="AfterInvoke(MethodInfo, object[], InterceptorState, ref object)"/> if
+        /// object's method, and ends with calling <see cref="AfterInvoke(MethodInfo, object[], InterceptorState)"/> if
         /// no exception is raised, otherwise <see cref="Faulted(MethodInfo, object[], InterceptorState, Exception)"/>
         /// is called.</summary>
         /// <param name="targetMethod">The <see cref="MethodInfo"/> for the method being intercepted.</param>

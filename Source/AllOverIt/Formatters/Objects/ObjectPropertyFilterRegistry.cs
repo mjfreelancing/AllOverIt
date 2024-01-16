@@ -12,6 +12,8 @@ namespace AllOverIt.Formatters.Objects
         // A filter is created for each request due to the serializer managing state.
         private readonly Dictionary<Type, Func<IObjectPropertySerializer>> _filterRegistry = [];
 
+        /// <summary>Constructor.</summary>
+        /// <param name="defaultSerializerFactory">An optional factory method to construct an <see cref="IObjectPropertySerializer"/> instance.</param>
         public ObjectPropertyFilterRegistry(Func<IObjectPropertySerializer> defaultSerializerFactory = default)
         {
             var serializerFactory = defaultSerializerFactory is not null
