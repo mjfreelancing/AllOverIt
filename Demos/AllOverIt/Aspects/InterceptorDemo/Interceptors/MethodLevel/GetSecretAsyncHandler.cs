@@ -16,7 +16,7 @@ namespace InterceptorDemo.Interceptors.MethodLevel
             _minimumReportableMilliseconds = minimimReportableMilliseconds;
         }
 
-        protected override InterceptorState<Task<string>> DoBeforeInvoke(MethodInfo targetMethod, ref object[] args)
+        protected override InterceptorState<Task<string>> BeforeMethodInvoke(MethodInfo targetMethod, ref object[] args)
         {
             var accessKey = (string) args[0];
 
@@ -27,7 +27,7 @@ namespace InterceptorDemo.Interceptors.MethodLevel
             return new TimedInterceptorState<Task<string>>();
         }
 
-        protected override void DoAfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState<Task<string>> state)
+        protected override void AfterMethodInvoke(MethodInfo targetMethod, object[] args, InterceptorState<Task<string>> state)
         {
             var accessKey = (string) args[0];
 
@@ -47,9 +47,9 @@ namespace InterceptorDemo.Interceptors.MethodLevel
             CheckElapsedPeriod(state);
         }
 
-        protected override void DoOnFaulted(MethodInfo targetMethod, object[] args, InterceptorState<Task<string>> state, Exception exception)
+        protected override void MethodFaulted(MethodInfo targetMethod, object[] args, InterceptorState<Task<string>> state, Exception exception)
         {
-            base.DoOnFaulted(targetMethod, args, state, exception);
+            base.MethodFaulted(targetMethod, args, state, exception);
 
             Console.WriteLine($"  => Faulted: {exception.Message}");
         }

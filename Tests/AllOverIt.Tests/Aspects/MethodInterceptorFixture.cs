@@ -85,9 +85,9 @@ namespace AllOverIt.Tests.Aspects
                 AfterHandlerCalled = true;
             }
 
-            protected override void OnMethodFaulted(MethodInfo targetMethod, object[] args, InterceptorState<string> state, Exception exception)
+            protected override void MethodFaulted(MethodInfo targetMethod, object[] args, InterceptorState<string> state, Exception exception)
             {
-                base.OnMethodFaulted(targetMethod, args, state, exception);
+                base.MethodFaulted(targetMethod, args, state, exception);
 
                 Exception = exception;
             }
@@ -102,23 +102,23 @@ namespace AllOverIt.Tests.Aspects
 
             public override MethodInfo[] TargetMethods { get; } = [typeof(IDummyService).GetMethod(nameof(IDummyService.GetValueAsync))];
 
-            protected override InterceptorState<Task<string>> DoBeforeInvoke(MethodInfo targetMethod, ref object[] args)
+            protected override InterceptorState<Task<string>> BeforeMethodInvoke(MethodInfo targetMethod, ref object[] args)
             {
                 BeforeHandlerCalled = true;
 
-                return base.DoBeforeInvoke(targetMethod, ref args);
+                return base.BeforeMethodInvoke(targetMethod, ref args);
             }
 
-            protected override void DoAfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState<Task<string>> state)
+            protected override void AfterMethodInvoke(MethodInfo targetMethod, object[] args, InterceptorState<Task<string>> state)
             {
-                base.DoAfterInvoke(targetMethod, args, state);
+                base.AfterMethodInvoke(targetMethod, args, state);
 
                 AfterHandlerCalled = true;
             }
 
-            protected override void DoOnFaulted(MethodInfo targetMethod, object[] args, InterceptorState<Task<string>> state, Exception exception)
+            protected override void MethodFaulted(MethodInfo targetMethod, object[] args, InterceptorState<Task<string>> state, Exception exception)
             {
-                base.DoOnFaulted(targetMethod, args, state, exception);
+                base.MethodFaulted(targetMethod, args, state, exception);
 
                 Exception = exception;
             }
@@ -133,23 +133,23 @@ namespace AllOverIt.Tests.Aspects
 
             public override MethodInfo[] TargetMethods { get; } = [typeof(IDummyService).GetMethod(nameof(IDummyService.SetValue))];
 
-            protected override InterceptorState DoBeforeInvoke(MethodInfo targetMethod, ref object[] args)
+            protected override InterceptorState BeforeMethodInvoke(MethodInfo targetMethod, ref object[] args)
             {
                 BeforeHandlerCalled = true;
 
-                return base.DoBeforeInvoke(targetMethod, ref args);
+                return base.BeforeMethodInvoke(targetMethod, ref args);
             }
 
-            protected override void DoAfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
+            protected override void AfterMethodInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
             {
-                base.DoAfterInvoke(targetMethod, args, state);
+                base.AfterMethodInvoke(targetMethod, args, state);
 
                 AfterHandlerCalled = true;
             }
 
-            protected override void DoOnFaulted(MethodInfo targetMethod, object[] args, InterceptorState state, Exception exception)
+            protected override void MethodFaulted(MethodInfo targetMethod, object[] args, InterceptorState state, Exception exception)
             {
-                base.DoOnFaulted(targetMethod, args, state, exception);
+                base.MethodFaulted(targetMethod, args, state, exception);
 
                 Exception = exception;
             }
@@ -164,23 +164,23 @@ namespace AllOverIt.Tests.Aspects
 
             public override MethodInfo[] TargetMethods { get; } = [typeof(IDummyService).GetMethod(nameof(IDummyService.SetValueAsync))];
 
-            protected override InterceptorState<Task> DoBeforeInvoke(MethodInfo targetMethod, ref object[] args)
+            protected override InterceptorState<Task> BeforeMethodInvoke(MethodInfo targetMethod, ref object[] args)
             {
                 BeforeHandlerCalled = true;
 
-                return base.DoBeforeInvoke(targetMethod, ref args);
+                return base.BeforeMethodInvoke(targetMethod, ref args);
             }
 
-            protected override void DoAfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState<Task> state)
+            protected override void AfterMethodInvoke(MethodInfo targetMethod, object[] args, InterceptorState<Task> state)
             {
-                base.DoAfterInvoke(targetMethod, args, state);
+                base.AfterMethodInvoke(targetMethod, args, state);
 
                 AfterHandlerCalled = true;
             }
 
-            protected override void DoOnFaulted(MethodInfo targetMethod, object[] args, InterceptorState<Task> state, Exception exception)
+            protected override void MethodFaulted(MethodInfo targetMethod, object[] args, InterceptorState<Task> state, Exception exception)
             {
-                base.DoOnFaulted(targetMethod, args, state, exception);
+                base.MethodFaulted(targetMethod, args, state, exception);
 
                 Exception = exception;
             }
