@@ -80,11 +80,10 @@
 * Amazon.CDK.Asset.AwsCliV1 v2.2.201
 * Amazon.CDK.Asset.KubectlV20 v2.1.2
 * Amazon.CDK.Asset.NodeProxyAgentV6 v2.0.1
-* Amazon.CDK.Lib v2.110.0
+* Amazon.CDK.Lib v2.121.1
 * Amazon.CDK.Lib v2.99.0
-* Amazon.JSII.Runtime v1.91.0
-* Amazon.JSII.Runtime v1.92.0
-* Cdklabs.AwsCdkAppsyncUtils v0.0.279
+* Amazon.JSII.Runtime v1.94.0
+* Cdklabs.AwsCdkAppsyncUtils v0.0.327
 * Constructs v10.0.0
 * Constructs v10.0.5
 
@@ -235,7 +234,7 @@
 
 ### Dependencies
 
-* AutoFixture v4.18.0
+* AutoFixture v4.18.1
 * Fare v2.1.1
 * FluentAssertions v6.12.0
 * System.ComponentModel.Annotations v4.3.0
@@ -254,11 +253,11 @@
 ### Dependencies
 
 * AllOverIt.Fixture
-* AutoFixture v4.18.0
-* AutoFixture.AutoFakeItEasy v4.18.0
-* Castle.Core v4.3.1
+* AutoFixture v4.18.1
+* AutoFixture.AutoFakeItEasy v4.18.1
+* Castle.Core v5.1.1
 * FakeItEasy v4.9.0
-* FakeItEasy v7.4.0
+* FakeItEasy v8.1.0
 * Fare v2.1.1
 * FluentAssertions v6.12.0
 * System.ComponentModel.Annotations v4.3.0
@@ -382,10 +381,12 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* DynamicData v8.0.2
+* DynamicData v8.3.27
 * Microsoft.Extensions.DependencyInjection.Abstractions v8.0.0
-* ReactiveUI v19.5.1
-* Splat v14.7.1
+* ReactiveUI v19.5.39
+* Splat v14.8.12
+* System.ComponentModel.Annotations v5.0.0
+* System.Text.Json v8.0.0
 
 <br>
 
@@ -402,11 +403,13 @@
 * AllOverIt
 * AllOverIt.Assertion
 * AllOverIt.ReactiveUI
-* DynamicData v8.0.2
+* DynamicData v8.3.27
 * Microsoft.Extensions.DependencyInjection.Abstractions v8.0.0
-* ReactiveUI v19.5.1
-* ReactiveUI.WPF v19.5.1
-* Splat v14.7.1
+* ReactiveUI v19.5.39
+* ReactiveUI.WPF v19.5.39
+* Splat v14.8.12
+* System.ComponentModel.Annotations v5.0.0
+* System.Text.Json v8.0.0
 
 <br>
 
@@ -472,7 +475,7 @@
 * AllOverIt.Serialization.Json.Abstractions
 * System.Runtime.CompilerServices.Unsafe v6.0.0
 * System.Text.Encodings.Web v8.0.0
-* System.Text.Json v8.0.0
+* System.Text.Json v8.0.1
 
 <br>
 
@@ -488,7 +491,7 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* FluentValidation v11.8.0
+* FluentValidation v11.9.0
 
 <br>
 
@@ -505,9 +508,9 @@
 * AllOverIt
 * AllOverIt.Assertion
 * AllOverIt.Validation
-* FluentValidation v11.8.0
+* FluentValidation v11.9.0
 * Microsoft.Extensions.DependencyInjection.Abstractions v8.0.0
-* Microsoft.Extensions.Options v8.0.0
+* Microsoft.Extensions.Options v8.0.1
 * Microsoft.Extensions.Primitives v8.0.0
 
 <br>
