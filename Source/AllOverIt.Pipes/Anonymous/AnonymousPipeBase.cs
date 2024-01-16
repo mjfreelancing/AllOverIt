@@ -83,7 +83,7 @@ namespace AllOverIt.Pipes.Anonymous
             }
         }
 
-        /// <summary>Disposes of the internal streams.</summary>
+        /// <summary>Disposes of the internal resources.</summary>
         /// <param name="disposing">Indicates if the internal resources are to be disposed.</param>
         protected virtual void Dispose(bool disposing)
         {

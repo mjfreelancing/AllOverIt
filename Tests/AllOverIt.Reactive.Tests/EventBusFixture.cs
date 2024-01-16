@@ -8,8 +8,6 @@ namespace AllOverIt.Reactive.Tests
 {
     public class EventBusFixture : FixtureBase
     {
-        private readonly IEventBus _eventBus = new EventBus();
-
         private class EventDummy
         {
         }
@@ -21,9 +19,12 @@ namespace AllOverIt.Reactive.Tests
             {
                 var received = false;
 
-                _eventBus.GetEvent<EventDummy>().Subscribe(_ => { received = true; });
+                using (var eventBus = new EventBus())
+                {
+                    eventBus.GetEvent<EventDummy>().Subscribe(_ => { received = true; });
 
-                _eventBus.Publish<EventDummy>();
+                    eventBus.Publish<EventDummy>();
+                }
 
                 received.Should().BeTrue();
             }
@@ -37,9 +38,12 @@ namespace AllOverIt.Reactive.Tests
                 EventDummy expected = new EventDummy();
                 EventDummy actual = null;
 
-                _eventBus.GetEvent<EventDummy>().Subscribe(@event => { actual = @event; });
+                using (var eventBus = new EventBus())
+                {
+                    eventBus.GetEvent<EventDummy>().Subscribe(@event => { actual = @event; });
 
-                _eventBus.Publish(expected);
+                    eventBus.Publish(expected);
+                }
 
                 actual.Should().BeSameAs(expected);
             }

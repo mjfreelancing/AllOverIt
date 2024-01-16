@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 
@@ -30,12 +29,23 @@ namespace AllOverIt.Reactive
             return _subject.OfType<TEvent>();
         }
 
+        /// <summary>Disposes of the internal resources.</summary>
+        /// <param name="disposing">Indicates if the internal resources are to be disposed.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing && _subject is not null)
+            {
+                _subject.Dispose();
+                _subject = null;
+            }
+        }
+
         /// <summary>Disposes of the observable sequence used for notifying observers of various events.</summary>
-        [ExcludeFromCodeCoverage]
         public void Dispose()
         {
-            _subject?.Dispose();
-            _subject = null;
+            Dispose(true);
+
+            GC.SuppressFinalize(this);
         }
     }
 }

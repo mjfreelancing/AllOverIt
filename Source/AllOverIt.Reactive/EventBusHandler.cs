@@ -67,8 +67,8 @@ namespace AllOverIt.Reactive
             return _eventBus.GetEvent<TEvent>();
         }
 
-        /// <summary>Disposes of the subscription if there is one.</summary>
-        /// <param name="disposing">Indicates if the subscription should be disposed, if there is one.</param>
+        /// <summary>Disposes of the internal resources.</summary>
+        /// <param name="disposing">Indicates if the internal resources are to be disposed.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (_subscription is not null)
