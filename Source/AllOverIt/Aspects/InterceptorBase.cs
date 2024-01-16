@@ -24,7 +24,7 @@ namespace AllOverIt.Aspects
             return true;
         }
 
-        /// <summary>The <see cref="BeforeInvoke(MethodInfo, ref object[], ref object)"/> method is called before calling the decorated
+        /// <summary>The <see cref="BeforeInvoke(MethodInfo, ref object[])"/> method is called before calling the decorated
         /// object's method, and ends with calling <see cref="AfterInvoke(MethodInfo, object[], InterceptorState, ref object)"/> if
         /// no exception is raised, otherwise <see cref="Faulted(MethodInfo, object[], InterceptorState, Exception)"/>
         /// is called.</summary>
