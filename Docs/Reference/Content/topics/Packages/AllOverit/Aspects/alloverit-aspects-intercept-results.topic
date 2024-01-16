@@ -71,7 +71,7 @@
             </p>
 
             <code-block lang="c#">
-                protected override InterceptorState&lt;string&gt; BeforeInvoke(
+                protected override InterceptorState&lt;string&gt; BeforeMethodInvoke(
                     MethodInfo targetMethod, object[] args)
                 {
                     // The 'accessKey' passed to GetSecret() is at index 0
