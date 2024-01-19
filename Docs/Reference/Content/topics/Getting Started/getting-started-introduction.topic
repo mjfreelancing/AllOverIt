@@ -10,7 +10,7 @@
     </p>
 
     <p>
-        As the years passed, <code>%aoi%</code>, the package, began to feel bloated and was starting to depend on other third-party packages. As a consequence, <code>%aoi%</code> was split into domain-specific assemblies. The originally named <code>%aoi%</code> package still exists, but its' scope has been reduced to a collection of commonly used core classes and extension methods that are built upon the .NET runtime. It, along with its many supporting packages, are now collectively known as the <format style="bold">%aoi%</format> suite.
+        As the years passed, <code>%aoi%</code>, the package, began to feel bloated and was starting to depend on other third-party packages. <code>%aoi%</code> was subsequently split into domain-specific assemblies. The originally named <code>%aoi%</code> package still exists, but its' scope has been reduced to a collection of commonly used core classes and extension methods that are built upon the .NET runtime. This, along with its many supporting packages, are now collectively known as the <format style="bold">%aoi%</format> suite.
     </p>
 
     <p>
@@ -138,7 +138,7 @@
             <td>
                 <p>
                     <a href="https://www.nuget.org/packages/AllOverIt.Assertion/absoluteLatest">
-                        <img src="https://img.shields.io/nuget/vpre/AllOverIt?color=E3505C" alt="AllOverIt.Assertion"/>
+                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Assertion?color=E3505C" alt="AllOverIt.Assertion"/>
                     </a>
                 </p>
                 <p>
@@ -892,7 +892,7 @@
                     </a>
                 </p>
                 <p>
-                    This package provides support for communication over anonymous pipes using <code>StreamReader</code> and <code>StreamWriter</code>, and strongly-typed message-based communication over named pipes using a binary serializer.
+                    This package provides support for communication over anonymous pipes using <a href="https://learn.microsoft.com/en-us/dotnet/api/system.io.streamreader">StreamReader</a> and <a href="https://learn.microsoft.com/en-us/dotnet/api/system.io.streamwriter">StreamWriter</a>, and strongly-typed message-based communication over named pipes using a binary serializer.
                 </p>
                 <p>
                     The named pipes can use the binary serializer from <a href="packages-alloverit-serialization-binary.topic"/> or you can create your own.
@@ -1273,7 +1273,7 @@
                     </a>
                 </p>
                 <p>
-                    This package contains additional validators and extensions for use with FluentValidation. It includes an invoker that will select, and invoke, a registered validator based on a provided model.
+                    This package contains additional validators and extensions for use with <a href="https://docs.fluentvalidation.net/en/latest/">FluentValidation</a>. It includes an invoker that will select, and invoke, a registered validator based on a provided model.
                 </p>
                 <p>
                     Synchronous and Asynchronous validation is supported, along with extensions that make it easier to pass context information into a validator to keep it stateless.
@@ -1327,7 +1327,7 @@
                     </a>
                 </p>
                 <p>
-                    This package contains <code>Microsoft.Extensions.Options</code> validation using <a href="https://docs.fluentvalidation.net/en/latest/">FluentValidation</a>.
+                    This package contains <a href="https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.options">Microsoft.Extensions.Options</a> validation using <a href="https://docs.fluentvalidation.net/en/latest/">FluentValidation</a>.
                 </p>
             </td>
 
