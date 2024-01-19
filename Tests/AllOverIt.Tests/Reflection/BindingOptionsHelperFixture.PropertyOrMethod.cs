@@ -52,7 +52,6 @@ namespace AllOverIt.Tests.Reflection
 
             private readonly IDictionary<string, PropertyMetadata> _propertyMetadata;
 
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0028:Simplify collection initialization", Justification = "Readability")]
             public BuildPropertyOrMethodBindingPredicate()
             {
                 _propertyMetadata = new Dictionary<string, PropertyMetadata>();
@@ -77,7 +76,7 @@ namespace AllOverIt.Tests.Reflection
             }
 
             [Theory]
-            [InlineData((BindingOptions)0, BindingOptions.DefaultScope | BindingOptions.DefaultAccessor | BindingOptions.DefaultVisibility)]
+            [InlineData((BindingOptions) 0, BindingOptions.DefaultScope | BindingOptions.DefaultAccessor | BindingOptions.DefaultVisibility)]
             [InlineData(BindingOptions.Default, BindingOptions.DefaultScope | BindingOptions.DefaultAccessor | BindingOptions.DefaultVisibility)]
 
             [InlineData(BindingOptions.All, BindingOptions.AllScope | BindingOptions.AllAccessor | BindingOptions.AllVisibility)]

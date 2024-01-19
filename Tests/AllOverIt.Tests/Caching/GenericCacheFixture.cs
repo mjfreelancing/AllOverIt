@@ -1,19 +1,19 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using AllOverIt.Caching;
+﻿using AllOverIt.Caching;
 using AllOverIt.Extensions;
 using AllOverIt.Fixture;
-using FluentAssertions;
-using System.Linq;
 using AllOverIt.Fixture.Extensions;
+using FluentAssertions;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace AllOverIt.Tests.Caching
 {
     public class GenericCacheFixture : FixtureBase
     {
-        private class KeyType1 : GenericCacheKey<int, string>
+        private record KeyType1 : GenericCacheKey<int, string>
         {
             public KeyType1(int val1, string val2)
                 : base(val1, val2)
@@ -21,7 +21,7 @@ namespace AllOverIt.Tests.Caching
             }
         }
 
-        private class KeyType2 : GenericCacheKey<bool, int?, string>
+        private record KeyType2 : GenericCacheKey<bool, int?, string>
         {
             public KeyType2(bool val1, int? val2, string val3)
                 : base(val1, val2, val3)
@@ -40,6 +40,17 @@ namespace AllOverIt.Tests.Caching
             PopulateCache(_cache);
         }
 
+        public class Default : GenericCacheFixture
+        {          
+            [Fact]
+            public void Should_Be_A_Default_Constructed_Cache()
+            {
+                var cache = GenericCache.Default;
+
+                cache.Should().BeOfType<GenericCache>();
+                cache.Count.Should().Be(0);
+            }
+        }
         public class Count : GenericCacheFixture
         {
             [Fact]
@@ -79,6 +90,16 @@ namespace AllOverIt.Tests.Caching
                     actual2Key.Key2.Should().Be(isEven ? i : -i);
                     actual2Key.Key3.Should().Be(isEven ? $"{i}" : default);
                 }
+            }
+
+            [Fact]
+            public void Should_Find_Key()
+            {
+                var keyType1 = GetAllKeyType1(_cache).First();
+                var keyType2 = GetAllKeyType2(_cache).First();
+
+                _cache.ContainsKey(keyType1).Should().BeTrue();
+                _cache.ContainsKey(keyType2).Should().BeTrue();
             }
         }
 
@@ -134,7 +155,6 @@ namespace AllOverIt.Tests.Caching
                 var typedKey = (GenericCacheKey<int>) actual;
 
                 typedKey.Key1.Should().Be(value);
-
             }
         }
 
@@ -302,13 +322,32 @@ namespace AllOverIt.Tests.Caching
             public void Should_Add_Key_Value()
             {
                 var key = new KeyType1(Create<int>(), Create<string>());
-                var value = CreateMany<string>();
+                var expected = CreateMany<string>();
 
-                _cache.Add(key, value);
+                _cache.Add(key, expected);
 
                 _ = _cache.TryGetValue<IReadOnlyCollection<string>>(key, out var actual);
 
-                value.Should().BeEquivalentTo(actual);
+                expected.Should().BeEquivalentTo(actual);
+            }
+
+            [Fact]
+            public void Should_Add_Different_Key_Types()
+            {
+                var key1 = new KeyType1(Create<int>(), Create<string>());
+                var key2 = new KeyType2(Create<bool>(), Create<int>(), Create<string>());
+
+                var expected1 = CreateMany<string>();
+                var expected2 = CreateMany<int>();
+
+                _cache.Add(key1, expected1);
+                _cache.Add(key2, expected2);
+
+                _ = _cache.TryGetValue<IReadOnlyCollection<string>>(key1, out var actual1);
+                _ = _cache.TryGetValue<IReadOnlyCollection<int>>(key2, out var actual2);
+
+                expected1.Should().BeEquivalentTo(actual1);
+                expected2.Should().BeEquivalentTo(actual2);
             }
 
             [Fact]
@@ -331,19 +370,19 @@ namespace AllOverIt.Tests.Caching
             public void Should_Not_Throw_When_Key_Element_Null()
             {
                 var key = new KeyType1(Create<int>(), null);
-                var value = CreateMany<string>();
+                var expected = CreateMany<string>();
 
                 key.Key2.Should().BeNull();
                 _cache.ContainsKey(key).Should().BeFalse();
 
                 Invoking(() =>
                     {
-                        _cache.Add(key, value);
+                        _cache.Add(key, expected);
                     })
                     .Should()
                     .NotThrow();
 
-                value.Should().BeEquivalentTo((IReadOnlyCollection<string>)_cache[key]);
+                expected.Should().BeEquivalentTo((IReadOnlyCollection<string>)_cache[key]);
             }
         }
 
@@ -567,7 +606,7 @@ namespace AllOverIt.Tests.Caching
             }
         }
 
-#if NET5_0_OR_GREATER
+#if !NETSTANDARD2_1
         public class TryRemove_TValue_KeyValuePair : GenericCacheFixture
         {
             [Fact]

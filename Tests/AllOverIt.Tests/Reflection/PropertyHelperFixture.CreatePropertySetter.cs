@@ -13,6 +13,11 @@ namespace AllOverIt.Tests.Reflection
 {
     public partial class PropertyHelperFixture
     {
+        private struct DummyStruct
+        {
+            public int Field1 { get; set; }
+        }
+
         public class CreatePropertySetter_Object : PropertyHelperFixture
         {
             [Fact]
@@ -28,7 +33,7 @@ namespace AllOverIt.Tests.Reflection
             }
 
             [Fact]
-            public void Should_Create_Setter()
+            public void Should_Create_Setter_Class()
             {
                 var expected = Create<int>();
                 var model = new DummyBaseClass();
@@ -39,6 +44,37 @@ namespace AllOverIt.Tests.Reflection
                 setter.Invoke(model, expected);
 
                 model.Prop1.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Create_Setter_SuperClass()
+            {
+                var expected = Create<int>();
+                var model = new DummySuperClass();
+
+                var propInfo = typeof(DummyBaseClass).GetProperty(nameof(DummyBaseClass.Prop1));
+                var setter = PropertyHelper.CreatePropertySetter(propInfo);
+
+                setter.Invoke(model, expected);
+
+                model.Prop1.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Create_Setter_Struct()
+            {
+                var expected = Create<int>();
+
+                // Note: This overload of CreateFieldSetter() only works for structs when they are boxed.
+                //       If you need to pass a strongly typed object then use CreateFieldSetterByRef().
+                object model = new DummyStruct();
+
+                var propInfo = typeof(DummyStruct).GetProperty(nameof(DummyStruct.Field1));
+                var setter = PropertyHelper.CreatePropertySetter(propInfo);
+
+                setter.Invoke(model, expected);
+
+                ((DummyStruct) model).Field1.Should().Be(expected);
             }
 
             [Fact]
@@ -95,7 +131,7 @@ namespace AllOverIt.Tests.Reflection
             }
 
             [Fact]
-            public void Should_Create_Setter()
+            public void Should_Create_Setter_Class()
             {
                 var expected = Create<int>();
                 var model = new DummyBaseClass();
@@ -107,6 +143,23 @@ namespace AllOverIt.Tests.Reflection
 
                 model.Prop1.Should().Be(expected);
             }
+
+            [Fact]
+            public void Should_Create_Setter_SuperClass()
+            {
+                var expected = Create<int>();
+                var model = new DummySuperClass();
+
+                var propInfo = typeof(DummyBaseClass).GetProperty(nameof(DummyBaseClass.Prop1));
+                var setter = PropertyHelper.CreatePropertySetter<DummySuperClass>(propInfo);
+
+                setter.Invoke(model, expected);
+
+                model.Prop1.Should().Be(expected);
+            }
+
+            // This typed version of CreatePropertySetter() will not work with structs. You can use
+            // the overload accepting an object (the instance must be declared as object and not using var).
 
             [Fact]
             public void Should_Throw_When_Property_Has_No_Setter()
@@ -137,7 +190,7 @@ namespace AllOverIt.Tests.Reflection
             }
 
             [Fact]
-            public void Should_Create_Setter()
+            public void Should_Create_Setter_Class()
             {
                 var expected = Create<int>();
                 var model = new DummyBaseClass();
@@ -148,6 +201,22 @@ namespace AllOverIt.Tests.Reflection
 
                 model.Prop1.Should().Be(expected);
             }
+
+            [Fact]
+            public void Should_Create_Setter_SuperClass()
+            {
+                var expected = Create<int>();
+                var model = new DummySuperClass();
+
+                var setter = PropertyHelper.CreatePropertySetter<DummySuperClass>(nameof(DummyBaseClass.Prop1));
+
+                setter.Invoke(model, expected);
+
+                model.Prop1.Should().Be(expected);
+            }
+
+            // This typed version of CreatePropertySetter() will not work with structs. You can use
+            // the overload accepting an object (the instance must be declared as object and not using var).
 
             [Fact]
             public void Should_Throw_When_Property_Does_Not_Exist()

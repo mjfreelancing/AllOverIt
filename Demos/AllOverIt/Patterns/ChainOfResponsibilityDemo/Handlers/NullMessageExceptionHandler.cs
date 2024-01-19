@@ -10,9 +10,11 @@ namespace ChainOfResponsibilityDemo.Handlers
 
             if (payload == null)
             {
-                Console.WriteLine("Handling a null message...");
+                Console.WriteLine(" >> Handling a null message...");
                 return Abandon(state);
             }
+
+            Console.WriteLine("Payload is not null, trying the next handler.");
 
             // not handled, so move onto the next handler
             return base.Handle(state);

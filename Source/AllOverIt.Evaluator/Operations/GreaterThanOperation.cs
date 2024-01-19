@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace AllOverIt.Evaluator.Operations
 {
-    /// <summary>An operation that returns true if one operand is greater than a second, otherwise false.</summary>
+    /// <summary>An operation that returns <see langword="true" /> if one operand is greater than a second, otherwise <see langword="false" />.</summary>
     public sealed class GreaterThanOperation : ArithmeticOperationBase
     {
         /// <summary>Constructor.</summary>

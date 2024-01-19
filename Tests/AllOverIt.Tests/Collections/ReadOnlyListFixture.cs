@@ -2,6 +2,7 @@
 using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using FluentAssertions;
+using System.Collections;
 using System.Collections.Generic;
 using Xunit;
 
@@ -25,6 +26,19 @@ namespace AllOverIt.Tests.Collections
             {
                 var actual = new ReadOnlyList<int>();
                 actual.Should().BeEmpty();
+            }
+        }
+
+        public class Constructor_IEnumerable : ReadOnlyListFixture
+        {
+            [Fact]
+            public void Should_Populate()
+            {
+                var expected = CreateMany<int>();
+                
+                var actual = new ReadOnlyList<int>(expected);
+
+                expected.Should().BeEquivalentTo(actual);
             }
         }
 
@@ -62,6 +76,21 @@ namespace AllOverIt.Tests.Collections
                 while (enumerator.MoveNext())
                 {
                     results.Add(enumerator.Current);
+                }
+
+                results.Should().BeEquivalentTo(_data);
+            }
+
+            [Fact]
+            public void Should_Iterate_Data_Using_Explicit_Interface()
+            {
+                var results = new List<object>();
+                var enumerator = ((IEnumerable) _list).GetEnumerator();
+
+                while (enumerator.MoveNext())
+                {
+                    var value = (int) (enumerator.Current);
+                    results.Add(value);
                 }
 
                 results.Should().BeEquivalentTo(_data);

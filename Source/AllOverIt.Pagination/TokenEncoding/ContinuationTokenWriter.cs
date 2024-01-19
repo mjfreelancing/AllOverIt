@@ -1,5 +1,5 @@
 ﻿using AllOverIt.Assertion;
-using AllOverIt.Serialization.Binary;
+using AllOverIt.Serialization.Binary.Writers;
 using System;
 using System.Collections.Generic;
 

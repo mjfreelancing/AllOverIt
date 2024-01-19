@@ -1,7 +1,7 @@
 namespace AllOverIt.Evaluator.Variables
 {
     /// <summary>A read-only constant variable that must be initialized at the time of construction.</summary>
-    public sealed record ConstantVariable : VariableBase
+    public sealed class ConstantVariable : VariableBase
     {
         /// <summary>The variable's value.</summary>
         public override double Value { get; }

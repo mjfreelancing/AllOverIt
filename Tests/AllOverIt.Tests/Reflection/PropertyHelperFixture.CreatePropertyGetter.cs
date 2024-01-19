@@ -155,6 +155,22 @@ namespace AllOverIt.Tests.Reflection
             }
 
             [Fact]
+            public void Should_Create_Getter_For_Derived()
+            {
+                var expected = new DummySuperClass
+                {
+                    Prop1 = Create<int>()
+                };
+
+                var propInfo = typeof(DummyBaseClass).GetProperty(nameof(DummyBaseClass.Prop1));
+                var getter = PropertyHelper.CreatePropertyGetter<DummySuperClass>(propInfo);
+
+                var actual = getter.Invoke(expected);
+
+                actual.Should().Be(expected.Prop1);
+            }
+
+            [Fact]
             public void Should_Create_Getter_For_Private_Property()
             {
                 var model = new DummySuperClass();
@@ -206,6 +222,21 @@ namespace AllOverIt.Tests.Reflection
                 };
 
                 var getter = PropertyHelper.CreatePropertyGetter<DummyBaseClass>(nameof(DummyBaseClass.Prop1));
+
+                var actual = getter.Invoke(expected);
+
+                actual.Should().Be(expected.Prop1);
+            }
+
+            [Fact]
+            public void Should_Create_Getter_For_Derived()
+            {
+                var expected = new DummySuperClass
+                {
+                    Prop1 = Create<int>()
+                };
+
+                var getter = PropertyHelper.CreatePropertyGetter<DummySuperClass>(nameof(DummyBaseClass.Prop1));
 
                 var actual = getter.Invoke(expected);
 

@@ -2,21 +2,22 @@
   "metadata": [
     {
       "src": [
-        {		
-	  "src": "../AllOverIt",
+        {
+          "src": "../Source",
           "files": [
-            "AllOverIt.csproj"
-          ],
-	  "exclude": [
-            "**/bin/**",
-            "**/obj/**",
-            "_site/**"
+            "**/bin/Release/net7.0/**.dll"
           ]
         }
       ],
       "dest": "api",
+      "includePrivateMembers": false,
       "disableGitFeatures": false,
-      "disableDefaultFilter": false
+      "disableDefaultFilter": false,
+      "noRestore": false,
+      "namespaceLayout": "flattened",
+      "memberLayout": "samePage",
+      "EnumSortOrder": "alphabetic",
+      "allowCompilationErrors": false
     }
   ],
   "build": {
@@ -29,8 +30,8 @@
       },
       {
         "files": [
-          "library/**.md",
-          "library/**/toc.yml",
+          "docs/**.md",
+          "docs/**/toc.yml",
           "toc.yml",
           "*.md"
         ]
@@ -43,41 +44,29 @@
         ],
         "exclude": [
           "images/psd/**"
-        ]            
-      }
-    ],
-    "overwrite": [
-      {
-        "files": [
-          "apidoc/**.md"
-        ],
-        "exclude": [
-          "obj/**",
-          "_site/**"
         ]
       }
     ],
-    "dest": "_site",
-    "globalMetadata":
-    {
+    "output": "_site",
+    "globalMetadata": {
       "_appTitle": "AllOverIt",
       "_appFooter": "Copyright © MJ Freelancing",
       "_enableNewTab": true,
+      "_enableSearch": true,
       "_disableContribution": true,
-      "_appLogoPath": "images/logo50.png",
-      "_appFaviconPath": "images/logo128.png"
+      "_disableBreadcrumb": false,
+      "_appLogoPath": "images/appLogo.png",
+      "_appFaviconPath": "images/appFavicon.png"
     },
     "globalMetadataFiles": [],
     "fileMetadataFiles": [],
     "template": [
       "default",
-      "templates/material"
+      "modern",
+      "template"
     ],
-    "postProcessors": ["ExtractSearchIndex"],
-    "markdownEngineName": "markdig",
-    "noLangKeyword": false,
+    "postProcessors": [],
     "keepFileLink": false,
-    "cleanupCacheHistory": false,
     "disableGitFeatures": false
   }
 }

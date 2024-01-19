@@ -65,10 +65,7 @@ namespace AllOverIt.Pagination.TokenEncoding
         private string Encode<TEntity>(ContinuationDirection continuationDirection, IReadOnlyCollection<TEntity> references)
             where TEntity : class
         {
-            if (references.IsNullOrEmpty())
-            {
-                throw new PaginationException("At least one reference entity is required to create a continuation token.");
-            }
+            Throw<PaginationException>.WhenNullOrEmpty(references, "At least one reference entity is required to create a continuation token.");
 
             // Determine the required reference to use based on the pagination direction and the continuation direction
             var reference = (_paginationDirection, continuationDirection) switch
@@ -85,10 +82,7 @@ namespace AllOverIt.Pagination.TokenEncoding
 
         private string Encode(ContinuationDirection direction, object reference)
         {
-            if (reference == null)
-            {
-                throw new PaginationException("A reference entity is required to create a continuation token.");
-            }
+            Throw<PaginationException>.WhenNull(reference, "A reference entity is required to create a continuation token.");
 
             // Determine the page direction that needs to be used in order to get the required next/previous page
             var continuationPageDirection = direction == ContinuationDirection.PreviousPage

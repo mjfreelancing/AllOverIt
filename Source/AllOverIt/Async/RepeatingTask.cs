@@ -10,78 +10,157 @@ namespace AllOverIt.Async
         /// <summary>Creates and starts a new task that repeatedly invokes an asynchronous function.</summary>
         /// <param name="action">The asynchronous function to execute each time the task repeats.</param>
         /// <param name="cancellationToken">The cancellation token used to terminate the task.</param>
-        /// <param name="repeatDelay">The frequency (milliseconds) the task should repeat.</param>
-        /// <param name="initialDelay">An initial delay (milliseconds) to wait before executing the first function invocation.</param>
-        /// <returns>The started task.</returns>
-        public static Task Start(Func<Task> action, int repeatDelay, CancellationToken cancellationToken, int initialDelay = 0)
+        /// <param name="repeatDelay">The frequency (milliseconds) the task should repeat. This delay period
+        /// restarts at the completion of each iteration.</param>
+        /// <returns>A task that completes when the <paramref name="cancellationToken"/> is cancelled.</returns>
+        public static Task Start(Func<Task> action, int repeatDelay, CancellationToken cancellationToken)
         {
-            return Task.Factory.StartNew(async () =>
-            {
-                try
-                {
-                    if (initialDelay > 0)
-                    {
-                        await InvokeIfNotCancelled(() => Task.Delay(initialDelay, cancellationToken), cancellationToken);
-                    }
+            return StartImpl(action, 0, repeatDelay, cancellationToken);
+        }
 
-                    while (!cancellationToken.IsCancellationRequested)
-                    {
-                        await InvokeIfNotCancelled(action, cancellationToken);
-                        await InvokeIfNotCancelled(() => Task.Delay(repeatDelay, cancellationToken), cancellationToken);
-                    }
-                }
-                catch (OperationCanceledException)
-                {
-                    // break out
-                }
-                catch (TimeoutException)
-                {
-                    // break out
-                }
-            }, cancellationToken, TaskCreationOptions.LongRunning, TaskScheduler.Default).Unwrap();
+        /// <summary>Creates and starts a new task that repeatedly invokes an asynchronous function.</summary>
+        /// <param name="action">The asynchronous function to execute each time the task repeats.</param>
+        /// <param name="cancellationToken">The cancellation token used to terminate the task.</param>
+        /// <param name="repeatDelay">The frequency (TimeSpan) the task should repeat. This delay period
+        /// restarts at the completion of each iteration.</param>
+        /// <returns>A task that completes when the <paramref name="cancellationToken"/> is cancelled.</returns>
+        public static Task Start(Func<Task> action, TimeSpan repeatDelay, CancellationToken cancellationToken)
+        {
+            return StartImpl(action, 0, (int)repeatDelay.TotalMilliseconds, cancellationToken);
+        }
+
+        /// <summary>Creates and starts a new task after an initial delay that repeatedly invokes an asynchronous function.</summary>
+        /// <param name="action">The asynchronous function to execute each time the task repeats.</param>
+        /// <param name="initialDelay">An initial delay (milliseconds) to wait before executing the first function invocation.</param>
+        /// <param name="repeatDelay">The frequency (milliseconds) the task should repeat. This delay period restarts at the completion
+        /// of each iteration.</param>
+        /// <param name="cancellationToken">The cancellation token used to terminate the task.</param>
+        /// <returns>A task that completes when the <paramref name="cancellationToken"/> is cancelled.</returns>
+        public static Task Start(Func<Task> action, int initialDelay, int repeatDelay, CancellationToken cancellationToken)
+        {
+            return StartImpl(action, initialDelay, repeatDelay, cancellationToken);
+        }
+
+        /// <summary>Creates and starts a new task after an initial delay that repeatedly invokes an asynchronous function.</summary>
+        /// <param name="action">The asynchronous function to execute each time the task repeats.</param>
+        /// <param name="initialDelay">An initial delay (TimeSpan) to wait before executing the first function invocation.</param>
+        /// <param name="repeatDelay">The frequency (TimeSpan) the task should repeat. This delay period restarts at the completion
+        /// of each iteration.</param>
+        /// <param name="cancellationToken">The cancellation token used to terminate the task.</param>
+        /// <returns>A task that completes when the <paramref name="cancellationToken"/> is cancelled.</returns>
+        public static Task Start(Func<Task> action, TimeSpan initialDelay, TimeSpan repeatDelay, CancellationToken cancellationToken)
+        {
+            return StartImpl(action, (int) initialDelay.TotalMilliseconds, (int) repeatDelay.TotalMilliseconds, cancellationToken);
         }
 
         /// <summary>Creates and starts a new task that repeatedly invokes a function.</summary>
         /// <param name="action">The function to execute each time the task repeats.</param>
         /// <param name="cancellationToken">The cancellation token used to terminate the task.</param>
-        /// <param name="repeatDelay">The frequency (milliseconds) the task should repeat.</param>
+        /// <param name="repeatDelay">The frequency (milliseconds) the task should repeat. This delay period restarts at the completion
+        /// of each iteration.</param>
+        /// <returns>A task that completes when the <paramref name="cancellationToken"/> is cancelled.</returns>
+        public static Task Start(Action action, int repeatDelay, CancellationToken cancellationToken)
+        {
+            return StartImpl(action, TimeSpan.FromMilliseconds(0), TimeSpan.FromMilliseconds(repeatDelay), cancellationToken);
+        }
+
+        /// <summary>Creates and starts a new task that repeatedly invokes a function.</summary>
+        /// <param name="action">The function to execute each time the task repeats.</param>
+        /// <param name="cancellationToken">The cancellation token used to terminate the task.</param>
+        /// <param name="repeatDelay">The frequency (TimeSpan) the task should repeat. This delay period restarts at the completion
+        /// of each iteration.</param>
+        /// <returns>A task that completes when the <paramref name="cancellationToken"/> is cancelled.</returns>
+        public static Task Start(Action action, TimeSpan repeatDelay, CancellationToken cancellationToken)
+        {
+            return StartImpl(action, TimeSpan.FromMilliseconds(0), repeatDelay, cancellationToken);
+        }
+
+        /// <summary>Creates and starts a new task after an initial delay that repeatedly invokes a function.</summary>
+        /// <param name="action">The function to execute each time the task repeats.</param>
         /// <param name="initialDelay">An initial delay (milliseconds) to wait before executing the first function invocation.</param>
-        /// <returns>The started task.</returns>
-        public static Task Start(Action action, int repeatDelay, CancellationToken cancellationToken, int initialDelay = 0)
+        /// <param name="repeatDelay">The frequency (milliseconds) the task should repeat. This delay period restarts at the completion
+        /// of each iteration.</param>
+        /// <param name="cancellationToken">The cancellation token used to terminate the task.</param>
+        /// <returns>A task that completes when the <paramref name="cancellationToken"/> is cancelled.</returns>
+        public static Task Start(Action action, int initialDelay, int repeatDelay, CancellationToken cancellationToken)
+        {
+            return StartImpl(action, TimeSpan.FromMilliseconds(initialDelay), TimeSpan.FromMilliseconds(repeatDelay), cancellationToken);
+        }
+
+        /// <summary>Creates and starts a new task after an initial delay that repeatedly invokes a function.</summary>
+        /// <param name="action">The function to execute each time the task repeats.</param>
+        /// <param name="initialDelay">An initial delay (TimeSpan) to wait before executing the first function invocation.</param>
+        /// <param name="repeatDelay">The frequency (TimeSpan) the task should repeat. This delay period restarts at the completion
+        /// of each iteration.</param>
+        /// <param name="cancellationToken">The cancellation token used to terminate the task.</param>
+        /// <returns>A task that completes when the <paramref name="cancellationToken"/> is cancelled.</returns>
+        public static Task Start(Action action, TimeSpan initialDelay, TimeSpan repeatDelay, CancellationToken cancellationToken)
+        {
+            return StartImpl(action, initialDelay, repeatDelay, cancellationToken);
+        }
+
+        private static Task StartImpl(Func<Task> action, int initialDelay, int repeatDelay, CancellationToken cancellationToken)
         {
             return Task.Factory.StartNew(async () =>
             {
+                // ConfigureAwait() isn't strictly required here as there is no synchronization context,
+                // but it keeps all code consistent.
+
                 try
                 {
                     if (initialDelay > 0)
                     {
-                        await InvokeIfNotCancelled(() => Task.Delay(initialDelay, cancellationToken), cancellationToken);
+                        cancellationToken.ThrowIfCancellationRequested();
+
+                        await Task.Delay(initialDelay, cancellationToken).ConfigureAwait(false);
                     }
 
                     while (!cancellationToken.IsCancellationRequested)
                     {
-                        if (!cancellationToken.IsCancellationRequested)
-                        {
-                            action.Invoke();
-                        }
+                        await action.Invoke();
 
-                        await InvokeIfNotCancelled(() => Task.Delay(repeatDelay, cancellationToken), cancellationToken);
+                        cancellationToken.ThrowIfCancellationRequested();
+
+                        await Task.Delay(repeatDelay, cancellationToken).ConfigureAwait(false);
                     }
                 }
                 catch (OperationCanceledException)
                 {
                     // break out
                 }
-                catch (TimeoutException)
-                {
-                    // break out
-                }
-            }, cancellationToken, TaskCreationOptions.LongRunning, TaskScheduler.Default).Unwrap();
+            }, cancellationToken, TaskCreationOptions.None, TaskScheduler.Default).Unwrap();
         }
 
-        private static Task InvokeIfNotCancelled(Func<Task> action, CancellationToken cancellationToken)
+        private static Task StartImpl(Action action, TimeSpan initialDelay, TimeSpan repeatDelay, CancellationToken cancellationToken)
         {
-            return cancellationToken.IsCancellationRequested ? Task.CompletedTask : action.Invoke();
+            return Task.Factory
+                .StartNew(async () =>
+                {
+                    // ConfigureAwait() isn't strictly required here as there is no synchronization context.
+                    try
+                    {
+                        if (initialDelay.TotalMilliseconds > 0)
+                        {
+                            cancellationToken.ThrowIfCancellationRequested();
+
+                            await Task.Delay(initialDelay, cancellationToken);
+                        }
+
+                        while (!cancellationToken.IsCancellationRequested)
+                        {
+                            action.Invoke();
+
+                            cancellationToken.ThrowIfCancellationRequested();
+
+                            await Task.Delay(repeatDelay, cancellationToken);
+                        }
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        // break out
+                    }
+                }, cancellationToken, TaskCreationOptions.LongRunning, TaskScheduler.Default)
+                .Unwrap();
         }
     }
 }

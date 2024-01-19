@@ -16,8 +16,8 @@ namespace SerializationFilterBenchmarking
         {
             _complexObject = new ComplexObject
             {
-                Items = new ComplexObject.Item[]
-                {
+                Items =
+                [
                     new()
                     {
                         Name = "Name 1",
@@ -48,7 +48,7 @@ namespace SerializationFilterBenchmarking
                             Values = Enumerable.Range(21, 5).SelectAsReadOnlyCollection(value => value)
                         }
                     },
-                }
+                ]
             };
 
             var filter = new ComplexObjectFilter();

@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using AllOverIt.Formatters.Exceptions;
 using AllOverIt.Formatters.Objects;
 using AllOverIt.Formatters.Objects.Exceptions;
 using AllOverIt.Reflection;
@@ -196,7 +195,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     BindingOptions = BindingOptions.Default,
                     EnumerableOptions = new ObjectPropertyEnumerableOptions(),
                     RootValueOptions = new ObjectPropertyRootValueOptions(),
-                    Filter = (ObjectPropertyFilter)null,
+                    Filter = (ObjectPropertyFilter) null,
                     IncludeNulls = false,
                     IncludeEmptyCollections = false,
                     NullValueOutput = "<null>",
@@ -498,6 +497,69 @@ namespace AllOverIt.Tests.Formatters.Objects
             }
 
             [Fact]
+            public void Should_Exclude_Enumerable_String_Type()
+            {
+                var dummy = Create<DummyType>();
+
+                var serializer = GetSerializer();
+
+                // The default options would result in exporting Prop1, Prop4, Prop5, Prop8, Prop14.
+                // Adding this ignored type will result in Prop4 and Prop14 being excluded.
+                serializer.Options.AddIgnoredTypes(CommonTypes.StringType);
+
+                var actual = serializer.SerializeToDictionary(dummy);
+
+                var expected = new Dictionary<string, string>
+                {
+                    { "Prop1", $"{dummy.Prop1}" },
+                    { $"Prop5.{dummy.Prop5.ElementAt(0).Key}", $"{dummy.Prop5.ElementAt(0).Value}" },
+                    { $"Prop5.{dummy.Prop5.ElementAt(1).Key}", $"{dummy.Prop5.ElementAt(1).Value}" },
+                    { $"Prop5.{dummy.Prop5.ElementAt(2).Key}", $"{dummy.Prop5.ElementAt(2).Value}" },
+                    { "Prop8", $"{dummy.Prop8}" }
+                };
+
+                expected
+                    .Should()
+                    .BeEquivalentTo(actual);
+            }
+
+            [Fact]
+            public void Should_Exclude_Class_Type()
+            {
+                var dummy = Create<DummyType>();
+
+                dummy.Prop6 = new Dictionary<DummyType, string>
+                {
+                    { Create<DummyType>(), Create<string>() }
+                };
+
+                var serializer = GetSerializer();
+
+                // The default options would result in exporting Prop1, Prop4, Prop5, Prop6, Prop8, Prop14.
+                // Adding this ignored type will result in Prop6 being excluded.
+                serializer.Options.AddIgnoredTypes(typeof(Dictionary<DummyType, string>));
+
+                var actual = serializer.SerializeToDictionary(dummy);
+
+                var expected = new Dictionary<string, string>
+                {
+                    { "Prop1", $"{dummy.Prop1}" },
+                    { "Prop4[0]", $"{dummy.Prop4.ElementAt(0)}" },
+                    { "Prop4[1]", $"{dummy.Prop4.ElementAt(1)}" },
+                    { "Prop4[2]", $"{dummy.Prop4.ElementAt(2)}" },
+                    { $"Prop5.{dummy.Prop5.ElementAt(0).Key}", $"{dummy.Prop5.ElementAt(0).Value}" },
+                    { $"Prop5.{dummy.Prop5.ElementAt(1).Key}", $"{dummy.Prop5.ElementAt(1).Value}" },
+                    { $"Prop5.{dummy.Prop5.ElementAt(2).Key}", $"{dummy.Prop5.ElementAt(2).Value}" },
+                    { "Prop8", $"{dummy.Prop8}" },
+                    { "Prop14", $"{dummy.Prop14}" }
+                };
+
+                expected
+                    .Should()
+                    .BeEquivalentTo(actual);
+            }
+
+            [Fact]
             public void Should_Collate_Arrays_Using_Filter_Options()
             {
                 var dummy = Create<DummyType>();
@@ -515,7 +577,7 @@ namespace AllOverIt.Tests.Formatters.Objects
 
                 var actual = serializer.SerializeToDictionary(dummy);
 
-                var expected =new Dictionary<string, string>
+                var expected = new Dictionary<string, string>
                 {
                     { "Prop1", $"{dummy.Prop1}" },
                     { "Prop2.Prop4", $"{dummy.Prop2.Prop4.ElementAt(0)}, {dummy.Prop2.Prop4.ElementAt(1)}, {dummy.Prop2.Prop4.ElementAt(2)}" }
@@ -575,7 +637,7 @@ namespace AllOverIt.Tests.Formatters.Objects
 
                 var actual = serializer.SerializeToDictionary(dummy);
 
-                var expected =new Dictionary<string, string>
+                var expected = new Dictionary<string, string>
                 {
                     {"Children[0].Info[0].TopNumbers", string.Join(", ", dummy.Children.ElementAt(0).Info.ElementAt(0).TopNumbers)},
                     {"Children[0].Info[1].TopNumbers", string.Join(", ", dummy.Children.ElementAt(0).Info.ElementAt(1).TopNumbers)},
@@ -607,11 +669,11 @@ namespace AllOverIt.Tests.Formatters.Objects
 
                 var serializer = GetSerializer(filter);
 
-                serializer.Options.EnumerableOptions.AutoCollatedPaths = new[] {"Numbers"};
+                serializer.Options.EnumerableOptions.AutoCollatedPaths = new[] { "Numbers" };
 
                 var actual = serializer.SerializeToDictionary(dummy);
 
-                var expected =new Dictionary<string, string>
+                var expected = new Dictionary<string, string>
                 {
                     {"Children[0].Info[0].TopNumbers", string.Join(", ", dummy.Children.ElementAt(0).Info.ElementAt(0).TopNumbers)},
                     {"Children[0].Info[1].TopNumbers", string.Join(", ", dummy.Children.ElementAt(0).Info.ElementAt(1).TopNumbers)},
@@ -699,7 +761,7 @@ namespace AllOverIt.Tests.Formatters.Objects
 
                 var actual = serializer.SerializeToDictionary(dummy);
 
-                var expected =new Dictionary<string, string>
+                var expected = new Dictionary<string, string>
                 {
                     {"Children[0].Info[0].TopNumbers", string.Join(", ", dummy.Children.ElementAt(0).Info.ElementAt(0).TopNumbers)},
                     {"Children[0].Info[1].TopNumbers", string.Join(", ", dummy.Children.ElementAt(0).Info.ElementAt(1).TopNumbers)},
@@ -717,8 +779,8 @@ namespace AllOverIt.Tests.Formatters.Objects
             {
                 var data = new
                 {
-                    Prop1 = new[]{1, 2, 3},
-                    Prop2 = new[]{"A", "B", "C"},
+                    Prop1 = new[] { 1, 2, 3 },
+                    Prop2 = new[] { "A", "B", "C" },
                     Prop3 = Create<string>(),
                     Prop4 = new[] { "A", "B", "C" },
                     Prop5 = new[] { Guid.NewGuid(), Guid.NewGuid() }
@@ -993,7 +1055,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                 var serializer = GetSerializer();
                 var actual = serializer.SerializeToDictionary(dictionary);
 
-                var expected =new Dictionary<string, string>
+                var expected = new Dictionary<string, string>
                 {
                     { $"{keys[0]}.{dictionary[keys[0]].Keys.ElementAt(0)}", $"{dictionary[keys[0]].Values.ElementAt(0)}" },
                     { $"{keys[0]}.{dictionary[keys[0]].Keys.ElementAt(1)}", $"{dictionary[keys[0]].Values.ElementAt(1)}" },
@@ -1200,7 +1262,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                 dummy2.Prop2 = dummy3;
 
                 var filter = new DummyTypePropertyNameFilter(name => name != nameof(DummyType.Prop2));
-                
+
                 var serializer = GetSerializer(filter);
 
                 var actual = serializer.SerializeToDictionary(dummy1);
@@ -1406,7 +1468,7 @@ namespace AllOverIt.Tests.Formatters.Objects
 
                     // Prop1, Prop2, Prop1, Prop4, , , , Prop5, , , , Prop8, Prop14, Prop4, , , , Prop5, , , , Prop8, Prop12, , Prop14
 
-                    var expected =new[] 
+                    var expected = new[]
                     {
                         typeof(int),                                        // Prop1
                         typeof(DummyType),                                  // Prop2

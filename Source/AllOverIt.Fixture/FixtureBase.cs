@@ -1,26 +1,30 @@
 ﻿using AllOverIt.Fixture.Exceptions;
 using AutoFixture;
+using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace AllOverIt.Fixture
 {
-    /// <summary>
-    /// Acts as a base class for all fixtures, providing access to a variety of useful methods that help generate automated input values.
-    /// </summary>
+    /// <summary>A base class for all fixtures, providing access to a variety of useful methods that help generate automated input values.</summary>
     public abstract class FixtureBase
     {
-        private readonly Random _random = new((int)DateTime.Now.Ticks);
+        private readonly Random _random = new((int) DateTime.Now.Ticks);
 
         /// <summary> Provides access to the AutoFixture.Fixture being used.</summary>
-        protected internal IFixture Fixture { get; } = new AutoFixture.Fixture();
+        protected internal IFixture Fixture { get; }
 
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
+        /// <summary>Default constructor.</summary>
         protected FixtureBase()
+            : this(new AutoFixture.Fixture())
         {
+        }
+
+        internal FixtureBase(IFixture fixture)
+        {
+            Fixture = fixture;
+
             // Note: cannot used <double> for the factory as it will result in infinite recursion
             var rnd = new Random((int) DateTime.Now.Ticks);
 
@@ -29,12 +33,17 @@ namespace AllOverIt.Fixture
             Fixture.Customize<decimal>(composer => composer.FromFactory<int>(value => value * (0.5m + (decimal) rnd.NextDouble())));
         }
 
-        /// <summary>
-        /// Constructor that supports customization of AutoFixture's Fixture.
-        /// </summary>
+        /// <summary>Constructor that supports customization of AutoFixture's Fixture.</summary>
         /// <param name="customization">The customization instance.</param>
         protected FixtureBase(ICustomization customization)
             : this()
+        {
+            Customize(customization);
+        }
+
+        /// <summary>Constructor that supports customization of AutoFixture's Fixture.</summary>
+        /// <param name="customization">The customization instance.</param>
+        public void Customize(ICustomization customization)
         {
             Fixture.Customize(customization);
         }
@@ -44,10 +53,14 @@ namespace AllOverIt.Fixture
         /// <returns>The same action passed to the method.</returns>
         protected static Action Invoking(Action action)
         {
+#if NET8_0_OR_GREATER
+            ArgumentNullException.ThrowIfNull(action);
+#else
             if (action == null)
             {
                 throw new ArgumentNullException(nameof(action));
             }
+#endif
 
             return action;
         }
@@ -58,10 +71,14 @@ namespace AllOverIt.Fixture
         /// <returns>The result of the invoked action.</returns>
         protected static Func<TResult> Invoking<TResult>(Func<TResult> action)
         {
+#if NET8_0_OR_GREATER
+            ArgumentNullException.ThrowIfNull(action);
+#else
             if (action == null)
             {
                 throw new ArgumentNullException(nameof(action));
             }
+#endif
 
             return action;
         }
@@ -357,12 +374,85 @@ namespace AllOverIt.Fixture
             return items;
         }
 
+        /// <summary>Asserts that an exception of type <typeparamref name="TException"/> has a default constructor.</summary>
+        /// <typeparam name="TException">The exception type.</typeparam>
+        protected static void AssertDefaultConstructor<TException>(string expectedMessage = default) where TException : Exception, new()
+        {
+            var exception = new TException();
+
+            var expected = expectedMessage ?? $"Exception of type '{typeof(TException).FullName}' was thrown.";
+
+            exception.Message.Should().Be(expected);
+        }
+
+        /// <summary>Asserts that an exception of type <typeparamref name="TException"/> does not have a default constructor.</summary>
+        /// <typeparam name="TException">The exception type.</typeparam>
+        protected static void AssertNoDefaultConstructor<TException>() where TException : Exception
+        {
+            var constructor = typeof(TException).GetConstructor(Type.EmptyTypes);
+
+            constructor.Should().BeNull();
+        }
+
+        /// <summary>Asserts that an exception of type <typeparamref name="TException"/> has a constructor accepting
+        /// a string message.</summary>
+        /// <typeparam name="TException">The exception type.</typeparam>
+        protected void AssertConstructorWithMessage<TException>() where TException : Exception
+        {
+            var message = Create<string>();
+
+            var constructor = typeof(TException).GetConstructor([typeof(string)]);
+
+            constructor.Should().NotBeNull();
+
+            var exception = (Exception) constructor.Invoke(new[] { message });
+
+            exception.Message.Should().Be(message);
+        }
+
+        /// <summary>Asserts that an exception of type <typeparamref name="TException"/> does not have a constructor
+        /// accepting a string message.</summary>
+        /// <typeparam name="TException">The exception type.</typeparam>
+        protected static void AssertNoConstructorWithMessage<TException>() where TException : Exception
+        {
+            var constructor = typeof(TException).GetConstructor([typeof(string)]);
+
+            constructor.Should().BeNull();
+        }
+
+        /// <summary>Asserts that an exception of type <typeparamref name="TException"/> has a constructor accepting
+        /// a string message and an inner exception.</summary>
+        /// <typeparam name="TException">The exception type.</typeparam>
+        protected void AssertConstructorWithMessageAndInnerException<TException>() where TException : Exception
+        {
+            var message = Create<string>();
+            var innerException = new Exception();
+
+            var constructor = typeof(TException).GetConstructor([typeof(string), typeof(Exception)]);
+
+            constructor.Should().NotBeNull();
+
+            var exception = (Exception) constructor.Invoke([message, innerException]);
+
+            exception.Message
+                .Should()
+                .Be(message);
+
+            exception.InnerException
+                .Should()
+                .BeSameAs(innerException);
+        }
+
         /// <summary>Asserts when a specified action is invoked that an AggregateException will be thrown and all expected exception
         /// types are handled.</summary>
         /// <param name="action">The action to invoke.</param>
         /// <param name="exceptionHandler">The handler invoked with each exception contained within an aggregate exception.</param>
         protected static void AssertHandledAggregateException(Action action, Func<Exception, bool> exceptionHandler)
         {
+#if NET8_0_OR_GREATER
+            ArgumentNullException.ThrowIfNull(action);
+            ArgumentNullException.ThrowIfNull(exceptionHandler);
+#else
             if (action == null)
             {
                 throw new ArgumentNullException(nameof(action));
@@ -372,6 +462,7 @@ namespace AllOverIt.Fixture
             {
                 throw new ArgumentNullException(nameof(exceptionHandler));
             }
+#endif
 
             try
             {
@@ -418,10 +509,10 @@ namespace AllOverIt.Fixture
             var enumCount = enumValues.Length;
             var index = _random.Next(1000) % enumCount;
 
-            return (TType)enumValues.GetValue(index);
+            return (TType) enumValues.GetValue(index);
         }
 
-        private IReadOnlyList<TType> CreateManyType<TType>(int count)
+        private List<TType> CreateManyType<TType>(int count)
         {
             // Fixture.CreateMany() doesn't randomize enum values - it uses a round-robin approach.
             if (!typeof(TType).IsEnum)
@@ -437,7 +528,7 @@ namespace AllOverIt.Fixture
               .Select(_ =>
               {
                   var index = _random.Next(1000) % enumCount;
-                  return (TType)enumValues.GetValue(index);
+                  return (TType) enumValues.GetValue(index);
               })
               .ToList();
         }

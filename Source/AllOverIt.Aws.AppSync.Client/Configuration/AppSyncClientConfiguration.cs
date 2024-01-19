@@ -1,10 +1,10 @@
 ﻿using AllOverIt.Aws.AppSync.Client.Authorization;
-using AllOverIt.Serialization.Abstractions;
+using AllOverIt.Serialization.Json.Abstractions;
 
 namespace AllOverIt.Aws.AppSync.Client.Configuration
 {
-    /// <summary>Contains configuration details for AppSync Graphql query and mutation operations.</summary>
-    public sealed record AppSyncClientConfiguration : IAppSyncClientConfiguration
+    /// <inheritdoc cref="IAppSyncClientConfiguration" />
+    public sealed class AppSyncClientConfiguration : IAppSyncClientConfiguration
     {
         /// <inheritdoc />
         public string EndPoint { get; init; }

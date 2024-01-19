@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <!--This forces dependency packages to be copied to the output folder-->
+        <!--<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>-->
+
+        <!--Specifically for plugins - see https://learn.microsoft.com/en-us/dotnet/core/project-sdk/msbuild-props#enabledynamicloading-->
+        <EnableDynamicLoading>true</EnableDynamicLoading>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\GCCollectorStartupHookProxy\GCCollectorStartupHookProxy.csproj" />
+    </ItemGroup>
+
+</Project>

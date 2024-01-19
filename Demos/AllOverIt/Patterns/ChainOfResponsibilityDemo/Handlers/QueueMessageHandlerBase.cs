@@ -9,12 +9,14 @@ namespace ChainOfResponsibilityDemo.Handlers
         protected QueueMessageHandlerState Abandon(QueueMessageHandlerState state)
         {
             state.QueueBroker.Abandon();
+
             return state;
         }
 
         protected QueueMessageHandlerState Deadletter(QueueMessageHandlerState state)
         {
             state.QueueBroker.Deadletter();
+
             return state;
         }
 #pragma warning restore CA1822 // Mark members as static

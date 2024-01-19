@@ -3,7 +3,7 @@ using System;
 namespace AllOverIt.Evaluator.Exceptions
 {
     /// <summary>An exception that can be thrown by a concrete IOperator while compiling a formula expression.</summary>
-    public class OperatorException : Exception
+    public sealed class OperatorException : Exception
     {
         /// <summary>Default constructor.</summary>
         public OperatorException()

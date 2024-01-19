@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace AllOverIt.Diagnostics.Breadcrumbs
 {
-    /// <summary>Stores a collection of breadcrumb messages and metadata.</summary>
+    /// <inheritdoc cref="IBreadcrumbs" />
     public sealed class Breadcrumbs : IBreadcrumbs
     {
         private interface IEnumerableWrapper
@@ -19,27 +19,27 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
 
         private sealed class SingleThreadListWrapper : IEnumerableWrapper
         {
-            private readonly List<BreadcrumbData> _breadcrumbs = new();
-            private readonly int _maxCapactiy;
+            private readonly List<BreadcrumbData> _breadcrumbs = [];
+            private readonly int _maxCapacity;
 
             public SingleThreadListWrapper(BreadcrumbsOptions options)
             {
-                _maxCapactiy = options.MaxCapacity;
-            }
-
-            public void Clear()
-            {
-                _breadcrumbs.Clear();
+                _maxCapacity = options.MaxCapacity;
             }
 
             public void Add(BreadcrumbData breadcrumb)
             {
                 _breadcrumbs.Add(breadcrumb);
 
-                if (_maxCapactiy > 0 && _breadcrumbs.Count > _maxCapactiy)
+                if (_maxCapacity > 0 && _breadcrumbs.Count > _maxCapacity)
                 {
-                    _breadcrumbs.RemoveRange(0, _breadcrumbs.Count - _maxCapactiy);
+                    _breadcrumbs.RemoveRange(0, _breadcrumbs.Count - _maxCapacity);
                 }
+            }
+
+            public void Clear()
+            {
+                _breadcrumbs.Clear();
             }
 
             public IEnumerator<BreadcrumbData> GetEnumerator()
@@ -50,14 +50,13 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
 
         private sealed class MultiThreadListWrapper : IEnumerableWrapper
         {
-            private readonly SortedList<long, BreadcrumbData> _breadcrumbs;
+            private readonly SortedList<long, BreadcrumbData> _breadcrumbs = [];
             private readonly object _syncRoot;
             private readonly int _maxCapactiy;
 
             public MultiThreadListWrapper(BreadcrumbsOptions options)
             {
                 _maxCapactiy = options.MaxCapacity;
-                _breadcrumbs = new SortedList<long, BreadcrumbData>();
                 _syncRoot = ((ICollection)_breadcrumbs).SyncRoot;
             }
 

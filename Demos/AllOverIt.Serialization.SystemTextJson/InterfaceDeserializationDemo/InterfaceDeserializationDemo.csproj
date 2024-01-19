@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Source\AllOverIt.Serialization.Json.SystemText\AllOverIt.Serialization.Json.SystemText.csproj" />
+    </ItemGroup>
+
+</Project>

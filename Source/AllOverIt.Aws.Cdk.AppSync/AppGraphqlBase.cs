@@ -2,8 +2,8 @@
 using AllOverIt.Aws.Cdk.AppSync.Factories;
 using AllOverIt.Aws.Cdk.AppSync.Mapping;
 using AllOverIt.Aws.Cdk.AppSync.Schema;
-using Amazon.CDK;
 using Amazon.CDK.AWS.AppSync;
+using Constructs;
 using System.Collections.Generic;
 using SystemType = System.Type;
 
@@ -25,7 +25,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
         /// a mapping type. If null then an an internal version will be created.</param>
         /// <param name="mappingTypeFactory">Contains registrations for mapping types (defined on a DataSource) that do not have
         /// a default constructor because arguments need to be provided at runtime.</param>
-        protected AppGraphqlBase(Construct scope, string id, IGraphqlApiProps apiProps, IReadOnlyDictionary<SystemType, string> typeNameOverrides = default,
+        protected AppGraphqlBase(Construct scope, string id, AppGraphqlProps apiProps, IReadOnlyDictionary<SystemType, string> typeNameOverrides = default,
             MappingTemplates mappingTemplates = default, MappingTypeFactory mappingTypeFactory = default)
             : base(scope, id, apiProps)
         {
@@ -33,9 +33,13 @@ namespace AllOverIt.Aws.Cdk.AppSync
             mappingTemplates ??= new MappingTemplates();
             mappingTypeFactory ??= new MappingTypeFactory();
 
-            var dataSourceFactory = new DataSourceFactory(this);
-            var gqlTypeCache = new GraphqlTypeStore(this, typeNameOverrides, mappingTemplates, mappingTypeFactory, dataSourceFactory);
-            _schemaBuilder = new SchemaBuilder(this, mappingTemplates, mappingTypeFactory, gqlTypeCache, dataSourceFactory);
+            var dataSourceFactory = new DataSourceFactory(this, apiProps.EndpointLookup);
+
+            var schema = apiProps.GetCodeFirstSchema();
+
+            var gqlTypeCache = new GraphqlTypeStore(schema, typeNameOverrides, mappingTemplates, mappingTypeFactory, dataSourceFactory);
+
+            _schemaBuilder = new SchemaBuilder(schema, mappingTemplates, mappingTypeFactory, gqlTypeCache, dataSourceFactory);
         }
 
         /// <summary>Adds a Query definition to the AppSync GraphQL API.</summary>

@@ -22,8 +22,8 @@ namespace AllOverIt.Fixture.Tests.Examples.Tests
             public void Should_Throw_When_Calculator_Null()
             {
                 Invoking(() => new Aggregator(null))
-                  .Should().
-                  Throw<ArgumentNullException>();
+                  .Should()
+                  .Throw<ArgumentNullException>();
             }
 
             [Fact]

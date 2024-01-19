@@ -13,6 +13,7 @@ namespace AllOverIt.Reflection
         /// based on a specified <see cref="PropertyInfo"/> instance.</summary>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> to build a property setter.</param>
         /// <returns>The compiled property setter.</returns>
+        /// <remarks>This overload will only work with structs that are provided as object types.</remarks>
         public static Action<object, object> CreatePropertySetter(PropertyInfo propertyInfo)
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
@@ -23,18 +24,20 @@ namespace AllOverIt.Reflection
 
             var declaringType = propertyInfo.ReflectedType;
 
-            var instance = Expression.Parameter(typeof(object), "item");
+            var instanceExpression = Expression.Parameter(typeof(object), "item");
 
-            var instanceParam = declaringType.IsValueType && !declaringType.IsNullableType()
-                ? Expression.Unbox(instance, declaringType)
-                : Expression.Convert(instance, declaringType);
+            var castTargetExpression = declaringType.IsValueType
+                ? Expression.Unbox(instanceExpression, declaringType)
+                : Expression.Convert(instanceExpression, declaringType);
 
-            var argument = Expression.Parameter(typeof(object), "arg");
-            var valueParam = Expression.Convert(argument, propertyInfo.PropertyType);
+            var argumentExpression = Expression.Parameter(typeof(object), "arg");
+            var valueParamExpression = Expression.Convert(argumentExpression, propertyInfo.PropertyType);
 
-            var setterCall = Expression.Call(instanceParam, setterMethodInfo, valueParam);
+            var setterCall = Expression.Call(castTargetExpression, setterMethodInfo, valueParamExpression);
 
-            return Expression.Lambda<Action<object, object>>(setterCall, instance, argument).Compile();
+            return Expression
+                .Lambda<Action<object, object>>(setterCall, instanceExpression, argumentExpression)
+                .Compile();
         }
 
         /// <summary>Creates a compiled expression as an <c>Action{TType, object}</c> to set a property value based
@@ -42,6 +45,8 @@ namespace AllOverIt.Reflection
         /// <typeparam name="TType">The object type to set the property value on.</typeparam>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> to build a property setter.</param>
         /// <returns>The compiled property setter.</returns>
+        /// <remarks>This overload will not work with strongly typed structs. To set the value of a property on a struct
+        /// use <see cref="CreatePropertySetter(PropertyInfo)"/>.</remarks>
         public static Action<TType, object> CreatePropertySetter<TType>(PropertyInfo propertyInfo)
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
@@ -56,6 +61,8 @@ namespace AllOverIt.Reflection
         /// <typeparam name="TType">The object type to set the property value on.</typeparam>
         /// <param name="propertyName">The name of the property to set the value on.</param>
         /// <returns>The compiled property setter.</returns>
+        /// <remarks>This overload will not work with strongly typed structs. To set the value of a property on a struct
+        /// use <see cref="CreatePropertySetter(PropertyInfo)"/>.</remarks>
         public static Action<TType, object> CreatePropertySetter<TType>(string propertyName)
         {
             _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
@@ -63,10 +70,7 @@ namespace AllOverIt.Reflection
             var type = typeof(TType);
             var propertyInfo = ReflectionCache.GetPropertyInfo(type.GetTypeInfo(), propertyName);
 
-            if (propertyInfo == null)
-            {
-                throw new ReflectionException($"The property {propertyName} on type {type.GetFriendlyName()} does not exist.");
-            }
+            Throw<ReflectionException>.WhenNull(propertyInfo, $"The property {propertyName} on type {type.GetFriendlyName()} does not exist.");
 
             return CreatePropertySetterExpressionLambda<TType>(propertyInfo).Compile();
         }

@@ -1,0 +1,12 @@
+direction: left
+
+aoi: AllOverIt
+aoi.alloverit-dependencyinjection: AllOverIt.DependencyInjection
+microsoft-extensions-dependencyinjection-abstractions_8-0-0: Microsoft.Extensions.DependencyInjection.Abstractions\nv8.0.0
+microsoft-extensions-dependencyinjection-abstractions_8-0-0.style.fill: "#ADD8E6"
+microsoft-extensions-dependencyinjection-abstractions_8-0-0.style.opacity: 0.8
+microsoft-extensions-dependencyinjection-abstractions_8-0-0 <- aoi.alloverit-dependencyinjection
+aoi.alloverit: AllOverIt
+aoi.alloverit-assertion: AllOverIt.Assertion
+aoi.alloverit-assertion <- aoi.alloverit
+aoi.alloverit <- aoi.alloverit-dependencyinjection

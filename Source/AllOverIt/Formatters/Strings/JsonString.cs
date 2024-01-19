@@ -58,81 +58,22 @@ namespace AllOverIt.Formatters.Strings
             var tokenProcessors = new List<Func<FormatterState, bool>>
             {
                 // add a space after a colon because we are ignoring whitespace
-                state =>
-                {
-                    if (state.Unquoted && state.Char == ':')
-                    {
-                        state.Append(": ");
-
-                        return true;
-                    }
-
-                    return false;
-                },
+                FormatColon,
 
                 // ignore whitespace
-                state => state.Unquoted && char.IsWhiteSpace(state.Char),
+                IgnoreWhitespace,
 
                 // add a line break after a comma
-                state =>
-                {
-                    if (state.Unquoted && state.Char == ',')
-                    {
-                        state.Append(state.Char);
-                        state.Append(Environment.NewLine);
-                        state.Append(GetIndent());
-
-                        return true;
-                    }
-
-                    return false;
-                },
+                state => AddLineBreakAfterColon(state, () => GetIndent()),
 
                 // start a new line after an opening bracket and note the next line requires indenting
-                state =>
-                {
-                    if (state.Unquoted && state.Char is '{' or '[')
-                    {
-                        state.Append(state.Char);
-                        state.PendingIndent = true;
-                        indentation++;
-
-                        return true;
-                    }
-
-                    return false;
-                },
+                state => FormatOpeningBracket(state, ref indentation),
 
                 // move a closing bracket to the next line with appropriate indentation
-                state =>
-                {
-                    if (state.Unquoted && state.Char is '}' or ']')
-                    {
-                        state.Append(Environment.NewLine);
-                        indentation--;
-                        state.Append(GetIndent());
-                        state.Append(state.Char);
-
-                        return true;
-                    }
-
-                    return false;
-                },
+                state => FormatClosingBracket(state, ref indentation, () => GetIndent()),
 
                 // some other character
-                state =>
-                {
-                    if (state.PendingIndent)
-                    {
-                        state.Append(Environment.NewLine);
-                        state.Append(GetIndent());
-                    }
-
-                    state.Append(state.Char);
-                    state.PendingIndent = false;
-
-                    return true;
-                }
+                state => HandleOtherCharacter(state, () => GetIndent())
             };
 
             var state = new FormatterState();
@@ -170,6 +111,80 @@ namespace AllOverIt.Formatters.Strings
             }
 
             return state.ToString();
+        }
+
+        private static bool FormatColon(FormatterState state)
+        {
+            if (state.Unquoted && state.Char == ':')
+            {
+                state.Append(": ");
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool IgnoreWhitespace(FormatterState state)
+        {
+            return state.Unquoted && char.IsWhiteSpace(state.Char);
+        }
+
+        private static bool AddLineBreakAfterColon(FormatterState state, Func<string> getIndent)
+        {
+            if (state.Unquoted && state.Char == ',')
+            {
+                state.Append(state.Char);
+                state.Append(Environment.NewLine);
+                state.Append(getIndent.Invoke());
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool FormatOpeningBracket(FormatterState state, ref int indentation)
+        {
+            if (state.Unquoted && state.Char is '{' or '[')
+            {
+                state.Append(state.Char);
+                state.PendingIndent = true;
+                indentation++;
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool FormatClosingBracket(FormatterState state, ref int indentation, Func<string> getIndent)
+        {
+            if (state.Unquoted && state.Char is '}' or ']')
+            {
+                state.Append(Environment.NewLine);
+                indentation--;
+                state.Append(getIndent.Invoke());
+                state.Append(state.Char);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool HandleOtherCharacter(FormatterState state, Func<string> getIndent)
+        {
+            if (state.PendingIndent)
+            {
+                state.Append(Environment.NewLine);
+                state.Append(getIndent.Invoke());
+            }
+
+            state.Append(state.Char);
+            state.PendingIndent = false;
+
+            return true;
         }
     }
 }

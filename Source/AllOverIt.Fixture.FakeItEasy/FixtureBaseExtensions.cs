@@ -3,11 +3,15 @@ using AutoFixture.AutoFakeItEasy;
 using FakeItEasy;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace AllOverIt.Fixture.FakeItEasy
 {
+    // These methods are effectively implicitly tested through their usage in tests.
+
     /// <summary>Provides a variety of extension methods for <see cref="FixtureBase"/>.</summary>
+    [ExcludeFromCodeCoverage]
     public static class FixtureBaseExtensions
     {
         /// <summary>Adds a customization for FakeItEasy.</summary>
@@ -17,7 +21,7 @@ namespace AllOverIt.Fixture.FakeItEasy
         public static void UseFakeItEasy(this FixtureBase fixtureBase, ICustomization customization = null)
         {
             customization ??= new AutoFakeItEasyCustomization { GenerateDelegates = true };
-            fixtureBase.Fixture.Customize(customization);
+            fixtureBase.Customize(customization);
         }
 
         /// <summary>Creates a Fake of the specified type.</summary>
@@ -70,7 +74,7 @@ namespace AllOverIt.Fixture.FakeItEasy
         /// <param name="fixtureBase">The <see cref="FixtureBase"/> instance.</param>
         /// <returns>A stub of the specified type.</returns>
         /// <remarks>A stub is an object that holds pre-defined data or setup that is used to satisfy calls made during a test.</remarks>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for documentation")]
+        [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for documentation")]
         public static TType CreateStub<TType>(this FixtureBase fixtureBase)
             where TType : class
         {
@@ -86,10 +90,7 @@ namespace AllOverIt.Fixture.FakeItEasy
         public static TType CreateStub<TType>(this FixtureBase fixtureBase, Action<Fake<TType>> modifier)
           where TType : class
         {
-            if (modifier == null)
-            {
-                throw new ArgumentNullException(nameof(modifier));
-            }
+            _ = modifier ?? throw new ArgumentNullException(nameof(modifier));
 
             var fake = fixtureBase.Fixture.Create<Fake<TType>>();
             modifier.Invoke(fake);
@@ -149,10 +150,7 @@ namespace AllOverIt.Fixture.FakeItEasy
         public static IReadOnlyList<TType> CreateManyStubs<TType>(this FixtureBase fixtureBase, Action<Fake<TType>, int> modifier, int count)
             where TType : class
         {
-            if (modifier == null)
-            {
-                throw new ArgumentNullException(nameof(modifier));
-            }
+            _ = modifier ?? throw new ArgumentNullException(nameof(modifier));
 
             var stubs = new List<TType>();
 

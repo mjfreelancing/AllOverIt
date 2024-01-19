@@ -15,7 +15,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
         private readonly Expression _rightOperand;
         private readonly Expression _resultExpression;
         private readonly Func<Expression, Expression, Expression> _operatorType;
-        private BinaryOperatorDummy _operator;
+        private DummyBinaryOperator _operator;
 
         public BinaryOperatorFixture()
         {
@@ -25,7 +25,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
 
             _operatorType = (e1, e2) => _resultExpression;
 
-            _operator = new BinaryOperatorDummy(_operatorType, _leftOperand, _rightOperand);
+            _operator = new DummyBinaryOperator(_operatorType, _leftOperand, _rightOperand);
         }
 
         public class Constructor : BinaryOperatorFixture
@@ -33,7 +33,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
             [Fact]
             public void Should_Throw_When_OperatorType_Is_Null()
             {
-                Invoking(() => _operator = new BinaryOperatorDummy(null, _leftOperand, _rightOperand))
+                Invoking(() => _operator = new DummyBinaryOperator(null, _leftOperand, _rightOperand))
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("operatorType");
@@ -42,7 +42,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
             [Fact]
             public void Should_Throw_When_Left_Operand_Is_Null()
             {
-                Invoking(() => _operator = new BinaryOperatorDummy(_operatorType, null, _rightOperand))
+                Invoking(() => _operator = new DummyBinaryOperator(_operatorType, null, _rightOperand))
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("leftOperand");
@@ -51,7 +51,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
             [Fact]
             public void Should_Throw_When_Right_Operand_Is_Null()
             {
-                Invoking(() => _operator = new BinaryOperatorDummy(_operatorType, _leftOperand, null))
+                Invoking(() => _operator = new DummyBinaryOperator(_operatorType, _leftOperand, null))
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("rightOperand");

@@ -55,7 +55,7 @@ namespace AllOverIt.Fixture.Extensions
         public static ExceptionAssertions<InvalidOperationException> WithMessageWhenEmpty(
             this ExceptionAssertions<InvalidOperationException> assertion, string errorMessage = default)
         {
-            return WithMessageWhenNull(assertion, errorMessage ?? "Value cannot be empty");
+            return assertion.WithMessage(errorMessage ?? "Value cannot be empty");
         }
 
         /// <summary>Asserts the message of the thrown <see cref="InvalidOperationException"/> matches <paramref name="errorMessage"/>.</summary>
@@ -65,7 +65,7 @@ namespace AllOverIt.Fixture.Extensions
         public static Task<ExceptionAssertions<InvalidOperationException>> WithMessageWhenEmpty(
             this Task<ExceptionAssertions<InvalidOperationException>> assertion, string errorMessage = default)
         {
-            return WithMessageWhenNull(assertion, errorMessage ?? "Value cannot be empty");
+            return assertion.WithMessage(errorMessage ?? "Value cannot be empty");
         }
 
         /// <summary>Asserts the message of the thrown <see cref="InvalidOperationException"/> matches <paramref name="errorMessage"/> and
@@ -78,7 +78,8 @@ namespace AllOverIt.Fixture.Extensions
             this ExceptionAssertions<InvalidOperationException> assertion, string name, string errorMessage = default)
         {
             var message = errorMessage ?? "Value cannot be null";
-            return WithMessageWhenNull(assertion, $"{message} ({name})");
+
+            return assertion.WithMessage($"{message} ({name})");
         }
 
         /// <summary>Asserts the message of the thrown <see cref="InvalidOperationException"/> matches <paramref name="errorMessage"/> and
@@ -91,7 +92,8 @@ namespace AllOverIt.Fixture.Extensions
             this Task<ExceptionAssertions<InvalidOperationException>> assertion, string name, string errorMessage = default)
         {
             var message = errorMessage ?? "Value cannot be null";
-            return WithMessageWhenNull(assertion, $"{message} ({name})");
+
+            return assertion.WithMessage($"{message} ({name})");
         }
 
         /// <summary>Asserts the message of the thrown <see cref="InvalidOperationException"/> matches <paramref name="errorMessage"/> and
@@ -104,7 +106,8 @@ namespace AllOverIt.Fixture.Extensions
             this ExceptionAssertions<InvalidOperationException> assertion, string name, string errorMessage = default)
         {
             var message = errorMessage ?? "Value must be null";
-            return WithMessageWhenNull(assertion, $"{message} ({name})");
+
+            return assertion.WithMessage($"{message} ({name})");
         }
 
         /// <summary>Asserts the message of the thrown <see cref="InvalidOperationException"/> matches <paramref name="errorMessage"/> and
@@ -117,7 +120,8 @@ namespace AllOverIt.Fixture.Extensions
             this Task<ExceptionAssertions<InvalidOperationException>> assertion, string name, string errorMessage = default)
         {
             var message = errorMessage ?? "Value must be null";
-            return WithMessageWhenNull(assertion, $"{message} ({name})");
+
+            return assertion.WithMessage($"{message} ({name})");
         }
 
         /// <summary>Asserts the message of the thrown <see cref="InvalidOperationException"/> matches <paramref name="errorMessage"/> and
@@ -130,7 +134,8 @@ namespace AllOverIt.Fixture.Extensions
             this ExceptionAssertions<InvalidOperationException> assertion, string name, string errorMessage = default)
         {
             var message = errorMessage ?? "Value cannot be empty";
-            return WithMessageWhenNull(assertion, $"{message} ({name})");
+
+            return assertion.WithMessage($"{message} ({name})");
         }
 
         /// <summary>Asserts the message of the thrown <see cref="InvalidOperationException"/> matches <paramref name="errorMessage"/> and
@@ -143,7 +148,8 @@ namespace AllOverIt.Fixture.Extensions
             this Task<ExceptionAssertions<InvalidOperationException>> assertion, string name, string errorMessage = default)
         {
             var message = errorMessage ?? "Value cannot be empty";
-            return WithMessageWhenNull(assertion, $"{message} ({name})");
+
+            return assertion.WithMessage($"{message} ({name})");
         }
 
         /// <summary>Asserts the message of the thrown <see cref="ArgumentNullException"/> matches <paramref name="errorMessage"/> and
@@ -156,6 +162,7 @@ namespace AllOverIt.Fixture.Extensions
             this ExceptionAssertions<ArgumentNullException> assertion, string name, string errorMessage = default)
         {
             var message = errorMessage ?? "Value cannot be null.";
+
             return assertion.WithMessage($"{message} (Parameter '{name}')");
         }
 
@@ -169,6 +176,7 @@ namespace AllOverIt.Fixture.Extensions
             this Task<ExceptionAssertions<ArgumentNullException>> assertion, string name, string errorMessage = default)
         {
             var message = errorMessage ?? "Value cannot be null.";
+
             return assertion.WithMessage($"{message} (Parameter '{name}')");
         }
 
@@ -181,7 +189,8 @@ namespace AllOverIt.Fixture.Extensions
         public static ExceptionAssertions<ArgumentException> WithNamedMessageWhenEmpty(
             this ExceptionAssertions<ArgumentException> assertion, string name, string errorMessage = default)
         {
-            var message = errorMessage ?? "The argument cannot be empty";
+            var message = errorMessage ?? "The argument cannot be empty.";
+
             return assertion.WithMessage($"{message} (Parameter '{name}')");
         }
 
@@ -194,7 +203,8 @@ namespace AllOverIt.Fixture.Extensions
         public static Task<ExceptionAssertions<ArgumentException>> WithNamedMessageWhenEmpty(
             this Task<ExceptionAssertions<ArgumentException>> assertion, string name, string errorMessage = default)
         {
-            var message = errorMessage ?? "The argument cannot be empty";
+            var message = errorMessage ?? "The argument cannot be empty.";
+
             return assertion.WithMessage($"{message} (Parameter '{name}')");
         }
     }

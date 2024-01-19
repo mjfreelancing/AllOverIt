@@ -1,0 +1,38 @@
+direction: left
+
+aoi: AllOverIt
+aoi.alloverit-reactiveui-wpf: AllOverIt.ReactiveUI.Wpf
+reactiveui-wpf_19-5-39: ReactiveUI.WPF\nv19.5.39
+reactiveui-wpf_19-5-39.style.fill: "#ADD8E6"
+reactiveui-wpf_19-5-39.style.opacity: 0.8
+reactiveui-wpf_19-5-39 <- aoi.alloverit-reactiveui-wpf
+aoi.alloverit-reactiveui: AllOverIt.ReactiveUI
+microsoft-extensions-dependencyinjection-abstractions_8-0-0: Microsoft.Extensions.DependencyInjection.Abstractions\nv8.0.0
+microsoft-extensions-dependencyinjection-abstractions_8-0-0.style.fill: "#ADD8E6"
+microsoft-extensions-dependencyinjection-abstractions_8-0-0.style.opacity: 0.8
+microsoft-extensions-dependencyinjection-abstractions_8-0-0 <- aoi.alloverit-reactiveui
+reactiveui_19-5-39: ReactiveUI\nv19.5.39
+reactiveui_19-5-39.style.fill: "#ADD8E6"
+reactiveui_19-5-39.style.opacity: 0.8
+dynamicdata_8-3-27: DynamicData\nv8.3.27
+dynamicdata_8-3-27.style.fill: "#FFEC96"
+dynamicdata_8-3-27.style.opacity: 0.8
+dynamicdata_8-3-27 <- reactiveui_19-5-39
+splat_14-8-12: Splat\nv14.8.12
+splat_14-8-12.style.fill: "#FFEC96"
+splat_14-8-12.style.opacity: 0.8
+splat_14-8-12 <- reactiveui_19-5-39
+system-componentmodel-annotations_5-0-0: System.ComponentModel.Annotations\nv5.0.0
+system-componentmodel-annotations_5-0-0.style.fill: "#FFEC96"
+system-componentmodel-annotations_5-0-0.style.opacity: 0.8
+system-componentmodel-annotations_5-0-0 <- reactiveui_19-5-39
+system-text-json_8-0-0: System.Text.Json\nv8.0.0
+system-text-json_8-0-0.style.fill: "#FFEC96"
+system-text-json_8-0-0.style.opacity: 0.8
+system-text-json_8-0-0 <- reactiveui_19-5-39
+reactiveui_19-5-39 <- aoi.alloverit-reactiveui
+aoi.alloverit: AllOverIt
+aoi.alloverit-assertion: AllOverIt.Assertion
+aoi.alloverit-assertion <- aoi.alloverit
+aoi.alloverit <- aoi.alloverit-reactiveui
+aoi.alloverit-reactiveui <- aoi.alloverit-reactiveui-wpf

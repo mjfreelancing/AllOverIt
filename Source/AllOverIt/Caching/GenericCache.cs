@@ -6,39 +6,14 @@ using System.Collections.Generic;
 
 namespace AllOverIt.Caching
 {
-    /// <summary>A cache capable of storing different key/value types. Each key type must inherit <see cref="GenericCacheKeyBase"/> and each
-    /// of the key elements must support equality comparison.</summary>
+    /// <inheritdoc cref="IGenericCache" />
     public class GenericCache : IGenericCache
     {
-        private class GenericCacheKeyComparer : IEqualityComparer<GenericCacheKeyBase>
-        {
-            public static readonly GenericCacheKeyComparer Instance = new();
-
-            public bool Equals(GenericCacheKeyBase lhs, GenericCacheKeyBase rhs)
-            {
-                if (lhs is null && rhs is null)
-                {
-                    return true;
-                }
-
-                if (lhs is null || rhs is null)
-                {
-                    return false;
-                }
-
-                return lhs.Key.GetType() == rhs.Key.GetType() && lhs.Key.Equals(rhs.Key);
-            }
-
-            public int GetHashCode(GenericCacheKeyBase obj)
-            {
-                return obj.Key.GetHashCode();
-            }
-        }
-
-        private readonly ConcurrentDictionary<GenericCacheKeyBase, object> _cache = new (GenericCacheKeyComparer.Instance);
+        // GenericCacheKeyBase is a record so a custom comparer for the dictionary is not required
+        private readonly ConcurrentDictionary<GenericCacheKeyBase, object> _cache = new();
 
         /// <summary>A static instance of a <see cref="GenericCache"/>.</summary>
-        public static readonly GenericCache Default = new();
+        public static readonly GenericCache Default = [];
 
         /// <summary>The number of elements in the cache.</summary>
         public int Count => _cache.Count;
@@ -114,7 +89,7 @@ namespace AllOverIt.Caching
 
         /// <summary>Determines if the cache contains the provided key.</summary>
         /// <param name="key">The key to lookup.</param>
-        /// <returns>True if the cache contains the key, otherwise false.</returns>
+        /// <returns><see langword="true" /> if the cache contains the key, otherwise <see langword="false" />.</returns>
         public bool ContainsKey(GenericCacheKeyBase key)
         {
             _ = key.WhenNotNull(nameof(key));
@@ -147,7 +122,7 @@ namespace AllOverIt.Caching
         /// <summary>Attempts to get the value associated with a key in the cache.</summary>
         /// <param name="key">The custom key associated with the value.</param>
         /// <param name="value">The value associated with the key.</param>
-        /// <returns>True if the key was found in the cache, otherwise false.</returns>
+        /// <returns><see langword="true" /> if the key was found in the cache, otherwise <see langword="false" />.</returns>
         public bool TryGetValue(GenericCacheKeyBase key, out object value)
         {
             _ = key.WhenNotNull(nameof(key));
@@ -171,7 +146,7 @@ namespace AllOverIt.Caching
 
         /// <summary>Attempts to remove a key and its associated value from the cache.</summary>
         /// <param name="item">The custom key and associated value.</param>
-        /// <returns>True if the key was found in the cache, otherwise false.</returns>
+        /// <returns><see langword="true" /> if the key was found in the cache, otherwise <see langword="false" />.</returns>
         public bool Remove(KeyValuePair<GenericCacheKeyBase, object> item)
         {
             return ((IDictionary<GenericCacheKeyBase, object>) _cache).Remove(item);
@@ -191,7 +166,7 @@ namespace AllOverIt.Caching
             return success;
         }
 
-#if NET5_0_OR_GREATER
+#if !NETSTANDARD2_1
         /// <inheritdoc />
         public bool TryRemove<TValue>(KeyValuePair<GenericCacheKeyBase, TValue> item)
         {
@@ -212,7 +187,7 @@ namespace AllOverIt.Caching
         /// <inheritdoc />
         public KeyValuePair<GenericCacheKeyBase, object>[] ToArray()
         {
-            return _cache.ToArray();
+            return [.. _cache];
         }
 
         /// <inheritdoc />

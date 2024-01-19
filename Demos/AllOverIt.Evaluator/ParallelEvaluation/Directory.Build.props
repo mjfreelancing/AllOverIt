@@ -1,8 +1,0 @@
-<Project>
-    <PropertyGroup>
-        <TargetFramework>net6.0-windows</TargetFramework>
-        <UseWindowsForms>true</UseWindowsForms>
-        <LangVersion>Latest</LangVersion>
-        <IsPackable>false</IsPackable>
-    </PropertyGroup>
-</Project>

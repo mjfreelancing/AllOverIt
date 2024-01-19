@@ -1,10 +1,10 @@
 ﻿using AllOverIt.Aws.AppSync.Client.Authorization;
-using AllOverIt.Serialization.Abstractions;
+using AllOverIt.Serialization.Json.Abstractions;
 
 namespace AllOverIt.Aws.AppSync.Client.Configuration
 {
-    /// <summary>Contains configuration details for the AppSync Graphql subscription client.</summary>
-    public sealed record SubscriptionClientConfiguration : ISubscriptionClientConfiguration
+    /// <inheritdoc cref="ISubscriptionClientConfiguration" />
+    public sealed class SubscriptionClientConfiguration : ISubscriptionClientConfiguration
     {
         private string _realTimeUrl;
 

@@ -3,7 +3,7 @@
 namespace AllOverIt.DependencyInjection.Exceptions
 {
     /// <summary>Represents an error that occurred while auto-registering a service for dependency injection.</summary>
-    public class DependencyRegistrationException : Exception
+    public sealed class DependencyRegistrationException : Exception
     {
         /// <summary>Default constructor.</summary>
         public DependencyRegistrationException()

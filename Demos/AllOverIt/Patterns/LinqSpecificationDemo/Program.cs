@@ -48,7 +48,7 @@ namespace LinqSpecificationDemo
             LogData(Repository.Persons.Where((Func<Person, bool>) !criteria));
             Console.WriteLine();
 
-            Console.WriteLine("");
+            Console.WriteLine();
             Console.WriteLine("All Over It.");
             Console.ReadKey();
         }

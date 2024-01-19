@@ -4,6 +4,7 @@ using AllOverIt.Filtering.Filters;
 using AllOverIt.Filtering.Options;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
+using AllOverIt.Fixture.FakeItEasy;
 using FakeItEasy;
 using FluentAssertions;
 using System;
@@ -67,7 +68,7 @@ namespace AllOverIt.Filtering.Tests.Extensions
                 }
             };
 
-            var specificationBuilder = new FilterSpecificationBuilder<DummyClass, DummyFilter>(filter, A.Fake<IDefaultQueryFilterOptions>());
+            var specificationBuilder = new FilterSpecificationBuilder<DummyClass, DummyFilter>(filter, this.CreateStub<IDefaultQueryFilterOptions>());
             var filterBuilder = new FilterBuilder<DummyClass, DummyFilter>(specificationBuilder);
 
             // When applied like this, they are chained from left to right. Use explicit specfications to control precedence.

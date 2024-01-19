@@ -25,7 +25,8 @@ namespace AllOverIt.Validation
 
             foreach (var validatorType in validatorTypes)
             {
-                var modelType = validatorType.BaseType!.GenericTypeArguments[0];
+                // Drill down until we find the abstract validator with the model type
+                var modelType = ValidationTypeHelper.GetModelType(validatorType);
 
                 var registerValidator = predicate?.Invoke(modelType, validatorType) ?? true;
 

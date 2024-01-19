@@ -1,17 +1,19 @@
 using AllOverIt.Assertion;
 using AllOverIt.Evaluator.Exceptions;
 using AllOverIt.Evaluator.Variables.Extensions;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace AllOverIt.Evaluator.Variables
 {
-    /// <summary>A registry of variables referenced by one or more formula.</summary>
+    /// <summary>A registry of variables that may be explicitly evaluated, or implicitly referenced by one or more formula.
+    /// It is expected that if a variable is formula based then all referenced variables will also exist in the registry at
+    /// the time that variable is evaluated. If there's uncertainty that all referenced variables will be registered then
+    /// it's recommended to use <see cref="VariableRegistryBuilder"/> as this will ensure the registry can only be built
+    /// when all referenced variables have been registered.</summary>
     public sealed class VariableRegistry : IVariableRegistry
     {
         private readonly IDictionary<string, IVariable> _variableRegistry = new Dictionary<string, IVariable>();
-
-        /// <summary>Contains a key-value collection of all registered variables, keyed by their name.</summary>
-        public IEnumerable<KeyValuePair<string, IVariable>> Variables => _variableRegistry;
 
         /// <inheritdoc />
         public void AddVariable(IVariable variable)
@@ -32,6 +34,8 @@ namespace AllOverIt.Evaluator.Variables
         /// <inheritdoc />
         public void AddVariables(params IVariable[] variables)
         {
+            _ = variables.WhenNotNull(nameof(variables));
+
             foreach (var variable in variables)
             {
                 AddVariable(variable);
@@ -67,14 +71,44 @@ namespace AllOverIt.Evaluator.Variables
             _variableRegistry.Clear();
         }
 
-        private IVariable GetVariable(string name)
+        /// <inheritdoc />
+        public bool TryGetVariable(string name, out IVariable variable)
         {
-            if (!_variableRegistry.TryGetValue(name, out var variable))
+            _ = name.WhenNotNullOrEmpty(nameof(name));
+
+            return _variableRegistry.TryGetValue(name, out variable);
+        }
+
+        /// <inheritdoc />
+        public IVariable GetVariable(string name)
+        {
+            _ = name.WhenNotNullOrEmpty(nameof(name));
+
+            if (!TryGetVariable(name, out var variable))
             {
                 throw new VariableException($"The variable '{name}' is not registered");
             }
 
             return variable;
+        }
+
+        /// <inheritdoc />
+        public bool ContainsVariable(string name)
+        {
+            _ = name.WhenNotNullOrEmpty(nameof(name));
+
+            return _variableRegistry.ContainsKey(name);
+        }
+
+        /// <inheritdoc />
+        public IEnumerator<KeyValuePair<string, IVariable>> GetEnumerator()
+        {
+            return _variableRegistry.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

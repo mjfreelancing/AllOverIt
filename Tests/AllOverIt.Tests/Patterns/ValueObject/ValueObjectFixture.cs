@@ -212,6 +212,17 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 actual.Should().BeFalse();
             }
+
+            [Fact]
+            public void Should_Be_Equal_When_Both_Null()
+            {
+                StringValueObject string1 = null;
+                StringValueObject string2 = null;
+
+                var actual = string1 == string2;
+
+                actual.Should().BeTrue();
+            }
         }
 
         public class Operator_NotEquals : ValueObjectFixture

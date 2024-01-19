@@ -16,7 +16,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
             public int? ProcessedValue { get; set; }
         }
 
-        private class ChainOfResponsibilityDummy1 : ChainOfResponsibilityHandler<DummyState, DummyState>
+        private class DummyChainOfResponsibility1 : ChainOfResponsibilityHandler<DummyState, DummyState>
         {
             public override DummyState Handle(DummyState state)
             {
@@ -30,7 +30,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
             }
         }
 
-        private class ChainOfResponsibilityDummy2 : ChainOfResponsibilityHandler<DummyState, DummyState>
+        private class DummyChainOfResponsibility2 : ChainOfResponsibilityHandler<DummyState, DummyState>
         {
             public override DummyState Handle(DummyState state)
             {
@@ -79,8 +79,8 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
             {
                 var handlers = new IChainOfResponsibilityHandler<DummyState, DummyState>[]
                 {
-                    new ChainOfResponsibilityDummy1(),
-                    new ChainOfResponsibilityDummy2()
+                    new DummyChainOfResponsibility1(),
+                    new DummyChainOfResponsibility2()
                 };
 
                 var composer = new ChainOfResponsibilityComposer<DummyState, DummyState>(handlers);
@@ -100,8 +100,8 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
             {
                 var handlers = new IChainOfResponsibilityHandler<DummyState, DummyState>[]
                 {
-                    new ChainOfResponsibilityDummy1(),
-                    new ChainOfResponsibilityDummy2()
+                    new DummyChainOfResponsibility1(),
+                    new DummyChainOfResponsibility2()
                 };
 
                 var composer = new ChainOfResponsibilityComposer<DummyState, DummyState>(handlers);
@@ -121,8 +121,8 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
             {
                 var handlers = new IChainOfResponsibilityHandler<DummyState, DummyState>[]
                 {
-                    new ChainOfResponsibilityDummy1(),
-                    new ChainOfResponsibilityDummy2()
+                    new DummyChainOfResponsibility1(),
+                    new DummyChainOfResponsibility2()
                 };
 
                 var composer = new ChainOfResponsibilityComposer<DummyState, DummyState>(handlers);

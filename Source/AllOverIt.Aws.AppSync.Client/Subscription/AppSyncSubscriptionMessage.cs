@@ -1,6 +1,4 @@
-﻿using System.Runtime.Serialization;
-
-namespace AllOverIt.Aws.AppSync.Client.Subscription
+﻿namespace AllOverIt.Aws.AppSync.Client.Subscription
 {
     /// <summary>Contains a graphql subscription message from AppSync.</summary>
     internal sealed class AppSyncSubscriptionMessage
@@ -12,7 +10,6 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         public string Type { get; init; }
 
         /// <summary>The content of the message received from AppSync.</summary>
-        [IgnoreDataMember]
         public string Message { get; internal set; }
     }
 }

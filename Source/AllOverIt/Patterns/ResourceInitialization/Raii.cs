@@ -27,11 +27,8 @@ namespace AllOverIt.Patterns.ResourceInitialization
             GC.SuppressFinalize(this);      // just in case an inherited class has a finalizer
         }
 
-        /// <summary>
-        /// A virtual method that is called at the time of disposal. For this class, the cleanup action provided at the time
-        /// of construction is invoked.
-        /// </summary>
-        /// <param name="disposing">Is true when the object is being disposed, otherwise false.</param>
+        /// <summary>Disposes of the internal resources.</summary>
+        /// <param name="disposing">Indicates if the internal resources are to be disposed.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposed)
@@ -75,11 +72,8 @@ namespace AllOverIt.Patterns.ResourceInitialization
             GC.SuppressFinalize(this);      // just in case an inherited class has a finalizer
         }
 
-        /// <summary>
-        /// A virtual method that is called at the time of disposal. For this class, the cleanup action provided at the time
-        /// of construction is invoked.
-        /// </summary>
-        /// <param name="disposing">Is true when the object is being disposed, otherwise false.</param>
+        /// <summary>Disposes of the internal resources.</summary>
+        /// <param name="disposing">Indicates if the internal resources are to be disposed.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposed)

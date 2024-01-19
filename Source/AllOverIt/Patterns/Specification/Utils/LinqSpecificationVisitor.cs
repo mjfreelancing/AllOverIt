@@ -1,10 +1,8 @@
 ﻿using AllOverIt.Assertion;
-using AllOverIt.Patterns.Specification.Exceptions;
 using AllOverIt.Reflection;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
@@ -13,7 +11,7 @@ namespace AllOverIt.Patterns.Specification.Utils
     /// <summary>Converts the expression of an <see cref="ILinqSpecification{TType}"/> to a query-like string.</summary>
     public sealed class LinqSpecificationVisitor : ExpressionVisitor
     {
-        private static readonly IDictionary<ExpressionType, string> ExpressionTypeMapping = new Dictionary<ExpressionType, string>
+        private static readonly Dictionary<ExpressionType, string> ExpressionTypeMapping = new()
         {
             [ExpressionType.Not] = "NOT",
             [ExpressionType.GreaterThan] = ">",
@@ -26,15 +24,27 @@ namespace AllOverIt.Patterns.Specification.Utils
             [ExpressionType.OrElse] = "OR"
         };
 
-        private static readonly IDictionary<Type, Func<object, string>> TypeValueConverters = new Dictionary<Type, Func<object, string>>
+        private static readonly Dictionary<Type, Func<object, string>> TypeValueConverters = new()
         {
             [CommonTypes.StringType] = value => $"'{value}'",
             [CommonTypes.DateTimeType] = value => $"'{((DateTime) value).ToUniversalTime():yyyy-MM-ddTHH:mm:ss.fffZ}'",
             [CommonTypes.BoolType] = value => value.ToString()
         };
 
+        private Dictionary<Type, Func<object, string>> _customTypeValueConverters;
         private readonly StringBuilder _queryStringBuilder = new();
         private readonly Stack<string> _fieldNames = new();
+
+        /// <summary>Adds a value converter for a custom type. This converter is used when needing to convert
+        /// the value of an expression to a string.</summary>
+        /// <param name="type">The custom type.</param>
+        /// <param name="converter">The action used to convert the value to a string.</param>
+        public void AddTypeValueConverter(Type type, Func<object, string> converter)
+        {
+            _customTypeValueConverters ??= [];
+
+            _customTypeValueConverters.Add(type, converter);
+        }
 
         /// <summary>Converts the expression of the provided <see cref="ILinqSpecification{TType}"/> to a query-like string.</summary>
         /// <typeparam name="TType">The candidate type the specification applies to.</typeparam>
@@ -49,10 +59,6 @@ namespace AllOverIt.Patterns.Specification.Utils
                 Visit(specification.Expression);
 
                 return _queryStringBuilder.ToString();
-            }
-            catch(Exception exception)
-            {
-                throw new LinqSpecificationVisitorException("An error occurred while trying to convert a specification to a query string.", exception, _queryStringBuilder.ToString());
             }
             finally
             {
@@ -78,7 +84,7 @@ namespace AllOverIt.Patterns.Specification.Utils
                 _queryStringBuilder.Append($".{node.Method.Name}(");
             }
 
-            if (node.Arguments.Any())
+            if (node.Arguments.Count != 0)
             {
                 if (node.Arguments.Count == 1)
                 {
@@ -177,6 +183,16 @@ namespace AllOverIt.Patterns.Specification.Utils
 
             var type = input.GetType();
 
+            if (TypeValueConverters.TryGetValue(type, out var converter))
+            {
+                return converter.Invoke(input);
+            }
+
+            if (_customTypeValueConverters?.TryGetValue(type, out var customConverter) ?? false)
+            {
+                return customConverter.Invoke(input);
+            }
+
             if (type.IsClass && type != CommonTypes.StringType)
             {
                 if (input is ICollection collection)
@@ -202,12 +218,8 @@ namespace AllOverIt.Patterns.Specification.Utils
                     return GetValue(value);
                 }
             }
-            else
-            {
-                return TypeValueConverters.TryGetValue(type, out var converter)
-                    ? converter.Invoke(input)
-                    : input.ToString();
-            }
+
+            return input.ToString();
         }
     }
 }

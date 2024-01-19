@@ -9,11 +9,13 @@ namespace ChainOfResponsibilityDemo.Handlers
         {
             var payload = state.QueueMessage.Payload;
 
-            if (payload != null && payload.IsNullOrEmpty())
+            if (payload.IsEmpty())
             {
-                Console.WriteLine("Handling an empty message...");
+                Console.WriteLine(" >> Handling an empty message...");
                 return Abandon(state);
             }
+
+            Console.WriteLine("Payload is empty, trying the next handler.");
 
             // not handled, so move onto the next handler
             return base.Handle(state);

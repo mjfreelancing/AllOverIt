@@ -17,6 +17,13 @@ namespace AllOverIt.Pagination
         /// <summary>A token generator used to encode and decode continuation tokens that simplifies requesting next and previous page queries.</summary>
         IContinuationTokenEncoder TokenEncoder { get; }
 
+        /// <summary>Gets the configured query direction when the <paramref name="continuationToken"/> is <see langword="null" /> or empty,
+        /// otherwise the direction encoded in the <paramref name="continuationToken"/>.</summary>
+        /// <param name="continuationToken">The continuation token containing the encoded query direction.</param>
+        /// <returns>The configured query direction when the <paramref name="continuationToken"/> is <see langword="null" /> or empty,
+        /// otherwise the direction encoded in the <paramref name="continuationToken"/>.</returns>
+        PaginationDirection GetQueryDirection(string continuationToken = default);
+
         /// <summary>Appends a new ascending order-by column. When ordering by multiple columns it is important that the last column
         /// is unique across all pages (such as the IDENTITY column), even if that column is not returned in the results.</summary>
         /// <typeparam name="TProperty">The entity's property type (the column).</typeparam>

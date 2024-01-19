@@ -49,7 +49,7 @@ namespace AllOverIt.Aws.AppSync.Client
         private TimeSpan _healthCheckPeriod;        // Max period to wait before a keep alive message from AppSync
         private IDisposable _healthDisposable;      // Subscription for resetting the connection and re-subscribing all subscriptions
         private IConnectableObservable<AppSyncSubscriptionMessage> _incomingMessages;
-        private IDisposable _incomingMessagesConnection;
+        private CompositeDisposable _incomingMessagesConnection;
         private IAppSyncAuthorization _connectionAuthorization;
 
         // The primary CancellationTokenSource used for message retrieval from the web socket
@@ -199,7 +199,7 @@ namespace AllOverIt.Aws.AppSync.Client
             }
         }
 
-        private IAsyncDisposable CreateSubscriptionDisposable(SubscriptionRegistrationRequest registration)
+        private RaiiAsync<SubscriptionRegistrationRequest> CreateSubscriptionDisposable(SubscriptionRegistrationRequest registration)
         {
             return new RaiiAsync<SubscriptionRegistrationRequest>(
                 () => registration,

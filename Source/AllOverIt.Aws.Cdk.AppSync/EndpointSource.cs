@@ -10,6 +10,9 @@
         ImportValue,
 
         /// <summary>Indicates the endpoint value refers to an environment variable name.</summary>
-        EnvironmentVariable
+        EnvironmentVariable,
+
+        /// <summary>Indicates the endpoint value refers to a lookup key.</summary>
+        Lookup
     }
 }

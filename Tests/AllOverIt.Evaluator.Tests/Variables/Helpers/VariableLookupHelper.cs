@@ -37,13 +37,13 @@ namespace AllOverIt.Evaluator.Tests.Variables.Helpers
 
         public static IDictionary<IVariable, IList<IVariable>> GetExpectedReferencedExplicit(IVariableRegistry registry)
         {
-            var a = registry.Variables.Single(kv => kv.Key == "a").Value;
-            var b = registry.Variables.Single(kv => kv.Key == "b").Value;
-            var c = registry.Variables.Single(kv => kv.Key == "c").Value;
-            var d = registry.Variables.Single(kv => kv.Key == "d").Value;
-            var e = registry.Variables.Single(kv => kv.Key == "e").Value;
-            var f = registry.Variables.Single(kv => kv.Key == "f").Value;
-            var g = registry.Variables.Single(kv => kv.Key == "g").Value;
+            var a = registry.Single(kv => kv.Key == "a").Value;
+            var b = registry.Single(kv => kv.Key == "b").Value;
+            var c = registry.Single(kv => kv.Key == "c").Value;
+            var d = registry.Single(kv => kv.Key == "d").Value;
+            var e = registry.Single(kv => kv.Key == "e").Value;
+            var f = registry.Single(kv => kv.Key == "f").Value;
+            var g = registry.Single(kv => kv.Key == "g").Value;
 
             return new Dictionary<IVariable, IList<IVariable>>
             {
@@ -59,13 +59,13 @@ namespace AllOverIt.Evaluator.Tests.Variables.Helpers
 
         public static IDictionary<IVariable, IList<IVariable>> GetExpectedReferencedAll(IVariableRegistry registry)
         {
-            var a = registry.Variables.Single(kv => kv.Key == "a").Value;
-            var b = registry.Variables.Single(kv => kv.Key == "b").Value;
-            var c = registry.Variables.Single(kv => kv.Key == "c").Value;
-            var d = registry.Variables.Single(kv => kv.Key == "d").Value;
-            var e = registry.Variables.Single(kv => kv.Key == "e").Value;
-            var f = registry.Variables.Single(kv => kv.Key == "f").Value;
-            var g = registry.Variables.Single(kv => kv.Key == "g").Value;
+            var a = registry.Single(kv => kv.Key == "a").Value;
+            var b = registry.Single(kv => kv.Key == "b").Value;
+            var c = registry.Single(kv => kv.Key == "c").Value;
+            var d = registry.Single(kv => kv.Key == "d").Value;
+            var e = registry.Single(kv => kv.Key == "e").Value;
+            var f = registry.Single(kv => kv.Key == "f").Value;
+            var g = registry.Single(kv => kv.Key == "g").Value;
 
             return new Dictionary<IVariable, IList<IVariable>>
             {
@@ -81,13 +81,13 @@ namespace AllOverIt.Evaluator.Tests.Variables.Helpers
 
         public static IDictionary<IVariable, IList<IVariable>> GetExpectedReferencingExplicit(IVariableRegistry registry)
         {
-            var a = registry.Variables.Single(kv => kv.Key == "a").Value;
-            var b = registry.Variables.Single(kv => kv.Key == "b").Value;
-            var c = registry.Variables.Single(kv => kv.Key == "c").Value;
-            var d = registry.Variables.Single(kv => kv.Key == "d").Value;
-            var e = registry.Variables.Single(kv => kv.Key == "e").Value;
-            var f = registry.Variables.Single(kv => kv.Key == "f").Value;
-            var g = registry.Variables.Single(kv => kv.Key == "g").Value;
+            var a = registry.Single(kv => kv.Key == "a").Value;
+            var b = registry.Single(kv => kv.Key == "b").Value;
+            var c = registry.Single(kv => kv.Key == "c").Value;
+            var d = registry.Single(kv => kv.Key == "d").Value;
+            var e = registry.Single(kv => kv.Key == "e").Value;
+            var f = registry.Single(kv => kv.Key == "f").Value;
+            var g = registry.Single(kv => kv.Key == "g").Value;
 
             return new Dictionary<IVariable, IList<IVariable>>
             {
@@ -103,13 +103,13 @@ namespace AllOverIt.Evaluator.Tests.Variables.Helpers
 
         public static IDictionary<IVariable, IList<IVariable>> GetExpectedReferencingAll(IVariableRegistry registry)
         {
-            var a = registry.Variables.Single(kv => kv.Key == "a").Value;
-            var b = registry.Variables.Single(kv => kv.Key == "b").Value;
-            var c = registry.Variables.Single(kv => kv.Key == "c").Value;
-            var d = registry.Variables.Single(kv => kv.Key == "d").Value;
-            var e = registry.Variables.Single(kv => kv.Key == "e").Value;
-            var f = registry.Variables.Single(kv => kv.Key == "f").Value;
-            var g = registry.Variables.Single(kv => kv.Key == "g").Value;
+            var a = registry.Single(kv => kv.Key == "a").Value;
+            var b = registry.Single(kv => kv.Key == "b").Value;
+            var c = registry.Single(kv => kv.Key == "c").Value;
+            var d = registry.Single(kv => kv.Key == "d").Value;
+            var e = registry.Single(kv => kv.Key == "e").Value;
+            var f = registry.Single(kv => kv.Key == "f").Value;
+            var g = registry.Single(kv => kv.Key == "g").Value;
 
             return new Dictionary<IVariable, IList<IVariable>>
             {

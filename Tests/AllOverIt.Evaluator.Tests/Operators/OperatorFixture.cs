@@ -11,14 +11,14 @@ namespace AllOverIt.Evaluator.Tests.Operators
     public class OperatorFixture : FixtureBase
     {
         private readonly double _value;
-        private OperatorDummy _operator;
+        private DummyOperator _operator;
 
         public OperatorFixture()
         {
             _value = Create<double>();
 
             var outOperand = Expression.Constant(_value);
-            _operator = new OperatorDummy(() => outOperand);
+            _operator = new DummyOperator(() => outOperand);
         }
 
         public class Constructor : OperatorFixture
@@ -26,7 +26,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
             [Fact]
             public void Should_Throw_When_Operand_Null()
             {
-                Invoking(() => _operator = new OperatorDummy(null))
+                Invoking(() => _operator = new DummyOperator(null))
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("operatorType");

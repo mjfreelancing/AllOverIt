@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="AllOverIt" id="packages-alloverit">
+
+    <link-summary>
+        This is the core package within the %aoi% suite, containing a diverse range of general-purpose classes and utility functions.
+    </link-summary>
+
+    <p>
+        <code>%aoi%</code> is a comprehensive library containing a diverse range of commonly-used classes and utility functions. Key areas catered for include:
+    </p>
+
+    <list columns="2">
+        <li>Threading</li>
+        <li>Tasks</li>
+        <li>Generic Caching</li>
+        <li>Event (message) aggregation</li>
+        <li>Expression and reflection utilities</li>
+        <li>Plugin contexts</li>
+        <li>Enriched enums</li>
+        <li>Pipelines</li>
+        <li>Value objects</li>
+        <li>Specifications</li>
+        <li>...and dozens of extensions</li>
+    </list>
+
+    <p>
+        Refer to the sections that follow for more detailed information.
+    </p>
+
+    <chapter id="dependencies" title="Dependencies">
+        <include from="dependency-diagram-prelude.topic" element-id="dependency_diagram-target-comment"/>
+
+        <tabs>
+            <tab title="NET 6">
+                <img src="$WRS_MODULE$/images/dependencies/net6.0/alloverit.png" alt="AllOverIt" />
+            </tab>
+            <tab title="NET 7">
+                <img src="$WRS_MODULE$/images/dependencies/net7.0/alloverit.png" alt="AllOverIt" />
+            </tab>
+            <tab title="NET 8">
+                <img src="$WRS_MODULE$/images/dependencies/net8.0/alloverit.png" alt="AllOverIt" />
+            </tab>
+        </tabs>
+    </chapter>
+
+    <seealso>
+        <category ref="related">
+            <a href="getting-started-dependencies.topic"/>
+            <a href="getting-started-installation.topic"/>
+        </category>
+    </seealso>
+</topic>

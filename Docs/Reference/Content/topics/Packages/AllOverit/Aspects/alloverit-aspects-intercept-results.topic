@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Intercept Results" id="alloverit-aspects-intercept-results"
+       help-id="alloverit-aspects-return-a-handled-result">
+
+    <p>
+        Interceptors provide two potential opportunities to modify the final result returned to the caller.
+    </p>
+
+    <list type="decimal">
+        <li>
+            <p>
+                Set a 'handled' result before the method on the decorated service instance has had an opportunity to be called.
+            </p>
+            <p>
+                For class-level interceptors this is performed in the <code>BeforeInvoke()</code> method, and for method-level interceptor handlers this is performed in the <code>BeforeMethodInvoke()</code> method.
+            </p>
+        </li>
+        <li>
+            <p>
+                Modify the result returned after the method on the decorated service instance has executed.
+            </p>
+            <p>
+                For class-level interceptors this is performed in the <code>AfterInvoke()</code> method, and for method-level interceptor handlers this is performed in the <code>AfterMethodInvoke()</code> method.
+            </p>
+        </li>
+    </list>
+
+    <chapter title="Before Execution" id="intercept-results-before-execution">
+        <p>
+            As an example, consider this method on an intercepted service:
+        </p>
+
+        <code-block lang="c#">
+            string GetSecret(string accessKey);
+        </code-block>
+
+        <chapter title="Class-level Interceptor" id="intercept-results-before-class-level">
+            <p>
+                The following example shows the <code>BeforeInvoke()</code> method determining if a cached result is available. If it is, then the result is set on an <code>InterceptorState</code> instance. Additionally, by setting the <code>IsHandled</code> property to <code>true</code>, the method on the decorated service instance will not be called.
+            </p>
+
+            <code-block lang="c#">
+                protected override InterceptorState BeforeInvoke(
+                    MethodInfo targetMethod, object[] args)
+                {
+                    // The 'accessKey' passed to GetSecret() is at index 0
+                    // (it is the first argument).
+                    var accessKey = (string) args[0];
+
+                    if (_cache.TryGetValue(out var cacheResult))
+                    {
+                        return new InterceptorState
+                        {
+                            IsHandled = true,
+                            Result = cacheResult;
+                        };
+                    }
+
+                    return new InterceptorState();
+                }
+            </code-block>
+        </chapter>
+
+        <chapter title="Method-level Interceptor" id="intercept-results-before-method-level">
+            <p>
+                The following example shows the <code>BeforeMethodInvoke()</code> method determining if a cached result is available. If it is, then the result is set on an <code>InterceptorState&lt;string&gt;</code> instance. Additionally, by setting the <code>IsHandled</code> property to <code>true</code>, the method on the decorated service instance will not be called.
+            </p>
+
+            <code-block lang="c#">
+                protected override InterceptorState&lt;string&gt; BeforeMethodInvoke(
+                    MethodInfo targetMethod, object[] args)
+                {
+                    // The 'accessKey' passed to GetSecret() is at index 0
+                    // (it is the first argument).
+                    var accessKey = (string) args[0];
+
+                    if (_cache.TryGetValue(out var cacheResult))
+                    {
+                        return new InterceptorState&lt;string&gt;
+                        {
+                            IsHandled = true,
+                            Result = cacheResult;
+                        };
+                    }
+
+                    return new InterceptorState&lt;string&gt;();
+                }
+            </code-block>
+        </chapter>
+
+        </chapter>
+    <chapter title="After Execution" id="intercept-results-after-execution">
+        <p>
+            Modifying the final result after the method on the decorated service instance has executed is very similar to the process shown for <a anchor="intercept-results-before-execution"/>.
+
+        </p>
+
+        <p>
+            As an example, consider this method on an intercepted service:
+        </p>
+
+        <code-block lang="c#">
+            Task&lt;string&gt; GetSecretAsync(string accessKey);
+        </code-block>
+
+        <chapter title="Class-level Interceptor" id="intercept-results-after-class-level">
+            <p>
+                The following example shows the <code>AfterInvoke()</code> method capturing the current result and updating it to be an uppercase version.
+            </p>
+
+            <code-block lang="c#">
+                protected override void AfterInvoke(MethodInfo targetMethod,
+                    object[] args, InterceptorState state)
+                {
+                    if (targetMethod != typeof(ISecretService)
+                        .GetMethod((nameof(ISecretService.GetSecretAsync)))
+                    {
+                        return;
+                    }
+
+                    // Referencing '.Result' is safe since the Task has
+                    // run to completion if it gets here.
+                    var stateResult = state
+                        .GetResult&lt;Task&lt;string&gt;&gt;()
+                        .Result;
+
+                    // Uppercase the string
+                    stateResult = stateResult.ToUpperInvariant();
+
+                    // Must set the result as a Task&lt;string&gt;
+                    state.SetResult(Task.FromResult(stateResult));
+                }
+            </code-block>
+        </chapter>
+
+        <chapter title="Method-level Interceptor" id="intercept-results-after-method-level">
+            <p>
+                The following example shows the <code>AfterMethodInvoke()</code> method capturing the current result and updating it to be an uppercase version.
+            </p>
+
+            <code-block lang="c#">
+                protected override void AfterMethodInvoke(MethodInfo targetMethod,
+                    object[] args, InterceptorState&lt;Task&lt;string&gt;&gt; state)
+                {
+                    // This is of type Task&lt;string&gt;
+                    var stateResult = state.Result;
+
+                    // Referencing '.Result' is safe since the Task has
+                    // run to completion if it gets here.
+                    var value = stateResult.Result;
+
+                    // Uppercase the string
+                    value = value.ToUpperInvariant();
+
+                    // Must set the result as a Task&lt;string&gt;
+                    // Could also use state.SetResult() if preferred.
+                    state.Result = Task.FromResult(value);
+                }
+            </code-block>
+        </chapter>
+    </chapter>
+</topic>

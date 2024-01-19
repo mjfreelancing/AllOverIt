@@ -1,12 +1,12 @@
-﻿using CsvHelper;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Extensions;
+using CsvHelper;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Threading.Tasks;
-using AllOverIt.Assertion;
-using AllOverIt.Extensions;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace AllOverIt.Csv
 {
@@ -22,8 +22,8 @@ namespace AllOverIt.Csv
 
             public CsvFieldResolver(string headerName, Func<TCsvData, object> valueResolver)
             {
-                HeaderNames = new []{ headerName };
-                _valuesResolver = item => new[]{ valueResolver.Invoke(item)};
+                HeaderNames = [headerName];
+                _valuesResolver = item => [valueResolver.Invoke(item)];
             }
 
             public CsvFieldResolver(IEnumerable<string> headerNames, Func<TCsvData, IEnumerable<object>> valuesResolver)
@@ -40,7 +40,7 @@ namespace AllOverIt.Csv
             }
         }
 
-        private readonly ICollection<IFieldResolver<TCsvData>> _fieldResolvers = new List<IFieldResolver<TCsvData>>();
+        private readonly List<IFieldResolver<TCsvData>> _fieldResolvers = [];
 
         /// <inheritdoc />
         public void AddField(string headerName, Func<TCsvData, object> valueResolver)
@@ -118,7 +118,7 @@ namespace AllOverIt.Csv
             }
         }
 
-        private Task WriteHeaderAsync(IWriter csv, CancellationToken cancellationToken)
+        private Task WriteHeaderAsync(CsvWriter csv, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -133,14 +133,14 @@ namespace AllOverIt.Csv
             return csv.NextRecordAsync();
         }
 
-        private async Task WriteRowAsync(TCsvData data, IWriter csv, CancellationToken cancellationToken)
+        private async Task WriteRowAsync(TCsvData data, CsvWriter csv, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
             foreach (var item in _fieldResolvers)
             {
                 var values = item.GetValues(data);
-                
+
                 foreach (var value in values)
                 {
                     csv.WriteField(value);

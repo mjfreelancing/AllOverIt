@@ -6,6 +6,7 @@ using AllOverIt.Reflection.Exceptions;
 using FluentAssertions;
 using FluentAssertions.Equivalency;
 using System;
+using System.Linq.Expressions;
 using System.Reflection;
 using Xunit;
 
@@ -13,6 +14,11 @@ namespace AllOverIt.Tests.Reflection
 {
     public partial class FieldHelperFixture
     {
+        private struct DummyStruct
+        {
+            public int Field1;
+        }
+
         public class CreateFieldSetter_Object : PropertyHelperFixture
         {
             [Fact]
@@ -28,7 +34,7 @@ namespace AllOverIt.Tests.Reflection
             }
 
             [Fact]
-            public void Should_Create_Setter()
+            public void Should_Create_Setter_Class()
             {
                 var expected = Create<int>();
                 var model = new DummyClass();
@@ -39,6 +45,37 @@ namespace AllOverIt.Tests.Reflection
                 setter.Invoke(model, expected);
 
                 model.Field1.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Create_Setter_ParentClass()
+            {
+                var expected = Create<int>();
+                var model = new DummyParentClass();
+
+                var fieldInfo = typeof(DummyClass).GetField(nameof(DummyClass.Field1));
+                var setter = FieldHelper.CreateFieldSetter(fieldInfo);
+
+                setter.Invoke(model, expected);
+
+                model.Field1.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Create_Setter_Struct()
+            {
+                var expected = Create<int>();
+
+                // Note: This overload of CreateFieldSetter() only works for structs when they are boxed.
+                //       If you need to pass a strongly typed object then use CreateFieldSetterByRef().
+                object model = new DummyStruct();
+                
+                var fieldInfo = typeof(DummyStruct).GetField(nameof(DummyStruct.Field1));
+                var setter = FieldHelper.CreateFieldSetter(fieldInfo);
+
+                setter(model, expected);
+
+                ((DummyStruct) model).Field1.Should().Be(expected);
             }
 
             [Fact]
@@ -82,7 +119,7 @@ namespace AllOverIt.Tests.Reflection
             }
 
             [Fact]
-            public void Should_Create_Setter()
+            public void Should_Create_Setter_Class()
             {
                 var expected = Create<int>();
                 var model = new DummyClass();
@@ -94,6 +131,24 @@ namespace AllOverIt.Tests.Reflection
 
                 model.Field1.Should().Be(expected);
             }
+
+            [Fact]
+            public void Should_Create_Setter_ParentClass()
+            {
+                var expected = Create<int>();
+                var model = new DummyParentClass();
+
+                var fieldInfo = typeof(DummyClass).GetField(nameof(DummyClass.Field1));
+                var setter = FieldHelper.CreateFieldSetter<DummyParentClass>(fieldInfo);
+
+                setter.Invoke(model, expected);
+
+                model.Field1.Should().Be(expected);
+            }
+
+            // This typed version of CreateFieldSetter() will not work with structs. You can use
+            // the overload accepting an object (the instance must be declared as object and not using var).
+            // Alternatively, use the CreateFieldSetterByRef() method.
         }
 
         public class CreateFieldSetter_Typed_FieldName : FieldHelperFixture
@@ -111,7 +166,7 @@ namespace AllOverIt.Tests.Reflection
             }
 
             [Fact]
-            public void Should_Create_Setter()
+            public void Should_Create_Setter_Class()
             {
                 var expected = Create<int>();
                 var model = new DummyClass();
@@ -122,6 +177,23 @@ namespace AllOverIt.Tests.Reflection
 
                 model.Field1.Should().Be(expected);
             }
+
+            [Fact]
+            public void Should_Create_Setter_ParentClass()
+            {
+                var expected = Create<int>();
+                var model = new DummyParentClass();
+
+                var setter = FieldHelper.CreateFieldSetter<DummyParentClass>(nameof(DummyClass.Field1));
+
+                setter.Invoke(model, expected);
+
+                model.Field1.Should().Be(expected);
+            }
+
+            // This typed version of CreateFieldSetter() will not work with structs. You can use
+            // the overload accepting an object (the instance must be declared as object and not using var).
+            // Alternatively, use the CreateFieldSetterByRef() method.
 
             [Fact]
             public void Should_Throw_When_Field_Does_Not_Exist()
@@ -153,13 +225,41 @@ namespace AllOverIt.Tests.Reflection
             }
 
             [Fact]
-            public void Should_Create_Setter_ByRef()
+            public void Should_Create_Setter_Class()
             {
                 var expected = Create<int>();
                 var model = new DummyClass();
 
                 var fieldInfo = typeof(DummyClass).GetField(nameof(DummyClass.Field1));
                 var setter = FieldHelper.CreateFieldSetterByRef<DummyClass>(fieldInfo);
+
+                setter.Invoke(ref model, expected);
+
+                model.Field1.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Create_Setter_ParentClass()
+            {
+                var expected = Create<int>();
+                var model = new DummyParentClass();
+
+                var fieldInfo = typeof(DummyClass).GetField(nameof(DummyClass.Field1));
+                var setter = FieldHelper.CreateFieldSetterByRef<DummyParentClass>(fieldInfo);
+
+                setter.Invoke(ref model, expected);
+
+                model.Field1.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Create_Setter_Struct()
+            {
+                var expected = Create<int>();
+                var model = new DummyStruct();
+
+                var fieldInfo = typeof(DummyStruct).GetField(nameof(DummyStruct.Field1));
+                var setter = FieldHelper.CreateFieldSetterByRef<DummyStruct>(fieldInfo);
 
                 setter.Invoke(ref model, expected);
 
@@ -182,12 +282,38 @@ namespace AllOverIt.Tests.Reflection
             }
 
             [Fact]
-            public void Should_Create_Setter()
+            public void Should_Create_Setter_Class()
             {
                 var expected = Create<int>();
                 var model = new DummyClass();
 
                 var setter = FieldHelper.CreateFieldSetterByRef<DummyClass>(nameof(DummyClass.Field1));
+
+                setter.Invoke(ref model, expected);
+
+                model.Field1.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Create_Setter_ParentClass()
+            {
+                var expected = Create<int>();
+                var model = new DummyParentClass();
+
+                var setter = FieldHelper.CreateFieldSetterByRef<DummyParentClass>(nameof(DummyClass.Field1));
+
+                setter.Invoke(ref model, expected);
+
+                model.Field1.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Create_Setter_Struct()
+            {
+                var expected = Create<int>();
+                var model = new DummyStruct();
+
+                var setter = FieldHelper.CreateFieldSetterByRef<DummyStruct>(nameof(DummyStruct.Field1));
 
                 setter.Invoke(ref model, expected);
 

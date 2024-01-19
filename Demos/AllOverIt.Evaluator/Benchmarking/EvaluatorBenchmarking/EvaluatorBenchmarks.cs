@@ -13,8 +13,7 @@ namespace EvaluatorBenchmarking
     [MemoryDiagnoser]
     public class EvaluatorBenchmarks
     {
-        private static readonly string[] Formula = new[]
-        {
+        private static readonly string[] Formula = [
             "11 + 77",
             "11 - 77",
             "11 * 77",
@@ -29,12 +28,12 @@ namespace EvaluatorBenchmarking
             "exp(3)",
             "10/0",
             "22 % 6"
-        };
+        ];
 
         private readonly IList<double> _lhs;
         private readonly IList<double> _rhs;
-        private readonly FormulaCompiler _compiler;
-        private readonly VariableRegistry _variableRegistry;
+        private readonly FormulaCompiler _compiler = new();
+        private readonly VariableRegistry _variableRegistry = [];
 
         public EvaluatorBenchmarks()
         {
@@ -42,8 +41,6 @@ namespace EvaluatorBenchmarking
 
             _lhs = Enumerable.Range(1, 10000).Select(_ => rnd.NextDouble()).ToList();
             _rhs = Enumerable.Range(1, 10000).Select(_ => rnd.NextDouble()).ToList();
-            _compiler = new FormulaCompiler();
-            _variableRegistry = new VariableRegistry();
         }
 
         [Benchmark]

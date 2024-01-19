@@ -1,21 +1,23 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net7.0;net6.0;net5.0;netcoreapp3.1;netstandard2.1</TargetFrameworks>
-        <Copyright>Copyright © 2021</Copyright>
-        <Description>A library to connect to AppSync GraphQL.</Description>
-        <PackageTags>utilities;aws;amazon;appsync;client</PackageTags>
+        <TargetFrameworks>net8.0;net7.0;net6.0;netstandard2.1</TargetFrameworks>
+        <Description>This package contains AWS AppSync GraphQL and Subscription clients with support for serialization using Newtonsoft or System.Text, including serialization of AllOverIt based enriched enums.</Description>
+        <PackageTags>AllOverIt;Utilities;AWS;Amazon;AppSync;Graphql</PackageTags>
     </PropertyGroup>
     
     <ItemGroup>
-        <ProjectReference Include="..\AllOverIt.Reactive\AllOverIt.Reactive.csproj" />
-        <ProjectReference Include="..\AllOverIt.Serialization.Abstractions\AllOverIt.Serialization.Abstractions.csproj" />
-        <ProjectReference Include="..\AllOverIt\AllOverIt.csproj" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
+        <ProjectReference Include="..\AllOverIt.Reactive\AllOverIt.Reactive.csproj" />
+        <ProjectReference Include="..\AllOverIt.Serialization.Json.Abstractions\AllOverIt.Serialization.Json.Abstractions.csproj" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />
     </ItemGroup>
 
 </Project>

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using AllOverIt.Assertion;
+using System;
+using System.Collections.Generic;
 
 namespace AllOverIt.Csv
 {
@@ -10,14 +12,11 @@ namespace AllOverIt.Csv
         {
             public bool Equals(FieldIdentifier<TFieldId> lhs, FieldIdentifier<TFieldId> rhs)
             {
+                Throw<InvalidOperationException>.When(lhs == null || rhs == null, "Field identifiers must not be null.");
+
                 if (ReferenceEquals(lhs, rhs))
                 {
                     return true;
-                }
-
-                if (lhs == null || rhs == null)
-                {
-                    return false;
                 }
 
                 // Only considering the 'Id' since the names should be unique per 'Id' for the CSV export to be of use
@@ -35,7 +34,9 @@ namespace AllOverIt.Csv
 
         /// <summary>A unique field identifier. This value is used to determine each set of unique header column names. This value
         /// can also be used during value resolution to identify the values to return.</summary>
-        public TFieldId Id { get; init; }      // Could be the item's index within a collection or a key in a dictionary or a custom concat of field values
+        /// <remarks>Examples of suitable values could be the item's index within a collection, a key in a dictionary, or a custom
+        /// concatenation of field values.</remarks>
+        public TFieldId Id { get; init; }
         
         /// <summary>The column header names to be exported. These names should be unique across all identifiers.</summary>
         public IReadOnlyCollection<string> Names { get; init; }

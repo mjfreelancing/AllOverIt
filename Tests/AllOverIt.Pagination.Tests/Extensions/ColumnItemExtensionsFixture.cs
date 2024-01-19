@@ -11,7 +11,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
 {
     public class ColumnItemExtensionsFixture : FixtureBase
     {
-        private sealed class EntityDummy
+        private sealed class DummyEntity
         {
             public int Id { get; init; }
             public string Name { get; init; }
@@ -50,7 +50,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             {
                 var columns = new List<IColumnDefinition>
                 {
-                    new ColumnDefinition<EntityDummy, string>(typeof(EntityDummy).GetProperty(nameof(EntityDummy.Name)), Create<bool>())
+                    new ColumnDefinition<DummyEntity, string>(typeof(DummyEntity).GetProperty(nameof(DummyEntity.Name)), Create<bool>())
                 };
 
                 Invoking(() =>
@@ -66,10 +66,10 @@ namespace AllOverIt.Pagination.Tests.Extensions
             public void Should_Get_Reference_Column_Value_Types()
             {
                 var columns = new List<IColumnDefinition>();
-                var entity = Create<EntityDummy>();
+                var entity = Create<DummyEntity>();
 
-                columns.Add(new ColumnDefinition<EntityDummy, string>(entity.GetType().GetPropertyInfo("Name"), Create<bool>()));
-                columns.Add(new ColumnDefinition<EntityDummy, int>(entity.GetType().GetPropertyInfo("Id"), Create<bool>()));
+                columns.Add(new ColumnDefinition<DummyEntity, string>(entity.GetType().GetPropertyInfo("Name"), Create<bool>()));
+                columns.Add(new ColumnDefinition<DummyEntity, int>(entity.GetType().GetPropertyInfo("Id"), Create<bool>()));
 
                 var actual = ColumnItemExtensions.GetColumnValues(columns, entity);
 

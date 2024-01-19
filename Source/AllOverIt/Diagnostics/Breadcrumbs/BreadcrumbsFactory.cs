@@ -1,6 +1,6 @@
 ﻿namespace AllOverIt.Diagnostics.Breadcrumbs
 {
-    /// <summary>Implements a factory that creates <see cref="Breadcrumbs"/> instances.</summary>
+    /// <inheritdoc cref="IBreadcrumbsFactory" />
     public sealed class BreadcrumbsFactory : IBreadcrumbsFactory
     {
         private readonly BreadcrumbsOptions _options;

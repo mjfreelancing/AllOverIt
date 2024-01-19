@@ -1,4 +1,5 @@
-﻿using AllOverIt.Extensions;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Extensions;
 using Amazon.CDK.AWS.AppSync;
 using System.Collections.Generic;
 
@@ -7,8 +8,8 @@ namespace AllOverIt.Aws.Cdk.AppSync.Mapping
     /// <summary>A registry of AppSync datasource request and response mappings.</summary>
     public sealed class MappingTemplates
     {
-        private readonly IDictionary<string, string> _functionRequestMappings = new Dictionary<string, string>();
-        private readonly IDictionary<string, string> _functionResponseMappings = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> _functionRequestMappings = [];
+        private readonly Dictionary<string, string> _functionResponseMappings = [];
 
         /// <summary>Registers a request and response mapping against a specified key.</summary>
         /// <param name="mappingKey">The key to register the mappings against.</param>
@@ -27,10 +28,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Mapping
         {
             var mapping = _functionRequestMappings.GetValueOrDefault(mappingKey);
 
-            if (mapping == null)
-            {
-                throw new KeyNotFoundException($"Request mapping not found for the key '{mappingKey}'.");
-            }
+            Throw<KeyNotFoundException>.WhenNull(mapping, $"Request mapping not found for the key '{mappingKey}'.");
 
             return MappingTemplate.FromString(mapping);
         }
@@ -40,10 +38,9 @@ namespace AllOverIt.Aws.Cdk.AppSync.Mapping
         /// <returns>The response mapping as an AppSync MappingTemplate.</returns>
         public MappingTemplate GetResponseMapping(string mappingKey)
         {
-            var mapping = _functionResponseMappings.GetValueOrDefault(mappingKey); if (mapping == null)
-            {
-                throw new KeyNotFoundException($"Response mapping not found for the key '{mappingKey}'.");
-            }
+            var mapping = _functionResponseMappings.GetValueOrDefault(mappingKey);
+
+            Throw<KeyNotFoundException>.WhenNull(mapping, $"Response mapping not found for the key '{mappingKey}'.");
 
             return MappingTemplate.FromString(mapping);
         }

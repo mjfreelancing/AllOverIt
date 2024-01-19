@@ -16,7 +16,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
         private readonly Expression _operand3;
         private readonly Expression _resultExpression;
         private readonly Func<Expression, Expression, Expression, Expression> _operatorType;
-        private TernaryOperatorDummy _operator;
+        private DummyTernaryOperator _operator;
 
         public TernaryOperatorFixture()
         {
@@ -27,7 +27,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
 
             _operatorType = (e1, e2, e3) => _resultExpression;
 
-            _operator = new TernaryOperatorDummy(_operatorType, _operand1, _operand2, _operand3);
+            _operator = new DummyTernaryOperator(_operatorType, _operand1, _operand2, _operand3);
         }
 
         public class Constructor : TernaryOperatorFixture
@@ -35,7 +35,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
             [Fact]
             public void Should_Throw_When_OperatorType_Is_Null()
             {
-                Invoking(() => _operator = new TernaryOperatorDummy(null, _operand1, _operand2, _operand3))
+                Invoking(() => _operator = new DummyTernaryOperator(null, _operand1, _operand2, _operand3))
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("operatorType");
@@ -44,7 +44,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
             [Fact]
             public void Should_Throw_When_Operand1_Is_Null()
             {
-                Invoking(() => _operator = new TernaryOperatorDummy(_operatorType, null, _operand2, _operand3))
+                Invoking(() => _operator = new DummyTernaryOperator(_operatorType, null, _operand2, _operand3))
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("operand1");
@@ -53,7 +53,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
             [Fact]
             public void Should_Throw_When_Operand2_Is_Null()
             {
-                Invoking(() => _operator = new TernaryOperatorDummy(_operatorType, _operand1, null, _operand3))
+                Invoking(() => _operator = new DummyTernaryOperator(_operatorType, _operand1, null, _operand3))
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("operand2");
@@ -62,7 +62,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
             [Fact]
             public void Should_Throw_When_Operand3_Is_Null()
             {
-                Invoking(() => _operator = new TernaryOperatorDummy(_operatorType, _operand1, _operand2, null))
+                Invoking(() => _operator = new DummyTernaryOperator(_operatorType, _operand1, _operand2, null))
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("operand3");

@@ -4,14 +4,24 @@ using System.Collections.Generic;
 
 namespace AllOverIt.Formatters.Objects
 {
-    /// <summary>Provides a registry of <see cref="ObjectPropertyFilter"/> types that can later be retrieved to filter
-    /// the properties of a given object during its serialization via an <see cref="IObjectPropertySerializer"/> instance.</summary>
+    /// <inheritdoc cref="IObjectPropertyFilterRegistry" />
     public sealed class ObjectPropertyFilterRegistry : IObjectPropertyFilterRegistry
     {
-        private static readonly IObjectPropertySerializer DefaultSerializer = new ObjectPropertySerializer();
+        private readonly Lazy<IObjectPropertySerializer> _defaultSerializer;
 
         // A filter is created for each request due to the serializer managing state.
-        private readonly IDictionary<Type, Func<IObjectPropertySerializer>> _filterRegistry = new Dictionary<Type, Func<IObjectPropertySerializer>>();
+        private readonly Dictionary<Type, Func<IObjectPropertySerializer>> _filterRegistry = [];
+
+        /// <summary>Constructor.</summary>
+        /// <param name="defaultSerializerFactory">An optional factory method to construct an <see cref="IObjectPropertySerializer"/> instance.</param>
+        public ObjectPropertyFilterRegistry(Func<IObjectPropertySerializer> defaultSerializerFactory = default)
+        {
+            var serializerFactory = defaultSerializerFactory is not null
+                ? defaultSerializerFactory
+                : () => new ObjectPropertySerializer();
+
+            _defaultSerializer = new Lazy<IObjectPropertySerializer>(serializerFactory);
+        }
 
         /// <inheritdoc />
         public void Register<TType, TFilter>(ObjectPropertySerializerOptions serializerOptions = default)
@@ -62,11 +72,12 @@ namespace AllOverIt.Formatters.Objects
                 return true;
             }
 
-            serializer = DefaultSerializer;
+            serializer = _defaultSerializer.Value;
+
             return false;
         }
 
-        private static IObjectPropertySerializer CreateObjectPropertySerializer<TFilter>(ObjectPropertySerializerOptions serializerOptions)
+        private static ObjectPropertySerializer CreateObjectPropertySerializer<TFilter>(ObjectPropertySerializerOptions serializerOptions)
             where TFilter : ObjectPropertyFilter, new()
         {
             _ = serializerOptions.WhenNotNull(nameof(serializerOptions));
@@ -76,7 +87,7 @@ namespace AllOverIt.Formatters.Objects
             return new ObjectPropertySerializer(serializerOptions, filter);
         }
 
-        private static IObjectPropertySerializer CreateObjectPropertySerializer<TFilter>(Action<ObjectPropertySerializerOptions> serializerOptions)
+        private static ObjectPropertySerializer CreateObjectPropertySerializer<TFilter>(Action<ObjectPropertySerializerOptions> serializerOptions)
             where TFilter : ObjectPropertyFilter, new()
         {
             var options = new ObjectPropertySerializerOptions();

@@ -18,7 +18,7 @@ namespace AllOverIt.Patterns.Command
     /// <typeparam name="TOutput">The output type to be returned from the command.</typeparam>
     public class CommandPipeline<TInput, TOutput> where TOutput : TInput
     {
-        private readonly List<ICommand<TInput, TOutput>> _commands = new ();
+        private readonly List<ICommand<TInput, TOutput>> _commands = [];
 
         /// <summary>Constructor.</summary>
         public CommandPipeline()
@@ -50,7 +50,7 @@ namespace AllOverIt.Patterns.Command
         /// <exception cref="CommandException">Thrown when there are no commands to execute.</exception>
         public TOutput Execute(TInput input)
         {
-            if (!_commands.Any())
+            if (_commands.Count == 0)
             {
                 throw new CommandException("There are no commands to execute.");
             }

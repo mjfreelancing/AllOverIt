@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
+using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Pagination.TokenEncoding;
 using FakeItEasy;
 using FluentAssertions;
@@ -19,7 +20,7 @@ namespace AllOverIt.Pagination.Tests
 
         public QueryPaginatorFactoryFixture()
         {
-            _factory = new QueryPaginatorFactory(A.Fake<IContinuationTokenEncoderFactory>());
+            _factory = new QueryPaginatorFactory(this.CreateStub<IContinuationTokenEncoderFactory>());
         }
 
         public class Constructor : QueryPaginatorFactoryFixture

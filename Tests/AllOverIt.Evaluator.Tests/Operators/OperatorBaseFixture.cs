@@ -19,14 +19,14 @@ namespace AllOverIt.Evaluator.Tests.Operators
         {
             private readonly Expression _expression1;
             private readonly Expression _expression2;
-            private readonly OperatorBaseDummy1 _operator;
-            private Func<Expression[], OperatorBaseDummy1> _creator;
+            private readonly DummyOperatorBase1 _operator;
+            private Func<Expression[], DummyOperatorBase1> _creator;
 
             public Create_Operator()
             {
                 _expression1 = this.CreateStub<Expression>();
                 _expression2 = this.CreateStub<Expression>();
-                _operator = new OperatorBaseDummy1(_expression1, _expression2);
+                _operator = new DummyOperatorBase1(_expression1, _expression2);
                 _creator = e => _operator;
             }
 
@@ -51,7 +51,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
             [Fact]
             public void Should_Throw_When_Creator_Null()
             {
-                Invoking(() => OperatorBase.Create(new[] { _expression1 }, (Func<Expression[], OperatorBaseDummy1>)null))
+                Invoking(() => OperatorBase.Create(new[] { _expression1 }, (Func<Expression[], DummyOperatorBase1>)null))
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("creator");
@@ -60,7 +60,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
             [Fact]
             public void Should_Throw_When_Multiple_Constructors()
             {
-                OperatorBaseDummy2 Creator(Expression[] e) => Create<OperatorBaseDummy2>();
+                DummyOperatorBase2 Creator(Expression[] e) => Create<DummyOperatorBase2>();
 
                 Invoking(() => OperatorBase.Create(new[] { _expression1 }, Creator))
                     .Should()

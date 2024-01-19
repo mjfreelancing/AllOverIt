@@ -3,7 +3,7 @@
 namespace AllOverIt.Aws.AppSync.Client.Response
 {
     /// <summary>Contains detailed error information reported by AppSync.</summary>
-    public sealed record GraphqlErrorDetail
+    public sealed class GraphqlErrorDetail
     {
         /// <summary>The graphql error code, if applicable for the error reported.</summary>
         public int? ErrorCode { get; init; }

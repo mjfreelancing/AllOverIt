@@ -19,7 +19,7 @@ namespace RepeatingTaskDemo
             var repeatingTask = RepeatingTask.Start(() =>
             {
                 Console.WriteLine($"Current time: {DateTime.Now:T}");
-            }, repeatDelay, tokenSource.Token, initialDelay);
+            }, initialDelay, repeatDelay, tokenSource.Token);
 
             // wait for the user to cancel
             Console.WriteLine("(Press any key to abort)");

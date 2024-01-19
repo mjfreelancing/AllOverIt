@@ -27,7 +27,7 @@ namespace AllOverIt.Extensions
                     return;
 
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(memberInfo), $"Expected {nameof(memberInfo)} to be a property or field");
+                    throw new InvalidOperationException($"Expected {nameof(memberInfo)} to be a property or field.");
             }
         }
 
@@ -44,7 +44,7 @@ namespace AllOverIt.Extensions
             {
                 PropertyInfo property => property.GetValue(target),
                 FieldInfo field => field.GetValue(target),
-                _ => throw new ArgumentOutOfRangeException(nameof(memberInfo), $"Expected {nameof(memberInfo)} to be a property or field")
+                _ => throw new InvalidOperationException($"Expected {nameof(memberInfo)} to be a property or field.")
             };
         }
 
@@ -60,7 +60,7 @@ namespace AllOverIt.Extensions
                 PropertyInfo propertyInfo => propertyInfo.PropertyType,
                 FieldInfo fieldInfo => fieldInfo.FieldType,
                 MethodInfo methodInfo => methodInfo.ReturnType,
-                _ => throw new ArgumentOutOfRangeException(nameof(memberInfo))
+                _ => throw new InvalidOperationException($"Expected {nameof(memberInfo)} to be a property, field, or method.")
             };
         }
     }

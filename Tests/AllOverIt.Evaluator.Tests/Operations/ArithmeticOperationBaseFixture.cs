@@ -14,7 +14,7 @@ namespace AllOverIt.Evaluator.Tests.Operations
 {
     public class ArithmeticOperationBaseFixture : FixtureBase
     {
-        private ArithmeticOperationDummy _operation;
+        private DummyArithmeticOperation _operation;
 
         public class Constructor : ArithmeticOperationBaseFixture
         {
@@ -22,7 +22,7 @@ namespace AllOverIt.Evaluator.Tests.Operations
             public void Should_Throw_When_Creator_Null()
             {
                 Invoking(
-                        () => _operation = new ArithmeticOperationDummy(Create<int>(), null))
+                        () => _operation = new DummyArithmeticOperation(Create<int>(), null))
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("creator");
@@ -35,7 +35,7 @@ namespace AllOverIt.Evaluator.Tests.Operations
 
                 IOperator Creator(Expression[] e) => this.CreateStub<IOperator>();
 
-                _operation = new ArithmeticOperationDummy(argumentCount, Creator);
+                _operation = new DummyArithmeticOperation(argumentCount, Creator);
 
                 var expected = new
                 {
@@ -66,7 +66,7 @@ namespace AllOverIt.Evaluator.Tests.Operations
                     return operatorFake;
                 }
 
-                _operation = new ArithmeticOperationDummy(Create<int>(), creator);
+                _operation = new DummyArithmeticOperation(Create<int>(), creator);
 
                 var result = _operation.GetExpression(new[] { expressionIn });
                 object[] expected = { expressionIn };

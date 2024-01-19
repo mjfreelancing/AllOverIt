@@ -7,7 +7,7 @@ namespace AllOverIt.Evaluator.Operators
     /// <summary>An expression operator that calculates the square root of a given operand.</summary>
     public sealed class SqrtOperator : UnaryOperator
     {
-        private static readonly MethodInfo OperatorMethodInfo = typeof(Math).GetMethod("Sqrt", new[] { typeof(double) });
+        private static readonly MethodInfo OperatorMethodInfo = typeof(Math).GetMethod("Sqrt", [typeof(double)]);
 
         /// <summary>Constructor.</summary>
         /// <param name="operand">The operand (argument) to be evaluated.</param>

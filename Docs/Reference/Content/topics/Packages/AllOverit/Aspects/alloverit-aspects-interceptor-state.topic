@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Interceptor State" id="alloverit-aspects-interceptor-state">
+
+    <p>
+        <code>InterceptorState</code> is a state class intended to carry information between the different stages of method interception.
+    </p>
+
+    <deflist>
+        <def title="Before Execution">
+            Before the real, decorated, service instance method is invoked, the interceptor is given the opportunity to create a state object that can be later accessed after method invocation, or if the method faults (throws an exception). The interceptor can also force the invocation of the instance method to be skipped by setting a 'handled' result.
+        </def>
+
+        <def title="After Execution">
+            After the service instance method has been invoked, or skipped, the interceptor's state can be inspected to perform a post-processing task, or replace the final result to be returned to the caller.
+        </def>
+
+        <def title="Faulted Execution">
+            If an exception is thrown during method invocation, the interceptor is given the opportunity to inspect the state instance and perform custom fault handling.
+        </def>
+    </deflist>
+
+    <chapter title="Typed vs Non-Typed" id="state-typed-vs-non-typed">
+        <p>
+            There are two flavours of <code>InterceptorState</code>; typed and non-typed. The following table provides a summary of when each will be used.
+        </p>
+
+        <table>
+            <tr>
+                <td>
+                    Interceptor Type
+                </td>
+                <td>
+                    Method Return Type
+                </td>
+                <td>
+                    State Type
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Class-level
+                </td>
+                <td>
+                    All
+                </td>
+                <td>
+                    <code>InterceptorState</code>
+                </td>
+            </tr>
+            <tr>
+                <td rowspan="4">
+                    Method-level
+                </td>
+                <td>
+                    <code>void</code>
+                </td>
+                <td>
+                    <code>InterceptorState</code>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <code>TResult</code>
+                </td>
+                <td>
+                    <code>InterceptorState&lt;TResult&gt;</code>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <code>Task</code>
+                </td>
+                <td>
+                    <code>InterceptorState&lt;Task&gt;</code>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <code>Task&lt;TResult&gt;</code>
+                </td>
+                <td>
+                    <code>InterceptorState&lt;Task&lt;TResult&gt;&gt;</code>
+                </td>
+            </tr>
+        </table>
+
+        <tip>
+            Interceptors can use the state types shown, or a derived version that includes additional, application specific, state.
+        </tip>
+    </chapter>
+
+    <chapter title="Key Features" id="state-key-features">
+        <chapter title="IsHandled" id="state-is-handled">
+            This is a boolean flag that can be set at the time of creating the initial state object, before the decorated instance method is called. When set to <code>true</code>, the interceptor will skip calling the instance method. The interceptor is responsible for providing the result to be returned to the caller, by calling the <code>SetResult()</code> method.
+        </chapter>
+
+        <chapter title="GetResult()" id="state-get-result">
+            <p>
+                There are two overloads of <code>GetResult()</code>:
+            </p>
+
+            <code-block lang="c#">
+                object GetResult();
+                TResult GetResult&lt;TResult&gt;();
+            </code-block>
+
+            <p>
+                All results are stored as <code>object</code> on the <code>InterceptorState</code>. The <code>GetResult&lt;TResult&gt;()</code> version is a convenience method that unboxes the result for you.
+            </p>
+        </chapter>
+
+        <chapter title="SetResult()" id="state-set-result">
+            <p>
+                A result can be set on the <code>InterceptorState</code> using the following method:
+            </p>
+
+            <code-block lang="c#">
+                void SetResult&lt;TResult&gt;(TResult result);
+            </code-block>
+
+            <p>
+                A result will be set explicitly by the interceptor when the decorated instance method is called, or by the handler within the before/after invocation methods.
+            </p>
+        </chapter>
+
+        <chapter title="Result" id="state-result">
+            This is a typed, convenience, property that is only applicable to  <code>InterceptorState&lt;TResult&gt;</code> state types, and implemented in terms of <code>GetResult()</code> and <code>SetResult()</code>, like so:.
+
+            <code-block lang="c#">
+                public TResult Result
+                {
+                    get => GetResult&lt;TResult&gt;();
+                    set => SetResult(value);
+                }
+            </code-block>
+        </chapter>
+    </chapter>
+
+    <chapter title="Async Methods" id="state-async-methods">
+        <p>
+            Results for <code>async</code> methods are worthy of special mention since they are stored on the state instance as a <code>Task&lt;TResult&gt;</code>.
+        </p>
+
+        <p>
+            Getting the result:
+        </p>
+
+        <deflist>
+            <def title="Class level interceptors">
+                <code-block lang="c#">
+                    // Is of type Task&lt;TResult&gt;
+                    var stateResult = state.GetResult&lt;TResult&gt;();
+
+                    // Referencing '.Result' is safe since the task has already completed
+                    var value = stateResult.Result;
+                </code-block>
+            </def>
+            <def title="Method level interceptors">
+                <code-block lang="c#">
+                    // Is of type Task&lt;TResult&gt;
+                    var stateResult = state.Result;
+
+                    // Referencing '.Result' is safe since the task has already completed
+                    var value = stateResult.Result;
+                </code-block>
+            </def>
+        </deflist>
+
+        <p>
+            Setting the result:
+        </p>
+
+        <deflist>
+            <def title="Class level interceptors">
+                <code-block lang="c#">
+                    var result = ... // some value
+
+                    // Must assign as Task&lt;TResult&gt;
+                    state.SetResult(Task.FromResult(result));
+                </code-block>
+            </def>
+            <def title="Method level interceptors">
+                <code-block lang="c#">
+                    var result = ... // some value
+
+                    // Must assign as Task&lt;TResult&gt;
+                    state.Result = Task.FromResult(result);
+                </code-block>
+            </def>
+        </deflist>
+    </chapter>
+</topic>

@@ -3,11 +3,15 @@ using AllOverIt.Aws.Cdk.AppSync.Factories;
 using AllOverIt.Aws.Cdk.AppSync.Mapping;
 using Amazon.CDK;
 using Amazon.CDK.AWS.AppSync;
+using Constructs;
+using System.Collections.Generic;
+using SystemType = System.Type;
+
+#if DEBUG
 using Amazon.CDK.AWS.Cognito;
 using Amazon.CDK.AWS.Lambda;
 using Amazon.CDK.AWS.S3;
-using System.Collections.Generic;
-using SystemType = System.Type;
+#endif
 
 namespace GraphqlSchema
 {
@@ -15,13 +19,13 @@ namespace GraphqlSchema
     {
         public AppSyncDemoGraphql(Construct scope, AppSyncDemoAppProps appProps, IAuthorizationMode authMode, IReadOnlyDictionary<SystemType, string> typeNameOverrides,
             MappingTemplates mappingTemplates, MappingTypeFactory mappingTypeFactory)
-            : base(scope, "GraphQl", GetGraphqlApiProps(scope, appProps, authMode), typeNameOverrides, mappingTemplates, mappingTypeFactory)
+            : base(scope, "GraphQl", GetAppGraphqlProps(scope, appProps, authMode), typeNameOverrides, mappingTemplates, mappingTypeFactory)
         {
         }
 
-        private static GraphqlApiProps GetGraphqlApiProps(Construct scope, AppSyncDemoAppProps appProps, IAuthorizationMode authMode)
+        private static AppGraphqlProps GetAppGraphqlProps(Construct scope, AppSyncDemoAppProps appProps, IAuthorizationMode authMode)
         {
-            return new GraphqlApiProps
+            return new AppGraphqlProps
             {
                 Name = $"{appProps.AppName} V{appProps.Version}",
 
@@ -32,8 +36,8 @@ namespace GraphqlSchema
 #if DEBUG   // Using RELEASE mode to deploy without these (DEBUG mode is used to check Synth output)
 
                     // would normally pass in the additional auth modes - these have been added to show the auth directive attributes work
-                    AdditionalAuthorizationModes = new IAuthorizationMode[]
-                    {
+                    AdditionalAuthorizationModes =
+                    [
                         new AuthorizationMode
                         {
                             AuthorizationType = AuthorizationType.USER_POOL,
@@ -76,8 +80,12 @@ namespace GraphqlSchema
                                 })
                             }
                         }
-                    }
+                    ]
 #endif
+                },
+                EndpointLookup = new Dictionary<string, string>
+                {
+                    [Constants.Lookup.GetCountriesUrlKey] = Fn.Join("/", [Fn.ImportValue(Constants.Import.GetCountriesUrlImportName), "lookup"])
                 }
             };
         }

@@ -14,7 +14,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
         private readonly Expression _operand;
         private readonly Expression _resultExpression;
         private readonly Func<Expression, Expression> _operatorType;
-        private UnaryOperatorDummy _operator;
+        private DummyUnaryOperator _operator;
 
         public UnaryOperatorFixture()
         {
@@ -23,7 +23,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
 
             _operatorType = e => _resultExpression;
 
-            _operator = new UnaryOperatorDummy(_operatorType, _operand);
+            _operator = new DummyUnaryOperator(_operatorType, _operand);
         }
 
         public class Constructor : UnaryOperatorFixture
@@ -31,7 +31,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
             [Fact]
             public void Should_Throw_When_OperatorType_Is_Null()
             {
-                Invoking(() => _operator = new UnaryOperatorDummy(null, _operand))
+                Invoking(() => _operator = new DummyUnaryOperator(null, _operand))
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("operatorType");
@@ -40,7 +40,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
             [Fact]
             public void Should_Throw_When_Operand_Is_Null()
             {
-                Invoking(() => _operator = new UnaryOperatorDummy(_operatorType, null))
+                Invoking(() => _operator = new DummyUnaryOperator(_operatorType, null))
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("operand");

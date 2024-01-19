@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
+using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Pagination.TokenEncoding;
 using FakeItEasy;
 using FluentAssertions;
@@ -33,7 +34,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
             {
                 Invoking(() =>
                 {
-                    var validator = new ContinuationTokenValidator(A.Fake<IContinuationTokenSerializerFactory>());
+                    var validator = new ContinuationTokenValidator(this.CreateStub<IContinuationTokenSerializerFactory>());
                     validator.IsValidToken(Create<string>(), null);
                 })
                     .Should()
@@ -44,8 +45,8 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
             [Fact]
             public void Should_Return_False_When_Random_String()
             {
-                var validator = new ContinuationTokenValidator(A.Fake<IContinuationTokenSerializerFactory>());
-                var actual = validator.IsValidToken(Create<string>(), A.Fake<IContinuationTokenOptions>());
+                var validator = new ContinuationTokenValidator(this.CreateStub<IContinuationTokenSerializerFactory>());
+                var actual = validator.IsValidToken(Create<string>(), this.CreateStub<IContinuationTokenOptions>());
 
                 actual.Should().BeFalse();
             }
@@ -118,7 +119,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 var serializerFactory = new ContinuationTokenSerializerFactory();
                 var validator = new ContinuationTokenValidator(serializerFactory);
 
-                var actual = validator.IsValidToken(null, A.Fake<IContinuationTokenOptions>());
+                var actual = validator.IsValidToken(null, this.CreateStub<IContinuationTokenOptions>());
 
                 actual.Should().BeTrue();
             }
@@ -129,7 +130,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 var serializerFactory = new ContinuationTokenSerializerFactory();
                 var validator = new ContinuationTokenValidator(serializerFactory);
 
-                var actual = validator.IsValidToken(string.Empty, A.Fake<IContinuationTokenOptions>());
+                var actual = validator.IsValidToken(string.Empty, this.CreateStub<IContinuationTokenOptions>());
 
                 actual.Should().BeTrue();
             }
@@ -140,7 +141,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 var serializerFactory = new ContinuationTokenSerializerFactory();
                 var validator = new ContinuationTokenValidator(serializerFactory);
 
-                var actual = validator.IsValidToken(" ", A.Fake<IContinuationTokenOptions>());
+                var actual = validator.IsValidToken(" ", this.CreateStub<IContinuationTokenOptions>());
 
                 actual.Should().BeTrue();
             }

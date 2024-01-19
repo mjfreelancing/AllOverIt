@@ -1,23 +1,39 @@
 ﻿using AllOverIt.Assertion;
+using AllOverIt.DependencyInjection.Exceptions;
 using AllOverIt.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AllOverIt.DependencyInjection.Exceptions;
 
 namespace AllOverIt.DependencyInjection.Extensions
 {
     // Helper methods for use by AutoRegisterScoped(), AutoRegisterSingleton(), and AutoRegisterTransient()
     public static partial class ServiceCollectionExtensions
     {
+        private static readonly IDictionary<ServiceLifetime, Action<IServiceCollection, Type, Type>> ServiceCreatorsByType =
+            new Dictionary<ServiceLifetime, Action<IServiceCollection, Type, Type>>
+            {
+                { ServiceLifetime.Scoped, (serviceCollection, serviceType, implementationType) => serviceCollection.AddScoped(serviceType, implementationType) },
+                { ServiceLifetime.Transient, (serviceCollection, serviceType, implementationType) => serviceCollection.AddTransient(serviceType, implementationType) },
+                { ServiceLifetime.Singleton, (serviceCollection, serviceType, implementationType) => serviceCollection.AddSingleton(serviceType, implementationType) }
+            };
+
+        private static readonly IDictionary<ServiceLifetime, Action<IServiceCollection, Type, Func<IServiceProvider, object>>> ServiceCreatorsByFactory =
+            new Dictionary<ServiceLifetime, Action<IServiceCollection, Type, Func<IServiceProvider, object>>>
+            {
+                { ServiceLifetime.Scoped, (serviceCollection, serviceType, factory) => serviceCollection.AddScoped(serviceType, factory) },
+                { ServiceLifetime.Transient, (serviceCollection, serviceType, factory) => serviceCollection.AddTransient(serviceType, factory) },
+                { ServiceLifetime.Singleton, (serviceCollection, serviceType, factory) => serviceCollection.AddSingleton(serviceType, factory) }
+            };
+
         private static IServiceCollection AutoRegisterWithLifetime<TServiceRegistrar, TServiceType>(IServiceCollection serviceCollection, Action<IServiceRegistrarOptions> configure,
             ServiceLifetime lifetime)
             where TServiceRegistrar : IServiceRegistrar, new()
         {
             _ = serviceCollection.WhenNotNull(nameof(serviceCollection));
 
-            return AutoRegisterWithLifetime(serviceCollection, new TServiceRegistrar(), new[] { typeof(TServiceType) }, configure, lifetime);
+            return AutoRegisterWithLifetime(serviceCollection, new TServiceRegistrar(), [typeof(TServiceType)], configure, lifetime);
         }
 
         private static IServiceCollection AutoRegisterWithLifetime<TServiceRegistrar>(this IServiceCollection serviceCollection, IEnumerable<Type> serviceTypes,
@@ -36,7 +52,7 @@ namespace AllOverIt.DependencyInjection.Extensions
             _ = serviceCollection.WhenNotNull(nameof(serviceCollection));
             _ = serviceRegistrar.WhenNotNull(nameof(serviceRegistrar));
 
-            return AutoRegisterWithLifetime(serviceCollection, serviceRegistrar, new[] { typeof(TServiceType) }, configure, lifetime);
+            return AutoRegisterWithLifetime(serviceCollection, serviceRegistrar, [typeof(TServiceType)], configure, lifetime);
         }
 
         private static IServiceCollection AutoRegisterWithLifetime(this IServiceCollection serviceCollection, IServiceRegistrar serviceRegistrar, IEnumerable<Type> serviceTypes,
@@ -67,23 +83,8 @@ namespace AllOverIt.DependencyInjection.Extensions
                         return;
                     }
 
-                    switch (lifetime)
-                    {
-                        case ServiceLifetime.Scoped:
-                            serviceCollection.AddScoped(serviceType, implementationType);
-                            break;
-
-                        case ServiceLifetime.Transient:
-                            serviceCollection.AddTransient(serviceType, implementationType);
-                            break;
-
-                        case ServiceLifetime.Singleton:
-                            serviceCollection.AddSingleton(serviceType, implementationType);
-                            break;
-
-                        default:
-                            throw new ArgumentOutOfRangeException(nameof(lifetime), lifetime, null);
-                    }
+                    // Call AddScoped(), AddTransient(), AddSingleton() with the types as required
+                    ServiceCreatorsByType[lifetime].Invoke(serviceCollection, serviceType, implementationType);
                 },
                 configure);
 
@@ -128,35 +129,14 @@ namespace AllOverIt.DependencyInjection.Extensions
                 allServiceTypes,
                 (serviceType, implementationType) =>
                 {
-                    switch (lifetime)
+                    object CreateImplementation(IServiceProvider provider)
                     {
-                        case ServiceLifetime.Scoped:
-                            serviceCollection.AddScoped(serviceType, provider =>
-                            {
-                                var args = constructorArgsResolver.Invoke(provider, implementationType);
-                                return Activator.CreateInstance(implementationType, args.ToArray());
-                            });
-                            break;
-
-                        case ServiceLifetime.Transient:
-                            serviceCollection.AddTransient(serviceType, provider =>
-                            {
-                                var args = constructorArgsResolver.Invoke(provider, implementationType);
-                                return Activator.CreateInstance(implementationType, args.ToArray());
-                            });
-                            break;
-
-                        case ServiceLifetime.Singleton:
-                            serviceCollection.AddSingleton(serviceType, provider =>
-                            {
-                                var args = constructorArgsResolver.Invoke(provider, implementationType);
-                                return Activator.CreateInstance(implementationType, args.ToArray());
-                            });
-                            break;
-
-                        default:
-                            throw new ArgumentOutOfRangeException(nameof(lifetime), lifetime, null);
+                        var args = constructorArgsResolver.Invoke(provider, implementationType);
+                        return Activator.CreateInstance(implementationType, args.ToArray());
                     }
+
+                    // Call AddScoped(), AddTransient(), AddSingleton() with the factory as required
+                    ServiceCreatorsByFactory[lifetime].Invoke(serviceCollection, serviceType, CreateImplementation);
                 },
                 configure);
 

@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <!--Targeting 'windows' because not all pipe features are available on other platforms-->
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <OutputType>Exe</OutputType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\..\Source\AllOverIt.Reactive\AllOverIt.Reactive.csproj" />
+        <ProjectReference Include="..\..\..\..\Source\AllOverIt.Serialization.Binary\AllOverIt.Serialization.Binary.csproj" />
+        <ProjectReference Include="..\..\..\..\Source\AllOverIt\AllOverIt.csproj" />
+        <ProjectReference Include="..\NamedPipeTypes\NamedPipeTypes.csproj" />
+
+    </ItemGroup>
+
+</Project>

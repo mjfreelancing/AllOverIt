@@ -1,6 +1,9 @@
 using AllOverIt.Fixture.Exceptions;
+using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Fixture.Tests.Dummies;
 using AutoFixture;
+using AutoFixture.Dsl;
+using FakeItEasy;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
@@ -11,6 +14,61 @@ namespace AllOverIt.Fixture.Tests
 {
     public class FixtureBaseFixture : FixtureBase
     {
+        public class Constructor : FixtureBaseFixture
+        {
+            private class FixtureDummy : FixtureBase
+            {
+                public FixtureDummy()
+                {
+                }
+
+                public FixtureDummy(IFixture fixture)
+                    : base(fixture)
+                {
+                }
+
+                public FixtureDummy(ICustomization customization)
+                    : base(customization)
+                {
+                }
+            }
+
+            [Fact]
+            public void Should_Use_AutoFixture()
+            {
+                Fixture.Should().BeOfType<AutoFixture.Fixture>();
+            }
+
+            [Fact]
+            public void Should_Have_Customizations()
+            {
+                Fixture.Customizations.Should().ContainItemsAssignableTo<NodeComposer<float>>();
+                Fixture.Customizations.Should().ContainItemsAssignableTo<NodeComposer<double>>();
+                Fixture.Customizations.Should().ContainItemsAssignableTo<NodeComposer<decimal>>();
+            }
+
+            [Fact]
+            public void Should_Use_Custom_Fixture()
+            {
+                var fixtureFake = this.CreateStub<IFixture>();
+                var fixture = new FixtureDummy(fixtureFake);
+
+                fixture.Fixture.Should().BeSameAs(fixtureFake);
+            }
+
+            [Fact]
+            public void Should_Add_Customization()
+            {
+                var fixtureFake = this.CreateStub<IFixture>();
+                var fixture = new FixtureDummy(fixtureFake);
+
+                var customizationFake = this.CreateStub<ICustomization>();
+                fixture.Customize(customizationFake);
+
+                A.CallTo(() => fixtureFake.Customize(customizationFake)).MustHaveHappenedOnceExactly();
+            }
+        }
+
         public class Invoking_Action : FixtureBaseFixture
         {
             [Fact]
@@ -40,7 +98,7 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Throw_When_Action_Null()
             {
-                Action action = () => Invoking((Func<bool>)null);
+                Action action = () => Invoking((Func<bool>) null);
 
                 action
                   .Should()
@@ -947,6 +1005,152 @@ namespace AllOverIt.Fixture.Tests
             }
         }
 
+
+
+
+
+        private sealed class DefaultConstructorExceptionDummy : Exception
+        {
+            public DefaultConstructorExceptionDummy()
+                : base("abc")
+            {
+            }
+        }
+
+        private sealed class NoDefaultConstructorExceptionDummy : Exception
+        {
+            public NoDefaultConstructorExceptionDummy(string message)
+                : base(message)
+            {
+            }
+        }
+
+        private sealed class ConstructorWithMessageExceptionDummy : Exception
+        {
+            public ConstructorWithMessageExceptionDummy(string message)
+                : base(message)
+            {
+            }
+        }
+
+
+
+
+
+        public class AssertDefaultConstructor_ : FixtureBaseFixture
+        {
+            [Fact]
+            public void Should_Have_Default_Constructor()
+            {
+                AssertDefaultConstructor<Exception>();
+            }
+
+            [Fact]
+            public void Should_Have_Known_Message()
+            {
+                AssertDefaultConstructor<DefaultConstructorExceptionDummy>("abc");
+            }
+        }
+
+        public class AssertNoDefaultConstructor_ : FixtureBaseFixture
+        {
+            [Fact]
+            public void Should_Not_Have_Default_Constructor()
+            {
+                AssertNoDefaultConstructor<NoDefaultConstructorExceptionDummy>();
+            }
+
+            [Fact]
+            public void Should_Throw_When_Has_Default_Constructor()
+            {
+                Invoking(() =>
+                {
+                    AssertNoDefaultConstructor<DefaultConstructorExceptionDummy>();
+                })
+                .Should()
+                .Throw<Xunit.Sdk.XunitException>()
+                .WithMessage("Expected constructor to be <null>, but found Void .ctor().");
+            }
+        }
+
+        public class AssertConstructorWithMessage_ : FixtureBaseFixture
+        {
+            [Fact]
+            public void Should_Have_Constructor_With_Message()
+            {
+                AssertConstructorWithMessage<ConstructorWithMessageExceptionDummy>();
+            }
+
+            [Fact]
+            public void Should_Throw_When_Not_Have_Constructor_With_Message()
+            {
+                Invoking(() =>
+                {
+                    AssertConstructorWithMessage<DefaultConstructorExceptionDummy>();
+                })
+                .Should()
+                .Throw<Xunit.Sdk.XunitException>()
+                .WithMessage("Expected constructor not to be <null>.");
+            }
+        }
+
+        public class AssertNoConstructorWithMessage_ : FixtureBaseFixture
+        {
+            private sealed class ExceptionNoConstructorWithMessageDummy : Exception
+            {
+                public ExceptionNoConstructorWithMessageDummy()
+                {
+                }
+            }
+
+            [Fact]
+            public void Should_Not_Have_Constructor_With_Message()
+            {
+                AssertNoConstructorWithMessage<ExceptionNoConstructorWithMessageDummy>();
+            }
+
+            [Fact]
+            public void Should_Throw_When_Have_Constructor_With_Message()
+            {
+                Invoking(() =>
+                {
+                    AssertNoConstructorWithMessage<ConstructorWithMessageExceptionDummy>();
+                })
+                .Should()
+                .Throw<Xunit.Sdk.XunitException>()
+                .WithMessage("Expected constructor to be <null>, but found Void .ctor(System.String).");
+            }
+        }
+
+        public class AssertConstructorWithMessageAndInnerException_ : FixtureBaseFixture
+        {
+            private sealed class ConstructorWithMessageAndInnerExceptionDummy : Exception
+            {
+                public ConstructorWithMessageAndInnerExceptionDummy(string message, Exception innerException)
+                    : base(message, innerException)
+                {
+                }
+            }
+
+            [Fact]
+            public void Should_Have_Constructor_With_Message_And_Inner_Exception()
+            {
+                AssertConstructorWithMessageAndInnerException<ConstructorWithMessageAndInnerExceptionDummy>();
+            }
+
+            [Fact]
+            public void Should_Throw_When_Not_Have_Constructor_With_Message_And_Inner_Exception()
+            {
+                Invoking(() =>
+                {
+                    AssertConstructorWithMessageAndInnerException<DefaultConstructorExceptionDummy>();
+                })
+                .Should()
+                .Throw<Xunit.Sdk.XunitException>()
+                .WithMessage("Expected constructor not to be <null>.");
+            }
+        }
+
         public class AssertHandledAggregateException_ : FixtureBaseFixture
         {
             private readonly IList<Exception> _exceptions;
@@ -955,9 +1159,9 @@ namespace AllOverIt.Fixture.Tests
             {
                 _exceptions = new Exception[]
                 {
-          new InvalidOperationException(),
-          new ArgumentNullException(),
-          new ArgumentOutOfRangeException()
+                    new InvalidOperationException(),
+                    new ArgumentNullException(),
+                    new ArgumentOutOfRangeException()
                 };
             }
 
@@ -1030,9 +1234,9 @@ namespace AllOverIt.Fixture.Tests
                     AssertHandledAggregateException(
               () =>
               {
-                        var exceptions = new[] { _exceptions[0], _exceptions[2] };
-                        throw new AggregateException(exceptions);
-                    },
+                  var exceptions = new[] { _exceptions[0], _exceptions[2] };
+                  throw new AggregateException(exceptions);
+              },
               exception => exception is InvalidOperationException);
                 };
 

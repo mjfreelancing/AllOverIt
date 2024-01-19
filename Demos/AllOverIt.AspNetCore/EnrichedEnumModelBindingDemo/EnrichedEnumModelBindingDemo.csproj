@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="6.5.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\Source\AllOverIt.AspNetCore\AllOverIt.AspNetCore.csproj" />
+        <ProjectReference Include="..\..\..\Source\AllOverIt.Serialization.Json.Newtonsoft\AllOverIt.Serialization.Json.Newtonsoft.csproj" />
+        <ProjectReference Include="..\..\..\Source\AllOverIt.Validation\AllOverIt.Validation.csproj" />
+    </ItemGroup>
+
+</Project>

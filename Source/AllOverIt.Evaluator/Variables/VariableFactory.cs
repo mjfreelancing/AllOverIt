@@ -16,7 +16,7 @@ namespace AllOverIt.Evaluator.Variables
         }
 
         /// <inheritdoc />
-        public IVariable CreateConstantVariable(string name, double value = default)
+        public IVariable CreateConstantVariable(string name, double value)
         {
             return new ConstantVariable(name, value);
         }
@@ -34,9 +34,21 @@ namespace AllOverIt.Evaluator.Variables
         }
 
         /// <inheritdoc />
+        public IVariable CreateDelegateVariable(string name, FormulaCompilerResult formulaCompilerResult)
+        {
+            return new DelegateVariable(name, formulaCompilerResult);
+        }
+
+        /// <inheritdoc />
         public ILazyVariable CreateLazyVariable(string name, Func<double> valueResolver, bool threadSafe = false)
         {
             return new LazyVariable(name, valueResolver, threadSafe);
+        }
+
+        /// <inheritdoc />
+        public ILazyVariable CreateLazyVariable(string name, FormulaCompilerResult formulaCompilerResult, bool threadSafe = false)
+        {
+            return new LazyVariable(name, formulaCompilerResult, threadSafe);
         }
 
         /// <inheritdoc />
@@ -58,9 +70,9 @@ namespace AllOverIt.Evaluator.Variables
             _ = variableRegistry.WhenNotNull(nameof(variableRegistry));
 
             // Can be null, but cannot be empty when it isn't
-            var selectedVariableNames = variableNames.WhenNotEmpty(nameof(variableNames))?.AsReadOnlyCollection();
+            var selectedVariableNames = variableNames?.WhenNotEmpty(nameof(variableNames));
 
-            var allVariables = from item in variableRegistry.Variables
+            var allVariables = from item in variableRegistry
                                let variable = item.Value
                                select variable.Value;
             

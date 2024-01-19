@@ -1,15 +1,16 @@
-﻿using AllOverIt.DependencyInjection.Tests.Types;
+﻿using AllOverIt.DependencyInjection.Exceptions;
+using AllOverIt.DependencyInjection.Tests.Helpers;
+using AllOverIt.DependencyInjection.Tests.TestTypes;
+using AllOverIt.DependencyInjection.Tests.Types;
+using AllOverIt.Extensions;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AllOverIt.DependencyInjection.Tests.Helpers;
-using AllOverIt.Extensions;
-using AllOverIt.Fixture.Extensions;
 using Xunit;
-using AllOverIt.DependencyInjection.Tests.TestTypes;
 
 namespace AllOverIt.DependencyInjection.Tests.Extensions
 {
@@ -47,10 +48,27 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar, AbstractClassA>(lifetime, _serviceCollection, null);
+                        DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar, AbstractClassA>(lifetime, _serviceCollection,
+                            (Action<IServiceRegistrarOptions>) null);
                     })
                     .Should()
                     .NotThrow();
+            }
+
+            [Theory]
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_Register_Concrete(ServiceLifetime lifetime)
+            {
+                Invoking(() =>
+                {
+                    _ = DependencyHelper.AutoRegisterUsingServiceLifetime<LocalDependenciesRegistrar, ConcreteClassA>(lifetime, _serviceCollection,
+                        (Action<IServiceRegistrarOptions>) null);
+                })
+                .Should()
+                .Throw<DependencyRegistrationException>()
+                .WithMessage($"Cannot register ConcreteClassA. All service types must be an interface or abstract type.");
             }
 
             [Theory]
@@ -277,10 +295,26 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                 Invoking(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, _serviceCollection,
-                            new[] {typeof(AbstractClassA), typeof(IBaseInterface2)});
+                            new[] { typeof(AbstractClassA), typeof(IBaseInterface2) }, (Action<IServiceRegistrarOptions>) null);
                     })
                     .Should()
                     .NotThrow();
+            }
+
+            [Theory]
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_Register_Concrete(ServiceLifetime lifetime)
+            {
+                Invoking(() =>
+                    {
+                        DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, _serviceCollection,
+                            new[] { typeof(ConcreteClassA), typeof(ConcreteClassB) }, (Action<IServiceRegistrarOptions>) null);
+                    })
+                    .Should()
+                    .Throw<DependencyRegistrationException>()
+                    .WithMessage($"Cannot register ConcreteClassA, ConcreteClassB. All service types must be an interface or abstract type.");
             }
 
             [Theory]
@@ -509,10 +543,27 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingServiceLifetime<AbstractClassA>(lifetime, _serviceCollection, _localRegistrar, null);
+                        DependencyHelper.AutoRegisterUsingServiceLifetime<AbstractClassA>(lifetime, _serviceCollection, _localRegistrar,
+                            (Action<IServiceRegistrarOptions>) null);
                     })
                     .Should()
                     .NotThrow();
+            }
+
+            [Theory]
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_Register_Concrete(ServiceLifetime lifetime)
+            {
+                Invoking(() =>
+                    {
+                        DependencyHelper.AutoRegisterUsingServiceLifetime<ConcreteClassA>(lifetime, _serviceCollection, _localRegistrar,
+                            (Action<IServiceRegistrarOptions>) null);
+                    })
+                    .Should()
+                    .Throw<DependencyRegistrationException>()
+                    .WithMessage($"Cannot register ConcreteClassA. All service types must be an interface or abstract type.");
             }
 
             [Theory]
@@ -757,10 +808,26 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                 Invoking(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _externalRegistrar,
-                            new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
+                            new[] { typeof(AbstractClassA), typeof(IBaseInterface2) }, (Action<IServiceRegistrarOptions>) null);
                     })
                     .Should()
                     .NotThrow();
+            }
+
+            [Theory]
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_Register_Concrete(ServiceLifetime lifetime)
+            {
+                Invoking(() =>
+                    {
+                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _externalRegistrar,
+                            new[] { typeof(AbstractClassA), typeof(ConcreteClassA), typeof(ConcreteClassB) }, (Action<IServiceRegistrarOptions>) null);
+                    })
+                    .Should()
+                    .Throw<DependencyRegistrationException>()
+                    .WithMessage($"Cannot register ConcreteClassA, ConcreteClassB. All service types must be an interface or abstract type.");
             }
 
             [Theory]
@@ -1034,10 +1101,26 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                 Invoking(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars,
-                            new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
+                            new[] { typeof(AbstractClassA), typeof(IBaseInterface2) }, (Action<IServiceRegistrarOptions>) null);
                     })
                     .Should()
                     .NotThrow();
+            }
+
+            [Theory]
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_Register_Concrete(ServiceLifetime lifetime)
+            {
+                Invoking(() =>
+                    {
+                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars,
+                            new[] { typeof(AbstractClassA), typeof(ConcreteClassA), typeof(ConcreteClassB) }, (Action<IServiceRegistrarOptions>) null);
+                    })
+                    .Should()
+                    .Throw<DependencyRegistrationException>()
+                    .WithMessage($"Cannot register ConcreteClassA, ConcreteClassB. All service types must be an interface or abstract type.");
             }
 
             [Theory]
@@ -1282,10 +1365,27 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                 Invoking(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, _serviceCollection,
-                            new[] {typeof(IBaseInterface3)}, (provider, serviceType) => new object[] {Create<int>()}, null);
+                            new[] {typeof(IBaseInterface3)}, (provider, serviceType) => new object[] {Create<int>()}, (Action<IServiceRegistrarOptions>) null);
                     })
                     .Should()
                     .NotThrow();
+            }
+
+            [Theory]
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_Register_Concrete(ServiceLifetime lifetime)
+            {
+                Invoking(() =>
+                    {
+                        DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, _serviceCollection,
+                            new[] { typeof(AbstractClassA), typeof(ConcreteClassA), typeof(ConcreteClassB) },
+                            (provider, serviceType) => new object[] { Create<int>() }, (Action<IServiceRegistrarOptions>) null);
+                    })
+                    .Should()
+                    .Throw<DependencyRegistrationException>()
+                    .WithMessage($"Cannot register ConcreteClassA, ConcreteClassB. All service types must be an interface or abstract type.");
             }
 
             [Theory]
@@ -1474,10 +1574,26 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                 Invoking(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrar, new[] { typeof(IBaseInterface3) },
-                            (provider, serviceType) => new object[] { Create<int>() }, null);
+                            (provider, serviceType) => new object[] { Create<int>() }, (Action<IServiceRegistrarOptions>) null);
                     })
                     .Should()
                     .NotThrow();
+            }
+
+            [Theory]
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_Register_Concrete(ServiceLifetime lifetime)
+            {
+                Invoking(() =>
+                    {
+                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrar,
+                            new[] { typeof(AbstractClassA), typeof(ConcreteClassA), typeof(ConcreteClassB) },
+                            (provider, serviceType) => new object[] { Create<int>() }, (Action<IServiceRegistrarOptions>) null);                })
+                    .Should()
+                    .Throw<DependencyRegistrationException>()
+                    .WithMessage($"Cannot register ConcreteClassA, ConcreteClassB. All service types must be an interface or abstract type.");
             }
 
             [Theory]
@@ -1682,10 +1798,27 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                 Invoking(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars, new[] { typeof(IBaseInterface3) },
-                            (provider, serviceType) => new object[] { Create<int>() }, null);
+                            (provider, serviceType) => new object[] { Create<int>() }, (Action<IServiceRegistrarOptions>) null);
                     })
                     .Should()
                     .NotThrow();
+            }
+
+            [Theory]
+            [InlineData(ServiceLifetime.Singleton)]
+            [InlineData(ServiceLifetime.Scoped)]
+            [InlineData(ServiceLifetime.Transient)]
+            public void Should_Throw_When_Register_Concrete(ServiceLifetime lifetime)
+            {
+                Invoking(() =>
+                    {
+                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars,
+                            new[] { typeof(AbstractClassA), typeof(ConcreteClassA), typeof(ConcreteClassB) },
+                            (provider, serviceType) => new object[] { Create<int>() }, (Action<IServiceRegistrarOptions>) null);
+                    })
+                    .Should()
+                    .Throw<DependencyRegistrationException>()
+                    .WithMessage($"Cannot register ConcreteClassA, ConcreteClassB. All service types must be an interface or abstract type.");
             }
 
             [Theory]

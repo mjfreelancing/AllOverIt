@@ -17,6 +17,8 @@ namespace AllOverIt.Tests.Reflection
         {
             public int Field1;
             private int Field2;
+            public int? Field3;
+            public string Field4;
 
             public DummyClass()
             {
@@ -26,6 +28,10 @@ namespace AllOverIt.Tests.Reflection
             {
                 Field2 = field2;
             }
+        }
+
+        private class DummyParentClass : DummyClass
+        {
         }
 
         public class CreateFieldGetter_Object : FieldHelperFixture
@@ -105,6 +111,22 @@ namespace AllOverIt.Tests.Reflection
             }
 
             [Fact]
+            public void Should_Create_Getter_For_Derived()
+            {
+                var expected = new DummyParentClass
+                {
+                    Field1 = Create<int>()
+                };
+
+                var fieldInfo = typeof(DummyClass).GetField(nameof(DummyClass.Field1));
+                var getter = FieldHelper.CreateFieldGetter<DummyParentClass>(fieldInfo);
+
+                var actual = getter.Invoke(expected);
+
+                actual.Should().Be(expected.Field1);
+            }
+
+            [Fact]
             public void Should_Create_Getter_For_Private_Field()
             {
                 var field2 = Create<int>();
@@ -143,6 +165,21 @@ namespace AllOverIt.Tests.Reflection
                 };
 
                 var getter = FieldHelper.CreateFieldGetter<DummyClass>(nameof(DummyClass.Field1));
+
+                var actual = getter.Invoke(expected);
+
+                actual.Should().Be(expected.Field1);
+            }
+
+            [Fact]
+            public void Should_Create_Getter_For_Derived()
+            {
+                var expected = new DummyParentClass
+                {
+                    Field1 = Create<int>()
+                };
+
+                var getter = FieldHelper.CreateFieldGetter<DummyParentClass>(nameof(DummyClass.Field1));
 
                 var actual = getter.Invoke(expected);
 

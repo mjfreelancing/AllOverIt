@@ -7,12 +7,12 @@ namespace AllOverIt.Validation
     {
         /// <summary>Indicates if the specified model type has a registered validator.</summary>
         /// <param name="modelType">The model type.</param>
-        /// <returns>True if the specified type has a registered validator, otherwise false.</returns>
+        /// <returns><see langword="true" /> if the specified type has a registered validator, otherwise <see langword="false" />.</returns>
         bool ContainsModelRegistration(Type modelType);
 
         /// <summary>Indicates if the specified model type has a registered validator.</summary>
         /// <typeparam name="TType">The model type.</typeparam>
-        /// <returns>True if the specified type has a registered validator, otherwise false.</returns>
+        /// <returns><see langword="true" /> if the specified type has a registered validator, otherwise <see langword="false" />.</returns>
         bool ContainsModelRegistration<TType>();
 
         /// <summary>Registers a model type with an associated validator.</summary>

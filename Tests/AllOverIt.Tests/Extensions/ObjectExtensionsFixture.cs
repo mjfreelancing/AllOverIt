@@ -1,13 +1,17 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
-using AllOverIt.Formatters.Exceptions;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Formatters.Objects;
+using AllOverIt.Formatters.Objects.Exceptions;
 using AllOverIt.Patterns.Enumeration;
 using AllOverIt.Reflection;
 using FluentAssertions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -16,7 +20,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Extensions
 {
-    public class ObjectExtensionsFixture : FixtureBase
+    public partial class ObjectExtensionsFixture : FixtureBase
     {
         private class DummyClassBase
         {
@@ -44,11 +48,16 @@ namespace AllOverIt.Tests.Extensions
             public double Prop6 { get; private set; }
             public static bool Prop7 { get; set; }
             public double? Prop8 { get; set; }
+            public int Prop9 { private get; set; }      // For testing !CanRead    
+
+            // used for hash code testing
+            public int GetProp9() => Prop9;
 
             public DummyClass()
             {
                 Prop6 = 6.7d;
                 Prop7 = true;
+                Prop9 = 9;
             }
         }
 
@@ -64,17 +73,17 @@ namespace AllOverIt.Tests.Extensions
             public IDictionary<int, IEnumerable<RootItem>> Maps { get; } = new Dictionary<int, IEnumerable<RootItem>>();
         }
 
-        private class EnrichedEnumDummy : EnrichedEnum<EnrichedEnumDummy>
+        private class DummyEnrichedEnum : EnrichedEnum<DummyEnrichedEnum>
         {
-            public static readonly EnrichedEnumDummy Value1 = new(1);
+            public static readonly DummyEnrichedEnum Value1 = new(1);
 
-            protected EnrichedEnumDummy(int value, [CallerMemberName] string name = null)
+            protected DummyEnrichedEnum(int value, [CallerMemberName] string name = null)
                 : base(value, name)
             {
             }
         }
 
-        private class SuperEnrichedEnumDummy : EnrichedEnumDummy
+        private class SuperEnrichedEnumDummy : DummyEnrichedEnum
         {
             public static readonly SuperEnrichedEnumDummy Value2 = new(2);
 
@@ -82,6 +91,46 @@ namespace AllOverIt.Tests.Extensions
                 : base(value, name)
             {
             }
+        }
+
+        private class DummyTypeConverter : TypeConverter
+        {
+            internal const string ExpectedValue = "custom_conversion";
+
+            public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+            {
+                return sourceType == typeof(DummyTypeToBeConverted) || sourceType == CommonTypes.StringType;
+            }
+
+            public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+            {
+                return destinationType == typeof(DummyTypeToBeConverted) || destinationType == CommonTypes.StringType;
+            }
+
+            public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+            {
+                if (destinationType == CommonTypes.StringType)
+                {
+                    return ExpectedValue;
+                }
+
+                return base.ConvertTo(context, culture, value, destinationType);
+            }
+
+            public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+            {
+                if ((string) value == ExpectedValue)
+                {
+                    return new DummyTypeToBeConverted();
+                }
+
+                return base.ConvertFrom(context, culture, value);
+            }
+        }
+
+        [TypeConverter(typeof(DummyTypeConverter))]
+        private class DummyTypeToBeConverted
+        {
         }
 
         public ObjectExtensionsFixture()
@@ -112,7 +161,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var source = Create<DummyClass>();
 
-                var expected = new Dictionary<string, object> {{"Prop2", 2}};
+                var expected = new Dictionary<string, object> {{"Prop2", 2}, { "Prop9", source.GetProp9() } };
 
                 var actual = ObjectExtensions.ToPropertyDictionary(source, true, BindingOptions.Instance | BindingOptions.Private);
 
@@ -179,7 +228,8 @@ namespace AllOverIt.Tests.Extensions
                     {"Prop5", "5"},
                     {"Prop6", 6.7},
                     {"Prop7", true},
-                    {"Prop8", null}
+                    {"Prop8", null},
+                    {"Prop9", 9}
                 };
 
                 var actual = ObjectExtensions.ToPropertyDictionary(source, true, BindingOptions.All);
@@ -1594,6 +1644,14 @@ namespace AllOverIt.Tests.Extensions
             }
 
             [Fact]
+            public void Should_Convert_Class_To_String_As_Name()
+            {
+                var actual = ObjectExtensions.As<string>(Create<DummyClass>());
+
+                actual.Should().Be(typeof(DummyClass).FullName);
+            }
+
+            [Fact]
             public void Should_Throw_When_Invalid_Cast()
             {
                 Invoking(() => ObjectExtensions.As<DummyUnrelatedClass>(Create<DummyClass>()))
@@ -1851,6 +1909,24 @@ namespace AllOverIt.Tests.Extensions
 
                 actual.Should().Be(DummyEnum.Dummy2);
             }
+
+            [Fact]
+            public void Should_Convert_To_String_Using_TypeConverter()
+            {
+                var value = new DummyTypeToBeConverted();
+
+                var actual = ObjectExtensions.As<string>(value);
+
+                actual.Should().Be(DummyTypeConverter.ExpectedValue);
+            }
+
+            [Fact]
+            public void Should_Convert_From_String_Using_TypeConverter()
+            {
+                var actual = ObjectExtensions.As<DummyTypeToBeConverted>(DummyTypeConverter.ExpectedValue);
+
+                actual.Should().BeOfType< DummyTypeToBeConverted>();
+            }
         }
 
         public class AsNullable : ObjectExtensionsFixture
@@ -1942,8 +2018,7 @@ namespace AllOverIt.Tests.Extensions
                 // Prop7 is static - the default binding excludes statics
                 var expected = ObjectExtensions.CalculateHashCode(subject,
                   model => model.Prop1, model => model.GetProp2(), model => model.Prop3, model => model.Prop4,
-                  model => model.Prop5, model => model.Prop6, model => model.Prop8
-                );
+                  model => model.Prop5, model => model.Prop6, model => model.Prop8, model => model.GetProp9());
 
                 var actual = ObjectExtensions.CalculateHashCode(subject);
 
@@ -1959,7 +2034,7 @@ namespace AllOverIt.Tests.Extensions
                 // Prop7 is static - the default binding excludes statics
                 var expected = ObjectExtensions.CalculateHashCode(subject,
                   model => model.Prop1, model => model.GetProp2(), model => model.Prop3, model => model.Prop4,
-                  model => model.Prop5, model => model.Prop6, model => model.Prop8
+                  model => model.Prop5, model => model.Prop6, model => model.Prop8, model => model.GetProp9()
                 );
 
                 var actual = ObjectExtensions.CalculateHashCode(subject);
@@ -1974,8 +2049,8 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = ObjectExtensions.CalculateHashCode(subject,
                   model => model.Prop1, model => model.GetProp2(), model => model.Prop3, model => model.Prop4,
-                  model => model.Prop5, model => model.Prop6, model => DummyClass.Prop7, model => model.Prop8
-                );
+                  model => model.Prop5, model => model.Prop6, model => DummyClass.Prop7, model => model.Prop8,
+                  model => model.GetProp9());
 
                 int actual;
                 var oldBindings = ObjectExtensions.DefaultHashCodeBindings;
@@ -2001,7 +2076,7 @@ namespace AllOverIt.Tests.Extensions
                 // Prop7 is static - the default binding excludes statics
                 var expected1 = ObjectExtensions.CalculateHashCode(subject,
                   model => model.Prop1, model => model.GetProp2(), model => model.Prop3, model => model.Prop4,
-                  model => model.Prop5, model => model.Prop6, model => model.Prop8
+                  model => model.Prop5, model => model.Prop6, model => model.Prop8, model => model.GetProp9()
                 );
 
                 var expected2 = ObjectExtensions.CalculateHashCode(subject,
@@ -2057,7 +2132,7 @@ namespace AllOverIt.Tests.Extensions
                 var subject = Create<DummyClass>();
 
                 var expected = ObjectExtensions.CalculateHashCode(subject, model => model.GetProp2(), model => model.Prop3,
-                  model => model.Prop6, model => model.Prop8);
+                  model => model.Prop6, model => model.Prop8, model => model.GetProp9());
 
                 var actual = ObjectExtensions.CalculateHashCode(subject, null, new[] { "Prop1", "Prop4", "Prop5" });
 
@@ -2119,7 +2194,7 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Return_True()
             {
-                var dummy = EnrichedEnumDummy.Value1;
+                var dummy = DummyEnrichedEnum.Value1;
 
                 var actual = dummy.IsEnrichedEnum();
 
@@ -2134,6 +2209,21 @@ namespace AllOverIt.Tests.Extensions
                 var actual = dummy.IsEnrichedEnum();
 
                 actual.Should().BeTrue();
+            }
+        }
+
+        public class GetObjectElements : ObjectExtensionsFixture
+        {
+            [Fact]
+            public void Should_Get_Object_Elements()
+            {
+                var expected = CreateMany<int>();
+
+                var actual = ObjectExtensions
+                    .GetObjectElements((object)expected)
+                    .Cast<int>();
+
+                actual.Should().ContainInOrder(expected);
             }
         }
 

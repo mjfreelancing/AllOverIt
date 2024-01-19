@@ -4,7 +4,7 @@ using AllOverIt.Aws.Cdk.AppSync.Attributes.Types;
 using AllOverIt.Aws.Cdk.AppSync.Exceptions;
 using AllOverIt.Extensions;
 using AllOverIt.Reflection;
-using Amazon.CDK.AWS.AppSync;
+using Cdklabs.AwsCdkAppsyncUtils;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -28,7 +28,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
                 .GetCustomAttributes<TType>(true)
                 .AsReadOnlyCollection();
 
-            if (schemaTypeAttributes.Any())
+            if (schemaTypeAttributes.Count != 0)
             {
                 if (schemaTypeAttributes.Count > 1)
                 {
@@ -67,7 +67,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
             if (TryGetSchemaAttribute<SchemaTypeBaseAttribute>(typeInfo, out var schemaTypeAttribute))
             {
                 var schemaTypeName = GetNamespaceBasedName(type.Namespace, schemaTypeAttribute.ExcludeNamespacePrefix, schemaTypeAttribute.Name);
-                
+
                 if (typeNameOverride.IsNotNullOrEmpty() && schemaTypeName.IsNotNullOrEmpty())
                 {
                     throw new SchemaException($"The type {type.GetFriendlyName()} has an attribute based name ({schemaTypeName}) and an override ({typeNameOverride}). Only one is allowed.");
@@ -102,7 +102,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
 
             return attributes.GetAuthDirectivesOrDefault();
         }
-        
+
         private static string GetNamespaceBasedName(string typeNamespace, string excludeNamespacePrefix, string name)
         {
             typeNamespace ??= string.Empty;

@@ -2,6 +2,7 @@
 using AllOverIt.Fixture;
 using FluentAssertions;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
@@ -29,6 +30,57 @@ namespace AllOverIt.Tests.Collections
             {
                 var actual = new ReadOnlyDictionary<int, string>();
                 actual.Should().BeEmpty();
+            }
+        }
+
+        public class Constructor_Dictionary : ReadOnlyListFixture
+        {
+            [Fact]
+            public void Should_Be_Populated()
+            {
+                IDictionary<int, string> expected = new Dictionary<int, string>
+                {
+                    { Create<int>(), Create<string>() },
+                    { Create<int>(), Create<string>() }
+                };
+
+                var actual = new ReadOnlyDictionary<int, string>(expected);
+
+                expected.Should().BeEquivalentTo(actual);
+            }
+        }
+
+        public class Constructor_ReadOnlyDictionary : ReadOnlyListFixture
+        {
+            [Fact]
+            public void Should_Be_Populated()
+            {
+                IReadOnlyDictionary<int, string> expected = new Dictionary<int, string>
+                {
+                    { Create<int>(), Create<string>() },
+                    { Create<int>(), Create<string>() }
+                };
+
+                var actual = new ReadOnlyDictionary<int, string>(expected);
+
+                expected.Should().BeEquivalentTo(actual);
+            }
+        }
+
+        public class Constructor_IEnumerable : ReadOnlyListFixture
+        {
+            [Fact]
+            public void Should_Be_Populated()
+            {
+                IEnumerable<KeyValuePair<int, string>> expected = new Dictionary<int, string>
+                {
+                    { Create<int>(), Create<string>() },
+                    { Create<int>(), Create<string>() }
+                };
+
+                var actual = new ReadOnlyDictionary<int, string>(expected);
+
+                expected.Should().BeEquivalentTo(actual);
             }
         }
 
@@ -115,6 +167,21 @@ namespace AllOverIt.Tests.Collections
                 while (enumerator.MoveNext())
                 {
                     results.Add(enumerator.Current.Value);
+                }
+
+                results.Should().BeEquivalentTo(_data.Values);
+            }
+
+            [Fact]
+            public void Should_Iterate_Data_Using_Explicit_Interface()
+            {
+                var results = new List<object>();
+                var enumerator = ((IEnumerable) _dictionary).GetEnumerator();
+
+                while (enumerator.MoveNext())
+                {
+                    var kvp = (KeyValuePair<int, string>) (enumerator.Current);
+                    results.Add(kvp.Value);
                 }
 
                 results.Should().BeEquivalentTo(_data.Values);

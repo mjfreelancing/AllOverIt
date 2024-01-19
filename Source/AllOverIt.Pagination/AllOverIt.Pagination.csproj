@@ -1,18 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net7.0;net6.0;net5.0;netcoreapp3.1;netstandard2.1</TargetFrameworks>
-        <Copyright>Copyright © 2022</Copyright>
-        <Description>A library providing queryable pagination utilities.</Description>
-        <PackageTags>utilities;query;pagination</PackageTags>
+        <TargetFrameworks>net8.0;net7.0;net6.0;netstandard2.1</TargetFrameworks>
+        <Description>An advanced keyset-based pagination package that uses a fluent-style builder to create queries that cater for forward and backward navigation for any given deterministic base query. Each page of results includes a 'continuation token' for the current, next, and previous page. These tokens can be used at a later time to navigate to the same location within the dataset, thereby somewhat overcoming the inability of random access traditionally associated with keyset-based navigation.</Description>
+        <PackageTags>AllOverIt;Utilities;Query;Pagination;KeySet</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\AllOverIt\AllOverIt.csproj" />
+        <ProjectReference Include="..\AllOverIt.Serialization.Binary\AllOverIt.Serialization.Binary.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
     </ItemGroup>
 
     <ItemGroup>

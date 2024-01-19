@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "StartupHookDemo": {
+      "commandName": "Project",
+        "environmentVariables": {
+            // A list of fully qualified names, delimited by the platform-specific path separator (; on Windows and : on Unix).
+            "DOTNET_STARTUP_HOOKS": "<set the explicit path here>\\GCCollectorStartupHook.dll"
+        }
+    }
+  }
+}

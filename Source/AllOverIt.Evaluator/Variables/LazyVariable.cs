@@ -7,7 +7,7 @@ namespace AllOverIt.Evaluator.Variables
     /// <summary>A delegate based variable that is evaluated the first time the <see cref="Value"/> is read.</summary>
     /// <remarks>For a delegate based variable that is re-evaluated each time the <see cref="Value"/> is read,
     /// see <see cref="DelegateVariable"/>.</remarks>
-    public sealed record LazyVariable : VariableBase, ILazyVariable
+    public sealed class LazyVariable : VariableBase, ILazyVariable
     {
         private readonly Func<double> _valueResolver;
         private readonly bool _threadSafe;
@@ -32,13 +32,13 @@ namespace AllOverIt.Evaluator.Variables
 
         /// <summary>Constructor.</summary>
         /// <param name="name">The variable's name.</param>
-        /// <param name="compilerResult">The compiled result of a formula. The associated resolver will be evaluated
+        /// <param name="formulaCompilerResult">The compiled result of a formula. The associated resolver will be evaluated
         /// the first time the <see cref="Value"/> is read.</param>
-        /// <param name="threadSafe">Indicates if the underlying lazy-evaluator should evaluate in a thread safe ammner.</param>
-        public LazyVariable(string name, FormulaCompilerResult compilerResult, bool threadSafe = false)
-            : this(name, compilerResult.Resolver, threadSafe)
+        /// <param name="threadSafe">Indicates if the underlying lazy-evaluator should evaluate in a thread safe manner.</param>
+        public LazyVariable(string name, FormulaCompilerResult formulaCompilerResult, bool threadSafe = false)
+            : this(name, formulaCompilerResult.Resolver, threadSafe)
         {
-            ReferencedVariables = compilerResult.GetReferencedVariables();
+            ReferencedVariables = formulaCompilerResult.GetReferencedVariables();
         }
 
         /// <inheritdoc />

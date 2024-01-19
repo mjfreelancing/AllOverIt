@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
+using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Pagination.TokenEncoding;
 using FakeItEasy;
 using FluentAssertions;
@@ -75,7 +76,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
             {
                 Invoking(() =>
                 {
-                    _continuationTokenCompressor.SerializeToStream(A.Fake<IContinuationToken>(), null);
+                    _continuationTokenCompressor.SerializeToStream(this.CreateStub<IContinuationToken>(), null);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -85,7 +86,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
             [Fact]
             public void Should_Serialize_To_Stream()
             {
-                var continuationToken = A.Fake<IContinuationToken>();
+                var continuationToken = this.CreateStub<IContinuationToken>();
 
                 _continuationTokenCompressor.SerializeToStream(continuationToken, Stream.Null);
 

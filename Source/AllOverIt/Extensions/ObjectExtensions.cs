@@ -1,7 +1,9 @@
-﻿using AllOverIt.Formatters.Objects;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Formatters.Objects;
 using AllOverIt.Helpers;
 using AllOverIt.Reflection;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -10,12 +12,159 @@ using System.Reflection;
 namespace AllOverIt.Extensions
 {
     /// <summary>Provides a variety of extension methods for object types.</summary>
-    public static class ObjectExtensions
+    public static partial class ObjectExtensions
     {
-        /// <summary>
-        /// Specifies the binding options to use when calculating the hash code of an object when using
-        /// <see cref="CalculateHashCode{TType}(TType,IEnumerable{string},IEnumerable{string})"/>.
-        /// </summary>
+        private static class ObjectConversionHelper
+        {
+            // instance, instance type, convertTo type, convertTo value
+            private static readonly IReadOnlyCollection<Func<object, Type, Type, object>> AsConverters = new[]
+            {
+                AsSameTypeOrObject,
+                AsFromIntegralToBool,
+                AsFromEnumToIntegral,
+                AsFromIntegralToEnum,
+                AsFromConvertibleTypeToValueType,
+                AsFromDerivedType,
+                AsUsingInstanceTypeConverter
+            };
+
+            public static TType ConvertTo<TType>(object instance, TType defaultValue)
+            {
+                if (instance == null)
+                {
+                    return defaultValue;
+                }
+
+                var instanceType = instance.GetType();
+                var convertToType = typeof(TType);
+
+                var convertedValue = AsConverters
+                    .Select(func => func.Invoke(instance, instanceType, convertToType))
+                    .Where(result => result != null)
+                    .FirstOrDefault();
+
+                return convertedValue != null
+                    ? (TType) convertedValue
+                    : StringExtensions.As(instance.ToString(), defaultValue);
+            }
+
+            private static object AsSameTypeOrObject(object instance, Type instanceType, Type convertToType)
+            {
+                // return the same value if no conversion is required
+                if (convertToType == instanceType || convertToType == CommonTypes.ObjectType)
+                {
+                    return instance;
+                }
+
+                return default;
+            }
+
+            private static object AsFromIntegralToBool(object instance, Type instanceType, Type convertToType)
+            {
+                // convert from integral to bool (conversion from a string is handled further below)
+                if (instance.IsIntegral() && convertToType == CommonTypes.BoolType)
+                {
+                    var intValue = (int) Convert.ChangeType(instance, CommonTypes.IntType);
+
+                    if (intValue is < 0 or > 1)
+                    {
+                        throw new ArgumentOutOfRangeException(nameof(instance), $"Cannot convert integral '{intValue}' to a Boolean.");
+                    }
+
+                    // convert the integral to a boolean
+                    return (bool) Convert.ChangeType(intValue, CommonTypes.BoolType);
+                }
+
+                return default;
+            }
+
+            private static object AsFromEnumToIntegral(object instance, Type instanceType, Type convertToType)
+            {
+                // converting from Enum to byte, sbyte, short, ushort, int, uint, long, or ulong
+                if (instance is Enum && convertToType.IsIntegralType())
+                {
+                    // cater for when Enum has an underlying type other than 'int'
+                    var underlyingValue = GetEnumAsUnderlyingValue(instance, instanceType);
+
+                    // now attempt to perform the converted value to the required type
+                    return Convert.ChangeType(underlyingValue, convertToType);
+                }
+
+                return default;
+            }
+
+            private static object AsFromIntegralToEnum(object instance, Type instanceType, Type convertToType)
+            {
+                // Converting from byte, sbyte, short, ushort, int, uint, long, or ulong to Enum
+                if (convertToType.IsEnumType() && instance.IsIntegral())
+                {
+                    // cater for when Enum has an underlying type other than 'int'
+                    var underlyingValue = GetEnumAsUnderlyingValue(instance, convertToType);
+
+                    if (!Enum.IsDefined(convertToType, underlyingValue))
+                    {
+                        throw new ArgumentOutOfRangeException(nameof(instance), $"Cannot cast '{instance}' to a '{convertToType.GetFriendlyName()}' value.");
+                    }
+
+                    return underlyingValue;
+                }
+
+                return default;
+            }
+
+            private static object AsFromConvertibleTypeToValueType(object instance, Type instanceType, Type convertToType)
+            {
+                if (instanceType != CommonTypes.StringType &&
+                    instanceType.IsDerivedFrom(CommonTypes.IConvertibleType) &&
+                    convertToType.IsValueType)
+                {
+                    return Convert.ChangeType(instance, convertToType);
+                }
+
+                return default;
+            }
+
+            private static object AsFromDerivedType(object instance, Type instanceType, Type convertToType)
+            {
+                if (convertToType.IsClassType() && convertToType != CommonTypes.StringType)
+                {
+                    // return the same value if the instance is a class inheriting `TType`
+                    if (instanceType.IsDerivedFrom(convertToType))
+                    {
+                        return instance;
+                    }
+
+                    var typeConverter = TypeDescriptor.GetConverter(convertToType);
+
+                    if (!typeConverter.IsValid(instance))
+                    {
+                        throw new InvalidCastException($"Unable to cast object of type '{instanceType.Name}' to type '{convertToType.Name}'.");
+                    }
+
+                    return typeConverter.ConvertFrom(instance);
+                }
+
+                return default;
+            }
+
+            private static object AsUsingInstanceTypeConverter(object instance, Type instanceType, Type convertToType)
+            {
+                if (instanceType.IsClassType() && instanceType != CommonTypes.StringType)
+                {
+                    var typeConverter = TypeDescriptor.GetConverter(instanceType);
+
+                    if (typeConverter.CanConvertTo(convertToType))
+                    {
+                        return typeConverter.ConvertTo(instance, convertToType);
+                    }
+                }
+
+                return default;
+            }
+        }
+
+        /// <summary>Specifies the binding options to use when calculating the hash code of an object when using
+        /// <see cref="CalculateHashCode{TType}(TType,IEnumerable{string},IEnumerable{string})"/>.</summary>
         public static BindingOptions DefaultHashCodeBindings { get; set; } = BindingOptions.Instance | BindingOptions.AllAccessor | BindingOptions.AllVisibility;
 
         /// <summary>Creates a dictionary containing property names and associated values.</summary>
@@ -26,14 +175,17 @@ namespace AllOverIt.Extensions
         public static IDictionary<string, object> ToPropertyDictionary(this object instance, bool includeNulls = false, BindingOptions bindingOptions = BindingOptions.Default)
         {
             var type = instance.GetType();
-            var propertyInfo = type.GetPropertyInfo(bindingOptions, false);     // Uses cached property info
+
+            // Uses cached property info
+            // Excludes any properties that don't have a getter
+            var propertyInfo = type.GetPropertyInfo(bindingOptions, false);
 
             var propInfos = new Dictionary<string, object>();
 
             // More efficient than LINQ
             foreach (var propInfo in propertyInfo)
             {
-                if (!propInfo.CanRead || propInfo.IsIndexer())
+                if (propInfo.IsIndexer())
                 {
                     continue;
                 }
@@ -205,87 +357,7 @@ namespace AllOverIt.Extensions
         /// <returns>Returns <paramref name="instance"/> converted to the specified <typeparamref name="TType"/>.</returns>
         public static TType As<TType>(this object instance, TType defaultValue = default)
         {
-            if (instance == null)
-            {
-                return defaultValue;
-            }
-
-            var instanceType = instance.GetType();
-            var convertToType = typeof(TType);
-
-            // return the same value if no conversion is required
-            if (convertToType == instanceType || convertToType == CommonTypes.ObjectType)
-            {
-                return (TType) instance;
-            }
-
-            if (convertToType.IsClassType() && convertToType != CommonTypes.StringType)
-            {
-                // return the same value if the instance is a class inheriting `TType`
-                if (instanceType.IsDerivedFrom(convertToType))
-                {
-                    return (TType) instance;
-                }
-
-                var typeConverter = TypeDescriptor.GetConverter(convertToType);
-
-                if (!typeConverter.IsValid(instance))
-                {
-                    throw new InvalidCastException($"Unable to cast object of type '{instanceType.Name}' to type '{convertToType.Name}'.");
-                }
-
-                return (TType) typeConverter.ConvertFrom(instance);
-            }
-
-            // convert from integral to bool (conversion from a string is handled further below)
-            if (convertToType == CommonTypes.BoolType && instance.IsIntegral())
-            {
-                var intValue = (int)Convert.ChangeType(instance, CommonTypes.IntType);
-
-                if (intValue is < 0 or > 1)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(instance), $"Cannot convert integral '{intValue}' to a Boolean.");
-                }
-
-                // convert the integral to a boolean
-                instance = (bool)Convert.ChangeType(intValue, CommonTypes.BoolType);
-
-                return (TType)instance;
-            }
-
-            // converting from Enum to byte, sbyte, short, ushort, int, uint, long, or ulong
-            if (instance is Enum && convertToType.IsIntegralType())
-            {
-                // cater for when Enum has an underlying type other than 'int'
-                var underlyingValue = GetEnumAsUnderlyingValue(instance, instanceType);
-
-                // now attempt to perform the converted value to the required type
-                return (TType)Convert.ChangeType(underlyingValue, convertToType);
-            }
-
-            // converting from byte, sbyte, short, ushort, int, uint, long, or ulong to Enum
-            if (convertToType.IsEnumType() && instance.IsIntegral())
-            {
-                // cater for when Enum has an underlying type other than 'int'
-                var underlyingValue = GetEnumAsUnderlyingValue(instance, convertToType);
-
-                if (!Enum.IsDefined(convertToType, underlyingValue))
-                {
-                    throw new ArgumentOutOfRangeException(nameof(instance), $"Cannot cast '{instance}' to a '{convertToType.GetFriendlyName()}' value.");
-                }
-
-                return (TType) underlyingValue;
-            }
-
-            if (instanceType != CommonTypes.StringType &&
-                instanceType.IsDerivedFrom(CommonTypes.IConvertibleType) &&
-                convertToType.IsValueType)
-            {
-                return (TType)Convert.ChangeType(instance, convertToType);
-            }
-
-            // all other cases
-            return StringExtensions.As(instance.ToString(), defaultValue);
+            return ObjectConversionHelper.ConvertTo(instance, defaultValue);
         }
 
         /// <summary>Converts the provided source <paramref name="instance"/> to a specified nullable type.</summary>
@@ -346,10 +418,23 @@ namespace AllOverIt.Extensions
         
         /// <summary>Determines if the provided object inherits from EnrichedEnum&lt;&gt;.</summary>
         /// <param name="object">The instance to be checked.</param>
-        /// <returns>True if the object inherits from EnrichedEnum&lt;>, otherwise False.</returns>
+        /// <returns><see langword="true" /> if the object inherits from EnrichedEnum&lt;>, otherwise <see langword="false" />.</returns>
         public static bool IsEnrichedEnum(this object @object)
         {
             return @object.GetType().IsEnrichedEnum();
+        }
+
+        /// <summary>Treats the provided object as an <see cref="IEnumerable{Object}"/> so it can be enumerated.</summary>
+        /// <param name="object">The object to treat as an <see cref="IEnumerable{Object}"/> so it can be enumerated.</param>
+        /// <returns>The object's elements.</returns>
+        public static IEnumerable<object> GetObjectElements(this object @object)
+        {
+            var objectIterator = ((IEnumerable) @object).GetEnumerator();
+
+            while (objectIterator.MoveNext())
+            {
+                yield return objectIterator.Current;
+            }
         }
 
         private static PropertyInfo GetPropertyInfo(Type instanceType, string propertyName, BindingFlags bindingFlags)

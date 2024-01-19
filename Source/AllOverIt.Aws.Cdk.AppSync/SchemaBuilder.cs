@@ -5,7 +5,7 @@ using AllOverIt.Aws.Cdk.AppSync.Extensions;
 using AllOverIt.Aws.Cdk.AppSync.Factories;
 using AllOverIt.Aws.Cdk.AppSync.Mapping;
 using AllOverIt.Aws.Cdk.AppSync.Schema;
-using Amazon.CDK.AWS.AppSync;
+using Cdklabs.AwsCdkAppsyncUtils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,15 +19,15 @@ namespace AllOverIt.Aws.Cdk.AppSync
         private const string MutationPrefix = "Mutation";
         private const string SubscriptionPrefix = "Subscription";
 
-        private readonly GraphqlApi _graphqlApi;
+        private readonly CodeFirstSchema _schema;
         private readonly MappingTemplates _mappingTemplates;
         private readonly MappingTypeFactory _mappingTypeFactory;
         private readonly GraphqlTypeStore _typeStore;
         private readonly DataSourceFactory _dataSourceFactory;
 
-        public SchemaBuilder(GraphqlApi graphQlApi, MappingTemplates mappingTemplates, MappingTypeFactory mappingTypeFactory, GraphqlTypeStore typeStore, DataSourceFactory dataSourceFactory)
+        public SchemaBuilder(CodeFirstSchema schema, MappingTemplates mappingTemplates, MappingTypeFactory mappingTypeFactory, GraphqlTypeStore typeStore, DataSourceFactory dataSourceFactory)
         {
-            _graphqlApi = graphQlApi.WhenNotNull(nameof(graphQlApi));
+            _schema = schema.WhenNotNull(nameof(schema));
             _mappingTemplates = mappingTemplates.WhenNotNull(nameof(mappingTemplates));
             _mappingTypeFactory = mappingTypeFactory.WhenNotNull(nameof(mappingTypeFactory));
             _typeStore = typeStore.WhenNotNull(nameof(typeStore));
@@ -37,13 +37,13 @@ namespace AllOverIt.Aws.Cdk.AppSync
         public SchemaBuilder AddQuery<TType>()
             where TType : IQueryDefinition
         {
-            CreateGraphqlSchemaType<TType>((fieldName, field) => _graphqlApi.AddQuery(fieldName, field));
+            CreateGraphqlSchemaType<TType>((fieldName, field) => _schema.AddQuery(fieldName, field));
             return this;
         }
 
         public SchemaBuilder AddMutation<TType>() where TType : IMutationDefinition
         {
-            CreateGraphqlSchemaType<TType>((fieldName, field) => _graphqlApi.AddMutation(fieldName, field));
+            CreateGraphqlSchemaType<TType>((fieldName, field) => _schema.AddMutation(fieldName, field));
             return this;
         }
 
@@ -60,10 +60,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
 
                 var dataSource = methodInfo.GetDataSource(_dataSourceFactory);
 
-                if (dataSource == null)
-                {
-                    throw new SchemaException($"{schemaType.Name} is missing a required datasource for '{methodInfo.Name}'.");
-                }
+                Throw<SchemaException>.WhenNull(dataSource, $"{schemaType.Name} is missing a required datasource for '{methodInfo.Name}'.");
 
                 var fieldMapping = methodInfo.GetFieldName(SubscriptionPrefix);
 
@@ -75,20 +72,19 @@ namespace AllOverIt.Aws.Cdk.AppSync
                     .GetGraphqlType(
                         fieldMapping,
                         requiredTypeInfo,
-                        objectType => _graphqlApi.AddType(objectType));
+                        objectType => _schema.AddType(objectType));
 
-                _graphqlApi.AddSubscription(methodInfo.Name.GetGraphqlName(),
+                _schema.AddSubscription(methodInfo.Name.GetGraphqlName(),
                     new ResolvableField(
                         new ResolvableFieldOptions
                         {
                             DataSource = dataSource,
                             RequestMappingTemplate = _mappingTemplates.GetRequestMapping(fieldMapping),
                             ResponseMappingTemplate = _mappingTemplates.GetResponseMapping(fieldMapping),
-                            Directives = new[]
-                            {
+                            Directives = [
                                 Directive.Subscribe(GetSubscriptionMutations(methodInfo).ToArray())
-                            },
-                            Args = methodInfo.GetMethodArgs(_graphqlApi, _typeStore),
+                            ],
+                            Args = methodInfo.GetMethodArgs(_schema, _typeStore),
                             ReturnType = returnObjectType
                         })
                 );
@@ -110,10 +106,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
 
                 var dataSource = methodInfo.GetDataSource(_dataSourceFactory);
 
-                if (dataSource == null)
-                {
-                    throw new SchemaException($"{schemaType.Name} is missing a required datasource for '{methodInfo.Name}'.");
-                }
+                Throw<SchemaException>.WhenNull(dataSource, $"{schemaType.Name} is missing a required datasource for '{methodInfo.Name}'.");
 
                 string rootName;
 
@@ -140,7 +133,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
                     .GetGraphqlType(
                         fieldMapping,
                         requiredTypeInfo,
-                        objectType => _graphqlApi.AddType(objectType));
+                        objectType => _schema.AddType(objectType));
 
                 var authDirectives = methodInfo.GetAuthDirectivesOrDefault();
 
@@ -152,7 +145,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
                             DataSource = dataSource,
                             RequestMappingTemplate = _mappingTemplates.GetRequestMapping(fieldMapping),
                             ResponseMappingTemplate = _mappingTemplates.GetResponseMapping(fieldMapping),
-                            Args = methodInfo.GetMethodArgs(_graphqlApi, _typeStore),
+                            Args = methodInfo.GetMethodArgs(_schema, _typeStore),
                             ReturnType = returnObjectType,
                             Directives = authDirectives
                         })
@@ -165,7 +158,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
             var attribute = methodInfo.GetCustomAttribute<SubscriptionMutationAttribute>(true);
 
             return attribute == null
-                ? Enumerable.Empty<string>()
+                ? []
                 : attribute!.Mutations;
         }
     }

@@ -3,7 +3,7 @@
 namespace AllOverIt.Formatters.Objects.Exceptions
 {
     /// <summary>Represents an error raised by an <see cref="ObjectPropertyFilter"/>.</summary>
-    public class ObjectPropertyFilterException : Exception
+    public sealed class ObjectPropertyFilterException : Exception
     {
         /// <summary>Default constructor.</summary>
         public ObjectPropertyFilterException()

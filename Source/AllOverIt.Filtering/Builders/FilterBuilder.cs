@@ -25,13 +25,16 @@ namespace AllOverIt.Filtering.Builders
             _specificationBuilder = specificationBuilder.WhenNotNull(nameof(specificationBuilder));
         }
 
-        // The final specification that can be applied to an IQueryable.Where()
+        // Return the specification that can be applied to an IQueryable.Where()
         public ILinqSpecification<TType> AsSpecification() => _currentSpecification ?? FilterSpecificationBuilder<TType, TFilter>.SpecificationTrue;
 
         #region WHERE Operations
         public ILogicalFilterBuilder<TType, TFilter> Where(Expression<Func<TType, string>> propertyExpression,
             Func<TFilter, IStringFilterOperation> operation, Action<OperationFilterOptions> options = default)
         {
+            _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
+            _ = operation.WhenNotNull(nameof(operation));
+
             var specification = _specificationBuilder.Create(propertyExpression, operation, options);
 
             ApplyNextSpecification(specification, LinqSpecificationExtensions.And);
@@ -42,6 +45,9 @@ namespace AllOverIt.Filtering.Builders
         public ILogicalFilterBuilder<TType, TFilter> Where<TProperty>(Expression<Func<TType, TProperty>> propertyExpression,
             Func<TFilter, IBasicFilterOperation> operation, Action<OperationFilterOptions> options = default)
         {
+            _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
+            _ = operation.WhenNotNull(nameof(operation));
+
             var specification = _specificationBuilder.Create(propertyExpression, operation, options);
 
             ApplyNextSpecification(specification, LinqSpecificationExtensions.And);
@@ -51,6 +57,8 @@ namespace AllOverIt.Filtering.Builders
 
         public ILogicalFilterBuilder<TType, TFilter> Where(ILinqSpecification<TType> specification)
         {
+            _ = specification.WhenNotNull(nameof(specification));
+
             ApplyNextSpecification(specification, LinqSpecificationExtensions.And);
 
             return this;
@@ -62,6 +70,9 @@ namespace AllOverIt.Filtering.Builders
         public ILogicalFilterBuilder<TType, TFilter> And(Expression<Func<TType, string>> propertyExpression,
             Func<TFilter, IStringFilterOperation> operation, Action<OperationFilterOptions> options = default)
         {
+            _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
+            _ = operation.WhenNotNull(nameof(operation));
+
             var specification = _specificationBuilder.Create(propertyExpression, operation, options);
 
             ApplyNextSpecification(specification, LinqSpecificationExtensions.And);
@@ -73,6 +84,9 @@ namespace AllOverIt.Filtering.Builders
         public ILogicalFilterBuilder<TType, TFilter> And<TProperty>(Expression<Func<TType, TProperty>> propertyExpression,
             Func<TFilter, IBasicFilterOperation> operation, Action<OperationFilterOptions> options = default)
         {
+            _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
+            _ = operation.WhenNotNull(nameof(operation));
+
             var specification = _specificationBuilder.Create(propertyExpression, operation, options);
 
             ApplyNextSpecification(specification, LinqSpecificationExtensions.And);
@@ -83,6 +97,8 @@ namespace AllOverIt.Filtering.Builders
         // On ILogicalFilterBuilder interface - want to enforce Where() being the first method called
         public ILogicalFilterBuilder<TType, TFilter> And(ILinqSpecification<TType> specification)
         {
+            _ = specification.WhenNotNull(nameof(specification));
+
             ApplyNextSpecification(specification, LinqSpecificationExtensions.And);
 
             return this;
@@ -94,6 +110,9 @@ namespace AllOverIt.Filtering.Builders
         public ILogicalFilterBuilder<TType, TFilter> Or(Expression<Func<TType, string>> propertyExpression,
             Func<TFilter, IStringFilterOperation> operation, Action<OperationFilterOptions> options = default)
         {
+            _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
+            _ = operation.WhenNotNull(nameof(operation));
+
             var specification = _specificationBuilder.Create(propertyExpression, operation, options);
 
             ApplyNextSpecification(specification, LinqSpecificationExtensions.Or);
@@ -105,6 +124,9 @@ namespace AllOverIt.Filtering.Builders
         public ILogicalFilterBuilder<TType, TFilter> Or<TProperty>(Expression<Func<TType, TProperty>> propertyExpression,
             Func<TFilter, IBasicFilterOperation> operation, Action<OperationFilterOptions> options = default)
         {
+            _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
+            _ = operation.WhenNotNull(nameof(operation));
+
             var specification = _specificationBuilder.Create(propertyExpression, operation, options);
 
             ApplyNextSpecification(specification, LinqSpecificationExtensions.Or);
@@ -115,6 +137,8 @@ namespace AllOverIt.Filtering.Builders
         // On ILogicalFilterBuilder interface - want to enforce Where() being the first method called
         public ILogicalFilterBuilder<TType, TFilter> Or(ILinqSpecification<TType> specification)
         {
+            _ = specification.WhenNotNull(nameof(specification));
+
             ApplyNextSpecification(specification, LinqSpecificationExtensions.Or);
 
             return this;

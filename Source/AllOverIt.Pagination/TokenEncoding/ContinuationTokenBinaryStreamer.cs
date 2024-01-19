@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Assertion;
-using AllOverIt.Serialization.Binary;
+using AllOverIt.Serialization.Binary.Readers;
+using AllOverIt.Serialization.Binary.Writers;
 using System.IO;
 using System.Text;
 

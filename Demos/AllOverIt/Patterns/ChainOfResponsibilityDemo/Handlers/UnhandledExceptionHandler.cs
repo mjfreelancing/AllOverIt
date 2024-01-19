@@ -6,7 +6,7 @@ namespace ChainOfResponsibilityDemo.Handlers
     {
         public override QueueMessageHandlerState Handle(QueueMessageHandlerState state)
         {
-            Console.WriteLine("Handling an unhandled exception...");
+            Console.WriteLine(" >> Handling an unhandled exception... (no more handlers)");
 
             // This is the end of the chain - just return the final state
             return Deadletter(state);

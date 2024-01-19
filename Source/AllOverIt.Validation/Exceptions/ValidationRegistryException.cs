@@ -3,7 +3,7 @@
 namespace AllOverIt.Validation.Exceptions
 {
     /// <summary>Represents an error that occurred while registering a validator.</summary>
-    public class ValidationRegistryException : Exception
+    public sealed class ValidationRegistryException : Exception
     {
         /// <summary>Default constructor.</summary>
         public ValidationRegistryException()

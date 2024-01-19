@@ -9,7 +9,7 @@ namespace AllOverIt.Filtering.Operations
     internal sealed class StartsWithOperation<TEntity> : OperationBase<TEntity, string> where TEntity : class
     {
         public StartsWithOperation(Expression<Func<TEntity, string>> propertyExpression, string value, IOperationFilterOptions options)
-            : base(propertyExpression, value, true, options, CreatePredicate)
+            : base(propertyExpression, value, false, options, CreatePredicate)
         {
         }
 

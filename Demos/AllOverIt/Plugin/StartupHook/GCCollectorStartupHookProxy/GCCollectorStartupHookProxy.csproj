@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\..\..\Source\AllOverIt\AllOverIt.csproj" />
+    </ItemGroup>
+
+</Project>

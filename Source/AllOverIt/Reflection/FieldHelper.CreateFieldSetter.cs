@@ -9,10 +9,6 @@ namespace AllOverIt.Reflection
 {
     public static partial class FieldHelper
     {
-        private static readonly MethodInfo SetFieldMethodInfo = typeof(FieldHelper).GetMethod(nameof(SetField), BindingFlags.Static | BindingFlags.NonPublic);
-
-        internal static void SetField<TValue>(ref TValue field, TValue newValue) => field = newValue;
-
         /// <summary>A delegate type that allows a field value to be updated via a ref.</summary>
         /// <typeparam name="TType">The object type to set the field value on.</typeparam>
         /// <param name="instance">The ref instance to update the field value on.</param>
@@ -23,32 +19,31 @@ namespace AllOverIt.Reflection
         /// based on a specified <see cref="FieldInfo"/> instance.</summary>
         /// <param name="fieldInfo">The <see cref="FieldInfo"/> to build a field setter.</param>
         /// <returns>The compiled field setter.</returns>
+        /// <remarks>This overload will only work with structs that are provided as object types. To set the
+        /// value of a field on a strongly typed struct use <see cref="CreateFieldSetterByRef{TType}(FieldInfo)"/>.</remarks>
         public static Action<object, object> CreateFieldSetter(FieldInfo fieldInfo)
         {
             _ = fieldInfo.WhenNotNull(nameof(fieldInfo));
 
             var declaringType = fieldInfo.DeclaringType;
 
-            var sourceParameter = Expression.Parameter(typeof(object), "item");
-            var valueParameter = Expression.Parameter(typeof(object), "value");
+            var instanceExpression = Expression.Parameter(typeof(object), "item");
 
-            var sourceExpression = declaringType.IsValueType && !declaringType.IsNullableType()
-                ? Expression.Unbox(sourceParameter, declaringType)
-                : sourceParameter.CastOrConvertTo(declaringType);
+            var valueExpression = Expression.Parameter(typeof(object), "value");
 
-            var fieldExpression = Expression.Field(sourceExpression, fieldInfo);
+            var castTargetExpression = declaringType.IsValueType
+                ? Expression.Unbox(instanceExpression, declaringType)           // struct
+                : Expression.Convert(instanceExpression, declaringType);        // class
 
-            var valueExpression = valueParameter.CastOrConvertTo(fieldExpression.Type);
+            var castValueExpression = Expression.Convert(valueExpression, fieldInfo.FieldType);
 
-            var genericSetFieldMethodInfo = SetFieldMethodInfo.MakeGenericMethod(fieldExpression.Type);
+            var fieldExpression = Expression.Field(castTargetExpression, fieldInfo);
 
-            var setFieldMethodCallExpression = Expression.Call(null, genericSetFieldMethodInfo, fieldExpression, valueExpression);
+            var assignExpression = Expression.Assign(fieldExpression, castValueExpression);
 
-            var setterFn = Expression
-                .Lambda<Action<object, object>>(setFieldMethodCallExpression, sourceParameter, valueParameter)
+            return Expression
+                .Lambda<Action<object, object>>(assignExpression, instanceExpression, valueExpression)
                 .Compile();
-
-            return setterFn;
         }
 
         /// <summary>Creates a compiled expression as an <c>Action{TType, object}</c> to set a field value
@@ -56,6 +51,8 @@ namespace AllOverIt.Reflection
         /// <typeparam name="TType">The object type to set the field value on.</typeparam>
         /// <param name="fieldInfo">The <see cref="FieldInfo"/> to build a field setter.</param>
         /// <returns>The compiled field setter.</returns>
+        /// <remarks>This typed version will not work with strongly typed structs. To set the value of a field on a struct
+        /// use either <see cref="CreateFieldSetter(FieldInfo)"/> or <see cref="CreateFieldSetterByRef{TType}(FieldInfo)"/>.</remarks>
         public static Action<TType, object> CreateFieldSetter<TType>(FieldInfo fieldInfo)
         {
             _ = fieldInfo.WhenNotNull(nameof(fieldInfo));
@@ -70,6 +67,8 @@ namespace AllOverIt.Reflection
         /// <typeparam name="TType">The object type to set the field value on.</typeparam>
         /// <param name="fieldName">The name of the field to set the value on.</param>
         /// <returns>The compiled field setter.</returns>
+        /// <remarks>This typed version will not work with strongly typed structs. To set the value of a field on a struct
+        /// use either <see cref="CreateFieldSetter(FieldInfo)"/> or <see cref="CreateFieldSetterByRef{TType}(FieldInfo)"/>.</remarks>
         public static Action<TType, object> CreateFieldSetter<TType>(string fieldName)
         {
             _ = fieldName.WhenNotNullOrEmpty(nameof(fieldName));
@@ -77,10 +76,7 @@ namespace AllOverIt.Reflection
             var type = typeof(TType);
             var fieldInfo = ReflectionCache.GetFieldInfo(type.GetTypeInfo(), fieldName);
 
-            if (fieldInfo == null)
-            {
-                throw new ReflectionException($"The field {fieldName} on type {type.GetFriendlyName()} does not exist.");
-            }
+            Throw<ReflectionException>.WhenNull(fieldInfo, $"The field {fieldName} on type {type.GetFriendlyName()} does not exist.");
 
             return CreateFieldSetter<TType>(fieldInfo);
         }
@@ -111,10 +107,7 @@ namespace AllOverIt.Reflection
             var type = typeof(TType);
             var fieldInfo = ReflectionCache.GetFieldInfo(type.GetTypeInfo(), fieldName);
 
-            if (fieldInfo == null)
-            {
-                throw new ReflectionException($"The field {fieldName} on type {type.GetFriendlyName()} does not exist.");
-            }
+            Throw<ReflectionException>.WhenNull(fieldInfo, $"The field {fieldName} on type {type.GetFriendlyName()} does not exist.");
 
             return CreateFieldSetterByRef<TType>(fieldInfo);
         }

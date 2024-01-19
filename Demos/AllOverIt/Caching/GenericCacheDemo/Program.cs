@@ -1,14 +1,14 @@
 ﻿using AllOverIt.Caching;
+using AllOverIt.Extensions;
+using AllOverIt.Reflection;
+using GenericCacheDemo.Keys;
+using GenericCacheDemo.Models;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using AllOverIt.Extensions;
-using AllOverIt.Reflection;
-using GenericCacheDemo.Keys;
-using GenericCacheDemo.Models;
 
 namespace GenericCacheDemo
 {
@@ -37,7 +37,7 @@ namespace GenericCacheDemo
 
             await Enumerable
                 .Range(1, 10)
-                .ForEachAsTaskAsync(value =>
+                .ForEachAsTaskAsync((value, cancellationToken) =>
                     {
                         var key = new IntCacheKey(value);
                         cache.TryAdd(key, value * value);
@@ -48,7 +48,7 @@ namespace GenericCacheDemo
 
             await Enumerable
                 .Range(1, 10)
-                .ForEachAsTaskAsync(value =>
+                .ForEachAsTaskAsync((value, cancellationToken) =>
                     {
                         var key = new IntCacheKey(value);
 
@@ -74,7 +74,7 @@ namespace GenericCacheDemo
 
             var readData = Enumerable
                 .Range(1, count)
-                .ForEachAsTaskAsync(value =>
+                .ForEachAsTaskAsync((value, cancellationToken) =>
                     {
                         var key = new IntCacheKey(value);
 
@@ -89,7 +89,7 @@ namespace GenericCacheDemo
 
             var writeData = Enumerable
                 .Range(1, count)
-                .ForEachAsTaskAsync(value =>
+                .ForEachAsTaskAsync((value, cancellationToken) =>
                     {
                         var key = new IntCacheKey(value);
                         cache.TryAdd(key, value * value);
@@ -102,7 +102,7 @@ namespace GenericCacheDemo
 
             if (failedReads.IsEmpty)
             {
-                Console.WriteLine("    All data for values 1 - 10000 was read without fail");
+                Console.WriteLine($"    All data for values 1 - {count} was read without fail");
             }
             else
             {
@@ -145,7 +145,7 @@ namespace GenericCacheDemo
             Console.WriteLine();
 
             var result2 = (PropertyInfo) cache[byBindingKey2];
-            OutputPropertyInfo($"Result via key type '{nameof(PropKeyByBindingAndName)}'", new []{ result2 });
+            OutputPropertyInfo($"Result via key type '{nameof(PropKeyByBindingAndName)}'", [result2]);
 
             cache.Clear();
         }

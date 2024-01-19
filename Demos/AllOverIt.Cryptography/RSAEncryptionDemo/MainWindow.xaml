@@ -1,0 +1,104 @@
+﻿<Window
+    x:Class="RSAEncryptionDemo.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:RSAEncryptionDemo"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="RSA Encryption"
+    Width="1100"
+    Height="740"
+    MinWidth="1100"
+    MinHeight="740"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <Window.DataContext>
+        <local:MainWindowViewModel />
+    </Window.DataContext>
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!--  Public Key  -->
+        <TextBlock Grid.Row="0" Grid.Column="0">Public Key:</TextBlock>
+
+        <TextBlock
+            Grid.Row="0"
+            Grid.Column="1"
+            Text="{Binding PublicKey, Mode=OneTime}"
+            TextWrapping="Wrap" />
+
+        <!--  Private Key  -->
+        <TextBlock
+            Grid.Row="1"
+            Grid.Column="0"
+            Margin="0,16">
+            Private Key:
+        </TextBlock>
+
+        <TextBlock
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="0,16"
+            Text="{Binding PrivateKey, Mode=OneTime}"
+            TextWrapping="Wrap" />
+
+        <!--  Text Input  -->
+        <TextBlock
+            Grid.Row="2"
+            Grid.Column="0"
+            Margin="0,16">
+            Text to encrypt:
+        </TextBlock>
+
+        <TextBox
+            Grid.Row="2"
+            Grid.Column="1"
+            Margin="0,16"
+            Background="AliceBlue"
+            FontWeight="Bold"
+            MaxLength="{Binding MaxInputLength, Mode=OneTime}"
+            Text="{Binding TextInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            TextWrapping="Wrap" />
+
+        <!--  Encrypted  -->
+        <TextBlock
+            Grid.Row="3"
+            Grid.Column="0"
+            Margin="0,16">
+            Encrypted:
+        </TextBlock>
+
+        <TextBlock
+            Grid.Row="3"
+            Grid.Column="1"
+            Margin="0,16"
+            Text="{Binding TextEncrypted, Mode=OneWay}"
+            TextWrapping="Wrap" />
+
+        <!--  Decrypted  -->
+        <TextBlock
+            Grid.Row="4"
+            Grid.Column="0"
+            Margin="0,16">
+            Decrypted:
+        </TextBlock>
+
+        <TextBlock
+            Grid.Row="4"
+            Grid.Column="1"
+            Margin="0,16"
+            Text="{Binding TextDecrypted, Mode=OneWay}"
+            TextWrapping="Wrap" />
+
+    </Grid>
+</Window>

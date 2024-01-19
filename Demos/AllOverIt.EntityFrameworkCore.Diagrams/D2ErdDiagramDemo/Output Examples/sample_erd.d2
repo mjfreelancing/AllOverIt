@@ -1,0 +1,187 @@
+direction: right
+
+Author: {
+  shape: sql_table
+
+  style: {
+    fill: black
+    stroke: \#99ccff
+    stroke-width: 4
+    stroke-dash: 2
+  }
+
+  Id: INTEGER {constraint: primary_key}
+  Email: TEXT(50)
+  FirstName: TEXT(50)
+  LastName: TEXT(50)
+}
+
+AuthorBlog: {
+  shape: sql_table
+
+  style: {
+    stroke: yellow
+  }
+
+  Id: INTEGER \[NOT NULL\] {constraint: primary_key}
+  AuthorId: INTEGER \[NOT NULL\] {constraint: foreign_key}
+  BlogId: INTEGER \[NOT NULL\] {constraint: foreign_key}
+}
+
+Blog: {
+  shape: sql_table
+
+  style: {
+    fill: black
+    stroke: \#99ccff
+    stroke-width: 4
+    stroke-dash: 2
+  }
+
+  Id: INTEGER {constraint: primary_key}
+  Description: TEXT(500)
+  WebSiteId: INTEGER {constraint: foreign_key}
+}
+
+Comment: {
+  shape: sql_table
+
+  Id: INTEGER {constraint: primary_key}
+  AuthorId: INTEGER {constraint: foreign_key}
+  Content: TEXT
+  PostId: INTEGER {constraint: foreign_key}
+}
+
+Post: {
+  shape: sql_table
+
+  style: {
+    stroke: yellow
+  }
+
+  Id: INTEGER \[NOT NULL\] {constraint: primary_key}
+  BlogId: INTEGER \[NOT NULL\] {constraint: foreign_key}
+  Content: TEXT \[NOT NULL\]
+  Title: TEXT(500) \[NOT NULL\]
+}
+
+Settings: {
+  shape: sql_table
+
+  style: {
+    stroke: yellow
+  }
+
+  Id: INTEGER \[NOT NULL\] {constraint: primary_key}
+  JsonConfig: TEXT \[NOT NULL\]
+  WebSiteId: INTEGER \[NOT NULL\] {constraint: foreign_key}
+}
+
+WebSite: {
+  shape: sql_table
+
+  style: {
+    stroke: yellow
+  }
+
+  Id: INTEGER \[NOT NULL\] {constraint: primary_key}
+  Description: TEXT(500) \[NOT NULL\]
+}
+
+Author.Id <-> AuthorBlog.AuthorId: {
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+  target-arrowhead: {
+    shape: cf-many
+  }
+  style: {
+    font-size: 18
+    font-color: blue
+    bold: true
+  }
+}
+
+Blog.Id <-> AuthorBlog.BlogId: {
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+  target-arrowhead: {
+    shape: cf-many
+  }
+  style: {
+    font-size: 18
+    font-color: blue
+    bold: true
+  }
+}
+
+WebSite.Id <-> Blog.WebSiteId: {
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+  target-arrowhead: {
+    shape: cf-many
+  }
+  style: {
+    font-size: 18
+    font-color: blue
+    bold: true
+  }
+}
+
+Author.Id <-> Comment.AuthorId: {
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+  target-arrowhead: {
+    shape: cf-many
+  }
+  style: {
+    font-size: 18
+    font-color: blue
+    bold: true
+  }
+}
+
+Post.Id <-> Comment.PostId: {
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+  target-arrowhead: {
+    shape: cf-many
+  }
+  style: {
+    font-size: 18
+    font-color: blue
+    bold: true
+  }
+}
+
+Blog.Id <-> Post.BlogId: {
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+  target-arrowhead: {
+    shape: cf-many
+  }
+  style: {
+    font-size: 18
+    font-color: blue
+    bold: true
+  }
+}
+
+WebSite.Id <-> Settings.WebSiteId: {
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+  target-arrowhead: {
+    shape: cf-one
+  }
+  style: {
+    font-size: 18
+    font-color: blue
+    bold: true
+  }
+}

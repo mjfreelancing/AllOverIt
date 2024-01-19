@@ -35,7 +35,7 @@ namespace EvaluatorBenchmarking
             var f = registry.AddDelegateVariable("f", compiler.Compile("b", registry));
             var g = registry.AddDelegateVariable("g", compiler.Compile("e", registry));
 
-            _variables = new[] {a, b, c, d, e, f, g};
+            _variables = [a, b, c, d, e, f, g];
             _lookup = new VariableLookup(registry);
         }
 

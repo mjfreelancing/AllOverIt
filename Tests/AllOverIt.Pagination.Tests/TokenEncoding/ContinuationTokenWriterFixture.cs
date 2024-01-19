@@ -2,7 +2,7 @@
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Pagination.TokenEncoding;
-using AllOverIt.Serialization.Binary;
+using AllOverIt.Serialization.Binary.Writers;
 using FakeItEasy;
 using FluentAssertions;
 using System;

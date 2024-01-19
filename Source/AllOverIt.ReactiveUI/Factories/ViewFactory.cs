@@ -20,7 +20,7 @@ namespace AllOverIt.ReactiveUI.Factories
         /// <inheritdoc />
         public IViewFor<TViewModel> CreateViewFor<TViewModel>() where TViewModel : class
         {
-            return _provider.GetService<IViewFor<TViewModel>>();
+            return _provider.GetRequiredService<IViewFor<TViewModel>>();
         }
     }
 }

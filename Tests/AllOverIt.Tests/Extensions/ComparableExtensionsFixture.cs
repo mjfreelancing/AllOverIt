@@ -8,33 +8,33 @@ namespace AllOverIt.Tests.Extensions
 {
     public class ComparableExtensionsFixture : FixtureBase
     {
-        private class CompareDummy : IComparable<CompareDummy>
+        private class DummyCompare : IComparable<DummyCompare>
         {
             private readonly double _value;
 
-            public CompareDummy(double value)
+            public DummyCompare(double value)
             {
                 _value = value;
             }
 
-            public int CompareTo(CompareDummy other)
+            public int CompareTo(DummyCompare other)
             {
                 return _value.CompareTo(other._value);
             }
         }
 
-        private CompareDummy Val1 { get; }
-        private CompareDummy Val2 { get; }
-        private CompareDummy Sum { get; }
+        private DummyCompare Val1 { get; }
+        private DummyCompare Val2 { get; }
+        private DummyCompare Sum { get; }
 
         protected ComparableExtensionsFixture()
         {
             var val1 = Create<double>();
             var val2 = val1 + Create<double>();
 
-            Val1 = new CompareDummy(val1);
-            Val2 = new CompareDummy(val2);
-            Sum = new CompareDummy(val1 + val2);
+            Val1 = new DummyCompare(val1);
+            Val2 = new DummyCompare(val2);
+            Sum = new DummyCompare(val1 + val2);
         }
 
         public class LessThan : ComparableExtensionsFixture

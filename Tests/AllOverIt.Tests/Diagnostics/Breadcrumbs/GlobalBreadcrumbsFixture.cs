@@ -5,7 +5,6 @@ using Xunit;
 
 namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 {
-    [Collection("GlobalBreadcrumbs")]
     public class GlobalBreadcrumbsFixture : FixtureBase
     {
         [Fact]
@@ -49,6 +48,31 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
             var instance2 = GlobalBreadcrumbs.Instance;
 
             instance1.Should().NotBeSameAs(instance2);
+        }
+
+        [Fact]
+        public void Should_Not_Throw_When_Destroyed_Without_Creation()
+        {
+            Invoking(() =>
+            {
+                GlobalBreadcrumbs.Destroy();
+            })
+            .Should()
+            .NotThrow();
+        }
+
+        [Fact]
+        public void Should_Not_Throw_When_Destroyed_Twice()
+        {
+            Invoking(() =>
+            {
+                _ = GlobalBreadcrumbs.Instance;
+
+                GlobalBreadcrumbs.Destroy();
+                GlobalBreadcrumbs.Destroy();
+            })
+            .Should()
+            .NotThrow();
         }
     }
 }

@@ -29,6 +29,7 @@ namespace AllOverIt.Csv
         /// <param name="data">The data to be exported.</param>
         /// <param name="includeHeader">Indicates if the header names are to be exported.</param>
         /// <param name="leaveOpen">Indicates if the <paramref name="writer"/> should be left open after writing the data.</param>
+        /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns>A task that completes when the export is completed.</returns>
         Task SerializeAsync(TextWriter writer, IEnumerable<TCsvData> data, bool includeHeader = true, bool leaveOpen = false,
             CancellationToken cancellationToken = default);
@@ -38,6 +39,7 @@ namespace AllOverIt.Csv
         /// <param name="data">The data to be exported.</param>
         /// <param name="includeHeader">Indicates if the header names are to be exported.</param>
         /// <param name="leaveOpen">Indicates if the <paramref name="writer"/> should be left open after writing the data.</param>
+        /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns>A task that completes when the export is completed.</returns>
         Task SerializeAsync(TextWriter writer, IAsyncEnumerable<TCsvData> data, bool includeHeader = true, bool leaveOpen = false,
             CancellationToken cancellationToken = default);

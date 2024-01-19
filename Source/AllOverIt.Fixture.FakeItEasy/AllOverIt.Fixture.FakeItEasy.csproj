@@ -1,17 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net7.0;net6.0;net5.0;netcoreapp3.1;netstandard2.1</TargetFrameworks>
-        <Copyright>Copyright © 2019</Copyright>
-        <Description>AllOverIt.Fixture.FakeItEasy extends AllOverIt.Fixture to allow FakeItEasy integration.</Description>
-        <PackageTags>unittesting;fakes;faking;mocks;mocking;stubs;stubbing;TDD;BDD;fluent;NUnit;xUnit;netstandard;netcore</PackageTags>
+        <TargetFrameworks>net8.0;net7.0;net6.0;netstandard2.1</TargetFrameworks>
+        <Description>This package extends AllOverIt.Fixture to support FakeItEasy integration.</Description>
+        <PackageTags>AllOverIt;Utilities;UnitTesting;Fakes;Faking;Mocks;Mocking;Stubs;Stubbing;TDD;BDD;NUnit;FakeItEasy</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AutoFixture" Version="4.17.0" />
-        <PackageReference Include="AutoFixture.AutoFakeItEasy" Version="4.17.0" />
-        <PackageReference Include="FakeItEasy" Version="7.3.1" />
-        <PackageReference Include="FluentAssertions" Version="6.8.0" />
+        <PackageReference Include="AutoFixture.AutoFakeItEasy" Version="4.18.1" />
+        <!--Can't update yet as AutoFakeItEasy 4.18.0 requires FakeItEasy < v8-->
+        <PackageReference Include="FakeItEasy" Version="8.1.0" />
     </ItemGroup>
 
     <ItemGroup>

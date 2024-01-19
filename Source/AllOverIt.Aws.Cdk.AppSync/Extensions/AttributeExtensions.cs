@@ -1,8 +1,7 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync.Attributes.Directives;
-using Amazon.CDK.AWS.AppSync;
+using Cdklabs.AwsCdkAppsyncUtils;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AllOverIt.Aws.Cdk.AppSync.Extensions
 {
@@ -18,7 +17,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
                 {
                     AuthDirectiveMode.Oidc => Directive.Oidc(),
                     AuthDirectiveMode.ApiKey => Directive.ApiKey(),
-                    AuthDirectiveMode.Cognito => Directive.Cognito((attribute as AuthCognitoDirectiveAttribute)!.Groups.ToArray()),
+                    AuthDirectiveMode.Cognito => Directive.Cognito([.. (attribute as AuthCognitoDirectiveAttribute)!.Groups]),
                     AuthDirectiveMode.Iam => Directive.Iam(),
                     AuthDirectiveMode.Lambda => Directive.Custom("@aws_lambda"),
                     _ => throw new ArgumentOutOfRangeException($"Unknown auth mode '{attribute.Mode}'")
@@ -27,8 +26,8 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
                 directives.Add(directive);
             }
 
-            return directives.Any()
-                ? directives.ToArray()
+            return directives.Count != 0
+                ? [.. directives]
                 : null;
         }
     }

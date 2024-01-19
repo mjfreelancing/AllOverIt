@@ -1,11 +1,10 @@
 using AllOverIt.Assertion;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AllOverIt.Evaluator.Variables
 {
     /// <summary>An abstract base class for a named variable.</summary>
-    public abstract record VariableBase : IVariable
+    public abstract class VariableBase : IVariable
     {
         internal IVariableRegistry VariableRegistry { get; set; }
 
@@ -16,7 +15,7 @@ namespace AllOverIt.Evaluator.Variables
         public abstract double Value { get; }
 
         /// <summary>Gets all variables this variable references. Only applicable to variables constructed from a FormulaCompilerResult.</summary>
-        public IEnumerable<IVariable> ReferencedVariables { get; protected init; } = Enumerable.Empty<IVariable>();
+        public IEnumerable<IVariable> ReferencedVariables { get; protected init; } = [];
 
         /// <summary>Constructor.</summary>
         /// <param name="name">The name of the ariable.</param>

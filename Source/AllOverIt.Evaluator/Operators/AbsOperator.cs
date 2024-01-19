@@ -7,7 +7,7 @@ namespace AllOverIt.Evaluator.Operators
     /// <summary>An expression operator that calculates the absolute value of a given operand.</summary>
     public sealed class AbsOperator : UnaryOperator
     {
-        private static readonly MethodInfo OperatorMethodInfo = typeof(Math).GetMethod("Abs", new[] { typeof(double) });
+        private static readonly MethodInfo OperatorMethodInfo = typeof(Math).GetMethod("Abs", [typeof(double)]);
 
         /// <summary>Constructor.</summary>
         /// <param name="operand">The operand (argument) to be evaluated.</param>

@@ -1,18 +1,21 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net7.0;net6.0;net5.0;netcoreapp3.1;netstandard2.1</TargetFrameworks>
-        <Copyright>Copyright © 2022</Copyright>
-        <Description>A library containing useful dependency injection related utilities.</Description>
-        <PackageTags>utilities;dependencyinjection</PackageTags>
+        <TargetFrameworks>net8.0;net7.0;net6.0;netstandard2.1</TargetFrameworks>
+        <Description>This package provides useful dependency injection related utilities such as registering and resolving 'named' services, auto service discovery and registration via a service registrar, and service decoration.</Description>
+        <PackageTags>AllOverIt;Utilities;DependencyInjection</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\AllOverIt\AllOverIt.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="AllOverIt.DependencyInjection.Tests" />
     </ItemGroup>
 
 </Project>

@@ -1,5 +1,5 @@
-﻿using System.Reactive.Disposables;
-using ReactiveUI;
+﻿using ReactiveUI;
+using System.Reactive.Disposables;
 
 namespace AllOverIt.ReactiveUI
 {

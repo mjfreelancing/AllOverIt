@@ -1,7 +1,7 @@
 ﻿namespace AllOverIt.Caching
 {
     /// <summary>The base key type for all keys contained in a concrete <see cref="IGenericCache"/>, such as <see cref="GenericCache"/>.</summary>
-    public abstract class GenericCacheKeyBase
+    public abstract record GenericCacheKeyBase
     {
         /// <summary>The key used to index an associated value.</summary>
         public object Key { get; init; }

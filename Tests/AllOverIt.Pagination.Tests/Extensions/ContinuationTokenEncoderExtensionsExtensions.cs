@@ -17,7 +17,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
         public ContinuationTokenEncoderExtensionsExtensions()
         {
-            _continuationTokenSerializerFake = A.Fake<IContinuationTokenSerializer>();
+            _continuationTokenSerializerFake = this.CreateStub<IContinuationTokenSerializer>();
             _continuationTokenEncoder = new ContinuationTokenEncoder(this.CreateManyStubs<IColumnDefinition>(), Create<PaginationDirection>(), _continuationTokenSerializerFake);
         }
 
@@ -28,7 +28,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             {
                 Invoking(() =>
                 {
-                    ContinuationTokenEncoderExtensions.Encode(null, A.Fake<IContinuationToken>());
+                    ContinuationTokenEncoderExtensions.Encode(null, this.CreateStub<IContinuationToken>());
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -50,7 +50,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             [Fact]
             public void Should_Encode_Token()
             {
-                var token = A.Fake<IContinuationToken>();
+                var token = this.CreateStub<IContinuationToken>();
                 var expected = Create<string>();
 
                 A.CallTo(() => _continuationTokenSerializerFake.Serialize(token)).Returns(expected);
@@ -90,7 +90,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             public void Should_Decode_Token()
             {
                 var token = Create<string>();
-                var expected = A.Fake<IContinuationToken>();
+                var expected = this.CreateStub<IContinuationToken>();
 
                 A.CallTo(() => _continuationTokenSerializerFake.Deserialize(token)).Returns(expected);
 

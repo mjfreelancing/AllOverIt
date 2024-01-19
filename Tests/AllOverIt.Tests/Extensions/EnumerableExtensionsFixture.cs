@@ -267,7 +267,7 @@ namespace AllOverIt.Tests.Extensions
         {
             [Fact]
             public async Task Should_Throw_When_Null()
-            {                
+            {
                 await Invoking(
                     async () =>
                     {
@@ -627,7 +627,7 @@ namespace AllOverIt.Tests.Extensions
                 var expectedValues = values.Select((item, index) => (item, index)).AsReadOnlyCollection();
 
                 var index = 0;
-                
+
                 foreach (var (value, idx) in values.WithIndex())
                 {
                     var expected = expectedValues.ElementAt(index++);
@@ -682,7 +682,7 @@ namespace AllOverIt.Tests.Extensions
                         {
                             IEnumerable<object> items = null;
 
-                            await items.ForEachAsync((_, _) => Task.CompletedTask);
+                            await items.ForEachAsync((_, _, _) => Task.CompletedTask);
                         })
                     .Should()
                     .ThrowAsync<ArgumentNullException>()
@@ -695,7 +695,7 @@ namespace AllOverIt.Tests.Extensions
                 var values = Create<string>();
                 var count = 0;
 
-                await values.ForEachAsync(async (item, index) =>
+                await values.ForEachAsync(async (item, index, _) =>
                 {
                     await Task.CompletedTask;
 
@@ -704,6 +704,42 @@ namespace AllOverIt.Tests.Extensions
                 });
 
                 count.Should().Be(values.Length);
+            }
+
+            [Fact]
+            public async Task Should_Throw_When_Cancelled()
+            {
+                await Invoking(
+                        async () =>
+                        {
+                            var cts = new CancellationTokenSource();
+                            cts.Cancel();
+
+                            IEnumerable<int> items = new[] { 1, 2, 3 };
+
+                            await items.ForEachAsync((_, _, _) => Task.CompletedTask, cts.Token);
+                        })
+                    .Should()
+                    .ThrowAsync<OperationCanceledException>();
+            }
+
+            [Fact]
+            public async Task Should_Pass_CancellationToken()
+            {
+                var cts = new CancellationTokenSource();
+
+                CancellationToken actual = default;
+
+                IEnumerable<int> items = new[] { 1 };
+
+                await items.ForEachAsync((_, _, token) =>
+                {
+                    actual = token;
+
+                    return Task.CompletedTask;
+                }, cts.Token);
+
+                actual.Should().Be(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
             }
         }
 
@@ -782,12 +818,12 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Find_Some_Matches()
             {
-                var first = new[] {1, 2, 3, 4, 5};
+                var first = new[] { 1, 2, 3, 4, 5 };
                 var second = new[] { 7, 8, 3, 4, 5 };
 
                 var matches = EnumerableExtensions.FindMatches(first, second, item => item, item => item);
 
-                var expected = new[] {3, 4, 5};
+                var expected = new[] { 3, 4, 5 };
 
                 expected.Should().BeEquivalentTo(matches);
             }
@@ -821,7 +857,7 @@ namespace AllOverIt.Tests.Extensions
             public void Should_Return_False_When_All_Keys_Not_Distinct()
             {
                 var duplicate = Create<string>();
-                var items = CreateMany<string>().Concat(new[] { duplicate , duplicate }).ToList();
+                var items = CreateMany<string>().Concat(new[] { duplicate, duplicate }).ToList();
 
                 var actual = items.HasDistinctGrouping(item => item);
 

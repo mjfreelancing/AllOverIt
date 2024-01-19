@@ -84,10 +84,10 @@ namespace AllOverIt.Aws.AppSync.Client
 
         private static Task<string> GetHttpResponseAsString(HttpResponseMessage responseMessage, CancellationToken cancellationToken)
         {
-#if NET5_0_OR_GREATER
-            return responseMessage.Content.ReadAsStringAsync(cancellationToken);
-#else
+#if NETSTANDARD2_1
             return responseMessage.Content.ReadAsStringAsync();
+#else
+            return responseMessage.Content.ReadAsStringAsync(cancellationToken);
 #endif
         }
 

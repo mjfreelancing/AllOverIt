@@ -61,7 +61,7 @@ namespace AllOverIt.Csv.Extensions
         /// <param name="valuesResolver">This resolver is called during the export process for each field instance and its associated field identifier. The 'Id'
         /// property of the field identifier is typically used to find the element to be exported. The serializer expects the same number of values to be returned
         /// as there were header names. If there's no data to be exported for this field instance then return null.</param>
-        /// <exception cref="CsvExportException">When the number of values returned does not match the number of header names.</exception>
+        /// <exception cref="CsvSerializerException">When the number of values returned does not match the number of header names.</exception>
         public static void AddDynamicFields<TCsvData, TField, TFieldId>(this ICsvSerializer<TCsvData> serializer, IEnumerable<TCsvData> data,
             Func<TCsvData, TField> fieldSelector, Func<TField, IEnumerable<FieldIdentifier<TFieldId>>> fieldIdentifiers,
             Func<TField, FieldIdentifier<TFieldId>, IEnumerable<object>> valuesResolver)
@@ -93,7 +93,7 @@ namespace AllOverIt.Csv.Extensions
 
                     if (values.Count != columnCount)
                     {
-                        throw new CsvExportException($"Column count mismatch. Expected {columnCount}, found {values.Count}.");
+                        throw new CsvSerializerException($"Column count mismatch. Expected {columnCount}, found {values.Count}.");
                     }
 
                     return values;

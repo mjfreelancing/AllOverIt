@@ -1,8 +1,7 @@
-﻿using AllOverIt.Extensions;
-using AllOverIt.Patterns.Specification;
+﻿using AllOverIt.Patterns.Specification;
+using AllOverIt.Patterns.Specification.Extensions;
 using System;
 using System.Linq;
-using AllOverIt.Patterns.Specification.Extensions;
 
 namespace SpecificationDemo
 {
@@ -33,21 +32,21 @@ namespace SpecificationDemo
             ShowComplexTest(complexSpecification);
             ShowNotComplexTest(complexSpecification);
 
-            Console.WriteLine("");
+            Console.WriteLine();
             Console.WriteLine("All Over It.");
             Console.ReadKey();
         }
 
         #region Show Simple Specification
 
-        private static void ShowIndividualResults(ISpecification<int> twoOrThreeSpecification, ISpecification<int> twoAndThreeSpecification)
+        private static void ShowIndividualResults(Specification<int> twoOrThreeSpecification, Specification<int> twoAndThreeSpecification)
         {
             // test all numbers 1..10 individually
             foreach (var i in Enumerable.Range(1, 10))
             {
                 Console.WriteLine($"{i} is divisible by 2 or 3 {twoOrThreeSpecification.IsSatisfiedBy(i)}");
                 Console.WriteLine($"{i} is divisible by 2 and 3 = {twoAndThreeSpecification.IsSatisfiedBy(i)}");
-                Console.WriteLine("");
+                Console.WriteLine();
             }
         }
 
@@ -55,10 +54,10 @@ namespace SpecificationDemo
 
         private static void ShowDivisbleAndTest(ISpecification<int> twoAndThreeSpecification)
         {
-            Console.WriteLine("");
+            Console.WriteLine();
             Console.WriteLine("Press any key for the next test (list only those divisible by 2 and 3)...");
             Console.ReadKey();
-            Console.WriteLine("");
+            Console.WriteLine();
 
             // find all matches where a value is divisible by 2 and 3
             var twoAndThreeResults = Enumerable.Range(1, 12).Where(twoAndThreeSpecification);
@@ -71,10 +70,10 @@ namespace SpecificationDemo
 
         private static void ShowDivisibleOrTest(ISpecification<int> twoOrThreeSpecification)
         {
-            Console.WriteLine("");
+            Console.WriteLine();
             Console.WriteLine("Press any key for the next test (list only those divisible by 2 or 3)...");
             Console.ReadKey();
-            Console.WriteLine("");
+            Console.WriteLine();
 
             // find all matches where a value is divisible by 2 or 3
             var twoOrThreeResults = Enumerable.Range(1, 12).Where(twoOrThreeSpecification);
@@ -89,10 +88,10 @@ namespace SpecificationDemo
 
         private static void ShowComplexTest(ISpecification<int> complexSpecification)
         {
-            Console.WriteLine("");
+            Console.WriteLine();
             Console.WriteLine("Press any key for the next test (list only those divisible by ((2 and 3) or 7))...");
             Console.ReadKey();
-            Console.WriteLine("");
+            Console.WriteLine();
 
             var results = Enumerable.Range(1, 21).Where(complexSpecification);
 
@@ -106,10 +105,10 @@ namespace SpecificationDemo
 
         private static void ShowNotComplexTest(ISpecification<int> complexSpecification)
         {
-            Console.WriteLine("");
+            Console.WriteLine();
             Console.WriteLine("Press any key for the next test (list only those NOT divisible by ((2 and 3) or 7))...");
             Console.ReadKey();
-            Console.WriteLine("");
+            Console.WriteLine();
 
             var notSpecification = complexSpecification.Not();
             var results = Enumerable.Range(1, 21).Where(notSpecification);

@@ -533,5 +533,22 @@ namespace AllOverIt.Tests.Threading
                     .NotThrow();
             }
         }
+
+        public class Disose : ReadWriteLockFixture
+        {
+            [Fact]
+            public void Should_Not_Throw_When_Disposed_Twice()
+            {
+                var @lock = new ReadWriteLock();
+
+                Invoking(() =>
+                {
+                    @lock.Dispose();
+                    @lock.Dispose();
+                })
+                .Should()
+                .NotThrow();
+            }
+        }
     }
 }

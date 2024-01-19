@@ -1,10 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net7.0;net6.0;net5.0;netcoreapp3.1;netstandard2.1</TargetFrameworks>
-        <Copyright>Copyright © 2015</Copyright>
-        <Description>A general purpose library containing a variety of classes, utilities, and helpers to fill in regularly occuring software development gaps.</Description>
-        <PackageTags>utilities</PackageTags>
+        <TargetFrameworks>net8.0;net7.0;net6.0;netstandard2.1</TargetFrameworks>
+        <Description>This package contains a diverse range of classes and utility functions, intended to tackle a wide array of commonly encountered issues. Key areas of concern include threading, tasks, generic caching, event (message) aggregation, expression and reflection utilities, plugin contexts, enriched enums, pipelines, value objects, specifications, and dozens of extensions.</Description>
+        <PackageTags>AllOverIt;Utilities;Async;Threading;Diagnostics;Patterns;IO;Reflection;Process;Collections;Caching;Conversions</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
@@ -13,5 +12,7 @@
 
     <ItemGroup>
         <InternalsVisibleTo Include="AllOverIt.Tests" />
+        <InternalsVisibleTo Include="AllOverIt.ReactiveUI.Tests" />
     </ItemGroup>
+    
 </Project>

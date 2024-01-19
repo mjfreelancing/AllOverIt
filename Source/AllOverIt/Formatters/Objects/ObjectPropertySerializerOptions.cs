@@ -8,11 +8,11 @@ namespace AllOverIt.Formatters.Objects
     /// <summary>Provides options that determine how serialization of properties and their values are handled by <see cref="ObjectPropertySerializer"/>.</summary>
     public sealed class ObjectPropertySerializerOptions
     {
-        private readonly List<Type> _ignoredTypes = new()
-        {
+        private readonly List<Type> _ignoredTypes =
+        [
             typeof(Task),
             typeof(Task<>)
-        };
+        ];
 
         /// <summary>Includes types that will be explicitly excluded during serialization.</summary>
         /// <remarks>Excludes {Task} and {Task&lt;>} by default.</remarks>
@@ -34,7 +34,7 @@ namespace AllOverIt.Formatters.Objects
         public string EmptyValueOutput { get; set; } = "<empty>";
 
         /// <summary>Provides options that allow array values to be collated to a single value.</summary>
-        /// <remarks>If a <see cref="Filter"/> has been provided to the <see cref="ObjectPropertySerializer"/> then
+        /// <remarks>If a <see cref="IObjectPropertySerializer.Filter"/> has been provided to the <see cref="ObjectPropertySerializer"/> then
         /// its enumerable options will override these settings.</remarks>
         public ObjectPropertyEnumerableOptions EnumerableOptions { get; } = new();
 

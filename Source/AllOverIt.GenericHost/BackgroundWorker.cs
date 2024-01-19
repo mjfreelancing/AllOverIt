@@ -39,12 +39,12 @@ namespace AllOverIt.GenericHost
         }
 
         /// <summary>Waits for the application to start, or enter the 'Stopping' state if the application fails to start.</summary>
-        /// <returns>True if the application has completely started or False if the application is stopping after failing to start.</returns>
+        /// <returns><see langword="true" /> if the application has completely started or False if the application is stopping after failing to start.</returns>
         /// <remarks>Calling this method at the start of the overriden <see cref="BackgroundService.ExecuteAsync"/> method is useful
         /// to ensure the application has completely started before continuing.</remarks>
-        protected async Task<bool> WaitForStartup()
+        protected Task<bool> WaitForStartup()
         {
-            return await _startupCompletionTask;
+            return _startupCompletionTask;
         }
 
         private static Task<bool> CreateStartedCompletionTask(IHostApplicationLifetime applicationLifetime)

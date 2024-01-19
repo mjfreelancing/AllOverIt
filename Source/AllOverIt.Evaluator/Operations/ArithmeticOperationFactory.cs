@@ -10,7 +10,7 @@ namespace AllOverIt.Evaluator.Operations
     /// The factory assumes a lower precedence value indicates a higher priority (refer to http://en.wikipedia.org/wiki/Order_of_operations). </summary>
     public sealed class ArithmeticOperationFactory : IArithmeticOperationFactory
     {
-        private readonly IDictionary<string, Lazy<ArithmeticOperation>> _operations = new Dictionary<string, Lazy<ArithmeticOperation>>();
+        private readonly Dictionary<string, Lazy<ArithmeticOperation>> _operations = [];
 
         /// <inheritdoc />
         public IEnumerable<string> RegisteredOperations => _operations.Keys;

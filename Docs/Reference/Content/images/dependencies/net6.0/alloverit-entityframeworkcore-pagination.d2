@@ -1,0 +1,31 @@
+direction: left
+
+aoi: AllOverIt
+aoi.alloverit-entityframeworkcore-pagination: AllOverIt.EntityFrameworkCore.Pagination
+aoi.alloverit-entityframeworkcore: AllOverIt.EntityFrameworkCore
+microsoft-entityframeworkcore-relational_7-0-14: Microsoft.EntityFrameworkCore.Relational\nv7.0.14
+microsoft-entityframeworkcore-relational_7-0-14.style.fill: "#ADD8E6"
+microsoft-entityframeworkcore-relational_7-0-14.style.opacity: 0.8
+microsoft-entityframeworkcore_7-0-14: Microsoft.EntityFrameworkCore\nv7.0.14
+microsoft-entityframeworkcore_7-0-14.style.fill: "#FFEC96"
+microsoft-entityframeworkcore_7-0-14.style.opacity: 0.8
+microsoft-entityframeworkcore_7-0-14 <- microsoft-entityframeworkcore-relational_7-0-14
+microsoft-extensions-configuration-abstractions_7-0-0: Microsoft.Extensions.Configuration.Abstractions\nv7.0.0
+microsoft-extensions-configuration-abstractions_7-0-0.style.fill: "#FFEC96"
+microsoft-extensions-configuration-abstractions_7-0-0.style.opacity: 0.8
+microsoft-extensions-configuration-abstractions_7-0-0 <- microsoft-entityframeworkcore-relational_7-0-14
+microsoft-entityframeworkcore-relational_7-0-14 <- aoi.alloverit-entityframeworkcore
+aoi.alloverit: AllOverIt
+aoi.alloverit-assertion: AllOverIt.Assertion
+aoi.alloverit-assertion <- aoi.alloverit
+aoi.alloverit <- aoi.alloverit-entityframeworkcore
+aoi.alloverit-entityframeworkcore <- aoi.alloverit-entityframeworkcore-pagination
+aoi.alloverit-pagination: AllOverIt.Pagination
+microsoft-extensions-dependencyinjection-abstractions_8-0-0: Microsoft.Extensions.DependencyInjection.Abstractions\nv8.0.0
+microsoft-extensions-dependencyinjection-abstractions_8-0-0.style.fill: "#ADD8E6"
+microsoft-extensions-dependencyinjection-abstractions_8-0-0.style.opacity: 0.8
+microsoft-extensions-dependencyinjection-abstractions_8-0-0 <- aoi.alloverit-pagination
+aoi.alloverit-serialization-binary: AllOverIt.Serialization.Binary
+aoi.alloverit <- aoi.alloverit-serialization-binary
+aoi.alloverit-serialization-binary <- aoi.alloverit-pagination
+aoi.alloverit-pagination <- aoi.alloverit-entityframeworkcore-pagination

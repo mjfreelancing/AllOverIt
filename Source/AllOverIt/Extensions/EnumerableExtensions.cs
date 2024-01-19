@@ -16,7 +16,7 @@ namespace AllOverIt.Extensions
         /// <summary>Indicates if the source items contains no elements.</summary>
         /// <typeparam name="TType">The type stored in the source collection.</typeparam>
         /// <param name="items">The source of elements.</param>
-        /// <returns>True if the source items contains no elements, otherwise false.</returns>
+        /// <returns><see langword="true" /> if the source items contains no elements, otherwise <see langword="false" />.</returns>
         public static bool NotAny<TType>(this IEnumerable<TType> items)
         {
             _ = items.WhenNotNull(nameof(items));
@@ -126,8 +126,8 @@ namespace AllOverIt.Extensions
         /// <param name="selector">The transform function applied to each element.</param>
         /// <param name="cancellationToken">A CancellationToken to cancel the operation.</param>
         /// <returns>The projected results as an IReadOnlyCollection{TResult}.</returns>
-        public static async Task<IReadOnlyCollection<TResult>> SelectAsReadOnlyCollectionAsync<TSource, TResult>(this IEnumerable<TSource> items, Func<TSource, Task<TResult>> selector,
-            CancellationToken cancellationToken = default)
+        public static async Task<IReadOnlyCollection<TResult>> SelectAsReadOnlyCollectionAsync<TSource, TResult>(this IEnumerable<TSource> items,
+            Func<TSource, Task<TResult>> selector, CancellationToken cancellationToken = default)
         {
             _ = items.WhenNotNull(nameof(items));
 
@@ -145,8 +145,8 @@ namespace AllOverIt.Extensions
         /// <param name="selector">The transform function applied to each element.</param>
         /// <param name="cancellationToken">A CancellationToken to cancel the operation.</param>
         /// <returns>The projected results as an IReadOnlyList{TResult}.</returns>
-        public static async Task<IReadOnlyList<TResult>> SelectAsReadOnlyListAsync<TSource, TResult>(this IEnumerable<TSource> items, Func<TSource, Task<TResult>> selector,
-            CancellationToken cancellationToken = default)
+        public static async Task<IReadOnlyList<TResult>> SelectAsReadOnlyListAsync<TSource, TResult>(this IEnumerable<TSource> items, Func<TSource,
+            Task<TResult>> selector, CancellationToken cancellationToken = default)
         {
             _ = items.WhenNotNull(nameof(items));
 
@@ -157,14 +157,20 @@ namespace AllOverIt.Extensions
             return results.AsReadOnlyList();
         }
 
-        /// <summary>
-        /// Applicable to strings and collections, this method determines if the instance is null or empty.
-        /// </summary>
+        /// <summary>Applicable to strings and collections, this method determines if the instance is null or empty.</summary>
         /// <param name="items">The object of interest.</param>
-        /// <returns>True if the object is null or empty.</returns>
+        /// <returns><see langword="true" /> if the object is null or empty.</returns>
         public static bool IsNullOrEmpty(this IEnumerable items)
         {
             return items == null || !items.GetEnumerator().MoveNext();
+        }
+
+        /// <summary>Applicable to strings and collections, this method determines if the instance is not null or empty.</summary>
+        /// <param name="items">The object of interest.</param>
+        /// <returns><see langword="true" /> if the object is not null or not empty.</returns>
+        public static bool IsNotNullOrEmpty(this IEnumerable items)                 // TODO: Add tests
+        {
+            return !IsNullOrEmpty(items);
         }
 
         /// <summary>
@@ -191,7 +197,7 @@ namespace AllOverIt.Extensions
                 }
             }
 
-            if (batch.Any())
+            if (batch.Count != 0)
             {
                 yield return batch;
             }
@@ -228,8 +234,9 @@ namespace AllOverIt.Extensions
         /// <typeparam name="TType">The element type.</typeparam>
         /// <param name="items">The source sequence of elements.</param>
         /// <param name="action">The asynchronous action to invoke against each element in the sequence.</param>
+        /// <param name="cancellationToken">An optional cancellation token.</param>
         /// <returns>An awaitable task that completes when the iteration is complete.</returns>
-        public static async Task ForEachAsync<TType>(this IEnumerable<TType> items, Func<TType, int, Task> action)
+        public static async Task ForEachAsync<TType>(this IEnumerable<TType> items, Func<TType, int, CancellationToken, Task> action, CancellationToken cancellationToken = default)
         {
             _ = items.WhenNotNull(nameof(items));
 
@@ -237,7 +244,9 @@ namespace AllOverIt.Extensions
 
             foreach (var item in items)
             {
-                await action.Invoke(item, index++).ConfigureAwait(false);
+                cancellationToken.ThrowIfCancellationRequested();
+
+                await action.Invoke(item, index++, cancellationToken).ConfigureAwait(false);
             }
         }
 
@@ -275,7 +284,7 @@ namespace AllOverIt.Extensions
         /// <typeparam name="TKey">The key type.</typeparam>
         /// <param name="source">The source collection.</param>
         /// <param name="selector">The key selector.</param>
-        /// <returns>True when the grouping results in one element per key, otherwise false.</returns>
+        /// <returns><see langword="true" /> when the grouping results in one element per key, otherwise <see langword="false" />.</returns>
         public static bool HasDistinctGrouping<TType, TKey>(this IEnumerable<TType> source, Func<TType, TKey> selector)
         {
             return source

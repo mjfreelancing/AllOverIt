@@ -3,7 +3,7 @@ using System;
 namespace AllOverIt.Evaluator.Exceptions
 {
     /// <summary>An exception that can be thrown to indicate a concrete IVariable instance is not mutable.</summary>
-    public class VariableImmutableException : VariableException
+    public sealed class VariableImmutableException : VariableException
     {
         /// <summary>Default constructor.</summary>
         public VariableImmutableException()

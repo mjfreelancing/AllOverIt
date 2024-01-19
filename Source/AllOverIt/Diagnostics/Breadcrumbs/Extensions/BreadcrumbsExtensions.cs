@@ -21,14 +21,7 @@ namespace AllOverIt.Diagnostics.Breadcrumbs.Extensions
 
             var message = $"Call Site: {caller.GetType().FullName}.{callerName}()";
 
-            if (metadata is null)
-            {
-                Add(breadcrumbs, message);
-            }
-            else
-            {
-                Add(breadcrumbs, message, metadata);
-            }
+            AddBreadcrumb(breadcrumbs, caller, message, metadata, callerName);
         }
 
         /// <summary>Adds a message that includes the name of the calling object and method.</summary>
@@ -50,14 +43,7 @@ namespace AllOverIt.Diagnostics.Breadcrumbs.Extensions
 
             var message = $"Call Site: {caller.GetType().FullName}.{callerName}(), at {filePath}:{lineNumber}";
 
-            if (metadata is null)
-            {
-                Add(breadcrumbs, message);
-            }
-            else
-            {
-                Add(breadcrumbs, message, metadata);
-            }
+            AddBreadcrumb(breadcrumbs, caller, message, metadata, callerName, filePath, lineNumber);
         }
 
         /// <summary>Adds a message to the collection of breadcrumbs.</summary>
@@ -68,7 +54,7 @@ namespace AllOverIt.Diagnostics.Breadcrumbs.Extensions
             _ = breadcrumbs.WhenNotNull(nameof(breadcrumbs));
             _ = message.WhenNotNullOrEmpty(nameof(message));
 
-            AddBreadcrumb(breadcrumbs, null, message, null);
+            AddBreadcrumb(breadcrumbs, null, message, null, null);
         }
 
         /// <summary>Adds a message and related metadata to the collection of breadcrumbs.</summary>
@@ -81,7 +67,7 @@ namespace AllOverIt.Diagnostics.Breadcrumbs.Extensions
             _ = message.WhenNotNullOrEmpty(nameof(message));
             _ = metadata.WhenNotNull(nameof(metadata));
 
-            AddBreadcrumb(breadcrumbs, null, message, metadata);
+            AddBreadcrumb(breadcrumbs, null, message, metadata, null);
         }
 
         /// <summary>Adds a message to the collection of breadcrumbs.</summary>
@@ -124,14 +110,14 @@ namespace AllOverIt.Diagnostics.Breadcrumbs.Extensions
             AddBreadcrumb(breadcrumbs, caller, message, metadata, callerName, filePath, lineNumber);
         }
 
-        private static void AddBreadcrumb(IBreadcrumbs breadcrumbs, object caller, string message, object metadata,
-            string callerName = null, string filePath = null, int lineNumber = 0)
+        internal static void AddBreadcrumb(IBreadcrumbs breadcrumbs, object caller, string message, object metadata,
+            string callerName, string filePath = null, int lineNumber = 0)
         {
             var fullName = (caller, callerName) switch
             {
                 (null, null) => null,
-                (null, _) => throw new InvalidOperationException("Cannot have a null caller instance."),
-                (_, null) => throw new InvalidOperationException("Cannot have a null caller name."),
+                (null, _) => throw new InvalidOperationException("Cannot have a null caller instance."),        // Cannot test this if the method is private
+                (_, null) => throw new InvalidOperationException("Cannot have a null caller name."),            // Cannot test this if the method is private
                 (_, "") => $"{caller.GetType().FullName}",
                 (_, _) => $"{caller.GetType().FullName}.{callerName}"
             };

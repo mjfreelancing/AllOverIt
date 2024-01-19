@@ -3,7 +3,7 @@
 namespace AllOverIt.Reflection.Exceptions
 {
     /// <summary>Represents an reflection related error.</summary>
-    public class ReflectionException : Exception
+    public sealed class ReflectionException : Exception
     {
         /// <summary>Default constructor.</summary>
         public ReflectionException()

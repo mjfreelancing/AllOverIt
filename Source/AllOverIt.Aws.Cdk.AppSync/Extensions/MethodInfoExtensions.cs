@@ -7,10 +7,9 @@ using AllOverIt.Aws.Cdk.AppSync.Factories;
 using AllOverIt.Aws.Cdk.AppSync.Mapping;
 using AllOverIt.Collections;
 using AllOverIt.Extensions;
-using Amazon.CDK.AWS.AppSync;
+using Cdklabs.AwsCdkAppsyncUtils;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using SystemType = System.Type;
 
@@ -44,11 +43,11 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
             }
         }
 
-        public static IDictionary<string, GraphqlType> GetMethodArgs(this MethodInfo methodInfo, GraphqlApi graphqlApi, GraphqlTypeStore typeStore)
+        public static IDictionary<string, GraphqlType> GetMethodArgs(this MethodInfo methodInfo, CodeFirstSchema schema, GraphqlTypeStore typeStore)
         {
             var parameters = methodInfo.GetParameters();
 
-            if (!parameters.Any())
+            if (parameters.Length == 0)
             {
                 return null;
             }
@@ -64,7 +63,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
 
                 // Passing null for the field name because we are not creating a graphql field type, it is an argument type.
                 // The graphql fields are tracked for things like determining request/response mappings.
-                var graphqlType = typeStore.GetGraphqlType(null, requiredTypeInfo, objectType => graphqlApi.AddType(objectType));
+                var graphqlType = typeStore.GetGraphqlType(null, requiredTypeInfo, objectType => schema.AddType(objectType));
 
                 args.Add(parameterInfo.Name.GetGraphqlName(), graphqlType);
             }
@@ -119,14 +118,11 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
         {
             var attribute = memberInfo.GetCustomAttribute<DataSourceAttribute>(true);
 
-            if (attribute == null)
-            {
-                throw new InvalidOperationException($"Expected {memberInfo.DeclaringType!.Name}.{memberInfo.Name} to have a datasource attribute.");
-            }
+            Throw<InvalidOperationException>.WhenNull(attribute, $"Expected {memberInfo.DeclaringType!.Name}.{memberInfo.Name} to have a datasource attribute.");
 
             // will be null if no type has been provided (assumes the mapping was added in code via MappingTemplates)
             return attribute.MappingType != null
-                ? ( mappingTypeFactory).GetRequestResponseMapping(attribute.MappingType)
+                ? mappingTypeFactory.GetRequestResponseMapping(attribute.MappingType)
                 : null;
         }
     }

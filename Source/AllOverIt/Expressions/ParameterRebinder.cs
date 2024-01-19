@@ -15,7 +15,7 @@ namespace AllOverIt.Expressions
 
         private ParameterRebinder(IDictionary<ParameterExpression, ParameterExpression> parameterMap)
         {
-            _parameterMap = parameterMap ?? new Dictionary<ParameterExpression, ParameterExpression>();
+            _parameterMap = parameterMap;
         }
 
         /// <summary>Replaces parameter expressions in a lambda expression with alternate parameter expressions in the provided mapping.</summary>

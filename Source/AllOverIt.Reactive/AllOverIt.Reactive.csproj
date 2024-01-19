@@ -1,14 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net7.0;net6.0;net5.0;netcoreapp3.1;netstandard2.1</TargetFrameworks>
-        <Copyright>Copyright © 2022</Copyright>
-        <Description>Provides utility extensions for use with System.Reactive.</Description>
-        <PackageTags>utilities;reactive</PackageTags>
+        <TargetFrameworks>net8.0;net7.0;net6.0;netstandard2.1</TargetFrameworks>
+        <Description>This package contains utility extensions for use with System.Reactive.</Description>
+        <PackageTags>AllOverIt;Utilities;Reactive</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="System.Reactive" Version="5.0.0" />
+        <PackageReference Include="System.Reactive" Version="6.0.0" />
     </ItemGroup>
 
     <ItemGroup>

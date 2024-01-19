@@ -106,9 +106,11 @@ namespace AllOverIt.Evaluator.Tests
 
         public class Process : FormulaProcessorFixture
         {
+            IArithmeticOperationFactory _operationFactory = new ArithmeticOperationFactory();
+
             public Process()
             {
-                _formulaProcessor = new FormulaProcessor(new ArithmeticOperationFactory(), new UserDefinedMethodFactory());
+                _formulaProcessor = new FormulaProcessor(_operationFactory, new UserDefinedMethodFactory());
             }
 
             [Fact]
@@ -236,6 +238,65 @@ namespace AllOverIt.Evaluator.Tests
                     .WithMessage("Invalid expression. See index 9, near '-round(b)'.")
                     .WithInnerException<FormulaException>()
                     .WithMessage("The ROUND method expects 2 parameter(s).");
+            }
+
+
+
+
+
+            private sealed class CustomMath
+            {
+                public static double CustomMin(double value1, double value2)
+                {
+                    // doesn't take epsilon into account - but this is just for test purposes
+                    return value1 < value2
+                      ? value1
+                      : value2;
+                }
+            }
+
+            private sealed class CustomMinOperator : BinaryOperator
+            {
+                public CustomMinOperator(Expression value1, Expression value2)
+                    : base(CreateExpression, value1, value2)
+                {
+                }
+
+                private static Expression CreateExpression(Expression value1, Expression value2)
+                {
+                    var method = typeof(CustomMath).GetMethod("CustomMin", new[] { typeof(double), typeof(double) });
+                    return Expression.Call(method!, value1, value2);
+                }
+            }
+
+            private sealed class CustomMinOperation : ArithmeticOperationBase
+            {
+                public CustomMinOperation()
+                    : base(2, MakeOperator)
+                {
+                }
+
+                public static IOperator MakeOperator(Expression[] expressions)
+                {
+                    return OperatorBase.Create(expressions, e => new CustomMinOperator(e[0], e[1]));
+                }
+            }
+
+            [Fact]
+            public void Should_Process_Custom_Operator()
+            {
+                _operationFactory.RegisterOperation("??", 3, 2, CustomMinOperation.MakeOperator);
+
+                var val1 = Create<double>();
+                var val2 = Create<double>();
+
+                var processorResult = _formulaProcessor.Process($"{val1} ?? {val2}", null);
+
+                var value = processorResult.FormulaExpression.Compile().Invoke();
+
+                var expected = Math.Min(val1, val2);
+
+                value.Should().Be(expected);
             }
 
             [Fact]

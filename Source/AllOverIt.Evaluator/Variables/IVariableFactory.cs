@@ -14,7 +14,7 @@ namespace AllOverIt.Evaluator.Variables
         /// <param name="name">The name to be assigned to the variable.</param>
         /// <param name="value">The constant value to be assigned to the variable.</param>
         /// <returns>The new variable instance.</returns>
-        IVariable CreateConstantVariable(string name, double value = default);
+        IVariable CreateConstantVariable(string name, double value);
 
         /// <summary>Creates a new mutable variable.</summary>
         /// <param name="name">The name to be assigned to the variable.</param>
@@ -28,12 +28,25 @@ namespace AllOverIt.Evaluator.Variables
         /// <returns>The new variable instance.</returns>
         IVariable CreateDelegateVariable(string name, Func<double> valueResolver);
 
+        /// <summary>Creates a new delegate variable that will be re-evaluated each time its value is read.</summary>
+        /// <param name="name">The name to be assigned to the variable.</param>
+        /// <param name="compilerResult">A compiled resolver returned from the compilation of a formula.</param>
+        /// <returns>The new variable instance.</returns>
+        IVariable CreateDelegateVariable(string name, FormulaCompilerResult compilerResult);
+
         /// <summary>Creates a new lazily-evaluated delegate variable.</summary>
         /// <param name="name">The name to be assigned to the variable.</param>
         /// <param name="valueResolver">The initial lazily-evaluated delegate to be assigned to the variable.</param>
         /// <param name="threadSafe">Indicates if the underlying lazy-evaluator should evaluate in a thread safe manner.</param>
         /// <returns>The new variable instance.</returns>
         ILazyVariable CreateLazyVariable(string name, Func<double> valueResolver, bool threadSafe = false);
+
+        /// <summary>Creates a new lazily-evaluated delegate variable.</summary>
+        /// <param name="name">The name to be assigned to the variable.</param>
+        /// <param name="compilerResult">A compiled resolver returned from the compilation of a formula.</param>
+        /// <param name="threadSafe">Indicates if the underlying lazy-evaluator should evaluate in a thread safe manner.</param>
+        /// <returns>The new variable instance.</returns>
+        ILazyVariable CreateLazyVariable(string name, FormulaCompilerResult compilerResult, bool threadSafe = false);
 
         /// <summary>Creates a delegate-based variable that will invoke one or more value resolvers and aggregate their values.</summary>
         /// <param name="name">The name to be assigned to the variable.</param>

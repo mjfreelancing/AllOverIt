@@ -1,0 +1,32 @@
+﻿<Window
+    x:Class="ExecuteCommandOnEnterKeyBehavior.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="clr-namespace:AllOverIt.Wpf.Controls.Behaviors;assembly=AllOverIt.Wpf.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:local="clr-namespace:ExecuteCommandOnEnterKeyBehavior"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Width="350"
+    Height="120"
+    Closing="OnWindowClosing"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <Window.DataContext>
+        <local:MainWindowViewModel />
+    </Window.DataContext>
+    <Grid>
+        <TextBox
+            Width="290"
+            Height="40"
+            Padding="10"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Background="LightSalmon">
+            <i:Interaction.Behaviors>
+                <behaviors:ExecuteCommandOnEnterKeyBehavior Command="{Binding ShowMessageCommand}" CommandParameter="{Binding CurrentDateTime}" />
+            </i:Interaction.Behaviors>
+            Click here and press ENTER to trigger a command
+        </TextBox>
+    </Grid>
+</Window>

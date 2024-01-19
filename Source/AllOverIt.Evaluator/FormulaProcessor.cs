@@ -35,7 +35,7 @@ namespace AllOverIt.Evaluator
 
         private readonly Stack<string> _operatorStack = new();
         private readonly Stack<Expression> _expressionStack = new();
-        private readonly HashSet<string> _referencedVariableNames = new();
+        private readonly HashSet<string> _referencedVariableNames = [];
         private readonly IArithmeticOperationFactory _operationFactory;
         private readonly IUserDefinedMethodFactory _userDefinedMethodFactory;
 
@@ -100,8 +100,10 @@ namespace AllOverIt.Evaluator
                 var funcExpression = Expression.Lambda<Func<double>>(lastExpression);
 
                 var referencedVariableNames = _referencedVariableNames.Count > 0
+
                     // Must return a copy of the referenced variable names
-                    ? new ReadOnlyCollection<string>(_referencedVariableNames.ToList())
+                    ? new ReadOnlyCollection<string>([.. _referencedVariableNames])
+
                     // FormulaProcessorResult handles this so it points to an empty ReadOnlyCollection
                     : null;
 
@@ -134,8 +136,7 @@ namespace AllOverIt.Evaluator
 
         private FormulaTokenProcessorContext[] GetFormulaTokenProcessors()
         {
-            return new FormulaTokenProcessorContext[]
-            {
+            return [
                 // args are (token, isUserDefined)
 
                 // The predicate is used to determine if the associated processor will be invoked. The input arguments of the predicate include the
@@ -178,15 +179,6 @@ namespace AllOverIt.Evaluator
                         return true;
                     }),
 
-                new FormulaTokenProcessorContext(
-                    (token, isUserDefined) => isUserDefined && token == ',',
-                    (_, _) =>
-                    {
-                        ++_currentIndex;
-                        ProcessMethodArgument();
-                        return true;
-                    }),
-
                 // an operator
                 new FormulaTokenProcessorContext(
                     (token, _) => IsCandidateOperation(token),
@@ -213,7 +205,7 @@ namespace AllOverIt.Evaluator
                         ProcessNamedOperand();
                         return true;
                     })
-            };
+            ];
         }
 
         private void PushOperator(string operatorToken)
@@ -241,13 +233,15 @@ namespace AllOverIt.Evaluator
 
             if (isUserMethod)
             {
-                // we should at least have a 'UserMethod' in the stack to indicate a user method is being parsed
+#if DEBUG
+                // We should at least have a 'UserMethod' in the stack to indicate a user method is being parsed
                 if (_operatorStack.Count == 0)
                 {
                     throw new FormulaException("Invalid expression stack.");
                 }
+#endif
 
-                // methods pushed onto the operator stack have been prefixed with 'UserMethod' to identify them as methods since they 
+                // Methods pushed onto the operator stack have been prefixed with 'UserMethod' to identify them as methods since they 
                 // may take parameters, in which case it is time to pop the expressions so they can be used for the input.
                 if (_operatorStack.Peek() == CustomTokens.UserMethod)
                 {
@@ -301,7 +295,7 @@ namespace AllOverIt.Evaluator
                 {
                     var next = _operatorStack.Peek();
 
-                    return next != CustomTokens.OpenScope && 
+                    return next != CustomTokens.OpenScope &&
                            currentOperation.Precedence >= _operationFactory.GetOperation(next).Precedence;
                 });
             }
@@ -390,13 +384,13 @@ namespace AllOverIt.Evaluator
             PushOperator(CustomTokens.UserMethod);      // to indicate a method operation
             PushOperator(CustomTokens.OpenScope);       // used to track nested argument expressions
 
-            // capture the current count of expressions - it should increase by the number of parameters expected by the method
+            // Capture the current count of expressions - it should increase by the number of parameters expected by the method
             var currentExpressionCount = _expressionStack.Count;
 
-            // passing true to indicate it is a method being parsed (so parameters can be parsed / read correctly)
+            // Passing true to indicate it is a method being parsed (so parameters can be parsed / read correctly)
             ParseContent(true);
 
-            // check if the expression is missing the required user method token
+            // Check if the expression is missing the required user method token
             if (_operatorStack.Peek() != CustomTokens.UserMethod)
             {
                 throw new FormulaException($"Invalid expression near method: {methodName}.");
@@ -404,7 +398,7 @@ namespace AllOverIt.Evaluator
 
             _operatorStack.Pop();                        // pop the 'UserMethod'
 
-            // determine how many arguments we need to pop 
+            // Determine how many arguments we need to pop 
             var operation = _userDefinedMethodFactory.GetMethod(methodName);    // will throw if not registered
             var expressionsRequired = operation.ArgumentCount;
 
@@ -446,10 +440,12 @@ namespace AllOverIt.Evaluator
         {
             var previousTokenWasExponent = false;
 
+#if DEBUG
             if (_currentIndex == _formula.Length)
             {
                 throw new FormulaException("Nothing to read.");
             }
+#endif
 
             var startIndex = _currentIndex;
 
@@ -473,10 +469,12 @@ namespace AllOverIt.Evaluator
                 }
             }
 
+#if DEBUG
             if (startIndex == _currentIndex)
             {
                 throw new FormulaException("Unexpected non-numerical token.");
             }
+#endif
 
             var operand = _formula[startIndex.._currentIndex].Span;
 
@@ -498,10 +496,12 @@ namespace AllOverIt.Evaluator
 
         private string ReadNamedOperand()
         {
+#if DEBUG
             if (_currentIndex == _formula.Length)
             {
                 throw new FormulaException("Nothing to read.");
             }
+#endif
 
             var startIndex = _currentIndex;
 
@@ -524,20 +524,24 @@ namespace AllOverIt.Evaluator
                 }
             }
 
+#if DEBUG
             if (startIndex == _currentIndex)
             {
                 throw new FormulaException("Unexpected empty named operand.");
             }
+#endif           
 
             return _formula[startIndex.._currentIndex].ToString();
         }
 
         private string ReadOperator()
         {
+#if DEBUG
             if (_currentIndex == _formula.Length)
             {
                 throw new FormulaException("Nothing to read.");
             }
+#endif
 
             var startIndex = _currentIndex;
 
@@ -568,10 +572,13 @@ namespace AllOverIt.Evaluator
                 }
             }
 
+#if DEBUG
             if (startIndex == _currentIndex)
             {
                 throw new FormulaException("Unexpected empty operation.");
             }
+#endif
+
 
             return _formula[startIndex.._currentIndex].ToString();
         }

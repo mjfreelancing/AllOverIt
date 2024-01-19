@@ -3,12 +3,10 @@ using AllOverIt.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Runtime.Serialization;
 
 namespace AllOverIt.Aws.AppSync.Client.Exceptions
 {
     /// <summary>This exception is raised when a non-successful graphql query or mutation occurs.</summary>
-    [Serializable]
     public sealed class GraphqlHttpRequestException : Exception
     {
         /// <summary>The HTTP status code.</summary>
@@ -25,29 +23,11 @@ namespace AllOverIt.Aws.AppSync.Client.Exceptions
         /// <param name="statusCode">The HTTP status code.</param>
         /// <param name="errors">When not null, this provides all graphql errors associated with the query or mutation request.</param>
         /// <param name="content">The raw HTT response content returned.</param>
-        public GraphqlHttpRequestException(HttpStatusCode statusCode, IEnumerable<GraphqlErrorDetail> errors, string content)
+        internal GraphqlHttpRequestException(HttpStatusCode statusCode, IEnumerable<GraphqlErrorDetail> errors, string content)
         {
             StatusCode = statusCode;
             Errors = errors?.AsReadOnlyCollection();    // can be null
             Content = content;
-        }
-
-        /// <inheritdoc />
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue(nameof(StatusCode), StatusCode);
-            info.AddValue(nameof(Errors), Errors, typeof(IEnumerable<GraphqlErrorDetail>));
-            info.AddValue(nameof(Content), Content);
-
-            base.GetObjectData(info, context);
-        }
-
-        private GraphqlHttpRequestException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-            StatusCode = (HttpStatusCode) info.GetValue(nameof(StatusCode), typeof(HttpStatusCode))!;
-            Errors = (IEnumerable<GraphqlErrorDetail>) info.GetValue(nameof(Errors), typeof(IEnumerable<GraphqlErrorDetail>))!;
-            Content = info.GetString(nameof(Content));
         }
     }
 }

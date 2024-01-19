@@ -3,7 +3,7 @@
 namespace AllOverIt.Pagination.Exceptions
 {
     /// <summary>Represents an error that occurs when configuring or executing a paginated query.</summary>
-    public class PaginationException : Exception
+    public sealed class PaginationException : Exception
     {
         /// <summary>Default constructor.</summary>
         public PaginationException()

@@ -1,5 +1,4 @@
-﻿using AllOverIt.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -34,15 +33,13 @@ namespace AllOverIt.Evaluator.Operations
     public sealed class UserDefinedMethodFactory : IUserDefinedMethodFactory
     {
         // shared across all instances
-        private static readonly IDictionary<string, Lazy<ArithmeticOperationBase>> BuiltInMethodsRegistry = new Dictionary<string, Lazy<ArithmeticOperationBase>>();
+        private static readonly Dictionary<string, Lazy<ArithmeticOperationBase>> BuiltInMethodsRegistry = [];
 
         // unique to each instance created (unless created as a Singleton of course) - created when the first method is registered
-        private IDictionary<string, Lazy<ArithmeticOperationBase>> _userMethodsRegistry;
+        private Dictionary<string, Lazy<ArithmeticOperationBase>> _userMethodsRegistry;
 
         /// <summary>Provides a list of all built-in and custom registered methods.</summary>
-        public IEnumerable<string> RegisteredMethods => BuiltInMethodsRegistry.Keys
-            .Concat(_userMethodsRegistry?.Keys ?? Enumerable.Empty<string>())
-            .AsReadOnlyCollection();
+        public IEnumerable<string> RegisteredMethods => GetRegisteredMethods();
 
         static UserDefinedMethodFactory()
         {
@@ -83,14 +80,14 @@ namespace AllOverIt.Evaluator.Operations
         /// <remarks>The operation type is expected to be thread-safe and should therefore not store state.</remarks>
         public void RegisterMethod<TOperationType>(string methodName) where TOperationType : ArithmeticOperationBase, new()
         {
-            _userMethodsRegistry ??=  new Dictionary<string, Lazy<ArithmeticOperationBase>>();
+            _userMethodsRegistry ??= [];
 
             RegisterMethod<TOperationType>(_userMethodsRegistry, methodName, true);
         }
 
         /// <summary>Indicates if the requested method name has been registered.</summary>
         /// <param name="methodName">The case-insensitive method name being queried.</param>
-        /// <returns>True if the requested method name has been registered, otherwise false.</returns>
+        /// <returns><see langword="true" /> if the requested method name has been registered, otherwise <see langword="false" />.</returns>
         public bool IsRegistered(string methodName)
         {
             var upperMethodName = methodName.ToUpperInvariant();
@@ -120,7 +117,19 @@ namespace AllOverIt.Evaluator.Operations
             throw new KeyNotFoundException($"The '{methodName}' method is not registered with the {nameof(UserDefinedMethodFactory)}.");
         }
 
-        private static void RegisterMethod<TOperationType>(IDictionary<string, Lazy<ArithmeticOperationBase>> operationRegistry, string methodName,
+        private IEnumerable<string> GetRegisteredMethods()
+        {
+            var keys = BuiltInMethodsRegistry.Keys.AsEnumerable();
+
+            if (_userMethodsRegistry is not null)
+            {
+                keys = keys.Concat(_userMethodsRegistry.Keys);
+            }
+
+            return keys;
+        }
+
+        private static void RegisterMethod<TOperationType>(Dictionary<string, Lazy<ArithmeticOperationBase>> operationRegistry, string methodName,
             bool requiresUppercase = false)
             where TOperationType : ArithmeticOperationBase, new()
         {

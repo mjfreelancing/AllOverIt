@@ -2,6 +2,7 @@
 using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
+using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Pagination.Exceptions;
 using AllOverIt.Pagination.Extensions;
 using AllOverIt.Pagination.TokenEncoding;
@@ -16,7 +17,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 {
     public class ContinuationTokenEncoderFixture : FixtureBase
     {
-        private sealed class EntityDummy
+        private sealed class DummyEntity
         {
             public int Id { get; init; }
             public string Name { get; init; }
@@ -28,8 +29,8 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
         {
             _columns = new IColumnDefinition[]
             {
-                new ColumnDefinition<EntityDummy, string>(typeof(EntityDummy).GetProperty(nameof(EntityDummy.Name)), Create<bool>()),
-                new ColumnDefinition<EntityDummy, int>(typeof(EntityDummy).GetProperty(nameof(EntityDummy.Id)), Create<bool>())
+                new ColumnDefinition<DummyEntity, string>(typeof(DummyEntity).GetProperty(nameof(DummyEntity.Name)), Create<bool>()),
+                new ColumnDefinition<DummyEntity, int>(typeof(DummyEntity).GetProperty(nameof(DummyEntity.Id)), Create<bool>())
             };
         }
 
@@ -40,7 +41,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
             {
                 Invoking(() =>
                 {
-                    _ = new ContinuationTokenEncoder(null, Create<PaginationDirection>(), A.Fake<IContinuationTokenSerializer>());
+                    _ = new ContinuationTokenEncoder(null, Create<PaginationDirection>(), this.CreateStub<IContinuationTokenSerializer>());
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -52,7 +53,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
             {
                 Invoking(() =>
                 {
-                    _ = new ContinuationTokenEncoder(new List<IColumnDefinition>(), Create<PaginationDirection>(), A.Fake<IContinuationTokenSerializer>());
+                    _ = new ContinuationTokenEncoder(new List<IColumnDefinition>(), Create<PaginationDirection>(), this.CreateStub<IContinuationTokenSerializer>());
                 })
                 .Should()
                 .Throw<ArgumentException>()
@@ -65,11 +66,11 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
             [Fact]
             public void Should_Throw_When_References_Null()
             {
-                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward, A.Fake<IContinuationTokenSerializer>());
+                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward, this.CreateStub<IContinuationTokenSerializer>());
 
                 Invoking(() =>
                 {
-                    _ = encoder.EncodePreviousPage((IReadOnlyCollection<EntityDummy>) null);
+                    _ = encoder.EncodePreviousPage((IReadOnlyCollection<DummyEntity>) null);
                 })
                 .Should()
                 .Throw<PaginationException>()
@@ -79,11 +80,11 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
             [Fact]
             public void Should_Throw_When_References_Empty()
             {
-                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward, A.Fake<IContinuationTokenSerializer>());
+                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward, this.CreateStub<IContinuationTokenSerializer>());
 
                 Invoking(() =>
                 {
-                    _ = encoder.EncodePreviousPage(Collection.EmptyReadOnly<EntityDummy>());
+                    _ = encoder.EncodePreviousPage(Collection.EmptyReadOnly<DummyEntity>());
                 })
                 .Should()
                 .Throw<PaginationException>()
@@ -96,7 +97,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
             [InlineData(PaginationDirection.Backward)]
             public void Should_Encode_Token(PaginationDirection paginationDirection)
             {
-                var entities = CreateMany<EntityDummy>();
+                var entities = CreateMany<DummyEntity>();
 
                 var expectedReference = paginationDirection switch
                 {
@@ -111,7 +112,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                     Values = new object[] { expectedReference.Name, expectedReference.Id }
                 };
 
-                var serializerFake = A.Fake<IContinuationTokenSerializer>();
+                var serializerFake = this.CreateStub<IContinuationTokenSerializer>();
 
                 IContinuationToken actualToken = default;
 
@@ -130,7 +131,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
             [InlineData(PaginationDirection.Backward)]
             public void Should_Encode_Decode_Token(PaginationDirection paginationDirection)
             {
-                var entities = CreateMany<EntityDummy>();
+                var entities = CreateMany<DummyEntity>();
 
                 var expectedReference = paginationDirection switch
                 {
@@ -160,7 +161,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
             [Fact]
             public void Encoding_With_Compression_Should_Not_Match_Without_Compression()
             {
-                var entities = CreateMany<EntityDummy>();
+                var entities = CreateMany<DummyEntity>();
                 var paginationDirection = Create<PaginationDirection>();
 
                 var serializer = new ContinuationTokenSerializer(new ContinuationTokenOptions { UseCompression = true });
@@ -180,11 +181,11 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
             [Fact]
             public void Should_Throw_When_References_Null()
             {
-                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward, A.Fake<IContinuationTokenSerializer>());
+                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward, this.CreateStub<IContinuationTokenSerializer>());
 
                 Invoking(() =>
                 {
-                    _ = encoder.EncodeNextPage((IReadOnlyCollection<EntityDummy>) null);
+                    _ = encoder.EncodeNextPage((IReadOnlyCollection<DummyEntity>) null);
                 })
                 .Should()
                 .Throw<PaginationException>()
@@ -194,11 +195,11 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
             [Fact]
             public void Should_Throw_When_References_Empty()
             {
-                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward, A.Fake<IContinuationTokenSerializer>());
+                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward, this.CreateStub<IContinuationTokenSerializer>());
 
                 Invoking(() =>
                 {
-                    _ = encoder.EncodeNextPage(Collection.EmptyReadOnly<EntityDummy>());
+                    _ = encoder.EncodeNextPage(Collection.EmptyReadOnly<DummyEntity>());
                 })
                 .Should()
                 .Throw<PaginationException>()
@@ -210,7 +211,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
             [InlineData(PaginationDirection.Backward)]
             public void Should_Encode_Token(PaginationDirection paginationDirection)
             {
-                var entities = CreateMany<EntityDummy>();
+                var entities = CreateMany<DummyEntity>();
 
                 var expectedReference = paginationDirection switch
                 {
@@ -225,7 +226,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                     Values = new object[] { expectedReference.Name, expectedReference.Id }
                 };
 
-                var serializerFake = A.Fake<IContinuationTokenSerializer>();
+                var serializerFake = this.CreateStub<IContinuationTokenSerializer>();
 
                 IContinuationToken actualToken = default;
 
@@ -244,7 +245,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
             [InlineData(PaginationDirection.Backward)]
             public void Should_Encode_Decode_Token(PaginationDirection paginationDirection)
             {
-                var entities = CreateMany<EntityDummy>();
+                var entities = CreateMany<DummyEntity>();
 
                 var expectedReference = paginationDirection switch
                 {
@@ -277,11 +278,11 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
             [Fact]
             public void Should_Throw_When_References_Null()
             {
-                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward, A.Fake<IContinuationTokenSerializer>());
+                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward, this.CreateStub<IContinuationTokenSerializer>());
 
                 Invoking(() =>
                 {
-                    _ = encoder.EncodePreviousPage( null);
+                    _ = encoder.EncodePreviousPage(null);
                 })
                 .Should()
                 .Throw<PaginationException>()
@@ -293,7 +294,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
             [InlineData(PaginationDirection.Backward)]
             public void Should_Encode_Token(PaginationDirection paginationDirection)
             {
-                var entity = Create<EntityDummy>();
+                var entity = Create<DummyEntity>();
 
                 var expected = new
                 {
@@ -301,7 +302,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                     Values = new object[] { entity.Name, entity.Id }
                 };
 
-                var serializerFake = A.Fake<IContinuationTokenSerializer>();
+                var serializerFake = this.CreateStub<IContinuationTokenSerializer>();
 
                 IContinuationToken actualToken = default;
 
@@ -320,7 +321,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
             [InlineData(PaginationDirection.Backward)]
             public void Should_Encode_Decode_Token(PaginationDirection paginationDirection)
             {
-                var entity = Create<EntityDummy>();
+                var entity = Create<DummyEntity>();
 
                 var expected = new
                 {
@@ -346,11 +347,11 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
             [Fact]
             public void Should_Throw_When_References_Null()
             {
-                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward, A.Fake<IContinuationTokenSerializer>());
+                var encoder = new ContinuationTokenEncoder(_columns, PaginationDirection.Forward, this.CreateStub<IContinuationTokenSerializer>());
 
                 Invoking(() =>
                 {
-                    _ = encoder.EncodeNextPage( null);
+                    _ = encoder.EncodeNextPage(null);
                 })
                 .Should()
                 .Throw<PaginationException>()
@@ -362,7 +363,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
             [InlineData(PaginationDirection.Backward)]
             public void Should_Encode_Token(PaginationDirection paginationDirection)
             {
-                var entity = Create<EntityDummy>();
+                var entity = Create<DummyEntity>();
 
                 var expected = new
                 {
@@ -370,7 +371,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                     Values = new object[] { entity.Name, entity.Id }
                 };
 
-                var serializerFake = A.Fake<IContinuationTokenSerializer>();
+                var serializerFake = this.CreateStub<IContinuationTokenSerializer>();
 
                 IContinuationToken actualToken = default;
 
@@ -389,7 +390,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
             [InlineData(PaginationDirection.Backward)]
             public void Should_Encode_Decode_Token(PaginationDirection paginationDirection)
             {
-                var entity = Create<EntityDummy>();
+                var entity = Create<DummyEntity>();
 
                 var expected = new
                 {
@@ -439,7 +440,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                     Values = (object[]) null
                 };
 
-                var serializerFake = A.Fake<IContinuationTokenSerializer>();
+                var serializerFake = this.CreateStub<IContinuationTokenSerializer>();
 
                 IContinuationToken actualToken = default;
 

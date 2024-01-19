@@ -26,7 +26,7 @@ namespace AllOverIt.Aws.AppSync.Client
         /// previous connection will be re-subscribed.</summary>
         /// <param name="authorization">The authorization to use for the request. If null is provided then the default authorization provided
         /// on the client configuration during construction will be used.</param>
-        /// <returns>True if the connection was established, otherwise false.</returns>
+        /// <returns><see langword="true" /> if the connection was established, otherwise <see langword="false" />.</returns>
         /// <remarks>Refer to <see cref="DisconnectAsync"/> for more information on how existing subscriptions are retained
         /// if the client is disconnected while there are active subscriptions.</remarks>
         Task<bool> ConnectAsync(IAppSyncAuthorization authorization = default);

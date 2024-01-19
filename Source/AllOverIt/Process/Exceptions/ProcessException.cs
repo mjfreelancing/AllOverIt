@@ -3,7 +3,7 @@
 namespace AllOverIt.Process.Exceptions
 {
     /// <summary>Represents an error that occurred while executing an external process.</summary>
-    public class ProcessException : Exception
+    public sealed class ProcessException : Exception
     {
         /// <summary>Default constructor.</summary>
         public ProcessException()

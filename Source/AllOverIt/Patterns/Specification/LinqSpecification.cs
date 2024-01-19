@@ -17,14 +17,6 @@ namespace AllOverIt.Patterns.Specification
 
         private Func<TType, bool> _compiled;
 
-        /// <summary>Creates an ad-hoc specification based on the provided predicate.</summary>
-        /// <param name="predicate">The predicate to be used by the specification.</param>
-        /// <returns>An ad-hoc specification based on the provided predicate.</returns>
-        public static ILinqSpecification<TType> Create(Expression<Func<TType, bool>> predicate)
-        {
-            return new AdHocSpecification(predicate);
-        }
-
         /// <inheritdoc />
         public Expression<Func<TType, bool>> Expression { get; }
 
@@ -35,6 +27,14 @@ namespace AllOverIt.Patterns.Specification
             _ = expressionResolver.WhenNotNull(nameof(expressionResolver));
 
             Expression = expressionResolver.Invoke();
+        }
+
+        /// <summary>Creates an ad-hoc specification based on the provided predicate.</summary>
+        /// <param name="predicate">The predicate to be used by the specification.</param>
+        /// <returns>An ad-hoc specification based on the provided predicate.</returns>
+        public static ILinqSpecification<TType> Create(Expression<Func<TType, bool>> predicate)
+        {
+            return new AdHocSpecification(predicate);
         }
 
         /// <summary>An implicit operator to return the specification as an Expression&lt;Func&lt;TType, bool&gt;&gt; so it can be used with

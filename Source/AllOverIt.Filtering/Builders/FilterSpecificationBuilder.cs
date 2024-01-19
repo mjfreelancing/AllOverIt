@@ -21,7 +21,7 @@ namespace AllOverIt.Filtering.Builders
         where TType : class
         where TFilter : class
     {
-        private static readonly GenericCache OperationTypePropertyGetters = new();
+        private static readonly GenericCache OperationTypePropertyGetters = [];
 
         private readonly IReadOnlyDictionary<Type, Type> _filterOperations = new Dictionary<Type, Type>
             {
@@ -203,9 +203,10 @@ namespace AllOverIt.Filtering.Builders
             Action<OperationFilterOptions> options)
         {
             var operation = filterOperation.Invoke(_filter);
-            var filterOptions = GetOperationFilterOptions(options);
 
-            Throw<InvalidOperationException>.WhenNull($"The filter operation resolver on {propertyExpression} cannot return null.");
+            Throw<InvalidOperationException>.WhenNull(operation, $"The filter operation resolver on {propertyExpression} cannot return null.");
+
+            var filterOptions = GetOperationFilterOptions(options);
 
             if (filterOptions.IgnoreDefaultFilterValue)
             {
@@ -233,7 +234,7 @@ namespace AllOverIt.Filtering.Builders
             }
             catch (NullNotSupportedException)
             {
-                throw new NullNotSupportedException($"The filter operation on {propertyExpression} does not support null values.");
+                throw new NullNotSupportedException($"The filter operation {operation.GetType().GetFriendlyName()}() on {propertyExpression} does not support null values.");
             }
         }
 
@@ -241,9 +242,10 @@ namespace AllOverIt.Filtering.Builders
             Func<TFilter, IBasicFilterOperation> filterOperation, Action<OperationFilterOptions> options)
         {
             var operation = filterOperation.Invoke(_filter);
-            var filterOptions = GetOperationFilterOptions(options);
 
-            Throw<InvalidOperationException>.WhenNull($"The filter operation resolver on {propertyExpression} cannot return null.");
+            Throw<InvalidOperationException>.WhenNull(operation, $"The filter operation resolver on {propertyExpression} cannot return null.");
+
+            var filterOptions = GetOperationFilterOptions(options);
 
             // The TProperty is based on the entity's property type. When this is non-nullable but the filter's value type is
             // nullable we need to use reflection to determine if the filter's value is null - we cannot cast the operation to
@@ -254,8 +256,11 @@ namespace AllOverIt.Filtering.Builders
             {
                 var genericArgumentType = operationType.GetGenericArguments()[0];
 
-                // Looking for typeof(string) and not IStringFilterOperation because other non (explicit) string operations support strings
-                var argTypeIsNullable = genericArgumentType == CommonTypes.StringType || genericArgumentType.IsNullableType();
+                // Looking for typeof(string) and not IStringFilterOperation because other non (explicit) string operations support strings.
+                // genericArgumentType.IsClass caters for 'value types' (wrappers)
+                var argTypeIsNullable = genericArgumentType == CommonTypes.StringType ||
+                                        genericArgumentType.IsClass ||
+                                        genericArgumentType.IsNullableType();
 
                 var operationIsArray = operationType.IsDerivedFrom(typeof(IArrayFilterOperation));
 
@@ -270,7 +275,7 @@ namespace AllOverIt.Filtering.Builders
                 }
             }
 
-            var operationKey = _filterOperations.Keys.SingleOrDefault(type => operationType.IsDerivedFrom(type));
+            var operationKey = _filterOperations.Keys.SingleOrDefault(operationType.IsDerivedFrom);
 
             Throw<InvalidOperationException>.WhenNull(operationKey, $"The operation type '{operationType.GetFriendlyName()}' is not registered with a specification factory.");
 
@@ -288,7 +293,7 @@ namespace AllOverIt.Filtering.Builders
 
         // TODO: Check for opportunities to improve performance related to reflection
         //
-        // As an example, creates an EqualToOperation<,> based on a IEqualTo<>
+        // As an example, create an EqualToOperation<,> based on a IEqualTo<>
         // Caters for IBasicFilterOperation and IArrayFilterOperation
         private static ILinqSpecification<TType> CreateSpecificationOperation<TProperty>(Type specificationOperationType, IBasicFilterOperation operation,
             Expression<Func<TType, TProperty>> propertyExpression, IOperationFilterOptions options)
@@ -313,8 +318,9 @@ namespace AllOverIt.Filtering.Builders
             }
             catch (TargetInvocationException exception)
             {
+                // The InnerException will never be null - it holds the underlying exception thrown by the invoked method
                 // The operation may throw a NullNotSupportedException
-                throw exception.InnerException ?? exception;
+                throw exception.InnerException;
             }
         }
 
@@ -322,19 +328,15 @@ namespace AllOverIt.Filtering.Builders
             Expression<Func<TType, TProperty>> propertyExpression, object value, IOperationFilterOptions options)
         {
             // No special consideration is required when the value is double (for example) and TProperty is double?
-            var ctor = genericOperation.GetConstructor(new[] {
-                        typeof(Expression<Func<TType, TProperty>>),
-                        typeof(TProperty),
-                        typeof(IOperationFilterOptions)
-                    });
+            var ctor = genericOperation.GetConstructor([typeof(Expression<Func<TType, TProperty>>), typeof(TProperty), typeof(IOperationFilterOptions)]);
 
-            return (ILinqSpecification<TType>) ctor.Invoke(new object[] { propertyExpression, value, options });
+            return (ILinqSpecification<TType>) ctor.Invoke([propertyExpression, value, options]);
         }
 
         private static ILinqSpecification<TType> CreateArraySpecificationOperation<TProperty>(Type genericOperation,
             Expression<Func<TType, TProperty>> propertyExpression, object values, IOperationFilterOptions options)
         {
-            Throw<InvalidOperationException>.When(values is not IList, "Array based specifications expected an IList<T>.");
+            Throw<InvalidOperationException>.When(values is not IList, "Array based specifications expect an IList<T>.");
 
             // The array based operations require special consideration when the value is double (for example) and
             // TProperty is double? because an error occurs due to List<double> cannot be converted to IList<double?>.
@@ -346,14 +348,9 @@ namespace AllOverIt.Filtering.Builders
                 values = ConvertListElements((IEnumerable) values, typeof(TProperty));
             }
 
-            var ctor = genericOperation.GetConstructor(new[]
-            {
-                typeof(Expression<Func<TType, TProperty>>),
-                typeof(IList<TProperty>),
-                typeof(IOperationFilterOptions)
-            });
+            var ctor = genericOperation.GetConstructor([typeof(Expression<Func<TType, TProperty>>), typeof(IList<TProperty>), typeof(IOperationFilterOptions)]);
 
-            return (ILinqSpecification<TType>) ctor.Invoke(new object[] { propertyExpression, values, options });
+            return (ILinqSpecification<TType>) ctor.Invoke([propertyExpression, values, options]);
         }
 
         private static ILinqSpecification<TType> CombineSpecifications(ILinqSpecification<TType> specification1, ILinqSpecification<TType> specification2,
@@ -394,9 +391,7 @@ namespace AllOverIt.Filtering.Builders
 
         private static IList ConvertListElements(IEnumerable elements, Type elementType)
         {
-            var listType = CommonTypes.ListGenericType.MakeGenericType(new[] { elementType });
-
-            var typedList = (IList) Activator.CreateInstance(listType);
+            var typedList = elementType.CreateList();
 
             foreach (var element in elements)
             {

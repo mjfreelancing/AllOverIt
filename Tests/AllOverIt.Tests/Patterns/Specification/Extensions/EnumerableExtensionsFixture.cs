@@ -8,7 +8,7 @@ using Xunit;
 
 namespace AllOverIt.Tests.Patterns.Specification.Extensions
 {
-    public partial class EnumerableExtensionsFixture : FixtureBase
+    public class EnumerableExtensionsFixture : FixtureBase
     {
         public class Specifications : SpecificationExtensionsFixture
         {

@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Instantiating Interceptors" id="alloverit-aspects-Instantiating-Interceptors">
+
+    <show-structure for="chapter" depth="2"/>
+
+    <p>
+        This section describes how to instantiate class and method level interceptors, with and without using dependency injection.
+    </p>
+
+    <chapter id="class-level-interceptors" title="Class-Level Interceptors">
+        <p>
+            The example <code>TimedInterceptor</code> shown below is used to decorate an implementation of <code>ISecretService</code>.
+        </p>
+
+        <code-block lang="c#">
+            public interface ISecretService
+            {
+                string GetSecret();
+                Task&lt;string&gt; GetSecretAsync();
+            }
+        </code-block>
+
+        <code-block lang="c#">
+            internal class TimedInterceptor : InterceptorBase&lt;ISecretService&gt;
+            {
+                private sealed class TimedState : InterceptorState
+                {
+                    public Stopwatch Stopwatch { get; } = Stopwatch.StartNew();
+                }
+
+                protected override InterceptorState BeforeInvoke(
+                    MethodInfo targetMethod, ref object[] args)
+                {
+                    return new TimedState();
+                }
+
+                protected override void AfterInvoke(MethodInfo targetMethod,
+                    object[] args, InterceptorState state)
+                {
+                    var timedState = state as TimedState;
+                    var elapsed = timedState.Stopwatch.ElapsedMilliseconds;
+
+                    // Do something here...
+                }
+            }
+        </code-block>
+
+        <p>
+            This interceptor can be instantiated explicitly or resolved via dependency injection, as described next.
+        </p>
+
+        <chapter id="class-level-without-dependency-injection" title="Without dependency injection">
+            <p>
+                To decorate a service with a class-level interceptor called <code>TimedInterceptor</code>, the proxy is created like so:
+            </p>
+
+            <code-block lang="c#">
+                var secretService = new SecretService();
+
+                var proxy = InterceptorFactory
+                    .CreateInterceptor&lt;ISecretService, TimedInterceptor&gt;(
+                        // The service instance being decorated.
+                        secretService,
+
+                        // Configure the interceptor.
+                        interceptor =>
+                        {
+                            interceptor.MinimumReportableMilliseconds = 100;
+                        });
+
+                var secret = proxy.GetSecret("secret_key");
+            </code-block>
+        </chapter>
+
+        <chapter id="class-level-using-dependency-injection" title="Using dependency injection">
+            <p>
+                The example below shows registering an <code>ISecretService</code> with a <code>ServiceCollection</code> and then decorating it with the <code>TimedInterceptor</code> interceptor.
+            </p>
+
+            <note>
+                Since custom interceptors cannot be sealed and must have a default constructor, if your interceptor requires additional dependencies, they will need to be provided via property or method injection rather than constructor injection.
+            </note>
+
+            <code-block lang="c#">
+                // The IServiceCollection provided by your DI setup
+                var services = new ServiceCollection();
+
+                services
+                    // Typical registration of the required service - this could have
+                    // been performed by a third-party library. The key point is that
+                    // ISecretService is registered somewhere with the DI container.
+                    .AddScoped&lt;ISecretService, SecretService&gt;()
+
+                    // And now register an interceptor as a decorator of
+                    // the ISecretService.
+                    .DecorateWithInterceptor&lt;ISecretService, TimedInterceptor&gt;(
+                        (provider, interceptor) =>
+                        {
+                            // If required, apply any configuration to your custom
+                            // interceptor using property or method injection.
+                            interceptor.MinimumReportableMilliseconds = 1000;
+                        });
+
+                // At some point later, you'll have access to an IServiceProvider
+                var serviceProvider = services.BuildServiceProvider();
+
+                // When the ISecretService is resolved, either explicitly as shown here
+                // or implicitly when injected into another class instance, the proxied
+                // version (TimedInterceptor) will be returned.
+                var proxy = serviceProvider.GetRequiredService&lt;ISecretService&gt;();
+
+                // Make calls on the ISecretService as you would normally.
+                var secret = proxy.GetSecret();
+            </code-block>
+        </chapter>
+    </chapter>
+
+    <chapter id="method-level-interceptors" title="Method-Level Interceptors">
+       <p>
+           Assume this method-level interceptor handler is used to intercept the <code>GetSecret()</code> method on <code>ISecretService</code>.
+       </p>
+
+        <code-block lang="c#">
+            internal sealed class GetSecretHandler
+                : InterceptorMethodHandlerBase&lt;string&gt;
+            {
+                public override MethodInfo[] TargetMethods { get; }
+                    = [typeof(ISecretService)
+                        .GetMethod(nameof(ISecretService.GetSecret))];
+
+                public GetSecretHandler(ICache cache)
+                {
+                    // implementation here...
+                }
+
+                protected override InterceptorState&lt;string&gt; BeforeMethodInvoke(
+                    MethodInfo targetMethod, ref object[] args)
+                {
+                    // implementation here...
+
+                    return new InterceptorState&lt;string&gt;();
+                }
+
+                protected override void AfterMethodInvoke(MethodInfo targetMethod,
+                    object[] args, InterceptorState&lt;string&gt; state)
+                {
+                    // implementation here...
+                }
+            }
+        </code-block>
+
+        <chapter id="method-level-without-dependency-injection" title="Without dependency injection">
+            <p>
+                To intercept a service with a method-level handler called <code>GetSecretHandler</code>, the proxy is created like so:
+            </p>
+
+            <code-block lang="c#">
+                var secretService = new SecretService();
+
+                var proxy = InterceptorFactory.CreateInterceptor&lt;
+                    ISecretService, MethodInterceptor&lt;ISecretService&gt;&gt;(
+
+                        // The service instance being decorated.
+                        secretService,
+
+                        // Configure the interceptor.
+                        interceptor =&gt;
+                        {
+                            // Some cache that needs to be injected manually
+                            var cache = Cache.Global;
+
+                            // Instantiate the method handler.
+                            var handler = new GetSecretHandler(cache);
+
+                            // Add it to the interceptor.
+                            interceptor.AddMethodHandler(handler);
+                        });
+
+                var secret = proxy.GetSecret(&quot;secret_key&quot;);
+            </code-block>
+        </chapter>
+
+        <chapter id="method-level-using-dependency-injection" title="Using dependency injection">
+            <p>
+                Dependency Injection registration involves decorating the service with <code>MethodInterceptor&lt;TService&gt;</code> and adding the required handlers, as shown in the following examples:
+            </p>
+
+            <deflist>
+                <def title="Manually construct the handlers">
+                    <p>
+                        When you need to manually construct the handlers because you need to pass arguments that cannot be resolved from the container.
+                    </p>
+
+                    <code-block lang="c#">
+                        var services = new ServiceCollection();
+
+                        // Typical registration of the required service - this could have been
+                        // performed by a third-party library. The key point is that
+                        // ISecretService is registered somewhere with the DI container.
+                        services.AddScoped&lt;ISecretService, SecretService&gt;();
+
+                        services.DecorateWithInterceptor&lt;
+                        ISecretService, MethodInterceptor&lt;ISecretService&gt;&gt;(
+                            (provider, interceptor) =&gt;
+                            {
+                                // Cache.Global represents a static ICache that has not
+                                // been registered with the service collection.
+                                var cache = Cache.Global;
+
+                                interceptor
+                                    .AddMethodHandler(new GetSecretHandler(cache))
+                                    .AddMethodHandler(new GetSecretAsyncHandler(cache));
+                            });
+                    </code-block>
+                </def>
+            </deflist>
+
+            <deflist>
+                <def title="Resolve the handlers">
+                    <p>
+                        When you can resolve the handlers directly from the DI container.
+                    </p>
+
+                    <code-block lang="c#">
+                        var services = new ServiceCollection();
+
+                        // Typical registration of the required service - this could have been
+                        // performed by a third-party library. The key point is that
+                        // ISecretService is registered somewhere with the DI container.
+                        services.AddScoped&lt;ISecretService, SecretService&gt;();
+
+                        services.AddSingleton&lt;ICache&gt;(Cache.Global);
+                        services.AddSingleton&lt;GetSecretHandler&gt;();
+                        services.AddSingleton&lt;GetSecretAsyncHandler&gt;();
+
+                        services.DecorateWithInterceptor&lt;
+                        ISecretService, MethodInterceptor&lt;ISecretService&gt;&gt;(
+                            (provider, interceptor) =>
+                            {
+                                var secretHandler = provider
+                                    .GetRequiredService&lt;GetSecretHandler&gt;();
+
+                                interceptor.AddMethodHandler(secretHandler);
+
+                                var secretAsyncHandler = provider
+                                    .GetRequiredService&lt;GetSecretAsyncHandler&gt;();
+
+                                interceptor.AddMethodHandler(secretAsyncHandler);
+                            });
+                    </code-block>
+                </def>
+            </deflist>
+        </chapter>
+    </chapter>
+
+    <chapter id="sequence-of-calls" title="Sequence of calls">
+        In all examples, the call to <code>proxy.GetSecret()</code>  will result in the following sequence:
+
+        <list type="decimal">
+            <li><code>TimedInterceptor.BeforeInvoke()</code></li>
+            <li><code>SecretService.GetSecret()</code></li>
+            <li><code>TimedInterceptor.AfterInvoke()</code></li>
+        </list>
+    </chapter>
+</topic>

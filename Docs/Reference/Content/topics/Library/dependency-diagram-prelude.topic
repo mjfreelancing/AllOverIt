@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Dependency Diagram Prelude" id="dependency-diagram-prelude" is-library="true">
+
+    <snippet id="dependency_diagram-target-comment" >
+       <p>
+           While most of the <format style="bold" instance="ar">%aoi%</format> packages target <code>.NET Standard 2.1</code> (<a href="getting-started-introduction.topic" instance="ar">see here</a>), the .NET dependency diagrams shown below are provided to differentiate between any third-party dependency versions that may differ across the versions of .NET indicated.
+       </p>
+        <p>
+           Refer to <a href="getting-started-dependencies.topic" instance="ar"/> for more information on the information these diagrams provide.
+        </p>
+    </snippet>
+</topic>

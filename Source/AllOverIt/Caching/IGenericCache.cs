@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 namespace AllOverIt.Caching
 {
-    /// <summary>Represents a generic cache for storing any object type based on a custom key.</summary>
+    /// <summary>A generic cache capable of storing different key/value types. Each key type must inherit <see cref="GenericCacheKeyBase"/>
+    /// and each of the key elements must support equality comparison.</summary>
     public interface IGenericCache : IDictionary<GenericCacheKeyBase, object>, IReadOnlyDictionary<GenericCacheKeyBase, object>
     {
         // Properties and methods defined on both ICollection<KeyValuePair<GenericCacheKeyBase, object>> and IReadOnlyCollection<KeyValuePair<GenericCacheKeyBase, object>>  or
@@ -26,28 +27,28 @@ namespace AllOverIt.Caching
         /// <typeparam name="TValue">The value type.</typeparam>
         /// <param name="key">The custom key associated with the value.</param>
         /// <param name="value">The value associated with the key.</param>
-        /// <returns>True if the key and associated value were added, otherwise false.</returns>
+        /// <returns><see langword="true" /> if the key and associated value were added, otherwise <see langword="false" />.</returns>
         bool TryAdd<TValue>(GenericCacheKeyBase key, TValue value);
 
         /// <summary>Attempts to get the value associated with a key in the cache.</summary>
         /// <typeparam name="TValue">The value type.</typeparam>
         /// <param name="key">The custom key associated with the value.</param>
         /// <param name="value">The value associated with the key.</param>
-        /// <returns>True if the key was found in the cache, otherwise false.</returns>
+        /// <returns><see langword="true" /> if the key was found in the cache, otherwise <see langword="false" />.</returns>
         bool TryGetValue<TValue>(GenericCacheKeyBase key, out TValue value);
 
         /// <summary>Attempts to remove a key from the cache and return the value associated with the key if it was found.</summary>
         /// <typeparam name="TValue">The value type.</typeparam>
         /// <param name="key">The custom key associated with the value.</param>
         /// <param name="value">The value associated with the key.</param>
-        /// <returns>True if the key was found in the cache, otherwise false.</returns>
+        /// <returns><see langword="true" /> if the key was found in the cache, otherwise <see langword="false" />.</returns>
         bool TryRemove<TValue>(GenericCacheKeyBase key, out TValue value);
 
-#if NET5_0_OR_GREATER
+#if !NETSTANDARD2_1
         /// <summary>Attempts to remove a key and its associated value from the cache.</summary>
         /// <typeparam name="TValue">The value type.</typeparam>
         /// <param name="item">The custom key and associated value.</param>
-        /// <returns>True if the key was found in the cache, otherwise false.</returns>
+        /// <returns><see langword="true" /> if the key was found in the cache, otherwise <see langword="false" />.</returns>
         bool TryRemove<TValue>(KeyValuePair<GenericCacheKeyBase, TValue> item);
 #endif
 
@@ -57,7 +58,7 @@ namespace AllOverIt.Caching
         /// <param name="key">The custom key associated with the value.</param>
         /// <param name="newValue">The new value to update to.</param>
         /// <param name="comparisonValue">The value to compare with the current value.</param>
-        /// <returns>True if the key was found in the cache, otherwise false.</returns>
+        /// <returns><see langword="true" /> if the key was found in the cache, otherwise <see langword="false" />.</returns>
         bool TryUpdate<TValue>(GenericCacheKeyBase key, TValue newValue, TValue comparisonValue);
 
         /// <summary>Copies the key and value pairs to a new array.</summary>

@@ -28,7 +28,7 @@ namespace AllOverIt.Pagination
             {
                 var compareTo = type
                     .GetTypeInfo()
-                    .GetMethod(nameof(IComparable.CompareTo), new[] { type });
+                    .GetMethod(nameof(IComparable.CompareTo), [type]);
 
                 compareTo.CheckNotNull(nameof(compareTo), $"The type {type.GetFriendlyName()} does not provide a {nameof(IComparable.CompareTo)}() method.");
 
@@ -47,7 +47,7 @@ namespace AllOverIt.Pagination
                 {
                     return type
                         .GetTypeInfo()
-                        .GetMethod(nameof(Enum.CompareTo), new[] { type });
+                        .GetMethod(nameof(Enum.CompareTo), [type]);
                 });
 
                 return true;

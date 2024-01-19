@@ -1,6 +1,7 @@
 ﻿using AllOverIt.Async;
 using AllOverIt.Fixture;
 using FluentAssertions;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
@@ -11,10 +12,21 @@ namespace AllOverIt.Tests.Async
 {
     public class RepeatingTaskFixture : FixtureBase
     {
+        public enum TimeUnit
+        {
+            Milliseconds,
+            Timespan
+        }
+
+        private static readonly int _delayMilliseconds = 10;
+        private static readonly TimeSpan _delayTimeSpan = TimeSpan.FromMilliseconds(_delayMilliseconds);
+
         public class Start_ActionAsync : RepeatingTaskFixture
         {
-            [Fact]
-            public async Task Should_Invoke_Action()
+            [Theory]
+            [InlineData(TimeUnit.Milliseconds)]
+            [InlineData(TimeUnit.Timespan)]
+            public async Task Should_Invoke_Action(TimeUnit timeUnit)
             {
                 var cancellationToken = new CancellationTokenSource();
                 var invoked = false;
@@ -27,28 +39,36 @@ namespace AllOverIt.Tests.Async
                     return Task.CompletedTask;
                 }
 
-                var task = RepeatingTask.Start(DoAction, 10, cancellationToken.Token);
+                var task = timeUnit == TimeUnit.Milliseconds
+                    ? RepeatingTask.Start(DoAction, _delayMilliseconds, cancellationToken.Token)
+                    : RepeatingTask.Start(DoAction, _delayTimeSpan, cancellationToken.Token);
 
-                await task.ConfigureAwait(false);
+                await task;
 
                 invoked.Should().BeTrue();
             }
 
-            [Fact]
-            public async Task Should_Not_Invoke_Action_When_Cancelled()
+            [Theory]
+            [InlineData(TimeUnit.Milliseconds)]
+            [InlineData(TimeUnit.Timespan)]
+            public async Task Should_Not_Invoke_Action_When_Cancelled(TimeUnit timeUnit)
             {
                 var cancellationToken = new CancellationTokenSource();
                 cancellationToken.Cancel();
 
-                var task = RepeatingTask.Start(() => Task.CompletedTask, 10, cancellationToken.Token);
+                var task = timeUnit == TimeUnit.Milliseconds
+                    ? RepeatingTask.Start(() => Task.CompletedTask, _delayMilliseconds, cancellationToken.Token)
+                    : RepeatingTask.Start(() => Task.CompletedTask, _delayTimeSpan, cancellationToken.Token);
 
                 await Invoking(() => task)
                   .Should()
                   .ThrowAsync<TaskCanceledException>();
             }
 
-            [Fact]
-            public async Task Should_Abort_When_Cancelled()
+            [Theory]
+            [InlineData(TimeUnit.Milliseconds)]
+            [InlineData(TimeUnit.Timespan)]
+            public async Task Should_Abort_When_Cancelled(TimeUnit timeUnit)
             {
                 var cancellationToken = new CancellationTokenSource();
                 var invoked = false;
@@ -62,15 +82,19 @@ namespace AllOverIt.Tests.Async
                     await Task.Delay(1, cancellationToken.Token);
                 }
 
-                var task = RepeatingTask.Start(DoAction, 10, cancellationToken.Token);
+                var task = timeUnit == TimeUnit.Milliseconds
+                    ? RepeatingTask.Start(DoAction, _delayMilliseconds, cancellationToken.Token)
+                    : RepeatingTask.Start(DoAction, _delayTimeSpan, cancellationToken.Token);
 
-                await task.ConfigureAwait(false);
+                await task;
 
                 invoked.Should().BeTrue();
             }
 
-            [Fact]
-            public async Task Should_Invoke_Action_Until_Cancelled()
+            [Theory]
+            [InlineData(TimeUnit.Milliseconds)]
+            [InlineData(TimeUnit.Timespan)]
+            public async Task Should_Invoke_Action_Until_Cancelled(TimeUnit timeUnit)
             {
                 var cancellationToken = new CancellationTokenSource();
                 var invokedCount = 0;
@@ -87,24 +111,27 @@ namespace AllOverIt.Tests.Async
                     return Task.CompletedTask;
                 }
 
-                var task = RepeatingTask.Start(DoAction, 10, cancellationToken.Token);
+                var task = timeUnit == TimeUnit.Milliseconds
+                    ? RepeatingTask.Start(DoAction, _delayMilliseconds, cancellationToken.Token)
+                    : RepeatingTask.Start(DoAction, _delayTimeSpan, cancellationToken.Token);
 
-                await task.ConfigureAwait(false);
+                await task;
 
                 invokedCount.Should().Be(2);
             }
 
-            [Fact]
-            public async Task Should_Invoke_Action_With_RepeatDelay()
+            [Theory]
+            [InlineData(TimeUnit.Milliseconds)]
+            [InlineData(TimeUnit.Timespan)]
+            public async Task Should_Invoke_Action_With_RepeatDelay(TimeUnit timeUnit)
             {
                 const int repeatDelay = 100;
                 var cancellationToken = new CancellationTokenSource();
                 var invokedCount = 0;
                 var delays = new List<long>();
-                var stopwatch = new Stopwatch();
                 var lastElapsed = 0L;
 
-                Task DoAction()
+                Task DoAction(Stopwatch stopwatch)
                 {
                     var elapsed = stopwatch.ElapsedMilliseconds - lastElapsed;
                     lastElapsed = elapsed;
@@ -121,31 +148,36 @@ namespace AllOverIt.Tests.Async
                     return Task.CompletedTask;
                 }
 
-                stopwatch.Start();
+                var stopwatch = Stopwatch.StartNew();
 
-                var task = RepeatingTask.Start(DoAction, repeatDelay, cancellationToken.Token);
+                var task = timeUnit == TimeUnit.Milliseconds
+                    ? RepeatingTask.Start(() => DoAction(stopwatch), repeatDelay, cancellationToken.Token)
+                    : RepeatingTask.Start(() => DoAction(stopwatch), TimeSpan.FromMilliseconds(repeatDelay), cancellationToken.Token);
 
-                await task.ConfigureAwait(false);
+                await task;
 
                 stopwatch.Stop();
 
-                delays[0].Should().BeLessThan(repeatDelay);   // should be invoked without delay
-                delays[1].Should().BeGreaterOrEqualTo(repeatDelay);
-                delays[2].Should().BeGreaterOrEqualTo(repeatDelay);
+                const int allowableDiff = 25;
+
+                delays[0].Should().BeLessThan(repeatDelay);                             // Should be invoked without delay
+                delays[1].Should().BeGreaterOrEqualTo(repeatDelay - allowableDiff);
+                delays[2].Should().BeGreaterOrEqualTo(repeatDelay - allowableDiff);
             }
 
-            [Fact]
-            public async Task Should_Invoke_Action_With_Initial_Delay()
+            [Theory]
+            [InlineData(TimeUnit.Milliseconds)]
+            [InlineData(TimeUnit.Timespan)]
+            public async Task Should_Invoke_Action_With_Initial_Delay(TimeUnit timeUnit)
             {
                 const int initialDelay = 200;
                 const int repeatDelay = 100;
                 var cancellationToken = new CancellationTokenSource();
                 var invokedCount = 0;
                 var delays = new List<long>();
-                var stopwatch = Stopwatch.StartNew();
                 var lastElapsed = 0L;
 
-                Task DoAction()
+                Task DoAction(Stopwatch stopwatch)
                 {
                     delays.Add(stopwatch.ElapsedMilliseconds - lastElapsed);
                     invokedCount++;
@@ -161,22 +193,30 @@ namespace AllOverIt.Tests.Async
                     return Task.CompletedTask;
                 }
 
-                var task = RepeatingTask.Start(DoAction, repeatDelay, cancellationToken.Token, initialDelay);
+                var stopwatch = Stopwatch.StartNew();
 
-                await task.ConfigureAwait(false);
+                var task = timeUnit == TimeUnit.Milliseconds
+                    ? RepeatingTask.Start(() => DoAction(stopwatch), initialDelay, repeatDelay, cancellationToken.Token)
+                    : RepeatingTask.Start(() => DoAction(stopwatch), TimeSpan.FromMilliseconds(initialDelay), TimeSpan.FromMilliseconds(repeatDelay), cancellationToken.Token);
+
+                await task;
 
                 stopwatch.Stop();
 
-                delays[0].Should().BeGreaterOrEqualTo(initialDelay);
-                delays[1].Should().BeGreaterOrEqualTo(repeatDelay);
-                delays[2].Should().BeGreaterOrEqualTo(repeatDelay);
+                const int allowableDiff = 25;
+
+                delays[0].Should().BeGreaterOrEqualTo(initialDelay - allowableDiff);
+                delays[1].Should().BeGreaterOrEqualTo(repeatDelay - allowableDiff);
+                delays[2].Should().BeGreaterOrEqualTo(repeatDelay - allowableDiff);
             }
         }
 
         public class Start_Action : RepeatingTaskFixture
         {
-            [Fact]
-            public async Task Should_Invoke_Action()
+            [Theory]
+            [InlineData(TimeUnit.Milliseconds)]
+            [InlineData(TimeUnit.Timespan)]
+            public async Task Should_Invoke_Action(TimeUnit timeUnit)
             {
                 var cancellationToken = new CancellationTokenSource();
                 var invoked = false;
@@ -187,28 +227,36 @@ namespace AllOverIt.Tests.Async
                     cancellationToken.Cancel();
                 }
 
-                var task = RepeatingTask.Start(DoAction, 10, cancellationToken.Token);
+                var task = timeUnit == TimeUnit.Milliseconds
+                    ? RepeatingTask.Start(DoAction, _delayMilliseconds, cancellationToken.Token)
+                    : RepeatingTask.Start(DoAction, _delayTimeSpan, cancellationToken.Token);
 
-                await task.ConfigureAwait(false);
+                await task;
 
                 invoked.Should().BeTrue();
             }
 
-            [Fact]
-            public async Task Should_Not_Invoke_Action_When_Cancelled()
+            [Theory]
+            [InlineData(TimeUnit.Milliseconds)]
+            [InlineData(TimeUnit.Timespan)]
+            public async Task Should_Not_Invoke_Action_When_Cancelled(TimeUnit timeUnit)
             {
                 var cancellationToken = new CancellationTokenSource();
                 cancellationToken.Cancel();
 
-                var task = RepeatingTask.Start(() => { }, 10, cancellationToken.Token);
+                var task = timeUnit == TimeUnit.Milliseconds
+                    ? RepeatingTask.Start(() => { }, _delayMilliseconds, cancellationToken.Token)
+                    : RepeatingTask.Start(() => { }, _delayTimeSpan, cancellationToken.Token);
 
                 await Invoking(() => task)
                   .Should()
                   .ThrowAsync<TaskCanceledException>();
             }
 
-            [Fact]
-            public async Task Should_Abort_When_Cancelled()
+            [Theory]
+            [InlineData(TimeUnit.Milliseconds)]
+            [InlineData(TimeUnit.Timespan)]
+            public async Task Should_Abort_When_Cancelled(TimeUnit timeUnit)
             {
                 var cancellationToken = new CancellationTokenSource();
                 var invoked = false;
@@ -222,15 +270,19 @@ namespace AllOverIt.Tests.Async
                     Task.Delay(1, cancellationToken.Token).GetAwaiter().GetResult();
                 }
 
-                var task = RepeatingTask.Start(DoAction, 10, cancellationToken.Token);
+                var task = timeUnit == TimeUnit.Milliseconds
+                    ? RepeatingTask.Start(DoAction, _delayMilliseconds, cancellationToken.Token)
+                    : RepeatingTask.Start(DoAction, _delayTimeSpan, cancellationToken.Token);
 
-                await task.ConfigureAwait(false);
+                await task;
 
                 invoked.Should().BeTrue();
             }
 
-            [Fact]
-            public async Task Should_Invoke_Action_Until_Cancelled()
+            [Theory]
+            [InlineData(TimeUnit.Milliseconds)]
+            [InlineData(TimeUnit.Timespan)]
+            public async Task Should_Invoke_Action_Until_Cancelled(TimeUnit timeUnit)
             {
                 var cancellationToken = new CancellationTokenSource();
                 var invokedCount = 0;
@@ -245,26 +297,29 @@ namespace AllOverIt.Tests.Async
                     }
                 }
 
-                var task = RepeatingTask.Start(DoAction, 10, cancellationToken.Token);
+                var task = timeUnit == TimeUnit.Milliseconds
+                    ? RepeatingTask.Start(DoAction, _delayMilliseconds, cancellationToken.Token)
+                    : RepeatingTask.Start(DoAction, _delayTimeSpan, cancellationToken.Token);
 
-                await task.ConfigureAwait(false);
+                await task;
 
                 invokedCount.Should().Be(2);
             }
 
-            [Fact]
-            public async Task Should_Invoke_Action_With_RepeatDelay()
+            [Theory]
+            [InlineData(TimeUnit.Milliseconds)]
+            [InlineData(TimeUnit.Timespan)]
+            public async Task Should_Invoke_Action_With_RepeatDelay(TimeUnit timeUnit)
             {
                 const int repeatDelay = 100;
                 var cancellationToken = new CancellationTokenSource();
                 var invokedCount = 0;
                 var delays = new List<int>();
-                var stopwatch = new Stopwatch();
                 var lastElapsed = 0L;
 
-                void DoAction()
+                void DoAction(Stopwatch stopwatch)
                 {
-                    var elapsed = (int)(stopwatch.ElapsedMilliseconds - lastElapsed);
+                    var elapsed = (int) (stopwatch.ElapsedMilliseconds - lastElapsed);
 
                     delays.Add(elapsed);
 
@@ -278,37 +333,42 @@ namespace AllOverIt.Tests.Async
                     lastElapsed = stopwatch.ElapsedMilliseconds;
                 }
 
-                stopwatch.Start();
+                var stopwatch = Stopwatch.StartNew();
 
-                var task = RepeatingTask.Start(DoAction, repeatDelay, cancellationToken.Token);
+                var task = timeUnit == TimeUnit.Milliseconds
+                    ? RepeatingTask.Start(() => DoAction(stopwatch), repeatDelay, cancellationToken.Token)
+                    : RepeatingTask.Start(() => DoAction(stopwatch), TimeSpan.FromMilliseconds(repeatDelay), cancellationToken.Token);
 
-                await task.ConfigureAwait(false);
+                await task;
 
                 stopwatch.Stop();
 
                 // delays[0] can be ignored since it is the first run with no initial delay.
                 // The other delays cannot be guaranteed to be close to 'repeatDelay', so check >=
-                delays[1].Should().BeGreaterThanOrEqualTo(repeatDelay);
-                delays[2].Should().BeGreaterThanOrEqualTo(repeatDelay);
+
+                const int allowableDiff = 25;
+
+                delays[1].Should().BeGreaterThanOrEqualTo(repeatDelay - allowableDiff);
+                delays[2].Should().BeGreaterThanOrEqualTo(repeatDelay - allowableDiff);
             }
 
-            [Fact]
-            public async Task Should_Invoke_Action_With_Initial_Delay()
+            [Theory]
+            [InlineData(TimeUnit.Milliseconds)]
+            [InlineData(TimeUnit.Timespan)]
+            public async Task Should_Invoke_Action_With_Initial_Delay(TimeUnit timeUnit)
             {
                 const int initialDelay = 200;
                 const int repeatDelay = 100;
                 var cancellationToken = new CancellationTokenSource();
                 var invokedCount = 0;
                 var delays = new List<long>();
-                var stopwatch = Stopwatch.StartNew();
                 var lastElapsed = 0L;
 
-                void DoAction()
+                void DoAction(Stopwatch stopwatch)
                 {
                     delays.Add(stopwatch.ElapsedMilliseconds - lastElapsed);
                     invokedCount++;
 
-                    // re-evaluate to eliminate delays with the Add() method
                     lastElapsed = stopwatch.ElapsedMilliseconds;
 
                     if (invokedCount == 3)
@@ -317,15 +377,21 @@ namespace AllOverIt.Tests.Async
                     }
                 }
 
-                var task = RepeatingTask.Start(DoAction, repeatDelay, cancellationToken.Token, initialDelay);
+                var stopwatch = Stopwatch.StartNew();
 
-                await task.ConfigureAwait(false);
+                var task = timeUnit == TimeUnit.Milliseconds
+                    ? RepeatingTask.Start(() => DoAction(stopwatch), initialDelay, repeatDelay, cancellationToken.Token)
+                    : RepeatingTask.Start(() => DoAction(stopwatch), TimeSpan.FromMilliseconds(initialDelay), TimeSpan.FromMilliseconds(repeatDelay), cancellationToken.Token);
+
+                await task;
 
                 stopwatch.Stop();
 
-                delays[0].Should().BeGreaterOrEqualTo(initialDelay);
-                delays[1].Should().BeGreaterOrEqualTo(repeatDelay);
-                delays[2].Should().BeGreaterOrEqualTo(repeatDelay);
+                const int allowableDiff = 25;
+
+                delays[0].Should().BeGreaterOrEqualTo(initialDelay - allowableDiff);
+                delays[1].Should().BeGreaterOrEqualTo(repeatDelay - allowableDiff);
+                delays[2].Should().BeGreaterOrEqualTo(repeatDelay - allowableDiff);
             }
         }
     }

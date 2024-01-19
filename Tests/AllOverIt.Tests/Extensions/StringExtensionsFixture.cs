@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text;
 using Xunit;
 
 namespace AllOverIt.Tests.Extensions
@@ -318,6 +319,43 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
+        public class IsEmpty : StringExtensionsFixture
+        {
+            private sealed class EmptyStrings : IEnumerable<object[]>
+            {
+                public IEnumerator<object[]> GetEnumerator()
+                {
+                    yield return new object[] { string.Empty };
+                    yield return new object[] { "   " };
+                }
+
+                IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+            }
+
+            [Fact]
+            public void Should_Return_False_When_Null()
+            {
+                string actual = default;
+
+                actual.IsEmpty().Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Return_False_When_Not_Empty_Or_Whitespace()
+            {
+                var actual = Create<string>();
+
+                actual.IsEmpty().Should().BeFalse();
+            }
+
+            [Theory]
+            [ClassData(typeof(EmptyStrings))]
+            public void Should_Return_True(string actual)
+            {
+                actual.IsEmpty().Should().BeTrue();
+            }
+        }
+
         public class ToBase64 : StringExtensionsFixture
         {
             [Fact]
@@ -387,6 +425,46 @@ namespace AllOverIt.Tests.Extensions
                 base64.FromBase64()
                     .Should()
                     .Be(phrase);
+            }
+        }
+
+        public class ToMemoryStream : StringExtensionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Null()
+            {
+                string value = null;
+
+                Invoking(() =>
+                {
+                    value.ToMemoryStream();
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("value");
+            }
+
+            [Fact]
+            public void Should_Be_Empty_When_Empty()
+            {
+                var value = string.Empty;
+
+                value.ToMemoryStream()
+                    .Length
+                    .Should()
+                    .Be(0);
+            }
+
+            [Fact]
+            public void Should_Copy_To_Stream()
+            {
+                var expected = Create<string>();
+
+                var stream = expected.ToMemoryStream();
+
+                var actual = Encoding.UTF8.GetString(stream.ToArray());
+
+                actual.Should().Be(expected);
             }
         }
 

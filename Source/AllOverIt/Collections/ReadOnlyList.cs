@@ -5,9 +5,9 @@ namespace AllOverIt.Collections
 {
     /// <summary>Provides a truly immutable list.</summary>
     /// <typeparam name="TType">The type stored by the list.</typeparam>
-    public sealed class ReadOnlyList<TType> : IReadOnlyList<TType>
+    public class ReadOnlyList<TType> : IReadOnlyList<TType>
     {
-        private readonly IList<TType> _list;
+        private readonly List<TType> _list;
 
         /// <inheritdoc />
         public TType this[int index] => _list[index];
@@ -19,14 +19,14 @@ namespace AllOverIt.Collections
 
         public ReadOnlyList()
         {
-            _list = new List<TType>();
+            _list = [];
         }
 
         /// <summary>Constructor.</summary>
         /// <param name="data">The data to add to the readonly list.</param>
         public ReadOnlyList(IEnumerable<TType> data = default)
         {
-            _list = new List<TType>(data);
+            _list = new(data);
         }
 
         /// <inheritdoc />

@@ -199,7 +199,7 @@ namespace AllOverIt.Tests.Expressions
             {
                 Invoking(() =>
                 {
-                    ExpressionUtils.GetConstructorWithParameters(null, new[] { typeof(double) });
+                    ExpressionUtils.GetConstructorWithParameters(null, [typeof(double)]);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -263,7 +263,7 @@ namespace AllOverIt.Tests.Expressions
             {
                 Invoking(() =>
                 {
-                    ExpressionUtils.GetConstructorWithParametersAsObjects(null, new[] { typeof(double) });
+                    ExpressionUtils.GetConstructorWithParametersAsObjects(null, [typeof(double)]);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()

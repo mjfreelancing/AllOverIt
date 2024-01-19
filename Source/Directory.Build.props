@@ -1,17 +1,18 @@
 <Project>
     <PropertyGroup>
         <LangVersion>Latest</LangVersion>
-        <Version>6.3.0</Version>
+        <Version>7.0.0</Version>
         <Authors>Malcolm Smith</Authors>
-        <Company></Company>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/mjfreelancing/AllOverIt</RepositoryUrl>
         <PackageIcon>aoi_package_icon.png</PackageIcon>
-        <PackageReadmeFile>readme.md</PackageReadmeFile>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
 
         <!--Stop warning related to end-of-life .NET versions-->
         <CheckEolTargetFramework>false</CheckEolTargetFramework>
+        <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
 
         <!-- devblogs.microsoft.com/dotnet/producing-packages-with-source-link/ -->
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -25,17 +26,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <None Include="..\..\Resources\aoi_package_icon.png">
-        <Pack>True</Pack>
-        <PackagePath>\</PackagePath>
-      </None>
-      <None Include="..\..\readme.md">
-        <Pack>True</Pack>
-        <PackagePath>\</PackagePath>
-      </None>
+        <None Include="..\..\Resources\aoi_package_icon.png">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
+        <None Include="..\..\README.md">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
     </ItemGroup>
-    
+
     <ItemGroup>
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
     </ItemGroup>
 </Project>

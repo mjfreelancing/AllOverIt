@@ -4,6 +4,7 @@ using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Xunit;
 
@@ -14,7 +15,7 @@ namespace AllOverIt.Tests.Extensions
         public class FirstElement_IReadOnlyList : ListExtensionsFixture
         {
             [Fact]
-            public void Should_Throw_When_Items_Null()
+            public void Should_Throw_When_List_Null()
             {
                 Invoking(() =>
                 {
@@ -22,11 +23,11 @@ namespace AllOverIt.Tests.Extensions
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("items");
+                    .WithNamedMessageWhenNull("list");
             }
 
             [Fact]
-            public void Should_Throw_When_Items_Empty()
+            public void Should_Throw_When_List_Empty()
             {
                 Invoking(() =>
                 {
@@ -34,7 +35,7 @@ namespace AllOverIt.Tests.Extensions
                 })
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("items");
+                    .WithNamedMessageWhenEmpty("list");
             }
 
             [Fact]
@@ -53,7 +54,7 @@ namespace AllOverIt.Tests.Extensions
         public class LastElement_IReadOnlyList : ListExtensionsFixture
         {
             [Fact]
-            public void Should_Throw_When_Items_Null()
+            public void Should_Throw_When_List_Null()
             {
                 Invoking(() =>
                 {
@@ -61,11 +62,11 @@ namespace AllOverIt.Tests.Extensions
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("items");
+                    .WithNamedMessageWhenNull("list");
             }
 
             [Fact]
-            public void Should_Throw_When_Items_Empty()
+            public void Should_Throw_When_List_Empty()
             {
                 Invoking(() =>
                 {
@@ -73,7 +74,7 @@ namespace AllOverIt.Tests.Extensions
                 })
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("items");
+                    .WithNamedMessageWhenEmpty("list");
             }
 
             [Fact]
@@ -92,7 +93,7 @@ namespace AllOverIt.Tests.Extensions
         public class FirstElement_IList : ListExtensionsFixture
         {
             [Fact]
-            public void Should_Throw_When_Items_Null()
+            public void Should_Throw_When_List_Null()
             {
                 Invoking(() =>
                 {
@@ -100,19 +101,19 @@ namespace AllOverIt.Tests.Extensions
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("items");
+                    .WithNamedMessageWhenNull("list");
             }
 
             [Fact]
-            public void Should_Throw_When_Items_Empty()
+            public void Should_Throw_When_List_Empty()
             {
                 Invoking(() =>
                 {
-                    ListExtensions.FirstElement(Array.Empty<int>().AsList());
+                    ListExtensions.FirstElement((IList<int>) new List<int>());
                 })
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("items");
+                    .WithNamedMessageWhenEmpty("list");
             }
 
             [Fact]
@@ -131,7 +132,7 @@ namespace AllOverIt.Tests.Extensions
         public class LastElement_IList : ListExtensionsFixture
         {
             [Fact]
-            public void Should_Throw_When_Items_Null()
+            public void Should_Throw_When_List_Null()
             {
                 Invoking(() =>
                 {
@@ -139,19 +140,19 @@ namespace AllOverIt.Tests.Extensions
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("items");
+                    .WithNamedMessageWhenNull("list");
             }
 
             [Fact]
-            public void Should_Throw_When_Items_Empty()
+            public void Should_Throw_When_List_Empty()
             {
                 Invoking(() =>
                 {
-                    ListExtensions.LastElement(Array.Empty<int>().AsList());
+                    ListExtensions.LastElement((IList<int>) new List<int>());
                 })
                     .Should()
                     .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("items");
+                    .WithNamedMessageWhenEmpty("list");
             }
 
             [Fact]
@@ -164,6 +165,82 @@ namespace AllOverIt.Tests.Extensions
                 var actual = items.LastElement();
 
                 expected.Should().Be(actual);
+            }
+        }
+
+        public class AddMany : ListExtensionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_List_Null()
+            {
+                Invoking(() =>
+                {
+                    ListExtensions.AddMany((IList<int>) null, CreateMany<int>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("list");
+            }
+
+            [Fact]
+            public void Should_Not_Throw_When_List_Empty()
+            {
+                Invoking(() =>
+                {
+                    ListExtensions.AddMany(new List<int>(), CreateMany<int>());
+                })
+                    .Should()
+                    .NotThrow();
+            }
+
+            [Fact]
+            public void Should_Throw_When_Items_Null()
+            {
+                Invoking(() =>
+                {
+                    ListExtensions.AddMany(new List<int>(), null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("items");
+            }
+
+            [Fact]
+            public void Should_Not_Not_Throw_When_Items_Empty()
+            {
+                Invoking(() =>
+                {
+                    ListExtensions.AddMany(CreateMany<int>().AsList(), Array.Empty<int>());
+                })
+                    .Should()
+                    .NotThrow();
+            }
+
+            [Fact]
+            public void Should_Add_To_List()
+            {
+                IList<int> list = new List<int>(CreateMany<int>());
+                var items = CreateMany<int>();
+
+                var expected = list.Concat(items).ToList();
+
+                list.AddMany(items);
+
+                list.Should().BeEquivalentTo(expected);
+            }
+
+            [Fact]
+            public void Should_Add_To_Non_List()
+            {
+                IList<int> list = new BindingList<int>();
+
+                var items = CreateMany<int>();
+
+                var expected = list.Concat(items).ToList();
+
+                list.AddMany(items);
+
+                list.Should().BeEquivalentTo(expected);
             }
         }
     }

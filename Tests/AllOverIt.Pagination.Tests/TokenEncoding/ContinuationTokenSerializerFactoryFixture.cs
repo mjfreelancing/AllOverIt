@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
+using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Pagination.TokenEncoding;
 using FakeItEasy;
 using FluentAssertions;
@@ -29,7 +30,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
             [Fact]
             public void Should_Return_Serializer()
             {
-                var options = A.Fake<IContinuationTokenOptions>();
+                var options = this.CreateStub<IContinuationTokenOptions>();
 
                 var actual = _serializerFactory.CreateContinuationTokenSerializer(options);
 

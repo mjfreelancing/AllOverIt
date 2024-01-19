@@ -48,8 +48,9 @@ namespace EFEnumerationDemo
                         GreaterThanOrEqual = 15,
                         LessThan = 5,
                         LessThanOrEqual = 7,
-                        //In = new List<int>(new[]{1, 2, 3}),         // implicit conversion  (commented out to test a null filter option)
-                        NotIn = new NotIn<int>(new[]{4, 5, 6})      // constructor
+                        
+                        //In = new List<int>([1, 2, 3]),         // implicit conversion  (commented out to test a null filter option)
+                        NotIn = new NotIn<int>([4, 5, 6])      // constructor
                     },
                     Description = {
                         EqualTo = "#10",

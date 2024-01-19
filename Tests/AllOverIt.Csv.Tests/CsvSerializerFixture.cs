@@ -1,41 +1,41 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
+using AllOverIt.Fixture.FakeItEasy;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using FakeItEasy;
-using Xunit;
 using System.Threading;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace AllOverIt.Csv.Tests
 {
     public class CsvSerializerFixture : FixtureBase
     {
-        private sealed class CoordinatesDummy
+        private sealed class DummyCoordinates
         {
             public double Latitude { get; }
             public double Longitude { get; }
 
-            public CoordinatesDummy(double latitude, double longitude)
+            public DummyCoordinates(double latitude, double longitude)
             {
                 Latitude = latitude;
                 Longitude = longitude;
             }
         }
 
-        private sealed class SampleDataDummy
+        private sealed class DummySampleData
         {
             public string Name { get; set; }
             public int Count { get; set; }
-            public IReadOnlyCollection<CoordinatesDummy> Coordinates { get; set; }
+            public IReadOnlyCollection<DummyCoordinates> Coordinates { get; set; }
         }
 
-        private readonly CsvSerializer<SampleDataDummy> _serializer = new();
+        private readonly CsvSerializer<DummySampleData> _serializer = new();
 
         public class AddField : CsvSerializerFixture
         {
@@ -92,7 +92,7 @@ namespace AllOverIt.Csv.Tests
             {
                 var sampleData = CreateSampleDataWithNames();
 
-                _serializer.AddField(nameof(SampleDataDummy.Name), data => data.Name);
+                _serializer.AddField(nameof(DummySampleData.Name), data => data.Name);
 
                 string actual;
 
@@ -103,7 +103,7 @@ namespace AllOverIt.Csv.Tests
                 }
 
                 var sb = new StringBuilder();
-                sb.AppendLine(nameof(SampleDataDummy.Name));
+                sb.AppendLine(nameof(DummySampleData.Name));
 
                 foreach (var data in sampleData)
                 {
@@ -123,15 +123,15 @@ namespace AllOverIt.Csv.Tests
 
                 var sampleData = names
                     .Zip(counts, (name, count) => new {Name = name, Count = count})
-                    .Select(value => new SampleDataDummy
+                    .Select(value => new DummySampleData
                     {
                         Name = value.Name,
                         Count = value.Count
                     })
                     .AsReadOnlyCollection();
 
-                _serializer.AddField(nameof(SampleDataDummy.Name), data => data.Name);
-                _serializer.AddField(nameof(SampleDataDummy.Count), data => data.Count);
+                _serializer.AddField(nameof(DummySampleData.Name), data => data.Name);
+                _serializer.AddField(nameof(DummySampleData.Count), data => data.Count);
 
                 string actual;
 
@@ -142,7 +142,7 @@ namespace AllOverIt.Csv.Tests
                 }
 
                 var sb = new StringBuilder();
-                sb.AppendLine($"{nameof(SampleDataDummy.Name)},{nameof(SampleDataDummy.Count)}");
+                sb.AppendLine($"{nameof(DummySampleData.Name)},{nameof(DummySampleData.Count)}");
 
                 foreach (var data in sampleData)
                 {
@@ -186,21 +186,21 @@ namespace AllOverIt.Csv.Tests
             {
                 var sampleData = new[]
                 {
-                    new SampleDataDummy()
+                    new DummySampleData()
                     {
                         Coordinates = new[]
                         {
-                            new CoordinatesDummy(Create<double>(), Create<double>()),
-                            new CoordinatesDummy(Create<double>(), Create<double>())
+                            new DummyCoordinates(Create<double>(), Create<double>()),
+                            new DummyCoordinates(Create<double>(), Create<double>())
                         }
                     },
-                    new SampleDataDummy()
+                    new DummySampleData()
                     {
                         Coordinates = new[]
                         {
-                            new CoordinatesDummy(Create<double>(), Create<double>()),
-                            new CoordinatesDummy(Create<double>(), Create<double>()),
-                            new CoordinatesDummy(Create<double>(), Create<double>())
+                            new DummyCoordinates(Create<double>(), Create<double>()),
+                            new DummyCoordinates(Create<double>(), Create<double>()),
+                            new DummyCoordinates(Create<double>(), Create<double>())
                         }
                     }
                 };
@@ -292,7 +292,7 @@ namespace AllOverIt.Csv.Tests
             {
                 await Invoking(async () =>
                     {
-                        await _serializer.SerializeAsync(null, CreateMany<SampleDataDummy>());
+                        await _serializer.SerializeAsync(null, CreateMany<DummySampleData>());
                     })
                     .Should()
                     .ThrowAsync<ArgumentNullException>()
@@ -304,7 +304,7 @@ namespace AllOverIt.Csv.Tests
             {
                 await Invoking(async () =>
                     {
-                        await _serializer.SerializeAsync(A.Fake<TextWriter>(), (IEnumerable<SampleDataDummy>) null);
+                        await _serializer.SerializeAsync(this.CreateStub<TextWriter>(), (IEnumerable<DummySampleData>) null);
                     })
                     .Should()
                     .ThrowAsync<ArgumentNullException>()
@@ -318,7 +318,7 @@ namespace AllOverIt.Csv.Tests
             {
                 var sampleData = CreateSampleDataWithNames();
 
-                _serializer.AddField(nameof(SampleDataDummy.Name), data => data.Name);
+                _serializer.AddField(nameof(DummySampleData.Name), data => data.Name);
 
                 string actual;
 
@@ -342,16 +342,16 @@ namespace AllOverIt.Csv.Tests
                 var batches = sampleData.Batch(2).AsReadOnlyCollection();
                 var batchCount = batches.Count;
 
-                _serializer.AddField(nameof(SampleDataDummy.Name), data => data.Name);
+                _serializer.AddField(nameof(DummySampleData.Name), data => data.Name);
 
                 string actual;
 
                 using (var writer = new StringWriter())
                 {
-                    await batches.ForEachAsync(async (batch, index) =>
+                    await batches.ForEachAsync(async (batch, index, token) =>
                     {
                         var leaveOpen = index != batchCount - 1;
-                        await _serializer.SerializeAsync(writer, batch, withHeader && index == 0, leaveOpen);
+                        await _serializer.SerializeAsync(writer, batch, withHeader && index == 0, leaveOpen, token);
                     });
 
                     actual = writer.ToString();
@@ -372,7 +372,7 @@ namespace AllOverIt.Csv.Tests
 
                     using (var writer = new StringWriter())
                     {
-                        await _serializer.SerializeAsync(writer, CreateMany<SampleDataDummy>(), cancellationToken: cts.Token);
+                        await _serializer.SerializeAsync(writer, CreateMany<DummySampleData>(), cancellationToken: cts.Token);
                     }
                 })
                 .Should()
@@ -387,7 +387,7 @@ namespace AllOverIt.Csv.Tests
             {
                 await Invoking(async () =>
                 {
-                    await _serializer.SerializeAsync(null, AsAsyncEnumerable(CreateMany<SampleDataDummy>()));
+                    await _serializer.SerializeAsync(null, AsAsyncEnumerable(CreateMany<DummySampleData>()));
                 })
                     .Should()
                     .ThrowAsync<ArgumentNullException>()
@@ -399,7 +399,7 @@ namespace AllOverIt.Csv.Tests
             {
                 await Invoking(async () =>
                 {
-                    await _serializer.SerializeAsync(A.Fake<TextWriter>(), (IAsyncEnumerable<SampleDataDummy>) null);
+                    await _serializer.SerializeAsync(this.CreateStub<TextWriter>(), (IAsyncEnumerable<DummySampleData>) null);
                 })
                     .Should()
                     .ThrowAsync<ArgumentNullException>()
@@ -413,7 +413,7 @@ namespace AllOverIt.Csv.Tests
             {
                 var sampleData = CreateSampleDataWithNames();
 
-                _serializer.AddField(nameof(SampleDataDummy.Name), data => data.Name);
+                _serializer.AddField(nameof(DummySampleData.Name), data => data.Name);
 
                 string actual;
 
@@ -437,16 +437,16 @@ namespace AllOverIt.Csv.Tests
                 var batches = sampleData.Batch(2).AsReadOnlyCollection();
                 var batchCount = batches.Count;
 
-                _serializer.AddField(nameof(SampleDataDummy.Name), data => data.Name);
+                _serializer.AddField(nameof(DummySampleData.Name), data => data.Name);
 
                 string actual;
 
                 using (var writer = new StringWriter())
                 {
-                    await batches.ForEachAsync(async (batch, index) =>
+                    await batches.ForEachAsync(async (batch, index, token) =>
                     {
                         var leaveOpen = index != batchCount - 1;
-                        await _serializer.SerializeAsync(writer, AsAsyncEnumerable(batch), withHeader && index == 0, leaveOpen);
+                        await _serializer.SerializeAsync(writer, AsAsyncEnumerable(batch), withHeader && index == 0, leaveOpen, token);
                     });
 
                     actual = writer.ToString();
@@ -467,7 +467,7 @@ namespace AllOverIt.Csv.Tests
 
                     using (var writer = new StringWriter())
                     {
-                        await _serializer.SerializeAsync(writer, AsAsyncEnumerable(CreateMany<SampleDataDummy>()), cancellationToken: cts.Token);
+                        await _serializer.SerializeAsync(writer, AsAsyncEnumerable(CreateMany<DummySampleData>()), cancellationToken: cts.Token);
                     }
                 })
                 .Should()
@@ -475,20 +475,20 @@ namespace AllOverIt.Csv.Tests
             }
         }
 
-        private IReadOnlyCollection<SampleDataDummy> CreateSampleDataWithNames()
+        private IReadOnlyCollection<DummySampleData> CreateSampleDataWithNames()
         {
             return CreateMany<string>()
-                .Select(value => new SampleDataDummy { Name = value })
+                .Select(value => new DummySampleData { Name = value })
                 .AsReadOnlyCollection();
         }
 
-        private static string GetExpectedOutputForDataWithNames(IEnumerable<SampleDataDummy> sampleData, bool includeHeader)
+        private static string GetExpectedOutputForDataWithNames(IEnumerable<DummySampleData> sampleData, bool includeHeader)
         {
             var sb = new StringBuilder();
 
             if (includeHeader)
             {
-                sb.AppendLine(nameof(SampleDataDummy.Name));
+                sb.AppendLine(nameof(DummySampleData.Name));
             }
 
             foreach (var data in sampleData)
@@ -499,7 +499,7 @@ namespace AllOverIt.Csv.Tests
             return sb.ToString();
         }
 
-        private static async IAsyncEnumerable<SampleDataDummy> AsAsyncEnumerable(IEnumerable<SampleDataDummy> items)
+        private static async IAsyncEnumerable<DummySampleData> AsAsyncEnumerable(IEnumerable<DummySampleData> items)
         {
             foreach (var item in items)
             {

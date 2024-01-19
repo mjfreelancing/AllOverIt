@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace FilteringDemo
+﻿namespace FilteringDemo
 {
     internal sealed class Product
     {
@@ -8,6 +6,6 @@ namespace FilteringDemo
         public string Category { get; set; }
         public string Name { get; set; }
         public double Price { get; set; }
-        public DateTime LastUpdated { get; set; }
+        public DateTimeValue LastUpdated { get; set; }      // Demonstrating how to use 'value types'
     }
 }

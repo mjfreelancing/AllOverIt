@@ -33,13 +33,13 @@ namespace AllOverIt.Events
                 return (Action<TMessage>)_handlerMethod.CreateDelegate(_handlerType, target);
             }
 
-            // the weak reference has gone
+            // The weak reference has gone
             return null;
         }
 
         public void Handle<TMessage>(TMessage message)
         {
-            // the handler could be null if the weak reference has been garbage collected
+            // The handler could be null if the weak reference has been garbage collected
             GetHandler<TMessage>()?.Invoke(message);
         }
     }

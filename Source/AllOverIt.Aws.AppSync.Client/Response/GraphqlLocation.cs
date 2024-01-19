@@ -1,7 +1,7 @@
 ﻿namespace AllOverIt.Aws.AppSync.Client.Response
 {
     /// <summary>Contains location information within a query or mutation request.</summary>
-    public sealed record GraphqlLocation
+    public sealed class GraphqlLocation
     {
         /// <summary>The line within the request that caused an error.</summary>
         public int Line { get; init; }

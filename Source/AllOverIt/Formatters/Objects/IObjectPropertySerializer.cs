@@ -2,7 +2,7 @@
 
 namespace AllOverIt.Formatters.Objects
 {
-    /// <summary>Represents a serializer that can convert an object to an IDictionary&lt;string, string&gt; using a dot notation for nested members.</summary>
+    /// <summary>A serializer that can convert an object to an IDictionary&lt;string, string&gt; using a dot notation for nested members.</summary>
     public interface IObjectPropertySerializer
     {
         /// <summary>Provides options that determine how serialization of properties and their values are handled.</summary>

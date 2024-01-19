@@ -1,5 +1,4 @@
-- name: Library
-  href: library/
-- name: Api Documentation
+- name: Package Reference
+  href: docs/
+- name: API Reference
   href: api/
-  homepage: api/index.md

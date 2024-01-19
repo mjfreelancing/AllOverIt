@@ -150,5 +150,20 @@ namespace AllOverIt.Tests.Threading
                   .WithMessage("The lock is not currently held.");
             }
         }
+
+        public class Disose : AwaitableLockFixture
+        {
+            [Fact]
+            public void Should_Not_Throw_When_Disposed_Twice()
+            {
+                Invoking(() =>
+                {
+                    _lock.Dispose();
+                    _lock.Dispose();
+                })
+                .Should()
+                .NotThrow();
+            }
+        }
     }
 }

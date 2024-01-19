@@ -16,9 +16,9 @@ namespace AllOverIt.Csv.Tests.Extensions
 {
     public class CsvSerializerExtensionsFixture : FixtureBase
     {
-        private sealed class SampleDataDummy
+        private sealed class DummySampleData
         {
-            public class ChildDummy
+            public class DummyChild
             {
                 public string Name { get; set; }
                 public int Value { get; set; }
@@ -26,60 +26,60 @@ namespace AllOverIt.Csv.Tests.Extensions
             }
 
             public IDictionary<string, double> KeyValues { get; set; }
-            public ChildDummy Child { get; set; }
-            public IReadOnlyCollection<ChildDummy> Children { get; set; }
+            public DummyChild Child { get; set; }
+            public IReadOnlyCollection<DummyChild> Children { get; set; }
         }
 
-        private readonly CsvSerializer<SampleDataDummy> _serializer = new();
-        private readonly IReadOnlyCollection<SampleDataDummy> _sampleData;
+        private readonly CsvSerializer<DummySampleData> _serializer = new();
+        private readonly IReadOnlyCollection<DummySampleData> _sampleData;
 
         public CsvSerializerExtensionsFixture()
         {
             var duplicateKeys = CreateMany<string>();
 
-            _sampleData = new List<SampleDataDummy>()
+            _sampleData = new List<DummySampleData>()
             {
-                new SampleDataDummy
+                new DummySampleData
                 {
                     KeyValues = CreateMany<KeyValuePair<string, double>>()
                         .ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
 
-                    Child = Create<SampleDataDummy.ChildDummy>(),
-                    Children = CreateMany<SampleDataDummy.ChildDummy>()
+                    Child = Create<DummySampleData.DummyChild>(),
+                    Children = CreateMany<DummySampleData.DummyChild>()
                 },
-                new SampleDataDummy
+                new DummySampleData
                 {
                     KeyValues = duplicateKeys
                         .Select(key => new KeyValuePair<string, double>(key, Create<double>()))
                         .ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
 
-                    Child = Create<SampleDataDummy.ChildDummy>(),
-                    Children = CreateMany<SampleDataDummy.ChildDummy>()
+                    Child = Create<DummySampleData.DummyChild>(),
+                    Children = CreateMany<DummySampleData.DummyChild>()
                 },
-                new SampleDataDummy
+                new DummySampleData
                 {
                     KeyValues = CreateMany<KeyValuePair<string, double>>()
                         .ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
 
-                    Child = Create<SampleDataDummy.ChildDummy>(),
-                    Children = CreateMany<SampleDataDummy.ChildDummy>()
+                    Child = Create<DummySampleData.DummyChild>(),
+                    Children = CreateMany<DummySampleData.DummyChild>()
                 },
-                new SampleDataDummy
+                new DummySampleData
                 {
                     KeyValues = duplicateKeys
                         .Select(key => new KeyValuePair<string, double>(key, Create<double>()))
                         .ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
 
-                    Child = Create<SampleDataDummy.ChildDummy>(),
-                    Children = CreateMany<SampleDataDummy.ChildDummy>()
+                    Child = Create<DummySampleData.DummyChild>(),
+                    Children = CreateMany<DummySampleData.DummyChild>()
                 },
-                new SampleDataDummy
+                new DummySampleData
                 {
                     KeyValues = CreateMany<KeyValuePair<string, double>>()
                         .ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
 
-                    Child = Create<SampleDataDummy.ChildDummy>(),
-                    Children = CreateMany<SampleDataDummy.ChildDummy>()
+                    Child = Create<DummySampleData.DummyChild>(),
+                    Children = CreateMany<DummySampleData.DummyChild>()
                 },
             };
         }
@@ -91,7 +91,7 @@ namespace AllOverIt.Csv.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        CsvSerializerExtensions.AddDynamicFields<SampleDataDummy, IDictionary<string, double>>(null, _sampleData, _ => null, _ => null, (_, _) => null);
+                        CsvSerializerExtensions.AddDynamicFields<DummySampleData, IDictionary<string, double>>(null, _sampleData, _ => null, _ => null, (_, _) => null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -103,7 +103,7 @@ namespace AllOverIt.Csv.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        CsvSerializerExtensions.AddDynamicFields<SampleDataDummy, IDictionary<string, double>>(_serializer, null, _ => null, _ => null, (_, _) => null);
+                        CsvSerializerExtensions.AddDynamicFields<DummySampleData, IDictionary<string, double>>(_serializer, null, _ => null, _ => null, (_, _) => null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -115,7 +115,7 @@ namespace AllOverIt.Csv.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        CsvSerializerExtensions.AddDynamicFields<SampleDataDummy, IDictionary<string, double>>(_serializer, _sampleData, null, _ => null, (_, _) => null);
+                        CsvSerializerExtensions.AddDynamicFields<DummySampleData, IDictionary<string, double>>(_serializer, _sampleData, null, _ => null, (_, _) => null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -127,7 +127,7 @@ namespace AllOverIt.Csv.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        CsvSerializerExtensions.AddDynamicFields<SampleDataDummy, IDictionary<string, double>>(_serializer, _sampleData, _ => null, null, (_, _) => null);
+                        CsvSerializerExtensions.AddDynamicFields<DummySampleData, IDictionary<string, double>>(_serializer, _sampleData, _ => null, null, (_, _) => null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -139,7 +139,7 @@ namespace AllOverIt.Csv.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        CsvSerializerExtensions.AddDynamicFields<SampleDataDummy, IDictionary<string, double>>(_serializer, _sampleData, _ => null, _ => null, null);
+                        CsvSerializerExtensions.AddDynamicFields<DummySampleData, IDictionary<string, double>>(_serializer, _sampleData, _ => null, _ => null, null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -149,7 +149,7 @@ namespace AllOverIt.Csv.Tests.Extensions
             [Fact]
             public async Task Should_Export_Dynamic_Columns_From_Dictionary()
             {
-                CsvSerializerExtensions.AddDynamicFields<SampleDataDummy, IDictionary<string, double>>(
+                CsvSerializerExtensions.AddDynamicFields<DummySampleData, IDictionary<string, double>>(
                     _serializer,
                     _sampleData,
                     data => data.KeyValues,     // The property
@@ -209,16 +209,16 @@ namespace AllOverIt.Csv.Tests.Extensions
             [Fact]
             public async Task Should_Export_Dynamic_Columns_From_Object()
             {
-                CsvSerializerExtensions.AddDynamicFields<SampleDataDummy, SampleDataDummy.ChildDummy>(
+                CsvSerializerExtensions.AddDynamicFields<DummySampleData, DummySampleData.DummyChild>(
                     _serializer,
                     _sampleData,
                     data => data.Child,                                 // The property
                     data => new []                                      // The dynamic columns
                         {
-                            nameof(SampleDataDummy.ChildDummy.Name),
-                            nameof(SampleDataDummy.ChildDummy.Value)
+                            nameof(DummySampleData.DummyChild.Name),
+                            nameof(DummySampleData.DummyChild.Value)
                         },
-                    (data, identifier) => identifier == nameof(SampleDataDummy.ChildDummy.Name)
+                    (data, identifier) => identifier == nameof(DummySampleData.DummyChild.Name)
                         ? data.Name
                         : data.Value);
 
@@ -233,7 +233,7 @@ namespace AllOverIt.Csv.Tests.Extensions
 
                 // Build the expected output
                 var sb = new StringBuilder();
-                sb.AppendLine($"{nameof(SampleDataDummy.ChildDummy.Name)},{nameof(SampleDataDummy.ChildDummy.Value)}");
+                sb.AppendLine($"{nameof(DummySampleData.DummyChild.Name)},{nameof(DummySampleData.DummyChild.Value)}");
 
                 foreach (var data in _sampleData)
                 {
@@ -253,7 +253,7 @@ namespace AllOverIt.Csv.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        CsvSerializerExtensions.AddDynamicFields<SampleDataDummy, IReadOnlyCollection<SampleDataDummy.ChildDummy>, int>(
+                        CsvSerializerExtensions.AddDynamicFields<DummySampleData, IReadOnlyCollection<DummySampleData.DummyChild>, int>(
                             null,
                             _sampleData,
                             data => data.Children,
@@ -271,7 +271,7 @@ namespace AllOverIt.Csv.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        CsvSerializerExtensions.AddDynamicFields<SampleDataDummy, IReadOnlyCollection<SampleDataDummy.ChildDummy>, int>(
+                        CsvSerializerExtensions.AddDynamicFields<DummySampleData, IReadOnlyCollection<DummySampleData.DummyChild>, int>(
                             _serializer,
                             null,
                             data => data.Children,
@@ -289,7 +289,7 @@ namespace AllOverIt.Csv.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        CsvSerializerExtensions.AddDynamicFields<SampleDataDummy, IReadOnlyCollection<SampleDataDummy.ChildDummy>, int>(
+                        CsvSerializerExtensions.AddDynamicFields<DummySampleData, IReadOnlyCollection<DummySampleData.DummyChild>, int>(
                             _serializer,
                             _sampleData,
                             null,
@@ -307,7 +307,7 @@ namespace AllOverIt.Csv.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        CsvSerializerExtensions.AddDynamicFields<SampleDataDummy, IReadOnlyCollection<SampleDataDummy.ChildDummy>, int>(
+                        CsvSerializerExtensions.AddDynamicFields<DummySampleData, IReadOnlyCollection<DummySampleData.DummyChild>, int>(
                             _serializer,
                             _sampleData,
                             data => data.Children,
@@ -325,7 +325,7 @@ namespace AllOverIt.Csv.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        CsvSerializerExtensions.AddDynamicFields<SampleDataDummy, IReadOnlyCollection<SampleDataDummy.ChildDummy>, int>(
+                        CsvSerializerExtensions.AddDynamicFields<DummySampleData, IReadOnlyCollection<DummySampleData.DummyChild>, int>(
                             _serializer,
                             _sampleData,
                             data => data.Children,
@@ -341,7 +341,7 @@ namespace AllOverIt.Csv.Tests.Extensions
             [Fact]
             public async Task Should_Export_Dynamic_Columns_From_Object()
             {
-                CsvSerializerExtensions.AddDynamicFields<SampleDataDummy, IReadOnlyCollection<SampleDataDummy.ChildDummy>, KeyValuePair<string, int>>(
+                CsvSerializerExtensions.AddDynamicFields<DummySampleData, IReadOnlyCollection<DummySampleData.DummyChild>, KeyValuePair<string, int>>(
                     _serializer,
                     _sampleData,
                     data => data.Children,
@@ -422,7 +422,7 @@ namespace AllOverIt.Csv.Tests.Extensions
             [Fact]
             public async Task Should_Throw_When_Column_Counts_Mismatch()
             {
-                CsvSerializerExtensions.AddDynamicFields<SampleDataDummy, IReadOnlyCollection<SampleDataDummy.ChildDummy>, KeyValuePair<string, int>>(
+                CsvSerializerExtensions.AddDynamicFields<DummySampleData, IReadOnlyCollection<DummySampleData.DummyChild>, KeyValuePair<string, int>>(
                     _serializer,
                     _sampleData,
                     data => data.Children,
@@ -470,7 +470,7 @@ namespace AllOverIt.Csv.Tests.Extensions
                         }
                     })
                     .Should()
-                    .ThrowAsync<CsvExportException>()
+                    .ThrowAsync<CsvSerializerException>()
                     .WithMessage("Column count mismatch. Expected 2, found 1.");
             }
         }

@@ -3,7 +3,7 @@
 namespace AllOverIt.Evaluator.Exceptions
 {
     /// <summary>An exception that can be thrown by the ArithmeticOperationFactory while compiling a formula expression.</summary>
-    public class OperationFactoryException : Exception
+    public sealed class OperationFactoryException : Exception
     {
         /// <summary>Default constructor.</summary>
         public OperationFactoryException()

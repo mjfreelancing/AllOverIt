@@ -1,10 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net7.0;net6.0;net5.0;netcoreapp3.1;netstandard2.1</TargetFrameworks>
-        <Copyright>Copyright © 2015</Copyright>
-        <Description>A library of pre and post condition assertion helper methods.</Description>
-        <PackageTags>utilities;asssertion;guard</PackageTags>
+        <TargetFrameworks>net8.0;net7.0;net6.0;netstandard2.1</TargetFrameworks>
+        <Description>This package contains a useful collection of pre and post condition assertion extension methods and a fluent-like approach to throwing exceptions based on a given condition or custom predicate.</Description>
+        <PackageTags>AllOverIt;Utilities;Asssertion;Guard</PackageTags>
     </PropertyGroup>
 
 </Project>

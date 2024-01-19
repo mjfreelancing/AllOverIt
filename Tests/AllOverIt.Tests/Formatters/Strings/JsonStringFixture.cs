@@ -131,6 +131,20 @@ $@"{stringValue}{{
         }
 
         [Fact]
+        public void Should_Keep_Escaped_Backslash()
+        {
+            var source = @"{""key"":""val\\ue""}";
+            var expected =
+@"{
+  ""key"": ""val\\ue""
+}";
+
+            var actual = JsonString.Format(source);
+
+            actual.Should().Be(expected);
+        }
+
+        [Fact]
         public void Should_Add_LineBreak_After_Unquoted_Comma()
         {
             var source = @"{""key1"":""value1"",""key2"":""value2""}";

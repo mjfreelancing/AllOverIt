@@ -3,7 +3,7 @@
 namespace AllOverIt.Patterns.Command.Exceptions
 {
     /// <summary>Represents an error that occurred while executing a command.</summary>
-    public class CommandException : Exception
+    public sealed class CommandException : Exception
     {
         /// <summary>Default constructor.</summary>
         public CommandException()

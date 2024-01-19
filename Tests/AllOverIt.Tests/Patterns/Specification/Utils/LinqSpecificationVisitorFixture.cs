@@ -11,13 +11,85 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
 {
     public class LinqSpecificationVisitorFixture : FixtureBase
     {
-        private class TypeDummy
+        private sealed class DateTimeValue
+        {
+            public DateTime Value { get; set; }
+
+            public static implicit operator DateTime?(DateTimeValue dateTimeValue) => dateTimeValue?.Value;
+            public static explicit operator DateTimeValue(DateTime value) => new() { Value = value };
+
+            // Used for custom value conversion when converting a LINQ expression to a query string
+            public override string ToString() => $"'{Value.ToString()}'";
+
+            public static bool operator >=(DateTimeValue left, DateTimeValue right)
+            {
+                if (left is null && right is null)
+                {
+                    return true;
+                }
+
+                if (left is null || right is null)
+                {
+                    return right is null;
+                }
+
+                return left.Value >= right.Value;
+            }
+
+            public static bool operator <=(DateTimeValue left, DateTimeValue right)
+            {
+                if (left is null && right is null)
+                {
+                    return true;
+                }
+
+                if (left == null || right == null)
+                {
+                    return left is null;
+                }
+
+                return left.Value <= right.Value;
+            }
+
+            public static bool operator >(DateTimeValue left, DateTimeValue right)
+            {
+                if (left is null && right is null)
+                {
+                    return false;
+                }
+
+                if (left == null || right == null)
+                {
+                    return right is null;
+                }
+
+                return left.Value > right.Value;
+            }
+
+            public static bool operator <(DateTimeValue left, DateTimeValue right)
+            {
+                if (left is null && right is null)
+                {
+                    return false;
+                }
+
+                if (left == null || right == null)
+                {
+                    return left is null;
+                }
+
+                return left.Value < right.Value;
+            }
+        }
+
+        private class DummyType
         {
             public int Value1 { get; set; }
             public double Value2 { get; set; }
             public string Value3 { get; set; }
             public DateTime Value4 { get; set; }
             public bool Value5 { get; set; }
+            public DateTimeValue Value6 { get; set; }       // Testing 'value types'
         }
 
         private readonly LinqSpecificationVisitor _visitor = new();
@@ -29,7 +101,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
             {
                 Invoking(() =>
                 {
-                    ILinqSpecification<TypeDummy> specification = null;
+                    ILinqSpecification<DummyType> specification = null;
 
                     _ = _visitor.AsQueryString(specification);
                 })
@@ -43,7 +115,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
             {
                 var value = Create<int>();
 
-                var specification = LinqSpecification<TypeDummy>.Create(item => item.Value1 == value);
+                var specification = LinqSpecification<DummyType>.Create(item => item.Value1 == value);
 
                 var actual = _visitor.AsQueryString(specification);
 
@@ -55,7 +127,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
             {
                 var value = Create<int>();
 
-                var specification = LinqSpecification<TypeDummy>.Create(item => item.Value1 != value);
+                var specification = LinqSpecification<DummyType>.Create(item => item.Value1 != value);
 
                 var actual = _visitor.AsQueryString(specification);
 
@@ -67,7 +139,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
             {
                 var value = Create<int>();
 
-                var specification = LinqSpecification<TypeDummy>.Create(item => item.Value1 > value);
+                var specification = LinqSpecification<DummyType>.Create(item => item.Value1 > value);
 
                 var actual = _visitor.AsQueryString(specification);
 
@@ -79,7 +151,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
             {
                 var value = Create<int>();
 
-                var specification = LinqSpecification<TypeDummy>.Create(item => item.Value1 >= value);
+                var specification = LinqSpecification<DummyType>.Create(item => item.Value1 >= value);
 
                 var actual = _visitor.AsQueryString(specification);
 
@@ -91,7 +163,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
             {
                 var value = Create<int>();
 
-                var specification = LinqSpecification<TypeDummy>.Create(item => item.Value1 < value);
+                var specification = LinqSpecification<DummyType>.Create(item => item.Value1 < value);
 
                 var actual = _visitor.AsQueryString(specification);
 
@@ -103,7 +175,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
             {
                 var value = Create<int>();
 
-                var specification = LinqSpecification<TypeDummy>.Create(item => item.Value1 <= value);
+                var specification = LinqSpecification<DummyType>.Create(item => item.Value1 <= value);
 
                 var actual = _visitor.AsQueryString(specification);
 
@@ -116,7 +188,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
                 var value1 = Create<int>();
                 var value2 = Create<int>();
 
-                var specification = LinqSpecification<TypeDummy>.Create(item => item.Value1 <= value1 && item.Value2 >= value2);
+                var specification = LinqSpecification<DummyType>.Create(item => item.Value1 <= value1 && item.Value2 >= value2);
 
                 var actual = _visitor.AsQueryString(specification);
 
@@ -128,7 +200,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
             {
                 var value = Create<string>();
 
-                var specification = LinqSpecification<TypeDummy>.Create(item => item.Value3 == value);
+                var specification = LinqSpecification<DummyType>.Create(item => item.Value3 == value);
 
                 var actual = _visitor.AsQueryString(specification);
 
@@ -141,7 +213,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
                 var value = Create<bool>();
 
                 // Has to be a comparison, can't just use 'item => item.Value5' as this only retrieves the property name
-                var specification = LinqSpecification<TypeDummy>.Create(item => item.Value5 == value);
+                var specification = LinqSpecification<DummyType>.Create(item => item.Value5 == value);
 
                 var actual = _visitor.AsQueryString(specification);
 
@@ -153,7 +225,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
             {
                 var values = CreateMany<int>().ToList();
 
-                var specification = LinqSpecification<TypeDummy>.Create(item => values.Contains(item.Value1));
+                var specification = LinqSpecification<DummyType>.Create(item => values.Contains(item.Value1));
 
                 var actual = _visitor.AsQueryString(specification);
 
@@ -166,7 +238,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
                 var value1 = Create<string>();
                 var value2 = Create<string>();
 
-                var specification = LinqSpecification<TypeDummy>.Create(item => value1.ToLower().StartsWith(value2));
+                var specification = LinqSpecification<DummyType>.Create(item => value1.ToLower().StartsWith(value2));
 
                 var actual = _visitor.AsQueryString(specification);
 
@@ -179,7 +251,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
                 var value1 = Create<string>();
                 var value2 = Create<string>();
 
-                var specification = LinqSpecification<TypeDummy>.Create(item => string.Compare(value1, value2) == 0);
+                var specification = LinqSpecification<DummyType>.Create(item => string.Compare(value1, value2) == 0);
 
                 var actual = _visitor.AsQueryString(specification);
 
@@ -189,7 +261,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
             [Fact]
             public void Should_Output_Constant()
             {
-                var specification = LinqSpecification<TypeDummy>.Create(item => item.Value1 == 99);
+                var specification = LinqSpecification<DummyType>.Create(item => item.Value1 == 99);
 
                 var actual = _visitor.AsQueryString(specification);
 
@@ -201,12 +273,39 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
             {
                 var value = Create<DateTime>().ToUniversalTime();
 
-                // Has to be a comparison, can't just use 'item => item.Value5' as this only retrieves the property name
-                var specification = LinqSpecification<TypeDummy>.Create(item => item.Value4 == value);
+                var specification = LinqSpecification<DummyType>.Create(item => item.Value4 == value);
 
                 var actual = _visitor.AsQueryString(specification);
 
                 actual.Should().Be($"(Value4 == '{value:yyyy-MM-ddTHH:mm:ss.fffZ}')");
+            }
+
+            [Fact]
+            public void Should_Output_DateTimeValue_DateTime_Comparison()
+            {
+                var value = Create<DateTime>().ToUniversalTime();
+
+                var specification = LinqSpecification<DummyType>.Create(item => item.Value6 == value);
+
+                var actual = _visitor.AsQueryString(specification);
+
+                actual.Should().Be($"(Value6 == '{value:yyyy-MM-ddTHH:mm:ss.fffZ}')");
+            }
+
+            [Fact]
+            public void Should_Output_DateTimeValue_DateTimeValue_Comparison_Using_Custom_Visitor()
+            {
+                var value = (DateTimeValue) Create<DateTime>().ToUniversalTime();
+
+                var specification = LinqSpecification<DummyType>.Create(item => item.Value6 == value);
+
+                // need a custom visitor for 'value types'
+                var visitor = new LinqSpecificationVisitor();
+                visitor.AddTypeValueConverter(typeof(DateTimeValue), value => value.ToString());
+
+                var actual = visitor.AsQueryString(specification);
+
+                actual.Should().Be($"(Value6 == '{value.Value}')");
             }
 
             [Fact]
@@ -215,7 +314,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
                 var value1 = Create<int>();
                 var value2 = Create<int>();
 
-                var specification = LinqSpecification<TypeDummy>.Create(item => !(item.Value1 <= value1 && item.Value2 >= value2));
+                var specification = LinqSpecification<DummyType>.Create(item => !(item.Value1 <= value1 && item.Value2 >= value2));
 
                 var actual = _visitor.AsQueryString(specification);
 
@@ -229,7 +328,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
                 var value2 = Create<int>();
                 var value3 = Create<string>();
 
-                var specification = LinqSpecification<TypeDummy>.Create(item => item.Value3 == value3 && !(item.Value1 <= value1 && item.Value2 >= value2));
+                var specification = LinqSpecification<DummyType>.Create(item => item.Value3 == value3 && !(item.Value1 <= value1 && item.Value2 >= value2));
 
                 var actual = _visitor.AsQueryString(specification);
 
@@ -243,7 +342,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
                 var value2 = Create<int>();
                 var value3 = Create<string>();
 
-                var specification = LinqSpecification<TypeDummy>.Create(item => item.Value1 <= value1 && item.Value2 >= value2 || item.Value3 != value3);
+                var specification = LinqSpecification<DummyType>.Create(item => item.Value1 <= value1 && item.Value2 >= value2 || item.Value3 != value3);
 
                 var actual = _visitor.AsQueryString(specification);
 

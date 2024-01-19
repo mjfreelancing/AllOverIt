@@ -5,13 +5,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Bogus" Version="34.0.2" />
+        <PackageReference Include="Bogus" Version="35.4.0" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\..\..\Source\AllOverIt.GenericHost\AllOverIt.GenericHost.csproj" />
         <ProjectReference Include="..\..\..\Source\AllOverIt.Pagination\AllOverIt.Pagination.csproj" />
-        <ProjectReference Include="..\..\..\Source\AllOverIt.Serialization.NewtonsoftJson\AllOverIt.Serialization.NewtonsoftJson.csproj" />
     </ItemGroup>
 
 </Project>

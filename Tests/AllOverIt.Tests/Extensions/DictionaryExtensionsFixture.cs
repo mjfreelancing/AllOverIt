@@ -80,10 +80,10 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
-        public class Concat : DictionaryExtensionsFixture
+        public class Combine : DictionaryExtensionsFixture
         {
             [Fact]
-            public void Should_Merge_Two_Dictionaries()
+            public void Should_Combine_Two_Dictionaries()
             {
                 var first = Create<Dictionary<string, string>>();
                 var second = Create<Dictionary<string, string>>();
@@ -100,7 +100,7 @@ namespace AllOverIt.Tests.Extensions
                     expected.Add(kvp.Key, kvp.Value);
                 }
 
-                var actual = first.Concat(second);
+                var actual = first.Combine(second);
 
                 actual.Should().BeEquivalentTo(expected);
             }
@@ -112,11 +112,25 @@ namespace AllOverIt.Tests.Extensions
 
                 Invoking(() =>
                     {
-                        values.Concat(values);
+                        values.Combine(values);
                     })
                     .Should()
                     .Throw<ArgumentException>()
                     .WithMessage($"An item with the same key has already been added. Key: {values.First().Key}");
+            }
+
+            [Fact]
+            public void Should_Return_New_Instance()
+            {
+                var first = Create<Dictionary<string, string>>();
+                var second = Create<Dictionary<string, string>>();
+
+                var actual = first.Combine(second);
+
+                actual.Should().BeOfType<Dictionary<string, string>>();
+
+                actual.Should().NotBeSameAs(first);
+                actual.Should().NotBeSameAs(second);
             }
         }
     }

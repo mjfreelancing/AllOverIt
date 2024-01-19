@@ -43,7 +43,7 @@ namespace MemoryPaginationDemo
             public string Previous { get; set; }
         }
 
-        private readonly IQueryPaginatorFactory _queryPaginatorFactory; 
+        private readonly IQueryPaginatorFactory _queryPaginatorFactory;
 
         public App(IQueryPaginatorFactory queryPaginatorFactory)
         {
@@ -63,7 +63,7 @@ namespace MemoryPaginationDemo
             var paginatorConfig = new QueryPaginatorConfiguration
             {
                 PageSize = pageSize,
-                PaginationDirection =   PaginationDirection.Forward,    // This is the default
+                PaginationDirection = PaginationDirection.Forward,    // This is the default
                 UseParameterizedQueries = false                         // Not required for memory based pagination
             };
 
@@ -86,25 +86,20 @@ namespace MemoryPaginationDemo
 
                 var lastCheckpoint = stopwatch.ElapsedMilliseconds;
 
-                var pageQuery = queryPaginator.GetPageQuery(continuationToken);
-
-                var pageResults = pageQuery.ToList();
-
-                var hasPrevious = pageResults.Any() && queryPaginator.HasPreviousPage(pageResults.First());
-                var hasNext = pageResults.Any() && queryPaginator.HasNextPage(pageResults.Last());
+                var pageResults = queryPaginator.GetPageResults(continuationToken);
 
                 var elapsed = stopwatch.ElapsedMilliseconds;
 
-                pageResults.ForEach(person =>
+                foreach (var person in pageResults.Results)
                 {
                     Console.WriteLine($"{person.LastName}, {person.FirstName} ({person.Gender}, {person.Id})");
-                });
+                };
 
                 Console.WriteLine();
                 Console.WriteLine($"Execution time: {elapsed - lastCheckpoint}ms");
                 Console.WriteLine();
 
-                key = GetUserInput(hasPrevious, hasNext);
+                key = GetUserInput(pageResults.PreviousToken.IsNotNullOrEmpty(), pageResults.NextToken.IsNotNullOrEmpty());
 
                 lastCheckpoint = stopwatch.ElapsedMilliseconds;
 
@@ -115,11 +110,11 @@ namespace MemoryPaginationDemo
                         break;
 
                     case 'p':
-                        continuationToken = queryPaginator.TokenEncoder.EncodePreviousPage(pageResults);
+                        continuationToken = pageResults.PreviousToken;
                         break;
 
                     case 'n':
-                        continuationToken = queryPaginator.TokenEncoder.EncodeNextPage(pageResults);
+                        continuationToken = pageResults.NextToken;
                         break;
 
                     case 'l':
@@ -150,7 +145,7 @@ namespace MemoryPaginationDemo
             return Task.CompletedTask;
         }
 
-        private static IReadOnlyCollection<PersonModel> GetData(int dataSize)
+        private static List<PersonModel> GetData(int dataSize)
         {
             Console.WriteLine();
             Console.WriteLine("Adding data...");

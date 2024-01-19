@@ -1,11 +1,12 @@
 <Project>
     <PropertyGroup>
-        <TargetFrameworks>net7.0;net6.0;net5.0;netcoreapp3.1</TargetFrameworks>
+        <TargetFrameworks>net8.0;net7.0;net6.0</TargetFrameworks>
         <LangVersion>Latest</LangVersion>
         <IsPackable>false</IsPackable>
 
         <!--Stop warning related to end-of-life .NET versions-->
         <CheckEolTargetFramework>false</CheckEolTargetFramework>
+        <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
 
         <RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
         <RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>

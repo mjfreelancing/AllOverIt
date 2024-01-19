@@ -2,6 +2,7 @@
 using AllOverIt.Reflection;
 using System;
 using System.ComponentModel;
+using System.IO;
 using System.Text;
 
 namespace AllOverIt.Extensions
@@ -87,7 +88,7 @@ namespace AllOverIt.Extensions
 
         /// <summary>Determines if a string is null, empty, or contains whitespace.</summary>
         /// <param name="value">The string value to compare.</param>
-        /// <returns>True if the string is null, empty, or contains whitespace, otherwise false.</returns>
+        /// <returns><see langword="true" /> if the string is null, empty, or contains whitespace, otherwise <see langword="false" />.</returns>
         public static bool IsNullOrEmpty(this string value)
         {
             return string.IsNullOrWhiteSpace(value);
@@ -95,10 +96,18 @@ namespace AllOverIt.Extensions
 
         /// <summary>Determines if a string is not null, empty, or containing whitespace.</summary>
         /// <param name="value">The string value to compare.</param>
-        /// <returns>True if the string is not null, not empty, nor contains whitespace, otherwise false.</returns>
+        /// <returns><see langword="true" /> if the string is not null, not empty, nor contains whitespace, otherwise <see langword="false" />.</returns>
         public static bool IsNotNullOrEmpty(this string value)
         {
             return !string.IsNullOrWhiteSpace(value);
+        }
+
+        /// <summary>Determines if a string is not null and empty or contains whitespace.</summary>
+        /// <param name="value">The string value to compare.</param>
+        /// <returns><see langword="true" /> if the string is not null and empty or contains whitespace, otherwise <see langword="false" />.</returns>
+        public static bool IsEmpty(this string value)
+        {
+            return value is not null && string.IsNullOrWhiteSpace(value);
         }
 
         /// <summary>Encodes a string value using base-64 digits.</summary>
@@ -108,7 +117,7 @@ namespace AllOverIt.Extensions
         {
             _ = value.WhenNotNull(nameof(value));
 
-            var bytes = Encoding.ASCII.GetBytes(value);
+            var bytes = Encoding.UTF8.GetBytes(value);
             return Convert.ToBase64String(bytes);
         }
 
@@ -120,7 +129,18 @@ namespace AllOverIt.Extensions
             _ = value.WhenNotNull(nameof(value));
 
             var bytes = Convert.FromBase64String(value);
-            return Encoding.ASCII.GetString(bytes);
+            return Encoding.UTF8.GetString(bytes);
+        }
+
+        /// <summary>Copies, and returns, a specified string to a memory stream.</summary>
+        /// <param name="value">The string content to copy to the memory stream.</param>
+        /// <returns></returns>
+        public static MemoryStream ToMemoryStream(this string value)
+        {
+            _ = value.WhenNotNull(nameof(value));
+
+            var bytes = Encoding.UTF8.GetBytes(value);
+            return new MemoryStream(bytes);
         }
     }
 }

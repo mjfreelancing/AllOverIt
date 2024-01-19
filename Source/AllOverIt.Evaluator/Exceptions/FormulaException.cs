@@ -3,7 +3,7 @@
 namespace AllOverIt.Evaluator.Exceptions
 {
     /// <summary>An exception that can be thrown by the FormulaCompiler while compiling a formula expression.</summary>
-    public class FormulaException : Exception
+    public sealed class FormulaException : Exception
     {
         /// <summary>Default constructor.</summary>
         public FormulaException()

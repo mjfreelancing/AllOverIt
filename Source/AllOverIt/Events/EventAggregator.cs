@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace AllOverIt.Events
 {
-    /// <summary>Provides support for produces to publish messages and consumers to subscribe for notification of those messages.</summary>
+    /// <inheritdoc cref="IEventAggregator" />
     public sealed class EventAggregator : IEventAggregator
     {
-        private readonly IDictionary<Type, IList<ISubscription>> _subscriptions = new Dictionary<Type, IList<ISubscription>>();
-        private readonly IDictionary<Type, IList<IAsyncSubscription>> _asyncSubscriptions = new Dictionary<Type, IList<IAsyncSubscription>>();
+        private readonly Dictionary<Type, IList<ISubscription>> _subscriptions = [];
+        private readonly Dictionary<Type, IList<IAsyncSubscription>> _asyncSubscriptions = [];
 
         /// <inheritdoc />
         /// <remarks>Cannot be used when there are registered async subscriptions for the provided message type. Use
@@ -38,7 +38,7 @@ namespace AllOverIt.Events
         public void Subscribe<TMessage>(Action<TMessage> handler, bool weakSubscription = true)
         {
             var subscription = weakSubscription
-              ? (ISubscription)new WeakSubscription(handler)
+              ? (ISubscription) new WeakSubscription(handler)
               : new Subscription(handler);
 
             Subscribe<TMessage>(subscription);
@@ -48,7 +48,7 @@ namespace AllOverIt.Events
         public void Subscribe<TMessage>(Func<TMessage, Task> handler, bool weakSubscription = true)
         {
             var subscription = weakSubscription
-              ? (IAsyncSubscription)new AsyncWeakSubscription(handler)
+              ? (IAsyncSubscription) new AsyncWeakSubscription(handler)
               : new AsyncSubscription(handler);
 
             Subscribe<TMessage>(subscription);
@@ -59,15 +59,14 @@ namespace AllOverIt.Events
         {
             if (_subscriptions.TryGetValue(typeof(TMessage), out var subscriptions))
             {
-                foreach (var subscription in subscriptions)
-                {
-                    var action = subscription.GetHandler<TMessage>();
+                // We're not checking for duplicate handler subscriptions so make sure any duplicates are unsubscribed
+                var subscriptionsToRemove = subscriptions
+                    .Where(subscription => subscription.GetHandler<TMessage>() == handler)
+                    .SelectAsReadOnlyCollection(subscription => subscription);
 
-                    if (action == handler)
-                    {
-                        subscriptions.Remove(subscription);
-                        return;
-                    }
+                foreach (var subscription in subscriptionsToRemove)
+                {
+                    subscriptions.Remove(subscription);
                 }
             }
         }
@@ -77,15 +76,14 @@ namespace AllOverIt.Events
         {
             if (_asyncSubscriptions.TryGetValue(typeof(TMessage), out var subscriptions))
             {
-                foreach (var subscription in subscriptions)
-                {
-                    var action = subscription.GetHandler<TMessage>();
+                // We're not checking for duplicate handler subscriptions so make sure any duplicates are unsubscribed
+                var subscriptionsToRemove = subscriptions
+                    .Where(subscription => subscription.GetHandler<TMessage>() == handler)
+                    .SelectAsReadOnlyCollection(subscription => subscription);
 
-                    if (action == handler)
-                    {
-                        subscriptions.Remove(subscription);
-                        return;
-                    }
+                foreach (var subscription in subscriptionsToRemove)
+                {
+                    subscriptions.Remove(subscription);
                 }
             }
         }
@@ -98,7 +96,7 @@ namespace AllOverIt.Events
             }
             else
             {
-                subscriptions = new List<ISubscription> { subscription };
+                subscriptions = [subscription];
                 _subscriptions.Add(typeof(TMessage), subscriptions);
             }
         }
@@ -111,7 +109,7 @@ namespace AllOverIt.Events
             }
             else
             {
-                subscriptions = new List<IAsyncSubscription> { subscription };
+                subscriptions = [subscription];
                 _asyncSubscriptions.Add(typeof(TMessage), subscriptions);
             }
         }

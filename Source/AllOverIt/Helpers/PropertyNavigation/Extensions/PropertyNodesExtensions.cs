@@ -51,14 +51,14 @@ namespace AllOverIt.Helpers.PropertyNavigation.Extensions
             return string.Join(".", propertyNodes.Nodes.Select(item => item.Name()));
         }
 
-        private static IPropertyNodes<TProperty> CreateFrom<TType, TProperty>(this IPropertyNodes<TType> other, Expression<Func<TType, TProperty>> expression)
+        private static PropertyNodes<TProperty> CreateFrom<TType, TProperty>(this IPropertyNodes<TType> other, Expression<Func<TType, TProperty>> expression)
         {
             var nodes = GetNodes(expression);
 
             return new PropertyNodes<TProperty>(other.Nodes.Concat(nodes));
         }
 
-        private static IPropertyNodes<TProperty> CreateFrom<TType, TProperty>(IPropertyNodes<TType> other, Expression<Func<TType, IEnumerable<TProperty>>> expression)
+        private static PropertyNodes<TProperty> CreateFrom<TType, TProperty>(IPropertyNodes<TType> other, Expression<Func<TType, IEnumerable<TProperty>>> expression)
         {
             var nodes = GetNodes(expression);
 

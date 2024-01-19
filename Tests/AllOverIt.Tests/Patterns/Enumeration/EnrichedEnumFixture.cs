@@ -11,54 +11,54 @@ namespace AllOverIt.Tests.Patterns.Enumeration
 {
     public class EnrichedEnumFixture : FixtureBase
     {
-        private class EnrichedEnumDummy : EnrichedEnum<EnrichedEnumDummy>
+        private class DummyEnrichedEnum1 : EnrichedEnum<DummyEnrichedEnum1>
         {
-            public static readonly EnrichedEnumDummy Value1 = new(1);
-            public static readonly EnrichedEnumDummy Value2 = new(2, "Value 2");
+            public static readonly DummyEnrichedEnum1 Value1 = new(1);
+            public static readonly DummyEnrichedEnum1 Value2 = new(2, "Value 2");
 
-            private EnrichedEnumDummy(int value, [CallerMemberName] string name = null)
+            private DummyEnrichedEnum1(int value, [CallerMemberName] string name = null)
                 : base(value, name)
             {
             }
         }
 
-        private class EnrichedEnumDummy2 : EnrichedEnum<EnrichedEnumDummy2>
+        private class DummyEnrichedEnum2 : EnrichedEnum<DummyEnrichedEnum2>
         {
-            public static readonly EnrichedEnumDummy2 Value1 = new(1);
-            public static readonly EnrichedEnumDummy2 Value2 = new(2, "Value 2");
+            public static readonly DummyEnrichedEnum2 Value1 = new(1);
+            public static readonly DummyEnrichedEnum2 Value2 = new(2, "Value 2");
 
-            private EnrichedEnumDummy2(int value, [CallerMemberName] string name = null)
+            private DummyEnrichedEnum2(int value, [CallerMemberName] string name = null)
                 : base(value, name)
             {
             }
         }
 
-        // Cannot merge BadEnrichedEnumDummy1, BadEnrichedEnumDummy2, BadEnrichedEnumDummy3 due to static initialization
-        private class BadEnrichedEnumDummy1 : EnrichedEnum<BadEnrichedEnumDummy1>
+        // Cannot merge DummyBadEnrichedEnum1, DummyBadEnrichedEnum2, DummyBadEnrichedEnum3 due to static initialization
+        private class DummyBadEnrichedEnum1 : EnrichedEnum<DummyBadEnrichedEnum1>
         {
-            public static readonly BadEnrichedEnumDummy1 NullName = new(1, null);
+            public static readonly DummyBadEnrichedEnum1 NullName = new(1, null);
 
-            private BadEnrichedEnumDummy1(int value, [CallerMemberName] string name = null)
+            private DummyBadEnrichedEnum1(int value, [CallerMemberName] string name = null)
                 : base(value, name)
             {
             }
         }
 
-        private class BadEnrichedEnumDummy2 : EnrichedEnum<BadEnrichedEnumDummy2>
+        private class DummyBadEnrichedEnum2 : EnrichedEnum<DummyBadEnrichedEnum2>
         {
-            public static readonly BadEnrichedEnumDummy2 EmptyName = new(1, "");
+            public static readonly DummyBadEnrichedEnum2 EmptyName = new(1, "");
 
-            private BadEnrichedEnumDummy2(int value, [CallerMemberName] string name = null)
+            private DummyBadEnrichedEnum2(int value, [CallerMemberName] string name = null)
                 : base(value, name)
             {
             }
         }
 
-        private class BadEnrichedEnumDummy3 : EnrichedEnum<BadEnrichedEnumDummy3>
+        private class DummyBadEnrichedEnum3 : EnrichedEnum<DummyBadEnrichedEnum3>
         {
-            public static readonly BadEnrichedEnumDummy3 WhitespaceName = new(1, "  ");
+            public static readonly DummyBadEnrichedEnum3 WhitespaceName = new(1, "  ");
 
-            private BadEnrichedEnumDummy3(int value, [CallerMemberName] string name = null)
+            private DummyBadEnrichedEnum3(int value, [CallerMemberName] string name = null)
                 : base(value, name)
             {
             }
@@ -71,7 +71,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 Invoking(() =>
                 {
-                    _ = BadEnrichedEnumDummy1.NullName;
+                    _ = DummyBadEnrichedEnum1.NullName;
                 })
                     .Should()
                     .Throw<TypeInitializationException>()
@@ -84,7 +84,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 Invoking(() =>
                 {
-                    _ = BadEnrichedEnumDummy2.EmptyName;
+                    _ = DummyBadEnrichedEnum2.EmptyName;
                 })
                     .Should()
                     .Throw<TypeInitializationException>()
@@ -97,7 +97,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 Invoking(() =>
                 {
-                    _ = BadEnrichedEnumDummy3.WhitespaceName;
+                    _ = DummyBadEnrichedEnum3.WhitespaceName;
                 })
                     .Should()
                     .Throw<TypeInitializationException>()
@@ -108,20 +108,20 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Set_Value()
             {
-                EnrichedEnumDummy.Value1.Value.Should().Be(1);
-                EnrichedEnumDummy.Value2.Value.Should().Be(2);
+                DummyEnrichedEnum1.Value1.Value.Should().Be(1);
+                DummyEnrichedEnum1.Value2.Value.Should().Be(2);
             }
 
             [Fact]
             public void Should_Set_Name_Same_As_Field()
             {
-                EnrichedEnumDummy.Value1.Name.Should().Be(nameof(EnrichedEnumDummy.Value1));
+                DummyEnrichedEnum1.Value1.Name.Should().Be(nameof(DummyEnrichedEnum1.Value1));
             }
 
             [Fact]
             public void Should_Set_Name_As_Specified()
             {
-                EnrichedEnumDummy.Value2.Name.Should().Be("Value 2");
+                DummyEnrichedEnum1.Value2.Name.Should().Be("Value 2");
             }
         }
 
@@ -130,8 +130,8 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Return_Name()
             {
-                EnrichedEnumDummy.Value1.ToString().Should().Be(EnrichedEnumDummy.Value1.Name);
-                EnrichedEnumDummy.Value2.ToString().Should().Be(EnrichedEnumDummy.Value2.Name);
+                DummyEnrichedEnum1.Value1.ToString().Should().Be(DummyEnrichedEnum1.Value1.Name);
+                DummyEnrichedEnum1.Value2.ToString().Should().Be(DummyEnrichedEnum1.Value2.Name);
             }
         }
 
@@ -140,14 +140,14 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Not_Compare()
             {
-                var actual = EnrichedEnumDummy.Value1.CompareTo(EnrichedEnumDummy.Value2);
+                var actual = DummyEnrichedEnum1.Value1.CompareTo(DummyEnrichedEnum1.Value2);
                 actual.Should().NotBe(0);
             }
 
             [Fact]
             public void Should_Compare()
             {
-                var actual = EnrichedEnumDummy.Value2.CompareTo(EnrichedEnumDummy.Value2);
+                var actual = DummyEnrichedEnum1.Value2.CompareTo(DummyEnrichedEnum1.Value2);
                 actual.Should().Be(0);
             }
 
@@ -156,7 +156,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 Invoking(() =>
                     {
-                        EnrichedEnumDummy.Value2.CompareTo(null);
+                        DummyEnrichedEnum1.Value2.CompareTo(null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -169,8 +169,8 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Be_Equal()
             {
-                object enum1 = EnrichedEnumDummy.Value1;
-                var actual = EnrichedEnumDummy.Value1.Equals(enum1);
+                object value1 = DummyEnrichedEnum1.Value1;
+                var actual = DummyEnrichedEnum1.Value1.Equals(value1);
 
                 actual.Should().BeTrue();
             }
@@ -178,8 +178,8 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Not_Be_Equal_When_Null()
             {
-                object enumNull = null;
-                var actual = EnrichedEnumDummy.Value1.Equals(enumNull);
+                object nullValue = null;
+                var actual = DummyEnrichedEnum1.Value1.Equals(nullValue);
 
                 actual.Should().BeFalse();
             }
@@ -187,8 +187,8 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Not_Be_Equal_Same_Type()
             {
-                object enum2 = EnrichedEnumDummy.Value2;
-                var actual = EnrichedEnumDummy.Value1.Equals(enum2);
+                object value2 = DummyEnrichedEnum1.Value2;
+                var actual = DummyEnrichedEnum1.Value1.Equals(value2);
 
                 actual.Should().BeFalse();
             }
@@ -196,8 +196,8 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Not_Be_Equal_Different_Type_Same_Value()
             {
-                object enum1 = EnrichedEnumDummy2.Value1;
-                var actual = EnrichedEnumDummy.Value1.Equals(enum1);
+                object value1 = DummyEnrichedEnum2.Value1;
+                var actual = DummyEnrichedEnum1.Value1.Equals(value1);
 
                 actual.Should().BeFalse();
             }
@@ -208,8 +208,8 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Be_Equal()
             {
-                var enum1 = EnrichedEnumDummy.Value1;
-                var actual = EnrichedEnumDummy.Value1.Equals(enum1);
+                var value1 = DummyEnrichedEnum1.Value1;
+                var actual = DummyEnrichedEnum1.Value1.Equals(value1);
 
                 actual.Should().BeTrue();
             }
@@ -217,8 +217,8 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Not_Be_Equal_When_Null()
             {
-                EnrichedEnumDummy enumNull = null;
-                var actual = EnrichedEnumDummy.Value1.Equals(enumNull);
+                DummyEnrichedEnum1 nullValue = null;
+                var actual = DummyEnrichedEnum1.Value1.Equals(nullValue);
 
                 actual.Should().BeFalse();
             }
@@ -226,8 +226,8 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Not_Be_Equal_Same_Type()
             {
-                var enum2 = EnrichedEnumDummy.Value2;
-                var actual = EnrichedEnumDummy.Value1.Equals(enum2);
+                var value2 = DummyEnrichedEnum1.Value2;
+                var actual = DummyEnrichedEnum1.Value1.Equals(value2);
 
                 actual.Should().BeFalse();
             }
@@ -239,7 +239,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             public void Should_Return_Value_HashCode()
             {
                 var expected = 2.GetHashCode();
-                var actual = EnrichedEnumDummy.Value2.GetHashCode();
+                var actual = DummyEnrichedEnum1.Value2.GetHashCode();
 
                 actual.Should().Be(expected);
             }
@@ -250,9 +250,9 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Get_All_Values()
             {
-                var actual = EnrichedEnumDummy.GetAllValues();
+                var actual = DummyEnrichedEnum1.GetAllValues();
 
-                var expected = new[] {EnrichedEnumDummy.Value1.Value, EnrichedEnumDummy.Value2.Value};
+                var expected = new[] {DummyEnrichedEnum1.Value1.Value, DummyEnrichedEnum1.Value2.Value};
 
                 expected.Should().BeEquivalentTo(actual);
             }
@@ -263,9 +263,9 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Get_All_Names()
             {
-                var actual = EnrichedEnumDummy.GetAllNames();
+                var actual = DummyEnrichedEnum1.GetAllNames();
 
-                var expected = new[] {EnrichedEnumDummy.Value1.Name, EnrichedEnumDummy.Value2.Name};
+                var expected = new[] {DummyEnrichedEnum1.Value1.Name, DummyEnrichedEnum1.Value2.Name};
 
                 expected.Should().BeEquivalentTo(actual);
             }
@@ -276,9 +276,9 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Get_All()
             {
-                var actual = EnrichedEnumDummy.GetAll();
+                var actual = DummyEnrichedEnum1.GetAll();
 
-                var expected = new[] {EnrichedEnumDummy.Value1, EnrichedEnumDummy.Value2};
+                var expected = new[] {DummyEnrichedEnum1.Value1, DummyEnrichedEnum1.Value2};
 
                 expected.Should().BeEquivalentTo(actual);
             }
@@ -289,8 +289,8 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Get_From_Number()
             {
-                EnrichedEnumDummy.From(1).Should().Be(EnrichedEnumDummy.Value1);
-                EnrichedEnumDummy.From(2).Should().Be(EnrichedEnumDummy.Value2);
+                DummyEnrichedEnum1.From(1).Should().Be(DummyEnrichedEnum1.Value1);
+                DummyEnrichedEnum1.From(2).Should().Be(DummyEnrichedEnum1.Value2);
             }
 
             [Fact]
@@ -298,11 +298,11 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 Invoking(() =>
                     {
-                        _ = EnrichedEnumDummy.From(0);
+                        _ = DummyEnrichedEnum1.From(0);
                     })
                     .Should()
                     .Throw<EnrichedEnumException>()
-                    .WithMessage("Unable to convert '0' to a EnrichedEnumDummy.");
+                    .WithMessage("Unable to convert '0' to a DummyEnrichedEnum1.");
             }
         }
 
@@ -311,16 +311,16 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Get_From_Number_String()
             {
-                EnrichedEnumDummy.From("1").Should().Be(EnrichedEnumDummy.Value1);
-                EnrichedEnumDummy.From("2").Should().Be(EnrichedEnumDummy.Value2);
+                DummyEnrichedEnum1.From("1").Should().Be(DummyEnrichedEnum1.Value1);
+                DummyEnrichedEnum1.From("2").Should().Be(DummyEnrichedEnum1.Value2);
             }
 
             [Fact]
             public void Should_Get_From_Name()
             {
-                EnrichedEnumDummy.From(nameof(EnrichedEnumDummy.Value1)).Should().Be(EnrichedEnumDummy.Value1);
-                EnrichedEnumDummy.From("Value 2").Should().Be(EnrichedEnumDummy.Value2);
-                EnrichedEnumDummy.From("VALUE 2").Should().Be(EnrichedEnumDummy.Value2);
+                DummyEnrichedEnum1.From(nameof(DummyEnrichedEnum1.Value1)).Should().Be(DummyEnrichedEnum1.Value1);
+                DummyEnrichedEnum1.From("Value 2").Should().Be(DummyEnrichedEnum1.Value2);
+                DummyEnrichedEnum1.From("VALUE 2").Should().Be(DummyEnrichedEnum1.Value2);
             }
 
             [Fact]
@@ -330,11 +330,11 @@ namespace AllOverIt.Tests.Patterns.Enumeration
 
                 Invoking(() =>
                     {
-                        _ = EnrichedEnumDummy.From(value);
+                        _ = DummyEnrichedEnum1.From(value);
                     })
                     .Should()
                     .Throw<EnrichedEnumException>()
-                    .WithMessage($"Unable to convert '{value}' to a EnrichedEnumDummy.");
+                    .WithMessage($"Unable to convert '{value}' to a DummyEnrichedEnum1.");
             }
 
             [Fact]
@@ -342,7 +342,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 Invoking(() =>
                 {
-                    _ = EnrichedEnumDummy.From((string)null);
+                    _ = DummyEnrichedEnum1.From((string)null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -354,7 +354,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 Invoking(() =>
                 {
-                    _ = EnrichedEnumDummy.From(string.Empty);
+                    _ = DummyEnrichedEnum1.From(string.Empty);
                 })
                     .Should()
                     .Throw<ArgumentException>()
@@ -366,7 +366,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 Invoking(() =>
                 {
-                    _ = EnrichedEnumDummy.From("  ");
+                    _ = DummyEnrichedEnum1.From("  ");
                 })
                     .Should()
                     .Throw<ArgumentException>()
@@ -379,16 +379,16 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Get_From_Value()
             {
-                var tryResult = EnrichedEnumDummy.TryFromValue(1, out var actual);
+                var tryResult = DummyEnrichedEnum1.TryFromValue(1, out var actual);
 
                 tryResult.Should().BeTrue();
-                actual.Should().Be(EnrichedEnumDummy.Value1);
+                actual.Should().Be(DummyEnrichedEnum1.Value1);
             }
 
             [Fact]
             public void Should_Not_Get_From_Value()
             {
-                var tryResult = EnrichedEnumDummy.TryFromValue(-1, out var actual);
+                var tryResult = DummyEnrichedEnum1.TryFromValue(-1, out var actual);
 
                 tryResult.Should().BeFalse();
                 actual.Should().BeNull();
@@ -400,16 +400,16 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Get_From_Name()
             {
-                var tryResult = EnrichedEnumDummy.TryFromName("VALUE 2", out var actual);
+                var tryResult = DummyEnrichedEnum1.TryFromName("VALUE 2", out var actual);
 
                 tryResult.Should().BeTrue();
-                actual.Should().Be(EnrichedEnumDummy.Value2);
+                actual.Should().Be(DummyEnrichedEnum1.Value2);
             }
 
             [Fact]
             public void Should_Not_Get_From_Name()
             {
-                var tryResult = EnrichedEnumDummy.TryFromName(Create<string>(), out var actual);
+                var tryResult = DummyEnrichedEnum1.TryFromName(Create<string>(), out var actual);
 
                 tryResult.Should().BeFalse();
                 actual.Should().BeNull();
@@ -420,7 +420,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 Invoking(() =>
                 {
-                    _ = EnrichedEnumDummy.TryFromName((string) null, out _);
+                    _ = DummyEnrichedEnum1.TryFromName((string) null, out _);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -432,7 +432,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 Invoking(() =>
                 {
-                    _ = EnrichedEnumDummy.TryFromName(string.Empty, out _);
+                    _ = DummyEnrichedEnum1.TryFromName(string.Empty, out _);
                 })
                     .Should()
                     .Throw<ArgumentException>()
@@ -444,7 +444,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 Invoking(() =>
                 {
-                    _ = EnrichedEnumDummy.TryFromName("  ", out _);
+                    _ = DummyEnrichedEnum1.TryFromName("  ", out _);
                 })
                     .Should()
                     .Throw<ArgumentException>()
@@ -457,37 +457,37 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Convert_From_Value()
             {
-                EnrichedEnumDummy.TryFromNameOrValue("2", out var enumeration).Should().BeTrue();
+                DummyEnrichedEnum1.TryFromNameOrValue("2", out var enumeration).Should().BeTrue();
 
-                enumeration.Should().Be(EnrichedEnumDummy.Value2);
+                enumeration.Should().Be(DummyEnrichedEnum1.Value2);
             }
 
             [Fact]
             public void Should_Convert_From_Name()
             {
-                EnrichedEnumDummy.TryFromNameOrValue("Value 2", out var enumeration).Should().BeTrue();
+                DummyEnrichedEnum1.TryFromNameOrValue("Value 2", out var enumeration).Should().BeTrue();
 
-                enumeration.Should().Be(EnrichedEnumDummy.Value2);
+                enumeration.Should().Be(DummyEnrichedEnum1.Value2);
             }
 
             [Fact]
             public void Should_Convert_From_Name_Case_Insensitive()
             {
-                EnrichedEnumDummy.TryFromNameOrValue("VaLuE 2", out var enumeration).Should().BeTrue();
+                DummyEnrichedEnum1.TryFromNameOrValue("VaLuE 2", out var enumeration).Should().BeTrue();
 
-                enumeration.Should().Be(EnrichedEnumDummy.Value2);
+                enumeration.Should().Be(DummyEnrichedEnum1.Value2);
             }
 
             [Fact]
             public void Should_Not_Convert_From_Value()
             {
-                EnrichedEnumDummy.TryFromNameOrValue("3", out _).Should().BeFalse();
+                DummyEnrichedEnum1.TryFromNameOrValue("3", out _).Should().BeFalse();
             }
 
             [Fact]
             public void Should_Not_Convert_From_Name()
             {
-                EnrichedEnumDummy.TryFromNameOrValue("Value 1", out _).Should().BeFalse();
+                DummyEnrichedEnum1.TryFromNameOrValue("Value 1", out _).Should().BeFalse();
             }
 
             [Fact]
@@ -495,7 +495,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 Invoking(() =>
                 {
-                    _ = EnrichedEnumDummy.TryFromNameOrValue((string) null, out _);
+                    _ = DummyEnrichedEnum1.TryFromNameOrValue((string) null, out _);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -507,7 +507,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 Invoking(() =>
                 {
-                    _ = EnrichedEnumDummy.TryFromNameOrValue(string.Empty, out _);
+                    _ = DummyEnrichedEnum1.TryFromNameOrValue(string.Empty, out _);
                 })
                     .Should()
                     .Throw<ArgumentException>()
@@ -519,7 +519,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 Invoking(() =>
                 {
-                    _ = EnrichedEnumDummy.TryFromNameOrValue("  ", out _);
+                    _ = DummyEnrichedEnum1.TryFromNameOrValue("  ", out _);
                 })
                     .Should()
                     .Throw<ArgumentException>()
@@ -534,7 +534,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [InlineData(2)]
             public void Should_Find_Value(int value)
             {
-                var actual = EnrichedEnumDummy.HasValue(value);
+                var actual = DummyEnrichedEnum1.HasValue(value);
 
                 actual.Should().BeTrue();
             }
@@ -544,7 +544,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [InlineData(0)]
             public void Should_Not_Find_Value(int value)
             {
-                var actual = EnrichedEnumDummy.HasValue(value);
+                var actual = DummyEnrichedEnum1.HasValue(value);
 
                 actual.Should().BeFalse();
             }
@@ -559,7 +559,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [InlineData("VALUE 2")]
             public void Should_Find_Name(string name)
             {
-                var actual = EnrichedEnumDummy.HasName(name);
+                var actual = DummyEnrichedEnum1.HasName(name);
 
                 actual.Should().BeTrue();
             }
@@ -567,7 +567,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Not_Find_Name()
             {
-                var actual = EnrichedEnumDummy.HasName(Create<string>());
+                var actual = DummyEnrichedEnum1.HasName(Create<string>());
 
                 actual.Should().BeFalse();
             }
@@ -577,7 +577,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 Invoking(() =>
                 {
-                    _ = EnrichedEnumDummy.HasName((string) null);
+                    _ = DummyEnrichedEnum1.HasName((string) null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -589,7 +589,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 Invoking(() =>
                 {
-                    _ = EnrichedEnumDummy.HasName(string.Empty);
+                    _ = DummyEnrichedEnum1.HasName(string.Empty);
                 })
                     .Should()
                     .Throw<ArgumentException>()
@@ -601,7 +601,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 Invoking(() =>
                 {
-                    _ = EnrichedEnumDummy.HasName("  ");
+                    _ = DummyEnrichedEnum1.HasName("  ");
                 })
                     .Should()
                     .Throw<ArgumentException>()
@@ -620,7 +620,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [InlineData("VALUE 2")]
             public void Should_Find_Name_Or_Value(string name)
             {
-                var actual = EnrichedEnumDummy.HasNameOrValue(name);
+                var actual = DummyEnrichedEnum1.HasNameOrValue(name);
 
                 actual.Should().BeTrue();
             }
@@ -628,8 +628,8 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Not_Find_Name_Or_Value()
             {
-                EnrichedEnumDummy.HasNameOrValue("-1").Should().BeFalse();
-                EnrichedEnumDummy.HasNameOrValue(Create<string>()).Should().BeFalse();
+                DummyEnrichedEnum1.HasNameOrValue("-1").Should().BeFalse();
+                DummyEnrichedEnum1.HasNameOrValue(Create<string>()).Should().BeFalse();
             }
 
             [Fact]
@@ -637,7 +637,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 Invoking(() =>
                 {
-                    _ = EnrichedEnumDummy.HasNameOrValue((string) null);
+                    _ = DummyEnrichedEnum1.HasNameOrValue((string) null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -649,7 +649,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 Invoking(() =>
                 {
-                    _ = EnrichedEnumDummy.HasNameOrValue(string.Empty);
+                    _ = DummyEnrichedEnum1.HasNameOrValue(string.Empty);
                 })
                     .Should()
                     .Throw<ArgumentException>()
@@ -661,7 +661,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 Invoking(() =>
                 {
-                    _ = EnrichedEnumDummy.HasNameOrValue("  ");
+                    _ = DummyEnrichedEnum1.HasNameOrValue("  ");
                 })
                     .Should()
                     .Throw<ArgumentException>()
@@ -674,8 +674,8 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Be_Equal()
             {
-                var enum1 = EnrichedEnumDummy.Value1;
-                var actual = EnrichedEnumDummy.Value1 == enum1;
+                var value1 = DummyEnrichedEnum1.Value1;
+                var actual = DummyEnrichedEnum1.Value1 == value1;
 
                 actual.Should().BeTrue();
             }
@@ -683,8 +683,8 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Not_Be_Equal_When_Null()
             {
-                EnrichedEnumDummy enumNull = null;
-                var actual = EnrichedEnumDummy.Value1 == enumNull;
+                DummyEnrichedEnum1 nullValue = null;
+                var actual = DummyEnrichedEnum1.Value1 == nullValue;
 
                 actual.Should().BeFalse();
             }
@@ -692,7 +692,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Not_Be_Equal_Same_Type()
             {
-                var actual = EnrichedEnumDummy.Value1 == EnrichedEnumDummy.Value2;
+                var actual = DummyEnrichedEnum1.Value1 == DummyEnrichedEnum1.Value2;
 
                 actual.Should().BeFalse();
             }
@@ -703,8 +703,8 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Be_Equal()
             {
-                var enum1 = EnrichedEnumDummy.Value1;
-                var actual = EnrichedEnumDummy.Value1 != enum1;
+                var value1 = DummyEnrichedEnum1.Value1;
+                var actual = DummyEnrichedEnum1.Value1 != value1;
 
                 actual.Should().BeFalse();
             }
@@ -712,9 +712,9 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Not_Be_Equal_When_Null()
             {
-                EnrichedEnumDummy enumNull = null;
+                DummyEnrichedEnum1 nullValue = null;
 
-                var actual = EnrichedEnumDummy.Value1 != enumNull;
+                var actual = DummyEnrichedEnum1.Value1 != nullValue;
 
                 actual.Should().BeTrue();
             }
@@ -722,7 +722,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Not_Be_Equal_Same_Type()
             {
-                var actual = EnrichedEnumDummy.Value1 != EnrichedEnumDummy.Value2;
+                var actual = DummyEnrichedEnum1.Value1 != DummyEnrichedEnum1.Value2;
 
                 actual.Should().BeTrue();
             }
@@ -733,7 +733,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Be_GreaterThan()
             {
-                var actual = EnrichedEnumDummy.Value2 > EnrichedEnumDummy.Value1;
+                var actual = DummyEnrichedEnum1.Value2 > DummyEnrichedEnum1.Value1;
 
                 actual.Should().BeTrue();
             }
@@ -741,7 +741,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Not_Be_GreaterThan()
             {
-                var actual = EnrichedEnumDummy.Value1 > EnrichedEnumDummy.Value2;
+                var actual = DummyEnrichedEnum1.Value1 > DummyEnrichedEnum1.Value2;
 
                 actual.Should().BeFalse();
             }
@@ -750,7 +750,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             public void Should_Not_Be_GreaterThan_When_Equal()
             {
 #pragma warning disable CS1718 // Comparison made to same variable
-                var actual = EnrichedEnumDummy.Value1 > EnrichedEnumDummy.Value1;
+                var actual = DummyEnrichedEnum1.Value1 > DummyEnrichedEnum1.Value1;
 #pragma warning restore CS1718 // Comparison made to same variable
 
                 actual.Should().BeFalse();
@@ -761,7 +761,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 Invoking(() =>
                     {
-                        _ = EnrichedEnumDummy.Value2 > null;
+                        _ = DummyEnrichedEnum1.Value2 > null;
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -774,7 +774,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Be_GreaterThan()
             {
-                var actual = EnrichedEnumDummy.Value2 >= EnrichedEnumDummy.Value1;
+                var actual = DummyEnrichedEnum1.Value2 >= DummyEnrichedEnum1.Value1;
 
                 actual.Should().BeTrue();
             }
@@ -782,8 +782,8 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Be_Equal()
             {
-                var enum2 = EnrichedEnumDummy.Value2;
-                var actual = EnrichedEnumDummy.Value2 >= enum2;
+                var value2 = DummyEnrichedEnum1.Value2;
+                var actual = DummyEnrichedEnum1.Value2 >= value2;
 
                 actual.Should().BeTrue();
             }
@@ -791,7 +791,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Not_Be_GreaterThanOrEqual()
             {
-                var actual = EnrichedEnumDummy.Value1 >= EnrichedEnumDummy.Value2;
+                var actual = DummyEnrichedEnum1.Value1 >= DummyEnrichedEnum1.Value2;
 
                 actual.Should().BeFalse();
             }
@@ -801,7 +801,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 Invoking(() =>
                     {
-                        _ = EnrichedEnumDummy.Value2 >= null;
+                        _ = DummyEnrichedEnum1.Value2 >= null;
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -814,7 +814,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Be_LessThan()
             {
-                var actual = EnrichedEnumDummy.Value1 < EnrichedEnumDummy.Value2;
+                var actual = DummyEnrichedEnum1.Value1 < DummyEnrichedEnum1.Value2;
 
                 actual.Should().BeTrue();
             }
@@ -822,7 +822,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Not_Be_LessThan()
             {
-                var actual = EnrichedEnumDummy.Value2 < EnrichedEnumDummy.Value1;
+                var actual = DummyEnrichedEnum1.Value2 < DummyEnrichedEnum1.Value1;
 
                 actual.Should().BeFalse();
             }
@@ -831,7 +831,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             public void Should_Not_Be_LessThan_When_Equal()
             {
 #pragma warning disable CS1718 // Comparison made to same variable
-                var actual = EnrichedEnumDummy.Value2 < EnrichedEnumDummy.Value2;
+                var actual = DummyEnrichedEnum1.Value2 < DummyEnrichedEnum1.Value2;
 #pragma warning restore CS1718 // Comparison made to same variable
 
                 actual.Should().BeFalse();
@@ -842,7 +842,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 Invoking(() =>
                 {
-                    _ = EnrichedEnumDummy.Value2 < null;
+                    _ = DummyEnrichedEnum1.Value2 < null;
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -855,7 +855,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Be_LessThan()
             {
-                var actual = EnrichedEnumDummy.Value1 <= EnrichedEnumDummy.Value2;
+                var actual = DummyEnrichedEnum1.Value1 <= DummyEnrichedEnum1.Value2;
 
                 actual.Should().BeTrue();
             }
@@ -863,8 +863,8 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Be_Equal()
             {
-                var enum2 = EnrichedEnumDummy.Value2;
-                var actual = EnrichedEnumDummy.Value2 <= enum2;
+                var value2 = DummyEnrichedEnum1.Value2;
+                var actual = DummyEnrichedEnum1.Value2 <= value2;
 
                 actual.Should().BeTrue();
             }
@@ -872,7 +872,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Not_Be_LessThanOrEqual()
             {
-                var actual = EnrichedEnumDummy.Value2 <= EnrichedEnumDummy.Value1;
+                var actual = DummyEnrichedEnum1.Value2 <= DummyEnrichedEnum1.Value1;
 
                 actual.Should().BeFalse();
             }
@@ -882,7 +882,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 Invoking(() =>
                 {
-                    _ = EnrichedEnumDummy.Value2 <= null;
+                    _ = DummyEnrichedEnum1.Value2 <= null;
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -895,7 +895,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Convert()
             {
-                int value = EnrichedEnumDummy.Value2;
+                int value = DummyEnrichedEnum1.Value2;
 
                 value.Should().Be(2);
             }
@@ -906,9 +906,9 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Convert()
             {
-                var value = (EnrichedEnumDummy) 2;
+                var value = (DummyEnrichedEnum1) 2;
 
-                value.Should().Be(EnrichedEnumDummy.Value2);
+                value.Should().Be(DummyEnrichedEnum1.Value2);
             }
         }
     }

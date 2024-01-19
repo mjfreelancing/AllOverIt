@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
-#if !NET5_0_OR_GREATER
+#if NETSTANDARD2_1
 namespace System.Runtime.CompilerServices
 {
     [ExcludeFromCodeCoverage, DebuggerNonUserCode]

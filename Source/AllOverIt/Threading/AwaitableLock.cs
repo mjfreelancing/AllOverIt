@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace AllOverIt.Threading
 {
-    /// <summary>Represents a lock that limits the number of threads that can access a resource within an asynchronous context.</summary>
+    /// <inheritdoc cref="IAwaitableLock" />
     public sealed class AwaitableLock : IAwaitableLock
     {
         private SemaphoreSlim _semaphore = new(1, 1);

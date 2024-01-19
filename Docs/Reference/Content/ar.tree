@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE instance-profile
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/product-profile.dtd">
+
+<instance-profile id="ar" name="AllOverIt Reference"
+                  start-page="getting-started-introduction.topic">
+
+    <toc-element toc-title="Getting Started">
+        <toc-element topic="getting-started-introduction.topic"/>
+        <toc-element topic="getting-started-dependencies.topic"/>
+        <toc-element topic="getting-started-installation.topic"/>
+    </toc-element>
+
+    <toc-element toc-title="Packages">
+        <toc-element topic="packages-alloverit.topic">
+            <toc-element toc-title="Aspects">
+                <toc-element topic="alloverit-aspects-interceptors.topic"/>
+                <toc-element topic="alloverit-aspects-Instantiating-Interceptors.topic"/>
+                <toc-element topic="alloverit-aspects-interceptor-state.topic"/>
+                <toc-element topic="alloverit-aspects-intercept-arguments.topic"/>
+                <toc-element topic="alloverit-aspects-intercept-results.topic"/>
+            </toc-element>
+            <toc-element toc-title="Async">
+                <toc-element topic="alloverit-async-async-lazy.topic"/>
+                <toc-element topic="alloverit-async-background-task.topic"/>
+            </toc-element>
+            <toc-element toc-title="Patterns">
+                <toc-element topic="alloverit-patterns-value-object.topic"/>
+            </toc-element>
+        </toc-element>
+        <toc-element topic="packages-alloverit-aspnetcore.topic"/>
+        <toc-element topic="packages-alloverit-assertion.topic"/>
+        <toc-element topic="packages-alloverit-aws-appsync-client.topic"/>
+        <toc-element topic="packages-alloverit-aws-cdk-appsync.topic"/>
+        <toc-element topic="packages-alloverit-cryptography.topic"/>
+        <toc-element topic="packages-alloverit-csv.topic"/>
+        <toc-element topic="packages-alloverit-dependency-injection.topic"/>
+        <toc-element topic="packages-alloverit-entityframeworkcore.topic"/>
+        <toc-element topic="packages-alloverit-entityframeworkcore-diagrams.topic"/>
+        <toc-element topic="packages-alloverit-entityframeworkcore-pagination.topic"/>
+        <toc-element topic="packages-alloverit-evaluator.topic"/>
+        <toc-element topic="packages-alloverit-filtering.topic"/>
+        <toc-element topic="packages-alloverit-fixture.topic"/>
+        <toc-element topic="packages-alloverit-fixture-fakeiteasy.topic"/>
+        <toc-element topic="packages-alloverit-generichost.topic"/>
+        <toc-element topic="packages-alloverit-mapping.topic"/>
+        <toc-element topic="packages-alloverit-pagination.topic"/>
+        <toc-element topic="packages-alloverit-pipes.topic"/>
+        <toc-element topic="packages-alloverit-reactive.topic"/>
+        <toc-element topic="packages-alloverit-reactiveui.topic"/>
+        <toc-element topic="packages-alloverit-reactiveui-wpf.topic"/>
+        <toc-element topic="packages-alloverit-serialization-binary.topic"/>
+        <toc-element topic="packages-alloverit-serialization-json-abstractions.topic"/>
+        <toc-element topic="packages-alloverit-serialization-json-newtonsoft.topic"/>
+        <toc-element topic="packages-alloverit-serialization-json-systemtext.topic"/>
+        <toc-element topic="packages-alloverit-validation.topic"/>
+        <toc-element topic="packages-alloverit-validation-options.topic"/>
+        <toc-element topic="packages-alloverit-wpf.topic"/>
+        <toc-element topic="packages-alloverit-wpf-controls.topic"/>
+    </toc-element>
+</instance-profile>

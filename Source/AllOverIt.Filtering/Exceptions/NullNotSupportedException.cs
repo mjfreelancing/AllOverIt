@@ -3,17 +3,25 @@
 namespace AllOverIt.Filtering.Exceptions
 {
     /// <summary>An exception that can be thrown wihle building a query filter.</summary>
-    public class NullNotSupportedException : Exception
+    public sealed class NullNotSupportedException : Exception
     {
         /// <summary>Constructor.</summary>
-        internal NullNotSupportedException()
+        public NullNotSupportedException()
         {
         }
 
         /// <summary>Constructor.</summary>
         /// <param name="message">The exception message.</param>
-        internal NullNotSupportedException(string message)
+        public NullNotSupportedException(string message)
             : base(message)
+        {
+        }
+
+        /// <summary>Constructor.</summary>
+        /// <param name="message">The exception message.</param>
+        /// <param name="innerException">The inner exception.</param>
+        public NullNotSupportedException(string message, Exception innerException)
+            : base(message, innerException)
         {
         }
     }

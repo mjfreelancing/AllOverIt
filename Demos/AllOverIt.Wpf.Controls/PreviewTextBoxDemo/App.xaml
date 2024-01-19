@@ -1,0 +1,43 @@
+﻿<Application
+    x:Class="PreviewTextBoxDemo.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:previewhandler="clr-namespace:AllOverIt.Wpf.Controls.PreviewTextBox.Handlers;assembly=AllOverIt.Wpf.Controls"
+    xmlns:previewtextbox="clr-namespace:AllOverIt.Wpf.Controls.PreviewTextBox;assembly=AllOverIt.Wpf.Controls"
+    StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <Style x:Key="PositiveIntegerTextBox" TargetType="{x:Type previewtextbox:PreviewTextBox}">
+                <Setter Property="PreviewHandler">
+                    <Setter.Value>
+                        <previewhandler:NumericInputHandler AllowDecimal="False" AllowNegative="False" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="NegativeIntegerTextBox" TargetType="{x:Type previewtextbox:PreviewTextBox}">
+                <Setter Property="PreviewHandler">
+                    <Setter.Value>
+                        <previewhandler:NumericInputHandler AllowDecimal="False" AllowNegative="True" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="PositiveDoubleTextBox" TargetType="{x:Type previewtextbox:PreviewTextBox}">
+                <Setter Property="PreviewHandler">
+                    <Setter.Value>
+                        <previewhandler:NumericInputHandler AllowDecimal="True" AllowNegative="False" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="NegativeDoubleTextBox" TargetType="{x:Type previewtextbox:PreviewTextBox}">
+                <Setter Property="PreviewHandler">
+                    <Setter.Value>
+                        <previewhandler:NumericInputHandler AllowDecimal="True" AllowNegative="True" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

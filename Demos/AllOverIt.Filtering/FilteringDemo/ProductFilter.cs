@@ -28,7 +28,7 @@ namespace FilteringDemo
 
         public sealed class LastUpdatedFilter
         {
-            public GreaterThanOrEqual<DateTime?> GreaterThanOrEqual { get; set; } = new();
+            public GreaterThanOrEqual<DateTimeValue> GreaterThanOrEqual { get; set; } = new();
         }
 
         public ActiveFilter Active { get; init; } = new();

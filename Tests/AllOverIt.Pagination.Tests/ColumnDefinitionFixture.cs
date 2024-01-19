@@ -11,17 +11,17 @@ namespace AllOverIt.Pagination.Tests
 {
     public class ColumnDefinitionFixture : FixtureBase
     {
-        private sealed class EntityDummy
+        private sealed class DummyEntity
         {
             public int Id { get; init; }
             public string Name { get; init; }
         }
 
-        private IReadOnlyCollection<EntityDummy> _entities;
+        private IReadOnlyCollection<DummyEntity> _entities;
 
         public ColumnDefinitionFixture()
         {
-            _entities = CreateMany<EntityDummy>();
+            _entities = CreateMany<DummyEntity>();
         }
 
         public class Constructor : ColumnDefinitionFixture
@@ -31,7 +31,7 @@ namespace AllOverIt.Pagination.Tests
             {
                 Invoking(() =>
                 {
-                    _ = new ColumnDefinition<EntityDummy, int>(null, Create<bool>());
+                    _ = new ColumnDefinition<DummyEntity, int>(null, Create<bool>());
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -44,9 +44,9 @@ namespace AllOverIt.Pagination.Tests
             [Fact]
             public void Should_Throw_When_Queryable_Null()
             {
-                var property = typeof(EntityDummy).GetProperty(nameof(EntityDummy.Id));
+                var property = typeof(DummyEntity).GetProperty(nameof(DummyEntity.Id));
 
-                var idPropertyDefinition = new ColumnDefinition<EntityDummy, int>(property, Create<bool>());
+                var idPropertyDefinition = new ColumnDefinition<DummyEntity, int>(property, Create<bool>());
 
                 Invoking(() =>
                 {
@@ -64,9 +64,9 @@ namespace AllOverIt.Pagination.Tests
             [InlineData(false, PaginationDirection.Backward)]
             public void Should_OrderBy_Id(bool ascending, PaginationDirection direction)
             {
-                var property = typeof(EntityDummy).GetProperty(nameof(EntityDummy.Id));
+                var property = typeof(DummyEntity).GetProperty(nameof(DummyEntity.Id));
 
-                var idPropertyDefinition = new ColumnDefinition<EntityDummy, int>(property, ascending);
+                var idPropertyDefinition = new ColumnDefinition<DummyEntity, int>(property, ascending);
 
                 var query = idPropertyDefinition.ApplyColumnOrderTo(_entities.AsQueryable(), direction);
 
@@ -90,9 +90,9 @@ namespace AllOverIt.Pagination.Tests
             [Fact]
             public void Should_Throw_When_Queryable_Null()
             {
-                var property = typeof(EntityDummy).GetProperty(nameof(EntityDummy.Id));
+                var property = typeof(DummyEntity).GetProperty(nameof(DummyEntity.Id));
 
-                var idPropertyDefinition = new ColumnDefinition<EntityDummy, int>(property, Create<bool>());
+                var idPropertyDefinition = new ColumnDefinition<DummyEntity, int>(property, Create<bool>());
 
                 Invoking(() =>
                 {
@@ -111,7 +111,7 @@ namespace AllOverIt.Pagination.Tests
             public void Should_OrderBy_Id_Then_Name(bool ascending, PaginationDirection direction)
             {
                 var newEntities = _entities
-                    .Select(item => new EntityDummy
+                    .Select(item => new DummyEntity
                     {
                         Id = item.Id,
                         Name = Create<string>()
@@ -121,15 +121,15 @@ namespace AllOverIt.Pagination.Tests
                     .Concat(newEntities)
                     .AsReadOnlyCollection();
 
-                var idProperty = typeof(EntityDummy).GetProperty(nameof(EntityDummy.Id));
+                var idProperty = typeof(DummyEntity).GetProperty(nameof(DummyEntity.Id));
 
-                var idPropertyDefinition = new ColumnDefinition<EntityDummy, int>(idProperty, ascending);
+                var idPropertyDefinition = new ColumnDefinition<DummyEntity, int>(idProperty, ascending);
 
                 var query = idPropertyDefinition.ApplyColumnOrderTo(_entities.AsQueryable(), direction);
 
-                var nameProperty = typeof(EntityDummy).GetProperty(nameof(EntityDummy.Name));
+                var nameProperty = typeof(DummyEntity).GetProperty(nameof(DummyEntity.Name));
 
-                var namePropertyDefinition = new ColumnDefinition<EntityDummy, string>(nameProperty, ascending);
+                var namePropertyDefinition = new ColumnDefinition<DummyEntity, string>(nameProperty, ascending);
 
                 query = namePropertyDefinition.ThenApplyColumnOrderTo(query, direction);
 

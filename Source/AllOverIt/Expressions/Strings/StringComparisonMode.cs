@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Patterns.Enumeration;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 namespace AllOverIt.Expressions.Strings
@@ -33,6 +34,7 @@ namespace AllOverIt.Expressions.Strings
         /// <summary>Compare strings using ordinal (binary) sort rules and ignoring the case of the strings being compared.</summary>
         public static readonly StringComparisonMode OrdinalIgnoreCase = new(8);
 
+        [ExcludeFromCodeCoverage]
         private StringComparisonMode()
         {
             // Required for some serialization scenarios

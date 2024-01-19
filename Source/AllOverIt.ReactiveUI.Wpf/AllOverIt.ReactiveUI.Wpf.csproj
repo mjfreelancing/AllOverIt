@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net8.0-windows;net7.0-windows;net6.0-windows</TargetFrameworks>
+        <Description>This package contains utility extensions for use with ReactiveUI and WPF.</Description>
+        <PackageTags>AllOverIt;Utilities;Reactive;ReactiveUI;WPF</PackageTags>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="ReactiveUI.WPF" Version="19.5.39" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\AllOverIt.ReactiveUI\AllOverIt.ReactiveUI.csproj" />
+    </ItemGroup>
+</Project>
+

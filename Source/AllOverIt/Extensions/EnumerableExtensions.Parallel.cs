@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AllOverIt.Assertion;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,14 @@ namespace AllOverIt.Extensions
         /// <param name="degreeOfParallelism">Determines the maximum number of tasks that will be created.</param>
         /// <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
         /// <returns>A task that will complete when all items have been processed.</returns>
-        public static Task ForEachAsTaskAsync<TType>(this IEnumerable<TType> items, Func<TType, Task> func, int degreeOfParallelism,
+        public static Task ForEachAsTaskAsync<TType>(this IEnumerable<TType> items, Func<TType, CancellationToken, Task> func, int degreeOfParallelism,
             CancellationToken cancellationToken = default)
         {
+            _ = items.WhenNotNull(nameof(items));
+            _ = func.WhenNotNull(nameof(func));
+
+            Throw<ArgumentOutOfRangeException>.When(degreeOfParallelism < 1, nameof(degreeOfParallelism), "At least one task must be specified.");
+
             return Task.WhenAll(
                 items
                     .GetPartitions(degreeOfParallelism)
@@ -46,9 +52,14 @@ namespace AllOverIt.Extensions
         /// <param name="degreeOfParallelism">Determines the maximum number of tasks that will be created.</param>
         /// <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
         /// <returns>A task that will complete when all items have been processed.</returns>
-        public static Task ForEachAsTaskAsync<TType, TInput>(this IEnumerable<TType> items, Func<TType, TInput, Task> func, TInput input,
+        public static Task ForEachAsTaskAsync<TType, TInput>(this IEnumerable<TType> items, Func<TType, TInput, CancellationToken, Task> func, TInput input,
             int degreeOfParallelism, CancellationToken cancellationToken = default)
         {
+            _ = items.WhenNotNull(nameof(items));
+            _ = func.WhenNotNull(nameof(func));
+
+            Throw<ArgumentOutOfRangeException>.When(degreeOfParallelism < 1, nameof(degreeOfParallelism), "At least one task must be specified.");
+
             return Task.WhenAll(
                 items
                     .GetPartitions(degreeOfParallelism)
@@ -73,9 +84,14 @@ namespace AllOverIt.Extensions
         /// <param name="degreeOfParallelism">Determines the maximum number of tasks that will be created.</param>
         /// <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
         /// <returns>A task that will complete when all items have been processed.</returns>
-        public static Task ForEachAsTaskAsync<TType, TInput1, TInput2>(this IEnumerable<TType> items, Func<TType, TInput1, TInput2, Task> func, 
+        public static Task ForEachAsTaskAsync<TType, TInput1, TInput2>(this IEnumerable<TType> items, Func<TType, TInput1, TInput2, CancellationToken, Task> func, 
             TInput1 input1, TInput2 input2, int degreeOfParallelism, CancellationToken cancellationToken = default)
         {
+            _ = items.WhenNotNull(nameof(items));
+            _ = func.WhenNotNull(nameof(func));
+
+            Throw<ArgumentOutOfRangeException>.When(degreeOfParallelism < 1, nameof(degreeOfParallelism), "At least one task must be specified.");
+
             return Task.WhenAll(
                 items
                     .GetPartitions(degreeOfParallelism)
@@ -102,9 +118,14 @@ namespace AllOverIt.Extensions
         /// <param name="degreeOfParallelism">Determines the maximum number of tasks that will be created.</param>
         /// <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
         /// <returns>A task that will complete when all items have been processed.</returns>
-        public static Task ForEachAsTaskAsync<TType, TInput1, TInput2, TInput3>(this IEnumerable<TType> items, Func<TType, TInput1, TInput2, TInput3, Task> func,
+        public static Task ForEachAsTaskAsync<TType, TInput1, TInput2, TInput3>(this IEnumerable<TType> items, Func<TType, TInput1, TInput2, TInput3, CancellationToken, Task> func,
             TInput1 input1, TInput2 input2, TInput3 input3, int degreeOfParallelism, CancellationToken cancellationToken = default)
         {
+            _ = items.WhenNotNull(nameof(items));
+            _ = func.WhenNotNull(nameof(func));
+
+            Throw<ArgumentOutOfRangeException>.When(degreeOfParallelism < 1, nameof(degreeOfParallelism), "At least one task must be specified.");
+
             return Task.WhenAll(
                 items
                     .GetPartitions(degreeOfParallelism)
@@ -134,9 +155,14 @@ namespace AllOverIt.Extensions
         /// <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
         /// <returns>A task that will complete when all items have been processed.</returns>
         public static Task ForEachAsTaskAsync<TType, TInput1, TInput2, TInput3, TInput4>(this IEnumerable<TType> items,
-            Func<TType, TInput1, TInput2, TInput3, TInput4, Task> func, TInput1 input1, TInput2 input2, TInput3 input3, TInput4 input4,
+            Func<TType, TInput1, TInput2, TInput3, TInput4, CancellationToken, Task> func, TInput1 input1, TInput2 input2, TInput3 input3, TInput4 input4,
             int degreeOfParallelism, CancellationToken cancellationToken = default)
         {
+            _ = items.WhenNotNull(nameof(items));
+            _ = func.WhenNotNull(nameof(func));
+
+            Throw<ArgumentOutOfRangeException>.When(degreeOfParallelism < 1, nameof(degreeOfParallelism), "At least one task must be specified.");
+
             return Task.WhenAll(
                 items
                     .GetPartitions(degreeOfParallelism)
@@ -161,9 +187,14 @@ namespace AllOverIt.Extensions
         /// <param name="degreeOfParallelism">Determines the maximum number of parallel operations.</param>
         /// <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
         /// <returns>A task that will complete when all items have been processed.</returns>
-        public static Task ForEachAsParallelAsync<TType>(this IEnumerable<TType> items, Func<TType, Task> func, int degreeOfParallelism,
+        public static Task ForEachAsParallelAsync<TType>(this IEnumerable<TType> items, Func<TType, CancellationToken, Task> func, int degreeOfParallelism,
             CancellationToken cancellationToken = default)
         {
+            _ = items.WhenNotNull(nameof(items));
+            _ = func.WhenNotNull(nameof(func));
+
+            Throw<ArgumentOutOfRangeException>.When(degreeOfParallelism < 1, nameof(degreeOfParallelism), "At least one task must be specified.");
+
             return Task.WhenAll(
                 items
                     .GetPartitions(degreeOfParallelism)
@@ -181,9 +212,14 @@ namespace AllOverIt.Extensions
         /// <param name="degreeOfParallelism">Determines the maximum number of parallel operations.</param>
         /// <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
         /// <returns>A task that will complete when all items have been processed.</returns>
-        public static Task ForEachAsParallelAsync<TType, TInput>(this IEnumerable<TType> items, Func<TType, TInput, Task> func, TInput input, int degreeOfParallelism,
+        public static Task ForEachAsParallelAsync<TType, TInput>(this IEnumerable<TType> items, Func<TType, TInput, CancellationToken, Task> func, TInput input, int degreeOfParallelism,
             CancellationToken cancellationToken = default)
         {
+            _ = items.WhenNotNull(nameof(items));
+            _ = func.WhenNotNull(nameof(func));
+
+            Throw<ArgumentOutOfRangeException>.When(degreeOfParallelism < 1, nameof(degreeOfParallelism), "At least one task must be specified.");
+
             return Task.WhenAll(
                 items
                     .GetPartitions(degreeOfParallelism)
@@ -203,9 +239,14 @@ namespace AllOverIt.Extensions
         /// <param name="degreeOfParallelism">Determines the maximum number of parallel operations.</param>
         /// <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
         /// <returns>A task that will complete when all items have been processed.</returns>
-        public static Task ForEachAsParallelAsync<TType, TInput1, TInput2>(this IEnumerable<TType> items, Func<TType, TInput1, TInput2, Task> func,
+        public static Task ForEachAsParallelAsync<TType, TInput1, TInput2>(this IEnumerable<TType> items, Func<TType, TInput1, TInput2, CancellationToken, Task> func,
             TInput1 input1, TInput2 input2, int degreeOfParallelism, CancellationToken cancellationToken = default)
         {
+            _ = items.WhenNotNull(nameof(items));
+            _ = func.WhenNotNull(nameof(func));
+
+            Throw<ArgumentOutOfRangeException>.When(degreeOfParallelism < 1, nameof(degreeOfParallelism), "At least one task must be specified.");
+
             return Task.WhenAll(
                 items
                     .GetPartitions(degreeOfParallelism)
@@ -227,9 +268,14 @@ namespace AllOverIt.Extensions
         /// <param name="degreeOfParallelism">Determines the maximum number of parallel operations.</param>
         /// <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
         /// <returns>A task that will complete when all items have been processed.</returns>
-        public static Task ForEachAsParallelAsync<TType, TInput1, TInput2, TInput3>(this IEnumerable<TType> items, Func<TType, TInput1, TInput2, TInput3, Task> func,
+        public static Task ForEachAsParallelAsync<TType, TInput1, TInput2, TInput3>(this IEnumerable<TType> items, Func<TType, TInput1, TInput2, TInput3, CancellationToken, Task> func,
             TInput1 input1, TInput2 input2, TInput3 input3, int degreeOfParallelism, CancellationToken cancellationToken = default)
         {
+            _ = items.WhenNotNull(nameof(items));
+            _ = func.WhenNotNull(nameof(func));
+
+            Throw<ArgumentOutOfRangeException>.When(degreeOfParallelism < 1, nameof(degreeOfParallelism), "At least one task must be specified.");
+
             return Task.WhenAll(
                 items
                     .GetPartitions(degreeOfParallelism)
@@ -254,9 +300,14 @@ namespace AllOverIt.Extensions
         /// <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
         /// <returns>A task that will complete when all items have been processed.</returns>
         public static Task ForEachAsParallelAsync<TType, TInput1, TInput2, TInput3, TInput4>(this IEnumerable<TType> items,
-            Func<TType, TInput1, TInput2, TInput3, TInput4, Task> func, TInput1 input1, TInput2 input2, TInput3 input3, TInput4 input4,
+            Func<TType, TInput1, TInput2, TInput3, TInput4, CancellationToken, Task> func, TInput1 input1, TInput2 input2, TInput3 input3, TInput4 input4,
             int degreeOfParallelism, CancellationToken cancellationToken = default)
         {
+            _ = items.WhenNotNull(nameof(items));
+            _ = func.WhenNotNull(nameof(func));
+
+            Throw<ArgumentOutOfRangeException>.When(degreeOfParallelism < 1, nameof(degreeOfParallelism), "At least one task must be specified.");
+
             return Task.WhenAll(
                 items
                     .GetPartitions(degreeOfParallelism)
@@ -273,19 +324,19 @@ namespace AllOverIt.Extensions
 
         #region ProcessPartitionAsync
 
-        private static async Task ProcessPartitionAsync<TType>(IEnumerator<TType> partition, Func<TType, Task> func, CancellationToken cancellationToken)
+        private static async Task ProcessPartitionAsync<TType>(IEnumerator<TType> partition, Func<TType, CancellationToken, Task> func, CancellationToken cancellationToken)
         {
             using (partition)
             {
                 while (partition.MoveNext())
                 {
                     cancellationToken.ThrowIfCancellationRequested();
-                    await func.Invoke(partition.Current).ConfigureAwait(false);
+                    await func.Invoke(partition.Current, cancellationToken).ConfigureAwait(false);
                 }
             }
         }
 
-        private static async Task ProcessPartitionAsync<TType, TInput>(IEnumerator<TType> partition, Func<TType, TInput, Task> func, TInput input,
+        private static async Task ProcessPartitionAsync<TType, TInput>(IEnumerator<TType> partition, Func<TType, TInput, CancellationToken, Task> func, TInput input,
             CancellationToken cancellationToken)
         {
             using (partition)
@@ -293,12 +344,12 @@ namespace AllOverIt.Extensions
                 while (partition.MoveNext())
                 {
                     cancellationToken.ThrowIfCancellationRequested();
-                    await func.Invoke(partition.Current, input).ConfigureAwait(false);
+                    await func.Invoke(partition.Current, input, cancellationToken).ConfigureAwait(false);
                 }
             }
         }
 
-        private static async Task ProcessPartitionAsync<TType, TInput1, TInput2>(IEnumerator<TType> partition, Func<TType, TInput1, TInput2, Task> func,
+        private static async Task ProcessPartitionAsync<TType, TInput1, TInput2>(IEnumerator<TType> partition, Func<TType, TInput1, TInput2, CancellationToken, Task> func,
             TInput1 input1, TInput2 input2, CancellationToken cancellationToken)
         {
             using (partition)
@@ -306,12 +357,12 @@ namespace AllOverIt.Extensions
                 while (partition.MoveNext())
                 {
                     cancellationToken.ThrowIfCancellationRequested();
-                    await func.Invoke(partition.Current, input1, input2).ConfigureAwait(false);
+                    await func.Invoke(partition.Current, input1, input2, cancellationToken).ConfigureAwait(false);
                 }
             }
         }
 
-        private static async Task ProcessPartitionAsync<TType, TInput1, TInput2, TInput3>(IEnumerator<TType> partition, Func<TType, TInput1, TInput2, TInput3, Task> func,
+        private static async Task ProcessPartitionAsync<TType, TInput1, TInput2, TInput3>(IEnumerator<TType> partition, Func<TType, TInput1, TInput2, TInput3, CancellationToken, Task> func,
             TInput1 input1, TInput2 input2, TInput3 input3, CancellationToken cancellationToken)
         {
             using (partition)
@@ -319,13 +370,13 @@ namespace AllOverIt.Extensions
                 while (partition.MoveNext())
                 {
                     cancellationToken.ThrowIfCancellationRequested();
-                    await func.Invoke(partition.Current, input1, input2, input3).ConfigureAwait(false);
+                    await func.Invoke(partition.Current, input1, input2, input3, cancellationToken).ConfigureAwait(false);
                 }
             }
         }
 
         private static async Task ProcessPartitionAsync<TType, TInput1, TInput2, TInput3, TInput4>(IEnumerator<TType> partition,
-            Func<TType, TInput1, TInput2, TInput3, TInput4, Task> func, TInput1 input1, TInput2 input2, TInput3 input3, TInput4 input4,
+            Func<TType, TInput1, TInput2, TInput3, TInput4, CancellationToken, Task> func, TInput1 input1, TInput2 input2, TInput3 input3, TInput4 input4,
             CancellationToken cancellationToken)
         {
             using (partition)
@@ -333,7 +384,7 @@ namespace AllOverIt.Extensions
                 while (partition.MoveNext())
                 {
                     cancellationToken.ThrowIfCancellationRequested();
-                    await func.Invoke(partition.Current, input1, input2, input3, input4).ConfigureAwait(false);
+                    await func.Invoke(partition.Current, input1, input2, input3, input4, cancellationToken).ConfigureAwait(false);
                 }
             }
         }

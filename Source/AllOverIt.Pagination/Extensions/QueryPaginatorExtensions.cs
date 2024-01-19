@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Pagination.Extensions
@@ -255,5 +256,53 @@ namespace AllOverIt.Pagination.Extensions
                 .ColumnDescending(expression6);
         }
         #endregion
+
+        /// <summary>Executes a paginated query and returns the results along with information pertaining to the previous and next pages of data.</summary>
+        /// <typeparam name="TResult">The result type.</typeparam>
+        /// <param name="queryPaginator">The paginator containing the configured query to execute.</param>
+        /// <param name="continuationToken">The continuation token that describes how to obtain the next (or previous) page of data.</param>
+        /// <returns>A page of results along with information about the previous and next page of data available.</returns>
+        /// <remarks>This method is only intended for memory based queries. If using EntityFramework Core then it is preferred to use
+        /// the GetPageResultsAsync() extension method found in AllOverIt.EntityFrameworkCore.Pagination.</remarks>
+        public static PageResult<TResult> GetPageResults<TResult>(this IQueryPaginator<TResult> queryPaginator, string continuationToken) where TResult : class
+        {
+            var totalCount = queryPaginator.BaseQuery.Count();
+            var pageQuery = queryPaginator.GetPageQuery(continuationToken);
+            var pageResults = pageQuery.ToList();
+            var hasResults = pageResults.Count != 0;
+
+            string previousToken = default;
+            string nextToken = default;
+
+            if (hasResults)
+            {
+                var (first, last) = queryPaginator.GetQueryDirection() == PaginationDirection.Forward
+                    ? (pageResults[0], pageResults[^1])
+                    : (pageResults[^1], pageResults[0]);
+
+                var hasPreviousPage = hasResults && queryPaginator.HasPreviousPage(first);
+
+                if (hasPreviousPage)
+                {
+                    previousToken = queryPaginator.TokenEncoder.EncodePreviousPage(pageResults);
+                }
+
+                var hasNextPage = hasResults && queryPaginator.HasNextPage(last);
+
+                if (hasNextPage)
+                {
+                    nextToken = queryPaginator.TokenEncoder.EncodeNextPage(pageResults);
+                }
+            }
+
+            return new PageResult<TResult>
+            {
+                Results = pageResults,
+                TotalCount = totalCount,
+                CurrentToken = continuationToken,
+                PreviousToken = previousToken,
+                NextToken = nextToken
+            };
+        }
     }
 }

@@ -16,7 +16,7 @@
         /// <summary>Deserializes a continuation token string to a <see cref="IContinuationToken"/> if it is valid.</summary>
         /// <param name="continuationToken">A serialized continuation token.</param>
         /// <param name="token">The deserialized continuation token if it can be decoded.</param>
-        /// <returns>True if the continuation token was deserialized, otherwise false.</returns>
+        /// <returns><see langword="true" /> if the continuation token was deserialized, otherwise <see langword="false" />.</returns>
         bool TryDeserialize(string continuationToken, out IContinuationToken token);
     }
 }

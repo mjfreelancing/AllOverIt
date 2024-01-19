@@ -26,7 +26,7 @@ namespace AllOverIt.Pagination
             public Expression ReferenceValue { get; set; }
         }
 
-        private readonly List<ColumnDefinition<TEntity>> _columns = new();
+        private readonly List<ColumnDefinition<TEntity>> _columns = [];
         private readonly QueryPaginatorConfiguration _configuration;
         private readonly IContinuationTokenEncoderFactory _continuationTokenEncoderFactory;
 
@@ -66,6 +66,17 @@ namespace AllOverIt.Pagination
         }
 
         /// <inheritdoc />
+        public PaginationDirection GetQueryDirection(string continuationToken = default)
+        {
+            // continuationToken can be null
+            var decodedToken = TokenEncoder.Decode(continuationToken);
+
+            return decodedToken == ContinuationToken.None
+                ? _configuration.PaginationDirection
+                : decodedToken.Direction;
+        }
+
+        /// <inheritdoc />
         public IQueryPaginator<TEntity> ColumnAscending<TProperty>(Expression<Func<TEntity, TProperty>> expression)
         {
             _ = expression.WhenNotNull(nameof(expression));
@@ -99,14 +110,9 @@ namespace AllOverIt.Pagination
                 ? GetDirectionQuery()
                 : GetDirectionReverseQuery();
 
-            var paginatedQuery = requiredQuery.AsQueryable();
-
-            // ContinuationToken.None indicates to get the first page (no token was provided)
-            if (decodedToken != ContinuationToken.None)
-            {
-                // If decodedToken.Values is null/empty the original query is returned
-                paginatedQuery = ApplyContinuationToken(paginatedQuery, decodedToken);
-            }
+            // When decodedToken = ContinuationToken.None (decodedToken.Values is null/empty) this indicates
+            // to get the first page so the original query is returned.
+            var paginatedQuery = ApplyContinuationToken(requiredQuery.AsQueryable(), decodedToken);
 
             paginatedQuery = paginatedQuery.Take(_configuration.PageSize);
 
@@ -226,18 +232,12 @@ namespace AllOverIt.Pagination
 
         private void AddColumnDefinition<TProperty>(Expression<Func<TEntity, TProperty>> propertyExpression, bool isAscending)
         {
-            if (_directionQuery != null)
-            {
-                throw new PaginationException("Additional columns cannot be added once pagination has begun.");
-            }
+            Throw<PaginationException>.WhenNotNull(_directionQuery, "Additional columns cannot be added once pagination has begun.");
 
             var fieldOrProperty = propertyExpression.GetPropertyOrFieldMemberInfo();
 
-            if (fieldOrProperty is FieldInfo _)
-            {
-                // EF cannot translate fields, and nor should they be used for exposing the model.
-                throw new PaginationException($"Paginated queries using fields is not supported.");
-            }
+            // EF cannot translate fields, and nor should they be used for exposing the model.
+            Throw<PaginationException>.When(fieldOrProperty is FieldInfo, "Paginated queries do not support fields.");
 
             var property = (PropertyInfo)fieldOrProperty;
 
@@ -476,7 +476,8 @@ namespace AllOverIt.Pagination
             }
         }
 
-        private Expression CreateReferenceParameter(IReadOnlyList<object> referenceValues, int index, Type valueType, IDictionary<int, Expression> referenceParameterCache)
+        private Expression CreateReferenceParameter(IReadOnlyList<object> referenceValues, int index, Type valueType,
+            IDictionary<int, Expression> referenceParameterCache)
         {
             if (referenceParameterCache.TryGetValue(index, out var expression))
             {
@@ -510,14 +511,12 @@ namespace AllOverIt.Pagination
             return targetExpression;
         }
 
-        private static Func<Expression, Expression, BinaryExpression> GetComparisonExpression(PaginationDirection direction, ColumnDefinition<TEntity> item, bool orEqual)
+        private static Func<Expression, Expression, BinaryExpression> GetComparisonExpression(PaginationDirection direction,
+            ColumnDefinition<TEntity> item, bool orEqual)
         {
-            var greaterThan = direction switch
-            {
-                PaginationDirection.Forward => item.IsAscending,
-                PaginationDirection.Backward => !item.IsAscending,
-                _ => throw new InvalidOperationException($"Unknown direction {direction}."),
-            };
+            var greaterThan = direction == PaginationDirection.Forward
+                ? item.IsAscending
+                : !item.IsAscending;
 
             return (greaterThan, orEqual) switch
             {
@@ -530,10 +529,7 @@ namespace AllOverIt.Pagination
 
         private void AssertColumnsDefined()
         {
-            if (_columns.NotAny())
-            {
-                throw new PaginationException("At least one column must be defined for pagination.");
-            }
+            Throw<PaginationException>.When(_columns.NotAny(), "At least one column must be defined for pagination.");
         }
     }
 }

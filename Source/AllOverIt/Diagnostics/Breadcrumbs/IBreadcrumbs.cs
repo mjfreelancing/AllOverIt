@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AllOverIt.Diagnostics.Breadcrumbs
 {
-    /// <summary>Represents a collection of breadcrumb messages and metadata.</summary>
+    /// <summary>A collection of breadcrumb messages and metadata.</summary>
     public interface IBreadcrumbs : IEnumerable<BreadcrumbData>
     {
         /// <summary>Controls whether or not breadcrumbs are collected.</summary>

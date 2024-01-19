@@ -9,7 +9,7 @@ namespace AllOverIt.Reflection
     /// <summary>Provides a default, static, cache to help improve performance where reflection is used extensively.</summary>
     public static partial class ReflectionCache
     {
-        private static readonly GenericCache FieldInfoCache = new();
+        private static readonly GenericCache FieldInfoCache = [];
 
         /// <summary>Gets the <see cref="FieldInfo"/> (property metadata) for a given property on a <typeparamref name="TType"/> from the default cache.
         /// If the <see cref="FieldInfo"/> is not in the cache then it will be obtained using the <paramref name="valueResolver"/> and added to the

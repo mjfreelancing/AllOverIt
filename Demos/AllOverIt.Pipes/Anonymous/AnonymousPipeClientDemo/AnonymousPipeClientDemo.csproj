@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <!--Targeting 'windows' because not all pipe features are available on other platforms-->
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <OutputType>Exe</OutputType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\..\Source\AllOverIt.Pipes\AllOverIt.Pipes.csproj" />
+        <ProjectReference Include="..\..\..\..\Source\AllOverIt\AllOverIt.csproj" />
+    </ItemGroup>
+
+</Project>

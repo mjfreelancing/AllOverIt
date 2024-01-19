@@ -11,10 +11,10 @@ using System.Threading.Tasks;
 namespace AllOverIt.Validation
 {
     /// <summary>A validation invoker that utilizes a registry to determine which validator to invoke based on the model type.</summary>
-    public sealed class ValidationInvoker : IValidationRegistry, IValidationInvoker
+    public class ValidationInvoker : IValidationRegistry, IValidationInvoker
     {
         // can only re-use validators that don't store state (context)
-        private readonly IDictionary<Type, Lazy<IValidator>> _validatorCache = new Dictionary<Type, Lazy<IValidator>>();
+        private readonly Dictionary<Type, Lazy<IValidator>> _validatorCache = [];
 
         /// <inheritdoc />
         public IValidationRegistry Register<TType, TValidator>()
@@ -51,9 +51,9 @@ namespace AllOverIt.Validation
                 throw new ValidationRegistryException($"The {validatorType.GetFriendlyName()} type must have a default constructor.");
             }
 
-            var validatorArgType = validatorType.BaseType!.GenericTypeArguments[0];
+            var validatorModelType = ValidationTypeHelper.GetModelType(validatorType);
 
-            if (modelType != validatorArgType)
+            if (modelType != validatorModelType)
             {
                 throw new ValidationRegistryException($"The {validatorType.GetFriendlyName()} type cannot validate a {modelType} type.");
             }
@@ -136,7 +136,7 @@ namespace AllOverIt.Validation
                 ThrowValidatorNotRegistered<TType>();
             }
 
-            return (ValidatorBase<TType>)resolver!.Value;
+            return (ValidatorBase<TType>) resolver!.Value;
         }
 
         private static void ThrowValidatorNotRegistered<TType>()

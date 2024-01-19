@@ -1,6 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
-using AllOverIt.Formatters.Exceptions;
+using AllOverIt.Formatters.Objects.Exceptions;
 using AllOverIt.Reflection;
 using System;
 using System.Collections;
@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace AllOverIt.Formatters.Objects
 {
-    /// <summary>Converts an object to an IDictionary&lt;string, string&gt; using a dot notation for nested members.</summary>
+    /// <inheritdoc cref="IObjectPropertySerializer" />
     public sealed class ObjectPropertySerializer : IObjectPropertySerializer
     {
         /// <inheritdoc />
@@ -21,6 +21,7 @@ namespace AllOverIt.Formatters.Objects
         /// <summary>Constructor.</summary>
         /// <param name="options">Specifies options that determine how serialization of properties and their values are handled.
         /// If null, a default set of options will be used.</param>
+        /// <param name="filter">Provides support for filtering properties and values when serializing.</param>
         public ObjectPropertySerializer(ObjectPropertySerializerOptions options = default, ObjectPropertyFilter filter = default)
         {
             Filter = filter;
@@ -213,7 +214,7 @@ namespace AllOverIt.Formatters.Objects
 
                 var isString = type == CommonTypes.StringType;
 
-                if (isString && ((string)value).IsNullOrEmpty())        // null was already checked, so this only applies to empty values
+                if (isString && ((string) value).IsNullOrEmpty())        // null was already checked, so this only applies to empty values
                 {
                     values.Add(path, Options.EmptyValueOutput);
                 }
@@ -316,7 +317,8 @@ namespace AllOverIt.Formatters.Objects
         private bool ExcludeEnumerable(IEnumerable enumerable)
         {
             var args = enumerable.GetType().GetGenericArguments();
-            return args.Any() && IgnoreType(args[0]);
+
+            return args.Length != 0 && IgnoreType(args[0]);
         }
 
         private void SetFilterAttributes(Type type, object value, string path, string name, int? index, IDictionary<object, ObjectPropertyParent> references)
@@ -391,7 +393,7 @@ namespace AllOverIt.Formatters.Objects
                 var filterCollatePaths = Filter?.EnumerableOptions.AutoCollatedPaths ?? Enumerable.Empty<string>();
                 var collationPaths = globalCollatePaths.Concat(filterCollatePaths).AsReadOnlyCollection();
 
-                if (collationPaths.Any())
+                if (collationPaths.Count != 0)
                 {
                     // Check if the current path is registered for auto-collation
                     var flatPath = GetPropertyPath(references);

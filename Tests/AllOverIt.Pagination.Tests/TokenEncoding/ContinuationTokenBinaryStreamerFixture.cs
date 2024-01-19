@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
+using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Pagination.TokenEncoding;
 using FakeItEasy;
 using FluentAssertions;
@@ -32,7 +33,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
             {
                 Invoking(() =>
                 {
-                    _continuationTokenBinaryStreamer.SerializeToStream(A.Fake<IContinuationToken>(), null);
+                    _continuationTokenBinaryStreamer.SerializeToStream(this.CreateStub<IContinuationToken>(), null);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()

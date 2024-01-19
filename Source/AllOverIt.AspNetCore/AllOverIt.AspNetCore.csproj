@@ -1,14 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net7.0;net6.0;net5.0;netcoreapp3.1</TargetFrameworks>
-        <Copyright>Copyright © 2021</Copyright>
-        <Description>Contains ASP.NET Core utilities.</Description>
-        <PackageTags>utilities;aspnetcore</PackageTags>
+        <TargetFrameworks>net8.0;net7.0;net6.0</TargetFrameworks>
+        <Description>This package provides useful ASP.NET Core utilities such as custom model binding for AllOverIt based enriched enum types and arrays of values in a query string.</Description>
+        <PackageTags>AllOverIt;Utilities;AspNetCore</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+        <!--https://learn.microsoft.com/en-us/aspnet/core/fundamentals/target-aspnetcore-->
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
 
     <ItemGroup>

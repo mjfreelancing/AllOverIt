@@ -2,7 +2,7 @@
 
 namespace GenericCacheDemo.Keys
 {
-    internal sealed class IntCacheKey : GenericCacheKey<int>
+    internal sealed record IntCacheKey : GenericCacheKey<int>
     {
         public IntCacheKey(int value)
             : base(value)
