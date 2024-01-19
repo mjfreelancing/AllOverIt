@@ -28,8 +28,8 @@
       },
       "Amazon.CDK.Lib": {
         "type": "Transitive",
-        "resolved": "2.121.1",
-        "contentHash": "lrBN0cQkd+xg2zOLxYqaTBRGRbt5cDA6JtqOtufaMHerFqIh5FUdR3OltaFaL7+LGhYJI4cWPUWF2gi+nTDZcQ==",
+        "resolved": "2.122.0",
+        "contentHash": "N92Nr5JtcnVXlymVZC/ix8B97y5BLvXXl8c3wM1WZziP9bajl7D3Dw/VDdnTvnYq06MTj6LSGrLEAsW90WjjQA==",
         "dependencies": {
           "Amazon.CDK.Asset.AwsCliV1": "[2.2.201, 3.0.0)",
           "Amazon.CDK.Asset.KubectlV20": "[2.1.2, 3.0.0)",
@@ -51,10 +51,10 @@
       },
       "Cdklabs.AwsCdkAppsyncUtils": {
         "type": "Transitive",
-        "resolved": "0.0.327",
-        "contentHash": "xJqDpvX5LRqytW049g4Y97AKA38USTc+a6ttAThn1WsHZvV6jMy6BpgpGS0/X0HAc4/hRrZjKvArE+59ybz6mw==",
+        "resolved": "0.0.331",
+        "contentHash": "LwltyjBnR3zSbne56p0mosvWxs8fa6ON+BXiBFKbPFbYsy4yKJ3FsNaZcQdgvcIR2JLt+/TigikK0gLqBPsL4Q==",
         "dependencies": {
-          "Amazon.CDK.Lib": "[2.99.0, 3.0.0)",
+          "Amazon.CDK.Lib": "[2.110.0, 3.0.0)",
           "Amazon.JSII.Runtime": "[1.94.0, 2.0.0)",
           "Constructs": "[10.0.5, 11.0.0)"
         }
@@ -198,7 +198,7 @@
       "alloverit": {
         "type": "Project",
         "dependencies": {
-          "AllOverIt.Assertion": "[7.0.0-rc.49, )"
+          "AllOverIt.Assertion": "[7.0.0, )"
         }
       },
       "alloverit.assertion": {
@@ -207,9 +207,9 @@
       "alloverit.aws.cdk.appsync": {
         "type": "Project",
         "dependencies": {
-          "AllOverIt": "[7.0.0-rc.49, )",
-          "Amazon.CDK.Lib": "[2.121.1, )",
-          "Cdklabs.AwsCdkAppsyncUtils": "[0.0.327, )"
+          "AllOverIt": "[7.0.0, )",
+          "Amazon.CDK.Lib": "[2.122.0, )",
+          "Cdklabs.AwsCdkAppsyncUtils": "[0.0.331, )"
         }
       }
     }
