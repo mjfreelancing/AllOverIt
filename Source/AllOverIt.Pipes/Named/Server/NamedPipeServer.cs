@@ -23,7 +23,7 @@ namespace AllOverIt.Pipes.Named.Server
     public sealed class NamedPipeServer<TMessage> : INamedPipeServer<TMessage> where TMessage : class, new()
     {
         private readonly INamedPipeSerializer<TMessage> _serializer;
-        internal IList<INamedPipeServerConnection<TMessage>> Connections { get; } = new List<INamedPipeServerConnection<TMessage>>();
+        internal List<INamedPipeServerConnection<TMessage>> Connections { get; } = [];
         private AwaitableLock _connectionsLock = new();
         private BackgroundTask _backgroundTask;
 
@@ -150,7 +150,7 @@ namespace AllOverIt.Pipes.Named.Server
             // We cannot lock here since the OnDisconnected event handler will be called - and apply the lock
             // New connections are not possible now the background thread has been disposed of.
 
-            if (Connections.Any())
+            if (Connections.Count != 0)
             {
                 // DoOnConnectionDisconnected() will be called for each connection where
                 // its' event handlers are also released.

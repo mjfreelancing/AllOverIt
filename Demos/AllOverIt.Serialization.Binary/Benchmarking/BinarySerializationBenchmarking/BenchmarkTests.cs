@@ -7,7 +7,6 @@ using BinarySerializationBenchmarking.Writers;
 using Newtonsoft.Json;
 using System;
 using System.Buffers;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -99,8 +98,8 @@ namespace BinarySerializationBenchmarking
                     LastName = "Rabbit",
                     Gender = Gender.Male
                 },
-                Students = new List<Student>
-                {
+                Students =
+                [
                     new()
                     {
                         FirstName = "Mary",
@@ -120,7 +119,7 @@ namespace BinarySerializationBenchmarking
                         Gender = Gender.Male,
                         Age = 13
                     }
-                }
+                ]
             };
         }
     }

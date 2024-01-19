@@ -96,7 +96,7 @@ namespace AllOverIt.Events
             }
             else
             {
-                subscriptions = new List<ISubscription> { subscription };
+                subscriptions = [subscription];
                 _subscriptions.Add(typeof(TMessage), subscriptions);
             }
         }
@@ -109,7 +109,7 @@ namespace AllOverIt.Events
             }
             else
             {
-                subscriptions = new List<IAsyncSubscription> { subscription };
+                subscriptions = [subscription];
                 _asyncSubscriptions.Add(typeof(TMessage), subscriptions);
             }
         }

@@ -124,7 +124,7 @@ namespace D2ErdDiagramDemo
                 DiagramFileName = "..\\..\\..\\Output Examples\\sample_erd.d2",
                 LayoutEngine = "elk",
                 Theme = Theme.Neutral,
-                Formats = new[] { ExportFormat.Svg, ExportFormat.Png, ExportFormat.Pdf },
+                Formats = [ExportFormat.Svg, ExportFormat.Png, ExportFormat.Pdf],
                 StandardOutputHandler = LogOutput,
                 ErrorOutputHandler = LogOutput          // Note: d2.exe seems to log everything to the error output
             };

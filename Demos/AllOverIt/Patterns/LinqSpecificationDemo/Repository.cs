@@ -4,8 +4,8 @@ namespace LinqSpecificationDemo
 {
     internal static class Repository
     {
-        public static readonly IEnumerable<Person> Persons = new[]
-        {
+        public static readonly IEnumerable<Person> Persons =
+        [
             new Person(20, Sex.Male, "WE"),
             new Person(18, Sex.Male, "AB"),
             new Person(16, Sex.Female, "GH"),
@@ -19,6 +19,6 @@ namespace LinqSpecificationDemo
             new Person(18, Sex.Female, "ZS"),
             new Person(20, Sex.Female, "CD"),
             new Person(22, Sex.Male, "HK")
-        };
+        ];
     }
 }

@@ -1,11 +1,11 @@
-﻿using AllOverIt.GenericHost;
+﻿using AllOverIt.DependencyInjection.Extensions;
+using AllOverIt.GenericHost;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
-using AllOverIt.DependencyInjection.Extensions;
-using FluentValidation;
 
 namespace ValidationViaDependencyInjectionDemo
 {
@@ -37,7 +37,7 @@ namespace ValidationViaDependencyInjectionDemo
                     //    config => config.Filter((serviceType, implementationType) => serviceType != typeof(IValidator)));
 
                     // Or registered like this using an open/unbound generic
-                    services.AutoRegisterSingleton<ValidationServiceRegistrar>(new[] { typeof(IValidator<>) });
+                    services.AutoRegisterSingleton<ValidationServiceRegistrar>([typeof(IValidator<>)]);
 
                     Console.WriteLine();
                 });

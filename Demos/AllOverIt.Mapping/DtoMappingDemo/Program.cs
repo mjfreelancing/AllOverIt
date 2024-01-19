@@ -32,16 +32,16 @@ namespace DtoMappingDemo
                 Prop8 =
                 {
                     Prop1 = 99,
-                    Prop2a = new[]
-                    {
+                    Prop2a =
+                    [
                         new ChildChildSourceType { Prop1 = 10 },
                         new ChildChildSourceType { Prop1 = 20 }
-                    },
-                    Prop2b = new[]
-                    {
+                    ],
+                    Prop2b =
+                    [
                         new ChildChildSourceType { Prop1 = 30 },
                         new ChildChildSourceType { Prop1 = 40 }
-                    }
+                    ]
                 },
                 Prop9 =
                 {
@@ -192,7 +192,7 @@ namespace DtoMappingDemo
 
             });
 
-            source.Prop7 = new[] { "Val1", "Val2", "Val3" };
+            source.Prop7 = ["Val1", "Val2", "Val3"];
             var target = new TargetType();
 
             var objectMapper = new ObjectMapper(mapperConfiguration);
@@ -231,7 +231,7 @@ namespace DtoMappingDemo
                 });
             });
 
-            source.Prop7 = new[] { "Val1", "Val2", "Val3" };
+            source.Prop7 = ["Val1", "Val2", "Val3"];
 
             var target = new TargetType();
 

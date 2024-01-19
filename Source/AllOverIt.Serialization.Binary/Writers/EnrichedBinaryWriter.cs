@@ -98,7 +98,7 @@ namespace AllOverIt.Serialization.Binary.Writers
         /// <inheritdoc />
         /// <remarks>If a property type doesn't have a registered writer the <see cref="EnrichedBinaryWriter"/> will use a
         /// <see cref="DynamicBinaryValueWriter"/>.</remarks>
-        public ICollection<IEnrichedBinaryValueWriter> Writers { get; } = new List<IEnrichedBinaryValueWriter>();
+        public ICollection<IEnrichedBinaryValueWriter> Writers { get; } = [];
 
         /// <inheritdoc cref="BinaryWriter(Stream)"/>
         public EnrichedBinaryWriter(Stream output)

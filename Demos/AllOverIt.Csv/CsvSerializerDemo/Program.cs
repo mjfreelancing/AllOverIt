@@ -82,8 +82,8 @@ namespace CsvSerializerDemo
                             Name = $"Sample {start}",
                             Count = 0,
                             Values = new Dictionary<string, int>(),
-                            Coordinates = new List<Coordinates>(),
-                            Metadata = new List<SampleMetadata>()
+                            Coordinates = [],
+                            Metadata = []
                         },
 
                         new SampleData
@@ -94,12 +94,12 @@ namespace CsvSerializerDemo
                             {
                                 { "Value 1", 1 }
                             },
-                            Coordinates = new List<Coordinates>
-                            {
+                            Coordinates =
+                            [
                                 new(100.1, 120.2)
-                            },
-                            Metadata = new List<SampleMetadata>
-                            {
+                            ],
+                            Metadata =
+                            [
                                 new()
                                 {
                                     Type = MetadataType.Environment,
@@ -124,7 +124,7 @@ namespace CsvSerializerDemo
                                     Name = "pH",
                                     Value = "7.0"
                                 }
-                            }
+                            ]
                         },
 
                         new SampleData
@@ -137,14 +137,14 @@ namespace CsvSerializerDemo
                                 { "Value 2", 2 },
                                 { "Value 3", 3 }
                             },
-                            Coordinates = new List<Coordinates>
-                            {
+                            Coordinates =
+                            [
                                 new(100.4, 119.8),
                                 new(100.7, 120.0),
                                 new(100.3, 119.2),
-                            },
-                            Metadata = new List<SampleMetadata>
-                            {
+                            ],
+                            Metadata =
+                            [
                                 new()
                                 {
                                     Type = MetadataType.Environment,
@@ -157,7 +157,7 @@ namespace CsvSerializerDemo
                                     Name = "pH",
                                     Value = "6.9"
                                 }
-                            }
+                            ]
                         },
 
                         new SampleData
@@ -169,13 +169,13 @@ namespace CsvSerializerDemo
                                 { "Value 1", 1 },
                                 { "Value 2", 2 }
                             },
-                            Coordinates = new List<Coordinates>
-                            {
+                            Coordinates =
+                            [
                                 new(100.1, 121.3),
                                 new(100.8, 120.5),
-                            },
-                            Metadata = new List<SampleMetadata>
-                            {
+                            ],
+                            Metadata =
+                            [
                                 new()
                                 {
                                     Type = MetadataType.Quality,
@@ -194,7 +194,7 @@ namespace CsvSerializerDemo
                                     Name = "pH",
                                     Value = "7.1"
                                 }
-                            }
+                            ]
                         }
                     };
                 })

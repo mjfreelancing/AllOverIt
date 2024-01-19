@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Text;
 
 namespace AllOverIt.Process.Extensions
@@ -30,7 +29,7 @@ namespace AllOverIt.Process.Extensions
         {
             _ = arguments.WhenNotNull(nameof(arguments));
 
-            return options.WithArguments(arguments.ToArray(), true);
+            return options.WithArguments([.. arguments], true);
         }
 
         /// <summary>Creates a new <see cref="ProcessExecutorOptions"/> by cloning the provided <paramref name="options"/> and updating the arguments.</summary>
@@ -145,9 +144,9 @@ namespace AllOverIt.Process.Extensions
         public static System.Diagnostics.Process Start(this ProcessExecutorOptions options)
         {
             var process = ProcessFactory.CreateProcess(options);
-            
+
             process.Start();
-            
+
             return process;
         }
     }

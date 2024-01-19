@@ -1,10 +1,10 @@
 ﻿using AllOverIt.Assertion;
+using AllOverIt.DependencyInjection.Exceptions;
 using AllOverIt.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AllOverIt.DependencyInjection.Exceptions;
 
 namespace AllOverIt.DependencyInjection.Extensions
 {
@@ -33,7 +33,7 @@ namespace AllOverIt.DependencyInjection.Extensions
         {
             _ = serviceCollection.WhenNotNull(nameof(serviceCollection));
 
-            return AutoRegisterWithLifetime(serviceCollection, new TServiceRegistrar(), new[] { typeof(TServiceType) }, configure, lifetime);
+            return AutoRegisterWithLifetime(serviceCollection, new TServiceRegistrar(), [typeof(TServiceType)], configure, lifetime);
         }
 
         private static IServiceCollection AutoRegisterWithLifetime<TServiceRegistrar>(this IServiceCollection serviceCollection, IEnumerable<Type> serviceTypes,
@@ -52,7 +52,7 @@ namespace AllOverIt.DependencyInjection.Extensions
             _ = serviceCollection.WhenNotNull(nameof(serviceCollection));
             _ = serviceRegistrar.WhenNotNull(nameof(serviceRegistrar));
 
-            return AutoRegisterWithLifetime(serviceCollection, serviceRegistrar, new[] { typeof(TServiceType) }, configure, lifetime);
+            return AutoRegisterWithLifetime(serviceCollection, serviceRegistrar, [typeof(TServiceType)], configure, lifetime);
         }
 
         private static IServiceCollection AutoRegisterWithLifetime(this IServiceCollection serviceCollection, IServiceRegistrar serviceRegistrar, IEnumerable<Type> serviceTypes,

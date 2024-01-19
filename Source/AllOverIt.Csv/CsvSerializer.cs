@@ -22,8 +22,8 @@ namespace AllOverIt.Csv
 
             public CsvFieldResolver(string headerName, Func<TCsvData, object> valueResolver)
             {
-                HeaderNames = new[] { headerName };
-                _valuesResolver = item => new[] { valueResolver.Invoke(item) };
+                HeaderNames = [headerName];
+                _valuesResolver = item => [valueResolver.Invoke(item)];
             }
 
             public CsvFieldResolver(IEnumerable<string> headerNames, Func<TCsvData, IEnumerable<object>> valuesResolver)

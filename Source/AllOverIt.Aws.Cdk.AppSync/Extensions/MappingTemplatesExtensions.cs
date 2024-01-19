@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync.Mapping;
-using System.Linq;
 
 namespace AllOverIt.Aws.Cdk.AppSync.Extensions
 {
@@ -44,7 +43,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
 
             mappingTemplates.RegisterMappings(nodeName, node.RequestMapping, node.ResponseMapping);
 
-            foreach (var child in node.Children ?? Enumerable.Empty<MappingNode>())
+            foreach (var child in node.Children ?? [])
             {
                 RegisterNodeMappings(mappingTemplates, nodeName, child);
             }

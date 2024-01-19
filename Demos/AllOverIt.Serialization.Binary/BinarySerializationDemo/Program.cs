@@ -4,7 +4,6 @@ using BinarySerializationDemo.Models;
 using BinarySerializationDemo.Readers;
 using BinarySerializationDemo.Writers;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.Json;
@@ -89,28 +88,28 @@ namespace BinarySerializationDemo
                     LastName = "Rabbit",
                     Gender = Gender.Male
                 },
-                Students = new List<Student>
-            {
-                new()
-                {
-                    FirstName = "Mary",
-                    LastName = "Lamb",
-                    Gender = Gender.Female,
-                    Age = 12
-                },
-                new()
-                {
-                    FirstName = "Charlette",
-                    LastName = "Web",
-                    Gender = Gender.Female
-                },
-                new()
-                {
-                    FirstName = "Shrek",
-                    Gender = Gender.Male,
-                    Age = 13
-                }
-            }
+                Students =
+                [
+                    new()
+                    {
+                        FirstName = "Mary",
+                        LastName = "Lamb",
+                        Gender = Gender.Female,
+                        Age = 12
+                    },
+                    new()
+                    {
+                        FirstName = "Charlette",
+                        LastName = "Web",
+                        Gender = Gender.Female
+                    },
+                    new()
+                    {
+                        FirstName = "Shrek",
+                        Gender = Gender.Male,
+                        Age = 13
+                    }
+                ]
             };
         }
     }

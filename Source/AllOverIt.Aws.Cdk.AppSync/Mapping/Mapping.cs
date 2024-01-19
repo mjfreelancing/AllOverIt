@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace AllOverIt.Aws.Cdk.AppSync.Mapping
 {
@@ -19,7 +18,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Mapping
                 Name = name,
                 RequestMapping = requestMapping,
                 ResponseMapping = responseMapping,
-                Children = children ?? Enumerable.Empty<MappingNode>()
+                Children = children ?? []
             };
         }
     }

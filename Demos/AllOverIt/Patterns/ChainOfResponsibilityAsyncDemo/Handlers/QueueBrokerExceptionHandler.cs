@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Patterns.ChainOfResponsibility;
-using ChainOfResponsibilityAsyncDemo.Handlers;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,12 +7,12 @@ namespace ChainOfResponsibilityAsyncDemo.Handlers
 {
     public sealed class QueueBrokerExceptionHandler : ChainOfResponsibilityAsyncComposer<QueueMessageHandlerState, QueueMessageHandlerState>
     {
-        private static readonly IEnumerable<QueueMessageHandlerBase> Handlers = new List<QueueMessageHandlerBase>
-        {
+        private static readonly IEnumerable<QueueMessageHandlerBase> Handlers =
+        [
             new NullMessageExceptionHandler(),
             new EmptyMessageExceptionHandler(),
             new UnhandledExceptionHandler()         // end of the chain
-        };
+        ];
 
         public QueueBrokerExceptionHandler()
             : base(Handlers)

@@ -6,12 +6,12 @@ namespace ChainOfResponsibilityDemo.Handlers
 {
     internal sealed class QueueBrokerExceptionHandler1 : ChainOfResponsibilityComposer<QueueMessageHandlerState, QueueMessageHandlerState>
     {
-        private static readonly IEnumerable<QueueMessageHandlerBase> Handlers = new List<QueueMessageHandlerBase>
-        {
+        private static readonly IEnumerable<QueueMessageHandlerBase> Handlers =
+        [
             new NullMessageExceptionHandler(),
             new EmptyMessageExceptionHandler(),
             new UnhandledExceptionHandler()         // end of the chain
-        };
+        ];
 
         public QueueBrokerExceptionHandler1()
             : base(Handlers)

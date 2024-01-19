@@ -7,7 +7,7 @@ namespace AllOverIt.Collections
     /// <typeparam name="TType">The type stored by the collection.</typeparam>
     public class ReadOnlyCollection<TType> : IReadOnlyCollection<TType>
     {
-        private readonly IList<TType> _list;
+        private readonly List<TType> _list;
 
         /// <inheritdoc />
         public int Count => _list.Count;
@@ -15,14 +15,14 @@ namespace AllOverIt.Collections
         /// <summary>Constructor.</summary>
         public ReadOnlyCollection()
         {
-            _list = new List<TType>();
+            _list = [];
         }
 
         /// <summary>Constructor.</summary>
         /// <param name="data">The data to add to the readonly list.</param>
         public ReadOnlyCollection(IEnumerable<TType> data = default)
         {
-            _list = new List<TType>(data);
+            _list = new(data);
         }
 
         /// <inheritdoc />

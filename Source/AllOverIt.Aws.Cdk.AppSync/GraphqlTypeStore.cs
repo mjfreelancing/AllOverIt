@@ -134,7 +134,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
             {
                 if (_typeUnderConstruction.Contains(type))
                 {
-                    var typeNames = string.Join(" -> ", _typeUnderConstruction.Select(item => item.Name).Concat(new[] { type.Name }));
+                    var typeNames = string.Join(" -> ", _typeUnderConstruction.Select(item => item.Name).Concat([type.Name]));
                     throw new InvalidOperationException($"Unexpected re-entry while creating '{typeNames}'");
                 }
 

@@ -1,14 +1,14 @@
 ﻿using AllOverIt.Caching;
+using AllOverIt.Extensions;
+using AllOverIt.Reflection;
+using GenericCacheDemo.Keys;
+using GenericCacheDemo.Models;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using AllOverIt.Extensions;
-using AllOverIt.Reflection;
-using GenericCacheDemo.Keys;
-using GenericCacheDemo.Models;
 
 namespace GenericCacheDemo
 {
@@ -145,7 +145,7 @@ namespace GenericCacheDemo
             Console.WriteLine();
 
             var result2 = (PropertyInfo) cache[byBindingKey2];
-            OutputPropertyInfo($"Result via key type '{nameof(PropKeyByBindingAndName)}'", new []{ result2 });
+            OutputPropertyInfo($"Result via key type '{nameof(PropKeyByBindingAndName)}'", [result2]);
 
             cache.Clear();
         }

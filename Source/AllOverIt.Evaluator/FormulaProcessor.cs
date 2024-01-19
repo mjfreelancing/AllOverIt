@@ -102,7 +102,7 @@ namespace AllOverIt.Evaluator
                 var referencedVariableNames = _referencedVariableNames.Count > 0
 
                     // Must return a copy of the referenced variable names
-                    ? new ReadOnlyCollection<string>(_referencedVariableNames.ToList())
+                    ? new ReadOnlyCollection<string>([.. _referencedVariableNames])
 
                     // FormulaProcessorResult handles this so it points to an empty ReadOnlyCollection
                     : null;

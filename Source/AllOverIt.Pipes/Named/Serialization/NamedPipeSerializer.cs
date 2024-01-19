@@ -19,12 +19,12 @@ namespace AllOverIt.Pipes.Named.Serialization
         /// <summary>Contains custom value readers for <typeparamref name="TMessage"/> or any of its' property types. If the serializer
         /// encounters a type for which there is no <see cref="IEnrichedBinaryValueReader"/> then a <see cref="DynamicBinaryValueReader"/>
         /// will be used.</summary>
-        public ICollection<IEnrichedBinaryValueReader> Readers { get; } = new List<IEnrichedBinaryValueReader>();
+        public ICollection<IEnrichedBinaryValueReader> Readers { get; } = [];
 
         /// <summary>Contains custom value writer for <typeparamref name="TMessage"/> or any of its' property types. If the serializer
         /// encounters a type for which there is no <see cref="IEnrichedBinaryValueWriter"/> then a <see cref="DynamicBinaryValueWriter"/>
         /// will be used.</summary>
-        public ICollection<IEnrichedBinaryValueWriter> Writers { get; } = new List<IEnrichedBinaryValueWriter>();
+        public ICollection<IEnrichedBinaryValueWriter> Writers { get; } = [];
 
         /// <inheritdoc/>
         public byte[] Serialize(TMessage message)

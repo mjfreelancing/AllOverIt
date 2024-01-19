@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AllOverIt.Csv;
+﻿using AllOverIt.Csv;
 using AllOverIt.Csv.Extensions;
 using CsvSerializerDemo.Data;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CsvSerializerDemo.Extensions
 {
@@ -36,12 +36,12 @@ namespace CsvSerializerDemo.Extensions
                             return new FieldIdentifier<int>
                             {
                                 Id = idx,
-                                Names = new[]
-                                {
+                                Names =
+                                [
                                     // Two columns to be exported per index
                                     $"{nameof(Coordinates.Latitude)} {idx + 1}",
                                     $"{nameof(Coordinates.Longitude)} {idx + 1}"
-                                }
+                                ]
                             };
                         });
                 },
@@ -53,11 +53,11 @@ namespace CsvSerializerDemo.Extensions
                         var coordinate = item.ElementAt(headerId.Id);
 
                         // Since two headers were exported, there is an expectation that two values will be returned
-                        return new object[]
-                        {
+                        return
+                        [
                             coordinate.Latitude,
                             coordinate.Longitude
-                        };
+                        ];
                     }
 
                     return null;
@@ -74,10 +74,10 @@ namespace CsvSerializerDemo.Extensions
                             return new FieldIdentifier<KeyValuePair<MetadataType, string>>
                             {
                                 Id = new KeyValuePair<MetadataType, string>(metadata.Type, metadata.Name),
-                                Names = new[]
-                                {
+                                Names =
+                                [
                                     $"{metadata.Type}-{metadata.Name}"
-                                }
+                                ]
                             };
                         });
                 },

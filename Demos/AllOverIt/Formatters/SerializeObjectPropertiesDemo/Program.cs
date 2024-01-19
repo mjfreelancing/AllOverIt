@@ -1,13 +1,13 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Formatters.Objects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AllOverIt.Formatters.Objects.Extensions;
 using AllOverIt.Helpers.PropertyNavigation;
 using AllOverIt.Helpers.PropertyNavigation.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SerializeObjectPropertiesDemo
 {
@@ -91,7 +91,7 @@ namespace SerializeObjectPropertiesDemo
                         Prop10 = true,
                         Prop8 = 2,
                         Prop9 = 3.3,
-                        Prop12 = new[] { 10, 20, 30 }
+                        Prop12 = [10, 20, 30]
                     },
                     new Dummy
                     {
@@ -99,7 +99,7 @@ namespace SerializeObjectPropertiesDemo
                         Prop10 = false,
                         Prop8 = 3,
                         Prop9 = 4.4,
-                        Prop12 = new[] { 11, 22, 33 }
+                        Prop12 = [11, 22, 33]
                     },
                     new Dummy
                     {
@@ -107,7 +107,7 @@ namespace SerializeObjectPropertiesDemo
                         Prop10 = true,
                         Prop8 = 4,
                         Prop9 = 5.5,
-                        Prop12 = new[] { 1, 2, 3 }
+                        Prop12 = [1, 2, 3]
                     }
                 }
             };
@@ -173,11 +173,11 @@ namespace SerializeObjectPropertiesDemo
 
             if (!collateArrayValues)
             {
-                serializer.Options.EnumerableOptions.AutoCollatedPaths = new[]
-                {
-                        "Prop30.Prop12",
-                        "Prop30.Prop13.Prop12"
-                    };
+                serializer.Options.EnumerableOptions.AutoCollatedPaths =
+                [
+                    "Prop30.Prop12",
+                    "Prop30.Prop13.Prop12"
+                ];
             }
 
             var items = serializer.SerializeToDictionary(metadataRoot).Select(kvp => $"{kvp.Key} = {kvp.Value}");
@@ -195,8 +195,8 @@ namespace SerializeObjectPropertiesDemo
 
             var complexObject = new ComplexObject
             {
-                Items = new ComplexObject.ComplexItem[]
-                {
+                Items =
+                [
                     new()
                     {
                         Name = "Name 1",
@@ -227,7 +227,7 @@ namespace SerializeObjectPropertiesDemo
                             Values = Enumerable.Range(21, 5).SelectAsReadOnlyCollection(value => value)
                         }
                     },
-                }
+                ]
             };
 
             Console.WriteLine("Filtered Object serialization values:");
@@ -245,8 +245,8 @@ namespace SerializeObjectPropertiesDemo
         {
             var complexObject = new ComplexObject
             {
-                Items = new ComplexObject.ComplexItem[]
-                {
+                Items =
+                [
                     new()
                     {
                         Name = "Name 1",
@@ -277,7 +277,7 @@ namespace SerializeObjectPropertiesDemo
                             Values = Enumerable.Range(21, 5).SelectAsReadOnlyCollection(value => value)
                         }
                     },
-                }
+                ]
             };
 
             var options = new ObjectPropertySerializerOptions
@@ -338,7 +338,7 @@ namespace SerializeObjectPropertiesDemo
             var options = new ObjectPropertySerializerOptions();
 
             // See SerializeFilteredItemDataViaRegistry() for a type-safe way that also checks the leaf node is not a class type
-            options.EnumerableOptions.AutoCollatedPaths = new[] { "Items.Data.Values" };
+            options.EnumerableOptions.AutoCollatedPaths = ["Items.Data.Values"];
 
             // Options can be safely shared
             registry.Register<ComplexObject, ComplexObjectItemDataFilter>(options);
@@ -353,8 +353,8 @@ namespace SerializeObjectPropertiesDemo
 
                         var complexObject = new ComplexObject
                         {
-                            Items = new ComplexObject.ComplexItem[]
-                            {
+                            Items =
+                            [
                                 new()
                                 {
                                     Name = "Name 1",
@@ -385,7 +385,7 @@ namespace SerializeObjectPropertiesDemo
                                         Values = Enumerable.Range(21, 5).SelectAsReadOnlyCollection(value => value)
                                     }
                                 },
-                            }
+                            ]
                         };
 
                         _ = registry.GetObjectPropertySerializer(complexObject, out var serializer);

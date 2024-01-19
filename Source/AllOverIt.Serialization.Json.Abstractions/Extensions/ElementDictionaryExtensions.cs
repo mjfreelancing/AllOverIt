@@ -145,7 +145,8 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
                 throw new JsonHelperException($"The property {arrayPropertyName} is not an array type.");
             }
 
-            array = Enumerable.Empty<IElementDictionary>();
+            array = [];
+
             return false;
         }
 
@@ -185,7 +186,8 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
                 return array.TryGetManyObjectArrayValues(propertyName, out arrayValues);
             }
 
-            arrayValues = Enumerable.Empty<TValue>();
+            arrayValues = [];
+
             return false;
         }
 
@@ -227,7 +229,8 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
             {
                 if (!element.TryGetValue<TValue>(arrayPropertyName, out var childValue))
                 {
-                    arrayValues = Enumerable.Empty<TValue>();
+                    arrayValues = [];
+
                     return false;
                 }
 
@@ -235,6 +238,7 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
             }
 
             arrayValues = values;
+
             return true;
         }
 
@@ -277,7 +281,8 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
                 {
                     if (!element.TryGetObjectArray(propertyName, out var array))
                     {
-                        childArray = Enumerable.Empty<IElementDictionary>();
+                        childArray = [];
+
                         return false;
                     }
 
@@ -288,6 +293,7 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
             }
 
             childArray = childElements;
+
             return true;
         }
 
@@ -352,7 +358,8 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
                 return childArray.TryGetManyObjectArrayValues(childPropertyName, out childArrayValues);
             }
 
-            childArrayValues = Enumerable.Empty<TValue>();
+            childArrayValues = [];
+
             return false;
         }
 
@@ -423,7 +430,7 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
         {
             var allProperties = propertyName.IsNullOrEmpty()
                 ? propertyNames
-                : propertyNames.Concat(new[] { propertyName });
+                : propertyNames.Concat([propertyName]);
 
             return new JsonHelperException($"The property {string.Join(".", allProperties)} was not found.");
         }
