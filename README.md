@@ -5,8 +5,7 @@ Refer to the [Change Log](ChangeLog.md) for an overview of what has recently cha
 
 Refer to the online [Documentation](https://alloverit.mjfreelancing.com) for comprehensive usage information.
 
-# Packages
-**AllOverIt** is a mono-repository. A summary for each of the available packages is provided below.
+A summary for each of the available packages is provided below.
 
 ## AllOverIt
 This general-purpose package contains a diverse range of classes and utility functions, intended to tackle a wide array of commonly encountered issues.
