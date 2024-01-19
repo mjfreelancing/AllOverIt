@@ -4,7 +4,7 @@
 
 # General Notes
 * Multiple dependency package updates across most packages. These are not noted below. Refer to the dependency
-  diagram available in the `/Docs/Dependencies` folder.
+  diagram available in the `\Docs\Reference\Content\images\dependencies` folder.
 
 
 ## AllOverIt
@@ -55,7 +55,7 @@
 
 
 ## AllOverIt.Assertion
-* Unchanged
+* Added WhenNotNullOrEmpty() overloads to the static Throw class.
 
 
 ## AllOverIt.Aws.Appsync.Client

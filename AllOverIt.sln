@@ -7,7 +7,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		Change Log.md = Change Log.md
-		Docs\Dependencies\Dependency Summary.md = Docs\Dependencies\Dependency Summary.md
 		LICENSE.md = LICENSE.md
 		README.md = README.md
 	EndProjectSection
@@ -373,7 +372,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RsaAesHybridEncryptionDemo"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThreadBindingDemo", "Demos\AllOverIt.Wpf\ThreadBindingDemo\ThreadBindingDemo.csproj", "{5BDA2A92-D5CE-46AE-AF00-DBC01AF96D84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowWrapperDemo", "Demos\AllOverIt.Wpf\WindowWrapperDemo\WindowWrapperDemo.csproj", "{47F67253-987F-4EFF-A8DD-1512668599D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowWrapperDemo", "Demos\AllOverIt.Wpf\WindowWrapperDemo\WindowWrapperDemo.csproj", "{47F67253-987F-4EFF-A8DD-1512668599D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
