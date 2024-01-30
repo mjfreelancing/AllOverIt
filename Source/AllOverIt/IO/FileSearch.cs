@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Linq;
 using System.Threading;
 
 namespace AllOverIt.IO
@@ -81,7 +80,7 @@ namespace AllOverIt.IO
             }
 
             // files will be null if exceptions are ignored
-            foreach (var file in files ?? Enumerable.Empty<FileInfo>())
+            foreach (var file in files ?? [])
             {
                 if (cancellationToken.IsCancellationRequested)
                 {

@@ -1,5 +1,4 @@
-﻿using AllOverIt.Assertion;
-using AllOverIt.Formatters.Objects;
+﻿using AllOverIt.Formatters.Objects;
 using AllOverIt.Helpers;
 using AllOverIt.Reflection;
 using System;
@@ -17,8 +16,8 @@ namespace AllOverIt.Extensions
         private static class ObjectConversionHelper
         {
             // instance, instance type, convertTo type, convertTo value
-            private static readonly IReadOnlyCollection<Func<object, Type, Type, object>> AsConverters = new[]
-            {
+            private static readonly IReadOnlyCollection<Func<object, Type, Type, object>> AsConverters =
+            [
                 AsSameTypeOrObject,
                 AsFromIntegralToBool,
                 AsFromEnumToIntegral,
@@ -26,7 +25,7 @@ namespace AllOverIt.Extensions
                 AsFromConvertibleTypeToValueType,
                 AsFromDerivedType,
                 AsUsingInstanceTypeConverter
-            };
+            ];
 
             public static TType ConvertTo<TType>(object instance, TType defaultValue)
             {
@@ -415,7 +414,7 @@ namespace AllOverIt.Extensions
 
             return HashCodeHelper.CalculateHashCode(properties);
         }
-        
+
         /// <summary>Determines if the provided object inherits from EnrichedEnum&lt;&gt;.</summary>
         /// <param name="object">The instance to be checked.</param>
         /// <returns><see langword="true" /> if the object inherits from EnrichedEnum&lt;>, otherwise <see langword="false" />.</returns>

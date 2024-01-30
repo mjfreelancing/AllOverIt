@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AllOverIt.Helpers
 {
@@ -12,7 +11,7 @@ namespace AllOverIt.Helpers
         /// <returns>A hash code based on the provided items and specified initial seed.</returns>
         public static int CalculateHashCode(params object[] items)
         {
-            return CalculateHashCode<object>(items.ToArray());
+            return CalculateHashCode<object>([.. items]);
         }
 
         /// <summary>Calculates a hash code based on the provided items.</summary>
