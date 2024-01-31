@@ -2,14 +2,11 @@
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
-using FluentAssertions.Equivalency;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection.Metadata;
 using Xunit;
 
 namespace AllOverIt.Tests.Extensions
@@ -47,7 +44,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ExpressionExtensions.GetMemberExpressions(expression);
 
-                var expected = new[]{ "Value", "subject" };
+                var expected = new[] { "Value", "subject" };
 
                 expected.Should().BeEquivalentTo(actual.Select(item => item.Member.Name));
             }
@@ -72,7 +69,7 @@ namespace AllOverIt.Tests.Extensions
         {
             [Fact]
             public void Should_Throw_When_Property_Expression_Null()
-{
+            {
                 var parameter = Expression.Parameter(typeof(DummyPropertyClass), "item");
 
                 Invoking(() => ExpressionExtensions.GetPropertyOrFieldExpressionUsingParameter<DummyPropertyClass, int>(null, parameter))
@@ -95,7 +92,7 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Get_Property_As_Parameter_MemberExpression()
             {
-                var subject = Create<DummyPropertyClass>();                
+                var subject = Create<DummyPropertyClass>();
 
                 var parameter = Expression.Parameter(typeof(DummyPropertyClass), "item");
                 var memberExpression = ExpressionExtensions.GetPropertyOrFieldExpressionUsingParameter<DummyPropertyClass, int>(subject => subject.Value, parameter);
