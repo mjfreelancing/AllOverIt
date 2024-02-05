@@ -17,15 +17,6 @@ namespace AllOverIt.Validation
         private readonly Dictionary<Type, Lazy<IValidator>> _validatorCache = [];
 
         /// <inheritdoc />
-        public IValidationRegistry Register<TType, TValidator>()
-            where TValidator : ValidatorBase<TType>, new()
-        {
-            _validatorCache.Add(typeof(TType), new Lazy<IValidator>(() => new TValidator()));
-
-            return this;
-        }
-
-        /// <inheritdoc />
         public bool ContainsModelRegistration(Type modelType)
         {
             return _validatorCache.ContainsKey(modelType);
@@ -38,27 +29,36 @@ namespace AllOverIt.Validation
         }
 
         /// <inheritdoc />
+        public IValidationRegistry Register<TType, TValidator>()
+            where TValidator : ValidatorBase<TType>, new()
+        {
+            AddToValidatorCache(typeof(TType), new Lazy<IValidator>(() => new TValidator()));
+
+            return this;
+        }
+
+        /// <inheritdoc />
         /// <remarks>The validator must implement <see cref="ValidatorBase{TType}"/> where TType is the model type.</remarks>
         public IValidationRegistry Register(Type modelType, Type validatorType)
         {
             if (!validatorType.IsDerivedFrom(typeof(ValidatorBase<>)))
             {
-                throw new ValidationRegistryException($"The {validatorType.GetFriendlyName()} type is not a validator.");
+                throw new ValidationRegistryException($"The type '{validatorType.GetFriendlyName()}' is not a validator.");
             }
 
             if (validatorType.GetConstructor(Type.EmptyTypes) == null)
             {
-                throw new ValidationRegistryException($"The {validatorType.GetFriendlyName()} type must have a default constructor.");
+                throw new ValidationRegistryException($"The type '{validatorType.GetFriendlyName()}' must have a default constructor.");
             }
 
             var validatorModelType = ValidationTypeHelper.GetModelType(validatorType);
 
             if (modelType != validatorModelType)
             {
-                throw new ValidationRegistryException($"The {validatorType.GetFriendlyName()} type cannot validate a {modelType} type.");
+                throw new ValidationRegistryException($"The type '{validatorType.GetFriendlyName()}' cannot validate a {modelType.GetFriendlyName()} type.");
             }
 
-            _validatorCache.Add(modelType, new Lazy<IValidator>(() => (IValidator) Activator.CreateInstance(validatorType)));
+            AddToValidatorCache(modelType, new Lazy<IValidator>(() => (IValidator) Activator.CreateInstance(validatorType)));
 
             return this;
         }
@@ -125,6 +125,16 @@ namespace AllOverIt.Validation
             var validator = GetValidator<TType>();
 
             return validator.ValidateAndThrowAsync(instance, context, cancellationToken);
+        }
+
+        private void AddToValidatorCache(Type modelType, Lazy<IValidator> factory)
+        {
+            if (ContainsModelRegistration(modelType))
+            {
+                throw new ValidationRegistryException($"The type '{modelType.GetFriendlyName()}' already has a registered validator.");
+            }
+
+            _validatorCache.Add(modelType, factory);
         }
 
         private ValidatorBase<TType> GetValidator<TType>()

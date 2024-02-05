@@ -1,4 +1,5 @@
-﻿using AllOverIt.Fixture;
+﻿using AllOverIt.Extensions;
+using AllOverIt.Fixture;
 using AllOverIt.Validation.Exceptions;
 using AllOverIt.Validation.Extensions;
 using FluentAssertions;
@@ -139,8 +140,8 @@ namespace AllOverIt.Validation.Tests
                         _validationInvoker.Register<DummyModel, DummyModelValidator>();
                     })
                    .Should()
-                   .Throw<ArgumentException>()
-                   .WithMessage($"An item with the same key has already been added. Key: {typeof(DummyModel).FullName}");
+                   .Throw<ValidationRegistryException>()
+                   .WithMessage($"The type '{typeof(DummyModel).GetFriendlyName()}' already has a registered validator.");
             }
         }
 
@@ -155,7 +156,7 @@ namespace AllOverIt.Validation.Tests
                     })
                    .Should()
                    .Throw<ValidationRegistryException>()
-                   .WithMessage($"The {nameof(DummyModel)} type is not a validator.");
+                   .WithMessage($"The type '{nameof(DummyModel)}' is not a validator.");
             }
 
             [Fact]
@@ -167,19 +168,19 @@ namespace AllOverIt.Validation.Tests
                     })
                    .Should()
                    .Throw<ValidationRegistryException>()
-                   .WithMessage($"The {nameof(DummyModelValidator)} type cannot validate a System.String type.");
+                   .WithMessage($"The type '{nameof(DummyModelValidator)}' cannot validate a String type.");
             }
 
             [Fact]
             public void Should_Throw_When_No_Default_Constructor()
             {
                 Invoking(() =>
-                {
-                    _validationInvoker.Register(typeof(DummyModel), typeof(DummyModelValidator2));
-                })
+                    {
+                        _validationInvoker.Register(typeof(DummyModel), typeof(DummyModelValidator2));
+                    })
                    .Should()
                    .Throw<ValidationRegistryException>()
-                   .WithMessage($"The {nameof(DummyModelValidator2)} type must have a default constructor.");
+                   .WithMessage($"The type '{nameof(DummyModelValidator2)}' must have a default constructor.");
             }
 
             [Fact]
@@ -193,8 +194,8 @@ namespace AllOverIt.Validation.Tests
                         _validationInvoker.Register(typeof(DummyModel), typeof(DummyModelValidator));
                     })
                    .Should()
-                   .Throw<ArgumentException>()
-                   .WithMessage($"An item with the same key has already been added. Key: {typeof(DummyModel).FullName}");
+                   .Throw<ValidationRegistryException>()
+                   .WithMessage($"The type '{typeof(DummyModel).GetFriendlyName()}' already has a registered validator.");
             }
         }
 

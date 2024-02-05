@@ -45,28 +45,32 @@ namespace AllOverIt.Validation
         public ILifetimeValidationRegistry RegisterTransient<TType, TValidator>()
             where TValidator : ValidatorBase<TType>, new()
         {
-            return Register(typeof(TType), typeof(TValidator), ServiceLifetime.Transient);
+            // Don't need to validate the model / validator combination
+            return RegisterModelValidator(typeof(TType), typeof(TValidator), ServiceLifetime.Transient);
         }
 
         /// <inheritdoc />
         public ILifetimeValidationRegistry RegisterScoped<TType, TValidator>()
             where TValidator : ValidatorBase<TType>, new()
         {
-            return Register(typeof(TType), typeof(TValidator), ServiceLifetime.Scoped);
+            // Don't need to validate the model / validator combination
+            return RegisterModelValidator(typeof(TType), typeof(TValidator), ServiceLifetime.Scoped);
         }
 
         /// <inheritdoc />
         public ILifetimeValidationRegistry RegisterSingleton<TType, TValidator>()
             where TValidator : ValidatorBase<TType>, new()
         {
-            return Register(typeof(TType), typeof(TValidator), ServiceLifetime.Singleton);
+            // Don't need to validate the model / validator combination
+            return RegisterModelValidator(typeof(TType), typeof(TValidator), ServiceLifetime.Singleton);
         }
 
         /// <inheritdoc />
         public ILifetimeValidationRegistry Register<TType, TValidator>(ServiceLifetime lifetime)
             where TValidator : ValidatorBase<TType>, new()
         {
-            return Register(typeof(TType), typeof(TValidator), lifetime);
+            // Don't need to validate the model / validator combination
+            return RegisterModelValidator(typeof(TType), typeof(TValidator), lifetime);
         }
 
         /// <inheritdoc />
@@ -92,14 +96,14 @@ namespace AllOverIt.Validation
         {
             if (!validatorType.IsDerivedFrom(typeof(ValidatorBase<>)))
             {
-                throw new ValidationRegistryException($"The {validatorType.GetFriendlyName()} type is not a validator.");
+                throw new ValidationRegistryException($"The type '{validatorType.GetFriendlyName()}' is not a validator.");
             }
 
             var validatorModelType = ValidationTypeHelper.GetModelType(validatorType);
 
             if (modelType != validatorModelType)
             {
-                throw new ValidationRegistryException($"The {validatorType.GetFriendlyName()} type cannot validate a {modelType} type.");
+                throw new ValidationRegistryException($"The type '{validatorType.GetFriendlyName()}' cannot validate a {modelType} type.");
             }
 
             RegisterModelValidator(modelType, validatorType, lifetime);
@@ -176,8 +180,13 @@ namespace AllOverIt.Validation
             _serviceProvider ??= serviceProvider;
         }
 
-        private void RegisterModelValidator(Type modelType, Type validatorType, ServiceLifetime lifetime)
+        private ILifetimeValidationRegistry RegisterModelValidator(Type modelType, Type validatorType, ServiceLifetime lifetime)
         {
+            if (ContainsModelRegistration(modelType))
+            {
+                throw new ValidationRegistryException($"The type '{modelType.GetFriendlyName()}' already has a registered validator.");
+            }
+
             var validatorKey = CreateModelValidatorKey(modelType);
 
             var descriptor = new ServiceDescriptor(
@@ -185,6 +194,8 @@ namespace AllOverIt.Validation
                 provider => (IValidator) ActivatorUtilities.CreateInstance(provider, validatorType), lifetime);
 
             _services.Add(descriptor);
+
+            return this;
         }
 
         private ValidatorBase<TType> GetValidator<TType>()
@@ -208,7 +219,7 @@ namespace AllOverIt.Validation
             return validator is not null;
         }
 
-        private Type CreateModelValidatorKey(Type modelType)
+        private static Type CreateModelValidatorKey(Type modelType)
         {
             var modelValidatorType = typeof(ValidatorBase<>).MakeGenericType(modelType);
 

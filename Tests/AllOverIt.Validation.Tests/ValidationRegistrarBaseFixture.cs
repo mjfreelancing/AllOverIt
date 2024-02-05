@@ -1,7 +1,8 @@
-﻿using AllOverIt.Collections;
+﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
+using AllOverIt.Validation.Exceptions;
 using FakeItEasy;
 using FluentAssertions;
 using System;
@@ -74,13 +75,13 @@ namespace AllOverIt.Validation.Tests
                     .CallsTo(fake => fake.Register(A<Type>.Ignored, A<Type>.Ignored))
                     .Invokes(call =>
                     {
-                        var validatorType = (Type)call.Arguments[1];
+                        var validatorType = (Type) call.Arguments[1];
                         validators.Add(validatorType);
                     });
 
                 _validationRegistrar.AutoRegisterValidators(registryFake.FakedObject);
 
-                validators.Should().HaveCount(21);      // All non-abstract validators in this assembly
+                validators.Should().HaveCount(22);      // All non-abstract validators in this assembly
 
                 validators.All(validator => !validator.IsAbstract).Should().BeTrue();
             }
@@ -102,8 +103,8 @@ namespace AllOverIt.Validation.Tests
                     invoker.Register<DummyModel, DummyModelValidator>();
                 })
                    .Should()
-                   .Throw<ArgumentException>()
-                   .WithMessage($"An item with the same key has already been added. Key: {typeof(DummyModel).FullName}");
+                   .Throw<ValidationRegistryException>()
+                   .WithMessage($"The type '{typeof(DummyModel).GetFriendlyName()}' already has a registered validator.");
             }
         }
     }
