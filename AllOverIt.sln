@@ -6,8 +6,8 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3B60B280-0CE6-4330-8BED-9C289760D4A7}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		LICENSE.md = LICENSE.md
 		ChangeLog.md = ChangeLog.md
+		LICENSE.md = LICENSE.md
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -373,6 +373,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThreadBindingDemo", "Demos\AllOverIt.Wpf\ThreadBindingDemo\ThreadBindingDemo.csproj", "{5BDA2A92-D5CE-46AE-AF00-DBC01AF96D84}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowWrapperDemo", "Demos\AllOverIt.Wpf\WindowWrapperDemo\WindowWrapperDemo.csproj", "{47F67253-987F-4EFF-A8DD-1512668599D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValidationInvokerDemo", "Demos\AllOverIt.Validation\ValidationInvokerDemo\ValidationInvokerDemo.csproj", "{730B0351-15F8-4D0A-B856-5FD20FFF52FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -892,6 +894,10 @@ Global
 		{47F67253-987F-4EFF-A8DD-1512668599D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47F67253-987F-4EFF-A8DD-1512668599D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47F67253-987F-4EFF-A8DD-1512668599D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{730B0351-15F8-4D0A-B856-5FD20FFF52FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{730B0351-15F8-4D0A-B856-5FD20FFF52FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{730B0351-15F8-4D0A-B856-5FD20FFF52FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{730B0351-15F8-4D0A-B856-5FD20FFF52FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1071,6 +1077,7 @@ Global
 		{A4670F23-930E-4449-B54E-B6F9B4037B25} = {02F12E9D-1953-487A-ADB7-0C0AD01F293E}
 		{5BDA2A92-D5CE-46AE-AF00-DBC01AF96D84} = {13DA98B5-96F6-4F75-942B-8BBCEB1EFA1F}
 		{47F67253-987F-4EFF-A8DD-1512668599D7} = {13DA98B5-96F6-4F75-942B-8BBCEB1EFA1F}
+		{730B0351-15F8-4D0A-B856-5FD20FFF52FC} = {736417D6-56B0-46F7-9717-5C8E7A2327EA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19DD11B3-596E-4862-B5C4-1FFFFB173106}
