@@ -61,7 +61,7 @@ namespace AllOverIt.Validation.Tests
             {
             }
         }
-        
+
         private readonly ValidationInvoker _validationInvoker;
 
         public ValidationInvokerFixture()
