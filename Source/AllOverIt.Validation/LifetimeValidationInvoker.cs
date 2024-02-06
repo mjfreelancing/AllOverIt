@@ -99,7 +99,7 @@ namespace AllOverIt.Validation
 
             if (modelType != validatorModelType)
             {
-                throw new ValidationRegistryException($"The type '{validatorType.GetFriendlyName()}' cannot validate a {modelType} type.");
+                throw new ValidationRegistryException($"The type '{validatorType.GetFriendlyName()}' cannot validate a {modelType.GetFriendlyName()} type.");
             }
 
             RegisterModelValidator(modelType, validatorType, lifetime);

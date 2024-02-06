@@ -67,7 +67,7 @@ namespace AllOverIt.Validation.Tests
                     return validatorType == typeof(DummyModelValidator);
                 });
 
-                AssertValidatorRegistration<DummyModel, DummyModelValidator>(_services, ServiceLifetime.Transient);
+                AssertValidatorRegistration<DummyModel, DummyModelValidator>(ServiceLifetime.Transient);
             }
 
             [Fact]
@@ -131,7 +131,7 @@ namespace AllOverIt.Validation.Tests
                     return validatorType == typeof(DummyModelValidator);
                 });
 
-                AssertValidatorRegistration<DummyModel, DummyModelValidator>(_services, ServiceLifetime.Scoped);
+                AssertValidatorRegistration<DummyModel, DummyModelValidator>(ServiceLifetime.Scoped);
             }
 
             [Fact]
@@ -195,7 +195,7 @@ namespace AllOverIt.Validation.Tests
                     return validatorType == typeof(DummyModelValidator);
                 });
 
-                AssertValidatorRegistration<DummyModel, DummyModelValidator>(_services, ServiceLifetime.Singleton);
+                AssertValidatorRegistration<DummyModel, DummyModelValidator>(ServiceLifetime.Singleton);
             }
 
             [Fact]
@@ -261,7 +261,7 @@ namespace AllOverIt.Validation.Tests
                     return validatorType == typeof(DummyModelValidator);
                 });
 
-                AssertValidatorRegistration<DummyModel, DummyModelValidator>(_services, lifetime);
+                AssertValidatorRegistration<DummyModel, DummyModelValidator>(lifetime);
             }
 
             [Fact]
@@ -285,15 +285,15 @@ namespace AllOverIt.Validation.Tests
             }
         }
 
-        private static void AssertValidatorRegistration<TModel, TValidator>(IServiceCollection services, ServiceLifetime lifetime)
+        private void AssertValidatorRegistration<TModel, TValidator>(ServiceLifetime lifetime)
         {
-            var descriptor = services
+            var descriptor = _services
                 .Where(item => item.ServiceType == LifetimeValidationInvoker.CreateModelValidatorKey(typeof(TModel)))
                 .SingleOrDefault();
 
             descriptor.Lifetime.Should().Be(lifetime);
 
-            var provider = services.BuildServiceProvider();
+            var provider = _services.BuildServiceProvider();
 
             descriptor.ImplementationFactory
                 .Invoke(provider)

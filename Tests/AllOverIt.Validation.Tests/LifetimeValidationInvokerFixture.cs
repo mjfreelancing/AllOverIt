@@ -1,10 +1,13 @@
-﻿using AllOverIt.Fixture;
+﻿using AllOverIt.Extensions;
+using AllOverIt.Fixture;
+using AllOverIt.Validation.Exceptions;
 using AllOverIt.Validation.Extensions;
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -134,77 +137,321 @@ namespace AllOverIt.Validation.Tests
             }
         }
 
-        //public class Register_Strongly_Typed : LifetimeValidationInvokerFixture
-        //{
-        //    [Fact]
-        //    public void Should_Register_Validator()
-        //    {
-        //        _validationRegistry.Register<DummyModel, DummyModelValidator>();
+        public class RegisterTransient_Strongly_Typed : LifetimeValidationInvokerFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Model_Already_Registered()
+            {
+                _validationRegistry.RegisterTransient<DummyModel, DummyModelValidator>();
 
-        //        // registering a second time will fail
-        //        Invoking(() =>
-        //        {
-        //            _validationRegistry.Register<DummyModel, DummyModelValidator>();
-        //        })
-        //           .Should()
-        //           .Throw<ValidationRegistryException>()
-        //           .WithMessage($"The type '{typeof(DummyModel).GetFriendlyName()}' already has a registered validator.");
-        //    }
-        //}
+                Invoking(() =>
+                {
+                    _validationRegistry.RegisterTransient<DummyModel, DummyModelValidator>();
+                })
+                 .Should()
+                 .Throw<ValidationRegistryException>()
+                 .WithMessage($"The type '{typeof(DummyModel).GetFriendlyName()}' already has a registered validator.");
+            }
 
-        //public class Register_By_Type : LifetimeValidationInvokerFixture
-        //{
-        //    [Fact]
-        //    public void Should_Throw_When_Not_A_Validator()
-        //    {
-        //        Invoking(() =>
-        //        {
-        //            _validationRegistry.Register(typeof(DummyModel), typeof(DummyModel));
-        //        })
-        //           .Should()
-        //           .Throw<ValidationRegistryException>()
-        //           .WithMessage($"The type '{nameof(DummyModel)}' is not a validator.");
-        //    }
+            [Fact]
+            public void Should_Register_Validator()
+            {
+                _validationRegistry.RegisterTransient<DummyModel, DummyModelValidator>();
 
-        //    [Fact]
-        //    public void Should_Throw_When_Cannot_Validate_Model_Type()
-        //    {
-        //        Invoking(() =>
-        //        {
-        //            _validationRegistry.Register(typeof(string), typeof(DummyModelValidator));
-        //        })
-        //           .Should()
-        //           .Throw<ValidationRegistryException>()
-        //           .WithMessage($"The type '{nameof(DummyModelValidator)}' cannot validate a String type.");
-        //    }
+                BuildServiceProvider();
 
-        //    [Fact]
-        //    public void Should_Throw_When_No_Default_Constructor()
-        //    {
-        //        Invoking(() =>
-        //        {
-        //            _validationRegistry.Register(typeof(DummyModel), typeof(DummyModelValidator2));
-        //        })
-        //           .Should()
-        //           .Throw<ValidationRegistryException>()
-        //           .WithMessage($"The type '{nameof(DummyModelValidator2)}' must have a default constructor.");
-        //    }
+                AssertValidatorRegistration<DummyModel, DummyModelValidator>(ServiceLifetime.Transient);
+            }
+        }
 
-        //    [Fact]
-        //    public void Should_Register_Validator()
-        //    {
-        //        _validationRegistry.Register(typeof(DummyModel), typeof(DummyModelValidator));
+        public class RegisterScoped_Strongly_Typed : LifetimeValidationInvokerFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Model_Already_Registered()
+            {
+                _validationRegistry.RegisterScoped<DummyModel, DummyModelValidator>();
 
-        //        // registering a second time will fail
-        //        Invoking(() =>
-        //        {
-        //            _validationRegistry.Register(typeof(DummyModel), typeof(DummyModelValidator));
-        //        })
-        //           .Should()
-        //           .Throw<ValidationRegistryException>()
-        //           .WithMessage($"The type '{typeof(DummyModel).GetFriendlyName()}' already has a registered validator.");
-        //    }
-        //}
+                Invoking(() =>
+                {
+                    _validationRegistry.RegisterScoped<DummyModel, DummyModelValidator>();
+                })
+                 .Should()
+                 .Throw<ValidationRegistryException>()
+                 .WithMessage($"The type '{typeof(DummyModel).GetFriendlyName()}' already has a registered validator.");
+            }
+
+            [Fact]
+            public void Should_Register_Validator()
+            {
+                _validationRegistry.RegisterScoped<DummyModel, DummyModelValidator>();
+
+                BuildServiceProvider();
+
+                AssertValidatorRegistration<DummyModel, DummyModelValidator>(ServiceLifetime.Scoped);
+            }
+        }
+
+        public class RegisterSingleton_Strongly_Typed : LifetimeValidationInvokerFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Model_Already_Registered()
+            {
+                _validationRegistry.RegisterSingleton<DummyModel, DummyModelValidator>();
+
+                Invoking(() =>
+                {
+                    _validationRegistry.RegisterSingleton<DummyModel, DummyModelValidator>();
+                })
+                 .Should()
+                 .Throw<ValidationRegistryException>()
+                 .WithMessage($"The type '{typeof(DummyModel).GetFriendlyName()}' already has a registered validator.");
+            }
+
+            [Fact]
+            public void Should_Register_Validator()
+            {
+                _validationRegistry.RegisterSingleton<DummyModel, DummyModelValidator>();
+
+                BuildServiceProvider();
+
+                AssertValidatorRegistration<DummyModel, DummyModelValidator>(ServiceLifetime.Singleton);
+            }
+        }
+
+        public class Register_Strongly_Typed : LifetimeValidationInvokerFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Model_Already_Registered()
+            {
+                _validationRegistry.Register<DummyModel, DummyModelValidator>(Create<ServiceLifetime>());
+
+                Invoking(() =>
+                {
+                    _validationRegistry.Register<DummyModel, DummyModelValidator>(Create<ServiceLifetime>());
+                })
+                 .Should()
+                 .Throw<ValidationRegistryException>()
+                 .WithMessage($"The type '{typeof(DummyModel).GetFriendlyName()}' already has a registered validator.");
+            }
+
+            [Fact]
+            public void Should_Register_Validator()
+            {
+                var lifetime = Create<ServiceLifetime>();
+
+                _validationRegistry.Register<DummyModel, DummyModelValidator>(lifetime);
+
+                BuildServiceProvider();
+
+                AssertValidatorRegistration<DummyModel, DummyModelValidator>(lifetime);
+            }
+        }
+
+        public class RegisterTransient_Type : LifetimeValidationInvokerFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Not_A_Validator()
+            {
+                Invoking(() =>
+                {
+                    _validationRegistry.RegisterTransient(typeof(DummyModel), typeof(DummyModel));
+                })
+                   .Should()
+                   .Throw<ValidationRegistryException>()
+                   .WithMessage($"The type '{nameof(DummyModel)}' is not a validator.");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Cannot_Validate_Model_Type()
+            {
+                Invoking(() =>
+                {
+                    _validationRegistry.RegisterTransient(typeof(string), typeof(DummyModelValidator));
+                })
+                   .Should()
+                   .Throw<ValidationRegistryException>()
+                   .WithMessage($"The type '{nameof(DummyModelValidator)}' cannot validate a String type.");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Model_Already_Registered()
+            {
+                _validationRegistry.RegisterTransient(typeof(DummyModel), typeof(DummyModelValidator));
+
+                Invoking(() =>
+                {
+                    _validationRegistry.RegisterTransient(typeof(DummyModel), typeof(DummyModelValidator));
+                })
+                 .Should()
+                 .Throw<ValidationRegistryException>()
+                 .WithMessage($"The type '{typeof(DummyModel).GetFriendlyName()}' already has a registered validator.");
+            }
+
+            [Fact]
+            public void Should_Register_Validator()
+            {
+                _validationRegistry.RegisterTransient(typeof(DummyModel), typeof(DummyModelValidator));
+
+                BuildServiceProvider();
+
+                AssertValidatorRegistration<DummyModel, DummyModelValidator>(ServiceLifetime.Transient);
+            }
+        }
+
+        public class RegisterScoped_Type : LifetimeValidationInvokerFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Not_A_Validator()
+            {
+                Invoking(() =>
+                {
+                    _validationRegistry.RegisterScoped(typeof(DummyModel), typeof(DummyModel));
+                })
+                   .Should()
+                   .Throw<ValidationRegistryException>()
+                   .WithMessage($"The type '{nameof(DummyModel)}' is not a validator.");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Cannot_Validate_Model_Type()
+            {
+                Invoking(() =>
+                {
+                    _validationRegistry.RegisterScoped(typeof(string), typeof(DummyModelValidator));
+                })
+                   .Should()
+                   .Throw<ValidationRegistryException>()
+                   .WithMessage($"The type '{nameof(DummyModelValidator)}' cannot validate a String type.");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Model_Already_Registered()
+            {
+                _validationRegistry.RegisterScoped(typeof(DummyModel), typeof(DummyModelValidator));
+
+                Invoking(() =>
+                {
+                    _validationRegistry.RegisterScoped(typeof(DummyModel), typeof(DummyModelValidator));
+                })
+                 .Should()
+                 .Throw<ValidationRegistryException>()
+                 .WithMessage($"The type '{typeof(DummyModel).GetFriendlyName()}' already has a registered validator.");
+            }
+
+            [Fact]
+            public void Should_Register_Validator()
+            {
+                _validationRegistry.RegisterScoped(typeof(DummyModel), typeof(DummyModelValidator));
+
+                BuildServiceProvider();
+
+                AssertValidatorRegistration<DummyModel, DummyModelValidator>(ServiceLifetime.Scoped);
+            }
+        }
+
+        public class RegisterSingleton_Type : LifetimeValidationInvokerFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Not_A_Validator()
+            {
+                Invoking(() =>
+                {
+                    _validationRegistry.RegisterSingleton(typeof(DummyModel), typeof(DummyModel));
+                })
+                   .Should()
+                   .Throw<ValidationRegistryException>()
+                   .WithMessage($"The type '{nameof(DummyModel)}' is not a validator.");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Cannot_Validate_Model_Type()
+            {
+                Invoking(() =>
+                {
+                    _validationRegistry.RegisterSingleton(typeof(string), typeof(DummyModelValidator));
+                })
+                   .Should()
+                   .Throw<ValidationRegistryException>()
+                   .WithMessage($"The type '{nameof(DummyModelValidator)}' cannot validate a String type.");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Model_Already_Registered()
+            {
+                _validationRegistry.RegisterSingleton(typeof(DummyModel), typeof(DummyModelValidator));
+
+                Invoking(() =>
+                {
+                    _validationRegistry.RegisterSingleton(typeof(DummyModel), typeof(DummyModelValidator));
+                })
+                 .Should()
+                 .Throw<ValidationRegistryException>()
+                 .WithMessage($"The type '{typeof(DummyModel).GetFriendlyName()}' already has a registered validator.");
+            }
+
+            [Fact]
+            public void Should_Register_Validator()
+            {
+                _validationRegistry.RegisterSingleton(typeof(DummyModel), typeof(DummyModelValidator));
+
+                BuildServiceProvider();
+
+                AssertValidatorRegistration<DummyModel, DummyModelValidator>(ServiceLifetime.Singleton);
+            }
+        }
+
+        public class Register_Type : LifetimeValidationInvokerFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Not_A_Validator()
+            {
+                Invoking(() =>
+                {
+                    _validationRegistry.Register(typeof(DummyModel), typeof(DummyModel), Create<ServiceLifetime>());
+                })
+                   .Should()
+                   .Throw<ValidationRegistryException>()
+                   .WithMessage($"The type '{nameof(DummyModel)}' is not a validator.");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Cannot_Validate_Model_Type()
+            {
+                Invoking(() =>
+                {
+                    _validationRegistry.Register(typeof(string), typeof(DummyModelValidator), Create<ServiceLifetime>());
+                })
+                   .Should()
+                   .Throw<ValidationRegistryException>()
+                   .WithMessage($"The type '{nameof(DummyModelValidator)}' cannot validate a String type.");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Model_Already_Registered()
+            {
+                _validationRegistry.Register(typeof(DummyModel), typeof(DummyModelValidator), Create<ServiceLifetime>());
+
+                Invoking(() =>
+                {
+                    _validationRegistry.Register(typeof(DummyModel), typeof(DummyModelValidator), Create<ServiceLifetime>());
+                })
+                 .Should()
+                 .Throw<ValidationRegistryException>()
+                 .WithMessage($"The type '{typeof(DummyModel).GetFriendlyName()}' already has a registered validator.");
+            }
+
+            [Fact]
+            public void Should_Register_Validator()
+            {
+                var lifetime = Create<ServiceLifetime>();
+
+                _validationRegistry.Register(typeof(DummyModel), typeof(DummyModelValidator), lifetime);
+
+                BuildServiceProvider();
+
+                AssertValidatorRegistration<DummyModel, DummyModelValidator>(lifetime);
+            }
+        }
 
         public class Validate_Type : LifetimeValidationInvokerFixture
         {
@@ -608,6 +855,22 @@ namespace AllOverIt.Validation.Tests
             var serviceProvider = _services.BuildServiceProvider();
 
             _validationInvoker.SetServiceProvider(serviceProvider);
+        }
+
+        private void AssertValidatorRegistration<TModel, TValidator>(ServiceLifetime lifetime)
+        {
+            var descriptor = _services
+                .Where(item => item.ServiceType == LifetimeValidationInvoker.CreateModelValidatorKey(typeof(TModel)))
+                .SingleOrDefault();
+
+            descriptor.Lifetime.Should().Be(lifetime);
+
+            var provider = _services.BuildServiceProvider();
+
+            descriptor.ImplementationFactory
+                .Invoke(provider)
+                .Should()
+                .BeOfType(typeof(TValidator));
         }
     }
 }
