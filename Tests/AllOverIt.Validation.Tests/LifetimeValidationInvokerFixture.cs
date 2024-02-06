@@ -1,17 +1,16 @@
-﻿using AllOverIt.Extensions;
-using AllOverIt.Fixture;
-using AllOverIt.Validation.Exceptions;
+﻿using AllOverIt.Fixture;
 using AllOverIt.Validation.Extensions;
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace AllOverIt.Validation.Tests
 {
-    public class ValidationInvokerFixture : FixtureBase
+    public class LifetimeValidationInvokerFixture : FixtureBase
     {
         private class DummyModel
         {
@@ -63,21 +62,42 @@ namespace AllOverIt.Validation.Tests
             }
         }
 
-        private readonly ValidationInvoker _validationInvoker;
-        private readonly IValidationRegistry _validationRegistry;
+        private readonly IServiceCollection _services;
+        private readonly LifetimeValidationInvoker _validationInvoker;
+        private readonly ILifetimeValidationRegistry _validationRegistry;
 
-        public ValidationInvokerFixture()
+        public LifetimeValidationInvokerFixture()
         {
-            _validationInvoker = new ValidationInvoker();
+            _services = new ServiceCollection();
+            _validationInvoker = new LifetimeValidationInvoker(_services);
             _validationRegistry = _validationInvoker;
         }
 
-        public class ContainsModelRegistration_Strongly_Type : ValidationInvokerFixture
+        public class ServiceProvider : LifetimeValidationInvokerFixture
+        {
+            [Fact]
+            public void Should_Throw_When_ServiceProvider_Not_Set()
+            {
+                RegisterValidator(Create<bool>(), Create<ServiceLifetime>(), false);
+
+                var model = Create<DummyModel>();
+
+                Invoking(() =>
+                {
+                    _validationInvoker.AssertValidation(model);
+                })
+                .Should()
+                .Throw<InvalidOperationException>()
+                .WithMessage("The service provider has not been set.");
+            }
+        }
+
+        public class ContainsModelRegistration_Strongly_Type : LifetimeValidationInvokerFixture
         {
             [Fact]
             public void Should_Return_True_For_Registered_Model()
             {
-                RegisterValidator(true);
+                RegisterValidator(true, Create<ServiceLifetime>());
 
                 _validationRegistry.ContainsModelRegistration<DummyModel>()
                     .Should()
@@ -93,12 +113,12 @@ namespace AllOverIt.Validation.Tests
             }
         }
 
-        public class ContainsModelRegistration_Type : ValidationInvokerFixture
+        public class ContainsModelRegistration_Type : LifetimeValidationInvokerFixture
         {
             [Fact]
             public void Should_Return_True_For_Registered_Model()
             {
-                RegisterValidator(false);
+                RegisterValidator(false, Create<ServiceLifetime>());
 
                 _validationRegistry.ContainsModelRegistration(typeof(DummyModel))
                     .Should()
@@ -114,86 +134,86 @@ namespace AllOverIt.Validation.Tests
             }
         }
 
-        public class Register_Strongly_Typed : ValidationInvokerFixture
-        {
-            [Fact]
-            public void Should_Register_Validator()
-            {
-                _validationRegistry.Register<DummyModel, DummyModelValidator>();
+        //public class Register_Strongly_Typed : LifetimeValidationInvokerFixture
+        //{
+        //    [Fact]
+        //    public void Should_Register_Validator()
+        //    {
+        //        _validationRegistry.Register<DummyModel, DummyModelValidator>();
 
-                // registering a second time will fail
-                Invoking(() =>
-                    {
-                        _validationRegistry.Register<DummyModel, DummyModelValidator>();
-                    })
-                   .Should()
-                   .Throw<ValidationRegistryException>()
-                   .WithMessage($"The type '{typeof(DummyModel).GetFriendlyName()}' already has a registered validator.");
-            }
-        }
+        //        // registering a second time will fail
+        //        Invoking(() =>
+        //        {
+        //            _validationRegistry.Register<DummyModel, DummyModelValidator>();
+        //        })
+        //           .Should()
+        //           .Throw<ValidationRegistryException>()
+        //           .WithMessage($"The type '{typeof(DummyModel).GetFriendlyName()}' already has a registered validator.");
+        //    }
+        //}
 
-        public class Register_By_Type : ValidationInvokerFixture
-        {
-            [Fact]
-            public void Should_Throw_When_Not_A_Validator()
-            {
-                Invoking(() =>
-                    {
-                        _validationRegistry.Register(typeof(DummyModel), typeof(DummyModel));
-                    })
-                   .Should()
-                   .Throw<ValidationRegistryException>()
-                   .WithMessage($"The type '{nameof(DummyModel)}' is not a validator.");
-            }
+        //public class Register_By_Type : LifetimeValidationInvokerFixture
+        //{
+        //    [Fact]
+        //    public void Should_Throw_When_Not_A_Validator()
+        //    {
+        //        Invoking(() =>
+        //        {
+        //            _validationRegistry.Register(typeof(DummyModel), typeof(DummyModel));
+        //        })
+        //           .Should()
+        //           .Throw<ValidationRegistryException>()
+        //           .WithMessage($"The type '{nameof(DummyModel)}' is not a validator.");
+        //    }
 
-            [Fact]
-            public void Should_Throw_When_Cannot_Validate_Model_Type()
-            {
-                Invoking(() =>
-                    {
-                        _validationRegistry.Register(typeof(string), typeof(DummyModelValidator));
-                    })
-                   .Should()
-                   .Throw<ValidationRegistryException>()
-                   .WithMessage($"The type '{nameof(DummyModelValidator)}' cannot validate a String type.");
-            }
+        //    [Fact]
+        //    public void Should_Throw_When_Cannot_Validate_Model_Type()
+        //    {
+        //        Invoking(() =>
+        //        {
+        //            _validationRegistry.Register(typeof(string), typeof(DummyModelValidator));
+        //        })
+        //           .Should()
+        //           .Throw<ValidationRegistryException>()
+        //           .WithMessage($"The type '{nameof(DummyModelValidator)}' cannot validate a String type.");
+        //    }
 
-            [Fact]
-            public void Should_Throw_When_No_Default_Constructor()
-            {
-                Invoking(() =>
-                    {
-                        _validationRegistry.Register(typeof(DummyModel), typeof(DummyModelValidator2));
-                    })
-                   .Should()
-                   .Throw<ValidationRegistryException>()
-                   .WithMessage($"The type '{nameof(DummyModelValidator2)}' must have a default constructor.");
-            }
+        //    [Fact]
+        //    public void Should_Throw_When_No_Default_Constructor()
+        //    {
+        //        Invoking(() =>
+        //        {
+        //            _validationRegistry.Register(typeof(DummyModel), typeof(DummyModelValidator2));
+        //        })
+        //           .Should()
+        //           .Throw<ValidationRegistryException>()
+        //           .WithMessage($"The type '{nameof(DummyModelValidator2)}' must have a default constructor.");
+        //    }
 
-            [Fact]
-            public void Should_Register_Validator()
-            {
-                _validationRegistry.Register(typeof(DummyModel), typeof(DummyModelValidator));
+        //    [Fact]
+        //    public void Should_Register_Validator()
+        //    {
+        //        _validationRegistry.Register(typeof(DummyModel), typeof(DummyModelValidator));
 
-                // registering a second time will fail
-                Invoking(() =>
-                    {
-                        _validationRegistry.Register(typeof(DummyModel), typeof(DummyModelValidator));
-                    })
-                   .Should()
-                   .Throw<ValidationRegistryException>()
-                   .WithMessage($"The type '{typeof(DummyModel).GetFriendlyName()}' already has a registered validator.");
-            }
-        }
+        //        // registering a second time will fail
+        //        Invoking(() =>
+        //        {
+        //            _validationRegistry.Register(typeof(DummyModel), typeof(DummyModelValidator));
+        //        })
+        //           .Should()
+        //           .Throw<ValidationRegistryException>()
+        //           .WithMessage($"The type '{typeof(DummyModel).GetFriendlyName()}' already has a registered validator.");
+        //    }
+        //}
 
-        public class Validate_Type : ValidationInvokerFixture
+        public class Validate_Type : LifetimeValidationInvokerFixture
         {
             [Theory]
             [InlineData(false)]
             [InlineData(true)]
             public void Should_Throw_When_Invoke_Validator(bool useStrongTyping)
             {
-                RegisterValidator(useStrongTyping);
+                RegisterValidator(useStrongTyping, Create<ServiceLifetime>());
 
                 var model = new DummyModel();
 
@@ -230,14 +250,14 @@ namespace AllOverIt.Validation.Tests
             }
         }
 
-        public class ValidateAsync_Type : ValidationInvokerFixture
+        public class ValidateAsync_Type : LifetimeValidationInvokerFixture
         {
             [Theory]
             [InlineData(false)]
             [InlineData(true)]
             public async Task Should_Throw_When_Invoke_Validator(bool useStrongTyping)
             {
-                RegisterValidator(useStrongTyping);
+                RegisterValidator(useStrongTyping, Create<ServiceLifetime>());
 
                 var model = new DummyModel();
 
@@ -274,14 +294,14 @@ namespace AllOverIt.Validation.Tests
             }
         }
 
-        public class Validate_Type_Context : ValidationInvokerFixture
+        public class Validate_Type_Context : LifetimeValidationInvokerFixture
         {
             [Theory]
             [InlineData(false)]
             [InlineData(true)]
             public void Should_Throw_When_Invoke_Validator(bool useStrongTyping)
             {
-                RegisterValidator(useStrongTyping);
+                RegisterValidator(useStrongTyping, Create<ServiceLifetime>());
 
                 var model = Create<DummyModel>();
                 var comparisonContext = !model.ValueFour;
@@ -305,14 +325,14 @@ namespace AllOverIt.Validation.Tests
             }
         }
 
-        public class ValidateAsync_Type_Context : ValidationInvokerFixture
+        public class ValidateAsync_Type_Context : LifetimeValidationInvokerFixture
         {
             [Theory]
             [InlineData(false)]
             [InlineData(true)]
             public async Task Should_Throw_When_Invoke_Validator(bool useStrongTyping)
             {
-                RegisterValidator(useStrongTyping);
+                RegisterValidator(useStrongTyping, Create<ServiceLifetime>());
 
                 var model = Create<DummyModel>();
                 var comparisonContext = !model.ValueFour;
@@ -336,11 +356,13 @@ namespace AllOverIt.Validation.Tests
             }
         }
 
-        public class AssertValidation_Type : ValidationInvokerFixture
+        public class AssertValidation_Type : LifetimeValidationInvokerFixture
         {
             [Fact]
             public void Should_Throw_When_Validator_Not_Registered()
             {
+                BuildServiceProvider();
+
                 Invoking(() =>
                 {
                     _validationInvoker.AssertValidation(Create<DummyModel>());
@@ -355,7 +377,7 @@ namespace AllOverIt.Validation.Tests
             [InlineData(true)]
             public void Should_Throw_When_Invoke_Validator(bool useStrongTyping)
             {
-                RegisterValidator(useStrongTyping);
+                RegisterValidator(useStrongTyping, Create<ServiceLifetime>());
 
                 var model = new DummyModel();
 
@@ -376,7 +398,7 @@ namespace AllOverIt.Validation.Tests
             [InlineData(true)]
             public void Should_Not_Throw_When_Invoke_Validator(bool useStrongTyping)
             {
-                RegisterValidator(useStrongTyping);
+                RegisterValidator(useStrongTyping, Create<ServiceLifetime>());
 
                 var model = Create<DummyModel>();
 
@@ -389,11 +411,13 @@ namespace AllOverIt.Validation.Tests
             }
         }
 
-        public class AssertValidationAsync_Type : ValidationInvokerFixture
+        public class AssertValidationAsync_Type : LifetimeValidationInvokerFixture
         {
             [Fact]
             public async Task Should_Throw_When_Validator_Not_Registered()
             {
+                BuildServiceProvider();
+
                 await Invoking(async () =>
                 {
                     await _validationInvoker.AssertValidationAsync(Create<DummyModel>());
@@ -408,14 +432,14 @@ namespace AllOverIt.Validation.Tests
             [InlineData(true)]
             public async Task Should_Throw_When_Invoke_Validator(bool useStrongTyping)
             {
-                RegisterValidator(useStrongTyping);
+                RegisterValidator(useStrongTyping, Create<ServiceLifetime>());
 
                 var model = new DummyModel();
 
                 await Invoking(async () =>
-                    {
-                        await _validationInvoker.AssertValidationAsync(model);
-                    })
+                {
+                    await _validationInvoker.AssertValidationAsync(model);
+                })
                     .Should()
                     .ThrowAsync<ValidationException>()
                     .WithMessage($"Validation failed: {Environment.NewLine}" +
@@ -429,24 +453,26 @@ namespace AllOverIt.Validation.Tests
             [InlineData(true)]
             public async Task Should_Not_Throw_When_Invoke_Validator(bool useStrongTyping)
             {
-                RegisterValidator(useStrongTyping);
+                RegisterValidator(useStrongTyping, Create<ServiceLifetime>());
 
                 var model = Create<DummyModel>();
 
                 await Invoking(async () =>
-                    {
-                        await _validationInvoker.AssertValidationAsync(model);
-                    })
+                {
+                    await _validationInvoker.AssertValidationAsync(model);
+                })
                     .Should()
                     .NotThrowAsync();
             }
         }
 
-        public class AssertValidation_Type_Context : ValidationInvokerFixture
+        public class AssertValidation_Type_Context : LifetimeValidationInvokerFixture
         {
             [Fact]
             public void Should_Throw_When_Validator_Not_Registered()
             {
+                BuildServiceProvider();
+
                 Invoking(() =>
                 {
                     _validationInvoker.AssertValidation(Create<DummyModel>(), Create<bool>());
@@ -461,7 +487,7 @@ namespace AllOverIt.Validation.Tests
             [InlineData(true)]
             public void Should_Throw_When_Invoke_Validator(bool useStrongTyping)
             {
-                RegisterValidator(useStrongTyping);
+                RegisterValidator(useStrongTyping, Create<ServiceLifetime>());
 
                 var model = new DummyModel();
                 var context = Create<bool>();
@@ -485,7 +511,7 @@ namespace AllOverIt.Validation.Tests
             [InlineData(true)]
             public void Should_Not_Throw_When_Invoke_Validator(bool useStrongTyping)
             {
-                RegisterValidator(useStrongTyping);
+                RegisterValidator(useStrongTyping, Create<ServiceLifetime>());
 
                 var model = Create<DummyModel>();
                 var context = Create<bool>();
@@ -500,11 +526,13 @@ namespace AllOverIt.Validation.Tests
             }
         }
 
-        public class AssertValidationAsync_Type_Context : ValidationInvokerFixture
+        public class AssertValidationAsync_Type_Context : LifetimeValidationInvokerFixture
         {
             [Fact]
             public async Task Should_Throw_When_Validator_Not_Registered()
             {
+                BuildServiceProvider();
+
                 await Invoking(async () =>
                 {
                     await _validationInvoker.AssertValidationAsync(Create<DummyModel>(), Create<bool>());
@@ -519,16 +547,16 @@ namespace AllOverIt.Validation.Tests
             [InlineData(true)]
             public async Task Should_Throw_When_Invoke_Validator(bool useStrongTyping)
             {
-                RegisterValidator(useStrongTyping);
+                RegisterValidator(useStrongTyping, Create<ServiceLifetime>());
 
                 var model = new DummyModel();
                 var context = Create<bool>();
                 model.ValueFour = !context;
 
                 await Invoking(async () =>
-                    {
-                        await _validationInvoker.AssertValidationAsync(model, context);
-                    })
+                {
+                    await _validationInvoker.AssertValidationAsync(model, context);
+                })
                     .Should()
                     .ThrowAsync<ValidationException>()
                     .WithMessage($"Validation failed: {Environment.NewLine}" +
@@ -543,31 +571,43 @@ namespace AllOverIt.Validation.Tests
             [InlineData(true)]
             public async Task Should_Not_Throw_When_Invoke_Validator(bool useStrongTyping)
             {
-                RegisterValidator(useStrongTyping);
+                RegisterValidator(useStrongTyping, Create<ServiceLifetime>());
 
                 var model = Create<DummyModel>();
                 var context = Create<bool>();
                 model.ValueFour = context;
 
                 await Invoking(async () =>
-                    {
-                        await _validationInvoker.AssertValidationAsync(model, context);
-                    })
+                {
+                    await _validationInvoker.AssertValidationAsync(model, context);
+                })
                     .Should()
                     .NotThrowAsync();
             }
         }
 
-        private void RegisterValidator(bool useStrongTyping)
+        private void RegisterValidator(bool useStrongTyping, ServiceLifetime lifetime, bool setProvider = true)
         {
             if (useStrongTyping)
             {
-                _validationRegistry.Register<DummyModel, DummyModelValidator>();
+                _validationRegistry.Register<DummyModel, DummyModelValidator>(lifetime);
             }
             else
             {
-                _validationRegistry.Register(typeof(DummyModel), typeof(DummyModelValidator));
+                _validationRegistry.Register(typeof(DummyModel), typeof(DummyModelValidator), lifetime);
             }
+
+            if (setProvider)
+            {
+                BuildServiceProvider();
+            }
+        }
+
+        private void BuildServiceProvider()
+        {
+            var serviceProvider = _services.BuildServiceProvider();
+
+            _validationInvoker.SetServiceProvider(serviceProvider);
         }
     }
 }

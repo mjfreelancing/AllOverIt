@@ -3,7 +3,7 @@ using System;
 
 namespace AllOverIt.Validation
 {
-    /// <summary>Represents a registry of model types and their associated validators.</summary>
+    /// <summary>Represents a registry of model types and their associated validators, with a given lifetime.</summary>
     public interface ILifetimeValidationRegistry
     {
         /// <summary>Indicates if the specified model type has a registered validator.</summary>
