@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ValidationInvokerDemo": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "Postcode": "1000"
+      }
+    }
+  }
+}

@@ -64,10 +64,12 @@ namespace AllOverIt.Validation.Tests
         }
 
         private readonly ValidationInvoker _validationInvoker;
+        private readonly IValidationRegistry _validationRegistry;
 
         public ValidationInvokerFixture()
         {
             _validationInvoker = new ValidationInvoker();
+            _validationRegistry = _validationInvoker;
         }
 
         public class ContainsModelRegistration_Type : ValidationInvokerFixture
@@ -75,9 +77,9 @@ namespace AllOverIt.Validation.Tests
             [Fact]
             public void Should_Return_True_For_Registered_Model()
             {
-                _validationInvoker.Register<DummyModel, DummyModelValidator>();
+                _validationRegistry.Register<DummyModel, DummyModelValidator>();
 
-                _validationInvoker.ContainsModelRegistration(typeof(DummyModel))
+                _validationRegistry.ContainsModelRegistration(typeof(DummyModel))
                     .Should()
                     .BeTrue();
             }
@@ -85,7 +87,7 @@ namespace AllOverIt.Validation.Tests
             [Fact]
             public void Should_Return_False_For_Registered_Model()
             {
-                _validationInvoker.ContainsModelRegistration(typeof(DummyModel))
+                _validationRegistry.ContainsModelRegistration(typeof(DummyModel))
                     .Should()
                     .BeFalse();
             }
@@ -96,9 +98,9 @@ namespace AllOverIt.Validation.Tests
             [Fact]
             public void Should_Return_True_For_Registered_Model()
             {
-                _validationInvoker.Register<DummyModel, DummyModelValidator>();
+                _validationRegistry.Register<DummyModel, DummyModelValidator>();
 
-                _validationInvoker.ContainsModelRegistration<DummyModel>()
+                _validationRegistry.ContainsModelRegistration<DummyModel>()
                     .Should()
                     .BeTrue();
             }
@@ -106,7 +108,7 @@ namespace AllOverIt.Validation.Tests
             [Fact]
             public void Should_Return_False_For_Registered_Model()
             {
-                _validationInvoker.ContainsModelRegistration<DummyModel>()
+                _validationRegistry.ContainsModelRegistration<DummyModel>()
                     .Should()
                     .BeFalse();
             }
@@ -132,12 +134,12 @@ namespace AllOverIt.Validation.Tests
             [Fact]
             public void Should_Register_Validator()
             {
-                _validationInvoker.Register<DummyModel, DummyModelValidator>();
+                _validationRegistry.Register<DummyModel, DummyModelValidator>();
 
                 // registering a second time will fail
                 Invoking(() =>
                     {
-                        _validationInvoker.Register<DummyModel, DummyModelValidator>();
+                        _validationRegistry.Register<DummyModel, DummyModelValidator>();
                     })
                    .Should()
                    .Throw<ValidationRegistryException>()
@@ -152,7 +154,7 @@ namespace AllOverIt.Validation.Tests
             {
                 Invoking(() =>
                     {
-                        _validationInvoker.Register(typeof(DummyModel), typeof(DummyModel));
+                        _validationRegistry.Register(typeof(DummyModel), typeof(DummyModel));
                     })
                    .Should()
                    .Throw<ValidationRegistryException>()
@@ -164,7 +166,7 @@ namespace AllOverIt.Validation.Tests
             {
                 Invoking(() =>
                     {
-                        _validationInvoker.Register(typeof(string), typeof(DummyModelValidator));
+                        _validationRegistry.Register(typeof(string), typeof(DummyModelValidator));
                     })
                    .Should()
                    .Throw<ValidationRegistryException>()
@@ -176,7 +178,7 @@ namespace AllOverIt.Validation.Tests
             {
                 Invoking(() =>
                     {
-                        _validationInvoker.Register(typeof(DummyModel), typeof(DummyModelValidator2));
+                        _validationRegistry.Register(typeof(DummyModel), typeof(DummyModelValidator2));
                     })
                    .Should()
                    .Throw<ValidationRegistryException>()
@@ -186,12 +188,12 @@ namespace AllOverIt.Validation.Tests
             [Fact]
             public void Should_Register_Validator()
             {
-                _validationInvoker.Register(typeof(DummyModel), typeof(DummyModelValidator));
+                _validationRegistry.Register(typeof(DummyModel), typeof(DummyModelValidator));
 
                 // registering a second time will fail
                 Invoking(() =>
                     {
-                        _validationInvoker.Register(typeof(DummyModel), typeof(DummyModelValidator));
+                        _validationRegistry.Register(typeof(DummyModel), typeof(DummyModelValidator));
                     })
                    .Should()
                    .Throw<ValidationRegistryException>()
@@ -527,11 +529,11 @@ namespace AllOverIt.Validation.Tests
         {
             if (useStrongTyping)
             {
-                _validationInvoker.Register<DummyModel, DummyModelValidator>();
+                _validationRegistry.Register<DummyModel, DummyModelValidator>();
             }
             else
             {
-                _validationInvoker.Register(typeof(DummyModel), typeof(DummyModelValidator));
+                _validationRegistry.Register(typeof(DummyModel), typeof(DummyModelValidator));
             }
         }
     }

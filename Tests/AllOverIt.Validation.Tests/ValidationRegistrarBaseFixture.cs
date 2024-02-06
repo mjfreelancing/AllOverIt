@@ -100,7 +100,7 @@ namespace AllOverIt.Validation.Tests
 
                 Invoking(() =>
                 {
-                    invoker.Register<DummyModel, DummyModelValidator>();
+                    ((IValidationRegistry) invoker).Register<DummyModel, DummyModelValidator>();
                 })
                    .Should()
                    .Throw<ValidationRegistryException>()

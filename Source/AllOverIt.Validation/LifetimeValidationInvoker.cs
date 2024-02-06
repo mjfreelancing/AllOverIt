@@ -22,13 +22,15 @@ namespace AllOverIt.Validation
         private readonly IServiceCollection _services;
         private IServiceProvider _serviceProvider;
 
+        private ILifetimeValidationRegistry ValidationRegistry => this;
+
         internal LifetimeValidationInvoker(IServiceCollection services)
         {
             _services = services.WhenNotNull(nameof(services));
         }
 
         /// <inheritdoc />
-        public bool ContainsModelRegistration(Type modelType)
+        bool ILifetimeValidationRegistry.ContainsModelRegistration(Type modelType)
         {
             var validatorKey = CreateModelValidatorKey(modelType);
 
@@ -36,63 +38,67 @@ namespace AllOverIt.Validation
         }
 
         /// <inheritdoc />
-        public bool ContainsModelRegistration<TType>()
+        bool ILifetimeValidationRegistry.ContainsModelRegistration<TType>()
         {
-            return ContainsModelRegistration(typeof(TType));
+            return ValidationRegistry.ContainsModelRegistration(typeof(TType));
         }
 
         /// <inheritdoc />
-        public ILifetimeValidationRegistry RegisterTransient<TType, TValidator>()
-            where TValidator : ValidatorBase<TType>, new()
-        {
-            // Don't need to validate the model / validator combination
-            return RegisterModelValidator(typeof(TType), typeof(TValidator), ServiceLifetime.Transient);
-        }
-
-        /// <inheritdoc />
-        public ILifetimeValidationRegistry RegisterScoped<TType, TValidator>()
-            where TValidator : ValidatorBase<TType>, new()
+        ILifetimeValidationRegistry ILifetimeValidationRegistry.RegisterTransient<TType, TValidator>()
         {
             // Don't need to validate the model / validator combination
-            return RegisterModelValidator(typeof(TType), typeof(TValidator), ServiceLifetime.Scoped);
+            RegisterModelValidator(typeof(TType), typeof(TValidator), ServiceLifetime.Transient);
+
+            return this;
         }
 
         /// <inheritdoc />
-        public ILifetimeValidationRegistry RegisterSingleton<TType, TValidator>()
-            where TValidator : ValidatorBase<TType>, new()
+        ILifetimeValidationRegistry ILifetimeValidationRegistry.RegisterScoped<TType, TValidator>()
         {
             // Don't need to validate the model / validator combination
-            return RegisterModelValidator(typeof(TType), typeof(TValidator), ServiceLifetime.Singleton);
+            RegisterModelValidator(typeof(TType), typeof(TValidator), ServiceLifetime.Scoped);
+
+            return this;
         }
 
         /// <inheritdoc />
-        public ILifetimeValidationRegistry Register<TType, TValidator>(ServiceLifetime lifetime)
-            where TValidator : ValidatorBase<TType>, new()
+        ILifetimeValidationRegistry ILifetimeValidationRegistry.RegisterSingleton<TType, TValidator>()
         {
             // Don't need to validate the model / validator combination
-            return RegisterModelValidator(typeof(TType), typeof(TValidator), lifetime);
+            RegisterModelValidator(typeof(TType), typeof(TValidator), ServiceLifetime.Singleton);
+
+            return this;
         }
 
         /// <inheritdoc />
-        public ILifetimeValidationRegistry RegisterTransient(Type modelType, Type validatorType)
+        ILifetimeValidationRegistry ILifetimeValidationRegistry.Register<TType, TValidator>(ServiceLifetime lifetime)
         {
-            return Register(modelType, validatorType, ServiceLifetime.Transient);
+            // Don't need to validate the model / validator combination
+            RegisterModelValidator(typeof(TType), typeof(TValidator), lifetime);
+
+            return this;
         }
 
         /// <inheritdoc />
-        public ILifetimeValidationRegistry RegisterScoped(Type modelType, Type validatorType)
+        ILifetimeValidationRegistry ILifetimeValidationRegistry.RegisterTransient(Type modelType, Type validatorType)
         {
-            return Register(modelType, validatorType, ServiceLifetime.Scoped);
+            return ValidationRegistry.Register(modelType, validatorType, ServiceLifetime.Transient);
         }
 
         /// <inheritdoc />
-        public ILifetimeValidationRegistry RegisterSingleton(Type modelType, Type validatorType)
+        ILifetimeValidationRegistry ILifetimeValidationRegistry.RegisterScoped(Type modelType, Type validatorType)
         {
-            return Register(modelType, validatorType, ServiceLifetime.Singleton);
+            return ValidationRegistry.Register(modelType, validatorType, ServiceLifetime.Scoped);
         }
 
         /// <inheritdoc />
-        public ILifetimeValidationRegistry Register(Type modelType, Type validatorType, ServiceLifetime lifetime)
+        ILifetimeValidationRegistry ILifetimeValidationRegistry.RegisterSingleton(Type modelType, Type validatorType)
+        {
+            return ValidationRegistry.Register(modelType, validatorType, ServiceLifetime.Singleton);
+        }
+
+        /// <inheritdoc />
+        ILifetimeValidationRegistry ILifetimeValidationRegistry.Register(Type modelType, Type validatorType, ServiceLifetime lifetime)
         {
             if (!validatorType.IsDerivedFrom(typeof(ValidatorBase<>)))
             {
@@ -180,9 +186,16 @@ namespace AllOverIt.Validation
             _serviceProvider ??= serviceProvider;
         }
 
-        private ILifetimeValidationRegistry RegisterModelValidator(Type modelType, Type validatorType, ServiceLifetime lifetime)
+        internal static Type CreateModelValidatorKey(Type modelType)
         {
-            if (ContainsModelRegistration(modelType))
+            var modelValidatorType = typeof(ValidatorBase<>).MakeGenericType(modelType);
+
+            return typeof(ModelMarker<,>).MakeGenericType(modelType, modelValidatorType);
+        }
+
+        private void RegisterModelValidator(Type modelType, Type validatorType, ServiceLifetime lifetime)
+        {
+            if (ValidationRegistry.ContainsModelRegistration(modelType))
             {
                 throw new ValidationRegistryException($"The type '{modelType.GetFriendlyName()}' already has a registered validator.");
             }
@@ -194,8 +207,6 @@ namespace AllOverIt.Validation
                 provider => (IValidator) ActivatorUtilities.CreateInstance(provider, validatorType), lifetime);
 
             _services.Add(descriptor);
-
-            return this;
         }
 
         private ValidatorBase<TType> GetValidator<TType>()
@@ -217,13 +228,6 @@ namespace AllOverIt.Validation
             validator = (IValidator) _serviceProvider.GetService(validatorKey);
 
             return validator is not null;
-        }
-
-        private static Type CreateModelValidatorKey(Type modelType)
-        {
-            var modelValidatorType = typeof(ValidatorBase<>).MakeGenericType(modelType);
-
-            return typeof(ModelMarker<,>).MakeGenericType(modelType, modelValidatorType);
         }
 
         private static void ThrowValidatorNotRegistered<TType>()

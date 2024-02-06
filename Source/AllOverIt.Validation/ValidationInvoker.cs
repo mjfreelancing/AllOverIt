@@ -16,21 +16,32 @@ namespace AllOverIt.Validation
         // can only re-use validators that don't store state (context)
         private readonly Dictionary<Type, Lazy<IValidator>> _validatorCache = [];
 
+        private IValidationRegistry ValidationRegistry => this;
+
+        public ValidationInvoker()
+        {
+        }
+
+        // For tests
+        internal ValidationInvoker(Dictionary<Type, Lazy<IValidator>> validatorCache)
+        {
+            _validatorCache = validatorCache;
+        }
+
         /// <inheritdoc />
-        public bool ContainsModelRegistration(Type modelType)
+        bool IValidationRegistry.ContainsModelRegistration(Type modelType)
         {
             return _validatorCache.ContainsKey(modelType);
         }
 
         /// <inheritdoc />
-        public bool ContainsModelRegistration<TType>()
+        bool IValidationRegistry.ContainsModelRegistration<TType>()
         {
-            return ContainsModelRegistration(typeof(TType));
+            return ValidationRegistry.ContainsModelRegistration(typeof(TType));
         }
 
         /// <inheritdoc />
-        public IValidationRegistry Register<TType, TValidator>()
-            where TValidator : ValidatorBase<TType>, new()
+        IValidationRegistry IValidationRegistry.Register<TType, TValidator>()
         {
             AddToValidatorCache(typeof(TType), new Lazy<IValidator>(() => new TValidator()));
 
@@ -39,7 +50,7 @@ namespace AllOverIt.Validation
 
         /// <inheritdoc />
         /// <remarks>The validator must implement <see cref="ValidatorBase{TType}"/> where TType is the model type.</remarks>
-        public IValidationRegistry Register(Type modelType, Type validatorType)
+        IValidationRegistry IValidationRegistry.Register(Type modelType, Type validatorType)
         {
             if (!validatorType.IsDerivedFrom(typeof(ValidatorBase<>)))
             {
@@ -129,7 +140,7 @@ namespace AllOverIt.Validation
 
         private void AddToValidatorCache(Type modelType, Lazy<IValidator> factory)
         {
-            if (ContainsModelRegistration(modelType))
+            if (ValidationRegistry.ContainsModelRegistration(modelType))
             {
                 throw new ValidationRegistryException($"The type '{modelType.GetFriendlyName()}' already has a registered validator.");
             }
