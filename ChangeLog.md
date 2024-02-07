@@ -1,13 +1,29 @@
+#  Version 7.1.0
+## Feb 2024
+---
+
+### AllOverIt.Validation
+* Added `ILifetimeValidationInvoker` as an alternative to `IValidationInvoker`. The existing `ValidationInvoker` can only be used
+  with validators containing a default constructor, and all validators are treated as a Singleton. `ILifetimeValidationInvoker`
+  adds support for registering validators with a Transient, Scoped, or Singleton scope, and they can be injected with dependencies.
+  A `ILifetimeValidationInvoker` is registered as a Singleton via the `AddLifetimeValidationInvoker()` extension method on
+  `IServiceCollection`. A `AddValidationInvoker()` extension method has also been added to simplify using `IValidationInvoker`.
+
+  The extension methods return `IValidationRegistry`/ `ILifetimeValidationRegistry` so additional validator registrations can be
+  added after the invoker has been registered, but before the `IServiceCollection` has been built.
+
+
+
 #  Version 7.0.0
 ## 20 Jan 2024
 ---
 
-# General Notes
+### General Notes
 * Multiple dependency package updates across most packages. These are not noted below. Refer to the dependency
   diagram available in the `\Docs\Reference\Content\images\dependencies` folder.
 
 
-## AllOverIt
+### AllOverIt
 * Added interceptor support to cater for Aspected Oriented Programming (AOP)
 * Added string extension `IsEmpty()`
 * `IAsyncEnumerable` extension updates
@@ -50,136 +66,136 @@
 * Added object extensions to invoke methods using reflection
 
 
-## AllOverIt.AspNetCore
+### AllOverIt.AspNetCore
 * Unchanged
 
 
-## AllOverIt.Assertion
+### AllOverIt.Assertion
 * Added WhenNotNullOrEmpty() overloads to the static Throw class.
 
 
-## AllOverIt.Aws.Appsync.Client
+### AllOverIt.Aws.Appsync.Client
 * Update to detection of execution timeout due to AWS changes
 
 
-## AllOverIt.Aws.Cdk.Appsync
+### AllOverIt.Aws.Cdk.Appsync
 * Updated from Amazon CDK v1 to Amazon.CDK.Lib v2
 * Added an EndpointSource of type "Lookup" that allows for custom values to be looked up when creating a HttpDataSource
 
 
-## AllOverIt.Cryptography :new:
+### AllOverIt.Cryptography :new:
 * Provides a simple approach to using RSA, AES, and RSA-AES hybrid encryption.
 
 
-## AllOverIt.Csv
+### AllOverIt.Csv
 * Renamed CsvExportException to CsvSerializerException
 * Added buffered CSV exporter base classes
 
 
-## AllOverIt.DependencyInjection
+### AllOverIt.DependencyInjection
 * Added support for registering named services
 
 
-## AllOverIt.EntityFrameworkCore
+### AllOverIt.EntityFrameworkCore
 * Added a database migrator that emits all pending migrations to be applied
 * Added a utility to get the current migration status of a database
 
 
-## AllOverIt.EntityFrameworkCore.Diagrams :new:
+### AllOverIt.EntityFrameworkCore.Diagrams :new:
 * Adds support for generating D2 entity relationship diagrams and exporting to text, svg, png, pdf
 
 
-## AllOverIt.EntityFrameworkCore.Pagination
+### AllOverIt.EntityFrameworkCore.Pagination
 * Unchanged
 
 
-## AllOverIt.Evaluator
+### AllOverIt.Evaluator
 * Modified VariableRegistry to be enumerable (removed Variables property)
 * Added methods to IVariableRegistry: TryGetVariable(), GetVariable(), ContainsVariable()
 * Added a VariableRegistryBuilder that allows registrations to be added out of sequence
 
 
-## AllOverIt.Filtering
+### AllOverIt.Filtering
 * Unchanged
 
 
-## AllOverIt.Fixture
+### AllOverIt.Fixture
 * Added exception assertion helpers
 
 
-## AllOverIt.Fixture.FakeItEasy
+### AllOverIt.Fixture.FakeItEasy
 * Unchanged
 
 
-## AllOverIt.GenericHost
+### AllOverIt.GenericHost
 * Unchanged
 
 
-## AllOverIt.Mapping :new:
+### AllOverIt.Mapping :new:
 * Moved `ObjectMapper` from `AllOverIt` into this dedicated package
 * Updated support `ArrayList`
 
 
-## AllOverIt.Pagination
+### AllOverIt.Pagination
 * Added `GetPageResults()` extension method for `IQueryPaginator<TResult>`. This is intended ONLY for memory based queries.
   It Performs the same job as `GetPageResultsAsync()` found in `AllOverIt.EntityFrameworkCore.Pagination`.
 
 
-## AllOverIt.Pipes
+### AllOverIt.Pipes
 * Provides support for named client and server pipes (Windows only).
 
 
-## AllOverIt.Reactive
+### AllOverIt.Reactive
 * Added ObservableObject, ObservableProxy and PropertyNotifyExtensions
 * Added EventBusHandler
 
 
-## AllOverIt.ReactiveUI
+### AllOverIt.ReactiveUI
 * Added support for a `ReactiveCommand` based pipeline (with support for chaining other sync / async pipeline steps)
 * Added ReactiveProxy
 * Added ViewRegistry so multiple view instances of various viewmodel types can be created and tracked
 
 
-## AllOverIt.ReactiveUI.Wpf :new:
+### AllOverIt.ReactiveUI.Wpf :new:
 * Added WpfViewHandler for use with ViewRegistry in AllOverIt.ReactiveUI
 * Added helpers to register ReactiveWindow / ReactiveUserControl and their associated viewmodel with IServiceCollection
 
 
-## AllOverIt.Serialization.Binary :new:
+### AllOverIt.Serialization.Binary :new:
 * Moved the binary serialization from `AllOverIt` into this dedicated package
 * Improved support for IEnumerable and arrays
 * Added DynamicBinaryValueReader and DynamicBinaryValueWriter
 
 
-## AllOverIt.Serialization.Json.Abstractions
+### AllOverIt.Serialization.Json.Abstractions
 * Renamed from `AllOverIt.Serialization.Abstractions`. If upgrading from a previous version then the package reference
   and usages of the `AllOverIt.Serialization.Abstractions` namespace will require manual updates.
 
 
-## AllOverIt.Serialization.Json.Newtonsoft
+### AllOverIt.Serialization.Json.Newtonsoft
 * Renamed from `AllOverIt.Serialization.NewtonsoftJson`. If upgrading from a previous version then the package reference
   and usages of the `AllOverIt.Serialization.NewtonsoftJson` namespace will require manual updates.
 
 
-## AllOverIt.Serialization.Json.SystemText
+### AllOverIt.Serialization.Json.SystemText
 * Renamed from `AllOverIt.Serialization.SystemTextJson`. If upgrading from a previous version then the package reference
   and usages of the `AllOverIt.Serialization.SystemTextJson` namespace will require manual updates.
 * Added an option to `NestedDictionaryConverter` so floating values can be read as double or decimal.
 
 
-## AllOverIt.Validation
+### AllOverIt.Validation
 * Unsealed ValidationInvoker so multiple types can be registered with DI.
 
 
-## AllOverIt.Validation.Options :new:
+### AllOverIt.Validation.Options :new:
 * Provides support for Configuration Options validation using `FluentValidation` and `AllOverIt.Validation` via the
   `OptionsBuilder<TOptions>` extension method called `UseFluentValidation()`.
 
 
-## AllOverIt.Wpf :new:
+### AllOverIt.Wpf :new:
 * General purpose WPF utilities
 
 
-## AllOverIt.Wpf.Controls :new:
+### AllOverIt.Wpf.Controls :new:
 * Includes a `PreviewTextBox` control
 * Includes a 'ExecuteCommandOnEnterKeyBehavior' behavior
