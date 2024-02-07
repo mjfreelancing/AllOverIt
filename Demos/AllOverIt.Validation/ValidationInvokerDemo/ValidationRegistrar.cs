@@ -1,5 +1,8 @@
 ﻿using AllOverIt.Validation;
 
-internal sealed class ValidationRegistrar : ValidationRegistrarBase
+namespace ValidationInvokerDemo
 {
+    internal sealed class ValidationRegistrar : ValidationRegistrarBase
+    {
+    }
 }

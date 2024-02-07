@@ -3,6 +3,8 @@ using AllOverIt.Validation.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using ValidationInvokerDemo;
+using ValidationInvokerDemo.Models;
 
 internal class Program
 {
@@ -38,7 +40,7 @@ internal class Program
                 // Demonstrates using ILifetimeValidationInvoker (supports validators with dependencies)
                 _ = services.AddLifetimeValidationInvoker(validationRegistry =>
                 {
-                    validationRegistry.AutoRegisterSingletonValidators<ServiceValidationRegistrar>((modelType, validatorType) =>
+                    validationRegistry.AutoRegisterSingletonValidators<LifetimeValidationRegistrar>((modelType, validatorType) =>
                     {
                         return modelType == typeof(Address);
                     });

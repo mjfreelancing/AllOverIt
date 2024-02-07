@@ -3,22 +3,26 @@ using AllOverIt.Extensions;
 using AllOverIt.Validation;
 using AllOverIt.Validation.Extensions;
 using Microsoft.Extensions.Configuration;
+using ValidationInvokerDemo.Models;
 
-public sealed class IsAddressValidator : ValidatorBase<Address>
+namespace ValidationInvokerDemo.Validators
 {
-    private readonly int _postcode;
-
-    // Dependencies are supported when used with IServiceValidationInvoker
-    public IsAddressValidator(IConfiguration configuration)
+    public sealed class IsAddressValidator : ValidatorBase<Address>
     {
-        _ = configuration.WhenNotNull();    // Demonstrating this should be injected
+        private readonly int _postcode;
 
-        _postcode = configuration["Postcode"].As<int>();
+        // Dependencies are supported when used with IServiceValidationInvoker
+        public IsAddressValidator(IConfiguration configuration)
+        {
+            _ = configuration.WhenNotNull();    // Demonstrating this should be injected
 
-        // methods starting with IsXXX are extension methods provided by AllOverIt.Validation
-        RuleFor(address => address.Number).IsGreaterThan(0);
-        RuleFor(address => address.Street).IsNotEmpty();
-        RuleFor(address => address.Suburb).IsNotEmpty();
-        RuleFor(address => address.Postcode).IsGreaterThan(_postcode);
+            _postcode = configuration["Postcode"].As<int>();
+
+            // methods starting with IsXXX are extension methods provided by AllOverIt.Validation
+            RuleFor(address => address.Number).IsGreaterThan(0);
+            RuleFor(address => address.Street).IsNotEmpty();
+            RuleFor(address => address.Suburb).IsNotEmpty();
+            RuleFor(address => address.Postcode).IsGreaterThan(_postcode);
+        }
     }
 }
