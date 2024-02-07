@@ -860,7 +860,7 @@ namespace AllOverIt.Validation.Tests
         private void AssertValidatorRegistration<TModel, TValidator>(ServiceLifetime lifetime)
         {
             var descriptor = _services
-                .Where(item => item.ServiceType == LifetimeValidationInvoker.CreateModelValidatorKey(typeof(TModel)))
+                .Where(descriptor => descriptor.ServiceType == LifetimeValidationInvoker.CreateModelValidatorKey(typeof(TModel)))
                 .SingleOrDefault();
 
             descriptor.Lifetime.Should().Be(lifetime);

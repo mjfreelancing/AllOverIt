@@ -12,6 +12,7 @@ using Xunit;
 
 namespace AllOverIt.Validation.Tests
 {
+
     public class ValidationRegistrarBaseFixture : FixtureBase
     {
         private sealed class DummyModel
@@ -64,7 +65,7 @@ namespace AllOverIt.Validation.Tests
             }
 
             [Fact]
-            public void Should_Register_All_Validators()
+            public void Should_Register_All_Validators_When_Predicate_Null()
             {
                 var validators = new List<Type>();
 
@@ -79,15 +80,15 @@ namespace AllOverIt.Validation.Tests
                         validators.Add(validatorType);
                     });
 
-                _validationRegistrar.AutoRegisterValidators(registryFake.FakedObject);
+                _validationRegistrar.AutoRegisterValidators(registryFake.FakedObject, null);
 
-                validators.Should().HaveCount(24);      // All non-abstract validators in this assembly
+                validators.Should().HaveCount(26);      // All non-abstract validators in this assembly
 
                 validators.All(validator => !validator.IsAbstract).Should().BeTrue();
             }
 
             [Fact]
-            public void Should_Register_Validators()
+            public void Should_Throw_When_Validator_Already_Registered()
             {
                 var invoker = new ValidationInvoker();
 
