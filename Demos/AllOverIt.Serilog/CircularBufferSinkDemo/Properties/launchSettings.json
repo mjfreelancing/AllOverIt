@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "CircularBufferSinkDemo": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "BufferCapacity": "20"
+      }
+    }
+  }
+}

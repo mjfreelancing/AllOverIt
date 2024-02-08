@@ -374,7 +374,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThreadBindingDemo", "Demos\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowWrapperDemo", "Demos\AllOverIt.Wpf\WindowWrapperDemo\WindowWrapperDemo.csproj", "{47F67253-987F-4EFF-A8DD-1512668599D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValidationInvokerDemo", "Demos\AllOverIt.Validation\ValidationInvokerDemo\ValidationInvokerDemo.csproj", "{730B0351-15F8-4D0A-B856-5FD20FFF52FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ValidationInvokerDemo", "Demos\AllOverIt.Validation\ValidationInvokerDemo\ValidationInvokerDemo.csproj", "{730B0351-15F8-4D0A-B856-5FD20FFF52FC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllOverIt.Serilog", "AllOverIt.Serilog", "{D68B489E-F268-4BCA-81EB-678D65E820FB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.Serilog", "Source\AllOverIt.Serilog\AllOverIt.Serilog.csproj", "{89BAE356-46F7-4B14-9347-EF72487EEA30}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CircularBufferSinkDemo", "Demos\AllOverIt.Serilog\CircularBufferSinkDemo\CircularBufferSinkDemo.csproj", "{EC135A46-03DC-41CA-A9FC-905EBE67D11A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -898,6 +904,14 @@ Global
 		{730B0351-15F8-4D0A-B856-5FD20FFF52FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{730B0351-15F8-4D0A-B856-5FD20FFF52FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{730B0351-15F8-4D0A-B856-5FD20FFF52FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89BAE356-46F7-4B14-9347-EF72487EEA30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89BAE356-46F7-4B14-9347-EF72487EEA30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89BAE356-46F7-4B14-9347-EF72487EEA30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89BAE356-46F7-4B14-9347-EF72487EEA30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC135A46-03DC-41CA-A9FC-905EBE67D11A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC135A46-03DC-41CA-A9FC-905EBE67D11A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC135A46-03DC-41CA-A9FC-905EBE67D11A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC135A46-03DC-41CA-A9FC-905EBE67D11A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1078,6 +1092,9 @@ Global
 		{5BDA2A92-D5CE-46AE-AF00-DBC01AF96D84} = {13DA98B5-96F6-4F75-942B-8BBCEB1EFA1F}
 		{47F67253-987F-4EFF-A8DD-1512668599D7} = {13DA98B5-96F6-4F75-942B-8BBCEB1EFA1F}
 		{730B0351-15F8-4D0A-B856-5FD20FFF52FC} = {736417D6-56B0-46F7-9717-5C8E7A2327EA}
+		{D68B489E-F268-4BCA-81EB-678D65E820FB} = {D9F6B8A1-4B01-4708-8851-741FC19F2440}
+		{89BAE356-46F7-4B14-9347-EF72487EEA30} = {FC8E8DB2-1299-44F4-A233-0EDCE225BB8C}
+		{EC135A46-03DC-41CA-A9FC-905EBE67D11A} = {D68B489E-F268-4BCA-81EB-678D65E820FB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19DD11B3-596E-4862-B5C4-1FFFFB173106}

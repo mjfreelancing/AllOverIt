@@ -2,6 +2,10 @@
 ## Feb 2024
 ---
 
+### AllOverIt
+* Added CircularBuffer&lt;TType&gt; now inherits from ICircularBuffer&lt;TType&gt;
+
+
 ### AllOverIt.Validation
 * Added `ILifetimeValidationInvoker` as an alternative to `IValidationInvoker`. The existing `ValidationInvoker` can only be used
   with validators containing a default constructor, and all validators are treated as a Singleton. `ILifetimeValidationInvoker`
@@ -11,6 +15,13 @@
 
   The extension methods return `IValidationRegistry`/ `ILifetimeValidationRegistry` so additional validator registrations can be
   added after the invoker has been registered, but before the `IServiceCollection` has been built.
+
+
+### AllOverIt.Serilog :new:
+* Provides a serilog sink that will capture log events and store them in a fixed-size circular buffer. That buffer can be
+  independantly injected elsewhere in the application for the purpose of further diagnostic processing.
+
+  Provides an enricher that captures the current ThreadId.
 
 
 

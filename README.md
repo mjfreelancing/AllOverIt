@@ -397,6 +397,19 @@ This package contains a wrapper for [System.Text](https://learn.microsoft.com/en
 ---
 
 
+## AllOverIt.Serilog
+
+This package contains general-purpose Serilog sinks and enrichers.
+
+![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
+![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
+![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
+
+[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt.Serilog?color=E3505C)](https://www.nuget.org/packages/AllOverIt.Serilog/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Serilog?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Serilog/absoluteLatest/)
+
+
 ## AllOverIt.Validation
 
 This package contains additional validators and extensions for use with [FluentValidation](https://docs.fluentvalidation.net/en/latest/). It includes an invoker that will select, and invoke, a registered validator based on a provided model.
