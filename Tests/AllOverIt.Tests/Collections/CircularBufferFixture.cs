@@ -6,7 +6,6 @@ using FluentAssertions;
 using System;
 using System.Collections;
 using System.Linq;
-using Xunit;
 
 namespace AllOverIt.Tests.Collections
 {
@@ -24,8 +23,8 @@ namespace AllOverIt.Tests.Collections
                     _ = new CircularBuffer<int>(capacity);
                 })
                 .Should()
-                .Throw<ArgumentException>()
-                .WithMessage("The circular buffer requires a capacity of at least 1.");
+                .Throw<ArgumentOutOfRangeException>()
+                .WithMessage("The circular buffer requires a capacity of at least 1. (Parameter 'capacity')");
             }
 
             [Fact]
@@ -54,8 +53,8 @@ namespace AllOverIt.Tests.Collections
                     _ = new CircularBuffer<int>(capacity, CreateMany<int>().ToArray());
                 })
                 .Should()
-                .Throw<ArgumentException>()
-                .WithMessage("The circular buffer requires a capacity of at least 1.");
+                .Throw<ArgumentOutOfRangeException>()
+                .WithMessage("The circular buffer requires a capacity of at least 1. (Parameter 'capacity')");
             }
 
             [Fact]
