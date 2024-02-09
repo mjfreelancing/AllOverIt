@@ -4,10 +4,10 @@
     "net8.0": {
       "Amazon.CDK.Asset.AwsCliV1": {
         "type": "Transitive",
-        "resolved": "2.2.201",
-        "contentHash": "2T7BL6WcBKA+8FDiul8N9TlVKBbkL7FfotEsBuyYzvdpUt/imeGPnY26q7MRsE9zNiqezEsfkvMASVhFRlEoUg==",
+        "resolved": "2.2.202",
+        "contentHash": "mz6qOkAqpiFP43CcAS6lDcYa4CPCVsQJzCQpRryf7CuMPhcG6IkfwqTpavRLMNTKow7PAYLleDu+mT17iHeqvg==",
         "dependencies": {
-          "Amazon.JSII.Runtime": "[1.91.0, 2.0.0)"
+          "Amazon.JSII.Runtime": "[1.93.0, 2.0.0)"
         }
       },
       "Amazon.CDK.Asset.KubectlV20": {
@@ -28,10 +28,10 @@
       },
       "Amazon.CDK.Lib": {
         "type": "Transitive",
-        "resolved": "2.122.0",
-        "contentHash": "N92Nr5JtcnVXlymVZC/ix8B97y5BLvXXl8c3wM1WZziP9bajl7D3Dw/VDdnTvnYq06MTj6LSGrLEAsW90WjjQA==",
+        "resolved": "2.126.0",
+        "contentHash": "cFnVaWznKp+ZT32Q8vrTpQJk7rDEzIvh7F8TIxFIIs7XJYaWRRMunKkpNdBj/eUI/heSrleY9HEualnrUy/Izw==",
         "dependencies": {
-          "Amazon.CDK.Asset.AwsCliV1": "[2.2.201, 3.0.0)",
+          "Amazon.CDK.Asset.AwsCliV1": "[2.2.202, 3.0.0)",
           "Amazon.CDK.Asset.KubectlV20": "[2.1.2, 3.0.0)",
           "Amazon.CDK.Asset.NodeProxyAgentV6": "[2.0.1, 3.0.0)",
           "Amazon.JSII.Runtime": "[1.94.0, 2.0.0)",
@@ -51,8 +51,8 @@
       },
       "Cdklabs.AwsCdkAppsyncUtils": {
         "type": "Transitive",
-        "resolved": "0.0.331",
-        "contentHash": "LwltyjBnR3zSbne56p0mosvWxs8fa6ON+BXiBFKbPFbYsy4yKJ3FsNaZcQdgvcIR2JLt+/TigikK0gLqBPsL4Q==",
+        "resolved": "0.0.345",
+        "contentHash": "+vDnkjC7SPByBYZNkQYBBo+oc72sAwrJVBc696LZve8ZDegNnltVJtYT6U5zJWOC5J/ly0zjYTrOMag/bIxVGw==",
         "dependencies": {
           "Amazon.CDK.Lib": "[2.110.0, 3.0.0)",
           "Amazon.JSII.Runtime": "[1.94.0, 2.0.0)",
@@ -208,8 +208,8 @@
         "type": "Project",
         "dependencies": {
           "AllOverIt": "[7.0.0, )",
-          "Amazon.CDK.Lib": "[2.122.0, )",
-          "Cdklabs.AwsCdkAppsyncUtils": "[0.0.331, )"
+          "Amazon.CDK.Lib": "[2.126.0, )",
+          "Cdklabs.AwsCdkAppsyncUtils": "[0.0.345, )"
         }
       }
     }
