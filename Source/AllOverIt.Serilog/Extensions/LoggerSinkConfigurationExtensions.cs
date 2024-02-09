@@ -44,7 +44,7 @@ namespace AllOverIt.Serilog.Extensions
         /// <param name="sinkMessages">The circular buffer to receive the log event messages.</param>
         /// <param name="formatter">A custom formatter to apply to the log events. This can be used to produce, for example,
         /// <c>JSON</c> output. To customize the text layout only, use the
-        /// <see cref="CircularBuffer(LoggerSinkConfiguration, ICircularBufferSinkMessages, LogEventLevel, string, IFormatProvider?, LoggingLevelSwitch?)"/>
+        /// <see cref="CircularBuffer(LoggerSinkConfiguration, ICircularBufferSinkMessages, string, LogEventLevel, IFormatProvider?, LoggingLevelSwitch?)"/>
         /// overload instead.</param>
         /// <param name="restrictedToMinimumLevel">The minimum level for events passed through the sink.
         /// Ignored when <paramref name="levelSwitch"/> is specified.</param>

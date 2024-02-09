@@ -13,8 +13,8 @@ namespace AllOverIt.Serilog.Sinks.CircularBuffer
         public string FormattedMessage { get; }
 
         /// <summary>Constructor.</summary>
-        /// <param name="LogEvent">The log event.</param>
-        /// <param name="FormattedMessage">A formatted version of the text message, as per the sink's format configuration.</param>
+        /// <param name="logEvent">The log event.</param>
+        /// <param name="formattedMessage">A formatted version of the text message, as per the sink's format configuration.</param>
         public CircularBufferSinkMessage(LogEvent logEvent, string formattedMessage)
         {
             LogEvent = logEvent.WhenNotNull(nameof(logEvent));
