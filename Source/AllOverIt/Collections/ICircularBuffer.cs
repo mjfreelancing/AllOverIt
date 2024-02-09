@@ -5,10 +5,10 @@ namespace AllOverIt.Collections
     /// <summary>Represents a fixed-size circular buffer providing insert, pop, and push operations.</summary>
     public interface ICircularBuffer<TType> : IEnumerable<TType>
     {
-        /// <summary>Returns the number of items in the buffer. The length can be less than the <see cref="Capacity"/>.</summary>
+        /// <summary>The number of items in the buffer. The length can be less than the <see cref="Capacity"/>.</summary>
         int Length { get; }
 
-        /// <summary>Indicates the maximum number of items that can be held by the buffer.</summary>
+        /// <summary>The maximum number of items that can be held by the buffer.</summary>
         int Capacity { get; }
 
         /// <summary>Indicates if the number of items in the buffer matches the <see cref="Capacity"/>.</summary>

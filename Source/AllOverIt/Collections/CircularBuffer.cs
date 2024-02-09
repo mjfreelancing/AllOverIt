@@ -42,7 +42,7 @@ namespace AllOverIt.Collections
         {
             _ = items.WhenNotNull(nameof(items));
 
-            Throw<ArgumentException>.When(capacity < 1, "The circular buffer requires a capacity of at least 1.");
+            Throw<ArgumentOutOfRangeException>.When(capacity < 1, nameof(capacity), "The circular buffer requires a capacity of at least 1.");
             Throw<ArgumentException>.When(items.Length > capacity, "The item count exceeds the circular buffer capacity.");
 
             _buffer = new TType[capacity];
