@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Source\AllOverIt.Fixture\AllOverIt.Fixture.csproj" />
+        <ProjectReference Include="..\..\Source\AllOverIt.Serilog\AllOverIt.Serilog.csproj" />
+    </ItemGroup>
+    
+</Project>

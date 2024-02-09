@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Linq;
 using System.Threading;
 
 namespace AllOverIt.IO
@@ -62,7 +61,7 @@ namespace AllOverIt.IO
                 }
             }
 
-            foreach (var directory in directories ?? Enumerable.Empty<DirectoryInfo>())
+            foreach (var directory in directories ?? [])
             {
                 if (cancellationToken.IsCancellationRequested)
                 {

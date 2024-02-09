@@ -37,7 +37,12 @@ namespace ValidationViaDependencyInjectionDemo
                     //    config => config.Filter((serviceType, implementationType) => serviceType != typeof(IValidator)));
 
                     // Or registered like this using an open/unbound generic
-                    services.AutoRegisterSingleton<ValidationServiceRegistrar>([typeof(IValidator<>)]);
+                    //services.AutoRegisterSingleton<ValidationServiceRegistrar>([typeof(IValidator<>)]);
+
+
+
+                    services.AutoRegisterTransient<ValidationServiceRegistrar>([typeof(IValidator<>)]);
+
 
                     Console.WriteLine();
                 });

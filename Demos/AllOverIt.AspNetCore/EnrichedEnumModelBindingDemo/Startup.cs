@@ -1,6 +1,6 @@
 using AllOverIt.AspNetCore.Extensions;
 using AllOverIt.Serialization.Json.Newtonsoft.Converters;
-using AllOverIt.Validation;
+using AllOverIt.Validation.Extensions;
 using EnrichedEnumModelBindingDemo.Problems;
 using EnrichedEnumModelBindingDemo.Requests;
 using EnrichedEnumModelBindingDemo.Validators;
@@ -74,9 +74,10 @@ namespace EnrichedEnumModelBindingDemo
             //     options.JsonSerializerOptions.Converters.Add(new DateTimeAsUtcConverter());
             // });
 
-            var validationInvoker = new ValidationInvoker();
-            validationInvoker.Register<WeatherRequestMulti, WeatherRequestMultiValidator>();
-            services.AddSingleton<IValidationInvoker>(validationInvoker);
+            _ = services.AddValidationInvoker(validationInvoker =>
+            {
+                validationInvoker.Register<WeatherRequestMulti, WeatherRequestMultiValidator>();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

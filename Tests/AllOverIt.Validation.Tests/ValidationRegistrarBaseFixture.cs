@@ -1,7 +1,8 @@
-﻿using AllOverIt.Collections;
+﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
+using AllOverIt.Validation.Exceptions;
 using FakeItEasy;
 using FluentAssertions;
 using System;
@@ -11,6 +12,7 @@ using Xunit;
 
 namespace AllOverIt.Validation.Tests
 {
+
     public class ValidationRegistrarBaseFixture : FixtureBase
     {
         private sealed class DummyModel
@@ -63,7 +65,7 @@ namespace AllOverIt.Validation.Tests
             }
 
             [Fact]
-            public void Should_Register_All_Validators()
+            public void Should_Register_All_Validators_When_Predicate_Null()
             {
                 var validators = new List<Type>();
 
@@ -74,19 +76,19 @@ namespace AllOverIt.Validation.Tests
                     .CallsTo(fake => fake.Register(A<Type>.Ignored, A<Type>.Ignored))
                     .Invokes(call =>
                     {
-                        var validatorType = (Type)call.Arguments[1];
+                        var validatorType = (Type) call.Arguments[1];
                         validators.Add(validatorType);
                     });
 
-                _validationRegistrar.AutoRegisterValidators(registryFake.FakedObject);
+                _validationRegistrar.AutoRegisterValidators(registryFake.FakedObject, null);
 
-                validators.Should().HaveCount(21);      // All non-abstract validators in this assembly
+                validators.Should().HaveCount(26);      // All non-abstract validators in this assembly
 
                 validators.All(validator => !validator.IsAbstract).Should().BeTrue();
             }
 
             [Fact]
-            public void Should_Register_Validators()
+            public void Should_Throw_When_Validator_Already_Registered()
             {
                 var invoker = new ValidationInvoker();
 
@@ -99,11 +101,11 @@ namespace AllOverIt.Validation.Tests
 
                 Invoking(() =>
                 {
-                    invoker.Register<DummyModel, DummyModelValidator>();
+                    ((IValidationRegistry) invoker).Register<DummyModel, DummyModelValidator>();
                 })
                    .Should()
-                   .Throw<ArgumentException>()
-                   .WithMessage($"An item with the same key has already been added. Key: {typeof(DummyModel).FullName}");
+                   .Throw<ValidationRegistryException>()
+                   .WithMessage($"The type '{typeof(DummyModel).GetFriendlyName()}' already has a registered validator.");
             }
         }
     }

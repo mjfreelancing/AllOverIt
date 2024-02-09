@@ -122,7 +122,7 @@ namespace AllOverIt.Mapping
                 {
                     return CreateEmptyCollection(targetPropertyType);
                 }
-                
+
                 return null;
             }
 
@@ -160,7 +160,8 @@ namespace AllOverIt.Mapping
                 return sourceValue switch
                 {
                     IDictionary _ => MapToDictionary(sourceValue, sourceValueType, targetPropertyType),
-                    /*IEnumerable*/ _ => MapToCollection(sourceValue, sourceValueType, targetPropertyType, deepCopy)
+                    /*IEnumerable*/
+                    _ => MapToCollection(sourceValue, sourceValueType, targetPropertyType, deepCopy)
                 };
             }
 
@@ -326,7 +327,7 @@ namespace AllOverIt.Mapping
 
         private object CreatedTypedDictionary(Type keyType, Type valueType)
         {
-            var dictionaryType = CommonTypes.DictionaryGenericType.MakeGenericType([keyType, valueType]);
+            var dictionaryType = CommonTypes.DictionaryGenericType.MakeGenericType(keyType, valueType);
 
             return CreateType(dictionaryType);
         }

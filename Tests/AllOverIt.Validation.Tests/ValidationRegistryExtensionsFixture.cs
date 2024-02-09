@@ -1,8 +1,12 @@
-﻿using AllOverIt.Fixture;
+﻿using AllOverIt.Extensions;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
+using AllOverIt.Validation.Exceptions;
 using AllOverIt.Validation.Extensions;
 using FluentAssertions;
+using FluentValidation;
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace AllOverIt.Validation.Tests
@@ -36,7 +40,7 @@ namespace AllOverIt.Validation.Tests
             }
 
             [Fact]
-            public void Should_Filter_Validators()
+            public void Should_Filter_Validator()
             {
                 var wasFiltered = false;
 
@@ -52,7 +56,23 @@ namespace AllOverIt.Validation.Tests
             }
 
             [Fact]
-            public void Should_Register_Validators()
+            public void Should_Register_Validator()
+            {
+                var validatorCache = new Dictionary<Type, Lazy<IValidator>>();
+                var invoker = new ValidationInvoker(validatorCache);
+
+                ValidationRegistryExtensions.AutoRegisterValidators<DummyRegistrar>(invoker, (modelType, validatorType) =>
+                {
+                    return validatorType == typeof(DummyModelValidator);
+                });
+
+                var validator = validatorCache[typeof(DummyModel)].Value;
+
+                validator.Should().BeOfType(typeof(DummyModelValidator));
+            }
+
+            [Fact]
+            public void Should_Throw_When_Already_Registered()
             {
                 var invoker = new ValidationInvoker();
 
@@ -62,14 +82,13 @@ namespace AllOverIt.Validation.Tests
                 });
 
                 // registering the validator a second time will throw an error
-
                 Invoking(() =>
                 {
-                    invoker.Register<DummyModel, DummyModelValidator>();
+                    ((IValidationRegistry) invoker).Register<DummyModel, DummyModelValidator>();
                 })
                    .Should()
-                   .Throw<ArgumentException>()
-                   .WithMessage($"An item with the same key has already been added. Key: {typeof(DummyModel).FullName}");
+                   .Throw<ValidationRegistryException>()
+                   .WithMessage($"The type '{typeof(DummyModel).GetFriendlyName()}' already has a registered validator.");
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using AllOverIt.Fixture;
+﻿using AllOverIt.Extensions;
+using AllOverIt.Fixture;
 using AllOverIt.Validation.Exceptions;
 using AllOverIt.Validation.Extensions;
 using FluentAssertions;
@@ -61,33 +62,14 @@ namespace AllOverIt.Validation.Tests
             {
             }
         }
-        
+
         private readonly ValidationInvoker _validationInvoker;
+        private readonly IValidationRegistry _validationRegistry;
 
         public ValidationInvokerFixture()
         {
             _validationInvoker = new ValidationInvoker();
-        }
-
-        public class ContainsModelRegistration_Type : ValidationInvokerFixture
-        {
-            [Fact]
-            public void Should_Return_True_For_Registered_Model()
-            {
-                _validationInvoker.Register<DummyModel, DummyModelValidator>();
-
-                _validationInvoker.ContainsModelRegistration(typeof(DummyModel))
-                    .Should()
-                    .BeTrue();
-            }
-
-            [Fact]
-            public void Should_Return_False_For_Registered_Model()
-            {
-                _validationInvoker.ContainsModelRegistration(typeof(DummyModel))
-                    .Should()
-                    .BeFalse();
-            }
+            _validationRegistry = _validationInvoker;
         }
 
         public class ContainsModelRegistration_Strongly_Type : ValidationInvokerFixture
@@ -95,34 +77,40 @@ namespace AllOverIt.Validation.Tests
             [Fact]
             public void Should_Return_True_For_Registered_Model()
             {
-                _validationInvoker.Register<DummyModel, DummyModelValidator>();
+                RegisterValidator(true);
 
-                _validationInvoker.ContainsModelRegistration<DummyModel>()
+                _validationRegistry.ContainsModelRegistration<DummyModel>()
                     .Should()
                     .BeTrue();
             }
 
             [Fact]
-            public void Should_Return_False_For_Registered_Model()
+            public void Should_Return_False_For_Non_Registered_Model()
             {
-                _validationInvoker.ContainsModelRegistration<DummyModel>()
+                _validationRegistry.ContainsModelRegistration<DummyModel>()
                     .Should()
                     .BeFalse();
             }
         }
 
-        public class Register_Type : ValidationInvokerFixture
+        public class ContainsModelRegistration_Type : ValidationInvokerFixture
         {
             [Fact]
-            public void Should_Throw_When_Validator_Not_Registered()
+            public void Should_Return_True_For_Registered_Model()
             {
-                Invoking(() =>
-                {
-                    _validationInvoker.AssertValidation(Create<DummyModel>());
-                })
+                RegisterValidator(false);
+
+                _validationRegistry.ContainsModelRegistration(typeof(DummyModel))
                     .Should()
-                    .Throw<InvalidOperationException>()
-                    .WithMessage("The type 'DummyModel' does not have a registered validator.");
+                    .BeTrue();
+            }
+
+            [Fact]
+            public void Should_Return_False_For_Non_Registered_Model()
+            {
+                _validationRegistry.ContainsModelRegistration(typeof(DummyModel))
+                    .Should()
+                    .BeFalse();
             }
         }
 
@@ -131,16 +119,16 @@ namespace AllOverIt.Validation.Tests
             [Fact]
             public void Should_Register_Validator()
             {
-                _validationInvoker.Register<DummyModel, DummyModelValidator>();
+                _validationRegistry.Register<DummyModel, DummyModelValidator>();
 
                 // registering a second time will fail
                 Invoking(() =>
                     {
-                        _validationInvoker.Register<DummyModel, DummyModelValidator>();
+                        _validationRegistry.Register<DummyModel, DummyModelValidator>();
                     })
                    .Should()
-                   .Throw<ArgumentException>()
-                   .WithMessage($"An item with the same key has already been added. Key: {typeof(DummyModel).FullName}");
+                   .Throw<ValidationRegistryException>()
+                   .WithMessage($"The type '{typeof(DummyModel).GetFriendlyName()}' already has a registered validator.");
             }
         }
 
@@ -151,11 +139,11 @@ namespace AllOverIt.Validation.Tests
             {
                 Invoking(() =>
                     {
-                        _validationInvoker.Register(typeof(DummyModel), typeof(DummyModel));
+                        _validationRegistry.Register(typeof(DummyModel), typeof(DummyModel));
                     })
                    .Should()
                    .Throw<ValidationRegistryException>()
-                   .WithMessage($"The {nameof(DummyModel)} type is not a validator.");
+                   .WithMessage($"The type '{nameof(DummyModel)}' is not a validator.");
             }
 
             [Fact]
@@ -163,38 +151,38 @@ namespace AllOverIt.Validation.Tests
             {
                 Invoking(() =>
                     {
-                        _validationInvoker.Register(typeof(string), typeof(DummyModelValidator));
+                        _validationRegistry.Register(typeof(string), typeof(DummyModelValidator));
                     })
                    .Should()
                    .Throw<ValidationRegistryException>()
-                   .WithMessage($"The {nameof(DummyModelValidator)} type cannot validate a System.String type.");
+                   .WithMessage($"The type '{nameof(DummyModelValidator)}' cannot validate a String type.");
             }
 
             [Fact]
             public void Should_Throw_When_No_Default_Constructor()
             {
                 Invoking(() =>
-                {
-                    _validationInvoker.Register(typeof(DummyModel), typeof(DummyModelValidator2));
-                })
+                    {
+                        _validationRegistry.Register(typeof(DummyModel), typeof(DummyModelValidator2));
+                    })
                    .Should()
                    .Throw<ValidationRegistryException>()
-                   .WithMessage($"The {nameof(DummyModelValidator2)} type must have a default constructor.");
+                   .WithMessage($"The type '{nameof(DummyModelValidator2)}' must have a default constructor.");
             }
 
             [Fact]
             public void Should_Register_Validator()
             {
-                _validationInvoker.Register(typeof(DummyModel), typeof(DummyModelValidator));
+                _validationRegistry.Register(typeof(DummyModel), typeof(DummyModelValidator));
 
                 // registering a second time will fail
                 Invoking(() =>
                     {
-                        _validationInvoker.Register(typeof(DummyModel), typeof(DummyModelValidator));
+                        _validationRegistry.Register(typeof(DummyModel), typeof(DummyModelValidator));
                     })
                    .Should()
-                   .Throw<ArgumentException>()
-                   .WithMessage($"An item with the same key has already been added. Key: {typeof(DummyModel).FullName}");
+                   .Throw<ValidationRegistryException>()
+                   .WithMessage($"The type '{typeof(DummyModel).GetFriendlyName()}' already has a registered validator.");
             }
         }
 
@@ -350,6 +338,18 @@ namespace AllOverIt.Validation.Tests
 
         public class AssertValidation_Type : ValidationInvokerFixture
         {
+            [Fact]
+            public void Should_Throw_When_Validator_Not_Registered()
+            {
+                Invoking(() =>
+                {
+                    _validationInvoker.AssertValidation(Create<DummyModel>());
+                })
+                    .Should()
+                    .Throw<InvalidOperationException>()
+                    .WithMessage("The type 'DummyModel' does not have a registered validator.");
+            }
+
             [Theory]
             [InlineData(false)]
             [InlineData(true)]
@@ -391,6 +391,18 @@ namespace AllOverIt.Validation.Tests
 
         public class AssertValidationAsync_Type : ValidationInvokerFixture
         {
+            [Fact]
+            public async Task Should_Throw_When_Validator_Not_Registered()
+            {
+                await Invoking(async () =>
+                {
+                    await _validationInvoker.AssertValidationAsync(Create<DummyModel>());
+                })
+                    .Should()
+                    .ThrowAsync<InvalidOperationException>()
+                    .WithMessage("The type 'DummyModel' does not have a registered validator.");
+            }
+
             [Theory]
             [InlineData(false)]
             [InlineData(true)]
@@ -432,6 +444,18 @@ namespace AllOverIt.Validation.Tests
 
         public class AssertValidation_Type_Context : ValidationInvokerFixture
         {
+            [Fact]
+            public void Should_Throw_When_Validator_Not_Registered()
+            {
+                Invoking(() =>
+                {
+                    _validationInvoker.AssertValidation(Create<DummyModel>(), Create<bool>());
+                })
+                    .Should()
+                    .Throw<InvalidOperationException>()
+                    .WithMessage("The type 'DummyModel' does not have a registered validator.");
+            }
+
             [Theory]
             [InlineData(false)]
             [InlineData(true)]
@@ -478,6 +502,18 @@ namespace AllOverIt.Validation.Tests
 
         public class AssertValidationAsync_Type_Context : ValidationInvokerFixture
         {
+            [Fact]
+            public async Task Should_Throw_When_Validator_Not_Registered()
+            {
+                await Invoking(async () =>
+                {
+                    await _validationInvoker.AssertValidationAsync(Create<DummyModel>(), Create<bool>());
+                })
+                    .Should()
+                    .ThrowAsync<InvalidOperationException>()
+                    .WithMessage("The type 'DummyModel' does not have a registered validator.");
+            }
+
             [Theory]
             [InlineData(false)]
             [InlineData(true)]
@@ -526,11 +562,11 @@ namespace AllOverIt.Validation.Tests
         {
             if (useStrongTyping)
             {
-                _validationInvoker.Register<DummyModel, DummyModelValidator>();
+                _validationRegistry.Register<DummyModel, DummyModelValidator>();
             }
             else
             {
-                _validationInvoker.Register(typeof(DummyModel), typeof(DummyModelValidator));
+                _validationRegistry.Register(typeof(DummyModel), typeof(DummyModelValidator));
             }
         }
     }

@@ -77,13 +77,13 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* Amazon.CDK.Asset.AwsCliV1 v2.2.201
+* Amazon.CDK.Asset.AwsCliV1 v2.2.202
 * Amazon.CDK.Asset.KubectlV20 v2.1.2
 * Amazon.CDK.Asset.NodeProxyAgentV6 v2.0.1
 * Amazon.CDK.Lib v2.110.0
-* Amazon.CDK.Lib v2.122.0
+* Amazon.CDK.Lib v2.126.0
 * Amazon.JSII.Runtime v1.94.0
-* Cdklabs.AwsCdkAppsyncUtils v0.0.331
+* Cdklabs.AwsCdkAppsyncUtils v0.0.345
 * Constructs v10.0.0
 * Constructs v10.0.5
 
@@ -116,7 +116,8 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* CsvHelper v30.0.1
+* CsvHelper v30.1.0
+* System.Linq.Async v4.0.0
 
 <br>
 
@@ -383,7 +384,7 @@
 * AllOverIt.Assertion
 * DynamicData v8.3.27
 * Microsoft.Extensions.DependencyInjection.Abstractions v8.0.0
-* ReactiveUI v19.5.39
+* ReactiveUI v19.5.41
 * Splat v14.8.12
 * System.ComponentModel.Annotations v5.0.0
 * System.Text.Json v8.0.0
@@ -405,8 +406,8 @@
 * AllOverIt.ReactiveUI
 * DynamicData v8.3.27
 * Microsoft.Extensions.DependencyInjection.Abstractions v8.0.0
-* ReactiveUI v19.5.39
-* ReactiveUI.WPF v19.5.39
+* ReactiveUI v19.5.41
+* ReactiveUI.WPF v19.5.41
 * Splat v14.8.12
 * System.ComponentModel.Annotations v5.0.0
 * System.Text.Json v8.0.0
@@ -483,6 +484,30 @@
 
 <br>
 
+## AllOverIt.Serilog
+
+![](https://img.shields.io/badge/.NET-7.0-C56EE0.svg) ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg) ![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
+
+### Dependencies
+
+* AllOverIt
+* AllOverIt.Assertion
+* Microsoft.Extensions.Configuration.Abstractions v8.0.0
+* Microsoft.Extensions.DependencyInjection.Abstractions v8.0.0
+* Microsoft.Extensions.Diagnostics.Abstractions v8.0.0
+* Microsoft.Extensions.FileProviders.Abstractions v8.0.0
+* Microsoft.Extensions.Hosting.Abstractions v8.0.0
+* Microsoft.Extensions.Logging.Abstractions v8.0.0
+* Serilog v3.1.1
+* Serilog.Extensions.Hosting v8.0.0
+* Serilog.Extensions.Logging v8.0.0
+
+<br>
+
+---
+
+<br>
+
 ## AllOverIt.Validation
 
 ![](https://img.shields.io/badge/.NET-7.0-C56EE0.svg) ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg) ![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
@@ -492,6 +517,7 @@
 * AllOverIt
 * AllOverIt.Assertion
 * FluentValidation v11.9.0
+* Microsoft.Extensions.DependencyInjection.Abstractions v8.0.0
 
 <br>
 
