@@ -13,6 +13,7 @@ namespace AllOverIt.Serilog.Extensions
             ServiceLifetime lifetime = ServiceLifetime.Scoped)
         {
             _ = services.WhenNotNull(nameof(services));
+            Throw<ArgumentOutOfRangeException>.When(capacity < 1, nameof(capacity), "The circular buffer requires a capacity of at least 1.");
 
             var descriptor = new ServiceDescriptor(
                 ICircularBufferSinkMessagesType,

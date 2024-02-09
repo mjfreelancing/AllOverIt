@@ -23,7 +23,7 @@ namespace AllOverIt.Serilog.Sinks.CircularBuffer
         /// <inheritdoc/>
         public void Emit(LogEvent logEvent)
         {
-            _ = logEvent.WhenNotNull(nameof(logEvent));
+            // Assuming serilog will never send a null LogEvent
 
             using (var writer = new StringWriter())
             {

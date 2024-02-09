@@ -1,4 +1,5 @@
-﻿using AllOverIt.Serilog.Sinks.CircularBuffer;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Serilog.Sinks.CircularBuffer;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AllOverIt.Serilog.Extensions
@@ -11,6 +12,8 @@ namespace AllOverIt.Serilog.Extensions
         /// <returns>The <see cref="ICircularBufferSinkMessages"/> instance.</returns>
         public static ICircularBufferSinkMessages GetCircularBufferSinkMessages(this IServiceProvider serviceProvider)
         {
+            _ = serviceProvider.WhenNotNull(nameof(serviceProvider));
+
             return serviceProvider.GetRequiredService<ICircularBufferSinkMessages>();
         }
     }

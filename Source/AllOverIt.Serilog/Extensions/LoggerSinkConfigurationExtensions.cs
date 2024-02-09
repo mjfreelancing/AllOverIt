@@ -17,22 +17,22 @@ namespace AllOverIt.Serilog.Extensions
         /// <summary>Writes log events to a <see cref="ICircularBufferSinkMessages"/> instance.</summary>
         /// <param name="sinkConfiguration">The logger sink configuration.</param>
         /// <param name="sinkMessages">The circular buffer to receive the log event messages.</param>
-        /// <param name="restrictedToMinimumLevel">The minimum level for events passed through the sink.
-        /// Ignored when <paramref name="levelSwitch"/> is specified.</param>
         /// <param name="outputTemplate">A message template describing the format used to write to the sink.
         /// the default is "<c>{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message}{NewLine}{Exception}</c>".</param>
+        /// <param name="restrictedToMinimumLevel">The minimum level for events passed through the sink.
+        /// Ignored when <paramref name="levelSwitch"/> is specified.</param>
         /// <param name="formatProvider">Supplies culture-specific formatting information, or <see cref="langword">null</see>.</param>
         /// <param name="levelSwitch">A switch allowing the pass-through minimum level to be changed at runtime.</param>
         /// <returns>The sink's <see cref="LoggerConfiguration"/> instance, allowing method chaining.</returns>
         public static LoggerConfiguration CircularBuffer(this LoggerSinkConfiguration sinkConfiguration,
             ICircularBufferSinkMessages sinkMessages,
-            LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
             string outputTemplate = DefaultOutputTemplate,
+            LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
             IFormatProvider? formatProvider = default,
             LoggingLevelSwitch? levelSwitch = default)
         {
             _ = sinkConfiguration.WhenNotNull(nameof(sinkConfiguration));
-            _ = outputTemplate.WhenNotNull(nameof(outputTemplate));
+            _ = outputTemplate.WhenNotNullOrEmpty(nameof(outputTemplate));
 
             var formatter = new MessageTemplateTextFormatter(outputTemplate, formatProvider);
 
