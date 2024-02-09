@@ -1,5 +1,5 @@
 #  Version 7.1.0
-## Feb 2024
+09 Feb 2024
 ---
 
 ### AllOverIt
@@ -21,7 +21,7 @@
 * Provides a serilog sink that will capture log events and store them in a fixed-size circular buffer. That buffer can be
   independantly injected elsewhere in the application for the purpose of further diagnostic processing.
 
-  Provides an enricher that captures the current ThreadId.
+  Provides a ThreadIEnricher that captures the current ThreadId.
 
 
 
