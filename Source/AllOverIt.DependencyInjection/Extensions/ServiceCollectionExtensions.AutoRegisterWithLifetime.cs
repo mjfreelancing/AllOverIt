@@ -11,16 +11,16 @@ namespace AllOverIt.DependencyInjection.Extensions
     // Helper methods for use by AutoRegisterScoped(), AutoRegisterSingleton(), and AutoRegisterTransient()
     public static partial class ServiceCollectionExtensions
     {
-        private static readonly IDictionary<ServiceLifetime, Action<IServiceCollection, Type, Type>> ServiceCreatorsByType =
-            new Dictionary<ServiceLifetime, Action<IServiceCollection, Type, Type>>
+        private static readonly Dictionary<ServiceLifetime, Action<IServiceCollection, Type, Type>> ServiceCreatorsByType =
+            new()
             {
                 { ServiceLifetime.Scoped, (serviceCollection, serviceType, implementationType) => serviceCollection.AddScoped(serviceType, implementationType) },
                 { ServiceLifetime.Transient, (serviceCollection, serviceType, implementationType) => serviceCollection.AddTransient(serviceType, implementationType) },
                 { ServiceLifetime.Singleton, (serviceCollection, serviceType, implementationType) => serviceCollection.AddSingleton(serviceType, implementationType) }
             };
 
-        private static readonly IDictionary<ServiceLifetime, Action<IServiceCollection, Type, Func<IServiceProvider, object>>> ServiceCreatorsByFactory =
-            new Dictionary<ServiceLifetime, Action<IServiceCollection, Type, Func<IServiceProvider, object>>>
+        private static readonly Dictionary<ServiceLifetime, Action<IServiceCollection, Type, Func<IServiceProvider, object>>> ServiceCreatorsByFactory =
+            new()
             {
                 { ServiceLifetime.Scoped, (serviceCollection, serviceType, factory) => serviceCollection.AddScoped(serviceType, factory) },
                 { ServiceLifetime.Transient, (serviceCollection, serviceType, factory) => serviceCollection.AddTransient(serviceType, factory) },

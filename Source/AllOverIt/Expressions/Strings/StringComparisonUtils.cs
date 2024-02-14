@@ -41,7 +41,7 @@ namespace AllOverIt.Expressions.Strings
         private static readonly MethodInfo ToUpperMethodInfo = CommonTypes.StringType.GetMethod(
             "ToUpper", Type.EmptyTypes);
 
-        private static readonly IDictionary<StringComparisonMode, Func<Expression, Expression>> StringModifiers = new Dictionary<StringComparisonMode, Func<Expression, Expression>>
+        private static readonly Dictionary<StringComparisonMode, Func<Expression, Expression>> StringModifiers = new()
         {
             { StringComparisonMode.ToLower, CreateToLowerCallExpression },
             { StringComparisonMode.ToUpper, CreateToUpperCallExpression }

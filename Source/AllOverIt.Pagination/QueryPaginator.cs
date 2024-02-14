@@ -239,7 +239,7 @@ namespace AllOverIt.Pagination
             // EF cannot translate fields, and nor should they be used for exposing the model.
             Throw<PaginationException>.When(fieldOrProperty is FieldInfo, "Paginated queries do not support fields.");
 
-            var property = (PropertyInfo)fieldOrProperty;
+            var property = (PropertyInfo) fieldOrProperty;
 
             var paginationItem = new ColumnDefinition<TEntity, TProperty>(property, isAscending);
 
@@ -442,7 +442,7 @@ namespace AllOverIt.Pagination
             return innerExpression;
         }
 
-        private static Expression CreateCompareToExpression(IColumnDefinition entity, MemberExpression memberAccess,
+        private static Expression CreateCompareToExpression(ColumnDefinition<TEntity> entity, MemberExpression memberAccess,
             Expression comparisonValue, Func<Expression, Expression, Expression> compareTo)
         {
             var propertyType = entity.Property.PropertyType;

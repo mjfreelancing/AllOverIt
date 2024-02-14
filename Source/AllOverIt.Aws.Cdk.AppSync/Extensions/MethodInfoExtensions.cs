@@ -114,7 +114,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
             return attributes.GetAuthDirectivesOrDefault();
         }
 
-        private static IRequestResponseMapping GetRequestResponseMapping(MemberInfo memberInfo, MappingTypeFactory mappingTypeFactory)
+        private static IRequestResponseMapping GetRequestResponseMapping(MethodInfo memberInfo, MappingTypeFactory mappingTypeFactory)
         {
             var attribute = memberInfo.GetCustomAttribute<DataSourceAttribute>(true);
 

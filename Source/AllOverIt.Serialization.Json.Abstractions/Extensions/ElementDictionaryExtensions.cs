@@ -208,7 +208,7 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
                 return arrayValues;
             }
 
-            throw CreateJsonHelperException(new[] { arrayPropertyName, propertyName });
+            throw CreateJsonHelperException([arrayPropertyName, propertyName]);
         }
 
         /// <summary>Tries to get the value of a property from each element of a specified array property.</summary>
@@ -257,7 +257,7 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
                 return arrayValues;
             }
 
-            throw CreateJsonHelperException(new[] { arrayPropertyName });
+            throw CreateJsonHelperException([arrayPropertyName]);
         }
 
         /// <summary>Try to get a child array of elements for a specified property.</summary>
