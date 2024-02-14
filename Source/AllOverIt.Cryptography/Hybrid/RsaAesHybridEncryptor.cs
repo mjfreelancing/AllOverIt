@@ -207,6 +207,7 @@ namespace AllOverIt.Cryptography.Hybrid
         {
             using (var hashAlgorithm = _signingConfiguration.HashAlgorithmName.CreateHashAlgorithm())
             {
+                // TODO: Net 9 - CryptographicOperations.HashData()
                 return hashAlgorithm.ComputeHash(plainText);
             }
         }
@@ -215,6 +216,7 @@ namespace AllOverIt.Cryptography.Hybrid
         {
             using (var hashAlgorithm = _signingConfiguration.HashAlgorithmName.CreateHashAlgorithm())
             {
+                // TODO: Net 9 - CryptographicOperations.HashData()
                 return hashAlgorithm.ComputeHash(plainText);
             }
         }
