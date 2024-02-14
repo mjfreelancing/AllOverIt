@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net8.0;net7.0;net6.0;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>net9.0;net8.0;net7.0;net6.0;netstandard2.1</TargetFrameworks>
         <Description>Using CsvHelper to perform the actual writing of CSV content, this package provides a configuration based serializer that can export data using a model with fixed columns as well as dynamic columns derived from complex or array type properties.</Description>
         <PackageTags>AllOverIt;Utilities;CSV;Export</PackageTags>
     </PropertyGroup>

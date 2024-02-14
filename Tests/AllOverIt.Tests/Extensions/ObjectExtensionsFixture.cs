@@ -269,7 +269,11 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = new Dictionary<string, object>
                 {
-                    { "Comparer", source.Comparer }, { "Count", source.Count }, { "Keys", source.Keys }, { "Values", source.Values }
+                    { "Comparer", source.Comparer }, { "Count", source.Count }, { "Keys", source.Keys }, { "Values", source.Values },
+
+#if NET9_0_OR_GREATER
+                    { "Capacity", source.Capacity }
+#endif
                 };
 
                 var actual = ObjectExtensions.ToPropertyDictionary(source);

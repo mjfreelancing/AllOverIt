@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net8.0;net7.0;net6.0</TargetFrameworks>
+        <TargetFrameworks>net9.0;net8.0;net7.0;net6.0</TargetFrameworks>
         <Description>In conjunction with D2, this package will generate entity relationship diagrams for an EntityFramework Core DbContext.</Description>
         <PackageTags>AllOverIt;Utilities;Query;EntityFramework;D2;Diagrams</PackageTags>
     </PropertyGroup>
@@ -12,6 +12,10 @@
 
     <ItemGroup Condition=" '$(TargetFramework)' == 'net8.0' ">
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.1" />
+    </ItemGroup>
+
+    <ItemGroup Condition=" '$(TargetFramework)' == 'net9.0' ">
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.0-preview.1.24081.2" />
     </ItemGroup>
 
     <ItemGroup>
