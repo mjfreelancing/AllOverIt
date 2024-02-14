@@ -6,6 +6,7 @@ using AllOverIt.Cryptography.RSA;
 using System;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace AllOverIt.Cryptography.Hybrid
 {
@@ -205,20 +206,26 @@ namespace AllOverIt.Cryptography.Hybrid
 
         private byte[] CalculateHash(byte[] plainText)
         {
+#if NET9_0_OR_GREATER
+            return CryptographicOperations.HashData(_signingConfiguration.HashAlgorithmName, plainText);
+#else
             using (var hashAlgorithm = _signingConfiguration.HashAlgorithmName.CreateHashAlgorithm())
             {
-                // TODO: Net 9 - CryptographicOperations.HashData()
                 return hashAlgorithm.ComputeHash(plainText);
             }
+#endif
         }
 
         private byte[] CalculateHash(Stream plainText)
         {
+#if NET9_0_OR_GREATER
+            return CryptographicOperations.HashData(_signingConfiguration.HashAlgorithmName, plainText);
+#else
             using (var hashAlgorithm = _signingConfiguration.HashAlgorithmName.CreateHashAlgorithm())
             {
-                // TODO: Net 9 - CryptographicOperations.HashData()
                 return hashAlgorithm.ComputeHash(plainText);
             }
+#endif
         }
 
         private byte[] SignHash(byte[] hash)
