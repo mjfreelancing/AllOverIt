@@ -207,11 +207,14 @@ namespace AllOverIt.Validation
         {
             Throw<InvalidOperationException>.WhenNull(_serviceProvider, "The service provider has not been set.");
 
-            var validatorKey = CreateModelValidatorKey(modelType);
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var validatorKey = CreateModelValidatorKey(modelType);
 
-            validator = (IValidator) _serviceProvider.GetService(validatorKey);
+                validator = (IValidator) scope.ServiceProvider.GetService(validatorKey);
 
-            return validator is not null;
+                return validator is not null;
+            }
         }
 
         private static void ThrowValidatorNotRegistered<TType>()
