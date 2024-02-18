@@ -2,6 +2,8 @@ using AllOverIt.AspNetCore.Extensions;
 using AllOverIt.Serialization.Json.Newtonsoft.Converters;
 using AllOverIt.Validation.Extensions;
 using EnrichedEnumModelBindingDemo.Problems;
+using EnrichedEnumModelBindingDemo.Requests;
+using EnrichedEnumModelBindingDemo.Validators;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -72,15 +74,13 @@ namespace EnrichedEnumModelBindingDemo
             //     options.JsonSerializerOptions.Converters.Add(new DateTimeAsUtcConverter());
             // });
 
-            // Demonstrating ILifetimeValidationInvoker            
-            _ = services.AddLifetimeValidationInvoker(registry =>
+            // Demonstrating ILifetimeValidationInvoker
+            services.AddLifetimeValidationInvoker(registry =>
             {
-                // Can either register individually
-                // registry.RegisterScoped<WeatherRequestMulti, WeatherRequestMultiValidator>();
+                registry.RegisterScoped<WeatherRequestMulti, WeatherRequestMultiValidator>();
 
-                // Or use a registrar - this will find all validators and register them as scoped
-                // (there's only one validator in the demo)
-                registry.AutoRegisterScopedValidators<LifetimeValidationRegistrar>();
+                // Could alternatively use this if using a registrar to auto-register a number of validators at the same time
+                // registry.AutoRegisterScopedValidators<LifetimeValidationRegistrar>();
             });
         }
 
