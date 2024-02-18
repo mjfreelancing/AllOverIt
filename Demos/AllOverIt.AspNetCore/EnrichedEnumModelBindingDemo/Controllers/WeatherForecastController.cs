@@ -32,7 +32,7 @@ namespace EnrichedEnumModelBindingDemo.Controllers
         // Tests model binding on query string of ForecastPeriodArray which is a ValueArray<ForecastPeriod>, where ForecastPeriod is an EnrichedEnum
         // Sample requests: http://localhost:5000/weatherforecast/multi?periods=today,tomorrow,nextweek
         [HttpGet("multi")]
-        public IReadOnlyCollection<WeatherReport> GetMulti([FromQuery] WeatherRequestMulti request, [FromServices] IValidationInvoker validationInvoker)
+        public IReadOnlyCollection<WeatherReport> GetMulti([FromQuery] WeatherRequestMulti request, [FromServices] ILifetimeValidationInvoker validationInvoker)
         {
             validationInvoker.AssertValidation(request);
 

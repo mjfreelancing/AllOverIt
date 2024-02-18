@@ -10,12 +10,12 @@ namespace ValidationInvokerDemo
     public sealed class App : ConsoleAppBase
     {
         private readonly IValidationInvoker _validationInvoker;
-        private readonly ILifetimeValidationInvoker _serviceValidationInvoker;
+        private readonly ILifetimeValidationInvoker _lifetimeValidationInvoker;
         private readonly ILogger<App> _logger;
-        public App(IValidationInvoker validationInvoker, ILifetimeValidationInvoker serviceValidationInvoker, ILogger<App> logger)
+        public App(IValidationInvoker validationInvoker, ILifetimeValidationInvoker lifetimeValidationInvoker, ILogger<App> logger)
         {
             _validationInvoker = validationInvoker.WhenNotNull();
-            _serviceValidationInvoker = serviceValidationInvoker.WhenNotNull();
+            _lifetimeValidationInvoker = lifetimeValidationInvoker.WhenNotNull();
             _logger = logger.WhenNotNull(nameof(logger));
 
             //_logger.LogInformation($"The {personValidator.GetType().GetFriendlyName()} validator has been injected");
@@ -33,7 +33,7 @@ namespace ValidationInvokerDemo
 
             Console.WriteLine();
 
-            errors = UseServiceValidationInvoker();
+            errors = UseLifetimeValidationInvoker();
 
             _logger.LogError(string.Join($"  {Environment.NewLine}", errors));
 
@@ -69,12 +69,12 @@ namespace ValidationInvokerDemo
             return validationResult.Errors;
         }
 
-        private List<ValidationFailure> UseServiceValidationInvoker()
+        private List<ValidationFailure> UseLifetimeValidationInvoker()
         {
             var address = new Address();
 
             // Or use AssertValidation() to force an exception to be thrown
-            var validationResult = _serviceValidationInvoker.Validate(address);
+            var validationResult = _lifetimeValidationInvoker.Validate(address);
 
             _logger.LogInformation($"A default constructed '{nameof(Address)}' has the following validation errors:");
 

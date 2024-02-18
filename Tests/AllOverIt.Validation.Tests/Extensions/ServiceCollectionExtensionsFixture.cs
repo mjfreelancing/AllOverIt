@@ -1,11 +1,11 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
+using AllOverIt.Validation.Extensions;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
-using Xunit;
 
 namespace AllOverIt.Validation.Tests.Extensions
 {
@@ -148,6 +148,87 @@ namespace AllOverIt.Validation.Tests.Extensions
                     .IsDerivedFrom(typeof(ILifetimeValidationRegistry))
                     .Should()
                     .BeTrue();
+            }
+
+            [Fact]
+            public void Should_Resolve_Transient_Validator()
+            {
+                _services.AddLifetimeValidationInvoker(registry =>
+                {
+                    registry.RegisterTransient<DummyModel, DummyModelValidator>();
+                });
+
+                Invoking(() =>
+                {
+                    // Make sure the registrations are all valid (such as cannot resolve a
+                    // scoped/transient within the singleton invoker).
+                    var provider = _services.BuildServiceProvider(true);
+
+                    using (var scope = provider.CreateScope())
+                    {
+                        var model = new DummyModel();
+
+                        scope.ServiceProvider
+                            .GetRequiredService<ILifetimeValidationInvoker>()
+                            .AssertValidation(model);
+                    }
+                })
+                .Should()
+                .NotThrow();
+            }
+
+            [Fact]
+            public void Should_Resolve_Scoped_Validator()
+            {
+                _services.AddLifetimeValidationInvoker(registry =>
+                {
+                    registry.RegisterScoped<DummyModel, DummyModelValidator>();
+                });
+
+                Invoking(() =>
+                {
+                    // Make sure the registrations are all valid (such as cannot resolve a
+                    // scoped/transient within the singleton invoker).
+                    var provider = _services.BuildServiceProvider(true);
+
+                    using (var scope = provider.CreateScope())
+                    {
+                        var model = new DummyModel();
+
+                        scope.ServiceProvider
+                            .GetRequiredService<ILifetimeValidationInvoker>()
+                            .AssertValidation(model);
+                    }
+                })
+                .Should()
+                .NotThrow();
+            }
+
+            [Fact]
+            public void Should_Resolve_Singleton_Validator()
+            {
+                _services.AddLifetimeValidationInvoker(registry =>
+                {
+                    registry.RegisterSingleton<DummyModel, DummyModelValidator>();
+                });
+
+                Invoking(() =>
+                {
+                    // Make sure the registrations are all valid (such as cannot resolve a
+                    // scoped/transient within the singleton invoker).
+                    var provider = _services.BuildServiceProvider(true);
+
+                    using (var scope = provider.CreateScope())
+                    {
+                        var model = new DummyModel();
+
+                        scope.ServiceProvider
+                            .GetRequiredService<ILifetimeValidationInvoker>()
+                            .AssertValidation(model);
+                    }
+                })
+                .Should()
+                .NotThrow();
             }
         }
     }

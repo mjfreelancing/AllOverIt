@@ -207,11 +207,16 @@ namespace AllOverIt.Validation
         {
             Throw<InvalidOperationException>.WhenNull(_serviceProvider, "The service provider has not been set.");
 
-            var validatorKey = CreateModelValidatorKey(modelType);
+            // The LifetimeValidationInvoker is a singleton so we need to create a new scope
+            // so transient / scoped validators are resolved correctly (and not become singletons).
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var validatorKey = CreateModelValidatorKey(modelType);
 
-            validator = (IValidator) _serviceProvider.GetService(validatorKey);
+                validator = (IValidator) scope.ServiceProvider.GetService(validatorKey);
 
-            return validator is not null;
+                return validator is not null;
+            }
         }
 
         private static void ThrowValidatorNotRegistered<TType>()
