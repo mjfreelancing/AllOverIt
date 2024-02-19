@@ -40,7 +40,7 @@ internal class Program
                 // Demonstrates using ILifetimeValidationInvoker (supports validators with dependencies)
                 _ = services.AddLifetimeValidationInvoker(validationRegistry =>
                 {
-                    validationRegistry.AutoRegisterSingletonValidators<LifetimeValidationRegistrar>((modelType, validatorType) =>
+                    validationRegistry.AutoRegisterScopedValidators<LifetimeValidationRegistrar>((modelType, validatorType) =>
                     {
                         return modelType == typeof(Address);
                     });

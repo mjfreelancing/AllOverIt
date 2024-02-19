@@ -74,9 +74,13 @@ namespace EnrichedEnumModelBindingDemo
             //     options.JsonSerializerOptions.Converters.Add(new DateTimeAsUtcConverter());
             // });
 
-            _ = services.AddValidationInvoker(validationInvoker =>
+            // Demonstrating ILifetimeValidationInvoker
+            services.AddLifetimeValidationInvoker(registry =>
             {
-                validationInvoker.Register<WeatherRequestMulti, WeatherRequestMultiValidator>();
+                registry.RegisterScoped<WeatherRequestMulti, WeatherRequestMultiValidator>();
+
+                // Could alternatively use this if using a registrar to auto-register a number of validators at the same time
+                // registry.AutoRegisterScopedValidators<LifetimeValidationRegistrar>();
             });
         }
 

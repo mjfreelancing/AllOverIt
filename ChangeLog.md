@@ -1,5 +1,14 @@
+#  Version 7.1.1
+## 19 Feb 2024
+---
+
+### AllOverIt.Validation
+* Fixed issue with scoped / transient validators being incorrectly registered with LifetimeValidationInvoker.
+
+
+
 #  Version 7.1.0
-09 Feb 2024
+## 09 Feb 2024
 ---
 
 ### AllOverIt
