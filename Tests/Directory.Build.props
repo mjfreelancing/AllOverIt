@@ -25,6 +25,6 @@
     </ItemGroup>
 
     <PropertyGroup>
-        <NoWarn>1701;1702;0169;0649</NoWarn>
+        <NoWarn>$(NoWarn);0618;1701;1702;0169;0649</NoWarn>
     </PropertyGroup>
 </Project>
