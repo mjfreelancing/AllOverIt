@@ -30,8 +30,8 @@ namespace EvaluatorBenchmarking
             "22 % 6"
         ];
 
-        private readonly IList<double> _lhs;
-        private readonly IList<double> _rhs;
+        private readonly List<double> _lhs;
+        private readonly List<double> _rhs;
         private readonly FormulaCompiler _compiler = new();
         private readonly VariableRegistry _variableRegistry = [];
 
