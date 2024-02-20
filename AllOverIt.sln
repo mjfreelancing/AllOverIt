@@ -7,6 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		ChangeLog.md = ChangeLog.md
+		ChangeLog - v7.2.md = ChangeLog - v7.2.md
 		LICENSE.md = LICENSE.md
 		README.md = README.md
 	EndProjectSection
@@ -382,7 +383,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.Serilog", "Source
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CircularBufferSinkDemo", "Demos\AllOverIt.Serilog\CircularBufferSinkDemo\CircularBufferSinkDemo.csproj", "{EC135A46-03DC-41CA-A9FC-905EBE67D11A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllOverIt.Serilog.Tests", "Tests\AllOverIt.Serilog.Tests\AllOverIt.Serilog.Tests.csproj", "{714FFBA3-D414-461A-84A4-161C32DC1E1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.Serilog.Tests", "Tests\AllOverIt.Serilog.Tests\AllOverIt.Serilog.Tests.csproj", "{714FFBA3-D414-461A-84A4-161C32DC1E1B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
