@@ -202,7 +202,7 @@ namespace AllOverIt.Extensions
         {
             _ = items.WhenNotNull(nameof(items));
 
-            return items.Select(selector).ToList();
+            return items.SelectToList(selector);
         }
 
         /// <summary>Projects each element into another form and returns the result as an IReadOnlyList&lt;TResult&gt;.</summary>
@@ -215,7 +215,7 @@ namespace AllOverIt.Extensions
         {
             _ = items.WhenNotNull(nameof(items));
 
-            return items.Select(selector).ToList();
+            return items.SelectToList(selector);
         }
 
         /// <summary>Asynchronously projects each element into another form and returns the result as a TResult[].</summary>
@@ -230,11 +230,9 @@ namespace AllOverIt.Extensions
         {
             _ = items.WhenNotNull(nameof(items));
 
-            var results = await items
-                .SelectAsync(selector, cancellationToken)
-                .ToArrayAsync(cancellationToken);
+            var results = await items.SelectToListAsync(selector, cancellationToken);
 
-            return results;
+            return [.. results];
         }
 
         /// <summary>Asynchronously projects each element into another form and returns the result as a List&lt;TResult&gt;.</summary>
@@ -268,11 +266,7 @@ namespace AllOverIt.Extensions
         {
             _ = items.WhenNotNull(nameof(items));
 
-            var results = await items
-                .SelectAsync(selector, cancellationToken)
-                .ToListAsync(cancellationToken);
-
-            return results.AsReadOnlyCollection();
+            return await items.SelectToListAsync(selector, cancellationToken);
         }
 
         /// <summary>Asynchronously projects each element into another form and returns the result as an IReadOnlyList&lt;TResult&gt;.</summary>
@@ -287,11 +281,7 @@ namespace AllOverIt.Extensions
         {
             _ = items.WhenNotNull(nameof(items));
 
-            var results = await items
-                .SelectAsync(selector, cancellationToken)
-                .ToListAsync(cancellationToken);
-
-            return results.AsReadOnlyList();
+            return await items.SelectToListAsync(selector, cancellationToken);
         }
 
         /// <summary>Applicable to strings and collections, this method determines if the instance is null or empty.</summary>

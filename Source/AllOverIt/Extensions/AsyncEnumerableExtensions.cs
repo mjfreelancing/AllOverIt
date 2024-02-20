@@ -88,14 +88,9 @@ namespace AllOverIt.Extensions
         {
             _ = items.WhenNotNull(nameof(items));
 
-            var listItems = new List<TType>();
-
-            await foreach (var item in items.WithCancellation(cancellationToken).ConfigureAwait(false))
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                listItems.Add(item);
-            }
+            var listItems = await items
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
 
             return [.. listItems];
         }
@@ -237,9 +232,7 @@ namespace AllOverIt.Extensions
         public static async Task<IReadOnlyCollection<TResult>> SelectToReadOnlyCollectionAsync<TSource, TResult>(this IAsyncEnumerable<TSource> items,
             Func<TSource, Task<TResult>> selector, CancellationToken cancellationToken = default)
         {
-            var results = await SelectToListAsync(items, selector, cancellationToken).ConfigureAwait(false);
-
-            return results.AsReadOnlyCollection();
+            return await SelectToListAsync(items, selector, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>Asynchronously projects each element into another form and returns the result as an <c>IReadOnlyList&lt;TResult&gt;</c>.</summary>
@@ -252,9 +245,7 @@ namespace AllOverIt.Extensions
         public static async Task<IReadOnlyList<TResult>> SelectToReadOnlyListAsync<TSource, TResult>(this IAsyncEnumerable<TSource> items,
             Func<TSource, Task<TResult>> selector, CancellationToken cancellationToken = default)
         {
-            var results = await SelectToListAsync(items, selector, cancellationToken).ConfigureAwait(false);
-
-            return results.AsReadOnlyList();
+            return await SelectToListAsync(items, selector, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>Asynchronously iterates a sequence of elements and provides the zero-based index of the current item.</summary>
