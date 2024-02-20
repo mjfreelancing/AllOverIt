@@ -6,6 +6,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace AllOverIt.Validation
     // Must be internal since the caller must be able to set the provider associated with the service collection.
     internal class LifetimeValidationInvoker : ILifetimeValidationRegistry, ILifetimeValidationInvoker
     {
+        [ExcludeFromCodeCoverage]
         private sealed class ModelMarker<TType, ValidatorBase>()
         {
         }
