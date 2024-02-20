@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Xunit;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -82,7 +81,7 @@ namespace AllOverIt.Tests.Extensions
                 await Task.CompletedTask;
             }
         }
-        
+
         public class SelectManyAsync : EnumerableExtensionsFixture
         {
             [Fact]
@@ -91,7 +90,7 @@ namespace AllOverIt.Tests.Extensions
                 await Invoking(
                         async () =>
                         {
-                            IAsyncEnumerable<IEnumerable<IEnumerable<bool>>>items = null;
+                            IAsyncEnumerable<IEnumerable<IEnumerable<bool>>> items = null;
 
                             await items.SelectManyAsync(item => item).ToListAsync();
                         })
@@ -128,13 +127,13 @@ namespace AllOverIt.Tests.Extensions
                     CreateMany<bool>(),
                     CreateMany<bool>()
                 };
-                
+
                 var expected = values
                     .SelectMany(item => item)
                     .AsReadOnlyCollection();
-            
+
                 IList<bool> actual;
-            
+
                 if (useCancellationToken)
                 {
                     using (var cts = new CancellationTokenSource())
@@ -146,7 +145,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     actual = await AsAsyncEnumerable(values).SelectManyAsync(item => item).ToListAsync();
                 }
-            
+
                 expected.Should().BeEquivalentTo(actual);
             }
 
@@ -160,7 +159,7 @@ namespace AllOverIt.Tests.Extensions
                 await Task.CompletedTask;
             }
         }
-        
+
         public class ToListAsync : AsyncEnumerableExtensionsFixture
         {
             [Fact]
@@ -213,7 +212,49 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
-        public class SelectAsListAsync : AsyncEnumerableExtensionsFixture
+        public class SelectToArrayAsync : AsyncEnumerableExtensionsFixture
+        {
+            [Fact]
+            public async Task Should_Convert_To_Array()
+            {
+                var items = CreateMany<string>();
+                var expected = items.ToDictionary(item => item, _ => Create<string>());
+
+                var actual = await GetStrings(items)
+                    .SelectToArrayAsync(item => Task.FromResult(expected[item]));
+
+                expected.Values.Should().BeEquivalentTo(actual);
+            }
+
+            [Fact]
+            public async Task Should_Return_As_Array()
+            {
+                var items = CreateMany<string>();
+                var expected = items.ToDictionary(item => item, _ => Create<string>());
+
+                var actual = await GetStrings(items)
+                    .SelectToArrayAsync(item => Task.FromResult(expected[item]));
+
+                actual.Should().BeAssignableTo(typeof(string[]));
+            }
+
+            [Fact]
+            public async Task Should_Throw_When_Cancelled()
+            {
+                var cancellationTokenSource = new CancellationTokenSource();
+                cancellationTokenSource.Cancel();
+
+                await Invoking(async () =>
+                {
+                    await GetStrings(CreateMany<string>())
+                        .SelectToArrayAsync(item => Task.FromResult(item), cancellationTokenSource.Token);
+                })
+                    .Should()
+                    .ThrowAsync<OperationCanceledException>();
+            }
+        }
+
+        public class SelectToListAsync : AsyncEnumerableExtensionsFixture
         {
             [Fact]
             public async Task Should_Convert_To_List()
@@ -222,8 +263,7 @@ namespace AllOverIt.Tests.Extensions
                 var expected = items.ToDictionary(item => item, _ => Create<string>());
 
                 var actual = await GetStrings(items)
-                    .SelectAsListAsync(item => Task.FromResult(expected[item]))
-                    ;
+                    .SelectToListAsync(item => Task.FromResult(expected[item]));
 
                 expected.Values.Should().BeEquivalentTo(actual);
             }
@@ -235,8 +275,133 @@ namespace AllOverIt.Tests.Extensions
                 var expected = items.ToDictionary(item => item, _ => Create<string>());
 
                 var actual = await GetStrings(items)
-                    .SelectAsListAsync(item => Task.FromResult(expected[item]))
-                    ;
+                    .SelectToListAsync(item => Task.FromResult(expected[item]));
+
+                actual.Should().BeAssignableTo(typeof(IList<string>));
+            }
+
+            [Fact]
+            public async Task Should_Throw_When_Cancelled()
+            {
+                var cancellationTokenSource = new CancellationTokenSource();
+                cancellationTokenSource.Cancel();
+
+                await Invoking(async () =>
+                {
+                    await GetStrings(CreateMany<string>())
+                        .SelectToListAsync(item => Task.FromResult(item), cancellationTokenSource.Token);
+                })
+                    .Should()
+                    .ThrowAsync<OperationCanceledException>();
+            }
+        }
+
+        public class SelectToReadOnlyCollectionAsync : AsyncEnumerableExtensionsFixture
+        {
+            [Fact]
+            public async Task Should_Convert_To_List()
+            {
+                var items = CreateMany<string>();
+                var expected = items.ToDictionary(item => item, _ => Create<string>());
+
+                var actual = await GetStrings(items)
+                    .SelectToReadOnlyCollectionAsync(item => Task.FromResult(expected[item]));
+
+                expected.Values.Should().BeEquivalentTo(actual);
+            }
+
+            [Fact]
+            public async Task Should_Return_As_List()
+            {
+                var items = CreateMany<string>();
+                var expected = items.ToDictionary(item => item, _ => Create<string>());
+
+                var actual = await GetStrings(items)
+                    .SelectToReadOnlyCollectionAsync(item => Task.FromResult(expected[item]));
+
+                actual.Should().BeAssignableTo(typeof(IReadOnlyCollection<string>));
+            }
+
+            [Fact]
+            public async Task Should_Throw_When_Cancelled()
+            {
+                var cancellationTokenSource = new CancellationTokenSource();
+                cancellationTokenSource.Cancel();
+
+                await Invoking(async () =>
+                {
+                    await GetStrings(CreateMany<string>())
+                        .SelectToReadOnlyCollectionAsync(item => Task.FromResult(item), cancellationTokenSource.Token);
+                })
+                    .Should()
+                    .ThrowAsync<OperationCanceledException>();
+            }
+        }
+
+        public class SelectToReadOnlyListAsync : AsyncEnumerableExtensionsFixture
+        {
+            [Fact]
+            public async Task Should_Convert_To_List()
+            {
+                var items = CreateMany<string>();
+                var expected = items.ToDictionary(item => item, _ => Create<string>());
+
+                var actual = await GetStrings(items)
+                    .SelectToReadOnlyListAsync(item => Task.FromResult(expected[item]));
+
+                expected.Values.Should().BeEquivalentTo(actual);
+            }
+
+            [Fact]
+            public async Task Should_Return_As_List()
+            {
+                var items = CreateMany<string>();
+                var expected = items.ToDictionary(item => item, _ => Create<string>());
+
+                var actual = await GetStrings(items)
+                    .SelectToReadOnlyListAsync(item => Task.FromResult(expected[item]));
+
+                actual.Should().BeAssignableTo(typeof(IReadOnlyList<string>));
+            }
+
+            [Fact]
+            public async Task Should_Throw_When_Cancelled()
+            {
+                var cancellationTokenSource = new CancellationTokenSource();
+                cancellationTokenSource.Cancel();
+
+                await Invoking(async () =>
+                {
+                    await GetStrings(CreateMany<string>())
+                        .SelectToReadOnlyListAsync(item => Task.FromResult(item), cancellationTokenSource.Token);
+                })
+                    .Should()
+                    .ThrowAsync<OperationCanceledException>();
+            }
+        }
+
+        public class SelectAsListAsync : AsyncEnumerableExtensionsFixture
+        {
+            [Fact]
+            public async Task Should_Convert_To_List()
+            {
+                var items = CreateMany<string>();
+                var expected = items.ToDictionary(item => item, _ => Create<string>());
+
+                var actual = await GetStrings(items)
+                    .SelectAsListAsync(item => Task.FromResult(expected[item]));
+
+                expected.Values.Should().BeEquivalentTo(actual);
+            }
+
+            [Fact]
+            public async Task Should_Return_As_List()
+            {
+                var items = CreateMany<string>();
+                var expected = items.ToDictionary(item => item, _ => Create<string>());
+
+                var actual = await GetStrings(items)
+                    .SelectAsListAsync(item => Task.FromResult(expected[item]));
 
                 actual.Should().BeAssignableTo(typeof(IList<string>));
             }
@@ -250,8 +415,7 @@ namespace AllOverIt.Tests.Extensions
                 await Invoking(async () =>
                     {
                         await GetStrings(CreateMany<string>())
-                            .SelectAsListAsync(item => Task.FromResult(item), cancellationTokenSource.Token)
-                            ;
+                            .SelectAsListAsync(item => Task.FromResult(item), cancellationTokenSource.Token);
                     })
                     .Should()
                     .ThrowAsync<OperationCanceledException>();
@@ -267,8 +431,7 @@ namespace AllOverIt.Tests.Extensions
                 var expected = items.ToDictionary(item => item, _ => Create<string>());
 
                 var actual = await GetStrings(items)
-                    .SelectAsReadOnlyCollectionAsync(item => Task.FromResult(expected[item]))
-                    ;
+                    .SelectAsReadOnlyCollectionAsync(item => Task.FromResult(expected[item]));
 
                 expected.Values.Should().BeEquivalentTo(actual);
             }
@@ -280,8 +443,7 @@ namespace AllOverIt.Tests.Extensions
                 var expected = items.ToDictionary(item => item, _ => Create<string>());
 
                 var actual = await GetStrings(items)
-                    .SelectAsReadOnlyCollectionAsync(item => Task.FromResult(expected[item]))
-                    ;
+                    .SelectAsReadOnlyCollectionAsync(item => Task.FromResult(expected[item]));
 
                 actual.Should().BeAssignableTo(typeof(IReadOnlyCollection<string>));
             }
@@ -295,8 +457,7 @@ namespace AllOverIt.Tests.Extensions
                 await Invoking(async () =>
                     {
                         await GetStrings(CreateMany<string>())
-                            .SelectAsReadOnlyCollectionAsync(item => Task.FromResult(item), cancellationTokenSource.Token)
-                            ;
+                            .SelectAsReadOnlyCollectionAsync(item => Task.FromResult(item), cancellationTokenSource.Token);
                     })
                     .Should()
                     .ThrowAsync<OperationCanceledException>();
@@ -312,8 +473,7 @@ namespace AllOverIt.Tests.Extensions
                 var expected = items.ToDictionary(item => item, _ => Create<string>());
 
                 var actual = await GetStrings(items)
-                    .SelectAsReadOnlyListAsync(item => Task.FromResult(expected[item]))
-                    ;
+                    .SelectAsReadOnlyListAsync(item => Task.FromResult(expected[item]));
 
                 expected.Values.Should().BeEquivalentTo(actual);
             }
@@ -325,8 +485,7 @@ namespace AllOverIt.Tests.Extensions
                 var expected = items.ToDictionary(item => item, _ => Create<string>());
 
                 var actual = await GetStrings(items)
-                    .SelectAsReadOnlyListAsync(item => Task.FromResult(expected[item]))
-                    ;
+                    .SelectAsReadOnlyListAsync(item => Task.FromResult(expected[item]));
 
                 actual.Should().BeAssignableTo(typeof(IReadOnlyList<string>));
             }
@@ -340,8 +499,7 @@ namespace AllOverIt.Tests.Extensions
                 await Invoking(async () =>
                     {
                         await GetStrings(CreateMany<string>())
-                            .SelectAsReadOnlyListAsync(item => Task.FromResult(item), cancellationTokenSource.Token)
-                            ;
+                            .SelectAsReadOnlyListAsync(item => Task.FromResult(item), cancellationTokenSource.Token);
                     })
                     .Should()
                     .ThrowAsync<OperationCanceledException>();

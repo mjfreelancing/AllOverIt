@@ -53,7 +53,7 @@ namespace AllOverIt.Extensions
             }
         }
 
-        /// <summary>Asynchronously projects each item within a sequence to an <see cref="IEnumerable{TResult}"/> and flattens the result to
+        /// <summary>Asynchronously projects each item within a sequence to an <see cref="IEnumerable&lt;TResult&gt;"/> and flattens the result to
         /// to a new sequence.</summary>
         /// <typeparam name="TType">The type of each element to be projected.</typeparam>
         /// <typeparam name="TResult">The projected result type.</typeparam>
@@ -79,12 +79,33 @@ namespace AllOverIt.Extensions
             }
         }
 
-        /// <summary>Iterates over an <see cref="IAsyncEnumerable{T}"/> to create a <see cref="List{T}"/>.</summary>
+        /// <summary>Iterates over an <see cref="IAsyncEnumerable{T}"/> of type <typeparamref name="TType"/> to create a <typeparamref name="TType"/>[].</summary>
+        /// <typeparam name="TType">The element type.</typeparam>
+        /// <param name="items">The enumerable to convert to an array asynchronously.</param>
+        /// <param name="cancellationToken">A cancellation token to cancel the processing.</param>
+        /// <returns>A <typeparamref name="TType"/>[] from the source items.</returns>
+        public static async Task<TType[]> ToArrayAsync<TType>(this IAsyncEnumerable<TType> items, CancellationToken cancellationToken = default)
+        {
+            _ = items.WhenNotNull(nameof(items));
+
+            var listItems = new List<TType>();
+
+            await foreach (var item in items.WithCancellation(cancellationToken).ConfigureAwait(false))
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                listItems.Add(item);
+            }
+
+            return [.. listItems];
+        }
+
+        /// <summary>Iterates over an <see cref="IAsyncEnumerable{T}"/> of type <typeparamref name="TType"/> to create a <see cref="List{T}"/>.</summary>
         /// <typeparam name="TType">The element type.</typeparam>
         /// <param name="items">The enumerable to convert to a list asynchronously.</param>
         /// <param name="cancellationToken">A cancellation token to cancel the processing.</param>
-        /// <returns>An <see cref="IList{T}"/> from the source items.</returns>
-        public static async Task<IList<TType>> ToListAsync<TType>(this IAsyncEnumerable<TType> items, CancellationToken cancellationToken = default)
+        /// <returns>A <see cref="List{T}"/> from the source items.</returns>
+        public static async Task<List<TType>> ToListAsync<TType>(this IAsyncEnumerable<TType> items, CancellationToken cancellationToken = default)
         {
             _ = items.WhenNotNull(nameof(items));
 
@@ -100,13 +121,16 @@ namespace AllOverIt.Extensions
             return listItems;
         }
 
-        /// <summary>Asynchronously projects each element into another form and returns the result as an IList{TResult}.</summary>
+        #region Obsolete
+
+        /// <summary>Asynchronously projects each element into another form and returns the result as an IList&lt;TResult&gt;.</summary>
         /// <typeparam name="TSource">The source elements.</typeparam>
         /// <typeparam name="TResult">The projected result type.</typeparam>
-        /// <param name="items">The source items to be projected and returned as an IList{TResult}.</param>
+        /// <param name="items">The source items to be projected and returned as an IList&lt;TResult&gt;.</param>
         /// <param name="selector">The transform function applied to each element.</param>
         /// <param name="cancellationToken">A cancellation token to cancel the processing.</param>
-        /// <returns>The projected results as an IList{TResult}.</returns>
+        /// <returns>The projected results as an IList&lt;TResult&gt;.</returns>
+        [Obsolete("This method will be dropped in v8. Use SelectToListAsync() instead.")]
         public static async Task<IList<TResult>> SelectAsListAsync<TSource, TResult>(this IAsyncEnumerable<TSource> items, Func<TSource, Task<TResult>> selector,
             CancellationToken cancellationToken = default)
         {
@@ -126,13 +150,14 @@ namespace AllOverIt.Extensions
             return listItems;
         }
 
-        /// <summary>Asynchronously projects each element into another form and returns the result as an IReadOnlyCollection{TResult}.</summary>
+        /// <summary>Asynchronously projects each element into another form and returns the result as an IReadOnlyCollection&lt;TResult&gt;.</summary>
         /// <typeparam name="TSource">The source elements.</typeparam>
         /// <typeparam name="TResult">The projected result type.</typeparam>
-        /// <param name="items">The source items to be projected and returned as an IReadOnlyCollection{TResult}.</param>
+        /// <param name="items">The source items to be projected and returned as an IReadOnlyCollection&lt;TResult&gt;.</param>
         /// <param name="selector">The transform function applied to each element.</param>
         /// <param name="cancellationToken">A cancellation token to cancel the processing.</param>
-        /// <returns>The projected results as an IReadOnlyCollection{TResult}.</returns>
+        /// <returns>The projected results as an IReadOnlyCollection&lt;TResult&gt;.</returns>
+        [Obsolete("This method will be dropped in v8. Use SelectToReadOnlyCollectionAsync() instead.")]
         public static async Task<IReadOnlyCollection<TResult>> SelectAsReadOnlyCollectionAsync<TSource, TResult>(this IAsyncEnumerable<TSource> items,
             Func<TSource, Task<TResult>> selector, CancellationToken cancellationToken = default)
         {
@@ -141,17 +166,93 @@ namespace AllOverIt.Extensions
             return results.AsReadOnlyCollection();
         }
 
-        /// <summary>Asynchronously projects each element into another form and returns the result as an IReadOnlyList{TResult}.</summary>
+        /// <summary>Asynchronously projects each element into another form and returns the result as an IReadOnlyList&lt;TResult&gt;.</summary>
         /// <typeparam name="TSource">The source elements.</typeparam>
         /// <typeparam name="TResult">The projected result type.</typeparam>
-        /// <param name="items">The source items to be projected and returned as an IReadOnlyList{TResult}.</param>
+        /// <param name="items">The source items to be projected and returned as an IReadOnlyList&lt;TResult&gt;.</param>
         /// <param name="selector">The transform function applied to each element.</param>
         /// <param name="cancellationToken">A cancellation token to cancel the processing.</param>
-        /// <returns>The projected results as an IReadOnlyList{TResult}.</returns>
+        /// <returns>The projected results as an IReadOnlyList&lt;TResult&gt;.</returns>
+        [Obsolete("This method will be dropped in v8. Use SelectToReadOnlyListAsync() instead.")]
         public static async Task<IReadOnlyList<TResult>> SelectAsReadOnlyListAsync<TSource, TResult>(this IAsyncEnumerable<TSource> items,
             Func<TSource, Task<TResult>> selector, CancellationToken cancellationToken = default)
         {
             var results = await SelectAsListAsync(items, selector, cancellationToken).ConfigureAwait(false);
+
+            return results.AsReadOnlyList();
+        }
+
+        #endregion
+
+        /// <summary>Asynchronously projects each element into another form and returns the result as a <typeparamref name="TResult"/>[].</summary>
+        /// <typeparam name="TSource">The source elements.</typeparam>
+        /// <typeparam name="TResult">The projected result type.</typeparam>
+        /// <param name="items">The source items to be projected and returned as a <typeparamref name="TResult"/>[].</param>
+        /// <param name="selector">The transform function applied to each element.</param>
+        /// <param name="cancellationToken">A cancellation token to cancel the processing.</param>
+        /// <returns>The projected results as a <typeparamref name="TResult"/>[].</returns>
+        public static async Task<TResult[]> SelectToArrayAsync<TSource, TResult>(this IAsyncEnumerable<TSource> items, Func<TSource, Task<TResult>> selector,
+            CancellationToken cancellationToken = default)
+        {
+            _ = items.WhenNotNull(nameof(items));
+
+            var listItems = await SelectToListAsync(items, selector, cancellationToken).ConfigureAwait(false);
+
+            return [.. listItems];
+        }
+
+        /// <summary>Asynchronously projects each element into another form and returns the result as a <c>List&lt;TResult&gt;</c>.</summary>
+        /// <typeparam name="TSource">The source elements.</typeparam>
+        /// <typeparam name="TResult">The projected result type.</typeparam>
+        /// <param name="items">The source items to be projected and returned as a <c>List&lt;TResult&gt;</c>.</param>
+        /// <param name="selector">The transform function applied to each element.</param>
+        /// <param name="cancellationToken">A cancellation token to cancel the processing.</param>
+        /// <returns>The projected results as a <c>List&lt;TResult&gt;</c>.</returns>
+        public static async Task<List<TResult>> SelectToListAsync<TSource, TResult>(this IAsyncEnumerable<TSource> items, Func<TSource, Task<TResult>> selector,
+            CancellationToken cancellationToken = default)
+        {
+            _ = items.WhenNotNull(nameof(items));
+
+            var listItems = new List<TResult>();
+
+            await foreach (var item in items.WithCancellation(cancellationToken).ConfigureAwait(false))
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                var result = await selector.Invoke(item).ConfigureAwait(false);
+
+                listItems.Add(result);
+            }
+
+            return listItems;
+        }
+
+        /// <summary>Asynchronously projects each element into another form and returns the result as an <c>IReadOnlyCollection&lt;TResult&gt;</c>.</summary>
+        /// <typeparam name="TSource">The source elements.</typeparam>
+        /// <typeparam name="TResult">The projected result type.</typeparam>
+        /// <param name="items">The source items to be projected and returned as an <c>IReadOnlyCollection&lt;TResult&gt;</c>.</param>
+        /// <param name="selector">The transform function applied to each element.</param>
+        /// <param name="cancellationToken">A cancellation token to cancel the processing.</param>
+        /// <returns>The projected results as an <c>IReadOnlyCollection&lt;TResult&gt;</c>.</returns>
+        public static async Task<IReadOnlyCollection<TResult>> SelectToReadOnlyCollectionAsync<TSource, TResult>(this IAsyncEnumerable<TSource> items,
+            Func<TSource, Task<TResult>> selector, CancellationToken cancellationToken = default)
+        {
+            var results = await SelectToListAsync(items, selector, cancellationToken).ConfigureAwait(false);
+
+            return results.AsReadOnlyCollection();
+        }
+
+        /// <summary>Asynchronously projects each element into another form and returns the result as an <c>IReadOnlyList&lt;TResult&gt;</c>.</summary>
+        /// <typeparam name="TSource">The source elements.</typeparam>
+        /// <typeparam name="TResult">The projected result type.</typeparam>
+        /// <param name="items">The source items to be projected and returned as an <c>IReadOnlyList&lt;TResult&gt;</c>.</param>
+        /// <param name="selector">The transform function applied to each element.</param>
+        /// <param name="cancellationToken">A cancellation token to cancel the processing.</param>
+        /// <returns>The projected results as an <c>IReadOnlyList&lt;TResult&gt;</c>.</returns>
+        public static async Task<IReadOnlyList<TResult>> SelectToReadOnlyListAsync<TSource, TResult>(this IAsyncEnumerable<TSource> items,
+            Func<TSource, Task<TResult>> selector, CancellationToken cancellationToken = default)
+        {
+            var results = await SelectToListAsync(items, selector, cancellationToken).ConfigureAwait(false);
 
             return results.AsReadOnlyList();
         }
