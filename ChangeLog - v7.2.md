@@ -29,3 +29,7 @@
 
 
   Added new `ToArrayAsync()`, `ToListAsync()` and `SelectToArrayAsync()` extension methods.
+
+
+  ### AllOverIt.Validation
+  * Added `AbstractValidator<T>` extension methods `CustomRuleFor()`, `CustomRuleForAsync()`, `ConditionalCustomRuleFor()`, and `ConditionalCustomRuleForAsync()`.

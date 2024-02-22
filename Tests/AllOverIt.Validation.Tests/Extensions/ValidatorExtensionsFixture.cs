@@ -3,7 +3,6 @@ using AllOverIt.Validation.Extensions;
 using FluentAssertions;
 using FluentValidation;
 using System.Threading.Tasks;
-using Xunit;
 
 namespace AllOverIt.Validation.Tests.Extensions
 {
