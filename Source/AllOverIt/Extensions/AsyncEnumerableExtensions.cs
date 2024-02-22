@@ -1,6 +1,8 @@
 ﻿using AllOverIt.Assertion;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -222,30 +224,19 @@ namespace AllOverIt.Extensions
             return listItems;
         }
 
-        /// <summary>Asynchronously projects each element into another form and returns the result as an <c>IReadOnlyCollection&lt;TResult&gt;</c>.</summary>
+        /// <summary>Asynchronously projects each element into another form and returns the result as an <c>ReadOnlyCollection&lt;TResult&gt;</c>.</summary>
         /// <typeparam name="TSource">The source elements.</typeparam>
         /// <typeparam name="TResult">The projected result type.</typeparam>
-        /// <param name="items">The source items to be projected and returned as an <c>IReadOnlyCollection&lt;TResult&gt;</c>.</param>
+        /// <param name="items">The source items to be projected and returned as an <c>ReadOnlyCollection&lt;TResult&gt;</c>.</param>
         /// <param name="selector">The transform function applied to each element.</param>
         /// <param name="cancellationToken">A cancellation token to cancel the processing.</param>
-        /// <returns>The projected results as an <c>IReadOnlyCollection&lt;TResult&gt;</c>.</returns>
-        public static async Task<IReadOnlyCollection<TResult>> SelectToReadOnlyCollectionAsync<TSource, TResult>(this IAsyncEnumerable<TSource> items,
+        /// <returns>The projected results as an <c>ReadOnlyCollection&lt;TResult&gt;</c>.</returns>
+        public static async Task<ReadOnlyCollection<TResult>> SelectToReadOnlyCollectionAsync<TSource, TResult>(this IAsyncEnumerable<TSource> items,
             Func<TSource, Task<TResult>> selector, CancellationToken cancellationToken = default)
         {
-            return await SelectToListAsync(items, selector, cancellationToken).ConfigureAwait(false);
-        }
+            var list = await SelectToListAsync(items, selector, cancellationToken).ConfigureAwait(false);
 
-        /// <summary>Asynchronously projects each element into another form and returns the result as an <c>IReadOnlyList&lt;TResult&gt;</c>.</summary>
-        /// <typeparam name="TSource">The source elements.</typeparam>
-        /// <typeparam name="TResult">The projected result type.</typeparam>
-        /// <param name="items">The source items to be projected and returned as an <c>IReadOnlyList&lt;TResult&gt;</c>.</param>
-        /// <param name="selector">The transform function applied to each element.</param>
-        /// <param name="cancellationToken">A cancellation token to cancel the processing.</param>
-        /// <returns>The projected results as an <c>IReadOnlyList&lt;TResult&gt;</c>.</returns>
-        public static async Task<IReadOnlyList<TResult>> SelectToReadOnlyListAsync<TSource, TResult>(this IAsyncEnumerable<TSource> items,
-            Func<TSource, Task<TResult>> selector, CancellationToken cancellationToken = default)
-        {
-            return await SelectToListAsync(items, selector, cancellationToken).ConfigureAwait(false);
+            return list.AsReadOnly();
         }
 
         /// <summary>Asynchronously iterates a sequence of elements and provides the zero-based index of the current item.</summary>

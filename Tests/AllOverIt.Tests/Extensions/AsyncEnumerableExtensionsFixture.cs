@@ -338,48 +338,6 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
-        public class SelectToReadOnlyListAsync : AsyncEnumerableExtensionsFixture
-        {
-            [Fact]
-            public async Task Should_Convert_To_List()
-            {
-                var items = CreateMany<string>();
-                var expected = items.ToDictionary(item => item, _ => Create<string>());
-
-                var actual = await GetStrings(items)
-                    .SelectToReadOnlyListAsync(item => Task.FromResult(expected[item]));
-
-                expected.Values.Should().BeEquivalentTo(actual);
-            }
-
-            [Fact]
-            public async Task Should_Return_As_List()
-            {
-                var items = CreateMany<string>();
-                var expected = items.ToDictionary(item => item, _ => Create<string>());
-
-                var actual = await GetStrings(items)
-                    .SelectToReadOnlyListAsync(item => Task.FromResult(expected[item]));
-
-                actual.Should().BeAssignableTo(typeof(IReadOnlyList<string>));
-            }
-
-            [Fact]
-            public async Task Should_Throw_When_Cancelled()
-            {
-                var cancellationTokenSource = new CancellationTokenSource();
-                cancellationTokenSource.Cancel();
-
-                await Invoking(async () =>
-                {
-                    await GetStrings(CreateMany<string>())
-                        .SelectToReadOnlyListAsync(item => Task.FromResult(item), cancellationTokenSource.Token);
-                })
-                    .Should()
-                    .ThrowAsync<OperationCanceledException>();
-            }
-        }
-
         public class SelectAsListAsync : AsyncEnumerableExtensionsFixture
         {
             [Fact]
