@@ -1,7 +1,9 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Validation.Extensions;
+using FluentAssertions;
 using FluentValidation.Results;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AllOverIt.Validation.Tests.Extensions
@@ -18,6 +20,7 @@ namespace AllOverIt.Validation.Tests.Extensions
         {
             public CustomRuleForValidator()
             {
+                // A rule for a single property
                 this.CustomRuleFor(model => model.ValueOne, (value, context) =>
                 {
                     if (value == default)
@@ -69,6 +72,7 @@ namespace AllOverIt.Validation.Tests.Extensions
         {
             public ConditionalCustomRuleForValidator()
             {
+                // A rule for a single property
                 this.ConditionalCustomRuleFor(
                     model => model.ValueOne,
                     value => value != default,      // Condition to execute the custom rule
@@ -127,23 +131,162 @@ namespace AllOverIt.Validation.Tests.Extensions
             }
         }
 
-
+        private readonly DummyModel _model = new();
 
         public class CustomRuleFor : AbstractValidatorExtensionsFixture
         {
+            private readonly CustomRuleForValidator _validator = new();
 
+            [Fact]
+            public void Should_Not_Have_Error()
+            {
+                _model.ValueOne = Create<int>();
+
+                var errors = _validator.Validate(_model).Errors;
+
+                errors.Should().BeEmpty();
+            }
+
+            [Fact]
+            public void Should_Validate_Single_Property()
+            {
+                var errors = _validator.Validate(_model).Errors;
+
+                errors.Single().ErrorMessage.Should().Be("Cannot be null");
+            }
+
+            [Fact]
+            public void Should_Validate_Two_Properties()
+            {
+                _model.ValueTwo = Guid.NewGuid();
+
+                var errors = _validator.Validate(_model).Errors;
+
+                errors.Single().ErrorMessage.Should().Be("Cannot be null");
+
+                _model.ValueOne = GetWithinRange(11, 100);
+
+                errors = _validator.Validate(_model).Errors;
+
+                errors.Single().ErrorMessage.Should().Be("Bad Combination");
+            }
         }
+
         public class CustomRuleForAsync : AbstractValidatorExtensionsFixture
         {
+            private readonly CustomRuleForValidator _validator = new();
 
+            [Fact]
+            public async Task Should_Not_Have_Error()
+            {
+                _model.ValueOne = Create<int>();
+
+                var errors = (await _validator.ValidateAsync(_model)).Errors;
+
+                errors.Should().BeEmpty();
+            }
+
+            [Fact]
+            public async Task Should_Validate_Single_Property()
+            {
+                var errors = (await _validator.ValidateAsync(_model)).Errors;
+
+                errors.Single().ErrorMessage.Should().Be("Cannot be null");
+            }
+
+            [Fact]
+            public async Task Should_Validate_Two_Properties()
+            {
+                _model.ValueTwo = Guid.NewGuid();
+
+                var errors = (await _validator.ValidateAsync(_model)).Errors;
+
+                errors.Single().ErrorMessage.Should().Be("Cannot be null");
+
+                _model.ValueOne = GetWithinRange(11, 100);
+
+                errors = (await _validator.ValidateAsync(_model)).Errors;
+
+                errors.Single().ErrorMessage.Should().Be("Bad Combination");
+            }
         }
+
         public class ConditionalCustomRuleFor : AbstractValidatorExtensionsFixture
         {
+            private readonly CustomRuleForValidator _validator = new();
 
+            [Fact]
+            public void Should_Not_Have_Error()
+            {
+                _model.ValueOne = Create<int>();
+
+                var errors = _validator.Validate(_model).Errors;
+
+                errors.Should().BeEmpty();
+            }
+
+            [Fact]
+            public void Should_Validate_Single_Property()
+            {
+                var errors = _validator.Validate(_model).Errors;
+
+                errors.Single().ErrorMessage.Should().Be("Cannot be null");
+            }
+
+            [Fact]
+            public void Should_Validate_Two_Properties()
+            {
+                _model.ValueTwo = Guid.NewGuid();
+
+                var errors = _validator.Validate(_model).Errors;
+
+                errors.Single().ErrorMessage.Should().Be("Cannot be null");
+
+                _model.ValueOne = GetWithinRange(11, 100);
+
+                errors = _validator.Validate(_model).Errors;
+
+                errors.Single().ErrorMessage.Should().Be("Bad Combination");
+            }
         }
+
         public class ConditionalCustomRuleForAsync : AbstractValidatorExtensionsFixture
         {
+            private readonly CustomRuleForValidator _validator = new();
 
+            [Fact]
+            public async Task Should_Not_Have_Error()
+            {
+                _model.ValueOne = Create<int>();
+
+                var errors = (await _validator.ValidateAsync(_model)).Errors;
+
+                errors.Should().BeEmpty();
+            }
+
+            [Fact]
+            public async Task Should_Validate_Single_Property()
+            {
+                var errors = (await _validator.ValidateAsync(_model)).Errors;
+
+                errors.Single().ErrorMessage.Should().Be("Cannot be null");
+            }
+
+            [Fact]
+            public async Task Should_Validate_Two_Properties()
+            {
+                _model.ValueTwo = Guid.NewGuid();
+
+                var errors = (await _validator.ValidateAsync(_model)).Errors;
+
+                errors.Single().ErrorMessage.Should().Be("Cannot be null");
+
+                _model.ValueOne = GetWithinRange(11, 100);
+
+                errors = (await _validator.ValidateAsync(_model)).Errors;
+
+                errors.Single().ErrorMessage.Should().Be("Bad Combination");
+            }
         }
     }
 }
