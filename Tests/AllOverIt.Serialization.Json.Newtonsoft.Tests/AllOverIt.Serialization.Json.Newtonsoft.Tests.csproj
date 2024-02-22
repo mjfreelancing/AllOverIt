@@ -5,4 +5,16 @@
         <ProjectReference Include="..\..\Source\AllOverIt.Serialization.Json.Newtonsoft\AllOverIt.Serialization.Json.Newtonsoft.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Update="coverlet.collector" Version="6.0.1">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Update="xunit" Version="2.7.0" />
+      <PackageReference Update="xunit.runner.visualstudio" Version="2.5.7">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+    </ItemGroup>
+
 </Project>
