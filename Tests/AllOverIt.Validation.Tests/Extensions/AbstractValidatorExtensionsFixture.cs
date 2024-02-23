@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Validation.Extensions;
 using FluentAssertions;
 using FluentValidation.Results;
@@ -90,7 +91,7 @@ namespace AllOverIt.Validation.Tests.Extensions
                     model => model.ValueOne != default && model.ValueTwo != default,    // Condition to execute the custom rule
                     (model, context) =>
                     {
-                        if (model.ValueOne > 10)
+                        if (model.ValueOne < 10)
                         {
                             context.AddFailure(new ValidationFailure($"{nameof(DummyModel.ValueOne)} / {nameof(DummyModel.ValueTwo)}", "Bad Value"));
                         }
@@ -121,7 +122,7 @@ namespace AllOverIt.Validation.Tests.Extensions
                     model => model.ValueOne != default && model.ValueTwo != default,    // Condition to execute the custom rule
                     (model, context, cancellationToken) =>
                     {
-                        if (model.ValueOne > 10)
+                        if (model.ValueOne < 10)
                         {
                             context.AddFailure(new ValidationFailure($"{nameof(DummyModel.ValueOne)} / {nameof(DummyModel.ValueTwo)}", "Bad Value"));
                         }
@@ -136,6 +137,42 @@ namespace AllOverIt.Validation.Tests.Extensions
         public class CustomRuleFor : AbstractValidatorExtensionsFixture
         {
             private readonly CustomRuleForValidator _validator = new();
+
+            [Fact]
+            public void Should_Throw_When_Validator_Null()
+            {
+                Invoking(() =>
+                {
+                    AbstractValidatorExtensions.CustomRuleFor<DummyModel, DummyModel>(null, model => model, (_, _) => { });
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("validator");
+            }
+
+            [Fact]
+            public void Should_Throw_When_PropertyExpression_Null()
+            {
+                Invoking(() =>
+                {
+                    AbstractValidatorExtensions.CustomRuleFor<DummyModel, DummyModel>(_validator, null, (_, _) => { });
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("propertyExpression");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Action_Null()
+            {
+                Invoking(() =>
+                {
+                    AbstractValidatorExtensions.CustomRuleFor<DummyModel, DummyModel>(_validator, model => model, null);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("action");
+            }
 
             [Fact]
             public void Should_Not_Have_Error()
@@ -174,7 +211,43 @@ namespace AllOverIt.Validation.Tests.Extensions
 
         public class CustomRuleForAsync : AbstractValidatorExtensionsFixture
         {
-            private readonly CustomRuleForValidator _validator = new();
+            private readonly CustomRuleForAsyncValidator _validator = new();
+
+            [Fact]
+            public void Should_Throw_When_Validator_Null()
+            {
+                Invoking(() =>
+                {
+                    AbstractValidatorExtensions.CustomRuleForAsync<DummyModel, DummyModel>(null, model => model, (_, _, _) => Task.CompletedTask);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("validator");
+            }
+
+            [Fact]
+            public void Should_Throw_When_PropertyExpression_Null()
+            {
+                Invoking(() =>
+                {
+                    AbstractValidatorExtensions.CustomRuleForAsync<DummyModel, DummyModel>(_validator, null, (_, _, _) => Task.CompletedTask);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("propertyExpression");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Action_Null()
+            {
+                Invoking(() =>
+                {
+                    AbstractValidatorExtensions.CustomRuleForAsync<DummyModel, DummyModel>(_validator, model => model, null);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("action");
+            }
 
             [Fact]
             public async Task Should_Not_Have_Error()
@@ -213,12 +286,60 @@ namespace AllOverIt.Validation.Tests.Extensions
 
         public class ConditionalCustomRuleFor : AbstractValidatorExtensionsFixture
         {
-            private readonly CustomRuleForValidator _validator = new();
+            private readonly ConditionalCustomRuleForValidator _validator = new();
+
+            [Fact]
+            public void Should_Throw_When_Validator_Null()
+            {
+                Invoking(() =>
+                {
+                    AbstractValidatorExtensions.ConditionalCustomRuleFor<DummyModel, DummyModel>(null, model => model, _ => Create<bool>(), (_, _) => { });
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("validator");
+            }
+
+            [Fact]
+            public void Should_Throw_When_PropertyExpression_Null()
+            {
+                Invoking(() =>
+                {
+                    AbstractValidatorExtensions.ConditionalCustomRuleFor<DummyModel, DummyModel>(_validator, null, _ => Create<bool>(), (_, _) => { });
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("propertyExpression");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Predicate_Null()
+            {
+                Invoking(() =>
+                {
+                    AbstractValidatorExtensions.ConditionalCustomRuleFor<DummyModel, DummyModel>(_validator, model => model, null, (_, _) => { });
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("predicate");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Action_Null()
+            {
+                Invoking(() =>
+                {
+                    AbstractValidatorExtensions.ConditionalCustomRuleFor<DummyModel, DummyModel>(_validator, model => model, _ => Create<bool>(), null);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("action");
+            }
 
             [Fact]
             public void Should_Not_Have_Error()
             {
-                _model.ValueOne = Create<int>();
+                _model.ValueOne = GetWithinRange(1, 9);
 
                 var errors = _validator.Validate(_model).Errors;
 
@@ -228,36 +349,81 @@ namespace AllOverIt.Validation.Tests.Extensions
             [Fact]
             public void Should_Validate_Single_Property()
             {
+                _model.ValueOne = GetWithinRange(11, 100);
+
                 var errors = _validator.Validate(_model).Errors;
 
-                errors.Single().ErrorMessage.Should().Be("Cannot be null");
+                errors.Single().ErrorMessage.Should().Be("Bad Value");
             }
 
             [Fact]
             public void Should_Validate_Two_Properties()
             {
+                _model.ValueOne = GetWithinRange(1, 5);
                 _model.ValueTwo = Guid.NewGuid();
 
                 var errors = _validator.Validate(_model).Errors;
 
-                errors.Single().ErrorMessage.Should().Be("Cannot be null");
-
-                _model.ValueOne = GetWithinRange(11, 100);
-
-                errors = _validator.Validate(_model).Errors;
-
-                errors.Single().ErrorMessage.Should().Be("Bad Combination");
+                errors.Single().ErrorMessage.Should().Be("Bad Value");
             }
         }
 
         public class ConditionalCustomRuleForAsync : AbstractValidatorExtensionsFixture
         {
-            private readonly CustomRuleForValidator _validator = new();
+            private readonly ConditionalCustomRuleForAsyncValidator _validator = new();
+
+            [Fact]
+            public void Should_Throw_When_Validator_Null()
+            {
+                Invoking(() =>
+                {
+                    AbstractValidatorExtensions.ConditionalCustomRuleForAsync<DummyModel, DummyModel>(null, model => model, _ => Create<bool>(), (_, _, _) => Task.CompletedTask);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("validator");
+            }
+
+            [Fact]
+            public void Should_Throw_When_PropertyExpression_Null()
+            {
+                Invoking(() =>
+                {
+                    AbstractValidatorExtensions.ConditionalCustomRuleForAsync<DummyModel, DummyModel>(_validator, null, _ => Create<bool>(), (_, _, _) => Task.CompletedTask);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("propertyExpression");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Predicate_Null()
+            {
+                Invoking(() =>
+                {
+                    AbstractValidatorExtensions.ConditionalCustomRuleForAsync<DummyModel, DummyModel>(_validator, model => model, null, (_, _, _) => Task.CompletedTask);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("predicate");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Action_Null()
+            {
+                Invoking(() =>
+                {
+                    AbstractValidatorExtensions.ConditionalCustomRuleForAsync<DummyModel, DummyModel>(_validator, model => model, _ => Create<bool>(), null);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("action");
+            }
 
             [Fact]
             public async Task Should_Not_Have_Error()
             {
-                _model.ValueOne = Create<int>();
+                _model.ValueOne = GetWithinRange(1, 9);
 
                 var errors = (await _validator.ValidateAsync(_model)).Errors;
 
@@ -267,25 +433,22 @@ namespace AllOverIt.Validation.Tests.Extensions
             [Fact]
             public async Task Should_Validate_Single_Property()
             {
+                _model.ValueOne = GetWithinRange(11, 100);
+
                 var errors = (await _validator.ValidateAsync(_model)).Errors;
 
-                errors.Single().ErrorMessage.Should().Be("Cannot be null");
+                errors.Single().ErrorMessage.Should().Be("Bad Value");
             }
 
             [Fact]
             public async Task Should_Validate_Two_Properties()
             {
+                _model.ValueOne = GetWithinRange(1, 5);
                 _model.ValueTwo = Guid.NewGuid();
 
                 var errors = (await _validator.ValidateAsync(_model)).Errors;
 
-                errors.Single().ErrorMessage.Should().Be("Cannot be null");
-
-                _model.ValueOne = GetWithinRange(11, 100);
-
-                errors = (await _validator.ValidateAsync(_model)).Errors;
-
-                errors.Single().ErrorMessage.Should().Be("Bad Combination");
+                errors.Single().ErrorMessage.Should().Be("Bad Value");
             }
         }
     }
