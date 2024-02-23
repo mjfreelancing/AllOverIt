@@ -1,25 +1,25 @@
 # Summary
 |||
 |:---|:---|
-| Generated on: | 9/02/2024 - 9:56:44 PM |
-| Coverage date: | 9/02/2024 - 9:54:22 PM - 9/02/2024 - 9:56:30 PM |
+| Generated on: | 23/02/2024 - 3:46:29 PM |
+| Coverage date: | 23/02/2024 - 3:43:13 PM - 23/02/2024 - 3:46:19 PM |
 | Parser: | MultiReport (19x Cobertura) |
 | Assemblies: | 19 |
-| Classes: | 451 |
-| Files: | 457 |
-| **Line coverage:** | 99.6% (13405 of 13455) |
-| Covered lines: | 13405 |
-| Uncovered lines: | 50 |
-| Coverable lines: | 13455 |
-| Total lines: | 33875 |
-| **Branch coverage:** | 96.4% (2564 of 2657) |
-| Covered branches: | 2564 |
-| Total branches: | 2657 |
+| Classes: | 452 |
+| Files: | 458 |
+| **Line coverage:** | 99.6% (13493 of 13544) |
+| Covered lines: | 13493 |
+| Uncovered lines: | 51 |
+| Coverable lines: | 13544 |
+| Total lines: | 34161 |
+| **Branch coverage:** | 96.2% (2410 of 2503) |
+| Covered branches: | 2410 |
+| Total branches: | 2503 |
 | **Method coverage:** | [Feature is only available for sponsors](https://reportgenerator.io/pro) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|
-|**AllOverIt**|**5552**|**11**|**5563**|**15727**|**99.8%**|**1034**|**1058**|**97.7%**|
+|**AllOverIt**|**5601**|**13**|**5614**|**15911**|**99.7%**|**1025**|**1050**|**97.6%**|
 |AllOverIt.Aspects.InterceptorBase`1|81|1|82|172|98.7%|12|12|100%|
 |AllOverIt.Aspects.InterceptorFactory|24|0|24|62|100%|4|4|100%|
 |AllOverIt.Aspects.InterceptorMethodHandlerAsyncBase|16|0|16|214|100%|0|0||
@@ -31,16 +31,16 @@
 |AllOverIt.Aspects.MethodInterceptor`1|23|0|23|63|100%|2|2|100%|
 |AllOverIt.Async.AsyncLazy`1|9|0|9|36|100%|0|0||
 |AllOverIt.Async.BackgroundTask|85|0|85|165|100%|13|14|92.8%|
-|AllOverIt.Async.BackgroundTask`1|79|1|80|165|98.7%|17|18|94.4%|
+|AllOverIt.Async.BackgroundTask`1|77|3|80|165|96.2%|16|18|88.8%|
 |AllOverIt.Async.CompositeAsyncDisposable|51|0|51|94|100%|6|6|100%|
 |AllOverIt.Async.RepeatingTask|82|2|84|166|97.6%|0|0||
 |AllOverIt.Async.TaskHelper|37|0|37|224|100%|0|0||
 |AllOverIt.Caching.GenericCache|152|0|152|341|100%|6|6|100%|
-|AllOverIt.Caching.GenericCacheKey`1|6|0|6|140|100%|0|0||
-|AllOverIt.Caching.GenericCacheKey`2|12|0|12|140|100%|0|0||
-|AllOverIt.Caching.GenericCacheKey`3|15|0|15|140|100%|0|0||
-|AllOverIt.Caching.GenericCacheKey`4|18|0|18|140|100%|0|0||
-|AllOverIt.Caching.GenericCacheKeyBase|6|0|6|17|100%|0|0||
+|AllOverIt.Caching.GenericCacheKey`1|5|0|5|140|100%|0|0||
+|AllOverIt.Caching.GenericCacheKey`2|11|0|11|140|100%|0|0||
+|AllOverIt.Caching.GenericCacheKey`3|14|0|14|140|100%|0|0||
+|AllOverIt.Caching.GenericCacheKey`4|17|0|17|140|100%|0|0||
+|AllOverIt.Caching.GenericCacheKeyBase|5|0|5|17|100%|0|0||
 |AllOverIt.Collections.CircularBuffer`1|148|0|148|257|100%|25|26|96.1%|
 |AllOverIt.Collections.Collection|4|0|4|21|100%|0|0||
 |AllOverIt.Collections.Dictionary|4|0|4|22|100%|0|0||
@@ -65,18 +65,18 @@
 |AllOverIt.Expressions.ExpressionConstants|1|0|1|11|100%|0|0||
 |AllOverIt.Expressions.ExpressionUtils|50|0|50|124|100%|8|8|100%|
 |AllOverIt.Expressions.ParameterRebinder|16|0|16|44|100%|2|2|100%|
-|AllOverIt.Expressions.PredicateBuilder|40|0|40|117|100%|10|10|100%|
+|AllOverIt.Expressions.PredicateBuilder|40|0|40|117|100%|6|6|100%|
 |AllOverIt.Expressions.Strings.Extensions.StringComparisonModeExtensions|23|0|23|41|100%|6|6|100%|
 |AllOverIt.Expressions.Strings.StringComparisonMode|12|0|12|48|100%|0|0||
 |AllOverIt.Expressions.Strings.StringComparisonUtils|150|0|150|329|100%|22|22|100%|
 |AllOverIt.Extensions.AsyncDisposableExtensions|10|0|10|41|100%|0|0||
-|AllOverIt.Extensions.AsyncEnumerableExtensions|76|0|76|221|100%|22|28|78.5%|
+|AllOverIt.Extensions.AsyncEnumerableExtensions|103|0|103|304|100%|24|30|80%|
 |AllOverIt.Extensions.ComparableExtensions|18|0|18|68|100%|0|0||
 |AllOverIt.Extensions.ComparerExtensions|28|0|28|74|100%|4|4|100%|
 |AllOverIt.Extensions.DictionaryExtensions|16|0|16|55|100%|8|8|100%|
 |AllOverIt.Extensions.DoubleExtensions|12|0|12|54|100%|0|0||
 |AllOverIt.Extensions.EndianExtensions|140|0|140|335|100%|36|36|100%|
-|AllOverIt.Extensions.EnumerableExtensions|291|0|291|690|100%|36|38|94.7%|
+|AllOverIt.Extensions.EnumerableExtensions|320|0|320|791|100%|36|38|94.7%|
 |AllOverIt.Extensions.ExceptionExtensions|21|0|21|47|100%|14|14|100%|
 |AllOverIt.Extensions.ExpressionExtensions|89|0|89|187|100%|37|38|97.3%|
 |AllOverIt.Extensions.ListExtensions|30|0|30|76|100%|4|4|100%|
@@ -88,7 +88,7 @@
 |AllOverIt.Extensions.StreamExtensions|14|0|14|38|100%|0|0||
 |AllOverIt.Extensions.StringExtensions|57|0|57|146|100%|20|20|100%|
 |AllOverIt.Extensions.TaskExtensions|17|0|17|41|100%|4|4|100%|
-|AllOverIt.Extensions.TypeExtensions|317|3|320|745|99%|58|60|96.6%|
+|AllOverIt.Extensions.TypeExtensions|317|3|320|745|99%|56|58|96.5%|
 |AllOverIt.Extensions.TypeInfoExtensions|56|0|56|122|100%|24|24|100%|
 |AllOverIt.Formatters.Objects.Exceptions.ObjectPropertyFilterException|9|0|9|28|100%|0|0||
 |AllOverIt.Formatters.Objects.Exceptions.SelfReferenceException|9|0|9|28|100%|0|0||
@@ -101,7 +101,7 @@
 |AllOverIt.Formatters.Objects.ObjectPropertySerializer|257|0|257|413|100%|122|122|100%|
 |AllOverIt.Formatters.Objects.ObjectPropertySerializerOptions|19|0|19|58|100%|0|0||
 |AllOverIt.Formatters.Strings.Extensions.StringFormatExtensions|3|0|3|16|100%|0|0||
-|AllOverIt.Formatters.Strings.JsonString|116|0|116|190|100%|54|54|100%|
+|AllOverIt.Formatters.Strings.JsonString|116|0|116|190|100%|50|50|100%|
 |AllOverIt.Helpers.EnumHelper|3|0|3|18|100%|0|0||
 |AllOverIt.Helpers.ExceptionAggregator|15|0|15|43|100%|4|4|100%|
 |AllOverIt.Helpers.HashCodeHelper|11|0|11|33|100%|2|2|100%|
@@ -217,7 +217,7 @@
 |AllOverIt.DependencyInjection.NamedServiceResolver|9|0|9|74|100%|0|0||
 |AllOverIt.DependencyInjection.NamedServiceResolver`1|24|0|24|74|100%|6|6|100%|
 |AllOverIt.DependencyInjection.ServiceRegistrarBase|62|0|62|101|100%|28|28|100%|
-|**AllOverIt.Evaluator**|**1399**|**19**|**1418**|**3741**|**98.6%**|**326**|**336**|**97%**|
+|**AllOverIt.Evaluator**|**1399**|**19**|**1418**|**3741**|**98.6%**|**184**|**194**|**94.8%**|
 |AllOverIt.Evaluator.Exceptions.FormulaException|9|0|9|28|100%|0|0||
 |AllOverIt.Evaluator.Exceptions.OperationFactoryException|9|0|9|28|100%|0|0||
 |AllOverIt.Evaluator.Exceptions.OperatorException|9|0|9|28|100%|0|0||
@@ -231,78 +231,78 @@
 |AllOverIt.Evaluator.FormulaProcessor|331|19|350|615|94.5%|98|108|90.7%|
 |AllOverIt.Evaluator.FormulaProcessorResult|9|0|9|42|100%|4|4|100%|
 |AllOverIt.Evaluator.FormulaTokenProcessorContext|7|0|7|29|100%|0|0||
-|AllOverIt.Evaluator.Operations.AbsOperation|6|0|6|20|100%|2|2|100%|
-|AllOverIt.Evaluator.Operations.AcosOperation|6|0|6|20|100%|2|2|100%|
+|AllOverIt.Evaluator.Operations.AbsOperation|6|0|6|20|100%|0|0||
+|AllOverIt.Evaluator.Operations.AcosOperation|6|0|6|20|100%|0|0||
 |AllOverIt.Evaluator.Operations.ArithmeticOperation|5|0|5|24|100%|0|0||
 |AllOverIt.Evaluator.Operations.ArithmeticOperationBase|9|0|9|36|100%|0|0||
-|AllOverIt.Evaluator.Operations.ArithmeticOperationFactory|54|0|54|107|100%|18|18|100%|
-|AllOverIt.Evaluator.Operations.AsinOperation|6|0|6|20|100%|2|2|100%|
-|AllOverIt.Evaluator.Operations.AtanOperation|6|0|6|20|100%|2|2|100%|
-|AllOverIt.Evaluator.Operations.CeilingOperation|6|0|6|20|100%|2|2|100%|
-|AllOverIt.Evaluator.Operations.CoshOperation|6|0|6|20|100%|2|2|100%|
-|AllOverIt.Evaluator.Operations.CosOperation|6|0|6|20|100%|2|2|100%|
-|AllOverIt.Evaluator.Operations.CubeRootOperation|6|0|6|20|100%|2|2|100%|
-|AllOverIt.Evaluator.Operations.EqualOperation|6|0|6|21|100%|2|2|100%|
-|AllOverIt.Evaluator.Operations.ExpOperation|6|0|6|20|100%|2|2|100%|
-|AllOverIt.Evaluator.Operations.FloorOperation|6|0|6|20|100%|2|2|100%|
-|AllOverIt.Evaluator.Operations.GreaterThanOperation|6|0|6|20|100%|2|2|100%|
-|AllOverIt.Evaluator.Operations.GreaterThanOrEqualOperation|6|0|6|20|100%|2|2|100%|
-|AllOverIt.Evaluator.Operations.IfOperation|6|0|6|20|100%|2|2|100%|
-|AllOverIt.Evaluator.Operations.LessThanOperation|6|0|6|20|100%|2|2|100%|
-|AllOverIt.Evaluator.Operations.LessThanOrEqualOperation|6|0|6|20|100%|2|2|100%|
-|AllOverIt.Evaluator.Operations.Log10Operation|6|0|6|20|100%|2|2|100%|
-|AllOverIt.Evaluator.Operations.Log2Operation|6|0|6|20|100%|2|2|100%|
-|AllOverIt.Evaluator.Operations.LogOperation|6|0|6|20|100%|2|2|100%|
-|AllOverIt.Evaluator.Operations.MaxOperation|6|0|6|20|100%|2|2|100%|
-|AllOverIt.Evaluator.Operations.MinOperation|6|0|6|20|100%|2|2|100%|
-|AllOverIt.Evaluator.Operations.NotEqualOperation|6|0|6|21|100%|2|2|100%|
-|AllOverIt.Evaluator.Operations.PercentOperation|6|0|6|20|100%|2|2|100%|
-|AllOverIt.Evaluator.Operations.RoundOperation|6|0|6|20|100%|2|2|100%|
-|AllOverIt.Evaluator.Operations.SinhOperation|6|0|6|20|100%|2|2|100%|
-|AllOverIt.Evaluator.Operations.SinOperation|6|0|6|20|100%|2|2|100%|
-|AllOverIt.Evaluator.Operations.SqrtOperation|6|0|6|20|100%|2|2|100%|
-|AllOverIt.Evaluator.Operations.TanhOperation|6|0|6|20|100%|2|2|100%|
-|AllOverIt.Evaluator.Operations.TanOperation|6|0|6|20|100%|2|2|100%|
+|AllOverIt.Evaluator.Operations.ArithmeticOperationFactory|54|0|54|107|100%|6|6|100%|
+|AllOverIt.Evaluator.Operations.AsinOperation|6|0|6|20|100%|0|0||
+|AllOverIt.Evaluator.Operations.AtanOperation|6|0|6|20|100%|0|0||
+|AllOverIt.Evaluator.Operations.CeilingOperation|6|0|6|20|100%|0|0||
+|AllOverIt.Evaluator.Operations.CoshOperation|6|0|6|20|100%|0|0||
+|AllOverIt.Evaluator.Operations.CosOperation|6|0|6|20|100%|0|0||
+|AllOverIt.Evaluator.Operations.CubeRootOperation|6|0|6|20|100%|0|0||
+|AllOverIt.Evaluator.Operations.EqualOperation|6|0|6|21|100%|0|0||
+|AllOverIt.Evaluator.Operations.ExpOperation|6|0|6|20|100%|0|0||
+|AllOverIt.Evaluator.Operations.FloorOperation|6|0|6|20|100%|0|0||
+|AllOverIt.Evaluator.Operations.GreaterThanOperation|6|0|6|20|100%|0|0||
+|AllOverIt.Evaluator.Operations.GreaterThanOrEqualOperation|6|0|6|20|100%|0|0||
+|AllOverIt.Evaluator.Operations.IfOperation|6|0|6|20|100%|0|0||
+|AllOverIt.Evaluator.Operations.LessThanOperation|6|0|6|20|100%|0|0||
+|AllOverIt.Evaluator.Operations.LessThanOrEqualOperation|6|0|6|20|100%|0|0||
+|AllOverIt.Evaluator.Operations.Log10Operation|6|0|6|20|100%|0|0||
+|AllOverIt.Evaluator.Operations.Log2Operation|6|0|6|20|100%|0|0||
+|AllOverIt.Evaluator.Operations.LogOperation|6|0|6|20|100%|0|0||
+|AllOverIt.Evaluator.Operations.MaxOperation|6|0|6|20|100%|0|0||
+|AllOverIt.Evaluator.Operations.MinOperation|6|0|6|20|100%|0|0||
+|AllOverIt.Evaluator.Operations.NotEqualOperation|6|0|6|21|100%|0|0||
+|AllOverIt.Evaluator.Operations.PercentOperation|6|0|6|20|100%|0|0||
+|AllOverIt.Evaluator.Operations.RoundOperation|6|0|6|20|100%|0|0||
+|AllOverIt.Evaluator.Operations.SinhOperation|6|0|6|20|100%|0|0||
+|AllOverIt.Evaluator.Operations.SinOperation|6|0|6|20|100%|0|0||
+|AllOverIt.Evaluator.Operations.SqrtOperation|6|0|6|20|100%|0|0||
+|AllOverIt.Evaluator.Operations.TanhOperation|6|0|6|20|100%|0|0||
+|AllOverIt.Evaluator.Operations.TanOperation|6|0|6|20|100%|0|0||
 |AllOverIt.Evaluator.Operations.UserDefinedMethodFactory|70|0|70|151|100%|18|18|100%|
-|AllOverIt.Evaluator.Operators.AbsOperator|7|0|7|24|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.AcosOperator|7|0|7|24|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.AddOperator|3|0|3|16|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.AsinOperator|7|0|7|24|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.AtanOperator|7|0|7|24|100%|2|2|100%|
+|AllOverIt.Evaluator.Operators.AbsOperator|7|0|7|24|100%|0|0||
+|AllOverIt.Evaluator.Operators.AcosOperator|7|0|7|24|100%|0|0||
+|AllOverIt.Evaluator.Operators.AddOperator|3|0|3|16|100%|0|0||
+|AllOverIt.Evaluator.Operators.AsinOperator|7|0|7|24|100%|0|0||
+|AllOverIt.Evaluator.Operators.AtanOperator|7|0|7|24|100%|0|0||
 |AllOverIt.Evaluator.Operators.BinaryOperator|8|0|8|32|100%|0|0||
-|AllOverIt.Evaluator.Operators.CeilingOperator|7|0|7|24|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.CoshOperator|7|0|7|24|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.CosOperator|7|0|7|24|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.CubeRootOperator|7|0|7|24|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.DivideOperator|3|0|3|16|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.EqualOperator|6|0|6|18|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.ExpOperator|7|0|7|24|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.FloorOperator|7|0|7|24|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.GreaterThanOperator|6|0|6|18|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.GreaterThanOrEqualOperator|6|0|6|18|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.IfOperator|6|0|6|22|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.LessThanOperator|6|0|6|18|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.LessThanOrEqualOperator|6|0|6|18|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.Log10Operator|7|0|7|24|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.Log2Operator|7|0|7|24|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.LogOperator|7|0|7|24|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.MaxOperator|7|0|7|25|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.MinOperator|7|0|7|25|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.ModuloOperator|3|0|3|16|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.MultiplyOperator|3|0|3|16|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.NegateOperator|3|0|3|15|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.NotEqualOperator|6|0|6|18|100%|2|2|100%|
+|AllOverIt.Evaluator.Operators.CeilingOperator|7|0|7|24|100%|0|0||
+|AllOverIt.Evaluator.Operators.CoshOperator|7|0|7|24|100%|0|0||
+|AllOverIt.Evaluator.Operators.CosOperator|7|0|7|24|100%|0|0||
+|AllOverIt.Evaluator.Operators.CubeRootOperator|7|0|7|24|100%|0|0||
+|AllOverIt.Evaluator.Operators.DivideOperator|3|0|3|16|100%|0|0||
+|AllOverIt.Evaluator.Operators.EqualOperator|6|0|6|18|100%|0|0||
+|AllOverIt.Evaluator.Operators.ExpOperator|7|0|7|24|100%|0|0||
+|AllOverIt.Evaluator.Operators.FloorOperator|7|0|7|24|100%|0|0||
+|AllOverIt.Evaluator.Operators.GreaterThanOperator|6|0|6|18|100%|0|0||
+|AllOverIt.Evaluator.Operators.GreaterThanOrEqualOperator|6|0|6|18|100%|0|0||
+|AllOverIt.Evaluator.Operators.IfOperator|6|0|6|22|100%|0|0||
+|AllOverIt.Evaluator.Operators.LessThanOperator|6|0|6|18|100%|0|0||
+|AllOverIt.Evaluator.Operators.LessThanOrEqualOperator|6|0|6|18|100%|0|0||
+|AllOverIt.Evaluator.Operators.Log10Operator|7|0|7|24|100%|0|0||
+|AllOverIt.Evaluator.Operators.Log2Operator|7|0|7|24|100%|0|0||
+|AllOverIt.Evaluator.Operators.LogOperator|7|0|7|24|100%|0|0||
+|AllOverIt.Evaluator.Operators.MaxOperator|7|0|7|25|100%|0|0||
+|AllOverIt.Evaluator.Operators.MinOperator|7|0|7|25|100%|0|0||
+|AllOverIt.Evaluator.Operators.ModuloOperator|3|0|3|16|100%|0|0||
+|AllOverIt.Evaluator.Operators.MultiplyOperator|3|0|3|16|100%|0|0||
+|AllOverIt.Evaluator.Operators.NegateOperator|3|0|3|15|100%|0|0||
+|AllOverIt.Evaluator.Operators.NotEqualOperator|6|0|6|18|100%|0|0||
 |AllOverIt.Evaluator.Operators.Operator`1|5|0|5|20|100%|0|0||
 |AllOverIt.Evaluator.Operators.OperatorBase|9|0|9|38|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.PercentOperator|7|0|7|22|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.PowerOperator|3|0|3|16|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.RoundOperator|9|0|9|27|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.SinhOperator|7|0|7|24|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.SinOperator|7|0|7|24|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.SqrtOperator|7|0|7|24|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.SubtractOperator|3|0|3|16|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.TanhOperator|7|0|7|24|100%|2|2|100%|
-|AllOverIt.Evaluator.Operators.TanOperator|7|0|7|24|100%|2|2|100%|
+|AllOverIt.Evaluator.Operators.PercentOperator|7|0|7|22|100%|0|0||
+|AllOverIt.Evaluator.Operators.PowerOperator|3|0|3|16|100%|0|0||
+|AllOverIt.Evaluator.Operators.RoundOperator|9|0|9|27|100%|0|0||
+|AllOverIt.Evaluator.Operators.SinhOperator|7|0|7|24|100%|0|0||
+|AllOverIt.Evaluator.Operators.SinOperator|7|0|7|24|100%|0|0||
+|AllOverIt.Evaluator.Operators.SqrtOperator|7|0|7|24|100%|0|0||
+|AllOverIt.Evaluator.Operators.SubtractOperator|3|0|3|16|100%|0|0||
+|AllOverIt.Evaluator.Operators.TanhOperator|7|0|7|24|100%|0|0||
+|AllOverIt.Evaluator.Operators.TanOperator|7|0|7|24|100%|0|0||
 |AllOverIt.Evaluator.Operators.TernaryOperator|9|0|9|35|100%|0|0||
 |AllOverIt.Evaluator.Operators.UnaryOperator|7|0|7|27|100%|0|0||
 |AllOverIt.Evaluator.Variables.ConstantVariable|5|0|5|18|100%|0|0||
@@ -317,8 +317,8 @@
 |AllOverIt.Evaluator.Variables.VariableLookup|25|0|25|59|100%|8|8|100%|
 |AllOverIt.Evaluator.Variables.VariableRegistry|52|0|52|114|100%|8|8|100%|
 |AllOverIt.Evaluator.Variables.VariableRegistryBuilder|127|0|127|256|100%|18|18|100%|
-|**AllOverIt.Filtering**|**639**|**1**|**640**|**1610**|**99.8%**|**120**|**134**|**89.5%**|
-|AllOverIt.Filtering.Builders.FilterBuilder`2|71|0|71|159|100%|18|24|75%|
+|**AllOverIt.Filtering**|**639**|**1**|**640**|**1610**|**99.8%**|**121**|**134**|**90.2%**|
+|AllOverIt.Filtering.Builders.FilterBuilder`2|71|0|71|159|100%|19|24|79.1%|
 |AllOverIt.Filtering.Builders.FilterSpecificationBuilder`2|212|1|213|404|99.5%|50|58|86.2%|
 |AllOverIt.Filtering.Exceptions.NullNotSupportedException|9|0|9|28|100%|0|0||
 |AllOverIt.Filtering.Extensions.FilterExtensions|12|0|12|42|100%|2|2|100%|
@@ -414,7 +414,7 @@
 |AllOverIt.ReactiveUI.ViewRegistry.ViewItem`1|2|0|2|15|100%|0|0||
 |AllOverIt.ReactiveUI.ViewRegistry.ViewModelViewItem`1|3|0|3|19|100%|0|0||
 |AllOverIt.ReactiveUI.ViewRegistry.ViewRegistry`1|133|0|133|261|100%|28|28|100%|
-|**AllOverIt.Serialization.Binary**|**591**|**1**|**592**|**1319**|**99.8%**|**101**|**110**|**91.8%**|
+|**AllOverIt.Serialization.Binary**|**590**|**1**|**591**|**1318**|**99.8%**|**101**|**110**|**91.8%**|
 |AllOverIt.Serialization.Binary.Exceptions.BinaryReaderException|9|0|9|30|100%|0|0||
 |AllOverIt.Serialization.Binary.Exceptions.BinaryWriterException|9|0|9|30|100%|0|0||
 |AllOverIt.Serialization.Binary.Readers.DynamicBinaryValueReader|16|0|16|51|100%|4|6|66.6%|
@@ -426,7 +426,7 @@
 |AllOverIt.Serialization.Binary.Writers.DynamicBinaryValueWriter|16|0|16|48|100%|4|6|66.6%|
 |AllOverIt.Serialization.Binary.Writers.EnrichedBinaryValueWriter|5|0|5|21|100%|0|0||
 |AllOverIt.Serialization.Binary.Writers.EnrichedBinaryValueWriter`1|1|0|1|15|100%|0|0||
-|AllOverIt.Serialization.Binary.Writers.EnrichedBinaryWriter|180|1|181|270|99.4%|34|36|94.4%|
+|AllOverIt.Serialization.Binary.Writers.EnrichedBinaryWriter|179|1|180|269|99.4%|34|36|94.4%|
 |AllOverIt.Serialization.Binary.Writers.Extensions.EnrichedBinaryValueWriterExtensions|5|0|5|22|100%|0|0||
 |AllOverIt.Serialization.Binary.Writers.Extensions.EnrichedBinaryWriterExtensions|142|0|142|380|100%|33|36|91.6%|
 |**AllOverIt.Serialization.Json.Abstractions**|**342**|**0**|**342**|**807**|**100%**|**52**|**52**|**100%**|
@@ -436,10 +436,10 @@
 |AllOverIt.Serialization.Json.Abstractions.Extensions.ElementDictionaryExtensions|202|0|202|438|100%|46|46|100%|
 |AllOverIt.Serialization.Json.Abstractions.JsonHelperBase|82|0|82|220|100%|0|0||
 |AllOverIt.Serialization.Json.Abstractions.JsonSerializerConfiguration|3|0|3|17|100%|0|0||
-|**AllOverIt.Serialization.Json.Newtonsoft**|**257**|**5**|**262**|**628**|**98%**|**75**|**86**|**87.2%**|
+|**AllOverIt.Serialization.Json.Newtonsoft**|**257**|**5**|**262**|**628**|**98%**|**73**|**84**|**86.9%**|
 |AllOverIt.Serialization.Json.Newtonsoft.Converters.DateTimeAsUtcConverter|14|0|14|39|100%|4|4|100%|
 |AllOverIt.Serialization.Json.Newtonsoft.Converters.EnrichedEnumJsonConverter`1|17|0|17|46|100%|2|2|100%|
-|AllOverIt.Serialization.Json.Newtonsoft.Converters.EnrichedEnumJsonConverterFactory|20|0|20|52|100%|6|6|100%|
+|AllOverIt.Serialization.Json.Newtonsoft.Converters.EnrichedEnumJsonConverterFactory|20|0|20|52|100%|4|4|100%|
 |AllOverIt.Serialization.Json.Newtonsoft.Converters.EnumerableInterfaceConverter`2|8|0|8|38|100%|2|2|100%|
 |AllOverIt.Serialization.Json.Newtonsoft.Converters.InterfaceConverter`2|8|0|8|39|100%|0|0||
 |AllOverIt.Serialization.Json.Newtonsoft.Converters.JsonConverterFactory|9|0|9|29|100%|0|0||
@@ -447,10 +447,10 @@
 |AllOverIt.Serialization.Json.Newtonsoft.Extensions.NewtonsoftJsonSerializerExtensions|16|0|16|48|100%|4|4|100%|
 |AllOverIt.Serialization.Json.Newtonsoft.JsonHelper|15|0|15|41|100%|4|4|100%|
 |AllOverIt.Serialization.Json.Newtonsoft.NewtonsoftJsonSerializer|66|0|66|124|100%|18|18|100%|
-|**AllOverIt.Serialization.Json.SystemText**|**250**|**7**|**257**|**623**|**97.2%**|**88**|**98**|**89.7%**|
+|**AllOverIt.Serialization.Json.SystemText**|**250**|**7**|**257**|**623**|**97.2%**|**86**|**96**|**89.5%**|
 |AllOverIt.Serialization.Json.SystemText.Converters.DateTimeAsUtcConverter|8|0|8|32|100%|0|0||
 |AllOverIt.Serialization.Json.SystemText.Converters.EnrichedEnumJsonConverter`1|11|0|11|35|100%|0|0||
-|AllOverIt.Serialization.Json.SystemText.Converters.EnrichedEnumJsonConverterFactory|20|0|20|54|100%|6|6|100%|
+|AllOverIt.Serialization.Json.SystemText.Converters.EnrichedEnumJsonConverterFactory|20|0|20|54|100%|4|4|100%|
 |AllOverIt.Serialization.Json.SystemText.Converters.EnumerableInterfaceConverter`2|8|0|8|40|100%|2|2|100%|
 |AllOverIt.Serialization.Json.SystemText.Converters.InterfaceConverter`2|7|0|7|42|100%|0|0||
 |AllOverIt.Serialization.Json.SystemText.Converters.NestedDictionaryConverter|106|7|113|208|93.8%|56|66|84.8%|
@@ -458,24 +458,25 @@
 |AllOverIt.Serialization.Json.SystemText.Extensions.SystemTextJsonSerializerExtensions|16|0|16|48|100%|4|4|100%|
 |AllOverIt.Serialization.Json.SystemText.JsonHelper|15|0|15|42|100%|4|4|100%|
 |AllOverIt.Serialization.Json.SystemText.SystemTextJsonSerializer|58|0|58|108|100%|16|16|100%|
-|**AllOverIt.Serilog**|**58**|**0**|**58**|**216**|**100%**|**0**|**0**|****|
-|AllOverIt.Serilog.Enrichers.ThreadId.ThreadIdEnricher|4|0|4|19|100%|0|0||
+|**AllOverIt.Serilog**|**58**|**0**|**58**|**217**|**100%**|**0**|**0**|****|
+|AllOverIt.Serilog.Enrichers.ThreadId.ThreadIdEnricher|4|0|4|20|100%|0|0||
 |AllOverIt.Serilog.Extensions.LoggerSinkConfigurationExtensions|12|0|12|67|100%|0|0||
 |AllOverIt.Serilog.Extensions.ServiceCollectionExtensions|11|0|11|28|100%|0|0||
 |AllOverIt.Serilog.Extensions.ServiceProviderExtensions|4|0|4|20|100%|0|0||
 |AllOverIt.Serilog.Sinks.CircularBuffer.CircularBufferSink|17|0|17|43|100%|0|0||
 |AllOverIt.Serilog.Sinks.CircularBuffer.CircularBufferSinkMessage|7|0|7|24|100%|0|0||
 |AllOverIt.Serilog.Sinks.CircularBuffer.CircularBufferSinkMessages|3|0|3|15|100%|0|0||
-|**AllOverIt.Validation**|**559**|**3**|**562**|**1653**|**99.4%**|**58**|**58**|**100%**|
+|**AllOverIt.Validation**|**599**|**2**|**601**|**1755**|**99.6%**|**58**|**58**|**100%**|
 |AllOverIt.Validation.Exceptions.ValidationRegistryException|9|0|9|28|100%|0|0||
+|AllOverIt.Validation.Extensions.AbstractValidatorExtensions|36|0|36|93|100%|0|0||
 |AllOverIt.Validation.Extensions.LifetimeValidationRegistryExtensions|17|0|17|68|100%|0|0||
 |AllOverIt.Validation.Extensions.RuleBuilderExtensions|144|0|144|505|100%|0|0||
 |AllOverIt.Validation.Extensions.RuleBuilderOptionsExtensions|3|0|3|19|100%|0|0||
-|AllOverIt.Validation.Extensions.ServiceCollectionExtensions|19|0|19|58|100%|4|4|100%|
+|AllOverIt.Validation.Extensions.ServiceCollectionExtensions|21|0|21|60|100%|4|4|100%|
 |AllOverIt.Validation.Extensions.ValidationContextExtensions|10|0|10|39|100%|0|0||
 |AllOverIt.Validation.Extensions.ValidationRegistryExtensions|5|0|5|24|100%|0|0||
 |AllOverIt.Validation.Extensions.ValidatorExtensions|10|0|10|41|100%|4|4|100%|
-|AllOverIt.Validation.LifetimeValidationInvoker|112|2|114|222|98.2%|10|10|100%|
+|AllOverIt.Validation.LifetimeValidationInvoker|114|1|115|229|99.1%|10|10|100%|
 |AllOverIt.Validation.LifetimeValidationRegistrarBase|24|0|24|72|100%|8|8|100%|
 |AllOverIt.Validation.ValidationInvoker|80|1|81|168|98.7%|12|12|100%|
 |AllOverIt.Validation.ValidationRegistrarBase|15|0|15|40|100%|8|8|100%|
