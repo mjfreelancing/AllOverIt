@@ -1,0 +1,3 @@
+Within 'Package Manager Console' tab:
+
+npm i -g aws-cdk

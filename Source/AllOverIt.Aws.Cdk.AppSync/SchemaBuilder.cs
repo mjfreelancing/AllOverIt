@@ -120,7 +120,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
                 }
                 else
                 {
-                    throw new InvalidOperationException($"Expected a {nameof(IQueryDefinition)} or {nameof(ISubscriptionDefinition)} type");
+                    throw new InvalidOperationException($"Expected a {nameof(IQueryDefinition)} or {nameof(IMutationDefinition)} type");
                 }
 
                 var fieldMapping = methodInfo.GetFieldName(rootName);
