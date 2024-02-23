@@ -4,6 +4,7 @@ using AllOverIt.Aws.Cdk.AppSync.Factories;
 using AllOverIt.Aws.Cdk.AppSync.Mapping;
 using AllOverIt.Aws.Cdk.AppSync.Schema.Types;
 using AllOverIt.Extensions;
+using Amazon.CDK.AWS.AppSync;
 using Cdklabs.AwsCdkAppsyncUtils;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,9 @@ namespace AllOverIt.Aws.Cdk.AppSync
     internal sealed class GraphqlTypeStore
     {
         private readonly List<SystemType> _typeUnderConstruction = [];
-        private readonly CodeFirstSchema _schema;
+
+        private readonly GraphqlApi _graphqlApi;
+        private readonly GraphqlSchema _schema;
         private readonly IReadOnlyDictionary<SystemType, string> _typeNameOverrides;
         private readonly MappingTemplates _mappingTemplates;
         private readonly MappingTypeFactory _mappingTypeFactory;
@@ -40,9 +43,10 @@ namespace AllOverIt.Aws.Cdk.AppSync
             {nameof(String), requiredTypeInfo => GraphqlType.String(CreateTypeOptions(requiredTypeInfo))}
         };
 
-        public GraphqlTypeStore(CodeFirstSchema schema, IReadOnlyDictionary<SystemType, string> typeNameOverrides, MappingTemplates mappingTemplates,
+        public GraphqlTypeStore(GraphqlApi graphqlApi, GraphqlSchema schema, IReadOnlyDictionary<SystemType, string> typeNameOverrides, MappingTemplates mappingTemplates,
             MappingTypeFactory mappingTypeFactory, DataSourceFactory dataSourceFactory)
         {
+            _graphqlApi = graphqlApi.WhenNotNull();
             _schema = schema.WhenNotNull();
             _typeNameOverrides = typeNameOverrides.WhenNotNull();
             _mappingTemplates = mappingTemplates.WhenNotNull();
@@ -142,7 +146,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
 
                 var classDefinition = new Dictionary<string, IField>();
 
-                ParseInterfaceTypeMethods(parentName, classDefinition, type);
+                ParseInterfaceTypeMethods(parentName, classDefinition, type, typeDescriptor);
 
                 var intermediateType = CreateIntermediateType(typeDescriptor, classDefinition);
 
@@ -164,7 +168,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
             }
         }
 
-        private void ParseInterfaceTypeMethods(string parentName, Dictionary<string, IField> classDefinition, SystemType type)
+        private void ParseInterfaceTypeMethods(string parentName, Dictionary<string, IField> classDefinition, SystemType type, GraphqlSchemaTypeDescriptor parentTypeDescriptor)
         {
             var methods = type.GetMethodInfo();
 
@@ -206,38 +210,42 @@ namespace AllOverIt.Aws.Cdk.AppSync
                 var authDirectives = methodInfo.GetAuthDirectivesOrDefault();
 
                 // optionally specified via a custom attribute
+                var fieldName = methodInfo.Name.GetGraphqlName();
                 var dataSource = methodInfo.GetDataSource(_dataSourceFactory);
 
-                if (dataSource == null)
-                {
-                    classDefinition.Add(
-                        methodInfo.Name.GetGraphqlName(),
-                        new Field(
-                            new FieldOptions
-                            {
-                                Args = methodInfo.GetMethodArgs(_schema, this),
-                                ReturnType = returnObjectType,
-                                Directives = authDirectives
-                            })
-                    );
-                }
-                else
+                classDefinition.Add(
+                    fieldName,
+                    new Field(
+                        new FieldOptions
+                        {
+                            Args = methodInfo.GetMethodArgs(_schema, this),
+                            ReturnType = returnObjectType,
+                            Directives = authDirectives
+                        })
+                );
+
+                if (dataSource is not null)
                 {
                     methodInfo.RegisterRequestResponseMappings(fieldMapping, _mappingTemplates, _mappingTypeFactory);
 
-                    classDefinition.Add(
-                        methodInfo.Name.GetGraphqlName(),
-                        new ResolvableField(
-                            new ResolvableFieldOptions
-                            {
-                                DataSource = dataSource,
-                                RequestMappingTemplate = _mappingTemplates.GetRequestMapping(fieldMapping),
-                                ResponseMappingTemplate = _mappingTemplates.GetResponseMapping(fieldMapping),
-                                Args = methodInfo.GetMethodArgs(_schema, this),
-                                ReturnType = returnObjectType,
-                                Directives = authDirectives
-                            })
-                    );
+                    var resolverProps = new ExtendedResolverProps
+                    {
+                        TypeName = parentTypeDescriptor.Name,
+                        FieldName = fieldName,
+                        DataSource = dataSource
+                    };
+
+                    if (false)
+                    {
+                        // JS resolvers to be implemented here
+                    }
+                    else
+                    {
+                        resolverProps.RequestMappingTemplate = _mappingTemplates.GetRequestMapping(fieldMapping);
+                        resolverProps.ResponseMappingTemplate = _mappingTemplates.GetResponseMapping(fieldMapping);
+                    }
+
+                    _graphqlApi.CreateResolver($"{parentTypeDescriptor.Name}{fieldName}Resolver", resolverProps);
                 }
             }
         }

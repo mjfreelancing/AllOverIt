@@ -35,11 +35,11 @@ namespace AllOverIt.Aws.Cdk.AppSync
 
             var dataSourceFactory = new DataSourceFactory(this, apiProps.EndpointLookup);
 
-            var schema = apiProps.GetCodeFirstSchema();
+            var schema = apiProps.GetGraphqlSchema();
 
-            var gqlTypeCache = new GraphqlTypeStore(schema, typeNameOverrides, mappingTemplates, mappingTypeFactory, dataSourceFactory);
+            var gqlTypeCache = new GraphqlTypeStore(this, schema, typeNameOverrides, mappingTemplates, mappingTypeFactory, dataSourceFactory);
 
-            _schemaBuilder = new SchemaBuilder(schema, mappingTemplates, mappingTypeFactory, gqlTypeCache, dataSourceFactory);
+            _schemaBuilder = new SchemaBuilder(this, schema, mappingTemplates, mappingTypeFactory, gqlTypeCache, dataSourceFactory);
         }
 
         /// <summary>Adds a Query definition to the AppSync GraphQL API.</summary>

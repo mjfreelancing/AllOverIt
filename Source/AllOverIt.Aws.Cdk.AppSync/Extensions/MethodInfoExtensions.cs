@@ -43,7 +43,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
             }
         }
 
-        public static IDictionary<string, GraphqlType> GetMethodArgs(this MethodInfo methodInfo, CodeFirstSchema schema, GraphqlTypeStore typeStore)
+        public static IDictionary<string, GraphqlType> GetMethodArgs(this MethodInfo methodInfo, GraphqlSchema schema, GraphqlTypeStore typeStore)
         {
             var parameters = methodInfo.GetParameters();
 

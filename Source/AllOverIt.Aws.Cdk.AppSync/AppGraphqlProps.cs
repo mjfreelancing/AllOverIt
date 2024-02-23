@@ -1,11 +1,10 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources;
 using Amazon.CDK.AWS.AppSync;
-using Cdklabs.AwsCdkAppsyncUtils;
 using System.Collections.Generic;
 
 namespace AllOverIt.Aws.Cdk.AppSync
 {
-    /// <summary>Contains options for an AppSync GraphQL API with the Schema pre-configured as a <see cref="CodeFirstSchema"/>.</summary>
+    /// <summary>Contains options for an AppSync GraphQL API with the Schema pre-configured as a <see cref="GraphqlSchema"/>.</summary>
     public sealed class AppGraphqlProps : GraphqlApiProps
     {
         /// <summary>Provides endpoint lookup values for <see cref="HttpDataSourceAttribute"/> using <see cref="EndpointSource.Lookup"/>.</summary>
@@ -14,12 +13,12 @@ namespace AllOverIt.Aws.Cdk.AppSync
         /// <summary>Constructor.</summary>
         public AppGraphqlProps()
         {
-            Definition = Definition.FromSchema(new CodeFirstSchema());
+            Definition = Definition.FromSchema(new GraphqlSchema());
         }
 
-        internal CodeFirstSchema GetCodeFirstSchema()
+        internal GraphqlSchema GetGraphqlSchema()
         {
-            return Definition.Schema as CodeFirstSchema;
+            return Definition.Schema as GraphqlSchema;
         }
     }
 }
