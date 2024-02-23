@@ -61,6 +61,9 @@ namespace GraphqlSchema.Schema
         [NoneDataSource(nameof(Globe), typeof(GlobeMapping))]
         IGlobe Globe();
 
+        [HttpDataSource(Constants.HttpDataSource.GetPopulationUrlExplicit, typeof(PopulationMapping))]
+        int Population(string countryCode);
+
 #region Date, Time, DateTime, Timestamp responses
 
         [NoneDataSource(nameof(CountryDate), typeof(CountryDateMapping))]

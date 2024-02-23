@@ -13,6 +13,8 @@ namespace AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources
             public string RequestMapping { get; }
             public string ResponseMapping { get; }
 
+            public string Code => string.Empty;
+
             public SubscriptionMapping()
             {
                 RequestMapping = GetRequestMapping();

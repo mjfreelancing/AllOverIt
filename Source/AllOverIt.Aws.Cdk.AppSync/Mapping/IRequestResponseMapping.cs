@@ -8,5 +8,8 @@
 
         /// <summary>The response mapping as a string.</summary>
         public string ResponseMapping { get; }
+
+        /// <summary>The code for request and response mapping.</summary>
+        public string Code { get; }
     }
 }

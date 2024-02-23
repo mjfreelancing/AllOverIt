@@ -17,6 +17,7 @@
             // need a real URL for the deployment to succeed
             internal const string GetLanguageUrlExplicit = "https://www.google.com";
             internal const string GetAllContinentsUrlEnvironmentName = "GetAllContinents";
+            internal const string GetPopulationUrlExplicit = "https://www.microsoft.com";
         }
 
         internal static class Import

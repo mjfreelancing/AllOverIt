@@ -7,6 +7,7 @@ namespace GraphqlSchema.Schema.Mappings
     {
         public string RequestMapping { get; protected set; }
         public string ResponseMapping { get; protected set; }
+        public string Code { get; protected set; }
 
         protected static string GetNoneRequestMapping()
         {
@@ -64,6 +65,16 @@ namespace GraphqlSchema.Schema.Mappings
         protected static string GetHttpResponseMapping()
         {
             return "$util.toJson($ctx.result.body)";
+        }
+
+        protected static string GetCodeMapping()
+        {
+            return @"
+                    function request() {
+                    };
+
+                    function response() {
+                    };";
         }
     }
 }
