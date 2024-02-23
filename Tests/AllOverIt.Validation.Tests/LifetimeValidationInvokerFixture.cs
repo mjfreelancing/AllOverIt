@@ -90,7 +90,7 @@ namespace AllOverIt.Validation.Tests
                 })
                 .Should()
                 .Throw<InvalidOperationException>()
-                .WithMessage("The service provider has not been set.");
+                .WithMessage("The scope factory has not been set.");
             }
         }
 
@@ -852,8 +852,9 @@ namespace AllOverIt.Validation.Tests
         private void BuildServiceProvider()
         {
             var serviceProvider = _services.BuildServiceProvider();
+            var scopeFactory = serviceProvider.GetRequiredService<IServiceScopeFactory>();
 
-            _validationInvoker.SetServiceProvider(serviceProvider);
+            _validationInvoker.SetScopeFactory(scopeFactory);
         }
 
         private void AssertValidatorRegistration<TModel, TValidator>(ServiceLifetime lifetime)

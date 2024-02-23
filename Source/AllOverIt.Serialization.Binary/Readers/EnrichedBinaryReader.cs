@@ -12,7 +12,7 @@ namespace AllOverIt.Serialization.Binary.Readers
     /// <inheritdoc cref="IEnrichedBinaryReader"/>
     public sealed class EnrichedBinaryReader : BinaryReader, IEnrichedBinaryReader
     {
-        private static readonly IDictionary<TypeIdentifier, Func<EnrichedBinaryReader, object>> TypeIdReader = new Dictionary<TypeIdentifier, Func<EnrichedBinaryReader, object>>
+        private static readonly Dictionary<TypeIdentifier, Func<EnrichedBinaryReader, object>> TypeIdReader = new()
         {
             { TypeIdentifier.Bool, reader => reader.ReadBoolean() },
             { TypeIdentifier.Byte, reader => reader.ReadByte() },

@@ -7,7 +7,7 @@ namespace AESEncryptionDemo
 {
     public sealed class MainWindowViewModel : ObservableObject
     {
-        private readonly IAesEncryptor _encryptor;
+        private readonly AesEncryptor _encryptor;
 
         private string _key;
         public string Key

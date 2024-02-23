@@ -46,7 +46,9 @@ namespace AllOverIt.Validation.Extensions
 
             services.AddSingleton<ILifetimeValidationInvoker>(provider =>
             {
-                validationInvoker.SetServiceProvider(provider);
+                var scopeFactory = provider.GetRequiredService<IServiceScopeFactory>();
+
+                validationInvoker.SetScopeFactory(scopeFactory);
 
                 return validationInvoker;
             });

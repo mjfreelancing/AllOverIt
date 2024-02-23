@@ -37,8 +37,7 @@ namespace AllOverIt.Serialization.Binary.Writers
             { CommonTypes.TimeSpanType, TypeIdentifier.TimeSpan }
         };
 
-        private static readonly IDictionary<TypeIdentifier, Action<EnrichedBinaryWriter, object>> TypeIdWriter =
-            new Dictionary<TypeIdentifier, Action<EnrichedBinaryWriter, object>>
+        private static readonly Dictionary<TypeIdentifier, Action<EnrichedBinaryWriter, object>> TypeIdWriter = new()
         {
             { TypeIdentifier.Bool, (writer, value) => writer.WriteBoolean((bool)value) },
             { TypeIdentifier.Byte, (writer, value) => writer.WriteByte((byte)value) },

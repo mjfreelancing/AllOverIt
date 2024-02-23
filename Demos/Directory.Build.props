@@ -4,4 +4,8 @@
         <LangVersion>Latest</LangVersion>
         <IsPackable>false</IsPackable>
     </PropertyGroup>
+
+    <PropertyGroup>
+        <NoWarn>$(NoWarn);0618</NoWarn>
+    </PropertyGroup>
 </Project>

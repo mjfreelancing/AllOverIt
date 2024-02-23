@@ -7,8 +7,8 @@ namespace AllOverIt.Cryptography.Extensions
     /// <summary>Contains hash algorithm related extensions.</summary>
     public static class HashAlgorithmNameExtensions
     {
-        private static readonly IDictionary<HashAlgorithmName, Func<HashAlgorithm>> AlgorithmRegistry
-            = new Dictionary<HashAlgorithmName, Func<HashAlgorithm>>
+        private static readonly Dictionary<HashAlgorithmName, Func<HashAlgorithm>> AlgorithmRegistry
+            = new()
             {
                 { HashAlgorithmName.MD5, () => MD5.Create() },
                 { HashAlgorithmName.SHA1, () => SHA1.Create() },
@@ -17,8 +17,8 @@ namespace AllOverIt.Cryptography.Extensions
                 { HashAlgorithmName.SHA512, () => SHA512.Create() }
             };
 
-        private static readonly IDictionary<HashAlgorithmName, int> HashRegistry
-            = new Dictionary<HashAlgorithmName, int>
+        private static readonly Dictionary<HashAlgorithmName, int> HashRegistry
+            = new()
             {
                 { HashAlgorithmName.MD5, 128 },
                 { HashAlgorithmName.SHA1, 160 },

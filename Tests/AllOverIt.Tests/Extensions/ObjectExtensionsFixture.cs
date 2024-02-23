@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
-using AllOverIt.Fixture.Extensions;
 using AllOverIt.Formatters.Objects;
 using AllOverIt.Formatters.Objects.Exceptions;
 using AllOverIt.Patterns.Enumeration;
@@ -10,13 +9,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Xunit;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -161,7 +158,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var source = Create<DummyClass>();
 
-                var expected = new Dictionary<string, object> {{"Prop2", 2}, { "Prop9", source.GetProp9() } };
+                var expected = new Dictionary<string, object> { { "Prop2", 2 }, { "Prop9", source.GetProp9() } };
 
                 var actual = ObjectExtensions.ToPropertyDictionary(source, true, BindingOptions.Instance | BindingOptions.Private);
 
@@ -187,7 +184,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var source = Create<DummyClass>();
 
-                var expected = new Dictionary<string, object> {{"Prop7", true}};
+                var expected = new Dictionary<string, object> { { "Prop7", true } };
 
                 var actual = ObjectExtensions.ToPropertyDictionary(source, true,
                   BindingOptions.Static | BindingOptions.AllAccessor | BindingOptions.AllVisibility);
@@ -242,7 +239,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var source = new DummyClass();
 
-                var expected = new Dictionary<string, object> {{"Prop1", 1}, {"Prop5", "5"}, {"Prop6", 6.7}, {"Prop8", null}};
+                var expected = new Dictionary<string, object> { { "Prop1", 1 }, { "Prop5", "5" }, { "Prop6", 6.7 }, { "Prop8", null } };
 
                 var actual = ObjectExtensions.ToPropertyDictionary(source, true, BindingOptions.Instance | BindingOptions.Public);
 
@@ -254,7 +251,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var source = new DummyClass();
 
-                var expected = new Dictionary<string, object> {{"Prop1", 1}, {"Prop5", "5"}, {"Prop6", 6.7}};
+                var expected = new Dictionary<string, object> { { "Prop1", 1 }, { "Prop5", "5" }, { "Prop6", 6.7 } };
 
                 var actual = ObjectExtensions.ToPropertyDictionary(source, false, BindingOptions.Instance | BindingOptions.Public);
 
@@ -373,7 +370,7 @@ namespace AllOverIt.Tests.Extensions
                         : value;
                 }
             }
-          
+
             private class Typed<TType>
             {
                 public TType Prop { get; set; }
@@ -1558,14 +1555,14 @@ namespace AllOverIt.Tests.Extensions
         public class IsIntegral : ObjectExtensionsFixture
         {
             [Theory]
-            [InlineData((byte)0, true)]
-            [InlineData((sbyte)0, true)]
-            [InlineData((short)0, true)]
-            [InlineData((ushort)0, true)]
+            [InlineData((byte) 0, true)]
+            [InlineData((sbyte) 0, true)]
+            [InlineData((short) 0, true)]
+            [InlineData((ushort) 0, true)]
             [InlineData(0, true)]
-            [InlineData((uint)0, true)]
-            [InlineData((long)0, true)]
-            [InlineData((ulong)0, true)]
+            [InlineData((uint) 0, true)]
+            [InlineData((long) 0, true)]
+            [InlineData((ulong) 0, true)]
             [InlineData(0.0d, false)]
             [InlineData(0.0f, false)]
             [InlineData("some value", false)]
@@ -1591,7 +1588,7 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Return_String_Default_When_Null()
             {
-                var actual = ObjectExtensions.As<string>((object)null);
+                var actual = ObjectExtensions.As<string>((object) null);
 
                 actual.Should().Be(default);
             }
@@ -1599,7 +1596,7 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Return_Int_Default_When_Null()
             {
-                var actual = ObjectExtensions.As<int>((object)null);
+                var actual = ObjectExtensions.As<int>((object) null);
 
                 actual.Should().Be(default);
             }
@@ -1628,7 +1625,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var expected = Create<DummyClass>();
 
-                var actual = ObjectExtensions.As<DummyClass>((DummyClassBase)expected);
+                var actual = ObjectExtensions.As<DummyClass>((DummyClassBase) expected);
 
                 actual.Should().BeSameAs(expected);
             }
@@ -1667,7 +1664,7 @@ namespace AllOverIt.Tests.Extensions
 
                 if (value < 0)
                 {
-                    value = (short)(-value);
+                    value = (short) (-value);
                 }
 
                 Invoking(() => ObjectExtensions.As<bool>(value))
@@ -1683,7 +1680,7 @@ namespace AllOverIt.Tests.Extensions
 
                 if (value > 0)
                 {
-                    value = (short)(-value);
+                    value = (short) (-value);
                 }
 
                 Invoking(() => ObjectExtensions.As<bool>(value))
@@ -1777,7 +1774,7 @@ namespace AllOverIt.Tests.Extensions
             [InlineData(DummyEnum.Dummy3)]
             public void Should_Convert_Enum_To_Integer(DummyEnum value)
             {
-                var expected = (int)value;
+                var expected = (int) value;
 
                 var actual = ObjectExtensions.As<int>(value);
 
@@ -1790,7 +1787,7 @@ namespace AllOverIt.Tests.Extensions
             [InlineData(DummyEnum.Dummy3)]
             public void Should_Convert_Enum_To_Short(DummyEnum value)
             {
-                var expected = (short)value;
+                var expected = (short) value;
 
                 var actual = ObjectExtensions.As<short>(value);
 
@@ -1925,7 +1922,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = ObjectExtensions.As<DummyTypeToBeConverted>(DummyTypeConverter.ExpectedValue);
 
-                actual.Should().BeOfType< DummyTypeToBeConverted>();
+                actual.Should().BeOfType<DummyTypeToBeConverted>();
             }
         }
 
@@ -1956,7 +1953,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var expected = Create<int?>();
 
-                var actual = ObjectExtensions.AsNullable((int?)null, expected);
+                var actual = ObjectExtensions.AsNullable((int?) null, expected);
 
                 actual.Should().Be(expected);
             }
@@ -2220,7 +2217,7 @@ namespace AllOverIt.Tests.Extensions
                 var expected = CreateMany<int>();
 
                 var actual = ObjectExtensions
-                    .GetObjectElements((object)expected)
+                    .GetObjectElements((object) expected)
                     .Cast<int>();
 
                 actual.Should().ContainInOrder(expected);

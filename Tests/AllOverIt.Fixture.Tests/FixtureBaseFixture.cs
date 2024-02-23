@@ -8,7 +8,6 @@ using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Xunit;
 
 namespace AllOverIt.Fixture.Tests
 {
@@ -374,7 +373,7 @@ namespace AllOverIt.Fixture.Tests
                 value.Should().NotBeNullOrEmpty();
             }
 
-            [Fact(Timeout = 1000)]
+            [Fact]
             public void Should_Create_Random_Enum()
             {
                 var value1 = Create<DummyEnum>();
