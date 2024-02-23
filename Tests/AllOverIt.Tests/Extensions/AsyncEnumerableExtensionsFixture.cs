@@ -160,6 +160,58 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
+        public class ToArrayAsync : AsyncEnumerableExtensionsFixture
+        {
+            [Fact]
+            public async Task Should_Throw_When_Null()
+            {
+                await Invoking(
+                        async () =>
+                        {
+                            IAsyncEnumerable<bool> items = null;
+
+                            await items.ToArrayAsync();
+                        })
+                    .Should()
+                    .ThrowAsync<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("items");
+            }
+
+            [Fact]
+            public async Task Should_Convert_To_List()
+            {
+                var expected = CreateMany<string>();
+
+                var actual = await GetStrings(expected).ToArrayAsync();
+
+                expected.Should().BeEquivalentTo(actual);
+            }
+
+            [Fact]
+            public async Task Should_Return_As_List()
+            {
+                var expected = CreateMany<string>();
+
+                var actual = await GetStrings(expected).ToArrayAsync();
+
+                actual.Should().BeAssignableTo(typeof(IList<string>));
+            }
+
+            [Fact]
+            public async Task Should_Throw_When_Cancelled()
+            {
+                var cancellationTokenSource = new CancellationTokenSource();
+                cancellationTokenSource.Cancel();
+
+                await Invoking(async () =>
+                    {
+                        await GetStrings(CreateMany<string>()).ToArrayAsync(cancellationTokenSource.Token);
+                    })
+                    .Should()
+                    .ThrowAsync<OperationCanceledException>();
+            }
+        }
+
         public class ToListAsync : AsyncEnumerableExtensionsFixture
         {
             [Fact]
@@ -204,9 +256,9 @@ namespace AllOverIt.Tests.Extensions
                 cancellationTokenSource.Cancel();
 
                 await Invoking(async () =>
-                    {
-                        await GetStrings(CreateMany<string>()).ToListAsync(cancellationTokenSource.Token);
-                    })
+                {
+                    await GetStrings(CreateMany<string>()).ToListAsync(cancellationTokenSource.Token);
+                })
                     .Should()
                     .ThrowAsync<OperationCanceledException>();
             }
