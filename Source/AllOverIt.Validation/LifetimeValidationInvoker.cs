@@ -6,6 +6,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,12 +16,13 @@ namespace AllOverIt.Validation
     // Must be internal since the caller must be able to set the provider associated with the service collection.
     internal class LifetimeValidationInvoker : ILifetimeValidationRegistry, ILifetimeValidationInvoker
     {
+        [ExcludeFromCodeCoverage]
         private sealed class ModelMarker<TType, ValidatorBase>()
         {
         }
 
         private readonly IServiceCollection _services;
-        private IServiceProvider _serviceProvider;
+        private IServiceScopeFactory _scopeFactory;
 
         private ILifetimeValidationRegistry ValidationRegistry => this;
 
@@ -163,9 +165,9 @@ namespace AllOverIt.Validation
             return validator.ValidateAndThrowAsync(instance, context, cancellationToken);
         }
 
-        internal void SetServiceProvider(IServiceProvider serviceProvider)
+        internal void SetScopeFactory(IServiceScopeFactory scopeFactory)
         {
-            _serviceProvider ??= serviceProvider;
+            _scopeFactory ??= scopeFactory;
         }
 
         internal static Type CreateModelValidatorKey(Type modelType)
@@ -205,11 +207,11 @@ namespace AllOverIt.Validation
 
         private bool TryGetValidator(Type modelType, out IValidator validator)
         {
-            Throw<InvalidOperationException>.WhenNull(_serviceProvider, "The service provider has not been set.");
+            Throw<InvalidOperationException>.WhenNull(_scopeFactory, "The scope factory has not been set.");
 
             // The LifetimeValidationInvoker is a singleton so we need to create a new scope
             // so transient / scoped validators are resolved correctly (and not become singletons).
-            using (var scope = _serviceProvider.CreateScope())
+            using (var scope = _scopeFactory.CreateScope())
             {
                 var validatorKey = CreateModelValidatorKey(modelType);
 

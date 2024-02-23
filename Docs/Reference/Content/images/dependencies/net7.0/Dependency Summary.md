@@ -81,9 +81,9 @@
 * Amazon.CDK.Asset.KubectlV20 v2.1.2
 * Amazon.CDK.Asset.NodeProxyAgentV6 v2.0.1
 * Amazon.CDK.Lib v2.110.0
-* Amazon.CDK.Lib v2.126.0
+* Amazon.CDK.Lib v2.129.0
 * Amazon.JSII.Runtime v1.94.0
-* Cdklabs.AwsCdkAppsyncUtils v0.0.345
+* Cdklabs.AwsCdkAppsyncUtils v0.0.358
 * Constructs v10.0.0
 * Constructs v10.0.5
 
@@ -116,7 +116,7 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* CsvHelper v30.1.0
+* CsvHelper v31.0.0
 * System.Linq.Async v4.0.0
 
 <br>
@@ -476,7 +476,7 @@
 * AllOverIt.Serialization.Json.Abstractions
 * System.Runtime.CompilerServices.Unsafe v6.0.0
 * System.Text.Encodings.Web v8.0.0
-* System.Text.Json v8.0.1
+* System.Text.Json v8.0.2
 
 <br>
 
@@ -536,7 +536,7 @@
 * AllOverIt.Validation
 * FluentValidation v11.9.0
 * Microsoft.Extensions.DependencyInjection.Abstractions v8.0.0
-* Microsoft.Extensions.Options v8.0.1
+* Microsoft.Extensions.Options v8.0.2
 * Microsoft.Extensions.Primitives v8.0.0
 
 <br>

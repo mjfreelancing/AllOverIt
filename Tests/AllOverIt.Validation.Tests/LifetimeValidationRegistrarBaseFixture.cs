@@ -9,7 +9,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Xunit;
 
 
 namespace AllOverIt.Validation.Tests
@@ -84,7 +83,7 @@ namespace AllOverIt.Validation.Tests
 
                 _validationRegistrar.AutoRegisterTransientValidators(registryFake.FakedObject, null);
 
-                validators.Should().HaveCount(26);      // All non-abstract validators in this assembly
+                validators.Should().HaveCount(30);      // All non-abstract validators in this assembly
 
                 validators.All(validator => !validator.IsAbstract).Should().BeTrue();
             }
@@ -176,7 +175,7 @@ namespace AllOverIt.Validation.Tests
 
                 _validationRegistrar.AutoRegisterScopedValidators(registryFake.FakedObject, null);
 
-                validators.Should().HaveCount(26);      // All non-abstract validators in this assembly
+                validators.Should().HaveCount(30);      // All non-abstract validators in this assembly
 
                 validators.All(validator => !validator.IsAbstract).Should().BeTrue();
             }
@@ -268,7 +267,7 @@ namespace AllOverIt.Validation.Tests
 
                 _validationRegistrar.AutoRegisterSingletonValidators(registryFake.FakedObject, null);
 
-                validators.Should().HaveCount(26);      // All non-abstract validators in this assembly
+                validators.Should().HaveCount(30);      // All non-abstract validators in this assembly
 
                 validators.All(validator => !validator.IsAbstract).Should().BeTrue();
             }
@@ -360,7 +359,7 @@ namespace AllOverIt.Validation.Tests
 
                 _validationRegistrar.AutoRegisterValidators(registryFake.FakedObject, Create<ServiceLifetime>(), null);
 
-                validators.Should().HaveCount(26);      // All non-abstract validators in this assembly
+                validators.Should().HaveCount(30);      // All non-abstract validators in this assembly
 
                 validators.All(validator => !validator.IsAbstract).Should().BeTrue();
             }
