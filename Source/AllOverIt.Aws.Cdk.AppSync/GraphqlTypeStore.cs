@@ -228,6 +228,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
                 {
                     methodInfo.RegisterRequestResponseMappings(fieldMapping, _mappingTemplates, _mappingTypeFactory);
 
+                    var mappingType = _mappingTemplates.GetMappingType(fieldMapping);
                     var resolverProps = new ExtendedResolverProps
                     {
                         TypeName = parentTypeDescriptor.Name,
@@ -235,9 +236,9 @@ namespace AllOverIt.Aws.Cdk.AppSync
                         DataSource = dataSource
                     };
 
-                    if (false)
+                    if (mappingType == MappingType.Code)
                     {
-                        // JS resolvers to be implemented here
+                        resolverProps.Code = _mappingTemplates.GetCodeMapping(fieldMapping);
                     }
                     else
                     {

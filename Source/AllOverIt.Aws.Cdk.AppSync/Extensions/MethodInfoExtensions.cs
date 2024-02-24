@@ -78,8 +78,12 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
             var requestResponseMapping = GetRequestResponseMapping(methodInfo, mappingTypeFactory);
 
             // will be null if the mapping has already been populated (via code), or the factory will provide the information
-            if (requestResponseMapping != null)
+            if (!string.IsNullOrWhiteSpace(requestResponseMapping?.Code))
             {
+                mappingTemplates.RegisterMappings(fieldMapping, requestResponseMapping.Code);
+            }
+            else if (requestResponseMapping != null)
+            {                
                 // fieldMapping includes the parent names too
                 mappingTemplates.RegisterMappings(fieldMapping, requestResponseMapping.RequestMapping, requestResponseMapping.ResponseMapping);
             }
