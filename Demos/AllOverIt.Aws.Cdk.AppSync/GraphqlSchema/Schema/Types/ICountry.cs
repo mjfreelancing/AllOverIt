@@ -1,5 +1,7 @@
-﻿using AllOverIt.Aws.Cdk.AppSync.Attributes.Directives;
+﻿using AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources;
+using AllOverIt.Aws.Cdk.AppSync.Attributes.Directives;
 using AllOverIt.Aws.Cdk.AppSync.Attributes.Types;
+using GraphqlSchema.Schema.Mappings.Query;
 using GraphqlSchema.Schema.Types.Globe;
 
 namespace GraphqlSchema.Schema.Types
@@ -22,5 +24,8 @@ namespace GraphqlSchema.Schema.Types
         DateType[] DateTypes();
 
         IContinent Continent();      // this is a circular reference
+
+        [HttpDataSource(Constants.HttpDataSource.GetPopulationUrlExplicit, typeof(PopulationMapping))]
+        int Population(string countryCode);
     }
 }
