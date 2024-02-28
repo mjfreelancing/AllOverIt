@@ -1,11 +1,12 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync;
 using AllOverIt.Aws.Cdk.AppSync.Factories;
-using AllOverIt.Aws.Cdk.AppSync.Mapping;
 using Amazon.CDK;
 using Amazon.CDK.AWS.AppSync;
 using Constructs;
 using System.Collections.Generic;
+using AllOverIt.Aws.Cdk.AppSync.Resolvers;
 using SystemType = System.Type;
+using AllOverIt.Aws.Cdk.AppSync.DataSources;
 
 #if DEBUG
 using Amazon.CDK.AWS.Cognito;
@@ -18,12 +19,13 @@ namespace GraphqlSchema
     internal sealed class AppSyncDemoGraphql : AppGraphqlBase
     {
         public AppSyncDemoGraphql(Construct scope, AppSyncDemoAppProps appProps, IAuthorizationMode authMode, IReadOnlyDictionary<SystemType, string> typeNameOverrides,
-            MappingTemplates mappingTemplates, MappingTypeFactory mappingTypeFactory)
-            : base(scope, "GraphQl", GetAppGraphqlProps(scope, appProps, authMode), typeNameOverrides, mappingTemplates, mappingTypeFactory)
+            ResolverRegistry resolverRegistry, ResolverFactory resolverFactory)
+            : base(scope, "GraphQl", GetAppGraphqlProps(scope, appProps, authMode, typeNameOverrides, resolverRegistry, resolverFactory))
         {
         }
 
-        private static AppGraphqlProps GetAppGraphqlProps(Construct scope, AppSyncDemoAppProps appProps, IAuthorizationMode authMode)
+        private static AppGraphqlProps GetAppGraphqlProps(Construct scope, AppSyncDemoAppProps appProps, IAuthorizationMode authMode,
+            IReadOnlyDictionary<SystemType, string> typeNameOverrides, ResolverRegistry resolverRegistry, ResolverFactory resolverFactory)
         {
             return new AppGraphqlProps
             {
@@ -83,11 +85,75 @@ namespace GraphqlSchema
                     ]
 #endif
                 },
+
+                TypeNameOverrides = typeNameOverrides,
+
+                ResolverRegistry = resolverRegistry,
+
+                ResolverFactory = resolverFactory,
+
                 EndpointLookup = new Dictionary<string, string>
                 {
-                    [Constants.Lookup.GetCountriesUrlKey] = Fn.Join("/", [Fn.ImportValue(Constants.Import.GetCountriesUrlImportName), "lookup"])
-                }
+                    [Constants.HttpDataSource.GetCountriesUrlLookupKey] = Fn.Join("/", [Fn.ImportValue(Constants.HttpDataSource.GetCountriesUrlImportName), "lookup"])
+                },
+
+                DataSources =
+                [
+                    .. CreateLambdaDataSources(),
+                    .. CreateHttpDataSources(),
+                    .. CreateNoneDataSources(),
+                    .. CreateSubscriptionDataSources()
+                ]
             };
+        }
+
+        private static IEnumerable<GraphQlDataSourceBase> CreateLambdaDataSources()
+        {
+            yield return new LambdaGraphQlDataSource(Constants.LambdaDataSource.GetLanguages);
+            yield return new LambdaGraphQlDataSource(Constants.LambdaDataSource.AddCountry);
+            yield return new LambdaGraphQlDataSource(Constants.LambdaDataSource.UpdateCountry);
+        }
+
+        private static IEnumerable<GraphQlDataSourceBase> CreateHttpDataSources()
+        {
+            yield return new HttpGraphQlDataSource(Constants.HttpDataSource.GetPopulationUrlExplicit, "An example Http data source");
+            yield return new HttpGraphQlDataSource(EndpointSource.EnvironmentVariable, Constants.HttpDataSource.GetAllContinentsUrlEnvironmentName);
+            yield return new HttpGraphQlDataSource(Constants.HttpDataSource.GetLanguageUrlExplicit);
+            yield return new HttpGraphQlDataSource(EndpointSource.ImportValue, Constants.HttpDataSource.GetCountriesUrlImportName);
+            yield return new HttpGraphQlDataSource(EndpointSource.Lookup, Constants.HttpDataSource.GetCountriesUrlLookupKey);
+        }
+
+        private static IEnumerable<GraphQlDataSourceBase> CreateNoneDataSources()
+        {
+            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.AddLanguage);
+            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountryLanguage);
+            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.ContinentLanguages);
+            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.DefaultLanguage);
+            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.Continents);
+            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.AllCountries);
+            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.Globe);
+            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountryDate);
+            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountryTime);
+            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountryDateTime);
+            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountryTimestamp);
+            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountryDates);
+            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountryTimes);
+            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountryDateTimes);
+            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountryTimestamps);
+            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountryByDate);
+            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountryByTime);
+            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountryByDateTime);
+            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountryByTimestamp);
+            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountriesByDates);
+            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountriesByTimes);
+            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountriesByDateTimes);
+            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountriesByTimestamps);
+        }
+
+        private static IEnumerable<GraphQlDataSourceBase> CreateSubscriptionDataSources()
+        {
+            // Datasources are optional for subscriptions
+            yield return new SubscriptionGraphQlDataSource(Constants.SubscriptionDataSource.AddedLanguage);
         }
     }
 }

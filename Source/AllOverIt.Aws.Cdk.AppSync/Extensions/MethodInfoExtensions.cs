@@ -1,10 +1,10 @@
 ﻿using AllOverIt.Assertion;
-using AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources;
 using AllOverIt.Aws.Cdk.AppSync.Attributes.Directives;
+using AllOverIt.Aws.Cdk.AppSync.Attributes.Resolvers;
 using AllOverIt.Aws.Cdk.AppSync.Attributes.Types;
 using AllOverIt.Aws.Cdk.AppSync.Exceptions;
 using AllOverIt.Aws.Cdk.AppSync.Factories;
-using AllOverIt.Aws.Cdk.AppSync.Mapping;
+using AllOverIt.Aws.Cdk.AppSync.Resolvers;
 using AllOverIt.Collections;
 using AllOverIt.Extensions;
 using Cdklabs.AwsCdkAppsyncUtils;
@@ -71,27 +71,23 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
             return args;
         }
 
-        public static void RegisterRequestResponseMappings(this MethodInfo methodInfo, string fieldMapping, MappingTemplates mappingTemplates, MappingTypeFactory mappingTypeFactory)
+        public static void RegisterResolver(this MethodInfo methodInfo, string fieldMapping, ResolverRegistry resolverRegistry, ResolverFactory resolverFactory)
         {
             _ = fieldMapping.WhenNotNullOrEmpty(nameof(fieldMapping));
 
-            var requestResponseMapping = GetRequestResponseMapping(methodInfo, mappingTypeFactory);
+            // Will be null if the resolver has already been populated (via code), or the factory will provide the information,
+            // or it isn't required (such as Subscriptions).
+            var resolver = GetResolverRuntime(methodInfo, resolverFactory);
 
-            // will be null if the mapping has already been populated (via code), or the factory will provide the information
-            if (!string.IsNullOrWhiteSpace(requestResponseMapping?.Code))
+            if (resolver is not null)
             {
-                mappingTemplates.RegisterMappings(fieldMapping, requestResponseMapping.Code);
-            }
-            else if (requestResponseMapping != null)
-            {                
-                // fieldMapping includes the parent names too
-                mappingTemplates.RegisterMappings(fieldMapping, requestResponseMapping.RequestMapping, requestResponseMapping.ResponseMapping);
+                resolverRegistry.RegisterResolver(fieldMapping, resolver);
             }
         }
 
         public static void AssertReturnSchemaType(this MethodInfo methodInfo, SystemType parentType)
         {
-            // make sure TYPE schema types only have other TYPE types, and similarly for INPUT schema types.
+            // Make sure TYPE schema types only have other TYPE types, and similarly for INPUT schema types.
             var parentSchemaType = parentType.GetGraphqlTypeDescriptor(EmptyTypeNameOverrides).SchemaType;
             var returnType = methodInfo.ReturnType;
 
@@ -118,16 +114,17 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
             return attributes.GetAuthDirectivesOrDefault();
         }
 
-        private static IRequestResponseMapping GetRequestResponseMapping(MethodInfo memberInfo, MappingTypeFactory mappingTypeFactory)
+        private static IResolverRuntime GetResolverRuntime(MethodInfo memberInfo, ResolverFactory resolverFactory)
         {
-            var attribute = memberInfo.GetCustomAttribute<DataSourceAttribute>(true);
+            var resolverAttribute = memberInfo.GetCustomAttribute<GraphQlResolverAttribute>(true);
 
-            Throw<InvalidOperationException>.WhenNull(attribute, $"Expected {memberInfo.DeclaringType!.Name}.{memberInfo.Name} to have a datasource attribute.");
+            // Will be null if no resolver type has been provided (assumes it was added code-first rather than on an attribute)
+            if (resolverAttribute?.ResolverType is not null)
+            {
+                return resolverFactory.GetResolverRuntime(resolverAttribute.ResolverType);
+            }
 
-            // will be null if no type has been provided (assumes the mapping was added in code via MappingTemplates)
-            return attribute.MappingType != null
-                ? mappingTypeFactory.GetRequestResponseMapping(attribute.MappingType)
-                : null;
+            return null;
         }
     }
 }

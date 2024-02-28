@@ -1,4 +1,4 @@
-#  Version 7.2.0
+mp#  Version 7.2.0
 ## 23 Feb 2024
 
 ### AllOverIt
@@ -191,7 +191,7 @@
 * Unchanged
 
 
-### AllOverIt.Mapping :new:
+### AllOverIt.e:
 * Moved `ObjectMapper` from `AllOverIt` into this dedicated package
 * Updated support `ArrayList`
 

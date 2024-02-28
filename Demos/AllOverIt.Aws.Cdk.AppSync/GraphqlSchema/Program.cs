@@ -25,7 +25,7 @@ namespace GraphqlSchema
             // required to test HttpDataSourceAttribute
             stack1.ExportValue(Token.AsString(Constants.HttpDataSource.GetLanguageUrlExplicit), new ExportValueOptions
             {
-                Name = Constants.Import.GetCountriesUrlImportName
+                Name = Constants.HttpDataSource.GetCountriesUrlImportName
             });
 
             var stack2 = new Stack(app, $"{Constants.AppName}V{Constants.ServiceVersion}Stack2", new StackProps

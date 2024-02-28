@@ -198,7 +198,7 @@
       "alloverit": {
         "type": "Project",
         "dependencies": {
-          "AllOverIt.Assertion": "[7.1.1, )"
+          "AllOverIt.Assertion": "[7.2.0, )"
         }
       },
       "alloverit.assertion": {
@@ -207,7 +207,7 @@
       "alloverit.aws.cdk.appsync": {
         "type": "Project",
         "dependencies": {
-          "AllOverIt": "[7.1.1, )",
+          "AllOverIt": "[7.2.0, )",
           "Amazon.CDK.Lib": "[2.129.0, )",
           "Cdklabs.AwsCdkAppsyncUtils": "[0.0.358, )"
         }

@@ -1,10 +1,12 @@
 ﻿using AllOverIt.Assertion;
-using AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources;
+using AllOverIt.Aws.Cdk.AppSync.Attributes.Resolvers;
+using AllOverIt.Aws.Cdk.AppSync.DataSources;
 using Amazon.CDK;
 using Amazon.CDK.AWS.AppSync;
 using Amazon.CDK.AWS.Lambda;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using SystemEnvironment = System.Environment;
 
@@ -15,33 +17,57 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
         private readonly Dictionary<string, BaseDataSource> _dataSourceCache = [];
 
         private readonly IGraphqlApi _graphQlApi;
+        private readonly IReadOnlyDictionary<string, GraphQlDataSourceBase> _dataSources;
         private readonly IReadOnlyDictionary<string, string> _endpointLookup;
 
-        public DataSourceFactory(IGraphqlApi graphQlApi, IReadOnlyDictionary<string, string> endpointLookup)
+        public DataSourceFactory(IGraphqlApi graphQlApi, IReadOnlyCollection<GraphQlDataSourceBase> dataSources,
+            IReadOnlyDictionary<string, string> endpointLookup)
         {
             _graphQlApi = graphQlApi.WhenNotNull(nameof(graphQlApi));
+
+            _dataSources = dataSources
+                .WhenNotNull(nameof(dataSources))
+                .Select(dataSource => new KeyValuePair<string, GraphQlDataSourceBase>(dataSource.DataSourceName, dataSource))
+                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
             _endpointLookup = endpointLookup ?? new Dictionary<string, string>();
         }
 
-        public BaseDataSource CreateDataSource(DataSourceAttribute attribute)
+        public BaseDataSource CreateDataSource(GraphQlResolverAttribute attribute)
         {
-            var dataSourceId = GetDataSourceId(_graphQlApi.Node.Path, attribute.DataSourceName);
-
-            if (!_dataSourceCache.TryGetValue(dataSourceId, out var dataSource))
+            if (attribute is UnitResolverAttribute unitResolverAttribute)
             {
-                dataSource = attribute switch
-                {
-                    LambdaDataSourceAttribute lambda => CreateLambdaDataSource(dataSourceId, lambda.FunctionName, lambda.Description),
-                    HttpDataSourceAttribute http => CreateHttpDataSource(dataSourceId, http.DataSourceName, http.EndpointSource, http.EndpointKey, http.Description),
-                    NoneDataSourceAttribute none => CreateNoneDataSource(dataSourceId, "None", none.DataSourceName, none.Description),
-                    SubscriptionDataSourceAttribute subscription => CreateNoneDataSource(dataSourceId, "Subscription", subscription.DataSourceName, subscription.Description),
-                    _ => throw new ArgumentOutOfRangeException($"Unknown DataSource type '{attribute.GetType().Name}'")
-                };
+                var datasourceLookup = unitResolverAttribute.DataSourceId;
 
-                _dataSourceCache.Add(dataSourceId, dataSource);
+                if (!_dataSources.TryGetValue(datasourceLookup, out var graphqlDataSource))
+                {
+                    Throw<InvalidOperationException>.WhenNull(graphqlDataSource, $"Unknown DataSource Id: '{datasourceLookup}'");
+                }
+
+                var dataSourceId = GetDataSourceId(_graphQlApi.Node.Path, graphqlDataSource.DataSourceName);
+
+                if (!_dataSourceCache.TryGetValue(dataSourceId, out var dataSource))
+                {
+                    dataSource = graphqlDataSource switch
+                    {
+                        LambdaGraphQlDataSource lambda => CreateLambdaDataSource(dataSourceId, lambda.FunctionName, lambda.Description),
+                        HttpGraphQlDataSource http => CreateHttpDataSource(dataSourceId, http.DataSourceName, http.EndpointSource, http.EndpointKey, http.Description),
+                        NoneGraphQlDataSource none => CreateNoneDataSource(dataSourceId, "None", none.DataSourceName, none.Description),
+                        SubscriptionGraphQlDataSource subscription => CreateNoneDataSource(dataSourceId, "Subscription", subscription.DataSourceName, subscription.Description),
+                        _ => throw new ArgumentOutOfRangeException($"Unknown DataSource type '{attribute.GetType().Name}'")
+                    };
+
+                    _dataSourceCache.Add(dataSourceId, dataSource);
+                }
+
+                return dataSource;
+            }
+            else if (attribute is PipelineResolverAttribute pipelineResolverAttribute)
+            {
+                // Pipelines yet to be implemented
             }
 
-            return dataSource;
+            return null;
         }
 
         private static string GetDataSourceId(string nodePath, string dataSourceName)
@@ -56,7 +82,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
 
         private static string SanitizeValue(string value)
         {
-            // exclude everything exception alphanumeric and dashes
+            // Exclude everything exception alphanumeric and dashes.
             return Regex.Replace(value, @"[^\w]", "", RegexOptions.None);
         }
 
@@ -87,7 +113,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
             });
         }
 
-        // Applicable to NoneDataSourceAttribute and SubscriptionDataSourceAttribute
+        // Applicable to NONE and Subscription DataSources
         private NoneDataSource CreateNoneDataSource(string dataSourceId, string dataSourceNamePrefix, string dataSourceName, string description)
         {
             var stack = Stack.Of(_graphQlApi);

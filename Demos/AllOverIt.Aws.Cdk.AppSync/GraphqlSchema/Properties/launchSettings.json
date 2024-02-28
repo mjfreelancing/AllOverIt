@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "GraphqlSchema": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "GetAllContinents": "www.ms.com"
+      }
+    }
+  }
+}

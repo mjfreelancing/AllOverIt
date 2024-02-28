@@ -3,7 +3,6 @@ using AllOverIt.Aws.Cdk.AppSync.Attributes;
 using AllOverIt.Aws.Cdk.AppSync.Exceptions;
 using AllOverIt.Aws.Cdk.AppSync.Extensions;
 using AllOverIt.Aws.Cdk.AppSync.Factories;
-using AllOverIt.Aws.Cdk.AppSync.Mapping;
 using AllOverIt.Aws.Cdk.AppSync.Schema;
 using Amazon.CDK.AWS.AppSync;
 using Cdklabs.AwsCdkAppsyncUtils;
@@ -22,19 +21,20 @@ namespace AllOverIt.Aws.Cdk.AppSync
 
         private readonly GraphqlApi _graphqlApi;
         private readonly GraphqlSchema _schema;
-        private readonly MappingTemplates _mappingTemplates;
-        private readonly MappingTypeFactory _mappingTypeFactory;
         private readonly GraphqlTypeStore _typeStore;
+        private readonly AppGraphqlProps _apiProps;
         private readonly DataSourceFactory _dataSourceFactory;
 
-        public SchemaBuilder(GraphqlApi graphqlApi, GraphqlSchema schema, MappingTemplates mappingTemplates, MappingTypeFactory mappingTypeFactory, GraphqlTypeStore typeStore, DataSourceFactory dataSourceFactory)
+        public SchemaBuilder(GraphqlApi graphqlApi, AppGraphqlProps apiProps, DataSourceFactory dataSourceFactory)
         {
             _graphqlApi = graphqlApi.WhenNotNull();
-            _schema = schema.WhenNotNull(nameof(schema));
-            _mappingTemplates = mappingTemplates.WhenNotNull(nameof(mappingTemplates));
-            _mappingTypeFactory = mappingTypeFactory.WhenNotNull(nameof(mappingTypeFactory));
-            _typeStore = typeStore.WhenNotNull(nameof(typeStore));
-            _dataSourceFactory = dataSourceFactory.WhenNotNull(nameof(dataSourceFactory));
+            _apiProps = apiProps.WhenNotNull();
+            _dataSourceFactory = dataSourceFactory.WhenNotNull();
+
+            var schema = apiProps.GetGraphqlSchema();
+
+            _schema = schema;
+            _typeStore = new GraphqlTypeStore(graphqlApi, schema, apiProps, _dataSourceFactory);
         }
 
         public SchemaBuilder AddQuery<TType>()
@@ -73,13 +73,9 @@ namespace AllOverIt.Aws.Cdk.AppSync
             {
                 methodInfo.AssertReturnTypeIsNotNullable();
 
-                var dataSource = methodInfo.GetDataSource(_dataSourceFactory);
-
-                Throw<SchemaException>.WhenNull(dataSource, $"{schemaType.Name} is missing a required datasource for '{methodInfo.Name}'.");
-
                 var fieldMapping = methodInfo.GetFieldName(SubscriptionPrefix);
 
-                methodInfo.RegisterRequestResponseMappings(fieldMapping, _mappingTemplates, _mappingTypeFactory);
+                methodInfo.RegisterResolver(fieldMapping, _apiProps.ResolverRegistry, _apiProps.ResolverFactory);
 
                 var requiredTypeInfo = methodInfo.GetRequiredTypeInfo();
 
@@ -105,6 +101,9 @@ namespace AllOverIt.Aws.Cdk.AppSync
                         })
                 });
 
+                var dataSource = methodInfo.GetDataSource(_dataSourceFactory);
+
+                // Can be null for subscriptions
                 if (dataSource is not null)
                 {
                     CreateResolver(SubscriptionPrefix, fieldName, dataSource, fieldMapping);
@@ -125,10 +124,6 @@ namespace AllOverIt.Aws.Cdk.AppSync
             {
                 methodInfo.AssertReturnTypeIsNotNullable();
 
-                var dataSource = methodInfo.GetDataSource(_dataSourceFactory);
-
-                Throw<SchemaException>.WhenNull(dataSource, $"{schemaType.Name} is missing a required datasource for '{methodInfo.Name}'.");
-
                 string rootName;
 
                 if (typeof(IQueryDefinition).IsAssignableFrom(schemaType))
@@ -146,7 +141,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
 
                 var fieldMapping = methodInfo.GetFieldName(rootName);
 
-                methodInfo.RegisterRequestResponseMappings(fieldMapping, _mappingTemplates, _mappingTypeFactory);
+                methodInfo.RegisterResolver(fieldMapping, _apiProps.ResolverRegistry, _apiProps.ResolverFactory);
 
                 var requiredTypeInfo = methodInfo.GetRequiredTypeInfo();
 
@@ -171,10 +166,11 @@ namespace AllOverIt.Aws.Cdk.AppSync
                         })
                 );
 
-                if (dataSource is not null)
-                {
-                    CreateResolver(rootName, fieldName, dataSource, fieldMapping);
-                }
+                var dataSource = methodInfo.GetDataSource(_dataSourceFactory);
+
+                Throw<SchemaException>.WhenNull(dataSource, $"{schemaType.Name} is missing a required datasource for '{methodInfo.Name}'.");
+
+                CreateResolver(rootName, fieldName, dataSource, fieldMapping);
             }
         }
 
@@ -189,7 +185,6 @@ namespace AllOverIt.Aws.Cdk.AppSync
 
         private void CreateResolver(string parentName, string fieldName, BaseDataSource dataSource, string fieldMapping)
         {
-            var mappingType = _mappingTemplates.GetMappingType(fieldMapping);
             var resolverProps = new ExtendedResolverProps
             {
                 TypeName = parentName,
@@ -197,15 +192,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
                 DataSource = dataSource
             };
 
-            if (mappingType == MappingType.Code)
-            {
-                resolverProps.Code = _mappingTemplates.GetCodeMapping(fieldMapping);
-            }
-            else
-            {
-                resolverProps.RequestMappingTemplate = _mappingTemplates.GetRequestMapping(fieldMapping);
-                resolverProps.ResponseMappingTemplate = _mappingTemplates.GetResponseMapping(fieldMapping);
-            }
+            _apiProps.ResolverRegistry.SetResolverProps(fieldMapping, resolverProps);
 
             _graphqlApi.CreateResolver($"{parentName}{fieldName}Resolver", resolverProps);
         }

@@ -1,8 +1,10 @@
-﻿using AllOverIt.Aws.Cdk.AppSync;
-using AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources;
+﻿using AllOverIt.Aws.Cdk.AppSync.Attributes.Resolvers;
 using AllOverIt.Aws.Cdk.AppSync.Attributes.Directives;
 using GraphqlSchema.Attributes;
-using GraphqlSchema.Schema.Mappings.Query;
+
+#if !USE_CODE_FIRST_RESOLVERS
+using GraphqlSchema.Schema.Resolvers.Query;
+#endif
 
 namespace GraphqlSchema.Schema.Types.Globe
 {
@@ -20,14 +22,22 @@ namespace GraphqlSchema.Schema.Types.Globe
     {
         string Name();
 
-        [HttpDataSource(EndpointSource.ImportValue, Constants.Import.GetCountriesUrlImportName, typeof(ContinentsCountriesMapping))]
+#if USE_CODE_FIRST_RESOLVERS
+        [UnitResolver(Constants.Import.GetCountriesUrlImportName)]
+#else
+        [UnitResolver(typeof(ContinentsCountriesResolver), Constants.HttpDataSource.GetCountriesUrlImportName)]
+#endif
 
 #if DEBUG   // Using RELEASE mode to deploy without these (DEBUG mode is used to check Synth output)
         [AuthApiKeyDirective]
 #endif
         ICountry[] Countries();
 
-        [HttpDataSource(EndpointSource.Lookup, Constants.Lookup.GetCountriesUrlKey, typeof(ContinentsCountryCodesMapping))]
+#if USE_CODE_FIRST_RESOLVERS
+        [UnitResolver(Constants.Lookup.GetCountriesUrlKey)]
+#else
+        [UnitResolver(typeof(ContinentsCountryCodesResolver), Constants.HttpDataSource.GetCountriesUrlLookupKey)]
+#endif
 
 #if DEBUG   // Using RELEASE mode to deploy without these (DEBUG mode is used to check Synth output)
         [AuthIamDirective]

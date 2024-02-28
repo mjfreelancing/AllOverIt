@@ -1,11 +1,7 @@
-﻿using AllOverIt.Aws.Cdk.AppSync.Attributes.Types;
-using AllOverIt.Aws.Cdk.AppSync.Factories;
-using AllOverIt.Aws.Cdk.AppSync.Mapping;
+﻿using AllOverIt.Aws.Cdk.AppSync.Factories;
 using AllOverIt.Aws.Cdk.AppSync.Schema;
 using Amazon.CDK.AWS.AppSync;
 using Constructs;
-using System.Collections.Generic;
-using SystemType = System.Type;
 
 namespace AllOverIt.Aws.Cdk.AppSync
 {
@@ -18,28 +14,12 @@ namespace AllOverIt.Aws.Cdk.AppSync
         /// <param name="scope">The construct scope.</param>
         /// <param name="id">The construct Id.</param>
         /// <param name="apiProps">The AppSync GraphQL API properties.</param>
-        /// <param name="typeNameOverrides">Provides name overrides for types discovered without a <see cref="SchemaTypeBaseAttribute"/>,
-        /// such as <see cref="SchemaEnumAttribute"/>. This would normally be used with other types, such as enumerations, defined in a shared
-        /// assembly.</param>
-        /// <param name="mappingTemplates">Contains request and response mapping templates for datasources that are not provided
-        /// a mapping type. If null then an an internal version will be created.</param>
-        /// <param name="mappingTypeFactory">Contains registrations for mapping types (defined on a DataSource) that do not have
-        /// a default constructor because arguments need to be provided at runtime.</param>
-        protected AppGraphqlBase(Construct scope, string id, AppGraphqlProps apiProps, IReadOnlyDictionary<SystemType, string> typeNameOverrides = default,
-            MappingTemplates mappingTemplates = default, MappingTypeFactory mappingTypeFactory = default)
+        protected AppGraphqlBase(Construct scope, string id, AppGraphqlProps apiProps)
             : base(scope, id, apiProps)
         {
-            typeNameOverrides ??= new Dictionary<SystemType, string>();
-            mappingTemplates ??= new MappingTemplates();
-            mappingTypeFactory ??= new MappingTypeFactory();
+            var dataSourceFactory = new DataSourceFactory(this, apiProps.DataSources, apiProps.EndpointLookup);
 
-            var dataSourceFactory = new DataSourceFactory(this, apiProps.EndpointLookup);
-
-            var schema = apiProps.GetGraphqlSchema();
-
-            var gqlTypeCache = new GraphqlTypeStore(this, schema, typeNameOverrides, mappingTemplates, mappingTypeFactory, dataSourceFactory);
-
-            _schemaBuilder = new SchemaBuilder(this, schema, mappingTemplates, mappingTypeFactory, gqlTypeCache, dataSourceFactory);
+            _schemaBuilder = new SchemaBuilder(this, apiProps, dataSourceFactory);
         }
 
         /// <summary>Adds a Query definition to the AppSync GraphQL API.</summary>

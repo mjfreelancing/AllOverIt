@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Aws.Cdk.AppSync.Extensions;
 using AllOverIt.Aws.Cdk.AppSync.Factories;
-using AllOverIt.Aws.Cdk.AppSync.Mapping;
 using AllOverIt.Aws.Cdk.AppSync.Schema.Types;
 using AllOverIt.Extensions;
 using Amazon.CDK.AWS.AppSync;
@@ -19,9 +18,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
 
         private readonly GraphqlApi _graphqlApi;
         private readonly GraphqlSchema _schema;
-        private readonly IReadOnlyDictionary<SystemType, string> _typeNameOverrides;
-        private readonly MappingTemplates _mappingTemplates;
-        private readonly MappingTypeFactory _mappingTypeFactory;
+        private readonly IAppGraphqlProps _apiProps;
         private readonly DataSourceFactory _dataSourceFactory;
 
         private readonly Dictionary<string, Func<RequiredTypeInfo, GraphqlType>> _fieldTypes = new()
@@ -43,14 +40,11 @@ namespace AllOverIt.Aws.Cdk.AppSync
             {nameof(String), requiredTypeInfo => GraphqlType.String(CreateTypeOptions(requiredTypeInfo))}
         };
 
-        public GraphqlTypeStore(GraphqlApi graphqlApi, GraphqlSchema schema, IReadOnlyDictionary<SystemType, string> typeNameOverrides, MappingTemplates mappingTemplates,
-            MappingTypeFactory mappingTypeFactory, DataSourceFactory dataSourceFactory)
+        public GraphqlTypeStore(GraphqlApi graphqlApi, GraphqlSchema schema, IAppGraphqlProps apiProps, DataSourceFactory dataSourceFactory)
         {
             _graphqlApi = graphqlApi.WhenNotNull();
             _schema = schema.WhenNotNull();
-            _typeNameOverrides = typeNameOverrides.WhenNotNull();
-            _mappingTemplates = mappingTemplates.WhenNotNull();
-            _mappingTypeFactory = mappingTypeFactory.WhenNotNull();
+            _apiProps = apiProps.WhenNotNull();
             _dataSourceFactory = dataSourceFactory.WhenNotNull();
         }
 
@@ -58,7 +52,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
         {
             SchemaUtils.AssertNoProperties(requiredTypeInfo.Type);
 
-            var typeDescriptor = requiredTypeInfo.Type.GetGraphqlTypeDescriptor(_typeNameOverrides);
+            var typeDescriptor = requiredTypeInfo.Type.GetGraphqlTypeDescriptor(_apiProps.TypeNameOverrides);
             var typeName = typeDescriptor.Name;
 
             var fieldTypeCreator = GetTypeCreator(fieldName, requiredTypeInfo.Type, typeName, typeDescriptor, typeCreated);
@@ -192,7 +186,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
                 {
                     // the type is already under construction - we can get away with a dummy intermediate type
                     // that has the name and no definition.
-                    var typeDescriptor = requiredTypeInfo.Type.GetGraphqlTypeDescriptor(_typeNameOverrides);
+                    var typeDescriptor = requiredTypeInfo.Type.GetGraphqlTypeDescriptor(_apiProps.TypeNameOverrides);
                     var intermediateType = CreateIntermediateType(typeDescriptor);
 
                     returnObjectType = intermediateType.Attribute(CreateTypeOptions(requiredTypeInfo));
@@ -209,7 +203,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
                 // Note: Directives work at the field level so you need to give the same access to the declaring type too.
                 var authDirectives = methodInfo.GetAuthDirectivesOrDefault();
 
-                // optionally specified via a custom attribute
+                // Optionally specified via a custom attribute
                 var fieldName = methodInfo.Name.GetGraphqlName();
                 var dataSource = methodInfo.GetDataSource(_dataSourceFactory);
 
@@ -224,11 +218,11 @@ namespace AllOverIt.Aws.Cdk.AppSync
                         })
                 );
 
+                // Can be null for subscriptions
                 if (dataSource is not null)
                 {
-                    methodInfo.RegisterRequestResponseMappings(fieldMapping, _mappingTemplates, _mappingTypeFactory);
+                    methodInfo.RegisterResolver(fieldMapping, _apiProps.ResolverRegistry, _apiProps.ResolverFactory);
 
-                    var mappingType = _mappingTemplates.GetMappingType(fieldMapping);
                     var resolverProps = new ExtendedResolverProps
                     {
                         TypeName = parentTypeDescriptor.Name,
@@ -236,15 +230,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
                         DataSource = dataSource
                     };
 
-                    if (mappingType == MappingType.Code)
-                    {
-                        resolverProps.Code = _mappingTemplates.GetCodeMapping(fieldMapping);
-                    }
-                    else
-                    {
-                        resolverProps.RequestMappingTemplate = _mappingTemplates.GetRequestMapping(fieldMapping);
-                        resolverProps.ResponseMappingTemplate = _mappingTemplates.GetResponseMapping(fieldMapping);
-                    }
+                    _apiProps.ResolverRegistry.SetResolverProps(fieldMapping, resolverProps);
 
                     _graphqlApi.CreateResolver($"{parentTypeDescriptor.Name}{fieldName}Resolver", resolverProps);
                 }
