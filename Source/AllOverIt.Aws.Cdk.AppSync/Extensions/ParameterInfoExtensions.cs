@@ -2,7 +2,6 @@
 using AllOverIt.Aws.Cdk.AppSync.Exceptions;
 using AllOverIt.Collections;
 using AllOverIt.Extensions;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -53,8 +52,8 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
                 parameterSchemaType != GraphqlSchemaType.Input &&
                 parameterSchemaType != GraphqlSchemaType.Enum)
             {
-                throw new InvalidOperationException($"The argument '({parameterInfo.ParameterType.Name} {parameterInfo.Name})' passed to " +
-                                                    $"{methodInfo.DeclaringType!.FullName}.{methodInfo.Name} must be either a scalar, enum, or an INPUT type.");
+                throw new SchemaException($"The argument '({parameterInfo.ParameterType.Name} {parameterInfo.Name})' passed to " +
+                                          $"{methodInfo.DeclaringType!.FullName}.{methodInfo.Name} must be either a scalar, enum, or an INPUT type.");
             }
         }
     }

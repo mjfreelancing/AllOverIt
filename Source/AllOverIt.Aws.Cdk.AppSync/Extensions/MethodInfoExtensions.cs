@@ -8,7 +8,6 @@ using AllOverIt.Aws.Cdk.AppSync.Resolvers;
 using AllOverIt.Collections;
 using AllOverIt.Extensions;
 using Cdklabs.AwsCdkAppsyncUtils;
-using System;
 using System.Collections.Generic;
 using System.Reflection;
 using SystemType = System.Type;
@@ -99,7 +98,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
                 {
                     if (parentSchemaType != methodSchemaType)
                     {
-                        throw new InvalidOperationException($"Expected '{returnType.FullName}.{methodInfo.Name}' to return a '{parentSchemaType}' type.");
+                        throw new SchemaException($"Expected '{returnType.FullName}.{methodInfo.Name}' to return a '{parentSchemaType}' type.");
                     }
                 }
             }

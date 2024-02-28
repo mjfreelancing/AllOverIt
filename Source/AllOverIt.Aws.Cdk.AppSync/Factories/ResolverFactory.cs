@@ -1,4 +1,5 @@
-﻿using AllOverIt.Aws.Cdk.AppSync.Resolvers;
+﻿using AllOverIt.Aws.Cdk.AppSync.Exceptions;
+using AllOverIt.Aws.Cdk.AppSync.Resolvers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
         {
             if (!typeof(IResolverRuntime).IsAssignableFrom(resolverType))
             {
-                throw new InvalidOperationException($"The mapping type '{resolverType.Name}' must inherit '{nameof(IResolverRuntime)}'.");
+                throw new SchemaException($"The resolver type '{resolverType.Name}' must inherit '{nameof(IResolverRuntime)}'.");
             }
 
             _exactResolverRegistry.Add(resolverType, creator);
@@ -58,7 +59,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
         {
             if (!typeof(IResolverRuntime).IsAssignableFrom(baseResolverType))
             {
-                throw new InvalidOperationException($"The mapping type '{baseResolverType.Name}' must inherit '{nameof(IResolverRuntime)}'.");
+                throw new SchemaException($"The resolver type '{baseResolverType.Name}' must inherit '{nameof(IResolverRuntime)}'.");
             }
 
             _inheritedResolverRegistry.Add(baseResolverType, creator);
@@ -66,24 +67,24 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
             return this;
         }
 
-        internal IResolverRuntime GetResolverRuntime(SystemType mappingType)
+        internal IResolverRuntime GetResolverRuntime(SystemType resolverType)
         {
             // Look for an exact match first.
-            if (_exactResolverRegistry.TryGetValue(mappingType, out var creator))
+            if (_exactResolverRegistry.TryGetValue(resolverType, out var creator))
             {
                 return creator.Invoke();
             }
 
             // Next look for inherited types.
-            var baseType = _inheritedResolverRegistry.Keys.SingleOrDefault(item => item.IsAssignableFrom(mappingType));
+            var baseType = _inheritedResolverRegistry.Keys.SingleOrDefault(item => item.IsAssignableFrom(resolverType));
 
             if (baseType != null)
             {
-                return _inheritedResolverRegistry[baseType].Invoke(mappingType);
+                return _inheritedResolverRegistry[baseType].Invoke(resolverType);
             }
 
             // Assume there is default constructor.
-            return (IResolverRuntime) Activator.CreateInstance(mappingType);
+            return (IResolverRuntime) Activator.CreateInstance(resolverType);
         }
     }
 }

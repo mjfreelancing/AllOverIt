@@ -23,7 +23,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
         /// defined in a shared assembly.</summary>
         IReadOnlyDictionary<SystemType, string> TypeNameOverrides { get; }
 
-        /// <summary>Contains request and response resolver mappings. This can be <see langword="null"/> if all field resolvers
+        /// <summary>Contains al configured or discovered resolvers. This can be <see langword="null"/> if all field resolvers
         /// are discoverable via a resolver attribute, such as <see cref="UnitResolverAttribute"/>. All resolvers must implement
         /// <see cref="IVtlRuntime"/> or <see cref="IJsRuntime"/>, both of which inherit <see cref="IResolverRuntime"/>.</summary>
         ResolverRegistry ResolverRegistry { get; }

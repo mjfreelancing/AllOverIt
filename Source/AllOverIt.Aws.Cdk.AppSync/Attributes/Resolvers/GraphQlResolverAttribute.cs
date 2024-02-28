@@ -8,7 +8,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Attributes.Resolvers
     [AttributeUsage(AttributeTargets.Method)]
     public abstract class GraphQlResolverAttribute : Attribute
     {
-        /// <summary>The mapping type that provides the required request and response mapping details. This type must inherit <see cref="IResolverRuntime"/>.</summary>
+        /// <summary>The resolver type that provides the required request and response mapping details. This type must inherit <see cref="IResolverRuntime"/>.</summary>
         public Type ResolverType { get; }
 
         // Used when the resolver type is registered in code - ResolverType will be null

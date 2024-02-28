@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Aws.Cdk.AppSync.Attributes.Resolvers;
+using AllOverIt.Aws.Cdk.AppSync.Exceptions;
 using AllOverIt.Extensions;
 using Amazon.CDK.AWS.AppSync;
 using System;
@@ -44,7 +45,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Resolvers
         {
             var resolver = _resolvers.GetValueOrDefault(resolverKey);
 
-            Throw<KeyNotFoundException>.WhenNull(resolver, $"Request resolver not found for the key '{resolverKey}'.");
+            Throw<SchemaException>.WhenNull(resolver, $"Resolver not found for the key '{resolverKey}'.");
 
             return resolver;
         }
@@ -53,7 +54,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Resolvers
         {
             var resolver = _resolvers.GetValueOrDefault(resolverKey);
 
-            Throw<KeyNotFoundException>.WhenNull(resolver, $"Request resolver not found for the key '{resolverKey}'.");
+            Throw<SchemaException>.WhenNull(resolver, $"Resolver not found for the key '{resolverKey}'.");
 
             if (resolver is IVtlRuntime requestResponseMapping)
             {
@@ -67,7 +68,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Resolvers
             }
             else
             {
-                throw new InvalidOperationException($"Unhandled mapping type '{resolver.GetType().GetFriendlyName()}'");
+                throw new InvalidOperationException($"Unhandled resolver type '{resolver.GetType().GetFriendlyName()}'");
             }
         }
     }

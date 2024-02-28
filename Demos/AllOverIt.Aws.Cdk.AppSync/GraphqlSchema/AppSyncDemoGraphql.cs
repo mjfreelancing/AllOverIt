@@ -153,7 +153,7 @@ namespace GraphqlSchema
         private static IEnumerable<GraphQlDataSourceBase> CreateSubscriptionDataSources()
         {
             // Datasources are optional for subscriptions
-            yield return new SubscriptionGraphQlDataSource(Constants.SubscriptionDataSource.AddedLanguage);
+            yield return new NoneGraphQlDataSource(Constants.SubscriptionDataSource.AddedLanguage);
         }
     }
 }

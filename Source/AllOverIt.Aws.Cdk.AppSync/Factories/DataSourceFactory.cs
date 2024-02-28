@@ -1,6 +1,7 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Aws.Cdk.AppSync.Attributes.Resolvers;
 using AllOverIt.Aws.Cdk.AppSync.DataSources;
+using AllOverIt.Aws.Cdk.AppSync.Exceptions;
 using Amazon.CDK;
 using Amazon.CDK.AWS.AppSync;
 using Amazon.CDK.AWS.Lambda;
@@ -41,7 +42,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
 
                 if (!_dataSources.TryGetValue(datasourceLookup, out var graphqlDataSource))
                 {
-                    Throw<InvalidOperationException>.WhenNull(graphqlDataSource, $"Unknown DataSource Id: '{datasourceLookup}'");
+                    Throw<SchemaException>.WhenNull(graphqlDataSource, $"Unknown DataSource Id: '{datasourceLookup}'");
                 }
 
                 var dataSourceId = GetDataSourceId(_graphQlApi.Node.Path, graphqlDataSource.DataSourceName);
@@ -53,7 +54,6 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
                         LambdaGraphQlDataSource lambda => CreateLambdaDataSource(dataSourceId, lambda.FunctionName, lambda.Description),
                         HttpGraphQlDataSource http => CreateHttpDataSource(dataSourceId, http.DataSourceName, http.EndpointSource, http.EndpointKey, http.Description),
                         NoneGraphQlDataSource none => CreateNoneDataSource(dataSourceId, "None", none.DataSourceName, none.Description),
-                        SubscriptionGraphQlDataSource subscription => CreateNoneDataSource(dataSourceId, "Subscription", subscription.DataSourceName, subscription.Description),
                         _ => throw new ArgumentOutOfRangeException($"Unknown DataSource type '{attribute.GetType().Name}'")
                     };
 
@@ -62,10 +62,10 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
 
                 return dataSource;
             }
-            else if (attribute is PipelineResolverAttribute pipelineResolverAttribute)
-            {
-                // Pipelines yet to be implemented
-            }
+            //else if (attribute is PipelineResolverAttribute pipelineResolverAttribute)
+            //{
+            //    Pipelines yet to be implemented
+            //}
 
             return null;
         }
@@ -135,13 +135,13 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
                 EndpointSource.ImportValue => Fn.ImportValue(endpointKey),
 
                 EndpointSource.EnvironmentVariable => SystemEnvironment.GetEnvironmentVariable(endpointKey)
-                    ?? throw new KeyNotFoundException($"Environment variable key '{endpointKey}' not found."),
+                    ?? throw new SchemaException($"Environment variable key '{endpointKey}' not found."),
 
                 EndpointSource.Lookup => _endpointLookup.TryGetValue(endpointKey, out var lookupValue)
                     ? lookupValue
-                    : throw new KeyNotFoundException($"Lookup key '{endpointKey}' not found."),
+                    : throw new SchemaException($"Lookup key '{endpointKey}' not found."),
 
-                _ => throw new InvalidOperationException($"Unknown EndpointSource type '{endpointSource}'")
+                _ => throw new SchemaException($"Unknown EndpointSource type '{endpointSource}'")
             };
         }
     }
