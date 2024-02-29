@@ -67,3 +67,6 @@ TestResults
 .idea
 !Docs/Reference/Content/topics/Packages
 Docs/Reference/Output
+
+cdk.out
+output.txt
