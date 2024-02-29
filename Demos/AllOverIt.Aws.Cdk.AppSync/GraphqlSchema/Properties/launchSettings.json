@@ -3,7 +3,7 @@
     "GraphqlSchema": {
       "commandName": "Project",
       "environmentVariables": {
-        "GetAllContinents": "www.ms.com"
+        "GetAllContinents": "www.google.com"
       }
     }
   }

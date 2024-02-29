@@ -82,7 +82,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
 
         private static string SanitizeValue(string value)
         {
-            // Exclude everything exception alphanumeric and dashes.
+            // Exclude everything except alphanumeric and dashes.
             return Regex.Replace(value, @"[^\w]", "", RegexOptions.None);
         }
 
