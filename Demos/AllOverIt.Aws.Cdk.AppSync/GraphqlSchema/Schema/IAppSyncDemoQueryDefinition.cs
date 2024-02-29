@@ -16,7 +16,7 @@ namespace GraphqlSchema.Schema
     internal interface IAppSyncDemoQueryDefinition : IQueryDefinition
     {
         // NOTE: Leave this as the first item as it is testing a parameter and return type that is unknown at the time of parsing
-        [UnitResolver(Constants.NoneDataSource.CountryLanguage)]     // Resolver type typeof(CountryLanguageResolver) is registered via code
+        [UnitResolver(Constants.NoneDataSource.Query)]     // Resolver type typeof(CountryLanguageResolver) is registered via code
 
 #if DEBUG   // Using RELEASE mode to deploy without these (DEBUG mode is used to check Synth output)
         [AuthApiKeyDirective]
@@ -25,16 +25,16 @@ namespace GraphqlSchema.Schema
 
         // Demonstrates how to obtain the datasource mapping via a user-provided factory
         // ContinentLanguagesResolver does not have a default ctor - it has been registered with the factory
-        [UnitResolver(typeof(ContinentLanguagesResolver), Constants.NoneDataSource.ContinentLanguages)]
+        [UnitResolver(typeof(ContinentLanguagesResolver), Constants.NoneDataSource.Query)]
         ILanguage[] ContinentLanguages([SchemaTypeRequired] IContinentFilterInput filter);
 
-        [UnitResolver(typeof(DefaultLanguageResolver), Constants.NoneDataSource.DefaultLanguage)]
+        [UnitResolver(typeof(DefaultLanguageResolver), Constants.NoneDataSource.Query)]
         ILanguage DefaultLanguage();
 
 #if USE_CODE_FIRST_RESOLVERS
         [UnitResolver(Constants.NoneDataSource.Continents)]
 #else
-        [UnitResolver(typeof(ContinentsResolver), Constants.NoneDataSource.Continents)]
+        [UnitResolver(typeof(ContinentsResolver), Constants.NoneDataSource.Query)]
 #endif
         IContinent[] Continents([SchemaTypeRequired] IContinentFilterInput filter);
 
@@ -57,7 +57,7 @@ namespace GraphqlSchema.Schema
         [UnitResolver(typeof(CountriesResolver), Constants.HttpDataSource.GetCountriesUrlImportName)]
         ICountry[] Countries([SchemaTypeRequired] ICountryFilterInput filter);
 
-        [UnitResolver(typeof(AllCountriesResolver), Constants.NoneDataSource.AllCountries)]
+        [UnitResolver(typeof(AllCountriesResolver), Constants.NoneDataSource.Query)]
         ICountryConnection AllCountries();
 
         [UnitResolver(typeof(LanguageResolver), Constants.HttpDataSource.GetLanguageUrlExplicit)]
@@ -66,56 +66,56 @@ namespace GraphqlSchema.Schema
         [UnitResolver(typeof(LanguagesResolver), Constants.LambdaDataSource.GetLanguages)]
         ILanguage[] Languages(ILanguageFilterInput filter);     // optional filter in this case, implies all languages will be returned if omitted
 
-        [UnitResolver(typeof(GlobeResolver), Constants.NoneDataSource.Globe)]
+        [UnitResolver(typeof(GlobeResolver), Constants.NoneDataSource.Query)]
         IGlobe Globe();
 
         #region Date, Time, DateTime, Timestamp responses
 
-        [UnitResolver(typeof(CountryDateResolver), Constants.NoneDataSource.CountryDate)]
+        [UnitResolver(typeof(CountryDateResolver), Constants.NoneDataSource.Query)]
         AwsTypeDate CountryDate([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType, DateFormat dateFormat);
 
-        [UnitResolver(typeof(CountryTimeResolver), Constants.NoneDataSource.CountryTime)]
+        [UnitResolver(typeof(CountryTimeResolver), Constants.NoneDataSource.Query)]
         AwsTypeTime CountryTime([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType);
 
-        [UnitResolver(typeof(CountryDateTimeResolver), Constants.NoneDataSource.CountryDateTime)]
+        [UnitResolver(typeof(CountryDateTimeResolver), Constants.NoneDataSource.Query)]
         AwsTypeDateTime CountryDateTime([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType);
 
-        [UnitResolver(typeof(CountryTimestampResolver), Constants.NoneDataSource.CountryTimestamp)]
+        [UnitResolver(typeof(CountryTimestampResolver), Constants.NoneDataSource.Query)]
         AwsTypeTimestamp CountryTimestamp([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType);
 
         #endregion
 
         #region Date, Time, DateTime, timestamp array responses
 
-        [UnitResolver(typeof(CountryDatesResolver), Constants.NoneDataSource.CountryDates)]
+        [UnitResolver(typeof(CountryDatesResolver), Constants.NoneDataSource.Query)]
         AwsTypeDate[] CountryDates([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType);
 
-        [UnitResolver(typeof(CountryTimesResolver), Constants.NoneDataSource.CountryTimes)]
+        [UnitResolver(typeof(CountryTimesResolver), Constants.NoneDataSource.Query)]
         AwsTypeTime[] CountryTimes([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType);
 
-        [UnitResolver(typeof(CountryDateTimesResolver), Constants.NoneDataSource.CountryDateTimes)]
+        [UnitResolver(typeof(CountryDateTimesResolver), Constants.NoneDataSource.Query)]
         AwsTypeDateTime[] CountryDateTimes([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType);
 
-        [UnitResolver(typeof(CountryTimestampsResolver), Constants.NoneDataSource.CountryTimestamps)]
+        [UnitResolver(typeof(CountryTimestampsResolver), Constants.NoneDataSource.Query)]
         AwsTypeTimestamp[] CountryTimestamps([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType);
 
         #endregion
 
         #region Date, Time, DateTime, timestamp input
 
-        [UnitResolver(typeof(CountryByDateResolver), Constants.NoneDataSource.CountryByDate)]
+        [UnitResolver(typeof(CountryByDateResolver), Constants.NoneDataSource.Query)]
         ICountry CountryByDate([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType,
             [SchemaTypeRequired] AwsTypeDate date);
 
-        [UnitResolver(typeof(CountryByTimeResolver), Constants.NoneDataSource.CountryByTime)]
+        [UnitResolver(typeof(CountryByTimeResolver), Constants.NoneDataSource.Query)]
         ICountry CountryByTime([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType,
             [SchemaTypeRequired] AwsTypeTime time);
 
-        [UnitResolver(typeof(CountryByDateTimeResolver), Constants.NoneDataSource.CountryByDateTime)]
+        [UnitResolver(typeof(CountryByDateTimeResolver), Constants.NoneDataSource.Query)]
         ICountry CountryByDateTime([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType,
             [SchemaTypeRequired] AwsTypeDateTime dateTime);
 
-        [UnitResolver(typeof(CountryByTimestampResolver), Constants.NoneDataSource.CountryByTimestamp)]
+        [UnitResolver(typeof(CountryByTimestampResolver), Constants.NoneDataSource.Query)]
         ICountry CountryByTimestamp([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType,
             [SchemaTypeRequired] AwsTypeTimestamp timestamp);
 
@@ -123,23 +123,23 @@ namespace GraphqlSchema.Schema
 
         #region Date, Time, DateTime, timestamp array input
 
-        [UnitResolver(typeof(CountriesByDatesResolver), Constants.NoneDataSource.CountriesByDates)]
+        [UnitResolver(typeof(CountriesByDatesResolver), Constants.NoneDataSource.Query)]
         ICountry[] CountriesByDates([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType,
             [SchemaTypeRequired]
             [SchemaArrayRequired]
             AwsTypeDate[] dates);
 
-        [UnitResolver(typeof(CountriesByTimesResolver), Constants.NoneDataSource.CountriesByTimes)]
+        [UnitResolver(typeof(CountriesByTimesResolver), Constants.NoneDataSource.Query)]
         ICountry[] CountriesByTimes([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType,
             [SchemaTypeRequired]
             [SchemaArrayRequired]
             AwsTypeTime[] times);
 
-        [UnitResolver(typeof(CountriesByDateTimesResolver), Constants.NoneDataSource.CountriesByDateTimes)]
+        [UnitResolver(typeof(CountriesByDateTimesResolver), Constants.NoneDataSource.Query)]
         ICountry[] CountriesByDateTimes([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType,
             [SchemaArrayRequired] AwsTypeDateTime[] dateTimes);
 
-        [UnitResolver(typeof(CountriesByTimestampsResolver), Constants.NoneDataSource.CountriesByTimestamps)]
+        [UnitResolver(typeof(CountriesByTimestampsResolver), Constants.NoneDataSource.Query)]
         ICountry[] CountriesByTimestamps([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType,
             [SchemaArrayRequired] AwsTypeTimestamp[] timestamps);
 

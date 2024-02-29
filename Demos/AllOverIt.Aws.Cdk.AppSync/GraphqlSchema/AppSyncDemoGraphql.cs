@@ -125,29 +125,9 @@ namespace GraphqlSchema
 
         private static IEnumerable<GraphQlDataSourceBase> CreateNoneDataSources()
         {
-            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.AddLanguage);
-            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountryLanguage);
-            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.ContinentLanguages);
-            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.DefaultLanguage);
-            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.Continents);
-            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.AllCountries);
-            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.Globe);
-            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountryDate);
-            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountryTime);
-            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountryDateTime);
-            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountryTimestamp);
-            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountryDates);
-            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountryTimes);
-            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountryDateTimes);
-            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountryTimestamps);
-            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountryByDate);
-            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountryByTime);
-            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountryByDateTime);
-            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountryByTimestamp);
-            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountriesByDates);
-            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountriesByTimes);
-            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountriesByDateTimes);
-            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.CountriesByTimestamps);
+            // Demonstrating use of shared NONE datasources
+            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.Query);
+            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.Mutation);
         }
 
         private static IEnumerable<GraphQlDataSourceBase> CreateSubscriptionDataSources()

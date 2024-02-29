@@ -23,7 +23,7 @@ namespace GraphqlSchema.Schema
         ICountry UpdateCountry([SchemaTypeRequired] ICountryInput country);
 
         [SchemaTypeRequired]
-        [UnitResolver(typeof(AddLanguageResolver), Constants.NoneDataSource.AddLanguage)]
+        [UnitResolver(typeof(AddLanguageResolver), Constants.NoneDataSource.Mutation)]
         ILanguage AddLanguage([SchemaTypeRequired] ILanguageInput language);
     }
 }
