@@ -1,6 +1,6 @@
 ﻿namespace GraphqlSchema.Schema.Resolvers.Query
 {
-    internal sealed class CountryByDateTimeResolver : NoneResolver
+    internal sealed class CountryByDateTimeResolver : NoneVtlResolver
     {
     }
 }

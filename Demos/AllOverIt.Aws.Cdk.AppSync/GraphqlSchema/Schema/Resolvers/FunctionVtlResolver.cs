@@ -1,8 +1,8 @@
 ﻿namespace GraphqlSchema.Schema.Resolvers
 {
-    internal class FunctionResolver : RequestResponseResolverBase
+    internal class FunctionVtlResolver : VtlResolverBase
     {
-        public FunctionResolver()
+        public FunctionVtlResolver()
         {
             RequestMapping = """
                 {

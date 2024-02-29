@@ -1,8 +1,8 @@
 ﻿namespace GraphqlSchema.Schema.Resolvers
 {
-    internal class NoneResolver : RequestResponseResolverBase
+    internal class NoneVtlResolver : VtlResolverBase
     {
-        public NoneResolver()
+        public NoneVtlResolver()
         {
             RequestMapping = """
                 {

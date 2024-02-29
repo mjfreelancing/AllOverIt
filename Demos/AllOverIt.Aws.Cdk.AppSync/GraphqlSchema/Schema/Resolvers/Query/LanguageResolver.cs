@@ -1,6 +1,6 @@
 ﻿namespace GraphqlSchema.Schema.Resolvers.Query
 {
-    internal sealed class LanguageResolver : RequestResponseResolverBase
+    internal sealed class LanguageResolver : VtlResolverBase
     {
         public LanguageResolver()
         {

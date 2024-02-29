@@ -61,7 +61,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
                 var requiredTypeInfo = parameterInfo.GetRequiredTypeInfo();
 
                 // Passing null for the field name because we are not creating a graphql field type, it is an argument type.
-                // The graphql fields are tracked for things like determining request/response mappings.
+                // The graphql fields are tracked for things like determining resolver request/response handlers.
                 var graphqlType = typeStore.GetGraphqlType(null, requiredTypeInfo, objectType => schema.AddType(objectType));
 
                 args.Add(parameterInfo.Name.GetGraphqlName(), graphqlType);

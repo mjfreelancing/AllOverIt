@@ -1,8 +1,8 @@
 ﻿namespace GraphqlSchema.Schema.Resolvers
 {
-    internal class HttpGetResolver : RequestResponseResolverBase
+    internal class HttpGetVtlResolver : VtlResolverBase
     {
-        public HttpGetResolver(string resource, string apiKey)
+        public HttpGetVtlResolver(string resource, string apiKey)
         {
             SetHttpRequestMapping("GET", resource, apiKey);
         }

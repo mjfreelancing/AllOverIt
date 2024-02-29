@@ -1,6 +1,6 @@
 ﻿namespace GraphqlSchema.Schema.Resolvers.Mutation
 {
-    internal sealed class AddLanguageResolver : NoneResolver
+    internal sealed class AddLanguageResolver : NoneVtlResolver
     {
         public AddLanguageResolver()
         {

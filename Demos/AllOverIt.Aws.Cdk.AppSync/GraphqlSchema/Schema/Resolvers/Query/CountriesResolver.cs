@@ -1,6 +1,6 @@
 ﻿namespace GraphqlSchema.Schema.Resolvers.Query
 {
-    internal sealed class CountriesResolver : RequestResponseResolverBase
+    internal sealed class CountriesResolver : VtlResolverBase
     {
         public CountriesResolver()
         {

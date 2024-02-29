@@ -178,7 +178,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
                 methodInfo.AssertReturnSchemaType(type);
 
                 var requiredTypeInfo = methodInfo.GetRequiredTypeInfo();
-                var fieldMapping = methodInfo.GetFieldName(parentName);
+                var fieldMapping = methodInfo.GetFieldName(parentName);     // Such as Query.Parent.Child.Field
 
                 GraphqlType returnObjectType;
 

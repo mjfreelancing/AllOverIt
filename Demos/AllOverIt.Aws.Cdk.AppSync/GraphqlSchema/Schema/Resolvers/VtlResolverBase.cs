@@ -2,12 +2,12 @@
 
 namespace GraphqlSchema.Schema.Resolvers
 {
-    internal abstract class RequestResponseResolverBase : IVtlRuntime
+    internal abstract class VtlResolverBase : IVtlRuntime
     {
         public string RequestMapping { get; protected set; }
         public string ResponseMapping { get; protected set; }
 
-        protected RequestResponseResolverBase()
+        protected VtlResolverBase()
         {
             ResponseMapping = "$util.toJson($ctx.result.body)";
         }

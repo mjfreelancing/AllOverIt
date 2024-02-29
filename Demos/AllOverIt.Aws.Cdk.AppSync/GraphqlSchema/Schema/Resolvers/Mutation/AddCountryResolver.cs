@@ -1,6 +1,6 @@
 ﻿namespace GraphqlSchema.Schema.Resolvers.Mutation
 {
-    internal sealed class AddCountryResolver : FunctionResolver
+    internal sealed class AddCountryResolver : FunctionVtlResolver
     {
     }
 }

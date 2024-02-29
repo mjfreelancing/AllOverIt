@@ -1,6 +1,6 @@
 ﻿namespace GraphqlSchema.Schema.Resolvers.Query
 {
-    internal sealed class DefaultLanguageResolver : NoneResolver
+    internal sealed class DefaultLanguageResolver : NoneVtlResolver
     {
         public DefaultLanguageResolver()
         {

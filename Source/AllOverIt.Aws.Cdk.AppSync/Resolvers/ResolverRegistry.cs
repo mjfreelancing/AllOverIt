@@ -8,16 +8,16 @@ using System.Collections.Generic;
 
 namespace AllOverIt.Aws.Cdk.AppSync.Resolvers
 {
-    /// <summary>A registry of AppSync resolver runtime mappings.</summary>
+    /// <summary>A registry of AppSync resolver runtime handlers.</summary>
     public sealed class ResolverRegistry
     {
-        private sealed class RequestResponseMapping : IVtlRuntime
+        private sealed class VtlHandler : IVtlRuntime
         {
             public string RequestMapping { get; init; }
             public string ResponseMapping { get; init; }
         }
 
-        private sealed class CodeMapping : IJsRuntime
+        private sealed class CodeHandler : IJsRuntime
         {
             public string Code { get; init; }
 

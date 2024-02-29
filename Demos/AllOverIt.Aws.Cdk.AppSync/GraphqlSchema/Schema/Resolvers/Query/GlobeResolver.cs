@@ -1,6 +1,6 @@
 ﻿namespace GraphqlSchema.Schema.Resolvers.Query
 {
-    internal sealed class GlobeResolver : FunctionResolver
+    internal sealed class GlobeResolver : FunctionVtlResolver
     {
     }
 }

@@ -9,7 +9,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Resolvers
         /// <param name="name">The dot-notation based name of the node within the GraphQL hierarchy.</param>
         /// <param name="resolverRuntime">The resolver runtime for the current node.</param>
         /// <param name="children">Child nodes, if any, of the current node.</param>
-        /// <returns>A new <see cref="ResolverRuntimeNode"/> containing the provided resolver request and response mapping details.</returns>
+        /// <returns>A new <see cref="ResolverRuntimeNode"/> containing the provided resolver request and response handler details.</returns>
         public static ResolverRuntimeNode Template(string name, IResolverRuntime resolverRuntime, IEnumerable<ResolverRuntimeNode> children = default)
         {
             return new ResolverRuntimeNode

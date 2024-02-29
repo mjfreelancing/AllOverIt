@@ -18,7 +18,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
         private readonly Dictionary<string, BaseDataSource> _dataSourceCache = [];
 
         private readonly IGraphqlApi _graphQlApi;
-        private readonly IReadOnlyDictionary<string, GraphQlDataSourceBase> _dataSources;
+        private readonly Dictionary<string, GraphQlDataSourceBase> _dataSources;
         private readonly IReadOnlyDictionary<string, string> _endpointLookup;
 
         public DataSourceFactory(IGraphqlApi graphQlApi, IReadOnlyCollection<GraphQlDataSourceBase> dataSources,

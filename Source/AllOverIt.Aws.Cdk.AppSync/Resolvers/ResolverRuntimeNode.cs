@@ -10,7 +10,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Resolvers
         /// Subscription root nodes are prefixed with 'Subscription'.</remarks>
         public string Name { get; set; }
 
-        /// <summary>The resolver runtime containning the request and response mapping. This can be an instance
+        /// <summary>The resolver runtime containing the request and response handler. This can be an instance
         /// of <see cref="IJsRuntime"/> or <see cref="IVtlRuntime"/>.</summary>
         public IResolverRuntime ResolverRuntime { get; set; }
 

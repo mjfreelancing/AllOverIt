@@ -23,7 +23,6 @@ namespace GraphqlSchema.Schema
 #endif
         ILanguage CountryLanguage(ICountryFilterInput country);
 
-        // Demonstrates how to obtain the datasource mapping via a user-provided factory
         // ContinentLanguagesResolver does not have a default ctor - it has been registered with the factory
         [UnitResolver(typeof(ContinentLanguagesResolver), Constants.NoneDataSource.Query)]
         ILanguage[] ContinentLanguages([SchemaTypeRequired] IContinentFilterInput filter);
