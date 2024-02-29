@@ -5,7 +5,7 @@
         internal const string AppName = "AppSyncDemo";
         internal const int ServiceVersion = 1;
 
-        internal static class Function
+        internal static class LambdaDataSource
         {
             internal const string GetLanguages = "GetLanguages";
             internal const string AddCountry = "AddCountry";
@@ -17,16 +17,21 @@
             // need a real URL for the deployment to succeed
             internal const string GetLanguageUrlExplicit = "https://www.google.com";
             internal const string GetAllContinentsUrlEnvironmentName = "GetAllContinents";
-        }
-
-        internal static class Import
-        {
+            internal const string GetPopulationUrlExplicit = "https://www.microsoft.com";
             internal const string GetCountriesUrlImportName = "GetCountriesImport";
+            internal const string GetCountriesUrlLookupKey = "GetCountriesLookup";
         }
 
-        internal static class Lookup
+        internal static class NoneDataSource
         {
-            internal const string GetCountriesUrlKey = "GetCountriesLookup";
+            // Demonstrating use of shared NONE datasources
+            internal const string Query = nameof(Query);
+            internal const string Mutation = nameof(Mutation);
+        }
+
+        internal static class SubscriptionDataSource
+        {
+            internal const string AddedLanguage = "AddedLanguage";
         }
     }
 }

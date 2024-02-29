@@ -4,6 +4,14 @@
         <OutputType>Exe</OutputType>
     </PropertyGroup>
 
+    <!--<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+      <DefineConstants>$(DefineConstants);USE_CODE_FIRST_RESOLVERS</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+      <DefineConstants>$(DefineConstants);USE_CODE_FIRST_RESOLVERS</DefineConstants>
+    </PropertyGroup>-->
+
     <ItemGroup>
         <ProjectReference Include="..\..\..\Source\AllOverIt.Aws.Cdk.AppSync\AllOverIt.Aws.Cdk.AppSync.csproj" />
     </ItemGroup>

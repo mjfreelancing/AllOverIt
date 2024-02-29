@@ -105,13 +105,14 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
 
         private static string GetNamespaceBasedName(string typeNamespace, string excludeNamespacePrefix, string name)
         {
-            typeNamespace ??= string.Empty;
             excludeNamespacePrefix ??= string.Empty;
 
             if (excludeNamespacePrefix.IsNullOrEmpty())
             {
                 return name;
             }
+
+            typeNamespace ??= string.Empty;
 
             var namePrefix = typeNamespace
                 .Replace(excludeNamespacePrefix, string.Empty)
