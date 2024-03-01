@@ -1,3 +1,17 @@
+#  Version 7.3.0
+## XX XXX 2024
+
+### AllOverIt.Aws.Cdk.AppSync
+* General cleanup / maintenance
+
+
+### AllOverIt.EntityFrameworkCore.Diagrams
+* Added support for grouping entities
+
+
+---
+
+
 #  Version 7.2.0
 ## 23 Feb 2024
 
