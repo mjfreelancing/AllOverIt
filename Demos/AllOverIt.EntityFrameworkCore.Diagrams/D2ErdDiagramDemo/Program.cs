@@ -25,6 +25,8 @@ namespace D2ErdDiagramDemo
                 {
                     options.Direction = ErdOptions.DiagramDirection.Right;
 
+                    AddEntityGroups(options);
+
                     options.Entities.Nullable.IsVisible = true;
                     options.Entities.Nullable.Mode = NullableColumnMode.NotNull;
 
@@ -134,6 +136,42 @@ namespace D2ErdDiagramDemo
             Console.WriteLine();
             Console.WriteLine("Done.");
             Console.ReadKey(true);
+        }
+
+        private static void AddEntityGroups(ErdOptions options)
+        {
+            // The first...
+            var webGroupStyle = new ShapeStyle
+            {
+                Fill = "lime",
+                Stroke = "black",
+                StrokeWidth = 4,
+                StrokeDash = 2
+            };
+
+            options.Group("web", "Web", webGroupStyle, entities =>
+            {
+                entities
+                    .Add<WebSite>()
+                    .Add<Settings>();
+            });
+
+            // The second...
+            var blogGroupStyle = new ShapeStyle
+            {
+                Fill = "cyan",
+                Stroke = "blue",
+                StrokeWidth = 4
+            };
+
+            options.Group("blog", null, blogGroupStyle, entities =>
+            {
+                entities
+                    .Add<Author>()
+                    .Add<Blog>()
+                    .Add<AuthorBlog>()
+                    .Add<Post>();
+            });
         }
 
         private static void LogOutput(object sender, DataReceivedEventArgs e)

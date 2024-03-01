@@ -1,7 +1,7 @@
 ﻿using AllOverIt.Assertion;
+using AllOverIt.EntityFrameworkCore.Diagrams.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -68,7 +68,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
 
                 var parentToChildNavigation = foreignKey.DependentToPrincipal?.Inverse;
 
-                Throw<InvalidOperationException>.WhenNull(
+                Throw<DiagramException>.WhenNull(
                     parentToChildNavigation,
                     $"A parent to child navigation property exists between {principalEntity.DisplayName()} and {column.DeclaringType.DisplayName()}, but not the reverse.");
 
@@ -77,6 +77,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
                 // TODO: Configure / handle composite keys
                 var entityColumn = new PrincipalForeignKey
                 {
+                    Type = principalEntity.ClrType,
                     EntityName = principalEntity.GetTableName(),
                     ColumnName = string.Join(", ", foreignKey.PrincipalKey.Properties.Select(property => property.Name)),
                     IsOneToMany = isOneToMany

@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.EntityFrameworkCore.Diagrams.D2.Extensions;
+using AllOverIt.EntityFrameworkCore.Diagrams.Exceptions;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,13 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
             var sb = new StringBuilder();
 
             var entityName = entityIdentifier.TableName;
+
+            var groupAlias = _options.Groups.GetAlias(entityIdentifier.Type);
+
+            if (groupAlias is not null)
+            {
+                entityName = $"{groupAlias}.{entityName}";
+            }
 
             sb.AppendLine($"{entityName}: {{");
             sb.AppendLine("  shape: sql_table");
@@ -130,7 +138,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
                 ConstraintType.None => string.Empty,
                 ConstraintType.PrimaryKey => $"{{ constraint: {PrimaryKey} }}",
                 ConstraintType.ForeignKey => $"{{ constraint: {ForeignKey} }}",
-                _ => throw new InvalidOperationException($"Unhandled constraint type '{column.Constraint}'.")
+                _ => throw new DiagramException($"Unhandled constraint type '{column.Constraint}'.")
             };
         }
     }
