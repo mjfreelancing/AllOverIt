@@ -1,4 +1,8 @@
-﻿using System;
+﻿using AllOverIt.Assertion;
+using AllOverIt.EntityFrameworkCore.Diagrams.Exceptions;
+using AllOverIt.Extensions;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace AllOverIt.EntityFrameworkCore.Diagrams
@@ -6,6 +10,54 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
     /// <summary>Provides options that define how the entity relationship diagram will be created.</summary>
     public sealed class ErdOptions
     {
+        private sealed class EntityGroups : IEntityGroups
+        {
+            private readonly Dictionary<string, EntityGroup> _aliasGroups = [];     // group to definition with collection of entities
+            private readonly Dictionary<Type, string> _entityGroupAliases = [];     // entity type to group
+
+            IEntityGroups IEntityGroups.Add(string alias, EntityGroup groupEntities)
+            {
+                if (_aliasGroups.ContainsKey(alias))
+                {
+                    throw new DiagramException($"The group alias '{alias}' already exists.");
+                }
+
+                _aliasGroups.Add(alias, groupEntities);
+
+                foreach (var groupEntity in groupEntities.EntityTypes)
+                {
+                    if (_entityGroupAliases.TryGetValue(groupEntity, out var entityAlias))
+                    {
+                        throw new DiagramException($"The entity type '{groupEntity.GetFriendlyName()}' is already associated with group alias '{entityAlias}'.");
+                    }
+
+                    _entityGroupAliases.Add(groupEntity, alias);
+                }
+
+                return this;
+            }
+
+            string IEntityGroups.GetAlias(Type entityType)
+            {
+                if (_entityGroupAliases.TryGetValue(entityType, out var alias))
+                {
+                    return alias;
+                }
+
+                return null;
+            }
+
+            IEnumerator<KeyValuePair<string, EntityGroup>> IEnumerable<KeyValuePair<string, EntityGroup>>.GetEnumerator()
+            {
+                return _aliasGroups.GetEnumerator();
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return ((IEnumerable<KeyValuePair<string, EntityGroup>>) this).GetEnumerator();
+            }
+        }
+
         /// <summary>Diagram direction options.</summary>
         public enum DiagramDirection
         {
@@ -35,12 +87,17 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
             public ShapeStyle ShapeStyle { get; internal set; } = new();
         }
 
-        private const string DefaultOneToOneLabel = "ONE-TO-ONE";
-        private const string DefaultOneToManyLabel = "ONE-TO-MANY";
-        private const string DefaultIsNullLabel = "[NULL]";
-        private const string DefaultNotNullLabel = "[NOT NULL]";
+        /// <summary>Represents a collection of entity groups, where each group contains one or more entities.</summary>
+        public interface IEntityGroups : IEnumerable<KeyValuePair<string, EntityGroup>>
+        {
+            /// <summary>Adds another group of entities, associated with a unique alias.</summary>
+            /// <param name="alias">The unique alias to associate with the group of entities.</param>
+            /// <param name="entityGroup">Contains information about the group, including the collection of associated entities.</param>
+            /// <returns>The same instance so additional calls can be chained.</returns>
+            IEntityGroups Add(string alias, EntityGroup entityGroup);
 
-        private readonly Dictionary<Type, EntityOptions> _entityOptions = [];
+            string GetAlias(Type entityType);
+        }
 
         /// <summary>Provides options that specify how a column's nullability is depicted on the generated diagram.</summary>
         public sealed class NullableColumn
@@ -87,6 +144,45 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
             public string OneToManyLabel { get; set; } = DefaultOneToManyLabel;
         }
 
+        /// <summary>Contains a group of entities and associated styling attributes for the diagram.</summary>
+        public sealed class EntityGroup
+        {
+            private readonly List<Type> _entityTypes = [];
+
+            /// <summary>The group's title. Set to <see langword="null"/> if not required.</summary>
+            public string Title { get; }
+
+            /// <summary>Contains styling options to use for the group in the generated diagram.</summary>
+            public ShapeStyle ShapeStyle { get; }
+
+            /// <summary>The entity types associated with the group.</summary>
+            public IReadOnlyCollection<Type> EntityTypes => _entityTypes;
+
+            /// <summary>Constructor.</summary>
+            /// <param name="title">The group's title. Set to <see langword="null"/> if not required.</param>
+            /// <param name="shapeStyle">Contains styling options to use for the group in the generated diagram.</param>
+            public EntityGroup(string title, ShapeStyle shapeStyle)
+            {
+                Title = title.WhenNotNullOrEmpty();
+                ShapeStyle = shapeStyle.WhenNotNull();
+            }
+
+            public EntityGroup Add<TEntity>() where TEntity : class
+            {
+                _entityTypes.Add(typeof(TEntity));
+
+                return this;
+            }
+        }
+
+        private const string DefaultOneToOneLabel = "ONE-TO-ONE";
+        private const string DefaultOneToManyLabel = "ONE-TO-MANY";
+        private const string DefaultIsNullLabel = "[NULL]";
+        private const string DefaultNotNullLabel = "[NOT NULL]";
+
+        private readonly Dictionary<Type, EntityOptions> _entityOptions = [];
+        private readonly EntityGroups _groupEntities = new();
+
         /// <summary>Specifies the direction the diagram flows towards.</summary>
         public DiagramDirection Direction { get; set; } = DiagramDirection.Left;
 
@@ -95,6 +191,31 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
 
         /// <summary>Defines cardinality options for all relationships generated in the diagram.</summary>
         public CardinalityOptions Cardinality { get; } = new();
+
+        /// <summary>The groups of entities.</summary>
+        public IEntityGroups Groups => _groupEntities;
+
+        /// <summary>Creates a new grouping of entity types.</summary>
+        /// <param name="alias">The alias to use in the diagram file for the group.</param>
+        /// <param name="title">The group title. Optional.</param>
+        /// <param name="shapeStyle">The styling options for the group shape.</param>
+        /// <param name="entities">An action that adds the required entities to the group.</param>
+        public void Group(string alias, string title, ShapeStyle shapeStyle, Action<EntityGroup> entities)
+        {
+            _ = alias.WhenNotNullOrEmpty();
+            _ = entities.WhenNotNull();
+
+            if (title.IsNullOrEmpty())
+            {
+                title = "\"\"";
+            }
+
+            var groupEntities = new EntityGroup(title, shapeStyle);
+
+            entities.Invoke(groupEntities);
+
+            Groups.Add(alias, groupEntities);
+        }
 
         /// <summary>Sets options for a single entity that overrides the global <see cref="Entities"/> options.</summary>
         /// <typeparam name="TEntity">The entity type to set option overrides.</typeparam>
