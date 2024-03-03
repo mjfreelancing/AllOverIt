@@ -1,7 +1,7 @@
 # Overview
 **AllOverIt** began as a single nuget package of the same name in 2015. Since then, the library has broadened and deepened in functionality, resulting in a comprehensive set of dedicated nuget packages that encompass a number of different domains.
 
-Refer to the [Change Log](ChangeLog.md) for an overview of what has recently changed.
+Refer to the [Change Log](./Docs/Change%20Logs/ChangeLog_v8.md) for an overview of what has recently changed.
 
 Refer to the online [Documentation](https://alloverit.mjfreelancing.com) for comprehensive usage information.
 
