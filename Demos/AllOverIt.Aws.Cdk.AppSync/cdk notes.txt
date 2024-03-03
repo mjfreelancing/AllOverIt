@@ -1,0 +1,10 @@
+To install CDK
+==============
+
+Install nvm: https://github.com/coreybutler/nvm-windows/releases
+ 
+nvm install 18.14.0		- or whatever version is currently supported
+ 
+nvm use 18.14.0
+ 
+npm i -g aws-cdk

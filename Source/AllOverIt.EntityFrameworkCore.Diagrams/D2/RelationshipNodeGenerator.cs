@@ -41,7 +41,16 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
 
         public string CreateNode(PrincipalForeignKey foreignKey, string targetEntityName, string targetColumnName)
         {
-            var sourceColumn = $"{foreignKey.EntityName}.{foreignKey.ColumnName}";
+            var entityName = foreignKey.EntityName;
+
+            var groupAlias = _options.Groups.GetAlias(foreignKey.Type);
+
+            if (groupAlias is not null)
+            {
+                entityName = $"{groupAlias}.{entityName}";
+            }
+
+            var sourceColumn = $"{entityName}.{foreignKey.ColumnName}";
             var targetColumn = $"{targetEntityName}.{targetColumnName}";
             var connection = GetConnection(foreignKey);
             var cardinalityNode = CreateCardinalityNode(foreignKey);

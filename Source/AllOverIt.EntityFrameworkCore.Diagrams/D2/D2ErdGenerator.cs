@@ -34,6 +34,21 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
             sb.AppendLine($"direction: {_options.Direction}".ToLowerInvariant());
             sb.AppendLine();
 
+            // Process all groups
+            _options.Groups.ForEach((entityGroup, _) =>
+            {
+                var alias = entityGroup.Key;
+                var config = entityGroup.Value;
+
+                var style = config.ShapeStyle.AsText(2);
+
+                sb.AppendLine($"{alias}: {config.Title} {{");
+                sb.AppendLine(style);
+                sb.AppendLine("}");
+                sb.AppendLine();
+            });
+
+            // Process all entities
             var entityNodeGenerator = new EntityNodeGenerator(_options, dbContextEntityTypes, defaultShapeStyle);
 
             foreach (var (entityIdentifier, columns) in entityColumns)
