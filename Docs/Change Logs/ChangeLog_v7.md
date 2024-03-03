@@ -1,5 +1,5 @@
 #  Version 7.3.0
-## XX XXX 2024
+## 04 Mar 2024
 
 ### AllOverIt.Aws.Cdk.AppSync
 * General cleanup / maintenance
