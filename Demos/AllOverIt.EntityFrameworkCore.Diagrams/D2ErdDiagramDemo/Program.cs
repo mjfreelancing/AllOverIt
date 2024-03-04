@@ -140,16 +140,8 @@ namespace D2ErdDiagramDemo
 
         private static void AddEntityGroups(ErdOptions options)
         {
-            // The first...
-            var webGroupStyle = new ShapeStyle
-            {
-                Fill = "lime",
-                Stroke = "black",
-                StrokeWidth = 4,
-                StrokeDash = 2
-            };
-
-            options.Group("web", "Web", webGroupStyle, entities =>
+            // The first, without an explicit style...
+            options.Group("web", "Web", new ShapeStyle(), entities =>
             {
                 entities
                     .Add<WebSite>()
