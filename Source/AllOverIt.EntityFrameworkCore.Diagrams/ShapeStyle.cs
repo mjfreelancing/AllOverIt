@@ -30,5 +30,14 @@
         {
             return this == Default;
         }
+
+        internal void CopyFrom(ShapeStyle source)
+        {
+            Fill = source.Fill;
+            Stroke = source.Stroke;
+            StrokeWidth = source.StrokeWidth;
+            StrokeDash = source.StrokeDash;
+            Opacity = source.Opacity;
+        }
     }
 }

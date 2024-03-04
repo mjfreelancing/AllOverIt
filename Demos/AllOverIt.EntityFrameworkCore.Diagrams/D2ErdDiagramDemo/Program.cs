@@ -27,6 +27,7 @@ namespace D2ErdDiagramDemo
 
                     AddEntityGroups(options);
 
+                    // Define the global Entities options before creating the entity specific options (so they can be pre-filled).
                     options.Entities.Nullable.IsVisible = true;
                     options.Entities.Nullable.Mode = NullableColumnMode.NotNull;
 
@@ -69,8 +70,8 @@ namespace D2ErdDiagramDemo
                         StrokeDash = 2
                     };
 
-                    // Can update individual properties
-                    options.Entity<Author>().SetShapeStyle(style =>
+                    // Can update individual properties - the default is to initialize using the same as the global options
+                    options.Entity<Author>(/*true*/).SetShapeStyle(style =>
                     {
                         style.Fill = shapeStyle.Fill;
                         style.Stroke = shapeStyle.Stroke;
@@ -79,7 +80,7 @@ namespace D2ErdDiagramDemo
                     });
 
                     // .. or completely replace the style
-                    options.Entity<Blog>().SetShapeStyle(shapeStyle);
+                    options.Entity<Blog>(false).SetShapeStyle(shapeStyle);
 
 
                     // Individual properties
