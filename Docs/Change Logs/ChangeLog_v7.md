@@ -1,43 +1,16 @@
-#  Version 7.4.0
-## 04 Mar 2024
-
-### AllOverIt.EntityFrameworkCore.Diagrams
-* Added an option to copy global entity options when first retrieving them for customization. This is a change in behaviour, but it is more appropriate.
-
-
----
-
-
-#  Version 7.3.2
-## 04 Mar 2024
-
-### AllOverIt.EntityFrameworkCore.Diagrams
-* Correct a regression with group titles not being included in the output.
-
-
----
-
-
-#  Version 7.3.1
-## 04 Mar 2024
-
-### AllOverIt.EntityFrameworkCore.Diagrams
-* Fixed an issue with a default style on grouped entities not generating a valid configuration. Added a new overload not requiring a style.
-
-
----
-
-
-#  Version 7.3.0
+#  Version 7.3.0 - 7.4.1
 ## 04 Mar 2024
 
 ### AllOverIt.Aws.Cdk.AppSync
-* General cleanup / maintenance
+* v7.3.0 - General cleanup / maintenance
 
 
 ### AllOverIt.EntityFrameworkCore.Diagrams
-* Added support for grouping entities
-
+* v7.3.0 - Added support for grouping entities
+* v7.3.1 - Fixed an issue with a default style on grouped entities not generating a valid configuration. Added a new overload not requiring a style.
+* v7.3.2 - Correct a regression with group titles not being included in the output.
+* v7.4.0 - Added an option to copy global entity options when first retrieving them for customization. This is a change in behaviour, but it is more appropriate.
+* v7.4.1 - Corrected copying of global 'NotNull' label.
 
 ---
 
