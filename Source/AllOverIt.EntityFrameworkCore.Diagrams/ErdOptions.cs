@@ -243,8 +243,9 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
 
         /// <summary>Sets options for a single entity that overrides the global <see cref="Entities"/> options.</summary>
         /// <typeparam name="TEntity">The entity type to set option overrides.</typeparam>
-        /// <param name="copyGlobal">If <see langword="True"/> at the time of the call, the <see cref="EntityOptions"/> returned
-        /// will be pre-configured with the same options as currently defined on the global <see cref="Entities"/> property.</param>
+        /// <param name="copyGlobal">If <see langword="True"/> at the time of the initial call for the specified <typeparamref name="TEntity"/>,
+        /// the <see cref="EntityOptions"/> returned will be pre-configured with the same options as currently defined on the global
+        /// <see cref="Entities"/> property. Default is <see langword="True"/>.</param>
         /// <returns>Options for an entity type that override the global <see cref="Entities"/> options.</returns>
         public EntityOptions Entity<TEntity>(bool copyGlobal = true) where TEntity : class
         {
@@ -253,8 +254,9 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
 
         /// <summary>Sets options for a single entity that overrides the global <see cref="Entities"/> options.</summary>
         /// <param name="entityType">The entity type to set option overrides.</param>
-        /// <param name="copyGlobal">If <see langword="True"/> at the time of the call, the <see cref="EntityOptions"/> returned
-        /// will be pre-configured with the same options as currently defined on the global <see cref="Entities"/> property.</param>
+        /// <param name="copyGlobal">If <see langword="True"/> at the time of the initial call for the specified <paramref name="entityType"/>,
+        /// the <see cref="EntityOptions"/> returned will be pre-configured with the same options as currently defined on the global
+        /// <see cref="Entities"/> property. Default is <see langword="True"/>.</param>
         /// <returns>Options for an entity type that override the global <see cref="Entities"/> options.</returns>
         public EntityOptions Entity(Type entityType, bool copyGlobal = true)
         {
