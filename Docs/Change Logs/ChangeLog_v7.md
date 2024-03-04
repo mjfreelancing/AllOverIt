@@ -1,3 +1,13 @@
+#  Version 7.4.0
+## 04 Mar 2024
+
+### AllOverIt.EntityFrameworkCore.Diagrams
+* Added an option to copy global entity options when first retrieving them for customization. This is a change in behaviour, but it is more appropriate.
+
+
+---
+
+
 #  Version 7.3.2
 ## 04 Mar 2024
 
