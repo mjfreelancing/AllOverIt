@@ -40,11 +40,19 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
                 var alias = entityGroup.Key;
                 var config = entityGroup.Value;
 
-                var style = config.ShapeStyle.AsText(2);
+                if (config.ShapeStyle.IsDefault())
+                {
+                    sb.AppendLine(alias);
+                }
+                else
+                {
+                    var style = config.ShapeStyle.AsText(2);
 
-                sb.AppendLine($"{alias}: {config.Title} {{");
-                sb.AppendLine(style);
-                sb.AppendLine("}");
+                    sb.AppendLine($"{alias}: {config.Title} {{");
+                    sb.AppendLine(style);
+                    sb.AppendLine("}");
+                }
+
                 sb.AppendLine();
             });
 

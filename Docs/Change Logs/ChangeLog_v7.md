@@ -1,3 +1,13 @@
+#  Version 7.3.1
+## 04 Mar 2024
+
+### AllOverIt.EntityFrameworkCore.Diagrams
+* Fixed an issue with a default style on grouped entities not generating a valid configuration. Added a new overload not requiring a style.
+
+
+---
+
+
 #  Version 7.3.0
 ## 04 Mar 2024
 
