@@ -95,36 +95,32 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
 
         private static string GetColumnDetail(Type entityType, ColumnDescriptor column, ErdOptions configuration)
         {
-            var hasEntityOptions = configuration.TryGetEntityOptions(entityType, out var options);
+            _ = configuration.TryGetEntityOptions(entityType, out var options);
+
+            ErdOptions.EntityOptionsBase entityOptions = options is not null
+                ? options
+                : configuration.Entities;
 
             var columnType = column.ColumnType;
 
             if (column.MaxLength.HasValue)
             {
-                var showMaxLength = hasEntityOptions
-                    ? options.ShowMaxLength
-                    : configuration.Entities.ShowMaxLength;
-
-                if (showMaxLength)
+                if (entityOptions.ShowMaxLength)
                 {
                     columnType = $"{column.ColumnType}({column.MaxLength})";
                 }
             }
 
-            var nullableIsVisible = hasEntityOptions
-                ? options.Nullable.IsVisible
-                : configuration.Entities.Nullable.IsVisible;
-
-            if (nullableIsVisible)
+            if (entityOptions.Nullable.IsVisible)
             {
-                if (column.IsNullable && configuration.Entities.Nullable.Mode == NullableColumnMode.IsNull)
+                if (column.IsNullable && entityOptions.Nullable.Mode == NullableColumnMode.IsNull)
                 {
-                    columnType = $@"{columnType} {configuration.Entities.Nullable.IsNullLabel.D2EscapeString()}";
+                    columnType = $@"{columnType} {entityOptions.Nullable.IsNullLabel.D2EscapeString()}";
                 }
 
-                if (!column.IsNullable && configuration.Entities.Nullable.Mode == NullableColumnMode.NotNull)
+                if (!column.IsNullable && entityOptions.Nullable.Mode == NullableColumnMode.NotNull)
                 {
-                    columnType = $@"{columnType} {configuration.Entities.Nullable.NotNullLabel.D2EscapeString()}";
+                    columnType = $@"{columnType} {entityOptions.Nullable.NotNullLabel.D2EscapeString()}";
                 }
             }
 

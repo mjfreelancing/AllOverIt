@@ -85,6 +85,13 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
 
             /// <summary>Provides styling options for an entity shape.</summary>
             public ShapeStyle ShapeStyle { get; internal set; } = new();
+
+            internal void CopyFrom(EntityOptionsBase source)
+            {
+                Nullable.CopyFrom(source.Nullable);
+                ShowMaxLength = source.ShowMaxLength;
+                ShapeStyle.CopyFrom(source.ShapeStyle);
+            }
         }
 
         /// <summary>Represents a collection of entity groups, where each group contains one or more entities.</summary>
@@ -115,6 +122,14 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
             /// <summary>Specifies the text to decorate a non-nullable column with when the <see cref="Mode"/> is
             /// <see cref="NullableColumnMode.NotNull"/>.</summary>
             public string NotNullLabel { get; set; } = DefaultNotNullLabel;
+
+            internal void CopyFrom(NullableColumn source)
+            {
+                IsVisible = source.IsVisible;
+                Mode = source.Mode;
+                IsNullLabel = source.IsNullLabel;
+                NotNullLabel = source.IsNullLabel;
+            }
         }
 
         /// <summary>Provides options for an individual entity that override the global <see cref="Entities"/> options.</summary>
@@ -228,18 +243,24 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
 
         /// <summary>Sets options for a single entity that overrides the global <see cref="Entities"/> options.</summary>
         /// <typeparam name="TEntity">The entity type to set option overrides.</typeparam>
+        /// <param name="copyGlobal">If <see langword="True"/> at the time of the initial call for the specified <typeparamref name="TEntity"/>,
+        /// the <see cref="EntityOptions"/> returned will be pre-configured with the same options as currently defined on the global
+        /// <see cref="Entities"/> property. Default is <see langword="True"/>.</param>
         /// <returns>Options for an entity type that override the global <see cref="Entities"/> options.</returns>
-        public EntityOptions Entity<TEntity>() where TEntity : class
+        public EntityOptions Entity<TEntity>(bool copyGlobal = true) where TEntity : class
         {
-            return GetEntityOptions(typeof(TEntity));
+            return GetEntityOptions(typeof(TEntity), copyGlobal);
         }
 
         /// <summary>Sets options for a single entity that overrides the global <see cref="Entities"/> options.</summary>
         /// <param name="entityType">The entity type to set option overrides.</param>
+        /// <param name="copyGlobal">If <see langword="True"/> at the time of the initial call for the specified <paramref name="entityType"/>,
+        /// the <see cref="EntityOptions"/> returned will be pre-configured with the same options as currently defined on the global
+        /// <see cref="Entities"/> property. Default is <see langword="True"/>.</param>
         /// <returns>Options for an entity type that override the global <see cref="Entities"/> options.</returns>
-        public EntityOptions Entity(Type entityType)
+        public EntityOptions Entity(Type entityType, bool copyGlobal = true)
         {
-            return GetEntityOptions(entityType);
+            return GetEntityOptions(entityType, copyGlobal);
         }
 
         internal bool TryGetEntityOptions(Type entity, out EntityOptions options)
@@ -247,11 +268,17 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
             return _entityOptions.TryGetValue(entity, out options);
         }
 
-        private EntityOptions GetEntityOptions(Type entity)
+        private EntityOptions GetEntityOptions(Type entity, bool copyGlobal)
         {
             if (!_entityOptions.TryGetValue(entity, out var entityByNameOptions))
             {
                 entityByNameOptions = new EntityOptions();
+
+                if (copyGlobal)
+                {
+                    entityByNameOptions.CopyFrom(Entities);
+                }
+
                 _entityOptions[entity] = entityByNameOptions;
             }
 
