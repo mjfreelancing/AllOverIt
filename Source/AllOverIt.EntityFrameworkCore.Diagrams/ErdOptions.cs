@@ -195,6 +195,15 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
         /// <summary>The groups of entities.</summary>
         public IEntityGroups Groups => _groupEntities;
 
+        /// <summary>Creates a new grouping of entity types using a default style.</summary>
+        /// <param name="alias">The alias to use in the diagram file for the group.</param>
+        /// <param name="title">The group title. Optional.</param>
+        /// <param name="entities">An action that adds the required entities to the group.</param>
+        public void Group(string alias, string title, Action<EntityGroup> entities)
+        {
+            Group(alias, title, new ShapeStyle(), entities);
+        }
+
         /// <summary>Creates a new grouping of entity types.</summary>
         /// <param name="alias">The alias to use in the diagram file for the group.</param>
         /// <param name="title">The group title. Optional.</param>
