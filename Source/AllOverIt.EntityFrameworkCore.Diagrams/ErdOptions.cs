@@ -128,7 +128,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
                 IsVisible = source.IsVisible;
                 Mode = source.Mode;
                 IsNullLabel = source.IsNullLabel;
-                NotNullLabel = source.IsNullLabel;
+                NotNullLabel = source.NotNullLabel;
             }
         }
 
