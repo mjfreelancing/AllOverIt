@@ -20,9 +20,9 @@ blog.Author: {
     stroke-dash: 2
   }
 
-  Id: INTEGER {constraint: primary_key}
-  Email: TEXT(50)
-  FirstName: TEXT(50)
+  Id: INTEGER \[NULL\] {constraint: primary_key}
+  Email: TEXT(50) \[NULL\]
+  FirstName: TEXT(50) \[NULL\]
   LastName: TEXT(50)
 }
 
