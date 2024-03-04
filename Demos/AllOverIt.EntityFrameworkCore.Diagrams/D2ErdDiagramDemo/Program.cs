@@ -151,7 +151,7 @@ namespace D2ErdDiagramDemo
             // The second...
             var blogGroupStyle = new ShapeStyle
             {
-                Fill = "cyan",
+                Fill = "#ffd8d8",
                 Stroke = "blue",
                 StrokeWidth = 4
             };
