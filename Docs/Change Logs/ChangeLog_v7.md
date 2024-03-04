@@ -1,3 +1,13 @@
+#  Version 7.3.2
+## 04 Mar 2024
+
+### AllOverIt.EntityFrameworkCore.Diagrams
+* Correct a regression with group titles not being included in the output.
+
+
+---
+
+
 #  Version 7.3.1
 ## 04 Mar 2024
 

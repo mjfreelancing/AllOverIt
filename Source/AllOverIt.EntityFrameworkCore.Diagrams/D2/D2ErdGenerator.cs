@@ -42,7 +42,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
 
                 if (config.ShapeStyle.IsDefault())
                 {
-                    sb.AppendLine(alias);
+                    sb.AppendLine($"{alias}: {config.Title}");
                 }
                 else
                 {
