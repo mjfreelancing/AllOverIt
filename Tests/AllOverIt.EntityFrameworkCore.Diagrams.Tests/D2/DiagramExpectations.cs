@@ -1,4 +1,4 @@
-﻿namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
+﻿namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.D2
 {
     internal static class DiagramExpectations
     {

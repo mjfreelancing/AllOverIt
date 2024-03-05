@@ -4,9 +4,9 @@ using AllOverIt.Fixture;
 using FluentAssertions;
 using System;
 
-namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
+namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.D2
 {
-    public class UnitTest1 : FixtureBase
+    public class ErdGeneratorFixture : FixtureBase
     {
         [Fact]
         public void Should_Create_Default_Diagram()
