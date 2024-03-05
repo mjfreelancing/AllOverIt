@@ -3,6 +3,7 @@
 
 ### AllOverIt.EntityFrameworkCore.Diagrams
 * Added support for preserving the order of columns as they are defined on entities.
+* Changed default entity nullable column options to be Visible and use NullableColumnMode.NotNull.
 
 
 ---
@@ -16,7 +17,7 @@
 
 
 ### AllOverIt.EntityFrameworkCore.Diagrams
-* v7.3.0 - Added support for grouping entities
+* v7.3.0 - Added support for grouping entities.
 * v7.3.1 - Fixed an issue with a default style on grouped entities not generating a valid configuration. Added a new overload not requiring a style.
 * v7.3.2 - Correct a regression with group titles not being included in the output.
 * v7.4.0 - Added an option to copy global entity options when first retrieving them for customization. This is a change in behaviour, but it is more appropriate.
