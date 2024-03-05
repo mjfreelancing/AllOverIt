@@ -1,3 +1,13 @@
+#  Version 7.5.0
+## 05 Mar 2024
+
+### AllOverIt.EntityFrameworkCore.Diagrams
+* Added support for preserving the order of columns as they are defined on entities.
+
+
+---
+
+
 #  Version 7.3.0 - 7.4.1
 ## 04 Mar 2024
 
