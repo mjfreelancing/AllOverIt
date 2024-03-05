@@ -77,6 +77,9 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
         /// <summary>Provides entity specific options that can be applied to a single entity, or globally.</summary>
         public abstract class EntityOptionsBase
         {
+            /// <summary>Determines whether the entity columns are exported in the same order as they are declared. Default is <see langword="True"/>.</summary>
+            public bool PreserveColumnOrder { get; private set; } = true;
+
             /// <summary>Specifies how each entity column nullability is depicted on the generated diagram.</summary>
             public NullableColumn Nullable { get; } = new();
 
@@ -91,6 +94,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
                 Nullable.CopyFrom(source.Nullable);
                 ShowMaxLength = source.ShowMaxLength;
                 ShapeStyle.CopyFrom(source.ShapeStyle);
+                PreserveColumnOrder = source.PreserveColumnOrder;
             }
         }
 

@@ -50,8 +50,12 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
                 .Single(entity => entity.ClrType == entityIdentifier.Type)
                 .ClrType;
 
+            bool preserveColumnOrder;
+
             if (_options.TryGetEntityOptions(entityType, out var entityOptions))
             {
+                preserveColumnOrder = entityOptions.PreserveColumnOrder;
+
                 if (!entityOptions.ShapeStyle.IsDefault())
                 {
                     sb.AppendLine(entityOptions.ShapeStyle.AsText(2));
@@ -60,11 +64,18 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
             }
             else
             {
+                preserveColumnOrder = _options.Entities.PreserveColumnOrder;
+
                 if (_defaultShapeStyle is not null)
                 {
                     sb.AppendLine(_defaultShapeStyle);
                     sb.AppendLine();
                 }
+            }
+
+            if (preserveColumnOrder)
+            {
+                columns = [.. GetPreservedColumnOrder(entityIdentifier, columns)];
             }
 
             foreach (var column in columns)
@@ -91,6 +102,37 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
             sb.Append('}');
 
             return sb.ToString();
+        }
+
+        private static IEnumerable<ColumnDescriptor> GetPreservedColumnOrder(EntityIdentifier entityIdentifier, IReadOnlyCollection<ColumnDescriptor> columns)
+        {
+            List<string> orderedPropertyNames = [];
+            List<Type> orderedPropertyTypes = [];
+
+            foreach (var property in entityIdentifier.Type.GetProperties())
+            {
+                orderedPropertyNames.Add(property.Name);
+                orderedPropertyTypes.Add(property.PropertyType);
+            }
+
+            return columns.OrderBy(column =>
+            {
+                var index = orderedPropertyNames.IndexOf(column.ColumnName);
+
+                if (index != -1)
+                {
+                    return index;
+                }
+
+                if (column.ForeignKeyPrincipals.Any())
+                {
+                    var foreignKey = column.ForeignKeyPrincipals.First();
+
+                    return orderedPropertyTypes.IndexOf(foreignKey.Type);
+                }
+
+                return -1;
+            });
         }
 
         private static string GetColumnDetail(Type entityType, ColumnDescriptor column, ErdOptions configuration)

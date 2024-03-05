@@ -12,6 +12,6 @@ namespace D2ErdDiagramDemo.Data.Entities
         public Author Author { get; set; }
 
         [Required]
-        public Blog Blog { get; set; }
+        public Blog Blogger { get; set; }       // Deliberately using a name that is different from the type
     }
 }

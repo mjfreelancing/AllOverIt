@@ -21,9 +21,9 @@ blog.Author: {
   }
 
   Id: INTEGER \[NOT NULL\] {constraint: primary_key}
-  Email: TEXT(50) \[NOT NULL\]
   FirstName: TEXT(50) \[NOT NULL\]
   LastName: TEXT(50)
+  Email: TEXT(50) \[NOT NULL\]
 }
 
 blog.AuthorBlog: {
@@ -35,7 +35,7 @@ blog.AuthorBlog: {
 
   Id: INTEGER \[NOT NULL\] {constraint: primary_key}
   AuthorId: INTEGER \[NOT NULL\] {constraint: foreign_key}
-  BlogId: INTEGER \[NOT NULL\] {constraint: foreign_key}
+  BloggerId: INTEGER \[NOT NULL\] {constraint: foreign_key}
 }
 
 blog.Blog: {
@@ -57,9 +57,9 @@ Comment: {
   shape: sql_table
 
   Id: INTEGER {constraint: primary_key}
-  AuthorId: INTEGER {constraint: foreign_key}
   Content: TEXT
   PostId: INTEGER {constraint: foreign_key}
+  AuthorId: INTEGER {constraint: foreign_key}
 }
 
 blog.Post: {
@@ -70,9 +70,9 @@ blog.Post: {
   }
 
   Id: INTEGER \[NOT NULL\] {constraint: primary_key}
-  BlogId: INTEGER \[NOT NULL\] {constraint: foreign_key}
-  Content: TEXT \[NOT NULL\]
   Title: TEXT(500) \[NOT NULL\]
+  Content: TEXT \[NOT NULL\]
+  BlogId: INTEGER \[NOT NULL\] {constraint: foreign_key}
 }
 
 web.Settings: {
@@ -112,7 +112,7 @@ blog.Author.Id <-> blog.AuthorBlog.AuthorId: {
   }
 }
 
-blog.Blog.Id <-> blog.AuthorBlog.BlogId: {
+blog.Blog.Id <-> blog.AuthorBlog.BloggerId: {
   source-arrowhead: {
     shape: cf-one-required
   }
@@ -140,7 +140,7 @@ web.WebSite.Id <-> blog.Blog.WebSiteId: {
   }
 }
 
-blog.Author.Id <-> Comment.AuthorId: {
+blog.Post.Id <-> Comment.PostId: {
   source-arrowhead: {
     shape: cf-one-required
   }
@@ -154,7 +154,7 @@ blog.Author.Id <-> Comment.AuthorId: {
   }
 }
 
-blog.Post.Id <-> Comment.PostId: {
+blog.Author.Id <-> Comment.AuthorId: {
   source-arrowhead: {
     shape: cf-one-required
   }
