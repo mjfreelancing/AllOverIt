@@ -114,10 +114,10 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
         public sealed class NullableColumn
         {
             /// <summary>Indicates if the nullability of a column is visible on the diagram.</summary>
-            public bool IsVisible { get; set; }
+            public bool IsVisible { get; set; } = true;
 
             /// <summary>Indicates if each column will be decorated as nullable or non-nullable.</summary>
-            public NullableColumnMode Mode { get; set; }
+            public NullableColumnMode Mode { get; set; } = NullableColumnMode.NotNull;
 
             /// <summary>Specifies the text to decorate a nullable column with when the <see cref="Mode"/> is
             /// <see cref="NullableColumnMode.IsNull"/>.</summary>
