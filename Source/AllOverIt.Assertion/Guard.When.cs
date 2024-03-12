@@ -22,7 +22,7 @@ namespace AllOverIt.Assertion
         /// <remarks>Evaluating the expression is an expensive operation as it must be compiled before it can be invoked.</remarks>
         public static TType WhenNotNull<TType>(Expression<Func<TType>> expression, string errorMessage = default)
             where TType : class
-{
+        {
             if (expression is null)
             {
                 throw CreateArgumentNullException(nameof(expression), errorMessage);
@@ -293,6 +293,6 @@ namespace AllOverIt.Assertion
             throw new ArgumentException(errorMessage ?? "The argument cannot be empty.", name);
         }
 
-#endregion
+        #endregion
     }
 }
