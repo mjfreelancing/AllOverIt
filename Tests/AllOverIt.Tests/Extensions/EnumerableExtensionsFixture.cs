@@ -48,6 +48,67 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
+        public class AsArray : EnumerableExtensionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Null()
+            {
+                IEnumerable<object> items = null;
+
+                Invoking(() => items.AsArray())
+                  .Should()
+                  .Throw<ArgumentNullException>()
+                  .WithNamedMessageWhenNull("items");
+            }
+
+            [Fact]
+            public void Should_Not_Throw_When_Empty()
+            {
+                var items = new List<int>();
+
+                Invoking(() => items.AsArray())
+                  .Should()
+                  .NotThrow();
+            }
+
+            [Fact]
+            public void Should_Not_Return_Same_Array()
+            {
+                var expected = CreateMany<int>();
+                var actual = expected.AsArray();
+
+                actual.Should().NotBeSameAs(expected);
+            }
+
+            [Fact]
+            public void Should_Return_Same_Array()
+            {
+                var expected = CreateMany<int>().ToArray();
+
+                var actual = expected.AsArray();
+
+                actual.Should().BeSameAs(expected);
+            }
+
+            [Fact]
+            public void Should_Return_New_Array()
+            {
+                var dictionary = new Dictionary<int, string>
+                {
+                    {Create<int>(), Create<string>()},
+                    {Create<int>(), Create<string>()},
+                    {Create<int>(), Create<string>()}
+                };
+
+                var actual = dictionary.AsArray();
+
+                var sameReference = ReferenceEquals(dictionary, actual);
+
+                sameReference.Should().BeFalse();
+                actual.Should().BeOfType<KeyValuePair<int, string>[]>();
+            }
+        }
+
         public class AsList : EnumerableExtensionsFixture
         {
             [Fact]
