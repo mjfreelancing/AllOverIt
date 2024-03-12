@@ -48,7 +48,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
                     {
                         LambdaGraphQlDataSource lambda => CreateLambdaDataSource(dataSourceId, lambda.FunctionName, lambda.Description),
                         HttpGraphQlDataSource http => CreateHttpDataSource(dataSourceId, http.DataSourceName, http.Endpoint, http.Description),
-                        NoneGraphQlDataSource none => CreateNoneDataSource(dataSourceId, "None", none.DataSourceName, none.Description),
+                        NoneGraphQlDataSource none => CreateNoneDataSource(dataSourceId, none.DataSourceName, none.Description),
                         _ => throw new ArgumentOutOfRangeException($"Unknown DataSource type '{attribute.GetType().Name}'")
                     };
 
@@ -109,14 +109,14 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
         }
 
         // Applicable to NONE and Subscription DataSources
-        private NoneDataSource CreateNoneDataSource(string dataSourceId, string dataSourceNamePrefix, string dataSourceName, string description)
+        private NoneDataSource CreateNoneDataSource(string dataSourceId, string dataSourceName, string description)
         {
             var stack = Stack.Of(_graphQlApi);
 
             return new NoneDataSource(stack, dataSourceId, new NoneDataSourceProps
             {
                 Api = _graphQlApi,
-                Name = GetFullDataSourceName(dataSourceNamePrefix, dataSourceName),
+                Name = GetFullDataSourceName("None", dataSourceName),
                 Description = description
             });
         }
