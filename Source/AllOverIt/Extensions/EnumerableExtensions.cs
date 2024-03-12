@@ -24,11 +24,25 @@ namespace AllOverIt.Extensions
             return !items.Any();
         }
 
-        /// <summary>Returns the source items as an IList.</summary>
+        /// <summary>Returns the source items as an array of <typeparamref name="TType"/>.</summary>
+        /// <typeparam name="TType">The type stored in the source collection.</typeparam>
+        /// <param name="items">The source of items to be returned as an array.</param>
+        /// <returns>The source items as an array of <typeparamref name="TType"/>. If the source items is already an array
+        /// then the same reference is returned, otherwise a new array is created and populated
+        /// before being returned.</returns>
+        public static TType[] AsArray<TType>(this IEnumerable<TType> items)
+        {
+            _ = items.WhenNotNull(nameof(items));
+
+            return items as TType[] ?? items.ToArray();
+        }
+
+        /// <summary>Returns the source items as an <see cref="IList{T}"/>.</summary>
         /// <typeparam name="TType">The type stored in the source collection.</typeparam>
         /// <param name="items">The source of items to be returned as an IList.</param>
-        /// <returns>If the source items is already an IList. If the source is already an IList then the same reference is returned,
-        /// otherwise a new list is created and populated before being returned.</returns>
+        /// <returns>The source items as an IList. If the source is already an IList then the
+        /// same reference is returned, otherwise a new list is created and populated before
+        /// being returned.</returns>
         public static IList<TType> AsList<TType>(this IEnumerable<TType> items)
         {
             _ = items.WhenNotNull(nameof(items));
@@ -36,11 +50,12 @@ namespace AllOverIt.Extensions
             return items as IList<TType> ?? items.ToList();
         }
 
-        /// <summary>Returns the source items as an IReadOnlyList.</summary>
+        /// <summary>Returns the source items as an <see cref="IReadOnlyList{T}"/>.</summary>
         /// <typeparam name="TType">The type stored in the source collection.</typeparam>
         /// <param name="items">The source of items to be returned as an IReadOnlyList.</param>
-        /// <returns>The source items as an IReadOnlyList. If the source is already an IReadOnlyList then the same
-        /// reference is returned, otherwise a new list is created and populated before being returned.</returns>
+        /// <returns>The source items as an <see cref="IReadOnlyList{T}"/>. If the source is already
+        /// an IReadOnlyList then the same  reference is returned, otherwise a new list is created
+        /// and populated before being returned.</returns>
         public static IReadOnlyList<TType> AsReadOnlyList<TType>(this IEnumerable<TType> items)
         {
             _ = items.WhenNotNull(nameof(items));
@@ -48,11 +63,12 @@ namespace AllOverIt.Extensions
             return items as IReadOnlyList<TType> ?? items.ToList();
         }
 
-        /// <summary>Returns the source items as an IReadOnlyCollection.</summary>
+        /// <summary>Returns the source items as an <see cref="IReadOnlyCollection{T}"/>.</summary>
         /// <typeparam name="TType">The type stored in the source collection.</typeparam>
         /// <param name="items">The source of items to be returned as an IReadOnlyCollection.</param>
-        /// <returns>The source items as an IReadOnlyCollection. If the source is already an IReadOnlyCollection then the same
-        /// reference is returned, otherwise a new list is created and populated before being returned.</returns>
+        /// <returns>The source items as an <see cref="IReadOnlyCollection{T}"/>. If the source is already
+        /// an IReadOnlyCollection then the same reference is returned, otherwise a new list is created and
+        /// populated before being returned.</returns>
         public static IReadOnlyCollection<TType> AsReadOnlyCollection<TType>(this IEnumerable<TType> items)
         {
             _ = items.WhenNotNull(nameof(items));

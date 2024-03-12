@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace D2ErdDiagramDemo.Data.Entities
+namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.Entities
 {
     [Table(nameof(AuthorBlog))]       // Enforce the name rather than take on the DbSet<> property name
     public class AuthorBlog

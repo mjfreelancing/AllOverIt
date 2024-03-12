@@ -45,7 +45,7 @@ namespace D2ErdDiagramDemo
 
                     var globalShapeStyle = new ShapeStyle
                     {
-                        Stroke = "yellow"
+                        Stroke = "#ccffcc"
                     };
 
                     // Set individual properties
@@ -54,7 +54,7 @@ namespace D2ErdDiagramDemo
                     //// .. or like this
                     //options.Entities.SetShapeStyle(style =>
                     //{
-                    //    style.Stroke = "yellow";
+                    //    style.Stroke = "#ccffcc";
                     //});
 
                     //// .. or like this

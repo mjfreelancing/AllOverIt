@@ -18,9 +18,9 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
         /// <returns>The generated diagram text.</returns>
         public string Generate(DbContext dbContext)
         {
-            var descriptors = GetEntityColumnDescriptors(dbContext);
+            var entityColumns = GetEntityColumnDescriptors(dbContext);
 
-            return GenerateDiagram(dbContext, descriptors);
+            return GenerateDiagram(dbContext, entityColumns);
         }
 
         /// <summary>Override in a concrete class to generate the entity relationship diagram using the provided
@@ -43,6 +43,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
                 var descriptors = entityType.GetProperties().SelectAsReadOnlyCollection(ColumnDescriptor.Create);
 
                 var identifier = new EntityIdentifier(entityType.ClrType, entityName);
+
                 entityDescriptors.Add(identifier, descriptors);
             }
 
