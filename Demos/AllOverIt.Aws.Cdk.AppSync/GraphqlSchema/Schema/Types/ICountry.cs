@@ -25,7 +25,7 @@ namespace GraphqlSchema.Schema.Types
 
         IContinent Continent();      // this is a circular reference
 
-        [UnitResolver(typeof(PopulationResolver), Constants.HttpDataSource.GetPopulationUrlExplicit)]
+        [UnitResolver(typeof(PopulationResolver), Constants.HttpDataSource.GetPopulationUrl)]
         int Population();
     }
 }

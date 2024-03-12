@@ -4,13 +4,14 @@
     public abstract class GraphQlDataSourceBase
     {
         /// <summary>The DataSource name.</summary>
-        public abstract string DataSourceName { get; }
+        public string DataSourceName { get; }
 
         /// <summary>A description for the DataSource.</summary>
         public string Description { get; }
 
-        protected GraphQlDataSourceBase(string description)
+        protected GraphQlDataSourceBase(string dataSourceName, string description)
         {
+            DataSourceName = dataSourceName;
             Description = description;
         }
     }

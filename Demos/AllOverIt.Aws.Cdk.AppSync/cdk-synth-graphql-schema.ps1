@@ -3,6 +3,6 @@ dotnet build
 cd..
 Clear-History
 cls
-$env:GetAllContinents = 'https://www.google.com'
+$env:GetAllContinentsUrl = 'https://www.abc.com'
 cdk synth AppSyncDemoV1Stack2 --app "dotnet exec ./GraphqlSchema/bin/Debug/net8.0/GraphqlSchema.dll" > output.txt
 pause

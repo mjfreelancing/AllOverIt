@@ -23,7 +23,7 @@ namespace GraphqlSchema
             });
 
             // required to test HttpDataSourceAttribute
-            stack1.ExportValue(Token.AsString(Constants.HttpDataSource.GetLanguageUrlExplicit), new ExportValueOptions
+            stack1.ExportValue(Token.AsString(Constants.HttpDataSource.GetLanguageUrlExportName), new ExportValueOptions
             {
                 Name = Constants.HttpDataSource.GetCountriesUrlImportName
             });

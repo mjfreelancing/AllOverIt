@@ -11,9 +11,6 @@ namespace AllOverIt.Aws.Cdk.AppSync
     /// <summary>Contains options for an AppSync GraphQL API.</summary>
     public interface IAppGraphqlProps
     {
-        /// <summary>Provides endpoint lookup values for <see cref="HttpGraphQlDataSource"/> using <see cref="EndpointSource.Lookup"/>.</summary>
-        IReadOnlyDictionary<string, string> EndpointLookup { get; }
-
         /// <summary>Provides a list of all DataSources, each having a <see cref="GraphQlDataSourceBase.DataSourceName"/>. This unique name
         /// is referenced by a resolver attribute, such as <see cref="UnitResolverAttribute"/>, to associate it with a field.</summary>
         IReadOnlyCollection<GraphQlDataSourceBase> DataSources { get; }

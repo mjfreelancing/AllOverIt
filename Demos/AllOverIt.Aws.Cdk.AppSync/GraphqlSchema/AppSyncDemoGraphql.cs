@@ -1,12 +1,13 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync;
+using AllOverIt.Aws.Cdk.AppSync.DataSources;
 using AllOverIt.Aws.Cdk.AppSync.Factories;
+using AllOverIt.Aws.Cdk.AppSync.Resolvers;
 using Amazon.CDK;
 using Amazon.CDK.AWS.AppSync;
 using Constructs;
 using System.Collections.Generic;
-using AllOverIt.Aws.Cdk.AppSync.Resolvers;
+
 using SystemType = System.Type;
-using AllOverIt.Aws.Cdk.AppSync.DataSources;
 
 #if DEBUG
 using Amazon.CDK.AWS.Cognito;
@@ -92,11 +93,6 @@ namespace GraphqlSchema
 
                 ResolverFactory = resolverFactory,
 
-                EndpointLookup = new Dictionary<string, string>
-                {
-                    [Constants.HttpDataSource.GetCountriesUrlLookupKey] = Fn.Join("/", [Fn.ImportValue(Constants.HttpDataSource.GetCountriesUrlImportName), "lookup"])
-                },
-
                 DataSources =
                 [
                     .. CreateLambdaDataSources(),
@@ -109,18 +105,18 @@ namespace GraphqlSchema
 
         private static IEnumerable<GraphQlDataSourceBase> CreateLambdaDataSources()
         {
-            yield return new LambdaGraphQlDataSource(Constants.LambdaDataSource.GetLanguages);
-            yield return new LambdaGraphQlDataSource(Constants.LambdaDataSource.AddCountry);
-            yield return new LambdaGraphQlDataSource(Constants.LambdaDataSource.UpdateCountry);
+            yield return new LambdaGraphQlDataSource(Constants.LambdaDataSource.GetLanguages, Constants.LambdaDataSource.GetLanguages);
+            yield return new LambdaGraphQlDataSource(Constants.LambdaDataSource.AddCountry, Constants.LambdaDataSource.AddCountry);
+            yield return new LambdaGraphQlDataSource(Constants.LambdaDataSource.UpdateCountry, Constants.LambdaDataSource.UpdateCountry);
         }
 
         private static IEnumerable<GraphQlDataSourceBase> CreateHttpDataSources()
         {
-            yield return new HttpGraphQlDataSource(Constants.HttpDataSource.GetPopulationUrlExplicit, "An example Http data source");
-            yield return new HttpGraphQlDataSource(EndpointSource.EnvironmentVariable, Constants.HttpDataSource.GetAllContinentsUrlEnvironmentName);
-            yield return new HttpGraphQlDataSource(Constants.HttpDataSource.GetLanguageUrlExplicit);
-            yield return new HttpGraphQlDataSource(EndpointSource.ImportValue, Constants.HttpDataSource.GetCountriesUrlImportName);
-            yield return new HttpGraphQlDataSource(EndpointSource.Lookup, Constants.HttpDataSource.GetCountriesUrlLookupKey);
+            yield return new HttpGraphQlDataSource(Constants.HttpDataSource.GetPopulationUrl, "https://www.microsoft.com", "An example Http data source");
+            yield return new HttpGraphQlDataSource(Constants.HttpDataSource.GetLanguageUrlExportName, "https://www.google.com");
+            yield return new HttpGraphQlDataSource(Constants.HttpDataSource.GetCountriesUrlImportName, Fn.Join("/", [Fn.ImportValue(Constants.HttpDataSource.GetCountriesUrlImportName), "lookup"]));
+            yield return new HttpGraphQlDataSource(Constants.HttpDataSource.GetCountryCodesUrl, "https://www.yahoo.com");
+            yield return new HttpGraphQlDataSource(Constants.HttpDataSource.GetAllContinentsUrlEnvironmentName, System.Environment.GetEnvironmentVariable(Constants.HttpDataSource.GetAllContinentsUrlEnvironmentName));
         }
 
         private static IEnumerable<GraphQlDataSourceBase> CreateNoneDataSources()

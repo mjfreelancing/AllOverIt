@@ -1,5 +1,5 @@
-﻿using AllOverIt.Aws.Cdk.AppSync.Attributes.Resolvers;
-using AllOverIt.Aws.Cdk.AppSync.Attributes.Directives;
+﻿using AllOverIt.Aws.Cdk.AppSync.Attributes.Directives;
+using AllOverIt.Aws.Cdk.AppSync.Attributes.Resolvers;
 using GraphqlSchema.Attributes;
 
 #if !USE_CODE_FIRST_RESOLVERS
@@ -23,7 +23,7 @@ namespace GraphqlSchema.Schema.Types.Globe
         string Name();
 
 #if USE_CODE_FIRST_RESOLVERS
-        [UnitResolver(Constants.Import.GetCountriesUrlImportName)]
+        [UnitResolver(Constants.HttpDataSource.GetCountriesUrlImportName)]
 #else
         [UnitResolver(typeof(ContinentsCountriesResolver), Constants.HttpDataSource.GetCountriesUrlImportName)]
 #endif
@@ -34,9 +34,9 @@ namespace GraphqlSchema.Schema.Types.Globe
         ICountry[] Countries();
 
 #if USE_CODE_FIRST_RESOLVERS
-        [UnitResolver(Constants.Lookup.GetCountriesUrlKey)]
+        [UnitResolver(Constants.HttpDataSource.GetCountryCodes)]
 #else
-        [UnitResolver(typeof(ContinentsCountryCodesResolver), Constants.HttpDataSource.GetCountriesUrlLookupKey)]
+        [UnitResolver(typeof(ContinentsCountryCodesResolver), Constants.HttpDataSource.GetCountryCodesUrl)]
 #endif
 
 #if DEBUG   // Using RELEASE mode to deploy without these (DEBUG mode is used to check Synth output)

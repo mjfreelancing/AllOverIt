@@ -42,7 +42,7 @@ namespace GraphqlSchema.Constructs
             var resolverRegistry = new ResolverRegistry();
 
 #if USE_CODE_FIRST_RESOLVERS
-            var noneResolver = new NoneResolver();
+            var noneResolver = new NoneVtlResolver();
 
             const string apiKey = "super_secret_api_key";
 

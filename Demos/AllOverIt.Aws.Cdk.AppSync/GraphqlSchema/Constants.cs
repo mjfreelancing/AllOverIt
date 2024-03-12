@@ -15,11 +15,11 @@
         internal static class HttpDataSource
         {
             // need a real URL for the deployment to succeed
-            internal const string GetLanguageUrlExplicit = "https://www.google.com";
-            internal const string GetAllContinentsUrlEnvironmentName = "GetAllContinents";
-            internal const string GetPopulationUrlExplicit = "https://www.microsoft.com";
-            internal const string GetCountriesUrlImportName = "GetCountriesImport";
-            internal const string GetCountriesUrlLookupKey = "GetCountriesLookup";
+            internal const string GetLanguageUrlExportName = "GetLanguageUrl";
+            internal const string GetAllContinentsUrlEnvironmentName = "GetAllContinentsUrl";
+            internal const string GetPopulationUrl = nameof(GetPopulationUrl);
+            internal const string GetCountriesUrlImportName = "GetCountriesUrl";
+            internal const string GetCountryCodesUrl = nameof(GetCountryCodesUrl);
         }
 
         internal static class NoneDataSource

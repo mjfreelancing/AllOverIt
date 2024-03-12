@@ -11,9 +11,6 @@ namespace AllOverIt.Aws.Cdk.AppSync
     public sealed class AppGraphqlProps : GraphqlApiProps, IAppGraphqlProps
     {
         /// <inheritdoc />
-        public IReadOnlyDictionary<string, string> EndpointLookup { get; init; } = new Dictionary<string, string>();
-
-        /// <inheritdoc />
         public IReadOnlyCollection<GraphQlDataSourceBase> DataSources { get; init; } = [];
 
         /// <inheritdoc />

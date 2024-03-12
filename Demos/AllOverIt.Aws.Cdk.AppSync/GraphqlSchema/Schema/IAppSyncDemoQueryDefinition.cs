@@ -16,7 +16,7 @@ namespace GraphqlSchema.Schema
     internal interface IAppSyncDemoQueryDefinition : IQueryDefinition
     {
         // NOTE: Leave this as the first item as it is testing a parameter and return type that is unknown at the time of parsing
-        [UnitResolver(Constants.NoneDataSource.Query)]     // Resolver type typeof(CountryLanguageResolver) is registered via code
+        [UnitResolver(Constants.NoneDataSource.Query)]     // Resolver type typeof(CountryLanguageResolver) is registered via code (based on Query.CountryLanguage)
 
 #if DEBUG   // Using RELEASE mode to deploy without these (DEBUG mode is used to check Synth output)
         [AuthApiKeyDirective]
@@ -31,7 +31,7 @@ namespace GraphqlSchema.Schema
         ILanguage DefaultLanguage();
 
 #if USE_CODE_FIRST_RESOLVERS
-        [UnitResolver(Constants.NoneDataSource.Continents)]
+        [UnitResolver(Constants.NoneDataSource.Query)]
 #else
         [UnitResolver(typeof(ContinentsResolver), Constants.NoneDataSource.Query)]
 #endif
@@ -59,7 +59,7 @@ namespace GraphqlSchema.Schema
         [UnitResolver(typeof(AllCountriesResolver), Constants.NoneDataSource.Query)]
         ICountryConnection AllCountries();
 
-        [UnitResolver(typeof(LanguageResolver), Constants.HttpDataSource.GetLanguageUrlExplicit)]
+        [UnitResolver(typeof(LanguageResolver), Constants.HttpDataSource.GetLanguageUrlExportName)]
         ILanguage Language([SchemaTypeRequired] string code);
 
         [UnitResolver(typeof(LanguagesResolver), Constants.LambdaDataSource.GetLanguages)]

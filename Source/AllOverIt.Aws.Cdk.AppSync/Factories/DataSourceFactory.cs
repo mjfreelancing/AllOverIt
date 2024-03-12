@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using SystemEnvironment = System.Environment;
 
 namespace AllOverIt.Aws.Cdk.AppSync.Factories
 {
@@ -19,10 +18,8 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
 
         private readonly IGraphqlApi _graphQlApi;
         private readonly Dictionary<string, GraphQlDataSourceBase> _dataSources;
-        private readonly IReadOnlyDictionary<string, string> _endpointLookup;
 
-        public DataSourceFactory(IGraphqlApi graphQlApi, IReadOnlyCollection<GraphQlDataSourceBase> dataSources,
-            IReadOnlyDictionary<string, string> endpointLookup)
+        public DataSourceFactory(IGraphqlApi graphQlApi, IReadOnlyCollection<GraphQlDataSourceBase> dataSources)
         {
             _graphQlApi = graphQlApi.WhenNotNull(nameof(graphQlApi));
 
@@ -30,15 +27,13 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
                 .WhenNotNull(nameof(dataSources))
                 .Select(dataSource => new KeyValuePair<string, GraphQlDataSourceBase>(dataSource.DataSourceName, dataSource))
                 .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-
-            _endpointLookup = endpointLookup ?? new Dictionary<string, string>();
         }
 
         public BaseDataSource CreateDataSource(GraphQlResolverAttribute attribute)
         {
             if (attribute is UnitResolverAttribute unitResolverAttribute)
             {
-                var datasourceLookup = unitResolverAttribute.DataSourceId;
+                var datasourceLookup = unitResolverAttribute.DataSourceName;
 
                 if (!_dataSources.TryGetValue(datasourceLookup, out var graphqlDataSource))
                 {
@@ -52,7 +47,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
                     dataSource = graphqlDataSource switch
                     {
                         LambdaGraphQlDataSource lambda => CreateLambdaDataSource(dataSourceId, lambda.FunctionName, lambda.Description),
-                        HttpGraphQlDataSource http => CreateHttpDataSource(dataSourceId, http.DataSourceName, http.EndpointSource, http.EndpointKey, http.Description),
+                        HttpGraphQlDataSource http => CreateHttpDataSource(dataSourceId, http.DataSourceName, http.Endpoint, http.Description),
                         NoneGraphQlDataSource none => CreateNoneDataSource(dataSourceId, "None", none.DataSourceName, none.Description),
                         _ => throw new ArgumentOutOfRangeException($"Unknown DataSource type '{attribute.GetType().Name}'")
                     };
@@ -100,7 +95,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
             });
         }
 
-        private HttpDataSource CreateHttpDataSource(string dataSourceId, string datasourceName, EndpointSource endpointSource, string endpointKey, string description)
+        private HttpDataSource CreateHttpDataSource(string dataSourceId, string datasourceName, string endpoint, string description)
         {
             var stack = Stack.Of(_graphQlApi);
 
@@ -109,7 +104,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
                 Api = _graphQlApi,
                 Name = GetFullDataSourceName("Http", datasourceName),
                 Description = description,
-                Endpoint = GetHttpEndpoint(endpointSource, endpointKey)
+                Endpoint = endpoint
             });
         }
 
@@ -124,25 +119,6 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
                 Name = GetFullDataSourceName(dataSourceNamePrefix, dataSourceName),
                 Description = description
             });
-        }
-
-        private string GetHttpEndpoint(EndpointSource endpointSource, string endpointKey)
-        {
-            return endpointSource switch
-            {
-                EndpointSource.Explicit => endpointKey,
-
-                EndpointSource.ImportValue => Fn.ImportValue(endpointKey),
-
-                EndpointSource.EnvironmentVariable => SystemEnvironment.GetEnvironmentVariable(endpointKey)
-                    ?? throw new SchemaException($"Environment variable key '{endpointKey}' not found."),
-
-                EndpointSource.Lookup => _endpointLookup.TryGetValue(endpointKey, out var lookupValue)
-                    ? lookupValue
-                    : throw new SchemaException($"Lookup key '{endpointKey}' not found."),
-
-                _ => throw new SchemaException($"Unknown EndpointSource type '{endpointSource}'")
-            };
         }
     }
 }

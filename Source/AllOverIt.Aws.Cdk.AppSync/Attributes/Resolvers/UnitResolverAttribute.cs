@@ -5,18 +5,18 @@ namespace AllOverIt.Aws.Cdk.AppSync.Attributes.Resolvers
 {
     public sealed class UnitResolverAttribute : GraphQlResolverAttribute
     {
-        public string DataSourceId { get; }
+        public string DataSourceName { get; }
 
         // Used when the resolver type is registered in code
-        public UnitResolverAttribute(string dataSourceId)
+        public UnitResolverAttribute(string dataSourceName)
         {
-            DataSourceId = dataSourceId.WhenNotNullOrEmpty(nameof(dataSourceId));
+            DataSourceName = dataSourceName.WhenNotNullOrEmpty(nameof(dataSourceName));
         }
 
-        public UnitResolverAttribute(Type resolverType, string dataSourceId)
+        public UnitResolverAttribute(Type resolverType, string dataSourceName)
             : base(resolverType)
         {
-            DataSourceId = dataSourceId.WhenNotNullOrEmpty(nameof(dataSourceId));
+            DataSourceName = dataSourceName.WhenNotNullOrEmpty(nameof(dataSourceName));
         }
     }
 }

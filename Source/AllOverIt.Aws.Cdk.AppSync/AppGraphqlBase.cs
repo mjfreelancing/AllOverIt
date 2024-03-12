@@ -17,7 +17,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
         protected AppGraphqlBase(Construct scope, string id, AppGraphqlProps apiProps)
             : base(scope, id, apiProps)
         {
-            var dataSourceFactory = new DataSourceFactory(this, apiProps.DataSources, apiProps.EndpointLookup);
+            var dataSourceFactory = new DataSourceFactory(this, apiProps.DataSources);
 
             _schemaBuilder = new SchemaBuilder(this, apiProps, dataSourceFactory);
         }
