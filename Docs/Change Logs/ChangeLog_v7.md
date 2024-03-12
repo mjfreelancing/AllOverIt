@@ -1,5 +1,8 @@
 #  Version 7.5.0
-## 05 Mar 2024
+## XX Mar 2024
+
+### AllOverIt
+* Added an AsArray() extension method for IEnumerable
 
 ### AllOverIt.EntityFrameworkCore.Diagrams
 * Added support for preserving the order of columns as they are defined on entities.
