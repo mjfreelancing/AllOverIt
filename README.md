@@ -12,6 +12,7 @@ This general-purpose package contains a diverse range of classes and utility fun
 
 Key areas of concern include threading, tasks, generic caching, event (message) aggregation, expression and reflection utilities, plugin contexts, enriched enums, pipelines, value objects, specifications, and dozens of extensions.
 
+![](https://img.shields.io/badge/.NET-9.0-FDCBC0.svg)
 ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
@@ -27,6 +28,7 @@ Key areas of concern include threading, tasks, generic caching, event (message) 
 
 This package provides useful ASP.NET Core utilities such as custom model binding for **AllOverIt** based enriched enum types, and arrays of values in a query string.
 
+![](https://img.shields.io/badge/.NET-9.0-FDCBC0.svg)
 ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
@@ -41,6 +43,7 @@ This package provides useful ASP.NET Core utilities such as custom model binding
 
 This package contains a useful collection of pre- and post-condition assertion extension methods, and a fluent-like approach to throwing exceptions based on a given condition or custom predicate.
 
+![](https://img.shields.io/badge/.NET-9.0-FDCBC0.svg)
 ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
@@ -56,6 +59,7 @@ This package contains a useful collection of pre- and post-condition assertion e
 
 This package contains AWS AppSync GraphQL and Subscription clients with support for serialization using Newtonsoft or System.Text, including serialization of **AllOverIt** based enriched enums.
 
+![](https://img.shields.io/badge/.NET-9.0-FDCBC0.svg)
 ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
@@ -71,6 +75,7 @@ This package contains AWS AppSync GraphQL and Subscription clients with support 
 
 This package greatly simplifies the generation of AWS Graphql schemas, including their associated mapping and resolver configuration, using a code-first approach.
 
+![](https://img.shields.io/badge/.NET-9.0-FDCBC0.svg)
 ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
@@ -85,6 +90,7 @@ This package greatly simplifies the generation of AWS Graphql schemas, including
 
 This package provides byte-array and stream-based interfaces for encryption algorithms such as AES, RSA and an RSA-AES hybrid. It also includes useful extension methods that greatly simplifies the encryption and decryption between byte-arrays, streams, plain text and base64 encoded versions of plain text and cipher text.
 
+![](https://img.shields.io/badge/.NET-9.0-FDCBC0.svg)
 ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
@@ -100,6 +106,7 @@ This package provides byte-array and stream-based interfaces for encryption algo
 
 Using [CsvHelper](https://joshclose.github.io/CsvHelper) to perform the actual writing of CSV content, this package provides a configuration based serializer that can export data using a model with fixed columns as well as dynamic columns derived from complex or array type properties.
 
+![](https://img.shields.io/badge/.NET-9.0-FDCBC0.svg)
 ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
@@ -115,6 +122,7 @@ Using [CsvHelper](https://joshclose.github.io/CsvHelper) to perform the actual w
 
 This package provides useful dependency injection related utilities such as registering and resolving 'named' services, auto service discovery and registration via a service registrar, and service decoration.
 
+![](https://img.shields.io/badge/.NET-9.0-FDCBC0.svg)
 ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
@@ -130,6 +138,7 @@ This package provides useful dependency injection related utilities such as regi
 
 This package provides EntityFramework Core utilities such as a database migration helper and a value converter for **AllOverIt** based enriched enum types.
 
+![](https://img.shields.io/badge/.NET-9.0-FDCBC0.svg)
 ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
@@ -144,6 +153,7 @@ This package provides EntityFramework Core utilities such as a database migratio
 
 In conjunction with [D2](https://d2lang.com/), this package will generate entity relationship diagrams for an EntityFramework Core DbContext.
 
+![](https://img.shields.io/badge/.NET-9.0-FDCBC0.svg)
 ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
@@ -158,6 +168,7 @@ In conjunction with [D2](https://d2lang.com/), this package will generate entity
 
 Using **AllOverIt.Pagination** as the basis for advanced keyset-based pagination, this package provides additional extensions for use with EntityFramework Core.
 
+![](https://img.shields.io/badge/.NET-9.0-FDCBC0.svg)
 ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
@@ -172,6 +183,7 @@ Using **AllOverIt.Pagination** as the basis for advanced keyset-based pagination
 
 This package contains a highly-extendable mathematical expression compiler and evaluator that includes constant, mutable, delegate, and lazily evaluated variables, offers implicit and explicit variable lookup, and supports custom arithmetic operators and operations.
 
+![](https://img.shields.io/badge/.NET-9.0-FDCBC0.svg)
 ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
@@ -189,6 +201,7 @@ This package adds comprehensive filtering support to any IQueryable with built-i
 
 It's also possible to create a custom predicate based on a Specification and there are options such as ignoring default (null) filter values and parameterizing query inputs that makes it ideal for use with EntityFramework Core.
 
+![](https://img.shields.io/badge/.NET-9.0-FDCBC0.svg)
 ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
@@ -204,6 +217,7 @@ It's also possible to create a custom predicate based on a Specification and the
 
 This package contains a base fixture class with numerous helper methods to assist with scaffolding unit tests. Utilizes [AutoFixture](https://github.com/AutoFixture/AutoFixture) to do most of the hard work.
 
+![](https://img.shields.io/badge/.NET-9.0-FDCBC0.svg)
 ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
@@ -219,6 +233,7 @@ This package contains a base fixture class with numerous helper methods to assis
 
 This package extends **AllOverIt.Fixture** to support [FakeItEasy](https://fakeiteasy.github.io/) integration.
 
+![](https://img.shields.io/badge/.NET-9.0-FDCBC0.svg)
 ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
@@ -234,6 +249,7 @@ This package extends **AllOverIt.Fixture** to support [FakeItEasy](https://fakei
 
 This package contains generic host helpers and convenience methods for setting up console applications that support dependency injection.
 
+![](https://img.shields.io/badge/.NET-9.0-FDCBC0.svg)
 ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
@@ -249,6 +265,7 @@ This package contains generic host helpers and convenience methods for setting u
 
 This package contains an object mapper that is mostly configuration free, but also capable of property exclusion, aliasing, null replacement, value conversion, and deep copying.
 
+![](https://img.shields.io/badge/.NET-9.0-FDCBC0.svg)
 ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
@@ -266,6 +283,7 @@ An advanced keyset-based pagination package that uses a fluent-style builder to 
 
 Each page of results includes a 'continuation token' for the current, next, and previous page. These tokens can be used at a later time to navigate to the same location within the dataset, thereby somewhat overcoming the inability of random access traditionally associated with keyset-based navigation.
 
+![](https://img.shields.io/badge/.NET-9.0-FDCBC0.svg)
 ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
@@ -283,6 +301,7 @@ This package provides support for communication over anonymous pipes using [Stre
 
 The named pipes can use the binary serializer from **AllOverIt.Serialization.Binary** or you can create your own.
 
+![](https://img.shields.io/badge/.NET-9.0--windows-FDCBC0.svg)
 ![](https://img.shields.io/badge/.NET-8.0--windows-C56EE0.svg)
 ![](https://img.shields.io/badge/.NET-7.0--windows-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0--windows-FF8C67.svg)
@@ -297,6 +316,7 @@ The named pipes can use the binary serializer from **AllOverIt.Serialization.Bin
 
 This package contains utility extensions for use with [System.Reactive](https://github.com/dotnet/reactive).
 
+![](https://img.shields.io/badge/.NET-9.0-FDCBC0.svg)
 ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
@@ -312,6 +332,7 @@ This package contains utility extensions for use with [System.Reactive](https://
 
 This package contains utility extensions for use with [ReactiveUI](https://github.com/reactiveui/ReactiveUI).
 
+![](https://img.shields.io/badge/.NET-9.0-FDCBC0.svg)
 ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
@@ -327,6 +348,7 @@ This package contains utility extensions for use with [ReactiveUI](https://githu
 
 This package contains utility extensions for use with [ReactiveUI](https://github.com/reactiveui/ReactiveUI) and WPF.
 
+![](https://img.shields.io/badge/.NET-9.0--windows-FDCBC0.svg)
 ![](https://img.shields.io/badge/.NET-8.0--windows-C56EE0.svg)
 ![](https://img.shields.io/badge/.NET-7.0--windows-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0--windows-FF8C67.svg)
@@ -341,6 +363,7 @@ This package contains utility extensions for use with [ReactiveUI](https://githu
 
 This package provides enhanced support for binary serialization. Complex object graphs, lists, dictionaries and nullable values can all be dynamically serialized using reflection-based readers and writers or, for greater performance, a custom serializer per object within the graph.
 
+![](https://img.shields.io/badge/.NET-9.0-FDCBC0.svg)
 ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
@@ -356,6 +379,7 @@ This package provides enhanced support for binary serialization. Complex object 
 
 This package contains JSON serialization abstractions.
 
+![](https://img.shields.io/badge/.NET-9.0-FDCBC0.svg)
 ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
@@ -371,6 +395,7 @@ This package contains JSON serialization abstractions.
 
 This package contains a wrapper for [Newtonsoft](https://www.newtonsoft.com/json) JSON serialization based on **AllOverIt.Serialization.Json.Abstractions**.
 
+![](https://img.shields.io/badge/.NET-9.0-FDCBC0.svg)
 ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
@@ -386,6 +411,7 @@ This package contains a wrapper for [Newtonsoft](https://www.newtonsoft.com/json
 
 This package contains a wrapper for [System.Text](https://learn.microsoft.com/en-us/dotnet/api/system.text.json) JSON serialization based on **AllOverIt.Serialization.Json.Abstractions**.
 
+![](https://img.shields.io/badge/.NET-9.0-FDCBC0.svg)
 ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
@@ -401,6 +427,7 @@ This package contains a wrapper for [System.Text](https://learn.microsoft.com/en
 
 This package contains general-purpose Serilog sinks and enrichers.
 
+![](https://img.shields.io/badge/.NET-9.0-FDCBC0.svg)
 ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
@@ -418,6 +445,7 @@ Synchronous and Asynchronous validation is supported, along with extensions that
 
 Also available is a validation registrar that makes it possible to auto-register all validators within the same assembly. Validators can also be filtered based on a predicate.
 
+![](https://img.shields.io/badge/.NET-9.0-FDCBC0.svg)
 ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
@@ -433,6 +461,7 @@ Also available is a validation registrar that makes it possible to auto-register
 
 This package contains [Microsoft.Extensions.Options](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.options) validation using [FluentValidation](https://docs.fluentvalidation.net/en/latest/).
 
+![](https://img.shields.io/badge/.NET-9.0-FDCBC0.svg)
 ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
@@ -448,9 +477,10 @@ This package contains [Microsoft.Extensions.Options](https://learn.microsoft.com
 
 This package contains general purpose WPF utilities.
 
-![](https://img.shields.io/badge/.NET--windows-8.0-C56EE0.svg)
-![](https://img.shields.io/badge/.NET--windows-7.0-55A9EE.svg)
-![](https://img.shields.io/badge/.NET--windows-6.0-FF8C67.svg)
+![](https://img.shields.io/badge/.NET-9.0--windows-FDCBC0.svg)
+![](https://img.shields.io/badge/.NET-8.0--windows-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-7.0--windows-55A9EE.svg)
+![](https://img.shields.io/badge/.NET-6.0--windows-FF8C67.svg)
 
 [![NuGet](https://img.shields.io/nuget/v/AllOverIt.Wpf?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.Wpf/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Wpf?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Wpf/absoluteLatest/)
@@ -462,9 +492,10 @@ This package contains general purpose WPF utilities.
 
 This package contains useful WPF controls.
 
-![](https://img.shields.io/badge/.NET--windows-8.0-C56EE0.svg)
-![](https://img.shields.io/badge/.NET--windows-7.0-55A9EE.svg)
-![](https://img.shields.io/badge/.NET--windows-6.0-FF8C67.svg)
+![](https://img.shields.io/badge/.NET-9.0--windows-FDCBC0.svg)
+![](https://img.shields.io/badge/.NET-8.0--windows-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-7.0--windows-55A9EE.svg)
+![](https://img.shields.io/badge/.NET-6.0--windows-FF8C67.svg)
 
 [![NuGet](https://img.shields.io/nuget/v/AllOverIt.Wpf.Controls?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.Wpf.Controls/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Wpf.Controls?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Wpf.Controls/absoluteLatest/)
