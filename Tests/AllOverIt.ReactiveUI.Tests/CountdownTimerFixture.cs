@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Reactive.Concurrency;
 using System.Threading;
-using Xunit;
 
 namespace AllOverIt.ReactiveUI.Tests
 {
@@ -89,7 +88,7 @@ namespace AllOverIt.ReactiveUI.Tests
                     .Throw<InvalidOperationException>()
                     .WithMessage("The countdown timer period cannot be modified while executing.");
                 }
-            }        
+            }
         }
 
         public class Start : CountdownTimerFixture
@@ -373,7 +372,7 @@ namespace AllOverIt.ReactiveUI.Tests
 
                     timer.Start();
 
-                    scheduler.AdvanceBy(TimeSpan.FromMilliseconds(totalMilliseconds * 2).Ticks);
+                    scheduler.AdvanceByMilliseconds(totalMilliseconds * 2);
 
                     completed.Should().BeTrue();
                 }
