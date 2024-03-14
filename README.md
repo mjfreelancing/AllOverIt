@@ -448,9 +448,9 @@ This package contains [Microsoft.Extensions.Options](https://learn.microsoft.com
 
 This package contains general purpose WPF utilities.
 
-![](https://img.shields.io/badge/.NET--windows-8.0-C56EE0.svg)
-![](https://img.shields.io/badge/.NET--windows-7.0-55A9EE.svg)
-![](https://img.shields.io/badge/.NET--windows-6.0-FF8C67.svg)
+![](https://img.shields.io/badge/.NET-8.0--windows-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-7.0--windows-55A9EE.svg)
+![](https://img.shields.io/badge/.NET-6.0--windows-FF8C67.svg)
 
 [![NuGet](https://img.shields.io/nuget/v/AllOverIt.Wpf?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.Wpf/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Wpf?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Wpf/absoluteLatest/)
@@ -462,9 +462,9 @@ This package contains general purpose WPF utilities.
 
 This package contains useful WPF controls.
 
-![](https://img.shields.io/badge/.NET--windows-8.0-C56EE0.svg)
-![](https://img.shields.io/badge/.NET--windows-7.0-55A9EE.svg)
-![](https://img.shields.io/badge/.NET--windows-6.0-FF8C67.svg)
+![](https://img.shields.io/badge/.NET-8.0--windows-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-7.0--windows-55A9EE.svg)
+![](https://img.shields.io/badge/.NET-6.0--windows-FF8C67.svg)
 
 [![NuGet](https://img.shields.io/nuget/v/AllOverIt.Wpf.Controls?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.Wpf.Controls/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Wpf.Controls?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Wpf.Controls/absoluteLatest/)
