@@ -17,7 +17,7 @@ Key areas of concern include threading, tasks, generic caching, event (message) 
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
 ![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
 
-[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt?color=E3505C)](https://www.nuget.org/packages/AllOverIt/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt?color=FFC33C)](https://www.nuget.org/packages/AllOverIt/absoluteLatest/)
 
 ---
@@ -31,7 +31,7 @@ This package provides useful ASP.NET Core utilities such as custom model binding
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
 
-[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt.AspNetCore?color=E3505C)](https://www.nuget.org/packages/AllOverIt.AspNetCore/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.AspNetCore?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.AspNetCore/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.AspNetCore?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.AspNetCore/absoluteLatest/)
 
 ---
@@ -46,7 +46,7 @@ This package contains a useful collection of pre- and post-condition assertion e
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
 ![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
 
-[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt.Assertion?color=E3505C)](https://www.nuget.org/packages/AllOverIt.Assertion/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Assertion?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.Assertion/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Assertion?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Assertion/absoluteLatest/)
 
 ---
@@ -61,7 +61,7 @@ This package contains AWS AppSync GraphQL and Subscription clients with support 
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
 ![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
 
-[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt.Aws.AppSync.Client?color=E3505C)](https://www.nuget.org/packages/AllOverIt.Aws.AppSync.Client/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Aws.AppSync.Client?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.Aws.AppSync.Client/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Aws.AppSync.Client?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Aws.AppSync.Client/absoluteLatest/)
 
 ---
@@ -75,7 +75,7 @@ This package greatly simplifies the generation of AWS Graphql schemas, including
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
 
-[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt.Aws.Cdk.AppSync?color=E3505C)](https://www.nuget.org/packages/AllOverIt.Aws.Cdk.AppSync/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Aws.Cdk.AppSync?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.Aws.Cdk.AppSync/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Aws.Cdk.AppSync?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Aws.Cdk.AppSync/absoluteLatest/)
 
 ---
@@ -90,7 +90,7 @@ This package provides byte-array and stream-based interfaces for encryption algo
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
 ![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
 
-[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt.Cryptography?color=E3505C)](https://www.nuget.org/packages/AllOverIt.Cryptography/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Cryptography?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.Cryptography/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Cryptography?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Cryptography/absoluteLatest/)
 
 ---
@@ -105,7 +105,7 @@ Using [CsvHelper](https://joshclose.github.io/CsvHelper) to perform the actual w
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
 ![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
 
-[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt.Csv?color=E3505C)](https://www.nuget.org/packages/AllOverIt.Csv/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Csv?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.Csv/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Csv?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Csv/absoluteLatest/)
 
 ---
@@ -120,7 +120,7 @@ This package provides useful dependency injection related utilities such as regi
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
 ![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
 
-[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt.DependencyInjection?color=E3505C)](https://www.nuget.org/packages/AllOverIt.DependencyInjection/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.DependencyInjection?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.DependencyInjection/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.DependencyInjection?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.DependencyInjection/absoluteLatest/)
 
 ---
@@ -134,7 +134,7 @@ This package provides EntityFramework Core utilities such as a database migratio
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
 
-[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt.EntityFrameworkCore?color=E3505C)](https://www.nuget.org/packages/AllOverIt.EntityFrameworkCore/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.EntityFrameworkCore?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.EntityFrameworkCore/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.EntityFrameworkCore?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.EntityFrameworkCore/absoluteLatest/)
 
 ---
@@ -148,7 +148,7 @@ In conjunction with [D2](https://d2lang.com/), this package will generate entity
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
 
-[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt.EntityFrameworkCore.Diagrams?color=E3505C)](https://www.nuget.org/packages/AllOverIt.EntityFrameworkCore.Diagrams/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.EntityFrameworkCore.Diagrams?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.EntityFrameworkCore.Diagrams/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.EntityFrameworkCore.Diagrams?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.EntityFrameworkCore.Diagrams/absoluteLatest/)
 
 ---
@@ -162,7 +162,7 @@ Using **AllOverIt.Pagination** as the basis for advanced keyset-based pagination
 ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
 
-[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt.EntityFrameworkCore.Pagination?color=E3505C)](https://www.nuget.org/packages/AllOverIt.EntityFrameworkCore.Pagination/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.EntityFrameworkCore.Pagination?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.EntityFrameworkCore.Pagination/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.EntityFrameworkCore.Pagination?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.EntityFrameworkCore.Pagination/absoluteLatest/)
 
 ---
@@ -177,7 +177,7 @@ This package contains a highly-extendable mathematical expression compiler and e
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
 ![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
 
-[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt.Evaluator?color=E3505C)](https://www.nuget.org/packages/AllOverIt.Evaluator/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Evaluator?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.Evaluator/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Evaluator?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Evaluator/absoluteLatest/)
 
 ---
@@ -194,7 +194,7 @@ It's also possible to create a custom predicate based on a Specification and the
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
 ![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
 
-[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt.Filtering?color=E3505C)](https://www.nuget.org/packages/AllOverIt.Filtering/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Filtering?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.Filtering/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Filtering?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Filtering/absoluteLatest/)
 
 ---
@@ -209,7 +209,7 @@ This package contains a base fixture class with numerous helper methods to assis
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
 ![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
 
-[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt.Fixture?color=E3505C)](https://www.nuget.org/packages/AllOverIt.Fixture/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Fixture?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.Fixture/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Fixture?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Fixture/absoluteLatest/)
 
 ---
@@ -224,7 +224,7 @@ This package extends **AllOverIt.Fixture** to support [FakeItEasy](https://fakei
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
 ![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
 
-[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt.Fixture.FakeItEasy?color=E3505C)](https://www.nuget.org/packages/AllOverIt.Fixture.FakeItEasy/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Fixture.FakeItEasy?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.Fixture.FakeItEasy/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Fixture.FakeItEasy?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Fixture.FakeItEasy/absoluteLatest/)
 
 ---
@@ -239,7 +239,7 @@ This package contains generic host helpers and convenience methods for setting u
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
 ![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
 
-[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt.GenericHost?color=E3505C)](https://www.nuget.org/packages/AllOverIt.GenericHost/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.GenericHost?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.GenericHost/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.GenericHost?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.GenericHost/absoluteLatest/)
 
 ---
@@ -254,7 +254,7 @@ This package contains an object mapper that is mostly configuration free, but al
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
 ![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
 
-[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt.Mapping?color=E3505C)](https://www.nuget.org/packages/AllOverIt.Mapping/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Mapping?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.Mapping/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Mapping?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Mapping/absoluteLatest/)
 
 ---
@@ -271,7 +271,7 @@ Each page of results includes a 'continuation token' for the current, next, and 
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
 ![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
 
-[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt.Pagination?color=E3505C)](https://www.nuget.org/packages/AllOverIt.Pagination/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Pagination?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.Pagination/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Pagination?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Pagination/absoluteLatest/)
 
 ---
@@ -287,7 +287,7 @@ The named pipes can use the binary serializer from **AllOverIt.Serialization.Bin
 ![](https://img.shields.io/badge/.NET-7.0--windows-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0--windows-FF8C67.svg)
 
-[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt.Pipes?color=E3505C)](https://www.nuget.org/packages/AllOverIt.Pipes/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Pipes?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.Pipes/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Pipes?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Pipes/absoluteLatest/)
 
 ---
@@ -302,7 +302,7 @@ This package contains utility extensions for use with [System.Reactive](https://
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
 ![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
 
-[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt.Reactive?color=E3505C)](https://www.nuget.org/packages/AllOverIt.Reactive/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Reactive?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.Reactive/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Reactive?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Reactive/absoluteLatest/)
 
 ---
@@ -317,7 +317,7 @@ This package contains utility extensions for use with [ReactiveUI](https://githu
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
 ![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
 
-[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt.ReactiveUI?color=E3505C)](https://www.nuget.org/packages/AllOverIt.ReactiveUI/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.ReactiveUI?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.ReactiveUI/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.ReactiveUI?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.ReactiveUI/absoluteLatest/)
 
 ---
@@ -331,7 +331,7 @@ This package contains utility extensions for use with [ReactiveUI](https://githu
 ![](https://img.shields.io/badge/.NET-7.0--windows-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-6.0--windows-FF8C67.svg)
 
-[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt.ReactiveUI.Wpf?color=E3505C)](https://www.nuget.org/packages/AllOverIt.ReactiveUI/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.ReactiveUI.Wpf?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.ReactiveUI/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.ReactiveUI.Wpf?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.ReactiveUI/absoluteLatest/)
 
 ---
@@ -346,7 +346,7 @@ This package provides enhanced support for binary serialization. Complex object 
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
 ![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
 
-[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt.Serialization.Binary?color=E3505C)](https://www.nuget.org/packages/AllOverIt.Serialization.Binary/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Serialization.Binary?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.Serialization.Binary/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Serialization.Binary?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Serialization.Binary/absoluteLatest/)
 
 ---
@@ -361,7 +361,7 @@ This package contains JSON serialization abstractions.
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
 ![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
 
-[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt.Serialization.Json.Abstractions?color=E3505C)](https://www.nuget.org/packages/AllOverIt.Serialization.Json.Abstractions/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Serialization.Json.Abstractions?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.Serialization.Json.Abstractions/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Serialization.Json.Abstractions?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Serialization.Json.Abstractions/absoluteLatest/)
 
 ---
@@ -376,7 +376,7 @@ This package contains a wrapper for [Newtonsoft](https://www.newtonsoft.com/json
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
 ![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
 
-[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt.Serialization.Json.NewtonSoft?color=E3505C)](https://www.nuget.org/packages/AllOverIt.Serialization.Json.NewtonSoft/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Serialization.Json.NewtonSoft?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.Serialization.Json.NewtonSoft/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Serialization.Json.NewtonSoft?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Serialization.Json.NewtonSoft/absoluteLatest/)
 
 ---
@@ -391,7 +391,7 @@ This package contains a wrapper for [System.Text](https://learn.microsoft.com/en
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
 ![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
 
-[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt.Serialization.Json.SystemText?color=E3505C)](https://www.nuget.org/packages/AllOverIt.Serialization.Json.SystemText/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Serialization.Json.SystemText?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.Serialization.Json.SystemText/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Serialization.Json.SystemText?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Serialization.Json.SystemText/absoluteLatest/)
 
 ---
@@ -406,7 +406,7 @@ This package contains general-purpose Serilog sinks and enrichers.
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
 ![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
 
-[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt.Serilog?color=E3505C)](https://www.nuget.org/packages/AllOverIt.Serilog/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Serilog?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.Serilog/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Serilog?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Serilog/absoluteLatest/)
 
 
@@ -423,7 +423,7 @@ Also available is a validation registrar that makes it possible to auto-register
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
 ![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
 
-[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt.Validation?color=E3505C)](https://www.nuget.org/packages/AllOverIt.Validation/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Validation?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.Validation/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Validation?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Validation/absoluteLatest/)
 
 ---
@@ -438,7 +438,7 @@ This package contains [Microsoft.Extensions.Options](https://learn.microsoft.com
 ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
 ![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
 
-[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt.Validation.Options?color=E3505C)](https://www.nuget.org/packages/AllOverIt.Validation.Options/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Validation.Options?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.Validation.Options/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Validation.Options?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Validation.Options/absoluteLatest/)
 
 ---
@@ -452,7 +452,7 @@ This package contains general purpose WPF utilities.
 ![](https://img.shields.io/badge/.NET--windows-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET--windows-6.0-FF8C67.svg)
 
-[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt.Wpf?color=E3505C)](https://www.nuget.org/packages/AllOverIt.Wpf/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Wpf?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.Wpf/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Wpf?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Wpf/absoluteLatest/)
 
 ---
@@ -466,7 +466,7 @@ This package contains useful WPF controls.
 ![](https://img.shields.io/badge/.NET--windows-7.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET--windows-6.0-FF8C67.svg)
 
-[![NuGet](https://img.shields.io/nuget/vpre/AllOverIt.Wpf.Controls?color=E3505C)](https://www.nuget.org/packages/AllOverIt.Wpf.Controls/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Wpf.Controls?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.Wpf.Controls/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Wpf.Controls?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Wpf.Controls/absoluteLatest/)
 
 ---
