@@ -251,5 +251,130 @@
               }
             }                
             """;
+
+        public static string WithNoPreserveOrderGlobal() => """
+            direction: left
+
+            Author: {
+              shape: sql_table
+
+              Id: INTEGER \[NOT NULL\] { constraint: primary_key }
+              Email: TEXT(50) \[NOT NULL\] 
+              FirstName: TEXT(50) \[NOT NULL\] 
+              LastName: TEXT(50) 
+            }
+
+            AuthorBlog: {
+              shape: sql_table
+
+              Id: INTEGER \[NOT NULL\] { constraint: primary_key }
+              AuthorId: INTEGER \[NOT NULL\] { constraint: foreign_key }
+              BloggerId: INTEGER \[NOT NULL\] { constraint: foreign_key }
+            }
+
+            Blog: {
+              shape: sql_table
+
+              Id: INTEGER \[NOT NULL\] { constraint: primary_key }
+              Description: TEXT(500) \[NOT NULL\] 
+              WebSiteId: INTEGER \[NOT NULL\] { constraint: foreign_key }
+            }
+
+            Comment: {
+              shape: sql_table
+
+              Id: INTEGER \[NOT NULL\] { constraint: primary_key }
+              AuthorId: INTEGER \[NOT NULL\] { constraint: foreign_key }
+              Content: TEXT(1024) \[NOT NULL\] 
+              PostId: INTEGER \[NOT NULL\] { constraint: foreign_key }
+            }
+
+            Post: {
+              shape: sql_table
+
+              Id: INTEGER \[NOT NULL\] { constraint: primary_key }
+              BlogId: INTEGER \[NOT NULL\] { constraint: foreign_key }
+              Content: TEXT \[NOT NULL\] 
+              Title: TEXT(500) \[NOT NULL\] 
+            }
+
+            Settings: {
+              shape: sql_table
+
+              Id: INTEGER \[NOT NULL\] { constraint: primary_key }
+              JsonConfig: TEXT \[NOT NULL\] 
+              WebSiteId: INTEGER \[NOT NULL\] { constraint: foreign_key }
+            }
+
+            WebSite: {
+              shape: sql_table
+
+              Id: INTEGER \[NOT NULL\] { constraint: primary_key }
+              Description: TEXT(500) \[NOT NULL\] 
+            }
+
+            Author.Id <-> AuthorBlog.AuthorId: ONE-TO-MANY {
+              source-arrowhead: {
+                shape: cf-one-required
+              }
+              target-arrowhead: {
+                shape: cf-many
+              }
+            }
+
+            Blog.Id <-> AuthorBlog.BloggerId: ONE-TO-MANY {
+              source-arrowhead: {
+                shape: cf-one-required
+              }
+              target-arrowhead: {
+                shape: cf-many
+              }
+            }
+
+            WebSite.Id <-> Blog.WebSiteId: ONE-TO-MANY {
+              source-arrowhead: {
+                shape: cf-one-required
+              }
+              target-arrowhead: {
+                shape: cf-many
+              }
+            }
+
+            Author.Id <-> Comment.AuthorId: ONE-TO-MANY {
+              source-arrowhead: {
+                shape: cf-one-required
+              }
+              target-arrowhead: {
+                shape: cf-many
+              }
+            }
+
+            Post.Id <-> Comment.PostId: ONE-TO-MANY {
+              source-arrowhead: {
+                shape: cf-one-required
+              }
+              target-arrowhead: {
+                shape: cf-many
+              }
+            }
+
+            Blog.Id <-> Post.BlogId: ONE-TO-MANY {
+              source-arrowhead: {
+                shape: cf-one-required
+              }
+              target-arrowhead: {
+                shape: cf-many
+              }
+            }
+
+            WebSite.Id <-> Settings.WebSiteId: ONE-TO-ONE {
+              source-arrowhead: {
+                shape: cf-one-required
+              }
+              target-arrowhead: {
+                shape: cf-one
+              }
+            }
+            """;
     }
 }

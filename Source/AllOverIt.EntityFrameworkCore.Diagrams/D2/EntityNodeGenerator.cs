@@ -25,7 +25,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
             _defaultShapeStyle = defaultShapeStyle;     // can be null
         }
 
-        public string CreateNode(EntityIdentifier entityIdentifier, IReadOnlyCollection<ColumnDescriptor> columns, Action<string> onRelationship)
+        public string CreateNode(EntityIdentifier entityIdentifier, IReadOnlyCollection<IColumnDescriptor> columns, Action<string> onRelationship)
         {
             _ = entityIdentifier.WhenNotNull(nameof(entityIdentifier));
             _ = columns.WhenNotNullOrEmpty(nameof(columns));
@@ -104,7 +104,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
             return sb.ToString();
         }
 
-        private static IEnumerable<ColumnDescriptor> GetPreservedColumnOrder(EntityIdentifier entityIdentifier, IReadOnlyCollection<ColumnDescriptor> columns)
+        private static IEnumerable<IColumnDescriptor> GetPreservedColumnOrder(EntityIdentifier entityIdentifier, IReadOnlyCollection<IColumnDescriptor> columns)
         {
             List<string> orderedPropertyNames = [];
             List<Type> orderedPropertyTypes = [];
@@ -135,7 +135,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
             });
         }
 
-        private static string GetColumnDetail(Type entityType, ColumnDescriptor column, ErdOptions configuration)
+        private static string GetColumnDetail(Type entityType, IColumnDescriptor column, ErdOptions configuration)
         {
             _ = configuration.TryGetEntityOptions(entityType, out var options);
 
@@ -169,7 +169,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
             return columnType;
         }
 
-        private static string GetColumnConstraint(ColumnDescriptor column)
+        private static string GetColumnConstraint(IColumnDescriptor column)
         {
             return column.Constraint switch
             {
