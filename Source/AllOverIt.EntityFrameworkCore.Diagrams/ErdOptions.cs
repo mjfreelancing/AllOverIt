@@ -78,7 +78,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
         public abstract class EntityOptionsBase
         {
             /// <summary>Determines whether the entity columns are exported in the same order as they are declared. Default is <see langword="True"/>.</summary>
-            public bool PreserveColumnOrder { get; private set; } = true;
+            public bool PreserveColumnOrder { get; set; } = true;
 
             /// <summary>Specifies how each entity column nullability is depicted on the generated diagram.</summary>
             public NullableColumn Nullable { get; } = new();
@@ -220,6 +220,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
         /// <param name="entities">An action that adds the required entities to the group.</param>
         public void Group(string alias, string title, Action<EntityGroup> entities)
         {
+            // Not using ShapeStyle.Default because the caller can change properties
             Group(alias, title, new ShapeStyle(), entities);
         }
 

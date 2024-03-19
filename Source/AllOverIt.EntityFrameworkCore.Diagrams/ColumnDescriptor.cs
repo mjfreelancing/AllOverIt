@@ -7,25 +7,13 @@ using System.Linq;
 
 namespace AllOverIt.EntityFrameworkCore.Diagrams
 {
-    /// <summary>Describes an entity column.</summary>
-    public sealed class ColumnDescriptor
+    internal sealed class ColumnDescriptor : IColumnDescriptor
     {
-        /// <summary>The column name.</summary>
         public string ColumnName { get; }
-
-        /// <summary>The column type.</summary>
         public string ColumnType { get; }
-
-        /// <summary>Indicates if the column is nullable.</summary>
         public bool IsNullable { get; }
-
-        /// <summary>Indicates the column's maximum length, where applicable.</summary>
         public int? MaxLength { get; }
-
-        /// <summary>Indicates the constraint type.</summary>
         public ConstraintType Constraint { get; } = ConstraintType.None;
-
-        /// <summary>Provides foreign key principles.</summary>
         public IReadOnlyCollection<PrincipalForeignKey> ForeignKeyPrincipals { get; }
 
         internal ColumnDescriptor(IProperty column)

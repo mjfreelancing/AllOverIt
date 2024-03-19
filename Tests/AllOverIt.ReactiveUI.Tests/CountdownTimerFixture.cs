@@ -330,8 +330,6 @@ namespace AllOverIt.ReactiveUI.Tests
             [Fact]
             public void Should_Notify_IsRunning()
             {
-                var scheduler = new TestScheduler();
-
                 using (var timer = new CountdownTimer())
                 {
                     timer.Configure(10000, 1000);

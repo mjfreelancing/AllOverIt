@@ -31,6 +31,28 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.D2
             }, DiagramExpectations.WithDirection(direction));
         }
 
+        /*
+            public bool PreserveColumnOrder { get; private set; } = true;
+
+            public NullableColumn Nullable { get; } = new();
+
+            public bool ShowMaxLength { get; set; } = true;
+         */
+
+        [Fact]
+        public void Should_Set_Global_Not_PreserveColumnOrder()
+        {
+            AssertDiagram(options =>
+            {
+                options.Entities.PreserveColumnOrder = false;
+            }, DiagramExpectations.WithNoPreserveOrderGlobal());
+        }
+
+
+
+
+
+
 
 
         private static void AddEntityGroups(ErdOptions options)
