@@ -45,7 +45,7 @@
             <td>
                 <p>
                     <a href="https://www.nuget.org/packages/AllOverIt/absoluteLatest/">
-                        <img src="https://img.shields.io/nuget/vpre/AllOverIt?color=E3505C" alt="AllOverIt"/>
+                        <img src="https://img.shields.io/nuget/v/AllOverIt?label=Stable&amp;color=E3505C" alt="AllOverIt"/>
                     </a>
                 </p>
                 <p>
@@ -93,7 +93,7 @@
             <td>
                 <p>
                     <a href="https://www.nuget.org/packages/AllOverIt.AspNetCore/absoluteLatest/">
-                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.AspNetCore?color=E3505C" alt="AllOverIt"/>
+                        <img src="https://img.shields.io/nuget/v/AllOverIt.AspNetCore?label=Stable&amp;color=E3505C" alt="AllOverIt"/>
                     </a>
                 </p>
                 <p>
@@ -138,7 +138,7 @@
             <td>
                 <p>
                     <a href="https://www.nuget.org/packages/AllOverIt.Assertion/absoluteLatest">
-                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Assertion?color=E3505C" alt="AllOverIt.Assertion"/>
+                        <img src="https://img.shields.io/nuget/v/AllOverIt.Assertion?label=Stable&amp;color=E3505C" alt="AllOverIt.Assertion"/>
                     </a>
                 </p>
                 <p>
@@ -186,7 +186,7 @@
             <td>
                 <p>
                     <a href="https://www.nuget.org/packages/AllOverIt.Aws.AppSync.Client/absoluteLatest">
-                        <img src="https://img.shields.io/nuget/vpre/AllOverIt?color=E3505C" alt="AllOverIt.Aws.AppSync.Client"/>
+                        <img src="https://img.shields.io/nuget/v/AllOverIt?label=Stable&amp;color=E3505C" alt="AllOverIt.Aws.AppSync.Client"/>
                     </a>
                 </p>
                 <p>
@@ -234,7 +234,7 @@
             <td>
                 <p>
                     <a href="https://www.nuget.org/packages/AllOverIt.Aws.Cdk.AppSync/absoluteLatest">
-                        <img src="https://img.shields.io/nuget/vpre/AllOverIt?color=E3505C" alt="AllOverIt.Aws.Cdk.AppSync"/>
+                        <img src="https://img.shields.io/nuget/v/AllOverIt?label=Stable&amp;color=E3505C" alt="AllOverIt.Aws.Cdk.AppSync"/>
                     </a>
                 </p>
                 <p>
@@ -279,7 +279,7 @@
             <td>
                 <p>
                     <a href="https://www.nuget.org/packages/AllOverIt.Cryptography/absoluteLatest/">
-                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Cryptography?color=E3505C" alt="AllOverIt.Cryptography"/>
+                        <img src="https://img.shields.io/nuget/v/AllOverIt.Cryptography?label=Stable&amp;color=E3505C" alt="AllOverIt.Cryptography"/>
                     </a>
                 </p>
                 <p>
@@ -327,7 +327,7 @@
             <td>
                 <p>
                     <a href="https://www.nuget.org/packages/AllOverIt.Csv/absoluteLatest/">
-                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Csv?color=E3505C" alt="AllOverIt.Csv"/>
+                        <img src="https://img.shields.io/nuget/v/AllOverIt.Csv?label=Stable&amp;color=E3505C" alt="AllOverIt.Csv"/>
                     </a>
                 </p>
                 <p>
@@ -375,7 +375,7 @@
             <td>
                 <p>
                     <a href="https://www.nuget.org/packages/AllOverIt.DependencyInjection/absoluteLatest/">
-                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.DependencyInjection?color=E3505C" alt="AllOverIt.DependencyInjection"/>
+                        <img src="https://img.shields.io/nuget/v/AllOverIt.DependencyInjection?label=Stable&amp;color=E3505C" alt="AllOverIt.DependencyInjection"/>
                     </a>
                 </p>
                 <p>
@@ -423,7 +423,7 @@
             <td>
                 <p>
                     <a href="https://www.nuget.org/packages/AllOverIt.EntityFrameworkCore/absoluteLatest/">
-                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.EntityFrameworkCore?color=E3505C" alt="AllOverIt.EntityFrameworkCore"/>
+                        <img src="https://img.shields.io/nuget/v/AllOverIt.EntityFrameworkCore?label=Stable&amp;color=E3505C" alt="AllOverIt.EntityFrameworkCore"/>
                     </a>
                 </p>
                 <p>
@@ -468,7 +468,7 @@
             <td>
                 <p>
                     <a href="https://www.nuget.org/packages/AllOverIt.EntityFrameworkCore.Diagrams/absoluteLatest/">
-                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.EntityFrameworkCore.Diagrams?color=E3505C" alt="AllOverIt.EntityFrameworkCore.Diagrams"/>
+                        <img src="https://img.shields.io/nuget/v/AllOverIt.EntityFrameworkCore.Diagrams?label=Stable&amp;color=E3505C" alt="AllOverIt.EntityFrameworkCore.Diagrams"/>
                     </a>
                 </p>
                 <p>
@@ -513,7 +513,7 @@
             <td>
                 <p>
                     <a href="https://www.nuget.org/packages/AllOverIt.EntityFrameworkCore.Pagination/absoluteLatest/">
-                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.EntityFrameworkCore.Pagination?color=E3505C" alt="AllOverIt.EntityFrameworkCore.Pagination"/>
+                        <img src="https://img.shields.io/nuget/v/AllOverIt.EntityFrameworkCore.Pagination?label=Stable&amp;color=E3505C" alt="AllOverIt.EntityFrameworkCore.Pagination"/>
                     </a>
                 </p>
                 <p>
@@ -558,7 +558,7 @@
             <td>
                 <p>
                     <a href="https://www.nuget.org/packages/AllOverIt.Evaluator/absoluteLatest/">
-                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Evaluator?color=E3505C" alt="AllOverIt.Evaluator"/>
+                        <img src="https://img.shields.io/nuget/v/AllOverIt.Evaluator?label=Stable&amp;color=E3505C" alt="AllOverIt.Evaluator"/>
                     </a>
                 </p>
                 <p>
@@ -609,7 +609,7 @@
             <td>
                 <p>
                     <a href="https://www.nuget.org/packages/AllOverIt.Filtering/absoluteLatest/">
-                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Filtering?color=E3505C" alt="AllOverIt.Filtering"/>
+                        <img src="https://img.shields.io/nuget/v/AllOverIt.Filtering?label=Stable&amp;color=E3505C" alt="AllOverIt.Filtering"/>
                     </a>
                 </p>
                 <p>
@@ -657,7 +657,7 @@
             <td>
                 <p>
                     <a href="https://www.nuget.org/packages/AllOverIt.Fixture/absoluteLatest/">
-                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Fixture?color=E3505C" alt="AllOverIt.Fixture"/>
+                        <img src="https://img.shields.io/nuget/v/AllOverIt.Fixture?label=Stable&amp;color=E3505C" alt="AllOverIt.Fixture"/>
                     </a>
                 </p>
                 <p>
@@ -705,7 +705,7 @@
             <td>
                 <p>
                     <a href="https://www.nuget.org/packages/AllOverIt.Fixture.FakeItEasy/absoluteLatest/">
-                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Fixture.FakeItEasy?color=E3505C" alt="AllOverIt.Fixture.FakeItEasy"/>
+                        <img src="https://img.shields.io/nuget/v/AllOverIt.Fixture.FakeItEasy?label=Stable&amp;color=E3505C" alt="AllOverIt.Fixture.FakeItEasy"/>
                     </a>
                 </p>
                 <p>
@@ -753,7 +753,7 @@
             <td>
                 <p>
                     <a href="https://www.nuget.org/packages/AllOverIt.GenericHost/absoluteLatest/">
-                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.GenericHost?color=E3505C" alt="AllOverIt.GenericHost"/>
+                        <img src="https://img.shields.io/nuget/v/AllOverIt.GenericHost?label=Stable&amp;color=E3505C" alt="AllOverIt.GenericHost"/>
                     </a>
                 </p>
                 <p>
@@ -801,7 +801,7 @@
             <td>
                 <p>
                     <a href="https://www.nuget.org/packages/AllOverIt.Mapping/absoluteLatest/">
-                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Mapping?color=E3505C" alt="AllOverIt.Mapping"/>
+                        <img src="https://img.shields.io/nuget/v/AllOverIt.Mapping?label=Stable&amp;color=E3505C" alt="AllOverIt.Mapping"/>
                     </a>
                 </p>
                 <p>
@@ -852,7 +852,7 @@
             <td>
                 <p>
                     <a href="https://www.nuget.org/packages/AllOverIt.Pagination/absoluteLatest/">
-                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Pagination?color=E3505C" alt="AllOverIt.Pagination"/>
+                        <img src="https://img.shields.io/nuget/v/AllOverIt.Pagination?label=Stable&amp;color=E3505C" alt="AllOverIt.Pagination"/>
                     </a>
                 </p>
                 <p>
@@ -903,7 +903,7 @@
             <td>
                 <p>
                     <a href="https://www.nuget.org/packages/AllOverIt.Pipes/absoluteLatest/">
-                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Pipes?color=E3505C" alt="AllOverIt.Pipes"/>
+                        <img src="https://img.shields.io/nuget/v/AllOverIt.Pipes?label=Stable&amp;color=E3505C" alt="AllOverIt.Pipes"/>
                     </a>
                 </p>
                 <p>
@@ -948,7 +948,7 @@
             <td>
                 <p>
                     <a href="https://www.nuget.org/packages/AllOverIt.Reactive/absoluteLatest/">
-                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Reactive?color=E3505C" alt="AllOverIt.Reactive"/>
+                        <img src="https://img.shields.io/nuget/v/AllOverIt.Reactive?label=Stable&amp;color=E3505C" alt="AllOverIt.Reactive"/>
                     </a>
                 </p>
                 <p>
@@ -996,7 +996,7 @@
             <td>
                 <p>
                     <a href="https://www.nuget.org/packages/AllOverIt.ReactiveUI/absoluteLatest/">
-                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.ReactiveUI?color=E3505C" alt="AllOverIt.ReactiveUI"/>
+                        <img src="https://img.shields.io/nuget/v/AllOverIt.ReactiveUI?label=Stable&amp;color=E3505C" alt="AllOverIt.ReactiveUI"/>
                     </a>
                 </p>
                 <p>
@@ -1044,7 +1044,7 @@
             <td>
                 <p>
                     <a href="https://www.nuget.org/packages/AllOverIt.ReactiveUI.Wpf/absoluteLatest/">
-                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.ReactiveUI.Wpf?color=E3505C" alt="AllOverIt.ReactiveUI.Wpf"/>
+                        <img src="https://img.shields.io/nuget/v/AllOverIt.ReactiveUI.Wpf?label=Stable&amp;color=E3505C" alt="AllOverIt.ReactiveUI.Wpf"/>
                     </a>
                 </p>
                 <p>
@@ -1089,7 +1089,7 @@
             <td>
                 <p>
                     <a href="https://www.nuget.org/packages/AllOverIt.Serialization.Binary/absoluteLatest/">
-                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Serialization.Binary?color=E3505C" alt="AllOverIt.Serialization.Binary"/>
+                        <img src="https://img.shields.io/nuget/v/AllOverIt.Serialization.Binary?label=Stable&amp;color=E3505C" alt="AllOverIt.Serialization.Binary"/>
                     </a>
                 </p>
                 <p>
@@ -1137,7 +1137,7 @@
             <td>
                 <p>
                     <a href="https://www.nuget.org/packages/AllOverIt.Serialization.Json.Abstractions/absoluteLatest/">
-                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Serialization.Json.Abstractions?color=E3505C" alt="AllOverIt.Serialization.Json.Abstractions"/>
+                        <img src="https://img.shields.io/nuget/v/AllOverIt.Serialization.Json.Abstractions?label=Stable&amp;color=E3505C" alt="AllOverIt.Serialization.Json.Abstractions"/>
                     </a>
                 </p>
                 <p>
@@ -1185,7 +1185,7 @@
             <td>
                 <p>
                     <a href="https://www.nuget.org/packages/AllOverIt.Serialization.Json.Newtonsoft/absoluteLatest/">
-                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Serialization.Json.Newtonsoft?color=E3505C" alt="AllOverIt.Serialization.Json.Newtonsoft"/>
+                        <img src="https://img.shields.io/nuget/v/AllOverIt.Serialization.Json.Newtonsoft?label=Stable&amp;color=E3505C" alt="AllOverIt.Serialization.Json.Newtonsoft"/>
                     </a>
                 </p>
                 <p>
@@ -1233,7 +1233,7 @@
             <td>
                 <p>
                     <a href="https://www.nuget.org/packages/AllOverIt.Serialization.Json.SystemText/absoluteLatest/">
-                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Serialization.Json.SystemText?color=E3505C" alt="AllOverIt.Serialization.Json.SystemText"/>
+                        <img src="https://img.shields.io/nuget/v/AllOverIt.Serialization.Json.SystemText?label=Stable&amp;color=E3505C" alt="AllOverIt.Serialization.Json.SystemText"/>
                     </a>
                 </p>
                 <p>
@@ -1287,7 +1287,7 @@
             <td>
                 <p>
                     <a href="https://www.nuget.org/packages/AllOverIt.Validation/absoluteLatest/">
-                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Validation?color=E3505C" alt="AllOverIt.Validation"/>
+                        <img src="https://img.shields.io/nuget/v/AllOverIt.Validation?label=Stable&amp;color=E3505C" alt="AllOverIt.Validation"/>
                     </a>
                 </p>
                 <p>
@@ -1335,7 +1335,7 @@
             <td>
                 <p>
                     <a href="https://www.nuget.org/packages/AllOverIt.Validation.Options/absoluteLatest/">
-                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Validation.Options?color=E3505C" alt="AllOverIt.Validation.Options"/>
+                        <img src="https://img.shields.io/nuget/v/AllOverIt.Validation.Options?label=Stable&amp;color=E3505C" alt="AllOverIt.Validation.Options"/>
                     </a>
                 </p>
                 <p>
@@ -1383,7 +1383,7 @@
             <td>
                 <p>
                     <a href="https://www.nuget.org/packages/AllOverIt.Wpf/absoluteLatest/">
-                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Wpf?color=E3505C" alt="AllOverIt.Wpf"/>
+                        <img src="https://img.shields.io/nuget/v/AllOverIt.Wpf?label=Stable&amp;color=E3505C" alt="AllOverIt.Wpf"/>
                     </a>
                 </p>
                 <p>
@@ -1428,7 +1428,7 @@
             <td>
                 <p>
                     <a href="https://www.nuget.org/packages/AllOverIt.Wpf.Controls/absoluteLatest/">
-                        <img src="https://img.shields.io/nuget/vpre/AllOverIt.Wpf.Controls?color=E3505C" alt="AllOverIt.Wpf.Controls"/>
+                        <img src="https://img.shields.io/nuget/v/AllOverIt.Wpf.Controls?label=Stable&amp;color=E3505C" alt="AllOverIt.Wpf.Controls"/>
                     </a>
                 </p>
                 <p>
