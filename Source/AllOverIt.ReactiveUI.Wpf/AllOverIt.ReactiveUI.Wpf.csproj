@@ -1,14 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net8.0-windows;net7.0-windows;net6.0-windows</TargetFrameworks>
+        <TargetFrameworks>net8.0-windows10.0.19041;net8.0-windows10.0.17763;net7.0-windows10.0.19041;net7.0-windows10.0.17763;net6.0-windows10.0.19041;net6.0-windows10.0.17763</TargetFrameworks>
         <Description>This package contains utility extensions for use with ReactiveUI and WPF.</Description>
         <PackageTags>AllOverIt;Utilities;Reactive;ReactiveUI;WPF</PackageTags>
         <UseWPF>true</UseWPF>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="ReactiveUI.WPF" Version="19.5.41" />
+      <PackageReference Include="ReactiveUI.WPF" Version="19.5.72" />
     </ItemGroup>
 
     <ItemGroup>
