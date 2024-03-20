@@ -2,7 +2,10 @@
 ## XX Mar 2024
 
 ### AllOverIt
-* Added an AsArray() extension method for IEnumerable
+* Added an AsArray() extension method for IEnumerable.
+* Changed return type of GetEnumValues() from IReadonlyCollection<TEnumType> to TEnumType[].
+* Added new methods to extract an array of enum values for a given numerical or Enum mask value;
+  GetValuesFromBitMask() and GetValuesFromEnumWithFlags(). NET 7.0 and above.
 
 ### AllOverIt.EntityFrameworkCore.Diagrams
 * Added support for preserving the order of columns as they are defined on entities.
