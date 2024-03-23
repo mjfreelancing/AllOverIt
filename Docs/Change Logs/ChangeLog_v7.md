@@ -11,6 +11,8 @@
 * Added support for preserving the order of columns as they are defined on entities.
 * Changed default entity nullable column options to be Visible and use NullableColumnMode.NotNull.
 
+### AllOverIt.Fixture.FakeItEasy
+* Breaking: Changed optional ICustomization in UseFakeItEasy() to AutoFakeItEasyCustomization
 
 ---
 
