@@ -4,12 +4,14 @@ using AllOverIt.IO;
 using AllOverIt.Process;
 using AllOverIt.Process.Extensions;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace AllOverIt.EntityFrameworkCore.Diagrams.D2.Extensions
 {
+    [ExcludeFromCodeCoverage]
     /// <summary>Provides a variety of extension methods for <see cref="D2ErdGenerator"/>.</summary>
     public static class D2ErdGeneratorExtensions
     {

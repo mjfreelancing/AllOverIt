@@ -87,9 +87,9 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
             var targetArrowHead = GetTargetArrowHead(foreignKey.IsOneToMany);
             var labelStyle = GetCardinalityLabelStyle();
 
-            if (sourceArrowHead is null &&
-                targetArrowHead is null &&
-                labelStyle is null)
+            if (sourceArrowHead.IsNullOrEmpty() &&
+                targetArrowHead.IsNullOrEmpty() &&
+                labelStyle.IsNullOrEmpty())
             {
                 return cardinality;
             }
@@ -98,17 +98,17 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
 
             sb.AppendLine($"{cardinality} {{");
 
-            if (sourceArrowHead is not null)
+            if (sourceArrowHead.IsNotNullOrEmpty())
             {
                 sb.AppendLine(sourceArrowHead);
             }
 
-            if (targetArrowHead is not null)
+            if (targetArrowHead.IsNotNullOrEmpty())
             {
                 sb.AppendLine(targetArrowHead);
             }
 
-            if (labelStyle is not null)
+            if (labelStyle.IsNotNullOrEmpty())
             {
                 sb.AppendLine(labelStyle);
             }
@@ -117,11 +117,12 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
 
             return sb.ToString();
         }
+
         private string GetSourceArrowHead()
         {
             return _options.Cardinality.ShowCrowsFoot
                 ? SourceArrowheadWithCrowsFoot
-                : null;
+                : string.Empty;
         }
 
         private string GetTargetArrowHead(bool isOneToMany)
@@ -133,14 +134,12 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
                     : TargetArrowHeadWithCrowsFootOneToOne;
             }
 
-            return null;
+            return string.Empty;
         }
 
         private string GetCardinalityLabelStyle()
         {
-            return _options.Cardinality.LabelStyle.IsDefault()
-                ? null
-                : _options.Cardinality.LabelStyle.AsText(2);
+            return _options.Cardinality.LabelStyle.AsText(2);
         }
     }
 }

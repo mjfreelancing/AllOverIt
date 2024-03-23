@@ -9,7 +9,6 @@ using FluentAssertions;
 using System;
 using System.IO;
 using System.Linq;
-using Xunit;
 
 using RSAAlgorithm = System.Security.Cryptography.RSA;
 
@@ -237,18 +236,18 @@ namespace AllOverIt.Cryptography.Tests.RSA
             [Fact]
             public void Should_Evaluate_MaxLength_Once()
             {
-                var rsaFactory = this.CreateFake<IRsaFactory>();
+                var rsaFactoryFake = this.CreateFake<IRsaFactory>();
 
-                rsaFactory
+                rsaFactoryFake
                     .CallsTo(fake => fake.Create())
                     .Returns(RSAAlgorithm.Create());
 
-                var encryptor = new RsaEncryptor(rsaFactory.FakedObject, new RsaEncryptorConfiguration());
+                var encryptor = new RsaEncryptor(rsaFactoryFake.FakedObject, new RsaEncryptorConfiguration());
 
                 encryptor.GetMaxInputLength();
                 encryptor.GetMaxInputLength();
 
-                rsaFactory
+                rsaFactoryFake
                     .CallsTo(fake => fake.Create())
                     .MustHaveHappenedOnceExactly();
             }

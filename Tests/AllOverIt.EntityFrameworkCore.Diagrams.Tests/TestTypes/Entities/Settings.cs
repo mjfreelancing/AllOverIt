@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.Entities
+namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.TestTypes.Entities
 {
     [Table(nameof(Settings))]       // Enforce the name rather than take on the DbSet<> property name
     public class Settings
