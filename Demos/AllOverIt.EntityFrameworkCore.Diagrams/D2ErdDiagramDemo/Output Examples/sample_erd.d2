@@ -48,9 +48,9 @@ blog.Blog: {
     stroke-dash: 2
   }
 
-  Id: INTEGER {constraint: primary_key}
-  Description: TEXT(500)
-  WebSiteId: INTEGER {constraint: foreign_key}
+  Id: INTEGER \[NOT NULL\] {constraint: primary_key}
+  Description: TEXT(500) \[NOT NULL\]
+  WebSiteId: INTEGER \[NOT NULL\] {constraint: foreign_key}
 }
 
 Comment: {
