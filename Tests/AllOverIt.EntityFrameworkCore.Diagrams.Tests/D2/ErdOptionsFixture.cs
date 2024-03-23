@@ -1,6 +1,6 @@
 ﻿using AllOverIt.EntityFrameworkCore.Diagrams.D2;
 using AllOverIt.EntityFrameworkCore.Diagrams.Exceptions;
-using AllOverIt.EntityFrameworkCore.Diagrams.Tests.Entities;
+using AllOverIt.EntityFrameworkCore.Diagrams.Tests.TestTypes.Entities;
 using AllOverIt.Fixture;
 using FluentAssertions;
 using System.Collections;

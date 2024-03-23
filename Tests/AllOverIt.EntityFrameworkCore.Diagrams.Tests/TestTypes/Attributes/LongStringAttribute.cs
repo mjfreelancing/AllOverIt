@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.Attributes
+namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.TestTypes.Attributes
 {
     public sealed class LongStringAttribute : MaxLengthAttribute
     {

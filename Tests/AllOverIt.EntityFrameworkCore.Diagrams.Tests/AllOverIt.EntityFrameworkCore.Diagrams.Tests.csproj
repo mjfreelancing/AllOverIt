@@ -13,5 +13,6 @@
     <ItemGroup>
         <ProjectReference Include="..\..\Source\AllOverIt.EntityFrameworkCore.Diagrams\AllOverIt.EntityFrameworkCore.Diagrams.csproj" />
         <ProjectReference Include="..\..\Source\AllOverIt.Fixture\AllOverIt.Fixture.csproj" />
+        <ProjectReference Include="..\TestUtils\TestUtils.csproj" />
     </ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
-﻿using AllOverIt.EntityFrameworkCore.Diagrams.Tests.Entities;
+﻿using AllOverIt.EntityFrameworkCore.Diagrams.Tests.TestTypes.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
+namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.TestTypes
 {
     public class TestDbContext : DbContext
     {
