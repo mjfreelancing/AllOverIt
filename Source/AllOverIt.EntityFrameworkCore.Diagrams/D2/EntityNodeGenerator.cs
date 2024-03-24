@@ -1,6 +1,7 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.EntityFrameworkCore.Diagrams.D2.Extensions;
 using AllOverIt.EntityFrameworkCore.Diagrams.Exceptions;
+using AllOverIt.Extensions;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Collections.Generic;
@@ -66,7 +67,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
             {
                 preserveColumnOrder = _options.Entities.PreserveColumnOrder;
 
-                if (_defaultShapeStyle is not null)
+                if (_defaultShapeStyle.IsNotNullOrEmpty())
                 {
                     sb.AppendLine(_defaultShapeStyle);
                     sb.AppendLine();
