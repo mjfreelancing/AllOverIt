@@ -27,10 +27,6 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
 
             var dbContextEntityTypes = dbContext.Model.GetEntityTypes().AsReadOnlyCollection();
 
-            var defaultShapeStyle = !_options.Entities.ShapeStyle.IsDefault()
-                ? _options.Entities.ShapeStyle.AsText(2)
-                : default;
-
             sb.AppendLine($"direction: {_options.Direction}".ToLowerInvariant());
             sb.AppendLine();
 
@@ -55,6 +51,8 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
 
                 sb.AppendLine();
             });
+
+            var defaultShapeStyle = _options.Entities.ShapeStyle.AsText(2);
 
             // Process all entities
             var entityNodeGenerator = new EntityNodeGenerator(_options, dbContextEntityTypes, defaultShapeStyle);
