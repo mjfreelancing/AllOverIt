@@ -11,6 +11,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Extensions
         /// <param name="configure">The configuration action.</param>
         public static void SetLabelStyle(this ErdOptions.CardinalityOptions cardinality, Action<LabelStyle> configure)
         {
+            _ = cardinality.WhenNotNull(nameof(cardinality));
             _ = configure.WhenNotNull(nameof(configure));
 
             configure.Invoke(cardinality.LabelStyle);
@@ -21,6 +22,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Extensions
         /// <param name="labelStyle">The <see cref="LabelStyle"/> to assign to the provided options.</param>
         public static void SetLabelStyle(this ErdOptions.CardinalityOptions cardinality, LabelStyle labelStyle)
         {
+            _ = cardinality.WhenNotNull(nameof(cardinality));
             _ = labelStyle.WhenNotNull(nameof(labelStyle));
 
             cardinality.LabelStyle = labelStyle;

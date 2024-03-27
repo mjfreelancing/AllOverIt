@@ -2,7 +2,7 @@ using AllOverIt.EntityFrameworkCore.Diagrams.D2;
 using AllOverIt.Fixture;
 using FluentAssertions;
 
-namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.D2
+namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 {
     public class ErdGeneratorFixture : FixtureBase
     {
