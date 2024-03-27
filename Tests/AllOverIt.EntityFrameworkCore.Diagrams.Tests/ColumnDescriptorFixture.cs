@@ -5,7 +5,7 @@ using FluentAssertions;
 using System.Collections.Generic;
 using TestUtils;
 
-namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.D2
+namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 {
     public class ColumnDescriptorFixture : NSubstituteFixtureBase
     {

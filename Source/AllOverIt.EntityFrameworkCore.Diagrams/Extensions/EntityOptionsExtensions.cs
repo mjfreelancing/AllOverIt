@@ -11,6 +11,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Extensions
         /// <param name="configure">The configuration action.</param>
         public static void SetShapeStyle(this ErdOptions.EntityOptions options, Action<ShapeStyle> configure)
         {
+            _ = options.WhenNotNull(nameof(options));
             _ = configure.WhenNotNull(nameof(configure));
 
             configure.Invoke(options.ShapeStyle);
@@ -21,6 +22,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Extensions
         /// <param name="shapeStyle">The <see cref="ShapeStyle"/> to assign to the provided options.</param>
         public static void SetShapeStyle(this ErdOptions.EntityOptions options, ShapeStyle shapeStyle)
         {
+            _ = options.WhenNotNull(nameof(options));
             _ = shapeStyle.WhenNotNull(nameof(shapeStyle));
 
             options.ShapeStyle = shapeStyle;

@@ -6,7 +6,7 @@ using FluentAssertions;
 using System.Collections;
 using System.Linq;
 
-namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.D2
+namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 {
     public class ErdOptionsFixture : FixtureBase
     {
