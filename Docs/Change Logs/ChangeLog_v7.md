@@ -1,3 +1,22 @@
+#  Version 7.5.0
+## 27 Mar 2024
+
+### AllOverIt
+* Added an AsArray() extension method for IEnumerable.
+* Breaking: Changed return type of GetEnumValues() from IReadonlyCollection<TEnumType> to TEnumType[].
+* Added new methods to extract an array of enum values for a given numerical or Enum mask value;
+  GetValuesFromBitMask() and GetValuesFromEnumWithFlags(). NET 7.0 and above.
+
+### AllOverIt.EntityFrameworkCore.Diagrams
+* Change in behaviour: Added support for preserving the order of columns as they are defined on entities. Default is true.
+* Changed default entity nullable column options to be Visible and use NullableColumnMode.NotNull.
+
+### AllOverIt.Fixture.FakeItEasy
+* Breaking: Changed optional ICustomization in UseFakeItEasy() to AutoFakeItEasyCustomization
+
+---
+
+
 #  Version 7.3.0 - 7.4.1
 ## 04 Mar 2024
 
@@ -6,7 +25,7 @@
 
 
 ### AllOverIt.EntityFrameworkCore.Diagrams
-* v7.3.0 - Added support for grouping entities
+* v7.3.0 - Added support for grouping entities.
 * v7.3.1 - Fixed an issue with a default style on grouped entities not generating a valid configuration. Added a new overload not requiring a style.
 * v7.3.2 - Correct a regression with group titles not being included in the output.
 * v7.4.0 - Added an option to copy global entity options when first retrieving them for customization. This is a change in behaviour, but it is more appropriate.

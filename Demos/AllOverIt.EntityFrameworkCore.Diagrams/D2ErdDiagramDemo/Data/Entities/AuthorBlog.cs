@@ -8,10 +8,11 @@ namespace D2ErdDiagramDemo.Data.Entities
     {
         public int Id { get; set; }
 
+        // Deliberately using a name that is different from the type, and before 'Author' to test preserving column order
         [Required]
-        public Author Author { get; set; }
+        public Blog Blogger { get; set; }
 
         [Required]
-        public Blog Blog { get; set; }
+        public Author Author { get; set; }
     }
 }

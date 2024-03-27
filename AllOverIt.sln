@@ -384,6 +384,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CircularBufferSinkDemo", "D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.Serilog.Tests", "Tests\AllOverIt.Serilog.Tests\AllOverIt.Serilog.Tests.csproj", "{714FFBA3-D414-461A-84A4-161C32DC1E1B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.EntityFrameworkCore.Diagrams.Tests", "Tests\AllOverIt.EntityFrameworkCore.Diagrams.Tests\AllOverIt.EntityFrameworkCore.Diagrams.Tests.csproj", "{8892AB1C-D791-4A86-B390-A05C85229024}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestUtils", "Tests\TestUtils\TestUtils.csproj", "{99AAFB04-7F1B-4A12-8EF1-8FB6F78330E2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -918,6 +922,14 @@ Global
 		{714FFBA3-D414-461A-84A4-161C32DC1E1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{714FFBA3-D414-461A-84A4-161C32DC1E1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{714FFBA3-D414-461A-84A4-161C32DC1E1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8892AB1C-D791-4A86-B390-A05C85229024}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8892AB1C-D791-4A86-B390-A05C85229024}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8892AB1C-D791-4A86-B390-A05C85229024}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8892AB1C-D791-4A86-B390-A05C85229024}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99AAFB04-7F1B-4A12-8EF1-8FB6F78330E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99AAFB04-7F1B-4A12-8EF1-8FB6F78330E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99AAFB04-7F1B-4A12-8EF1-8FB6F78330E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99AAFB04-7F1B-4A12-8EF1-8FB6F78330E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1102,6 +1114,8 @@ Global
 		{89BAE356-46F7-4B14-9347-EF72487EEA30} = {FC8E8DB2-1299-44F4-A233-0EDCE225BB8C}
 		{EC135A46-03DC-41CA-A9FC-905EBE67D11A} = {D68B489E-F268-4BCA-81EB-678D65E820FB}
 		{714FFBA3-D414-461A-84A4-161C32DC1E1B} = {0C08FAE6-4CD9-4C7B-A849-EB0DB9BD1451}
+		{8892AB1C-D791-4A86-B390-A05C85229024} = {0C08FAE6-4CD9-4C7B-A849-EB0DB9BD1451}
+		{99AAFB04-7F1B-4A12-8EF1-8FB6F78330E2} = {0C08FAE6-4CD9-4C7B-A849-EB0DB9BD1451}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19DD11B3-596E-4862-B5C4-1FFFFB173106}

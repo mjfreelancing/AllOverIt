@@ -7,7 +7,7 @@ namespace AllOverIt.Async
     {
         #region WhenAll
 
-        // The following link should an alternative that provides GetAwaiter() / ConfigureAwait() extensions to await a tuple
+        // The following link shows an alternative that provides GetAwaiter() / ConfigureAwait() extensions to await a tuple
         // https://github.com/buvinghausen/TaskTupleAwaiter/blob/a568b46692c317b851e3df2ccb517ae2160b7a15/src/TaskTupleAwaiter/TaskTupleExtensions.cs
         //
         // More info on making anything awaitable: // https://devblogs.microsoft.com/pfxteam/await-anything/

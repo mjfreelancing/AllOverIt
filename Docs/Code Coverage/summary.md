@@ -1,25 +1,25 @@
 # Summary
 |||
 |:---|:---|
-| Generated on: | 23/02/2024 - 3:46:29 PM |
-| Coverage date: | 23/02/2024 - 3:43:13 PM - 23/02/2024 - 3:46:19 PM |
-| Parser: | MultiReport (19x Cobertura) |
-| Assemblies: | 19 |
-| Classes: | 452 |
-| Files: | 458 |
-| **Line coverage:** | 99.6% (13493 of 13544) |
-| Covered lines: | 13493 |
-| Uncovered lines: | 51 |
-| Coverable lines: | 13544 |
-| Total lines: | 34161 |
-| **Branch coverage:** | 96.2% (2410 of 2503) |
-| Covered branches: | 2410 |
-| Total branches: | 2503 |
+| Generated on: | 27/03/2024 - 8:33:08 PM |
+| Coverage date: | 27/03/2024 - 8:27:27 PM - 27/03/2024 - 8:32:38 PM |
+| Parser: | MultiReport (21x Cobertura) |
+| Assemblies: | 20 |
+| Classes: | 473 |
+| Files: | 478 |
+| **Line coverage:** | 99.5% (14112 of 14169) |
+| Covered lines: | 14112 |
+| Uncovered lines: | 57 |
+| Coverable lines: | 14169 |
+| Total lines: | 35505 |
+| **Branch coverage:** | 96.1% (2549 of 2651) |
+| Covered branches: | 2549 |
+| Total branches: | 2651 |
 | **Method coverage:** | [Feature is only available for sponsors](https://reportgenerator.io/pro) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|
-|**AllOverIt**|**5601**|**13**|**5614**|**15911**|**99.7%**|**1025**|**1050**|**97.6%**|
+|**AllOverIt**|**5638**|**13**|**5651**|**15998**|**99.7%**|**1037**|**1062**|**97.6%**|
 |AllOverIt.Aspects.InterceptorBase`1|81|1|82|172|98.7%|12|12|100%|
 |AllOverIt.Aspects.InterceptorFactory|24|0|24|62|100%|4|4|100%|
 |AllOverIt.Aspects.InterceptorMethodHandlerAsyncBase|16|0|16|214|100%|0|0||
@@ -30,8 +30,8 @@
 |AllOverIt.Aspects.InterceptorState`1|2|0|2|40|100%|0|0||
 |AllOverIt.Aspects.MethodInterceptor`1|23|0|23|63|100%|2|2|100%|
 |AllOverIt.Async.AsyncLazy`1|9|0|9|36|100%|0|0||
-|AllOverIt.Async.BackgroundTask|85|0|85|165|100%|13|14|92.8%|
-|AllOverIt.Async.BackgroundTask`1|77|3|80|165|96.2%|16|18|88.8%|
+|AllOverIt.Async.BackgroundTask|83|2|85|165|97.6%|12|14|85.7%|
+|AllOverIt.Async.BackgroundTask`1|79|1|80|165|98.7%|17|18|94.4%|
 |AllOverIt.Async.CompositeAsyncDisposable|51|0|51|94|100%|6|6|100%|
 |AllOverIt.Async.RepeatingTask|82|2|84|166|97.6%|0|0||
 |AllOverIt.Async.TaskHelper|37|0|37|224|100%|0|0||
@@ -76,7 +76,7 @@
 |AllOverIt.Extensions.DictionaryExtensions|16|0|16|55|100%|8|8|100%|
 |AllOverIt.Extensions.DoubleExtensions|12|0|12|54|100%|0|0||
 |AllOverIt.Extensions.EndianExtensions|140|0|140|335|100%|36|36|100%|
-|AllOverIt.Extensions.EnumerableExtensions|320|0|320|791|100%|36|38|94.7%|
+|AllOverIt.Extensions.EnumerableExtensions|324|0|324|807|100%|38|40|95%|
 |AllOverIt.Extensions.ExceptionExtensions|21|0|21|47|100%|14|14|100%|
 |AllOverIt.Extensions.ExpressionExtensions|89|0|89|187|100%|37|38|97.3%|
 |AllOverIt.Extensions.ListExtensions|30|0|30|76|100%|4|4|100%|
@@ -102,7 +102,7 @@
 |AllOverIt.Formatters.Objects.ObjectPropertySerializerOptions|19|0|19|58|100%|0|0||
 |AllOverIt.Formatters.Strings.Extensions.StringFormatExtensions|3|0|3|16|100%|0|0||
 |AllOverIt.Formatters.Strings.JsonString|116|0|116|190|100%|50|50|100%|
-|AllOverIt.Helpers.EnumHelper|3|0|3|18|100%|0|0||
+|AllOverIt.Helpers.EnumHelper|36|0|36|89|100%|10|10|100%|
 |AllOverIt.Helpers.ExceptionAggregator|15|0|15|43|100%|4|4|100%|
 |AllOverIt.Helpers.HashCodeHelper|11|0|11|33|100%|2|2|100%|
 |AllOverIt.Helpers.ProgressReport.ProgressState|2|0|2|13|100%|0|0||
@@ -217,6 +217,28 @@
 |AllOverIt.DependencyInjection.NamedServiceResolver|9|0|9|74|100%|0|0||
 |AllOverIt.DependencyInjection.NamedServiceResolver`1|24|0|24|74|100%|6|6|100%|
 |AllOverIt.DependencyInjection.ServiceRegistrarBase|62|0|62|101|100%|28|28|100%|
+|**AllOverIt.EntityFrameworkCore.Diagrams**|**582**|**6**|**588**|**1310**|**98.9%**|**128**|**136**|**94.1%**|
+|AllOverIt.EntityFrameworkCore.Diagrams.ColumnDescriptor|50|0|50|80|100%|9|10|90%|
+|AllOverIt.EntityFrameworkCore.Diagrams.D2.D2ErdExportOptions|6|0|6|32|100%|0|0||
+|AllOverIt.EntityFrameworkCore.Diagrams.D2.D2ErdGenerator|45|0|45|77|100%|6|6|100%|
+|AllOverIt.EntityFrameworkCore.Diagrams.D2.EntityNodeGenerator|119|6|125|184|95.2%|39|42|92.8%|
+|AllOverIt.EntityFrameworkCore.Diagrams.D2.Extensions.LabelStyleExtensions|32|0|32|42|100%|15|18|83.3%|
+|AllOverIt.EntityFrameworkCore.Diagrams.D2.Extensions.ShapeStyleExtensions|29|0|29|36|100%|10|10|100%|
+|AllOverIt.EntityFrameworkCore.Diagrams.D2.Extensions.StringExtensions|7|0|7|17|100%|0|0||
+|AllOverIt.EntityFrameworkCore.Diagrams.D2.RelationshipNodeGenerator|76|0|76|145|100%|29|30|96.6%|
+|AllOverIt.EntityFrameworkCore.Diagrams.D2.StyleStringBuilder|17|0|17|36|100%|2|2|100%|
+|AllOverIt.EntityFrameworkCore.Diagrams.EntityColumns|3|0|3|16|100%|0|0||
+|AllOverIt.EntityFrameworkCore.Diagrams.EntityIdentifier|1|0|1|53|100%|0|0||
+|AllOverIt.EntityFrameworkCore.Diagrams.ErdGenerator|6|0|6|23|100%|2|2|100%|
+|AllOverIt.EntityFrameworkCore.Diagrams.ErdGeneratorBase|16|0|16|53|100%|2|2|100%|
+|AllOverIt.EntityFrameworkCore.Diagrams.ErdOptions|106|0|106|293|100%|14|14|100%|
+|AllOverIt.EntityFrameworkCore.Diagrams.Exceptions.DiagramException|9|0|9|28|100%|0|0||
+|AllOverIt.EntityFrameworkCore.Diagrams.Extensions.CardinalityExtensions|10|0|10|31|100%|0|0||
+|AllOverIt.EntityFrameworkCore.Diagrams.Extensions.EntityGlobalOptionsExtensions|10|0|10|31|100%|0|0||
+|AllOverIt.EntityFrameworkCore.Diagrams.Extensions.EntityOptionsExtensions|10|0|10|31|100%|0|0||
+|AllOverIt.EntityFrameworkCore.Diagrams.LabelStyle|10|0|10|38|100%|0|0||
+|AllOverIt.EntityFrameworkCore.Diagrams.PrincipalForeignKey|4|0|4|21|100%|0|0||
+|AllOverIt.EntityFrameworkCore.Diagrams.ShapeStyle|16|0|16|43|100%|0|0||
 |**AllOverIt.Evaluator**|**1399**|**19**|**1418**|**3741**|**98.6%**|**184**|**194**|**94.8%**|
 |AllOverIt.Evaluator.Exceptions.FormulaException|9|0|9|28|100%|0|0||
 |AllOverIt.Evaluator.Exceptions.OperationFactoryException|9|0|9|28|100%|0|0||
@@ -317,8 +339,8 @@
 |AllOverIt.Evaluator.Variables.VariableLookup|25|0|25|59|100%|8|8|100%|
 |AllOverIt.Evaluator.Variables.VariableRegistry|52|0|52|114|100%|8|8|100%|
 |AllOverIt.Evaluator.Variables.VariableRegistryBuilder|127|0|127|256|100%|18|18|100%|
-|**AllOverIt.Filtering**|**639**|**1**|**640**|**1610**|**99.8%**|**121**|**134**|**90.2%**|
-|AllOverIt.Filtering.Builders.FilterBuilder`2|71|0|71|159|100%|19|24|79.1%|
+|**AllOverIt.Filtering**|**639**|**1**|**640**|**1610**|**99.8%**|**120**|**134**|**89.5%**|
+|AllOverIt.Filtering.Builders.FilterBuilder`2|71|0|71|159|100%|18|24|75%|
 |AllOverIt.Filtering.Builders.FilterSpecificationBuilder`2|212|1|213|404|99.5%|50|58|86.2%|
 |AllOverIt.Filtering.Exceptions.NullNotSupportedException|9|0|9|28|100%|0|0||
 |AllOverIt.Filtering.Extensions.FilterExtensions|12|0|12|42|100%|2|2|100%|

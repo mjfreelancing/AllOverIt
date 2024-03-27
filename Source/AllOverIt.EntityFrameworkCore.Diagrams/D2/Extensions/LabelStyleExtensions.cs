@@ -4,6 +4,7 @@
     {
         public static string AsText(this LabelStyle labelStyle, int indent)
         {
+            // Returns string.Empty if no style options are set
             return StyleStringBuilder.Create(indent, styler =>
             {
                 if (labelStyle.FontSize != default)

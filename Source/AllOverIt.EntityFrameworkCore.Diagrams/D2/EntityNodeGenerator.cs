@@ -1,6 +1,7 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.EntityFrameworkCore.Diagrams.D2.Extensions;
 using AllOverIt.EntityFrameworkCore.Diagrams.Exceptions;
+using AllOverIt.Extensions;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
             _defaultShapeStyle = defaultShapeStyle;     // can be null
         }
 
-        public string CreateNode(EntityIdentifier entityIdentifier, IReadOnlyCollection<ColumnDescriptor> columns, Action<string> onRelationship)
+        public string CreateNode(EntityIdentifier entityIdentifier, IReadOnlyCollection<IColumnDescriptor> columns, Action<string> onRelationship)
         {
             _ = entityIdentifier.WhenNotNull(nameof(entityIdentifier));
             _ = columns.WhenNotNullOrEmpty(nameof(columns));
@@ -50,8 +51,12 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
                 .Single(entity => entity.ClrType == entityIdentifier.Type)
                 .ClrType;
 
+            bool preserveColumnOrder;
+
             if (_options.TryGetEntityOptions(entityType, out var entityOptions))
             {
+                preserveColumnOrder = entityOptions.PreserveColumnOrder;
+
                 if (!entityOptions.ShapeStyle.IsDefault())
                 {
                     sb.AppendLine(entityOptions.ShapeStyle.AsText(2));
@@ -60,11 +65,18 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
             }
             else
             {
-                if (_defaultShapeStyle is not null)
+                preserveColumnOrder = _options.Entities.PreserveColumnOrder;
+
+                if (_defaultShapeStyle.IsNotNullOrEmpty())
                 {
                     sb.AppendLine(_defaultShapeStyle);
                     sb.AppendLine();
                 }
+            }
+
+            if (preserveColumnOrder)
+            {
+                columns = [.. GetPreservedColumnOrder(entityIdentifier, columns)];
             }
 
             foreach (var column in columns)
@@ -93,7 +105,38 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
             return sb.ToString();
         }
 
-        private static string GetColumnDetail(Type entityType, ColumnDescriptor column, ErdOptions configuration)
+        private static IEnumerable<IColumnDescriptor> GetPreservedColumnOrder(EntityIdentifier entityIdentifier, IReadOnlyCollection<IColumnDescriptor> columns)
+        {
+            List<string> orderedPropertyNames = [];
+            List<Type> orderedPropertyTypes = [];
+
+            foreach (var property in entityIdentifier.Type.GetProperties())
+            {
+                orderedPropertyNames.Add(property.Name);
+                orderedPropertyTypes.Add(property.PropertyType);
+            }
+
+            return columns.OrderBy(column =>
+            {
+                var index = orderedPropertyNames.IndexOf(column.ColumnName);
+
+                if (index != -1)
+                {
+                    return index;
+                }
+
+                if (column.ForeignKeyPrincipals.Count > 0)
+                {
+                    var foreignKey = column.ForeignKeyPrincipals.First();
+
+                    return orderedPropertyTypes.IndexOf(foreignKey.Type);
+                }
+
+                return -1;
+            });
+        }
+
+        private static string GetColumnDetail(Type entityType, IColumnDescriptor column, ErdOptions configuration)
         {
             _ = configuration.TryGetEntityOptions(entityType, out var options);
 
@@ -127,7 +170,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
             return columnType;
         }
 
-        private static string GetColumnConstraint(ColumnDescriptor column)
+        private static string GetColumnConstraint(IColumnDescriptor column)
         {
             return column.Constraint switch
             {

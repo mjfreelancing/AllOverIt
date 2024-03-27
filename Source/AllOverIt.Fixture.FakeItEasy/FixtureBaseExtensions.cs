@@ -18,7 +18,7 @@ namespace AllOverIt.Fixture.FakeItEasy
         /// <param name="fixtureBase">The <see cref="FixtureBase"/> instance.</param>
         /// <param name="customization">The customization to add. If null, an <see cref="AutoFakeItEasyCustomization"/> with
         /// 'GenerateDelegates' set to true will be added.</param>
-        public static void UseFakeItEasy(this FixtureBase fixtureBase, ICustomization customization = null)
+        public static void UseFakeItEasy(this FixtureBase fixtureBase, AutoFakeItEasyCustomization customization = null)
         {
             customization ??= new AutoFakeItEasyCustomization { GenerateDelegates = true };
             fixtureBase.Customize(customization);
