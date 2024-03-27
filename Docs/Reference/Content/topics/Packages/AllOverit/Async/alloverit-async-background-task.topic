@@ -5,5 +5,115 @@
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
        title="BackgroundTask" id="alloverit-async-background-task">
 
-    <p>Start typing here...</p>
+    <p>
+        <code>BackgroundTask</code> and <code>BackgroundTask&lt;TType&gt;</code> provide the ability to execute an action asynchronously in a background task with the following key features:
+    </p>
+
+    <list type="bullet">
+        <li>Awaitable</li>
+        <li>Cancellable via a user-provided <code>CancellationToken</code></li>
+        <li>Disposable, implementing <code>IAsyncDisposable</code></li>
+        <li>Auto-cancels if disposed</li>
+    </list>
+
+    <p>
+        The only difference between <code>BackgroundTask</code> and <code>BackgroundTask&lt;TType&gt;</code> is that the latter returns a result of type <code>&lt;TType&gt;</code> when the task is awaited. The sections that follow in this documentation provide examples using <code>BackgroundTask&lt;TType&gt;</code>, but the information is equally relevant to <code>BackgroundTask</code>, with the exception that a result is not returned.
+    </p>
+
+    <chapter title="Creating a background task" id="creating-background-task">
+        <p>
+            There are several constructors available, providing flexibility around cancellation, exception handling, task behaviour and scheduling.
+        </p>
+
+        <code-block lang="c#">
+            public BackgroundTask(Func&lt;CancellationToken, Task&lt;TResult&gt;&gt; action,
+            CancellationToken cancellationToken = default)
+        </code-block>
+
+        <p>
+            Use this constructor to invoke a cancellable background task, like so:
+        </p>
+
+        <code-block lang="c#">
+            var cts = new CancellationTokenSource();
+
+            var task = new BackgroundTask&lt;int&gt;(async cancellationToken =>
+            {
+            await Task.Delay(1000, cancellationToken);
+
+            return 42;
+            }, cts.Token);
+        </code-block>
+
+        // NEXT CTOR HERE
+
+    </chapter>
+
+
+
+
+
+
+
+    <chapter title="Awaiting a background task" id="awaiting-background-task">
+        <p>
+            Consider the following code:
+        </p>
+
+        <code-block lang="c#">
+            var cts = new CancellationTokenSource();
+
+            var task = new BackgroundTask&lt;int&gt;(async cancellationToken =>
+            {
+            await Task.Delay(1000, cancellationToken);
+
+            return 42;
+            }, cts.Token);
+
+            var result = await task;    // will return 42
+        </code-block>
+    </chapter>
+
+
+    <chapter title="Cancelling a background task" id="cancelling-background-task">
+
+
+
+        <p>
+            Consider the following code:
+        </p>
+
+        <code-block lang="c#">
+            var task = new BackgroundTask&lt;int&gt;(async cancellationToken =>
+            {
+            await Task.Delay(1000, cancellationToken);
+
+            return 42;
+            }, cts.Token);
+
+            cts.Cancel();
+
+            // Will throw a TaskCanceledException
+            var result = await task;
+        </code-block>
+
+    </chapter>
+
+
+    <chapter title="Disposing a background task" id="disposing-background-task">
+
+    </chapter>
+
+
+    <chapter title="Handling exceptions" id="handling-exceptions">
+
+        Within your own code
+
+        Via the ExceptionDispatchInfo
+
+        Allow it to propagate when awaited - needs to be tested
+
+    </chapter>
+
+
 </topic>
