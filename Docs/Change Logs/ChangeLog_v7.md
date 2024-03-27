@@ -1,3 +1,17 @@
+#  Version 7.5.1
+## 28 Mar 2024
+
+### AllOverIt.Aws.Cdk.AppSync
+* Maintenance package updates
+
+### AllOverIt.ReactiveUI
+* Maintenance package updates
+
+### AllOverIt.ReactiveUI.Wpf
+* Maintenance package updates
+---
+
+
 #  Version 7.5.0
 ## 27 Mar 2024
 
