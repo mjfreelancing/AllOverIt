@@ -107,6 +107,9 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
             /// <returns>The same instance so additional calls can be chained.</returns>
             IEntityGroups Add(string alias, EntityGroup entityGroup);
 
+            /// <summary>Gets the alias associated with a specified entity type.</summary>
+            /// <param name="entityType">The entity type to get the alias for.</param>
+            /// <returns>The alias associated with a specified entity type.</returns>
             string GetAlias(Type entityType);
         }
 
@@ -186,6 +189,9 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
                 ShapeStyle = shapeStyle.WhenNotNull();
             }
 
+            /// <summary>Adds an entity type to the group.</summary>
+            /// <typeparam name="TEntity">The entity type to add to the group.</typeparam>
+            /// <returns>The entity group to allow for chained calls.</returns>
             public EntityGroup Add<TEntity>() where TEntity : class
             {
                 _entityTypes.Add(typeof(TEntity));
