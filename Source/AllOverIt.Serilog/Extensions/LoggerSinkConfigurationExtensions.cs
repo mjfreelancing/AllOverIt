@@ -21,7 +21,7 @@ namespace AllOverIt.Serilog.Extensions
         /// the default is "<c>{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message}{NewLine}{Exception}</c>".</param>
         /// <param name="restrictedToMinimumLevel">The minimum level for events passed through the sink.
         /// Ignored when <paramref name="levelSwitch"/> is specified.</param>
-        /// <param name="formatProvider">Supplies culture-specific formatting information, or <see cref="langword">null</see>.</param>
+        /// <param name="formatProvider">Supplies culture-specific formatting information, or <see langword="null"></see>.</param>
         /// <param name="levelSwitch">A switch allowing the pass-through minimum level to be changed at runtime.</param>
         /// <returns>The sink's <see cref="LoggerConfiguration"/> instance, allowing method chaining.</returns>
         public static LoggerConfiguration CircularBuffer(this LoggerSinkConfiguration sinkConfiguration,

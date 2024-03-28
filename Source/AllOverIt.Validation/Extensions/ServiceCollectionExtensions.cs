@@ -4,6 +4,7 @@ using System;
 
 namespace AllOverIt.Validation.Extensions
 {
+    /// <summary>Provides extension methods for a <see cref="IServiceCollection"/>.</summary>
     public static class ServiceCollectionExtensions
     {
         /// <summary>Adds support for registering a <see cref="ValidationInvoker"/>, as a singleton <see cref="IValidationInvoker"/>. The registration

@@ -11,8 +11,8 @@ using System.Threading.Tasks;
 
 namespace AllOverIt.EntityFrameworkCore.Diagrams.D2.Extensions
 {
-    [ExcludeFromCodeCoverage]
     /// <summary>Provides a variety of extension methods for <see cref="D2ErdGenerator"/>.</summary>
+    [ExcludeFromCodeCoverage]
     public static class D2ErdGeneratorExtensions
     {
         /// <summary>Exports the D2 diagram to a file along with any additional configured formats.</summary>

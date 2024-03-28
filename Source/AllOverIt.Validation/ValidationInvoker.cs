@@ -18,6 +18,7 @@ namespace AllOverIt.Validation
 
         private IValidationRegistry ValidationRegistry => this;
 
+        /// <summary>Constructor.</summary>
         public ValidationInvoker()
         {
         }
