@@ -1,3 +1,12 @@
+#  Version 7.6.0
+## 28 Mar 2024
+
+### AllOverIt.Serilog
+* Added an overload for AddSerilogCircularBuffer() that allows the capacity to be resolved from IServiceProvider.
+
+---
+
+
 #  Version 7.5.1
 ## 28 Mar 2024
 
@@ -9,6 +18,7 @@
 
 ### AllOverIt.ReactiveUI.Wpf
 * Maintenance package updates
+
 ---
 
 
