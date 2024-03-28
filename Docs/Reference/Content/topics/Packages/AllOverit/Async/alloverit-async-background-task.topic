@@ -20,33 +20,105 @@
         The only difference between <code>BackgroundTask</code> and <code>BackgroundTask&lt;TType&gt;</code> is that the latter returns a result of type <code>&lt;TType&gt;</code> when the task is awaited. The sections that follow in this documentation provide examples using <code>BackgroundTask&lt;TType&gt;</code>, but the information is equally relevant to <code>BackgroundTask</code>, with the exception that a result is not returned.
     </p>
 
-    <chapter title="Creating a background task" id="creating-background-task">
+    <chapter title="Creating background tasks" id="creating-background-tasks">
         <p>
             There are several constructors available, providing flexibility around cancellation, exception handling, task behaviour and scheduling.
         </p>
 
-        <code-block lang="c#">
-            public BackgroundTask(Func&lt;CancellationToken, Task&lt;TResult&gt;&gt; action,
-            CancellationToken cancellationToken = default)
-        </code-block>
+        <chapter title="Basic usage" id="background-task-simple">
+            <p>
+                The simplest use case involves an asynchronous action and a cancellation token, using the following constructor:
+            </p>
 
-        <p>
-            Use this constructor to invoke a cancellable background task, like so:
-        </p>
+            <code-block lang="c#">
+                public BackgroundTask(Func&lt;CancellationToken, Task&lt;TResult&gt;&gt; action,
+                    CancellationToken cancellationToken = default)
+            </code-block>
 
-        <code-block lang="c#">
-            var cts = new CancellationTokenSource();
+            <p>
+                An example implementation looks like so:
+            </p>
 
-            var task = new BackgroundTask&lt;int&gt;(async cancellationToken =>
-            {
-            await Task.Delay(1000, cancellationToken);
+            <code-block lang="c#">
+                var cts = new CancellationTokenSource();
 
-            return 42;
-            }, cts.Token);
-        </code-block>
+                var task = new BackgroundTask&lt;int&gt;(async cancellationToken =>
+                {
+                    // Execute your background task logic here
+                    await Task.Delay(1000, cancellationToken);
 
-        // NEXT CTOR HERE
+                    return 42;
+                }, cts.Token);
 
+                // To cancel the background task, call Cancel() on cts or
+                // call Dispose() of the task.
+            </code-block>
+        </chapter>
+
+        <chapter title="Exception handling" id="background-task-exception-handling">
+            <p>
+                If you need to be notified of unhandled exceptions, the following constructor can be used:
+            </p>
+
+            <code-block lang="c#">
+                public BackgroundTask(Func&lt;CancellationToken, Task&lt;TResult&gt;&gt; action,
+                    Func&lt;ExceptionDispatchInfo, bool&gt; exceptionHandler,
+                    CancellationToken cancellationToken = default)
+            </code-block>
+
+            <p>
+                An example implementation looks like so:
+            </p>
+
+            <code-block lang="c#">
+                var cts = new CancellationTokenSource();
+
+                var task = new BackgroundTask&lt;int&gt;(async cancellationToken =>
+                {
+                    // Execute your background task logic here
+                    await Task.Delay(1000, cancellationToken);
+
+                    return 42;
+                },
+
+                edi =>
+                {
+                    // edi.SourceException provides the unhandled exception.
+                    //
+                    // Return true to indicate the exception has been handled and allow
+                    // the background task to continue, assuming it can recover from the
+                    // thrown state.
+                    //
+                    // Return false to have the original exception re-thrown.
+                    return false;
+                },
+
+                cts.Token);
+
+                // To cancel the background task, call Cancel() on cts or
+                // call Dispose() of the task.
+            </code-block>
+        </chapter>
+
+        <chapter title="Advanced configuration" id="background-task-advanced-configuration">
+            <p>
+                The remaining constructors are similar to those described above in terms of functionality, but they provide finer granularity over the behavior of task creation and scheduling.
+            </p>
+
+            <code-block lang="c#">
+                public BackgroundTask(Func&lt;CancellationToken, Task&lt;TResult&gt;&gt; action,
+                    TaskCreationOptions creationOptions, TaskScheduler scheduler,
+                    CancellationToken cancellationToken = default)
+            </code-block>
+
+            <code-block lang="c#">
+                public BackgroundTask(Func&lt;CancellationToken, Task&lt;TResult&gt;&gt; action,
+                    TaskCreationOptions creationOptions, TaskScheduler scheduler,
+                    Func&lt;ExceptionDispatchInfo, bool&gt; exceptionHandler,
+                    CancellationToken cancellationToken = default)
+            </code-block>
+
+        </chapter>
     </chapter>
 
 
@@ -65,9 +137,9 @@
 
             var task = new BackgroundTask&lt;int&gt;(async cancellationToken =>
             {
-            await Task.Delay(1000, cancellationToken);
+                await Task.Delay(1000, cancellationToken);
 
-            return 42;
+                return 42;
             }, cts.Token);
 
             var result = await task;    // will return 42
@@ -86,9 +158,9 @@
         <code-block lang="c#">
             var task = new BackgroundTask&lt;int&gt;(async cancellationToken =>
             {
-            await Task.Delay(1000, cancellationToken);
+                await Task.Delay(1000, cancellationToken);
 
-            return 42;
+                return 42;
             }, cts.Token);
 
             cts.Cancel();

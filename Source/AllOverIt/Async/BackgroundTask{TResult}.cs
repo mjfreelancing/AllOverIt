@@ -31,7 +31,8 @@ namespace AllOverIt.Async
         /// <param name="exceptionHandler">An exception handler that is invoked if an exception is raised. The handler must return
         /// <see langword="true"/> if the exception is handled. If the handler returns <see langword="false"/> the exception will be re-thrown.</param>
         /// <param name="cancellationToken">An optional cancellation token that will cancel the task if cancelled.</param>
-        public BackgroundTask(Func<CancellationToken, Task<TResult>> action, Func<ExceptionDispatchInfo, bool> exceptionHandler, CancellationToken cancellationToken = default)
+        public BackgroundTask(Func<CancellationToken, Task<TResult>> action, Func<ExceptionDispatchInfo, bool> exceptionHandler,
+            CancellationToken cancellationToken = default)
         {
             _ = action.WhenNotNull(nameof(action));
             _ = exceptionHandler.WhenNotNull(nameof(exceptionHandler));
