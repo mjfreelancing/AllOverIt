@@ -44,6 +44,20 @@ namespace BackgroundTaskDemo
                 return true;        // handled
             }, cts.Token);
 
+
+            var task5 = new BackgroundTask(async cancellationToken =>
+            {
+                Console.WriteLine("Task 5 Waiting...");
+
+                await Task.Delay(5000, cancellationToken);
+
+                Console.WriteLine("Task 5 Completed");      // Will not be logged
+            }, cts.Token);
+
+            await task5.DisposeAsync();
+
+            Console.WriteLine("Task 5 Disposed.");
+
             // To test cancelling the tasks
             //await Task.Delay(100);
             //cts.Cancel();
