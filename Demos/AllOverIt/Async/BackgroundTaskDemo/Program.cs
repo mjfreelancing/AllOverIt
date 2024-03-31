@@ -54,6 +54,13 @@ namespace BackgroundTaskDemo
                 Console.WriteLine("Task 5 Completed");      // Will not be logged
             }, cts.Token);
 
+            var task6 = new BackgroundTask(Task6Impl, exception =>
+            {
+                Console.WriteLine("Task 6, last chance to handle an exception. Returning false.");
+
+                return false;
+            }, cts.Token);
+
             await task5.DisposeAsync();
 
             Console.WriteLine("Task 5 Disposed.");
@@ -73,14 +80,39 @@ namespace BackgroundTaskDemo
             var t2Result = ((Task<long>) task2).Result;
 
             Console.WriteLine();
-            Console.WriteLine($"Task2 returned a value of {t2Result}");
+            Console.WriteLine($"Task 2 returned a value of {t2Result}");
             Console.WriteLine();
+
+            try
+            {
+                // task6 re-throws an exception that will be propagated when awaited
+                await task6;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Task 6 re-threw an exception, raised when awaited: {ex.Message}");
+                Console.WriteLine();
+            }
 
             Console.WriteLine("All tasks have completed.");
 
             Console.WriteLine();
             Console.WriteLine("All Over It.");
             Console.ReadKey();
+        }
+
+        private static async Task Task6Impl(CancellationToken cancellationToken)
+        {
+            try
+            {
+                await Task.Delay(500, cancellationToken);
+
+                throw new Exception("Task 6 threw an error");
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Re-throwing an exception in Task 6", exception);
+            }
         }
     }
 }
