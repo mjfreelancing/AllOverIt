@@ -223,18 +223,74 @@
         </list>
     </chapter>
 
-
-
-
     <chapter title="Handling exceptions" id="handling-exceptions">
+        <p>
+            It's always best, where possible, to handle known exceptions within the <code>BackgroundTask</code> handler. For example:
+        </p>
 
-        Within your own code
+        <code-block lang="c#">
+            var cts = new CancellationTokenSource();
 
-        Via ExceptionDispatchInfo
+            var task = new BackgroundTask&lt;int&gt;(async cancellationToken =>
+            {
+                try
+                {
+                    // Execute your background task logic here
+                }
+                catch (Exception exception)
+                {
+                    // Handle the task or re-throw
+                }
 
-        Allow it to propagate when awaited - needs to be tested
+                return 42;
+            }, cts.Token);
+        </code-block>
 
+        <p>
+            In the above example, if the exception is re-thrown it will be raised when the task is awaited.
+        </p>
+
+        <p>
+            It isn't always possible to handle exceptions in a generic manner. As an example, the application may need to apply certain rules, or strategies, to determine if the exception can be ignored. You may even want to simply log the exception before it is re-raised. This can be achieved, like so:
+        </p>
+
+        <code-block lang="c#">
+            var cts = new CancellationTokenSource();
+
+            var task = new BackgroundTask&lt;int&gt;(async cancellationToken =>
+            {
+                try
+                {
+                    // Execute your background task logic here
+                }
+                catch (HttpRequestException exception)
+                {
+                    // An example of an exception that can be handled
+                }
+
+                // All other exceptions will be thrown, and passed to the exception handler
+            },
+
+            exception =>
+            {
+                // Return true to indicate the exception has been handled and allow
+                // the background task to continue (or complete), assuming it can recover
+                // from the thrown state.
+                //
+                // Return false to have the original exception re-thrown.
+                return false;
+            },
+
+            cts.Token);
+        </code-block>
+
+        <p>
+            In the above example, if the exception handler is called and it returns <code>false</code>, the exception will be re-thrown. The raised exception will be observed when the task is awaited:
+        </p>
+
+        <code-block lang="c#">
+            // The raised exception will observed when the task is awaited.
+            await task;
+        </code-block>
     </chapter>
-
-
 </topic>
