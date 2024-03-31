@@ -23,6 +23,7 @@
             <toc-element toc-title="Async">
                 <toc-element topic="alloverit-async-async-lazy.topic"/>
                 <toc-element topic="alloverit-async-background-task.topic"/>
+                <toc-element topic="alloverit-async-composite-async-disposable.topic"/>
             </toc-element>
             <toc-element toc-title="Patterns">
                 <toc-element topic="alloverit-patterns-value-object.topic"/>

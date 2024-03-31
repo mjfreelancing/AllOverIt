@@ -5,6 +5,8 @@
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
        title="Interceptor State" id="alloverit-aspects-interceptor-state">
 
+    <show-structure for="chapter" depth="2"/>
+
     <p>
         <code>InterceptorState</code> is a state class intended to carry information between the different stages of method interception.
     </p>
