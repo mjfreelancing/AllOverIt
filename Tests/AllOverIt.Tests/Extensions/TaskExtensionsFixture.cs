@@ -2,9 +2,7 @@
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
-using System.Threading;
 using System.Threading.Tasks;
-using Xunit;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -45,7 +43,7 @@ namespace AllOverIt.Tests.Extensions
 
                 Exception actual = null;
 
-                AllOverIt.Extensions.TaskExtensions.FireAndForget(completionSource.Task, dispatchInfo => actual = dispatchInfo.SourceException);
+                AllOverIt.Extensions.TaskExtensions.FireAndForget(completionSource.Task, exception => actual = exception);
 
                 actual.Should().BeSameAs(exception);
             }
@@ -68,7 +66,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 Exception actual = null;
 
-                await AllOverIt.Extensions.TaskExtensions.DoFireAndForget(Task.Delay(1), dispatchInfo => actual = dispatchInfo.SourceException);
+                await AllOverIt.Extensions.TaskExtensions.DoFireAndForget(Task.Delay(1), exception => actual = exception);
 
                 actual.Should().BeNull();
             }
@@ -83,7 +81,7 @@ namespace AllOverIt.Tests.Extensions
 
                 Exception actual = null;
 
-                await AllOverIt.Extensions.TaskExtensions.DoFireAndForget(completionSource.Task, dispatchInfo => actual = dispatchInfo.SourceException);
+                await AllOverIt.Extensions.TaskExtensions.DoFireAndForget(completionSource.Task, exception => actual = exception);
 
                 actual.Should().BeSameAs(exception);
             }

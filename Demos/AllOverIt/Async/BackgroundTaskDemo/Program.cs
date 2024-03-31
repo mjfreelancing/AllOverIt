@@ -30,17 +30,17 @@ namespace BackgroundTaskDemo
 
 
             var task3 = new BackgroundTask(_ => throw new Exception("Task 3 Error !!!"), TaskCreationOptions.LongRunning, TaskScheduler.Default,
-                edi =>
+                exception =>
                 {
-                    Console.WriteLine($"Caught an exception: {edi.SourceException.Message}");
+                    Console.WriteLine($"Caught an exception: {exception.Message}");
                     return true;        // handled
                 },
                 cts.Token);
 
 
-            var task4 = new BackgroundTask(_ => throw new Exception("Task 4 Error !!!"), edi =>
+            var task4 = new BackgroundTask(_ => throw new Exception("Task 4 Error !!!"), exception =>
             {
-                Console.WriteLine($"Caught an exception: {edi.SourceException.Message}");
+                Console.WriteLine($"Caught an exception: {exception.Message}");
                 return true;        // handled
             }, cts.Token);
 

@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,7 +30,7 @@ namespace AllOverIt.Async
         /// <param name="exceptionHandler">An exception handler that is invoked if an exception is raised. The handler must return
         /// <see langword="true"/> if the exception is handled. If the handler returns <see langword="false"/> the exception will be re-thrown.</param>
         /// <param name="cancellationToken">An optional cancellation token that will cancel the task if cancelled.</param>
-        public BackgroundTask(Func<CancellationToken, Task<TResult>> action, Func<ExceptionDispatchInfo, bool> exceptionHandler,
+        public BackgroundTask(Func<CancellationToken, Task<TResult>> action, Func<Exception, bool> exceptionHandler,
             CancellationToken cancellationToken = default)
         {
             _ = action.WhenNotNull(nameof(action));
@@ -68,7 +67,7 @@ namespace AllOverIt.Async
         /// <see langword="true"/> if the exception is handled. If the handler returns <see langword="false"/> the exception will be re-thrown.</param>
         /// <param name="cancellationToken">An optional cancellation token that will cancel the task if cancelled.</param>
         public BackgroundTask(Func<CancellationToken, Task<TResult>> action, TaskCreationOptions creationOptions, TaskScheduler scheduler,
-            Func<ExceptionDispatchInfo, bool> exceptionHandler, CancellationToken cancellationToken = default)
+            Func<Exception, bool> exceptionHandler, CancellationToken cancellationToken = default)
         {
             _ = action.WhenNotNull(nameof(action));
             _ = exceptionHandler.WhenNotNull(nameof(exceptionHandler));
@@ -132,7 +131,7 @@ namespace AllOverIt.Async
                 : CancellationTokenSource.CreateLinkedTokenSource(_cancellationTokenSource.Token, cancellationToken).Token;
         }
 
-        private async Task<TResult> InvokeActionAsync(Func<CancellationToken, Task<TResult>> action, Func<ExceptionDispatchInfo, bool> exceptionHandler,
+        private async Task<TResult> InvokeActionAsync(Func<CancellationToken, Task<TResult>> action, Func<Exception, bool> exceptionHandler,
             CancellationToken cancellationToken)
         {
             try
@@ -146,20 +145,15 @@ namespace AllOverIt.Async
                     return default;
                 }
 
-                var edi = ExceptionDispatchInfo.Capture(exception);
-
                 if (exceptionHandler is not null)
                 {
-                    if (exceptionHandler.Invoke(edi))
+                    if (exceptionHandler.Invoke(exception))
                     {
                         return default;
                     }
                 }
 
-                edi.Throw();
-
-                // Only to keep the compiler happy - the previous line throws
-                return default;
+                throw;
             }
         }
     }

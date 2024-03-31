@@ -1,3 +1,14 @@
+#  Version 7.7.0
+## XX Apr 2024
+
+### AllOverIt
+* Breaking: More appropriate implementation of exception handler in BackgroundTask and the Task extension method, FireAndForget().
+  They now provides the actual Exception instead of ExceptionDispatchInfo(), which the caller can create if they need to re-throw
+  later (or on a different thread).
+
+---
+
+
 #  Version 7.6.0
 ## 28 Mar 2024
 
