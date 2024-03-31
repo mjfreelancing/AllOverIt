@@ -62,7 +62,7 @@
 
             <code-block lang="c#">
                 public BackgroundTask(Func&lt;CancellationToken, Task&lt;TResult&gt;&gt; action,
-                    Func&lt;ExceptionDispatchInfo, bool&gt; exceptionHandler,
+                    Func&lt;Exception, bool&gt; exceptionHandler,
                     CancellationToken cancellationToken = default)
             </code-block>
 
@@ -81,10 +81,8 @@
                     return 42;
                 },
 
-                edi =>
+                exception =>
                 {
-                    // edi.SourceException provides the unhandled exception.
-                    //
                     // Return true to indicate the exception has been handled and allow
                     // the background task to continue, assuming it can recover from the
                     // thrown state.
@@ -114,7 +112,7 @@
             <code-block lang="c#">
                 public BackgroundTask(Func&lt;CancellationToken, Task&lt;TResult&gt;&gt; action,
                     TaskCreationOptions creationOptions, TaskScheduler scheduler,
-                    Func&lt;ExceptionDispatchInfo, bool&gt; exceptionHandler,
+                    Func&lt;Exception, bool&gt; exceptionHandler,
                     CancellationToken cancellationToken = default)
             </code-block>
 
@@ -183,7 +181,46 @@
             <code>BackgroundTask</code> is not only awaitable, but it is also disposable. Furthermore, if the <code>CancellationToken</code> provided to the <code>BackgroundTask</code> is not in a cancelled state at the time of disposal, the <code>BackgroundTask</code> will internally cancel its running state, allowing it to be shutdown cleanly.
         </p>
 
+        <p>
+            Consider the following example:
+        </p>
 
+        <code-block lang="c#">
+            var cts = new CancellationTokenSource();
+
+            var task = new BackgroundTask(async cancellationToken =>
+            {
+                Console.WriteLine("Task Waiting...");
+
+                await Task.Delay(5000, cancellationToken);
+
+                Console.WriteLine("Task Completed");
+            }, cts.Token);
+
+            await Task.Delay(1000);
+
+            await task.DisposeAsync();
+
+            Console.WriteLine("Task Disposed");
+        </code-block>
+
+        <p>
+            This code will output:
+        </p>
+
+        <code-block lang="console">
+            Task Waiting...
+            Task Disposed
+        </code-block>
+
+        <p>
+            It is important to note that:
+        </p>
+
+        <list type="bullet">
+            <li><code>Task Completed</code> will not be output to the console</li>
+            <li><code>cts</code> will not be in a cancelled state</li>
+        </list>
     </chapter>
 
 
@@ -193,7 +230,7 @@
 
         Within your own code
 
-        Via the ExceptionDispatchInfo
+        Via ExceptionDispatchInfo
 
         Allow it to propagate when awaited - needs to be tested
 
