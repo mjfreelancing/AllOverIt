@@ -5,6 +5,8 @@
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
        title="BackgroundTask" id="alloverit-async-background-task">
 
+    <show-structure for="chapter" depth="2"/>
+
     <p>
         <code>BackgroundTask</code> and <code>BackgroundTask&lt;TType&gt;</code> provide the ability to execute an action asynchronously in a background task with the following key features:
     </p>
@@ -55,7 +57,7 @@
             </code-block>
         </chapter>
 
-        <chapter title="Exception handling" id="background-task-exception-handling">
+        <chapter title="Exception handlers" id="background-task-exception-handlers">
             <p>
                 If you need to be notified of unhandled exceptions, the following constructor can be used:
             </p>
@@ -126,7 +128,7 @@
         </chapter>
     </chapter>
 
-    <chapter title="Awaiting a background task" id="awaiting-background-task">
+    <chapter title="Awaiting background tasks" id="awaiting-background-tasks">
         <p>
             <code>BackgroundTask</code> is awaitable, just like a regular <code>Task</code>. Consider the following code:
         </p>
@@ -150,7 +152,7 @@
         </p>
     </chapter>
 
-    <chapter title="Cancelling a background task" id="cancelling-background-task">
+    <chapter title="Cancelling background tasks" id="cancelling-background-tasks">
         <p>
             Consider the following code:
         </p>
@@ -175,7 +177,7 @@
         </p>
     </chapter>
 
-    <chapter title="Disposing a background task" id="disposing-background-task">
+    <chapter title="Disposing background tasks" id="disposing-background-tasks">
 
         <p>
             <code>BackgroundTask</code> is not only awaitable, but it is also disposable. Furthermore, if the <code>CancellationToken</code> provided to the <code>BackgroundTask</code> is not in a cancelled state at the time of disposal, the <code>BackgroundTask</code> will internally cancel its running state, allowing it to be shutdown cleanly.
