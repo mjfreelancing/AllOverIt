@@ -66,7 +66,6 @@
             <p>
                 <format style="bold">Method level Interceptors</format>
             </p>
-
             <p>
                 Implement one or more method-level handlers to intercept only the methods of concern.
             </p>
