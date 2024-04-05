@@ -32,15 +32,16 @@ namespace AllOverIt.Tests.Async
             {
                 using var cts = new CancellationTokenSource();
 
-                var tcs = new TaskCompletionSource<bool>();
+                var resetEvent = new ManualResetEventSlim();
 
                 var invoked = false;
 
                 Task DoAction()
                 {
-                    tcs.SetResult(true);
-
                     invoked = true;
+
+                    resetEvent.Set();
+
                     cts.Cancel();
 
                     return Task.CompletedTask;
@@ -54,7 +55,7 @@ namespace AllOverIt.Tests.Async
 
                 var task = RepeatingTask.StartAsync(DoAction, options, cts.Token);
 
-                await tcs.Task;
+                resetEvent.Wait();
 
                 invoked.Should().BeTrue();
 
@@ -113,7 +114,7 @@ namespace AllOverIt.Tests.Async
             [Fact]
             public async Task Should_Invoke_Action_Until_Cancelled()
             {
-                var tcs = new TaskCompletionSource<bool>();
+                var resetEvent = new ManualResetEventSlim();
 
                 using var cts = new CancellationTokenSource();
 
@@ -128,9 +129,9 @@ namespace AllOverIt.Tests.Async
                         cts.Cancel();
                     }
 
-                    if (!tcs.Task.IsCompleted)
+                    if (!resetEvent.IsSet)
                     {
-                        tcs.SetResult(true);
+                        resetEvent.Set();
                     }
 
                     return Task.CompletedTask;
@@ -145,7 +146,7 @@ namespace AllOverIt.Tests.Async
                 var task = RepeatingTask.StartAsync(DoAction, options, cts.Token);
 
                 // Give the background task time to actually start
-                await tcs.Task;
+                resetEvent.Wait();
 
                 invokedCount.Should().Be(1);
 
@@ -171,7 +172,7 @@ namespace AllOverIt.Tests.Async
             [Fact]
             public async Task Should_Invoke_Action_With_RepeatDelay()
             {
-                var tcs = new TaskCompletionSource<bool>();
+                var resetEvent = new ManualResetEventSlim();
 
                 using var cts = new CancellationTokenSource();
 
@@ -186,9 +187,9 @@ namespace AllOverIt.Tests.Async
                         cts.Cancel();
                     }
 
-                    if (!tcs.Task.IsCompleted)
+                    if (!resetEvent.IsSet)
                     {
-                        tcs.SetResult(true);
+                        resetEvent.Set();
                     }
 
                     return Task.CompletedTask;
@@ -203,7 +204,7 @@ namespace AllOverIt.Tests.Async
                 var task = RepeatingTask.StartAsync(DoAction, options, cts.Token);
 
                 // Give the background task time to actually start
-                await tcs.Task;
+                resetEvent.Wait();
 
                 invokedCount.Should().Be(1);
 
@@ -282,17 +283,18 @@ namespace AllOverIt.Tests.Async
             [Fact]
             public async Task Should_Invoke_Action()
             {
-                using var cts = new CancellationTokenSource();
+                var resetEvent = new ManualResetEventSlim();
 
-                var tcs = new TaskCompletionSource<bool>();
+                using var cts = new CancellationTokenSource();
 
                 var invoked = false;
 
                 void DoAction()
                 {
-                    tcs.SetResult(true);
-
                     invoked = true;
+
+                    resetEvent.Set();
+
                     cts.Cancel();
                 }
 
@@ -304,7 +306,7 @@ namespace AllOverIt.Tests.Async
 
                 var task = RepeatingTask.StartAsync(DoAction, options, cts.Token);
 
-                await tcs.Task;
+                resetEvent.Wait();
 
                 invoked.Should().BeTrue();
 
@@ -363,7 +365,7 @@ namespace AllOverIt.Tests.Async
             [Fact]
             public async Task Should_Invoke_Action_Until_Cancelled()
             {
-                var tcs = new TaskCompletionSource<bool>();
+                var resetEvent = new ManualResetEventSlim();
 
                 using var cts = new CancellationTokenSource();
 
@@ -378,9 +380,9 @@ namespace AllOverIt.Tests.Async
                         cts.Cancel();
                     }
 
-                    if (!tcs.Task.IsCompleted)
+                    if (!resetEvent.IsSet)
                     {
-                        tcs.SetResult(true);
+                        resetEvent.Set();
                     }
                 }
 
@@ -393,7 +395,7 @@ namespace AllOverIt.Tests.Async
                 var task = RepeatingTask.StartAsync(DoAction, options, cts.Token);
 
                 // Give the background task time to actually start
-                await tcs.Task;
+                resetEvent.Wait();
 
                 invokedCount.Should().Be(1);
 
@@ -419,7 +421,7 @@ namespace AllOverIt.Tests.Async
             [Fact]
             public async Task Should_Invoke_Action_With_RepeatDelay()
             {
-                var tcs = new TaskCompletionSource<bool>();
+                var resetEvent = new ManualResetEventSlim();
 
                 using var cts = new CancellationTokenSource();
 
@@ -434,9 +436,9 @@ namespace AllOverIt.Tests.Async
                         cts.Cancel();
                     }
 
-                    if (!tcs.Task.IsCompleted)
+                    if (!resetEvent.IsSet)
                     {
-                        tcs.SetResult(true);
+                        resetEvent.Set();
                     }
                 }
 
@@ -449,7 +451,7 @@ namespace AllOverIt.Tests.Async
                 var task = RepeatingTask.StartAsync(DoAction, options, cts.Token);
 
                 // Give the background task time to actually start
-                await tcs.Task;
+                resetEvent.Wait();
 
                 invokedCount.Should().Be(1);
 
