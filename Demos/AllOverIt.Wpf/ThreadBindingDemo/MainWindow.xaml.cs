@@ -37,8 +37,8 @@ namespace ThreadBindingDemo
                 {
                     cts.Cancel();
 
-                    // Re-throw the exception on the main thread. Will be handled by the unhandled
-                    // exception handler in app.cs
+                    // Re-throw the exception on the main thread (capture to avoid a closure).
+                    // Will be handled by the unhandled exception handler in app.cs
                     var edi = ExceptionDispatchInfo.Capture(exception);
 
                     UIThread.Invoke(() =>
