@@ -66,7 +66,7 @@ namespace AllOverIt.Aspects
 
                 Faulted(targetMethod, args, state, fault);
 
-                ExceptionDispatchInfo.Capture(fault).Throw();
+                ExceptionDispatchInfo.Throw(fault);
             }
 
             return state.GetResult();

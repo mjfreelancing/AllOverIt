@@ -9,20 +9,28 @@ namespace RepeatingTaskDemo
     {
         static async Task Main()
         {
-            const int initialDelay = 5000;
-            const int repeatDelay = 1000;
-            var tokenSource = new CancellationTokenSource();
+            var options = new RepeatingTaskOptions
+            {
+                InitialDelay = TimeSpan.FromSeconds(2),
+                RepeatDelay = TimeSpan.FromSeconds(5),
+            };
 
-            Console.WriteLine($"Waiting for {initialDelay}ms, will then update the time every {repeatDelay}ms...");
+            using var tokenSource = new CancellationTokenSource();
+
+            Console.WriteLine($"Current time: {DateTime.Now:T}");
+            Console.WriteLine($"Waiting for {options.InitialDelay} seconds, will then update the time every {options.RepeatDelay} seconds...");
 
             // start a repeating task
-            var repeatingTask = RepeatingTask.Start(() =>
+            var repeatingTask = RepeatingTask.StartAsync(() =>
             {
                 Console.WriteLine($"Current time: {DateTime.Now:T}");
-            }, initialDelay, repeatDelay, tokenSource.Token);
+            }, options, tokenSource.Token);
 
             // wait for the user to cancel
+            Console.WriteLine();
             Console.WriteLine("(Press any key to abort)");
+            Console.WriteLine();
+
             Console.ReadKey();
 
             tokenSource.Cancel();

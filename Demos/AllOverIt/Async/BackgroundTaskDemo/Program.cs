@@ -30,19 +30,40 @@ namespace BackgroundTaskDemo
 
 
             var task3 = new BackgroundTask(_ => throw new Exception("Task 3 Error !!!"), TaskCreationOptions.LongRunning, TaskScheduler.Default,
-                edi =>
+                exception =>
                 {
-                    Console.WriteLine($"Caught an exception: {edi.SourceException.Message}");
+                    Console.WriteLine($"Caught an exception: {exception.Message}");
                     return true;        // handled
                 },
                 cts.Token);
 
 
-            var task4 = new BackgroundTask(_ => throw new Exception("Task 4 Error !!!"), edi =>
+            var task4 = new BackgroundTask(_ => throw new Exception("Task 4 Error !!!"), exception =>
             {
-                Console.WriteLine($"Caught an exception: {edi.SourceException.Message}");
+                Console.WriteLine($"Caught an exception: {exception.Message}");
                 return true;        // handled
             }, cts.Token);
+
+
+            var task5 = new BackgroundTask(async cancellationToken =>
+            {
+                Console.WriteLine("Task 5 Waiting...");
+
+                await Task.Delay(5000, cancellationToken);
+
+                Console.WriteLine("Task 5 Completed");      // Will not be logged
+            }, cts.Token);
+
+            var task6 = new BackgroundTask(Task6Impl, exception =>
+            {
+                Console.WriteLine("Task 6, last chance to handle an exception. Returning false.");
+
+                return false;
+            }, cts.Token);
+
+            await task5.DisposeAsync();
+
+            Console.WriteLine("Task 5 Disposed.");
 
             // To test cancelling the tasks
             //await Task.Delay(100);
@@ -59,14 +80,39 @@ namespace BackgroundTaskDemo
             var t2Result = ((Task<long>) task2).Result;
 
             Console.WriteLine();
-            Console.WriteLine($"Task2 returned a value of {t2Result}");
+            Console.WriteLine($"Task 2 returned a value of {t2Result}");
             Console.WriteLine();
+
+            try
+            {
+                // task6 re-throws an exception that will be propagated when awaited
+                await task6;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Task 6 re-threw an exception, raised when awaited: {ex.Message}");
+                Console.WriteLine();
+            }
 
             Console.WriteLine("All tasks have completed.");
 
             Console.WriteLine();
             Console.WriteLine("All Over It.");
             Console.ReadKey();
+        }
+
+        private static async Task Task6Impl(CancellationToken cancellationToken)
+        {
+            try
+            {
+                await Task.Delay(500, cancellationToken);
+
+                throw new Exception("Task 6 threw an error");
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Re-throwing an exception in Task 6", exception);
+            }
         }
     }
 }

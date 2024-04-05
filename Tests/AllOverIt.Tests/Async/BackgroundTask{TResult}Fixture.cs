@@ -5,7 +5,6 @@ using FluentAssertions;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Xunit;
 
 namespace AllOverIt.Tests.Async
 {
@@ -97,9 +96,9 @@ namespace AllOverIt.Tests.Async
 
                 var backgroundTask = new BackgroundTask<bool>(
                     token => throw expected,
-                    edi =>
+                    exception =>
                     {
-                        actual = edi.SourceException;
+                        actual = exception;
                         return true;
                     },
                     CancellationToken.None);
@@ -122,9 +121,9 @@ namespace AllOverIt.Tests.Async
 
                 var backgroundTask = new BackgroundTask<bool>(
                     token => throw expected,
-                    edi =>
+                    exception =>
                     {
-                        actual = edi.SourceException;
+                        actual = exception;
                         return false;
                     },
                     CancellationToken.None);
@@ -307,11 +306,12 @@ namespace AllOverIt.Tests.Async
                 var expected = new Exception();
                 Exception actual = null;
 
-                var backgroundTask = new BackgroundTask<bool>(token => throw expected, TaskCreationOptions.None, TaskScheduler.Current, edi =>
-                {
-                    actual = edi.SourceException;
-                    return true;
-                }, CancellationToken.None);
+                var backgroundTask = new BackgroundTask<bool>(token => throw expected, TaskCreationOptions.None, TaskScheduler.Current,
+                    exception =>
+                    {
+                        actual = exception;
+                        return true;
+                    }, CancellationToken.None);
 
                 await Invoking(async () =>
                 {
@@ -329,11 +329,12 @@ namespace AllOverIt.Tests.Async
                 var expected = new Exception(Create<string>());
                 Exception actual = null;
 
-                var backgroundTask = new BackgroundTask<bool>(token => throw expected, TaskCreationOptions.None, TaskScheduler.Current, edi =>
-                {
-                    actual = edi.SourceException;
-                    return false;
-                }, CancellationToken.None);
+                var backgroundTask = new BackgroundTask<bool>(token => throw expected, TaskCreationOptions.None, TaskScheduler.Current,
+                    exception =>
+                    {
+                        actual = exception;
+                        return false;
+                    }, CancellationToken.None);
 
                 await Invoking(async () =>
                 {

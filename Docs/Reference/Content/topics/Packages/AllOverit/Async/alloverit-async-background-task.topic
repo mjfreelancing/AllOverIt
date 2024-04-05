@@ -5,6 +5,8 @@
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
        title="BackgroundTask" id="alloverit-async-background-task">
 
+    <show-structure for="chapter" depth="2"/>
+
     <p>
         <code>BackgroundTask</code> and <code>BackgroundTask&lt;TType&gt;</code> provide the ability to execute an action asynchronously in a background task with the following key features:
     </p>
@@ -20,18 +22,115 @@
         The only difference between <code>BackgroundTask</code> and <code>BackgroundTask&lt;TType&gt;</code> is that the latter returns a result of type <code>&lt;TType&gt;</code> when the task is awaited. The sections that follow in this documentation provide examples using <code>BackgroundTask&lt;TType&gt;</code>, but the information is equally relevant to <code>BackgroundTask</code>, with the exception that a result is not returned.
     </p>
 
-    <chapter title="Creating a background task" id="creating-background-task">
+    <chapter title="Creating background tasks" id="creating-background-tasks">
         <p>
             There are several constructors available, providing flexibility around cancellation, exception handling, task behaviour and scheduling.
         </p>
 
-        <code-block lang="c#">
-            public BackgroundTask(Func&lt;CancellationToken, Task&lt;TResult&gt;&gt; action,
-            CancellationToken cancellationToken = default)
-        </code-block>
+        <chapter title="Basic usage" id="background-task-simple">
+            <p>
+                The simplest use case involves an asynchronous action and a cancellation token, using the following constructor:
+            </p>
 
+            <code-block lang="c#">
+                public BackgroundTask(Func&lt;CancellationToken, Task&lt;TResult&gt;&gt; action,
+                    CancellationToken cancellationToken = default)
+            </code-block>
+
+            <p>
+                An example implementation looks like so:
+            </p>
+
+            <code-block lang="c#">
+                var cts = new CancellationTokenSource();
+
+                var task = new BackgroundTask&lt;int&gt;(async cancellationToken =>
+                {
+                    // Execute your background task logic here
+                    await Task.Delay(1000, cancellationToken);
+
+                    return 42;
+                }, cts.Token);
+
+                // To cancel the background task, call Cancel() on cts or
+                // call Dispose() of the task.
+            </code-block>
+        </chapter>
+
+        <chapter title="Exception handlers" id="background-task-exception-handlers">
+            <p>
+                If you need to be notified of unhandled exceptions, the following constructor can be used:
+            </p>
+
+            <code-block lang="c#">
+                public BackgroundTask(Func&lt;CancellationToken, Task&lt;TResult&gt;&gt; action,
+                    Func&lt;Exception, bool&gt; exceptionHandler,
+                    CancellationToken cancellationToken = default)
+            </code-block>
+
+            <p>
+                An example implementation looks like so:
+            </p>
+
+            <code-block lang="c#">
+                var cts = new CancellationTokenSource();
+
+                var task = new BackgroundTask&lt;int&gt;(async cancellationToken =>
+                {
+                    // Execute your background task logic here
+                    await Task.Delay(1000, cancellationToken);
+
+                    return 42;
+                },
+
+                exception =>
+                {
+                    // Return true to indicate the exception has been handled and allow
+                    // the background task to continue, assuming it can recover from the
+                    // thrown state.
+                    //
+                    // Return false to have the original exception re-thrown.
+                    return false;
+                },
+
+                cts.Token);
+
+                // To cancel the background task, call Cancel() on cts or
+                // call Dispose() of the task.
+            </code-block>
+        </chapter>
+
+        <chapter title="Advanced configuration" id="background-task-advanced-configuration">
+            <p>
+                The remaining constructors are similar to those described above in terms of functionality, but they provide finer granularity over the behavior of task creation and scheduling.
+            </p>
+
+            <code-block lang="c#">
+                public BackgroundTask(Func&lt;CancellationToken, Task&lt;TResult&gt;&gt; action,
+                    TaskCreationOptions creationOptions, TaskScheduler scheduler,
+                    CancellationToken cancellationToken = default)
+            </code-block>
+
+            <code-block lang="c#">
+                public BackgroundTask(Func&lt;CancellationToken, Task&lt;TResult&gt;&gt; action,
+                    TaskCreationOptions creationOptions, TaskScheduler scheduler,
+                    Func&lt;Exception, bool&gt; exceptionHandler,
+                    CancellationToken cancellationToken = default)
+            </code-block>
+
+            <p>
+                More information about <code>TaskCreationOptions</code> can be found at <a href="https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.taskcreationoptions"/>.
+            </p>
+
+            <p>
+                More information about <code>TaskScheduler</code> can be found at <a href="https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.taskscheduler"/>.
+            </p>
+        </chapter>
+    </chapter>
+
+    <chapter title="Awaiting background tasks" id="awaiting-background-tasks">
         <p>
-            Use this constructor to invoke a cancellable background task, like so:
+            <code>BackgroundTask</code> is awaitable, just like a regular <code>Task</code>. Consider the following code:
         </p>
 
         <code-block lang="c#">
@@ -39,46 +138,21 @@
 
             var task = new BackgroundTask&lt;int&gt;(async cancellationToken =>
             {
-            await Task.Delay(1000, cancellationToken);
+                // Execute your background task logic here
+                await Task.Delay(1000, cancellationToken);
 
-            return 42;
+                return 42;
             }, cts.Token);
+
+            var result = await task;
         </code-block>
 
-        // NEXT CTOR HERE
-
-    </chapter>
-
-
-
-
-
-
-
-    <chapter title="Awaiting a background task" id="awaiting-background-task">
         <p>
-            Consider the following code:
+            In this example, when the <code>BackgroundTask</code> successfully completes, <code>result</code> will have a value of 42.
         </p>
-
-        <code-block lang="c#">
-            var cts = new CancellationTokenSource();
-
-            var task = new BackgroundTask&lt;int&gt;(async cancellationToken =>
-            {
-            await Task.Delay(1000, cancellationToken);
-
-            return 42;
-            }, cts.Token);
-
-            var result = await task;    // will return 42
-        </code-block>
     </chapter>
 
-
-    <chapter title="Cancelling a background task" id="cancelling-background-task">
-
-
-
+    <chapter title="Cancelling background tasks" id="cancelling-background-tasks">
         <p>
             Consider the following code:
         </p>
@@ -86,9 +160,10 @@
         <code-block lang="c#">
             var task = new BackgroundTask&lt;int&gt;(async cancellationToken =>
             {
-            await Task.Delay(1000, cancellationToken);
+                // Execute your background task logic here
+                await Task.Delay(1000, cancellationToken);
 
-            return 42;
+                return 42;
             }, cts.Token);
 
             cts.Cancel();
@@ -97,23 +172,127 @@
             var result = await task;
         </code-block>
 
+        <p>
+            In this example, since the <code>CancellationToken</code> is cancelled before the <code>BackgroundTask</code> completes, awaiting it will result in a <code>TaskCanceledException</code> being thrown.
+        </p>
     </chapter>
 
+    <chapter title="Disposing background tasks" id="disposing-background-tasks">
 
-    <chapter title="Disposing a background task" id="disposing-background-task">
+        <p>
+            <code>BackgroundTask</code> is not only awaitable, but it is also disposable. Furthermore, if the <code>CancellationToken</code> provided to the <code>BackgroundTask</code> is not in a cancelled state at the time of disposal, the <code>BackgroundTask</code> will internally cancel its running state, allowing it to be shutdown cleanly.
+        </p>
 
+        <p>
+            Consider the following example:
+        </p>
+
+        <code-block lang="c#">
+            var cts = new CancellationTokenSource();
+
+            var task = new BackgroundTask(async cancellationToken =>
+            {
+                Console.WriteLine("Task Waiting...");
+
+                await Task.Delay(5000, cancellationToken);
+
+                Console.WriteLine("Task Completed");
+            }, cts.Token);
+
+            await Task.Delay(1000);
+
+            await task.DisposeAsync();
+
+            Console.WriteLine("Task Disposed");
+        </code-block>
+
+        <p>
+            This code will output:
+        </p>
+
+        <code-block lang="console">
+            Task Waiting...
+            Task Disposed
+        </code-block>
+
+        <p>
+            It is important to note that:
+        </p>
+
+        <list type="bullet">
+            <li><code>Task Completed</code> will not be output to the console</li>
+            <li><code>cts</code> will not be in a cancelled state</li>
+        </list>
     </chapter>
-
 
     <chapter title="Handling exceptions" id="handling-exceptions">
+        <p>
+            It's always best, where possible, to handle known exceptions within the <code>BackgroundTask</code> handler. For example:
+        </p>
 
-        Within your own code
+        <code-block lang="c#">
+            var cts = new CancellationTokenSource();
 
-        Via the ExceptionDispatchInfo
+            var task = new BackgroundTask&lt;int&gt;(async cancellationToken =>
+            {
+                try
+                {
+                    // Execute your background task logic here
+                }
+                catch (Exception exception)
+                {
+                    // Handle the task or re-throw
+                }
 
-        Allow it to propagate when awaited - needs to be tested
+                return 42;
+            }, cts.Token);
+        </code-block>
 
+        <p>
+            In the above example, if the exception is re-thrown it will be raised when the task is awaited.
+        </p>
+
+        <p>
+            It isn't always possible to handle exceptions in a generic manner. As an example, the application may need to apply certain rules, or strategies, to determine if the exception can be ignored. You may even want to simply log the exception before it is re-raised. This can be achieved, like so:
+        </p>
+
+        <code-block lang="c#">
+            var cts = new CancellationTokenSource();
+
+            var task = new BackgroundTask&lt;int&gt;(async cancellationToken =>
+            {
+                try
+                {
+                    // Execute your background task logic here
+                }
+                catch (HttpRequestException exception)
+                {
+                    // An example of an exception that can be handled
+                }
+
+                // All other exceptions will be thrown, and passed to the exception handler
+            },
+
+            exception =>
+            {
+                // Return true to indicate the exception has been handled and allow
+                // the background task to continue (or complete), assuming it can recover
+                // from the thrown state.
+                //
+                // Return false to have the original exception re-thrown.
+                return false;
+            },
+
+            cts.Token);
+        </code-block>
+
+        <p>
+            In the above example, if the exception handler is called and it returns <code>false</code>, the exception will be re-thrown. The raised exception will be observed when the task is awaited:
+        </p>
+
+        <code-block lang="c#">
+            // The raised exception will observed when the task is awaited.
+            await task;
+        </code-block>
     </chapter>
-
-
 </topic>
