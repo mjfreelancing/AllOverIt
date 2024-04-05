@@ -6,6 +6,9 @@
   They now provides the actual Exception instead of ExceptionDispatchInfo(), which the caller can create if they need to re-throw
   later (or on a different thread).
 
+* Added RepeatingTask.StartAsync() to replace the various Start() methods. StartAsync() accepts an options class. The Start()
+  methods will be removed in v8.
+
 ---
 
 
