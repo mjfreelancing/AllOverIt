@@ -12,7 +12,7 @@ namespace AllOverIt.Helpers
     public static class EnumHelper
     {
         /// <summary>Returns all possible enum values.</summary>
-        /// <typeparam name="TType">The Enum type.</typeparam>
+        /// <typeparam name="TEnumType">The Enum type.</typeparam>
         /// <returns>All possible enum values.</returns>
         public static TEnumType[] GetEnumValues<TEnumType>()
           where TEnumType : Enum
