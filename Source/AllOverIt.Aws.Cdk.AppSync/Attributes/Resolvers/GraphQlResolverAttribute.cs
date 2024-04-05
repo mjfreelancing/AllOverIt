@@ -6,17 +6,22 @@ namespace AllOverIt.Aws.Cdk.AppSync.Attributes.Resolvers
 {
     /// <summary>An abstract resolver attribute that contains a resolver type.</summary>
     [AttributeUsage(AttributeTargets.Method)]
-    public abstract class GraphQlResolverAttribute : Attribute
+    public abstract class GraphqlResolverAttribute : Attribute
     {
-        /// <summary>The resolver type that provides the required request and response handler details. This type must inherit <see cref="IResolverRuntime"/>.</summary>
+        /// <summary>The resolver type that provides the required request and response handler details.
+        /// This type must inherit <see cref="IResolverRuntime"/>.</summary>
         public Type ResolverType { get; }
 
-        // Used when the resolver type is registered in code - ResolverType will be null
-        protected GraphQlResolverAttribute()
+        /// <summary>Constructor. Used when the resolver type is registered in code.</summary>
+        protected GraphqlResolverAttribute()
         {
+            // ResolverType will be null
         }
 
-        protected GraphQlResolverAttribute(Type resolverType)
+        /// <summary>Constructor.</summary>
+        /// <param name="resolverType">The resolver type that provides the required request and response handler details.
+        /// This type must inherit <see cref="IResolverRuntime"/>.</param>
+        protected GraphqlResolverAttribute(Type resolverType)
         {
             ResolverType = resolverType.WhenNotNull(nameof(resolverType));
         }

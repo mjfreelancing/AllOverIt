@@ -17,19 +17,19 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
         private readonly Dictionary<string, BaseDataSource> _dataSourceCache = [];
 
         private readonly IGraphqlApi _graphQlApi;
-        private readonly Dictionary<string, GraphQlDataSourceBase> _dataSources;
+        private readonly Dictionary<string, GraphqlDataSourceBase> _dataSources;
 
-        public DataSourceFactory(IGraphqlApi graphQlApi, IReadOnlyCollection<GraphQlDataSourceBase> dataSources)
+        public DataSourceFactory(IGraphqlApi graphQlApi, IReadOnlyCollection<GraphqlDataSourceBase> dataSources)
         {
             _graphQlApi = graphQlApi.WhenNotNull(nameof(graphQlApi));
 
             _dataSources = dataSources
                 .WhenNotNull(nameof(dataSources))
-                .Select(dataSource => new KeyValuePair<string, GraphQlDataSourceBase>(dataSource.DataSourceName, dataSource))
+                .Select(dataSource => new KeyValuePair<string, GraphqlDataSourceBase>(dataSource.DataSourceName, dataSource))
                 .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
 
-        public BaseDataSource CreateDataSource(GraphQlResolverAttribute attribute)
+        public BaseDataSource CreateDataSource(GraphqlResolverAttribute attribute)
         {
             if (attribute is UnitResolverAttribute unitResolverAttribute)
             {
@@ -46,9 +46,9 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
                 {
                     dataSource = graphqlDataSource switch
                     {
-                        LambdaGraphQlDataSource lambda => CreateLambdaDataSource(dataSourceId, lambda.FunctionName, lambda.Description),
-                        HttpGraphQlDataSource http => CreateHttpDataSource(dataSourceId, http.DataSourceName, http.Endpoint, http.Description),
-                        NoneGraphQlDataSource none => CreateNoneDataSource(dataSourceId, none.DataSourceName, none.Description),
+                        LambdaGraphqlDataSource lambda => CreateLambdaDataSource(dataSourceId, lambda.FunctionName, lambda.Description),
+                        HttpGraphqlDataSource http => CreateHttpDataSource(dataSourceId, http.DataSourceName, http.Endpoint, http.Description),
+                        NoneGraphqlDataSource none => CreateNoneDataSource(dataSourceId, none.DataSourceName, none.Description),
                         _ => throw new ArgumentOutOfRangeException($"Unknown DataSource type '{attribute.GetType().Name}'")
                     };
 

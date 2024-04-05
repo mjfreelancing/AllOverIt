@@ -103,33 +103,33 @@ namespace GraphqlSchema
             };
         }
 
-        private static IEnumerable<GraphQlDataSourceBase> CreateLambdaDataSources()
+        private static IEnumerable<GraphqlDataSourceBase> CreateLambdaDataSources()
         {
-            yield return new LambdaGraphQlDataSource(Constants.LambdaDataSource.GetLanguages, Constants.LambdaDataSource.GetLanguages);
-            yield return new LambdaGraphQlDataSource(Constants.LambdaDataSource.AddCountry, Constants.LambdaDataSource.AddCountry);
-            yield return new LambdaGraphQlDataSource(Constants.LambdaDataSource.UpdateCountry, Constants.LambdaDataSource.UpdateCountry);
+            yield return new LambdaGraphqlDataSource(Constants.LambdaDataSource.GetLanguages, Constants.LambdaDataSource.GetLanguages);
+            yield return new LambdaGraphqlDataSource(Constants.LambdaDataSource.AddCountry, Constants.LambdaDataSource.AddCountry);
+            yield return new LambdaGraphqlDataSource(Constants.LambdaDataSource.UpdateCountry, Constants.LambdaDataSource.UpdateCountry);
         }
 
-        private static IEnumerable<GraphQlDataSourceBase> CreateHttpDataSources()
+        private static IEnumerable<GraphqlDataSourceBase> CreateHttpDataSources()
         {
-            yield return new HttpGraphQlDataSource(Constants.HttpDataSource.GetPopulationUrl, "https://www.microsoft.com", "An example Http data source");
-            yield return new HttpGraphQlDataSource(Constants.HttpDataSource.GetLanguageUrlExportName, "https://www.google.com");
-            yield return new HttpGraphQlDataSource(Constants.HttpDataSource.GetCountriesUrlImportName, Fn.Join("/", [Fn.ImportValue(Constants.HttpDataSource.GetCountriesUrlImportName), "lookup"]));
-            yield return new HttpGraphQlDataSource(Constants.HttpDataSource.GetCountryCodesUrl, "https://www.yahoo.com");
-            yield return new HttpGraphQlDataSource(Constants.HttpDataSource.GetAllContinentsUrlEnvironmentName, System.Environment.GetEnvironmentVariable(Constants.HttpDataSource.GetAllContinentsUrlEnvironmentName));
+            yield return new HttpGraphqlDataSource(Constants.HttpDataSource.GetPopulationUrl, "https://www.microsoft.com", "An example Http data source");
+            yield return new HttpGraphqlDataSource(Constants.HttpDataSource.GetLanguageUrlExportName, "https://www.google.com");
+            yield return new HttpGraphqlDataSource(Constants.HttpDataSource.GetCountriesUrlImportName, Fn.Join("/", [Fn.ImportValue(Constants.HttpDataSource.GetCountriesUrlImportName), "lookup"]));
+            yield return new HttpGraphqlDataSource(Constants.HttpDataSource.GetCountryCodesUrl, "https://www.yahoo.com");
+            yield return new HttpGraphqlDataSource(Constants.HttpDataSource.GetAllContinentsUrlEnvironmentName, System.Environment.GetEnvironmentVariable(Constants.HttpDataSource.GetAllContinentsUrlEnvironmentName));
         }
 
-        private static IEnumerable<GraphQlDataSourceBase> CreateNoneDataSources()
+        private static IEnumerable<GraphqlDataSourceBase> CreateNoneDataSources()
         {
             // Demonstrating use of shared NONE datasources
-            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.Query);
-            yield return new NoneGraphQlDataSource(Constants.NoneDataSource.Mutation);
+            yield return new NoneGraphqlDataSource(Constants.NoneDataSource.Query);
+            yield return new NoneGraphqlDataSource(Constants.NoneDataSource.Mutation);
         }
 
-        private static IEnumerable<GraphQlDataSourceBase> CreateSubscriptionDataSources()
+        private static IEnumerable<GraphqlDataSourceBase> CreateSubscriptionDataSources()
         {
             // Datasources are optional for subscriptions
-            yield return new NoneGraphQlDataSource(Constants.SubscriptionDataSource.AddedLanguage);
+            yield return new NoneGraphqlDataSource(Constants.SubscriptionDataSource.AddedLanguage);
         }
     }
 }

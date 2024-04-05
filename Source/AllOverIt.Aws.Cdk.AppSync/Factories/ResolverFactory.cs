@@ -14,8 +14,8 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
         private readonly Dictionary<SystemType, Func<IResolverRuntime>> _exactResolverRegistry = [];
         private readonly Dictionary<SystemType, Func<SystemType, IResolverRuntime>> _inheritedResolverRegistry = [];
 
-        /// <summary>Registers an exact resolver type (declared on a concrete <see cref="Attributes.DataSources.DataSourceAttribute"/> attribute)
-        /// against a factory method to create an <see cref="IVtlRuntime"/> instance, which would typically be a <typeparamref name="TType"/>.</summary>
+        /// <summary>Registers a resolver type against a factory method to create an <see cref="IVtlRuntime"/> instance,
+        /// which would typically be a <typeparamref name="TType"/>.</summary>
         /// <typeparam name="TType">The resolver type being registered.</typeparam>
         /// <param name="creator">The factory method to create the required <see cref="IVtlRuntime"/> instance.</param>
         /// <returns>Returns the <see cref="ResolverFactory"/> to allow for a fluent syntax.</returns>
@@ -24,8 +24,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
             return Register(typeof(TType), creator);
         }
 
-        /// <summary>Registers an exact resolver type (declared on a concrete <see cref="Attributes.DataSources.DataSourceAttribute"/> attribute)
-        /// against a factory method to create an <see cref="IVtlRuntime"/> instance.</summary>
+        /// <summary>Registers a resolver type against a factory method to create an <see cref="IVtlRuntime"/> instance.</summary>
         /// <param name="resolverType">The resolver type registered against the factory method.</param>
         /// <param name="creator">The factory method to create the required <see cref="IVtlRuntime"/> instance.</param>
         /// <returns>Returns the <see cref="ResolverFactory"/> to allow for a fluent syntax.</returns>

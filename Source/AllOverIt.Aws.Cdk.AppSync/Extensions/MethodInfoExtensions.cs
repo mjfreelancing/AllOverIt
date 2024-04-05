@@ -115,7 +115,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
 
         private static IResolverRuntime GetResolverRuntime(MethodInfo memberInfo, ResolverFactory resolverFactory)
         {
-            var resolverAttribute = memberInfo.GetCustomAttribute<GraphQlResolverAttribute>(true);
+            var resolverAttribute = memberInfo.GetCustomAttribute<GraphqlResolverAttribute>(true);
 
             // Will be null if no resolver type has been provided (assumes it was added code-first rather than on an attribute)
             if (resolverAttribute?.ResolverType is not null)

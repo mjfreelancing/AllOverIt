@@ -3,7 +3,7 @@
 namespace AllOverIt.Aws.Cdk.AppSync.DataSources
 {
     /// <summary>Provides information required to declare an AppSync lambda DataSource.</summary>
-    public class LambdaGraphQlDataSource : GraphQlDataSourceBase
+    public class LambdaGraphqlDataSource : GraphqlDataSourceBase
     {
         /// <summary>The name of the lambda function.</summary>
         public string FunctionName { get; }
@@ -12,7 +12,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.DataSources
         /// <param name="dataSourceName">The DataSource name.</param>
         /// <param name="functionName">The name of the lambda function.</param>
         /// <param name="description">A description for the datasource.</param>
-        public LambdaGraphQlDataSource(string dataSourceName, string functionName, string description = default)
+        public LambdaGraphqlDataSource(string dataSourceName, string functionName, string description = default)
             : base(dataSourceName, description)
         {
             FunctionName = functionName.WhenNotNullOrEmpty(nameof(functionName));

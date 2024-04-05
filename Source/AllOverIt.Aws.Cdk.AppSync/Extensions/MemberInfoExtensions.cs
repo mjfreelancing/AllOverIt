@@ -10,7 +10,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
     {
         public static BaseDataSource GetDataSource(this MemberInfo memberInfo, DataSourceFactory dataSourceFactory)
         {
-            var resolverAttribute = memberInfo.GetCustomAttribute<GraphQlResolverAttribute>(true);
+            var resolverAttribute = memberInfo.GetCustomAttribute<GraphqlResolverAttribute>(true);
 
             if (resolverAttribute is not null)
             {
