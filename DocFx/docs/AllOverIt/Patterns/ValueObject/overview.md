@@ -1,3 +1,0 @@
-# ValueObject - Overview
----
-
