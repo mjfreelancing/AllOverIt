@@ -18,7 +18,7 @@ namespace NamedPipeClientDemo
         private IDisposable _pingSubscription;
 
         private PipeClient()
-        {            
+        {
         }
 
         public static Task RunAsync(string pipeName, bool useCustomReaderWriter = true)
@@ -75,7 +75,7 @@ namespace NamedPipeClientDemo
                                         Text = message
                                     };
 
-                                    PipeLogger.Append(ConsoleColor.Yellow, $"Sending : {pipeMessage}");
+                                    PipeLogger.Append(ConsoleColor.Yellow, $"Client sending : {pipeMessage}");
 
                                     await client
                                         .WriteAsync(pipeMessage, _runningToken.Token)
@@ -146,7 +146,7 @@ namespace NamedPipeClientDemo
 
         private void DoOnMessageReceived(object sender, NamedPipeConnectionMessageEventArgs<PipeMessage, INamedPipeClientConnection<PipeMessage>> args)
         {
-            PipeLogger.Append(ConsoleColor.Green, $"Received: {args.Message}");
+            PipeLogger.Append(ConsoleColor.Green, $"Client received: {args.Message}");
 
             if (_runningToken.Token.IsCancellationRequested)
             {
@@ -168,7 +168,7 @@ namespace NamedPipeClientDemo
                             Text = $"{DateTime.Now.Ticks}"
                         };
 
-                        PipeLogger.Append(ConsoleColor.Yellow, $"Sending : {pipeMessage}");
+                        PipeLogger.Append(ConsoleColor.Yellow, $"Client sending : {pipeMessage}");
 
                         await connection
                             .WriteAsync(pipeMessage)
@@ -202,5 +202,5 @@ namespace NamedPipeClientDemo
         {
             DoOnException(args.Exception);
         }
-    }   
+    }
 }
