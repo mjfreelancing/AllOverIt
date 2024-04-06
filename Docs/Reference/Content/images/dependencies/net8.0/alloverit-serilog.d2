@@ -2,10 +2,11 @@ direction: left
 
 aoi: AllOverIt
 aoi.alloverit-serilog: AllOverIt.Serilog
-microsoft-extensions-dependencyinjection-abstractions_8-0-0: Microsoft.Extensions.DependencyInjection.Abstractions\nv8.0.0
-microsoft-extensions-dependencyinjection-abstractions_8-0-0.style.fill: "#ADD8E6"
-microsoft-extensions-dependencyinjection-abstractions_8-0-0.style.opacity: 0.8
-microsoft-extensions-dependencyinjection-abstractions_8-0-0 <- aoi.alloverit-serilog
+microsoft-extensions-dependencyinjection-abstractions-group: ""
+microsoft-extensions-dependencyinjection-abstractions-group.microsoft-extensions-dependencyinjection-abstractions_8-0-1: Microsoft.Extensions.DependencyInjection.Abstractions\nv8.0.1
+microsoft-extensions-dependencyinjection-abstractions-group.microsoft-extensions-dependencyinjection-abstractions_8-0-1.style.fill: "#ADD8E6"
+microsoft-extensions-dependencyinjection-abstractions-group.microsoft-extensions-dependencyinjection-abstractions_8-0-1.style.opacity: 0.8
+microsoft-extensions-dependencyinjection-abstractions-group.microsoft-extensions-dependencyinjection-abstractions_8-0-1 <- aoi.alloverit-serilog
 microsoft-extensions-hosting-abstractions_8-0-0: Microsoft.Extensions.Hosting.Abstractions\nv8.0.0
 microsoft-extensions-hosting-abstractions_8-0-0.style.fill: "#ADD8E6"
 microsoft-extensions-hosting-abstractions_8-0-0.style.opacity: 0.8
@@ -13,7 +14,10 @@ microsoft-extensions-configuration-abstractions_8-0-0: Microsoft.Extensions.Conf
 microsoft-extensions-configuration-abstractions_8-0-0.style.fill: "#FFEC96"
 microsoft-extensions-configuration-abstractions_8-0-0.style.opacity: 0.8
 microsoft-extensions-configuration-abstractions_8-0-0 <- microsoft-extensions-hosting-abstractions_8-0-0
-microsoft-extensions-dependencyinjection-abstractions_8-0-0 <- microsoft-extensions-hosting-abstractions_8-0-0
+microsoft-extensions-dependencyinjection-abstractions-group.microsoft-extensions-dependencyinjection-abstractions_8-0-0: Microsoft.Extensions.DependencyInjection.Abstractions\nv8.0.0
+microsoft-extensions-dependencyinjection-abstractions-group.microsoft-extensions-dependencyinjection-abstractions_8-0-0.style.fill: "#FFEC96"
+microsoft-extensions-dependencyinjection-abstractions-group.microsoft-extensions-dependencyinjection-abstractions_8-0-0.style.opacity: 0.8
+microsoft-extensions-dependencyinjection-abstractions-group.microsoft-extensions-dependencyinjection-abstractions_8-0-0 <- microsoft-extensions-hosting-abstractions_8-0-0
 microsoft-extensions-diagnostics-abstractions_8-0-0: Microsoft.Extensions.Diagnostics.Abstractions\nv8.0.0
 microsoft-extensions-diagnostics-abstractions_8-0-0.style.fill: "#FFEC96"
 microsoft-extensions-diagnostics-abstractions_8-0-0.style.opacity: 0.8
@@ -30,7 +34,7 @@ microsoft-extensions-hosting-abstractions_8-0-0 <- aoi.alloverit-serilog
 serilog-extensions-hosting_8-0-0: Serilog.Extensions.Hosting\nv8.0.0
 serilog-extensions-hosting_8-0-0.style.fill: "#ADD8E6"
 serilog-extensions-hosting_8-0-0.style.opacity: 0.8
-microsoft-extensions-dependencyinjection-abstractions_8-0-0 <- serilog-extensions-hosting_8-0-0
+microsoft-extensions-dependencyinjection-abstractions-group.microsoft-extensions-dependencyinjection-abstractions_8-0-0 <- serilog-extensions-hosting_8-0-0
 microsoft-extensions-hosting-abstractions_8-0-0 <- serilog-extensions-hosting_8-0-0
 microsoft-extensions-logging-abstractions_8-0-0 <- serilog-extensions-hosting_8-0-0
 serilog_3-1-1: Serilog\nv3.1.1
