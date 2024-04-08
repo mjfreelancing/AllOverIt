@@ -153,8 +153,11 @@ namespace AllOverIt.Pipes.Named.Server
             if (Connections.Count != 0)
             {
                 // DoOnConnectionDisconnected() will be called for each connection where
-                // its' event handlers are also released.
-                await Connections.DisposeAllAsync().ConfigureAwait(false);
+                // its' event handlers are also released. Using a copy since 'Connections'
+                // will be modified.
+                var connections = new List<INamedPipeServerConnection<TMessage>>(Connections);
+
+                await connections.DisposeAllAsync().ConfigureAwait(false);
             }
         }
 

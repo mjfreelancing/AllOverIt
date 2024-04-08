@@ -94,8 +94,8 @@ namespace AllOverIt.Pipes.Tests.Named
             var serializer = new NamedPipeSerializer<DummyMessage>();
             var expected = Create<DummyMessage>();
 
-            var mre1 = new ManualResetEventSlim();
-            var mre2 = new ManualResetEventSlim();
+            var signal1 = new SemaphoreSlim(0);
+            var signal2 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -103,19 +103,19 @@ namespace AllOverIt.Pipes.Tests.Named
                 {
                     server.Start();
 
-                    mre1.Set();
+                    signal1.Release();
 
-                    mre2.Wait();
+                    await signal2.WaitAsync();
                 }
             }, _timeoutSource.Token).Unwrap();
+
+            await signal1.WaitAsync();
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
                 await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
                 {
                     client.IsConnected.Should().BeFalse();
-
-                    mre1.Wait();
 
                     if (connectToServer)
                     {
@@ -125,7 +125,7 @@ namespace AllOverIt.Pipes.Tests.Named
                     client.IsConnected.Should().Be(connectToServer);
                 }
 
-                mre2.Set();
+                signal2.Release();
             }, _timeoutSource.Token).Unwrap();
 
             await Task.WhenAll(serverTask, clientTask);
@@ -138,8 +138,8 @@ namespace AllOverIt.Pipes.Tests.Named
             var serializer = new NamedPipeSerializer<DummyMessage>();
             var expected = Create<DummyMessage>();
 
-            var mre1 = new ManualResetEventSlim();
-            var mre2 = new ManualResetEventSlim();
+            var signal1 = new SemaphoreSlim(0);
+            var signal2 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -147,18 +147,18 @@ namespace AllOverIt.Pipes.Tests.Named
                 {
                     server.Start();
 
-                    mre1.Set();
+                    signal1.Release();
 
-                    mre2.Wait();
+                    await signal2.WaitAsync();
                 }
             }, _timeoutSource.Token).Unwrap();
+
+            await signal1.WaitAsync();
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
                 await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
                 {
-                    mre1.Wait();
-
                     await client.ConnectAsync(ConnectTimeout);
 
                     await Invoking(async () =>
@@ -172,7 +172,7 @@ namespace AllOverIt.Pipes.Tests.Named
                     client.IsConnected.Should().BeTrue();
                 }
 
-                mre2.Set();
+                signal2.Release();
             }, _timeoutSource.Token).Unwrap();
 
             await Task.WhenAll(serverTask, clientTask);
@@ -185,8 +185,8 @@ namespace AllOverIt.Pipes.Tests.Named
             var serializer = new NamedPipeSerializer<DummyMessage>();
             var expected = Create<DummyMessage>();
 
-            var mre1 = new ManualResetEventSlim();
-            var mre2 = new ManualResetEventSlim();
+            var signal1 = new SemaphoreSlim(0);
+            var signal2 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -194,18 +194,18 @@ namespace AllOverIt.Pipes.Tests.Named
                 {
                     server.Start();
 
-                    mre1.Set();
+                    signal1.Release();
 
-                    mre2.Wait();
+                    await signal2.WaitAsync();
                 }
             }, _timeoutSource.Token).Unwrap();
+
+            await signal1.WaitAsync();
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
                 await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
                 {
-                    mre1.Wait();
-
                     await client.ConnectAsync(ConnectTimeout);
 
                     client.IsConnected.Should().BeTrue();
@@ -215,7 +215,7 @@ namespace AllOverIt.Pipes.Tests.Named
                     client.IsConnected.Should().BeFalse();
                 }
 
-                mre2.Set();
+                signal2.Release();
             }, _timeoutSource.Token).Unwrap();
 
             await Task.WhenAll(serverTask, clientTask);
@@ -251,9 +251,10 @@ namespace AllOverIt.Pipes.Tests.Named
             var pipeName = Create<string>();
             var serializer = new NamedPipeSerializer<DummyMessage>();
 
-            var mre1 = new ManualResetEventSlim();
-            var mre2 = new ManualResetEventSlim();
-            var mre3 = new ManualResetEventSlim();
+            var signal1 = new SemaphoreSlim(0);
+            var signal2 = new SemaphoreSlim(0);
+            var signal3 = new SemaphoreSlim(0);
+            var signal4 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -261,36 +262,38 @@ namespace AllOverIt.Pipes.Tests.Named
                 {
                     void Server_OnClientConnected(object sender, NamedPipeConnectionEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> e)
                     {
-                        mre2.Set();
+                        Task.Run(() => signal2.Release());
                     }
 
                     server.OnClientConnected += Server_OnClientConnected;
 
                     server.Start();
 
-                    mre1.Set();
+                    signal1.Release();
 
-                    mre2.Wait();
+                    await signal2.WaitAsync();
 
                     server.Connections.Single().IsConnected.Should().BeTrue();
 
-                    mre3.Wait();
+                    signal3.Release();
+
+                    await signal4.WaitAsync();
                 }
             }, _timeoutSource.Token).Unwrap();
+
+            await signal1.WaitAsync();
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
                 await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
                 {
-                    mre1.Wait();
-
                     await client.ConnectAsync(ConnectTimeout);
 
                     // Wait for the server to update the connection list - triggered via Server_OnClientConnected
-                    mre2.Wait();
+                    await signal3.WaitAsync();
                 }
 
-                mre3.Set();
+                signal4.Release();
             }, _timeoutSource.Token).Unwrap();
 
             await Task.WhenAll(serverTask, clientTask);
@@ -302,10 +305,10 @@ namespace AllOverIt.Pipes.Tests.Named
             var pipeName = Create<string>();
             var serializer = new NamedPipeSerializer<DummyMessage>();
 
-            var mre1 = new ManualResetEventSlim();
-            var mre2 = new ManualResetEventSlim();
-            var mre3 = new ManualResetEventSlim();
-            var mre4 = new ManualResetEventSlim();
+            var signal1 = new SemaphoreSlim(0);
+            var signal2 = new SemaphoreSlim(0);
+            var signal3 = new SemaphoreSlim(0);
+            var signal4 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -313,40 +316,42 @@ namespace AllOverIt.Pipes.Tests.Named
                 {
                     void Server_OnClientConnected(object sender, NamedPipeConnectionEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> e)
                     {
-                        mre2.Set();
+                        Task.Run(() => signal2.Release());
                     }
 
                     server.OnClientConnected += Server_OnClientConnected;
 
                     server.Start();
 
-                    mre1.Set();
+                    signal1.Release();
 
-                    mre2.Wait();
+                    await signal2.WaitAsync();
 
                     server.Connections.Single().IsConnected.Should().BeTrue();
 
-                    mre3.Set();
+                    signal3.Release();
 
-                    mre4.Wait();    // wait for the client to disconnect
+                    await signal4.WaitAsync();    // wait for the client to disconnect
 
-                    server.Connections.Should().BeEmpty();
+                    await Task.Delay(100);
+
+                    server.Connections.Count.Should().Be(0);
                 }
             }, _timeoutSource.Token).Unwrap();
+
+            await signal1.WaitAsync();
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
                 await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
                 {
-                    mre1.Wait();
-
                     await client.ConnectAsync(ConnectTimeout);
 
                     // Wait for the server to update the connection list
-                    mre3.Wait();
+                    await signal3.WaitAsync();
                 }
 
-                mre4.Set();
+                signal4.Release();
             }, _timeoutSource.Token).Unwrap();
 
             await Task.WhenAll(serverTask, clientTask);
@@ -359,10 +364,10 @@ namespace AllOverIt.Pipes.Tests.Named
             var serializer = new DummyBadSerializer(PipeDirection.Out);
             Exception actual = null;
 
-            var mre1 = new ManualResetEventSlim();
-            var mre2 = new ManualResetEventSlim();
-            var mre3 = new ManualResetEventSlim();
-            var mre4 = new ManualResetEventSlim();
+            var signal1 = new SemaphoreSlim(0);
+            var signal2 = new SemaphoreSlim(0);
+            var signal3 = new SemaphoreSlim(0);
+            var signal4 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -371,7 +376,8 @@ namespace AllOverIt.Pipes.Tests.Named
                     void Server_OnException(object sender, NamedPipeExceptionEventArgs eventArgs)
                     {
                         actual = eventArgs.Exception;
-                        mre3.Set();
+
+                        Task.Run(() => signal3.Release());
                     }
 
                     server.OnException += Server_OnException;
@@ -380,13 +386,13 @@ namespace AllOverIt.Pipes.Tests.Named
                     {
                         server.Start();
 
-                        mre1.Set();
+                        signal1.Release();
 
-                        mre2.Wait();
+                        await signal2.WaitAsync();
 
                         await server.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
 
-                        mre4.Wait();
+                        await signal4.WaitAsync();
                     }
                     finally
                     {
@@ -395,20 +401,22 @@ namespace AllOverIt.Pipes.Tests.Named
                 }
             }, _timeoutSource.Token).Unwrap();
 
+            await signal1.WaitAsync();
+
             var clientTask = Task.Factory.StartNew(async () =>
             {
                 await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
                 {
-                    mre1.Wait();
-
                     await client.ConnectAsync(ConnectTimeout);
 
-                    mre2.Set();
+                    await Task.Delay(100);
 
-                    mre3.Wait();
+                    signal2.Release();
+
+                    await signal3.WaitAsync();
                 }
 
-                mre4.Set();
+                signal4.Release();
             }, _timeoutSource.Token).Unwrap();
 
             await Task.WhenAll(serverTask, clientTask);
@@ -423,17 +431,17 @@ namespace AllOverIt.Pipes.Tests.Named
             var serializer = new DummyBadSerializer(PipeDirection.In);
             Exception actual = null;
 
-            var mre1 = new ManualResetEventSlim();
-            var mre2 = new ManualResetEventSlim();
-            var mre3 = new ManualResetEventSlim();
+            var signal1 = new SemaphoreSlim(0);
+            var signal2 = new SemaphoreSlim(0);
+            var signal3 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
                 await using (var server = new NamedPipeServer<DummyMessage>(pipeName, serializer))
                 {
-                    async void Server_OnClientConnected(object sender, NamedPipeConnectionEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> eventArgs)
+                    void Server_OnClientConnected(object sender, NamedPipeConnectionEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> eventArgs)
                     {
-                        await server.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
+                        Task.Run(async () => await server.WriteAsync(Create<DummyMessage>(), CancellationToken.None));
                     }
 
                     server.OnClientConnected += Server_OnClientConnected;
@@ -442,9 +450,9 @@ namespace AllOverIt.Pipes.Tests.Named
                     {
                         server.Start();
 
-                        mre1.Set();
+                        signal1.Release();
 
-                        mre3.Wait();
+                        await signal3.WaitAsync();
                     }
                     finally
                     {
@@ -453,6 +461,8 @@ namespace AllOverIt.Pipes.Tests.Named
                 }
             }, _timeoutSource.Token).Unwrap();
 
+            await signal1.WaitAsync();
+
             var clientTask = Task.Factory.StartNew(async () =>
             {
                 await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
@@ -460,18 +470,19 @@ namespace AllOverIt.Pipes.Tests.Named
                     void Client_OnException(object sender, NamedPipeExceptionEventArgs eventArgs)
                     {
                         actual = eventArgs.Exception;
-                        mre2.Set();
+
+                        Task.Run(() => signal2.Release());
                     }
 
                     client.OnException += Client_OnException;
 
                     try
                     {
-                        mre1.Wait();
+                        await client.ConnectAsync(ConnectTimeout);
 
-                        await client.ConnectAsync(TimeSpan.FromSeconds(10));        // ConnectTimeout
+                        await Task.Delay(100);
 
-                        mre2.Wait();
+                        await signal2.WaitAsync();
                     }
                     finally
                     {
@@ -479,7 +490,7 @@ namespace AllOverIt.Pipes.Tests.Named
                     }
                 }
 
-                mre3.Set();
+                signal3.Release();
             }, _timeoutSource.Token).Unwrap();
 
             await Task.WhenAll(serverTask, clientTask);
@@ -494,10 +505,10 @@ namespace AllOverIt.Pipes.Tests.Named
             var pipeName = Create<string>();
             var serializer = new NamedPipeSerializer<DummyMessage>();
 
-            var mre1 = new ManualResetEventSlim();
-            var mre2 = new ManualResetEventSlim();
-            var mre3 = new ManualResetEventSlim();
-            var mre4 = new ManualResetEventSlim();
+            var signal1 = new SemaphoreSlim(0);
+            var signal2 = new SemaphoreSlim(0);
+            var signal3 = new SemaphoreSlim(0);
+            var signal4 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -505,16 +516,16 @@ namespace AllOverIt.Pipes.Tests.Named
                 {
                     void Server_OnClientConnected(object sender, NamedPipeConnectionEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> e)
                     {
-                        mre2.Set();
+                        Task.Run(() => signal2.Release());
                     }
 
                     server.OnClientConnected += Server_OnClientConnected;
 
                     server.Start();
 
-                    mre1.Set();
+                    signal1.Release();
 
-                    mre2.Wait();     // wait for the client to connect
+                    await signal2.WaitAsync();     // wait for the client to connect
 
                     Invoking(() =>
                     {
@@ -524,25 +535,25 @@ namespace AllOverIt.Pipes.Tests.Named
                     .Throw<IOException>()
                     .WithMessage("Unable to impersonate using a named pipe until data has been read from that pipe.");
 
-                    mre3.Set();
+                    signal3.Release();
                 }
 
-                mre4.Wait();
+                await signal4.WaitAsync();
             }, _timeoutSource.Token).Unwrap();
+
+            await signal1.WaitAsync();
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
                 await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
                 {
-                    mre1.Wait();
-
                     await client.ConnectAsync(ConnectTimeout);
 
                     // wait for the server-side assertion
-                    mre3.Wait();
+                    await signal3.WaitAsync();
                 }
 
-                mre4.Set();
+                signal4.Release();
             }, _timeoutSource.Token).Unwrap();
 
             await Task.WhenAll(serverTask, clientTask);
@@ -554,10 +565,10 @@ namespace AllOverIt.Pipes.Tests.Named
             var pipeName = Create<string>();
             var serializer = new NamedPipeSerializer<DummyMessage>();
 
-            var mre1 = new ManualResetEventSlim();
-            var mre2 = new ManualResetEventSlim();
-            var mre3 = new ManualResetEventSlim();
-            var mre4 = new ManualResetEventSlim();
+            var signal1 = new SemaphoreSlim(0);
+            var signal2 = new SemaphoreSlim(0);
+            var signal3 = new SemaphoreSlim(0);
+            var signal4 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -565,7 +576,7 @@ namespace AllOverIt.Pipes.Tests.Named
                 {
                     void Server_OnMessageReceived(object sender, NamedPipeConnectionMessageEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> eventArgs)
                     {
-                        mre2.Set();
+                        Task.Run(() => signal2.Release());
                     }
 
                     server.OnMessageReceived += Server_OnMessageReceived;
@@ -574,17 +585,17 @@ namespace AllOverIt.Pipes.Tests.Named
                     {
                         server.Start();
 
-                        mre1.Set();
+                        signal1.Release();
 
-                        mre2.Wait();
+                        await signal2.WaitAsync();
 
                         var username = server.Connections.Single().GetImpersonationUserName();
 
                         username.Should().Be(Environment.UserName);
 
-                        mre3.Set();
+                        signal3.Release();
 
-                        mre4.Wait();
+                        await signal4.WaitAsync();
                     }
                     finally
                     {
@@ -593,20 +604,20 @@ namespace AllOverIt.Pipes.Tests.Named
                 }
             }, _timeoutSource.Token).Unwrap();
 
+            await signal1.WaitAsync();
+
             var clientTask = Task.Factory.StartNew(async () =>
             {
                 await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
                 {
-                    mre1.Wait();
-
                     await client.ConnectAsync(ConnectTimeout);
 
                     await client.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
 
-                    mre3.Wait();
+                    await signal3.WaitAsync();
                 }
 
-                mre4.Set();
+                signal4.Release();
             }, _timeoutSource.Token).Unwrap();
 
             await Task.WhenAll(serverTask, clientTask);
@@ -620,10 +631,10 @@ namespace AllOverIt.Pipes.Tests.Named
             var expected = Create<DummyMessage>();
             DummyMessage actual = null;
 
-            var mre1 = new ManualResetEventSlim();
-            var mre2 = new ManualResetEventSlim();
-            var mre3 = new ManualResetEventSlim();
-            var mre4 = new ManualResetEventSlim();
+            var signal1 = new SemaphoreSlim(0);
+            var signal2 = new SemaphoreSlim(0);
+            var signal3 = new SemaphoreSlim(0);
+            var signal4 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -631,15 +642,17 @@ namespace AllOverIt.Pipes.Tests.Named
                 {
                     server.Start();
 
-                    mre1.Set();
+                    signal1.Release();
 
-                    mre2.Wait();
+                    await signal2.WaitAsync();
 
                     await server.WriteAsync(expected, CancellationToken.None);
 
-                    mre4.Wait();
+                    await signal4.WaitAsync();
                 }
             }, _timeoutSource.Token).Unwrap();
+
+            await signal1.WaitAsync();
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
@@ -648,20 +661,21 @@ namespace AllOverIt.Pipes.Tests.Named
                     void Client_OnMessageReceived(object sender, NamedPipeConnectionMessageEventArgs<DummyMessage, INamedPipeClientConnection<DummyMessage>> eventArgs)
                     {
                         actual = eventArgs.Message;
-                        mre3.Set();
+
+                        Task.Run(() => signal3.Release());
                     }
 
                     client.OnMessageReceived += Client_OnMessageReceived;
 
                     try
                     {
-                        mre1.Wait();
-
                         await client.ConnectAsync(ConnectTimeout);
 
-                        mre2.Set();
+                        await Task.Delay(100);
 
-                        mre3.Wait();
+                        signal2.Release();
+
+                        await signal3.WaitAsync();
                     }
                     finally
                     {
@@ -669,7 +683,7 @@ namespace AllOverIt.Pipes.Tests.Named
                     }
                 }
 
-                mre4.Set();
+                signal4.Release();
             }, _timeoutSource.Token).Unwrap();
 
             await Task.WhenAll(serverTask, clientTask);
@@ -688,16 +702,17 @@ namespace AllOverIt.Pipes.Tests.Named
             var expected = Create<DummyMessage>();
             string actual = default;
 
-            var mre1 = new ManualResetEventSlim();
-            var mre2 = new ManualResetEventSlim();
-            var mre3 = new ManualResetEventSlim();
-            var mre4 = new ManualResetEventSlim();
-            var mre5 = new ManualResetEventSlim();
+            var signal1 = new SemaphoreSlim(0);
+            var signal2 = new SemaphoreSlim(0);
+            var signal3 = new SemaphoreSlim(0);
+            var signal4 = new SemaphoreSlim(0);
+            var signal5 = new SemaphoreSlim(0);
 
             void Client_OnMessageReceived(object sender, NamedPipeConnectionMessageEventArgs<DummyMessage, INamedPipeClientConnection<DummyMessage>> eventArgs)
             {
                 actual = eventArgs.Message.Value;
-                mre2.Set();
+
+                Task.Run(() => signal2.Release());
             }
 
             var serverTask = Task.Factory.StartNew(async () =>
@@ -706,9 +721,9 @@ namespace AllOverIt.Pipes.Tests.Named
                 {
                     server.Start();
 
-                    mre1.Set();
+                    signal1.Release();
 
-                    mre3.Wait();
+                    await signal3.WaitAsync();
 
                     if (connectionIndex == 2)
                     {
@@ -738,20 +753,22 @@ namespace AllOverIt.Pipes.Tests.Named
                             CancellationToken.None);
                     }
 
-                    mre2.Wait();
+                    await signal2.WaitAsync();
 
                     if (connectionIndex != 2)
                     {
                         actual.Should().Be(expected.Value);
                     }
 
-                    mre4.Set();
+                    signal4.Release();
 
-                    mre5.Wait();
+                    await signal5.WaitAsync();
 
                     await server.StopAsync();
                 }
             }, _timeoutSource.Token).Unwrap();
+
+            await signal1.WaitAsync();
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
@@ -767,10 +784,10 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     await client.ConnectAsync(ConnectTimeout);
 
+                    await Task.Delay(100);
+
                     return client;
                 }
-
-                mre1.Wait();
 
                 NamedPipeClient<DummyMessage> client1 = null;
                 NamedPipeClient<DummyMessage> client2 = null;
@@ -781,12 +798,9 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     client2 = await CreateClientAsync();
 
-                    // Give time for the clients to connect
-                    await Task.Delay(100);
+                    signal3.Release();
 
-                    mre3.Set();
-
-                    mre4.Wait();
+                    await signal4.WaitAsync();
                 }
                 finally
                 {
@@ -796,15 +810,13 @@ namespace AllOverIt.Pipes.Tests.Named
                     }
 
                     await composites.DisposeAsync();
+
+                    signal5.Release();
                 }
 
             }, _timeoutSource.Token).Unwrap();
 
-            await clientTask;
-
-            mre5.Set();
-
-            await serverTask;
+            await Task.WhenAll(serverTask, clientTask);
 
             actual.Should().Be(expected.Value);
         }
@@ -817,10 +829,10 @@ namespace AllOverIt.Pipes.Tests.Named
             var expected = Create<DummyMessage>();
             DummyMessage actual = null;
 
-            var mre1 = new ManualResetEventSlim();
-            var mre2 = new ManualResetEventSlim();
-            var mre3 = new ManualResetEventSlim();
-            var mre4 = new ManualResetEventSlim();
+            var signal1 = new SemaphoreSlim(0);
+            var signal2 = new SemaphoreSlim(0);
+            var signal3 = new SemaphoreSlim(0);
+            var signal4 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -829,7 +841,8 @@ namespace AllOverIt.Pipes.Tests.Named
                     void Server_OnMessageReceived(object sender, NamedPipeConnectionMessageEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> eventArgs)
                     {
                         actual = eventArgs.Message;
-                        mre2.Set();
+
+                        Task.Run(() => signal2.Release());
                     }
 
                     server.OnMessageReceived += Server_OnMessageReceived;
@@ -838,9 +851,9 @@ namespace AllOverIt.Pipes.Tests.Named
                     {
                         server.Start();
 
-                        mre1.Set();
+                        signal1.Release();
 
-                        mre3.Wait();
+                        await signal3.WaitAsync();
                     }
                     finally
                     {
@@ -848,25 +861,25 @@ namespace AllOverIt.Pipes.Tests.Named
                     }
                 }
 
-                mre4.Wait();
+                await signal4.WaitAsync();
             }, _timeoutSource.Token).Unwrap();
+
+            await signal1.WaitAsync();
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
                 await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
                 {
-                    mre1.Wait();
-
                     await client.ConnectAsync(ConnectTimeout);
 
                     await client.WriteAsync(expected, CancellationToken.None);
 
-                    mre2.Wait();
+                    await signal2.WaitAsync();
 
-                    mre3.Set();
+                    signal3.Release();
                 }
 
-                mre4.Set();
+                signal4.Release();
             }, _timeoutSource.Token).Unwrap();
 
             await Task.WhenAll(serverTask, clientTask);
@@ -913,9 +926,9 @@ namespace AllOverIt.Pipes.Tests.Named
             var serializer = new NamedPipeSerializer<DummyMessage>();
             var actual = false;
 
-            var mre1 = new ManualResetEventSlim();
-            var mre2 = new ManualResetEventSlim();
-            var mre3 = new ManualResetEventSlim();
+            var signal1 = new SemaphoreSlim(0);
+            var signal2 = new SemaphoreSlim(0);
+            var signal3 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -923,11 +936,13 @@ namespace AllOverIt.Pipes.Tests.Named
                 {
                     server.Start();
 
-                    mre1.Set();
+                    signal1.Release();
 
-                    mre3.Wait();
+                    await signal3.WaitAsync();
                 }
             }, _timeoutSource.Token).Unwrap();
+
+            await signal1.WaitAsync();
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
@@ -936,19 +951,20 @@ namespace AllOverIt.Pipes.Tests.Named
                     void Client_OnConnected(object sender, NamedPipeConnectionEventArgs<DummyMessage, INamedPipeClientConnection<DummyMessage>> eventArgs)
                     {
                         actual = true;
-                        mre2.Set();
+
+                        Task.Run(() => signal2.Release());
                     }
 
                     client.OnConnected += Client_OnConnected;
 
-                    mre1.Wait();
-
                     await client.ConnectAsync(ConnectTimeout);
 
-                    mre2.Wait();
+                    await Task.Delay(100);
+
+                    await signal2.WaitAsync();
                 }
 
-                mre3.Set();
+                signal3.Release();
             }, _timeoutSource.Token).Unwrap();
 
             await Task.WhenAll(serverTask, clientTask);
@@ -963,10 +979,10 @@ namespace AllOverIt.Pipes.Tests.Named
             var serializer = new NamedPipeSerializer<DummyMessage>();
             var actual = false;
 
-            var mre1 = new ManualResetEventSlim();
-            var mre2 = new ManualResetEventSlim();
-            var mre3 = new ManualResetEventSlim();
-            var mre4 = new ManualResetEventSlim();
+            var signal1 = new SemaphoreSlim(0);
+            var signal2 = new SemaphoreSlim(0);
+            var signal3 = new SemaphoreSlim(0);
+            var signal4 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -974,15 +990,17 @@ namespace AllOverIt.Pipes.Tests.Named
                 {
                     server.Start();
 
-                    mre1.Set();
+                    signal1.Release();
 
-                    mre2.Wait();
+                    await signal2.WaitAsync();
 
                     await server.StopAsync();
 
-                    mre4.Wait();
+                    await signal4.WaitAsync();
                 }
             }, _timeoutSource.Token).Unwrap();
+
+            await signal1.WaitAsync();
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
@@ -991,21 +1009,20 @@ namespace AllOverIt.Pipes.Tests.Named
                     void Client_OnDisconnected(object sender, NamedPipeConnectionEventArgs<DummyMessage, INamedPipeClientConnection<DummyMessage>> eventArgs)
                     {
                         actual = true;
-                        mre3.Set();
+
+                        Task.Run(() => signal3.Release());
                     }
 
                     client.OnDisconnected += Client_OnDisconnected;
 
-                    mre1.Wait();
-
                     await client.ConnectAsync(ConnectTimeout);
 
-                    mre2.Set();
+                    signal2.Release();
 
-                    mre3.Wait();
+                    await signal3.WaitAsync();
                 }
 
-                mre4.Set();
+                signal4.Release();
             }, _timeoutSource.Token).Unwrap();
 
             await Task.WhenAll(serverTask, clientTask);
@@ -1020,10 +1037,10 @@ namespace AllOverIt.Pipes.Tests.Named
             var serializer = new NamedPipeSerializer<DummyMessage>();
             var actual = false;
 
-            var mre1 = new ManualResetEventSlim();
-            var mre2 = new ManualResetEventSlim();
-            var mre3 = new ManualResetEventSlim();
-            var mre4 = new ManualResetEventSlim();
+            var signal1 = new SemaphoreSlim(0);
+            var signal2 = new SemaphoreSlim(0);
+            var signal3 = new SemaphoreSlim(0);
+            var signal4 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -1031,15 +1048,17 @@ namespace AllOverIt.Pipes.Tests.Named
                 {
                     server.Start();
 
-                    mre1.Set();
+                    signal1.Release();
 
-                    mre2.Wait();
+                    await signal2.WaitAsync();
 
                     await server.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
 
-                    mre4.Wait();
+                    await signal4.WaitAsync();
                 }
             }, _timeoutSource.Token).Unwrap();
+
+            await signal1.WaitAsync();
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
@@ -1048,20 +1067,21 @@ namespace AllOverIt.Pipes.Tests.Named
                     void Client_OnMessageReceived(object sender, NamedPipeConnectionMessageEventArgs<DummyMessage, INamedPipeClientConnection<DummyMessage>> eventArgs)
                     {
                         actual = true;
-                        mre3.Set();
+
+                        Task.Run(() => signal3.Release());
                     }
 
                     client.OnMessageReceived += Client_OnMessageReceived;
 
                     try
                     {
-                        mre1.Wait();
-
                         await client.ConnectAsync(ConnectTimeout);
 
-                        mre2.Set();
+                        await Task.Delay(100);
 
-                        mre3.Wait();
+                        signal2.Release();
+
+                        await signal3.WaitAsync();
                     }
                     finally
                     {
@@ -1069,7 +1089,7 @@ namespace AllOverIt.Pipes.Tests.Named
                     }
                 }
 
-                mre4.Set();
+                signal4.Release();
             }, _timeoutSource.Token).Unwrap();
 
             await Task.WhenAll(serverTask, clientTask);
@@ -1085,10 +1105,10 @@ namespace AllOverIt.Pipes.Tests.Named
             var expected = new Exception();
             Exception actual = null;
 
-            var mre1 = new ManualResetEventSlim();
-            var mre2 = new ManualResetEventSlim();
-            var mre3 = new ManualResetEventSlim();
-            var mre4 = new ManualResetEventSlim();
+            var signal1 = new SemaphoreSlim(0);
+            var signal2 = new SemaphoreSlim(0);
+            var signal3 = new SemaphoreSlim(0);
+            var signal4 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -1096,15 +1116,17 @@ namespace AllOverIt.Pipes.Tests.Named
                 {
                     server.Start();
 
-                    mre1.Set();
+                    signal1.Release();
 
-                    mre3.Wait();
+                    await signal3.WaitAsync();
 
                     await server.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
 
-                    mre4.Wait();
+                    await signal4.WaitAsync();
                 }
             }, _timeoutSource.Token).Unwrap();
+
+            await signal1.WaitAsync();
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
@@ -1118,7 +1140,8 @@ namespace AllOverIt.Pipes.Tests.Named
                     void Client_OnException(object sender, NamedPipeExceptionEventArgs eventArgs)
                     {
                         actual = eventArgs.Exception;
-                        mre2.Set();
+
+                        Task.Run(() => signal2.Release());
                     }
 
                     client.OnMessageReceived += Client_OnMessageReceived;
@@ -1126,13 +1149,13 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     try
                     {
-                        mre1.Wait();
-
                         await client.ConnectAsync(ConnectTimeout);
 
-                        mre3.Set();
+                        await Task.Delay(100);
 
-                        mre2.Wait();
+                        signal3.Release();
+
+                        await signal2.WaitAsync();
                     }
                     finally
                     {
@@ -1141,7 +1164,7 @@ namespace AllOverIt.Pipes.Tests.Named
                     }
                 }
 
-                mre4.Set();
+                signal4.Release();
             }, _timeoutSource.Token).Unwrap();
 
             await Task.WhenAll(serverTask, clientTask);
@@ -1157,10 +1180,10 @@ namespace AllOverIt.Pipes.Tests.Named
             var expected = new Exception();
             Exception actual = null;
 
-            var mre1 = new ManualResetEventSlim();
-            var mre2 = new ManualResetEventSlim();
-            var mre3 = new ManualResetEventSlim();
-            var mre4 = new ManualResetEventSlim();
+            var signal1 = new SemaphoreSlim(0);
+            var signal2 = new SemaphoreSlim(0);
+            var signal3 = new SemaphoreSlim(0);
+            var signal4 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -1168,15 +1191,17 @@ namespace AllOverIt.Pipes.Tests.Named
                 {
                     server.Start();
 
-                    mre1.Set();
+                    signal1.Release();
 
-                    mre3.Wait();
+                    await signal3.WaitAsync();
 
                     await server.StopAsync();
 
-                    mre4.Wait();
+                    await signal4.WaitAsync();
                 }
             }, _timeoutSource.Token).Unwrap();
+
+            await signal1.WaitAsync();
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
@@ -1190,24 +1215,25 @@ namespace AllOverIt.Pipes.Tests.Named
                     void Client_OnException(object sender, NamedPipeExceptionEventArgs eventArgs)
                     {
                         actual = eventArgs.Exception;
-                        mre2.Set();
+
+                        Task.Run(() => signal2.Release());
                     }
 
                     client.OnDisconnected += Client_OnDisconnected;
                     client.OnException += Client_OnException;
 
-                    mre1.Wait();
-
                     await client.ConnectAsync(ConnectTimeout);
 
-                    mre3.Set();
+                    await Task.Delay(100);
 
-                    mre2.Wait();
+                    signal3.Release();
+
+                    await signal2.WaitAsync();
 
                     client.IsConnected.Should().BeFalse();
                 }
 
-                mre4.Set();
+                signal4.Release();
             }, _timeoutSource.Token).Unwrap();
 
             await Task.WhenAll(serverTask, clientTask);
@@ -1222,9 +1248,9 @@ namespace AllOverIt.Pipes.Tests.Named
             var serializer = new NamedPipeSerializer<DummyMessage>();
             var actual = false;
 
-            var mre1 = new ManualResetEventSlim();
-            var mre2 = new ManualResetEventSlim();
-            var mre3 = new ManualResetEventSlim();
+            var signal1 = new SemaphoreSlim(0);
+            var signal2 = new SemaphoreSlim(0);
+            var signal3 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -1233,31 +1259,32 @@ namespace AllOverIt.Pipes.Tests.Named
                     void Server_OnClientConnected(object sender, NamedPipeConnectionEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> eventArgs)
                     {
                         actual = true;
-                        mre2.Set();
+
+                        Task.Run(() => signal2.Release());
                     }
 
                     server.OnClientConnected += Server_OnClientConnected;
 
                     server.Start();
 
-                    mre1.Set();
+                    signal1.Release();
 
-                    mre3.Wait();
+                    await signal3.WaitAsync();
                 }
             }, _timeoutSource.Token).Unwrap();
+
+            await signal1.WaitAsync();
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
                 await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
                 {
-                    mre1.Wait();
-
                     await client.ConnectAsync(ConnectTimeout);
 
-                    mre2.Wait();
+                    await signal2.WaitAsync();
                 }
 
-                mre3.Set();
+                signal3.Release();
             }, _timeoutSource.Token).Unwrap();
 
             await Task.WhenAll(serverTask, clientTask);
@@ -1273,9 +1300,9 @@ namespace AllOverIt.Pipes.Tests.Named
             var expected = new Exception();
             Exception actual = null;
 
-            var mre1 = new ManualResetEventSlim();
-            var mre2 = new ManualResetEventSlim();
-            var mre3 = new ManualResetEventSlim();
+            var signal1 = new SemaphoreSlim(0);
+            var signal2 = new SemaphoreSlim(0);
+            var signal3 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -1289,7 +1316,8 @@ namespace AllOverIt.Pipes.Tests.Named
                     void Server_OnException(object sender, NamedPipeExceptionEventArgs eventArgs)
                     {
                         actual = eventArgs.Exception;
-                        mre2.Set();
+
+                        Task.Run(() => signal2.Release());
                     }
 
                     server.OnClientConnected += Server_OnClientConnected;
@@ -1297,33 +1325,31 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     server.Start();
 
-                    mre1.Set();
+                    signal1.Release();
 
-                    mre3.Wait();
+                    await signal3.WaitAsync();
                 }
             }, _timeoutSource.Token).Unwrap();
+
+            await signal1.WaitAsync();
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
                 await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
                 {
-                    mre1.Wait();
-
                     await client.ConnectAsync(ConnectTimeout);
 
-                    mre2.Wait();
+                    await signal2.WaitAsync();
 
-                    await Task.Delay(10);
+                    await Task.Delay(100);
 
                     client.IsConnected.Should().BeFalse();
                 }
+
+                signal3.Release();
             }, _timeoutSource.Token).Unwrap();
 
-            await clientTask;
-
-            mre3.Set();
-
-            await serverTask;
+            await Task.WhenAll(serverTask, clientTask);
 
             actual.Should().BeSameAs(expected);
         }
@@ -1335,9 +1361,9 @@ namespace AllOverIt.Pipes.Tests.Named
             var serializer = new NamedPipeSerializer<DummyMessage>();
             var actual = false;
 
-            var mre1 = new ManualResetEventSlim();
-            var mre2 = new ManualResetEventSlim();
-            var mre3 = new ManualResetEventSlim();
+            var signal1 = new SemaphoreSlim(0);
+            var signal2 = new SemaphoreSlim(0);
+            var signal3 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -1346,33 +1372,34 @@ namespace AllOverIt.Pipes.Tests.Named
                     void Server_OnClientDisconnected(object sender, NamedPipeConnectionEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> eventArgs)
                     {
                         actual = true;
-                        mre2.Set();
+
+                        Task.Run(() => signal2.Release());
                     }
 
                     server.OnClientDisconnected += Server_OnClientDisconnected;
 
                     server.Start();
 
-                    mre1.Set();
+                    signal1.Release();
 
-                    mre3.Wait();
+                    await signal3.WaitAsync();
                 }
             }, _timeoutSource.Token).Unwrap();
+
+            await signal1.WaitAsync();
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
                 await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
                 {
-                    mre1.Wait();
-
                     await client.ConnectAsync(ConnectTimeout);
 
                     await client.DisconnectAsync();
 
-                    mre2.Wait();
+                    await signal2.WaitAsync();
                 }
 
-                mre3.Set();
+                signal3.Release();
             }, _timeoutSource.Token).Unwrap();
 
             await Task.WhenAll(serverTask, clientTask);
@@ -1387,9 +1414,9 @@ namespace AllOverIt.Pipes.Tests.Named
             var serializer = new NamedPipeSerializer<DummyMessage>();
             var actual = false;
 
-            var mre1 = new ManualResetEventSlim();
-            var mre2 = new ManualResetEventSlim();
-            var mre3 = new ManualResetEventSlim();
+            var signal1 = new SemaphoreSlim(0);
+            var signal2 = new SemaphoreSlim(0);
+            var signal3 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -1398,7 +1425,8 @@ namespace AllOverIt.Pipes.Tests.Named
                     void Server_OnMessageReceived(object sender, NamedPipeConnectionMessageEventArgs<DummyMessage, INamedPipeServerConnection<DummyMessage>> eventArgs)
                     {
                         actual = true;
-                        mre2.Set();
+
+                        Task.Run(() => signal2.Release());
                     }
 
                     server.OnMessageReceived += Server_OnMessageReceived;
@@ -1408,9 +1436,9 @@ namespace AllOverIt.Pipes.Tests.Named
 
                         server.Start();
 
-                        mre1.Set();
+                        signal1.Release();
 
-                        mre3.Wait();
+                        await signal3.WaitAsync();
                     }
                     finally
                     {
@@ -1419,20 +1447,20 @@ namespace AllOverIt.Pipes.Tests.Named
                 }
             }, _timeoutSource.Token).Unwrap();
 
+            await signal1.WaitAsync();
+
             var clientTask = Task.Factory.StartNew(async () =>
             {
                 await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
                 {
-                    mre1.Wait();
-
                     await client.ConnectAsync(ConnectTimeout);
 
                     await client.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
 
-                    mre2.Wait();
+                    await signal2.WaitAsync();
                 }
 
-                mre3.Set();
+                signal3.Release();
             }, _timeoutSource.Token).Unwrap();
 
             await Task.WhenAll(serverTask, clientTask);
@@ -1449,11 +1477,11 @@ namespace AllOverIt.Pipes.Tests.Named
             DummyMessage actual = null;
             var counter = 0;
 
-            var mre1 = new ManualResetEventSlim();
-            var mre2 = new ManualResetEventSlim();
-            var mre3 = new ManualResetEventSlim();
-            var mre4 = new ManualResetEventSlim();
-            var mre5 = new ManualResetEventSlim();
+            var signal1 = new SemaphoreSlim(0);
+            var signal2 = new SemaphoreSlim(0);
+            var signal3 = new SemaphoreSlim(0);
+            var signal4 = new SemaphoreSlim(0);
+            var signal5 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -1463,23 +1491,24 @@ namespace AllOverIt.Pipes.Tests.Named
                     {
                         actual = eventArgs.Message;
                         counter++;
-                        mre2.Set();
+
+                        Task.Run(() => signal2.Release());
                     }
 
                     server.Start();
 
-                    mre1.Set();
+                    signal1.Release();
 
-                    mre3.Wait();
+                    await signal3.WaitAsync();
 
                     // Now assign the handler
                     server.OnMessageReceived += Server_OnMessageReceived;
 
                     try
                     {
-                        mre4.Set();
+                        signal4.Release();
 
-                        mre5.Wait();
+                        await signal5.WaitAsync();
                     }
                     finally
                     {
@@ -1488,30 +1517,30 @@ namespace AllOverIt.Pipes.Tests.Named
                 }
             }, _timeoutSource.Token).Unwrap();
 
+            await signal1.WaitAsync();
+
             var clientTask = Task.Factory.StartNew(async () =>
             {
                 await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
                 {
-                    mre1.Wait();
-
                     await client.ConnectAsync(ConnectTimeout);
 
                     // Code path testing when OnMessageReceived is not assigned
                     await client.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
 
                     // Give the server some time to receive the message (cannot use OnMessageReceived here since we are testing when it is not assigned)
-                    await Task.Delay(10);
+                    await Task.Delay(100);
 
-                    mre3.Set();
+                    signal3.Release();
 
-                    mre4.Wait();
+                    await signal4.WaitAsync();
 
                     await client.WriteAsync(expected, CancellationToken.None);
 
-                    mre2.Wait();
+                    await signal2.WaitAsync();
                 }
 
-                mre5.Set();
+                signal5.Release();
             }, _timeoutSource.Token).Unwrap();
 
             await Task.WhenAll(serverTask, clientTask);
@@ -1528,9 +1557,9 @@ namespace AllOverIt.Pipes.Tests.Named
             var expected = new Exception();
             Exception actual = null;
 
-            var mre1 = new ManualResetEventSlim();
-            var mre2 = new ManualResetEventSlim();
-            var mre3 = new ManualResetEventSlim();
+            var signal1 = new SemaphoreSlim(0);
+            var signal2 = new SemaphoreSlim(0);
+            var signal3 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -1544,7 +1573,8 @@ namespace AllOverIt.Pipes.Tests.Named
                     void Server_OnException(object sender, NamedPipeExceptionEventArgs eventArgs)
                     {
                         actual = eventArgs.Exception;
-                        mre2.Set();
+
+                        Task.Run(() => signal2.Release());
                     }
 
                     server.OnMessageReceived += Server_OnMessageReceived;
@@ -1554,9 +1584,9 @@ namespace AllOverIt.Pipes.Tests.Named
                     {
                         server.Start();
 
-                        mre1.Set();
+                        signal1.Release();
 
-                        mre3.Wait();
+                        await signal3.WaitAsync();
                     }
                     finally
                     {
@@ -1566,20 +1596,20 @@ namespace AllOverIt.Pipes.Tests.Named
                 }
             }, _timeoutSource.Token).Unwrap();
 
+            await signal1.WaitAsync();
+
             var clientTask = Task.Factory.StartNew(async () =>
             {
                 await using (var client = new NamedPipeClient<DummyMessage>(pipeName, serializer))
                 {
-                    mre1.Wait();
-
                     await client.ConnectAsync(ConnectTimeout);
 
                     await client.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
 
-                    mre2.Wait();
+                    await signal2.WaitAsync();
                 }
 
-                mre3.Set();
+                signal3.Release();
             }, _timeoutSource.Token).Unwrap();
 
             await Task.WhenAll(serverTask, clientTask);
