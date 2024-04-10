@@ -182,7 +182,7 @@ namespace NamedPipeServerDemo
         {
             var connection = args.Connection;
 
-            PipeLogger.Append(ConsoleColor.Yellow, $"Received: {args.Message} from {connection.ConnectionId} (as '{connection.GetImpersonationUserName()}')");
+            PipeLogger.Append(ConsoleColor.Yellow, $"Server received: {args.Message} from {connection.ConnectionId} (as '{connection.GetImpersonationUserName()}')");
 
             if (_runningToken.Token.IsCancellationRequested)
             {
@@ -203,7 +203,7 @@ namespace NamedPipeServerDemo
                             Text = $"{DateTime.Now.Ticks}"
                         };
 
-                        PipeLogger.Append(ConsoleColor.Green, $"Sending : {pipeMessage}");
+                        PipeLogger.Append(ConsoleColor.Green, $"Server sending : {pipeMessage}");
 
                         await connection
                             .WriteAsync(pipeMessage)

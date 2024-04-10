@@ -55,10 +55,7 @@ namespace AllOverIt.Async
         {
             using (var cancellationTokenSource = new CancellationTokenSource())
             {
-                // capture for the closure below (keep the analyzer happy)
-                var cts = cancellationTokenSource;
-
-                Task.Run(async () =>
+                Task.Factory.StartNew(async state =>
                 {
                     try
                     {
@@ -67,9 +64,9 @@ namespace AllOverIt.Async
                     }
                     finally
                     {
-                        cts.Cancel();
+                        ((CancellationTokenSource) state).Cancel();
                     }
-                }, CancellationToken.None);
+                }, cancellationTokenSource, CancellationToken.None);
 
                 cancellationTokenSource.Token.WaitHandle.WaitOne();
             }
@@ -88,6 +85,7 @@ namespace AllOverIt.Async
             finally
             {
                 _disposables.Clear();
+                // Not setting null - saves having to check in multiple places should there be re-entry
             }
         }
     }

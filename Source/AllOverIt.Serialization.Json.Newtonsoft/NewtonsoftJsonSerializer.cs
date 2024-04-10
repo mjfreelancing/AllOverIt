@@ -18,8 +18,14 @@ namespace AllOverIt.Serialization.Json.Newtonsoft
         /// <summary>The serialization options. If no settings are provided then a default set will be applied.</summary>
         public JsonSerializerSettings Settings { get; }
 
+        /// <summary>Constructor. Uses a default constructed JsonSerializerSettings.</summary>
+        public NewtonsoftJsonSerializer()
+            : this(new JsonSerializerSettings())
+        {
+        }
+
         /// <summary>Constructor.</summary>
-        /// <param name="settings">The Newtonsoft serialization settings to use. If no options are provided then a default set will be applied.</param>
+        /// <param name="settings">The Newtonsoft serialization settings to use..</param>
         public NewtonsoftJsonSerializer(JsonSerializerSettings settings = default)
         {
             Settings = settings ?? new JsonSerializerSettings();

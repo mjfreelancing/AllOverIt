@@ -1,3 +1,0 @@
-# Resource Initialization - Overview
----
-
