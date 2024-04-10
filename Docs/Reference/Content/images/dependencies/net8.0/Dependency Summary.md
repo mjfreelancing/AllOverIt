@@ -81,9 +81,10 @@
 * Amazon.CDK.Asset.KubectlV20 v2.1.2
 * Amazon.CDK.Asset.NodeProxyAgentV6 v2.0.1
 * Amazon.CDK.Lib v2.110.0
-* Amazon.CDK.Lib v2.135.0
+* Amazon.CDK.Lib v2.136.1
 * Amazon.JSII.Runtime v1.96.0
-* Cdklabs.AwsCdkAppsyncUtils v0.0.400
+* Amazon.JSII.Runtime v1.97.0
+* Cdklabs.AwsCdkAppsyncUtils v0.0.403
 * Constructs v10.0.0
 * Constructs v10.0.5
 
@@ -148,8 +149,8 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* Microsoft.EntityFrameworkCore v8.0.3
-* Microsoft.EntityFrameworkCore.Relational v8.0.3
+* Microsoft.EntityFrameworkCore v8.0.4
+* Microsoft.EntityFrameworkCore.Relational v8.0.4
 * Microsoft.Extensions.Configuration.Abstractions v8.0.0
 
 <br>
@@ -166,8 +167,8 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* Microsoft.EntityFrameworkCore v8.0.3
-* Microsoft.EntityFrameworkCore.Relational v8.0.3
+* Microsoft.EntityFrameworkCore v8.0.4
+* Microsoft.EntityFrameworkCore.Relational v8.0.4
 * Microsoft.Extensions.Configuration.Abstractions v8.0.0
 
 <br>
@@ -187,8 +188,8 @@
 * AllOverIt.EntityFrameworkCore
 * AllOverIt.Pagination
 * AllOverIt.Serialization.Binary
-* Microsoft.EntityFrameworkCore v8.0.3
-* Microsoft.EntityFrameworkCore.Relational v8.0.3
+* Microsoft.EntityFrameworkCore v8.0.4
+* Microsoft.EntityFrameworkCore.Relational v8.0.4
 * Microsoft.Extensions.Configuration.Abstractions v8.0.0
 * Microsoft.Extensions.DependencyInjection.Abstractions v8.0.1
 

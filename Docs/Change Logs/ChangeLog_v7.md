@@ -1,5 +1,5 @@
 #  Version 7.7.0
-## XX Apr 2024
+## 10 Apr 2024
 
 ### AllOverIt
 * Breaking: More appropriate implementation of exception handler in BackgroundTask and the Task extension method, FireAndForget().

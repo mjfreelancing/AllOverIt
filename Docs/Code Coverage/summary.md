@@ -1,25 +1,25 @@
 # Summary
 |||
 |:---|:---|
-| Generated on: | 8/04/2024 - 9:53:39 PM |
-| Coverage date: | 8/04/2024 - 9:41:56 PM - 8/04/2024 - 9:53:21 PM |
+| Generated on: | 10/04/2024 - 11:22:52 PM |
+| Coverage date: | 10/04/2024 - 11:09:23 PM - 10/04/2024 - 11:22:32 PM |
 | Parser: | MultiReport (69x Cobertura) |
 | Assemblies: | 21 |
 | Classes: | 493 |
 | Files: | 498 |
-| **Line coverage:** | 99.2% (14805 of 14923) |
-| Covered lines: | 14805 |
-| Uncovered lines: | 118 |
-| Coverable lines: | 14923 |
-| Total lines: | 37122 |
-| **Branch coverage:** | 96.2% (2660 of 2765) |
-| Covered branches: | 2660 |
-| Total branches: | 2765 |
+| **Line coverage:** | 99.1% (14811 of 14931) |
+| Covered lines: | 14811 |
+| Uncovered lines: | 120 |
+| Coverable lines: | 14931 |
+| Total lines: | 37137 |
+| **Branch coverage:** | 96.2% (2659 of 2763) |
+| Covered branches: | 2659 |
+| Total branches: | 2763 |
 | **Method coverage:** | [Feature is only available for sponsors](https://reportgenerator.io/pro) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|
-|**AllOverIt**|**5645**|**70**|**5715**|**16102**|**98.7%**|**1041**|**1066**|**97.6%**|
+|**AllOverIt**|**5642**|**72**|**5714**|**16102**|**98.7%**|**1038**|**1062**|**97.7%**|
 |AllOverIt.Aspects.InterceptorBase`1|81|1|82|172|98.7%|12|12|100%|
 |AllOverIt.Aspects.InterceptorFactory|24|0|24|62|100%|4|4|100%|
 |AllOverIt.Aspects.InterceptorMethodHandlerAsyncBase|16|0|16|214|100%|0|0||
@@ -30,9 +30,9 @@
 |AllOverIt.Aspects.InterceptorState`1|2|0|2|40|100%|0|0||
 |AllOverIt.Aspects.MethodInterceptor`1|23|0|23|63|100%|2|2|100%|
 |AllOverIt.Async.AsyncLazy`1|9|0|9|36|100%|0|0||
-|AllOverIt.Async.BackgroundTask|84|0|84|162|100%|14|14|100%|
+|AllOverIt.Async.BackgroundTask|82|2|84|162|97.6%|13|14|92.8%|
 |AllOverIt.Async.BackgroundTask`1|79|0|79|160|100%|17|18|94.4%|
-|AllOverIt.Async.CompositeAsyncDisposable|51|0|51|92|100%|8|10|80%|
+|AllOverIt.Async.CompositeAsyncDisposable|50|0|50|92|100%|6|6|100%|
 |AllOverIt.Async.RepeatingTask|84|62|146|259|57.5%|0|0||
 |AllOverIt.Async.RepeatingTaskOptions|5|0|5|26|100%|0|0||
 |AllOverIt.Async.TaskHelper|37|0|37|224|100%|0|0||
@@ -416,7 +416,7 @@
 |AllOverIt.Pagination.TokenEncoding.ContinuationTokenSerializerFactory|4|0|4|14|100%|0|0||
 |AllOverIt.Pagination.TokenEncoding.ContinuationTokenValidator|12|0|12|33|100%|2|2|100%|
 |AllOverIt.Pagination.TokenEncoding.ContinuationTokenWriter|7|0|7|27|100%|0|0||
-|**AllOverIt.Pipes**|**664**|**4**|**668**|**1471**|**99.4%**|**102**|**108**|**94.4%**|
+|**AllOverIt.Pipes**|**667**|**4**|**671**|**1474**|**99.4%**|**104**|**110**|**94.5%**|
 |AllOverIt.Pipes.Anonymous.AnonymousPipeBase|53|0|53|115|100%|12|14|85.7%|
 |AllOverIt.Pipes.Anonymous.AnonymousPipeClient|9|0|9|35|100%|0|0||
 |AllOverIt.Pipes.Anonymous.AnonymousPipeServer|18|0|18|50|100%|2|2|100%|
@@ -433,7 +433,7 @@
 |AllOverIt.Pipes.Named.Events.NamedPipeConnectionMessageEventArgs`2|5|0|5|23|100%|0|0||
 |AllOverIt.Pipes.Named.Events.NamedPipeExceptionEventArgs|5|0|5|19|100%|0|0||
 |AllOverIt.Pipes.Named.Serialization.NamedPipeSerializer`1|30|0|30|73|100%|6|6|100%|
-|AllOverIt.Pipes.Named.Server.NamedPipeServer`1|167|4|171|291|97.6%|25|26|96.1%|
+|AllOverIt.Pipes.Named.Server.NamedPipeServer`1|170|4|174|294|97.7%|27|28|96.4%|
 |AllOverIt.Pipes.Named.Server.NamedPipeServerConnection`1|39|0|39|91|100%|8|8|100%|
 |AllOverIt.Pipes.Named.Server.NamedPipeServerFactory`1|7|0|7|25|100%|0|0||
 |**AllOverIt.Reactive**|**187**|**0**|**187**|**523**|**100%**|**38**|**40**|**95%**|
@@ -479,7 +479,7 @@
 |AllOverIt.Serialization.Json.Abstractions.Extensions.ElementDictionaryExtensions|202|0|202|438|100%|46|46|100%|
 |AllOverIt.Serialization.Json.Abstractions.JsonHelperBase|82|0|82|220|100%|0|0||
 |AllOverIt.Serialization.Json.Abstractions.JsonSerializerConfiguration|3|0|3|17|100%|0|0||
-|**AllOverIt.Serialization.Json.Newtonsoft**|**257**|**5**|**262**|**628**|**98%**|**73**|**84**|**86.9%**|
+|**AllOverIt.Serialization.Json.Newtonsoft**|**260**|**5**|**265**|**634**|**98.1%**|**73**|**84**|**86.9%**|
 |AllOverIt.Serialization.Json.Newtonsoft.Converters.DateTimeAsUtcConverter|14|0|14|39|100%|4|4|100%|
 |AllOverIt.Serialization.Json.Newtonsoft.Converters.EnrichedEnumJsonConverter`1|17|0|17|46|100%|2|2|100%|
 |AllOverIt.Serialization.Json.Newtonsoft.Converters.EnrichedEnumJsonConverterFactory|20|0|20|52|100%|4|4|100%|
@@ -489,8 +489,8 @@
 |AllOverIt.Serialization.Json.Newtonsoft.Converters.NestedDictionaryConverter|84|5|89|172|94.3%|35|46|76%|
 |AllOverIt.Serialization.Json.Newtonsoft.Extensions.NewtonsoftJsonSerializerExtensions|16|0|16|48|100%|4|4|100%|
 |AllOverIt.Serialization.Json.Newtonsoft.JsonHelper|15|0|15|41|100%|4|4|100%|
-|AllOverIt.Serialization.Json.Newtonsoft.NewtonsoftJsonSerializer|66|0|66|124|100%|18|18|100%|
-|**AllOverIt.Serialization.Json.SystemText**|**250**|**7**|**257**|**623**|**97.2%**|**86**|**96**|**89.5%**|
+|AllOverIt.Serialization.Json.Newtonsoft.NewtonsoftJsonSerializer|69|0|69|130|100%|18|18|100%|
+|**AllOverIt.Serialization.Json.SystemText**|**253**|**7**|**260**|**629**|**97.3%**|**86**|**96**|**89.5%**|
 |AllOverIt.Serialization.Json.SystemText.Converters.DateTimeAsUtcConverter|8|0|8|32|100%|0|0||
 |AllOverIt.Serialization.Json.SystemText.Converters.EnrichedEnumJsonConverter`1|11|0|11|35|100%|0|0||
 |AllOverIt.Serialization.Json.SystemText.Converters.EnrichedEnumJsonConverterFactory|20|0|20|54|100%|4|4|100%|
@@ -500,7 +500,7 @@
 |AllOverIt.Serialization.Json.SystemText.Converters.NestedDictionaryConverterOptions|1|0|1|14|100%|0|0||
 |AllOverIt.Serialization.Json.SystemText.Extensions.SystemTextJsonSerializerExtensions|16|0|16|48|100%|4|4|100%|
 |AllOverIt.Serialization.Json.SystemText.JsonHelper|15|0|15|42|100%|4|4|100%|
-|AllOverIt.Serialization.Json.SystemText.SystemTextJsonSerializer|58|0|58|108|100%|16|16|100%|
+|AllOverIt.Serialization.Json.SystemText.SystemTextJsonSerializer|61|0|61|114|100%|16|16|100%|
 |**AllOverIt.Serilog**|**75**|**0**|**75**|**251**|**100%**|**0**|**0**|****|
 |AllOverIt.Serilog.Enrichers.ThreadId.ThreadIdEnricher|4|0|4|20|100%|0|0||
 |AllOverIt.Serilog.Extensions.LoggerSinkConfigurationExtensions|12|0|12|67|100%|0|0||
