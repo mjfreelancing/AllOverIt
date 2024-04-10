@@ -1,3 +1,23 @@
+#  Version 7.7.0
+## 10 Apr 2024
+
+### AllOverIt
+* Breaking: More appropriate implementation of exception handler in BackgroundTask and the Task extension method, FireAndForget().
+  They now provides the actual Exception instead of ExceptionDispatchInfo(), which the caller can create if they need to re-throw
+  later (or on a different thread).
+
+* Added RepeatingTask.StartAsync() to replace the various Start() methods. StartAsync() accepts an options class. The Start()
+  methods will be removed in v8.
+
+### AllOverIt.Serialization.Json.Newtonsoft
+* Added a default constructor to NewtonsoftJsonSerializer so it can be used in a generic constraint.
+
+### AllOverIt.Serialization.Json.SystemText
+* Added a default constructor to SystemTextJsonSerializer so it can be used in a generic constraint.
+
+---
+
+
 #  Version 7.6.0
 ## 28 Mar 2024
 

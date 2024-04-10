@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="RepeatingTask" id="alloverit-async-repeating-task">
+
+    <show-structure for="chapter" depth="2"/>
+
+    <chapter title="Overview" id="repeating-task-overview">
+        <p>
+            <code>RepeatingTask</code> is a general purpose background task that repeatedly invokes an action until a provided <code>CancellationToken</code> is cancelled. A <code>RepeatingTask</code> is created via one of several static factory methods and supports:
+        </p>
+
+        <list type="bullet">
+            <li>Synchronous and Asynchronous actions</li>
+            <li>An optional delay before the first invocation</li>
+            <li>A delay period to pause between each subsequent invocation</li>
+            <li>Optional control of task creation and scheduling</li>
+        </list>
+    </chapter>
+
+    <chapter title="Configuration" id="repeating-task-configuration">
+        <p>
+            For the majority of situations, configuration is quite minimal, specifying a repeat delay period, and possibly an initial delay period, like so:
+        </p>
+
+        <code-block lang="c#">
+            // Without an initial delay
+            var options = new RepeatingTaskOptions
+            {
+                RepeatDelay = TimeSpan.FromSeconds(5),
+            };
+
+            // With an initial delay
+            var options = new RepeatingTaskOptions
+            {
+                InitialDelay = TimeSpan.FromSeconds(2),
+                RepeatDelay = TimeSpan.FromSeconds(5),
+            };
+        </code-block>
+
+        <list type="bullet">
+            <li>
+                <p>
+                    <format style="bold">InitialDelay</format>
+                </p>
+                <p>
+                    An initial wait period before the first invocation of the action.
+                </p>
+
+            </li>
+            <li>
+                <p>
+                    <format style="bold">RepeatDelay</format>
+                </p>
+                <p>
+                    The wait period between the end of the current invocation and the start of the next.
+                </p>
+            </li>
+        </list>
+
+        <p>
+            The following configuration options are also available for finer control:
+        </p>
+
+        <list type="bullet">
+            <li>
+                <p>
+                    <format style="bold">CreationOptions</format>
+                </p>
+                <p>
+                    Provides flags that control the behavior for the creation and execution of the repeating task. Defaults to <code>TaskCreationOptions.LongRunning</code>.
+                </p>
+
+            </li>
+            <li>
+                <p>
+                    <format style="bold">Scheduler</format>
+                </p>
+                <p>
+                    The scheduler handling the low-level queuing of tasks onto threads. Defaults to <code>TaskScheduler.Default</code>.
+                </p>
+            </li>
+            <li>
+                <p>
+                    <format style="bold">TimeProvider</format>
+                </p>
+                <p>
+                    Provides an abstraction for time, making it possible to more easily implement unit tests. Defaults to <code>TimeProvider.System</code>.
+                </p>
+            </li>
+        </list>
+    </chapter>
+
+    <chapter title="Usage" id="repeating-task-usage">
+        <p>
+            <code>RepeatingTask</code> supports the invocation of an <code>Action</code> or a <code>Func&lt;Task&gt;</code>. To get started, create a <code>RepeatingTaskOptions</code> to specify the (optional) initial delay and repeat period, like so:
+        </p>
+
+        <code-block lang="c#">
+            var options = new RepeatingTaskOptions
+            {
+                // Optional.
+                InitialDelay = TimeSpan.FromSeconds(2),
+
+                // This is the delay between the end of the current
+                // invocation and the start of the next.
+                RepeatDelay = TimeSpan.FromSeconds(5),
+            };
+        </code-block>
+
+        <p>
+            Create a <code>CancellationTokenSource</code> if you require the ability to explicitly cancel the task.
+        </p>
+
+        <code-block lang="c#">
+            using var tokenSource = new CancellationTokenSource();
+
+            var cancellationToken = tokenSource.Token;
+        </code-block>
+
+        <p>
+            Create the required task:
+        </p>
+
+        <code-block lang="c#">
+            var repeatingTask = RepeatingTask.StartAsync(() =>
+            {
+                // Do your work here
+                Console.WriteLine($"Current time: {DateTime.Now:T}");
+            }, options, cancellationToken);
+        </code-block>
+
+        <p>
+            The provided action will repeat until the cancellation token is cancelled.
+        </p>
+
+        <code-block lang="c#">
+            tokenSource.Cancel();
+
+            await repeatingTask;
+        </code-block>
+    </chapter>
+</topic>

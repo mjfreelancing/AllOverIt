@@ -5,6 +5,8 @@
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
        title="AsyncLazy" id="alloverit-async-async-lazy" help-id="alloverit-async-asynclazy">
 
+    <show-structure for="chapter" depth="2"/>
+
     <p>
         <code>AsyncLazy&lt;TType&gt;</code> is similar to <code>Lazy&lt;TType&gt;</code> in that it invokes a factory method, but asynchronously, to return a <code>TType</code> when its' <code>Value</code> property is awaited. All subsequent access to <code>Value</code> will then return the cached result.
     </p>

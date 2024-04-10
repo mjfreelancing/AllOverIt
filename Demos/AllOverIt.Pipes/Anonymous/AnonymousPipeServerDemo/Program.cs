@@ -1,4 +1,4 @@
-﻿using AllOverIt.IO;
+﻿using AllOverIt.Async;
 using AllOverIt.Pipes.Anonymous;
 using AllOverIt.Process;
 using AllOverIt.Process.Extensions;
@@ -6,16 +6,21 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace AnonymousPipeServerDemo
 {
     internal class Program
     {
-        static void Main()
+        static async Task Main()
         {
             LogMessage("Server Started");
-            
+
             Process clientProcess;
+            Task backgroundTask;
+
+            using var cts = new CancellationTokenSource();
 
             using (var pipeServer = new AnonymousPipeServer())
             {
@@ -44,17 +49,26 @@ namespace AnonymousPipeServerDemo
 
                 LogMessage("Server completed handshake with the Client.");
 
+                // Give some time for the client demo to log to the console
+                await Task.Delay(500);
+
                 string message;
+
+                backgroundTask = StartBackgroundCommunication(pipeServer, cts.Token);
 
                 do
                 {
-                    LogMessage("Server can now send messages to the client (type 'quit' to exit): ");
+                    LogMessage("Type a message to send to the client (type 'quit' to exit): ");
 
                     message = Console.ReadLine();
 
                     pipeServer.Writer.WriteLine(message);
 
                 } while (!message.Equals("quit", StringComparison.InvariantCultureIgnoreCase));
+
+                cts.Cancel();
+
+                await backgroundTask;
             }
 
             clientProcess.WaitForExit();
@@ -65,6 +79,20 @@ namespace AnonymousPipeServerDemo
             Console.WriteLine();
             Console.WriteLine("All Over It.");
             Console.ReadKey();
+        }
+
+        private static Task StartBackgroundCommunication(AnonymousPipeServer pipeServer, CancellationToken cancellationToken)
+        {
+            var options = new RepeatingTaskOptions
+            {
+                InitialDelay = TimeSpan.FromSeconds(10),
+                RepeatDelay = TimeSpan.FromSeconds(10)
+            };
+
+            return RepeatingTask.StartAsync(() =>
+            {
+                pipeServer.Writer.WriteLine($"Server sent a message at {DateTime.Now:T}");
+            }, options, cancellationToken);
         }
 
         private static void LogMessage(string message)

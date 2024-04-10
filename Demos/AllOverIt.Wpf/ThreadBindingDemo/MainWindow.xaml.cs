@@ -3,6 +3,7 @@ using AllOverIt.Extensions;
 using AllOverIt.Wpf.Threading;
 using AllOverIt.Wpf.Threading.Extensions;
 using System;
+using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -32,13 +33,18 @@ namespace ThreadBindingDemo
             var cts = new CancellationTokenSource();
 
             CreateBackgroundTask(cts.Token)
-                .FireAndForget(edi =>
+                .FireAndForget(exception =>
                 {
                     cts.Cancel();
 
-                    // Re-throw the exception on the main thread. Will be handled by the unhandled
-                    // exception handler in app.cs
-                    UIThread.Invoke(() => edi.Throw());
+                    // Re-throw the exception on the main thread (capture to avoid a closure).
+                    // Will be handled by the unhandled exception handler in app.cs
+                    var edi = ExceptionDispatchInfo.Capture(exception);
+
+                    UIThread.Invoke(() =>
+                    {
+                        edi.Throw();
+                    });
                 });
         }
 
@@ -193,5 +199,5 @@ namespace ThreadBindingDemo
                 }, null);
             }
         }
-    }    
+    }
 }

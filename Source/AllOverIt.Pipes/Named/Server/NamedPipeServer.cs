@@ -153,8 +153,11 @@ namespace AllOverIt.Pipes.Named.Server
             if (Connections.Count != 0)
             {
                 // DoOnConnectionDisconnected() will be called for each connection where
-                // its' event handlers are also released.
-                await Connections.DisposeAllAsync().ConfigureAwait(false);
+                // its' event handlers are also released. Using a copy since 'Connections'
+                // will be modified.
+                var connections = Connections.ToList();
+
+                await connections.DisposeAllAsync().ConfigureAwait(false);
             }
         }
 
@@ -189,20 +192,23 @@ namespace AllOverIt.Pipes.Named.Server
             cancellationToken.ThrowIfCancellationRequested();
 
             // Get potential connections synchronously
-            IEnumerable<INamedPipeConnection<TMessage>> connectionsSnapshot = null;
+            IEnumerable<INamedPipeConnection<TMessage>> targetConnections = null;
 
             using (await _connectionsLock.GetLockAsync(cancellationToken))
             {
-                connectionsSnapshot = Connections
+                targetConnections = Connections
                     .Where(connection => connection.IsConnected && predicate.Invoke(connection))
-                    .AsReadOnlyCollection();
+                    .ToArray();
             }
 
-            foreach (var connection in connectionsSnapshot)
+            foreach (var connection in targetConnections)
             {
                 try
                 {
-                    await connection.WriteAsync(message, cancellationToken).ConfigureAwait(false);
+                    if (connection.IsConnected)
+                    {
+                        await connection.WriteAsync(message, cancellationToken).ConfigureAwait(false);
+                    }
                 }
                 catch (Exception exception)
                 {

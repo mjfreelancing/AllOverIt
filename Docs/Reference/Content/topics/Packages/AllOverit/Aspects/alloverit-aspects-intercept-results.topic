@@ -6,6 +6,8 @@
        title="Intercept Results" id="alloverit-aspects-intercept-results"
        help-id="alloverit-aspects-return-a-handled-result">
 
+    <show-structure for="chapter" depth="2"/>
+
     <p>
         Interceptors provide two potential opportunities to modify the final result returned to the caller.
     </p>

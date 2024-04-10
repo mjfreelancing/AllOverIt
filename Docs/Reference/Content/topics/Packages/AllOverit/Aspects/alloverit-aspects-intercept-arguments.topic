@@ -6,6 +6,8 @@
        title="Intercept Arguments" id="alloverit-aspects-intercept-arguments"
        help-id="alloverit-aspects-modify-input-arguments">
 
+    <show-structure for="chapter" depth="2"/>
+
     <p>
         Consider this method on an intercepted service:
     </p>

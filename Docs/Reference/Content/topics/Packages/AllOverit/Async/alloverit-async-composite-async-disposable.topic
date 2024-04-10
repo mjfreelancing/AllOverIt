@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="CompositeAsyncDisposable" id="alloverit-async-composite-async-disposable">
+
+    <show-structure for="chapter" depth="2"/>
+
+    <p>
+        The <code>CompositeAsyncDisposable</code> represents a group of <code>IAsyncDisposable</code> instances that are disposed together, when the  <code>CompositeAsyncDisposable</code> is disposed.
+    </p>
+
+    <chapter title="Usage" id="composite-async-disposable">
+        <p>
+            Starting with a <code>CompositeAsyncDisposable</code> instance:
+        </p>
+
+        <code-block lang="c#">
+            var subscriptions = new CompositeAsyncDisposable();
+        </code-block>
+
+        <note title="Initialize with existing IAsyncDisposable instances">
+            <p>
+                If you already have a collection of IAsyncDisposable instances they can be passed to the <code>CompositeAsyncDisposable</code> at the time of construction.
+            </p>
+
+            <code-block lang="c#">
+                var disposables = new CompositeAsyncDisposable(
+                    disposable1, disposable2, disposable3);
+            </code-block>
+        </note>
+
+        <p>
+            New <code>IAsyncDisposable</code> instances can be added using either of the following approaches:
+        </p>
+
+        <code-block lang="c#">
+            // Each 'subscription' represents any IAsyncDisposable
+            IAsyncDisposable subscription1 = ...
+            IAsyncDisposable subscription2 = ...
+            IAsyncDisposable subscription3 = ...
+            IAsyncDisposable subscription4 = ...
+
+            // Explicitly add it to the composite
+            subscriptions.Add(subscription1);
+
+            // Add it via an extension method
+            subscription2.DisposeWith(subscriptions);
+
+            // Add more than one at a time
+            subscriptions.Add(subscription3, subscription4);
+        </code-block>
+    </chapter>
+
+    <chapter title="Disposal" id="composite-async-disposal">
+        <p>
+            <code>CompositeAsyncDisposable</code> Implements <code>IDisposable</code> and <code>IAsyncDisposable</code>.
+        </p>
+
+        <chapter title="IDisposable" id="composite-async-disposal-disposable">
+            <p>
+                The group of <code>IAsyncDisposable</code> instances are best disposed of via <code>DisposeAsync()</code> but for the situation where they need to be disposed of via <code>Dispose()</code>, <code>CompositeAsyncDisposable</code> will:
+            </p>
+
+            <list type="bullet">
+                <li>
+                    Create a background task
+                </li>
+                <li>
+                    Dispose of each item asynchronously
+                </li>
+            </list>
+
+            <warning title="Risk of a deadlock">
+                <p>
+                    The calling thread will be blocked until all <code>IAsyncDisposable</code> instances have been disposed. If <code>Dispose()</code> is called on the main thread of a desktop application, for example, and the disposal process attempts to synchronous a message back to the main thread, then a deadlock will occur.
+                </p>
+            </warning>
+        </chapter>
+
+        <chapter title="IAsyncDisposable" id="composite-async-disposal-async-disposable">
+            <p>
+                For any <code>CompositeAsyncDisposable</code>, such as:
+            </p>
+
+            <code-block lang="c#">
+                var subscriptions = new CompositeAsyncDisposable();
+            </code-block>
+
+            <p>
+                Calling:
+            </p>
+
+            <code-block lang="c#">
+                await subscriptions.DisposeAsync();
+            </code-block>
+
+            <p>
+                Will result in iterating each <code>IAsyncDisposable</code> and calling its' <code>DisposeAsync()</code> method.
+            </p>
+
+            <warning title="Don't allow exceptions to propagate">
+                <p>
+                    There is no attempt to handle exceptions during disposal other than ensuring the composite is cleared. If an exception is raised while disposing of an item within the group, all subsequent disposables are ignored and the exception will propagate.
+                </p>
+            </warning>
+        </chapter>
+    </chapter>
+</topic>
