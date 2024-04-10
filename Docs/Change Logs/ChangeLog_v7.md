@@ -9,6 +9,12 @@
 * Added RepeatingTask.StartAsync() to replace the various Start() methods. StartAsync() accepts an options class. The Start()
   methods will be removed in v8.
 
+### AllOverIt.Serialization.Json.Newtonsoft
+* Added a default constructor to NewtonsoftJsonSerializer so it can be used in a generic constraint.
+
+### AllOverIt.Serialization.Json.SystemText
+* Added a default constructor to SystemTextJsonSerializer so it can be used in a generic constraint.
+
 ---
 
 
