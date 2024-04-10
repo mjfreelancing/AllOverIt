@@ -8,7 +8,7 @@ namespace AllOverIt.Async
     /// <summary>A composite that caters for asynchronous disposal of multiple IAsyncDisposable's using a synchronous Dispose().</summary>
     public sealed class CompositeAsyncDisposable : IDisposable, IAsyncDisposable
     {
-        private List<IAsyncDisposable> _disposables = [];
+        private readonly List<IAsyncDisposable> _disposables = [];
 
         /// <summary>Returns the collection of disposables.</summary>
         public IEnumerable<IAsyncDisposable> Disposables => _disposables;
@@ -32,7 +32,7 @@ namespace AllOverIt.Async
         /// perform the disposal on the calling thread.</remarks>
         public void Dispose()
         {
-            if (_disposables is not null && _disposables.Count != 0)
+            if (_disposables.Count != 0)
             {
                 // Dispose should not throw, so it is assumed this will not throw
                 DisposeResources();
@@ -44,7 +44,7 @@ namespace AllOverIt.Async
         /// perform the disposal on the calling thread.</remarks>
         public async ValueTask DisposeAsync()
         {
-            if (_disposables is not null && _disposables.Count != 0)
+            if (_disposables.Count != 0)
             {
                 // Dispose should not throw, so it is assumed this will not throw
                 await DisposeResourcesAsync().ConfigureAwait(false);
@@ -85,7 +85,7 @@ namespace AllOverIt.Async
             finally
             {
                 _disposables.Clear();
-                _disposables = null;
+                // Not setting null - saves having to check in multiple places should there be re-entry
             }
         }
     }
