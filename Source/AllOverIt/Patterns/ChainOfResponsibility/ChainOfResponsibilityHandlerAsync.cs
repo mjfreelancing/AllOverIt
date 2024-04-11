@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Assertion;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AllOverIt.Patterns.ChainOfResponsibility
@@ -21,8 +22,10 @@ namespace AllOverIt.Patterns.ChainOfResponsibility
         /// <remarks>If the current handler cannot process the request then it should call base.Handle() to give
         /// the next handler in the chain an opportunity to process the request. To terminate the processing
         /// at the current handler do not call the base method.</remarks>
-        public virtual Task<TOutput> HandleAsync(TInput state)
+        public virtual Task<TOutput> HandleAsync(TInput state, CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             // The last handler passed to SetNext() will have its _nextHandler un-assigned - return default
             // to indicate it's the end of the chain. A better practice would be to include a terminal handler
             // that does not call base.Handle() at the end of its processing.
@@ -31,7 +34,7 @@ namespace AllOverIt.Patterns.ChainOfResponsibility
                 return Task.FromResult((TOutput) default);
             }
 
-            return _nextHandler.HandleAsync(state);
+            return _nextHandler.HandleAsync(state, cancellationToken);
         }
     }
 }

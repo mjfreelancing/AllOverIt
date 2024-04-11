@@ -4,8 +4,8 @@ using AllOverIt.Patterns.ChainOfResponsibility;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
-using Xunit;
 
 namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
 {
@@ -19,7 +19,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
 
         private class DummyChainOfResponsibility1 : ChainOfResponsibilityHandlerAsync<DummyState, DummyState>
         {
-            public override Task<DummyState> HandleAsync(DummyState state)
+            public override Task<DummyState> HandleAsync(DummyState state, CancellationToken cancellationToken)
             {
                 if (state.Value % 3 == 0)
                 {
@@ -27,13 +27,13 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
                     return Task.FromResult(state);
                 }
 
-                return base.HandleAsync(state);
+                return base.HandleAsync(state, cancellationToken);
             }
         }
 
         private class DummyChainOfResponsibility2 : ChainOfResponsibilityHandlerAsync<DummyState, DummyState>
         {
-            public override Task<DummyState> HandleAsync(DummyState state)
+            public override Task<DummyState> HandleAsync(DummyState state, CancellationToken cancellationToken)
             {
                 if (state.Value % 2 == 0)
                 {
@@ -41,7 +41,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
                     return Task.FromResult(state);
                 }
 
-                return base.HandleAsync(state);
+                return base.HandleAsync(state, cancellationToken);
             }
         }
 
@@ -91,7 +91,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
                     Value = 3
                 };
 
-                state = await composer.HandleAsync(state);
+                state = await composer.HandleAsync(state, CancellationToken.None);
 
                 state.ProcessedValue.Should().Be(9);
             }
@@ -112,7 +112,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
                     Value = 2
                 };
 
-                state = await composer.HandleAsync(state);
+                state = await composer.HandleAsync(state, CancellationToken.None);
 
                 state.ProcessedValue.Should().Be(4);
             }
@@ -133,9 +133,33 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
                     Value = 5
                 };
 
-                state = await composer.HandleAsync(state);
+                state = await composer.HandleAsync(state, CancellationToken.None);
 
                 state.Should().Be(default);
+            }
+
+            [Fact]
+            public async Task Should_Throw_When_Cancelled()
+            {
+                var handlers = new IChainOfResponsibilityHandlerAsync<DummyState, DummyState>[]
+                {
+                    new DummyChainOfResponsibility1(),
+                    new DummyChainOfResponsibility2()
+                };
+
+                var composer = new ChainOfResponsibilityAsyncComposer<DummyState, DummyState>(handlers);
+
+                var state = new DummyState
+                {
+                    Value = 2
+                };
+
+                using var cts = new CancellationTokenSource();
+                cts.Cancel();
+
+                await Invoking(() => composer.HandleAsync(state, cts.Token))
+                    .Should()
+                    .ThrowExactlyAsync<OperationCanceledException>();
             }
         }
     }

@@ -2,6 +2,7 @@ using AllOverIt.Assertion;
 using AllOverIt.Extensions;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AllOverIt.Patterns.ChainOfResponsibility.Extensions
@@ -52,9 +53,9 @@ namespace AllOverIt.Patterns.ChainOfResponsibility.Extensions
                 ((IChainOfResponsibilityHandlerAsync<TInput, TOutput>) this).SetNext(next);
             }
 
-            public Task<TOutput> HandleAsync(TInput state)
+            public Task<TOutput> HandleAsync(TInput state, CancellationToken cancellationToken)
             {
-                return _first.HandleAsync(state);
+                return _first.HandleAsync(state, cancellationToken);
             }
 
             IChainOfResponsibilityHandlerAsync<TInput, TOutput> IChainOfResponsibilityHandlerAsync<TInput, TOutput>.SetNext(IChainOfResponsibilityHandlerAsync<TInput, TOutput> handler)
