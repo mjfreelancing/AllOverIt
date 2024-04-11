@@ -1,6 +1,7 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Patterns.ChainOfResponsibility.Extensions;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AllOverIt.Patterns.ChainOfResponsibility
@@ -23,11 +24,12 @@ namespace AllOverIt.Patterns.ChainOfResponsibility
 
         /// <summary>Invokes each handler in turn with the provided state until the state is actioned.</summary>
         /// <param name="state">The input state to be processed.</param>
+        /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns>The final output state of the input was processed. If the input state is not processed by one of the handlers
         /// then the default value for <typeparamref name="TInput" /> is returned (null if it is a reference type).</returns>
-        public Task<TOutput> HandleAsync(TInput state)
+        public Task<TOutput> HandleAsync(TInput state, CancellationToken cancellationToken)
         {
-            return _firstHandler.HandleAsync(state);
+            return _firstHandler.HandleAsync(state, cancellationToken);
         }
     }
 }

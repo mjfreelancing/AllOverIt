@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Patterns.ChainOfResponsibility;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ChainOfResponsibilityAsyncDemo.Handlers
@@ -7,20 +8,20 @@ namespace ChainOfResponsibilityAsyncDemo.Handlers
     {
         // This is demo code - the members would normally be accessing member data
 #pragma warning disable CA1822 // Mark members as static
-        protected async Task<QueueMessageHandlerState> AbandonAsync(QueueMessageHandlerState state)
+        protected async Task<QueueMessageHandlerState> AbandonAsync(QueueMessageHandlerState state, CancellationToken cancellationToken)
         {
             // do something async in the handler
-            await Task.Delay(100);
+            await Task.Delay(100, cancellationToken);
 
             state.QueueBroker.Abandon();
 
             return state;
         }
 
-        protected async Task<QueueMessageHandlerState> DeadletterAsync(QueueMessageHandlerState state)
+        protected async Task<QueueMessageHandlerState> DeadletterAsync(QueueMessageHandlerState state, CancellationToken cancellationToken)
         {
             // do something async in the handler
-            await Task.Delay(100);
+            await Task.Delay(100, cancellationToken);
 
             state.QueueBroker.Deadletter();
 

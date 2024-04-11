@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace AllOverIt.Patterns.ChainOfResponsibility
 {
@@ -15,7 +16,8 @@ namespace AllOverIt.Patterns.ChainOfResponsibility
         /// <summary>Potentially handles a given request using the provided state.</summary>
         /// <param name="state">Contains the request and possibly other state information to potentially be processed
         /// by the current handler.</param>
+        /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns>An output state.</returns>
-        Task<TOutput> HandleAsync(TInput state);
+        Task<TOutput> HandleAsync(TInput state, CancellationToken cancellationToken);
     }
 }
