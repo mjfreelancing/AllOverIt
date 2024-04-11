@@ -1,5 +1,6 @@
 ﻿using ChainOfResponsibilityAsyncDemo.Handlers;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ChainOfResponsibilityAsyncDemo
@@ -8,6 +9,8 @@ namespace ChainOfResponsibilityAsyncDemo
     {
         static async Task Main()
         {
+            using var cts = new CancellationTokenSource();
+
             var message = new QueueMessage();
             var broker = new QueueBroker();
 
@@ -23,7 +26,7 @@ namespace ChainOfResponsibilityAsyncDemo
             }
             catch (Exception exception)
             {
-                await exceptionHandler.HandleAsync(message, broker, exception);
+                await exceptionHandler.HandleAsync(message, broker, exception, cts.Token);
             }
 
             Console.WriteLine();
@@ -38,7 +41,7 @@ namespace ChainOfResponsibilityAsyncDemo
             }
             catch (Exception exception)
             {
-                await exceptionHandler.HandleAsync(message, broker, exception);
+                await exceptionHandler.HandleAsync(message, broker, exception, cts.Token);
             }
 
             Console.WriteLine();
@@ -53,7 +56,7 @@ namespace ChainOfResponsibilityAsyncDemo
             }
             catch (Exception exception)
             {
-                await exceptionHandler.HandleAsync(message, broker, exception);
+                await exceptionHandler.HandleAsync(message, broker, exception, cts.Token);
             }
 
             Console.WriteLine();

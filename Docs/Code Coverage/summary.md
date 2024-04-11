@@ -1,25 +1,25 @@
 # Summary
 |||
 |:---|:---|
-| Generated on: | 10/04/2024 - 11:22:52 PM |
-| Coverage date: | 10/04/2024 - 11:09:23 PM - 10/04/2024 - 11:22:32 PM |
+| Generated on: | 11/04/2024 - 11:57:51 PM |
+| Coverage date: | 11/04/2024 - 11:42:03 PM - 11/04/2024 - 11:57:30 PM |
 | Parser: | MultiReport (69x Cobertura) |
 | Assemblies: | 21 |
 | Classes: | 493 |
 | Files: | 498 |
-| **Line coverage:** | 99.1% (14811 of 14931) |
-| Covered lines: | 14811 |
-| Uncovered lines: | 120 |
-| Coverable lines: | 14931 |
-| Total lines: | 37137 |
-| **Branch coverage:** | 96.2% (2659 of 2763) |
-| Covered branches: | 2659 |
+| **Line coverage:** | 99.2% (14814 of 14932) |
+| Covered lines: | 14814 |
+| Uncovered lines: | 118 |
+| Coverable lines: | 14932 |
+| Total lines: | 37143 |
+| **Branch coverage:** | 96.1% (2658 of 2763) |
+| Covered branches: | 2658 |
 | Total branches: | 2763 |
 | **Method coverage:** | [Feature is only available for sponsors](https://reportgenerator.io/pro) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|
-|**AllOverIt**|**5642**|**72**|**5714**|**16102**|**98.7%**|**1038**|**1062**|**97.7%**|
+|**AllOverIt**|**5645**|**70**|**5715**|**16108**|**98.7%**|**1039**|**1062**|**97.8%**|
 |AllOverIt.Aspects.InterceptorBase`1|81|1|82|172|98.7%|12|12|100%|
 |AllOverIt.Aspects.InterceptorFactory|24|0|24|62|100%|4|4|100%|
 |AllOverIt.Aspects.InterceptorMethodHandlerAsyncBase|16|0|16|214|100%|0|0||
@@ -30,7 +30,7 @@
 |AllOverIt.Aspects.InterceptorState`1|2|0|2|40|100%|0|0||
 |AllOverIt.Aspects.MethodInterceptor`1|23|0|23|63|100%|2|2|100%|
 |AllOverIt.Async.AsyncLazy`1|9|0|9|36|100%|0|0||
-|AllOverIt.Async.BackgroundTask|82|2|84|162|97.6%|13|14|92.8%|
+|AllOverIt.Async.BackgroundTask|84|0|84|162|100%|14|14|100%|
 |AllOverIt.Async.BackgroundTask`1|79|0|79|160|100%|17|18|94.4%|
 |AllOverIt.Async.CompositeAsyncDisposable|50|0|50|92|100%|6|6|100%|
 |AllOverIt.Async.RepeatingTask|84|62|146|259|57.5%|0|0||
@@ -115,11 +115,11 @@
 |AllOverIt.Helpers.PropertyNavigation.PropertyNodes`1|10|0|10|28|100%|0|0||
 |AllOverIt.Helpers.TypeFactory`1|118|0|118|318|100%|0|0||
 |AllOverIt.IO.FileUtils|20|0|20|127|100%|2|2|100%|
-|AllOverIt.Patterns.ChainOfResponsibility.ChainOfResponsibilityAsyncComposer`2|9|0|9|33|100%|0|0||
+|AllOverIt.Patterns.ChainOfResponsibility.ChainOfResponsibilityAsyncComposer`2|9|0|9|35|100%|0|0||
 |AllOverIt.Patterns.ChainOfResponsibility.ChainOfResponsibilityComposer`2|9|0|9|32|100%|0|0||
 |AllOverIt.Patterns.ChainOfResponsibility.ChainOfResponsibilityHandler`2|9|0|9|33|100%|2|2|100%|
-|AllOverIt.Patterns.ChainOfResponsibility.ChainOfResponsibilityHandlerAsync`2|10|0|10|37|100%|2|2|100%|
-|AllOverIt.Patterns.ChainOfResponsibility.Extensions.ChainOfResponsibilityHandlerExtensions|62|0|62|152|100%|8|8|100%|
+|AllOverIt.Patterns.ChainOfResponsibility.ChainOfResponsibilityHandlerAsync`2|11|0|11|40|100%|2|2|100%|
+|AllOverIt.Patterns.ChainOfResponsibility.Extensions.ChainOfResponsibilityHandlerExtensions|62|0|62|153|100%|8|8|100%|
 |AllOverIt.Patterns.Command.AsyncCommandPipeline`2|26|0|26|75|100%|4|4|100%|
 |AllOverIt.Patterns.Command.CommandPipeline`2|24|0|24|68|100%|4|4|100%|
 |AllOverIt.Patterns.Command.Exceptions.CommandException|9|0|9|28|100%|0|0||
@@ -340,9 +340,9 @@
 |AllOverIt.Evaluator.Variables.VariableLookup|25|0|25|59|100%|8|8|100%|
 |AllOverIt.Evaluator.Variables.VariableRegistry|52|0|52|114|100%|8|8|100%|
 |AllOverIt.Evaluator.Variables.VariableRegistryBuilder|127|0|127|256|100%|18|18|100%|
-|**AllOverIt.Filtering**|**639**|**1**|**640**|**1610**|**99.8%**|**123**|**134**|**91.7%**|
-|AllOverIt.Filtering.Builders.FilterBuilder`2|71|0|71|159|100%|19|24|79.1%|
-|AllOverIt.Filtering.Builders.FilterSpecificationBuilder`2|212|1|213|404|99.5%|52|58|89.6%|
+|**AllOverIt.Filtering**|**639**|**1**|**640**|**1610**|**99.8%**|**121**|**134**|**90.2%**|
+|AllOverIt.Filtering.Builders.FilterBuilder`2|71|0|71|159|100%|18|24|75%|
+|AllOverIt.Filtering.Builders.FilterSpecificationBuilder`2|212|1|213|404|99.5%|51|58|87.9%|
 |AllOverIt.Filtering.Exceptions.NullNotSupportedException|9|0|9|28|100%|0|0||
 |AllOverIt.Filtering.Extensions.FilterExtensions|12|0|12|42|100%|2|2|100%|
 |AllOverIt.Filtering.Extensions.FilterSpecificationExtensions|5|0|5|28|100%|2|2|100%|
