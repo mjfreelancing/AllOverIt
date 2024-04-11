@@ -1,3 +1,12 @@
+#  Version 7.8.0
+## 12 Apr 2024
+
+### AllOverIt
+* Breaking: ChainOfResponsibility async handlers updated to support CancellationToken.
+
+---
+
+
 #  Version 7.7.0
 ## 10 Apr 2024
 
