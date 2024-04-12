@@ -169,7 +169,7 @@ namespace AllOverIt.Assertion
         /// <param name="errorMessage">The error message to throw if the instance is null. If not provided, the default message
         /// is "Value cannot be null".</param>
         /// <returns>The original object instance when not null.</returns>
-        public static TType WhenNotNull<TType>(this TType @object,
+        public static TType WhenNotNull<TType>([NotNull] this TType? @object,
 #if NETSTANDARD2_1
             string name,
 #else
@@ -194,7 +194,7 @@ namespace AllOverIt.Assertion
         /// instance and "Value cannot be empty" for an empty collection.</param>
         /// <returns>The original object instance when not null and not empty.</returns>
         [return: NotNullIfNotNull(nameof(@object))]
-        public static IEnumerable<TType> WhenNotNullOrEmpty<TType>(this IEnumerable<TType>? @object,
+        public static IEnumerable<TType> WhenNotNullOrEmpty<TType>([NotNull] this IEnumerable<TType>? @object,
 #if NETSTANDARD2_1
             string name,
 #else
@@ -260,7 +260,7 @@ namespace AllOverIt.Assertion
         /// instance and "Value cannot be empty" for an empty collection.</param>
         /// <returns>The original string instance when not null and not empty.</returns>
         [return: NotNullIfNotNull(nameof(@object))]
-        public static string? WhenNotNullOrEmpty(this string? @object,
+        public static string? WhenNotNullOrEmpty([NotNull] this string? @object,
 #if NETSTANDARD2_1
             string name,
 #else
