@@ -5,6 +5,7 @@ using AllOverIt.Serilog.Extensions;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Templates;
+using System.Threading.Tasks;
 
 namespace CircularBufferSinkDemo
 {

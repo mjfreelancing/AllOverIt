@@ -177,10 +177,10 @@ namespace AllOverIt.Async
                         {
                             cancellationToken.ThrowIfCancellationRequested();
 
-#if NET8_0_OR_GREATER
-                            await Task.Delay(options.InitialDelay, options.TimeProvider, cancellationToken).ConfigureAwait(false);
-#else
+#if NETSTANDARD2_1
                             await Task.Delay(options.InitialDelay, cancellationToken).ConfigureAwait(false);
+#else
+                            await Task.Delay(options.InitialDelay, options.TimeProvider, cancellationToken).ConfigureAwait(false);
 #endif
                         }
 
@@ -190,10 +190,10 @@ namespace AllOverIt.Async
 
                             cancellationToken.ThrowIfCancellationRequested();
 
-#if NET8_0_OR_GREATER
-                            await Task.Delay(options.RepeatDelay, options.TimeProvider, cancellationToken).ConfigureAwait(false);
-#else
+#if NETSTANDARD2_1
                             await Task.Delay(options.RepeatDelay, cancellationToken).ConfigureAwait(false);
+#else
+                            await Task.Delay(options.RepeatDelay, options.TimeProvider, cancellationToken).ConfigureAwait(false);
 #endif
                         }
                     }
@@ -228,10 +228,10 @@ namespace AllOverIt.Async
                         {
                             cancellationToken.ThrowIfCancellationRequested();
 
-#if NET8_0_OR_GREATER
-                            await Task.Delay(options.InitialDelay, options.TimeProvider, cancellationToken).ConfigureAwait(false);
-#else
+#if NETSTANDARD2_1
                             await Task.Delay(options.InitialDelay, cancellationToken).ConfigureAwait(false);
+#else
+                            await Task.Delay(options.InitialDelay, options.TimeProvider, cancellationToken).ConfigureAwait(false);
 #endif
                         }
 
@@ -241,10 +241,10 @@ namespace AllOverIt.Async
 
                             cancellationToken.ThrowIfCancellationRequested();
 
-#if NET8_0_OR_GREATER
-                            await Task.Delay(options.RepeatDelay, options.TimeProvider, cancellationToken).ConfigureAwait(false);
-#else
+#if NETSTANDARD2_1
                             await Task.Delay(options.RepeatDelay, cancellationToken).ConfigureAwait(false);
+#else
+                            await Task.Delay(options.RepeatDelay, options.TimeProvider, cancellationToken).ConfigureAwait(false);
 #endif
                         }
                     }

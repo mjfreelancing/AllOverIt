@@ -41,7 +41,7 @@ namespace AllOverIt.Tests.Helpers
             }
         }
 
-#if NET7_0_OR_GREATER
+#if !NETSTANDARD2_1
         public class GetValuesFromBitMask : EnumHelperFixture
         {
             [Theory]

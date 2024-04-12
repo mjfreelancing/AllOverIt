@@ -1,4 +1,6 @@
-﻿namespace NamedDependenciesDemo
+﻿using System;
+
+namespace NamedDependenciesDemo
 {
     internal sealed class Clock : IClock
     {

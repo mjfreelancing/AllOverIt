@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net9.0;net8.0;net7.0;net6.0;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>net9.0;net8.0;netstandard2.1</TargetFrameworks>
         <Description>This package contains a base fixture class with numerous helper methods to assist with scaffolding unit tests. Utilizes AutoFixture to do most of the hard work.</Description>
         <PackageTags>AllOverIt;Utilities;UnitTesting;Fakes;Faking;Mocks;Mocking;Stubs;Stubbing;TDD;BDD;NUnit</PackageTags>
     </PropertyGroup>

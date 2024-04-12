@@ -53,7 +53,7 @@ namespace AllOverIt.Fixture
         /// <returns>The same action passed to the method.</returns>
         protected static Action Invoking(Action action)
         {
-#if NET8_0_OR_GREATER
+#if !NETSTANDARD2_1
             ArgumentNullException.ThrowIfNull(action);
 #else
             if (action == null)
@@ -71,7 +71,7 @@ namespace AllOverIt.Fixture
         /// <returns>The result of the invoked action.</returns>
         protected static Func<TResult> Invoking<TResult>(Func<TResult> action)
         {
-#if NET8_0_OR_GREATER
+#if !NETSTANDARD2_1
             ArgumentNullException.ThrowIfNull(action);
 #else
             if (action == null)
@@ -449,7 +449,7 @@ namespace AllOverIt.Fixture
         /// <param name="exceptionHandler">The handler invoked with each exception contained within an aggregate exception.</param>
         protected static void AssertHandledAggregateException(Action action, Func<Exception, bool> exceptionHandler)
         {
-#if NET8_0_OR_GREATER
+#if !NETSTANDARD2_1
             ArgumentNullException.ThrowIfNull(action);
             ArgumentNullException.ThrowIfNull(exceptionHandler);
 #else

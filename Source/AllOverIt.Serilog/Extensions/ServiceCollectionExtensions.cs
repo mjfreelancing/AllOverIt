@@ -1,6 +1,7 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Serilog.Sinks.CircularBuffer;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace AllOverIt.Serilog.Extensions
 {

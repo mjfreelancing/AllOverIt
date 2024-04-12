@@ -1,6 +1,6 @@
 ﻿using System;
 
-#if NET7_0_OR_GREATER
+#if !NETSTANDARD2_1
 using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.InteropServices;
@@ -20,7 +20,7 @@ namespace AllOverIt.Helpers
             return (TEnumType[]) Enum.GetValues(typeof(TEnumType));
         }
 
-#if NET7_0_OR_GREATER
+#if !NETSTANDARD2_1
         /// <summary>Given a bit mask as a numeric value, get an array of corresponding enum values for a given
         /// enumeration type. It is assumed each enum value will be a multiple of two.</summary>
         /// <typeparam name="TEnumType">The enumeration type.</typeparam>

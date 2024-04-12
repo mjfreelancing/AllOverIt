@@ -6,6 +6,7 @@ using Serilog.Core;
 using Serilog.Events;
 using Serilog.Formatting;
 using Serilog.Formatting.Display;
+using System;
 
 namespace AllOverIt.Serilog.Extensions
 {

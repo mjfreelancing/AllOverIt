@@ -18,7 +18,7 @@ namespace AllOverIt.Async
         /// <summary>The schedular handling the low-level queuing of tasks onto threads.</summary>
         public TaskScheduler Scheduler { get; init; } = TaskScheduler.Default;
 
-#if NET8_0_OR_GREATER
+#if !NETSTANDARD2_1
         /// <summary>Provides an abstraction for time.</summary>
         public TimeProvider TimeProvider { get; init; } = TimeProvider.System;
 #endif

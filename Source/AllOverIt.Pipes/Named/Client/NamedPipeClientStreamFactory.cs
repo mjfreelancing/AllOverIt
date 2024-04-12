@@ -23,13 +23,13 @@ namespace AllOverIt.Pipes.Named.Client
 
             try
             {
-#if NET7_0_OR_GREATER
+#if NETSTANDARD2_1
                 await pipeStream
-                    .ConnectAsync(timeout, cancellationToken)
+                    .ConnectAsync((int)timeout.TotalMilliseconds, cancellationToken)
                     .ConfigureAwait(false);
 #else
                 await pipeStream
-                    .ConnectAsync((int)timeout.TotalMilliseconds, cancellationToken)
+                    .ConnectAsync(timeout, cancellationToken)
                     .ConfigureAwait(false);
 #endif
 

@@ -10,7 +10,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Security;
 using System.Text;
-using Xunit;
 
 namespace AllOverIt.Tests.Process
 {
@@ -64,7 +63,7 @@ namespace AllOverIt.Tests.Process
                 ErrorDialog = false,
                 ErrorDialogParentHandle = (IntPtr) default
 
-#if NET8_0_OR_GREATER
+#if !NETSTANDARD2_1
                 ,
                 UseCredentialsForNetworkingOnly = false
 #endif
@@ -123,7 +122,7 @@ namespace AllOverIt.Tests.Process
                 ErrorDialog = false,
                 ErrorDialogParentHandle = (IntPtr) default
 
-#if NET8_0_OR_GREATER
+#if !NETSTANDARD2_1
                 ,
                 UseCredentialsForNetworkingOnly = false
 #endif

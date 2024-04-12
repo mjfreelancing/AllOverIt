@@ -1,12 +1,10 @@
-﻿#if NET8_0_OR_GREATER
+﻿#if !NETSTANDARD2_1
 
 using AllOverIt.Async;
 using AllOverIt.Fixture;
 using FluentAssertions;
 using Microsoft.Extensions.Time.Testing;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 

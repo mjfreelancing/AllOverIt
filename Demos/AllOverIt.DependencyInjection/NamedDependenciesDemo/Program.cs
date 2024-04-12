@@ -1,6 +1,7 @@
 ﻿using AllOverIt.DependencyInjection;
 using AllOverIt.DependencyInjection.Extensions;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace NamedDependenciesDemo
 {
