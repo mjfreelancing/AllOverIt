@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -20,7 +21,7 @@ namespace AllOverIt.Assertion
         /// is "Value cannot be null".</param>
         /// <returns>The value of the evaluated expression.</returns>
         /// <remarks>Evaluating the expression is an expensive operation as it must be compiled before it can be invoked.</remarks>
-        public static TType WhenNotNull<TType>(Expression<Func<TType>> expression, string errorMessage = default)
+        public static TType WhenNotNull<TType>(Expression<Func<TType>> expression, string? errorMessage = default)
             where TType : class
         {
             if (expression is null)
@@ -50,7 +51,7 @@ namespace AllOverIt.Assertion
         /// instance and "Value cannot be empty" for an empty collection.</param>
         /// <returns>The value of the evaluated expression.</returns>
         /// <remarks>Evaluating the expression is an expensive operation as it must be compiled before it can be invoked.</remarks>
-        public static IEnumerable<TType> WhenNotNullOrEmpty<TType>(Expression<Func<IEnumerable<TType>>> expression, string errorMessage = default)
+        public static IEnumerable<TType> WhenNotNullOrEmpty<TType>(Expression<Func<IEnumerable<TType>>> expression, string? errorMessage = default)
         {
             if (expression is null)
             {
@@ -79,7 +80,7 @@ namespace AllOverIt.Assertion
         /// is "Value cannot be empty".</param>
         /// <returns>The value of the evaluated expression. The evaluated value can be null.</returns>
         /// <remarks>Evaluating the expression is an expensive operation as it must be compiled before it can be invoked.</remarks>
-        public static IEnumerable<TType> WhenNotEmpty<TType>(Expression<Func<IEnumerable<TType>>> expression, string errorMessage = default)
+        public static IEnumerable<TType>? WhenNotEmpty<TType>(Expression<Func<IEnumerable<TType>>> expression, string? errorMessage = default)
         {
             if (expression is null)
             {
@@ -107,7 +108,7 @@ namespace AllOverIt.Assertion
         /// instance and "Value cannot be empty" for an empty collection.</param>
         /// <returns>The value of the evaluated expression.</returns>
         /// <remarks>Evaluating the expression is an expensive operation as it must be compiled before it can be invoked.</remarks>
-        public static string WhenNotNullOrEmpty(Expression<Func<string>> expression, string errorMessage = default)
+        public static string WhenNotNullOrEmpty(Expression<Func<string>> expression, string? errorMessage = default)
         {
             if (expression is null)
             {
@@ -135,7 +136,7 @@ namespace AllOverIt.Assertion
         /// is "Value cannot be empty".</param>
         /// <returns>The value of the evaluated expression. The evaluated value can be null.</returns>
         /// <remarks>Evaluating the expression is an expensive operation as it must be compiled before it can be invoked.</remarks>
-        public static string WhenNotEmpty(Expression<Func<string>> expression, string errorMessage = default)
+        public static string? WhenNotEmpty(Expression<Func<string>> expression, string? errorMessage = default)
         {
             if (expression is null)
             {
@@ -174,7 +175,7 @@ namespace AllOverIt.Assertion
 #else
             [CallerArgumentExpression(nameof(@object))] string name = "",
 #endif
-            string errorMessage = default)
+            string? errorMessage = default)
             where TType : class
         {
             if (@object is null)
@@ -192,13 +193,14 @@ namespace AllOverIt.Assertion
         /// <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be null" for a null
         /// instance and "Value cannot be empty" for an empty collection.</param>
         /// <returns>The original object instance when not null and not empty.</returns>
-        public static IEnumerable<TType> WhenNotNullOrEmpty<TType>(this IEnumerable<TType> @object,
+        [return: NotNullIfNotNull(nameof(@object))]
+        public static IEnumerable<TType> WhenNotNullOrEmpty<TType>(this IEnumerable<TType>? @object,
 #if NETSTANDARD2_1
             string name,
 #else
             [CallerArgumentExpression(nameof(@object))] string name = "",
 #endif
-            string errorMessage = default)
+            string? errorMessage = default)
         {
             if (@object is null)
             {
@@ -214,13 +216,14 @@ namespace AllOverIt.Assertion
         /// <param name="name">The name identifying the collection instance.</param>
         /// <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be empty".</param>
         /// <returns>The original collection instance when not empty. If the instance was null then null will be returned.</returns>
-        public static IEnumerable<TType> WhenNotEmpty<TType>(this IEnumerable<TType> @object,
+        [return: NotNullIfNotNull(nameof(@object))]
+        public static IEnumerable<TType>? WhenNotEmpty<TType>(this IEnumerable<TType>? @object,
 #if NETSTANDARD2_1
             string name,
 #else
             [CallerArgumentExpression(nameof(@object))] string name = "",
 #endif
-            string errorMessage = default)
+            string? errorMessage = default)
         {
             if (@object is not null)
             {
@@ -256,13 +259,14 @@ namespace AllOverIt.Assertion
         /// <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be null" for a null
         /// instance and "Value cannot be empty" for an empty collection.</param>
         /// <returns>The original string instance when not null and not empty.</returns>
-        public static string WhenNotNullOrEmpty(this string @object,
+        [return: NotNullIfNotNull(nameof(@object))]
+        public static string? WhenNotNullOrEmpty(this string? @object,
 #if NETSTANDARD2_1
             string name,
 #else
             [CallerArgumentExpression(nameof(@object))] string name = "",
 #endif
-            string errorMessage = default)
+            string? errorMessage = default)
         {
             if (@object is null)
             {
@@ -276,14 +280,15 @@ namespace AllOverIt.Assertion
         /// <param name="object">The string instance.</param>
         /// <param name="name">The name identifying the string instance.</param>
         /// <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be empty".</param>
-        /// <returns>The original string instance when not empty.</returns>
-        public static string WhenNotEmpty(this string @object,
+        /// <returns>The original string instance when not empty. If the instance was null then null will be returned.</returns>
+        [return: NotNullIfNotNull(nameof(@object))]
+        public static string? WhenNotEmpty(this string? @object,
 #if NETSTANDARD2_1
             string name,
 #else
             [CallerArgumentExpression(nameof(@object))] string name = "",
 #endif
-            string errorMessage = default)
+            string? errorMessage = default)
         {
             if (@object is null || !string.IsNullOrWhiteSpace(@object))
             {
