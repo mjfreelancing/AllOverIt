@@ -6,12 +6,12 @@ namespace AllOverIt.Patterns.ValueObject.Exceptions
     public sealed class ValueObjectValidationException : Exception
     {
         /// <summary>The value that failed validation.</summary>
-        public object AttemptedValue { get; }
+        public object? AttemptedValue { get; }
 
         /// <summary>Constructor.</summary>
         /// <param name="attemptedValue">The value that failed validation.</param>
         /// <param name="message">The exception message.</param>
-        internal ValueObjectValidationException(object attemptedValue, string message)
+        internal ValueObjectValidationException(object? attemptedValue, string message)
             : base(message)
         {
             AttemptedValue = attemptedValue;

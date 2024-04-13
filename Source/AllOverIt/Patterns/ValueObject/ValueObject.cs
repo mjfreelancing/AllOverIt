@@ -1,5 +1,4 @@
-﻿using AllOverIt.Assertion;
-using AllOverIt.Patterns.ValueObject.Exceptions;
+﻿using AllOverIt.Patterns.ValueObject.Exceptions;
 using System;
 
 namespace AllOverIt.Patterns.ValueObject
@@ -11,10 +10,10 @@ namespace AllOverIt.Patterns.ValueObject
         where TType : ValueObject<TValue, TType>
         where TValue : IComparable<TValue>, IEquatable<TValue>
     {
-        private TValue _value;
+        private TValue? _value;
 
         /// <summary>The underlying value.</summary>
-        public TValue Value
+        public TValue? Value
         {
             get => _value;
 
@@ -32,30 +31,59 @@ namespace AllOverIt.Patterns.ValueObject
         }
 
         /// <summary>Constructor.</summary>
-        protected ValueObject(TValue value)
+        protected ValueObject(TValue? value)
         {
             Value = value;
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => obj is ValueObject<TValue, TType> other && Equals(other);
+        public override bool Equals(object? obj) => obj is ValueObject<TValue, TType> other && Equals(other);
 
         /// <inheritdoc />
-        public bool Equals(ValueObject<TValue, TType> other)
+        public bool Equals(ValueObject<TValue, TType>? other)
         {
+            if (other is null)
+            {
+                return false;
+            }
+
             if (ReferenceEquals(this, other))
             {
                 return true;
             }
 
-            return other is not null && Value.Equals(other.Value);
+            if (Value is null)
+            {
+                return other.Value is null;
+            }
+
+            return other.Value is not null && Value.Equals(other.Value);
         }
 
         /// <inheritdoc />
-        public int CompareTo(ValueObject<TValue, TType> other)
+        public int CompareTo(ValueObject<TValue, TType>? other)
         {
-            var value = other.WhenNotNull(nameof(other)).Value;
-            return Value.CompareTo(value);
+            if (other is null)
+            {
+                return 1;
+            }
+
+            if (Value is null && other.Value is null)
+            {
+                return 0;
+            }
+
+            if (Value is null)
+            {
+                return -1;
+            }
+
+            if (other.Value is null)
+            {
+                return 1;
+            }
+
+            return Value.CompareTo(other.Value);
         }
 
         // <summary>Operator that determines if two ValueObject instances are equal.</summary>
@@ -104,26 +132,26 @@ namespace AllOverIt.Patterns.ValueObject
 
         /// <summary>Implicit operator to convert a ValueObject to its underlying value equivalent.</summary>
         /// <param name="value">The value to implicitly convert.</param>
-        public static implicit operator TValue(ValueObject<TValue, TType> value) => value.Value;
+        public static implicit operator TValue?(ValueObject<TValue, TType> value) => value.Value;
 
         /// <summary>Explicit operator to convert an underlying type to its ValueObject equivalent.</summary>
         /// <param name="value">The value to explicitly convert.</param>
-        public static explicit operator ValueObject<TValue, TType>(TValue value) => new(value);
+        public static explicit operator ValueObject<TValue, TType>(TValue? value) => new(value);
 
         /// <inheritdoc />
         public override int GetHashCode()
         {
-            return Value.GetHashCode();
+            return Value is null ? 0 : Value.GetHashCode();
         }
 
         /// <summary>Override to validate the initialized value.</summary>
         /// <param name="value">The value to be validated.</param>
-        protected virtual bool ValidateValue(TValue value)
+        protected virtual bool ValidateValue(TValue? value)
         {
             return true;
         }
 
-        private void AssertValue(TValue value)
+        private void AssertValue(TValue? value)
         {
             if (!ValidateValue(value))
             {

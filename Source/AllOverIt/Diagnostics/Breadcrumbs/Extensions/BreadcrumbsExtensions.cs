@@ -12,7 +12,7 @@ namespace AllOverIt.Diagnostics.Breadcrumbs.Extensions
         /// <param name="caller">The caller instance.</param>
         /// <param name="metadata">Metadata associated with the message.</param>
         /// <param name="callerName">The name of the calling method.</param>
-        public static void AddCallSite(this IBreadcrumbs breadcrumbs, object caller, object metadata = null,
+        public static void AddCallSite(this IBreadcrumbs breadcrumbs, object caller, object? metadata = null,
             [CallerMemberName] string callerName = "")
         {
             _ = breadcrumbs.WhenNotNull(nameof(breadcrumbs));
@@ -31,7 +31,7 @@ namespace AllOverIt.Diagnostics.Breadcrumbs.Extensions
         /// <param name="callerName">The name of the calling method.</param>
         /// <param name="filePath">The file path of the calling method.</param>
         /// <param name="lineNumber">The line number of the calling method file path.</param>
-        public static void AddExtendedCallSite(this IBreadcrumbs breadcrumbs, object caller, object metadata = null,
+        public static void AddExtendedCallSite(this IBreadcrumbs breadcrumbs, object caller, object? metadata = null,
             [CallerMemberName] string callerName = "",
             [CallerFilePath] string filePath = "",
             [CallerLineNumber] int lineNumber = 0)
@@ -110,8 +110,8 @@ namespace AllOverIt.Diagnostics.Breadcrumbs.Extensions
             AddBreadcrumb(breadcrumbs, caller, message, metadata, callerName, filePath, lineNumber);
         }
 
-        internal static void AddBreadcrumb(IBreadcrumbs breadcrumbs, object caller, string message, object metadata,
-            string callerName, string filePath = null, int lineNumber = 0)
+        internal static void AddBreadcrumb(IBreadcrumbs breadcrumbs, object? caller, string? message, object? metadata,
+            string? callerName, string? filePath = null, int lineNumber = 0)
         {
             var fullName = (caller, callerName) switch
             {

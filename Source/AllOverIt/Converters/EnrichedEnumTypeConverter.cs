@@ -1,9 +1,10 @@
-﻿using System;
-using System.ComponentModel;
-using System.Globalization;
-using AllOverIt.Extensions;
+﻿using AllOverIt.Extensions;
 using AllOverIt.Patterns.Enumeration;
 using AllOverIt.Reflection;
+using System;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 
 namespace AllOverIt.Converters
 {
@@ -15,13 +16,13 @@ namespace AllOverIt.Converters
         private static readonly Type EnrichedEnumTypeConverterType = typeof(EnrichedEnumTypeConverter<TEnum>);
 
         /// <inheritdoc />
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+        public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType)
         {
             return sourceType == CommonTypes.StringType || sourceType.IsIntegralType();
         }
 
         /// <inheritdoc />
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+        public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value)
         {
             if (value == null)
             {
@@ -34,13 +35,13 @@ namespace AllOverIt.Converters
         }
 
         /// <inheritdoc />
-        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+        public override bool CanConvertTo(ITypeDescriptorContext? context, [NotNullWhen(true)] Type? destinationType)
         {
-            return destinationType == CommonTypes.StringType || destinationType.IsIntegralType();
+            return destinationType is not null && (destinationType == CommonTypes.StringType || destinationType.IsIntegralType());
         }
 
         /// <inheritdoc />
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+        public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
         {
             if (value == null)
             {
@@ -56,7 +57,7 @@ namespace AllOverIt.Converters
         /// <returns>A new TypeConverter instance.</returns>
         public static TypeConverter Create()
         {
-            return (TypeConverter) Activator.CreateInstance(EnrichedEnumTypeConverterType);
+            return (TypeConverter) Activator.CreateInstance(EnrichedEnumTypeConverterType)!;
         }
     }
 }

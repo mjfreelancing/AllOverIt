@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace AllOverIt.Aspects
@@ -31,13 +32,13 @@ namespace AllOverIt.Aspects
         /// <summary>Determines if an intercept handler has been registered for the provided <paramref name="targetMethod"/>.</summary>
         /// <param name="targetMethod">The <see cref="MethodInfo"/> of the method to determine if there is a registered interceptor.</param>
         /// <returns><see langword="True"/> if an interceptor is registered, otherwise <see langword="False"/>.</returns>
-        protected override bool CanInterceptMethod(MethodInfo targetMethod)
+        protected override bool CanInterceptMethod([NotNullWhen(true)] MethodInfo? targetMethod)
         {
-            return _methodInterceptors.ContainsKey(targetMethod);
+            return base.CanInterceptMethod(targetMethod) && _methodInterceptors.ContainsKey(targetMethod);
         }
 
         /// <inheritdoc />
-        protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args)
+        protected override InterceptorState BeforeInvoke(MethodInfo? targetMethod, ref object?[]? args)
         {
             var methodInterceptor = _methodInterceptors[targetMethod];
 
@@ -45,7 +46,7 @@ namespace AllOverIt.Aspects
         }
 
         /// <inheritdoc />
-        protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
+        protected override void AfterInvoke(MethodInfo targetMethod, object?[]? args, InterceptorState state)
         {
             var methodInterceptor = _methodInterceptors[targetMethod];
 
@@ -53,7 +54,7 @@ namespace AllOverIt.Aspects
         }
 
         /// <inheritdoc />
-        protected override void Faulted(MethodInfo targetMethod, object[] args, InterceptorState state, Exception exception)
+        protected override void Faulted(MethodInfo targetMethod, object?[]? args, InterceptorState state, Exception exception)
         {
             var methodInterceptor = _methodInterceptors[targetMethod];
 

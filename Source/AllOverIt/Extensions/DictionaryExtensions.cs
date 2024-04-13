@@ -14,7 +14,8 @@ namespace AllOverIt.Extensions
         /// <param name="key">The key value.</param>
         /// <param name="defaultValue">When provided, this will be returned as the default value if the key is not found in the dictionary.</param>
         /// <returns>The value associated with the specified key, otherwise a default value.</returns>
-        public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue = default)
+        public static TValue? GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue?> dictionary, TKey key, TValue? defaultValue = default)
+            where TKey : notnull
         {
             return dictionary.TryGetValue(key, out var result) ? result : defaultValue;
         }
@@ -26,7 +27,8 @@ namespace AllOverIt.Extensions
         /// <param name="key">The key value.</param>
         /// <param name="valueCreator">The Func that provides the value to set when the key is not found.</param>
         /// <returns>The value based on a specified key, or the value returned by a specified Func when the key is not found.</returns>
-        public static TValue GetOrSet<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, Func<TValue> valueCreator)
+        public static TValue? GetOrSet<TKey, TValue>(this IDictionary<TKey, TValue?> dictionary, TKey key, Func<TValue?> valueCreator)
+            where TKey : notnull
         {
             if (dictionary.TryGetValue(key, out var result))
             {
@@ -45,7 +47,8 @@ namespace AllOverIt.Extensions
         /// <param name="first">The first dictionary.</param>
         /// <param name="second">The second dictionary.</param>
         /// <returns>A new dictionary that contains elements from two source dictionaries.</returns>
-        public static IDictionary<TKey, TValue> Combine<TKey, TValue>(this IDictionary<TKey, TValue> first, IDictionary<TKey, TValue> second)
+        public static IDictionary<TKey, TValue?> Combine<TKey, TValue>(this IDictionary<TKey, TValue?> first, IDictionary<TKey, TValue?> second)
+            where TKey : notnull
         {
             return Enumerable
                 .Concat(first, second)

@@ -1,6 +1,8 @@
-﻿using AllOverIt.Extensions;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Extensions;
 using AllOverIt.Reflection;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
@@ -13,15 +15,15 @@ namespace AllOverIt.Aspects
     /// <typeparam name="TServiceType"></typeparam>
     public abstract class InterceptorBase<TServiceType> : DispatchProxy
     {
-        internal TServiceType _serviceInstance;
+        internal TServiceType? _serviceInstance;
 
         /// <summary>Determines if this interceptor should be invoked for the provided target method. All methods will pass
         /// through this interceptor if not overriden.</summary>
         /// <param name="targetMethod">The method info for the method being intercepted.</param>
         /// <returns><see langword="True"/> if the interceptor can handle the method, otherwise <see langword="False"/>.</returns>
-        protected virtual bool CanInterceptMethod(MethodInfo targetMethod)
+        protected virtual bool CanInterceptMethod([NotNullWhen(true)] MethodInfo? targetMethod)
         {
-            return true;
+            return targetMethod is not null;
         }
 
         /// <summary>The <see cref="BeforeInvoke(MethodInfo, ref object[])"/> method is called before calling the decorated
@@ -31,8 +33,12 @@ namespace AllOverIt.Aspects
         /// <param name="targetMethod">The <see cref="MethodInfo"/> for the method being intercepted.</param>
         /// <param name="args">The arguments passed to the intercepted method.</param>
         /// <returns>The result of the method invoked on the decorated instance.</returns>
-        protected override object Invoke(MethodInfo targetMethod, object[] args)
+        protected override object? Invoke([NotNull] MethodInfo? targetMethod, object?[]? args)
         {
+            // CanInterceptMethod() returns false if targetMethod is null BUT we want to avoid
+            // calling InvokeServiceInstance() if the method is not null but filtered out.
+            _ = targetMethod.WhenNotNull(nameof(targetMethod));
+
             if (!CanInterceptMethod(targetMethod))
             {
                 return InvokeServiceInstance(targetMethod, args);
@@ -62,7 +68,7 @@ namespace AllOverIt.Aspects
             catch (TargetInvocationException exception)
             {
                 // The InnerException will never be null - it holds the underlying exception thrown by the invoked method
-                var fault = exception.InnerException;
+                var fault = exception.InnerException!;
 
                 Faulted(targetMethod, args, state, fault);
 
@@ -77,7 +83,7 @@ namespace AllOverIt.Aspects
         /// <param name="args">The arguments passed to the intercepted method, passed by ref.</param>
         /// <returns>A state object that will be passed to the <see cref="AfterInvoke(MethodInfo, object[], InterceptorState)"/>
         /// or <see cref="Faulted(MethodInfo, object[], InterceptorState, Exception)"/> method, as applicable.</returns>
-        protected virtual InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args)
+        protected virtual InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object?[]? args)
         {
             return new InterceptorState();
         }
@@ -86,7 +92,7 @@ namespace AllOverIt.Aspects
         /// <param name="targetMethod">The <see cref="MethodInfo"/> for the method being intercepted.</param>
         /// <param name="args">The arguments passed to the intercepted method.</param>
         /// <param name="state">The state object returned by <see cref="BeforeInvoke(MethodInfo, ref object[])"/>.</param>
-        protected virtual void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
+        protected virtual void AfterInvoke(MethodInfo targetMethod, object?[]? args, InterceptorState state)
         {
         }
 
@@ -95,11 +101,11 @@ namespace AllOverIt.Aspects
         /// <param name="args">The arguments passed to the intercepted method.</param>
         /// <param name="state">The state object returned by <see cref="BeforeInvoke(MethodInfo, ref object[])"/>.</param>
         /// <param name="exception">The exception that was thrown by the instance method.</param>
-        protected virtual void Faulted(MethodInfo targetMethod, object[] args, InterceptorState state, Exception exception)
+        protected virtual void Faulted(MethodInfo targetMethod, object?[]? args, InterceptorState state, Exception exception)
         {
         }
 
-        private object GetAsyncResult(MethodInfo targetMethod, object[] args, InterceptorState state)
+        private object? GetAsyncResult(MethodInfo targetMethod, object?[]? args, InterceptorState state)
         {
             // Without interception, the state's result (a Task) is what would normally be awaited by the caller.
             // We need to call AfterInvoke() before that await completes so we need to instead return a different
@@ -122,20 +128,20 @@ namespace AllOverIt.Aspects
             var tcsType = typeof(TaskCompletionSource<>).MakeGenericType(tcsReturnType);
 
             // Create an instance of TaskCompletionSource<T>.
-            var tcs = Activator.CreateInstance(tcsType);
+            var tcs = Activator.CreateInstance(tcsType)!;
 
             // Get the Task from the TaskCompletionSource<T> that the caller will now be awaiting.
-            var result = tcsType.GetProperty("Task").GetValue(tcs, null);
+            var result = tcsType.GetProperty("Task")!.GetValue(tcs, null);
 
             // Add a continuation so we can call Faulted() / AfterInvoke() before setting the final result to be returned.
-            var taskResult = state.GetResult() as Task;
+            var taskResult = (state.GetResult() as Task)!;
 
             taskResult
                 .ContinueWith(task =>
                 {
                     if (task.IsFaulted)
                     {
-                        var exception = task.Exception.InnerException;
+                        var exception = task.Exception!.InnerException!;
 
                         Faulted(targetMethod, args, state, exception);
 
@@ -164,7 +170,7 @@ namespace AllOverIt.Aspects
             return result;
         }
 
-        private object InvokeServiceInstance(MethodInfo targetMethod, object[] args)
+        private object? InvokeServiceInstance([NotNull] MethodInfo targetMethod, object?[]? args)
         {
             return targetMethod.Invoke(_serviceInstance, args);
         }

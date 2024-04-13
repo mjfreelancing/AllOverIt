@@ -5,7 +5,6 @@ using AllOverIt.Patterns.Enumeration.Exceptions;
 using FluentAssertions;
 using System;
 using System.Runtime.CompilerServices;
-using Xunit;
 
 namespace AllOverIt.Tests.Patterns.Enumeration
 {
@@ -152,15 +151,14 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             }
 
             [Fact]
-            public void Should_Throw_When_Null()
+            public void Should_Not_Throw_When_Comparing_To_Null()
             {
                 Invoking(() =>
-                    {
-                        DummyEnrichedEnum1.Value2.CompareTo(null);
-                    })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("other");
+                {
+                    DummyEnrichedEnum1.Value2.CompareTo(null);
+                })
+                .Should()
+                .NotThrow();
             }
         }
 
@@ -252,7 +250,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 var actual = DummyEnrichedEnum1.GetAllValues();
 
-                var expected = new[] {DummyEnrichedEnum1.Value1.Value, DummyEnrichedEnum1.Value2.Value};
+                var expected = new[] { DummyEnrichedEnum1.Value1.Value, DummyEnrichedEnum1.Value2.Value };
 
                 expected.Should().BeEquivalentTo(actual);
             }
@@ -265,7 +263,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 var actual = DummyEnrichedEnum1.GetAllNames();
 
-                var expected = new[] {DummyEnrichedEnum1.Value1.Name, DummyEnrichedEnum1.Value2.Name};
+                var expected = new[] { DummyEnrichedEnum1.Value1.Name, DummyEnrichedEnum1.Value2.Name };
 
                 expected.Should().BeEquivalentTo(actual);
             }
@@ -278,7 +276,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 var actual = DummyEnrichedEnum1.GetAll();
 
-                var expected = new[] {DummyEnrichedEnum1.Value1, DummyEnrichedEnum1.Value2};
+                var expected = new[] { DummyEnrichedEnum1.Value1, DummyEnrichedEnum1.Value2 };
 
                 expected.Should().BeEquivalentTo(actual);
             }
@@ -342,7 +340,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 Invoking(() =>
                 {
-                    _ = DummyEnrichedEnum1.From((string)null);
+                    _ = DummyEnrichedEnum1.From((string) null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -757,15 +755,14 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             }
 
             [Fact]
-            public void Should_Throw_When_Null()
+            public void Should_Not_Throw_When_Comparing_To_Null()
             {
                 Invoking(() =>
-                    {
-                        _ = DummyEnrichedEnum1.Value2 > null;
-                    })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("other");
+                {
+                    _ = DummyEnrichedEnum1.Value2 > null;
+                })
+                .Should()
+                .NotThrow();
             }
         }
 
@@ -797,15 +794,14 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             }
 
             [Fact]
-            public void Should_Throw_When_Null()
+            public void Should_Not_Throw_When_Comparing_To_Null()
             {
                 Invoking(() =>
-                    {
-                        _ = DummyEnrichedEnum1.Value2 >= null;
-                    })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("other");
+                {
+                    _ = DummyEnrichedEnum1.Value2 >= null;
+                })
+                .Should()
+                .NotThrow();
             }
         }
 
@@ -838,15 +834,14 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             }
 
             [Fact]
-            public void Should_Throw_When_Null()
+            public void Should_Not_Throw_When_Comparing_To_Null()
             {
                 Invoking(() =>
                 {
                     _ = DummyEnrichedEnum1.Value2 < null;
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("other");
+                .Should()
+                .NotThrow();
             }
         }
 
@@ -878,15 +873,14 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             }
 
             [Fact]
-            public void Should_Throw_When_Null()
+            public void Should_Not_Throw_When_Comparing_To_Null()
             {
                 Invoking(() =>
                 {
                     _ = DummyEnrichedEnum1.Value2 <= null;
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("other");
+                .Should()
+                .NotThrow();
             }
         }
 

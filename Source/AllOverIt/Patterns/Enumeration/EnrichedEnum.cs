@@ -15,13 +15,13 @@ namespace AllOverIt.Patterns.Enumeration
     public abstract class EnrichedEnum<TEnum> : IComparable<EnrichedEnum<TEnum>>, IEquatable<EnrichedEnum<TEnum>>
         where TEnum : EnrichedEnum<TEnum>
     {
-        private static readonly TEnum[] AllValues = GetAllEnums().ToArray();
+        private static readonly TEnum[] AllValues = GetAllEnums();
 
         /// <summary>The integer value of the enumeration.</summary>
         public int Value { get; }
 
         /// <summary>The name, or string value, of the enumeration.</summary>
-        public string Name { get; }
+        public string Name { get; } = string.Empty;
 
         /// <summary>Constructor.</summary>
         [ExcludeFromCodeCoverage]
@@ -43,17 +43,18 @@ namespace AllOverIt.Patterns.Enumeration
         public override string ToString() => Name;
 
         /// <inheritdoc />
-        public int CompareTo(EnrichedEnum<TEnum> other)
+        public int CompareTo(EnrichedEnum<TEnum>? other)
         {
-            var value = other.WhenNotNull(nameof(other)).Value;
+            var value = other?.Value;
+
             return Value.CompareTo(value);
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => obj is EnrichedEnum<TEnum> other && Equals(other);
+        public override bool Equals(object? obj) => obj is EnrichedEnum<TEnum> other && Equals(other);
 
         /// <inheritdoc />
-        public bool Equals(EnrichedEnum<TEnum> other)
+        public bool Equals(EnrichedEnum<TEnum>? other)
         {
             if (ReferenceEquals(this, other))
             {
@@ -243,16 +244,18 @@ namespace AllOverIt.Patterns.Enumeration
         private static bool TryParse(Func<TEnum, bool> predicate, out TEnum enumeration)
         {
             enumeration = AllValues.SingleOrDefault(predicate);
-            return enumeration != null;
+
+            return enumeration is not null;
         }
 
-        private static IEnumerable<TEnum> GetAllEnums()
+        private static TEnum[] GetAllEnums()
         {
             var fields = typeof(TEnum).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
 
             return fields
                 .Select(field => field.GetValue(null))
-                .Cast<TEnum>();
+                .Cast<TEnum>()
+                .ToArray();
         }
     }
 }

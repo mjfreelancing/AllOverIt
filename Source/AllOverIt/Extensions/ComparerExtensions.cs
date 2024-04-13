@@ -16,7 +16,7 @@ namespace AllOverIt.Extensions
                 _comparer = comparer;
             }
 
-            public int Compare(TType x, TType y)
+            public int Compare(TType? x, TType? y)
             {
                 var result = _comparer.Compare(x, y);
 
@@ -36,7 +36,7 @@ namespace AllOverIt.Extensions
                 _next = next;
             }
 
-            int IComparer<TType>.Compare(TType x, TType y)
+            int IComparer<TType>.Compare(TType? x, TType? y)
             {
                 var result = _first.Compare(x, y);
 

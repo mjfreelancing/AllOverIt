@@ -14,7 +14,7 @@ namespace AllOverIt.Aspects
         /// <param name="configure">An optional configuration action that allows for customization of the created interceptor.</param>
         /// <returns>An interceptor that implements <typeparamref name="TServiceType"/>.</returns>
         public static TServiceType CreateInterceptor<TServiceType, TInterceptor>(TServiceType serviceInstance,
-            Action<TInterceptor> configure = default) where TInterceptor : InterceptorBase<TServiceType>
+            Action<TInterceptor>? configure = default) where TInterceptor : InterceptorBase<TServiceType>
         {
             var proxyInstance = GetServiceProxy<TServiceType, TInterceptor>(serviceInstance);
 
@@ -36,7 +36,7 @@ namespace AllOverIt.Aspects
         /// <param name="configure">An optional configuration action that allows for customization of the created interceptor.</param>
         /// <returns>An interceptor that implements <typeparamref name="TServiceType"/>.</returns>
         public static TServiceType CreateInterceptor<TServiceType, TInterceptor>(TServiceType serviceInstance, IServiceProvider serviceProvider,
-            Action<IServiceProvider, TInterceptor> configure = default) where TInterceptor : InterceptorBase<TServiceType>
+            Action<IServiceProvider, TInterceptor>? configure = default) where TInterceptor : InterceptorBase<TServiceType>
         {
             var proxyInstance = GetServiceProxy<TServiceType, TInterceptor>(serviceInstance);
 

@@ -57,7 +57,7 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
             public MultiThreadListWrapper(BreadcrumbsOptions options)
             {
                 _maxCapactiy = options.MaxCapacity;
-                _syncRoot = ((ICollection)_breadcrumbs).SyncRoot;
+                _syncRoot = ((ICollection) _breadcrumbs).SyncRoot;
             }
 
             public void Add(BreadcrumbData breadcrumb)
@@ -94,7 +94,7 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
                         {
                             yield return iterator.Current.Value;
                         }
-                    }                   
+                    }
                 }
             }
         }
@@ -114,7 +114,7 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
                     return _enabled;
                 }
             }
-            
+
             set
             {
                 using (_readWriteLock.GetWriteLock())
@@ -147,11 +147,17 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
             }
         }
 
+        /// <summary>Constructor. Applies a default constructed <see cref="BreadcrumbsOptions"/>.</summary>
+        public Breadcrumbs()
+            : this(new BreadcrumbsOptions())
+        {
+        }
+
         /// <summary>Constructor.</summary>
         /// <param name="options">Provides options that control how breadcrumb items are inserted and cached.</param>
-        public Breadcrumbs(BreadcrumbsOptions options = default)
+        public Breadcrumbs(BreadcrumbsOptions options)
         {
-            Options = options ?? new BreadcrumbsOptions();
+            Options = options.WhenNotNull(nameof(options));
 
             _breadcrumbs = Options.ThreadSafe
                 ? new MultiThreadListWrapper(Options)

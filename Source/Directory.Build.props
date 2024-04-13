@@ -27,6 +27,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Compile Include="..\NetStandardAttributes.cs" Link="NetStandardAttributes.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
         <None Include="..\..\Resources\aoi_package_icon.png">
             <Pack>True</Pack>
             <PackagePath>\</PackagePath>

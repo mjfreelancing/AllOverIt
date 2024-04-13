@@ -18,13 +18,13 @@ namespace AllOverIt.Collections
         /// <summary>Constructor.</summary>
 
         public ReadOnlyList()
+            : this([])
         {
-            _list = [];
         }
 
         /// <summary>Constructor.</summary>
         /// <param name="data">The data to add to the readonly list.</param>
-        public ReadOnlyList(IEnumerable<TType> data = default)
+        public ReadOnlyList(IEnumerable<TType> data)
         {
             _list = new(data);
         }

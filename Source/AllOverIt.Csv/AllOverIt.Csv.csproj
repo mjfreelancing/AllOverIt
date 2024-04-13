@@ -5,7 +5,7 @@
         <Description>Using CsvHelper to perform the actual writing of CSV content, this package provides a configuration based serializer that can export data using a model with fixed columns as well as dynamic columns derived from complex or array type properties.</Description>
         <PackageTags>AllOverIt;Utilities;CSV;Export</PackageTags>
     </PropertyGroup>
-
+    
     <ItemGroup>
         <PackageReference Include="CsvHelper" Version="31.0.3" />
     </ItemGroup>

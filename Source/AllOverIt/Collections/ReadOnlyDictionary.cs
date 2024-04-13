@@ -7,6 +7,7 @@ namespace AllOverIt.Collections
     /// <typeparam name="TKey">The key type.</typeparam>
     /// <typeparam name="TValue">The value type.</typeparam>
     public class ReadOnlyDictionary<TKey, TValue> : IReadOnlyDictionary<TKey, TValue>
+        where TKey : notnull
     {
         private readonly IDictionary<TKey, TValue> _dictionary;
 
@@ -24,8 +25,8 @@ namespace AllOverIt.Collections
 
         /// <summary>Constructor.</summary>
         public ReadOnlyDictionary()
+            : this([])
         {
-            _dictionary = new Dictionary<TKey, TValue>();
         }
 
         /// <summary>Constructor.</summary>
@@ -38,7 +39,7 @@ namespace AllOverIt.Collections
         /// <summary>Constructor.</summary>
         /// <param name="data">Data to be added to the readonly dictionary.</param>
         public ReadOnlyDictionary(IReadOnlyDictionary<TKey, TValue> data)
-            : this((IEnumerable<KeyValuePair<TKey, TValue>>)data)
+            : this((IEnumerable<KeyValuePair<TKey, TValue>>) data)
         {
         }
 

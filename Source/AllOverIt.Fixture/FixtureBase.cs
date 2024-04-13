@@ -376,7 +376,7 @@ namespace AllOverIt.Fixture
 
         /// <summary>Asserts that an exception of type <typeparamref name="TException"/> has a default constructor.</summary>
         /// <typeparam name="TException">The exception type.</typeparam>
-        protected static void AssertDefaultConstructor<TException>(string expectedMessage = default) where TException : Exception, new()
+        protected static void AssertDefaultConstructor<TException>(string? expectedMessage = default) where TException : Exception, new()
         {
             var exception = new TException();
 
@@ -405,7 +405,7 @@ namespace AllOverIt.Fixture
 
             constructor.Should().NotBeNull();
 
-            var exception = (Exception) constructor.Invoke(new[] { message });
+            var exception = (Exception) constructor!.Invoke(new[] { message });
 
             exception.Message.Should().Be(message);
         }
@@ -432,7 +432,7 @@ namespace AllOverIt.Fixture
 
             constructor.Should().NotBeNull();
 
-            var exception = (Exception) constructor.Invoke([message, innerException]);
+            var exception = (Exception) constructor!.Invoke([message, innerException]);
 
             exception.Message
                 .Should()
@@ -509,7 +509,7 @@ namespace AllOverIt.Fixture
             var enumCount = enumValues.Length;
             var index = _random.Next(1000) % enumCount;
 
-            return (TType) enumValues.GetValue(index);
+            return (TType) enumValues.GetValue(index)!;
         }
 
         private List<TType> CreateManyType<TType>(int count)
@@ -528,7 +528,8 @@ namespace AllOverIt.Fixture
               .Select(_ =>
               {
                   var index = _random.Next(1000) % enumCount;
-                  return (TType) enumValues.GetValue(index);
+
+                  return (TType) enumValues.GetValue(index)!;
               })
               .ToList();
         }
