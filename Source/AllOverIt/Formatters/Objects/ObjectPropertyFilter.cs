@@ -8,25 +8,25 @@ namespace AllOverIt.Formatters.Objects
     public abstract class ObjectPropertyFilter
     {
         /// <summary>The type of the current value.</summary>
-        public Type Type { get; internal set; }
+        public Type? Type { get; internal set; }
 
         /// <summary>The value of the current value.</summary>
-        public object Value { get; internal set; }
+        public object? Value { get; internal set; }
 
         /// <summary>The full path, with index notation for enumerable types, within the object graph where the current value sits.</summary>
-        public string Path { get; internal set; }
+        public string? Path { get; internal set; }
 
         /// <summary>The full path, without index notation for enumerable types, within the object graph where the current value sits.</summary>
-        public string PropertyPath { get; internal set; }
+        public string? PropertyPath { get; internal set; }
 
         /// <summary>The name of the property associated with the current value. This will be null for values within a collection.</summary>
-        public string Name { get; internal set; }
+        public string? Name { get; internal set; }
 
         /// <summary>If the current value is within a collection then this represents its relative index.</summary>
         public int? Index { get; internal set; }
 
         /// <summary>Provides a collection of parent objects associated with the current value.</summary>
-        public IReadOnlyCollection<ObjectPropertyParent> Parents { get; internal set; }
+        public IReadOnlyCollection<ObjectPropertyParent>? Parents { get; internal set; }
 
         /// <summary>Provides options that allow array values to be collated to a single value.</summary>
         /// <remarks>These options override the serializer's global array handling options.</remarks>

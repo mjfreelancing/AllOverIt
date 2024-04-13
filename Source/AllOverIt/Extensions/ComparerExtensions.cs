@@ -16,9 +16,24 @@ namespace AllOverIt.Extensions
                 _comparer = comparer;
             }
 
-            public int Compare(TType? x, TType? y)
+            public int Compare(TType? lhs, TType? rhs)
             {
-                var result = _comparer.Compare(x, y);
+                if (lhs is null && rhs is null)
+                {
+                    return 0;
+                }
+
+                if (lhs is null)
+                {
+                    return -1;
+                }
+
+                if (rhs is null)
+                {
+                    return 1;
+                }
+
+                var result = _comparer.Compare(lhs, rhs);
 
                 return result == 0 ? result : -result;
             }
@@ -36,13 +51,28 @@ namespace AllOverIt.Extensions
                 _next = next;
             }
 
-            int IComparer<TType>.Compare(TType? x, TType? y)
+            int IComparer<TType>.Compare(TType? lhs, TType? rhs)
             {
-                var result = _first.Compare(x, y);
+                if (lhs is null && rhs is null)
+                {
+                    return 0;
+                }
+
+                if (lhs is null)
+                {
+                    return -1;
+                }
+
+                if (rhs is null)
+                {
+                    return 1;
+                }
+
+                var result = _first.Compare(lhs, rhs);
 
                 return result != 0
                     ? result
-                    : _next.Compare(x, y);
+                    : _next.Compare(lhs, rhs);
             }
         }
 

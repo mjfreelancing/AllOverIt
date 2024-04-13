@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Formatters.Objects;
 using AllOverIt.Formatters.Objects.Exceptions;
 using AllOverIt.Patterns.Enumeration;
@@ -138,6 +139,18 @@ namespace AllOverIt.Tests.Extensions
 
         public class ToPropertyDictionary : ObjectExtensionsFixture
         {
+            [Fact]
+            public void Should_Throw_When_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = ObjectExtensions.ToPropertyDictionary(null, Create<bool>(), BindingOptions.Instance | BindingOptions.Public);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("instance");
+            }
+
             [Fact]
             public void Should_Return_Public_PropertyDictionary()
             {

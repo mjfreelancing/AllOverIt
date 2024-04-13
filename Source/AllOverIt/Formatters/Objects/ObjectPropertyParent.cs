@@ -6,10 +6,10 @@ namespace AllOverIt.Formatters.Objects
     public sealed class ObjectPropertyParent
     {
         /// <summary>The name of the property. Will be null when a collection item.</summary>
-        public string Name { get; }
+        public string? Name { get; }
 
         /// <summary>The value of the property.</summary>
-        public object Value { get; }
+        public object? Value { get; }
 
         /// <summary>When an element within a collection, this is the index of the item.</summary>
         public int? Index { get; }
@@ -18,7 +18,7 @@ namespace AllOverIt.Formatters.Objects
         /// <param name="name">The name of the property.</param>
         /// <param name="value">The value of the property.</param>
         /// <param name="index">When an element within a collection, this is the index of the item.</param>
-        public ObjectPropertyParent(string name, object value, int? index)
+        public ObjectPropertyParent(string? name, object? value, int? index)
         {
             Name = name?.WhenNotEmpty(nameof(name));        // Can be null but should not be empty
             Value = value;

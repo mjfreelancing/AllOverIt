@@ -13,9 +13,9 @@ namespace AllOverIt.Expressions
     {
         private sealed class ParameterHolder
         {
-            public object Value { get; }
+            public object? Value { get; }
 
-            public ParameterHolder(object value)
+            public ParameterHolder(object? value)
             {
                 Value = value;
             }
@@ -26,7 +26,7 @@ namespace AllOverIt.Expressions
         /// <typeparam name="TType">The type of the value.</typeparam>
         /// <param name="value">The value to be wrapped.</param>
         /// <returns>The value, via a proxy property, as an <see cref="Expression"/>.</returns>
-        public static Expression CreateParameterizedValue<TType>(TType value)
+        public static Expression CreateParameterizedValue<TType>(TType? value)
         {
             return CreateParameterizedValue(value, typeof(TType));
         }
@@ -34,9 +34,9 @@ namespace AllOverIt.Expressions
         /// <summary>Wraps a value in a placeholder object and returns the value as a property of that object,
         /// thus making it suitable for creating parameterized queryables.</summary>
         /// <param name="value">The value to be wrapped.</param>
-        /// <param name="valueType">The type of the value.</param>
+        /// <param name="valueType">The type of the value. If <see langword="null"/>, the object's type will be determined at runtime.</param>
         /// <returns>The value, via a proxy property, as an <see cref="Expression"/>.</returns>
-        public static Expression CreateParameterizedValue(object value, Type valueType = default)
+        public static Expression CreateParameterizedValue(object? value, Type? valueType = default)
         {
             valueType ??= value?.GetType();
 

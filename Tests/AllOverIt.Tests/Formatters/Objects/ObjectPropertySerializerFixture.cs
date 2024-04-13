@@ -10,7 +10,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Xunit;
 
 namespace AllOverIt.Tests.Formatters.Objects
 {
@@ -205,6 +204,18 @@ namespace AllOverIt.Tests.Formatters.Objects
                 expected
                     .Should()
                     .BeEquivalentTo(helper.Options);
+            }
+
+            [Fact]
+            public void Should_Throw_When_Options_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = new ObjectPropertySerializer(null, null);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("options");
             }
 
             [Theory]
@@ -1637,7 +1648,7 @@ namespace AllOverIt.Tests.Formatters.Objects
 
             private static ObjectPropertySerializer GetSerializer(ObjectPropertyFilter filter = default)
             {
-                return new(null, filter);
+                return new(filter);
             }
         }
     }

@@ -10,7 +10,7 @@ namespace AllOverIt.Formatters.Objects
 
         /// <summary>An optional filter that can be implemented to exclude properties by name or value. Values can be
         /// modified, or formatted if the filter implements <see cref="IFormattableObjectPropertyFilter"/>.</summary>
-        ObjectPropertyFilter Filter { get; }
+        ObjectPropertyFilter? Filter { get; }
 
         /// <summary>Serializes an object to an IDictionary&lt;string, string&gt;.</summary>
         /// <param name="instance">The object to be serialized.</param>

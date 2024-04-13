@@ -23,7 +23,7 @@ namespace AllOverIt.Extensions
         ///   <para>No attempt is made to avoid overflow or argument exceptions.</para>
         /// </remarks>
         [return: MaybeNull]
-        public static TType As<TType>(this string value, TType? defaultValue = default)
+        public static TType As<TType>(this string? value, TType? defaultValue = default)
         {
             if (string.IsNullOrWhiteSpace(value))
             {

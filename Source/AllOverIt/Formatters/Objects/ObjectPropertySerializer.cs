@@ -16,16 +16,30 @@ namespace AllOverIt.Formatters.Objects
         public ObjectPropertySerializerOptions Options { get; }
 
         /// <inheritdoc />
-        public ObjectPropertyFilter Filter { get; }
+        public ObjectPropertyFilter? Filter { get; } = default;
+
+        /// <summary>Constructor. Applies a default constructed <see cref="ObjectPropertySerializerOptions"/>.</summary>
+        /// <param name="filter">Provides support for filtering properties and values when serializing. Optional.</param>
+        public ObjectPropertySerializer()
+            : this(new ObjectPropertySerializerOptions(), null)
+        {
+        }
+
+        /// <summary>Constructor. Applies a default constructed <see cref="ObjectPropertySerializerOptions"/>.</summary>
+        /// <param name="filter">Provides support for filtering properties and values when serializing. Optional.</param>
+        public ObjectPropertySerializer(ObjectPropertyFilter filter)
+            : this(new ObjectPropertySerializerOptions(), filter)
+        {
+        }
 
         /// <summary>Constructor.</summary>
         /// <param name="options">Specifies options that determine how serialization of properties and their values are handled.
         /// If null, a default set of options will be used.</param>
-        /// <param name="filter">Provides support for filtering properties and values when serializing.</param>
-        public ObjectPropertySerializer(ObjectPropertySerializerOptions options = default, ObjectPropertyFilter filter = default)
+        /// <param name="filter">Provides support for filtering properties and values when serializing. Optional.</param>
+        public ObjectPropertySerializer(ObjectPropertySerializerOptions options, ObjectPropertyFilter? filter = default)
         {
+            Options = options.WhenNotNull(nameof(options));
             Filter = filter;
-            Options = options ?? new ObjectPropertySerializerOptions();
         }
 
         /// <inheritdoc />
@@ -42,7 +56,7 @@ namespace AllOverIt.Formatters.Objects
 
             if (instance != null)
             {
-                Populate(null, instance, dictionary, new Dictionary<object, ObjectPropertyParent>());
+                Populate(string.Empty, instance, dictionary, new Dictionary<object, ObjectPropertyParent>());
             }
 
             return dictionary;
@@ -67,14 +81,11 @@ namespace AllOverIt.Formatters.Objects
 
                     if (collateValues)
                     {
-#pragma warning disable IDE0074 // Use compound assignment
-                        // More efficient than ??=
-                        if (prefix == null)
+                        if (prefix.IsEmpty())
                         {
                             // The array must have been a root object (not a property value) so use "[]" as the prefix
                             prefix = Options.RootValueOptions.ArrayKeyName;
                         }
-#pragma warning restore IDE0074 // Use compound assignment
 
                         values.Add(prefix, string.Join(GetEnumerableOptions().Separator, arrayValues.Values));
                     }
@@ -162,7 +173,7 @@ namespace AllOverIt.Formatters.Objects
             AppendNameValue(prefix, null, Options.EmptyValueOutput, null, values, references);
         }
 
-        private void AppendObjectAsPropertyValues(string prefix, object instance, IDictionary<string, string> values,
+        private void AppendObjectAsPropertyValues(string? prefix, object instance, IDictionary<string, string> values,
             IDictionary<object, ObjectPropertyParent> references)
         {
             var instanceType = instance.GetType();
@@ -201,10 +212,10 @@ namespace AllOverIt.Formatters.Objects
             }
         }
 
-        private void AppendNameValue(string path, string name, object value, int? index, IDictionary<string, string> values,
+        private void AppendNameValue(string path, string? name, object? value, int? index, IDictionary<string, string> values,
             IDictionary<object, ObjectPropertyParent> references)
         {
-            if (value == null)
+            if (value is null)
             {
                 values.Add(path, Options.NullValueOutput);
             }
@@ -214,7 +225,7 @@ namespace AllOverIt.Formatters.Objects
 
                 var isString = type == CommonTypes.StringType;
 
-                if (isString && ((string) value).IsNullOrEmpty())        // null was already checked, so this only applies to empty values
+                if (isString && ((string) value).IsEmpty())        // null was already checked, so this only applies to empty values
                 {
                     values.Add(path, Options.EmptyValueOutput);
                 }
@@ -321,7 +332,7 @@ namespace AllOverIt.Formatters.Objects
             return args.Length != 0 && IgnoreType(args[0]);
         }
 
-        private void SetFilterAttributes(Type type, object value, string path, string name, int? index, IDictionary<object, ObjectPropertyParent> references)
+        private void SetFilterAttributes(Type type, object value, string path, string? name, int? index, IDictionary<object, ObjectPropertyParent> references)
         {
             var propertyPath = GetPropertyPath(references);
 
@@ -332,7 +343,7 @@ namespace AllOverIt.Formatters.Objects
                     : $"{propertyPath}.{name}";
             }
 
-            Filter.Type = type;
+            Filter!.Type = type;
             Filter.Value = value;
             Filter.Path = path;
             Filter.PropertyPath = propertyPath;
@@ -341,16 +352,16 @@ namespace AllOverIt.Formatters.Objects
             Filter.Parents = references.Values.AsReadOnlyCollection();
         }
 
-        private bool IncludeProperty(Type type, object value, string path, string name, int? index, IDictionary<object, ObjectPropertyParent> references)
+        private bool IncludeProperty(Type type, object value, string path, string? name, int? index, IDictionary<object, ObjectPropertyParent> references)
         {
             SetFilterAttributes(type, value, path, name, index, references);
 
-            return Filter.OnIncludeProperty();
+            return Filter!.OnIncludeProperty();
         }
 
-        private bool IncludePropertyValue(Type type, object value, string path, string name, int? index, IDictionary<object, ObjectPropertyParent> references)
+        private bool IncludePropertyValue(Type type, object value, string path, string? name, int? index, IDictionary<object, ObjectPropertyParent> references)
         {
-            return IncludeProperty(type, value, path, name, index, references) && Filter.OnIncludeValue();
+            return IncludeProperty(type, value, path, name, index, references) && Filter!.OnIncludeValue();
         }
 
         private static string GetPropertyPath(IDictionary<object, ObjectPropertyParent> references)
@@ -362,16 +373,16 @@ namespace AllOverIt.Formatters.Objects
         {
             var enumerableType = enumerable.GetType();
 
-            // See if it's an array
+            // See if it's an array (will return null if not an array)
             var elementType = enumerableType.GetElementType();
 
             // Otherwise a generic collection
-            if (elementType == null && enumerableType.IsGenericType)
+            if (elementType is null && enumerableType.IsGenericType)
             {
                 elementType = enumerableType.GetGenericArguments()[0];
             }
 
-            return elementType;
+            return elementType ?? CommonTypes.ObjectType;
         }
 
         private bool CanCollateEnumerableValues(IEnumerable enumerable, IDictionary<object, ObjectPropertyParent> references)

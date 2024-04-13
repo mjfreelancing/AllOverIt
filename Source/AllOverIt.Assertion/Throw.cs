@@ -57,7 +57,8 @@ namespace AllOverIt.Assertion
         /// <param name="arg1">The first argument to be provided to the exception constructor.</param>
         /// <param name="arg2">The second argument to be provided to the exception constructor.</param>
         /// <param name="arg3">The third argument to be provided to the exception constructor.</param>
-        public static void When<TExceptionArg1, TExceptionArg2, TExceptionArg3>(bool condition, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3)
+        public static void When<TExceptionArg1, TExceptionArg2, TExceptionArg3>(bool condition, TExceptionArg1 arg1, TExceptionArg2 arg2,
+            TExceptionArg3 arg3)
         {
             if (condition)
             {
@@ -75,7 +76,8 @@ namespace AllOverIt.Assertion
         /// <param name="arg2">The second argument to be provided to the exception constructor.</param>
         /// <param name="arg3">The third argument to be provided to the exception constructor.</param>
         /// <param name="arg4">The fourth argument to be provided to the exception constructor.</param>
-        public static void When<TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>(bool condition, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3, TExceptionArg4 arg4)
+        public static void When<TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>(bool condition, TExceptionArg1 arg1, TExceptionArg2 arg2,
+            TExceptionArg3 arg3, TExceptionArg4 arg4)
         {
             if (condition)
             {
@@ -129,7 +131,8 @@ namespace AllOverIt.Assertion
         /// <param name="arg1">The first argument to be provided to the exception constructor.</param>
         /// <param name="arg2">The second argument to be provided to the exception constructor.</param>
         /// <param name="arg3">The third argument to be provided to the exception constructor.</param>
-        public static void WhenNot<TExceptionArg1, TExceptionArg2, TExceptionArg3>(bool condition, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3)
+        public static void WhenNot<TExceptionArg1, TExceptionArg2, TExceptionArg3>(bool condition, TExceptionArg1 arg1, TExceptionArg2 arg2,
+            TExceptionArg3 arg3)
         {
             if (!condition)
             {
@@ -147,7 +150,8 @@ namespace AllOverIt.Assertion
         /// <param name="arg2">The second argument to be provided to the exception constructor.</param>
         /// <param name="arg3">The third argument to be provided to the exception constructor.</param>
         /// <param name="arg4">The fourth argument to be provided to the exception constructor.</param>
-        public static void WhenNot<TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>(bool condition, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3, TExceptionArg4 arg4)
+        public static void WhenNot<TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>(bool condition, TExceptionArg1 arg1,
+            TExceptionArg2 arg2, TExceptionArg3 arg3, TExceptionArg4 arg4)
         {
             if (!condition)
             {
@@ -208,7 +212,8 @@ namespace AllOverIt.Assertion
         /// <param name="arg1">The first argument to be provided to the exception constructor.</param>
         /// <param name="arg2">The second argument to be provided to the exception constructor.</param>
         /// <param name="arg3">The third argument to be provided to the exception constructor.</param>
-        public static void WhenNull<TType, TExceptionArg1, TExceptionArg2, TExceptionArg3>([NotNull] TType? @object, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3)
+        public static void WhenNull<TType, TExceptionArg1, TExceptionArg2, TExceptionArg3>([NotNull] TType? @object, TExceptionArg1 arg1,
+            TExceptionArg2 arg2, TExceptionArg3 arg3)
             where TType : class
         {
             if (IsNull(@object))
@@ -228,7 +233,8 @@ namespace AllOverIt.Assertion
         /// <param name="arg2">The second argument to be provided to the exception constructor.</param>
         /// <param name="arg3">The third argument to be provided to the exception constructor.</param>
         /// <param name="arg4">The fourth argument to be provided to the exception constructor.</param>
-        public static void WhenNull<TType, TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>([NotNull] TType? @object, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3, TExceptionArg4 arg4)
+        public static void WhenNull<TType, TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>([NotNull] TType? @object,
+            TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3, TExceptionArg4 arg4)
             where TType : class
         {
             if (IsNull(@object))
@@ -290,7 +296,8 @@ namespace AllOverIt.Assertion
         /// <param name="arg1">The first argument to be provided to the exception constructor.</param>
         /// <param name="arg2">The second argument to be provided to the exception constructor.</param>
         /// <param name="arg3">The third argument to be provided to the exception constructor.</param>
-        public static void WhenNotNull<TType, TExceptionArg1, TExceptionArg2, TExceptionArg3>(TType? @object, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3)
+        public static void WhenNotNull<TType, TExceptionArg1, TExceptionArg2, TExceptionArg3>(TType? @object, TExceptionArg1 arg1,
+            TExceptionArg2 arg2, TExceptionArg3 arg3)
             where TType : class
         {
             if (IsNotNull(@object))
@@ -310,7 +317,8 @@ namespace AllOverIt.Assertion
         /// <param name="arg2">The second argument to be provided to the exception constructor.</param>
         /// <param name="arg3">The third argument to be provided to the exception constructor.</param>
         /// <param name="arg4">The fourth argument to be provided to the exception constructor.</param>
-        public static void WhenNotNull<TType, TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>(TType? @object, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3, TExceptionArg4 arg4)
+        public static void WhenNotNull<TType, TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>(TType? @object, TExceptionArg1 arg1,
+            TExceptionArg2 arg2, TExceptionArg3 arg3, TExceptionArg4 arg4)
             where TType : class
         {
             if (IsNotNull(@object))
@@ -365,7 +373,8 @@ namespace AllOverIt.Assertion
         /// <param name="arg1">The first argument to be provided to the exception constructor.</param>
         /// <param name="arg2">The second argument to be provided to the exception constructor.</param>
         /// <param name="arg3">The third argument to be provided to the exception constructor.</param>
-        public static void WhenNullOrEmpty<TExceptionArg1, TExceptionArg2, TExceptionArg3>([NotNull] string? @object, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3)
+        public static void WhenNullOrEmpty<TExceptionArg1, TExceptionArg2, TExceptionArg3>([NotNull] string? @object, TExceptionArg1 arg1,
+            TExceptionArg2 arg2, TExceptionArg3 arg3)
         {
             if (IsNullOrEmpty(@object))
             {
@@ -383,7 +392,8 @@ namespace AllOverIt.Assertion
         /// <param name="arg2">The second argument to be provided to the exception constructor.</param>
         /// <param name="arg3">The third argument to be provided to the exception constructor.</param>
         /// <param name="arg4">The fourth argument to be provided to the exception constructor.</param>
-        public static void WhenNullOrEmpty<TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>([NotNull] string? @object, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3, TExceptionArg4 arg4)
+        public static void WhenNullOrEmpty<TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>([NotNull] string? @object,
+            TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3, TExceptionArg4 arg4)
         {
             if (IsNullOrEmpty(@object))
             {
@@ -437,7 +447,8 @@ namespace AllOverIt.Assertion
         /// <param name="arg1">The first argument to be provided to the exception constructor.</param>
         /// <param name="arg2">The second argument to be provided to the exception constructor.</param>
         /// <param name="arg3">The third argument to be provided to the exception constructor.</param>
-        public static void WhenNotNullOrEmpty<TExceptionArg1, TExceptionArg2, TExceptionArg3>(string? @object, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3)
+        public static void WhenNotNullOrEmpty<TExceptionArg1, TExceptionArg2, TExceptionArg3>(string? @object, TExceptionArg1 arg1,
+            TExceptionArg2 arg2, TExceptionArg3 arg3)
         {
             if (!IsNullOrEmpty(@object))
             {
@@ -455,7 +466,8 @@ namespace AllOverIt.Assertion
         /// <param name="arg2">The second argument to be provided to the exception constructor.</param>
         /// <param name="arg3">The third argument to be provided to the exception constructor.</param>
         /// <param name="arg4">The fourth argument to be provided to the exception constructor.</param>
-        public static void WhenNotNullOrEmpty<TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>(string? @object, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3, TExceptionArg4 arg4)
+        public static void WhenNotNullOrEmpty<TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>(string? @object, TExceptionArg1 arg1,
+            TExceptionArg2 arg2, TExceptionArg3 arg3, TExceptionArg4 arg4)
         {
             if (!IsNullOrEmpty(@object))
             {
@@ -516,7 +528,8 @@ namespace AllOverIt.Assertion
         /// <param name="arg1">The first argument to be provided to the exception constructor.</param>
         /// <param name="arg2">The second argument to be provided to the exception constructor.</param>
         /// <param name="arg3">The third argument to be provided to the exception constructor.</param>
-        public static void WhenNullOrEmpty<TType, TExceptionArg1, TExceptionArg2, TExceptionArg3>([NotNull] IEnumerable<TType>? @object, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3)
+        public static void WhenNullOrEmpty<TType, TExceptionArg1, TExceptionArg2, TExceptionArg3>([NotNull] IEnumerable<TType>? @object, TExceptionArg1 arg1,
+            TExceptionArg2 arg2, TExceptionArg3 arg3)
             where TType : class
         {
             if (IsNullOrEmpty(@object))
@@ -536,7 +549,8 @@ namespace AllOverIt.Assertion
         /// <param name="arg2">The second argument to be provided to the exception constructor.</param>
         /// <param name="arg3">The third argument to be provided to the exception constructor.</param>
         /// <param name="arg4">The fourth argument to be provided to the exception constructor.</param>
-        public static void WhenNullOrEmpty<TType, TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>([NotNull] IEnumerable<TType>? @object, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3, TExceptionArg4 arg4)
+        public static void WhenNullOrEmpty<TType, TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>([NotNull] IEnumerable<TType>? @object,
+            TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3, TExceptionArg4 arg4)
             where TType : class
         {
             if (IsNullOrEmpty(@object))
@@ -598,7 +612,8 @@ namespace AllOverIt.Assertion
         /// <param name="arg1">The first argument to be provided to the exception constructor.</param>
         /// <param name="arg2">The second argument to be provided to the exception constructor.</param>
         /// <param name="arg3">The third argument to be provided to the exception constructor.</param>
-        public static void WhenNotNullOrEmpty<TType, TExceptionArg1, TExceptionArg2, TExceptionArg3>(IEnumerable<TType>? @object, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3)
+        public static void WhenNotNullOrEmpty<TType, TExceptionArg1, TExceptionArg2, TExceptionArg3>(IEnumerable<TType>? @object, TExceptionArg1 arg1,
+            TExceptionArg2 arg2, TExceptionArg3 arg3)
             where TType : class
         {
             if (!IsNullOrEmpty(@object))
@@ -618,7 +633,8 @@ namespace AllOverIt.Assertion
         /// <param name="arg2">The second argument to be provided to the exception constructor.</param>
         /// <param name="arg3">The third argument to be provided to the exception constructor.</param>
         /// <param name="arg4">The fourth argument to be provided to the exception constructor.</param>
-        public static void WhenNotNullOrEmpty<TType, TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>(IEnumerable<TType>? @object, TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3, TExceptionArg4 arg4)
+        public static void WhenNotNullOrEmpty<TType, TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>(IEnumerable<TType>? @object,
+            TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3, TExceptionArg4 arg4)
             where TType : class
         {
             if (!IsNullOrEmpty(@object))

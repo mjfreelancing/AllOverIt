@@ -1,7 +1,8 @@
 ﻿using AllOverIt.Diagnostics.Breadcrumbs;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
-using Xunit;
+using System;
 
 namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 {
@@ -15,6 +16,18 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
             var breacrumbs = factory.CreateBreadcrumbs() as AllOverIt.Diagnostics.Breadcrumbs.Breadcrumbs;
 
             breacrumbs.Options.Should().BeEquivalentTo(new BreadcrumbsOptions());
+        }
+
+        [Fact]
+        public void Should_Throw_When_Options_Null()
+        {
+            Invoking(() =>
+            {
+                _ = new BreadcrumbsFactory(null);
+            })
+            .Should()
+            .Throw<ArgumentNullException>()
+            .WithNamedMessageWhenNull("options");
         }
 
         [Fact]
