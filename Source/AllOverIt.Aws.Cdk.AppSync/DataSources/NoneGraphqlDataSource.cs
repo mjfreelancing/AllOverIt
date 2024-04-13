@@ -6,7 +6,7 @@
         /// <summary>Constructor.</summary>
         /// <param name="dataSourceName">The DataSource name.</param>
         /// <param name="description">A description for the datasource.</param>
-        public NoneGraphqlDataSource(string dataSourceName, string description = default)
+        public NoneGraphqlDataSource(string dataSourceName, string? description = default)
             : base(dataSourceName, description)
         {
         }

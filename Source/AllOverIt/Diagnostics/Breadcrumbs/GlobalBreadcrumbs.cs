@@ -1,10 +1,12 @@
-﻿namespace AllOverIt.Diagnostics.Breadcrumbs
+﻿using AllOverIt.Assertion;
+
+namespace AllOverIt.Diagnostics.Breadcrumbs
 {
     /// <summary>A helper to create a static <see cref="Breadcrumbs"/> for when you need a globally accessible instance
     /// for troubleshooting.</summary>
     public static class GlobalBreadcrumbs
     {
-        private static IBreadcrumbs _breadcrumbs;
+        private static IBreadcrumbs? _breadcrumbs;
 
         /// <summary>Gets the current global instance, creating a default instance if required.</summary>
         public static IBreadcrumbs Instance
@@ -16,12 +18,24 @@
             }
         }
 
+        /// <summary>Creates a new <see cref="Breadcrumbs"/> instance with a default constructed <see cref="BreadcrumbsOptions"/>.
+        /// If the global instance already exists it will be replaced.</summary>
+        /// <returns>A new <see cref="Breadcrumbs"/> instance.</returns>
+        public static IBreadcrumbs Create()
+        {
+            _breadcrumbs = new Breadcrumbs(new BreadcrumbsOptions());
+
+            return _breadcrumbs;
+        }
+
         /// <summary>Creates a new <see cref="Breadcrumbs"/> instance with the provided options. If the global instance
         /// already exists it will be replaced.</summary>
         /// <param name="options">The breadcrumbs options to use.</param>
         /// <returns>A new <see cref="Breadcrumbs"/> instance.</returns>
-        public static IBreadcrumbs Create(BreadcrumbsOptions options = default)
+        public static IBreadcrumbs Create(BreadcrumbsOptions options)
         {
+            _ = options.WhenNotNull(nameof(options));
+
             // Re-create the breadcrumbs if called more than once
             _breadcrumbs = new Breadcrumbs(options);
 

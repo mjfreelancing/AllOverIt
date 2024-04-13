@@ -12,7 +12,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.DataSources
         /// <param name="dataSourceName">The DataSource name.</param>
         /// <param name="endpoint">The HTTP endpoint.</param>
         /// <param name="description">A description for the datasource.</param>
-        public HttpGraphqlDataSource(string dataSourceName, string endpoint, string description = default)
+        public HttpGraphqlDataSource(string dataSourceName, string endpoint, string? description = default)
             : base(dataSourceName, description)
         {
             Endpoint = endpoint.WhenNotNullOrEmpty(nameof(endpoint));

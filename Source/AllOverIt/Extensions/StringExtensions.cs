@@ -2,6 +2,7 @@
 using AllOverIt.Reflection;
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 
@@ -21,7 +22,8 @@ namespace AllOverIt.Extensions
         ///   <para>Char and Boolean type conversions must be performed using the <see cref="ObjectExtensions.As{TType}(object, TType)"/> method.</para>
         ///   <para>No attempt is made to avoid overflow or argument exceptions.</para>
         /// </remarks>
-        public static TType As<TType>(this string value, TType defaultValue = default)
+        [return: MaybeNull]
+        public static TType As<TType>(this string value, TType? defaultValue = default)
         {
             if (string.IsNullOrWhiteSpace(value))
             {
@@ -32,16 +34,19 @@ namespace AllOverIt.Extensions
 
             if (valueType.IsEnum)
             {
-                return (TType)Enum.Parse(valueType, value, true);
+                return (TType) Enum.Parse(valueType, value, true);
             }
 
             if (valueType == CommonTypes.BoolType)
             {
                 switch (value)
                 {
-                    case "0": return (TType)Convert.ChangeType(false, valueType);
-                    case "1": return (TType)Convert.ChangeType(true, valueType);
-                    // fall through - true / false values will be converted via the type converter
+                    case "0":
+                        return (TType) Convert.ChangeType(false, valueType);
+
+                    case "1":
+                        return (TType) Convert.ChangeType(true, valueType);
+                        // fall through - true / false values will be converted via the type converter
                 }
             }
 
@@ -53,10 +58,10 @@ namespace AllOverIt.Extensions
                 throw new ArgumentException($"No converter exists for type '{valueType.Name}' when value = '{value}'.");
             }
 
-            // will throw NotSupportedException if the conversion cannot be performed
+            // Will throw NotSupportedException if the conversion cannot be performed
             var converted = typeConverter.ConvertFromString(value);
 
-            return (TType)converted;
+            return (TType) converted!;
         }
 
         /// <summary>Converts a given string to another nullable type.</summary>
@@ -74,7 +79,7 @@ namespace AllOverIt.Extensions
             if (typeof(TType).IsEnum)
             {
                 // will throw ArgumentException is 'ignoreCase = false' and the value cannot be found
-                return (TType)Enum.Parse(typeof(TType), value, true);
+                return (TType) Enum.Parse(typeof(TType), value, true);
             }
 
             // perform this after the enum conversion attempt
@@ -89,7 +94,7 @@ namespace AllOverIt.Extensions
         /// <summary>Determines if a string is null, empty, or contains whitespace.</summary>
         /// <param name="value">The string value to compare.</param>
         /// <returns><see langword="true" /> if the string is null, empty, or contains whitespace, otherwise <see langword="false" />.</returns>
-        public static bool IsNullOrEmpty(this string value)
+        public static bool IsNullOrEmpty([NotNullWhen(false)] this string? value)
         {
             return string.IsNullOrWhiteSpace(value);
         }
@@ -97,7 +102,7 @@ namespace AllOverIt.Extensions
         /// <summary>Determines if a string is not null, empty, or containing whitespace.</summary>
         /// <param name="value">The string value to compare.</param>
         /// <returns><see langword="true" /> if the string is not null, not empty, nor contains whitespace, otherwise <see langword="false" />.</returns>
-        public static bool IsNotNullOrEmpty(this string value)
+        public static bool IsNotNullOrEmpty([NotNullWhen(true)] this string? value)
         {
             return !string.IsNullOrWhiteSpace(value);
         }
@@ -118,6 +123,7 @@ namespace AllOverIt.Extensions
             _ = value.WhenNotNull(nameof(value));
 
             var bytes = Encoding.UTF8.GetBytes(value);
+
             return Convert.ToBase64String(bytes);
         }
 
@@ -129,6 +135,7 @@ namespace AllOverIt.Extensions
             _ = value.WhenNotNull(nameof(value));
 
             var bytes = Convert.FromBase64String(value);
+
             return Encoding.UTF8.GetString(bytes);
         }
 
@@ -140,6 +147,7 @@ namespace AllOverIt.Extensions
             _ = value.WhenNotNull(nameof(value));
 
             var bytes = Encoding.UTF8.GetBytes(value);
+
             return new MemoryStream(bytes);
         }
     }

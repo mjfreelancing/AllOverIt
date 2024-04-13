@@ -253,7 +253,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
             };
         }
 
-        private static IIntermediateType CreateIntermediateType(GraphqlSchemaTypeDescriptor typeDescriptor, IDictionary<string, IField> classDefinition = null)
+        private static IIntermediateType CreateIntermediateType(GraphqlSchemaTypeDescriptor typeDescriptor, IDictionary<string, IField>? classDefinition = default)
         {
             // TODO: currently handles Input and Type - haven't yet looked at these below
 
