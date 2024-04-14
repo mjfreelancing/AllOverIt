@@ -16,21 +16,21 @@ namespace InterceptorDemo.Interceptors.ClassLevel
             public Stopwatch Stopwatch { get; } = Stopwatch.StartNew();
         }
 
-        protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args)
+        protected override InterceptorState BeforeInvoke(MethodInfo? targetMethod, ref object?[]? args)
         {
-            Console.WriteLine($"Before {targetMethod.Name}");
+            Console.WriteLine($"Before {targetMethod!.Name}");
 
             return new TimedState();
         }
 
-        protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
+        protected override void AfterInvoke(MethodInfo targetMethod, object?[]? args, InterceptorState state)
         {
             Console.WriteLine($"After {targetMethod.Name}");
 
             CheckElapsedPeriod(state);
         }
 
-        protected override void Faulted(MethodInfo targetMethod, object[] args, InterceptorState state, Exception exception)
+        protected override void Faulted(MethodInfo targetMethod, object?[]? args, InterceptorState state, Exception exception)
         {
             Console.WriteLine($"FAULTED: {targetMethod.Name} - {exception.Message}");
 
@@ -39,7 +39,7 @@ namespace InterceptorDemo.Interceptors.ClassLevel
 
         private void CheckElapsedPeriod(InterceptorState state)
         {
-            var timedState = state as TimedState;
+            var timedState = (TimedState) state;
             var elapsed = timedState.Stopwatch.ElapsedMilliseconds;
 
             if (!MinimimReportableMilliseconds.HasValue || elapsed >= MinimimReportableMilliseconds)

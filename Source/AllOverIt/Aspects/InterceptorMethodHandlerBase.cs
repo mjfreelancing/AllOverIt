@@ -71,13 +71,13 @@ namespace AllOverIt.Aspects
         /// <inheritdoc />
         void IInterceptorMethodHandler.AfterInvoke(MethodInfo targetMethod, object?[]? args, InterceptorState state)
         {
-            AfterMethodInvoke(targetMethod, args, state as InterceptorState<TResult>);
+            AfterMethodInvoke(targetMethod, args, (InterceptorState<TResult>) state);
         }
 
         /// <inheritdoc />
         void IInterceptorMethodHandler.Faulted(MethodInfo targetMethod, object?[]? args, InterceptorState state, Exception exception)
         {
-            MethodFaulted(targetMethod, args, state as InterceptorState<TResult>, exception);
+            MethodFaulted(targetMethod, args, (InterceptorState<TResult>) state, exception);
         }
 
         /// <summary>This method is called before the intercepted method is called on the decorated instance.</summary>
@@ -123,13 +123,13 @@ namespace AllOverIt.Aspects
         /// <inheritdoc />
         void IInterceptorMethodHandler.AfterInvoke(MethodInfo targetMethod, object?[]? args, InterceptorState state)
         {
-            AfterMethodInvoke(targetMethod, args, state as InterceptorState<Task>);
+            AfterMethodInvoke(targetMethod, args, (InterceptorState<Task>) state);
         }
 
         /// <inheritdoc />
         void IInterceptorMethodHandler.Faulted(MethodInfo targetMethod, object?[]? args, InterceptorState state, Exception exception)
         {
-            MethodFaulted(targetMethod, args, state as InterceptorState<Task>, exception);
+            MethodFaulted(targetMethod, args, (InterceptorState<Task>) state, exception);
         }
 
         /// <summary>This method is called before the intercepted method is called on the decorated instance.</summary>
@@ -175,13 +175,13 @@ namespace AllOverIt.Aspects
         /// <inheritdoc />
         void IInterceptorMethodHandler.AfterInvoke(MethodInfo targetMethod, object?[]? args, InterceptorState state)
         {
-            AfterMethodInvoke(targetMethod, args, state as InterceptorState<Task<TResult>>);
+            AfterMethodInvoke(targetMethod, args, (InterceptorState<Task<TResult>>) state);
         }
 
         /// <inheritdoc />
         void IInterceptorMethodHandler.Faulted(MethodInfo targetMethod, object?[]? args, InterceptorState state, Exception exception)
         {
-            MethodFaulted(targetMethod, args, state as InterceptorState<Task<TResult>>, exception);
+            MethodFaulted(targetMethod, args, (InterceptorState<Task<TResult>>) state, exception);
         }
 
         /// <summary>This method is called before the intercepted method is called on the decorated instance.</summary>

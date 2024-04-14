@@ -843,6 +843,51 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
+        public class IsNotNullOrEmpty : EnumerableExtensionsFixture
+        {
+            [Fact]
+            public void Should_Return_False_When_Null()
+            {
+                var actual = EnumerableExtensions.IsNotNullOrEmpty(null);
+
+                actual.Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Return_False_When_Array_Empty()
+            {
+                var actual = EnumerableExtensions.IsNotNullOrEmpty(Array.Empty<object>());
+
+                actual.Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Return_True_When_Array_Not_Empty()
+            {
+                var actual = EnumerableExtensions.IsNotNullOrEmpty(new[] { true, false });
+
+                actual.Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Return_False_When_String_Empty()
+            {
+                var value = string.Empty;
+                var actual = EnumerableExtensions.IsNotNullOrEmpty(value);
+
+                actual.Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Return_True_When_String_Not_Empty()
+            {
+                var value = Create<string>();
+                var actual = EnumerableExtensions.IsNotNullOrEmpty(value);
+
+                actual.Should().BeTrue();
+            }
+        }
+
         public class Batch : EnumerableExtensionsFixture
         {
             [Fact]

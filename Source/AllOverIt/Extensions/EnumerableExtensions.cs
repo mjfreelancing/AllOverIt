@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -277,15 +278,15 @@ namespace AllOverIt.Extensions
         /// <summary>Applicable to strings and collections, this method determines if the instance is null or empty.</summary>
         /// <param name="items">The object of interest.</param>
         /// <returns><see langword="true" /> if the object is null or empty.</returns>
-        public static bool IsNullOrEmpty(this IEnumerable items)
+        public static bool IsNullOrEmpty([NotNullWhen(false)] this IEnumerable? items)
         {
-            return items == null || !items.GetEnumerator().MoveNext();
+            return items is null || !items.GetEnumerator().MoveNext();
         }
 
         /// <summary>Applicable to strings and collections, this method determines if the instance is not null or empty.</summary>
         /// <param name="items">The object of interest.</param>
         /// <returns><see langword="true" /> if the object is not null or not empty.</returns>
-        public static bool IsNotNullOrEmpty(this IEnumerable items)                 // TODO: Add tests
+        public static bool IsNotNullOrEmpty([NotNullWhen(true)] this IEnumerable? items)
         {
             return !IsNullOrEmpty(items);
         }
@@ -378,6 +379,7 @@ namespace AllOverIt.Extensions
         /// <returns>Elements from the first collection that have a key matching elements in the second collection.</returns>
         public static IEnumerable<TFirst> FindMatches<TFirst, TSecond, TKey>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second,
             Func<TFirst, TKey> firstSelector, Func<TSecond, TKey> secondSelector)
+            where TKey : notnull
         {
             var firstItems = first
                 .WhenNotNull(nameof(first))

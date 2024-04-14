@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Assertion;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
@@ -74,12 +75,15 @@ namespace AllOverIt.IO
         /// <param name="relativePath">The relative path to apply to the path portion of the source filename.</param>
         /// <param name="newFileName">If not null then the source filename is replaced.</param>
         /// <returns>The absolute filename derived from applying a relative path to the original source filename.</returns>
-        public static string GetAbsoluteFileName(string sourceFileName, string relativePath, string newFileName = null)
+        public static string GetAbsoluteFileName(string sourceFileName, string relativePath, string? newFileName = null)
         {
             _ = sourceFileName.WhenNotNullOrEmpty(nameof(sourceFileName));
             _ = relativePath.WhenNotNullOrEmpty(nameof(relativePath));
 
             var sourceDirectory = Path.GetDirectoryName(sourceFileName);
+
+            Throw<InvalidOperationException>.WhenNull(sourceDirectory, $"'{sourceDirectory}' does not contain a path.");
+
             var outputPath = GetAbsolutePath(sourceDirectory, relativePath);
 
             return Path.Combine(outputPath, newFileName ?? Path.GetFileName(sourceFileName));

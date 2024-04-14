@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AllOverIt.Assertion;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
@@ -40,7 +41,7 @@ namespace AllOverIt.Aspects
         /// <inheritdoc />
         protected override InterceptorState BeforeInvoke(MethodInfo? targetMethod, ref object?[]? args)
         {
-            var methodInterceptor = _methodInterceptors[targetMethod];
+            var methodInterceptor = GetMethodInterceptor(targetMethod);
 
             return methodInterceptor.BeforeInvoke(targetMethod, ref args);
         }
@@ -48,7 +49,7 @@ namespace AllOverIt.Aspects
         /// <inheritdoc />
         protected override void AfterInvoke(MethodInfo targetMethod, object?[]? args, InterceptorState state)
         {
-            var methodInterceptor = _methodInterceptors[targetMethod];
+            var methodInterceptor = GetMethodInterceptor(targetMethod);
 
             methodInterceptor.AfterInvoke(targetMethod, args, state);
         }
@@ -56,9 +57,17 @@ namespace AllOverIt.Aspects
         /// <inheritdoc />
         protected override void Faulted(MethodInfo targetMethod, object?[]? args, InterceptorState state, Exception exception)
         {
-            var methodInterceptor = _methodInterceptors[targetMethod];
+            var methodInterceptor = GetMethodInterceptor(targetMethod);
 
             methodInterceptor.Faulted(targetMethod, args, state, exception);
+        }
+
+        private IInterceptorMethodHandler GetMethodInterceptor([NotNull] MethodInfo? targetMethod)
+        {
+            // This method only exists so the code analysis can determine targetMethod is not null
+            _ = targetMethod.WhenNotNull(nameof(targetMethod));
+
+            return _methodInterceptors[targetMethod];
         }
     }
 }

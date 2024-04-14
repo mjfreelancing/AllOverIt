@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Aspects;
+using AllOverIt.Assertion;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -10,7 +11,7 @@ namespace InterceptorDemo.Interceptors.MethodLevel
         private readonly long _minimumReportableMilliseconds;
         private readonly bool _useCache;
 
-        public override MethodInfo[] TargetMethods { get; } = [typeof(ISecretService).GetMethod(nameof(ISecretService.GetSecret))];
+        public override MethodInfo[] TargetMethods { get; } = [typeof(ISecretService).GetMethod(nameof(ISecretService.GetSecret))!];
 
         public GetSecretHandler(long minimimReportableMilliseconds, bool useCache)
         {
@@ -18,29 +19,34 @@ namespace InterceptorDemo.Interceptors.MethodLevel
             _useCache = useCache;
         }
 
-        protected override InterceptorState<string> BeforeMethodInvoke(MethodInfo targetMethod, ref object[] args)
+        protected override InterceptorState<string> BeforeMethodInvoke(MethodInfo? targetMethod, ref object?[]? args)
         {
-            var accessKey = (string) args[0];
+            // This demo assumes args is not null
+            _ = args.WhenNotNull();
+
+            var accessKey = (string) args[0]!;
 
             args[0] = accessKey.ToUpperInvariant();
 
-            string result = default;
+            string? result = default;
             var isHandled = false;
+
+            var methodName = targetMethod!.Name;
 
             if (_useCache)
             {
                 // Pretend to get the result from a cache here - just setting a value
-                var cachedValue = ((string) args[0]).ToArray();
+                var cachedValue = accessKey.ToArray();
                 Array.Reverse(cachedValue);
 
                 result = new string(cachedValue).ToLowerInvariant();
                 isHandled = true;
 
-                Console.WriteLine($"Before {targetMethod.Name}({accessKey}) - using a cache");
+                Console.WriteLine($"Before {methodName}({accessKey}) - using a cache");
             }
             else
             {
-                Console.WriteLine($"Before {targetMethod.Name}({accessKey}) - not using a cache");
+                Console.WriteLine($"Before {methodName}({accessKey}) - not using a cache");
             }
 
             return new TimedInterceptorState<string>
@@ -50,9 +56,13 @@ namespace InterceptorDemo.Interceptors.MethodLevel
             };
         }
 
-        protected override void AfterMethodInvoke(MethodInfo targetMethod, object[] args, InterceptorState<string> state)
+        protected override void AfterMethodInvoke(MethodInfo targetMethod, object?[]? args, InterceptorState<string> state)
         {
-            var accessKey = (string) args[0];
+            // This demo assumes state.Result is not null
+            _ = args.WhenNotNull();
+            _ = state.Result.WhenNotNull();
+
+            var accessKey = (string) args[0]!;
 
             Console.WriteLine($"After {targetMethod.Name}, arg[0] = {accessKey}, state result = {state.Result}");
 
@@ -65,7 +75,7 @@ namespace InterceptorDemo.Interceptors.MethodLevel
 
         private void CheckElapsedPeriod(InterceptorState<string> state)
         {
-            var timedState = state as TimedInterceptorState<string>;
+            var timedState = (TimedInterceptorState<string>) state;
             var elapsed = timedState.Stopwatch.ElapsedMilliseconds;
 
             if (elapsed >= _minimumReportableMilliseconds)

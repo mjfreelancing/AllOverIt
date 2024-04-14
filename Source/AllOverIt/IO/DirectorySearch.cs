@@ -46,7 +46,7 @@ namespace AllOverIt.IO
                 yield break;
             }
 
-            IEnumerable<DirectoryInfo> directories = null;
+            IEnumerable<DirectoryInfo>? directories = null;
 
             try
             {

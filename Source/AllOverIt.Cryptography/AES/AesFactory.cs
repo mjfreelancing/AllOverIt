@@ -1,5 +1,4 @@
-﻿using AllOverIt.Assertion;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 
 namespace AllOverIt.Cryptography.AES
 {
@@ -10,7 +9,9 @@ namespace AllOverIt.Cryptography.AES
         public static readonly AesFactory Instance = new();
 
         /// <inheritdoc />
-        public Aes Create(IAesEncryptorConfiguration configuration = default)
+        /// <remarks>If <paramref name="configuration"/> is <see langword="null"/>, a default constructed
+        /// <see cref="AesEncryptorConfiguration"/> will be used.</remarks>
+        public Aes Create(IAesEncryptorConfiguration? configuration = default)
         {
             configuration ??= new AesEncryptorConfiguration();
 

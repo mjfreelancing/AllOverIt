@@ -10,29 +10,31 @@ namespace InterceptorDemo.Interceptors.ClassLevel
     // Return a handled result - will not called the decorated instance
     internal class HandleResultInterceptor : InterceptorBase<ISecretService>
     {
-        private static readonly MethodInfo GetSecretMethodInfo = typeof(ISecretService).GetMethod(nameof(ISecretService.GetSecret));
-        private static readonly MethodInfo GetSecretAsyncMethodInfo = typeof(ISecretService).GetMethod(nameof(ISecretService.GetSecretAsync));
+        private static readonly MethodInfo GetSecretMethodInfo = typeof(ISecretService).GetMethod(nameof(ISecretService.GetSecret))!;
+        private static readonly MethodInfo GetSecretAsyncMethodInfo = typeof(ISecretService).GetMethod(nameof(ISecretService.GetSecretAsync))!;
 
         // Only intercept these methods
         private static readonly MethodInfo[] FilteredMethods = [GetSecretMethodInfo, GetSecretAsyncMethodInfo];
 
-        protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args)
+        protected override InterceptorState BeforeInvoke(MethodInfo? targetMethod, ref object?[]? args)
         {
+            var methodName = targetMethod!.Name;
+
             if (!FilteredMethods.Contains(targetMethod))
             {
-                Console.WriteLine($"Skipping {targetMethod.Name}");
+                Console.WriteLine($"Skipping {methodName}");
 
                 return new InterceptorState();
             }
 
-            Console.WriteLine($"Before {targetMethod.Name}");
+            Console.WriteLine($"Before {methodName}");
 
             var state = new InterceptorState
             {
                 IsHandled = true,
             };
 
-            var result = $"{targetMethod.Name} has been intercepted - will not call the decorated instance";
+            var result = $"{methodName} has been intercepted - will not call the decorated instance";
 
             // This is a classic reason why class level interceptors are not ideal for this scenario. Best to use method level interceptors.
             if (targetMethod == GetSecretMethodInfo)
@@ -47,7 +49,7 @@ namespace InterceptorDemo.Interceptors.ClassLevel
             return state;
         }
 
-        protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
+        protected override void AfterInvoke(MethodInfo targetMethod, object?[]? args, InterceptorState state)
         {
             if (!FilteredMethods.Contains(targetMethod))
             {
@@ -55,8 +57,8 @@ namespace InterceptorDemo.Interceptors.ClassLevel
             }
 
             var stateResult = targetMethod == GetSecretMethodInfo
-                ? state.GetResult<string>()
-                : state.GetResult<Task<string>>().Result;       // safe since the Task has run to completion if it gets here
+                ? state.GetResult<string>()!
+                : state.GetResult<Task<string>>()!.Result!;       // safe since the Task has run to completion if it gets here
 
             Console.WriteLine($"After {targetMethod.Name}, handled result is '{stateResult}'");
         }

@@ -14,7 +14,7 @@ namespace AllOverIt.Formatters.Objects
 
         /// <summary>Constructor.</summary>
         /// <param name="defaultSerializerFactory">An optional factory method to construct an <see cref="IObjectPropertySerializer"/> instance.</param>
-        public ObjectPropertyFilterRegistry(Func<IObjectPropertySerializer> defaultSerializerFactory = default)
+        public ObjectPropertyFilterRegistry(Func<IObjectPropertySerializer>? defaultSerializerFactory = default)
         {
             var serializerFactory = defaultSerializerFactory is not null
                 ? defaultSerializerFactory
@@ -24,7 +24,7 @@ namespace AllOverIt.Formatters.Objects
         }
 
         /// <inheritdoc />
-        public void Register<TType, TFilter>(ObjectPropertySerializerOptions serializerOptions = default)
+        public void Register<TType, TFilter>(ObjectPropertySerializerOptions? serializerOptions = default)
             where TFilter : ObjectPropertyFilter, new()
         {
             var options = serializerOptions ?? new ObjectPropertySerializerOptions();

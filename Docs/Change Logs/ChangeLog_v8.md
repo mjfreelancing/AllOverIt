@@ -1,9 +1,14 @@
 #  Version 8.0.0
 ## XX XXX 2024
 
+### PENDING / IN-PROGRESS
+* Enable nullable references
+* Change properties and arguments from IReadOnlyCollection<T> to T[], where applicable
+* Add 'required' to properties, where applicable - including NetStandard 2.1 support
+
+
 ### Applicable to all packages
 * Dopped support for NET 6 and NET 7
-* Enabled Nullable references
 
 
 ### AllOverIt

@@ -158,7 +158,7 @@ namespace AllOverIt.Aspects
                         // The TaskCompletionSource needs to be set the result returned by the decorated
                         // service / interceptor, or null if the method's return type is void or Task.
                         var returnValue = hasReturnType
-                            ? state.GetResult().GetPropertyValue(methodReturnType, "Result")
+                            ? state.GetResult()!.GetPropertyValue(methodReturnType, "Result")
                             : null;
 
                         // Set the final result.

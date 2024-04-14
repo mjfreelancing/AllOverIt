@@ -181,7 +181,7 @@ namespace AllOverIt.Formatters.Objects
             if (!instanceType.IsClass || instanceType == CommonTypes.StringType)
             {
                 // The value doesn't have properties....only option is to ToString() it
-                values.Add(Options.RootValueOptions.ScalarKeyName, instance.ToString());
+                values.Add(Options.RootValueOptions.ScalarKeyName, instance.ToString()!);
                 return;
             }
 
@@ -231,7 +231,7 @@ namespace AllOverIt.Formatters.Objects
                 }
                 else if (isString || type.IsValueType)
                 {
-                    var valueStr = value.ToString();
+                    var valueStr = value.ToString()!;
 
                     if (Filter is not null)
                     {
@@ -308,7 +308,10 @@ namespace AllOverIt.Formatters.Objects
             if (args.NotAny())
             {
                 // Assume IDictionary, such as from Environment.GetEnvironmentVariables(), contains values that can be converted to strings
-                dictionary = dictionary.Cast<DictionaryEntry>().ToDictionary(entry => entry.Key.ToString(), entry => entry.Value.ToString());
+                dictionary = dictionary.Cast<DictionaryEntry>().ToDictionary(
+                    entry => entry.Key.ToString()!,
+                    entry => entry.Value!.ToString()!);
+
                 args = dictionary.GetType().GetGenericArguments();
             }
 

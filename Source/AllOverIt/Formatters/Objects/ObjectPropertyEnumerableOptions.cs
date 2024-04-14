@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AllOverIt.Formatters.Objects
+﻿namespace AllOverIt.Formatters.Objects
 {
     /// <summary>Provides options for the handling of enumerable values.</summary>
     public sealed class ObjectPropertyEnumerableOptions
@@ -15,6 +13,6 @@ namespace AllOverIt.Formatters.Objects
         /// <summary>An optional set of property paths that will be auto-collated.</summary>
         /// <remarks>Only string and primitive collections can be collated. Paths referencing non-collections or a collection
         /// of complex types are ignored.</remarks>
-        public IReadOnlyCollection<string> AutoCollatedPaths { get; set; }
+        public string[]? AutoCollatedPaths { get; set; }
     }
 }

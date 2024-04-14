@@ -55,7 +55,7 @@ namespace AllOverIt.IO
                 yield break;
             }
 
-            IEnumerable<FileInfo> files = null;
+            IEnumerable<FileInfo>? files = null;
 
             try
             {

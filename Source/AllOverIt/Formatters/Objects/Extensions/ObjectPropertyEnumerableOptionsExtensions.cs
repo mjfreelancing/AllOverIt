@@ -5,7 +5,6 @@ using AllOverIt.Helpers.PropertyNavigation;
 using AllOverIt.Helpers.PropertyNavigation.Extensions;
 using AllOverIt.Reflection;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace AllOverIt.Formatters.Objects.Extensions
@@ -23,7 +22,7 @@ namespace AllOverIt.Formatters.Objects.Extensions
             _ = options.WhenNotNull(nameof(options));
             _ = propertyNodes.WhenNotNullOrEmpty(nameof(propertyNodes));
 
-            var fullPaths = propertyNodes.Select(item =>
+            var fullPaths = propertyNodes.SelectToArray(item =>
             {
                 var fullNodePath = item.GetFullNodePath();
 
@@ -31,7 +30,7 @@ namespace AllOverIt.Formatters.Objects.Extensions
 
                 var leafNodeType = member.Member.GetMemberType();
 
-                Type elementType = null;
+                Type? elementType = null;
 
                 if (leafNodeType.IsArray)
                 {
@@ -57,7 +56,7 @@ namespace AllOverIt.Formatters.Objects.Extensions
                 return fullNodePath;
             });
 
-            options.AutoCollatedPaths = new List<string>(fullPaths);
+            options.AutoCollatedPaths = fullPaths;
         }
     }
 }

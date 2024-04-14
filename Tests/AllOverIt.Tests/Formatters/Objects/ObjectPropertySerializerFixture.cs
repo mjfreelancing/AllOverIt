@@ -244,7 +244,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {
                         CollateValues = false,
                         Separator = ", ",
-                        AutoCollatedPaths = (IReadOnlyCollection<string>) null
+                        AutoCollatedPaths = (string[]) null
                     },
                     RootValueOptions = new
                     {

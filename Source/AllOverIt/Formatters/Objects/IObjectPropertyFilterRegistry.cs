@@ -10,9 +10,9 @@ namespace AllOverIt.Formatters.Objects
         /// process the properties of an object instance.</summary>
         /// <typeparam name="TType">The object type to register against a filter type.</typeparam>
         /// <typeparam name="TFilter">The filter type.</typeparam>
-        /// <param name="serializerOptions">Options to be used by each constructed serializer. If no options are provided then
+        /// <param name="serializerOptions">Options to be used by each constructed serializer. If <see langword="null"/>, then
         /// a default <see cref="ObjectPropertySerializerOptions"/> instance will be used.</param>
-        public void Register<TType, TFilter>(ObjectPropertySerializerOptions serializerOptions = default)
+        public void Register<TType, TFilter>(ObjectPropertySerializerOptions? serializerOptions = default)
             where TFilter : ObjectPropertyFilter, new();
 
         /// <summary>Registers an object type to a filter type that will be used by an <see cref="IObjectPropertySerializer"/> to
@@ -31,8 +31,8 @@ namespace AllOverIt.Formatters.Objects
         /// <param name="object">The object to find an <see cref="ObjectPropertyFilter"/> that can process its properties.</param>
         /// <param name="serializer">If the registry has a registered filter that can process the object's properties then a new serializer configured with
         /// the filter is returned. If there is no suitable filter then a default serializer is returned.</param>
-        /// <returns><see langword="true" /> if a registered filter is found, otherwise <see langword="false" />. If there is no registered serializer then <paramref name="serializer"/>
-        /// will be assigned a default serializer.</returns>
+        /// <returns><see langword="true" /> if a registered filter is found, otherwise <see langword="false" />. If there is no registered serializer
+        /// then <paramref name="serializer"/> will be assigned a default serializer.</returns>
         /// <remarks>Serializers and their associated filter are constructed on demand, and they are each treated as a Singleton.</remarks>
         /// 
         bool GetObjectPropertySerializer(object @object, out IObjectPropertySerializer serializer);

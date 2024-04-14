@@ -32,10 +32,10 @@ namespace AllOverIt.Cryptography.RSA
     public sealed class RsaKeyPair
     {
         /// <summary>An RSA public key. This can be <see langword="null"/> if it is not required, such as when performing a decryption operation.</summary>
-        public byte[] PublicKey { get; private set; }
+        public byte[]? PublicKey { get; private set; }
 
         /// <summary>An RSA private key. This can be <see langword="null"/> if it is not required, such as when performing an encryption operation.</summary>
-        public byte[] PrivateKey { get; private set; }
+        public byte[]? PrivateKey { get; private set; }
 
         /// <summary>Gets the size, in bits, of the key used by the RSA algorithm.</summary>
         public int KeySize { get; private set; }
@@ -101,7 +101,7 @@ namespace AllOverIt.Cryptography.RSA
         /// <param name="privateKey">>The RSA private key to use. This can be <see langword="null"/> (or empty) if it is not required, such as when performing
         /// an encryption operation.</param>
         /// <remarks>At least one of the public / private keys must be provided.</remarks>
-        public void SetKeys(byte[] publicKey, byte[] privateKey)
+        public void SetKeys(byte[]? publicKey, byte[]? privateKey)
         {
             Throw<RsaException>.When(
                 publicKey.IsNullOrEmpty() && privateKey.IsNullOrEmpty(),
@@ -130,7 +130,7 @@ namespace AllOverIt.Cryptography.RSA
             SetKeys(publicKey, privateKey);
         }
 
-        private static byte[] GetAsBytes(string key)
+        private static byte[]? GetAsBytes(string key)
         {
             if (key.IsNullOrEmpty())
             {

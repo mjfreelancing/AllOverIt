@@ -20,7 +20,7 @@ namespace AllOverIt.Cryptography.AES
         public int KeySize
         {
             get => _keySize;
-            init 
+            init
             {
                 if (_keySize != value)
                 {
@@ -37,10 +37,10 @@ namespace AllOverIt.Cryptography.AES
         public int FeedbackSize { get; init; } = 8;
 
         /// <inheritdoc />
-        public byte[] Key { get; private set; }
+        public byte[]? Key { get; private set; }
 
         /// <inheritdoc />
-        public byte[] IV { get; private set; }
+        public byte[]? IV { get; private set; }
 
         /// <summary>Constructor. Uses a default configuration (see <see cref="IAesEncryptorConfiguration"/>) with
         /// a random secrey key and initialization vector.</summary>

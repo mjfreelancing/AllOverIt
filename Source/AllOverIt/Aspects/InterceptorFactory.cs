@@ -51,7 +51,7 @@ namespace AllOverIt.Aspects
 
         private static object GetServiceProxy<TServiceType, TInterceptor>(TServiceType serviceInstance) where TInterceptor : InterceptorBase<TServiceType>
         {
-            object proxyInstance = DispatchProxy.Create<TServiceType, TInterceptor>();
+            object proxyInstance = DispatchProxy.Create<TServiceType, TInterceptor>()!;
 
             var proxyDecorator = (InterceptorBase<TServiceType>) proxyInstance;
             proxyDecorator._serviceInstance = serviceInstance;

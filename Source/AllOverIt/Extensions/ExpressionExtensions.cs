@@ -1,6 +1,7 @@
 ﻿using AllOverIt.Assertion;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -21,7 +22,7 @@ namespace AllOverIt.Extensions
 
             IEnumerable<MemberExpression> GetMembers()
             {
-                while (memberExpression != null)
+                while (memberExpression is not null)
                 {
                     yield return memberExpression;
 
@@ -39,18 +40,23 @@ namespace AllOverIt.Extensions
         /// <param name="parameterExpression">The parameter to use when constructing the <see cref="MemberExpression"/>.</param>
         /// <returns>A <see cref="MemberExpression"/> representing the property or field accessor expression. This expression can later be used
         /// to obtain the value of the property or field, or convert it to a <see cref="ConstantExpression"/>.</returns>
-        public static MemberExpression GetPropertyOrFieldExpressionUsingParameter<TType, TProperty>(
+        /// <remarks>Will return <see langword="null"/> when <paramref name="propertyOrFieldExpression"/> yields no member expressions.</remarks>
+        public static MemberExpression? GetPropertyOrFieldExpressionUsingParameter<TType, TProperty>(
             this Expression<Func<TType, TProperty>> propertyOrFieldExpression, ParameterExpression parameterExpression)
         {
             _ = propertyOrFieldExpression.WhenNotNull(nameof(propertyOrFieldExpression));
             _ = parameterExpression.WhenNotNull(nameof(parameterExpression));
 
-            MemberExpression member = null;
+            MemberExpression? member = null;
+
             var memberExpressions = propertyOrFieldExpression.GetMemberExpressions();
 
             foreach (var memberExpression in memberExpressions)
             {
-                var expression = (Expression) member ?? parameterExpression;
+                var expression = member is null
+                    ? parameterExpression
+                    : (Expression) member;
+
                 member = Expression.PropertyOrField(expression, memberExpression.Member.Name);
             }
 
@@ -64,7 +70,8 @@ namespace AllOverIt.Extensions
         /// <param name="propertyOrFieldExpression">The property or field accessor expression.</param>
         /// <returns>A <see cref="MemberExpression"/> representing the property or field accessor expression. This expression can later be used
         /// to obtain the value of the property or field, or convert it to a <see cref="ConstantExpression"/>.</returns>
-        public static MemberExpression GetParameterPropertyOrFieldExpression<TType, TProperty>(this Expression<Func<TType, TProperty>> propertyOrFieldExpression)
+        /// <remarks>Will return <see langword="null"/> when <paramref name="propertyOrFieldExpression"/> yields no member expressions.</remarks>
+        public static MemberExpression? GetParameterPropertyOrFieldExpression<TType, TProperty>(this Expression<Func<TType, TProperty>> propertyOrFieldExpression)
         {
             _ = propertyOrFieldExpression.WhenNotNull(nameof(propertyOrFieldExpression));
 
@@ -81,7 +88,7 @@ namespace AllOverIt.Extensions
         /// <see cref="MemberExpression"/>, or a <see cref="UnaryExpression"/> who's Operand is a <see cref="MemberExpression"/>.
         /// In all other cases, null is returned.
         /// </returns>
-        public static MemberExpression UnwrapMemberExpression(this Expression expression)
+        public static MemberExpression? UnwrapMemberExpression([NotNull] this Expression? expression)
         {
             _ = expression.WhenNotNull(nameof(expression));
 
@@ -115,26 +122,26 @@ namespace AllOverIt.Extensions
         /// </summary>
         /// <param name="expression">The expression to be evaluated.</param>
         /// <returns>The value of the <paramref name="expression"/>.</returns>
-        public static object GetValue(this Expression expression)
+        public static object? GetValue(this Expression? expression)
         {
             try
             {
                 static object EvalMemberExpression(MemberExpression memberExpression)
                 {
-                    var value = GetValue(memberExpression.Expression);
+                    var value = GetValue(memberExpression.Expression)!;
 
                     return memberExpression.Member.GetValue(value);
                 }
 
-                static object EvalMethodCallExpression(MethodCallExpression methodCallExpression)
+                static object? EvalMethodCallExpression(MethodCallExpression methodCallExpression)
                 {
-                    var obj = methodCallExpression.Object.GetValue();
-                    var parameters = methodCallExpression.Arguments.Select(e => e.GetValue()).ToArray();
+                    var instanceOrStatic = methodCallExpression.Object.GetValue();
+                    var parameters = methodCallExpression.Arguments.SelectToArray(expression => expression.GetValue());
 
-                    return methodCallExpression.Method.Invoke(obj, parameters);
+                    return methodCallExpression.Method.Invoke(instanceOrStatic, parameters);
                 }
 
-                static object EvalDynamicInvocationResult(Expression expression)
+                static object? EvalDynamicInvocationResult(Expression expression)
                 {
                     var lambdaExpression = Expression.Lambda(expression);
                     var func = lambdaExpression.Compile();
@@ -162,7 +169,7 @@ namespace AllOverIt.Extensions
             catch (TargetInvocationException exception)
             {
                 // The InnerException will never be null - it holds the underlying exception thrown by the invoked method
-                throw exception.InnerException;
+                throw exception.InnerException!;
             }
         }
 
