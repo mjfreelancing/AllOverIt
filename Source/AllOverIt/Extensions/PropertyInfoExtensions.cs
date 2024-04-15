@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -11,9 +12,11 @@ namespace AllOverIt.Extensions
         /// <summary>Determines if the provided <paramref name="propertyInfo"/> is for an abstract property.</summary>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> for a property.</param>
         /// <returns><see langword="true" /> if the <paramref name="propertyInfo"/> is for an abstract property, otherwise <see langword="false" />.</returns>
-        public static bool IsAbstract(this PropertyInfo propertyInfo)
+        public static bool IsAbstract([NotNull] this PropertyInfo? propertyInfo)
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
+
+            Throw<InvalidOperationException>.WhenNull(propertyInfo.GetMethod, $"The property '{propertyInfo.Name}' is expected to have a getter.");
 
             return propertyInfo.GetMethod.IsAbstract;
         }
@@ -21,9 +24,11 @@ namespace AllOverIt.Extensions
         /// <summary>Determines of the <paramref name="propertyInfo"/> is for an internal property.</summary>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> for a property.</param>
         /// <returns><see langword="true" /> if the <paramref name="propertyInfo"/> is for an internal property, otherwise <see langword="false" />.</returns>
-        public static bool IsInternal(this PropertyInfo propertyInfo)
+        public static bool IsInternal([NotNull] this PropertyInfo? propertyInfo)
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
+
+            Throw<InvalidOperationException>.WhenNull(propertyInfo.GetMethod, $"The property '{propertyInfo.Name}' is expected to have a getter.");
 
             return propertyInfo.GetMethod.IsAssembly;
         }
@@ -31,9 +36,11 @@ namespace AllOverIt.Extensions
         /// <summary>Determines of the <paramref name="propertyInfo"/> is for a private property.</summary>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> for a property.</param>
         /// <returns><see langword="true" /> if the <paramref name="propertyInfo"/> is for a virtual property, otherwise <see langword="false" />.</returns>
-        public static bool IsPrivate(this PropertyInfo propertyInfo)
+        public static bool IsPrivate([NotNull] this PropertyInfo? propertyInfo)
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
+
+            Throw<InvalidOperationException>.WhenNull(propertyInfo.GetMethod, $"The property '{propertyInfo.Name}' is expected to have a getter.");
 
             return propertyInfo.GetMethod.IsPrivate;
         }
@@ -41,9 +48,11 @@ namespace AllOverIt.Extensions
         /// <summary>Determines of the <paramref name="propertyInfo"/> is for a protected property.</summary>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> for a property.</param>
         /// <returns><see langword="true" /> if the <paramref name="propertyInfo"/> is for a protected property, otherwise <see langword="false" />.</returns>
-        public static bool IsProtected(this PropertyInfo propertyInfo)
+        public static bool IsProtected([NotNull] this PropertyInfo? propertyInfo)
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
+
+            Throw<InvalidOperationException>.WhenNull(propertyInfo.GetMethod, $"The property '{propertyInfo.Name}' is expected to have a getter.");
 
             return propertyInfo.GetMethod.IsFamily;
         }
@@ -51,9 +60,11 @@ namespace AllOverIt.Extensions
         /// <summary>Determines of the <paramref name="propertyInfo"/> is for a public property.</summary>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> for a property.</param>
         /// <returns><see langword="true" /> if the <paramref name="propertyInfo"/> is for a public property, otherwise <see langword="false" />.</returns>
-        public static bool IsPublic(this PropertyInfo propertyInfo)
+        public static bool IsPublic([NotNull] this PropertyInfo? propertyInfo)
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
+
+            Throw<InvalidOperationException>.WhenNull(propertyInfo.GetMethod, $"The property '{propertyInfo.Name}' is expected to have a getter.");
 
             return propertyInfo.GetMethod.IsPublic;
         }
@@ -61,9 +72,11 @@ namespace AllOverIt.Extensions
         /// <summary>Determines of the <paramref name="propertyInfo"/> is for a static property.</summary>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> for a property.</param>
         /// <returns><see langword="true" /> if the <paramref name="propertyInfo"/> is for a static property, otherwise <see langword="false" />.</returns>
-        public static bool IsStatic(this PropertyInfo propertyInfo)
+        public static bool IsStatic([NotNull] this PropertyInfo? propertyInfo)
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
+
+            Throw<InvalidOperationException>.WhenNull(propertyInfo.GetMethod, $"The property '{propertyInfo.Name}' is expected to have a getter.");
 
             return propertyInfo.GetMethod.IsStatic;
         }
@@ -71,9 +84,11 @@ namespace AllOverIt.Extensions
         /// <summary>Determines of the <paramref name="propertyInfo"/> is for a virtual property.</summary>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> for a property.</param>
         /// <returns><see langword="true" /> if the <paramref name="propertyInfo"/> is for a virtual property, otherwise <see langword="false" />.</returns>
-        public static bool IsVirtual(this PropertyInfo propertyInfo)
+        public static bool IsVirtual([NotNull] this PropertyInfo? propertyInfo)
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
+
+            Throw<InvalidOperationException>.WhenNull(propertyInfo.GetMethod, $"The property '{propertyInfo.Name}' is expected to have a getter.");
 
             return propertyInfo.GetMethod.IsVirtual;
         }
@@ -81,7 +96,7 @@ namespace AllOverIt.Extensions
         /// <summary>Determines if a property is an indexer.</summary>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> for a property.</param>
         /// <returns><see langword="true" /> if the property is an indexer.</returns>
-        public static bool IsIndexer(this PropertyInfo propertyInfo)
+        public static bool IsIndexer([NotNull] this PropertyInfo? propertyInfo)
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
 

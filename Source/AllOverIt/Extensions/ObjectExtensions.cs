@@ -29,7 +29,8 @@ namespace AllOverIt.Extensions
                 AsUsingInstanceTypeConverter
             ];
 
-            public static TType? ConvertTo<TType>(object? instance, TType? defaultValue)
+            [return: MaybeNull]
+            public static TType ConvertTo<TType>(object? instance, TType defaultValue)
             {
                 if (instance is null)
                 {
@@ -235,11 +236,11 @@ namespace AllOverIt.Extensions
         /// <param name="bindingFlags">.NET binding options that determine how property names are resolved.</param>
         /// <returns>The value of a property by name</returns>
         /// <exception cref="MemberAccessException">When the property name cannot be found using the provided binding flags.</exception>
-        public static TValue GetPropertyValue<TValue>(this object instance, string propertyName, BindingFlags bindingFlags)
+        public static TValue? GetPropertyValue<TValue>(this object instance, string propertyName, BindingFlags bindingFlags)
         {
             var instanceType = instance.GetType();
 
-            return (TValue) GetPropertyValue(instance, instanceType, propertyName, bindingFlags);
+            return (TValue?) GetPropertyValue(instance, instanceType, propertyName, bindingFlags);
         }
 
         /// <summary>Uses reflection to get the value of an object's property by name.</summary>
@@ -249,7 +250,7 @@ namespace AllOverIt.Extensions
         /// <param name="bindingFlags">.NET binding options that determine how property names are resolved.</param>
         /// <returns>The value of a property by name</returns>
         /// <exception cref="MemberAccessException">When the property name cannot be found using the provided binding flags.</exception>
-        public static object GetPropertyValue(this object instance, Type instanceType, string propertyName, BindingFlags bindingFlags)
+        public static object? GetPropertyValue(this object instance, Type instanceType, string propertyName, BindingFlags bindingFlags)
         {
             var propertyInfo = GetPropertyInfo(instanceType, propertyName, bindingFlags);
 
@@ -265,11 +266,11 @@ namespace AllOverIt.Extensions
         /// <param name="bindingOptions">Binding options that determine how property names are resolved.</param>
         /// <returns>The value of a property by name</returns>
         /// <exception cref="MemberAccessException">When the property name cannot be found using the provided binding options.</exception>
-        public static TValue GetPropertyValue<TValue>(this object instance, string propertyName, BindingOptions bindingOptions = BindingOptions.Default)
+        public static TValue? GetPropertyValue<TValue>(this object instance, string propertyName, BindingOptions bindingOptions = BindingOptions.Default)
         {
             var instanceType = instance.GetType();
 
-            return (TValue) GetPropertyValue(instance, instanceType, propertyName, bindingOptions);
+            return (TValue?) GetPropertyValue(instance, instanceType, propertyName, bindingOptions);
         }
 
         /// <summary>Uses reflection to get the value of an object's property by name.</summary>
@@ -279,7 +280,7 @@ namespace AllOverIt.Extensions
         /// <param name="bindingOptions">Binding options that determine how property names are resolved.</param>
         /// <returns>The value of a property by name</returns>
         /// <exception cref="MemberAccessException">When the property name cannot be found using the provided binding options.</exception>
-        public static object GetPropertyValue(this object instance, Type instanceType, string propertyName, BindingOptions bindingOptions = BindingOptions.Default)
+        public static object? GetPropertyValue(this object instance, Type instanceType, string propertyName, BindingOptions bindingOptions = BindingOptions.Default)
         {
             var propertyInfo = instanceType
                 .GetPropertyInfo(bindingOptions, false)
@@ -447,13 +448,13 @@ namespace AllOverIt.Extensions
             }
         }
 
-        private static PropertyInfo? GetPropertyInfo(Type instanceType, string propertyName, BindingFlags bindingFlags)
+        private static PropertyInfo? GetPropertyInfo(Type? instanceType, string propertyName, BindingFlags bindingFlags)
         {
-            while (instanceType != null)
+            while (instanceType is not null)
             {
                 var propertyInfo = instanceType.GetProperty(propertyName, bindingFlags);
 
-                if (propertyInfo != null)
+                if (propertyInfo is not null)
                 {
                     return propertyInfo;
                 }

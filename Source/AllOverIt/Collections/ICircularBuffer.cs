@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AllOverIt.Collections
 {
@@ -24,10 +25,12 @@ namespace AllOverIt.Collections
 
         /// <summary>Gets the element at the front of the buffer.</summary>
         /// <returns>The element at the front of the buffer.</returns>
+        [return: MaybeNull]
         TType Front();
 
         /// <summary>Gets the element at the end of the buffer.</summary>
         /// <returns>The element at the end of the buffer.</returns>
+        [return: MaybeNull]
         TType Back();
 
         /// <summary>Inserts a new element at the front of the buffer. If the buffer is full then the last
@@ -42,10 +45,12 @@ namespace AllOverIt.Collections
 
         /// <summary>Removes and returns the element at the front of the buffer.</summary>
         /// <returns>The element removed from the front of the buffer.</returns>
+        [return: MaybeNull]
         TType PopFront();
 
         /// <summary>Removes and returns the element at the back of the buffer.</summary>
         /// <returns>The element removed from the back of the buffer.</returns>
+        [return: MaybeNull]
         TType PopBack();
 
         /// <summary>Clears the buffer.</summary>

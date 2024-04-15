@@ -7,8 +7,8 @@ namespace AllOverIt.Patterns.ValueObject
     /// <typeparam name="TValue">The type inheriting this class.</typeparam>
     /// <typeparam name="TType">The underlying storage type for the immutable value.</typeparam>
     public class ValueObject<TValue, TType> : IComparable<ValueObject<TValue, TType>>, IEquatable<ValueObject<TValue, TType>>
-        where TType : ValueObject<TValue, TType>
         where TValue : IComparable<TValue>, IEquatable<TValue>
+        where TType : ValueObject<TValue, TType>
     {
         private TValue? _value;
 

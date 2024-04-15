@@ -21,7 +21,7 @@ namespace AllOverIt.Reflection
         /// <remarks>When class inheritance is involved, this method returns the first method found, starting at the type represented
         /// by <typeparamref name="TType"/>.</remarks>
         public static IEnumerable<MethodInfo> GetMethodInfo<TType>(BindingOptions bindingOptions = BindingOptions.Default, bool declaredOnly = false,
-            Func<GenericCacheKeyBase, IEnumerable<MethodInfo>> valueResolver = default)
+            Func<GenericCacheKeyBase, IEnumerable<MethodInfo>>? valueResolver = default)
         {
             return GetMethodInfo(typeof(TType), bindingOptions, declaredOnly, valueResolver ?? GetMethodInfoFromTypeBindingDeclaredOnly());
         }
@@ -36,7 +36,7 @@ namespace AllOverIt.Reflection
         /// <remarks>When class inheritance is involved, this method returns the first method found, starting at the type represented
         /// by  <paramref name="type"/>.</remarks>
         public static IEnumerable<MethodInfo> GetMethodInfo(Type type, BindingOptions bindingOptions = BindingOptions.Default, bool declaredOnly = false,
-            Func<GenericCacheKeyBase, IEnumerable<MethodInfo>> valueResolver = default)
+            Func<GenericCacheKeyBase, IEnumerable<MethodInfo>>? valueResolver = default)
         {
             var key = new GenericCacheKey<Type, BindingOptions, bool>(type, bindingOptions, declaredOnly);
 
@@ -49,7 +49,7 @@ namespace AllOverIt.Reflection
         /// <param name="valueResolver">The factory method to obtain the required <see cref="MethodInfo"/>.</param>
         /// <returns>The method metadata, as <see cref="MethodInfo"/>, of a specified <typeparamref name="TType"/> with a given name and no arguments.</returns>
         /// <remarks>All instance, static, public, and non-public methods are searched.</remarks>
-        public static MethodInfo GetMethodInfo<TType>(string name, Func<GenericCacheKeyBase, MethodInfo> valueResolver = default)
+        public static MethodInfo GetMethodInfo<TType>(string name, Func<GenericCacheKeyBase, MethodInfo>? valueResolver = default)
         {
             return GetMethodInfo(typeof(TType), name, Type.EmptyTypes, valueResolver);
         }
@@ -60,7 +60,7 @@ namespace AllOverIt.Reflection
         /// <param name="valueResolver">The factory method to obtain the required <see cref="MethodInfo"/>.</param>
         /// <returns>The method metadata, as <see cref="MethodInfo"/>, of a specified <paramref name="type"/> with a given name and no arguments.</returns>
         /// <remarks>All instance, static, public, and non-public methods are searched.</remarks>
-        public static MethodInfo GetMethodInfo(Type type, string name, Func<GenericCacheKeyBase, MethodInfo> valueResolver = default)
+        public static MethodInfo GetMethodInfo(Type type, string name, Func<GenericCacheKeyBase, MethodInfo>? valueResolver = default)
         {
             return GetMethodInfo(type, name, Type.EmptyTypes, valueResolver);
         }
@@ -72,7 +72,7 @@ namespace AllOverIt.Reflection
         /// <param name="valueResolver">The factory method to obtain the required <see cref="MethodInfo"/>.</param>
         /// <returns>The method metadata, as <see cref="MethodInfo"/>, of a specified <typeparamref name="TType"/> with a given name and argument types.</returns>
         /// <remarks>All instance, static, public, and non-public methods are searched.</remarks>
-        public static MethodInfo GetMethodInfo<TType>(string name, Type[] types, Func<GenericCacheKeyBase, MethodInfo> valueResolver = default)
+        public static MethodInfo GetMethodInfo<TType>(string name, Type[] types, Func<GenericCacheKeyBase, MethodInfo>? valueResolver = default)
         {
             return GetMethodInfo(typeof(TType), name, types, valueResolver ?? GetMethodInfoFromTypeMethodNameArgTypes());
         }
@@ -84,7 +84,7 @@ namespace AllOverIt.Reflection
         /// <param name="valueResolver">The factory method to obtain the required <see cref="MethodInfo"/>.</param>
         /// <returns>The method metadata, as <see cref="MethodInfo"/>, of a specified <paramref name="type"/> with a given name and argument types.</returns>
         /// <remarks>All instance, static, public, and non-public methods are searched.</remarks>
-        public static MethodInfo GetMethodInfo(Type type, string name, Type[] types, Func<GenericCacheKeyBase, MethodInfo> valueResolver = default)
+        public static MethodInfo GetMethodInfo(Type type, string name, Type[] types, Func<GenericCacheKeyBase, MethodInfo>? valueResolver = default)
         {
             var key = new GenericCacheKey<Type, string, Type[]>(type, name, types);
 

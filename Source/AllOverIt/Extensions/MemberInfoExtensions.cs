@@ -35,7 +35,7 @@ namespace AllOverIt.Extensions
         /// <param name="memberInfo">The <see cref="MemberInfo"/> of the property or field being read.</param>
         /// <param name="target">The target object being read.</param>
         /// <returns>The value of the property or field referred to by <paramref name="memberInfo" />.</returns>
-        public static object GetValue(this MemberInfo memberInfo, object target)
+        public static object? GetValue(this MemberInfo memberInfo, object target)
         {
             _ = memberInfo.WhenNotNull(nameof(memberInfo));
             _ = target.WhenNotNull(nameof(target));

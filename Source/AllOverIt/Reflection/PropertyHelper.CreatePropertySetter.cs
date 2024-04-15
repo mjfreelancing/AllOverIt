@@ -20,13 +20,13 @@ namespace AllOverIt.Reflection
 
             AssertPropertyCanWrite(propertyInfo);
 
-            var setterMethodInfo = propertyInfo.GetSetMethod(true);
+            var setterMethodInfo = propertyInfo.GetSetMethod(true)!;
 
             var declaringType = propertyInfo.ReflectedType;
 
             var instanceExpression = Expression.Parameter(typeof(object), "item");
 
-            var castTargetExpression = declaringType.IsValueType
+            var castTargetExpression = declaringType!.IsValueType
                 ? Expression.Unbox(instanceExpression, declaringType)
                 : Expression.Convert(instanceExpression, declaringType);
 
@@ -81,12 +81,12 @@ namespace AllOverIt.Reflection
 
             AssertPropertyCanWrite(propertyInfo);
 
-            var setterMethodInfo = propertyInfo.GetSetMethod(true);
+            var setterMethodInfo = propertyInfo.GetSetMethod(true)!;
 
             var instance = Expression.Parameter(typeof(TType), "item");
 
             var instanceType = typeof(TType) != propertyInfo.DeclaringType
-                ? (Expression) Expression.TypeAs(instance, propertyInfo.DeclaringType)
+                ? (Expression) Expression.TypeAs(instance, propertyInfo.DeclaringType!)
                 : instance;
 
             var argument = Expression.Parameter(typeof(object), "arg");
@@ -101,7 +101,7 @@ namespace AllOverIt.Reflection
         {
             if (!propertyInfo.CanWrite)
             {
-                throw new ReflectionException($"The property {propertyInfo.Name} on type {propertyInfo.DeclaringType.GetFriendlyName()} does not have a setter.");
+                throw new ReflectionException($"The property {propertyInfo.Name} on type {propertyInfo.DeclaringType!.GetFriendlyName()} does not have a setter.");
             }
         }
     }

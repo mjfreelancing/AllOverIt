@@ -59,7 +59,7 @@ namespace AllOverIt.Reflection
 
             AssertPropertyCanRead(propertyInfo);
 
-            var getterMethodInfo = propertyInfo.GetGetMethod(true);
+            var getterMethodInfo = propertyInfo.GetGetMethod(true)!;
 
             // propertyInfo.DeclaringType should be ok but if there's problems consider propertyInfo.ReflectedType:
             //
@@ -71,7 +71,7 @@ namespace AllOverIt.Reflection
             // m2.ReflectedType => Derived
 
             var itemParam = Expression.Parameter(typeof(object), "item");
-            var instanceParam = Expression.Convert(itemParam, propertyInfo.DeclaringType);
+            var instanceParam = Expression.Convert(itemParam, propertyInfo.DeclaringType!)!;
             var getterCall = Expression.Call(instanceParam, getterMethodInfo);
             var objectGetterCall = Expression.Convert(getterCall, typeof(object));
 
@@ -87,7 +87,7 @@ namespace AllOverIt.Reflection
             var itemParam = Expression.Parameter(typeof(TType), "item");
 
             Expression declaringTypeItemParam = typeof(TType) != propertyInfo.DeclaringType
-                ? Expression.TypeAs(itemParam, propertyInfo.DeclaringType)
+                ? Expression.TypeAs(itemParam, propertyInfo.DeclaringType!)
                 : itemParam;
 
             var property = Expression.Property(declaringTypeItemParam, propertyInfo);
@@ -101,7 +101,7 @@ namespace AllOverIt.Reflection
         {
             if (!propertyInfo.CanRead)
             {
-                throw new ReflectionException($"The property {propertyInfo.Name} on type {propertyInfo.DeclaringType.GetFriendlyName()} does not have a getter.");
+                throw new ReflectionException($"The property {propertyInfo.Name} on type {propertyInfo.DeclaringType!.GetFriendlyName()} does not have a getter.");
             }
         }
     }

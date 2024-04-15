@@ -13,11 +13,14 @@ namespace AllOverIt.Patterns.ChainOfResponsibility
         /// <returns>The original handler to allow for a fluent syntax.</returns>
         IChainOfResponsibilityHandlerAsync<TInput, TOutput> SetNext(IChainOfResponsibilityHandlerAsync<TInput, TOutput> handler);
 
+        // Note: Task<TOutput?> supports nullable reference types and does not change int to int?, for example.
+        // This syntax is required because [return: MayBeNull] cannot be applied here.
+        //
         /// <summary>Potentially handles a given request using the provided state.</summary>
         /// <param name="state">Contains the request and possibly other state information to potentially be processed
         /// by the current handler.</param>
         /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns>An output state.</returns>
-        Task<TOutput> HandleAsync(TInput state, CancellationToken cancellationToken);
+        Task<TOutput?> HandleAsync(TInput state, CancellationToken cancellationToken);
     }
 }

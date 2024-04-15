@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace AllOverIt.Extensions
@@ -14,7 +15,8 @@ namespace AllOverIt.Extensions
         /// <param name="key">The key value.</param>
         /// <param name="defaultValue">When provided, this will be returned as the default value if the key is not found in the dictionary.</param>
         /// <returns>The value associated with the specified key, otherwise a default value.</returns>
-        public static TValue? GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue?> dictionary, TKey key, TValue? defaultValue = default)
+        [return: MaybeNull]
+        public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue? defaultValue = default)
             where TKey : notnull
         {
             return dictionary.TryGetValue(key, out var result) ? result : defaultValue;
@@ -27,7 +29,7 @@ namespace AllOverIt.Extensions
         /// <param name="key">The key value.</param>
         /// <param name="valueCreator">The Func that provides the value to set when the key is not found.</param>
         /// <returns>The value based on a specified key, or the value returned by a specified Func when the key is not found.</returns>
-        public static TValue? GetOrSet<TKey, TValue>(this IDictionary<TKey, TValue?> dictionary, TKey key, Func<TValue?> valueCreator)
+        public static TValue GetOrSet<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, Func<TValue> valueCreator)
             where TKey : notnull
         {
             if (dictionary.TryGetValue(key, out var result))

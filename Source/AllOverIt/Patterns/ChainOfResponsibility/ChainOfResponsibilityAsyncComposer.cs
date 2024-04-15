@@ -22,12 +22,15 @@ namespace AllOverIt.Patterns.ChainOfResponsibility
                 .Compose();
         }
 
+        // Note: Task<TOutput?> supports nullable reference types and does not change int to int?, for example.
+        // This syntax is required because [return: MayBeNull] cannot be applied here.
+        //
         /// <summary>Invokes each handler in turn with the provided state until the state is actioned.</summary>
         /// <param name="state">The input state to be processed.</param>
         /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns>The final output state of the input was processed. If the input state is not processed by one of the handlers
         /// then the default value for <typeparamref name="TInput" /> is returned (null if it is a reference type).</returns>
-        public Task<TOutput> HandleAsync(TInput state, CancellationToken cancellationToken)
+        public Task<TOutput?> HandleAsync(TInput state, CancellationToken cancellationToken)
         {
             return _firstHandler.HandleAsync(state, cancellationToken);
         }

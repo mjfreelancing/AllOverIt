@@ -15,7 +15,7 @@ namespace AllOverIt.Patterns.Specification
             }
         }
 
-        private Func<TType, bool> _compiled;
+        private Func<TType, bool>? _compiled;
 
         /// <inheritdoc />
         public Expression<Func<TType, bool>> Expression { get; }
@@ -93,7 +93,7 @@ namespace AllOverIt.Patterns.Specification
         {
 #pragma warning disable IDE0074 // Use compound assignment
             // More efficient than ??=
-            if (_compiled == null)
+            if (_compiled is null)
             {
                 _compiled = Expression.Compile();
             }

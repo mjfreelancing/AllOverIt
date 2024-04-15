@@ -19,7 +19,7 @@ namespace AllOverIt.Reflection
             _ = fieldInfo.WhenNotNull(nameof(fieldInfo));
 
             var itemParam = Expression.Parameter(typeof(object), "item");
-            var instanceParam = itemParam.CastOrConvertTo(fieldInfo.DeclaringType);
+            var instanceParam = itemParam.CastOrConvertTo(fieldInfo.DeclaringType!);
 
             var instanceField = Expression.Field(instanceParam, fieldInfo);
             var objectinstanceField = Expression.Convert(instanceField, typeof(object));
@@ -41,7 +41,7 @@ namespace AllOverIt.Reflection
 
             var field = typeof(TType) == fieldInfo.DeclaringType
                 ? Expression.Field(instance, fieldInfo)
-                : Expression.Field(Expression.TypeAs(instance, fieldInfo.DeclaringType), fieldInfo);
+                : Expression.Field(Expression.TypeAs(instance, fieldInfo.DeclaringType!), fieldInfo);
 
             var convertField = Expression.TypeAs(field, typeof(object));
 

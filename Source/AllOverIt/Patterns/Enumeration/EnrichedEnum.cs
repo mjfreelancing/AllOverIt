@@ -121,7 +121,7 @@ namespace AllOverIt.Patterns.Enumeration
         /// <param name="value">The integer value to convert to an equivalent enumeration instance.</param>
         /// <param name="enumeration">The matching enumeration instance if a match is found.</param>
         /// <returns><see langword="true" /> if the conversion was successful, otherwise <see langword="false" />.</returns>
-        public static bool TryFromValue(int value, out TEnum enumeration)
+        public static bool TryFromValue(int value, [MaybeNullWhen(false)] out TEnum enumeration)
         {
             return TryParse(item => item.Value == value, out enumeration);
         }
@@ -130,7 +130,7 @@ namespace AllOverIt.Patterns.Enumeration
         /// <param name="name">The name to convert to an equivalent enumeration instance.</param>
         /// <param name="enumeration">The matching enumeration instance if a match is found.</param>
         /// <returns><see langword="true" /> if the conversion was successful, otherwise <see langword="false" />.</returns>
-        public static bool TryFromName(string name, out TEnum enumeration)
+        public static bool TryFromName(string name, [MaybeNullWhen(false)] out TEnum enumeration)
         {
             _ = name.WhenNotNullOrEmpty(nameof(name));
 
@@ -141,7 +141,7 @@ namespace AllOverIt.Patterns.Enumeration
         /// <param name="nameOrValue">The string name, or integer value (as a string), to convert to an equivalent enumeration instance.</param>
         /// <param name="enumeration">The matching enumeration instance if a match is found.</param>
         /// <returns><see langword="true" /> if the conversion was successful, otherwise <see langword="false" />.</returns>
-        public static bool TryFromNameOrValue(string nameOrValue, out TEnum enumeration)
+        public static bool TryFromNameOrValue(string nameOrValue, [MaybeNullWhen(false)] out TEnum enumeration)
         {
             _ = nameOrValue.WhenNotNullOrEmpty(nameof(nameOrValue));
 
@@ -241,7 +241,7 @@ namespace AllOverIt.Patterns.Enumeration
             throw new EnrichedEnumException($"Unable to convert '{value}' to a {typeof(TEnum).Name}.");
         }
 
-        private static bool TryParse(Func<TEnum, bool> predicate, out TEnum enumeration)
+        private static bool TryParse(Func<TEnum, bool> predicate, [MaybeNullWhen(false)] out TEnum enumeration)
         {
             enumeration = AllValues.SingleOrDefault(predicate);
 

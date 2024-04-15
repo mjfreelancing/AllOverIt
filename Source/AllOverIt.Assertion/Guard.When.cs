@@ -26,7 +26,7 @@ namespace AllOverIt.Assertion
         {
             if (expression is null)
             {
-                throw CreateArgumentNullException(nameof(expression), errorMessage);
+                ThrowArgumentNullException(nameof(expression), errorMessage);
             }
 
             switch (expression)
@@ -55,7 +55,7 @@ namespace AllOverIt.Assertion
         {
             if (expression is null)
             {
-                throw CreateArgumentNullException(nameof(expression), errorMessage);
+                ThrowArgumentNullException(nameof(expression), errorMessage);
             }
 
             switch (expression)
@@ -84,7 +84,7 @@ namespace AllOverIt.Assertion
         {
             if (expression is null)
             {
-                throw CreateArgumentNullException(nameof(expression), errorMessage);
+                ThrowArgumentNullException(nameof(expression), errorMessage);
             }
 
             switch (expression)
@@ -112,7 +112,7 @@ namespace AllOverIt.Assertion
         {
             if (expression is null)
             {
-                throw CreateArgumentNullException(nameof(expression), errorMessage);
+                ThrowArgumentNullException(nameof(expression), errorMessage);
             }
 
             switch (expression)
@@ -140,7 +140,7 @@ namespace AllOverIt.Assertion
         {
             if (expression is null)
             {
-                throw CreateArgumentNullException(nameof(expression), errorMessage);
+                ThrowArgumentNullException(nameof(expression), errorMessage);
             }
 
             switch (expression)
@@ -180,7 +180,7 @@ namespace AllOverIt.Assertion
         {
             if (@object is null)
             {
-                throw CreateArgumentNullException(name, errorMessage);
+                ThrowArgumentNullException(name, errorMessage);
             }
 
             return @object;
@@ -204,7 +204,7 @@ namespace AllOverIt.Assertion
         {
             if (@object is null)
             {
-                throw CreateArgumentNullException(name, errorMessage);
+                ThrowArgumentNullException(name, errorMessage);
             }
 
             return WhenNotEmpty(@object, name, errorMessage);
@@ -246,7 +246,7 @@ namespace AllOverIt.Assertion
 
                 if (!any)
                 {
-                    throw new ArgumentException(errorMessage ?? "The argument cannot be empty.", name);
+                    ThrowEmptyArgumentException(name, errorMessage);
                 }
             }
 
@@ -270,7 +270,7 @@ namespace AllOverIt.Assertion
         {
             if (@object is null)
             {
-                throw CreateArgumentNullException(name, errorMessage);
+                ThrowArgumentNullException(name, errorMessage);
             }
 
             return WhenNotEmpty(@object, name, errorMessage);
@@ -280,7 +280,7 @@ namespace AllOverIt.Assertion
         /// <param name="object">The string instance.</param>
         /// <param name="name">The name identifying the string instance.</param>
         /// <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be empty".</param>
-        /// <returns>The original string instance when not empty. If the instance was null then null will be returned.</returns>
+        /// <returns>The original string instance when not empty. If the instance was <see langword="null"/> then <see langword="null"/> will be returned.</returns>
         [return: NotNullIfNotNull(nameof(@object))]
         public static string? WhenNotEmpty(this string? @object,
 #if NETSTANDARD2_1
@@ -290,12 +290,12 @@ namespace AllOverIt.Assertion
 #endif
             string? errorMessage = default)
         {
-            if (@object is null || !string.IsNullOrWhiteSpace(@object))
+            if (@object is not null && string.IsNullOrWhiteSpace(@object))
             {
-                return @object;
+                ThrowEmptyArgumentException(name, errorMessage);
             }
 
-            throw new ArgumentException(errorMessage ?? "The argument cannot be empty.", name);
+            return @object;
         }
 
         #endregion

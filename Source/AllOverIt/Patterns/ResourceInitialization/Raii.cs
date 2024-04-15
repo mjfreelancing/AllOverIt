@@ -81,7 +81,6 @@ namespace AllOverIt.Patterns.ResourceInitialization
                 if (disposing)
                 {
                     _cleanUp.Invoke(Context);
-                    Context = default;
                 }
 
                 _disposed = true;

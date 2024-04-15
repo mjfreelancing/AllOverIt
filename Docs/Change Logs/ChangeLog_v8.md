@@ -5,6 +5,7 @@
 * Enable nullable references
 * Change properties and arguments from IReadOnlyCollection<T> to T[], where applicable
 * Add 'required' to properties, where applicable - including NetStandard 2.1 support
+* Consider removing extraneous null guard checks in extension methods
 
 
 ### Applicable to all packages

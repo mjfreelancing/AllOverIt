@@ -20,7 +20,7 @@ namespace AllOverIt.Reflection
         /// <returns>The property metadata, as <see cref="FieldInfo"/>, of a specified property on the specified <typeparamref name="TType"/>.</returns>
         /// <remarks>When class inheritance is involved, this method returns the first property found, starting at the type represented
         /// by <typeparamref name="TType"/>.</remarks>
-        public static FieldInfo GetFieldInfo<TType>(string propertyName, Func<GenericCacheKeyBase, FieldInfo> valueResolver = default)
+        public static FieldInfo GetFieldInfo<TType>(string propertyName, Func<GenericCacheKeyBase, FieldInfo>? valueResolver = default)
         {
             var typeInfo = typeof(TType).GetTypeInfo();
 
@@ -33,7 +33,7 @@ namespace AllOverIt.Reflection
         /// <param name="propertyName">The property name.</param>
         /// <param name="valueResolver">The factory method to obtain the required <see cref="FieldInfo"/>.</param>
         /// <returns>The <see cref="FieldInfo"/> for a given property on a <see cref="Type"/> from the default cache.</returns>
-        public static FieldInfo GetFieldInfo(Type type, string propertyName, Func<GenericCacheKeyBase, FieldInfo> valueResolver = default)
+        public static FieldInfo GetFieldInfo(Type type, string propertyName, Func<GenericCacheKeyBase, FieldInfo>? valueResolver = default)
         {
             return GetFieldInfo(type.GetTypeInfo(), propertyName, valueResolver);
         }
@@ -45,7 +45,7 @@ namespace AllOverIt.Reflection
         /// <param name="propertyName">The property name.</param>
         /// <param name="valueResolver">The factory method to obtain the required <see cref="FieldInfo"/>.</param>
         /// <returns>The <see cref="FieldInfo"/> for a given property on a <see cref="TypeInfo"/> from the default cache.</returns>
-        public static FieldInfo GetFieldInfo(TypeInfo typeInfo, string propertyName, Func<GenericCacheKeyBase, FieldInfo> valueResolver = default)
+        public static FieldInfo GetFieldInfo(TypeInfo typeInfo, string propertyName, Func<GenericCacheKeyBase, FieldInfo>? valueResolver = default)
         {
             var key = new GenericCacheKey<TypeInfo, string>(typeInfo, propertyName);
 
@@ -64,7 +64,7 @@ namespace AllOverIt.Reflection
         /// <remarks>When class inheritance is involved, this method returns the first property found, starting at the type represented
         /// by <typeparamref name="TType"/>.</remarks>
         public static IEnumerable<FieldInfo> GetFieldInfo<TType>(BindingOptions bindingOptions = BindingOptions.Default, bool declaredOnly = false,
-            Func<GenericCacheKeyBase, IEnumerable<FieldInfo>> valueResolver = default)
+            Func<GenericCacheKeyBase, IEnumerable<FieldInfo>>? valueResolver = default)
         {
             return GetFieldInfo(typeof(TType), bindingOptions, declaredOnly, valueResolver);
         }
@@ -78,7 +78,7 @@ namespace AllOverIt.Reflection
         /// <param name="valueResolver">The factory method to obtain the required <see cref="FieldInfo"/>.</param>
         /// <returns>The <see cref="FieldInfo"/> for a given <see cref="Type"/> and options from the default cache.</returns>
         public static IEnumerable<FieldInfo> GetFieldInfo(Type type, BindingOptions bindingOptions = BindingOptions.Default, bool declaredOnly = false,
-            Func<GenericCacheKeyBase, IEnumerable<FieldInfo>> valueResolver = default)
+            Func<GenericCacheKeyBase, IEnumerable<FieldInfo>>? valueResolver = default)
         {
             var key = new GenericCacheKey<Type, BindingOptions, bool>(type, bindingOptions, declaredOnly);
 
@@ -93,7 +93,7 @@ namespace AllOverIt.Reflection
         /// <param name="valueResolver">The factory method to obtain the required <see cref="FieldInfo"/>.</param>
         /// <returns>The <see cref="FieldInfo"/> for a given <see cref="TypeInfo"/> and options from the default cache.</returns>
         public static IEnumerable<FieldInfo> GetFieldInfo(TypeInfo typeInfo, bool declaredOnly = false,
-            Func<GenericCacheKeyBase, IEnumerable<FieldInfo>> valueResolver = default)
+            Func<GenericCacheKeyBase, IEnumerable<FieldInfo>>? valueResolver = default)
         {
             var key = new GenericCacheKey<TypeInfo, bool>(typeInfo, declaredOnly);
 

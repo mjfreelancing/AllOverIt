@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace AllOverIt.Patterns.Specification.Extensions
@@ -63,6 +64,7 @@ namespace AllOverIt.Patterns.Specification.Extensions
         /// <param name="specification">The specification to apply against a collection of elements.</param>
         /// <returns>The first candidate that meets the criteria of a provided specification or the type's
         /// default if there are no matches.</returns>
+        [return: MaybeNull]
         public static TType FirstOrDefault<TType>(this IEnumerable<TType> candidates, ISpecification<TType> specification)
         {
             return candidates.FirstOrDefault(specification.IsSatisfiedBy);
@@ -85,6 +87,7 @@ namespace AllOverIt.Patterns.Specification.Extensions
         /// <param name="specification">The specification to apply against a collection of elements.</param>
         /// <returns>The last candidate that meets the criteria of a provided specification or the type's
         /// default if there are no matches.</returns>
+        [return: MaybeNull]
         public static TType LastOrDefault<TType>(this IEnumerable<TType> candidates, ISpecification<TType> specification)
         {
             return candidates.LastOrDefault(specification.IsSatisfiedBy);

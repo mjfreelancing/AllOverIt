@@ -24,7 +24,7 @@ namespace AllOverIt.Assertion
         {
             if (@object is null)
             {
-                throw CreateInvalidOperationException(name, errorMessage ?? "Value cannot be null");
+                ThrowInvalidOperationException(name, errorMessage ?? "Value cannot be null");
             }
         }
 
@@ -45,7 +45,7 @@ namespace AllOverIt.Assertion
         {
             if (@object is not null)
             {
-                throw CreateInvalidOperationException(name, errorMessage ?? "Value must be null");
+                ThrowInvalidOperationException(name, errorMessage ?? "Value must be null");
             }
         }
 
@@ -88,7 +88,7 @@ namespace AllOverIt.Assertion
         {
             if (@object is not null && !@object.Any())
             {
-                throw CreateInvalidOperationException(name, errorMessage ?? "Value cannot be empty");
+                ThrowInvalidOperationException(name, errorMessage ?? "Value cannot be empty");
             }
         }
 
@@ -125,7 +125,7 @@ namespace AllOverIt.Assertion
         {
             if (@object is not null && string.IsNullOrWhiteSpace(@object))
             {
-                throw CreateInvalidOperationException(name, errorMessage ?? "Value cannot be empty");
+                ThrowInvalidOperationException(name, errorMessage ?? "Value cannot be empty");
             }
         }
     }

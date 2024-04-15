@@ -126,7 +126,7 @@ namespace AllOverIt.Extensions
         {
             try
             {
-                static object EvalMemberExpression(MemberExpression memberExpression)
+                static object? EvalMemberExpression(MemberExpression memberExpression)
                 {
                     var value = GetValue(memberExpression.Expression)!;
 
