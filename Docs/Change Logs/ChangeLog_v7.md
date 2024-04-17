@@ -1,3 +1,12 @@
+#  Version 7.8.1
+## 18 Apr 2024
+
+### AllOverIt.Aws.AppSync.Client
+* Fixed disposal of HttpClient
+
+---
+
+
 #  Version 7.8.0
 ## 12 Apr 2024
 
