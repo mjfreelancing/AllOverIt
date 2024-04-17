@@ -108,11 +108,11 @@ namespace AllOverIt.Aws.AppSync.Client
             return message;
         }
 
-        private Task<HttpResponseMessage> GetHttpResponseMessageAsync(HttpRequestMessage requestMessage, CancellationToken cancellationToken)
+        private async Task<HttpResponseMessage> GetHttpResponseMessageAsync(HttpRequestMessage requestMessage, CancellationToken cancellationToken)
         {
-            var httpClient = _httpClientFactory.CreateClient(HttpClientName);
+            using var httpClient = _httpClientFactory.CreateClient(HttpClientName);
 
-            return httpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+            return await httpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
         }
     }
 }
