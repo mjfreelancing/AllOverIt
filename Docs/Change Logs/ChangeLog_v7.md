@@ -1,8 +1,18 @@
+#  Version 7.9.0
+## 20 Apr 2024
+
+### AllOverIt
+* Added a 'VoidType' that can be useful for observable subjects that need to emit 'no value'.
+* Added an implementation of the Result pattern.
+
+---
+
+
 #  Version 7.8.1
 ## 18 Apr 2024
 
 ### AllOverIt.Aws.AppSync.Client
-* Fixed disposal of HttpClient
+* Explicit disposal of HttpClient
 
 ---
 
