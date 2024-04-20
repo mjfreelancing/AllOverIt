@@ -19,6 +19,14 @@ public class EnrichedResult<TResult> : EnrichedResult
         set => _value = value;
     }
 
+    /// <summary>Implicit operator to convert an <see cref="EnrichedResult{TResult}"/> to its underlying result type.</summary>
+    /// <param name="result">The result value to implicitly convert to.</param>
+    public static implicit operator TResult?(EnrichedResult<TResult> result) => result.Value;
+
+    /// <summary>Explicit operator to convert a result value to its <see cref="EnrichedResult{TResult}"/> equivalent.</summary>
+    /// <param name="result">The result value to explicitly convert to.</param>
+    public static explicit operator EnrichedResult<TResult>(TResult result) => new(result);
+
     internal EnrichedResult()
         : base(true, null)
     {

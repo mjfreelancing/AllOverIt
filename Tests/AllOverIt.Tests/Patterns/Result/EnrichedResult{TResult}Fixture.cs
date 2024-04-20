@@ -143,4 +143,76 @@ public partial class EnrichedResultFixture : FixtureBase
             actual3.Error.Should().Be(error);
         }
     }
+
+    public class Implicit_Operator : EnrichedResultFixture
+    {
+        [Fact]
+        public void Should_Implicit_Convert_From_EnrichedResult_Int()
+        {
+            var value = Create<int>();
+
+            var result = EnrichedResult.Success(value);
+
+            int actual = result;
+
+            actual.Should().Be(value);
+        }
+
+        [Fact]
+        public void Should_Implicit_Convert_From_EnrichedResult_Nullable_Int()
+        {
+            var value = Create<int?>();
+
+            var result = EnrichedResult.Success(value);
+
+            int? actual = result;
+
+            actual.Should().Be(value);
+        }
+
+        [Fact]
+        public void Should_Implicit_Convert_From_EnrichedResult_String()
+        {
+            var value = Create<string>();
+
+            var result = EnrichedResult.Success(value);
+
+            string actual = result;
+
+            actual.Should().Be(value);
+        }
+    }
+
+    public class Explicit_Operator : EnrichedResultFixture
+    {
+        [Fact]
+        public void Should_Explicit_Convert_To_EnrichedResult_Int()
+        {
+            var value = Create<int>();
+
+            var actual = (EnrichedResult<int>) value;
+
+            actual.Value.Should().Be(value);
+        }
+
+        [Fact]
+        public void Should_Explicit_Convert_To_EnrichedResult_Nullable_Int()
+        {
+            var value = Create<int?>();
+
+            var actual = (EnrichedResult<int?>) value;
+
+            actual.Value.Should().Be(value);
+        }
+
+        [Fact]
+        public void Should_Explicit_Convert_To_EnrichedResult_String()
+        {
+            var value = Create<string>();
+
+            var actual = (EnrichedResult<string>) value;
+
+            actual.Value.Should().Be(value);
+        }
+    }
 }
