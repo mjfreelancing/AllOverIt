@@ -177,7 +177,7 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var result = EnrichedResult.Success(value);
 
-            string actual = result;
+            string actual = result!;
 
             actual.Should().Be(value);
         }

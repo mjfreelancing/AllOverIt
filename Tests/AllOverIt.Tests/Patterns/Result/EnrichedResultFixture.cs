@@ -9,6 +9,15 @@ namespace AllOverIt.Tests.Patterns.Result;
 
 public partial class EnrichedResultFixture : FixtureBase
 {
+    private enum DummyErrorType
+    {
+        Dummy1,
+        Dummy2,
+        Dummy3,
+        Dummy4,
+        Dummy5
+    }
+
     public class Error : EnrichedResultFixture
     {
         [Fact]
@@ -204,12 +213,12 @@ public partial class EnrichedResultFixture : FixtureBase
         }
     }
 
-    public class Fail_Default : EnrichedResultFixture
+    public class Fail_EnrichedError : EnrichedResultFixture
     {
         [Fact]
-        public void Should_Fail_No_Error()
+        public void Should_Create_EnrichedResult_Fail_No_Error()
         {
-            var actual = EnrichedResult.Fail();
+            var actual = EnrichedResult.Fail((EnrichedError?) null);
 
             actual.Should().BeOfType<EnrichedResult>();
 
@@ -220,12 +229,31 @@ public partial class EnrichedResultFixture : FixtureBase
                 Error = (EnrichedError?) null
             };
 
-            // Have to exclude Error since it will throw when there is no error.
+            // Have to exclude Value since it will throw when there is no result.
+            expected.Should().BeEquivalentTo(actual);
+        }
+
+        [Fact]
+        public void Should_Create_EnrichedResult_Fail_With_Error()
+        {
+            var error = new EnrichedError();
+            var actual = EnrichedResult.Fail(error);
+
+            actual.Should().BeOfType<EnrichedResult>();
+
+            var expected = new
+            {
+                IsSuccess = false,
+                IsError = true,
+                Error = error
+            };
+
+            // Have to exclude Value since it will throw when there is no result.
             expected.Should().BeEquivalentTo(actual);
         }
     }
 
-    public class Fail_Typed_No_Error : EnrichedResultFixture
+    public class Fail_TResult_No_Error : EnrichedResultFixture
     {
         [Fact]
         public void Should_Create_Error_Int()
@@ -238,7 +266,7 @@ public partial class EnrichedResultFixture : FixtureBase
             {
                 IsSuccess = false,
                 IsError = true,
-                //Value = default(int)
+                //Value =
                 Error = (EnrichedError?) null
             };
 
@@ -257,7 +285,7 @@ public partial class EnrichedResultFixture : FixtureBase
             {
                 IsSuccess = false,
                 IsError = true,
-                //Value = default(int?)
+                //Value =
                 Error = (EnrichedError?) null
 
             };
@@ -277,7 +305,7 @@ public partial class EnrichedResultFixture : FixtureBase
             {
                 IsSuccess = false,
                 IsError = true,
-                //Value = default(string)
+                //Value =
                 Error = (EnrichedError?) null
 
             };
@@ -287,7 +315,7 @@ public partial class EnrichedResultFixture : FixtureBase
         }
     }
 
-    public class Fail_Typed_With_Error : EnrichedResultFixture
+    public class Fail_TResult_With_Error : EnrichedResultFixture
     {
         [Fact]
         public void Should_Create_Error_Int()
@@ -368,6 +396,690 @@ public partial class EnrichedResultFixture : FixtureBase
             actual.Error = error;
 
             actual.Error.Should().Be(error);
+        }
+    }
+
+    public class Fail_Description : EnrichedResultFixture
+    {
+        [Fact]
+        public void Should_Create_EnrichedResult_Error_With_Description()
+        {
+            var description = Create<string>();
+
+            var actual = EnrichedResult.Fail(description);
+
+            actual.Error.Should().BeOfType<EnrichedError>();
+
+            var expected = new
+            {
+                IsSuccess = false,
+                IsError = true,
+                Error = new
+                {
+                    Type = (string?) null,
+                    Code = (string?) null,
+                    Description = description
+                }
+            };
+
+            expected.Should().BeEquivalentTo(actual);
+        }
+    }
+
+    public class Fail_Type_Description : EnrichedResultFixture
+    {
+        [Fact]
+        public void Should_Create_EnrichedResult_Error_With_Type_Description()
+        {
+            var type = Create<string>();
+            var description = Create<string>();
+
+            var actual = EnrichedResult.Fail(type, description);
+
+            actual.Error.Should().BeOfType<EnrichedError>();
+
+            var expected = new
+            {
+                IsSuccess = false,
+                IsError = true,
+                Error = new
+                {
+                    Type = type,
+                    Code = (string?) null,
+                    Description = description
+                }
+            };
+
+            expected.Should().BeEquivalentTo(actual);
+        }
+    }
+
+    public class Fail_Type_Code_Description : EnrichedResultFixture
+    {
+        [Fact]
+        public void Should_Create_EnrichedResult_Error_With_Type_Code_Description()
+        {
+            var type = Create<string>();
+            var code = Create<string>();
+            var description = Create<string>();
+
+            var actual = EnrichedResult.Fail(type, code, description);
+
+            actual.Error.Should().BeOfType<EnrichedError>();
+
+            var expected = new
+            {
+                IsSuccess = false,
+                IsError = true,
+                Error = new
+                {
+                    Type = type,
+                    Code = code,
+                    Description = description
+                }
+            };
+
+            expected.Should().BeEquivalentTo(actual);
+        }
+    }
+
+    public class Fail_TResult_Description : EnrichedResultFixture
+    {
+        [Fact]
+        public void Should_Create_EnrichedResult_Int_Error_With_Description()
+        {
+            var description = Create<string>();
+
+            var actual = EnrichedResult.Fail<int>(description);
+
+            actual.Should().BeOfType<EnrichedResult<int>>();
+
+            actual.Error.Should().BeOfType<EnrichedError>();
+
+            var expected = new
+            {
+                IsSuccess = false,
+                IsError = true,
+                Error = new
+                {
+                    Type = (string?) null,
+                    Code = (string?) null,
+                    Description = description
+                }
+            };
+
+            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+        }
+
+        [Fact]
+        public void Should_Create_EnrichedResult_Nullable_Int_Error_With_Description()
+        {
+            var description = Create<string>();
+
+            var actual = EnrichedResult.Fail<int?>(description);
+
+            actual.Should().BeOfType<EnrichedResult<int?>>();
+
+            actual.Error.Should().BeOfType<EnrichedError>();
+
+            var expected = new
+            {
+                IsSuccess = false,
+                IsError = true,
+                Error = new
+                {
+                    Type = (string?) null,
+                    Code = (string?) null,
+                    Description = description
+                }
+            };
+
+            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+        }
+
+        [Fact]
+        public void Should_Create_EnrichedResult_String_Error_With_Description()
+        {
+            var description = Create<string>();
+
+            var actual = EnrichedResult.Fail<string>(description);
+
+            actual.Should().BeOfType<EnrichedResult<string>>();
+
+            actual.Error.Should().BeOfType<EnrichedError>();
+
+            var expected = new
+            {
+                IsSuccess = false,
+                IsError = true,
+                Error = new
+                {
+                    Type = (string?) null,
+                    Code = (string?) null,
+                    Description = description
+                }
+            };
+
+            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+        }
+    }
+
+    public class Fail_TResult_Type_Description : EnrichedResultFixture
+    {
+        [Fact]
+        public void Should_Create_EnrichedResult_Int_Error_With_Type_Description()
+        {
+            var type = Create<string>();
+            var description = Create<string>();
+
+            var actual = EnrichedResult.Fail<int>(type, description);
+
+            actual.Should().BeOfType<EnrichedResult<int>>();
+
+            actual.Error.Should().BeOfType<EnrichedError>();
+
+            var expected = new
+            {
+                IsSuccess = false,
+                IsError = true,
+                Error = new
+                {
+                    Type = type,
+                    Code = (string?) null,
+                    Description = description
+                }
+            };
+
+            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+        }
+
+        [Fact]
+        public void Should_Create_EnrichedResult_Nullable_Int_Error_With_Type_Description()
+        {
+            var type = Create<string>();
+            var description = Create<string>();
+
+            var actual = EnrichedResult.Fail<int?>(type, description);
+
+            actual.Should().BeOfType<EnrichedResult<int?>>();
+
+            actual.Error.Should().BeOfType<EnrichedError>();
+
+            var expected = new
+            {
+                IsSuccess = false,
+                IsError = true,
+                Error = new
+                {
+                    Type = type,
+                    Code = (string?) null,
+                    Description = description
+                }
+            };
+
+            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+        }
+
+        [Fact]
+        public void Should_Create_EnrichedResult_String_Error_With_Type_Description()
+        {
+            var type = Create<string>();
+            var description = Create<string>();
+
+            var actual = EnrichedResult.Fail<string>(type, description);
+
+            actual.Should().BeOfType<EnrichedResult<string>>();
+
+            actual.Error.Should().BeOfType<EnrichedError>();
+
+            var expected = new
+            {
+                IsSuccess = false,
+                IsError = true,
+                Error = new
+                {
+                    Type = type,
+                    Code = (string?) null,
+                    Description = description
+                }
+            };
+
+            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+        }
+    }
+
+    public class Fail_TResult_Type_Code_Description : EnrichedResultFixture
+    {
+        [Fact]
+        public void Should_Create_EnrichedResult_Int_Error_With_Code_Description()
+        {
+            var type = Create<string>();
+            var code = Create<string>();
+            var description = Create<string>();
+
+            var actual = EnrichedResult.Fail<int>(type, code, description);
+
+            actual.Should().BeOfType<EnrichedResult<int>>();
+
+            actual.Error.Should().BeOfType<EnrichedError>();
+
+            var expected = new
+            {
+                IsSuccess = false,
+                IsError = true,
+                Error = new
+                {
+                    Type = type,
+                    Code = code,
+                    Description = description
+                }
+            };
+
+            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+        }
+
+        [Fact]
+        public void Should_Create_EnrichedResult_Nullable_Int_Error_With_Code_Description()
+        {
+            var type = Create<string>();
+            var code = Create<string>();
+            var description = Create<string>();
+
+            var actual = EnrichedResult.Fail<int?>(type, code, description);
+
+            actual.Should().BeOfType<EnrichedResult<int?>>();
+
+            actual.Error.Should().BeOfType<EnrichedError>();
+
+            var expected = new
+            {
+                IsSuccess = false,
+                IsError = true,
+                Error = new
+                {
+                    Type = type,
+                    Code = code,
+                    Description = description
+                }
+            };
+
+            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+        }
+
+        [Fact]
+        public void Should_Create_EnrichedResult_String_Error_With_Code_Description()
+        {
+            var type = Create<string>();
+            var code = Create<string>();
+            var description = Create<string>();
+
+            var actual = EnrichedResult.Fail<string>(type, code, description);
+
+            actual.Should().BeOfType<EnrichedResult<string>>();
+
+            actual.Error.Should().BeOfType<EnrichedError>();
+
+            var expected = new
+            {
+                IsSuccess = false,
+                IsError = true,
+                Error = new
+                {
+                    Type = type,
+                    Code = code,
+                    Description = description
+                }
+            };
+
+            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+        }
+    }
+
+    public class Fail_TErrorType : EnrichedResultFixture
+    {
+        [Fact]
+        public void Should_Create_EnrichedResult_Error()
+        {
+            var errorType = Create<DummyErrorType>();
+
+            var actual = EnrichedResult.Fail<DummyErrorType>(errorType);
+
+            actual.Error.Should().BeOfType<EnrichedError<DummyErrorType>>();
+
+            var expected = new
+            {
+                IsSuccess = false,
+                IsError = true,
+                Error = new
+                {
+                    Type = errorType.ToString(),
+                    Code = (string?) null,
+                    Description = (string?) null,
+                    ErrorType = errorType
+                }
+            };
+
+            expected.Should().BeEquivalentTo(actual);
+        }
+    }
+
+    public class Fail_TErrorType_Description : EnrichedResultFixture
+    {
+        [Fact]
+        public void Should_Create_EnrichedResult_Error_Description()
+        {
+            var errorType = Create<DummyErrorType>();
+            var description = Create<string>();
+
+            var actual = EnrichedResult.Fail<DummyErrorType>(errorType, description);
+
+            actual.Error.Should().BeOfType<EnrichedError<DummyErrorType>>();
+
+            var expected = new
+            {
+                IsSuccess = false,
+                IsError = true,
+                Error = new
+                {
+                    Type = errorType.ToString(),
+                    Code = (string?) null,
+                    Description = description,
+                    ErrorType = errorType
+                }
+            };
+
+            expected.Should().BeEquivalentTo(actual);
+        }
+    }
+
+    public class Fail_TErrorType_Code_Description : EnrichedResultFixture
+    {
+        [Fact]
+        public void Should_Create_EnrichedResult_Error_Code_Description()
+        {
+            var errorType = Create<DummyErrorType>();
+            var code = Create<string>();
+            var description = Create<string>();
+
+            var actual = EnrichedResult.Fail<DummyErrorType>(errorType, code, description);
+
+            actual.Error.Should().BeOfType<EnrichedError<DummyErrorType>>();
+
+            var expected = new
+            {
+                IsSuccess = false,
+                IsError = true,
+                Error = new
+                {
+                    Type = errorType.ToString(),
+                    Code = code,
+                    Description = description,
+                    ErrorType = errorType
+                }
+            };
+
+            expected.Should().BeEquivalentTo(actual);
+        }
+    }
+
+    public class Fail_TResult_TErrorType : EnrichedResultFixture
+    {
+        [Fact]
+        public void Should_Create_EnrichedResult_Int_With_Error()
+        {
+            var errorType = Create<DummyErrorType>();
+
+            var actual = EnrichedResult.Fail<int, DummyErrorType>(errorType);
+
+            actual.Should().BeOfType<EnrichedResult<int>>();
+
+            actual.Error.Should().BeOfType<EnrichedError<DummyErrorType>>();
+
+            var expected = new
+            {
+                IsSuccess = false,
+                IsError = true,
+                Error = new
+                {
+                    Type = errorType.ToString(),
+                    Code = (string?) null,
+                    Description = (string?) null,
+                    ErrorType = errorType
+                }
+            };
+
+            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+        }
+
+        [Fact]
+        public void Should_Create_EnrichedResult_Nullable_Int_With_Error()
+        {
+            var errorType = Create<DummyErrorType>();
+
+            var actual = EnrichedResult.Fail<int?, DummyErrorType>(errorType);
+
+            actual.Should().BeOfType<EnrichedResult<int?>>();
+
+            actual.Error.Should().BeOfType<EnrichedError<DummyErrorType>>();
+
+            var expected = new
+            {
+                IsSuccess = false,
+                IsError = true,
+                Error = new
+                {
+                    Type = errorType.ToString(),
+                    Code = (string?) null,
+                    Description = (string?) null,
+                    ErrorType = errorType
+                }
+            };
+
+            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+        }
+
+        [Fact]
+        public void Should_Create_EnrichedResult_String_With_Error()
+        {
+            var errorType = Create<DummyErrorType>();
+
+            var actual = EnrichedResult.Fail<string, DummyErrorType>(errorType);
+
+            actual.Should().BeOfType<EnrichedResult<string>>();
+
+            actual.Error.Should().BeOfType<EnrichedError<DummyErrorType>>();
+
+            var expected = new
+            {
+                IsSuccess = false,
+                IsError = true,
+                Error = new
+                {
+                    Type = errorType.ToString(),
+                    Code = (string?) null,
+                    Description = (string?) null,
+                    ErrorType = errorType
+                }
+            };
+
+            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+        }
+    }
+
+    public class Fail_TResult_TErrorType_Description : EnrichedResultFixture
+    {
+        [Fact]
+        public void Should_Create_EnrichedResult_Int_Error_With_Description()
+        {
+            var errorType = Create<DummyErrorType>();
+            var description = Create<string>();
+
+            var actual = EnrichedResult.Fail<int, DummyErrorType>(errorType, description);
+
+            actual.Should().BeOfType<EnrichedResult<int>>();
+
+            actual.Error.Should().BeOfType<EnrichedError<DummyErrorType>>();
+
+            var expected = new
+            {
+                IsSuccess = false,
+                IsError = true,
+                Error = new
+                {
+                    Type = errorType.ToString(),
+                    Code = (string?) null,
+                    Description = description,
+                    ErrorType = errorType
+                }
+            };
+
+            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+        }
+
+        [Fact]
+        public void Should_Create_EnrichedResult_Nullable_Int_Error_With_Description()
+        {
+            var errorType = Create<DummyErrorType>();
+            var description = Create<string>();
+
+            var actual = EnrichedResult.Fail<int?, DummyErrorType>(errorType, description);
+
+            actual.Should().BeOfType<EnrichedResult<int?>>();
+
+            actual.Error.Should().BeOfType<EnrichedError<DummyErrorType>>();
+
+            var expected = new
+            {
+                IsSuccess = false,
+                IsError = true,
+                Error = new
+                {
+                    Type = errorType.ToString(),
+                    Code = (string?) null,
+                    Description = description,
+                    ErrorType = errorType
+                }
+            };
+
+            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+        }
+
+        [Fact]
+        public void Should_Create_EnrichedResult_String_Error_With_Description()
+        {
+            var errorType = Create<DummyErrorType>();
+            var description = Create<string>();
+
+            var actual = EnrichedResult.Fail<string, DummyErrorType>(errorType, description);
+
+            actual.Should().BeOfType<EnrichedResult<string>>();
+
+            actual.Error.Should().BeOfType<EnrichedError<DummyErrorType>>();
+
+            var expected = new
+            {
+                IsSuccess = false,
+                IsError = true,
+                Error = new
+                {
+                    Type = errorType.ToString(),
+                    Code = (string?) null,
+                    Description = description,
+                    ErrorType = errorType
+                }
+            };
+
+            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+        }
+    }
+
+    public class Fail_TResult_TErrorType_Code_Description : EnrichedResultFixture
+    {
+        [Fact]
+        public void Should_Create_EnrichedResult_Int_Error_With_Code_Description()
+        {
+            var errorType = Create<DummyErrorType>();
+            var code = Create<string>();
+            var description = Create<string>();
+
+            var actual = EnrichedResult.Fail<int, DummyErrorType>(errorType, code, description);
+
+            actual.Should().BeOfType<EnrichedResult<int>>();
+
+            actual.Error.Should().BeOfType<EnrichedError<DummyErrorType>>();
+
+            var expected = new
+            {
+                IsSuccess = false,
+                IsError = true,
+                Error = new
+                {
+                    Type = errorType.ToString(),
+                    Code = code,
+                    Description = description,
+                    ErrorType = errorType
+                }
+            };
+
+            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+        }
+
+        [Fact]
+        public void Should_Create_EnrichedResult_Nullable_Int_Error_With_Code_Description()
+        {
+            var errorType = Create<DummyErrorType>();
+            var code = Create<string>();
+            var description = Create<string>();
+
+            var actual = EnrichedResult.Fail<int?, DummyErrorType>(errorType, code, description);
+
+            actual.Should().BeOfType<EnrichedResult<int?>>();
+
+            actual.Error.Should().BeOfType<EnrichedError<DummyErrorType>>();
+
+            var expected = new
+            {
+                IsSuccess = false,
+                IsError = true,
+                Error = new
+                {
+                    Type = errorType.ToString(),
+                    Code = code,
+                    Description = description,
+                    ErrorType = errorType
+                }
+            };
+
+            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+        }
+
+        [Fact]
+        public void Should_Create_EnrichedResult_String_Error_With_Code_Description()
+        {
+            var errorType = Create<DummyErrorType>();
+            var code = Create<string>();
+            var description = Create<string>();
+
+            var actual = EnrichedResult.Fail<string, DummyErrorType>(errorType, code, description);
+
+            actual.Should().BeOfType<EnrichedResult<string>>();
+
+            actual.Error.Should().BeOfType<EnrichedError<DummyErrorType>>();
+
+            var expected = new
+            {
+                IsSuccess = false,
+                IsError = true,
+                Error = new
+                {
+                    Type = errorType.ToString(),
+                    Code = code,
+                    Description = description,
+                    ErrorType = errorType
+                }
+            };
+
+            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
         }
     }
 }

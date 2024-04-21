@@ -3,11 +3,11 @@
 namespace AllOverIt.Patterns.Result
 {
     /// <summary>Enhances <see cref="EnrichedError"/> by providing the ability to store the error type
-    /// as a <see langword="struct"/> (such as an <see langword="int"/> or <see langword="enum"/>).</summary>
-    /// <typeparam name="TErrorType">The strongly-typed, <see langword="struct"/>-based, error type.</typeparam>
-    public class EnrichedError<TErrorType> : EnrichedError where TErrorType : struct
+    /// as another type that is more suitable for comparisons, such as an <see langword="int"/> or <see langword="enum"/>.</summary>
+    /// <typeparam name="TErrorType">The strongly-typed error type.</typeparam>
+    public class EnrichedError<TErrorType> : EnrichedError where TErrorType : notnull
     {
-        /// <summary>The strongly-typed, <see langword="struct"/>-based, error type.</summary>
+        /// <summary>The strongly-typed error type.</summary>
         public TErrorType ErrorType { get; }
 
         /// <summary>Constructor.</summary>

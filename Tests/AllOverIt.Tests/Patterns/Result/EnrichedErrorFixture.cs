@@ -5,9 +5,15 @@ using AllOverIt.Patterns.Result;
 using FluentAssertions;
 
 namespace AllOverIt.Tests.Patterns.Result;
-
 public partial class EnrichedErrorFixture : FixtureBase
 {
+    private readonly EnrichedError[] EnrichedErrors =
+    [
+        EnrichedResult.Fail().Error!,
+        EnrichedResult.Fail<int>().Error!,
+        EnrichedResult.Fail<double>().Error!,
+    ];
+
     public class Constructor : EnrichedErrorFixture
     {
         [Fact]
@@ -83,6 +89,91 @@ public partial class EnrichedErrorFixture : FixtureBase
                 Type = type,
                 Code = code,
                 Description = description
+            };
+
+            expected.Should().BeEquivalentTo(actual);
+        }
+    }
+
+    public class Aggregate : EnrichedErrorFixture
+    {
+        [Fact]
+        public void Should_Set_Errors()
+        {
+            var actual = EnrichedError.Aggregate(EnrichedErrors);
+
+            var expected = new
+            {
+                Type = (string?) null,
+                Code = (string?) null,
+                Description = (string?) null,
+                Errors = EnrichedErrors
+            };
+
+            expected.Should().BeEquivalentTo(actual);
+        }
+    }
+
+    public class Aggregate_Description : EnrichedErrorFixture
+    {
+        [Fact]
+        public void Should_Set_Description_Errors()
+        {
+            var description = Create<string>();
+
+            var actual = EnrichedError.Aggregate(description, EnrichedErrors);
+
+            var expected = new
+            {
+                Type = (string?) null,
+                Code = (string?) null,
+                Description = description,
+                Errors = EnrichedErrors
+            };
+
+            expected.Should().BeEquivalentTo(actual);
+        }
+    }
+
+    public class Aggregate_Type_Description : EnrichedErrorFixture
+    {
+        [Fact]
+        public void Should_Set_Type_Description_Errors()
+        {
+            var type = Create<string>();
+            var description = Create<string>();
+
+            var actual = EnrichedError.Aggregate(type, description, EnrichedErrors);
+
+            var expected = new
+            {
+                Type = type,
+                Code = (string?) null,
+                Description = description,
+                Errors = EnrichedErrors
+            };
+
+            expected.Should().BeEquivalentTo(actual);
+        }
+    }
+
+    public class Aggregate_Type_Code_Description : EnrichedErrorFixture
+    {
+        [Fact]
+        public void Should_Set_Type_Code_Description_Errors()
+        {
+            var type = Create<string>();
+            var code = Create<string>();
+            var description = Create<string>();
+
+            var actual = EnrichedError.Aggregate(type, code, description, EnrichedErrors);
+
+            var expected = new
+            {
+                Type = type,
+                Code = code,
+                Description = description,
+                Errors = EnrichedErrors
             };
 
             expected.Should().BeEquivalentTo(actual);

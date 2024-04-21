@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Patterns.Result;
+using AllOverIt.Patterns.Result.Extensions;
 using System.Diagnostics;
 
 namespace ResultOrErrorDemo.Errors;
@@ -14,6 +15,9 @@ internal class Program
         ShowFailUsingFactoryBasedError();           // EnrichedResult with Error = EnrichedError<AppErrorType>
         ShowFailUsingStaticError();                 // EnrichedResult with Error = UnexpectedError (which is a EnrichedError<AppErrorType>)
         ShowFailUsingStronglyTypedError();          // EnrichedResult with Error = ValidationError (which is a EnrichedError<AppErrorType>)
+        ShowFailWithAggregateError();
+        ShowMatchWithResult();
+        ShowMatchWithError();
     }
 
     private static void ShowSuccessWithNoResult()
@@ -92,7 +96,7 @@ internal class Program
 
         if (result.IsError)
         {
-            switch (result.Error.Type)
+            switch (result.Error!.Type)
             {
                 case "BadRequest":
                     Console.WriteLine($"ShowFailUsingFactoryBasedError - Passed with '{result.Error.Description}'");
@@ -151,4 +155,43 @@ internal class Program
             throw new UnreachableException();
         }
     }
+
+    private static void ShowFailWithAggregateError()
+    {
+        var error1 = EnrichedResult.Fail(AppErrors.Unexpected).Error!;
+        var error2 = EnrichedResult.Fail(AppErrors.Validation).Error!;
+        var error3 = EnrichedResult.Fail(new EnrichedError("some type", "some description")).Error!;
+
+        // There are additional overloads that allow a type, code, description to be given to the aggregate.
+        var aggregate = EnrichedError.Aggregate(error1, error2, error3);
+
+        var descriptions = aggregate.Errors.Select(error => error.Description);
+
+        Console.WriteLine($"ShowFailWithAggregateError: {string.Join(", ", descriptions)}");
+    }
+
+    private static void ShowMatchWithResult()
+    {
+        var result = EnrichedResult.Success(100);
+
+        // Showing that we can even return a different result type
+        var matched = result.Match(
+            result => EnrichedResult.Success($"ShowMatchWithResult - Passed with {result.Value}"),
+            result => throw new UnreachableException());
+
+        Console.WriteLine(matched.Value);
+    }
+
+    private static void ShowMatchWithError()
+    {
+        // Shows the creation of an EnrichedResult<int> with an EnrichedError<byte>
+        var result = EnrichedResult.Fail<int, byte>(255, "Some random error");
+
+        // Showing that we can even return a different result type
+        result.Switch(
+            result => throw new UnreachableException(),
+            result => Console.WriteLine($"ShowMatchWithError - Passed with {result.Error!.Description}"));
+    }
+
+
 }

@@ -6,7 +6,7 @@ public static class AppErrors
 {
     public static EnrichedError BadRequest(
         string code = nameof(AppErrorType.BadRequest),
-        string description = "A 'Bad Request' error has occurred.")
+        string description = "A 'Bad Request' error has occurred")
     {
         return new EnrichedError<AppErrorType>(AppErrorType.BadRequest, code, description);
     }

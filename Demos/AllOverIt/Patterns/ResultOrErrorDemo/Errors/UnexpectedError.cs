@@ -8,7 +8,7 @@ public sealed class UnexpectedError : EnrichedError<AppErrorType>
         : base(
             AppErrorType.Unexpected,
             nameof(AppErrorType.Unexpected),
-            "An unexpected error occurred.")
+            "An unexpected error occurred")
     {
     }
 

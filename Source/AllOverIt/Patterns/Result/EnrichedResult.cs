@@ -35,33 +35,186 @@ public class EnrichedResult
     /// <summary>Constructs a new <see cref="EnrichedResult"/> in a successful state.</summary>
     /// <returns>A new <see cref="EnrichedResult"/> with a successful state.</returns>
     [return: NotNull]
-    public static EnrichedResult Success() => new(true, null);
+    public static EnrichedResult Success()
+    {
+        return new(true, null);
+    }
 
     /// <summary>Constructs a new <see cref="EnrichedResult{TResult}"/> in a successful state, with a default value.</summary>
     /// <typeparam name="TResult">The result's <see cref="EnrichedResult{TResult}.Value"/> type.</typeparam>
     /// <returns>A new <see cref="EnrichedResult{TResult}"/> with a successful state, and a default value.</returns>
     [return: NotNull]
-    public static EnrichedResult<TResult> Success<TResult>() => new();
+    public static EnrichedResult<TResult> Success<TResult>()
+    {
+        return new();
+    }
 
     /// <summary>Constructs a new <see cref="EnrichedResult{TResult}"/> in a successful state, with a value.</summary>
     /// <typeparam name="TResult">The result's <see cref="EnrichedResult{TResult}.Value"/> type.</typeparam>
     /// <param name="result">The value of the successful result.</param>
     /// <returns>A new <see cref="EnrichedResult{TResult}"/> with a successful state, and a value.</returns>
     [return: NotNull]
-    public static EnrichedResult<TResult> Success<TResult>(TResult result) => new(result);
+    public static EnrichedResult<TResult> Success<TResult>(TResult result)
+    {
+        return new(result);
+    }
 
     /// <summary>Constructs a new <see cref="EnrichedResult"/> in a failed state.</summary>
     /// <param name="error">An optional <see cref="EnrichedError"/> to associate with the failed result.</param>
     /// <returns>A new <see cref="EnrichedResult"/> in a failed state.</returns>
     [return: NotNull]
-    public static EnrichedResult Fail(EnrichedError? error = default) => new(false, error);
+    public static EnrichedResult Fail(EnrichedError? error = default)
+    {
+        return new(false, error);
+    }
 
     /// <summary>Constructs a new <see cref="EnrichedResult{TResult}"/> in a failed state.</summary>
     /// <typeparam name="TResult">The result type associated with the result.</typeparam>
     /// <param name="error">An optional <see cref="EnrichedError{TResult}"/> to associate with the failed result.</param>
     /// <returns>A new <see cref="EnrichedResult"/> in a failed state.</returns>
     [return: NotNull]
-    public static EnrichedResult<TResult> Fail<TResult>(EnrichedError? error = default) => new(error);
+    public static EnrichedResult<TResult> Fail<TResult>(EnrichedError? error = default)
+    {
+        return new(error);
+    }
+
+    /// <summary>Constructs a new <see cref="EnrichedResult"/> in a failed state, with a description.</summary>
+    /// <param name="description">A description for the error.</param>
+    /// <returns>A new <see cref="EnrichedResult"/> in a failed state, with a description.</returns>
+    [return: NotNull]
+    public static EnrichedResult Fail(string description)
+    {
+        return new(false, new EnrichedError(description));
+    }
+
+    /// <summary>Constructs a new <see cref="EnrichedResult"/> in a failed state, with a type and description.</summary>
+    /// <param name="type">Describes the error type.</param>
+    /// <param name="description">A description for the error.</param>
+    /// <returns>A new <see cref="EnrichedResult"/> in a failed state, with a type and description.</returns>
+    [return: NotNull]
+    public static EnrichedResult Fail(string type, string description)
+    {
+        return new(false, new EnrichedError(type, description));
+    }
+
+    /// <summary>Constructs a new <see cref="EnrichedResult"/> in a failed state, with a type, a code, and description.</summary>
+    /// <param name="type">Describes the error type.</param>
+    /// <param name="code">A code that identifies the error.</param>
+    /// <param name="description">A description for the error.</param>
+    /// <returns>A new <see cref="EnrichedResult"/> in a failed state, with a type, a code, and description.</returns>
+    [return: NotNull]
+    public static EnrichedResult Fail(string? type, string? code, string? description)
+    {
+        return new(false, new EnrichedError(type, code, description));
+    }
+
+    /// <summary>Constructs a new <see cref="EnrichedResult{TResult}"/> in a failed state, with a description.</summary>
+    /// <typeparam name="TResult"></typeparam>
+    /// <param name="description">A description for the error.</param>
+    /// <returns>A new <see cref="EnrichedResult{TResult}"/> in a failed state, with a description.</returns>
+    [return: NotNull]
+    public static EnrichedResult<TResult> Fail<TResult>(string description)
+    {
+        return new EnrichedResult<TResult>(new EnrichedError(description));
+    }
+
+    /// <summary>Constructs a new <see cref="EnrichedResult{TResult}"/> in a failed state, with a type and description.</summary>
+    /// <typeparam name="TResult">The result type.</typeparam>
+    /// <param name="type">Describes the error type.</param>
+    /// <param name="description">A description for the error.</param>
+    /// <returns>A new <see cref="EnrichedResult{TResult}"/> in a failed state, with a type and description.</returns>
+    [return: NotNull]
+    public static EnrichedResult<TResult> Fail<TResult>(string type, string description)
+    {
+        return new EnrichedResult<TResult>(new EnrichedError(type, description));
+    }
+
+    /// <summary>Constructs a new <see cref="EnrichedResult{TResult}"/> in a failed state, with a type, a code, and a description.</summary>
+    /// <typeparam name="TResult">The result type.</typeparam>
+    /// <param name="type">Describes the error type.</param>
+    /// <param name="code">A code that identifies the error.</param>
+    /// <param name="description">A description for the error.</param>
+    /// <returns>A new <see cref="EnrichedResult{TResult}"/> in a failed state, with a type, a code, and a description.</returns>
+    [return: NotNull]
+    public static EnrichedResult<TResult> Fail<TResult>(string? type, string? code, string? description)
+    {
+        return new EnrichedResult<TResult>(new EnrichedError(type, code, description));
+    }
+
+    /// <summary>Constructs a new <see cref="EnrichedResult"/> in a failed state, with an error type.</summary>
+    /// <typeparam name="TErrorType">The error type that describes the error.</typeparam>
+    /// <param name="errorType">The value of the <typeparamref name="TErrorType"/>.</param>
+    /// <returns>A new <see cref="EnrichedResult"/> in a failed state, with an error type.</returns>
+    [return: NotNull]
+    public static EnrichedResult Fail<TErrorType>(TErrorType errorType)
+        where TErrorType : notnull
+    {
+        return new(false, new EnrichedError<TErrorType>(errorType));
+    }
+
+    /// <summary>Constructs a new <see cref="EnrichedResult"/> in a failed state, with an error type, and a description.</summary>
+    /// <typeparam name="TErrorType">The error type that describes the error.</typeparam>
+    /// <param name="errorType">The value of the <typeparamref name="TErrorType"/>.</param>
+    /// <param name="description">A description for the error.</param>
+    /// <returns>A new <see cref="EnrichedResult"/> in a failed state, with an error type, and a description.</returns>
+    [return: NotNull]
+    public static EnrichedResult Fail<TErrorType>(TErrorType errorType, string description)
+        where TErrorType : notnull
+    {
+        return new(false, new EnrichedError<TErrorType>(errorType, description));
+    }
+
+    /// <summary>Constructs a new <see cref="EnrichedResult"/> in a failed state, with an error type, error code, and a description.</summary>
+    /// <typeparam name="TErrorType">The error type that describes the error.</typeparam>
+    /// <param name="errorType">The value of the <typeparamref name="TErrorType"/>.</param>
+    /// <param name="code">A code that identifies the error.</param>
+    /// <param name="description">A description for the error.</param>
+    /// <returns>A new <see cref="EnrichedResult"/> in a failed state, with an error type, error code, and a description.</returns>
+    [return: NotNull]
+    public static EnrichedResult Fail<TErrorType>(TErrorType errorType, string? code, string? description)
+        where TErrorType : notnull
+    {
+        return new(false, new EnrichedError<TErrorType>(errorType, code, description));
+    }
+
+    /// <summary>Constructs a new <see cref="EnrichedResult{TResult}"/> in a failed state, with an error type.</summary>
+    /// <typeparam name="TResult">The result type.</typeparam>
+    /// <typeparam name="TErrorType">The error type that describes the error.</typeparam>
+    /// <param name="errorType">The value of the <typeparamref name="TErrorType"/>.</param>
+    /// <returns>A new <see cref="EnrichedResult{TResult}"/> in a failed state, with an error type.</returns>
+    [return: NotNull]
+    public static EnrichedResult<TResult> Fail<TResult, TErrorType>(TErrorType errorType)
+        where TErrorType : notnull
+    {
+        return new EnrichedResult<TResult>(new EnrichedError<TErrorType>(errorType));
+    }
+
+    /// <summary>Constructs a new <see cref="EnrichedResult{TResult}"/> in a failed state, with an error type, and a description.</summary>
+    /// <typeparam name="TResult">The result type.</typeparam>
+    /// <typeparam name="TErrorType">The error type that describes the error.</typeparam>
+    /// <param name="errorType">The value of the <typeparamref name="TErrorType"/>.</param>
+    /// <param name="description">A description for the error.</param>
+    /// <returns>A new <see cref="EnrichedResult{TResult}"/> in a failed state, with an error type, and a description.</returns>
+    [return: NotNull]
+    public static EnrichedResult<TResult> Fail<TResult, TErrorType>(TErrorType errorType, string description)
+        where TErrorType : notnull
+    {
+        return new EnrichedResult<TResult>(new EnrichedError<TErrorType>(errorType, description));
+    }
+
+    /// <summary>Constructs a new <see cref="EnrichedResult{TResult}"/> in a failed state, with an error type, an error code, and a description.</summary>
+    /// <typeparam name="TResult">The result type.</typeparam>
+    /// <typeparam name="TErrorType">The error type that describes the error.</typeparam>
+    /// <param name="errorType">The value of the <typeparamref name="TErrorType"/>.</param>
+    /// <param name="code">A code that identifies the error.</param>
+    /// <param name="description">A description for the error.</param>
+    /// <returns>A new <see cref="EnrichedResult{TResult}"/> in a failed state, with an error type, an error code, and a description.</returns>
+    [return: NotNull]
+    public static EnrichedResult<TResult> Fail<TResult, TErrorType>(TErrorType errorType, string? code, string? description)
+        where TErrorType : notnull
+    {
+        return new EnrichedResult<TResult>(new EnrichedError<TErrorType>(errorType, code, description));
+    }
 
     private EnrichedError? GetError()
     {

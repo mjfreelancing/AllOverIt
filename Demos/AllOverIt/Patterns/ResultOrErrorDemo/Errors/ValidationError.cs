@@ -8,7 +8,7 @@ public sealed class ValidationError : EnrichedError<AppErrorType>
         : base(
             AppErrorType.Validation,
             nameof(AppErrorType.Validation),
-            "A validation error occurred.")
+            "A validation error occurred")
     {
     }
 
