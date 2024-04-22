@@ -15,7 +15,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
 
             configure?.Invoke(options);
 
-            var formatter = (TGenerator) Activator.CreateInstance(typeof(TGenerator), new[] { options });
+            var formatter = (TGenerator) Activator.CreateInstance(typeof(TGenerator), [options]);
 
             return formatter;
         }
