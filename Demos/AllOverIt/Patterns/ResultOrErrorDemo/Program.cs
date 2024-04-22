@@ -15,6 +15,7 @@ internal class Program
         ShowFailUsingFactoryBasedError();           // EnrichedResult with Error = EnrichedError<AppErrorType>
         ShowFailUsingStaticError();                 // EnrichedResult with Error = UnexpectedError (which is a EnrichedError<AppErrorType>)
         ShowFailUsingStronglyTypedError();          // EnrichedResult with Error = ValidationError (which is a EnrichedError<AppErrorType>)
+        ShowFailUsingCustomError();
         ShowFailWithAggregateError();
         ShowMatchWithResult();
         ShowMatchWithError();
@@ -149,6 +150,35 @@ internal class Program
             };
 
             Console.WriteLine($"ShowFailUsingStronglyTypedError - Passed with '{description}'");
+        }
+        else
+        {
+            throw new UnreachableException();
+        }
+    }
+
+    private static void ShowFailUsingCustomError()
+    {
+        EnrichedError validationError = new ValidationError("Validation", "A validation error...")
+        {
+            ValidationErrors =
+            [
+                new ValidationErrorDetail
+                {
+                    AttemptedValue = 42,
+                    Message = "Some property has a bad value"
+                }
+            ]
+        };
+
+        var result = EnrichedResult.Fail(validationError);
+
+        if (result.IsError)
+        {
+            var error = result.Error as ValidationError;
+            var errorDetail = error!.ValidationErrors.Single();
+
+            Console.WriteLine($"ShowFailUsingCustomError - Passed with '{errorDetail.Message}' for attempted value {errorDetail.AttemptedValue}");
         }
         else
         {

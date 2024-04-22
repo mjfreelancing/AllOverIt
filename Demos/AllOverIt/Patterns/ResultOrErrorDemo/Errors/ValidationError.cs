@@ -4,6 +4,8 @@ namespace ResultOrErrorDemo.Errors;
 
 public sealed class ValidationError : EnrichedError<AppErrorType>
 {
+    public ValidationErrorDetail[] ValidationErrors { get; set; } = [];
+
     public ValidationError()
         : base(
             AppErrorType.Validation,
