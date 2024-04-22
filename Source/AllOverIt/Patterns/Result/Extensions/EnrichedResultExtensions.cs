@@ -5,7 +5,7 @@ using System;
 
 namespace AllOverIt.Patterns.Result.Extensions;
 
-/// <summary>Provides a variety of extension methods for <see cref="EnrichedResult"/> and <see cref=EnrichedResult{TResult}"/>.</summary>
+/// <summary>Provides a variety of extension methods for <see cref="EnrichedResult"/> and <see cref="EnrichedResult{TResult}"/>.</summary>
 public static class EnrichedResultExtensions
 {
     /// <summary>Matches a result for success or failure and invokes an associated action.</summary>
