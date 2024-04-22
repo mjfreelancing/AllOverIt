@@ -1,7 +1,7 @@
 <Project>
     <PropertyGroup>
         <LangVersion>Latest</LangVersion>
-        <Version>7.8.1</Version>
+        <Version>7.9.0</Version>
         <Authors>Malcolm Smith</Authors>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>

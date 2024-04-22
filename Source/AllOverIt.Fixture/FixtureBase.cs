@@ -405,7 +405,7 @@ namespace AllOverIt.Fixture
 
             constructor.Should().NotBeNull();
 
-            var exception = (Exception) constructor.Invoke(new[] { message });
+            var exception = (Exception) constructor.Invoke([message]);
 
             exception.Message.Should().Be(message);
         }

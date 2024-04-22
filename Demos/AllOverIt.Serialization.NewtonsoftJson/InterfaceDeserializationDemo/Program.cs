@@ -68,8 +68,8 @@ namespace InterfaceDeserializationDemo
                     Street = "Broad St",
                     City = "BroadMeadow"
                 },
-                Children = new[]
-                {
+                Children =
+                [
                     new Child                       // This property is of type IChild
                     {
                         FirstName = "Mary",
@@ -80,7 +80,7 @@ namespace InterfaceDeserializationDemo
                         FirstName = "Roger",
                         Age = 5
                     }
-                }
+                ]
             };
 
             var serialized = JsonConvert.SerializeObject(parent);
