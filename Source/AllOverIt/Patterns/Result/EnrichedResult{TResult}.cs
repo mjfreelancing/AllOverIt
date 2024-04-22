@@ -45,7 +45,7 @@ public class EnrichedResult<TResult> : EnrichedResult
 
     private TResult? GetValue()
     {
-        Throw<InvalidOperationException>.When(IsError, $"The result has no value. More detail can be found on the {nameof(Fail)} property.");
+        Throw<InvalidOperationException>.When(IsFail, $"The result has no value. More detail can be found on the {nameof(Fail)} property.");
 
         return _value;
     }

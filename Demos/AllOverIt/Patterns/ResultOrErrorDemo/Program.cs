@@ -80,7 +80,7 @@ internal class Program
     {
         var result = EnrichedResult.Fail();
 
-        if (result.IsError)
+        if (result.IsFail)
         {
             Console.WriteLine("ShowFailWithNoError - Passed");
         }
@@ -95,7 +95,7 @@ internal class Program
         // BadRequest() accepts a code and description
         var result = EnrichedResult.Fail(AppErrors.BadRequest());
 
-        if (result.IsError)
+        if (result.IsFail)
         {
             switch (result.Error!.Type)
             {
@@ -118,7 +118,7 @@ internal class Program
         // The Type, Code, and Description are all fixed
         var result = EnrichedResult.Fail(AppErrors.Unexpected);
 
-        if (result.IsError)
+        if (result.IsFail)
         {
             var description = result.Error switch
             {
@@ -139,7 +139,7 @@ internal class Program
         // The Type, Code, and Description are all fixed
         var result = EnrichedResult.Fail(AppErrors.Validation);
 
-        if (result.IsError)
+        if (result.IsFail)
         {
             var errorType = (EnrichedError<AppErrorType>) result.Error!;
 
@@ -173,7 +173,7 @@ internal class Program
 
         var result = EnrichedResult.Fail(validationError);
 
-        if (result.IsError)
+        if (result.IsFail)
         {
             var error = result.Error as ValidationError;
             var errorDetail = error!.ValidationErrors.Single();

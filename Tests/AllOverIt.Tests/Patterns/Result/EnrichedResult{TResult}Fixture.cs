@@ -114,13 +114,13 @@ public partial class EnrichedResultFixture : FixtureBase
             var actual2 = new EnrichedResult<int?>((EnrichedError?) null);
             var actual3 = new EnrichedResult<string>((EnrichedError?) null);
 
-            actual1.IsError.Should().BeTrue();
+            actual1.IsFail.Should().BeTrue();
             actual1.Error.Should().Be(default);
 
-            actual2.IsError.Should().BeTrue();
+            actual2.IsFail.Should().BeTrue();
             actual2.Error.Should().Be(default);
 
-            actual2.IsError.Should().BeTrue();
+            actual2.IsFail.Should().BeTrue();
             actual2.Error.Should().Be(default);
         }
 
@@ -133,13 +133,13 @@ public partial class EnrichedResultFixture : FixtureBase
             var actual2 = new EnrichedResult<int?>(error);
             var actual3 = new EnrichedResult<string>(error);
 
-            actual1.IsError.Should().BeTrue();
+            actual1.IsFail.Should().BeTrue();
             actual1.Error.Should().Be(error);
 
-            actual2.IsError.Should().BeTrue();
+            actual2.IsFail.Should().BeTrue();
             actual2.Error.Should().Be(error);
 
-            actual3.IsError.Should().BeTrue();
+            actual3.IsFail.Should().BeTrue();
             actual3.Error.Should().Be(error);
         }
     }

@@ -15,7 +15,7 @@ public class EnrichedResult
     public bool IsSuccess { get; }
 
     /// <summary>Indicates if the result has an error state.</summary>
-    public bool IsError => !IsSuccess;
+    public bool IsFail => !IsSuccess;
 
     /// <summary>An optional <see cref="EnrichedError"/> that describes the error state.
     /// This property will throw an <see cref="InvalidOperationException"/> if the result

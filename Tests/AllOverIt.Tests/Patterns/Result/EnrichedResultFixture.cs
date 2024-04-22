@@ -18,6 +18,44 @@ public partial class EnrichedResultFixture : FixtureBase
         Dummy5
     }
 
+    public class IsSuccess : EnrichedResultFixture
+    {
+        [Fact]
+        public void Should_Return_True_When_Success()
+        {
+            var result = EnrichedResult.Success();
+
+            result.IsSuccess.Should().BeTrue();
+        }
+
+        [Fact]
+        public void Should_Return_False_When_Fail()
+        {
+            var result = EnrichedResult.Fail();
+
+            result.IsSuccess.Should().BeFalse();
+        }
+    }
+
+    public class IsFail : EnrichedResultFixture
+    {
+        [Fact]
+        public void Should_Return_True_When_Fail()
+        {
+            var result = EnrichedResult.Fail();
+
+            result.IsFail.Should().BeTrue();
+        }
+
+        [Fact]
+        public void Should_Return_False_When_Success()
+        {
+            var result = EnrichedResult.Success();
+
+            result.IsFail.Should().BeFalse();
+        }
+    }
+
     public class Error : EnrichedResultFixture
     {
         [Fact]
@@ -60,7 +98,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = true,
-                IsError = false
+                IsFail = false
                 //Error = (EnrichedError) null
             };
 
@@ -81,7 +119,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = true,
-                IsError = false,
+                IsFail = false,
                 Value = default(int)
                 //Error = (EnrichedError) null
             };
@@ -100,7 +138,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = true,
-                IsError = false,
+                IsFail = false,
                 Value = default(int?)
                 //Error = (EnrichedError) null
             };
@@ -119,7 +157,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = true,
-                IsError = false,
+                IsFail = false,
                 Value = default(string)
                 //Error = (EnrichedError) null
             };
@@ -143,7 +181,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = true,
-                IsError = false,
+                IsFail = false,
                 Value = value
                 //Error = (EnrichedError) null
             };
@@ -164,7 +202,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = true,
-                IsError = false,
+                IsFail = false,
                 Value = value
                 //Error = (EnrichedError) null
             };
@@ -185,7 +223,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = true,
-                IsError = false,
+                IsFail = false,
                 Value = value
                 //Error = (EnrichedError) null
             };
@@ -225,7 +263,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 Error = (EnrichedError?) null
             };
 
@@ -244,7 +282,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 Error = error
             };
 
@@ -265,7 +303,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 //Value =
                 Error = (EnrichedError?) null
             };
@@ -284,7 +322,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 //Value =
                 Error = (EnrichedError?) null
 
@@ -304,7 +342,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 //Value =
                 Error = (EnrichedError?) null
 
@@ -329,7 +367,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 //Value = 
                 Error = error
             };
@@ -350,7 +388,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 //Value = 
                 Error = error
             };
@@ -371,7 +409,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 //Value = 
                 Error = error
             };
@@ -413,7 +451,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 Error = new
                 {
                     Type = (string?) null,
@@ -441,7 +479,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 Error = new
                 {
                     Type = type,
@@ -470,7 +508,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 Error = new
                 {
                     Type = type,
@@ -499,7 +537,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 Error = new
                 {
                     Type = (string?) null,
@@ -525,7 +563,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 Error = new
                 {
                     Type = (string?) null,
@@ -551,7 +589,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 Error = new
                 {
                     Type = (string?) null,
@@ -581,7 +619,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 Error = new
                 {
                     Type = type,
@@ -608,7 +646,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 Error = new
                 {
                     Type = type,
@@ -635,7 +673,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 Error = new
                 {
                     Type = type,
@@ -666,7 +704,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 Error = new
                 {
                     Type = type,
@@ -694,7 +732,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 Error = new
                 {
                     Type = type,
@@ -722,7 +760,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 Error = new
                 {
                     Type = type,
@@ -749,7 +787,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 Error = new
                 {
                     Type = errorType.ToString(),
@@ -778,7 +816,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 Error = new
                 {
                     Type = errorType.ToString(),
@@ -808,7 +846,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 Error = new
                 {
                     Type = errorType.ToString(),
@@ -838,7 +876,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 Error = new
                 {
                     Type = errorType.ToString(),
@@ -865,7 +903,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 Error = new
                 {
                     Type = errorType.ToString(),
@@ -892,7 +930,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 Error = new
                 {
                     Type = errorType.ToString(),
@@ -923,7 +961,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 Error = new
                 {
                     Type = errorType.ToString(),
@@ -951,7 +989,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 Error = new
                 {
                     Type = errorType.ToString(),
@@ -979,7 +1017,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 Error = new
                 {
                     Type = errorType.ToString(),
@@ -1011,7 +1049,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 Error = new
                 {
                     Type = errorType.ToString(),
@@ -1040,7 +1078,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 Error = new
                 {
                     Type = errorType.ToString(),
@@ -1069,7 +1107,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var expected = new
             {
                 IsSuccess = false,
-                IsError = true,
+                IsFail = true,
                 Error = new
                 {
                     Type = errorType.ToString(),
