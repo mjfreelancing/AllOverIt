@@ -84,9 +84,10 @@ namespace AllOverIt.Async
                 .Unwrap();
         }
 
-        /// <summary>An implicit operator that returns a <see cref="BackgroundTask"/> as a <see cref="Task"/>.</summary>
+        /// <summary>An implicit operator that returns a <see cref="BackgroundTask"/> as a <see cref="Task"/>.
+        /// If <paramref name="backgroundTask"/> is <see langword="null"/>, then the operator will return <see langword="null"/>.</summary>
         /// <param name="backgroundTask">The <see cref="BackgroundTask"/> to implicitly convert to a <see cref="Task"/>.</param>
-        public static implicit operator Task(BackgroundTask backgroundTask)
+        public static implicit operator Task?(BackgroundTask? backgroundTask)
         {
             return backgroundTask?._task;
         }

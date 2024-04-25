@@ -170,7 +170,7 @@ namespace AllOverIt.Aspects
             return result;
         }
 
-        private object? InvokeServiceInstance([NotNull] MethodInfo targetMethod, object?[]? args)
+        private object? InvokeServiceInstance(MethodInfo targetMethod, object?[]? args)
         {
             return targetMethod.Invoke(_serviceInstance, args);
         }

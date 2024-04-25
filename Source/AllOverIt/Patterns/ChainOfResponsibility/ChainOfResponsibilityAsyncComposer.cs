@@ -22,9 +22,6 @@ namespace AllOverIt.Patterns.ChainOfResponsibility
                 .Compose();
         }
 
-        // Note: Task<TOutput?> supports nullable reference types and does not change int to int?, for example.
-        // This syntax is required because [return: MayBeNull] cannot be applied here.
-        //
         /// <summary>Invokes each handler in turn with the provided state until the state is actioned.</summary>
         /// <param name="state">The input state to be processed.</param>
         /// <param name="cancellationToken">A cancellation token.</param>

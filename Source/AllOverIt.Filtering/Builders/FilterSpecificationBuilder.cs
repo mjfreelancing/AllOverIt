@@ -55,7 +55,7 @@ namespace AllOverIt.Filtering.Builders
         #region Create
 
         public ILinqSpecification<TType> Create(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation,
-            Action<OperationFilterOptions> options = default)
+            Action<OperationFilterOptions>? options = default)
         {
             _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
             _ = operation.WhenNotNull(nameof(operation));
@@ -341,7 +341,7 @@ namespace AllOverIt.Filtering.Builders
             // The array based operations require special consideration when the value is double (for example) and
             // TProperty is double? because an error occurs due to List<double> cannot be converted to IList<double?>.
 
-            var valuesType = values.GetType();            
+            var valuesType = values.GetType();
 
             if (valuesType.IsGenericEnumerableType() && valuesType.GetGenericArguments()[0] != typeof(TProperty))
             {

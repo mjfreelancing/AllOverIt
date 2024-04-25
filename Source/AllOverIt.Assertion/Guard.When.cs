@@ -194,7 +194,7 @@ namespace AllOverIt.Assertion
         /// instance and "Value cannot be empty" for an empty collection.</param>
         /// <returns>The original object instance when not null and not empty.</returns>
         [return: NotNullIfNotNull(nameof(@object))]
-        public static IEnumerable<TType> WhenNotNullOrEmpty<TType>([NotNull] this IEnumerable<TType>? @object,
+        public static IEnumerable<TType> WhenNotNullOrEmpty<TType>(this IEnumerable<TType>? @object,
 #if NETSTANDARD2_1
             string name,
 #else
