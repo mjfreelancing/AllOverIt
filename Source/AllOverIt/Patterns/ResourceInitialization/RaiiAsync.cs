@@ -7,7 +7,8 @@ namespace AllOverIt.Patterns.ResourceInitialization
     /// <summary>An async disposable object implementing the Resource Acquisition Is Initialization idiom.</summary>
     public class RaiiAsync : IAsyncDisposable
     {
-        private Func<Task>? _cleanUp;
+        private bool _disposed;
+        private readonly Func<Task> _cleanUp;
 
         /// <summary>Constructor used to provide the initialization and cleanup actions to be invoked.</summary>
         /// <param name="initialize">The initialization action to invoke at the time of initialization.</param>
@@ -32,12 +33,11 @@ namespace AllOverIt.Patterns.ResourceInitialization
         /// <summary>Performs the asynchronous disposal of resources.</summary>
         protected virtual async ValueTask DisposeAsyncCore()
         {
-            if (_cleanUp is not null)
+            if (!_disposed)
             {
                 await _cleanUp.Invoke().ConfigureAwait(false);
+                _disposed = true;
             }
-
-            _cleanUp = null;
         }
     }
 
@@ -45,7 +45,8 @@ namespace AllOverIt.Patterns.ResourceInitialization
     /// <typeparam name="TType">The type being initialized.</typeparam>
     public class RaiiAsync<TType> : IAsyncDisposable
     {
-        private Func<TType, Task>? _cleanUp;
+        private bool _disposed;
+        private readonly Func<TType, Task> _cleanUp;
 
         /// <summary>The context provided at the time of initialization.</summary>
         public TType Context { get; }
@@ -73,12 +74,11 @@ namespace AllOverIt.Patterns.ResourceInitialization
         /// <summary>Performs the asynchronous disposal of resources.</summary>
         protected virtual async ValueTask DisposeAsyncCore()
         {
-            if (_cleanUp != null)
+            if (!_disposed)
             {
                 await _cleanUp.Invoke(Context).ConfigureAwait(false);
+                _disposed = true;
             }
-
-            _cleanUp = null;
         }
     }
 }
