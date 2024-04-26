@@ -1,8 +1,9 @@
 ﻿using AllOverIt.Patterns.Result;
 using AllOverIt.Patterns.Result.Extensions;
+using ResultOrErrorDemo.Errors;
 using System.Diagnostics;
 
-namespace ResultOrErrorDemo.Errors;
+namespace ResultOrErrorDemo;
 
 internal class Program
 {

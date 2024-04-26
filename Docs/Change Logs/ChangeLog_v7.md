@@ -1,3 +1,12 @@
+#  Version 7.x.x
+## XX Apr 2024
+
+### AllOverIt
+* Corrected namespace for VoidType (now AllOverIt.Types).
+
+---
+
+
 #  Version 7.9.0
 ## 22 Apr 2024
 
