@@ -1,9 +1,6 @@
 using AllOverIt.Expressions;
 using AllOverIt.Fixture;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Tests.Expressions

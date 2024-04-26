@@ -4,9 +4,6 @@ using AllOverIt.Async;
 using AllOverIt.Fixture;
 using FluentAssertions;
 using Microsoft.Extensions.Time.Testing;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Tests.Async
 {

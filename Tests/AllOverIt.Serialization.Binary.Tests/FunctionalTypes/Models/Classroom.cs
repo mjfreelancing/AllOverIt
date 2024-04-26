@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AllOverIt.Serialization.Binary.Tests.FunctionalTypes.Models
+﻿namespace AllOverIt.Serialization.Binary.Tests.FunctionalTypes.Models
 {
     internal sealed class Classroom
     {

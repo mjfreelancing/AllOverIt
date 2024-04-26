@@ -2,8 +2,6 @@
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Helpers.ProgressReport;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
 
 namespace AllOverIt.Tests.Helpers.ProgressReport
 {

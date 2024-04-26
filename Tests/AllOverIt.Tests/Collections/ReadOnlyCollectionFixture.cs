@@ -3,7 +3,6 @@ using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using FluentAssertions;
 using System.Collections;
-using System.Collections.Generic;
 
 namespace AllOverIt.Tests.Collections
 {

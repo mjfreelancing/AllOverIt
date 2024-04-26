@@ -1,5 +1,3 @@
-using System;
-
 namespace AllOverIt.Evaluator.Tests
 {
     public class FormulaCompilerFixtureFunctionalLog2 : FormulaCompilerFixtureFunctionalBase

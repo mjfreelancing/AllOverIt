@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Validation.Validators;
 using FluentAssertions;
-using System;
 
 namespace AllOverIt.Validation.Tests.Validators
 {

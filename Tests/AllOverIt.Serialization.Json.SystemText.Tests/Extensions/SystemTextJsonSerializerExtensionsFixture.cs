@@ -2,7 +2,6 @@ using AllOverIt.Fixture;
 using AllOverIt.Serialization.Json.SystemText.Converters;
 using AllOverIt.Serialization.Json.SystemText.Extensions;
 using FluentAssertions;
-using System.Linq;
 
 namespace AllOverIt.Serialization.Json.SystemText.Tests.Extensions
 {

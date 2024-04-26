@@ -2,8 +2,6 @@
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Pipes.Anonymous;
 using FluentAssertions;
-using System;
-using System.IO;
 using System.IO.Pipes;
 
 namespace AllOverIt.Pipes.Tests.Anonymous

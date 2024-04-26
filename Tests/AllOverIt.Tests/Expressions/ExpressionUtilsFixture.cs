@@ -3,8 +3,6 @@ using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
-using System;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Tests.Expressions

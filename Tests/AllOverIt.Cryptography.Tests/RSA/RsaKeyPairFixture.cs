@@ -4,7 +4,6 @@ using AllOverIt.Cryptography.RSA.Exceptions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
-using System;
 
 using RSAAlgorithm = System.Security.Cryptography.RSA;
 

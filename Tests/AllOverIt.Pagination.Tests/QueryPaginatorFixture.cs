@@ -4,11 +4,6 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Pagination.Exceptions;
 using AllOverIt.Pagination.TokenEncoding;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Pagination.Tests
 {

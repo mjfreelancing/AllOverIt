@@ -3,7 +3,6 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.Command;
 using AllOverIt.Patterns.Command.Exceptions;
 using FluentAssertions;
-using System;
 
 namespace AllOverIt.Tests.Patterns.Command
 {

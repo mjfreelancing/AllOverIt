@@ -2,7 +2,6 @@ using AllOverIt.Evaluator.Tests.Operators.Dummies;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
-using System;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Evaluator.Tests.Operators

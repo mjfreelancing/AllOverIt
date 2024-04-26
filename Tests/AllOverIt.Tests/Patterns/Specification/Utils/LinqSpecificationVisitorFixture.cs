@@ -3,8 +3,6 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.Specification;
 using AllOverIt.Patterns.Specification.Utils;
 using FluentAssertions;
-using System;
-using System.Linq;
 
 namespace AllOverIt.Tests.Patterns.Specification.Utils
 {

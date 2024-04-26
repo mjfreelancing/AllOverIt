@@ -3,7 +3,6 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.ChainOfResponsibility;
 using AllOverIt.Patterns.ChainOfResponsibility.Extensions;
 using FluentAssertions;
-using System;
 
 namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
 {

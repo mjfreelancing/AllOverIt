@@ -4,7 +4,6 @@ using AllOverIt.ReactiveUI.ViewRegistry.Events;
 using FakeItEasy;
 using FluentAssertions;
 using ReactiveUI;
-using System;
 
 namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
 {

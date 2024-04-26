@@ -3,8 +3,6 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Helpers.PropertyNavigation;
 using AllOverIt.Helpers.PropertyNavigation.Extensions;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Tests.Helpers.PropertyNavigation.Extensions

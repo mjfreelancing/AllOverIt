@@ -1,6 +1,5 @@
 ﻿using AllOverIt.EntityFrameworkCore.Diagrams.D2;
 using FluentAssertions;
-using System.Collections.Generic;
 using System.Diagnostics;
 using TestUtils;
 

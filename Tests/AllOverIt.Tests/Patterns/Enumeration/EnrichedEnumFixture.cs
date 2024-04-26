@@ -3,7 +3,6 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.Enumeration;
 using AllOverIt.Patterns.Enumeration.Exceptions;
 using FluentAssertions;
-using System;
 using System.Runtime.CompilerServices;
 
 namespace AllOverIt.Tests.Patterns.Enumeration

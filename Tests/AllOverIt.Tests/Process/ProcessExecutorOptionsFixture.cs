@@ -3,8 +3,6 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Process;
 using AllOverIt.Process.Extensions;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace AllOverIt.Tests.Process

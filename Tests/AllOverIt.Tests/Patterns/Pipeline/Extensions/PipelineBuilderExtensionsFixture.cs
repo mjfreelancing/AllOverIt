@@ -3,9 +3,6 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.Pipeline;
 using AllOverIt.Patterns.Pipeline.Extensions;
 using FluentAssertions;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
 {

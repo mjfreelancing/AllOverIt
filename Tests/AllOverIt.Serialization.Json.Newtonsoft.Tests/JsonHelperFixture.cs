@@ -5,10 +5,7 @@ using AllOverIt.Serialization.Json.Abstractions.Exceptions;
 using AllOverIt.Serialization.Json.Newtonsoft.Converters;
 using FluentAssertions;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 
 namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
 {

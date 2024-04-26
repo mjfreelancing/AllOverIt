@@ -3,9 +3,6 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Validation.Extensions;
 using FluentAssertions;
 using FluentValidation.Results;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Validation.Tests.Extensions
 {

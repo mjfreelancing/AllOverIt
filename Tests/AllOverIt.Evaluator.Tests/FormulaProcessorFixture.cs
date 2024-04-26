@@ -7,7 +7,6 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using FakeItEasy;
 using FluentAssertions;
-using System;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Evaluator.Tests

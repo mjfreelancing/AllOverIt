@@ -6,8 +6,6 @@ using AllOverIt.Formatters.Objects.Extensions;
 using AllOverIt.Helpers.PropertyNavigation;
 using AllOverIt.Helpers.PropertyNavigation.Extensions;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
 
 namespace AllOverIt.Tests.Formatters.Objects.Extensions
 {

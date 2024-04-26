@@ -2,8 +2,6 @@
 using AllOverIt.Expressions.Strings.Extensions;
 using AllOverIt.Fixture;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
 
 namespace AllOverIt.Tests.Expressions.Strings.Extensions
 {

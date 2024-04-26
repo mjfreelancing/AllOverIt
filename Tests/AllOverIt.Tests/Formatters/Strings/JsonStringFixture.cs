@@ -2,7 +2,6 @@
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Formatters.Strings;
 using FluentAssertions;
-using System;
 
 namespace AllOverIt.Tests.Formatters.Strings
 {

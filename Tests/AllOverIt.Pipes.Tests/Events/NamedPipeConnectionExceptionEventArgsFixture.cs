@@ -3,9 +3,6 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Pipes.Named.Connection;
 using AllOverIt.Pipes.Named.Events;
 using FluentAssertions;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Pipes.Tests.Events
 {

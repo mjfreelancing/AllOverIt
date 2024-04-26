@@ -1,8 +1,6 @@
 ﻿using AllOverIt.Cryptography.RSA;
 using AllOverIt.Fixture;
 using FluentAssertions;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 
 namespace AllOverIt.Cryptography.Tests.RSA

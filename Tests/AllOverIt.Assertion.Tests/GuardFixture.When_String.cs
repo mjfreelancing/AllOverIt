@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
-using System;
 
 namespace AllOverIt.Tests.Assertion
 {

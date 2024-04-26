@@ -2,8 +2,6 @@
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Helpers;
 using FluentAssertions;
-using System;
-using System.Linq;
 
 namespace AllOverIt.Tests.Helpers
 {

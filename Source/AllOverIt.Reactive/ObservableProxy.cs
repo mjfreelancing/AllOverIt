@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 namespace AllOverIt.Reactive
 {
     /// <summary>Extends <see cref="ObservableObject"/> by adding support for creating a wrapper around a model that is not
-    /// observable. This can be useful for sitations such as creating an observable model for use in a MVVM application
+    /// observable. This can be useful for situations such as creating an observable model for use in a MVVM application
     /// that wraps a non-observable entity. Property updates made via this proxy object will apply the same updates to the 
     /// wrapped model and raise change notifications.</summary>
     /// <typeparam name="TType">The wrapped model type.</typeparam>

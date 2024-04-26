@@ -9,8 +9,6 @@ using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Patterns.Specification;
 using FakeItEasy;
 using FluentAssertions;
-using System;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Filtering.Tests.Builders

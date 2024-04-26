@@ -1,8 +1,6 @@
 ﻿using AllOverIt.Patterns.Specification;
 using AllOverIt.Tests.Patterns.Specification.Dummies;
 using FluentAssertions;
-using System;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Tests.Patterns.Specification

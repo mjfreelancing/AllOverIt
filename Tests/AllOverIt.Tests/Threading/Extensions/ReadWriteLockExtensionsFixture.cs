@@ -2,7 +2,6 @@
 using AllOverIt.Threading;
 using AllOverIt.Threading.Extensions;
 using FluentAssertions;
-using System.Threading;
 
 namespace AllOverIt.Tests.Threading.Extensions
 {

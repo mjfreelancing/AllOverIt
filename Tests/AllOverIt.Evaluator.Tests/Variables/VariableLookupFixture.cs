@@ -3,7 +3,6 @@ using AllOverIt.Evaluator.Variables;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
-using System;
 
 namespace AllOverIt.Evaluator.Tests.Variables
 {

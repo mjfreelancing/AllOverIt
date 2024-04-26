@@ -5,7 +5,6 @@ using AllOverIt.Serialization.Binary.Readers;
 using AllOverIt.Serialization.Binary.Readers.Extensions;
 using FakeItEasy;
 using FluentAssertions;
-using System;
 
 namespace AllOverIt.Serialization.Binary.Tests.Extensions
 {

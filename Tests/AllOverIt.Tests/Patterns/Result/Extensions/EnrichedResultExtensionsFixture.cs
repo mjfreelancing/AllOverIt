@@ -5,7 +5,6 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.Result;
 using AllOverIt.Patterns.Result.Extensions;
 using FluentAssertions;
-using System;
 
 namespace AllOverIt.Tests.Patterns.Result.Extensions;
 

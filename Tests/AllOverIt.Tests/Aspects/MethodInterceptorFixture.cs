@@ -2,9 +2,7 @@
 using AllOverIt.Assertion;
 using AllOverIt.Fixture;
 using FluentAssertions;
-using System;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Tests.Aspects
 {

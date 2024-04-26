@@ -4,10 +4,7 @@ using AllOverIt.Process;
 using AllOverIt.Process.Extensions;
 using FluentAssertions;
 using FluentAssertions.Extensions;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace AllOverIt.Tests.Process.Extensions
 {

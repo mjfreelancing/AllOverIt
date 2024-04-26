@@ -2,8 +2,6 @@
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using ReactiveUI;
-using System;
-using System.Collections.Generic;
 
 namespace AllOverIt.ReactiveUI.Tests
 {

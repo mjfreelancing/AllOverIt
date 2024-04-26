@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Async;
 using AllOverIt.Fixture;
 using FluentAssertions;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Tests.Async
 {

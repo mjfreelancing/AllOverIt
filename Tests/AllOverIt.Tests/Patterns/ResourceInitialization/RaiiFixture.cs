@@ -2,7 +2,6 @@
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.ResourceInitialization;
 using FluentAssertions;
-using System;
 
 namespace AllOverIt.Tests.Patterns.ResourceInitialization
 {

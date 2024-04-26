@@ -3,8 +3,6 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Pagination.TokenEncoding;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
 
 namespace AllOverIt.Pagination.Tests.TokenEncoding
 {

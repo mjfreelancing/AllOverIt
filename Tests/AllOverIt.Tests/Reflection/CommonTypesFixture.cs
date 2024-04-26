@@ -2,9 +2,7 @@
 using AllOverIt.Patterns.Enumeration;
 using AllOverIt.Reflection;
 using FluentAssertions;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 
 namespace AllOverIt.Tests.Reflection
 {

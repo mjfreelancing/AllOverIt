@@ -5,7 +5,6 @@ using FluentAssertions;
 using Serilog;
 using Serilog.Formatting;
 using Serilog.Formatting.Display;
-using System;
 
 namespace AllOverIt.Serilog.Tests.Extensions
 {

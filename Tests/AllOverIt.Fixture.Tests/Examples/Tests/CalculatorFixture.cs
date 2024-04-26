@@ -1,6 +1,5 @@
 using AllOverIt.Fixture.Tests.Examples.SUT;
 using FluentAssertions;
-using System;
 
 namespace AllOverIt.Fixture.Tests.Examples.Tests
 {

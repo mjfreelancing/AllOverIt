@@ -5,7 +5,6 @@ using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Pagination.Exceptions;
 using AllOverIt.Pagination.TokenEncoding;
 using FluentAssertions;
-using System;
 
 namespace AllOverIt.Pagination.Tests.TokenEncoding
 {

@@ -4,7 +4,6 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Reflection;
 using AllOverIt.Reflection.Exceptions;
 using FluentAssertions;
-using System;
 using System.Reflection;
 
 namespace AllOverIt.Tests.Reflection

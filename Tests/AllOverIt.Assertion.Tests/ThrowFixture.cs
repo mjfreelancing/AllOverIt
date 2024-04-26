@@ -1,7 +1,5 @@
 ﻿using AllOverIt.Fixture;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
 
 namespace AllOverIt.Assertion.Tests
 {
