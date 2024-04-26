@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Serialization.Json.Abstractions.Exceptions
+﻿namespace AllOverIt.Serialization.Json.Abstractions.Exceptions
 {
     /// <summary>Thrown when unable to set a configuration option on an <see cref="IJsonSerializer"/>.</summary>
     public sealed class SerializerConfigurationException : Exception

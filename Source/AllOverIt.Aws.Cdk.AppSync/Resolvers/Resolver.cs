@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AllOverIt.Aws.Cdk.AppSync.Resolvers
+﻿namespace AllOverIt.Aws.Cdk.AppSync.Resolvers
 {
     /// <summary>Contains resolver helper functions.</summary>
     public static class Resolver

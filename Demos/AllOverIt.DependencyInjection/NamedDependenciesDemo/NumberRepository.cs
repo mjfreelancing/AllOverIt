@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace NamedDependenciesDemo
+﻿namespace NamedDependenciesDemo
 {
     internal sealed class NumberRepository : IRepository
     {

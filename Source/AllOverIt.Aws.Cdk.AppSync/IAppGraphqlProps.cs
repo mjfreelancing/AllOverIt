@@ -3,7 +3,6 @@ using AllOverIt.Aws.Cdk.AppSync.Attributes.Types;
 using AllOverIt.Aws.Cdk.AppSync.DataSources;
 using AllOverIt.Aws.Cdk.AppSync.Factories;
 using AllOverIt.Aws.Cdk.AppSync.Resolvers;
-using System.Collections.Generic;
 using SystemType = System.Type;
 
 namespace AllOverIt.Aws.Cdk.AppSync

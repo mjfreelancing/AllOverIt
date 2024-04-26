@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Mapping.Exceptions
+﻿namespace AllOverIt.Mapping.Exceptions
 {
     /// <summary>Represents an error that occurred while object mapping.</summary>
     public sealed class ObjectMapperException : Exception

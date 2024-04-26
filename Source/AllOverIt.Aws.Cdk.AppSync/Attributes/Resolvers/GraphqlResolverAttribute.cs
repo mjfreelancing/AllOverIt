@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Aws.Cdk.AppSync.Resolvers;
-using System;
 
 namespace AllOverIt.Aws.Cdk.AppSync.Attributes.Resolvers
 {

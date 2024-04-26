@@ -3,9 +3,7 @@ using AllOverIt.Helpers.PropertyNavigation;
 using AllOverIt.Helpers.PropertyNavigation.Extensions;
 using AllOverIt.Reflection;
 using PropertyNavigationDemo.Models;
-using System;
 using System.Collections;
-using System.Linq;
 
 namespace PropertyNavigationDemo
 {

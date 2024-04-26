@@ -5,9 +5,6 @@ using AllOverIt.Aws.Cdk.AppSync.Exceptions;
 using Amazon.CDK;
 using Amazon.CDK.AWS.AppSync;
 using Amazon.CDK.AWS.Lambda;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace AllOverIt.Aws.Cdk.AppSync.Factories

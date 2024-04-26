@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace InterceptorDemo
+﻿namespace InterceptorDemo
 {
     public interface ISecretService
     {

@@ -1,9 +1,7 @@
 ﻿using AllOverIt.Extensions;
 using FluentValidation.Results;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System.Collections.Generic;
 
 namespace EnrichedEnumModelBindingDemo.Problems
 {

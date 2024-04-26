@@ -21,7 +21,6 @@
 //     Note: older examples used this : <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 
 using GCCollectorStartupHook;
-using System;
 using System.Reflection;
 using System.Runtime.Loader;
 

@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Aspects;
 using BenchmarkDotNet.Attributes;
-using System.Threading.Tasks;
 
 namespace InterceptorBenchmarking
 {

@@ -5,9 +5,6 @@ using AllOverIt.Aws.Cdk.AppSync.Schema.Types;
 using AllOverIt.Extensions;
 using Amazon.CDK.AWS.AppSync;
 using Cdklabs.AwsCdkAppsyncUtils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using SystemType = System.Type;
 
 namespace AllOverIt.Aws.Cdk.AppSync

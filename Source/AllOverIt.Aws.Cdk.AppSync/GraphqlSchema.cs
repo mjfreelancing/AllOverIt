@@ -1,6 +1,4 @@
 ﻿using Cdklabs.AwsCdkAppsyncUtils;
-using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace AllOverIt.Aws.Cdk.AppSync

@@ -3,7 +3,6 @@ using EFEnumerationDemo.Entities;
 using EFEnumerationDemo.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
 
 namespace EFEnumerationDemo
 {

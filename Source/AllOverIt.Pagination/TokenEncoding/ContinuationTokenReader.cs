@@ -2,7 +2,6 @@
 using AllOverIt.Extensions;
 using AllOverIt.Serialization.Binary.Readers;
 using AllOverIt.Serialization.Binary.Readers.Extensions;
-using System.Collections.Generic;
 
 namespace AllOverIt.Pagination.TokenEncoding
 {

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AllOverIt.Pagination.TokenEncoding
+﻿namespace AllOverIt.Pagination.TokenEncoding
 {
     /// <summary>Represents a factory for creating continuation token encoders.</summary>
     public interface IContinuationTokenEncoderFactory

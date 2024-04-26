@@ -2,7 +2,6 @@
 using AllOverIt.Aws.Cdk.AppSync.Factories;
 using AllOverIt.Aws.Cdk.AppSync.Resolvers;
 using Amazon.CDK.AWS.AppSync;
-using System.Collections.Generic;
 using SystemType = System.Type;
 
 namespace AllOverIt.Aws.Cdk.AppSync

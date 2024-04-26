@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Csv.Exceptions
+﻿namespace AllOverIt.Csv.Exceptions
 {
     /// <summary>Represents an error that occurs during the serialization of data to CSV.</summary>
     public sealed class CsvSerializerException : Exception

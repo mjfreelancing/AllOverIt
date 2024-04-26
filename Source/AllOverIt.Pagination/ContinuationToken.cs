@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AllOverIt.Pagination
+﻿namespace AllOverIt.Pagination
 {
     internal sealed class ContinuationToken : IContinuationToken
     {

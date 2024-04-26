@@ -4,13 +4,8 @@ using AllOverIt.Extensions;
 using AllOverIt.Pagination.Exceptions;
 using AllOverIt.Pagination.Extensions;
 using AllOverIt.Pagination.TokenEncoding;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Pagination
 {

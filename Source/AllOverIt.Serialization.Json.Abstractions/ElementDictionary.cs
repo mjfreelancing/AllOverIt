@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Serialization.Json.Abstractions.Exceptions;
 using System.Collections;
-using System.Collections.Generic;
 
 namespace AllOverIt.Serialization.Json.Abstractions
 {

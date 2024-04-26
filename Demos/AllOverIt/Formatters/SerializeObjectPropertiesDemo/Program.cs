@@ -3,11 +3,7 @@ using AllOverIt.Formatters.Objects;
 using AllOverIt.Formatters.Objects.Extensions;
 using AllOverIt.Helpers.PropertyNavigation;
 using AllOverIt.Helpers.PropertyNavigation.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace SerializeObjectPropertiesDemo
 {

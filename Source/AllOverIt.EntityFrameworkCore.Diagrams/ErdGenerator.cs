@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.EntityFrameworkCore.Diagrams
+﻿namespace AllOverIt.EntityFrameworkCore.Diagrams
 {
     /// <summary>An entity relationship diagram generator factory.</summary>
     public static class ErdGenerator

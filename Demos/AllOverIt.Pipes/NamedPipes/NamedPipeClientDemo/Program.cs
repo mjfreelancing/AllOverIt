@@ -1,6 +1,4 @@
 ﻿using NamedPipeTypes;
-using System;
-using System.Threading.Tasks;
 
 namespace NamedPipeClientDemo
 {

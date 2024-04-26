@@ -3,8 +3,6 @@ using AllOverIt.Aws.Cdk.AppSync.Attributes.Resolvers;
 using AllOverIt.Aws.Cdk.AppSync.Exceptions;
 using AllOverIt.Extensions;
 using Amazon.CDK.AWS.AppSync;
-using System;
-using System.Collections.Generic;
 
 namespace AllOverIt.Aws.Cdk.AppSync.Resolvers
 {

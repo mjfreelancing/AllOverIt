@@ -1,8 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
 using AllOverIt.Reflection;
-using System;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace AllOverIt.Mapping

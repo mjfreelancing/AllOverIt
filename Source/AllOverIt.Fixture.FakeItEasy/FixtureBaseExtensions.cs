@@ -1,10 +1,7 @@
 ﻿using AutoFixture;
 using AutoFixture.AutoFakeItEasy;
 using FakeItEasy;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 
 namespace AllOverIt.Fixture.FakeItEasy
 {

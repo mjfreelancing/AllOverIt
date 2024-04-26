@@ -22,8 +22,6 @@ using GraphqlSchema.Schema;
 using GraphqlSchema.Schema.Resolvers;
 using GraphqlSchema.Schema.Resolvers.Query;
 using GraphqlSchema.Schema.Types;
-using System;
-using System.Collections.Generic;
 using SystemType = System.Type;
 
 #if CODE_FIRST_APPROACH_2

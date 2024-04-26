@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Patterns.ChainOfResponsibility;
 using AllOverIt.Patterns.ChainOfResponsibility.Extensions;
-using System;
 
 namespace ChainOfResponsibilityDemo.Handlers
 {

@@ -1,7 +1,4 @@
 ﻿using ChainOfResponsibilityAsyncDemo.Handlers;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ChainOfResponsibilityAsyncDemo
 {

@@ -2,9 +2,6 @@
 using AllOverIt.Extensions;
 using AllOverIt.Pagination.Exceptions;
 using AllOverIt.Pagination.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AllOverIt.Pagination.TokenEncoding
 {

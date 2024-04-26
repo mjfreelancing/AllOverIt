@@ -1,8 +1,5 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync.Exceptions;
 using AllOverIt.Aws.Cdk.AppSync.Resolvers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using SystemType = System.Type;
 
 namespace AllOverIt.Aws.Cdk.AppSync.Factories

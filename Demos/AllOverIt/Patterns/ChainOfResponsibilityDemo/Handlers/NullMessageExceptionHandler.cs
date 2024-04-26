@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ChainOfResponsibilityDemo.Handlers
+﻿namespace ChainOfResponsibilityDemo.Handlers
 {
     public sealed class NullMessageExceptionHandler : QueueMessageHandlerBase
     {

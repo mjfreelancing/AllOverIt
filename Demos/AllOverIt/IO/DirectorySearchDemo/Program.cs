@@ -1,5 +1,4 @@
 ﻿using AllOverIt.IO;
-using System;
 
 namespace DirectorySearchDemo
 {

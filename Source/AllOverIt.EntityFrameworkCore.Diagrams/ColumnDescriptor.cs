@@ -2,8 +2,6 @@
 using AllOverIt.EntityFrameworkCore.Diagrams.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AllOverIt.EntityFrameworkCore.Diagrams
 {

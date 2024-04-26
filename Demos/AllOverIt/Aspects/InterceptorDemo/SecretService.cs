@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace InterceptorDemo
+﻿namespace InterceptorDemo
 {
     internal sealed class SecretService : ISecretService
     {

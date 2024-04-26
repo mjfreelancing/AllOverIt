@@ -1,7 +1,5 @@
 ﻿using AllOverIt.ReactiveUI.ViewRegistry.Events;
 using ReactiveUI;
-using System;
-using System.Collections.Generic;
 
 namespace AllOverIt.ReactiveUI.ViewRegistry
 {

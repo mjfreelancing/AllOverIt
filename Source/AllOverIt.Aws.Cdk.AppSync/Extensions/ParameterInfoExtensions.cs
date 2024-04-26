@@ -2,8 +2,6 @@
 using AllOverIt.Aws.Cdk.AppSync.Exceptions;
 using AllOverIt.Collections;
 using AllOverIt.Extensions;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using SystemType = System.Type;
 

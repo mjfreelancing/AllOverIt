@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AllOverIt.Aws.Cdk.AppSync.Resolvers
+﻿namespace AllOverIt.Aws.Cdk.AppSync.Resolvers
 {
     /// <summary>A node within a GraphQL hierarchy that contains a resolver runtime.</summary>
     public sealed class ResolverRuntimeNode

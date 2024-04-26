@@ -5,9 +5,6 @@ using AllOverIt.Process;
 using AllOverIt.Process.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.EntityFrameworkCore.Diagrams.D2.Extensions
 {

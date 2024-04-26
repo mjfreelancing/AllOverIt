@@ -1,9 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Csv.Exceptions;
 using AllOverIt.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AllOverIt.Csv.Extensions
 {

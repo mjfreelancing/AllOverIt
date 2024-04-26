@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace SerializeObjectPropertiesDemo
+﻿namespace SerializeObjectPropertiesDemo
 {
     internal class Dummy
     {

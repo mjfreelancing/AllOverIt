@@ -5,10 +5,7 @@ using AllOverIt.Aws.Cdk.AppSync.Exceptions;
 using AllOverIt.Extensions;
 using AllOverIt.Reflection;
 using Cdklabs.AwsCdkAppsyncUtils;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Reflection;
 using SystemType = System.Type;
 

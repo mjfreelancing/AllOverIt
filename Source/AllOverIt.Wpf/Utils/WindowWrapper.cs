@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Assertion;
-using System;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;

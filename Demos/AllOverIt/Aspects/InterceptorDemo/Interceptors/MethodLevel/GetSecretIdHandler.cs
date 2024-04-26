@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Aspects;
-using System;
 using System.Reflection;
 
 namespace InterceptorDemo.Interceptors.MethodLevel

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Fixture.Exceptions
+﻿namespace AllOverIt.Fixture.Exceptions
 {
     /// <summary>The exception raised when an unhandled AggregateException is thrown.</summary>
     public sealed class AggregateAssertionException : Exception

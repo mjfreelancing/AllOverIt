@@ -4,9 +4,7 @@ using AllOverIt.EntityFrameworkCore.Diagrams.D2.Extensions;
 using AllOverIt.EntityFrameworkCore.Diagrams.Extensions;
 using D2ErdDiagramDemo.Data;
 using D2ErdDiagramDemo.Data.Entities;
-using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
 
 namespace D2ErdDiagramDemo
 {

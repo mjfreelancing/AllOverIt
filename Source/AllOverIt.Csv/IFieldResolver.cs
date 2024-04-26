@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AllOverIt.Csv
+﻿namespace AllOverIt.Csv
 {
     /// <summary>Represents a resolver that provides one or more column names and associated values for a particular field.</summary>
     /// <typeparam name="TCsvData">The data type being serialized to CSV format.</typeparam>

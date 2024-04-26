@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ObjectMappingBenchmarking
+﻿namespace ObjectMappingBenchmarking
 {
     public class SimpleTarget
     {
