@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Evaluator.Exceptions
+﻿namespace AllOverIt.Evaluator.Exceptions
 {
     /// <summary>An exception that can be thrown by the ArithmeticOperationFactory while compiling a formula expression.</summary>
     public sealed class OperationFactoryException : Exception

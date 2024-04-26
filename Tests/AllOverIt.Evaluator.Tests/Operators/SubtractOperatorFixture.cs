@@ -5,7 +5,6 @@ using AllOverIt.Fixture.FakeItEasy;
 using FluentAssertions;
 using System;
 using System.Linq.Expressions;
-using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Operators
 {

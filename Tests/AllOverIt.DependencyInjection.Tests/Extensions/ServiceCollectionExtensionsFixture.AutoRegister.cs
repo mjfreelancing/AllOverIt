@@ -10,7 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Xunit;
 
 namespace AllOverIt.DependencyInjection.Tests.Extensions
 {
@@ -249,7 +248,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, null, new[] {typeof(AbstractClassA), typeof(IBaseInterface2)});
+                        DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, null, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -264,7 +263,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, _serviceCollection, (IEnumerable<Type>)null);
+                        DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, _serviceCollection, (IEnumerable<Type>) null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -324,14 +323,14 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             public void Should_Register_No_Exclude_Or_Filter(ServiceLifetime lifetime)
             {
                 var provider = DependencyHelper
-                    
-                    .AutoRegisterUsingServiceLifetime<LocalDependenciesRegistrar>(lifetime, _serviceCollection, new[] {typeof(AbstractClassA), typeof(IBaseInterface2) })
 
-                    .AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, new[] {typeof(AbstractClassA), typeof(IBaseInterface2) })
+                    .AutoRegisterUsingServiceLifetime<LocalDependenciesRegistrar>(lifetime, _serviceCollection, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
+
+                    .AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
 
                     .BuildServiceProvider();
 
-                DependencyHelper.AssertExpectation<AbstractClassA>(provider, new[] {typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG)});
+                DependencyHelper.AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
                 DependencyHelper.AssertExpectation<IBaseInterface2>(provider, new[] { typeof(ConcreteClassA), typeof(ConcreteClassC), typeof(ConcreteClassE), typeof(ConcreteClassG) });
             }
 
@@ -762,7 +761,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, (IServiceRegistrar)null, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
+                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, (IServiceRegistrar) null, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -1015,7 +1014,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
 
         public class AutoRegister_ServiceRegistrars_ServiceTypes : ServiceCollectionExtensionsFixture
         {
-            private readonly IServiceRegistrar[] _registrars = new IServiceRegistrar[] { new LocalDependenciesRegistrar(), new ExternalDependenciesRegistrar()};
+            private readonly IServiceRegistrar[] _registrars = new IServiceRegistrar[] { new LocalDependenciesRegistrar(), new ExternalDependenciesRegistrar() };
 
             [Theory]
             [InlineData(ServiceLifetime.Singleton)]
@@ -1132,7 +1131,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                 var provider = DependencyHelper
 
                     .AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) })
-                    
+
                     .BuildServiceProvider();
 
                 DependencyHelper.AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
@@ -1302,7 +1301,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                 Invoking(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, null, new[] { typeof(IBaseInterface3) },
-                            (provider, serviceType) => new object[]{Create<int>()});
+                            (provider, serviceType) => new object[] { Create<int>() });
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -1318,7 +1317,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                 Invoking(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, _serviceCollection,
-                            (IEnumerable<Type>) null, (provider, serviceType) => new object[] {Create<int>()});
+                            (IEnumerable<Type>) null, (provider, serviceType) => new object[] { Create<int>() });
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -1334,7 +1333,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                 Invoking(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, _serviceCollection,
-                            new List<Type>(), (provider, serviceType) => new object[] {Create<int>()});
+                            new List<Type>(), (provider, serviceType) => new object[] { Create<int>() });
                     })
                     .Should()
                     .Throw<ArgumentException>()
@@ -1365,7 +1364,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                 Invoking(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, _serviceCollection,
-                            new[] {typeof(IBaseInterface3)}, (provider, serviceType) => new object[] {Create<int>()}, (Action<IServiceRegistrarOptions>) null);
+                            new[] { typeof(IBaseInterface3) }, (provider, serviceType) => new object[] { Create<int>() }, (Action<IServiceRegistrarOptions>) null);
                     })
                     .Should()
                     .NotThrow();
@@ -1484,7 +1483,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
 
         public class AutoRegister_ServiceRegistrar_ServiceTypes_ConstructorArgs : ServiceCollectionExtensionsFixture
         {
-            private readonly ExternalDependenciesRegistrar _registrar = new ();
+            private readonly ExternalDependenciesRegistrar _registrar = new();
 
             [Theory]
             [InlineData(ServiceLifetime.Singleton)]
@@ -1510,7 +1509,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, (IServiceRegistrar)null, new[] { typeof(IBaseInterface3) },
+                        DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, (IServiceRegistrar) null, new[] { typeof(IBaseInterface3) },
                             (provider, serviceType) => new object[] { Create<int>() });
                     })
                     .Should()
@@ -1590,7 +1589,8 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrar,
                             new[] { typeof(AbstractClassA), typeof(ConcreteClassA), typeof(ConcreteClassB) },
-                            (provider, serviceType) => new object[] { Create<int>() }, (Action<IServiceRegistrarOptions>) null);                })
+                            (provider, serviceType) => new object[] { Create<int>() }, (Action<IServiceRegistrarOptions>) null);
+                    })
                     .Should()
                     .Throw<DependencyRegistrationException>()
                     .WithMessage($"Cannot register ConcreteClassA, ConcreteClassB. All service types must be an interface or abstract type.");
@@ -1689,10 +1689,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                 }
             }
         }
-        
+
         public class AutoRegister_ServiceRegistrars_ServiceTypes_ConstructorArgs : ServiceCollectionExtensionsFixture
         {
-            private readonly IServiceRegistrar[] _registrars = new[] {(IServiceRegistrar) new LocalDependenciesRegistrar(), new ExternalDependenciesRegistrar()};
+            private readonly IServiceRegistrar[] _registrars = new[] { (IServiceRegistrar) new LocalDependenciesRegistrar(), new ExternalDependenciesRegistrar() };
 
             [Theory]
             [InlineData(ServiceLifetime.Singleton)]

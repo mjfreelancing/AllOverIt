@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.IO.Pipes;
+﻿using System.IO.Pipes;
 
 namespace AllOverIt.Pipes.Anonymous
 {

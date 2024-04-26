@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Logging
+﻿namespace AllOverIt.Logging
 {
     /// <summary>A console logger capable of generating output in color.</summary>
     public interface IColorConsoleLogger

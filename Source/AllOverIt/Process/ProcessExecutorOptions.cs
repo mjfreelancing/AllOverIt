@@ -1,6 +1,4 @@
 ﻿using AllOverIt.Assertion;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
@@ -30,7 +28,7 @@ namespace AllOverIt.Process
         public IDictionary<string, string> EnvironmentVariables { get; init; }
 
         /// <summary>A handler to receive standard output.</summary>
-        public DataReceivedEventHandler StandardOutputHandler {get; init; }
+        public DataReceivedEventHandler StandardOutputHandler { get; init; }
 
         /// <summary>A handler to receive error output.</summary>
         public DataReceivedEventHandler ErrorOutputHandler { get; init; }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Formatters.Objects
+﻿namespace AllOverIt.Formatters.Objects
 {
     /// <summary>A registry of <see cref="ObjectPropertyFilter"/> types that can later be retrieved to filter
     /// the properties of a given object during its serialization via an <see cref="IObjectPropertySerializer"/> instance.</summary>

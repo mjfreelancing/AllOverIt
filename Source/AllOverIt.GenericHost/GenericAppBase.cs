@@ -1,7 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-
-namespace AllOverIt.GenericHost
+﻿namespace AllOverIt.GenericHost
 {
     /// <summary>Abstract base class for <see cref="IGenericApp"/> concrete types.</summary>
     public abstract class GenericAppBase : IGenericApp

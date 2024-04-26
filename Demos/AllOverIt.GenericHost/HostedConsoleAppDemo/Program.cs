@@ -1,8 +1,8 @@
 ﻿using AllOverIt.GenericHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace HostedConsoleAppDemo
 {

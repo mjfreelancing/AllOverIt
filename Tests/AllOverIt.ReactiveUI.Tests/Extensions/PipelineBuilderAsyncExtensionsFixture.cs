@@ -1,15 +1,12 @@
-﻿using AllOverIt.Extensions;
-using AllOverIt.Fixture;
+﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Patterns.Pipeline;
 using AllOverIt.ReactiveUI.Extensions;
-using FakeItEasy;
 using FluentAssertions;
 using ReactiveUI;
 using System;
 using System.Threading.Tasks;
-using Xunit;
 
 namespace AllOverIt.ReactiveUI.Tests.Extensions
 {

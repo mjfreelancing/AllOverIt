@@ -5,13 +5,8 @@ using AllOverIt.Pagination;
 using AllOverIt.Pagination.Extensions;
 using Bogus;
 using Bogus.DataSets;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace MemoryPaginationDemo
 {

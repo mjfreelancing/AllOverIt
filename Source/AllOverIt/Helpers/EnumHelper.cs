@@ -1,6 +1,4 @@
-﻿using System;
-
-#if !NETSTANDARD2_1
+﻿#if !NETSTANDARD2_1
 using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.InteropServices;

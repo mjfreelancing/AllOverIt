@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace AllOverIt.Async
+﻿namespace AllOverIt.Async
 {
     /// <summary>Provides options that determine how <see cref="RepeatingTask"/> is constructed and behaves.</summary>
     public sealed class RepeatingTaskOptions

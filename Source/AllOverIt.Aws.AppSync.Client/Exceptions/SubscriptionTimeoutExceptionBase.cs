@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Aws.AppSync.Client.Exceptions
+﻿namespace AllOverIt.Aws.AppSync.Client.Exceptions
 {
     /// <summary>Base class for all subscription related timeout exceptions.</summary>
     public abstract class SubscriptionTimeoutExceptionBase : TimeoutExceptionBase

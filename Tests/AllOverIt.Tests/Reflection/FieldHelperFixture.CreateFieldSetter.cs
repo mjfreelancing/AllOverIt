@@ -1,14 +1,10 @@
 ﻿using AllOverIt.Extensions;
-using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Reflection;
 using AllOverIt.Reflection.Exceptions;
 using FluentAssertions;
-using FluentAssertions.Equivalency;
 using System;
-using System.Linq.Expressions;
 using System.Reflection;
-using Xunit;
 
 namespace AllOverIt.Tests.Reflection
 {
@@ -69,7 +65,7 @@ namespace AllOverIt.Tests.Reflection
                 // Note: This overload of CreateFieldSetter() only works for structs when they are boxed.
                 //       If you need to pass a strongly typed object then use CreateFieldSetterByRef().
                 object model = new DummyStruct();
-                
+
                 var fieldInfo = typeof(DummyStruct).GetField(nameof(DummyStruct.Field1));
                 var setter = FieldHelper.CreateFieldSetter(fieldInfo);
 

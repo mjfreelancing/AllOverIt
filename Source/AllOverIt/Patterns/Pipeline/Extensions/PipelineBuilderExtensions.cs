@@ -1,7 +1,4 @@
 ﻿using AllOverIt.Assertion;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Patterns.Pipeline.Extensions
 {
@@ -120,7 +117,7 @@ namespace AllOverIt.Patterns.Pipeline.Extensions
             Task<TNextOut> stepAsync(TPrevOut result, CancellationToken cancellationToken)
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                
+
                 return Task.FromResult(step.Invoke(result));
             };
 

@@ -7,7 +7,6 @@ using FakeItEasy;
 using FluentAssertions;
 using System;
 using System.Linq;
-using Xunit;
 
 namespace AllOverIt.Serialization.Binary.Tests.Extensions
 {

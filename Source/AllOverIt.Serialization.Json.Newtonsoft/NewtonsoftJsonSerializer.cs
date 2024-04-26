@@ -4,11 +4,7 @@ using AllOverIt.Serialization.Json.Abstractions.Exceptions;
 using AllOverIt.Serialization.Json.Newtonsoft.Converters;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Serialization.Json.Newtonsoft
 {

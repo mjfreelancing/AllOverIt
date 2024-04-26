@@ -2,9 +2,6 @@
 using AllOverIt.Evaluator.Exceptions;
 using AllOverIt.Extensions;
 using AllOverIt.Patterns.Specification.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AllOverIt.Evaluator.Variables
 {

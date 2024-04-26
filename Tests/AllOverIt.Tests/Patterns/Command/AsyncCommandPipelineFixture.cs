@@ -1,12 +1,11 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using AllOverIt.Fixture;
+﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.Command;
 using AllOverIt.Patterns.Command.Exceptions;
 using FluentAssertions;
-using Xunit;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace AllOverIt.Tests.Patterns.Command
 {
@@ -168,7 +167,7 @@ namespace AllOverIt.Tests.Patterns.Command
             private class SequenceCommand : IAsyncCommand<int, int>
             {
                 public int Sequence { get; private set; }
-                
+
                 public Task<int> ExecuteAsync(int input, CancellationToken cancellationToken)
                 {
                     Sequence = input;

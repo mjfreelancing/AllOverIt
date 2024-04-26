@@ -7,7 +7,6 @@ using FluentAssertions;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
-using Xunit;
 
 namespace AllOverIt.Validation.Tests
 {

@@ -7,7 +7,6 @@ using FluentAssertions;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Xunit;
 
 namespace AllOverIt.Pipes.Tests.Named.Client
 {

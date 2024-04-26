@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Xunit;
 
 namespace AllOverIt.Tests.Process.Extensions
 {

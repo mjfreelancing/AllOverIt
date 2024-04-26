@@ -4,7 +4,6 @@ using AllOverIt.Helpers.ProgressReport;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
-using Xunit;
 
 namespace AllOverIt.Tests.Helpers.ProgressReport
 {

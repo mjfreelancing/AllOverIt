@@ -1,9 +1,5 @@
 ﻿using AllOverIt.Cryptography.AES;
-using AllOverIt.Cryptography.AES.Exceptions;
-using AllOverIt.Fixture;
 using FluentAssertions;
-using System.Security.Cryptography;
-using Xunit;
 
 namespace AllOverIt.Cryptography.Tests.AES
 {

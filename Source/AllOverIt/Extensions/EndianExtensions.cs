@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Extensions
+﻿namespace AllOverIt.Extensions
 {
     /// <summary>Provides a variety of extension methods for types that require byte ordering operations.</summary>
     public static partial class EndianExtensions

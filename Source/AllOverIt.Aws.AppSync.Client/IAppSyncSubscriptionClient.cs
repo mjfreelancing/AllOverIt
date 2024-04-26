@@ -2,8 +2,6 @@
 using AllOverIt.Aws.AppSync.Client.Request;
 using AllOverIt.Aws.AppSync.Client.Response;
 using AllOverIt.Aws.AppSync.Client.Subscription;
-using System;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Aws.AppSync.Client
 {
@@ -14,7 +12,7 @@ namespace AllOverIt.Aws.AppSync.Client
         IObservable<SubscriptionConnectionState> ConnectionState { get; }
 
         /// <summary>An observable reporting connection and subscription related exceptions.</summary>
-         IObservable<Exception> Exceptions { get; }
+        IObservable<Exception> Exceptions { get; }
 
         /// <summary>An observable reporting subscription related graphql errors.</summary>
         IObservable<GraphqlSubscriptionResponseError> GraphqlErrors { get; }

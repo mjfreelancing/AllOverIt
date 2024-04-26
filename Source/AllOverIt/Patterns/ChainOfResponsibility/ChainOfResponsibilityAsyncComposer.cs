@@ -1,8 +1,5 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Patterns.ChainOfResponsibility.Extensions;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Patterns.ChainOfResponsibility
 {

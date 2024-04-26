@@ -8,7 +8,7 @@
         /// <param name="source">The source instance to copy property values from.</param>
         /// <returns>a new target instance after all source properties have been copied. If the source is null
         /// then null will be returned.</returns>
-        TTarget Map<TTarget>(object source) 
+        TTarget Map<TTarget>(object source)
             where TTarget : class, new();
 
         /// <summary>Maps properties from a source object onto a provided target instance.</summary>

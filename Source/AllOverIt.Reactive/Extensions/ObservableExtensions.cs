@@ -1,7 +1,5 @@
 ﻿using AllOverIt.Assertion;
-using System;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Reactive.Extensions
 {

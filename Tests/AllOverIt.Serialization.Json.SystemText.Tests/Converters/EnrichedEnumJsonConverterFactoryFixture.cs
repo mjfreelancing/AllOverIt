@@ -5,7 +5,6 @@ using FluentAssertions;
 using System;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
-using Xunit;
 
 namespace AllOverIt.Serialization.Json.SystemText.Tests.Converters
 {

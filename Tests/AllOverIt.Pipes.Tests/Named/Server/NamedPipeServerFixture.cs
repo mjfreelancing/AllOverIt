@@ -9,7 +9,6 @@ using System;
 using System.IO.Pipes;
 using System.Threading;
 using System.Threading.Tasks;
-using Xunit;
 
 namespace AllOverIt.Pipes.Tests.Named.Server
 {

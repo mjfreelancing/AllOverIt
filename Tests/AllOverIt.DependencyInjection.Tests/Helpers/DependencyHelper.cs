@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AllOverIt.DependencyInjection.Extensions;
+﻿using AllOverIt.DependencyInjection.Extensions;
 using AllOverIt.Extensions;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AllOverIt.DependencyInjection.Tests.Helpers
 {
@@ -17,7 +17,7 @@ namespace AllOverIt.DependencyInjection.Tests.Helpers
             return lifetime switch
             {
                 ServiceLifetime.Singleton => ServiceCollectionExtensions.AutoRegisterSingleton<TServiceRegistrar, TServiceType>(services, configure),
-                
+
                 ServiceLifetime.Scoped => ServiceCollectionExtensions.AutoRegisterScoped<TServiceRegistrar, TServiceType>(services, configure),
 
                 ServiceLifetime.Transient => ServiceCollectionExtensions.AutoRegisterTransient<TServiceRegistrar, TServiceType>(services, configure),

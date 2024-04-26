@@ -1,9 +1,5 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Async;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Extensions
 {
@@ -34,7 +30,7 @@ namespace AllOverIt.Extensions
             _ = disposables.WhenNotNull(nameof(disposables));
 
             var disposableConnections = new CompositeAsyncDisposable(disposables.ToArray());
-            
+
             return disposableConnections.DisposeAsync();
         }
     }

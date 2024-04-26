@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Validation.Validators
+﻿namespace AllOverIt.Validation.Validators
 {
     /// <summary>A validator that determines if a property value is greater than a comparison value stored on the validation context.</summary>
     /// <typeparam name="TType">The model type containing the property to be validated.</typeparam>

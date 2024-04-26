@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DtoMappingDemo
+﻿namespace DtoMappingDemo
 {
     public class ChildTargetType
     {

@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Assertion;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace AllOverIt.DependencyInjection.Extensions
 {

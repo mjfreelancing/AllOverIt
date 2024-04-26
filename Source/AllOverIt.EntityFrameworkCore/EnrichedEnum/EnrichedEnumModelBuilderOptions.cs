@@ -1,6 +1,4 @@
 ﻿using AllOverIt.Patterns.Enumeration;
-using System;
-using System.Collections.Generic;
 
 namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
 {

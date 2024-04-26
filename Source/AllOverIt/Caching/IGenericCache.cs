@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AllOverIt.Caching
+﻿namespace AllOverIt.Caching
 {
     /// <summary>A generic cache capable of storing different key/value types. Each key type must inherit <see cref="GenericCacheKeyBase"/>
     /// and each of the key elements must support equality comparison.</summary>

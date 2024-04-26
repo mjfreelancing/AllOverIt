@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Patterns.ResourceInitialization;
-using System;
 
 namespace AllOverIt.Threading.Extensions
 {

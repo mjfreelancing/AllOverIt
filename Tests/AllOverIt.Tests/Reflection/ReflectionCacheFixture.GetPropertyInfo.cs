@@ -3,8 +3,6 @@ using AllOverIt.Reflection;
 using FluentAssertions;
 using System.Linq;
 using System.Reflection;
-using Xunit;
-using Xunit.Abstractions;
 
 namespace AllOverIt.Tests.Reflection
 {
@@ -74,7 +72,7 @@ namespace AllOverIt.Tests.Reflection
             [Fact]
             public void Should_Get_Property_In_Super()
             {
-                var actual = (object)ReflectionCache.GetPropertyInfo<DummyPropertyMethodSuperClass>("Prop3");
+                var actual = (object) ReflectionCache.GetPropertyInfo<DummyPropertyMethodSuperClass>("Prop3");
 
                 var expected = new
                 {
@@ -166,7 +164,7 @@ namespace AllOverIt.Tests.Reflection
 
             [Fact]
             public void Should_Get_Property_In_Base()
-{
+            {
                 var typeInfo = typeof(DummyPropertyMethodSuperClass).GetTypeInfo();
                 var actual = (object) ReflectionCache.GetPropertyInfo(typeInfo, "Prop1");
 

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AllOverIt.Formatters.Objects
+﻿namespace AllOverIt.Formatters.Objects
 {
     /// <summary>A serializer that can convert an object to an IDictionary&lt;string, string&gt; using a dot notation for nested members.</summary>
     public interface IObjectPropertySerializer

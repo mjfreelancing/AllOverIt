@@ -9,7 +9,7 @@ using System.Runtime.Loader;
 namespace AllOverIt.Plugin
 {
     /// <summary>Implements a runtime scope for assembly loading.</summary>
-    [ExcludeFromCodeCoverage]    
+    [ExcludeFromCodeCoverage]
     public class PluginLoadContext : AssemblyLoadContext
     {
         // The AssemblyDependencyResolver object is constructed with the path to a .NET class library (plugin).

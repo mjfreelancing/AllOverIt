@@ -1,8 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace AllOverIt.Pipes.Named.Connection
+﻿namespace AllOverIt.Pipes.Named.Connection
 {
     /// <summary>A connection for an underlying <see cref="System.IO.Pipes.PipeStream"/> that can serialize messages.</summary>
     /// <typeparam name="TMessage">The message type serialized by the connection.</typeparam>

@@ -1,9 +1,7 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Reflection;
-using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Text;
 
 namespace AllOverIt.Extensions

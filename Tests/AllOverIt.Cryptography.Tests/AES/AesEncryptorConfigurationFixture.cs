@@ -6,7 +6,6 @@ using FluentAssertions;
 using System;
 using System.Linq;
 using System.Security.Cryptography;
-using Xunit;
 
 namespace AllOverIt.Cryptography.Tests.AES
 {

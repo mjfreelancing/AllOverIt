@@ -5,7 +5,6 @@ using FluentAssertions;
 using System;
 using System.IO;
 using System.Text;
-using Xunit;
 
 namespace AllOverIt.Tests.Extensions
 {

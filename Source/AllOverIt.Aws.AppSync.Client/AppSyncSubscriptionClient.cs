@@ -13,11 +13,7 @@ using AllOverIt.Patterns.ResourceInitialization;
 using AllOverIt.Reactive.Extensions;
 using AllOverIt.Threading;
 using AllOverIt.Threading.Extensions;
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net.WebSockets;
 using System.Reactive;
 using System.Reactive.Disposables;
@@ -25,8 +21,6 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Reactive.Threading.Tasks;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Aws.AppSync.Client
 {

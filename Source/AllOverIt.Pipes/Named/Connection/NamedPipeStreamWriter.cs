@@ -1,12 +1,8 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Threading;
-using System;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.IO.Pipes;
 using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Pipes.Named.Connection
 {

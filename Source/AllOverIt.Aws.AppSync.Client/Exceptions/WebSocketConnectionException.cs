@@ -1,7 +1,5 @@
 ﻿using AllOverIt.Aws.AppSync.Client.Response;
 using AllOverIt.Extensions;
-using System;
-using System.Collections.Generic;
 
 namespace AllOverIt.Aws.AppSync.Client.Exceptions
 {
@@ -10,7 +8,7 @@ namespace AllOverIt.Aws.AppSync.Client.Exceptions
     {
         /// <summary>The graphql error type.</summary>
         public string ErrorType { get; }
-        
+
         /// <summary>A collection of graphql errors as reported by AppSync.</summary>
         public IEnumerable<GraphqlErrorDetail> Errors { get; }
 

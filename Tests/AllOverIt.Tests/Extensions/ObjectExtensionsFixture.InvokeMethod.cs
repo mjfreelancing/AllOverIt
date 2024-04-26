@@ -1,22 +1,7 @@
 ﻿using AllOverIt.Extensions;
-using AllOverIt.Fixture;
-using AllOverIt.Fixture.Extensions;
-using AllOverIt.Formatters.Objects;
-using AllOverIt.Formatters.Objects.Exceptions;
-using AllOverIt.Patterns.Enumeration;
 using AllOverIt.Reflection;
 using FluentAssertions;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -24,7 +9,7 @@ namespace AllOverIt.Tests.Extensions
     {
         private class DummyInvokeClass
         {
-            public int Arg{ get; private set; }
+            public int Arg { get; private set; }
 
             public void Method1(int arg1) => Arg = arg1;
             private void Method2(int arg1) => Arg = arg1;

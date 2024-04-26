@@ -1,6 +1,5 @@
 ﻿using Serilog.Core;
 using Serilog.Events;
-using System;
 
 namespace AllOverIt.Serilog.Enrichers.ThreadId
 {

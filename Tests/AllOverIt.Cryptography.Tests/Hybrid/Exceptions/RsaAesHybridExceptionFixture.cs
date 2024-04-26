@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Cryptography.Hybrid.Exceptions;
 using AllOverIt.Fixture;
-using Xunit;
 
 namespace AllOverIt.Cryptography.Tests.Hybrid.Exceptions
 {

@@ -1,9 +1,5 @@
 ﻿using AllOverIt.Assertion;
-using AllOverIt.Pipes.Exceptions;
-using System;
 using System.IO.Pipes;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Pipes.Named.Connection
 {

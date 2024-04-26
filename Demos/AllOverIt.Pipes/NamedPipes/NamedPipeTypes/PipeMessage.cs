@@ -1,12 +1,10 @@
-﻿using System;
-
-namespace NamedPipeTypes
+﻿namespace NamedPipeTypes
 {
     public sealed class PipeMessage
     {
         public class ChildClass
         {
-            public int Value { get; set; } = (int)DateTime.Now.Ticks;
+            public int Value { get; set; } = (int) DateTime.Now.Ticks;
         }
 
         public Guid Id { get; set; } = Guid.NewGuid();

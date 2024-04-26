@@ -2,10 +2,7 @@
 using AllOverIt.Extensions;
 using AllOverIt.Wpf.Threading;
 using AllOverIt.Wpf.Threading.Extensions;
-using System;
 using System.Runtime.ExceptionServices;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace ThreadBindingDemo

@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Aspects;
 using AllOverIt.Fixture;
 using FluentAssertions;
-using Xunit;
 
 namespace AllOverIt.Tests.Aspects
 {

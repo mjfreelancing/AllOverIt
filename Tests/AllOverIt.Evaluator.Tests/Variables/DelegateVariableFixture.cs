@@ -4,7 +4,6 @@ using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
-using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Variables
 {
@@ -53,7 +52,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
             [Fact]
             public void Should_Throw_When_Func_Null()
             {
-                Invoking(() => _variable = new DelegateVariable(Create<string>(), (Func<double>)null))
+                Invoking(() => _variable = new DelegateVariable(Create<string>(), (Func<double>) null))
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("valueResolver");

@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Expressions;
 using AllOverIt.Expressions.Strings;
 using AllOverIt.Filtering.Options;
-using System;
 using System.Linq.Expressions;
 using SystemExpression = System.Linq.Expressions.Expression;    // avoid conflict with the Expression property on LinqSpecification
 

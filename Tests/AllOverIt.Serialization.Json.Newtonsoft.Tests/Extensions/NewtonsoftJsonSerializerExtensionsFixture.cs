@@ -3,7 +3,6 @@ using AllOverIt.Serialization.Json.Newtonsoft.Converters;
 using AllOverIt.Serialization.Json.Newtonsoft.Extensions;
 using FluentAssertions;
 using System.Linq;
-using Xunit;
 
 namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Extensions
 {

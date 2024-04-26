@@ -105,7 +105,7 @@ namespace AllOverIt.Wpf.Threading
             dispatcher = Application.Current?.Dispatcher;
 
             Throw<InvalidOperationException>.WhenNull(dispatcher, "The application's dispatcher is not available.");
-            
+
             return dispatcher.CheckAccess();
         }
     }

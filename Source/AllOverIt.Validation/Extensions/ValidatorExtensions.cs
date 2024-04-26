@@ -1,6 +1,4 @@
 ﻿using FluentValidation;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Validation.Extensions
 {

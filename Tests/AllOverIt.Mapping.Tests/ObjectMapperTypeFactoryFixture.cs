@@ -2,7 +2,6 @@
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
-using Xunit;
 
 using static AllOverIt.Mapping.Tests.ObjectMapperTypes;
 

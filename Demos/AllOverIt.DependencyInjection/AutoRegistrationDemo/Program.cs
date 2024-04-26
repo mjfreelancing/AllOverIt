@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using AllOverIt.DependencyInjection.Extensions;
+﻿using AllOverIt.DependencyInjection.Extensions;
 using AllOverIt.GenericHost;
 using ExternalDependencies;
 using Microsoft.Extensions.DependencyInjection;

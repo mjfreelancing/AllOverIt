@@ -1,11 +1,6 @@
-﻿using AllOverIt.Collections;
-using AllOverIt.Fixture;
+﻿using AllOverIt.Fixture;
 using FluentAssertions;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
-using Xunit;
 
 namespace AllOverIt.Reactive.Tests
 {

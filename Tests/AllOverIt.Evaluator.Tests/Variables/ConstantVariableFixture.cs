@@ -4,7 +4,6 @@ using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
-using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Variables
 {

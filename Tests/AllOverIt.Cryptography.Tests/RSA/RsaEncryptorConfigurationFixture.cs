@@ -5,7 +5,6 @@ using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
 using System.Security.Cryptography;
-using Xunit;
 
 using RSAAlgorithm = System.Security.Cryptography.RSA;
 
@@ -31,7 +30,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
                 var config1 = new RsaEncryptorConfiguration();
                 var config2 = new RsaEncryptorConfiguration();
 
-                config1.Keys.Should().NotBeEquivalentTo(config2.Keys);                
+                config1.Keys.Should().NotBeEquivalentTo(config2.Keys);
             }
         }
 

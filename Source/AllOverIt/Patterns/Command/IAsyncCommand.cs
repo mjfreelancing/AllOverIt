@@ -1,7 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-
-namespace AllOverIt.Patterns.Command
+﻿namespace AllOverIt.Patterns.Command
 {
     /// <summary>Represents an asynchronous command with no input or output.</summary>
     public interface IAsyncCommand

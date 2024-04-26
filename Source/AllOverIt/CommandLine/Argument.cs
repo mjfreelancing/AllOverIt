@@ -29,7 +29,7 @@ namespace AllOverIt.CommandLine
 
             var stringBuilder = new StringBuilder();
 
-            stringBuilder.Append(Quote);            
+            stringBuilder.Append(Quote);
 
             for (var idx = 0; idx < value.Length;)
             {

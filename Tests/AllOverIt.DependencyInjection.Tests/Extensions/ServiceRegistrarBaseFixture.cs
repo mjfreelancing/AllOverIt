@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AllOverIt.DependencyInjection.Exceptions;
+﻿using AllOverIt.DependencyInjection.Exceptions;
 using AllOverIt.DependencyInjection.Tests.Helpers;
 using AllOverIt.DependencyInjection.Tests.TestTypes;
 using AllOverIt.DependencyInjection.Tests.Types;
@@ -8,7 +6,7 @@ using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using Xunit;
+using System.Collections.Generic;
 
 namespace AllOverIt.DependencyInjection.Tests.Extensions
 {
@@ -37,7 +35,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
 
             var int1Instance = provider.GetService<IEnumerable<IBaseInterface1>>()!.SelectAsReadOnlyCollection(item => item.GetType());
 
-            int1Instance.Should().BeEquivalentTo(new[] {typeof(ConcreteClassF), typeof(ConcreteClassG)});
+            int1Instance.Should().BeEquivalentTo(new[] { typeof(ConcreteClassF), typeof(ConcreteClassG) });
 
             var int4Instance = provider.GetService<IEnumerable<IBaseInterface4>>()!.SelectAsReadOnlyCollection(item => item.GetType());
 

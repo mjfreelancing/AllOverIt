@@ -8,7 +8,6 @@ using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Operations
 {

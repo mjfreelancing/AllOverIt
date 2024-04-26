@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Validation
+﻿namespace AllOverIt.Validation
 {
     /// <summary>Represents a registry of model types and their associated validators.</summary>
     public interface IValidationRegistry

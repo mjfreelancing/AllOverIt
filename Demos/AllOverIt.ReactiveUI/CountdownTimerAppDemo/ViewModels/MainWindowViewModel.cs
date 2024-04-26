@@ -1,7 +1,6 @@
 ﻿using AllOverIt.ReactiveUI;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using System;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;

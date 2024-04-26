@@ -1,6 +1,4 @@
 ﻿using AllOverIt.Expressions;
-using System;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Extensions

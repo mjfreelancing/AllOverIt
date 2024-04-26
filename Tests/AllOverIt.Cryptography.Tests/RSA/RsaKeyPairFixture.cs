@@ -5,7 +5,6 @@ using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
-using Xunit;
 
 using RSAAlgorithm = System.Security.Cryptography.RSA;
 
@@ -55,7 +54,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
             {
                 Invoking(() =>
                 {
-                    _ = new RsaKeyPair((byte[])null, null);
+                    _ = new RsaKeyPair((byte[]) null, null);
                 })
                 .Should()
                 .Throw<RsaException>()
@@ -102,7 +101,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
             {
                 Invoking(() =>
                 {
-                    _ = new RsaKeyPair((string)null, null);
+                    _ = new RsaKeyPair((string) null, null);
                 })
                 .Should()
                 .Throw<RsaException>()

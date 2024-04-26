@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Reflection;
 using BenchmarkDotNet.Attributes;
-using System;
 using System.Reflection;
 
 namespace CompiledReflectionBenchmarking

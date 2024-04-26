@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Aws.AppSync.Client.Configuration
+﻿namespace AllOverIt.Aws.AppSync.Client.Configuration
 {
     /// <summary>Provides subscription client connection options.</summary>
     public sealed class SubscriptionClientConnectionOptions

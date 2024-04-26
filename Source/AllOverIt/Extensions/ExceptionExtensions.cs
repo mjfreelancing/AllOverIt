@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Assertion;
-using System;
 
 namespace AllOverIt.Extensions
 {
@@ -37,7 +36,7 @@ namespace AllOverIt.Extensions
 
                 return;
             }
-            
+
             if (exception.InnerException is not null)
             {
                 WalkRecursive(exception.InnerException, onException, recursionLevel + 1, maxRecursionLevel);

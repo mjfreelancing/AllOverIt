@@ -1,6 +1,4 @@
 ﻿using AllOverIt.Assertion;
-using System;
-using System.IO;
 using System.Text;
 
 namespace AllOverIt.Cryptography.Extensions
@@ -224,7 +222,7 @@ namespace AllOverIt.Cryptography.Extensions
         {
             _ = encryptor.WhenNotNull(nameof(encryptor));
             _ = cipherTextStream.WhenNotNull(nameof(cipherTextStream));
-            
+
             var plainTextBytes = DecryptStreamToBytes(encryptor, cipherTextStream);
 
             return Encoding.UTF8.GetString(plainTextBytes);

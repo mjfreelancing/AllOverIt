@@ -1,7 +1,5 @@
 using AllOverIt.Assertion;
 using AllOverIt.Evaluator.Variables;
-using System;
-using System.Collections.Generic;
 
 namespace AllOverIt.Evaluator
 {

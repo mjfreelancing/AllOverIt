@@ -1,9 +1,6 @@
 ﻿using AllOverIt.Pipes.Named.Connection;
 using AllOverIt.Pipes.Named.Events;
-using System;
 using System.IO.Pipes;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Pipes.Named.Server
 {

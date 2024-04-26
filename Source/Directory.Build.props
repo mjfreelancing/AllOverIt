@@ -2,6 +2,7 @@
     <PropertyGroup>
         <LangVersion>Latest</LangVersion>
         <Nullable>Enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
         <Version>8.0.0-preview.3</Version>
         <Authors>Malcolm Smith</Authors>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>

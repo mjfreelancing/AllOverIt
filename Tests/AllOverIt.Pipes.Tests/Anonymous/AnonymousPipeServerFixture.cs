@@ -4,7 +4,6 @@ using FluentAssertions;
 using System;
 using System.IO;
 using System.IO.Pipes;
-using Xunit;
 
 namespace AllOverIt.Pipes.Tests.Anonymous
 {

@@ -7,7 +7,7 @@ namespace AllOverIt.Evaluator.Operations
     public sealed class AcosOperation : ArithmeticOperationBase
     {
         /// <summary>Constructor.</summary>
-        public AcosOperation() 
+        public AcosOperation()
             : base(1, MakeOperator)
         {
         }

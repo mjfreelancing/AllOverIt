@@ -13,7 +13,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
-using Xunit;
 
 namespace AllOverIt.Serialization.Json.SystemText.Tests
 {

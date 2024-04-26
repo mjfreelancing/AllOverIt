@@ -2,12 +2,9 @@
 using AllOverIt.Formatters.Objects;
 using AllOverIt.Helpers;
 using AllOverIt.Reflection;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Reflection;
 
 namespace AllOverIt.Extensions

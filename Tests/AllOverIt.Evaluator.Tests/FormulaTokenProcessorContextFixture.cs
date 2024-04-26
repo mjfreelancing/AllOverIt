@@ -2,7 +2,6 @@
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
-using Xunit;
 
 namespace AllOverIt.Evaluator.Tests
 {

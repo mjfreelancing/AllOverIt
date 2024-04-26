@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Filtering.Filters;
-using System.Linq;
 
 namespace AllOverIt.Filtering.Extensions
 {

@@ -1,5 +1,4 @@
-﻿using System;
-using AllOverIt.Evaluator.Variables;
+﻿using AllOverIt.Evaluator.Variables;
 
 namespace AllOverIt.Evaluator.Exceptions
 {

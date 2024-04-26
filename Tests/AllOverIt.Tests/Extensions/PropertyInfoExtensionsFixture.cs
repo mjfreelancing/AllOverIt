@@ -1,10 +1,8 @@
-﻿using System;
-using AllOverIt.Extensions;
-using AllOverIt.Fixture;
-using FluentAssertions;
+﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using Xunit;
-using System.Reflection;
+using FluentAssertions;
+using System;
+
 using PropertyInfoExtensions = AllOverIt.Extensions.PropertyInfoExtensions;
 
 namespace AllOverIt.Tests.Extensions

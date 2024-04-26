@@ -4,7 +4,6 @@ using AllOverIt.Fixture;
 using AllOverIt.Patterns.Specification.Extensions;
 using FluentAssertions;
 using System.Linq;
-using Xunit;
 
 namespace AllOverIt.Filtering.Tests.Extensions
 {
@@ -67,7 +66,7 @@ namespace AllOverIt.Filtering.Tests.Extensions
 
                 var actual = data
                     .AsQueryable()
-                    .ApplyFilter(dataFilter , (specificationBuilder, filterBuilder) =>
+                    .ApplyFilter(dataFilter, (specificationBuilder, filterBuilder) =>
                     {
                         // Demonstrating mixing specifications with direct filter builder operations
                         var spec1 = specificationBuilder.Create(model => model.Prop2, filter => filter.Prop2.EqualTo);

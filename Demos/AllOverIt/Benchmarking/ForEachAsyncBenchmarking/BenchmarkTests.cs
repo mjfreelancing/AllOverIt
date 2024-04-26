@@ -50,9 +50,9 @@ namespace ForEachAsyncBenchmarking
             return
                 from input1 in Enumerable.Range(1, 10)
                 from input2 in Enumerable.Range(1, 10)
-                select(input1, input2);
+                select (input1, input2);
         }
-        
+
         private static Task Multiply((int input1, int input2) input, CancellationToken cancellationToken)
         {
             _ = input.input1 * input.input2;

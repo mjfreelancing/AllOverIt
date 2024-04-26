@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Patterns.Enumeration.Exceptions;
-using Xunit;
 
 namespace AllOverIt.Tests.Patterns.Enumeration.Exceptions
 {

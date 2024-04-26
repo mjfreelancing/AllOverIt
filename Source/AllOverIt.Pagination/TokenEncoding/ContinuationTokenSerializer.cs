@@ -31,7 +31,7 @@ namespace AllOverIt.Pagination.TokenEncoding
                 // Decorate the binary streamer with compression
                 _tokenStreamer = new ContinuationTokenCompressor(tokenStreamer);
             }
-        }       
+        }
 
         public string Serialize(IContinuationToken continuationToken)
         {

@@ -1,6 +1,5 @@
 ﻿using AllOverIt.DependencyInjection.Exceptions;
 using AllOverIt.Fixture;
-using Xunit;
 
 namespace AllOverIt.DependencyInjection.Tests.Exceptions
 {

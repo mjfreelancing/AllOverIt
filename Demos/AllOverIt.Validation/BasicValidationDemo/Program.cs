@@ -1,8 +1,6 @@
 ﻿using BasicValidationDemo.Models;
 using BasicValidationDemo.Validators;
 using FluentValidation.Results;
-using System;
-using System.Linq;
 
 namespace BasicValidationDemo
 {

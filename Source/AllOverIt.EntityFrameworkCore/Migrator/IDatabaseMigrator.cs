@@ -1,6 +1,4 @@
 ﻿using AllOverIt.EntityFrameworkCore.Migrator.Events;
-using System;
-using System.Threading.Tasks;
 
 namespace AllOverIt.EntityFrameworkCore.Migrator
 {

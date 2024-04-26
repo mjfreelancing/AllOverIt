@@ -1,9 +1,7 @@
 ﻿using AllOverIt.AspNetCore.ValueArray;
 using AllOverIt.Extensions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace AllOverIt.AspNetCore.ModelBinders
 {

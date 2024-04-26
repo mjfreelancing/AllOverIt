@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AllOverIt.Cryptography
+﻿namespace AllOverIt.Cryptography
 {
     /// <summary>Represents the ability to encrypt and decrypt from one stream to another.</summary>
     public interface IStreamEncryptor

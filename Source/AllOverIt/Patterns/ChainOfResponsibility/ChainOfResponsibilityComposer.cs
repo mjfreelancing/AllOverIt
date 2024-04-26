@@ -1,6 +1,5 @@
 using AllOverIt.Assertion;
 using AllOverIt.Patterns.ChainOfResponsibility.Extensions;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 namespace AllOverIt.Patterns.ChainOfResponsibility

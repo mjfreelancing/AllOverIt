@@ -67,7 +67,7 @@ namespace DiagnosticsDemo
                 });
 
             await Task.WhenAll(tasks);
-        
+
             // The breadcrumbs will be logged by the main app after the user presses a key
 
             Console.WriteLine();

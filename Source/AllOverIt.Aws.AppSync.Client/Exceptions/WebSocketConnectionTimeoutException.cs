@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Aws.AppSync.Client.Exceptions
+﻿namespace AllOverIt.Aws.AppSync.Client.Exceptions
 {
     /// <summary>This exception is raised when an attempt to make a new websocket connection times out within a specified period.</summary>
     [Serializable]

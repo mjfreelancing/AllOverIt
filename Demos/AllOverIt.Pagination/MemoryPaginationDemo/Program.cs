@@ -2,7 +2,6 @@
 using AllOverIt.Pagination.Extensions;
 using MemoryPaginationDemo;
 using Microsoft.Extensions.Hosting;
-using System.Threading.Tasks;
 
 class Program
 {

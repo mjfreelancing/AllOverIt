@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace AllOverIt.Evaluator.Variables
 {
     /// <summary>Provides the ability to look up referenced and referencing variables for a specified variable.</summary>

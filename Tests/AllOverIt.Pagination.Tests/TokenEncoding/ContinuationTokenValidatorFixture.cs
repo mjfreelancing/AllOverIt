@@ -2,11 +2,8 @@
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Pagination.TokenEncoding;
-using FakeItEasy;
 using FluentAssertions;
-using Newtonsoft.Json.Linq;
 using System;
-using Xunit;
 
 namespace AllOverIt.Pagination.Tests.TokenEncoding
 {
@@ -28,7 +25,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
         }
 
         public class IsValidToken : ContinuationTokenValidatorFixture
-        {            
+        {
             [Fact]
             public void Should_Throw_When_Options_Null()
             {

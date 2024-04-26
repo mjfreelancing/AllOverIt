@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Assertion;
-using System;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 

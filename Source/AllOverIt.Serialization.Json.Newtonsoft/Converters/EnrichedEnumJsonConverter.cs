@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Patterns.Enumeration;
 using Newtonsoft.Json;
-using System;
 
 namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
 {

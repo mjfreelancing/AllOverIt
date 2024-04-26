@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Extensions;
 using FluentAssertions;
 using System.Reflection;
-using Xunit;
 
 namespace AllOverIt.Tests.Extensions
 {

@@ -4,7 +4,7 @@ using System;
 
 namespace ChainOfResponsibilityDemo.Handlers
 {
-    internal sealed class QueueBrokerExceptionHandler2 
+    internal sealed class QueueBrokerExceptionHandler2
     {
         private readonly IChainOfResponsibilityHandler<QueueMessageHandlerState, QueueMessageHandlerState> _handler
             = new NullMessageExceptionHandler()

@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AllOverIt.Assertion;
+﻿using AllOverIt.Assertion;
 using AllOverIt.Csv.Exceptions;
 using AllOverIt.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AllOverIt.Csv.Extensions
 {
@@ -89,7 +89,7 @@ namespace AllOverIt.Csv.Extensions
                         .Invoke(field, identifier)
                         ?.AsReadOnlyCollection();
 
-                    values ??= Enumerable.Repeat((object)null, identifier.Names.Count).ToList();
+                    values ??= Enumerable.Repeat((object) null, identifier.Names.Count).ToList();
 
                     if (values.Count != columnCount)
                     {

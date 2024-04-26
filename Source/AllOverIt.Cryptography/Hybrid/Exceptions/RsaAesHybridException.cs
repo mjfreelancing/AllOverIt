@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Cryptography.Hybrid.Exceptions
+﻿namespace AllOverIt.Cryptography.Hybrid.Exceptions
 {
     /// <summary>Exception raised during an RSA-AES hybrid encryption or decryption operation.</summary>
     public class RsaAesHybridException : Exception

@@ -2,12 +2,10 @@
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Patterns.Pipeline;
-using FakeItEasy;
 using FluentAssertions;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Xunit;
 
 namespace AllOverIt.Tests.Patterns.Pipeline
 {

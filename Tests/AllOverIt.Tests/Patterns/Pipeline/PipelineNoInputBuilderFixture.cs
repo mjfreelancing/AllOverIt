@@ -2,15 +2,13 @@
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Patterns.Pipeline;
-using FakeItEasy;
 using FluentAssertions;
 using System;
-using Xunit;
 
 namespace AllOverIt.Tests.Patterns.Pipeline
 {
     public class PipelineNoInputBuilderFixture : FixtureBase
-    {      
+    {
         public class PipelineNoInputBuilder_TIn_TOut : PipelineNoInputBuilderFixture
         {
             public class Constructor : PipelineNoInputBuilder_TIn_TOut

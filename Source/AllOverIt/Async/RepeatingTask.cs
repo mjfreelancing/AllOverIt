@@ -1,7 +1,4 @@
 ﻿using AllOverIt.Assertion;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Async
 {

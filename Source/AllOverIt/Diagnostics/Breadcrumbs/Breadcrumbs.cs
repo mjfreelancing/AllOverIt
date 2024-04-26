@@ -1,9 +1,7 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Threading;
 using AllOverIt.Threading.Extensions;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 
 namespace AllOverIt.Diagnostics.Breadcrumbs
 {

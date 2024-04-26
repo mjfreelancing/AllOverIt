@@ -1,6 +1,4 @@
 ﻿using AllOverIt.Assertion;
-using System;
-using System.IO;
 using System.IO.Pipes;
 
 namespace AllOverIt.Pipes.Anonymous

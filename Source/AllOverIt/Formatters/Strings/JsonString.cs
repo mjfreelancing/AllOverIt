@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using AllOverIt.Assertion;
 using System.Text;
-using AllOverIt.Assertion;
 
 namespace AllOverIt.Formatters.Strings
 {

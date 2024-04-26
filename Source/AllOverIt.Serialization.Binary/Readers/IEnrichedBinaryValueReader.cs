@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Serialization.Binary.Readers
+﻿namespace AllOverIt.Serialization.Binary.Readers
 {
     /// <summary>Represents a binary value reader for a given object type. When registered as an <see cref="IEnrichedBinaryReader"/> reader,
     /// these readers make it possible to deserialize complex object graphs.</summary>

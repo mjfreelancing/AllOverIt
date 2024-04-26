@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Serialization.Json.Abstractions.Exceptions;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 

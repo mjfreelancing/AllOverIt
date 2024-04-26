@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Cryptography.AES.Exceptions;
 using AllOverIt.Fixture;
-using Xunit;
 
 namespace AllOverIt.Cryptography.Tests.AES.Exceptions
 {

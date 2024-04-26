@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
 
 namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
 {

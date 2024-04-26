@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace AllOverIt.Evaluator.Variables
 {
     /// <summary>Represents a registry of variables that may be explicitly evaluated, or implicitly referenced by one or more formula.</summary>

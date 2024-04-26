@@ -5,7 +5,6 @@ using AllOverIt.Pagination.Extensions;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
-using Xunit;
 
 namespace AllOverIt.Pagination.Tests.Extensions
 {

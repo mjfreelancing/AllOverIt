@@ -1,8 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Threading;
-
-namespace AllOverIt.Threading
+﻿namespace AllOverIt.Threading
 {
     /// <summary>A lock that limits the number of threads that can access a resource within an asynchronous context.</summary>
     public interface IAwaitableLock : IDisposable

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace AllOverIt.Async
+﻿namespace AllOverIt.Async
 {
     /// <summary>A composite that caters for asynchronous disposal of multiple IAsyncDisposable's using a synchronous Dispose().</summary>
     public sealed class CompositeAsyncDisposable : IDisposable, IAsyncDisposable

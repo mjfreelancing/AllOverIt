@@ -1,5 +1,4 @@
 using AllOverIt.Assertion;
-using System;
 
 namespace AllOverIt.Evaluator
 {

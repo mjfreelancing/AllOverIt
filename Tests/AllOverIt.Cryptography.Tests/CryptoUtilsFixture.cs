@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Fixture;
 using FluentAssertions;
 using System.Security.Cryptography;
-using Xunit;
 
 namespace AllOverIt.Cryptography.Tests
 {

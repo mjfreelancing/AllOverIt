@@ -7,7 +7,6 @@ using FakeItEasy;
 using FluentAssertions;
 using System;
 using System.Linq;
-using Xunit;
 
 namespace AllOverIt.Pagination.Tests.TokenEncoding
 {

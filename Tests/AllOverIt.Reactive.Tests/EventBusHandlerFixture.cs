@@ -4,7 +4,6 @@ using FluentAssertions;
 using System;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using Xunit;
 
 namespace AllOverIt.Reactive.Tests
 {
@@ -31,7 +30,7 @@ namespace AllOverIt.Reactive.Tests
             }
 
             public HandlerDummy(IEventBus eventBus, Func<EventDummy, bool> predicate)
-                : this(eventBus, (Action)null)
+                : this(eventBus, (Action) null)
             {
                 _predicate = predicate;
             }

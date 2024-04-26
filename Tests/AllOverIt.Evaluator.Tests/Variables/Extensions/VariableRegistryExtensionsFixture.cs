@@ -7,7 +7,6 @@ using FakeItEasy;
 using FluentAssertions;
 using System;
 using System.Linq;
-using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Variables.Extensions
 {
@@ -36,7 +35,7 @@ namespace AllOverIt.Evaluator.Tests.Variables.Extensions
             [Fact]
             public void Should_Throw_When_Variable_Null()
             {
-                Invoking(() => _registryFake.FakedObject.Add((IVariable)null))
+                Invoking(() => _registryFake.FakedObject.Add((IVariable) null))
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("variable");
@@ -67,7 +66,7 @@ namespace AllOverIt.Evaluator.Tests.Variables.Extensions
             [Fact]
             public void Should_Throw_When_Variables_Null()
             {
-                Invoking(() => VariableRegistryExtensions.Add(_registryFake.FakedObject, (IVariable[])null))
+                Invoking(() => VariableRegistryExtensions.Add(_registryFake.FakedObject, (IVariable[]) null))
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("variables");

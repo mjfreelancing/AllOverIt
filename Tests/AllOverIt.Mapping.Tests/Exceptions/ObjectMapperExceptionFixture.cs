@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Mapping.Exceptions;
-using Xunit;
 
 namespace AllOverIt.Mapping.Tests.Exceptions
 {

@@ -4,8 +4,6 @@ using AllOverIt.Formatters.Objects.Exceptions;
 using AllOverIt.Helpers.PropertyNavigation;
 using AllOverIt.Helpers.PropertyNavigation.Extensions;
 using AllOverIt.Reflection;
-using System;
-using System.Linq;
 
 namespace AllOverIt.Formatters.Objects.Extensions
 {

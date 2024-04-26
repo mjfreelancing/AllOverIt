@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ValueObjectDemo.Extensions
+﻿namespace ValueObjectDemo.Extensions
 {
     internal static class EnrichedTemperatureExtensions
     {

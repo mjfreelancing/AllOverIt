@@ -1,5 +1,4 @@
 using System;
-using Xunit;
 
 namespace AllOverIt.Evaluator.Tests
 {

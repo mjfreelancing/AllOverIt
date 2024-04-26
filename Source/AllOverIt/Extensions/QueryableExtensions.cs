@@ -2,7 +2,6 @@
 using AllOverIt.Patterns.Specification;
 using AllOverIt.Patterns.Specification.Extensions;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 
 namespace AllOverIt.Extensions
 {

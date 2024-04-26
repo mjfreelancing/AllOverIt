@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AllOverIt.DependencyInjection
+﻿namespace AllOverIt.DependencyInjection
 {
     /// <summary>Represents a registrar responsible for registering services against suitable concrete implementations.</summary>
     public interface IServiceRegistrar

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AllOverIt.Aws.AppSync.Client.Authorization
+﻿namespace AllOverIt.Aws.AppSync.Client.Authorization
 {
     /// <summary>Base class for AppSync authorization headers.</summary>
     public abstract class AppSyncAuthorizationBase : IAppSyncAuthorization

@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using AllOverIt.Fixture;
+﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Helpers.PropertyNavigation;
 using AllOverIt.Helpers.PropertyNavigation.Extensions;
 using FluentAssertions;
-using Xunit;
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace AllOverIt.Tests.Helpers.PropertyNavigation.Extensions
 {
@@ -41,7 +39,7 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation.Extensions
         {
             [Fact]
             public void Should_Throw_When_Nodes_null()
-            {   
+            {
                 Invoking(() =>
                 {
                     _ = PropertyNodesExtensions.Navigate(null, _expression1);
@@ -56,7 +54,7 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation.Extensions
             {
                 Invoking(() =>
                     {
-                        _ = PropertyNodesExtensions.Navigate(_nodes, (Expression<Func<DummyObject, bool>>)null);
+                        _ = PropertyNodesExtensions.Navigate(_nodes, (Expression<Func<DummyObject, bool>>) null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -77,7 +75,7 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation.Extensions
             public void Should_Append_Multiple_Nodes()
             {
                 Expression<Func<DummyObject, int>> expression = model => model.Prop5.Prop4;
-                
+
                 var expected1 = expression.Body as MemberExpression;
                 var expected0 = expected1.Expression as MemberExpression;
 
@@ -194,7 +192,7 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation.Extensions
 
                 var actual = PropertyNodesExtensions.GetFullNodePath(nodes).Split('.');
 
-                var expected = new[] {nameof(DummyObject.Prop3), nameof(DummyObject.ChildObject.Prop4)};
+                var expected = new[] { nameof(DummyObject.Prop3), nameof(DummyObject.ChildObject.Prop4) };
 
                 expected.Should().BeEquivalentTo(actual);
             }

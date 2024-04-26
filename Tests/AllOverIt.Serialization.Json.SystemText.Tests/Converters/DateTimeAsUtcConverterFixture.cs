@@ -3,7 +3,6 @@ using AllOverIt.Serialization.Json.SystemText.Converters;
 using FluentAssertions;
 using System;
 using System.Text.Json;
-using Xunit;
 
 namespace AllOverIt.Serialization.Json.SystemText.Tests.Converters
 {

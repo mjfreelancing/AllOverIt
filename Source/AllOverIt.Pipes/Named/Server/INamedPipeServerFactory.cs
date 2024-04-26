@@ -1,6 +1,4 @@
-﻿using AllOverIt.Pipes.Named.Serialization;
-
-namespace AllOverIt.Pipes.Named.Server
+﻿namespace AllOverIt.Pipes.Named.Server
 {
     /// <summary>Represents a factory that creates instances of a named pipe server.</summary>
     /// <typeparam name="TMessage">The message type serialized between a named pipe client and a named pipe server.</typeparam>

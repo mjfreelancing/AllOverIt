@@ -2,10 +2,6 @@
 using AllOverIt.EntityFrameworkCore.Migrator.Events;
 using AllOverIt.Extensions;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.EntityFrameworkCore.Migrator
 {

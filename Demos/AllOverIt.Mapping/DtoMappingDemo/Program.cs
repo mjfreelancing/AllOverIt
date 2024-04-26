@@ -3,10 +3,7 @@ using AllOverIt.Mapping;
 using AllOverIt.Reflection;
 using AllOverIt.Serialization.Json.Abstractions;
 using AllOverIt.Serialization.Json.SystemText;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace DtoMappingDemo
 {

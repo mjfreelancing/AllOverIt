@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Pagination.Exceptions;
-using Xunit;
 
 namespace AllOverIt.Pagination.Tests.Exceptions
 {
