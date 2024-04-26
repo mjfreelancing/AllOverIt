@@ -3,10 +3,6 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.ChainOfResponsibility;
 using AllOverIt.Patterns.ChainOfResponsibility.Extensions;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Tests.Patterns.ChainOfResponsibility.Extensions
 {

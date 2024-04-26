@@ -2,9 +2,6 @@
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Reflection;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 using static AllOverIt.Mapping.Tests.ObjectMapperTypes;
 

@@ -1,9 +1,7 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Patterns.ResourceInitialization;
 using FluentAssertions;
-using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Tests.Patterns.ResourceInitialization
 {

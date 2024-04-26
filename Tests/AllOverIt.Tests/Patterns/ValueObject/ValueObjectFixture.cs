@@ -3,7 +3,6 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.ValueObject;
 using AllOverIt.Patterns.ValueObject.Exceptions;
 using FluentAssertions;
-using System;
 
 namespace AllOverIt.Tests.Patterns.ValueObject
 {

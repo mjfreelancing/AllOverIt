@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Expressions.Strings;
 using AllOverIt.Fixture;
-using System.Collections.Generic;
 
 namespace AllOverIt.Filtering.Tests.Operations
 {

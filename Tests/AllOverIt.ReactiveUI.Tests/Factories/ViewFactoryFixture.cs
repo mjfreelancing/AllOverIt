@@ -5,7 +5,6 @@ using AllOverIt.ReactiveUI.Factories;
 using FakeItEasy;
 using FluentAssertions;
 using ReactiveUI;
-using System;
 
 namespace AllOverIt.ReactiveUI.Tests.Factories
 {

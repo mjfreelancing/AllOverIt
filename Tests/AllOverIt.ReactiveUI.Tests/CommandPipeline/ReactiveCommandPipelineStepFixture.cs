@@ -3,9 +3,6 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.ReactiveUI.CommandPipeline;
 using FluentAssertions;
 using ReactiveUI;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.ReactiveUI.Tests.CommandPipeline
 {

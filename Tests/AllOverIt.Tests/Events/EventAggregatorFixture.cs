@@ -1,9 +1,6 @@
 ﻿using AllOverIt.Events;
 using AllOverIt.Fixture;
 using FluentAssertions;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Tests.Events
 {

@@ -1,7 +1,6 @@
 using AllOverIt.Fixture;
 using AllOverIt.Serialization.Json.SystemText.Converters;
 using FluentAssertions;
-using System;
 using System.Text.Json;
 
 namespace AllOverIt.Serialization.Json.SystemText.Tests.Converters

@@ -2,8 +2,6 @@
 using AllOverIt.Evaluator.Tests.Operations.Dummies;
 using AllOverIt.Fixture;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
 
 namespace AllOverIt.Evaluator.Tests.Operations
 {

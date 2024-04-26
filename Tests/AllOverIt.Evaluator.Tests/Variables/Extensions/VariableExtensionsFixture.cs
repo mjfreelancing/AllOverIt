@@ -6,7 +6,6 @@ using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using FluentAssertions;
-using System;
 
 namespace AllOverIt.Evaluator.Tests.Variables.Extensions
 {

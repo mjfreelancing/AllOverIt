@@ -3,8 +3,6 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Pagination.TokenEncoding;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Linq;
 
 namespace AllOverIt.Pagination.Tests.Extensions
 {

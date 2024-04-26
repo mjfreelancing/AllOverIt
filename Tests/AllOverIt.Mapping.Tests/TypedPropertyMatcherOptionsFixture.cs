@@ -4,10 +4,7 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Mapping.Exceptions;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using static AllOverIt.Mapping.Tests.ObjectMapperTypes;
 
 namespace AllOverIt.Mapping.Tests

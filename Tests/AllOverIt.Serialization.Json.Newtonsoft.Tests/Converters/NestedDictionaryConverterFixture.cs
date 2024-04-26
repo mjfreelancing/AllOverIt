@@ -4,9 +4,6 @@ using AllOverIt.Serialization.Json.Newtonsoft.Converters;
 using FluentAssertions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters
 {

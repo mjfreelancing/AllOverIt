@@ -2,8 +2,6 @@
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Reflection;
 using FluentAssertions;
-using System;
-using System.Linq;
 using System.Reflection;
 
 namespace AllOverIt.Mapping.Tests

@@ -5,7 +5,6 @@ using AllOverIt.Filtering.Options;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using FluentAssertions;
-using System;
 
 namespace AllOverIt.Filtering.Tests.Operations
 {

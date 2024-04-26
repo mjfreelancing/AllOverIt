@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Fixture;
 using FluentAssertions;
-using System;
 using System.Reactive.Linq;
 
 namespace AllOverIt.Reactive.Tests

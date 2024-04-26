@@ -2,7 +2,6 @@
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Pipes.Named.Events;
 using FluentAssertions;
-using System;
 
 namespace AllOverIt.Pipes.Tests.Events
 {

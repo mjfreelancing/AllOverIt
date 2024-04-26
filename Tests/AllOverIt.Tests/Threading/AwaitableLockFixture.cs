@@ -1,9 +1,6 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Threading;
 using FluentAssertions;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Tests.Threading
 {

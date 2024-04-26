@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Fixture.Exceptions;
 using FluentAssertions;
-using System;
 
 namespace AllOverIt.Fixture.Tests.Exceptions
 {

@@ -3,8 +3,6 @@ using AllOverIt.Filtering.Filters;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
 
 namespace AllOverIt.Filtering.Tests.Extensions
 {

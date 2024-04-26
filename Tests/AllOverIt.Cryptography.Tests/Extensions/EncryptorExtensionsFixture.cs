@@ -5,9 +5,6 @@ using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FakeItEasy;
 using FluentAssertions;
-using System;
-using System.IO;
-using System.Linq;
 
 namespace AllOverIt.Cryptography.Tests.Extensions
 {

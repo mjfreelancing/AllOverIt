@@ -3,7 +3,6 @@ using AllOverIt.Patterns.Enumeration;
 using AllOverIt.Serialization.Json.Newtonsoft.Converters;
 using FluentAssertions;
 using Newtonsoft.Json;
-using System;
 using System.Runtime.CompilerServices;
 
 namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters

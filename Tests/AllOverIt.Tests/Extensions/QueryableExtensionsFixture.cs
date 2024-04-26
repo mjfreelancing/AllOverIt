@@ -4,7 +4,6 @@ using AllOverIt.Patterns.Specification;
 using AllOverIt.Patterns.Specification.Extensions;
 using AllOverIt.Tests.Patterns.Specification.Dummies;
 using FluentAssertions;
-using System.Linq;
 
 namespace AllOverIt.Tests.Extensions
 {

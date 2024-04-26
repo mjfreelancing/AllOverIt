@@ -2,9 +2,6 @@
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AllOverIt.Validation.Tests.Validators
 {

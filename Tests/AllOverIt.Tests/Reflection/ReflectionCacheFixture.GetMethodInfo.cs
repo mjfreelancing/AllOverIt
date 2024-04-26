@@ -1,8 +1,6 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Reflection;
 using FluentAssertions;
-using System;
-using System.Linq;
 
 namespace AllOverIt.Tests.Reflection
 {

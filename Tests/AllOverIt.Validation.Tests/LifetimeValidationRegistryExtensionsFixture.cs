@@ -5,8 +5,6 @@ using AllOverIt.Validation.Exceptions;
 using AllOverIt.Validation.Extensions;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Linq;
 
 namespace AllOverIt.Validation.Tests
 {

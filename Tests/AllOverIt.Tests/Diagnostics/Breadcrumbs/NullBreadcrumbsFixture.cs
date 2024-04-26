@@ -3,7 +3,6 @@ using AllOverIt.Fixture;
 using AllOverIt.Patterns.Specification.Extensions;
 using FluentAssertions;
 using System.Collections;
-using System.Linq;
 
 namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 {

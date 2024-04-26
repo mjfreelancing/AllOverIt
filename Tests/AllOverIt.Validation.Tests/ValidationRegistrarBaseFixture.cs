@@ -5,9 +5,6 @@ using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Validation.Exceptions;
 using FakeItEasy;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AllOverIt.Validation.Tests
 {

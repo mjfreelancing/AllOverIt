@@ -6,9 +6,6 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using FakeItEasy;
 using FluentAssertions;
-using System;
-using System.IO;
-using System.Linq;
 
 using RSAAlgorithm = System.Security.Cryptography.RSA;
 

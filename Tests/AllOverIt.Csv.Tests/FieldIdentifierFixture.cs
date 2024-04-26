@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Fixture;
 using FluentAssertions;
-using System;
 
 namespace AllOverIt.Csv.Tests
 {

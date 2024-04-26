@@ -5,12 +5,8 @@ using AllOverIt.Mapping.Exceptions;
 using AllOverIt.Mapping.Extensions;
 using AllOverIt.Reflection;
 using FluentAssertions;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
 
 using static AllOverIt.Mapping.Tests.ObjectMapperTypes;
 

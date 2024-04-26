@@ -2,7 +2,6 @@ using AllOverIt.Fixture;
 using AllOverIt.Patterns.Enumeration;
 using AllOverIt.Serialization.Json.SystemText.Converters;
 using FluentAssertions;
-using System;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 

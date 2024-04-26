@@ -1,5 +1,4 @@
 ﻿using Microsoft.Reactive.Testing;
-using System;
 
 namespace AllOverIt.ReactiveUI.Tests
 {

@@ -4,15 +4,10 @@ using AllOverIt.Patterns.Enumeration;
 using AllOverIt.Serialization.Json.Abstractions;
 using AllOverIt.Serialization.Json.SystemText.Converters;
 using FluentAssertions;
-using System;
-using System.IO;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Serialization.Json.SystemText.Tests
 {

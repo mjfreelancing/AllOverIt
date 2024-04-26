@@ -3,7 +3,6 @@ using AllOverIt.Cryptography.RSA;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
-using System;
 using System.Security.Cryptography;
 
 using RSAAlgorithm = System.Security.Cryptography.RSA;

@@ -5,8 +5,6 @@ using AllOverIt.Patterns.Pipeline;
 using AllOverIt.ReactiveUI.Extensions;
 using FluentAssertions;
 using ReactiveUI;
-using System;
-using System.Threading.Tasks;
 
 namespace AllOverIt.ReactiveUI.Tests.Extensions
 {

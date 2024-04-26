@@ -1,5 +1,3 @@
-using System;
-
 namespace AllOverIt.Fixture.Tests.Examples.SUT
 {
     public class Calculator : ICalculator

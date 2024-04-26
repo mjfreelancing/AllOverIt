@@ -1,7 +1,6 @@
 using AllOverIt.Evaluator.Extensions;
 using AllOverIt.Evaluator.Variables;
 using FluentAssertions;
-using System;
 
 namespace AllOverIt.Evaluator.Tests
 {

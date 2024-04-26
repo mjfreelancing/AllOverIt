@@ -8,10 +8,7 @@ using AllOverIt.ReactiveUI.ViewRegistry.Events;
 using FakeItEasy;
 using FluentAssertions;
 using ReactiveUI;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
 {

@@ -1,9 +1,6 @@
 using AllOverIt.Evaluator.Variables;
 using AllOverIt.Evaluator.Variables.Extensions;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AllOverIt.Evaluator.Tests.Variables.Helpers
 {

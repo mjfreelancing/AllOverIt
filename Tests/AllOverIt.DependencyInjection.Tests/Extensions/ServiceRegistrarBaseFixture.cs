@@ -6,7 +6,6 @@ using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using System.Collections.Generic;
 
 namespace AllOverIt.DependencyInjection.Tests.Extensions
 {

@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Validation.Extensions;
 using FluentAssertions;
-using System;
 
 namespace AllOverIt.Validation.Tests.Validators
 {

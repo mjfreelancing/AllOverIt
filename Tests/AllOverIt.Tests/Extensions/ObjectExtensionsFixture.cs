@@ -5,15 +5,11 @@ using AllOverIt.Formatters.Objects.Exceptions;
 using AllOverIt.Patterns.Enumeration;
 using AllOverIt.Reflection;
 using FluentAssertions;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Tests.Extensions
 {

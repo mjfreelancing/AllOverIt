@@ -3,8 +3,6 @@ using AllOverIt.Fixture.Tests.Examples.SUT;
 using AutoFixture.AutoFakeItEasy;
 using FakeItEasy;
 using FluentAssertions;
-using System;
-using System.Linq;
 
 namespace AllOverIt.Fixture.Tests.Examples.Tests
 {

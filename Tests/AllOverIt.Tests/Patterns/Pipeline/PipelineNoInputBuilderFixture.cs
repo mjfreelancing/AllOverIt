@@ -3,7 +3,6 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Patterns.Pipeline;
 using FluentAssertions;
-using System;
 
 namespace AllOverIt.Tests.Patterns.Pipeline
 {

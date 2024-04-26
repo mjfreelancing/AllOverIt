@@ -2,9 +2,6 @@
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Mapping.Extensions;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AllOverIt.Mapping.Tests.Extensions
 {

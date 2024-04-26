@@ -6,9 +6,6 @@ using AllOverIt.Serialization.Binary.Readers;
 using AllOverIt.Serialization.Binary.Readers.Extensions;
 using FakeItEasy;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AllOverIt.Serialization.Binary.Tests.Extensions
 {

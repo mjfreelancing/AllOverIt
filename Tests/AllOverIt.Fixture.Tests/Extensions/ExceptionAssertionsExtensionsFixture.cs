@@ -1,7 +1,5 @@
 ﻿using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
-using System;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Fixture.Tests.Extensions
 {

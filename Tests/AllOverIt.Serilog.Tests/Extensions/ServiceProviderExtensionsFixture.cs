@@ -4,7 +4,6 @@ using AllOverIt.Serilog.Extensions;
 using AllOverIt.Serilog.Sinks.CircularBuffer;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace AllOverIt.Serilog.Tests.Extensions
 {

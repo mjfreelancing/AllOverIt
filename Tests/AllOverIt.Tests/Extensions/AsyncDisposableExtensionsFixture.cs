@@ -4,8 +4,6 @@ using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.ResourceInitialization;
 using FluentAssertions;
-using System;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Tests.Extensions
 {

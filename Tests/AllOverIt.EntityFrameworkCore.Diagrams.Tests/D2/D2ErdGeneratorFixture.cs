@@ -2,7 +2,6 @@
 using AllOverIt.EntityFrameworkCore.Diagrams.Tests.TestTypes;
 using AllOverIt.EntityFrameworkCore.Diagrams.Tests.TestTypes.Entities;
 using FluentAssertions;
-using System;
 using TestUtils;
 
 namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.D2

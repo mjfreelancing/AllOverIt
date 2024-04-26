@@ -3,11 +3,6 @@ using AllOverIt.Csv.Exporter;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Csv.Tests.Exporter
 {

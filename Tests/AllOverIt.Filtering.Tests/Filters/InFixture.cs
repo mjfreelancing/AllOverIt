@@ -1,8 +1,6 @@
 ﻿using AllOverIt.Filtering.Filters;
 using AllOverIt.Fixture;
 using FluentAssertions;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AllOverIt.Filtering.Tests.Filters
 {

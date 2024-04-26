@@ -4,7 +4,6 @@ using AllOverIt.Patterns.Pipeline;
 using AllOverIt.ReactiveUI.Extensions;
 using FluentAssertions;
 using ReactiveUI;
-using System;
 
 namespace AllOverIt.ReactiveUI.Tests.Extensions
 {

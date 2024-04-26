@@ -4,10 +4,7 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.Enumeration;
 using AllOverIt.Reflection;
 using FluentAssertions;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace AllOverIt.Tests.Extensions

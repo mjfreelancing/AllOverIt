@@ -2,7 +2,6 @@ using AllOverIt.Evaluator.Extensions;
 using AllOverIt.Evaluator.Variables;
 using AllOverIt.Evaluator.Variables.Extensions;
 using FluentAssertions;
-using System.Linq;
 
 namespace AllOverIt.Evaluator.Tests
 {

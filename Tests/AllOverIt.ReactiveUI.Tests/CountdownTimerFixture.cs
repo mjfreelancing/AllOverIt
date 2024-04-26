@@ -4,10 +4,7 @@ using FakeItEasy;
 using FluentAssertions;
 using Microsoft.Reactive.Testing;
 using ReactiveUI;
-using System;
-using System.Collections.Generic;
 using System.Reactive.Concurrency;
-using System.Threading;
 
 namespace AllOverIt.ReactiveUI.Tests
 {

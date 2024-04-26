@@ -7,8 +7,6 @@ using AllOverIt.Serialization.Binary.Tests.FunctionalTypes.Writers;
 using AllOverIt.Serialization.Binary.Writers;
 using AllOverIt.Serialization.Binary.Writers.Extensions;
 using FluentAssertions;
-using System.Collections.Generic;
-using System.IO;
 using System.Text;
 
 namespace AllOverIt.Serialization.Binary.Tests

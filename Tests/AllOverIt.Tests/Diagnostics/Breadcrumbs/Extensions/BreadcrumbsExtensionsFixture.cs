@@ -2,8 +2,6 @@
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
-using System;
-using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions

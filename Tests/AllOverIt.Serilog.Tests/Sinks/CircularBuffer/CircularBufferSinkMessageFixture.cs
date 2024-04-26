@@ -3,7 +3,6 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Serilog.Sinks.CircularBuffer;
 using FluentAssertions;
 using Serilog.Events;
-using System;
 using System.Diagnostics;
 
 namespace AllOverIt.Serilog.Tests.Sinks.CircularBuffer
