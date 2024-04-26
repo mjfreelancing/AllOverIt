@@ -2,7 +2,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-namespace AllOverIt.Patterns.Result
+namespace AllOverIt.Types
 {
     /// <summary>Represents a void result type.</summary>
     [ExcludeFromCodeCoverage]
