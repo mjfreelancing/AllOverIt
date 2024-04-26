@@ -2,7 +2,6 @@
 using AllOverIt.Validation.Extensions;
 using FluentValidation;
 using FluentValidation.Validators;
-using System;
 
 namespace AllOverIt.Validation.Validators
 {

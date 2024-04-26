@@ -5,7 +5,6 @@ using FluentAssertions;
 using Newtonsoft.Json;
 using System;
 using System.Runtime.CompilerServices;
-using Xunit;
 
 namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters
 {

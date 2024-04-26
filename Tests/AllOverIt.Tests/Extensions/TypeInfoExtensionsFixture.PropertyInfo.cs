@@ -2,7 +2,6 @@
 using AllOverIt.Fixture;
 using FluentAssertions;
 using System.Reflection;
-using Xunit;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -83,9 +82,9 @@ namespace AllOverIt.Tests.Extensions
                 var typeInfo = typeof(PropertySuperClass).GetTypeInfo();
 
                 // cast is required for BeEquivalentTo()
-                var actual = (object)TypeInfoExtensions.GetPropertyInfo(typeInfo, "Prop4");
+                var actual = (object) TypeInfoExtensions.GetPropertyInfo(typeInfo, "Prop4");
 
-                var expected = new {Name = "Prop4", PropertyType = typeof(long)};
+                var expected = new { Name = "Prop4", PropertyType = typeof(long) };
 
                 actual.Should().BeEquivalentTo(expected);
             }
@@ -95,9 +94,9 @@ namespace AllOverIt.Tests.Extensions
             {
                 var typeInfo = typeof(PropertyBaseClass).GetTypeInfo();
 
-                var actual = (object)TypeInfoExtensions.GetPropertyInfo(typeInfo, "Prop1");
+                var actual = (object) TypeInfoExtensions.GetPropertyInfo(typeInfo, "Prop1");
 
-                var expected = new {Name = "Prop1", PropertyType = typeof(int)};
+                var expected = new { Name = "Prop1", PropertyType = typeof(int) };
 
                 actual.Should().BeEquivalentTo(expected);
             }
@@ -107,7 +106,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var typeInfo = typeof(PropertySuperClass).GetTypeInfo();
 
-                var actual = (object)TypeInfoExtensions.GetPropertyInfo(typeInfo, "PropXYZ");
+                var actual = (object) TypeInfoExtensions.GetPropertyInfo(typeInfo, "PropXYZ");
 
                 actual.Should().BeNull();
             }

@@ -1,5 +1,4 @@
 ﻿using Hellang.Middleware.ProblemDetails;
-using Microsoft.AspNetCore.Http;
 using System.Diagnostics;
 
 namespace EnrichedEnumModelBindingDemo.Problems

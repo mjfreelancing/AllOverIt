@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Validation;
 using BasicValidationDemo.Models;
 using FluentValidation;
-using System;
 
 namespace BasicValidationDemo.Validators
 {

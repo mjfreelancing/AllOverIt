@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading;
-
-namespace AllOverIt.Threading
+﻿namespace AllOverIt.Threading
 {
     // Internally, this class uses a default constructed ReaderWriterLockSlim object to perform all locking operations.
     // Refer to http://msdn.microsoft.com/en-us/library/system.threading.readerwriterlockslim(v=vs.110).aspx for more

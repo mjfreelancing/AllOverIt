@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AllOverIt.Serialization.Json.Abstractions
+﻿namespace AllOverIt.Serialization.Json.Abstractions
 {
     /// <summary>Represents a JSON object or array element. This type is enumerable.</summary>
     public interface IElementDictionary : IEnumerable<KeyValuePair<string, object>>

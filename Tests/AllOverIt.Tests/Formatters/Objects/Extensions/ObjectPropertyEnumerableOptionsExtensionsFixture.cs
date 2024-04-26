@@ -8,7 +8,6 @@ using AllOverIt.Helpers.PropertyNavigation.Extensions;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
-using Xunit;
 
 namespace AllOverIt.Tests.Formatters.Objects.Extensions
 {
@@ -98,7 +97,7 @@ namespace AllOverIt.Tests.Formatters.Objects.Extensions
 
                 ObjectPropertyEnumerableOptionsExtensions.SetAutoCollatedPaths(_options, nodes);
 
-                var expected = new[] {"Prop3.Prop4"};
+                var expected = new[] { "Prop3.Prop4" };
 
                 expected.Should().BeEquivalentTo(_options.AutoCollatedPaths);
             }
@@ -125,7 +124,7 @@ namespace AllOverIt.Tests.Formatters.Objects.Extensions
 
                 ObjectPropertyEnumerableOptionsExtensions.SetAutoCollatedPaths(_options, nodes1, nodes2, nodes3, nodes4);
 
-                var expected = new[] {"Prop3.Prop4", "Prop5.Prop4", "Prop1", "Prop6" };
+                var expected = new[] { "Prop3.Prop4", "Prop5.Prop4", "Prop1", "Prop6" };
 
                 expected.Should().BeEquivalentTo(_options.AutoCollatedPaths);
             }

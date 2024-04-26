@@ -4,9 +4,7 @@ using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
-using Xunit;
 
 namespace AllOverIt.Tests.Extensions
 {

@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Serialization.Binary.Exceptions;
-using Xunit;
 
 namespace AllOverIt.Serialization.Binary.Tests.Exceptions
 {

@@ -1,5 +1,3 @@
-using System;
-
 namespace EnrichedEnumModelBindingDemo.Models
 {
     public sealed class WeatherForecast

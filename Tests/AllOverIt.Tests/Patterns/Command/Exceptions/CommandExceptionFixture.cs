@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Patterns.Command.Exceptions;
-using Xunit;
 
 namespace AllOverIt.Tests.Patterns.Command.Exceptions
 {

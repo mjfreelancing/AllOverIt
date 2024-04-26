@@ -3,9 +3,7 @@ using AllOverIt.DependencyInjection.Extensions;
 using InterceptorDemo.Interceptors.ClassLevel;
 using InterceptorDemo.Interceptors.MethodLevel;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 
 namespace InterceptorDemo
 {

@@ -2,8 +2,6 @@
 using AllOverIt.Extensions;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Linq;
 
 namespace AllOverIt.Validation
 {

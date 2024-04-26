@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AllOverIt.Formatters.Objects
+﻿namespace AllOverIt.Formatters.Objects
 {
     /// <summary>A base class that provides support for filtering properties and values when serializing via
     /// <see cref="ObjectPropertySerializer"/>.</summary>
@@ -31,7 +28,7 @@ namespace AllOverIt.Formatters.Objects
         /// <summary>Provides options that allow array values to be collated to a single value.</summary>
         /// <remarks>These options override the serializer's global array handling options.</remarks>
         public ObjectPropertyEnumerableOptions EnumerableOptions { get; } = new();
-        
+
         /// <summary>Use this method to filter out properties. Return true to include the property and false to have it excluded.</summary>
         public virtual bool OnIncludeProperty()
         {

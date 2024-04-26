@@ -1,8 +1,6 @@
 ﻿using AllOverIt.Filtering.Extensions;
 using AllOverIt.Filtering.Options;
 using AllOverIt.Patterns.Specification;
-using System;
-using System.Linq;
 
 namespace AllOverIt.Filtering.Builders
 {

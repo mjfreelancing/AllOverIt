@@ -6,7 +6,6 @@ using AllOverIt.Pagination.TokenEncoding;
 using FakeItEasy;
 using FluentAssertions;
 using System;
-using Xunit;
 
 namespace AllOverIt.Pagination.Tests.Extensions
 {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using AllOverIt.Serialization.Binary.Writers;
+﻿using AllOverIt.Serialization.Binary.Writers;
 
 namespace AllOverIt.Serialization.Binary.Readers
 {

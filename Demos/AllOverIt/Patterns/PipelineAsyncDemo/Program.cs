@@ -2,9 +2,6 @@
 using AllOverIt.Patterns.Pipeline.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using PipelineAsyncDemo.Steps;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace PipelineAsyncDemo
 {
@@ -30,7 +27,7 @@ namespace PipelineAsyncDemo
             var p2 = PipelineBuilder
                 .PipeAsync(cancellationToken => Task.FromResult(1))
                 .PipeAsync((v, cancellationToken) => Task.FromResult(v * 2.0d))
-                .Pipe(v => (int)(v * 3))
+                .Pipe(v => (int) (v * 3))
                 .Pipe(v => v * 3)
                 .PipeAsync(new DoubleStepAsync())
                 .Pipe(v => v * 3)

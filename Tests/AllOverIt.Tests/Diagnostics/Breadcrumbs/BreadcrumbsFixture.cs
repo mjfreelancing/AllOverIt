@@ -1,5 +1,4 @@
-﻿using AllOverIt.Collections;
-using AllOverIt.Diagnostics.Breadcrumbs;
+﻿using AllOverIt.Diagnostics.Breadcrumbs;
 using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
@@ -9,7 +8,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Xunit;
 
 namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 {
@@ -324,7 +322,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
             {
                 var breadcrumbs = CreateBreadcrumbs();
 
-                var enumerator = ((IEnumerable)breadcrumbs).GetEnumerator();
+                var enumerator = ((IEnumerable) breadcrumbs).GetEnumerator();
 
                 var count = 0;
 
@@ -377,7 +375,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 
                 while (enumerator.MoveNext())
                 {
-                    var value = (BreadcrumbData)enumerator.Current;
+                    var value = (BreadcrumbData) enumerator.Current;
 
                     actual.Add(value);
                 }

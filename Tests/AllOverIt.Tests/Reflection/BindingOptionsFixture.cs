@@ -2,7 +2,6 @@ using AllOverIt.Fixture;
 using AllOverIt.Helpers;
 using AllOverIt.Reflection;
 using FluentAssertions;
-using Xunit;
 
 namespace AllOverIt.Tests.Reflection
 {
@@ -40,24 +39,24 @@ namespace AllOverIt.Tests.Reflection
             [InlineData(BindingOptions.Public, 256)]
             public void Should_Have_Expected_Base_Value(BindingOptions option, int expected)
             {
-                ((int)option).Should().Be(expected);
+                ((int) option).Should().Be(expected);
             }
 
             [Theory]
-            [InlineData(BindingOptions.DefaultScope, (int)(BindingOptions.Static | BindingOptions.Instance))]
-            [InlineData(BindingOptions.DefaultAccessor, (int)(BindingOptions.Abstract | BindingOptions.Virtual | BindingOptions.NonVirtual))]
-            [InlineData(BindingOptions.DefaultVisibility, (int)(BindingOptions.Public))]
-            [InlineData(BindingOptions.AllVisibility, (int)(BindingOptions.DefaultVisibility | BindingOptions.Private | BindingOptions.Protected | BindingOptions.Internal))]
-            [InlineData(BindingOptions.Default, (int)(BindingOptions.DefaultScope | BindingOptions.DefaultAccessor | BindingOptions.DefaultVisibility))]
-            [InlineData(BindingOptions.All, (int)(BindingOptions.AllScope | BindingOptions.AllAccessor | BindingOptions.AllVisibility))]
+            [InlineData(BindingOptions.DefaultScope, (int) (BindingOptions.Static | BindingOptions.Instance))]
+            [InlineData(BindingOptions.DefaultAccessor, (int) (BindingOptions.Abstract | BindingOptions.Virtual | BindingOptions.NonVirtual))]
+            [InlineData(BindingOptions.DefaultVisibility, (int) (BindingOptions.Public))]
+            [InlineData(BindingOptions.AllVisibility, (int) (BindingOptions.DefaultVisibility | BindingOptions.Private | BindingOptions.Protected | BindingOptions.Internal))]
+            [InlineData(BindingOptions.Default, (int) (BindingOptions.DefaultScope | BindingOptions.DefaultAccessor | BindingOptions.DefaultVisibility))]
+            [InlineData(BindingOptions.All, (int) (BindingOptions.AllScope | BindingOptions.AllAccessor | BindingOptions.AllVisibility))]
             public void Should_Have_Expected_Composite_Value(BindingOptions option, int expected)
             {
                 ((int) option).Should().Be(expected);
             }
 
             [Theory]
-            [InlineData(BindingOptions.AllScope, (int)BindingOptions.DefaultScope)]
-            [InlineData(BindingOptions.AllAccessor, (int)BindingOptions.DefaultAccessor)]
+            [InlineData(BindingOptions.AllScope, (int) BindingOptions.DefaultScope)]
+            [InlineData(BindingOptions.AllAccessor, (int) BindingOptions.DefaultAccessor)]
             public void Should_Have_Equivalent_Value(BindingOptions option, int expected)
             {
                 ((int) option).Should().Be(expected);

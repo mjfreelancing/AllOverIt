@@ -1,8 +1,5 @@
 using AllOverIt.Assertion;
 using AllOverIt.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AllOverIt.Evaluator.Variables
 {
@@ -75,7 +72,7 @@ namespace AllOverIt.Evaluator.Variables
             var allVariables = from item in variableRegistry
                                let variable = item.Value
                                select variable.Value;
-            
+
             var sumValues = selectedVariableNames == null
               ? allVariables
               : selectedVariableNames.Select(variableRegistry.GetValue);

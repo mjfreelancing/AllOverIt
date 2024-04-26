@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace InterfaceDeserializationDemo
+﻿namespace InterfaceDeserializationDemo
 {
     internal sealed class Parent : Person
     {

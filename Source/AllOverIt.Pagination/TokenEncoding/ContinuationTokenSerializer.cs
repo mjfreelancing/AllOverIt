@@ -1,9 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
 using AllOverIt.Pagination.Exceptions;
-using System;
-using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
 
 namespace AllOverIt.Pagination.TokenEncoding
@@ -31,7 +28,7 @@ namespace AllOverIt.Pagination.TokenEncoding
                 // Decorate the binary streamer with compression
                 _tokenStreamer = new ContinuationTokenCompressor(tokenStreamer);
             }
-        }       
+        }
 
         public string Serialize(IContinuationToken continuationToken)
         {

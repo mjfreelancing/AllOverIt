@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using AllOverIt.Wpf.Utils;
+﻿using AllOverIt.Wpf.Utils;
+using System.Windows;
 
 namespace AllOverIt.Wpf.Extensions
 {

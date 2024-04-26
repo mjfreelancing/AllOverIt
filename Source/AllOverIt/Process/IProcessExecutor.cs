@@ -1,8 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace AllOverIt.Process
+﻿namespace AllOverIt.Process
 {
     /// <summary>Defines a process executor.</summary>
     public interface IProcessExecutor : IDisposable

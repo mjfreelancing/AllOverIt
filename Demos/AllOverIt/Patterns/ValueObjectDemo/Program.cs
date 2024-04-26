@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Patterns.ValueObject.Exceptions;
-using System;
 using ValueObjectDemo.Extensions;
 
 namespace ValueObjectDemo
@@ -23,7 +22,7 @@ namespace ValueObjectDemo
             }
             catch (ValueObjectValidationException exception)
             {
-                var value = (EnrichedTemperature)(exception.AttemptedValue);
+                var value = (EnrichedTemperature) (exception.AttemptedValue);
                 throw new ArgumentException($"The temperature {value.Temperature:N2} {value.Units} is invalid ({value.ConvertToKelvin():N2} Kelvin)");
             }
 
@@ -45,7 +44,7 @@ namespace ValueObjectDemo
             CompareTemperatures(temp3, temp2);
             CompareTemperatures(temp3, temp4);
             CompareTemperatures(temp3, temp5);
-            
+
             Console.WriteLine();
 
             CompareTemperatures(temp4, temp1);

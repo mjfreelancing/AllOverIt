@@ -1,11 +1,10 @@
-﻿using System;
-using System.Linq.Expressions;
-using AllOverIt.Fixture;
+﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Helpers.PropertyNavigation;
 using AllOverIt.Helpers.PropertyNavigation.Extensions;
 using FluentAssertions;
-using Xunit;
+using System;
+using System.Linq.Expressions;
 
 namespace AllOverIt.Tests.Helpers.PropertyNavigation.Extensions
 {

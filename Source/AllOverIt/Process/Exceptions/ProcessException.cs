@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Process.Exceptions
+﻿namespace AllOverIt.Process.Exceptions
 {
     /// <summary>Represents an error that occurred while executing an external process.</summary>
     public sealed class ProcessException : Exception

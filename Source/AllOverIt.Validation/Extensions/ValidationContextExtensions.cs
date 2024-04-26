@@ -33,7 +33,7 @@ namespace AllOverIt.Validation.Extensions
             _ = context.WhenNotNull(nameof(context));
             _ = key.WhenNotNullOrEmpty(nameof(key));
 
-            return (TContext)context.RootContextData[key];
+            return (TContext) context.RootContextData[key];
         }
     }
 }

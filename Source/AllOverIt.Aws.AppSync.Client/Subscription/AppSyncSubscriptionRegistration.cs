@@ -1,9 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Aws.AppSync.Client.Response;
 using AllOverIt.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Aws.AppSync.Client.Subscription
 {

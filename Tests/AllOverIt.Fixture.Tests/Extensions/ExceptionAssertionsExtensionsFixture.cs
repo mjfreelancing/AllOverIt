@@ -1,12 +1,7 @@
-﻿using AllOverIt.Fixture;
-using AllOverIt.Fixture.Extensions;
+﻿using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
-using FluentAssertions.Specialized;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using System;
 using System.Threading.Tasks;
-using Xunit;
-using ExceptionAssertionsExtensions = AllOverIt.Fixture.Extensions.ExceptionAssertionsExtensions;
 
 namespace AllOverIt.Fixture.Tests.Extensions
 {

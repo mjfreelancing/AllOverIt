@@ -6,7 +6,6 @@ using FluentAssertions;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Xunit;
 
 namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
 {
@@ -246,7 +245,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
             {
                 Invoking(() =>
                 {
-                    _ = PipelineBuilderExtensions.PipeAsync<StepAsyncDummy, int, double, string>( null);
+                    _ = PipelineBuilderExtensions.PipeAsync<StepAsyncDummy, int, double, string>(null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -503,7 +502,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
             {
                 Invoking(() =>
                 {
-                    _ = PipelineBuilderExtensions.PipeAsync( null, _funcStepAsync);
+                    _ = PipelineBuilderExtensions.PipeAsync(null, _funcStepAsync);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -538,7 +537,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
             {
                 Invoking(() =>
                 {
-                    _ = PipelineBuilderExtensions.PipeAsync( null, _stepAsyncDummy);
+                    _ = PipelineBuilderExtensions.PipeAsync(null, _stepAsyncDummy);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -573,7 +572,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
             {
                 Invoking(() =>
                 {
-                    _ = PipelineBuilderExtensions.PipeAsync<StepAsyncDummy, double, string>( null);
+                    _ = PipelineBuilderExtensions.PipeAsync<StepAsyncDummy, double, string>(null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()

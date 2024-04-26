@@ -1,7 +1,4 @@
 ﻿using AllOverIt.Assertion;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -105,7 +102,7 @@ namespace AllOverIt.Wpf.Threading
             dispatcher = Application.Current?.Dispatcher;
 
             Throw<InvalidOperationException>.WhenNull(dispatcher, "The application's dispatcher is not available.");
-            
+
             return dispatcher.CheckAccess();
         }
     }

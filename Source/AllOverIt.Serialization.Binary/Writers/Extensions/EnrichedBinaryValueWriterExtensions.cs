@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Assertion;
-using AllOverIt.Serialization.Binary.Writers;
 
 namespace AllOverIt.Serialization.Binary.Writers.Extensions
 {

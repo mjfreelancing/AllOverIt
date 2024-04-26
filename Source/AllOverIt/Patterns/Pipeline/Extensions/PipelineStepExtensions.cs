@@ -1,7 +1,4 @@
 ﻿using AllOverIt.Assertion;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Patterns.Pipeline.Extensions
 {
@@ -32,5 +29,5 @@ namespace AllOverIt.Patterns.Pipeline.Extensions
 
             return step.ExecuteAsync;
         }
-    }        
+    }
 }

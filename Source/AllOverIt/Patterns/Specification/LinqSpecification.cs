@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Assertion;
-using System;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Patterns.Specification

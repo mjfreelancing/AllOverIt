@@ -1,15 +1,6 @@
-﻿using AllOverIt.Fixture;
-using AllOverIt.Mapping;
-using AllOverIt.Mapping.Exceptions;
-using AllOverIt.Reflection;
-using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using AllOverIt.Extensions;
-using Xunit;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace AllOverIt.Mapping.Tests
 {

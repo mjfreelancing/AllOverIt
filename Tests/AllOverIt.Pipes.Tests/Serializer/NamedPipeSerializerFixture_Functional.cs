@@ -6,7 +6,6 @@ using AllOverIt.Serialization.Binary.Writers;
 using AllOverIt.Serialization.Binary.Writers.Extensions;
 using FluentAssertions;
 using System;
-using Xunit;
 
 namespace AllOverIt.Pipes.Tests.Serializer
 {

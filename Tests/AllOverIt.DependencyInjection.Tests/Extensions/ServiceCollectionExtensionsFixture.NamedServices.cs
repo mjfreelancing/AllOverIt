@@ -1,11 +1,9 @@
 ﻿using AllOverIt.DependencyInjection.Extensions;
-using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
-using Xunit;
 
 namespace AllOverIt.DependencyInjection.Tests.Extensions
 {

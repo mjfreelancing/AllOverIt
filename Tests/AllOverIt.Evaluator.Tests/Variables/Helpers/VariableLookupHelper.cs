@@ -31,7 +31,7 @@ namespace AllOverIt.Evaluator.Tests.Variables.Helpers
             registry.AddLazyVariable("e", compiler.Compile("a+b+c", registry));
             registry.AddDelegateVariable("f", compiler.Compile("b", registry));
             registry.AddDelegateVariable("g", compiler.Compile("e", registry));
-            
+
             return registry;
         }
 

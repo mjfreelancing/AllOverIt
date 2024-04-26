@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Validation
+﻿namespace AllOverIt.Validation
 {
     internal static class ValidationTypeHelper
     {

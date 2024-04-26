@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AllOverIt.Aws.Cdk.AppSync.Mapping
+﻿namespace AllOverIt.Aws.Cdk.AppSync.Mapping
 {
     /// <summary>A node within a GraphQL hierarchy that contains a datasource request and response mapping.</summary>
     public sealed class MappingNode

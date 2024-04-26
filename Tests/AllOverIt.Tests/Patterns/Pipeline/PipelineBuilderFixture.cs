@@ -3,14 +3,10 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Patterns.Pipeline;
 using AllOverIt.Patterns.Pipeline.Extensions;
-using FakeItEasy;
 using FluentAssertions;
 using System;
-using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
-using Xunit;
-using Xunit.Sdk;
 
 namespace AllOverIt.Tests.Patterns.Pipeline
 {

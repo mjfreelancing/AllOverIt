@@ -3,7 +3,6 @@ using AllOverIt.Evaluator.Variables;
 using AllOverIt.Evaluator.Variables.Extensions;
 using FluentAssertions;
 using System.Linq;
-using Xunit;
 
 namespace AllOverIt.Evaluator.Tests
 {

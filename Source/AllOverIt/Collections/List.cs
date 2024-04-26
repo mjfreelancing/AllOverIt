@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AllOverIt.Collections
+﻿namespace AllOverIt.Collections
 {
     /// <summary>Provides static methods related to list types.</summary>
     public static class List

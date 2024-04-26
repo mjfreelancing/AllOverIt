@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Assertion;
 using BenchmarkDotNet.Attributes;
-using System;
 
 /*
     |          Method | IterationCount |          Mean |       Error |     StdDev |  Gen 0 | Allocated |

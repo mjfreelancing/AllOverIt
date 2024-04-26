@@ -5,11 +5,7 @@ using EnrichedEnumModelBindingDemo.Problems;
 using EnrichedEnumModelBindingDemo.Requests;
 using EnrichedEnumModelBindingDemo.Validators;
 using Hellang.Middleware.ProblemDetails;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace EnrichedEnumModelBindingDemo
 {

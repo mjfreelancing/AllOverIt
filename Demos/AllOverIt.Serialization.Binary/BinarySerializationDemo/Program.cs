@@ -3,8 +3,6 @@ using AllOverIt.Serialization.Binary.Writers;
 using BinarySerializationDemo.Models;
 using BinarySerializationDemo.Readers;
 using BinarySerializationDemo.Writers;
-using System;
-using System.IO;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;

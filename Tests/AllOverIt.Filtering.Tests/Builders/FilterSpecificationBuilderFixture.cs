@@ -12,7 +12,6 @@ using FluentAssertions;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
-using Xunit;
 
 namespace AllOverIt.Filtering.Tests.Builders
 {

@@ -1,8 +1,6 @@
 ﻿using AllOverIt.Serialization.Json.Abstractions;
 using AllOverIt.Serialization.Json.Newtonsoft.Converters;
 using Newtonsoft.Json;
-using System;
-using System.Linq;
 
 namespace AllOverIt.Serialization.Json.Newtonsoft
 {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace FilteringDemo
+﻿namespace FilteringDemo
 {
     public sealed class DateTimeValue
     {

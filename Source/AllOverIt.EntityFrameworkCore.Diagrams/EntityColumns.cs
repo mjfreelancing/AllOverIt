@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Collections;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 namespace AllOverIt.EntityFrameworkCore.Diagrams
 {

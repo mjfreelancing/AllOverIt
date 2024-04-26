@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources;
 using Amazon.CDK.AWS.AppSync;
 using Cdklabs.AwsCdkAppsyncUtils;
-using System.Collections.Generic;
 
 namespace AllOverIt.Aws.Cdk.AppSync
 {

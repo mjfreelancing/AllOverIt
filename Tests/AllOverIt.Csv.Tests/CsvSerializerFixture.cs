@@ -10,7 +10,6 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Xunit;
 
 namespace AllOverIt.Csv.Tests
 {
@@ -122,7 +121,7 @@ namespace AllOverIt.Csv.Tests
                 var counts = CreateMany<int>();
 
                 var sampleData = names
-                    .Zip(counts, (name, count) => new {Name = name, Count = count})
+                    .Zip(counts, (name, count) => new { Name = name, Count = count })
                     .Select(value => new DummySampleData
                     {
                         Name = value.Name,
@@ -215,7 +214,7 @@ namespace AllOverIt.Csv.Tests
                     .SelectAsReadOnlyCollection(idx => new
                     {
                         Index = idx,
-                        Names = new List<string>(new[] {$"Latitude {idx + 1}", $"Longitude {idx + 1}"})
+                        Names = new List<string>(new[] { $"Latitude {idx + 1}", $"Longitude {idx + 1}" })
                     });
 
                 var headerNames = uniqueIdentifiers

@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace AllOverIt.Evaluator.Variables
 {
     /// <summary>Represents a factory for creating variables.</summary>

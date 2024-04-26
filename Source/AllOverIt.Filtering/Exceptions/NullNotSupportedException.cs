@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Filtering.Exceptions
+﻿namespace AllOverIt.Filtering.Exceptions
 {
     /// <summary>An exception that can be thrown wihle building a query filter.</summary>
     public sealed class NullNotSupportedException : Exception

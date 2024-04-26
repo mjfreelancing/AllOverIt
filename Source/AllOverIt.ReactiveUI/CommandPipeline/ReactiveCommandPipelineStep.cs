@@ -2,8 +2,6 @@
 using AllOverIt.Patterns.Pipeline;
 using ReactiveUI;
 using System.Reactive.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.ReactiveUI.CommandPipeline
 {

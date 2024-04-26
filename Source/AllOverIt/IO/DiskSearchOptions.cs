@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.IO
+﻿namespace AllOverIt.IO
 {
     /// <summary>Contains options that can be applied when performing a directory or file search.</summary>
     [Flags]

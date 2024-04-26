@@ -1,6 +1,4 @@
 ﻿using AllOverIt.Patterns.ChainOfResponsibility;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ChainOfResponsibilityAsyncDemo.Handlers
 {

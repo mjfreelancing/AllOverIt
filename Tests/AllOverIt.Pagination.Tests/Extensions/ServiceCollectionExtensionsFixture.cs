@@ -5,7 +5,6 @@ using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
-using Xunit;
 
 namespace AllOverIt.Pagination.Tests.Extensions
 {

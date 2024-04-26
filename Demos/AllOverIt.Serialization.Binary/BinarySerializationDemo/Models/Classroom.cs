@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System;
-
-namespace BinarySerializationDemo.Models
+﻿namespace BinarySerializationDemo.Models
 {
     internal sealed class Classroom
     {

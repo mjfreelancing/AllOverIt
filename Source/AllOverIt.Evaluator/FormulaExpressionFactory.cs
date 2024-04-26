@@ -3,7 +3,6 @@ using AllOverIt.Evaluator.Exceptions;
 using AllOverIt.Evaluator.Operations;
 using AllOverIt.Evaluator.Variables;
 using AllOverIt.Reflection;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace LinqSpecificationDemo
+﻿namespace LinqSpecificationDemo
 {
     internal static class Repository
     {

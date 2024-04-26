@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AllOverIt.Collections
+﻿namespace AllOverIt.Collections
 {
     /// <summary>Represents a fixed-size circular buffer providing insert, pop, and push operations.</summary>
     public interface ICircularBuffer<TType> : IEnumerable<TType>

@@ -3,7 +3,6 @@ using AllOverIt.Cryptography.RSA;
 using AllOverIt.Fixture;
 using FluentAssertions;
 using System.Security.Cryptography;
-using Xunit;
 
 namespace AllOverIt.Cryptography.Tests.Hybrid
 {

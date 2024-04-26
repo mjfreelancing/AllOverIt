@@ -3,11 +3,7 @@ using AllOverIt.Extensions;
 using AllOverIt.Reflection;
 using AllOverIt.Serialization.Binary.Exceptions;
 using AllOverIt.Serialization.Binary.Writers.Extensions;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text;
 
 namespace AllOverIt.Serialization.Binary.Writers

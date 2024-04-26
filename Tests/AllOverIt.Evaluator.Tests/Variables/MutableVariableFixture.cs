@@ -3,9 +3,7 @@ using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Variables
 {

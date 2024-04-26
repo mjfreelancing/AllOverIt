@@ -2,11 +2,6 @@
 using AllOverIt.Extensions;
 using AllOverIt.Patterns.Pipeline;
 using AllOverIt.Patterns.Pipeline.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace PipelineParallelDemo
 {
@@ -68,7 +63,7 @@ namespace PipelineParallelDemo
 
                 // Takes the output from the previous step and runs 3 calcs in parallel before returning a Stats instance
                 .PipeAsync(calculateStats)
-                
+
                 .Build();
 
             var input = Enumerable

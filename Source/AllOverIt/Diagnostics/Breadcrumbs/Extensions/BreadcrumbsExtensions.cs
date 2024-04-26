@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Assertion;
-using System;
 using System.Runtime.CompilerServices;
 
 namespace AllOverIt.Diagnostics.Breadcrumbs.Extensions

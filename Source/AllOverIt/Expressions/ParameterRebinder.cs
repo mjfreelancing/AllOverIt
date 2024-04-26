@@ -1,5 +1,4 @@
 using AllOverIt.Assertion;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Expressions

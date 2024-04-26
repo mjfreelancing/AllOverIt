@@ -1,8 +1,6 @@
 ﻿using AllOverIt.Evaluator;
 using AllOverIt.Evaluator.Variables;
 using AllOverIt.Evaluator.Variables.Extensions;
-using System;
-using System.Linq;
 
 namespace VariableLookupDemo
 {

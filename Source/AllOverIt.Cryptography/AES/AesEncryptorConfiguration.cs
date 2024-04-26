@@ -20,7 +20,7 @@ namespace AllOverIt.Cryptography.AES
         public int KeySize
         {
             get => _keySize;
-            init 
+            init
             {
                 if (_keySize != value)
                 {

@@ -2,10 +2,7 @@
 using AllOverIt.Extensions;
 using AllOverIt.Formatters.Objects.Exceptions;
 using AllOverIt.Reflection;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AllOverIt.Formatters.Objects
 {

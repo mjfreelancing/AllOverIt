@@ -1,7 +1,5 @@
 ﻿using AllOverIt.Patterns.Enumeration;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 
 namespace AllOverIt.Reflection
 {

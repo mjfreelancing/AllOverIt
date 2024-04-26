@@ -1,9 +1,8 @@
-﻿using System;
-using AllOverIt.Fixture;
+﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Formatters.Objects;
 using FluentAssertions;
-using Xunit;
+using System;
 
 namespace AllOverIt.Tests.Formatters.Objects
 {

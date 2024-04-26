@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
-using Xunit;
 
 namespace AllOverIt.Tests.Aspects
 {

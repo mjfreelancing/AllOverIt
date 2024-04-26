@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Aws.AppSync.Client.Request
+﻿namespace AllOverIt.Aws.AppSync.Client.Request
 {
     /// <summary>A subscription query with a unique identifier and optional variables associated with the query.</summary>
     public sealed class SubscriptionQuery

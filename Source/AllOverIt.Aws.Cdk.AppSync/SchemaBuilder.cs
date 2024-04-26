@@ -6,9 +6,6 @@ using AllOverIt.Aws.Cdk.AppSync.Factories;
 using AllOverIt.Aws.Cdk.AppSync.Mapping;
 using AllOverIt.Aws.Cdk.AppSync.Schema;
 using Cdklabs.AwsCdkAppsyncUtils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace AllOverIt.Aws.Cdk.AppSync

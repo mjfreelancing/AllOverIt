@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Aws.AppSync.Client.Exceptions;
-using System.Linq;
 
 namespace AllOverIt.Aws.AppSync.Client.Extensions
 {

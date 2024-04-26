@@ -1,5 +1,4 @@
 ﻿using AllOverIt.IO;
-using System;
 using System.Diagnostics;
 
 namespace FileSearchDemo

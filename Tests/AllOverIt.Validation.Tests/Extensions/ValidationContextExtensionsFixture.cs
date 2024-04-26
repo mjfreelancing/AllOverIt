@@ -4,7 +4,6 @@ using AllOverIt.Validation.Extensions;
 using FluentAssertions;
 using FluentValidation;
 using System;
-using Xunit;
 
 namespace AllOverIt.Validation.Tests.Extensions
 {

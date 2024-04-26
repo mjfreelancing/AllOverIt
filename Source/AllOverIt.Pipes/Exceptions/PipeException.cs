@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Pipes.Exceptions
+﻿namespace AllOverIt.Pipes.Exceptions
 {
     /// <summary>Represents an error that occurs while using an anonymous pipe.</summary>
     public class PipeException : Exception

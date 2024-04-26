@@ -3,7 +3,6 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Mapping.Exceptions;
 using FluentAssertions;
 using System;
-using Xunit;
 
 using static AllOverIt.Mapping.Tests.ObjectMapperTypes;
 

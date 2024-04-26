@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace InterceptorBenchmarking
+﻿namespace InterceptorBenchmarking
 {
     public interface IService
     {

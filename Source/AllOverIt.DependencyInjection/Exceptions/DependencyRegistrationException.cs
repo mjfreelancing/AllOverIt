@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.DependencyInjection.Exceptions
+﻿namespace AllOverIt.DependencyInjection.Exceptions
 {
     /// <summary>Represents an error that occurred while auto-registering a service for dependency injection.</summary>
     public sealed class DependencyRegistrationException : Exception

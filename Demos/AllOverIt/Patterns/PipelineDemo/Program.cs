@@ -2,7 +2,6 @@
 using AllOverIt.Patterns.Pipeline.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using PipelineDemo.Steps;
-using System;
 
 namespace PipelineDemo
 {
@@ -52,7 +51,7 @@ namespace PipelineDemo
 
             var serviceProvider = services.BuildServiceProvider();
 
-            var pipeline = serviceProvider.GetRequiredService<IntegerPipelineProcessor>();            
+            var pipeline = serviceProvider.GetRequiredService<IntegerPipelineProcessor>();
 
             var result = pipeline.Invoke(5);
 

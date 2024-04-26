@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Pipes.Named.Events
+﻿namespace AllOverIt.Pipes.Named.Events
 {
     /// <summary>Declares named pipe event handlers.</summary>
     /// <typeparam name="TMessage">The message type serialized between a named pipe client and a named pipe server.</typeparam>

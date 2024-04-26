@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace InterfaceDeserializationDemo
+﻿namespace InterfaceDeserializationDemo
 {
     public interface IParent : IPerson
     {

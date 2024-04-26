@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace SerializationFilterBenchmarking
+﻿namespace SerializationFilterBenchmarking
 {
     internal sealed class ComplexObject
     {

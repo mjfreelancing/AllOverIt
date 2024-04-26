@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Diagnostics.Breadcrumbs;
 using AllOverIt.Fixture;
 using FluentAssertions;
-using Xunit;
 
 namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 {

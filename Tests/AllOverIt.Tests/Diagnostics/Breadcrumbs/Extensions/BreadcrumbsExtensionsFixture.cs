@@ -5,7 +5,6 @@ using FluentAssertions;
 using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Xunit;
 
 namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
 {
@@ -421,7 +420,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             [Fact]
             public void Should_Throw_When_Caller_Null()
             {
-                Invoking(() => BreadcrumbsExtensions.Add(_breadcrumbs, (object)null, Create<string>()))
+                Invoking(() => BreadcrumbsExtensions.Add(_breadcrumbs, (object) null, Create<string>()))
                   .Should()
                   .Throw<ArgumentNullException>()
                   .WithNamedMessageWhenNull("caller");

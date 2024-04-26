@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace CsvSerializerDemo.Data
+﻿namespace CsvSerializerDemo.Data
 {
     public sealed class SampleData
     {

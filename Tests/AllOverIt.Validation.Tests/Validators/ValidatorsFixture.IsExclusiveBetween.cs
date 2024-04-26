@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Validation.Extensions;
 using FluentAssertions;
 using FluentValidation;
-using Xunit;
 
 namespace AllOverIt.Validation.Tests.Validators
 {

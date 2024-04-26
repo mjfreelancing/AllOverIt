@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AllOverIt.Aws.AppSync.Client.Response
+﻿namespace AllOverIt.Aws.AppSync.Client.Response
 {
     /// <summary>A base class for all graphql responses.</summary>
     /// <typeparam name="TResponse">The response type populated with the expected response data.</typeparam>

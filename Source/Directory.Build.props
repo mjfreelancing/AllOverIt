@@ -1,6 +1,7 @@
 <Project>
     <PropertyGroup>
         <LangVersion>Latest</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
         <Version>7.9.0</Version>
         <Authors>Malcolm Smith</Authors>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>

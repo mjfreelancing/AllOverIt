@@ -6,7 +6,6 @@ using AllOverIt.Reflection.Exceptions;
 using FluentAssertions;
 using System;
 using System.Reflection;
-using Xunit;
 
 namespace AllOverIt.Tests.Reflection
 {
@@ -206,7 +205,7 @@ namespace AllOverIt.Tests.Reflection
             {
                 Invoking(() =>
                 {
-                    _ = PropertyHelper.CreatePropertyGetter<DummyBaseClass>((string)null);
+                    _ = PropertyHelper.CreatePropertyGetter<DummyBaseClass>((string) null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()

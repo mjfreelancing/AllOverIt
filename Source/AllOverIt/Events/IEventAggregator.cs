@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace AllOverIt.Events
+﻿namespace AllOverIt.Events
 {
     /// <summary>Provides a mechanism for produces to publish messages and consumers to subscribe for notification of those messages.</summary>
     public interface IEventAggregator

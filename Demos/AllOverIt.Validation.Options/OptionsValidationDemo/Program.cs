@@ -3,7 +3,6 @@ using AllOverIt.Validation.Options.Extensions;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Threading.Tasks;
 
 namespace OptionsValidationDemo
 {

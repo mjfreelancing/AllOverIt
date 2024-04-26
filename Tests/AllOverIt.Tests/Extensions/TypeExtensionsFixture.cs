@@ -1,15 +1,14 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
+using AllOverIt.Patterns.Enumeration;
 using AllOverIt.Reflection;
 using FluentAssertions;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using AllOverIt.Fixture.Extensions;
-using AllOverIt.Patterns.Enumeration;
-using Xunit;
-using System.Collections;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -110,7 +109,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = (object) AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(PropertySuperClass), "Prop3");
 
-                var expected = new {Name = "Prop3", PropertyType = typeof(double)};
+                var expected = new { Name = "Prop3", PropertyType = typeof(double) };
 
                 actual.Should().BeEquivalentTo(expected);
             }
@@ -118,9 +117,9 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Get_Property_In_Base()
             {
-                var actual = (object)AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(PropertySuperClass), "Prop1");
+                var actual = (object) AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(PropertySuperClass), "Prop1");
 
-                var expected = new {Name = "Prop1", PropertyType = typeof(int)};
+                var expected = new { Name = "Prop1", PropertyType = typeof(int) };
 
                 actual.Should().BeEquivalentTo(expected);
             }
@@ -128,7 +127,7 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Not_Find_Property()
             {
-                var actual = (object)AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(PropertySuperClass), "PropXYZ");
+                var actual = (object) AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(PropertySuperClass), "PropXYZ");
 
                 actual.Should().BeNull();
             }
@@ -158,9 +157,9 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions
                     .GetPropertyInfo(typeof(PropertySuperClass), BindingOptions.Default, true)
-                    .Select(item => new {item.Name, item.PropertyType});
+                    .Select(item => new { item.Name, item.PropertyType });
 
-                var expected = new[] {new {Name = "Prop3", PropertyType = typeof(double)}};
+                var expected = new[] { new { Name = "Prop3", PropertyType = typeof(double) } };
 
                 expected.Should().BeEquivalentTo(actual);
             }
@@ -182,7 +181,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(PropertySuperClass), binding, false);
 
-                var expected = new[]{ "Prop1", "Prop2", "Prop3", "Prop4" };
+                var expected = new[] { "Prop1", "Prop2", "Prop3", "Prop4" };
 
                 expected
                   .Should()
@@ -886,7 +885,7 @@ namespace AllOverIt.Tests.Extensions
             [InlineData(typeof(object), "Object")]
             [InlineData(typeof(int), "Int32")]
             [InlineData(typeof(int?), "Int32?")]
-            [InlineData(typeof(Dictionary<int,string>.KeyCollection), "KeyCollection<Int32, String>")]     // has no backticks in the name
+            [InlineData(typeof(Dictionary<int, string>.KeyCollection), "KeyCollection<Int32, String>")]     // has no backticks in the name
             [InlineData(typeof(DummyEnum), "DummyEnum")]
             [InlineData(typeof(DummyEnum?), "DummyEnum?")]
             [InlineData(typeof(IEnumerable<DummyEnum>), "IEnumerable<DummyEnum>")]

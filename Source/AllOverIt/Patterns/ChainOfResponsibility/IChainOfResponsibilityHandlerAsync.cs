@@ -1,7 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-
-namespace AllOverIt.Patterns.ChainOfResponsibility
+﻿namespace AllOverIt.Patterns.ChainOfResponsibility
 {
     /// <summary>An interface that describes an asynchronous implementation of the Chain Of Responsibility pattern.</summary>
     /// <typeparam name="TInput">The input state type.</typeparam>

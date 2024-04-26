@@ -6,7 +6,6 @@ using FakeItEasy;
 using FluentAssertions;
 using System;
 using System.IO.Pipes;
-using Xunit;
 
 namespace AllOverIt.Pipes.Tests.Named.Client
 {

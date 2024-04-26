@@ -2,6 +2,6 @@
 {
     internal sealed class StringMessage
     {
-        public string  Value { get; set; }
+        public string Value { get; set; }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Assertion;
-using System.IO;
 using System.Text;
 
 namespace AllOverIt.Extensions

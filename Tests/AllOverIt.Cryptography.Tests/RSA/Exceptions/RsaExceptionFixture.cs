@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Cryptography.RSA.Exceptions;
 using AllOverIt.Fixture;
-using Xunit;
 
 namespace AllOverIt.Cryptography.Tests.RSA.Exceptions
 {

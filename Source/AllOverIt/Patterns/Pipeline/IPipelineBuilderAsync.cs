@@ -1,8 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace AllOverIt.Patterns.Pipeline
+﻿namespace AllOverIt.Patterns.Pipeline
 {
     /// <summary>Represents an asynchronous pipeline builder that takes no initial input.</summary>
     /// <typeparam name="TOut">The output type for the pipeline.</typeparam>

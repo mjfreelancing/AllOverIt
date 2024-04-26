@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync.Exceptions;
 using AllOverIt.Extensions;
-using System.Collections.Generic;
 
 namespace AllOverIt.Aws.Cdk.AppSync.Attributes.Directives
 {

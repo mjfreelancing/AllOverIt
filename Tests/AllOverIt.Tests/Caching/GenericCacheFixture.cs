@@ -7,7 +7,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Xunit;
 
 namespace AllOverIt.Tests.Caching
 {
@@ -41,7 +40,7 @@ namespace AllOverIt.Tests.Caching
         }
 
         public class Default : GenericCacheFixture
-        {          
+        {
             [Fact]
             public void Should_Be_A_Default_Constructed_Cache()
             {
@@ -382,7 +381,7 @@ namespace AllOverIt.Tests.Caching
                     .Should()
                     .NotThrow();
 
-                expected.Should().BeEquivalentTo((IReadOnlyCollection<string>)_cache[key]);
+                expected.Should().BeEquivalentTo((IReadOnlyCollection<string>) _cache[key]);
             }
         }
 
@@ -454,7 +453,7 @@ namespace AllOverIt.Tests.Caching
 
                 success.Should().BeTrue();
 
-                value.Should().BeEquivalentTo((IReadOnlyCollection<string>)actual);
+                value.Should().BeEquivalentTo((IReadOnlyCollection<string>) actual);
             }
 
             [Fact]
@@ -744,7 +743,7 @@ namespace AllOverIt.Tests.Caching
                 Invoking(() =>
                     {
                         var key = new KeyType1(Create<int>(), Create<string>());
-                        _ = _cache.GetOrAdd(key, (Func<GenericCacheKeyBase, string>)null);
+                        _ = _cache.GetOrAdd(key, (Func<GenericCacheKeyBase, string>) null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -986,7 +985,7 @@ namespace AllOverIt.Tests.Caching
             public void Should_Provide_AddKey()
             {
                 var key = new KeyType1(Create<int>(), Create<string>());
-                GenericCacheKeyBase actualAddKey = null; 
+                GenericCacheKeyBase actualAddKey = null;
 
                 _cache.ContainsKey(key).Should().BeFalse();
 
@@ -1375,7 +1374,7 @@ namespace AllOverIt.Tests.Caching
                 [Fact]
                 public void Should_Be_False()
                 {
-                    ((ICollection<KeyValuePair<GenericCacheKeyBase, object>>)_cache).IsReadOnly.Should().BeFalse();
+                    ((ICollection<KeyValuePair<GenericCacheKeyBase, object>>) _cache).IsReadOnly.Should().BeFalse();
                 }
             }
 

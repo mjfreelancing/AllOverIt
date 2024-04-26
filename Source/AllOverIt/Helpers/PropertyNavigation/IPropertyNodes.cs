@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AllOverIt.Helpers.PropertyNavigation
+﻿namespace AllOverIt.Helpers.PropertyNavigation
 {
     /// <summary>One or more property nodes in an object graph.</summary>
     public interface IPropertyNodes

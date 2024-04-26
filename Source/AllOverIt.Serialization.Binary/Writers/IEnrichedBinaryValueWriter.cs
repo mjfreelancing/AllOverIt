@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Serialization.Binary.Writers
+﻿namespace AllOverIt.Serialization.Binary.Writers
 {
     /// <summary>Represents a binary value writer for a given object type. When registered as an <see cref="IEnrichedBinaryWriter"/> writer,
     /// these writers make it possible to serialize complex object graphs.</summary>

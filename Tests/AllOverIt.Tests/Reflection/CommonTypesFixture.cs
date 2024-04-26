@@ -1,12 +1,10 @@
 ﻿using AllOverIt.Fixture;
-using System.Collections.Generic;
-using System;
-using Xunit;
-using FluentAssertions;
-using AllOverIt.Reflection;
-using System.Collections;
 using AllOverIt.Patterns.Enumeration;
-using System.Collections.ObjectModel;
+using AllOverIt.Reflection;
+using FluentAssertions;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace AllOverIt.Tests.Reflection
 {

@@ -3,7 +3,6 @@ using AllOverIt.Pagination.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PaginationConsoleDemo;
-using System.Threading.Tasks;
 
 class Program
 {

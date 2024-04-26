@@ -2,8 +2,6 @@ using AllOverIt.Assertion;
 using AllOverIt.Collections;
 using AllOverIt.Evaluator.Variables;
 using AllOverIt.Extensions;
-using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Evaluator

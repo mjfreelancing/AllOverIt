@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text.Json;
-using Xunit;
 
 namespace AllOverIt.Serialization.Json.SystemText.Tests
 {

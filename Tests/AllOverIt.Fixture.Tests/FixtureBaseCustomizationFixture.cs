@@ -1,6 +1,5 @@
 using AllOverIt.Fixture.Tests.Dummies;
 using FluentAssertions;
-using Xunit;
 
 namespace AllOverIt.Fixture.Tests
 {

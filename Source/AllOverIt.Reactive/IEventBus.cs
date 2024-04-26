@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Reactive
+﻿namespace AllOverIt.Reactive
 {
     /// <summary>Describes a subscribable event aggregator / message bus.</summary>
     public interface IEventBus : IDisposable

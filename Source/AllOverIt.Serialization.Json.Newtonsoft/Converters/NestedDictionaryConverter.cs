@@ -1,10 +1,7 @@
 ﻿using AllOverIt.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 
 namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
 {

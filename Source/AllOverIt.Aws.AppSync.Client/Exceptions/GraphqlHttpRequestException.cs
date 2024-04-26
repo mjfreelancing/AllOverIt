@@ -1,7 +1,5 @@
 ﻿using AllOverIt.Aws.AppSync.Client.Response;
 using AllOverIt.Extensions;
-using System;
-using System.Collections.Generic;
 using System.Net;
 
 namespace AllOverIt.Aws.AppSync.Client.Exceptions

@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PaginationConsoleDemo.Entities;
-using System;
 
 namespace PaginationConsoleDemo
 {

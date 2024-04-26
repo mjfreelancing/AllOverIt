@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AllOverIt.Formatters.Objects
+﻿namespace AllOverIt.Formatters.Objects
 {
     /// <summary>Provides options for the handling of enumerable values.</summary>
     public sealed class ObjectPropertyEnumerableOptions

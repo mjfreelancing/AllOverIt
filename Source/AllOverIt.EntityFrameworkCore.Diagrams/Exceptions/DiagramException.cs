@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.EntityFrameworkCore.Diagrams.Exceptions
+﻿namespace AllOverIt.EntityFrameworkCore.Diagrams.Exceptions
 {
     /// <summary>Represents an error that occurs while generating an Entity Relationship Diagram.</summary>
     public class DiagramException : Exception

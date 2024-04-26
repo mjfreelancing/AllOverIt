@@ -1,12 +1,9 @@
 ﻿using AllOverIt.Assertion;
 using ReactiveUI;
-using System;
-using System.Linq;
 using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.Threading;
 
 namespace AllOverIt.ReactiveUI
 {
@@ -91,11 +88,11 @@ namespace AllOverIt.ReactiveUI
                     ? Observable.Interval(updateInterval, _timerScheduler).TimeInterval(_timerScheduler)
                     : Observable.Interval(updateInterval).TimeInterval();
 
-                var intervalObservable = scheduledInterval                    
+                var intervalObservable = scheduledInterval
                     .Select(timeInterval =>
                     {
                         remaining = remaining.Subtract(timeInterval.Interval);
-                        
+
                         return remaining;
                     })
                     .TakeWhile(remainingTime => !cancellationToken.IsCancellationRequested && remainingTime > TimeSpan.Zero);
@@ -139,7 +136,7 @@ namespace AllOverIt.ReactiveUI
         /// <inheritdoc />
         public void Start(TimeSpan skipTimeSpan)
         {
-            Start((int)skipTimeSpan.TotalMilliseconds);
+            Start((int) skipTimeSpan.TotalMilliseconds);
         }
 
         /// <inheritdoc />

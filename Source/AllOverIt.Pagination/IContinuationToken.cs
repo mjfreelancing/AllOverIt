@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AllOverIt.Pagination
+﻿namespace AllOverIt.Pagination
 {
     /// <summary>Contains information that can be serialized to enable paginated queries.</summary>
     public interface IContinuationToken

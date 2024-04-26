@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Patterns.Command;
-using System;
 
 namespace CommandDemo
 {

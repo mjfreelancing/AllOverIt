@@ -1,10 +1,7 @@
 ﻿#define USE_ALLOVERIT
 
-using System;
-using System.Threading;
 
 #if USE_ALLOVERIT
-using System.Threading.Tasks;
 #endif
 
 namespace GCCollectorStartupHookProxy

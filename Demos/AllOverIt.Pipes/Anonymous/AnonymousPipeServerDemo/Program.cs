@@ -2,12 +2,8 @@
 using AllOverIt.Pipes.Anonymous;
 using AllOverIt.Process;
 using AllOverIt.Process.Extensions;
-using System;
 using System.Diagnostics;
-using System.IO;
 using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AnonymousPipeServerDemo
 {

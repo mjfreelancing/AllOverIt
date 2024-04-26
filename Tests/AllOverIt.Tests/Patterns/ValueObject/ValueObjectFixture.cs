@@ -4,7 +4,6 @@ using AllOverIt.Patterns.ValueObject;
 using AllOverIt.Patterns.ValueObject.Exceptions;
 using FluentAssertions;
 using System;
-using Xunit;
 
 namespace AllOverIt.Tests.Patterns.ValueObject
 {

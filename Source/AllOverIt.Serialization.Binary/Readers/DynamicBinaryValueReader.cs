@@ -1,8 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
 using AllOverIt.Serialization.Binary.Writers;
-using System;
-using System.Linq;
 
 namespace AllOverIt.Serialization.Binary.Readers
 {

@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Patterns.ValueObject.Exceptions;
-using System;
 
 namespace AllOverIt.Patterns.ValueObject
 {

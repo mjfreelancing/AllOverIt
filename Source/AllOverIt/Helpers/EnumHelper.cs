@@ -1,6 +1,4 @@
-﻿using System;
-
-#if NET7_0_OR_GREATER
+﻿#if NET7_0_OR_GREATER
 using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.InteropServices;

@@ -3,8 +3,6 @@ using AllOverIt.Filtering.Extensions;
 using AllOverIt.Filtering.Options;
 using AllOverIt.Patterns.Specification.Extensions;
 using AllOverIt.Patterns.Specification.Utils;
-using System;
-using System.Linq;
 
 namespace FilteringDemo
 {

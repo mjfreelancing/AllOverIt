@@ -1,7 +1,6 @@
 ﻿using Amazon.CDK;
 using Amazon.CDK.AWS.AppSync;
 using GraphqlSchema.Constructs;
-using System;
 using CDKEnvironment = Amazon.CDK.Environment;
 using SystemEnvironment = System.Environment;
 

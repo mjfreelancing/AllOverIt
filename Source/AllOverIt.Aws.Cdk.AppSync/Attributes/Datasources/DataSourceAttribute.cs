@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync.Mapping;
-using System;
 
 namespace AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources
 {
@@ -12,7 +11,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources
 
         /// <summary>The mapping type that provides the required request and response mapping details. This type must inherit <see cref="IRequestResponseMapping"/>.</summary>
         public Type MappingType { get; }
-        
+
         /// <summary>A description for the datasource.</summary>
         public string Description { get; }
 

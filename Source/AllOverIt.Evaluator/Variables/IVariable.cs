@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace AllOverIt.Evaluator.Variables
 {
     /// <summary>Describes a named variable.</summary>

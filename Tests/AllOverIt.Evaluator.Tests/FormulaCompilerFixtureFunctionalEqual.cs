@@ -1,5 +1,3 @@
-using Xunit;
-
 namespace AllOverIt.Evaluator.Tests
 {
     public class FormulaCompilerFixtureFunctionalEqual : FormulaCompilerFixtureFunctionalBase

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Aws.Cdk.AppSync.Exceptions
+﻿namespace AllOverIt.Aws.Cdk.AppSync.Exceptions
 {
     /// <summary>An error describing a condition that would result in an invalid schema.</summary>
     public sealed class SchemaException : Exception

@@ -1,7 +1,5 @@
-using AllOverIt.Patterns.Specification;
 using AllOverIt.Patterns.Specification.Extensions;
 using FluentAssertions;
-using Xunit;
 
 namespace AllOverIt.Tests.Patterns.Specification
 {

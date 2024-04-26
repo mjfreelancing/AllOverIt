@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Cryptography.RSA;
-using System;
 
 namespace AllOverIt.Cryptography.Extensions
 {
@@ -28,7 +27,7 @@ namespace AllOverIt.Cryptography.Extensions
 
             Throw<ArgumentException>.WhenNull(rsaKeyPair.PrivateKey, "The private key cannot be null.");
 
-            return Convert.ToBase64String(rsaKeyPair.PrivateKey); ;
+            return Convert.ToBase64String(rsaKeyPair.PrivateKey);
         }
     }
 }

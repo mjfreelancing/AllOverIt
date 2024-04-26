@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Cryptography.RSA.Exceptions;
 using AllOverIt.Extensions;
-using System;
 using System.Security.Cryptography;
 
 using RSAAlgorithm = System.Security.Cryptography.RSA;

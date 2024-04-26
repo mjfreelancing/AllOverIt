@@ -1,13 +1,10 @@
 ﻿using AllOverIt.Extensions;
-using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Reflection;
 using AllOverIt.Reflection.Exceptions;
 using FluentAssertions;
-using FluentAssertions.Equivalency;
 using System;
 using System.Reflection;
-using Xunit;
 
 namespace AllOverIt.Tests.Reflection
 {

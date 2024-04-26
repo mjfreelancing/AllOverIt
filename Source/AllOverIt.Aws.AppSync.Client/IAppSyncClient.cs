@@ -1,8 +1,6 @@
 ﻿using AllOverIt.Aws.AppSync.Client.Authorization;
 using AllOverIt.Aws.AppSync.Client.Request;
 using AllOverIt.Aws.AppSync.Client.Response;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Aws.AppSync.Client
 {

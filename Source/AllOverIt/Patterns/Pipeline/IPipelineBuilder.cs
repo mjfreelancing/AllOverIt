@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Patterns.Pipeline
+﻿namespace AllOverIt.Patterns.Pipeline
 {
     /// <summary>An synchronous pipeline builder that takes no initial input.</summary>
     /// <typeparam name="TOut">The output type for the pipeline.</typeparam>

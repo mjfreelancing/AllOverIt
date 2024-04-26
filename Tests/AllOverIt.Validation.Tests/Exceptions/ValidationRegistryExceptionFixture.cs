@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Validation.Exceptions;
-using Xunit;
 
 namespace AllOverIt.Validation.Tests.Exceptions
 {

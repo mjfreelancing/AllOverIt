@@ -1,7 +1,5 @@
 ﻿using AllOverIt.Assertion;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AllOverIt.Mapping.Extensions
 {

@@ -1,8 +1,6 @@
 ﻿using AllOverIt.Serialization.Json.SystemText;
 using AllOverIt.Serialization.Json.SystemText.Converters;
 using AllOverIt.Serialization.Json.SystemText.Extensions;
-using System;
-using System.Linq;
 using System.Text.Json;
 
 namespace InterfaceDeserializationDemo

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace AllOverIt.Events
+﻿namespace AllOverIt.Events
 {
     internal interface IAsyncSubscription
     {

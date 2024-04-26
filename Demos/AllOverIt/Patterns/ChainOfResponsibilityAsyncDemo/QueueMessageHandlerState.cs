@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ChainOfResponsibilityAsyncDemo
+﻿namespace ChainOfResponsibilityAsyncDemo
 {
     public sealed class QueueMessageHandlerState
     {

@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Wpf.Utils;
-using System;
 using System.Windows;
 
 namespace WindowWrapperDemo

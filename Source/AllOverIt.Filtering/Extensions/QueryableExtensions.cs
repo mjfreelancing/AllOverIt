@@ -3,9 +3,7 @@ using AllOverIt.Extensions;
 using AllOverIt.Filtering.Builders;
 using AllOverIt.Filtering.Options;
 using AllOverIt.Patterns.Specification.Extensions;
-using System;
 using System.Data;
-using System.Linq;
 
 namespace AllOverIt.Filtering.Extensions
 {

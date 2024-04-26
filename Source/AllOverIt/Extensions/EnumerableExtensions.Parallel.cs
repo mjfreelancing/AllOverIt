@@ -1,10 +1,5 @@
 ﻿using AllOverIt.Assertion;
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Extensions
 {
@@ -84,7 +79,7 @@ namespace AllOverIt.Extensions
         /// <param name="degreeOfParallelism">Determines the maximum number of tasks that will be created.</param>
         /// <param name="cancellationToken">A cancellation token that can cancel the processing.</param>
         /// <returns>A task that will complete when all items have been processed.</returns>
-        public static Task ForEachAsTaskAsync<TType, TInput1, TInput2>(this IEnumerable<TType> items, Func<TType, TInput1, TInput2, CancellationToken, Task> func, 
+        public static Task ForEachAsTaskAsync<TType, TInput1, TInput2>(this IEnumerable<TType> items, Func<TType, TInput1, TInput2, CancellationToken, Task> func,
             TInput1 input1, TInput2 input2, int degreeOfParallelism, CancellationToken cancellationToken = default)
         {
             _ = items.WhenNotNull(nameof(items));

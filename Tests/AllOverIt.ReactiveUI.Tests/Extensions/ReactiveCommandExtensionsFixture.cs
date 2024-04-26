@@ -2,11 +2,9 @@
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.Pipeline;
 using AllOverIt.ReactiveUI.Extensions;
-using FakeItEasy;
 using FluentAssertions;
 using ReactiveUI;
 using System;
-using Xunit;
 
 namespace AllOverIt.ReactiveUI.Tests.Extensions
 {

@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Operators
 {
@@ -51,7 +50,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
             [Fact]
             public void Should_Throw_When_Creator_Null()
             {
-                Invoking(() => OperatorBase.Create(new[] { _expression1 }, (Func<Expression[], DummyOperatorBase1>)null))
+                Invoking(() => OperatorBase.Create(new[] { _expression1 }, (Func<Expression[], DummyOperatorBase1>) null))
                     .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("creator");

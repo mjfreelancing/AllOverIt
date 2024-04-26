@@ -1,6 +1,4 @@
 ﻿using AllOverIt.Assertion;
-using System;
-using System.Collections.Generic;
 
 namespace AllOverIt.Csv
 {
@@ -37,7 +35,7 @@ namespace AllOverIt.Csv
         /// <remarks>Examples of suitable values could be the item's index within a collection, a key in a dictionary, or a custom
         /// concatenation of field values.</remarks>
         public TFieldId Id { get; init; }
-        
+
         /// <summary>The column header names to be exported. These names should be unique across all identifiers.</summary>
         public IReadOnlyCollection<string> Names { get; init; }
     }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ExternalDependencies
+﻿namespace ExternalDependencies
 {
     internal sealed class NameRepository : IRepository
     {

@@ -1,7 +1,5 @@
 ﻿using AllOverIt.Assertion;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 
 namespace AllOverIt.Collections
 {

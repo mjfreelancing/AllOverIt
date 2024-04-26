@@ -1,8 +1,6 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Formatters.Objects;
 using BenchmarkDotNet.Attributes;
-using System;
-using System.Linq;
 
 namespace SerializationFilterBenchmarking
 {

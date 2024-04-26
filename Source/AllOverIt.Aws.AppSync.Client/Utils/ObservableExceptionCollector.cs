@@ -1,6 +1,4 @@
 ﻿using AllOverIt.Assertion;
-using System;
-using System.Collections.Generic;
 
 namespace AllOverIt.Aws.AppSync.Client.Utils
 {

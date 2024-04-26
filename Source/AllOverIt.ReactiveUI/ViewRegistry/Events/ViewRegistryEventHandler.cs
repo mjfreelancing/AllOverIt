@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Assertion;
 using ReactiveUI;
-using System;
 
 namespace AllOverIt.ReactiveUI.ViewRegistry.Events
 {

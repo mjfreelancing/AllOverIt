@@ -1,6 +1,5 @@
 using AllOverIt.Assertion;
 using AllOverIt.Evaluator.Operators;
-using System;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Evaluator.Operations

@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using Xunit;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -42,7 +41,7 @@ namespace AllOverIt.Tests.Extensions
             public void Should_Return_First_Element()
             {
                 var items = CreateMany<int>();
-                
+
                 var expected = items[0];
 
                 var actual = items.FirstElement();

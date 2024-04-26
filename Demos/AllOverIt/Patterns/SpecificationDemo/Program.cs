@@ -1,7 +1,5 @@
 ﻿using AllOverIt.Patterns.Specification;
 using AllOverIt.Patterns.Specification.Extensions;
-using System;
-using System.Linq;
 
 namespace SpecificationDemo
 {

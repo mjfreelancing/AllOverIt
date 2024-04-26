@@ -1,7 +1,5 @@
 ﻿using AllOverIt.Assertion;
-using System;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Events
 {
@@ -24,14 +22,14 @@ namespace AllOverIt.Events
         {
             if (_handlerMethod.IsStatic)
             {
-                return (Func<TMessage, Task>)_handlerMethod.CreateDelegate(_handlerType, null);
+                return (Func<TMessage, Task>) _handlerMethod.CreateDelegate(_handlerType, null);
             }
 
             var target = _weakReference.Target;
 
             if (target != null)
             {
-                return (Func<TMessage, Task>)_handlerMethod.CreateDelegate(_handlerType, target);
+                return (Func<TMessage, Task>) _handlerMethod.CreateDelegate(_handlerType, target);
             }
 
             // the weak reference has gone

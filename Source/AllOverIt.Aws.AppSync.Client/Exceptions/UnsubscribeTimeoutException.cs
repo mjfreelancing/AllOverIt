@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Aws.AppSync.Client.Exceptions
+﻿namespace AllOverIt.Aws.AppSync.Client.Exceptions
 {
     /// <summary>This exception is raised when a request to unsubscribe a subscription does not complete within a period defined on the connection options.</summary>
     [Serializable]

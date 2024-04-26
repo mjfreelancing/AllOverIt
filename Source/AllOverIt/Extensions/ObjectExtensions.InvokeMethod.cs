@@ -1,6 +1,4 @@
 ﻿using AllOverIt.Reflection;
-using System;
-using System.Linq;
 using System.Reflection;
 
 namespace AllOverIt.Extensions

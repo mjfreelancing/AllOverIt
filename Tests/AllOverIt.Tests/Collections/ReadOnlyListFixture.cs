@@ -4,7 +4,6 @@ using AllOverIt.Fixture;
 using FluentAssertions;
 using System.Collections;
 using System.Collections.Generic;
-using Xunit;
 
 namespace AllOverIt.Tests.Collections
 {
@@ -35,7 +34,7 @@ namespace AllOverIt.Tests.Collections
             public void Should_Populate()
             {
                 var expected = CreateMany<int>();
-                
+
                 var actual = new ReadOnlyList<int>(expected);
 
                 expected.Should().BeEquivalentTo(actual);

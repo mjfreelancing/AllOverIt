@@ -3,7 +3,6 @@ using AllOverIt.Filtering.Filters;
 using AllOverIt.Filtering.Options;
 using AllOverIt.Patterns.Specification;
 using AllOverIt.Patterns.Specification.Extensions;
-using System;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Filtering.Builders

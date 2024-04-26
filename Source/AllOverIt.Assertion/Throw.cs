@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace AllOverIt.Assertion
+﻿namespace AllOverIt.Assertion
 {
     // TODO: Look at an alternative that accept a Func<> so the args are lazily evaluated - to avoid things like string interpolation.
     //       Needs a review as it may end up being a different interface.

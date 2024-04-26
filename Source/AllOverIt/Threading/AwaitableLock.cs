@@ -1,8 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace AllOverIt.Threading
+﻿namespace AllOverIt.Threading
 {
     /// <inheritdoc cref="IAwaitableLock" />
     public sealed class AwaitableLock : IAwaitableLock

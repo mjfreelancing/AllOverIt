@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Pipes.Anonymous;
-using System;
 
 namespace AnonymousPipeClientDemo
 {

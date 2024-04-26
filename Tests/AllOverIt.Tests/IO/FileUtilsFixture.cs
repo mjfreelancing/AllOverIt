@@ -3,7 +3,6 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.IO;
 using FluentAssertions;
 using System;
-using Xunit;
 
 namespace AllOverIt.Tests.IO
 {

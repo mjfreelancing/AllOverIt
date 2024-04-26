@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Assertion;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 
 namespace AllOverIt.Csv.Exporter
 {

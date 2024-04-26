@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
 using AllOverIt.Mapping.Exceptions;
-using System;
 using System.Collections.Concurrent;
 
 namespace AllOverIt.Mapping

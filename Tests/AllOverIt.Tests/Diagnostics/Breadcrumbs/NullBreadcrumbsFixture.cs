@@ -2,9 +2,8 @@
 using AllOverIt.Fixture;
 using AllOverIt.Patterns.Specification.Extensions;
 using FluentAssertions;
-using Xunit;
-using System.Linq;
 using System.Collections;
+using System.Linq;
 
 namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 {
@@ -102,7 +101,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
             [Fact]
             public void Should_Not_Enumerate()
             {
-                ((IEnumerable)_breadcrumbs).GetEnumerator().MoveNext().Should().BeFalse();
+                ((IEnumerable) _breadcrumbs).GetEnumerator().MoveNext().Should().BeFalse();
             }
         }
     }

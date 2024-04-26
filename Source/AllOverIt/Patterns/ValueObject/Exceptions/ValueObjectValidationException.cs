@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Patterns.ValueObject.Exceptions
+﻿namespace AllOverIt.Patterns.ValueObject.Exceptions
 {
     /// <summary>Represents a validation error that occurred while initializing a <see cref="ValueObject{TValue, TType}"/>.</summary>
     public sealed class ValueObjectValidationException : Exception

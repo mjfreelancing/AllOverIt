@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Serialization.Json.Abstractions.Exceptions;
-using Xunit;
 
 namespace AllOverIt.Serialization.Json.Abstractions.Tests.Exceptions
 {

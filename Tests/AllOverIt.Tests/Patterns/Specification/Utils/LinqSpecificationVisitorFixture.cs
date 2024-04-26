@@ -5,7 +5,6 @@ using AllOverIt.Patterns.Specification.Utils;
 using FluentAssertions;
 using System;
 using System.Linq;
-using Xunit;
 
 namespace AllOverIt.Tests.Patterns.Specification.Utils
 {

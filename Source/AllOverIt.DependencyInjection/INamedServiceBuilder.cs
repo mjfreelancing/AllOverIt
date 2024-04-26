@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.DependencyInjection
+﻿namespace AllOverIt.DependencyInjection
 {
     /// <summary>Represents a builder that allows for the registration of named services, where each
     /// implementation must implement <typeparamref name="TService"/>.</summary>

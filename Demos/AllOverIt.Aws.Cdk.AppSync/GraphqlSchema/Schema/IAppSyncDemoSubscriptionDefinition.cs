@@ -12,7 +12,7 @@ namespace GraphqlSchema.Schema
         [SubscriptionDataSource(nameof(AddedCountry))]
         ICountry AddedCountry(GraphqlTypeId code);          // optional, so all countries added will be reported
 
-        [SubscriptionMutation(nameof(IAppSyncDemoMutationDefinition.AddLanguage))]   
+        [SubscriptionMutation(nameof(IAppSyncDemoMutationDefinition.AddLanguage))]
         [SubscriptionDataSource(nameof(AddedLanguage))]
         ILanguage AddedLanguage(GraphqlTypeId code);        // only providing the ability to (optionally) filter by code
     }

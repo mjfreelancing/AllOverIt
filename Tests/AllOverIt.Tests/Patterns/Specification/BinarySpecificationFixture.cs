@@ -2,7 +2,6 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Tests.Patterns.Specification.Dummies;
 using FluentAssertions;
 using System;
-using Xunit;
 
 namespace AllOverIt.Tests.Patterns.Specification
 {

@@ -5,7 +5,6 @@ using AllOverIt.Patterns.Enumeration.Exceptions;
 using FluentAssertions;
 using System;
 using System.Runtime.CompilerServices;
-using Xunit;
 
 namespace AllOverIt.Tests.Patterns.Enumeration
 {
@@ -252,7 +251,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 var actual = DummyEnrichedEnum1.GetAllValues();
 
-                var expected = new[] {DummyEnrichedEnum1.Value1.Value, DummyEnrichedEnum1.Value2.Value};
+                var expected = new[] { DummyEnrichedEnum1.Value1.Value, DummyEnrichedEnum1.Value2.Value };
 
                 expected.Should().BeEquivalentTo(actual);
             }
@@ -265,7 +264,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 var actual = DummyEnrichedEnum1.GetAllNames();
 
-                var expected = new[] {DummyEnrichedEnum1.Value1.Name, DummyEnrichedEnum1.Value2.Name};
+                var expected = new[] { DummyEnrichedEnum1.Value1.Name, DummyEnrichedEnum1.Value2.Name };
 
                 expected.Should().BeEquivalentTo(actual);
             }
@@ -278,7 +277,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 var actual = DummyEnrichedEnum1.GetAll();
 
-                var expected = new[] {DummyEnrichedEnum1.Value1, DummyEnrichedEnum1.Value2};
+                var expected = new[] { DummyEnrichedEnum1.Value1, DummyEnrichedEnum1.Value2 };
 
                 expected.Should().BeEquivalentTo(actual);
             }
@@ -342,7 +341,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 Invoking(() =>
                 {
-                    _ = DummyEnrichedEnum1.From((string)null);
+                    _ = DummyEnrichedEnum1.From((string) null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()

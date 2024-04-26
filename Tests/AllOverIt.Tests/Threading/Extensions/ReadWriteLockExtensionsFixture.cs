@@ -3,7 +3,6 @@ using AllOverIt.Threading;
 using AllOverIt.Threading.Extensions;
 using FluentAssertions;
 using System.Threading;
-using Xunit;
 
 namespace AllOverIt.Tests.Threading.Extensions
 {

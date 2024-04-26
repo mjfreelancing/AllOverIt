@@ -1,9 +1,7 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Threading;
 using AllOverIt.Threading.Extensions;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 
 namespace AllOverIt.Diagnostics.Breadcrumbs
 {
@@ -57,7 +55,7 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
             public MultiThreadListWrapper(BreadcrumbsOptions options)
             {
                 _maxCapactiy = options.MaxCapacity;
-                _syncRoot = ((ICollection)_breadcrumbs).SyncRoot;
+                _syncRoot = ((ICollection) _breadcrumbs).SyncRoot;
             }
 
             public void Add(BreadcrumbData breadcrumb)
@@ -94,7 +92,7 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
                         {
                             yield return iterator.Current.Value;
                         }
-                    }                   
+                    }
                 }
             }
         }
@@ -114,7 +112,7 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
                     return _enabled;
                 }
             }
-            
+
             set
             {
                 using (_readWriteLock.GetWriteLock())
