@@ -11,13 +11,13 @@ namespace AllOverIt.Csv.Exporter
         private readonly BufferedCsvExporterConfiguration _configuration;
         private readonly List<TModel> _data;
 
-        private StreamWriter _writer;
-        private ICsvSerializer<TModel> _csvSerializer;
+        private StreamWriter? _writer;
+        private ICsvSerializer<TModel>? _csvSerializer;
 
         /// <summary>The underlying stream provided to the CSV writer. This stream is created on demand when the buffer
         /// is first flushed, including during a call to <see cref="FlushAsync(CancellationToken)"/> when there is data
         /// available for writing.</summary>
-        protected Stream Stream { get; private set; }
+        protected Stream? Stream { get; private set; }
 
         /// <summary>Constructor. Initialized with a default <see cref="BufferedCsvExporterConfiguration"/>.</summary>
         protected BufferedCsvExporterBase()
@@ -35,7 +35,7 @@ namespace AllOverIt.Csv.Exporter
         }
 
         /// <inheritdoc />
-        public void Configure(IEnumerable<TModel> configData = default)
+        public void Configure(IEnumerable<TModel>? configData = default)
         {
             Throw<CsvExporterException>.WhenNotNull(_csvSerializer, "The CSV serializer is already configured.");
 
@@ -104,7 +104,7 @@ namespace AllOverIt.Csv.Exporter
         /// data will be used to establish the names of the dyanmic columns, through the use of calls to one of the <see cref="ICsvSerializer{TCsvData}"/>
         /// extension methods <c>AddDynamicFields()</c>.</param>
         /// <returns>The newly instantiated, and configured, CSV serializer.</returns>
-        protected abstract ICsvSerializer<TModel> CreateSerializer(IEnumerable<TModel> configData = default);
+        protected abstract ICsvSerializer<TModel> CreateSerializer(IEnumerable<TModel>? configData = default);
 
         /// <summary>Disposed of internal resources.</summary>
         /// <returns>A <see cref="ValueTask"/> that completes when all resources have been disposed of.</returns>

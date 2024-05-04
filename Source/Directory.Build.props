@@ -47,6 +47,7 @@
     </ItemGroup>
 
     <PropertyGroup>
+        <!--CS0618 - 'member' is obsolete-->
         <NoWarn>$(NoWarn);0618</NoWarn>
     </PropertyGroup>
 </Project>

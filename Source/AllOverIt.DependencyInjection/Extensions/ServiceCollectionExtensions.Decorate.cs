@@ -33,7 +33,7 @@ namespace AllOverIt.DependencyInjection.Extensions
         /// <param name="serviceCollection">The service collection.</param>
         /// <param name="configure">An optional action that can be used to configure the interceptor instance decorating the <typeparamref name="TServiceType"/>.</param>
         /// <returns>The original service collection to allow for a fluent syntax.</returns>
-        public static IServiceCollection DecorateWithInterceptor<TServiceType, TInterceptor>(this IServiceCollection serviceCollection, Action<IServiceProvider, TInterceptor> configure = default)
+        public static IServiceCollection DecorateWithInterceptor<TServiceType, TInterceptor>(this IServiceCollection serviceCollection, Action<IServiceProvider, TInterceptor>? configure = default)
             where TInterceptor : InterceptorBase<TServiceType>
         {
             _ = serviceCollection.WhenNotNull(nameof(serviceCollection));
@@ -66,7 +66,7 @@ namespace AllOverIt.DependencyInjection.Extensions
                 descriptor.Lifetime);
         }
 
-        private static ServiceDescriptor DecorateWithInterceptor<TServiceType, TInterceptor>(ServiceDescriptor descriptor, Action<IServiceProvider, TInterceptor> configure)
+        private static ServiceDescriptor DecorateWithInterceptor<TServiceType, TInterceptor>(ServiceDescriptor descriptor, Action<IServiceProvider, TInterceptor>? configure)
             where TInterceptor : InterceptorBase<TServiceType>
         {
             return ServiceDescriptor.Describe(
@@ -74,7 +74,7 @@ namespace AllOverIt.DependencyInjection.Extensions
                 provider =>
                 {
                     var instance = (TServiceType) GetInstance(provider, descriptor);
-                    return InterceptorFactory.CreateInterceptor(instance, provider, configure);
+                    return InterceptorFactory.CreateInterceptor(instance, provider, configure)!;
                 },
                 descriptor.Lifetime);
         }

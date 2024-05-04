@@ -45,7 +45,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
             _dataSourceFactory = dataSourceFactory.WhenNotNull();
         }
 
-        public GraphqlType GetGraphqlType(string fieldName, RequiredTypeInfo requiredTypeInfo, Action<IIntermediateType> typeCreated)
+        public GraphqlType GetGraphqlType(string? fieldName, RequiredTypeInfo requiredTypeInfo, Action<IIntermediateType> typeCreated)
         {
             SchemaUtils.AssertNoProperties(requiredTypeInfo.Type);
 
@@ -57,7 +57,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
             return fieldTypeCreator.Invoke(requiredTypeInfo);
         }
 
-        private Func<RequiredTypeInfo, GraphqlType> GetTypeCreator(string parentName, SystemType type, string lookupTypeName,
+        private Func<RequiredTypeInfo, GraphqlType> GetTypeCreator(string? parentName, SystemType type, string lookupTypeName,
             GraphqlSchemaTypeDescriptor typeDescriptor, Action<IIntermediateType> typeCreated)
         {
             if (!_fieldTypes.TryGetValue(lookupTypeName, out var fieldTypeCreator))
@@ -121,7 +121,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
             return enumType;
         }
 
-        private IIntermediateType CreateInterfaceType(string parentName, SystemType type, GraphqlSchemaTypeDescriptor typeDescriptor)
+        private IIntermediateType CreateInterfaceType(string? parentName, SystemType type, GraphqlSchemaTypeDescriptor typeDescriptor)
         {
             SchemaUtils.AssertNoProperties(type);
 
@@ -159,7 +159,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
             }
         }
 
-        private void ParseInterfaceTypeMethods(string parentName, Dictionary<string, IField> classDefinition, SystemType type, GraphqlSchemaTypeDescriptor parentTypeDescriptor)
+        private void ParseInterfaceTypeMethods(string? parentName, Dictionary<string, IField> classDefinition, SystemType type, GraphqlSchemaTypeDescriptor parentTypeDescriptor)
         {
             var methods = type.GetMethodInfo();
 

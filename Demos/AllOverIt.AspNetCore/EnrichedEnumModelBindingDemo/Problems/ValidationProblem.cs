@@ -14,7 +14,7 @@ namespace EnrichedEnumModelBindingDemo.Problems
             // TraceId has already been added to the output
         }
 
-        private static void AppendErrorCodes(IDictionary<string, object> extensions, IEnumerable<ValidationFailure> errors)
+        private static void AppendErrorCodes(IDictionary<string, object?> extensions, IEnumerable<ValidationFailure> errors)
         {
             var errorDetails = errors
                 .SelectAsReadOnlyCollection(error => new

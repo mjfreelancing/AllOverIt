@@ -9,7 +9,7 @@
         /// If all columns are fixed / well-known then this parameter will be <see langword="null"/>. When not <see langword="null"/>, the provided
         /// data will be used to establish the names of the dyanmic columns, through the use of calls to one of the <see cref="ICsvSerializer{TCsvData}"/>
         /// extension methods <c>AddDynamicFields()</c>.</param>
-        void Configure(IEnumerable<TModel> configData = default);
+        void Configure(IEnumerable<TModel>? configData = default);
 
         /// <summary>Adds a row of data to the CSV content. Each.</summary>
         /// <param name="data">The model containing the data for each column to be exported, as configured via <see cref="Configure(IEnumerable{TModel})"/>.</param>

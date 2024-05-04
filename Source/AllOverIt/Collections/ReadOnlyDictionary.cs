@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AllOverIt.Collections
 {
@@ -62,7 +64,7 @@ namespace AllOverIt.Collections
         }
 
         /// <inheritdoc />
-        public bool TryGetValue(TKey key, out TValue value)
+        public bool TryGetValue(TKey key, [MaybeNull] out TValue value)
         {
             return _dictionary.TryGetValue(key, out value);
         }

@@ -9,13 +9,13 @@ namespace AllOverIt.DependencyInjection
                                                            INamedServiceResolver<TService> where TService : class
     {
         private readonly Dictionary<string, Type> _namedImplementations = [];
-        internal IServiceProvider _provider;        // assigned through field injection
+        internal IServiceProvider? _provider;        // assigned through field injection
 
         void INamedServiceRegistration<TService>.Register<TImplementation>(string name)
         {
             _ = name.WhenNotNullOrEmpty(nameof(name));
 
-            ((INamedServiceRegistration<TService>) this).Register(name, typeof(TImplementation));
+            (this as INamedServiceRegistration<TService>).Register(name, typeof(TImplementation));
         }
 
         void INamedServiceRegistration<TService>.Register(string name, Type implementationType)
@@ -41,6 +41,8 @@ namespace AllOverIt.DependencyInjection
 
             if (_namedImplementations.TryGetValue(name, out var implementationType))
             {
+                Throw<InvalidOperationException>.WhenNull(_provider, "The service provider has not been assigned.");
+
                 return _provider
                     .GetRequiredService<IEnumerable<TService>>()
                     .Single(service => service.GetType() == implementationType);

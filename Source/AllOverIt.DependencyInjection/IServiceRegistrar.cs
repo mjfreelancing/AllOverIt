@@ -9,6 +9,6 @@
         /// <param name="serviceTypes">The service types (abstract classes or interfaces) to register.</param>
         /// <param name="registrationAction">The action to invoke to register a service type against an implementation type.</param>
         /// <param name="configure">Optional configuration options that provide the ability to exclude or otherwise filter service or implementation types.</param>
-        void AutoRegisterServices(IEnumerable<Type> serviceTypes, Action<Type, Type> registrationAction, Action<IServiceRegistrarOptions> configure = default);
+        void AutoRegisterServices(IEnumerable<Type> serviceTypes, Action<Type, Type> registrationAction, Action<IServiceRegistrarOptions>? configure = default);
     }
 }

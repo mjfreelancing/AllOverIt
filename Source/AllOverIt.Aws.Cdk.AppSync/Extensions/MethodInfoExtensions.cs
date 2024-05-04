@@ -41,7 +41,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
             }
         }
 
-        public static IDictionary<string, GraphqlType> GetMethodArgs(this MethodInfo methodInfo, GraphqlSchema schema, GraphqlTypeStore typeStore)
+        public static IDictionary<string, GraphqlType>? GetMethodArgs(this MethodInfo methodInfo, GraphqlSchema schema, GraphqlTypeStore typeStore)
         {
             var parameters = methodInfo.GetParameters();
 
@@ -63,7 +63,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
                 // The graphql fields are tracked for things like determining resolver request/response handlers.
                 var graphqlType = typeStore.GetGraphqlType(null, requiredTypeInfo, objectType => schema.AddType(objectType));
 
-                args.Add(parameterInfo.Name.GetGraphqlName(), graphqlType);
+                args.Add(parameterInfo.Name!.GetGraphqlName(), graphqlType);
             }
 
             return args;
@@ -112,7 +112,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
             return attributes.GetAuthDirectivesOrDefault();
         }
 
-        private static IResolverRuntime GetResolverRuntime(MethodInfo memberInfo, ResolverFactory resolverFactory)
+        private static IResolverRuntime? GetResolverRuntime(MethodInfo memberInfo, ResolverFactory resolverFactory)
         {
             var resolverAttribute = memberInfo.GetCustomAttribute<GraphqlResolverAttribute>(true);
 

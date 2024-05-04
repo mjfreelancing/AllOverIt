@@ -6,6 +6,8 @@
 * Change properties and arguments from IReadOnlyCollection<T> to T[], where applicable
 * Add 'required' to properties, where applicable - including NetStandard 2.1 support
 * Consider removing extraneous null guard checks in extension methods
+* Add alternative to ServiceRegistrar to provide a fluent syntax that caters for similar functionality
+  plus the ability to resolve the same instance for multiple interfaces, and handle open generics.
 
 
 ### Applicable to all packages

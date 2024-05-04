@@ -30,7 +30,8 @@ namespace AllOverIt.Process
             }
         }
 
-        internal SystemProcess _process;
+        private bool _disposed;
+        internal readonly SystemProcess _process;
         internal readonly ProcessExecutorOptions _options;
 
         /// <summary>Constructor.</summary>
@@ -62,10 +63,13 @@ namespace AllOverIt.Process
         [ExcludeFromCodeCoverage]
         public void Dispose()
         {
-            _process?.Close();
-            _process?.Dispose();
+            if (!_disposed)
+            {
+                _process.Close();
+                _process.Dispose();
 
-            _process = null;
+                _disposed = true;
+            }
         }
 
         [ExcludeFromCodeCoverage]

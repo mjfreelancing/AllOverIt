@@ -10,34 +10,34 @@ namespace AllOverIt.Expressions.Strings
     public static class StringComparisonUtils
     {
         private static readonly MethodInfo CompareMethodInfo = CommonTypes.StringType.GetMethod(
-            "Compare", BindingFlags.Public | BindingFlags.Static, null, [CommonTypes.StringType, CommonTypes.StringType], null);
+            "Compare", BindingFlags.Public | BindingFlags.Static, null, [CommonTypes.StringType, CommonTypes.StringType], null)!;
 
         private static readonly MethodInfo CompareStringComparisonMethodInfo = CommonTypes.StringType.GetMethod(
-            "Compare", BindingFlags.Public | BindingFlags.Static, null, [CommonTypes.StringType, CommonTypes.StringType, CommonTypes.StringComparisonType], null);
+            "Compare", BindingFlags.Public | BindingFlags.Static, null, [CommonTypes.StringType, CommonTypes.StringType, CommonTypes.StringComparisonType], null)!;
 
         private static readonly MethodInfo ContainsMethodInfo = CommonTypes.StringType.GetMethod(
-            "Contains", [CommonTypes.StringType]);
+            "Contains", [CommonTypes.StringType])!;
 
         private static readonly MethodInfo ContainsStringComparisonMethodInfo = CommonTypes.StringType.GetMethod(
-            "Contains", [CommonTypes.StringType, CommonTypes.StringComparisonType]);
+            "Contains", [CommonTypes.StringType, CommonTypes.StringComparisonType])!;
 
         private static readonly MethodInfo StartsWithMethodInfo = CommonTypes.StringType.GetMethod(
-            "StartsWith", [CommonTypes.StringType]);
+            "StartsWith", [CommonTypes.StringType])!;
 
         private static readonly MethodInfo StartsWithStringComparisonMethodInfo = CommonTypes.StringType.GetMethod(
-            "StartsWith", [CommonTypes.StringType, CommonTypes.StringComparisonType]);
+            "StartsWith", [CommonTypes.StringType, CommonTypes.StringComparisonType])!;
 
         private static readonly MethodInfo EndsWithMethodInfo = CommonTypes.StringType.GetMethod(
-            "EndsWith", [CommonTypes.StringType]);
+            "EndsWith", [CommonTypes.StringType])!;
 
         private static readonly MethodInfo EndsWithStringComparisonMethodInfo = CommonTypes.StringType.GetMethod(
-            "EndsWith", [CommonTypes.StringType, CommonTypes.StringComparisonType]);
+            "EndsWith", [CommonTypes.StringType, CommonTypes.StringComparisonType])!;
 
         private static readonly MethodInfo ToLowerMethodInfo = CommonTypes.StringType.GetMethod(
-            "ToLower", Type.EmptyTypes);
+            "ToLower", Type.EmptyTypes)!;
 
         private static readonly MethodInfo ToUpperMethodInfo = CommonTypes.StringType.GetMethod(
-            "ToUpper", Type.EmptyTypes);
+            "ToUpper", Type.EmptyTypes)!;
 
         private static readonly Dictionary<StringComparisonMode, Func<Expression, Expression>> StringModifiers = new()
         {
