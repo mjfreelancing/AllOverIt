@@ -97,5 +97,42 @@ namespace AllOverIt.DependencyInjection.Tests
 
             DependencyHelper.AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
         }
+
+        [Theory]
+        [InlineData(ServiceLifetime.Singleton)]
+        [InlineData(ServiceLifetime.Scoped)]
+        [InlineData(ServiceLifetime.Transient)]
+        public void Should_Register_As_Individual_Resolutions(ServiceLifetime lifetime)
+        {
+            var provider = DependencyHelper
+                .AutoRegisterUsingServiceLifetime<LocalDependenciesRegistrar>(
+                    lifetime,
+                    _serviceCollection,
+                    [typeof(IBaseInterface1), typeof(IBaseInterface2), typeof(IBaseInterface4), typeof(AbstractClassA)])
+                .BuildServiceProvider();
+
+            var concrete1 = provider.GetRequiredService<IBaseInterface1>();
+
+            concrete1.Should().BeOfType<ConcreteClassG>();
+
+            var concrete2 = provider.GetRequiredService<IBaseInterface2>();
+
+            concrete2.Should().BeOfType<ConcreteClassG>();
+
+            var concrete3 = provider.GetRequiredService<IBaseInterface4>();
+
+            concrete3.Should().BeOfType<ConcreteClassG>();
+
+            var concrete4 = provider.GetRequiredService<AbstractClassA>();
+
+            concrete4.Should().BeOfType<ConcreteClassG>();
+
+            concrete1.Should().NotBeSameAs(concrete2);
+            concrete1.Should().NotBeSameAs(concrete3);
+            concrete1.Should().NotBeSameAs(concrete4);
+            concrete2.Should().NotBeSameAs(concrete3);
+            concrete2.Should().NotBeSameAs(concrete4);
+            concrete3.Should().NotBeSameAs(concrete4);
+        }
     }
 }
