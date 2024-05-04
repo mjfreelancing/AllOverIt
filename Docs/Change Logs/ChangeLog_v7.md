@@ -3,6 +3,7 @@
 
 ### AllOverIt
 * Corrected namespace for VoidType (now AllOverIt.Types).
+* Breaking: Changed name of TypeExtensions.CreateList() to TypeExtensions.CreateListOf()
 * Breaking: Several sync methods updated to forward the CancellationToken to the selector: SelectAsync(),
             SelectAsReadOnlyCollectionAsync(), SelectAsReadOnlyListAsync(), SelectToReadOnlyCollectionAsync(), SelectToArrayAsync(),
             and SelectToListAsync().

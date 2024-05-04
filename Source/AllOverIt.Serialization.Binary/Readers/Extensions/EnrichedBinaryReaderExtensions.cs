@@ -185,10 +185,10 @@ namespace AllOverIt.Serialization.Binary.Readers.Extensions
 
             if (count == 0)
             {
-                return elementType.CreateList();
+                return elementType.CreateListOf();
             }
 
-            var values = elementType.CreateList();
+            var values = elementType.CreateListOf();
 
             for (var i = 0; i < count; i++)
             {
