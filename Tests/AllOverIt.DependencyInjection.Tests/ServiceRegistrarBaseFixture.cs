@@ -7,7 +7,7 @@ using AllOverIt.Fixture;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace AllOverIt.DependencyInjection.Tests.Extensions
+namespace AllOverIt.DependencyInjection.Tests
 {
     public class ServiceRegistrarBaseFixture : FixtureBase
     {
