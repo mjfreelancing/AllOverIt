@@ -3,6 +3,7 @@ using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 
 namespace AllOverIt.Tests.Extensions
@@ -321,18 +322,33 @@ namespace AllOverIt.Tests.Extensions
         public class SelectAsync : EnumerableExtensionsFixture
         {
             [Fact]
-            public async Task Should_Throw_When_Null()
+            public async Task Should_Throw_When_Items_Null()
             {
                 await Invoking(
                     async () =>
                     {
                         IEnumerable<bool> items = null;
 
-                        await items.SelectAsync(item => Task.FromResult(item)).ToListAsync();
+                        await items.SelectAsync((item, token) => Task.FromResult(item)).ToListAsync();
                     })
                   .Should()
                   .ThrowAsync<ArgumentNullException>()
                   .WithNamedMessageWhenNull("items");
+            }
+
+            [Fact]
+            public async Task Should_Throw_When_Selector_Null()
+            {
+                await Invoking(
+                    async () =>
+                    {
+                        IEnumerable<bool> items = [];
+
+                        await items.SelectAsync((Func<bool, CancellationToken, Task<bool>>) null).ToListAsync();
+                    })
+                  .Should()
+                  .ThrowAsync<ArgumentNullException>()
+                  .WithNamedMessageWhenNull("selector");
             }
 
             [Fact]
@@ -346,7 +362,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         IEnumerable<bool> items = new[] { true };
 
-                        await items.SelectAsync(item => Task.FromResult(item), cts.Token).ToListAsync();
+                        await items.SelectAsync((item, token) => Task.FromResult(item), cts.Token).ToListAsync();
                     })
                   .Should()
                   .ThrowAsync<OperationCanceledException>();
@@ -358,9 +374,111 @@ namespace AllOverIt.Tests.Extensions
                 var values = CreateMany<bool>();
                 var expected = values.SelectAsReadOnlyCollection(item => !item);
 
-                var actual = await values.SelectAsync(item => Task.FromResult(!item)).ToListAsync();
+                var actual = await values.SelectAsync((item, token) => Task.FromResult(!item)).ToListAsync();
 
                 expected.Should().BeEquivalentTo(actual);
+            }
+        }
+
+        public class SelectAsParallelAsync_DegreeOfParallelism : EnumerableExtensionsFixture
+        {
+            [Fact]
+            public async Task Should_Throw_When_Items_Null()
+            {
+                await Invoking(
+                    async () =>
+                    {
+                        IEnumerable<bool> items = null;
+
+                        await items.SelectAsParallelAsync((item, token) => Task.FromResult(item), 1).ToListAsync();
+                    })
+                  .Should()
+                  .ThrowAsync<ArgumentNullException>()
+                  .WithNamedMessageWhenNull("items");
+            }
+
+            [Fact]
+            public async Task Should_Throw_When_Selector_Null()
+            {
+                await Invoking(
+                    async () =>
+                    {
+                        IEnumerable<bool> items = [];
+
+                        await items.SelectAsParallelAsync((Func<bool, CancellationToken, Task<bool>>) null, 1).ToListAsync();
+                    })
+                  .Should()
+                  .ThrowAsync<ArgumentNullException>()
+                  .WithNamedMessageWhenNull("selector");
+            }
+
+            [Fact]
+            public async Task Should_Throw_When_DegreeOfParallelism_Out_Of_Range()
+            {
+                await Invoking(
+                    async () =>
+                    {
+                        IEnumerable<bool> items = [];
+
+                        await items.SelectAsParallelAsync((item, token) => Task.FromResult(item), 0).ToListAsync();
+                    })
+                  .Should()
+                  .ThrowAsync<ArgumentOutOfRangeException>()
+                  .WithMessage("The degree of parallelism must be greater than zero. (Parameter 'degreeOfParallelism')");
+            }
+
+            [Fact]
+            public async Task Should_Cancel_Iteration()
+            {
+                var cts = new CancellationTokenSource();
+                cts.Cancel();
+
+                await Invoking(
+                    async () =>
+                    {
+                        IEnumerable<bool> items = new[] { true };
+
+                        await items.SelectAsParallelAsync((item, token) => Task.FromResult(item), 1, cts.Token).ToListAsync();
+                    })
+                  .Should()
+                  .ThrowAsync<OperationCanceledException>();
+            }
+
+            [Fact]
+            public async Task Should_Iterate_Collection()
+            {
+                var values = CreateMany<bool>(100);
+                var expected = values.SelectAsReadOnlyCollection(item => !item);
+
+                var actual = await values.SelectAsParallelAsync((item, token) => Task.FromResult(!item), GetWithinRange(1, 4)).ToListAsync();
+
+                expected.Should().BeEquivalentTo(actual);
+            }
+
+            [Fact]
+            public async Task Should_Have_Max_Degree_Of_Parallelism()
+            {
+                var rnd = new Random();
+                var degreeOfParallelism = Environment.ProcessorCount;
+                var counts = new ConcurrentQueue<int>();
+                var counter = 0;
+
+                var actual = await Enumerable.Range(1, 100).SelectAsParallelAsync(async (item, token) =>
+                {
+                    var count = Interlocked.Increment(ref counter);
+
+                    counts.Enqueue(count);
+
+                    await Task.Delay((int) Math.Floor(rnd.NextDouble() * 25), token);
+
+                    Interlocked.Decrement(ref counter);
+
+                    return item;
+                }, degreeOfParallelism).ToListAsync();
+
+                counts.Min().Should().BeGreaterThan(0);
+                counts.Max().Should().BeGreaterThan(1);
+                counts.Max().Should().BeLessThanOrEqualTo(degreeOfParallelism);
             }
         }
 
@@ -379,6 +497,21 @@ namespace AllOverIt.Tests.Extensions
                   .Should()
                   .Throw<ArgumentNullException>()
                   .WithNamedMessageWhenNull("items");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Selector_Null()
+            {
+                Invoking(
+                    () =>
+                    {
+                        IEnumerable<bool> items = [];
+
+                        items.SelectToArray((Func<bool, bool>) null);
+                    })
+                  .Should()
+                  .Throw<ArgumentNullException>()
+                  .WithNamedMessageWhenNull("selector");
             }
 
             [Fact]
@@ -538,6 +671,21 @@ namespace AllOverIt.Tests.Extensions
             }
 
             [Fact]
+            public void Should_Throw_When_Selector_Null()
+            {
+                Invoking(
+                    () =>
+                    {
+                        IEnumerable<bool> items = [];
+
+                        items.SelectToList((Func<bool, bool>) null);
+                    })
+                  .Should()
+                  .Throw<ArgumentNullException>()
+                  .WithNamedMessageWhenNull("selector");
+            }
+
+            [Fact]
             public void Should_Not_Throw_When_Empty()
             {
                 var items = new List<int>();
@@ -577,6 +725,21 @@ namespace AllOverIt.Tests.Extensions
             }
 
             [Fact]
+            public void Should_Throw_When_Selector_Null()
+            {
+                Invoking(
+                    () =>
+                    {
+                        IEnumerable<bool> items = [];
+
+                        items.SelectToReadOnlyCollection((Func<bool, bool>) null);
+                    })
+                  .Should()
+                  .Throw<ArgumentNullException>()
+                  .WithNamedMessageWhenNull("selector");
+            }
+
+            [Fact]
             public void Should_Not_Throw_When_Empty()
             {
                 var items = new List<int>();
@@ -608,7 +771,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         IEnumerable<object> items = null;
 
-                        return items.SelectToArrayAsync(item => Task.FromResult(item));
+                        return items.SelectToArrayAsync((item, token) => Task.FromResult(item));
                     })
                   .Should()
                   .ThrowAsync<ArgumentNullException>()
@@ -620,9 +783,24 @@ namespace AllOverIt.Tests.Extensions
             {
                 var items = new List<int>();
 
-                await Invoking(() => items.SelectToArrayAsync(item => Task.FromResult(item)))
+                await Invoking(() => items.SelectToArrayAsync((item, token) => Task.FromResult(item)))
                   .Should()
                   .NotThrowAsync();
+            }
+
+            [Fact]
+            public async Task Should_Throw_When_Selector_Null()
+            {
+                await Invoking(
+                    () =>
+                    {
+                        IEnumerable<bool> items = [];
+
+                        return items.SelectToArrayAsync((Func<bool, CancellationToken, Task<bool>>) null);
+                    })
+                  .Should()
+                  .ThrowAsync<ArgumentNullException>()
+                  .WithNamedMessageWhenNull("selector");
             }
 
             [Fact]
@@ -631,7 +809,7 @@ namespace AllOverIt.Tests.Extensions
                 var source = CreateMany<int>();
                 var expected = source.Select(item => item * 2);
 
-                var actual = await source.SelectToArrayAsync(item => Task.FromResult(item * 2));
+                var actual = await source.SelectToArrayAsync((item, token) => Task.FromResult(item * 2));
 
                 expected.Should().BeEquivalentTo(actual);
             }
@@ -647,7 +825,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         IEnumerable<object> items = null;
 
-                        return items.SelectToListAsync(item => Task.FromResult(item));
+                        return items.SelectToListAsync((item, token) => Task.FromResult(item));
                     })
                   .Should()
                   .ThrowAsync<ArgumentNullException>()
@@ -659,9 +837,24 @@ namespace AllOverIt.Tests.Extensions
             {
                 var items = new List<int>();
 
-                await Invoking(() => items.SelectToListAsync(item => Task.FromResult(item)))
+                await Invoking(() => items.SelectToListAsync((item, token) => Task.FromResult(item)))
                   .Should()
                   .NotThrowAsync();
+            }
+
+            [Fact]
+            public async Task Should_Throw_When_Selector_Null()
+            {
+                await Invoking(
+                    () =>
+                    {
+                        IEnumerable<bool> items = [];
+
+                        return items.SelectToListAsync((Func<bool, CancellationToken, Task<bool>>) null);
+                    })
+                  .Should()
+                  .ThrowAsync<ArgumentNullException>()
+                  .WithNamedMessageWhenNull("selector");
             }
 
             [Fact]
@@ -670,7 +863,7 @@ namespace AllOverIt.Tests.Extensions
                 var source = CreateMany<int>();
                 var expected = source.Select(item => item * 2);
 
-                var actual = await source.SelectToListAsync(item => Task.FromResult(item * 2));
+                var actual = await source.SelectToListAsync((item, token) => Task.FromResult(item * 2));
 
                 expected.Should().BeEquivalentTo(actual);
             }
@@ -686,7 +879,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         IEnumerable<object> items = null;
 
-                        return items.SelectAsReadOnlyCollectionAsync(item => Task.FromResult(item));
+                        return items.SelectAsReadOnlyCollectionAsync((item, token) => Task.FromResult(item));
                     })
                   .Should()
                   .ThrowAsync<ArgumentNullException>()
@@ -698,9 +891,24 @@ namespace AllOverIt.Tests.Extensions
             {
                 var items = new List<int>();
 
-                await Invoking(() => items.SelectAsReadOnlyCollectionAsync(item => Task.FromResult(item)))
+                await Invoking(() => items.SelectAsReadOnlyCollectionAsync((item, token) => Task.FromResult(item)))
                   .Should()
                   .NotThrowAsync();
+            }
+
+            [Fact]
+            public async Task Should_Throw_When_Selector_Null()
+            {
+                await Invoking(
+                    () =>
+                    {
+                        IEnumerable<bool> items = [];
+
+                        return items.SelectAsReadOnlyCollectionAsync((Func<bool, CancellationToken, Task<bool>>) null);
+                    })
+                  .Should()
+                  .ThrowAsync<ArgumentNullException>()
+                  .WithNamedMessageWhenNull("selector");
             }
 
             [Fact]
@@ -709,7 +917,7 @@ namespace AllOverIt.Tests.Extensions
                 var source = CreateMany<int>();
                 var expected = source.Select(item => item * 2);
 
-                var actual = await source.SelectAsReadOnlyCollectionAsync(item => Task.FromResult(item * 2));
+                var actual = await source.SelectAsReadOnlyCollectionAsync((item, token) => Task.FromResult(item * 2));
 
                 expected.Should().BeEquivalentTo(actual);
             }
@@ -725,7 +933,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         IEnumerable<object> items = null;
 
-                        return items.SelectAsReadOnlyListAsync(item => Task.FromResult(item));
+                        return items.SelectAsReadOnlyListAsync((item, token) => Task.FromResult(item));
                     })
                   .Should()
                   .ThrowAsync<ArgumentNullException>()
@@ -737,9 +945,24 @@ namespace AllOverIt.Tests.Extensions
             {
                 var items = new List<int>();
 
-                await Invoking(() => items.SelectAsReadOnlyListAsync(item => Task.FromResult(item)))
+                await Invoking(() => items.SelectAsReadOnlyListAsync((item, token) => Task.FromResult(item)))
                   .Should()
                   .NotThrowAsync();
+            }
+
+            [Fact]
+            public async Task Should_Throw_When_Selector_Null()
+            {
+                await Invoking(
+                    () =>
+                    {
+                        IEnumerable<bool> items = [];
+
+                        return items.SelectAsReadOnlyListAsync((Func<bool, CancellationToken, Task<bool>>) null);
+                    })
+                  .Should()
+                  .ThrowAsync<ArgumentNullException>()
+                  .WithNamedMessageWhenNull("selector");
             }
 
             [Fact]
@@ -748,7 +971,7 @@ namespace AllOverIt.Tests.Extensions
                 var source = CreateMany<int>();
                 var expected = source.Select(item => item * 2);
 
-                var actual = await source.SelectAsReadOnlyListAsync(item => Task.FromResult(item * 2));
+                var actual = await source.SelectAsReadOnlyListAsync((item, token) => Task.FromResult(item * 2));
 
                 expected.Should().BeEquivalentTo(actual);
             }
@@ -764,7 +987,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         IEnumerable<object> items = null;
 
-                        return items.SelectToReadOnlyCollectionAsync(item => Task.FromResult(item));
+                        return items.SelectToReadOnlyCollectionAsync((item, token) => Task.FromResult(item));
                     })
                   .Should()
                   .ThrowAsync<ArgumentNullException>()
@@ -776,9 +999,24 @@ namespace AllOverIt.Tests.Extensions
             {
                 var items = new List<int>();
 
-                await Invoking(() => items.SelectToReadOnlyCollectionAsync(item => Task.FromResult(item)))
+                await Invoking(() => items.SelectToReadOnlyCollectionAsync((item, token) => Task.FromResult(item)))
                   .Should()
                   .NotThrowAsync();
+            }
+
+            [Fact]
+            public async Task Should_Throw_When_Selector_Null()
+            {
+                await Invoking(
+                    () =>
+                    {
+                        IEnumerable<bool> items = [];
+
+                        return items.SelectToReadOnlyCollectionAsync((Func<bool, CancellationToken, Task<bool>>) null);
+                    })
+                  .Should()
+                  .ThrowAsync<ArgumentNullException>()
+                  .WithNamedMessageWhenNull("selector");
             }
 
             [Fact]
@@ -787,7 +1025,7 @@ namespace AllOverIt.Tests.Extensions
                 var source = CreateMany<int>();
                 var expected = source.Select(item => item * 2);
 
-                var actual = await source.SelectToReadOnlyCollectionAsync(item => Task.FromResult(item * 2));
+                var actual = await source.SelectToReadOnlyCollectionAsync((item, token) => Task.FromResult(item * 2));
 
                 expected.Should().BeEquivalentTo(actual);
             }

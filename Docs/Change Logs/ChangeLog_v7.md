@@ -3,6 +3,10 @@
 
 ### AllOverIt
 * Corrected namespace for VoidType (now AllOverIt.Types).
+* Breaking: Several sync methods updated to forward the CancellationToken to the selector: SelectAsync(),
+            SelectAsReadOnlyCollectionAsync(), SelectAsReadOnlyListAsync(), SelectToReadOnlyCollectionAsync(), SelectToArrayAsync(),
+            and SelectToListAsync().
+* Added SelectAsParallelAsync() to asynchronously invoke selectors in parallel, and with a maximum degree of parallelism.
 
 ---
 
