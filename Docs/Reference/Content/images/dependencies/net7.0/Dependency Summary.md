@@ -79,12 +79,11 @@
 * AllOverIt.Assertion
 * Amazon.CDK.Asset.AwsCliV1 v2.2.202
 * Amazon.CDK.Asset.KubectlV20 v2.1.2
-* Amazon.CDK.Asset.NodeProxyAgentV6 v2.0.1
+* Amazon.CDK.Asset.NodeProxyAgentV6 v2.0.3
 * Amazon.CDK.Lib v2.110.0
-* Amazon.CDK.Lib v2.136.1
-* Amazon.JSII.Runtime v1.96.0
-* Amazon.JSII.Runtime v1.97.0
-* Cdklabs.AwsCdkAppsyncUtils v0.0.403
+* Amazon.CDK.Lib v2.140.0
+* Amazon.JSII.Runtime v1.98.0
+* Cdklabs.AwsCdkAppsyncUtils v0.0.425
 * Constructs v10.0.0
 * Constructs v10.0.5
 
@@ -117,7 +116,7 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* CsvHelper v31.0.3
+* CsvHelper v32.0.1
 
 <br>
 
@@ -258,7 +257,7 @@
 * AutoFixture.AutoFakeItEasy v4.18.1
 * Castle.Core v5.1.1
 * FakeItEasy v4.9.0
-* FakeItEasy v8.1.0
+* FakeItEasy v8.2.0
 * Fare v2.1.1
 * FluentAssertions v6.12.0
 * System.ComponentModel.Annotations v4.3.0
@@ -382,10 +381,10 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* DynamicData v8.3.27
+* DynamicData v8.4.1
 * Microsoft.Extensions.DependencyInjection.Abstractions v8.0.1
-* ReactiveUI v19.6.1
-* Splat v14.8.12
+* ReactiveUI v20.0.1
+* Splat v15.0.1
 * System.ComponentModel.Annotations v5.0.0
 * System.Text.Json v8.0.3
 
@@ -404,11 +403,11 @@
 * AllOverIt
 * AllOverIt.Assertion
 * AllOverIt.ReactiveUI
-* DynamicData v8.3.27
+* DynamicData v8.4.1
 * Microsoft.Extensions.DependencyInjection.Abstractions v8.0.1
-* ReactiveUI v19.6.1
-* ReactiveUI.WPF v19.6.1
-* Splat v14.8.12
+* ReactiveUI v20.0.1
+* ReactiveUI.WPF v20.0.1
+* Splat v15.0.1
 * System.ComponentModel.Annotations v5.0.0
 * System.Text.Json v8.0.3
 
@@ -517,7 +516,7 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* FluentValidation v11.9.0
+* FluentValidation v11.9.1
 * Microsoft.Extensions.DependencyInjection.Abstractions v8.0.1
 
 <br>
@@ -535,7 +534,7 @@
 * AllOverIt
 * AllOverIt.Assertion
 * AllOverIt.Validation
-* FluentValidation v11.9.0
+* FluentValidation v11.9.1
 * Microsoft.Extensions.DependencyInjection.Abstractions v8.0.0
 * Microsoft.Extensions.DependencyInjection.Abstractions v8.0.1
 * Microsoft.Extensions.Options v8.0.2
