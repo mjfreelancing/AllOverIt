@@ -388,7 +388,7 @@ namespace AllOverIt.Filtering.Builders
 
         private static IList ConvertListElements(IEnumerable elements, Type elementType)
         {
-            var typedList = elementType.CreateList();
+            var typedList = elementType.CreateListOf();
 
             foreach (var element in elements)
             {

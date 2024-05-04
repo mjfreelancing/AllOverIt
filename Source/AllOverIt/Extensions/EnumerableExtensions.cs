@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
@@ -79,16 +80,78 @@ namespace AllOverIt.Extensions
         /// <param name="selector">The transform function to be applied to each element.</param>
         /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns>An enumerator that provides asynchronous iteration over a sequence of elements.</returns>
-        public static async IAsyncEnumerable<TResult> SelectAsync<TType, TResult>(this IEnumerable<TType> items, Func<TType, Task<TResult>> selector,
-            [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        public static async IAsyncEnumerable<TResult> SelectAsync<TType, TResult>(this IEnumerable<TType> items,
+            Func<TType, CancellationToken, Task<TResult>> selector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             _ = items.WhenNotNull(nameof(items));
+            _ = selector.WhenNotNull(nameof(selector));
 
             foreach (var item in items)
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                yield return await selector.Invoke(item).ConfigureAwait(false);
+                yield return await selector.Invoke(item, cancellationToken).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>Asynchronously projects each item within a sequence, interleaved in parallel, using a specified
+        /// maximum degree of parallelism.</summary>
+        /// <typeparam name="TType">The type of each element to be projected.</typeparam>
+        /// <typeparam name="TResult">The projected result type.</typeparam>
+        /// <param name="items">The sequence of elements to be projected.</param>
+        /// <param name="selector">The transform function to be applied to each element.</param>
+        /// <param name="degreeOfParallelism">The maximum degree of parallelism.</param>
+        /// <param name="cancellationToken">A cancellation token.</param>
+        /// <returns>An enumerator that provides asynchronous iteration over a sequence of elements.</returns>
+        public static async IAsyncEnumerable<TResult> SelectAsParallelAsync<TType, TResult>(this IEnumerable<TType> items,
+            Func<TType, CancellationToken, Task<TResult>> selector, int degreeOfParallelism,
+            [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        {
+            _ = items.WhenNotNull(nameof(items));
+            _ = selector.WhenNotNull(nameof(selector));
+
+            Throw<ArgumentOutOfRangeException>.When(
+                degreeOfParallelism < 1,
+                nameof(degreeOfParallelism),
+                "The degree of parallelism must be greater than zero.");
+
+            using var semaphore = new SemaphoreSlim(degreeOfParallelism, degreeOfParallelism);
+
+            using var blockingCollection = new BlockingCollection<Task<TResult>>();
+
+            var producer = Task.Factory.StartNew(async () =>
+            {
+                try
+                {
+                    foreach (var item in items)
+                    {
+                        cancellationToken.ThrowIfCancellationRequested();
+
+                        await semaphore.WaitAsync(cancellationToken);
+
+                        var itemTask = selector.Invoke(item, cancellationToken);
+
+                        blockingCollection.Add(itemTask, cancellationToken);
+                    }
+                }
+                finally
+                {
+                    blockingCollection.CompleteAdding();
+                }
+            });
+
+            foreach (var predictionResult in blockingCollection.GetConsumingEnumerable(cancellationToken))
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                try
+                {
+                    yield return await predictionResult.ConfigureAwait(false);
+                }
+                finally
+                {
+                    semaphore.Release();
+                }
             }
         }
 
@@ -104,6 +167,7 @@ namespace AllOverIt.Extensions
         public static IList<TResult> SelectAsList<TSource, TResult>(this IEnumerable<TSource> items, Func<TSource, TResult> selector)
         {
             _ = items.WhenNotNull(nameof(items));
+            _ = selector.WhenNotNull(nameof(selector));
 
             return items.Select(selector).ToList();
         }
@@ -118,6 +182,7 @@ namespace AllOverIt.Extensions
         public static IReadOnlyCollection<TResult> SelectAsReadOnlyCollection<TSource, TResult>(this IEnumerable<TSource> items, Func<TSource, TResult> selector)
         {
             _ = items.WhenNotNull(nameof(items));
+            _ = selector.WhenNotNull(nameof(selector));
 
             return items.Select(selector).ToList();
         }
@@ -132,6 +197,7 @@ namespace AllOverIt.Extensions
         public static IReadOnlyList<TResult> SelectAsReadOnlyList<TSource, TResult>(this IEnumerable<TSource> items, Func<TSource, TResult> selector)
         {
             _ = items.WhenNotNull(nameof(items));
+            _ = selector.WhenNotNull(nameof(selector));
 
             return items.Select(selector).ToList();
         }
@@ -145,9 +211,10 @@ namespace AllOverIt.Extensions
         /// <returns>The projected results as an IReadOnlyCollection&lt;TResult&gt;.</returns>
         [Obsolete("This method will be dropped in v8. Use SelectToReadOnlyCollectionAsync() instead.")]
         public static async Task<IReadOnlyCollection<TResult>> SelectAsReadOnlyCollectionAsync<TSource, TResult>(this IEnumerable<TSource> items,
-            Func<TSource, Task<TResult>> selector, CancellationToken cancellationToken = default)
+            Func<TSource, CancellationToken, Task<TResult>> selector, CancellationToken cancellationToken = default)
         {
             _ = items.WhenNotNull(nameof(items));
+            _ = selector.WhenNotNull(nameof(selector));
 
             var results = await items
                 .SelectAsync(selector, cancellationToken)
@@ -164,10 +231,11 @@ namespace AllOverIt.Extensions
         /// <param name="cancellationToken">A CancellationToken to cancel the operation.</param>
         /// <returns>The projected results as an IReadOnlyList&lt;TResult&gt;.</returns>
         [Obsolete("This method will be dropped in v8. Use SelectToReadOnlyCollectionAsync() instead.")]
-        public static async Task<IReadOnlyList<TResult>> SelectAsReadOnlyListAsync<TSource, TResult>(this IEnumerable<TSource> items, Func<TSource,
-            Task<TResult>> selector, CancellationToken cancellationToken = default)
+        public static async Task<IReadOnlyList<TResult>> SelectAsReadOnlyListAsync<TSource, TResult>(this IEnumerable<TSource> items,
+            Func<TSource, CancellationToken, Task<TResult>> selector, CancellationToken cancellationToken = default)
         {
             _ = items.WhenNotNull(nameof(items));
+            _ = selector.WhenNotNull(nameof(selector));
 
             var results = await items
                 .SelectAsync(selector, cancellationToken)
@@ -187,6 +255,7 @@ namespace AllOverIt.Extensions
         public static TResult[] SelectToArray<TSource, TResult>(this IEnumerable<TSource> items, Func<TSource, TResult> selector)
         {
             _ = items.WhenNotNull(nameof(items));
+            _ = selector.WhenNotNull(nameof(selector));
 
             return items.Select(selector).ToArray();
         }
@@ -200,6 +269,7 @@ namespace AllOverIt.Extensions
         public static List<TResult> SelectToList<TSource, TResult>(this IEnumerable<TSource> items, Func<TSource, TResult> selector)
         {
             _ = items.WhenNotNull(nameof(items));
+            _ = selector.WhenNotNull(nameof(selector));
 
             return items.Select(selector).ToList();
         }
@@ -210,9 +280,11 @@ namespace AllOverIt.Extensions
         /// <param name="items">The source items to be projected and returned as an ReadOnlyCollection&lt;TResult&gt;.</param>
         /// <param name="selector">The transform function applied to each element.</param>
         /// <returns>The projected results as an ReadOnlyCollection&lt;TResult&gt;.</returns>
-        public static ReadOnlyCollection<TResult> SelectToReadOnlyCollection<TSource, TResult>(this IEnumerable<TSource> items, Func<TSource, TResult> selector)
+        public static ReadOnlyCollection<TResult> SelectToReadOnlyCollection<TSource, TResult>(this IEnumerable<TSource> items,
+            Func<TSource, TResult> selector)
         {
             _ = items.WhenNotNull(nameof(items));
+            _ = selector.WhenNotNull(nameof(selector));
 
             return items.SelectToList(selector).AsReadOnly();
         }
@@ -225,9 +297,10 @@ namespace AllOverIt.Extensions
         /// <param name="cancellationToken">A CancellationToken to cancel the operation.</param>
         /// <returns>The projected results as a a TResult[].</returns>
         public static async Task<TResult[]> SelectToArrayAsync<TSource, TResult>(this IEnumerable<TSource> items,
-            Func<TSource, Task<TResult>> selector, CancellationToken cancellationToken = default)
+            Func<TSource, CancellationToken, Task<TResult>> selector, CancellationToken cancellationToken = default)
         {
             _ = items.WhenNotNull(nameof(items));
+            _ = selector.WhenNotNull(nameof(selector));
 
             var results = await items.SelectToListAsync(selector, cancellationToken);
 
@@ -242,9 +315,10 @@ namespace AllOverIt.Extensions
         /// <param name="cancellationToken">A CancellationToken to cancel the operation.</param>
         /// <returns>The projected results as a List&lt;TResult&gt;.</returns>
         public static async Task<List<TResult>> SelectToListAsync<TSource, TResult>(this IEnumerable<TSource> items,
-            Func<TSource, Task<TResult>> selector, CancellationToken cancellationToken = default)
+            Func<TSource, CancellationToken, Task<TResult>> selector, CancellationToken cancellationToken = default)
         {
             _ = items.WhenNotNull(nameof(items));
+            _ = selector.WhenNotNull(nameof(selector));
 
             var results = await items
                 .SelectAsync(selector, cancellationToken)
@@ -261,9 +335,10 @@ namespace AllOverIt.Extensions
         /// <param name="cancellationToken">A CancellationToken to cancel the operation.</param>
         /// <returns>The projected results as an ReadOnlyCollection&lt;TResult&gt;.</returns>
         public static async Task<ReadOnlyCollection<TResult>> SelectToReadOnlyCollectionAsync<TSource, TResult>(this IEnumerable<TSource> items,
-            Func<TSource, Task<TResult>> selector, CancellationToken cancellationToken = default)
+            Func<TSource, CancellationToken, Task<TResult>> selector, CancellationToken cancellationToken = default)
         {
             _ = items.WhenNotNull(nameof(items));
+            _ = selector.WhenNotNull(nameof(selector));
 
             var list = await items.SelectToListAsync(selector, cancellationToken);
 
@@ -349,7 +424,8 @@ namespace AllOverIt.Extensions
         /// <param name="action">The asynchronous action to invoke against each element in the sequence.</param>
         /// <param name="cancellationToken">An optional cancellation token.</param>
         /// <returns>An awaitable task that completes when the iteration is complete.</returns>
-        public static async Task ForEachAsync<TType>(this IEnumerable<TType> items, Func<TType, int, CancellationToken, Task> action, CancellationToken cancellationToken = default)
+        public static async Task ForEachAsync<TType>(this IEnumerable<TType> items, Func<TType, int, CancellationToken, Task> action,
+            CancellationToken cancellationToken = default)
         {
             _ = items.WhenNotNull(nameof(items));
 

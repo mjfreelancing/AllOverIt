@@ -285,7 +285,7 @@ namespace AllOverIt.Serialization.Binary.Writers.Extensions
 
                         values = value is null
                             ? new List<object>()
-                            : elementType.CreateList();
+                            : elementType.CreateListOf();
                     }
 
                     values.Add(value);

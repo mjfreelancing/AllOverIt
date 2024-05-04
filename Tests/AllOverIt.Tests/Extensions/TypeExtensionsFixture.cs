@@ -1047,13 +1047,13 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
-        public class CreateList : TypeExtensionsFixture
+        public class CreateListOf : TypeExtensionsFixture
         {
 
             [Fact]
-            public void Should_Create_List()
+            public void Should_Create_ListOf()
             {
-                var actual = AllOverIt.Extensions.TypeExtensions.CreateList(typeof(string));
+                var actual = AllOverIt.Extensions.TypeExtensions.CreateListOf(typeof(string));
 
                 actual.Should().BeOfType<List<string>>();
             }
