@@ -4,10 +4,7 @@ using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Pagination.TokenEncoding;
 using FakeItEasy;
 using FluentAssertions;
-using System;
-using System.IO;
 using System.IO.Compression;
-using Xunit;
 
 namespace AllOverIt.Pagination.Tests.TokenEncoding
 {

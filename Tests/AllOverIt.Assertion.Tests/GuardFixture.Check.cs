@@ -1,9 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using Xunit;
 
 namespace AllOverIt.Tests.Assertion
 {
@@ -128,7 +125,7 @@ namespace AllOverIt.Tests.Assertion
             {
                 Invoking(() =>
                     {
-                        Guard.CheckIsNull((DummyClass)null, Create<string>());
+                        Guard.CheckIsNull((DummyClass) null, Create<string>());
                     })
                     .Should()
                     .NotThrow();
@@ -222,7 +219,7 @@ namespace AllOverIt.Tests.Assertion
             {
                 Invoking(() =>
                     {
-                        var dummy = new List<DummyClass> {new DummyClass()};
+                        var dummy = new List<DummyClass> { new DummyClass() };
 
                         Guard.CheckNotNullOrEmpty(dummy, Create<string>());
                     })
@@ -237,7 +234,7 @@ namespace AllOverIt.Tests.Assertion
 
                 Invoking(() =>
                     {
-                        var dummy = new List<DummyClass> {new DummyClass()};
+                        var dummy = new List<DummyClass> { new DummyClass() };
 
                         Guard.CheckNotNullOrEmpty(dummy, Create<string>(), errorMessage);
                     })
@@ -314,7 +311,7 @@ namespace AllOverIt.Tests.Assertion
             {
                 Invoking(() =>
                     {
-                        var dummy = new List<DummyClass> {new DummyClass()};
+                        var dummy = new List<DummyClass> { new DummyClass() };
 
                         Guard.CheckNotEmpty(dummy, Create<string>());
                     })
@@ -329,7 +326,7 @@ namespace AllOverIt.Tests.Assertion
 
                 Invoking(() =>
                     {
-                        var dummy = new List<DummyClass> {new DummyClass()};
+                        var dummy = new List<DummyClass> { new DummyClass() };
 
                         Guard.CheckNotEmpty(dummy, Create<string>(), errorMessage);
                     })

@@ -2,7 +2,6 @@
 using AllOverIt.Extensions;
 using AllOverIt.Mapping.Exceptions;
 using AllOverIt.Reflection;
-using System;
 using System.Collections;
 
 namespace AllOverIt.Mapping

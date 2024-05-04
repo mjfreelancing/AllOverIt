@@ -1,6 +1,4 @@
 ﻿using AllOverIt.Assertion;
-using System;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Events
 {
@@ -15,7 +13,7 @@ namespace AllOverIt.Events
 
         public Func<TMessage, Task> GetHandler<TMessage>()
         {
-            return (Func<TMessage, Task>)_handler;
+            return (Func<TMessage, Task>) _handler;
         }
 
         public Task HandleAsync<TMessage>(TMessage message)

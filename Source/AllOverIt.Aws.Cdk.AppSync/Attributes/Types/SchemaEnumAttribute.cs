@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Aws.Cdk.AppSync.Attributes.Types
+﻿namespace AllOverIt.Aws.Cdk.AppSync.Attributes.Types
 {
     /// <summary>Apply to an enum that requires a custom name to be generated in the schema.</summary>
     [AttributeUsage(AttributeTargets.Enum, Inherited = false)]

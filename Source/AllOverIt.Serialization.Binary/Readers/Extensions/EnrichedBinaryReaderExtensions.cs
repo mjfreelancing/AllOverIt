@@ -2,13 +2,9 @@
 using AllOverIt.Extensions;
 using AllOverIt.Reflection;
 using AllOverIt.Serialization.Binary.Exceptions;
-using AllOverIt.Serialization.Binary.Readers;
 using AllOverIt.Serialization.Binary.Writers;
 using AllOverIt.Serialization.Binary.Writers.Extensions;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AllOverIt.Serialization.Binary.Readers.Extensions
 {
@@ -189,10 +185,10 @@ namespace AllOverIt.Serialization.Binary.Readers.Extensions
 
             if (count == 0)
             {
-                return elementType.CreateList();
+                return elementType.CreateListOf();
             }
 
-            var values = elementType.CreateList();
+            var values = elementType.CreateListOf();
 
             for (var i = 0; i < count; i++)
             {

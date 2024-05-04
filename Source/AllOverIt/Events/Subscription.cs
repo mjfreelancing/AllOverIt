@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Assertion;
-using System;
 
 namespace AllOverIt.Events
 {
@@ -14,7 +13,7 @@ namespace AllOverIt.Events
 
         public Action<TMessage> GetHandler<TMessage>()
         {
-            return (Action<TMessage>)_handler;
+            return (Action<TMessage>) _handler;
         }
 
         public void Handle<TMessage>(TMessage message)

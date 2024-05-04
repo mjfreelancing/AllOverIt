@@ -3,8 +3,6 @@ using AllOverIt.Cryptography.RSA;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
-using System;
-using Xunit;
 
 namespace AllOverIt.Cryptography.Tests.Extensions
 {

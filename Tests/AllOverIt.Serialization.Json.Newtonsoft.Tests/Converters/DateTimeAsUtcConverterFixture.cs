@@ -2,8 +2,6 @@ using AllOverIt.Fixture;
 using AllOverIt.Serialization.Json.Newtonsoft.Converters;
 using FluentAssertions;
 using Newtonsoft.Json;
-using System;
-using Xunit;
 
 namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters
 {

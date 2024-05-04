@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Assertion;
-using AllOverIt.Serialization.Binary.Readers;
 
 namespace AllOverIt.Serialization.Binary.Readers.Extensions
 {

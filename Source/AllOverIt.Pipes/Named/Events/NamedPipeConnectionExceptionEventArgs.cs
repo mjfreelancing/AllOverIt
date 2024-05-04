@@ -2,7 +2,6 @@
 using AllOverIt.Pipes.Named.Client;
 using AllOverIt.Pipes.Named.Connection;
 using AllOverIt.Pipes.Named.Server;
-using System;
 
 namespace AllOverIt.Pipes.Named.Events
 {

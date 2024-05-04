@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Evaluator;
 using AllOverIt.Evaluator.Extensions;
-using System;
 
 namespace BasicEvaluationDemo
 {

@@ -2,7 +2,6 @@
 using AllOverIt.EntityFrameworkCore.Diagrams.D2.Extensions;
 using AllOverIt.Extensions;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Text;
 
 namespace AllOverIt.EntityFrameworkCore.Diagrams.D2

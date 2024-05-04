@@ -1,10 +1,7 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Reflection;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -422,7 +419,7 @@ namespace AllOverIt.Extensions
         /// <summary>Creates a new list with elements of type <paramref name="type"/>.</summary>
         /// <param name="type">The new list's element type.</param>
         /// <returns>A new list instance.</returns>
-        public static IList CreateList(this Type type)
+        public static IList CreateListOf(this Type type)
         {
             var listType = CommonTypes.ListGenericType.MakeGenericType([type]);
 

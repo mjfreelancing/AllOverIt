@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Reflection
+﻿namespace AllOverIt.Reflection
 {
     /// <Summary>Specifies binding options that, when combined, provide the ability to filter reflection operations that
     /// target property and method information on a type.</Summary>

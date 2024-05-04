@@ -2,10 +2,6 @@
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
-using System;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace AllOverIt.Tests.Events
 {

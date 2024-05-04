@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace AllOverIt.Pagination
+﻿namespace AllOverIt.Pagination
 {
     /// <summary>Defined a factory that creates a <see cref="IQueryPaginator{TEntity}"/> instances.</summary>
     public interface IQueryPaginatorFactory

@@ -1,10 +1,6 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using Xunit;
 
 namespace AllOverIt.Reactive.Tests
 {
@@ -56,7 +52,6 @@ namespace AllOverIt.Reactive.Tests
             public ModelProxyDummy(ModelDummy dummy)
                 : base(dummy)
             {
-                
             }
 
             public string FirstName

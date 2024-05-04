@@ -1,8 +1,5 @@
 ﻿using AllOverIt.Reactive;
-using AllOverIt.Wpf.Threading;
-using System;
 using System.Reactive.Linq;
-using System.Threading;
 using System.Windows.Input;
 
 namespace ExecuteCommandOnEnterKeyBehavior

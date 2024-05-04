@@ -1,7 +1,6 @@
 ﻿//#define AUTOMAPPER
 using AllOverIt.Mapping;
 using BenchmarkDotNet.Attributes;
-using System;
 
 #if AUTOMAPPER
     using AutoMapper;

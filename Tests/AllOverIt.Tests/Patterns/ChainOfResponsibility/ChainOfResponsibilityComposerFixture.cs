@@ -2,9 +2,6 @@
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.ChainOfResponsibility;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using Xunit;
 
 namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
 {

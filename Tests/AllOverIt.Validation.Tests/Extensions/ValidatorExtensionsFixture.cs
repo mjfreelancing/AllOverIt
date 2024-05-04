@@ -2,7 +2,6 @@
 using AllOverIt.Validation.Extensions;
 using FluentAssertions;
 using FluentValidation;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Validation.Tests.Extensions
 {

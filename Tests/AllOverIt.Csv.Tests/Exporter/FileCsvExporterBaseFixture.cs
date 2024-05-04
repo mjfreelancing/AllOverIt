@@ -2,10 +2,6 @@
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using Xunit;
 
 namespace AllOverIt.Csv.Tests.Exporter
 {

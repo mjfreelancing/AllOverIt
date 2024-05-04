@@ -3,17 +3,12 @@ using AllOverIt.Pipes.Named.Extensions;
 using AllOverIt.Pipes.Named.Serialization;
 using AllOverIt.Pipes.Named.Server;
 using NamedPipeTypes;
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
 using System.IO.Pipes;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Security.AccessControl;
 using System.Security.Principal;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace NamedPipeServerDemo
 {

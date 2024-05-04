@@ -1,8 +1,6 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using FluentAssertions;
-using System;
-using Xunit;
 
 namespace AllOverIt.Tests.Extensions
 {

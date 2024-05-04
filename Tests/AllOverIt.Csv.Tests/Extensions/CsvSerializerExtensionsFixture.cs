@@ -1,16 +1,10 @@
-﻿using AllOverIt.Csv.Extensions;
+﻿using AllOverIt.Csv.Exceptions;
+using AllOverIt.Csv.Extensions;
 using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using AllOverIt.Csv.Exceptions;
-using Xunit;
 
 namespace AllOverIt.Csv.Tests.Extensions
 {
@@ -213,7 +207,7 @@ namespace AllOverIt.Csv.Tests.Extensions
                     _serializer,
                     _sampleData,
                     data => data.Child,                                 // The property
-                    data => new []                                      // The dynamic columns
+                    data => new[]                                      // The dynamic columns
                         {
                             nameof(DummySampleData.DummyChild.Name),
                             nameof(DummySampleData.DummyChild.Value)
@@ -248,7 +242,7 @@ namespace AllOverIt.Csv.Tests.Extensions
 
         public class AddDynamicFields_Field_FieldId : CsvSerializerExtensionsFixture
         {
-                [Fact]
+            [Fact]
             public void Should_Throw_When_Serializer_Null()
             {
                 Invoking(() =>
@@ -345,7 +339,7 @@ namespace AllOverIt.Csv.Tests.Extensions
                     _serializer,
                     _sampleData,
                     data => data.Children,
-                    field => 
+                    field =>
                     {
                         return field
                             .Select(child =>

@@ -4,8 +4,6 @@ using AllOverIt.Evaluator.Operations;
 using AllOverIt.Evaluator.Variables;
 using AllOverIt.Extensions;
 using CustomOperationDemo.Operations;
-using System;
-using System.Collections.Generic;
 
 namespace CustomOperationDemo
 {

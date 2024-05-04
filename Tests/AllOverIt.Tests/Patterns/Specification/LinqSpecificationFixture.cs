@@ -1,10 +1,7 @@
 ﻿using AllOverIt.Patterns.Specification;
 using AllOverIt.Tests.Patterns.Specification.Dummies;
 using FluentAssertions;
-using System;
-using System.Linq;
 using System.Linq.Expressions;
-using Xunit;
 
 namespace AllOverIt.Tests.Patterns.Specification
 {
@@ -79,7 +76,7 @@ namespace AllOverIt.Tests.Patterns.Specification
             {
                 // When using the Create() factory method, the syntax will be:
                 // var specification = (Func<int, bool>) (LinqSpecification<int>.Create(value => value % 2 == 0) as LinqSpecification<int>);
-                var isEvenSpecification = (Func<int, bool>) (new LinqIsEven());                
+                var isEvenSpecification = (Func<int, bool>) (new LinqIsEven());
 
                 var actual = Enumerable
                     .Range(1, 4)
@@ -152,7 +149,7 @@ namespace AllOverIt.Tests.Patterns.Specification
             {
                 var isEven = new LinqIsEven();
                 var isPositive = new LinqIsPositive();
-                var combined = !isEven || !isPositive ;
+                var combined = !isEven || !isPositive;
 
                 var actual = combined.IsSatisfiedBy(value);
                 actual.Should().Be(expected);

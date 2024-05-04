@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Extensions
+﻿namespace AllOverIt.Extensions
 {
     /// <summary>Provides a variety of extension methods for <see cref="IComparable{TType}"/> types.</summary>
     public static class ComparableExtensions

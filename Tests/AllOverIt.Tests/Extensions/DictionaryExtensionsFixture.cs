@@ -1,10 +1,6 @@
-﻿using System;
-using AllOverIt.Extensions;
+﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using FluentAssertions;
-using System.Collections.Generic;
-using Xunit;
-using System.Linq;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -19,7 +15,7 @@ namespace AllOverIt.Tests.Extensions
             _key = Create<string>();
             _value = Create<string>();
 
-            _dictionary = new Dictionary<string, string> {{_key, _value}};
+            _dictionary = new Dictionary<string, string> { { _key, _value } };
         }
 
         public class GetValueOrDefault : DictionaryExtensionsFixture

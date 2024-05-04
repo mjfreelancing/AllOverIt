@@ -1,14 +1,7 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Fixture.Extensions;
-using AutoFixture;
 using FluentAssertions;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using Xunit;
-using Xunit.Sdk;
 
 namespace AllOverIt.Tests.Assertion
 {
@@ -91,7 +84,7 @@ namespace AllOverIt.Tests.Assertion
 
             public DummyEnumerable(IEnumerable<int> items)
             {
-                _items = new List<int>(items);    
+                _items = new List<int>(items);
             }
 
             public IEnumerator<int> GetEnumerator()

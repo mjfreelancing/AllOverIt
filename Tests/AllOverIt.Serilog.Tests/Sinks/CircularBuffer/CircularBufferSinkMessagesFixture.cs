@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Serilog.Sinks.CircularBuffer;
 using FluentAssertions;
-using System;
 
 namespace AllOverIt.Serilog.Tests.Sinks.CircularBuffer
 {

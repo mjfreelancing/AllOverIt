@@ -1,9 +1,8 @@
-﻿using System;
-using System.ComponentModel;
-using System.Globalization;
-using AllOverIt.Extensions;
+﻿using AllOverIt.Extensions;
 using AllOverIt.Patterns.Enumeration;
 using AllOverIt.Reflection;
+using System.ComponentModel;
+using System.Globalization;
 
 namespace AllOverIt.Converters
 {

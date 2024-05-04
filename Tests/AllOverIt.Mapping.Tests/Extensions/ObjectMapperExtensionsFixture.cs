@@ -1,12 +1,7 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using AllOverIt.Mapping;
 using AllOverIt.Mapping.Extensions;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Xunit;
 
 namespace AllOverIt.Mapping.Tests.Extensions
 {

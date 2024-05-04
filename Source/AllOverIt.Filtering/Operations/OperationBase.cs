@@ -5,8 +5,6 @@ using AllOverIt.Filtering.Exceptions;
 using AllOverIt.Filtering.Options;
 using AllOverIt.Patterns.Specification;
 using AllOverIt.Reflection;
-using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using SystemExpression = System.Linq.Expressions.Expression;    // avoid conflict with the Expression property on LinqSpecification
 
@@ -22,7 +20,7 @@ namespace AllOverIt.Filtering.Operations
 
             // The constant value used in the predicate
             TProperty value,
-            
+
             // Indicates if an exception is to be thrown when the provided value is null
             bool supportsNull,
 

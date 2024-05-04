@@ -2,8 +2,6 @@
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Reactive.Extensions;
 using FluentAssertions;
-using System;
-using Xunit;
 
 namespace AllOverIt.Reactive.Tests.Extensions
 {

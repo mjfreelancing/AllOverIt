@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Cryptography.RSA.Exceptions
+﻿namespace AllOverIt.Cryptography.RSA.Exceptions
 {
     /// <summary>Exception raised during an RSA encryption or decryption operation.</summary>
     public class RsaException : Exception

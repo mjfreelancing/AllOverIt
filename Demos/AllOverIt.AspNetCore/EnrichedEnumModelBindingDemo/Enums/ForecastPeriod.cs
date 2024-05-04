@@ -1,7 +1,7 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using AllOverIt.Converters;
+﻿using AllOverIt.Converters;
 using AllOverIt.Patterns.Enumeration;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace EnrichedEnumModelBindingDemo.Enums
 {

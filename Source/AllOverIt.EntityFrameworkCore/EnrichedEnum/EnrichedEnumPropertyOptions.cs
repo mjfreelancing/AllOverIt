@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Patterns.Enumeration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
 
 namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
 {

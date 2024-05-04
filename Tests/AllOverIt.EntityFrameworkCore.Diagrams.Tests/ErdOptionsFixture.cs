@@ -4,7 +4,6 @@ using AllOverIt.EntityFrameworkCore.Diagrams.Tests.TestTypes.Entities;
 using AllOverIt.Fixture;
 using FluentAssertions;
 using System.Collections;
-using System.Linq;
 
 namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 {

@@ -2,8 +2,6 @@
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Formatters.Strings;
 using FluentAssertions;
-using System;
-using Xunit;
 
 namespace AllOverIt.Tests.Formatters.Strings
 {
@@ -64,10 +62,11 @@ namespace AllOverIt.Tests.Formatters.Strings
         [Fact]
         public void Should_Add_Space_After_Colon()
         {
-            var expected =
-@"{
-  ""key"": ""value""
-}";
+            var expected = """
+                {
+                  "key": "value"
+                }
+                """;
 
             var actual = JsonString.Format(BasicSourceString);
 
@@ -78,10 +77,12 @@ namespace AllOverIt.Tests.Formatters.Strings
         public void Should_Return_Bad_Output_For_Bad_Input()
         {
             var stringValue = Create<string>();
-            var expected = 
-$@"{stringValue}{{
-  ab: cd
-}}";
+
+            var expected = $$"""
+                {{stringValue}}{
+                  ab: cd
+                }
+                """;
 
             var actual = JsonString.Format($"{stringValue}{{ab:cd}}");
 
@@ -91,11 +92,13 @@ $@"{stringValue}{{
         [Fact]
         public void Should_Ignore_Unquoted_Whitespace()
         {
-            var source = @"{""key"":""value""    }";
-            var expected =
-@"{
-  ""key"": ""value""
-}";
+            var source = """{"key":"value"    }""";
+
+            var expected = """
+                {
+                  "key": "value"
+                }
+                """;
 
             var actual = JsonString.Format(source);
 
@@ -105,11 +108,13 @@ $@"{stringValue}{{
         [Fact]
         public void Should_Keep_Quoted_Whitespace()
         {
-            var source = @"{""key"":""val ue""  }";
-            var expected =
-@"{
-  ""key"": ""val ue""
-}";
+            var source = """{"key":"val ue"  }""";
+
+            var expected = """
+                {
+                  "key": "val ue"
+                }
+                """;
 
             var actual = JsonString.Format(source);
 
@@ -119,11 +124,13 @@ $@"{stringValue}{{
         [Fact]
         public void Should_Keep_Quoted_Comma()
         {
-            var source = @"{""key"":""val,ue""  }";
-            var expected =
-@"{
-  ""key"": ""val,ue""
-}";
+            var source = """{"key":"val,ue"  }""";
+
+            var expected = """
+                {
+                  "key": "val,ue"
+                }
+                """;
 
             var actual = JsonString.Format(source);
 
@@ -133,11 +140,13 @@ $@"{stringValue}{{
         [Fact]
         public void Should_Keep_Escaped_Backslash()
         {
-            var source = @"{""key"":""val\\ue""}";
-            var expected =
-@"{
-  ""key"": ""val\\ue""
-}";
+            var source = """{"key":"val\\ue"}""";
+
+            var expected = """
+                {
+                  "key": "val\\ue"
+                }
+                """;
 
             var actual = JsonString.Format(source);
 
@@ -147,12 +156,14 @@ $@"{stringValue}{{
         [Fact]
         public void Should_Add_LineBreak_After_Unquoted_Comma()
         {
-            var source = @"{""key1"":""value1"",""key2"":""value2""}";
-            var expected =
-@"{
-  ""key1"": ""value1"",
-  ""key2"": ""value2""
-}";
+            var source = """{"key1":"value1","key2":"value2"}""";
+
+            var expected = """
+                {
+                  "key1": "value1",
+                  "key2": "value2"
+                }
+                """;
 
             var actual = JsonString.Format(source);
 
@@ -162,13 +173,15 @@ $@"{stringValue}{{
         [Fact]
         public void Should_Add_LineBreak_And_Indent_After_Opening_Brace()
         {
-            var source = @"{""key1"":{""key2"":""value2""}}";
-            var expected =
-@"{
-  ""key1"": {
-    ""key2"": ""value2""
-  }
-}";
+            var source = """{"key1":{"key2":"value2"}}""";
+
+            var expected = """
+                {
+                  "key1": {
+                    "key2": "value2"
+                  }
+                }
+                """;
 
             var actual = JsonString.Format(source);
 
@@ -178,15 +191,17 @@ $@"{stringValue}{{
         [Fact]
         public void Should_Add_LineBreak_And_Indent_After_Opening_Bracket()
         {
-            var source = @"{""key1"":[""value1"", ""val , ue2"", ""value3""]}";
-            var expected =
-@"{
-  ""key1"": [
-    ""value1"",
-    ""val , ue2"",
-    ""value3""
-  ]
-}";
+            var source = """{"key1":["value1", "val , ue2", "value3"]}""";
+
+            var expected = """
+                {
+                  "key1": [
+                    "value1",
+                    "val , ue2",
+                    "value3"
+                  ]
+                }
+                """;
 
             var actual = JsonString.Format(source);
 
@@ -196,13 +211,15 @@ $@"{stringValue}{{
         [Fact]
         public void Should_Move_Closing_Bracket_To_Next_Line()
         {
-            var source = @"{""key1"":[""value1""]}";
-            var expected =
-@"{
-  ""key1"": [
-    ""value1""
-  ]
-}";
+            var source = """{"key1":["value1"]}""";
+
+            var expected = """
+                {
+                  "key1": [
+                    "value1"
+                  ]
+                }
+                """;
 
             var actual = JsonString.Format(source);
 
@@ -212,10 +229,12 @@ $@"{stringValue}{{
         [Fact]
         public void Should_Not_Add_Blank_Line_For_Empty_Object()
         {
-            var source = @"{}";
-            var expected =
-@"{
-}";
+            var source = "{}";
+
+            var expected = """
+                {
+                }
+                """;
 
             var actual = JsonString.Format(source);
 
@@ -225,13 +244,15 @@ $@"{stringValue}{{
         [Fact]
         public void Should_Not_Add_LineBreak_After_Quoted_Opening_Bracket()
         {
-            var source = @"{""key1"":[""val[ue1""]}";
-            var expected =
-@"{
-  ""key1"": [
-    ""val[ue1""
-  ]
-}";
+            var source = """{"key1":["val[ue1"]}""";
+
+            var expected = """
+                {
+                  "key1": [
+                    "val[ue1"
+                  ]
+                }
+                """;
 
             var actual = JsonString.Format(source);
 
@@ -241,13 +262,15 @@ $@"{stringValue}{{
         [Fact]
         public void Should_Not_Move_Quoted_Closing_Bracket_To_Next_Line()
         {
-            var source = @"{""key1"":[""val]ue1""]}";
-            var expected =
-@"{
-  ""key1"": [
-    ""val]ue1""
-  ]
-}";
+            var source = """{"key1":["val]ue1"]}""";
+
+            var expected = """
+                {
+                  "key1": [
+                    "val]ue1"
+                  ]
+                }
+                """;
 
             var actual = JsonString.Format(source);
 
@@ -257,12 +280,14 @@ $@"{stringValue}{{
         [Fact]
         public void Should_Not_Add_Blank_Line_For_Empty_Array()
         {
-            var source = @"{""key1"":[]}";
-            var expected =
-                @"{
-  ""key1"": [
-  ]
-}";
+            var source = """{"key1":[]}""";
+
+            var expected = """
+                {
+                  "key1": [
+                  ]
+                }
+                """;
 
             var actual = JsonString.Format(source);
 
@@ -272,18 +297,21 @@ $@"{stringValue}{{
         [Fact]
         public void Should_Remove_Extra_Whitespace()
         {
-            var source = @"    {   ""key1""    :
+            var source = """
+                    {   "key1"    :
 
 
-""value1""   ,  ""key2"":   ""value2""   }
+                "value1"   ,  "key2":   "value2"   }
 
-";
 
-            var expected =
-                @"{
-  ""key1"": ""value1"",
-  ""key2"": ""value2""
-}";
+                """;
+
+            var expected = """
+                {
+                  "key1": "value1",
+                  "key2": "value2"
+                }
+                """;
 
             var actual = JsonString.Format(source);
 

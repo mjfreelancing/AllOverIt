@@ -2,10 +2,7 @@
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Reflection;
 using FluentAssertions;
-using System;
-using System.Linq;
 using System.Reflection;
-using Xunit;
 
 namespace AllOverIt.Mapping.Tests
 {

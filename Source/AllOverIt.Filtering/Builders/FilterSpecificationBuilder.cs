@@ -8,10 +8,7 @@ using AllOverIt.Filtering.Options;
 using AllOverIt.Patterns.Specification;
 using AllOverIt.Patterns.Specification.Extensions;
 using AllOverIt.Reflection;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -341,7 +338,7 @@ namespace AllOverIt.Filtering.Builders
             // The array based operations require special consideration when the value is double (for example) and
             // TProperty is double? because an error occurs due to List<double> cannot be converted to IList<double?>.
 
-            var valuesType = values.GetType();            
+            var valuesType = values.GetType();
 
             if (valuesType.IsGenericEnumerableType() && valuesType.GetGenericArguments()[0] != typeof(TProperty))
             {
@@ -391,7 +388,7 @@ namespace AllOverIt.Filtering.Builders
 
         private static IList ConvertListElements(IEnumerable elements, Type elementType)
         {
-            var typedList = elementType.CreateList();
+            var typedList = elementType.CreateListOf();
 
             foreach (var element in elements)
             {

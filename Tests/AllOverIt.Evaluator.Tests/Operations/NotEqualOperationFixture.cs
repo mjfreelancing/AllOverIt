@@ -1,4 +1,3 @@
-using System;
 using AllOverIt.Evaluator.Operations;
 using AllOverIt.Evaluator.Operators;
 

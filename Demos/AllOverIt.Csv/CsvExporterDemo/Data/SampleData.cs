@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace CsvExporterDemo.Data
+﻿namespace CsvExporterDemo.Data
 {
     public sealed class SampleData
     {

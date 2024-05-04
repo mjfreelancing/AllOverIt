@@ -3,9 +3,6 @@ using AllOverIt.Evaluator.Extensions;
 using AllOverIt.Evaluator.Variables;
 using AllOverIt.Evaluator.Variables.Extensions;
 using BenchmarkDotNet.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace EvaluatorBenchmarking
 {

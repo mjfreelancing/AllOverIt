@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Assertion;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace AllOverIt.DependencyInjection
 {
@@ -91,14 +90,14 @@ namespace AllOverIt.DependencyInjection
         {
             _ = name.WhenNotNullOrEmpty(nameof(name));
 
-            ((INamedServiceRegistration<TService>)_resolver).Register<TImplementation>(name);
+            ((INamedServiceRegistration<TService>) _resolver).Register<TImplementation>(name);
         }
 
         private void RegisterImplementation(string name, Type implementationType)
         {
             _ = name.WhenNotNullOrEmpty(nameof(name));
 
-            ((INamedServiceRegistration<TService>)_resolver).Register(name, implementationType);
+            ((INamedServiceRegistration<TService>) _resolver).Register(name, implementationType);
         }
 
         private bool IsRegistered<TImplementation>(ServiceLifetime lifetime)

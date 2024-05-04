@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Helpers.PropertyNavigation;
 using FluentAssertions;
-using Xunit;
 
 namespace AllOverIt.Tests.Helpers.PropertyNavigation
 {
@@ -35,7 +34,7 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation
             [Fact]
             public void Should_Return_Nodes()
             {
-                var expected = new[] {new PropertyNode(), new PropertyNode(), new PropertyNode()};
+                var expected = new[] { new PropertyNode(), new PropertyNode(), new PropertyNode() };
 
                 var actual = new PropertyNodes<DummyObject>(expected);
 

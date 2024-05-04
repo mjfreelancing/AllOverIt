@@ -1,7 +1,5 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.CommandLine;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;

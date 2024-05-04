@@ -3,11 +3,7 @@ using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.Resources;
-using System;
-using System.Linq;
 using System.Linq.Expressions;
-using Xunit;
 
 namespace AllOverIt.Tests.Expressions
 {
@@ -176,8 +172,8 @@ namespace AllOverIt.Tests.Expressions
                     .CreateParameterExpressions(new[] { typeof(int), typeof(double), typeof(string) })
                     .ToList();
 
-                actual.Should().BeEquivalentTo(new[] 
-                { 
+                actual.Should().BeEquivalentTo(new[]
+                {
                     Expression.Parameter(typeof(int), "t1"),
                     Expression.Parameter(typeof(double), "t2"),
                     Expression.Parameter(typeof(string), "t3")

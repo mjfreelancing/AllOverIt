@@ -1,8 +1,5 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Patterns.Pipeline.Extensions;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Patterns.Pipeline
 {

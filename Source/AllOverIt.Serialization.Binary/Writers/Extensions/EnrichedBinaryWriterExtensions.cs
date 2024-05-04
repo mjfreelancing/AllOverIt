@@ -3,11 +3,7 @@ using AllOverIt.Extensions;
 using AllOverIt.Reflection;
 using AllOverIt.Serialization.Binary.Readers;
 using AllOverIt.Serialization.Binary.Readers.Extensions;
-using AllOverIt.Serialization.Binary.Writers;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 
 namespace AllOverIt.Serialization.Binary.Writers.Extensions
 {
@@ -289,7 +285,7 @@ namespace AllOverIt.Serialization.Binary.Writers.Extensions
 
                         values = value is null
                             ? new List<object>()
-                            : elementType.CreateList();
+                            : elementType.CreateListOf();
                     }
 
                     values.Add(value);

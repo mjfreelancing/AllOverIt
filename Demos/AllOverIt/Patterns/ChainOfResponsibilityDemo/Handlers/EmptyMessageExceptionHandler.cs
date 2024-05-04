@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Extensions;
-using System;
 
 namespace ChainOfResponsibilityDemo.Handlers
 {

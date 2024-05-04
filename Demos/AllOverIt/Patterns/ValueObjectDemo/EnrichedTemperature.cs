@@ -1,5 +1,4 @@
-﻿using System;
-using ValueObjectDemo.Extensions;
+﻿using ValueObjectDemo.Extensions;
 
 namespace ValueObjectDemo
 {

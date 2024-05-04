@@ -1,5 +1,4 @@
 using AllOverIt.Assertion;
-using System.Linq;
 
 namespace AllOverIt.Fixture.Tests.Examples.SUT
 {

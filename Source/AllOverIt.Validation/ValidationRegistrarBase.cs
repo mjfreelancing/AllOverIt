@@ -1,8 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
 using FluentValidation;
-using System;
-using System.Linq;
 
 namespace AllOverIt.Validation
 {

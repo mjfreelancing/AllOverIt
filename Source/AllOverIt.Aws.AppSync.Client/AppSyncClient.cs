@@ -4,10 +4,7 @@ using AllOverIt.Aws.AppSync.Client.Configuration;
 using AllOverIt.Aws.AppSync.Client.Exceptions;
 using AllOverIt.Aws.AppSync.Client.Request;
 using AllOverIt.Aws.AppSync.Client.Response;
-using System.Net.Http;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Aws.AppSync.Client
 {

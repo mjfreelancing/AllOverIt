@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace AllOverIt.Pipes.Named.Connection
+﻿namespace AllOverIt.Pipes.Named.Connection
 {
     /// <summary>A <see cref="INamedPipeConnection{TMessage}"/> that can be connected and disconnected.</summary>
     /// <typeparam name="TMessage">The message type serialized by the connection.</typeparam>

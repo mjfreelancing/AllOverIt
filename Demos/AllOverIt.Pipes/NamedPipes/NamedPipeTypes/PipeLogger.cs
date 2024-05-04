@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Logging;
-using System;
 
 namespace NamedPipeTypes
 {

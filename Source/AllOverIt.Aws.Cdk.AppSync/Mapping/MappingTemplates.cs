@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
 using Amazon.CDK.AWS.AppSync;
-using System.Collections.Generic;
 
 namespace AllOverIt.Aws.Cdk.AppSync.Mapping
 {

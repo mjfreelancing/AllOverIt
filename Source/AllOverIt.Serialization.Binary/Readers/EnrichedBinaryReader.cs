@@ -1,10 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Serialization.Binary.Exceptions;
 using AllOverIt.Serialization.Binary.Readers.Extensions;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text;
 
 namespace AllOverIt.Serialization.Binary.Readers

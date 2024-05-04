@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Serialization.Binary.Readers
+﻿namespace AllOverIt.Serialization.Binary.Readers
 {
     /// <inheritdoc cref="IEnrichedBinaryValueReader"/>
     /// <typeparam name="TType">The object type read by this value reader.</typeparam>

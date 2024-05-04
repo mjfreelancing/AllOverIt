@@ -1,11 +1,8 @@
 using AllOverIt.Fixture;
-using System.Reactive.Subjects;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using FluentAssertions;
-using System;
-using System.Threading.Tasks;
-using Xunit;
+using System.Reactive.Subjects;
 using ObservableExtensions = AllOverIt.Reactive.Extensions.ObservableExtensions;
 
 namespace AllOverIt.Reactive.Tests.Extensions

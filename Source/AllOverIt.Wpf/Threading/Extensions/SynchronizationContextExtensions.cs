@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Assertion;
-using System.Threading;
 
 namespace AllOverIt.Wpf.Threading.Extensions
 {

@@ -1,5 +1,4 @@
 ﻿using AllOverIt.EntityFrameworkCore.Diagrams.D2.Extensions;
-using System;
 using System.Text;
 
 namespace AllOverIt.EntityFrameworkCore.Diagrams.D2

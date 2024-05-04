@@ -2,9 +2,6 @@
 using AllOverIt.Threading;
 using AllOverIt.Threading.Extensions;
 using FluentAssertions;
-using System.Threading;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace AllOverIt.Tests.Threading.Extensions
 {
@@ -53,7 +50,7 @@ namespace AllOverIt.Tests.Threading.Extensions
                 var success = await @lock.TryEnterLockAsync(10, CancellationToken.None);
 
                 success.Should().BeTrue();
-                
+
                 @lock.ExitLock();
             }
         }

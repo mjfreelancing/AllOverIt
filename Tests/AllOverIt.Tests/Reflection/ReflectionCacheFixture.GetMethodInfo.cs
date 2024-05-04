@@ -1,9 +1,6 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Reflection;
 using FluentAssertions;
-using System;
-using System.Linq;
-using Xunit;
 
 namespace AllOverIt.Tests.Reflection
 {
@@ -150,7 +147,7 @@ namespace AllOverIt.Tests.Reflection
                 actual.Should().BeEquivalentTo(expected);
             }
         }
-        
+
         public class GetMethodInfo_Type : ReflectionCacheFixture
         {
             private readonly string[] _knownMethods = new[] { "Method1", "Method2", "Method3", "Method4" };

@@ -2,15 +2,11 @@
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Patterns.Enumeration;
-using FakeItEasy;
 using FluentAssertions;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
-using Xunit;
 
 namespace AllOverIt.Tests.Converters
 {

@@ -1,6 +1,4 @@
 ﻿using AllOverIt.Assertion;
-using System;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Extensions
 {

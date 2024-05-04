@@ -1,11 +1,8 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Process.Exceptions;
-using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using SystemProcess = System.Diagnostics.Process;
 
 namespace AllOverIt.Process

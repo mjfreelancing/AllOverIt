@@ -1,5 +1,4 @@
-﻿using AllOverIt.Assertion;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 
 namespace AllOverIt.Cryptography.AES
 {

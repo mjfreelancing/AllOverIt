@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AllOverIt.Diagnostics.Breadcrumbs
+﻿namespace AllOverIt.Diagnostics.Breadcrumbs
 {
     /// <summary>A collection of breadcrumb messages and metadata.</summary>
     public interface IBreadcrumbs : IEnumerable<BreadcrumbData>

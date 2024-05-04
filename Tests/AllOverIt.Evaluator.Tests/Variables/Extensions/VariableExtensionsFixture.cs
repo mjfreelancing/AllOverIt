@@ -1,13 +1,11 @@
 using AllOverIt.Evaluator.Tests.Variables.Dummies;
+using AllOverIt.Evaluator.Tests.Variables.Helpers;
 using AllOverIt.Evaluator.Variables;
 using AllOverIt.Evaluator.Variables.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using FluentAssertions;
-using System;
-using AllOverIt.Evaluator.Tests.Variables.Helpers;
-using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Variables.Extensions
 {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Reflection.Exceptions
+﻿namespace AllOverIt.Reflection.Exceptions
 {
     /// <summary>Represents an reflection related error.</summary>
     public sealed class ReflectionException : Exception

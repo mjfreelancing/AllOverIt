@@ -2,9 +2,7 @@ using AllOverIt.Evaluator.Operators;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
-using System;
 using System.Linq.Expressions;
-using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Operators
 {

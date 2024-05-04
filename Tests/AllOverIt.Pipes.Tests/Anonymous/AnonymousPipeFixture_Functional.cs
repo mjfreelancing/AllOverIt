@@ -1,10 +1,7 @@
 using AllOverIt.Fixture;
 using AllOverIt.Pipes.Anonymous;
 using FluentAssertions;
-using System.IO;
 using System.IO.Pipes;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace AllOverIt.Pipes.Tests.Anonymous
 {

@@ -1,7 +1,6 @@
 ﻿using AllOverIt.ReactiveUI.Factories;
 using Microsoft.Extensions.DependencyInjection;
 using ReactiveUI;
-using System;
 
 namespace AllOverIt.ReactiveUI.Wpf.Extensions
 {

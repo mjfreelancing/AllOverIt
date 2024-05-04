@@ -1,6 +1,4 @@
 ﻿using AllOverIt.Patterns.Pipeline;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace PipelineAsyncDemo.Steps
 {

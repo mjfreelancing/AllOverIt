@@ -6,12 +6,7 @@ using AllOverIt.Pipes.Named.Events;
 using AllOverIt.Pipes.Named.Serialization;
 using AllOverIt.Pipes.Named.Server;
 using FluentAssertions;
-using System;
-using System.IO;
 using System.IO.Pipes;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Pipes.Tests.Named
 {

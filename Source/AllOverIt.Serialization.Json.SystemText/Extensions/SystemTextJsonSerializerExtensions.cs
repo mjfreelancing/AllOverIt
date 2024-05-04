@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Serialization.Json.SystemText.Converters;
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace AllOverIt.Serialization.Json.SystemText.Extensions

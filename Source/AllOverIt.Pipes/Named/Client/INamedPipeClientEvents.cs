@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Pipes.Named.Events;
-using System;
 
 namespace AllOverIt.Pipes.Named.Client
 {

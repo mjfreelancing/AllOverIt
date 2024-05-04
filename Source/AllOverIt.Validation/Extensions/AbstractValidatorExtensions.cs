@@ -1,9 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using FluentValidation;
-using System;
 using System.Linq.Expressions;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Validation.Extensions
 {

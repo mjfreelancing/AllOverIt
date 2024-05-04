@@ -1,10 +1,7 @@
 using AllOverIt.Fixture;
 using AllOverIt.Reactive.Extensions;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
 using System.Reactive.Disposables;
-using Xunit;
 
 namespace AllOverIt.Reactive.Tests.Extensions
 {

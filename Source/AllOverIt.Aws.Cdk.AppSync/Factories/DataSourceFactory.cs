@@ -3,8 +3,6 @@ using AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources;
 using Amazon.CDK;
 using Amazon.CDK.AWS.AppSync;
 using Amazon.CDK.AWS.Lambda;
-using System;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using SystemEnvironment = System.Environment;
 

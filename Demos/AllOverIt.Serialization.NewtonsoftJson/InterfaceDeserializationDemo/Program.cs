@@ -2,8 +2,6 @@
 using AllOverIt.Serialization.Json.Newtonsoft.Converters;
 using AllOverIt.Serialization.Json.Newtonsoft.Extensions;
 using Newtonsoft.Json;
-using System;
-using System.Linq;
 
 namespace InterfaceDeserializationDemo
 {

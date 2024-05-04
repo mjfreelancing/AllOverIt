@@ -1,6 +1,4 @@
-﻿using System;
-using System.Reactive.Concurrency;
-using System.Threading;
+﻿using System.Reactive.Concurrency;
 
 namespace AllOverIt.ReactiveUI
 {

@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Patterns.ValueObject.Exceptions;
 using FluentAssertions;
-using Xunit;
 
 namespace AllOverIt.Tests.Patterns.ValueObject.Exceptions
 {

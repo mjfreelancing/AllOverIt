@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace AllOverIt.Evaluator.Operations
+﻿namespace AllOverIt.Evaluator.Operations
 {
     /// <summary>A factory containing user-defined methods that can be evaluated as part of a formula.</summary>
     /// <remarks>

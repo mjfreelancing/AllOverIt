@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 
 namespace AllOverIt.Collections
 {
@@ -38,7 +37,7 @@ namespace AllOverIt.Collections
         /// <summary>Constructor.</summary>
         /// <param name="data">Data to be added to the readonly dictionary.</param>
         public ReadOnlyDictionary(IReadOnlyDictionary<TKey, TValue> data)
-            : this((IEnumerable<KeyValuePair<TKey, TValue>>)data)
+            : this((IEnumerable<KeyValuePair<TKey, TValue>>) data)
         {
         }
 

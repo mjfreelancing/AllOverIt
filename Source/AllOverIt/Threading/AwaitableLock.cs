@@ -1,13 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Threading;
-
-namespace AllOverIt.Threading
+﻿namespace AllOverIt.Threading
 {
     /// <inheritdoc cref="IAwaitableLock" />
     public sealed class AwaitableLock : IAwaitableLock
     {
-        private SemaphoreSlim _semaphore = new(1, 1);
+        private bool _disposed;
+        private readonly SemaphoreSlim _semaphore = new(1, 1);
 
         /// <inheritdoc />
         public Task EnterLockAsync(CancellationToken cancellationToken)
@@ -43,8 +40,11 @@ namespace AllOverIt.Threading
         /// <summary>Disposes of the managed resources.</summary>
         public void Dispose()
         {
-            _semaphore?.Dispose();
-            _semaphore = null;
+            if (!_disposed)
+            {
+                _semaphore.Dispose();
+                _disposed = true;           // avoiding making _disposed nullable
+            }
         }
     }
 }

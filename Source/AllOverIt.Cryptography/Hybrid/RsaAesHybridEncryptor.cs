@@ -3,9 +3,6 @@ using AllOverIt.Cryptography.AES;
 using AllOverIt.Cryptography.Extensions;
 using AllOverIt.Cryptography.Hybrid.Exceptions;
 using AllOverIt.Cryptography.RSA;
-using System;
-using System.IO;
-using System.Linq;
 
 namespace AllOverIt.Cryptography.Hybrid
 {

@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace AllOverIt.Patterns.Specification.Extensions
+﻿namespace AllOverIt.Patterns.Specification.Extensions
 {
     /// <summary>Provides a variety of specification extension methods for <see cref="IEnumerable{T}"/>.</summary>
     public static class EnumerableExtensions

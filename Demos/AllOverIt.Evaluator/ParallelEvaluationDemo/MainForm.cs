@@ -1,6 +1,4 @@
 ﻿using ParallelEvaluationDemo;
-using System;
-using System.Windows.Forms;
 
 namespace ParallelEvaluation
 {

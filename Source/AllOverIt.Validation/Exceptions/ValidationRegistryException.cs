@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Validation.Exceptions
+﻿namespace AllOverIt.Validation.Exceptions
 {
     /// <summary>Represents an error that occurred while registering a validator.</summary>
     public sealed class ValidationRegistryException : Exception

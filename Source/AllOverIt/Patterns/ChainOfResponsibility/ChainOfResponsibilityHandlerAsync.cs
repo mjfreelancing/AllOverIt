@@ -1,6 +1,4 @@
 ﻿using AllOverIt.Assertion;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Patterns.ChainOfResponsibility
 {

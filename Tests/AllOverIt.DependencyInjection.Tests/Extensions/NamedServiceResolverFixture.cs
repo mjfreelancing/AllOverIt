@@ -1,14 +1,9 @@
 ﻿using AllOverIt.DependencyInjection.Exceptions;
-using AllOverIt.DependencyInjection.Extensions;
 using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FakeItEasy;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using Xunit;
 
 namespace AllOverIt.DependencyInjection.Tests.Extensions
 {

@@ -3,11 +3,6 @@ using AllOverIt.Fixture;
 using AllOverIt.Pagination.Extensions;
 using AllOverIt.Pagination.TokenEncoding;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using Xunit;
 
 namespace AllOverIt.Pagination.Tests.Extensions
 {

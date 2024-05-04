@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AllOverIt.Pagination.TokenEncoding
+﻿namespace AllOverIt.Pagination.TokenEncoding
 {
     /// <summary>Describes a token generator that simplifies requesting next and previous page queries.</summary>
     public interface IContinuationTokenEncoder

@@ -5,9 +5,6 @@ using AutoFixture;
 using AutoFixture.Dsl;
 using FakeItEasy;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AllOverIt.Fixture.Tests
 {

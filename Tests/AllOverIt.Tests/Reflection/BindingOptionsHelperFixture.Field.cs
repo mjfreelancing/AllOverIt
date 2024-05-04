@@ -2,10 +2,7 @@ using AllOverIt.Expressions;
 using AllOverIt.Extensions;
 using AllOverIt.Reflection;
 using FluentAssertions;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using Xunit;
 
 namespace AllOverIt.Tests.Reflection
 {
@@ -55,7 +52,7 @@ namespace AllOverIt.Tests.Reflection
             }
 
             [Theory]
-            [InlineData((BindingOptions)0, BindingOptions.DefaultScope | BindingOptions.DefaultAccessor | BindingOptions.DefaultVisibility)]
+            [InlineData((BindingOptions) 0, BindingOptions.DefaultScope | BindingOptions.DefaultAccessor | BindingOptions.DefaultVisibility)]
             [InlineData(BindingOptions.Default, BindingOptions.DefaultScope | BindingOptions.DefaultAccessor | BindingOptions.DefaultVisibility)]
 
             [InlineData(BindingOptions.All, BindingOptions.AllScope | BindingOptions.AllAccessor | BindingOptions.AllVisibility)]

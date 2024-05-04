@@ -1,6 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using AllOverIt.Validation.Extensions;
+﻿using AllOverIt.Validation.Extensions;
 using FluentValidation;
 using FluentValidation.Results;
 

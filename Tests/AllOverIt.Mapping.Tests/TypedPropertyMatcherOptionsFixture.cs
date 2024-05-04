@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using AllOverIt.Extensions;
+﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
-using AllOverIt.Mapping;
 using AllOverIt.Mapping.Exceptions;
-using FakeItEasy;
 using FluentAssertions;
-using Xunit;
-
+using System.Collections.ObjectModel;
 using static AllOverIt.Mapping.Tests.ObjectMapperTypes;
 
 namespace AllOverIt.Mapping.Tests

@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Evaluator.Operations;
 using AllOverIt.Evaluator.Variables;
 using AllOverIt.Extensions;
-using System;
 
 namespace AllOverIt.Evaluator
 {

@@ -1,11 +1,9 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Helpers.PropertyNavigation;
-using System;
-using System.Collections;
-using System.Linq;
 using AllOverIt.Helpers.PropertyNavigation.Extensions;
 using AllOverIt.Reflection;
 using PropertyNavigationDemo.Models;
+using System.Collections;
 
 namespace PropertyNavigationDemo
 {

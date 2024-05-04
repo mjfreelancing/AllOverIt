@@ -1,8 +1,6 @@
 using AllOverIt.Evaluator.Extensions;
 using AllOverIt.Evaluator.Variables;
 using FluentAssertions;
-using System;
-using Xunit;
 
 namespace AllOverIt.Evaluator.Tests
 {

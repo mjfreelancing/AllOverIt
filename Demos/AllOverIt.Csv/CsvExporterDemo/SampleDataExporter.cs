@@ -2,8 +2,6 @@
 using AllOverIt.Csv.Exporter;
 using AllOverIt.Csv.Extensions;
 using CsvExporterDemo.Data;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace CsvExporterDemo
 {

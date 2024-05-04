@@ -2,7 +2,6 @@
 using AllOverIt.Fixture;
 using AllOverIt.Tests.Extensions;
 using FluentAssertions;
-using Xunit;
 
 namespace AllOverIt.Tests.CommandLine
 {

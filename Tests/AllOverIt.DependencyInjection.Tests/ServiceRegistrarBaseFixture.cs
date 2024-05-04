@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AllOverIt.DependencyInjection.Exceptions;
+﻿using AllOverIt.DependencyInjection.Exceptions;
 using AllOverIt.DependencyInjection.Tests.Helpers;
 using AllOverIt.DependencyInjection.Tests.TestTypes;
 using AllOverIt.DependencyInjection.Tests.Types;
@@ -8,9 +6,8 @@ using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using Xunit;
 
-namespace AllOverIt.DependencyInjection.Tests.Extensions
+namespace AllOverIt.DependencyInjection.Tests
 {
     public class ServiceRegistrarBaseFixture : FixtureBase
     {
@@ -37,7 +34,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
 
             var int1Instance = provider.GetService<IEnumerable<IBaseInterface1>>()!.SelectAsReadOnlyCollection(item => item.GetType());
 
-            int1Instance.Should().BeEquivalentTo(new[] {typeof(ConcreteClassF), typeof(ConcreteClassG)});
+            int1Instance.Should().BeEquivalentTo(new[] { typeof(ConcreteClassF), typeof(ConcreteClassG) });
 
             var int4Instance = provider.GetService<IEnumerable<IBaseInterface4>>()!.SelectAsReadOnlyCollection(item => item.GetType());
 
@@ -99,6 +96,43 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             DependencyHelper.AssertExpectation<IBaseInterface5>(provider, new[] { typeof(ConcreteClassF) });
 
             DependencyHelper.AssertExpectation<AbstractClassA>(provider, new[] { typeof(ConcreteClassD), typeof(ConcreteClassE), typeof(ConcreteClassG) });
+        }
+
+        [Theory]
+        [InlineData(ServiceLifetime.Singleton)]
+        [InlineData(ServiceLifetime.Scoped)]
+        [InlineData(ServiceLifetime.Transient)]
+        public void Should_Register_As_Individual_Resolutions(ServiceLifetime lifetime)
+        {
+            var provider = DependencyHelper
+                .AutoRegisterUsingServiceLifetime<LocalDependenciesRegistrar>(
+                    lifetime,
+                    _serviceCollection,
+                    [typeof(IBaseInterface1), typeof(IBaseInterface2), typeof(IBaseInterface4), typeof(AbstractClassA)])
+                .BuildServiceProvider();
+
+            var concrete1 = provider.GetRequiredService<IBaseInterface1>();
+
+            concrete1.Should().BeOfType<ConcreteClassG>();
+
+            var concrete2 = provider.GetRequiredService<IBaseInterface2>();
+
+            concrete2.Should().BeOfType<ConcreteClassG>();
+
+            var concrete3 = provider.GetRequiredService<IBaseInterface4>();
+
+            concrete3.Should().BeOfType<ConcreteClassG>();
+
+            var concrete4 = provider.GetRequiredService<AbstractClassA>();
+
+            concrete4.Should().BeOfType<ConcreteClassG>();
+
+            concrete1.Should().NotBeSameAs(concrete2);
+            concrete1.Should().NotBeSameAs(concrete3);
+            concrete1.Should().NotBeSameAs(concrete4);
+            concrete2.Should().NotBeSameAs(concrete3);
+            concrete2.Should().NotBeSameAs(concrete4);
+            concrete3.Should().NotBeSameAs(concrete4);
         }
     }
 }

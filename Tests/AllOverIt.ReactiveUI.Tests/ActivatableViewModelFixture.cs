@@ -1,8 +1,6 @@
 ﻿using AllOverIt.Fixture;
 using FluentAssertions;
-using System;
 using System.Reactive.Disposables;
-using Xunit;
 
 namespace AllOverIt.ReactiveUI.Tests
 {

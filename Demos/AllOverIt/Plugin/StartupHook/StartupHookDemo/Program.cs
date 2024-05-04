@@ -1,7 +1,4 @@
 ﻿using AllOverIt.Extensions;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace StartupHookDemo
 {

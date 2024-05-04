@@ -2,13 +2,7 @@
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Pipes.Named.Connection;
 using FluentAssertions;
-using System;
-using System.IO;
 using System.IO.Pipes;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace AllOverIt.Pipes.Tests.Connection
 {

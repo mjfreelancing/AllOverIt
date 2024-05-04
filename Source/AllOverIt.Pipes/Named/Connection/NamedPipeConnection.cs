@@ -2,10 +2,7 @@
 using AllOverIt.Async;
 using AllOverIt.Pipes.Exceptions;
 using AllOverIt.Pipes.Named.Serialization;
-using System;
 using System.IO.Pipes;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Pipes.Named.Connection
 {

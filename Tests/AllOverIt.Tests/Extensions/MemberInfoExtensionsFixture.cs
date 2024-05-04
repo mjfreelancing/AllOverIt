@@ -1,10 +1,7 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
-using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
-using System;
 using System.Linq.Expressions;
-using Xunit;
 
 namespace AllOverIt.Tests.Extensions
 {

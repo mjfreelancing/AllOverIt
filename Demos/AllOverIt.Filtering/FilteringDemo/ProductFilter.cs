@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Filtering.Filters;
-using System;
 
 namespace FilteringDemo
 {

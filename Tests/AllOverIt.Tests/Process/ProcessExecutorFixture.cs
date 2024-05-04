@@ -3,14 +3,10 @@ using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Process;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Security;
 using System.Text;
-using Xunit;
 
 namespace AllOverIt.Tests.Process
 {

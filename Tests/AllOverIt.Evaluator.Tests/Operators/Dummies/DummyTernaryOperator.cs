@@ -1,6 +1,5 @@
-﻿using System;
+﻿using AllOverIt.Evaluator.Operators;
 using System.Linq.Expressions;
-using AllOverIt.Evaluator.Operators;
 
 namespace AllOverIt.Evaluator.Tests.Operators.Dummies
 {

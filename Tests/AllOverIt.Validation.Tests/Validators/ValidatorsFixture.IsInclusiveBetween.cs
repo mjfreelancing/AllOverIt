@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Validation.Extensions;
 using FluentAssertions;
 using FluentValidation;
-using Xunit;
 
 namespace AllOverIt.Validation.Tests.Validators
 {
@@ -96,7 +95,7 @@ namespace AllOverIt.Validation.Tests.Validators
             {
                 var model = new DummyComparisonModel
                 {
-                    Value4 = 1, 
+                    Value4 = 1,
                     Value5 = GetWithinRange(1, 1000),
                     Value6 = 1000
                 };

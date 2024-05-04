@@ -1,9 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace AllOverIt.Csv.Exporter
+﻿namespace AllOverIt.Csv.Exporter
 {
     /// <summary>Implements a buffered CSV exporter that writes the content to a memory stream.</summary>
     /// <typeparam name="TModel">The model type representing the columns of each row to be exported.</typeparam>

@@ -9,7 +9,7 @@ namespace AllOverIt.Evaluator.Variables
         /// <summary>Constructor.</summary>
         /// <param name="name">The variable's name.</param>
         /// <param name="value">The variable's value.</param>
-        public ConstantVariable(string name, double value = default) 
+        public ConstantVariable(string name, double value = default)
             : base(name)
         {
             Value = value;

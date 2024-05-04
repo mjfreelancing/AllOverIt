@@ -2,10 +2,7 @@
 using AllOverIt.Pipes.Exceptions;
 using AllOverIt.Pipes.Named.Events;
 using AllOverIt.Pipes.Named.Serialization;
-using System;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Pipes.Named.Client
 {

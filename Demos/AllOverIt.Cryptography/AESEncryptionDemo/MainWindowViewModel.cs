@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Cryptography.AES;
 using AllOverIt.Cryptography.Extensions;
 using AllOverIt.Reactive;
-using System;
 
 namespace AESEncryptionDemo
 {

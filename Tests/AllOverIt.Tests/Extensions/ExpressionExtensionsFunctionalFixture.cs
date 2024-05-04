@@ -1,10 +1,7 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using FluentAssertions;
-using System;
-using System.Linq;
 using System.Linq.Expressions;
-using Xunit;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -77,7 +74,7 @@ namespace AllOverIt.Tests.Extensions
             var parent = Create<ParentClass>();
 
             Expression<Func<int>> expression = () => parent.Child.Property;
-            
+
             var members = expression
               .GetMemberExpressions()               // unwraps the LambdaExpression
               .Select(exp => exp.GetValue())

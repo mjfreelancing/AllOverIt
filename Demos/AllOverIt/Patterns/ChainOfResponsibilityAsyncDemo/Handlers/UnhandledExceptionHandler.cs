@@ -1,8 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace ChainOfResponsibilityAsyncDemo.Handlers
+﻿namespace ChainOfResponsibilityAsyncDemo.Handlers
 {
     public sealed class UnhandledExceptionHandler : QueueMessageHandlerBase
     {

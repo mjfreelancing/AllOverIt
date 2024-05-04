@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Evaluator.Exceptions
+﻿namespace AllOverIt.Evaluator.Exceptions
 {
     /// <summary>An exception that can be thrown by the FormulaCompiler while compiling a formula expression.</summary>
     public sealed class FormulaException : Exception

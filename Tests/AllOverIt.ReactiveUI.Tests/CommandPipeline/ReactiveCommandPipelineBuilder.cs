@@ -4,9 +4,6 @@ using AllOverIt.Patterns.Pipeline;
 using AllOverIt.ReactiveUI.CommandPipeline;
 using FluentAssertions;
 using ReactiveUI;
-using System;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace AllOverIt.ReactiveUI.Tests.CommandPipeline
 {

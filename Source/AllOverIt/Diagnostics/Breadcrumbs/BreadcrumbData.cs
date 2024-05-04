@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading;
-
-namespace AllOverIt.Diagnostics.Breadcrumbs
+﻿namespace AllOverIt.Diagnostics.Breadcrumbs
 {
     /// <summary>Contains breadcrumb information at a point in time.</summary>
     public sealed class BreadcrumbData

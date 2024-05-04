@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace AppSyncSubscriptionDemo
+﻿namespace AppSyncSubscriptionDemo
 {
     public interface IWorkerReady
     {

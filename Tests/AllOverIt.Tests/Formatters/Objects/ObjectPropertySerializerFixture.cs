@@ -5,12 +5,7 @@ using AllOverIt.Formatters.Objects;
 using AllOverIt.Formatters.Objects.Exceptions;
 using AllOverIt.Reflection;
 using FluentAssertions;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace AllOverIt.Tests.Formatters.Objects
 {

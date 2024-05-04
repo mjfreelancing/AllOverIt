@@ -61,7 +61,7 @@ namespace GraphqlSchema.Schema
         [NoneDataSource(nameof(Globe), typeof(GlobeMapping))]
         IGlobe Globe();
 
-#region Date, Time, DateTime, Timestamp responses
+        #region Date, Time, DateTime, Timestamp responses
 
         [NoneDataSource(nameof(CountryDate), typeof(CountryDateMapping))]
         AwsTypeDate CountryDate([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType, DateFormat dateFormat);
@@ -75,9 +75,9 @@ namespace GraphqlSchema.Schema
         [NoneDataSource(nameof(CountryTimestamp), typeof(CountryTimestampMapping))]
         AwsTypeTimestamp CountryTimestamp([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType);
 
-#endregion
+        #endregion
 
-#region Date, Time, DateTime, timestamp array responses
+        #region Date, Time, DateTime, timestamp array responses
 
         [NoneDataSource(nameof(CountryDates), typeof(CountryDatesMapping))]
         AwsTypeDate[] CountryDates([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType);
@@ -91,9 +91,9 @@ namespace GraphqlSchema.Schema
         [NoneDataSource(nameof(CountryTimestamps), typeof(CountryTimestampsMapping))]
         AwsTypeTimestamp[] CountryTimestamps([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType);
 
-#endregion
+        #endregion
 
-#region Date, Time, DateTime, timestamp input
+        #region Date, Time, DateTime, timestamp input
 
         [NoneDataSource(nameof(CountryByDate), typeof(CountryByDateMapping))]
         ICountry CountryByDate([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType,
@@ -111,9 +111,9 @@ namespace GraphqlSchema.Schema
         ICountry CountryByTimestamp([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType,
             [SchemaTypeRequired] AwsTypeTimestamp timestamp);
 
-#endregion
+        #endregion
 
-#region Date, Time, DateTime, timestamp array input
+        #region Date, Time, DateTime, timestamp array input
 
         [NoneDataSource(nameof(CountriesByDates), typeof(CountriesByDatesMapping))]
         ICountry[] CountriesByDates([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType,
@@ -135,6 +135,6 @@ namespace GraphqlSchema.Schema
         ICountry[] CountriesByTimestamps([SchemaTypeRequired] GraphqlTypeId countryId, [SchemaTypeRequired] DateType dateType,
             [SchemaArrayRequired] AwsTypeTimestamp[] timestamps);
 
-#endregion
+        #endregion
     }
 }

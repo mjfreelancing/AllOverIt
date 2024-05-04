@@ -1,9 +1,6 @@
 ﻿using AllOverIt.Pipes.Named.Connection;
-using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO.Pipes;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Pipes.Named.Client
 {
@@ -29,7 +26,7 @@ namespace AllOverIt.Pipes.Named.Client
                     .ConfigureAwait(false);
 #else
                 await pipeStream
-                    .ConnectAsync((int)timeout.TotalMilliseconds, cancellationToken)
+                    .ConnectAsync((int) timeout.TotalMilliseconds, cancellationToken)
                     .ConfigureAwait(false);
 #endif
 

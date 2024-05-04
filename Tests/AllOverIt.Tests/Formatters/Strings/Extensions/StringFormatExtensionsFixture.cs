@@ -2,8 +2,6 @@
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Formatters.Strings.Extensions;
 using FluentAssertions;
-using System;
-using Xunit;
 
 namespace AllOverIt.Tests.Formatters.Strings.Extensions
 {

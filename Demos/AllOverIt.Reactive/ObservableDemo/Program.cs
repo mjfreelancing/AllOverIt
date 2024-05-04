@@ -2,7 +2,6 @@
 using AllOverIt.Reactive.Extensions;
 using ObservableDemo.Entities;
 using ObservableDemo.Models;
-using System;
 
 namespace ObservableDemo
 {

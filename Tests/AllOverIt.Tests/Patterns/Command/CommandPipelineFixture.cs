@@ -1,10 +1,8 @@
-﻿using System;
-using AllOverIt.Fixture;
+﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.Command;
 using AllOverIt.Patterns.Command.Exceptions;
 using FluentAssertions;
-using Xunit;
 
 namespace AllOverIt.Tests.Patterns.Command
 {
@@ -160,7 +158,7 @@ namespace AllOverIt.Tests.Patterns.Command
             private class SequenceCommand : ICommand<int, int>
             {
                 public int Sequence { get; private set; }
-                
+
                 public int Execute(int input)
                 {
                     Sequence = input;

@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Reflection;
 
 namespace AllOverIt.Extensions
@@ -21,7 +20,7 @@ namespace AllOverIt.Extensions
             }
             catch (PathTooLongException)
             {
-                return (string)fileInfo.GetType()
+                return (string) fileInfo.GetType()
                   .GetField("FullPath", BindingFlags.Instance | BindingFlags.NonPublic)!
                   .GetValue(fileInfo);
             }

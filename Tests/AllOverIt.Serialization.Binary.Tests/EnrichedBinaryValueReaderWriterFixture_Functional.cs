@@ -7,10 +7,7 @@ using AllOverIt.Serialization.Binary.Tests.FunctionalTypes.Writers;
 using AllOverIt.Serialization.Binary.Writers;
 using AllOverIt.Serialization.Binary.Writers.Extensions;
 using FluentAssertions;
-using System.Collections.Generic;
-using System.IO;
 using System.Text;
-using Xunit;
 
 namespace AllOverIt.Serialization.Binary.Tests
 {
@@ -106,7 +103,7 @@ namespace AllOverIt.Serialization.Binary.Tests
             using (var stream = new MemoryStream())
             {
                 using (var writer = new EnrichedBinaryWriter(stream, Encoding.UTF8, true))
-                {                 
+                {
                     writer.WriteObject(expected);
                 }
 

@@ -2,12 +2,6 @@
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.FakeItEasy;
 using FluentAssertions;
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Xunit;
-using static AllOverIt.Tests.Async.CompositeAsyncDisposableFixture;
 
 namespace AllOverIt.Tests.Async
 {

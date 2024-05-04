@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using AllOverIt.Assertion;
+﻿using AllOverIt.Assertion;
 using Microsoft.Extensions.Hosting;
 
 namespace AllOverIt.GenericHost

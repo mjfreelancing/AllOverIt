@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Serialization.Json.Abstractions.Exceptions
+﻿namespace AllOverIt.Serialization.Json.Abstractions.Exceptions
 {
     /// <summary>Represents an error thrown by a concrete instance of <see cref="JsonHelperBase"/>.</summary>
     public sealed class JsonHelperException : Exception

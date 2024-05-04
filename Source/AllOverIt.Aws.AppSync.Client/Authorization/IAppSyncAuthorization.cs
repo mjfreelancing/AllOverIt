@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AllOverIt.Aws.AppSync.Client.Authorization
+﻿namespace AllOverIt.Aws.AppSync.Client.Authorization
 {
     /// <summary>Represents AppSync authorization header key-value pairs.</summary>
     public interface IAppSyncAuthorization

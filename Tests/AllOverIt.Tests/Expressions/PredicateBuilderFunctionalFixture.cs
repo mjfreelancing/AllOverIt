@@ -1,11 +1,7 @@
 using AllOverIt.Expressions;
 using AllOverIt.Fixture;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using Xunit;
 
 namespace AllOverIt.Tests.Expressions
 {
@@ -73,7 +69,7 @@ namespace AllOverIt.Tests.Expressions
 
             var actual = filtered.Select(item => item.Id);
 
-            actual.Should().BeEquivalentTo(new[]{ 1, 3, 5 });
+            actual.Should().BeEquivalentTo(new[] { 1, 3, 5 });
         }
 
         [Fact]
@@ -88,7 +84,7 @@ namespace AllOverIt.Tests.Expressions
 
             var actual = filtered.Select(item => item.Id);
 
-            actual.Should().BeEquivalentTo(new[]{ 1, 3 });
+            actual.Should().BeEquivalentTo(new[] { 1, 3 });
         }
 
         [Fact]

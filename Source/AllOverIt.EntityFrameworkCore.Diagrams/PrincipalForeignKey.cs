@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.EntityFrameworkCore.Diagrams
+﻿namespace AllOverIt.EntityFrameworkCore.Diagrams
 {
     /// <summary>Contains information for a principal (primary) key.</summary>
     public sealed class PrincipalForeignKey

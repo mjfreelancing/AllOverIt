@@ -1,9 +1,7 @@
-﻿using System;
-using AllOverIt.Extensions;
+﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
-using FluentAssertions;
 using AllOverIt.Fixture.Extensions;
-using Xunit;
+using FluentAssertions;
 using System.Reflection;
 using PropertyInfoExtensions = AllOverIt.Extensions.PropertyInfoExtensions;
 

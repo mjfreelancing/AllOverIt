@@ -1,9 +1,7 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.EntityFrameworkCore.Diagrams.Exceptions;
 using AllOverIt.Extensions;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 
 namespace AllOverIt.EntityFrameworkCore.Diagrams
 {

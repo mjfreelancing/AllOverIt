@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Filtering.Filters;
 using AllOverIt.Fixture;
 using FluentAssertions;
-using Xunit;
 
 namespace AllOverIt.Filtering.Tests.Filters
 {

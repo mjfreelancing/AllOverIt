@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Events
+﻿namespace AllOverIt.Events
 {
     internal interface ISubscription
     {

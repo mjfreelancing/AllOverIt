@@ -2,12 +2,8 @@
 using AllOverIt.Pipes.Named.Events;
 using AllOverIt.Pipes.Named.Serialization;
 using NamedPipeTypes;
-using System;
-using System.IO;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace NamedPipeClientDemo
 {

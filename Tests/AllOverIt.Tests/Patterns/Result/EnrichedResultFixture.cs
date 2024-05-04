@@ -3,7 +3,6 @@
 using AllOverIt.Fixture;
 using AllOverIt.Patterns.Result;
 using FluentAssertions;
-using System;
 
 namespace AllOverIt.Tests.Patterns.Result;
 

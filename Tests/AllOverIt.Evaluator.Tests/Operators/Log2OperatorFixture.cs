@@ -1,10 +1,8 @@
-using System;
-using System.Linq.Expressions;
 using AllOverIt.Evaluator.Operators;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
-using Xunit;
+using System.Linq.Expressions;
 
 namespace AllOverIt.Evaluator.Tests.Operators
 {

@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.ReactiveUI.ViewRegistry;
 using ReactiveUI;
-using System;
 using System.Windows;
 
 namespace AllOverIt.ReactiveUI.Wpf

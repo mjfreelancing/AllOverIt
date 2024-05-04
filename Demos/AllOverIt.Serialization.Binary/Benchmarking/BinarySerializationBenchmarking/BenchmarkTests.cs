@@ -5,9 +5,7 @@ using BinarySerializationBenchmarking.Models;
 using BinarySerializationBenchmarking.Readers;
 using BinarySerializationBenchmarking.Writers;
 using Newtonsoft.Json;
-using System;
 using System.Buffers;
-using System.IO;
 using System.Text;
 
 /*

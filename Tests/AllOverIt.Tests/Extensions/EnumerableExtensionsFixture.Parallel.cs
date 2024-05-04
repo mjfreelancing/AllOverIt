@@ -2,13 +2,7 @@
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -111,7 +105,7 @@ namespace AllOverIt.Tests.Extensions
 
             public ForEachAsTaskAsync_Input_1()
             {
-                _input1 = Create<double>(); 
+                _input1 = Create<double>();
             }
 
             [Fact]

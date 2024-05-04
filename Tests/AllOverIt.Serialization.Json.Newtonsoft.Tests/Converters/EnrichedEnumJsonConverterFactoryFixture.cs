@@ -3,9 +3,7 @@ using AllOverIt.Patterns.Enumeration;
 using AllOverIt.Serialization.Json.Newtonsoft.Converters;
 using FluentAssertions;
 using Newtonsoft.Json;
-using System;
 using System.Runtime.CompilerServices;
-using Xunit;
 
 namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters
 {
@@ -101,7 +99,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters
                 {
                     EnableCaching = false,
                 };
-                
+
                 var converter1 = converterFactory.CreateConverter(typeof(DummyEnrichedEnum1));
                 var converter2 = converterFactory.CreateConverter(typeof(DummyEnrichedEnum1));
 

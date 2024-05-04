@@ -1,6 +1,3 @@
-using System;
-using AllOverIt.Evaluator.Variables;
-
 namespace AllOverIt.Evaluator.Exceptions
 {
     /// <summary>An exception that can be thrown by a concrete IVariable.</summary>

@@ -2,8 +2,6 @@
 using AllOverIt.Filtering.Filters;
 using AllOverIt.Filtering.Options;
 using AllOverIt.Patterns.Specification;
-using System;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Filtering.Builders

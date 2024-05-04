@@ -3,8 +3,6 @@ using AllOverIt.Evaluator.Variables;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
-using System;
-using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Variables
 {
@@ -123,7 +121,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
             {
                 Invoking(() =>
                 {
-                    _ = _variableRegistryBuilder.AddDelegateVariable(Create<string>(), (Func<double>)null);
+                    _ = _variableRegistryBuilder.AddDelegateVariable(Create<string>(), (Func<double>) null);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()

@@ -1,7 +1,5 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync.Attributes.Directives;
 using Cdklabs.AwsCdkAppsyncUtils;
-using System;
-using System.Collections.Generic;
 
 namespace AllOverIt.Aws.Cdk.AppSync.Extensions
 {

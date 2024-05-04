@@ -2,16 +2,12 @@
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Xunit;
 
 namespace AllOverIt.Validation.Tests.Validators
 {
     // These tests implicitly test: RuleBuilderExtensions, ContextComparisonValidator, ValidatorBase
     public partial class ValidatorsFixture : FixtureBase
-    { 
+    {
         private class DummyComparisonModel
         {
             public string Value1 { get; set; }
@@ -77,7 +73,7 @@ namespace AllOverIt.Validation.Tests.Validators
                 var result = validator.Validate(model);
 
                 result.IsValid.Should().BeFalse();
-                
+
                 result.Errors.Single()
                     .ErrorMessage
                     .Should()

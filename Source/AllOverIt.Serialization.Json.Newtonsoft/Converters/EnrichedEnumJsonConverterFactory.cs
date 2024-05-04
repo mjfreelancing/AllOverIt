@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Patterns.Enumeration;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Concurrent;
 
 namespace AllOverIt.Serialization.Json.Newtonsoft.Converters

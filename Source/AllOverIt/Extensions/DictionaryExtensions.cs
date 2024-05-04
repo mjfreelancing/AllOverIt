@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace AllOverIt.Extensions
+﻿namespace AllOverIt.Extensions
 {
     /// <summary>Provides a variety of extension methods for <see cref="IDictionary{TKey,TValue}"/>.</summary>
     public static class DictionaryExtensions

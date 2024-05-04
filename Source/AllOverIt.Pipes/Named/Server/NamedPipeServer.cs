@@ -7,13 +7,8 @@ using AllOverIt.Pipes.Named.Events;
 using AllOverIt.Pipes.Named.Serialization;
 using AllOverIt.Threading;
 using AllOverIt.Threading.Extensions;
-using System;
-using System.Collections.Generic;
 using System.IO.Pipes;
-using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Pipes.Named.Server
 {

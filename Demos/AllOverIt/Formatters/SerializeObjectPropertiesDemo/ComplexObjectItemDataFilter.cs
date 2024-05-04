@@ -1,6 +1,4 @@
 ﻿using AllOverIt.Formatters.Objects;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace SerializeObjectPropertiesDemo
 {

@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Reactive;
-using System;
 using System.Reactive.Linq;
 
 namespace SubscribedEventsDemo

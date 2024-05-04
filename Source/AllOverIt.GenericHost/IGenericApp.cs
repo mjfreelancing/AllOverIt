@@ -1,7 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-
-namespace AllOverIt.GenericHost
+﻿namespace AllOverIt.GenericHost
 {
     /// <summary>Represents an application that can be hosted by .NET's hosting service.</summary>
     public interface IGenericApp

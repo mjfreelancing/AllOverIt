@@ -1,8 +1,6 @@
 ﻿using AllOverIt.Caching;
 using AllOverIt.Fixture;
-using Castle.DynamicProxy.Generators;
 using FluentAssertions;
-using Xunit;
 
 namespace AllOverIt.Tests.Caching
 {

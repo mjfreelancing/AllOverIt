@@ -2,9 +2,6 @@
 using AllOverIt.Formatters.Objects;
 using AllOverIt.Reflection;
 using FluentAssertions;
-using System.Linq;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace AllOverIt.Tests.Formatters.Objects
 {

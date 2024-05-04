@@ -3,8 +3,6 @@ using AllOverIt.Patterns.Specification;
 using AllOverIt.Patterns.Specification.Extensions;
 using AllOverIt.Tests.Patterns.Specification.Dummies;
 using FluentAssertions;
-using System.Linq;
-using Xunit;
 
 namespace AllOverIt.Tests.Patterns.Specification.Extensions
 {
@@ -149,7 +147,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Extensions
                     var specification = Specification<int>.Create(value => value < 5);
                     var actual = values.TakeWhile(specification).ToList();
 
-                    var expected = new[] {1, 2, 3, 4};
+                    var expected = new[] { 1, 2, 3, 4 };
 
                     expected.Should().BeEquivalentTo(actual);
                 }

@@ -1,10 +1,7 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using Xunit;
 
 namespace AllOverIt.Tests.Assertion
 {
@@ -17,7 +14,7 @@ namespace AllOverIt.Tests.Assertion
             {
                 Invoking(() =>
                     {
-                        Guard.WhenNotNull((Expression<Func<DummyClass>>)null, null);
+                        Guard.WhenNotNull((Expression<Func<DummyClass>>) null, null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -31,7 +28,7 @@ namespace AllOverIt.Tests.Assertion
 
                 Invoking(() =>
                     {
-                        Guard.WhenNotNull((Expression<Func<DummyClass>>)null, errorMessage);
+                        Guard.WhenNotNull((Expression<Func<DummyClass>>) null, errorMessage);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -73,7 +70,7 @@ namespace AllOverIt.Tests.Assertion
             {
                 Invoking(() =>
                     {
-                        Guard.WhenNotNull(() => (DummyClass)null);
+                        Guard.WhenNotNull(() => (DummyClass) null);
                     })
                     .Should()
                     .Throw<ArgumentException>()
@@ -103,7 +100,7 @@ namespace AllOverIt.Tests.Assertion
             {
                 Invoking(() =>
                     {
-                        Guard.WhenNotNullOrEmpty((Expression<Func<IEnumerable<DummyClass>>>)null);
+                        Guard.WhenNotNullOrEmpty((Expression<Func<IEnumerable<DummyClass>>>) null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -117,7 +114,7 @@ namespace AllOverIt.Tests.Assertion
 
                 Invoking(() =>
                     {
-                        Guard.WhenNotNullOrEmpty((Expression<Func<IEnumerable<DummyClass>>>)null, errorMessage);
+                        Guard.WhenNotNullOrEmpty((Expression<Func<IEnumerable<DummyClass>>>) null, errorMessage);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -171,7 +168,7 @@ namespace AllOverIt.Tests.Assertion
             [Fact]
             public void Should_Not_Throw_When_Not_Empty()
             {
-                var expected = new List<DummyClass> {new()};
+                var expected = new List<DummyClass> { new() };
 
                 Invoking(() =>
                     {
@@ -204,7 +201,7 @@ namespace AllOverIt.Tests.Assertion
             {
                 Invoking(() =>
                     {
-                        Guard.WhenNotNullOrEmpty(() => (IEnumerable<DummyClass>)null);
+                        Guard.WhenNotNullOrEmpty(() => (IEnumerable<DummyClass>) null);
                     })
                     .Should()
                     .Throw<ArgumentException>()
@@ -216,7 +213,7 @@ namespace AllOverIt.Tests.Assertion
             {
                 Invoking(() =>
                     {
-                        var expected = new List<DummyClass> {new DummyClass()};
+                        var expected = new List<DummyClass> { new DummyClass() };
 
                         var actual = Guard.WhenNotNullOrEmpty(() => expected);
 
@@ -234,7 +231,7 @@ namespace AllOverIt.Tests.Assertion
             {
                 Invoking(() =>
                     {
-                        Guard.WhenNotEmpty((Expression<Func<IEnumerable<DummyClass>>>)null);
+                        Guard.WhenNotEmpty((Expression<Func<IEnumerable<DummyClass>>>) null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -248,7 +245,7 @@ namespace AllOverIt.Tests.Assertion
 
                 Invoking(() =>
                     {
-                        Guard.WhenNotEmpty((Expression<Func<IEnumerable<DummyClass>>>)null, errorMessage);
+                        Guard.WhenNotEmpty((Expression<Func<IEnumerable<DummyClass>>>) null, errorMessage);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -285,7 +282,7 @@ namespace AllOverIt.Tests.Assertion
             [Fact]
             public void Should_Not_Throw_When_Not_Empty()
             {
-                var expected = new List<DummyClass> {new()};
+                var expected = new List<DummyClass> { new() };
 
                 Invoking(() =>
                     {
@@ -319,7 +316,7 @@ namespace AllOverIt.Tests.Assertion
             {
                 Invoking(() =>
                     {
-                        Guard.WhenNotEmpty(() => (IEnumerable<DummyClass>)null);
+                        Guard.WhenNotEmpty(() => (IEnumerable<DummyClass>) null);
                     })
                     .Should()
                     .Throw<ArgumentException>()
@@ -331,7 +328,7 @@ namespace AllOverIt.Tests.Assertion
             {
                 Invoking(() =>
                     {
-                        var expected = new List<DummyClass> {new DummyClass()};
+                        var expected = new List<DummyClass> { new DummyClass() };
 
                         var actual = Guard.WhenNotEmpty(() => expected);
 
@@ -349,7 +346,7 @@ namespace AllOverIt.Tests.Assertion
             {
                 Invoking(() =>
                     {
-                        Guard.WhenNotNullOrEmpty((Expression<Func<string>>)null);
+                        Guard.WhenNotNullOrEmpty((Expression<Func<string>>) null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -363,7 +360,7 @@ namespace AllOverIt.Tests.Assertion
 
                 Invoking(() =>
                     {
-                        Guard.WhenNotNullOrEmpty((Expression<Func<string>>)null, errorMessage);
+                        Guard.WhenNotNullOrEmpty((Expression<Func<string>>) null, errorMessage);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -450,7 +447,7 @@ namespace AllOverIt.Tests.Assertion
             {
                 Invoking(() =>
                     {
-                        Guard.WhenNotNullOrEmpty(() => (string)null);
+                        Guard.WhenNotNullOrEmpty(() => (string) null);
                     })
                     .Should()
                     .Throw<ArgumentException>()
@@ -480,7 +477,7 @@ namespace AllOverIt.Tests.Assertion
             {
                 Invoking(() =>
                     {
-                        Guard.WhenNotEmpty((Expression<Func<string>>)null);
+                        Guard.WhenNotEmpty((Expression<Func<string>>) null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -494,7 +491,7 @@ namespace AllOverIt.Tests.Assertion
 
                 Invoking(() =>
                     {
-                        Guard.WhenNotEmpty((Expression<Func<string>>)null, errorMessage);
+                        Guard.WhenNotEmpty((Expression<Func<string>>) null, errorMessage);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -549,7 +546,7 @@ namespace AllOverIt.Tests.Assertion
             {
                 Invoking(() =>
                     {
-                        Guard.WhenNotEmpty(() => (string)null);
+                        Guard.WhenNotEmpty(() => (string) null);
                     })
                     .Should()
                     .Throw<ArgumentException>()

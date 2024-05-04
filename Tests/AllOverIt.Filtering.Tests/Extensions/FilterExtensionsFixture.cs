@@ -3,9 +3,6 @@ using AllOverIt.Filtering.Filters;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using Xunit;
 
 namespace AllOverIt.Filtering.Tests.Extensions
 {
@@ -37,7 +34,7 @@ namespace AllOverIt.Filtering.Tests.Extensions
             {
                 Invoking(() =>
                 {
-                    _ = FilterExtensions.HasValue((IArrayFilterOperation<int>)default);
+                    _ = FilterExtensions.HasValue((IArrayFilterOperation<int>) default);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()

@@ -4,12 +4,6 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Pagination.Exceptions;
 using AllOverIt.Pagination.TokenEncoding;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace AllOverIt.Pagination.Tests
 {
@@ -403,7 +397,7 @@ namespace AllOverIt.Pagination.Tests
             public void Should_Add_Column_Ascending_Backward()
             {
                 var query = Array.Empty<DummyEntity>().AsQueryable();
-                
+
                 var config = new QueryPaginatorConfiguration
                 {
                     PageSize = Create<int>(),
@@ -1743,7 +1737,7 @@ namespace AllOverIt.Pagination.Tests
             }
         }
 
-        public class Comparisons: QueryPaginatorFixture
+        public class Comparisons : QueryPaginatorFixture
         {
             [Fact]
             public void Should_Compare_Enum_Guid()

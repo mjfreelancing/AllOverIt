@@ -1,9 +1,6 @@
 using AllOverIt.Evaluator.Variables;
 using AllOverIt.Evaluator.Variables.Extensions;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AllOverIt.Evaluator.Tests.Variables.Helpers
 {
@@ -31,7 +28,7 @@ namespace AllOverIt.Evaluator.Tests.Variables.Helpers
             registry.AddLazyVariable("e", compiler.Compile("a+b+c", registry));
             registry.AddDelegateVariable("f", compiler.Compile("b", registry));
             registry.AddDelegateVariable("g", compiler.Compile("e", registry));
-            
+
             return registry;
         }
 

@@ -6,11 +6,7 @@ using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.Specification;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using Xunit;
 
 namespace AllOverIt.Filtering.Tests.Builders
 {
@@ -444,7 +440,7 @@ namespace AllOverIt.Filtering.Tests.Builders
                 {
                     var filterBuilder = CreateFilterBuilder(_filter);
 
-                    _ = filterBuilder.Where((ILinqSpecification<DummyClass>)null);
+                    _ = filterBuilder.Where((ILinqSpecification<DummyClass>) null);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()

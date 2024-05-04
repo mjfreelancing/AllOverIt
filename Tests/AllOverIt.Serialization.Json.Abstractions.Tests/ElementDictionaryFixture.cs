@@ -2,11 +2,7 @@ using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Serialization.Json.Abstractions.Exceptions;
 using FluentAssertions;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Xunit;
 
 namespace AllOverIt.Serialization.Json.Abstractions.Tests
 {

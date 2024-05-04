@@ -1,6 +1,5 @@
 ﻿using AllOverIt.AspNetCore.ModelBinders;
 using Microsoft.AspNetCore.Mvc;
-using System;
 
 namespace AllOverIt.AspNetCore.ValueArray
 {

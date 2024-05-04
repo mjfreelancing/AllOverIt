@@ -1,8 +1,6 @@
 ﻿using AllOverIt.Wpf.Extensions;
 using AllOverIt.Wpf.Utils;
-using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows;
 using ViewRegistryDemo.ViewModels;
 using ViewRegistryDemo.ViewRegistry;

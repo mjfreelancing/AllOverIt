@@ -2,11 +2,7 @@
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Pagination.TokenEncoding;
-using FakeItEasy;
 using FluentAssertions;
-using System;
-using System.Linq;
-using Xunit;
 
 namespace AllOverIt.Pagination.Tests
 {

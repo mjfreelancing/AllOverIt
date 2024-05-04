@@ -4,10 +4,7 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Reflection;
 using AllOverIt.Reflection.Exceptions;
 using FluentAssertions;
-using System;
-using System.Linq;
 using System.Reflection;
-using Xunit;
 
 namespace AllOverIt.Tests.Reflection
 {
@@ -87,7 +84,7 @@ namespace AllOverIt.Tests.Reflection
             {
                 Invoking(() =>
                 {
-                    _ = FieldHelper.CreateFieldGetter<DummyClass>((FieldInfo)null);
+                    _ = FieldHelper.CreateFieldGetter<DummyClass>((FieldInfo) null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()

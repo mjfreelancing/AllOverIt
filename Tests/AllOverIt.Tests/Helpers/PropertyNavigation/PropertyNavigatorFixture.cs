@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Helpers.PropertyNavigation;
 using FluentAssertions;
-using Xunit;
 
 namespace AllOverIt.Tests.Helpers.PropertyNavigation
 {

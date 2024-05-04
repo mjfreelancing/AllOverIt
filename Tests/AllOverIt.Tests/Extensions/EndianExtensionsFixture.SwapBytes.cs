@@ -1,11 +1,6 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using FluentAssertions;
-using System;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using Xunit;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -150,7 +145,7 @@ namespace AllOverIt.Tests.Extensions
                 // meaning negative.
 
                 // Get the four int elements that represent the decimal
-                var valueInts = decimal.GetBits(value); 
+                var valueInts = decimal.GetBits(value);
 
                 var actual = EndianExtensions.SwapBytes(value);
                 var actualInts = decimal.GetBits(actual);

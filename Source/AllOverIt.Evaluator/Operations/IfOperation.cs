@@ -1,5 +1,5 @@
-using System.Linq.Expressions;
 using AllOverIt.Evaluator.Operators;
+using System.Linq.Expressions;
 
 namespace AllOverIt.Evaluator.Operations
 {

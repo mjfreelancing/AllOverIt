@@ -5,11 +5,7 @@ using AllOverIt.Pipes.Named.Serialization;
 using AllOverIt.Pipes.Named.Server;
 using FakeItEasy;
 using FluentAssertions;
-using System;
 using System.IO.Pipes;
-using System.Threading;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace AllOverIt.Pipes.Tests.Named.Server
 {

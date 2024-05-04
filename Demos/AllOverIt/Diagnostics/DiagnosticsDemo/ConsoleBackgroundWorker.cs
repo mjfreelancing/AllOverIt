@@ -4,10 +4,6 @@ using AllOverIt.Diagnostics.Breadcrumbs.Extensions;
 using AllOverIt.Extensions;
 using AllOverIt.GenericHost;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DiagnosticsDemo
 {
@@ -67,7 +63,7 @@ namespace DiagnosticsDemo
                 });
 
             await Task.WhenAll(tasks);
-        
+
             // The breadcrumbs will be logged by the main app after the user presses a key
 
             Console.WriteLine();

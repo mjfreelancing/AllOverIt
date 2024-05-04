@@ -5,9 +5,6 @@ using AllOverIt.Pagination.TokenEncoding;
 using AllOverIt.Serialization.Binary.Writers;
 using FakeItEasy;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using Xunit;
 
 namespace AllOverIt.Pagination.Tests.TokenEncoding
 {

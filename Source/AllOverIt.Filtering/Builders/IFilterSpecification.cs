@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Patterns.Specification;
-using System.Linq;
 
 namespace AllOverIt.Filtering.Builders
 {

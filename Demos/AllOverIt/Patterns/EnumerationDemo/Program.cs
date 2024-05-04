@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EnumerationDemo
+﻿namespace EnumerationDemo
 {
     internal class Program
     {

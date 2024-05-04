@@ -7,14 +7,8 @@ using AllOverIt.Serialization.Json.Newtonsoft.Converters;
 using FluentAssertions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using System;
-using System.IO;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
 {

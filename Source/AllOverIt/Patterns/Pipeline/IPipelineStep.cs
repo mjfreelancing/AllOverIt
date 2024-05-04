@@ -1,7 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-
-namespace AllOverIt.Patterns.Pipeline
+﻿namespace AllOverIt.Patterns.Pipeline
 {
     /// <summary>Represents a synchronous step within a pipeline sequence.</summary>
     /// <typeparam name="TIn">The input type for the provided pipeline step.</typeparam>

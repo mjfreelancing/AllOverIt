@@ -4,7 +4,6 @@
         <TargetFrameworks>net8.0;net7.0;net6.0;netstandard2.1</TargetFrameworks>
         <Description>This package contains general-purpose Serilog sinks and enrichers.</Description>
         <PackageTags>AllOverIt;Utilities;Serilog;Logging;Sink;Enricher</PackageTags>
-        <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 

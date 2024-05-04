@@ -1,8 +1,6 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Helpers;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
 
 namespace AllOverIt.Tests.Helpers
 {

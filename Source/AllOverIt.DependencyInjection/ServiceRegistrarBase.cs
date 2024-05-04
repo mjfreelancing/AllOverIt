@@ -1,13 +1,17 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.DependencyInjection.Exceptions;
 using AllOverIt.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AllOverIt.DependencyInjection
 {
-    /// <summary>Base class for service registrars that scan for, and register, service and implementation types located in the containing assembly.</summary>
+    /// <summary>Base class for service registrars that scan for, and register, service and implementation types located in the containing assembly.
+    /// If a class implements multiple interfaces, or includes an abstract class, and those service types are being searched, then each service
+    /// type will have its own registration against the implementation type with the service collection.
+    /// <br/><br/>
+    /// As an example, if ConcreteA implements IService1 and IService2, then resolving IService1 and IService2 will result in different ConcreteA
+    /// instances being resolved, even if they are registered as Scoped or a Singleton.
+    /// </summary>
     public abstract class ServiceRegistrarBase : IServiceRegistrar, IServiceRegistrarOptions
     {
         private readonly Lazy<IReadOnlyCollection<Type>> _implementationCandidates;

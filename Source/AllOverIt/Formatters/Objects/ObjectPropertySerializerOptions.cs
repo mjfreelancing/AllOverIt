@@ -1,7 +1,4 @@
 ﻿using AllOverIt.Reflection;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace AllOverIt.Formatters.Objects
 {

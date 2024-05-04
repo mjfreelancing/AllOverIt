@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading;
-
-namespace AllOverIt.Threading
+﻿namespace AllOverIt.Threading
 {
     // Internally, this class uses a default constructed ReaderWriterLockSlim object to perform all locking operations.
     // Refer to http://msdn.microsoft.com/en-us/library/system.threading.readerwriterlockslim(v=vs.110).aspx for more
@@ -10,10 +7,12 @@ namespace AllOverIt.Threading
     /// <inheritdoc cref="IReadWriteLock" />
     public sealed class ReadWriteLock : IReadWriteLock
     {
+        private bool _disposed;
+
         // Many threads can enter the read lock simultaneously.
         // Only one thread can enter an upgradeable lock but other threads can still enter a read lock.
         // Only one thread can enter a write lock and meanwhile no other thread can enter any other lock type.
-        private ReaderWriterLockSlim _slimLock;
+        private readonly ReaderWriterLockSlim _slimLock;
 
         /// <summary>Constructor.</summary>
         /// <remarks>Defaults to a non-recursive lock policy.</remarks>
@@ -110,8 +109,11 @@ namespace AllOverIt.Threading
         /// <summary>Disposes of the internal lock.</summary>
         public void Dispose()
         {
-            _slimLock?.Dispose();
-            _slimLock = null;
+            if (!_disposed)
+            {
+                _slimLock.Dispose();
+                _disposed = true;
+            }
         }
     }
 }

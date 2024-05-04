@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Aws.Cdk.AppSync.Attributes.Directives
+﻿namespace AllOverIt.Aws.Cdk.AppSync.Attributes.Directives
 {
     /// <summary>A base Authorization directive.</summary>
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Method)]

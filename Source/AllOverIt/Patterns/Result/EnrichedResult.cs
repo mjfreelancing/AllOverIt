@@ -1,7 +1,6 @@
 ﻿#nullable enable
 
 using AllOverIt.Assertion;
-using System;
 using System.Diagnostics.CodeAnalysis;
 
 namespace AllOverIt.Patterns.Result;

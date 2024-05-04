@@ -1,7 +1,5 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Serialization.Binary.Writers;
-using System;
-using System.Collections.Generic;
 
 namespace AllOverIt.Pagination.TokenEncoding
 {

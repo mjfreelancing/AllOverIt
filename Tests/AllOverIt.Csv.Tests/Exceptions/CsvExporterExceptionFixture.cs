@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Csv.Exceptions;
 using AllOverIt.Fixture;
-using Xunit;
 
 namespace AllOverIt.Csv.Tests.Exceptions
 {

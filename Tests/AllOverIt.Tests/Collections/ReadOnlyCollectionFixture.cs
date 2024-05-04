@@ -3,8 +3,6 @@ using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using FluentAssertions;
 using System.Collections;
-using System.Collections.Generic;
-using Xunit;
 
 namespace AllOverIt.Tests.Collections
 {
@@ -62,7 +60,7 @@ namespace AllOverIt.Tests.Collections
 
                 while (enumerator.MoveNext())
                 {
-                    results.Add((int)enumerator.Current);
+                    results.Add((int) enumerator.Current);
                 }
 
                 results.Should().BeEquivalentTo(_data);

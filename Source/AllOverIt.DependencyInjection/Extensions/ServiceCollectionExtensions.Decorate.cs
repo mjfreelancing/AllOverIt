@@ -3,9 +3,6 @@ using AllOverIt.Assertion;
 using AllOverIt.DependencyInjection.Exceptions;
 using AllOverIt.Extensions;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AllOverIt.DependencyInjection.Extensions
 {

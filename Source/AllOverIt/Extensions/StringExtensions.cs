@@ -1,8 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Reflection;
-using System;
 using System.ComponentModel;
-using System.IO;
 using System.Text;
 
 namespace AllOverIt.Extensions
@@ -32,16 +30,22 @@ namespace AllOverIt.Extensions
 
             if (valueType.IsEnum)
             {
-                return (TType)Enum.Parse(valueType, value, true);
+                return (TType) Enum.Parse(valueType, value, true);
             }
 
             if (valueType == CommonTypes.BoolType)
             {
                 switch (value)
                 {
-                    case "0": return (TType)Convert.ChangeType(false, valueType);
-                    case "1": return (TType)Convert.ChangeType(true, valueType);
-                    // fall through - true / false values will be converted via the type converter
+                    case "0":
+                        return (TType) Convert.ChangeType(false, valueType);
+
+                    case "1":
+                        return (TType) Convert.ChangeType(true, valueType);
+
+                    default:
+                        // fall through - true / false values will be converted via the type converter
+                        break;
                 }
             }
 
@@ -56,7 +60,7 @@ namespace AllOverIt.Extensions
             // will throw NotSupportedException if the conversion cannot be performed
             var converted = typeConverter.ConvertFromString(value);
 
-            return (TType)converted;
+            return (TType) converted;
         }
 
         /// <summary>Converts a given string to another nullable type.</summary>
@@ -74,7 +78,7 @@ namespace AllOverIt.Extensions
             if (typeof(TType).IsEnum)
             {
                 // will throw ArgumentException is 'ignoreCase = false' and the value cannot be found
-                return (TType)Enum.Parse(typeof(TType), value, true);
+                return (TType) Enum.Parse(typeof(TType), value, true);
             }
 
             // perform this after the enum conversion attempt

@@ -3,8 +3,6 @@ using AllOverIt.Evaluator.Variables;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.FakeItEasy;
 using FluentAssertions;
-using System;
-using Xunit;
 
 namespace AllOverIt.Evaluator.Tests
 {

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AllOverIt.EntityFrameworkCore.Diagrams
+﻿namespace AllOverIt.EntityFrameworkCore.Diagrams
 {
     /// <summary>Describes an entity column.</summary>
     public interface IColumnDescriptor

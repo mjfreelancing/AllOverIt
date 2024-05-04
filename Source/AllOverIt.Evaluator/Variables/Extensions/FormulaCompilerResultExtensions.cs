@@ -1,6 +1,4 @@
 using AllOverIt.Extensions;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AllOverIt.Evaluator.Variables.Extensions
 {

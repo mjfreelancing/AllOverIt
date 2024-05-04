@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.DependencyInjection
+﻿namespace AllOverIt.DependencyInjection
 {
     /// <summary>Represents the ability to register a service type by name.</summary>
     /// <typeparam name="TService">The service type to be registered by name.</typeparam>

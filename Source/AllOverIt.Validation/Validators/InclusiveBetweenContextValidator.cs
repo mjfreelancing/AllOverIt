@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Validation.Validators
+﻿namespace AllOverIt.Validation.Validators
 {
     /// <summary>A range validator that compares a property value against an inclusive upper and lower limit stored on the validation context.</summary>
     /// <typeparam name="TType">The model type containing the property to be validated.</typeparam>

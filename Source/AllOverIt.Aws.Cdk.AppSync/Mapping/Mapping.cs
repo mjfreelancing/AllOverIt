@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AllOverIt.Aws.Cdk.AppSync.Mapping
+﻿namespace AllOverIt.Aws.Cdk.AppSync.Mapping
 {
     /// <summary>Contains mapping helper functions.</summary>
     public static class Mapping

@@ -4,9 +4,7 @@ using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using FluentAssertions;
-using System;
 using System.Linq.Expressions;
-using Xunit;
 
 namespace AllOverIt.Evaluator.Tests.Operations
 {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading;
-
-namespace AllOverIt.Aws.AppSync.Client.Utils
+﻿namespace AllOverIt.Aws.AppSync.Client.Utils
 {
     // A CancellationTokenSource that can timeout and be linked with another CancellationTokenSource.
     internal sealed class TimeoutCancellationSource : IDisposable

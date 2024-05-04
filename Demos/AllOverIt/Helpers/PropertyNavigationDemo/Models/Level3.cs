@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace PropertyNavigationDemo.Models
+﻿namespace PropertyNavigationDemo.Models
 {
     public class Level3
     {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Threading
+﻿namespace AllOverIt.Threading
 {
     /// <summary>A lock that is used to manage access to a resource, allowing multiple threads for reading
     /// or exclusive access for writing. Unlike <see cref="IAwaitableLock"/>, this cannot be used with

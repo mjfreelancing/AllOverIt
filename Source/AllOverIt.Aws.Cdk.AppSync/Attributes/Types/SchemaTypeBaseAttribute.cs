@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Aws.Cdk.AppSync.Attributes.Types
+﻿namespace AllOverIt.Aws.Cdk.AppSync.Attributes.Types
 {
     // NOTE: Keep the 'Attribute' suffix (and not Base)
 

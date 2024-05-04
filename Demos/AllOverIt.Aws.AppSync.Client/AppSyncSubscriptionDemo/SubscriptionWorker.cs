@@ -11,10 +11,6 @@ using AllOverIt.Serialization.Json.Abstractions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AppSyncSubscriptionDemo
 {

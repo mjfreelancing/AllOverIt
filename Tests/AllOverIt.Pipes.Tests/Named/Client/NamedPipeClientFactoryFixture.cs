@@ -4,8 +4,6 @@ using AllOverIt.Pipes.Named.Client;
 using AllOverIt.Pipes.Named.Serialization;
 using FakeItEasy;
 using FluentAssertions;
-using System;
-using Xunit;
 
 namespace AllOverIt.Pipes.Tests.Named.Client
 {

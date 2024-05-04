@@ -2,14 +2,8 @@
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Process;
 using AllOverIt.Process.Extensions;
-using FakeItEasy.Sdk;
 using FluentAssertions;
-using Microsoft.VisualBasic.FileIO;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using Xunit;
 
 namespace AllOverIt.Tests.Process
 {

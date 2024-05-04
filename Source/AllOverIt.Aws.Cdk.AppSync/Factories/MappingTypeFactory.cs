@@ -1,7 +1,4 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync.Mapping;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using SystemType = System.Type;
 
 namespace AllOverIt.Aws.Cdk.AppSync.Factories

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.Serialization.Binary.Readers
+﻿namespace AllOverIt.Serialization.Binary.Readers
 {
     /// <inheritdoc cref="IEnrichedBinaryValueReader"/>
     public abstract class EnrichedBinaryValueReader : IEnrichedBinaryValueReader

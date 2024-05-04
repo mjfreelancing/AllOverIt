@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AllOverIt.DependencyInjection
+﻿namespace AllOverIt.DependencyInjection
 {
     /// <summary>Service registrar options that determine what service and implementation types are registered.</summary>
     public interface IServiceRegistrarOptions

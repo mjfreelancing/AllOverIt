@@ -1,8 +1,6 @@
 using AllOverIt.Patterns.Specification;
 using AllOverIt.Tests.Patterns.Specification.Dummies;
 using FluentAssertions;
-using Microsoft.VisualBasic;
-using Xunit;
 
 namespace AllOverIt.Tests.Patterns.Specification
 {

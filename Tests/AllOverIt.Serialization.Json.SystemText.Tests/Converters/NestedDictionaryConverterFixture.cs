@@ -2,11 +2,7 @@ using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Serialization.Json.SystemText.Converters;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
-using Xunit;
 
 namespace AllOverIt.Serialization.Json.SystemText.Tests.Converters
 {

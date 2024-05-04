@@ -1,7 +1,6 @@
 using AllOverIt.Fixture;
 using AllOverIt.Pagination.Extensions;
 using FluentAssertions;
-using Xunit;
 
 namespace AllOverIt.Pagination.Tests.Extensions
 {

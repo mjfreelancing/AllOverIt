@@ -3,10 +3,7 @@ using AllOverIt.Cryptography.AES.Exceptions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
-using System;
-using System.Linq;
 using System.Security.Cryptography;
-using Xunit;
 
 namespace AllOverIt.Cryptography.Tests.AES
 {

@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Assertion;
-using System;
 using System.Runtime.CompilerServices;
 using System.Windows.Threading;
 

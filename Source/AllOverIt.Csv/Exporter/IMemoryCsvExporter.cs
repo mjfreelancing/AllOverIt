@@ -1,7 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-
-namespace AllOverIt.Csv.Exporter
+﻿namespace AllOverIt.Csv.Exporter
 {
     /// <summary>Represents a buffered CSV exporter that caches rows of data that are flushed to memory when the buffer is full.</summary>
     /// <typeparam name="TModel">The model type representing the columns of each row to be exported.</typeparam>

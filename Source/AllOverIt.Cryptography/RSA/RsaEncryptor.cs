@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Cryptography.RSA.Exceptions;
 using AllOverIt.Extensions;
-using System.IO;
 using System.Security.Cryptography;
 
 using RSAAlgorithm = System.Security.Cryptography.RSA;
@@ -12,7 +11,7 @@ namespace AllOverIt.Cryptography.RSA
     public sealed class RsaEncryptor : IRsaEncryptor
     {
         private readonly IRsaFactory _rsaFactory;
-        
+
         private int? _maxInputLength;
 
         /// <inheritdoc />

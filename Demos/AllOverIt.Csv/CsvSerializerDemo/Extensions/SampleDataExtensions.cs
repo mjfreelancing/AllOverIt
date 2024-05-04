@@ -1,8 +1,6 @@
 ﻿using AllOverIt.Csv;
 using AllOverIt.Csv.Extensions;
 using CsvSerializerDemo.Data;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace CsvSerializerDemo.Extensions
 {

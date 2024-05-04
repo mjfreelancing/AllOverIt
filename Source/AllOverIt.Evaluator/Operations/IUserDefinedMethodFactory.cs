@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace AllOverIt.Evaluator.Operations
 {
     /// <summary>Represents a user defined method factory.</summary>

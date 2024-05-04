@@ -1,3 +1,17 @@
+#  Version 7.10.0
+## 04 May 2024
+
+### AllOverIt
+* Corrected namespace for VoidType (now AllOverIt.Types).
+* Breaking: Changed name of TypeExtensions.CreateList() to TypeExtensions.CreateListOf()
+* Breaking: Several sync methods updated to forward the CancellationToken to the selector: SelectAsync(),
+            SelectAsReadOnlyCollectionAsync(), SelectAsReadOnlyListAsync(), SelectToReadOnlyCollectionAsync(), SelectToArrayAsync(),
+            and SelectToListAsync().
+* Added SelectAsParallelAsync() to asynchronously invoke selectors in parallel, and with a maximum degree of parallelism.
+
+---
+
+
 #  Version 7.9.0
 ## 22 Apr 2024
 

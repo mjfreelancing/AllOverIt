@@ -1,7 +1,5 @@
 ﻿using AllOverIt.Serialization.Json.Abstractions;
 using AllOverIt.Serialization.Json.SystemText.Converters;
-using System;
-using System.Linq;
 using System.Text.Json;
 
 namespace AllOverIt.Serialization.Json.SystemText

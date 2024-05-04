@@ -1,8 +1,6 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using FluentAssertions;
-using System;
-using Xunit;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -38,7 +36,7 @@ namespace AllOverIt.Tests.Extensions
 
             // just to make sure the loop executes - the default binding used by ToPropertyDictionary() excludes private, protected and internal
             // and the GetPropertyInfo() method below does the same.
-            var expectedValues = new[]{ nameof(Person.FirstName), nameof(Person.Surname), nameof(Person.Age), nameof(Person.FullName) };
+            var expectedValues = new[] { nameof(Person.FirstName), nameof(Person.Surname), nameof(Person.Age), nameof(Person.FullName) };
 
             expectedValues.Should().BeEquivalentTo(valueLookup.Keys);
 

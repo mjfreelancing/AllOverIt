@@ -1,10 +1,7 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Reflection;
 using FluentAssertions;
-using System.Linq;
 using System.Reflection;
-using Xunit;
-using Xunit.Abstractions;
 
 namespace AllOverIt.Tests.Reflection
 {
@@ -37,7 +34,7 @@ namespace AllOverIt.Tests.Reflection
             [Fact]
             public void Should_Get_Field_In_Super()
             {
-                var actual = (object)ReflectionCache.GetFieldInfo<DummyFieldSuperClass>("Field4");
+                var actual = (object) ReflectionCache.GetFieldInfo<DummyFieldSuperClass>("Field4");
 
                 var expected = new
                 {
@@ -129,7 +126,7 @@ namespace AllOverIt.Tests.Reflection
 
             [Fact]
             public void Should_Get_Field_In_Base()
-{
+            {
                 var typeInfo = typeof(DummyFieldSuperClass).GetTypeInfo();
                 var actual = (object) ReflectionCache.GetFieldInfo(typeInfo, "Field1");
 

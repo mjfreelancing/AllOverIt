@@ -1,5 +1,4 @@
 ﻿using AllOverIt.EntityFrameworkCore.ValueConverters;
-using System;
 
 namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
 {

@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Assertion;
-using System.IO;
 using System.IO.Compression;
 
 namespace AllOverIt.Pagination.TokenEncoding

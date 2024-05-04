@@ -5,8 +5,6 @@ using AllOverIt.Serilog.Sinks.CircularBuffer;
 using FluentAssertions;
 using Serilog;
 using Serilog.Formatting.Display;
-using System;
-using System.Linq;
 
 namespace AllOverIt.Serilog.Tests.Sinks.CircularBuffer
 {

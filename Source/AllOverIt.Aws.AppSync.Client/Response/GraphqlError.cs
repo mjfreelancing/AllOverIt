@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AllOverIt.Aws.AppSync.Client.Response
+﻿namespace AllOverIt.Aws.AppSync.Client.Response
 {
     /// <summary>Contains graphql errors reported by AppSync.</summary>
     public sealed class GraphqlError

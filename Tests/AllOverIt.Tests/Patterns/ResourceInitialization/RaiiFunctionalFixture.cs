@@ -1,10 +1,7 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Patterns.ResourceInitialization;
 using FluentAssertions;
-using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace AllOverIt.Tests.Patterns.ResourceInitialization
 {
@@ -34,7 +31,7 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
 
             public void LogMessage(string message)
             {
-                _action.Invoke(message); ;
+                _action.Invoke(message);
             }
 
             public IDisposable GetProfiler(string title)

@@ -1,6 +1,4 @@
 ﻿#define USE_NEWTSONSOFT                 // Comment out to use System.Text
-using System;
-using System.Linq;
 using AllOverIt.Extensions;
 using AllOverIt.Serialization.Json.Abstractions.Extensions;
 

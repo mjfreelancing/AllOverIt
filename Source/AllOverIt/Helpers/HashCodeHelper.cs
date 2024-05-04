@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AllOverIt.Helpers
+﻿namespace AllOverIt.Helpers
 {
     /// <summary>Provides helper methods to assist with calculating hash codes from one or more values.</summary>
     public static class HashCodeHelper
