@@ -2,9 +2,7 @@
 
 using AllOverIt.Assertion;
 using AllOverIt.Plugin.Exceptions;
-using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Reflection;
 
 namespace AllOverIt.Plugin.Extensions
@@ -19,7 +17,7 @@ namespace AllOverIt.Plugin.Extensions
         /// <param name="assemblyName">The name of the assembly (without its extension) containing the required type.</param>
         /// <param name="typeName">The namespace qualified name of the type to create.</param>
         /// <returns>The created instance of <paramref name="typeName"/>.</returns>
-        public static object CreateType(this PluginLoadContext loadContext, string assemblyName, string typeName)
+        public static object? CreateType(this PluginLoadContext loadContext, string assemblyName, string typeName)
         {
             return loadContext.CreateType<object>(assemblyName, typeName);
         }
@@ -31,7 +29,7 @@ namespace AllOverIt.Plugin.Extensions
         /// <param name="typeName">The namespace qualified name of the type to create.</param>
         /// <param name="args">Arguments to be passed to the constructor of the required type.</param>
         /// <returns>The created instance of <paramref name="typeName"/>.</returns>
-        public static object CreateType(this PluginLoadContext loadContext, string assemblyName, string typeName, params object[] args)
+        public static object? CreateType(this PluginLoadContext loadContext, string assemblyName, string typeName, params object[] args)
         {
             return loadContext.CreateType<object>(assemblyName, typeName, args);
         }
@@ -43,9 +41,14 @@ namespace AllOverIt.Plugin.Extensions
         /// <param name="assemblyName">The name of the assembly (without its extension) containing the required type.</param>
         /// <param name="typeName">The namespace qualified name of the type to create.</param>
         /// <returns>The created instance of <paramref name="typeName"/> cast as a <typeparamref name="TType"/>.</returns>
-        public static TType CreateType<TType>(this PluginLoadContext loadContext, string assemblyName, string typeName) where TType : class
+        public static TType? CreateType<TType>(this PluginLoadContext loadContext, string assemblyName, string typeName) where TType : class
         {
             var requiredType = LoadTypeFromAssembly(loadContext, assemblyName, typeName);
+
+            if (requiredType is null)
+            {
+                return null;
+            }
 
             return Activator.CreateInstance(requiredType) as TType;
         }
@@ -58,16 +61,21 @@ namespace AllOverIt.Plugin.Extensions
         /// <param name="typeName">The namespace qualified name of the type to create.</param>
         /// <param name="args">Arguments to be passed to the constructor of the required type.</param>
         /// <returns>The created instance of <paramref name="typeName"/> cast as a <typeparamref name="TType"/>.</returns>
-        public static TType CreateType<TType>(this PluginLoadContext loadContext, string assemblyName, string typeName, params object[] args) where TType : class
+        public static TType? CreateType<TType>(this PluginLoadContext loadContext, string assemblyName, string typeName, params object[] args) where TType : class
         {
             var requiredType = LoadTypeFromAssembly(loadContext, assemblyName, typeName);
+
+            if (requiredType is null)
+            {
+                return null;
+            }
 
             return Activator.CreateInstance(requiredType, args) as TType;
         }
 
         // assemblyName must be the DLL name without the extension
-        // typeFullName must be namespace.typename
-        private static Type LoadTypeFromAssembly(PluginLoadContext loadContext, string assemblyName, string fullTypeName)
+        // typeFullName must be namespace.type_name
+        private static Type? LoadTypeFromAssembly(PluginLoadContext loadContext, string assemblyName, string fullTypeName)
         {
             var assemblyNameInfo = new AssemblyName(assemblyName);
             var assembly = loadContext.LoadFromAssemblyName(assemblyNameInfo);

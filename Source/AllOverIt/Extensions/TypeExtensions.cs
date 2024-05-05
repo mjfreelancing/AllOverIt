@@ -16,7 +16,7 @@ namespace AllOverIt.Extensions
         /// <returns>The property metadata, as <see cref="PropertyInfo"/>, of a specified property on the provided <paramref name="type"/>.</returns>
         /// <remarks>When class inheritance is involved, this method returns the first property found, starting at the type represented
         /// by <paramref name="type"/>.</remarks>
-        public static PropertyInfo GetPropertyInfo(this Type type, string propertyName)
+        public static PropertyInfo? GetPropertyInfo(this Type type, string propertyName)
         {
             return TypeInfoExtensions.GetPropertyInfo(type.GetTypeInfo(), propertyName);
         }
@@ -58,7 +58,7 @@ namespace AllOverIt.Extensions
         /// <returns>The field metadata, as <see cref="FieldInfo"/>, of a specified field on the provided <paramref name="type"/>.</returns>
         /// <remarks>When class inheritance is involved, this method returns the first field found, starting at the type represented
         /// by <paramref name="type"/>.</remarks>
-        public static FieldInfo GetFieldInfo(this Type type, string fieldName)
+        public static FieldInfo? GetFieldInfo(this Type type, string fieldName)
         {
             return TypeInfoExtensions.GetFieldInfo(type.GetTypeInfo(), fieldName);
         }
@@ -127,7 +127,7 @@ namespace AllOverIt.Extensions
         /// <param name="name">The name of the method.</param>
         /// <returns>The method metadata, as <see cref="MethodInfo"/>, of a provided <see cref="Type"/> with a given name and no arguments.</returns>
         /// <remarks>All instance, static, public, and non-public methods are searched.</remarks>
-        public static MethodInfo GetMethodInfo(this Type type, string name)
+        public static MethodInfo? GetMethodInfo(this Type type, string name)
         {
             return GetMethodInfo(type, name, Type.EmptyTypes);
         }
@@ -138,7 +138,7 @@ namespace AllOverIt.Extensions
         /// <param name="types">The argument types expected on the method</param>
         /// <returns>The method metadata, as <see cref="MethodInfo"/>, of a provided <see cref="Type"/> with a given name and argument types.</returns>
         /// <remarks>All instance, static, public, and non-public methods are searched.</remarks>
-        public static MethodInfo GetMethodInfo(this Type type, string name, Type[] types)
+        public static MethodInfo? GetMethodInfo(this Type type, string name, Type[] types)
         {
             return type.GetMethod(
               name,
@@ -224,7 +224,7 @@ namespace AllOverIt.Extensions
         /// it is expected to have a single generic argument type, such as <see cref="IEnumerable{TType}"/> or <see cref="IList{TType}"/>.</summary>
         /// <param name="type">The type to get the element type for.</param>
         /// <returns>The element type for any type assignable from <see cref="IEnumerable"/> (or an array).</returns>
-        public static Type GetEnumerableElementType(this Type type)
+        public static Type? GetEnumerableElementType(this Type type)
         {
             Throw<InvalidOperationException>.When(!CommonTypes.IEnumerableType.IsAssignableFrom(type), $"{type.GetFriendlyName()} is not an {nameof(IEnumerable)}.");
 
@@ -272,15 +272,18 @@ namespace AllOverIt.Extensions
             _ = type.WhenNotNull(nameof(type));
             _ = fromType.WhenNotNull(nameof(fromType));
 
-            while (type != null && type != CommonTypes.ObjectType)
+            // Treated as Type? due to 'is not null' check below
+            var nextType = type;
+
+            while (nextType is not null && nextType != CommonTypes.ObjectType)
             {
-                if (fromType.IsRawGenericType(type))
+                if (fromType.IsRawGenericType(nextType))
                 {
                     return true;
                 }
 
                 // Will be null when the type is an interface
-                type = type.BaseType;
+                nextType = nextType.BaseType;
             }
 
             return false;
@@ -323,7 +326,7 @@ namespace AllOverIt.Extensions
         /// <param name="type">The source type to be searched.</param>
         /// <param name="genericTypeDefinition">The generic type definition to look for.</param>
         /// <returns>The resolved type if found, otherwise <see langword="null"/>.</returns>
-        public static Type GetBaseGenericTypeDefinition(this Type type, Type genericTypeDefinition)
+        public static Type? GetBaseGenericTypeDefinition(this Type type, Type genericTypeDefinition)
         {
             bool IsMatch(Type candidate)
             {
@@ -402,7 +405,7 @@ namespace AllOverIt.Extensions
         /// <param name="type">The type containing the static method.</param>
         /// <param name="methodName">The name of the static method.</param>
         /// <returns>The method info for a static method.</returns>
-        public static MethodInfo GetStaticMethod(this Type type, string methodName)
+        public static MethodInfo? GetStaticMethod(this Type type, string methodName)
         {
             return type.GetMethod(methodName, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
         }
@@ -411,7 +414,7 @@ namespace AllOverIt.Extensions
         /// <param name="type">The type containing the instance method.</param>
         /// <param name="methodName">The name of the instance method.</param>
         /// <returns>The method info for an instance method.</returns>
-        public static MethodInfo GetInstanceMethod(this Type type, string methodName)
+        public static MethodInfo? GetInstanceMethod(this Type type, string methodName)
         {
             return type.GetMethod(methodName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
         }
@@ -423,7 +426,7 @@ namespace AllOverIt.Extensions
         {
             var listType = CommonTypes.ListGenericType.MakeGenericType([type]);
 
-            return (IList) Activator.CreateInstance(listType);
+            return (IList) Activator.CreateInstance(listType)!;
         }
 
         private static bool IsRawGenericType(this Type type, Type generic)

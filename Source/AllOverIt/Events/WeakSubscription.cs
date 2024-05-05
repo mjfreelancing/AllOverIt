@@ -18,7 +18,7 @@ namespace AllOverIt.Events
             _handlerType = handler.GetType();
         }
 
-        public Action<TMessage> GetHandler<TMessage>()
+        public Action<TMessage>? GetHandler<TMessage>()
         {
             if (_handlerMethod.IsStatic)
             {

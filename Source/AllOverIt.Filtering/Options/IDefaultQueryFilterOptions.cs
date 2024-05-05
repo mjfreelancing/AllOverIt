@@ -5,7 +5,7 @@ using AllOverIt.Filtering.Filters;
 namespace AllOverIt.Filtering.Options
 {
     /// <summary>Represents the default query filter options that control how predicates are built using an <see cref="IFilterBuilder{TType, TFilter}"/>.
-    /// These options are considered as the defaults for the creation of all filter specifications unless overriden when provided as 
+    /// These options are considered as the defaults for the creation of all filter specifications unless overridden when provided as 
     /// <see cref="OperationFilterOptions"/> (initially copied from these defaults) via <see cref="IFilterSpecificationBuilder{TType, TFilter}"/>.</summary>
     public interface IDefaultQueryFilterOptions
     {

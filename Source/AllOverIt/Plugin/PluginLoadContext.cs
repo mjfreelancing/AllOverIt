@@ -28,7 +28,7 @@ namespace AllOverIt.Plugin
         }
 
         /// <inheritdoc/>
-        protected override Assembly Load(AssemblyName assemblyName)
+        protected override Assembly? Load(AssemblyName assemblyName)
         {
             var assemblyPath = _resolver.ResolveAssemblyToPath(assemblyName);
 

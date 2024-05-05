@@ -16,7 +16,7 @@ namespace AllOverIt.Aspects
         internal TServiceType? _serviceInstance;
 
         /// <summary>Determines if this interceptor should be invoked for the provided target method. All methods will pass
-        /// through this interceptor if not overriden.</summary>
+        /// through this interceptor if not overridden.</summary>
         /// <param name="targetMethod">The method info for the method being intercepted.</param>
         /// <returns><see langword="True"/> if the interceptor can handle the method, otherwise <see langword="False"/>.</returns>
         protected virtual bool CanInterceptMethod([NotNullWhen(true)] MethodInfo? targetMethod)

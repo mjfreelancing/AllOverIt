@@ -72,7 +72,7 @@ namespace AllOverIt.Reflection
         /// <param name="type">The type to get the <see cref="FieldInfo"/> for.</param>
         /// <param name="bindingOptions">The binding option that determines the scope, access, and visibility rules to apply when searching for the <see cref="FieldInfo"/>.</param>
         /// <param name="declaredOnly">If true, the metadata of properties in the declared class as well as base class(es) are returned (if a property is
-        /// overriden then only the base class <see cref="FieldInfo"/> is returned). If false, only property metadata of the declared type is returned.</param>
+        /// overridden then only the base class <see cref="FieldInfo"/> is returned). If false, only property metadata of the declared type is returned.</param>
         /// <param name="valueResolver">The factory method to obtain the required <see cref="FieldInfo"/>.</param>
         /// <returns>The <see cref="FieldInfo"/> for a given <see cref="Type"/> and options from the default cache.</returns>
         public static IEnumerable<FieldInfo> GetFieldInfo(Type type, BindingOptions bindingOptions = BindingOptions.Default, bool declaredOnly = false,
@@ -87,7 +87,7 @@ namespace AllOverIt.Reflection
         /// is not in the cache then it will be obtained using the <paramref name="valueResolver"/> and added to the cache before returning.</summary>
         /// <param name="typeInfo">The <see cref="TypeInfo"/> to get the <see cref="FieldInfo"/> for.</param>
         /// <param name="declaredOnly">If true, the metadata of properties in the declared class as well as base class(es) are returned (if a property is
-        /// overriden then only the base class <see cref="FieldInfo"/> is returned). If false, only property metadata of the declared type is returned.</param>
+        /// overridden then only the base class <see cref="FieldInfo"/> is returned). If false, only property metadata of the declared type is returned.</param>
         /// <param name="valueResolver">The factory method to obtain the required <see cref="FieldInfo"/>.</param>
         /// <returns>The <see cref="FieldInfo"/> for a given <see cref="TypeInfo"/> and options from the default cache.</returns>
         public static IEnumerable<FieldInfo> GetFieldInfo(TypeInfo typeInfo, bool declaredOnly = false,
