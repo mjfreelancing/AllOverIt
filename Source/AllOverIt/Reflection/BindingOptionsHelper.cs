@@ -49,7 +49,7 @@ namespace AllOverIt.Reflection
 
                 // At least one scope, accessor, and visibility predicate will succeed
                 return scopePredicate!.And(accessorPredicate!).And(visibilityPredicate!).Compile();
-            });
+            })!;
         }
 
         internal static Func<FieldInfo, bool> BuildFieldInfoBindingPredicate(BindingOptions bindingOptions)
@@ -90,7 +90,7 @@ namespace AllOverIt.Reflection
 
                 // At least one scope and visibility predicate will succeed
                 return scopePredicate!.And(visibilityPredicate!).Compile();
-            });
+            })!;
         }
 
         private static Expression<Func<MethodBase, bool>>? OrBindProperty(this Expression<Func<MethodBase, bool>>? expression,

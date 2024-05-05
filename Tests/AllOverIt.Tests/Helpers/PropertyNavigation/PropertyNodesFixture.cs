@@ -1,4 +1,5 @@
-﻿using AllOverIt.Fixture;
+﻿using AllOverIt.Extensions;
+using AllOverIt.Fixture;
 using AllOverIt.Helpers.PropertyNavigation;
 using FluentAssertions;
 
@@ -6,8 +7,13 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation
 {
     public class PropertyNodesFixture : FixtureBase
     {
-        private class DummyObject
+        private class DummyObject1
         {
+        }
+
+        private class DummyObject2
+        {
+            public int Id { get; set; }
         }
 
         public class Constructor : PropertyNodesFixture
@@ -15,15 +21,15 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation
             [Fact]
             public void Should_Contain_Object_Type()
             {
-                var actual = new PropertyNodes<DummyObject>();
+                var actual = new PropertyNodes<DummyObject1>();
 
-                actual.ObjectType.Should().Be(typeof(DummyObject));
+                actual.ObjectType.Should().Be(typeof(DummyObject1));
             }
 
             [Fact]
             public void Should_Contain_No_Nodes()
             {
-                var actual = new PropertyNodes<DummyObject>();
+                var actual = new PropertyNodes<DummyObject1>();
 
                 actual.Nodes.Should().BeEmpty();
             }
@@ -34,9 +40,16 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation
             [Fact]
             public void Should_Return_Nodes()
             {
-                var expected = new[] { new PropertyNode(), new PropertyNode(), new PropertyNode() };
+                var memberExpression = ExpressionExtensions.GetParameterPropertyOrFieldExpression<DummyObject2, int>(subject => subject.Id);
 
-                var actual = new PropertyNodes<DummyObject>(expected);
+                PropertyNode[] expected =
+                [
+                    new PropertyNode { Expression = memberExpression },
+                    new PropertyNode { Expression = memberExpression },
+                    new PropertyNode { Expression = memberExpression }
+                ];
+
+                var actual = new PropertyNodes<DummyObject1>(expected);
 
                 expected.Should().BeEquivalentTo(actual.Nodes);
             }

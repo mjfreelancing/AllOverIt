@@ -73,7 +73,7 @@ namespace AllOverIt.Process
         }
 
         [ExcludeFromCodeCoverage]
-        private async Task DoExecuteAsync(DataReceivedEventHandler standardOutputHandler, DataReceivedEventHandler errorOutputHandler,
+        private async Task DoExecuteAsync(DataReceivedEventHandler? standardOutputHandler, DataReceivedEventHandler? errorOutputHandler,
             CancellationToken cancellationToken)
         {
             if (standardOutputHandler is not null)
@@ -100,7 +100,7 @@ namespace AllOverIt.Process
                 _process.BeginErrorReadLine();
             }
 
-            Exception processException = null;
+            Exception? processException = null;
 
             try
             {

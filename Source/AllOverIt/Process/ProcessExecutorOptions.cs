@@ -12,10 +12,10 @@ namespace AllOverIt.Process
         public string ProcessFileName { get; }
 
         /// <summary>The working directory of the process being executed.</summary>
-        public string WorkingDirectory { get; init; }
+        public string? WorkingDirectory { get; init; }
 
         /// <summary>The arguments to be passed to the process being executed.</summary>
-        public string Arguments { get; init; }
+        public string? Arguments { get; init; }
 
         /// <summary>Indicates whether to start the process in a new window.</summary>
         public bool NoWindow { get; init; }
@@ -25,13 +25,13 @@ namespace AllOverIt.Process
         public TimeSpan Timeout { get; init; }
 
         /// <summary>Additional environment variables to be provided specifically to the process, and any child processes, being executed.</summary>
-        public IDictionary<string, string> EnvironmentVariables { get; init; }
+        public IDictionary<string, string>? EnvironmentVariables { get; init; }
 
         /// <summary>A handler to receive standard output.</summary>
-        public DataReceivedEventHandler StandardOutputHandler { get; init; }
+        public DataReceivedEventHandler? StandardOutputHandler { get; init; }
 
         /// <summary>A handler to receive error output.</summary>
-        public DataReceivedEventHandler ErrorOutputHandler { get; init; }
+        public DataReceivedEventHandler? ErrorOutputHandler { get; init; }
 
         /// <summary>Constructor.</summary>
         /// <param name="processFileName">The name of the process to be executed. This should be fully qualified if the process cannot be found on the system path.</param>
