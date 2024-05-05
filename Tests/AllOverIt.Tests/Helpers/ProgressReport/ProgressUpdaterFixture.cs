@@ -98,6 +98,28 @@ namespace AllOverIt.Tests.Helpers.ProgressReport
 
                 actual.Should().BeEquivalentTo(expected);
             }
+
+            [Fact]
+            public void Should_Notify_Expected_Text()
+            {
+                string[] progressTest = ["", null, "a", "b", null, "", null, "c", null, null];
+
+                var actual = new List<string>();
+
+                var updater = ProgressUpdater.Create(progressTest.Length, 1, state =>
+                {
+                    actual.Add(state.Text);
+                });
+
+                for (var i = 0; i < progressTest.Length; i++)
+                {
+                    updater.Invoke(_ => progressTest[i]);
+                }
+
+                string[] expected = ["", "", "a", "b", "b", "", "", "c", "c", "c"];
+
+                actual.Should().BeEquivalentTo(expected);
+            }
         }
     }
 }

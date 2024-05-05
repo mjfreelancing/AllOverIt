@@ -45,7 +45,7 @@ namespace AllOverIt.Helpers.ProgressReport
                     var state = new ProgressState
                     {
                         Progress = progress,
-                        Text = text
+                        Text = progressText
                     };
 
                     notifier.Invoke(state);
