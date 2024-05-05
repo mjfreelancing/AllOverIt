@@ -1,4 +1,13 @@
 #  Version 7.10.0
+## 06 May 2024
+
+### AllOverIt
+* Fixed progress text reported by ProgressUpdater when the caller returns null so it reports the previous progress text.
+
+---
+
+
+#  Version 7.10.0
 ## 04 May 2024
 
 ### AllOverIt
