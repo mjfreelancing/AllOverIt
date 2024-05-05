@@ -59,7 +59,7 @@
                     }
                     finally
                     {
-                        ((CancellationTokenSource) state).Cancel();
+                        ((CancellationTokenSource) state!).Cancel();
                     }
                 }, cancellationTokenSource, CancellationToken.None);
 

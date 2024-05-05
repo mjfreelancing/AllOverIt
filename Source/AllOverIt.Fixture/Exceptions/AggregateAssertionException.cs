@@ -4,7 +4,7 @@
     public sealed class AggregateAssertionException : Exception
     {
         /// <summary>The unhandled exception to report.</summary>
-        public AggregateException UnhandledException { get; }
+        public AggregateException? UnhandledException { get; }
 
         /// <summary>Constructor.</summary>
         public AggregateAssertionException()
