@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Reflection;
 using FluentAssertions;
 using System.Reflection;
@@ -69,6 +70,42 @@ namespace AllOverIt.Tests.Reflection
         public class GetPropertyInfo_Typed_PropertyName : ReflectionCacheFixture
         {
             [Fact]
+            public void Should_Throw_When_Property_Name_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = ReflectionCache.GetPropertyInfo<DummyPropertyMethodSuperClass>(null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("propertyName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Property_Name_Empty()
+            {
+                Invoking(() =>
+                {
+                    _ = ReflectionCache.GetPropertyInfo<DummyPropertyMethodSuperClass>(string.Empty);
+                })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("propertyName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Property_Name_Whitespace()
+            {
+                Invoking(() =>
+                {
+                    _ = ReflectionCache.GetPropertyInfo<DummyPropertyMethodSuperClass>("   ");
+                })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("propertyName");
+            }
+
+            [Fact]
             public void Should_Get_Property_In_Super()
             {
                 var actual = (object) ReflectionCache.GetPropertyInfo<DummyPropertyMethodSuperClass>("Prop3");
@@ -108,6 +145,54 @@ namespace AllOverIt.Tests.Reflection
         public class GetPropertyInfo_Type_PropertyName : ReflectionCacheFixture
         {
             [Fact]
+            public void Should_Throw_When_Type_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = ReflectionCache.GetPropertyInfo((Type) null, Create<string>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("type");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Property_Name_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = ReflectionCache.GetPropertyInfo(typeof(DummyPropertyMethodSuperClass), null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("propertyName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Property_Name_Empty()
+            {
+                Invoking(() =>
+                {
+                    _ = ReflectionCache.GetPropertyInfo(typeof(DummyPropertyMethodSuperClass), string.Empty);
+                })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("propertyName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Property_Name_Whitespace()
+            {
+                Invoking(() =>
+                {
+                    _ = ReflectionCache.GetPropertyInfo(typeof(DummyPropertyMethodSuperClass), "   ");
+                })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("propertyName");
+            }
+
+            [Fact]
             public void Should_Get_Property_In_Super()
             {
                 var actual = (object) ReflectionCache.GetPropertyInfo(typeof(DummyPropertyMethodSuperClass), "Prop3");
@@ -146,6 +231,60 @@ namespace AllOverIt.Tests.Reflection
 
         public class GetPropertyInfo_TypeInfo_PropertyName : ReflectionCacheFixture
         {
+            [Fact]
+            public void Should_Throw_When_TypeInfo_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = ReflectionCache.GetPropertyInfo((TypeInfo) null, Create<string>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("typeInfo");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Property_Name_Null()
+            {
+                Invoking(() =>
+                {
+                    var typeInfo = typeof(DummyPropertyMethodSuperClass).GetTypeInfo();
+
+                    _ = ReflectionCache.GetPropertyInfo(typeInfo, null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("propertyName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Property_Name_Empty()
+            {
+                Invoking(() =>
+                {
+                    var typeInfo = typeof(DummyPropertyMethodSuperClass).GetTypeInfo();
+
+                    _ = ReflectionCache.GetPropertyInfo(typeInfo, string.Empty);
+                })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("propertyName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Property_Name_Whitespace()
+            {
+                Invoking(() =>
+                {
+                    var typeInfo = typeof(DummyPropertyMethodSuperClass).GetTypeInfo();
+
+                    _ = ReflectionCache.GetPropertyInfo(typeInfo, "   ");
+                })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("propertyName");
+            }
+
             [Fact]
             public void Should_Get_Property_In_Super()
             {
@@ -256,6 +395,18 @@ namespace AllOverIt.Tests.Reflection
         public class GetPropertyInfo_Type_Bindings : ReflectionCacheFixture
         {
             [Fact]
+            public void Should_Throw_When_Type_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = ReflectionCache.GetPropertyInfo((Type) null, BindingOptions.Default);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("type");
+            }
+
+            [Fact]
             public void Should_Use_Default_Binding_Not_Declared_Only()
             {
                 var actual = ReflectionCache.GetPropertyInfo(typeof(DummyPropertyMethodSuperClass));
@@ -322,6 +473,18 @@ namespace AllOverIt.Tests.Reflection
 
         public class GetPropertyInfo_TypeInfo : ReflectionCacheFixture
         {
+            [Fact]
+            public void Should_Throw_When_TypeInfo_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = ReflectionCache.GetPropertyInfo((TypeInfo) null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("typeInfo");
+            }
+
             [Fact]
             public void Should_Get_Declared_Only()
             {

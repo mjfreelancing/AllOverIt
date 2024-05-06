@@ -1,4 +1,5 @@
-﻿using AllOverIt.Caching;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Caching;
 using AllOverIt.Extensions;
 using System.Reflection;
 
@@ -9,59 +10,67 @@ namespace AllOverIt.Reflection
     {
         private static readonly GenericCache FieldInfoCache = [];
 
-        /// <summary>Gets the <see cref="FieldInfo"/> (property metadata) for a given property on a <typeparamref name="TType"/> from the default cache.
+        /// <summary>Gets the <see cref="FieldInfo"/> (field metadata) for a given field on a <typeparamref name="TType"/> from the default cache.
         /// If the <see cref="FieldInfo"/> is not in the cache then it will be obtained using the <paramref name="valueResolver"/> and added to the
         /// cache before returning.</summary>
-        /// <typeparam name="TType">The type to obtain the property metadata from.</typeparam>
-        /// <param name="propertyName">The property name.</param>
+        /// <typeparam name="TType">The type to obtain the field metadata from.</typeparam>
+        /// <param name="fieldName">The field name.</param>
         /// <param name="valueResolver">The factory method to obtain the required <see cref="FieldInfo"/>.</param>
-        /// <returns>The property metadata, as <see cref="FieldInfo"/>, of a specified property on the specified <typeparamref name="TType"/>.</returns>
-        /// <remarks>When class inheritance is involved, this method returns the first property found, starting at the type represented
+        /// <returns>The field metadata, as <see cref="FieldInfo"/>, of a specified field on the specified <typeparamref name="TType"/>.</returns>
+        /// <remarks>When class inheritance is involved, this method returns the first field found, starting at the type represented
         /// by <typeparamref name="TType"/>.</remarks>
-        public static FieldInfo GetFieldInfo<TType>(string propertyName, Func<GenericCacheKeyBase, FieldInfo>? valueResolver = default)
+        public static FieldInfo? GetFieldInfo<TType>(string fieldName, Func<GenericCacheKeyBase, FieldInfo>? valueResolver = default)
         {
+            _ = fieldName.WhenNotNullOrEmpty(nameof(fieldName));
+
             var typeInfo = typeof(TType).GetTypeInfo();
 
-            return GetFieldInfo(typeInfo, propertyName, valueResolver);
+            return GetFieldInfo(typeInfo, fieldName, valueResolver);
         }
 
-        /// <summary>Gets the <see cref="PropertyInfo"/> for a given property on a <see cref="Type"/> from the default cache. If the <see cref="FieldInfo"/>
+        /// <summary>Gets the <see cref="PropertyInfo"/> for a given field on a <see cref="Type"/> from the default cache. If the <see cref="FieldInfo"/>
         /// is not in the cache then it will be obtained using the <paramref name="valueResolver"/> and added to the cache before returning.</summary>
         /// <param name="type"></param>
-        /// <param name="propertyName">The property name.</param>
+        /// <param name="fieldName">The field name.</param>
         /// <param name="valueResolver">The factory method to obtain the required <see cref="FieldInfo"/>.</param>
-        /// <returns>The <see cref="FieldInfo"/> for a given property on a <see cref="Type"/> from the default cache.</returns>
-        public static FieldInfo GetFieldInfo(Type type, string propertyName, Func<GenericCacheKeyBase, FieldInfo>? valueResolver = default)
+        /// <returns>The <see cref="FieldInfo"/> for a given field on a <see cref="Type"/> from the default cache.</returns>
+        public static FieldInfo? GetFieldInfo(Type type, string fieldName, Func<GenericCacheKeyBase, FieldInfo>? valueResolver = default)
         {
-            return GetFieldInfo(type.GetTypeInfo(), propertyName, valueResolver);
+            _ = type.WhenNotNull(nameof(type));
+            _ = fieldName.WhenNotNullOrEmpty(nameof(fieldName));
+
+            return GetFieldInfo(type.GetTypeInfo(), fieldName, valueResolver);
         }
 
-        /// <summary>Gets the <see cref="FieldInfo"/> for a given property on a <see cref="TypeInfo"/> from the default cache. If the
+        /// <summary>Gets the <see cref="FieldInfo"/> for a given field on a <see cref="TypeInfo"/> from the default cache. If the
         /// <see cref="FieldInfo"/> is not in the cache then it will be obtained using the <paramref name="valueResolver"/> and added to the
         /// cache before returning.</summary>
         /// <param name="typeInfo">The <see cref="TypeInfo"/> to get the <see cref="FieldInfo"/> for.</param>
-        /// <param name="propertyName">The property name.</param>
+        /// <param name="fieldName">The field name.</param>
         /// <param name="valueResolver">The factory method to obtain the required <see cref="FieldInfo"/>.</param>
-        /// <returns>The <see cref="FieldInfo"/> for a given property on a <see cref="TypeInfo"/> from the default cache.</returns>
-        public static FieldInfo GetFieldInfo(TypeInfo typeInfo, string propertyName, Func<GenericCacheKeyBase, FieldInfo>? valueResolver = default)
+        /// <returns>The <see cref="FieldInfo"/> for a given field on a <see cref="TypeInfo"/> from the default cache.</returns>
+        public static FieldInfo? GetFieldInfo(TypeInfo typeInfo, string fieldName, Func<GenericCacheKeyBase, FieldInfo>? valueResolver = default)
         {
-            var key = new GenericCacheKey<TypeInfo, string>(typeInfo, propertyName);
+            _ = typeInfo.WhenNotNull(nameof(typeInfo));
+            _ = fieldName.WhenNotNullOrEmpty(nameof(fieldName));
+
+            var key = new GenericCacheKey<TypeInfo, string>(typeInfo, fieldName);
 
             return FieldInfoCache.GetOrAdd(key, valueResolver ?? GetFieldInfoFromTypeInfoPropertyName());
         }
 
-        /// <summary>Gets <see cref="FieldInfo"/> (property metadata) for a given <typeparamref name="TType"/> and options from the default cache.
+        /// <summary>Gets <see cref="FieldInfo"/> (field metadata) for a given <typeparamref name="TType"/> and options from the default cache.
         /// If the <see cref="FieldInfo"/> is not in the cache then it will be obtained using the <paramref name="valueResolver"/> and added to the
         /// cache before returning.</summary>
-        /// <typeparam name="TType">The type to obtain property metadata for.</typeparam>
+        /// <typeparam name="TType">The type to obtain field metadata for.</typeparam>
         /// <param name="bindingOptions">The binding option that determines the scope, access, and visibility rules to apply when searching for the <see cref="FieldInfo"/>.</param>
         /// <param name="declaredOnly">If true, the metadata of properties in the declared class as well as base class(es) are returned.
-        /// If false, only property metadata of the declared type is returned.</param>
+        /// If false, only field metadata of the declared type is returned.</param>
         /// <param name="valueResolver">The factory method to obtain the required <see cref="FieldInfo"/>.</param>
-        /// <returns>The property metadata, as <see cref="FieldInfo"/>, of a specified <typeparamref name="TType"/>.</returns>
-        /// <remarks>When class inheritance is involved, this method returns the first property found, starting at the type represented
+        /// <returns>The field metadata, as <see cref="FieldInfo"/>, of a specified <typeparamref name="TType"/>.</returns>
+        /// <remarks>When class inheritance is involved, this method returns the first field found, starting at the type represented
         /// by <typeparamref name="TType"/>.</remarks>
-        public static IEnumerable<FieldInfo> GetFieldInfo<TType>(BindingOptions bindingOptions = BindingOptions.Default, bool declaredOnly = false,
+        public static IEnumerable<FieldInfo>? GetFieldInfo<TType>(BindingOptions bindingOptions = BindingOptions.Default, bool declaredOnly = false,
             Func<GenericCacheKeyBase, IEnumerable<FieldInfo>>? valueResolver = default)
         {
             return GetFieldInfo(typeof(TType), bindingOptions, declaredOnly, valueResolver);
@@ -71,13 +80,15 @@ namespace AllOverIt.Reflection
         /// is not in the cache then it will be obtained using the <paramref name="valueResolver"/> and added to the cache before returning.</summary>
         /// <param name="type">The type to get the <see cref="FieldInfo"/> for.</param>
         /// <param name="bindingOptions">The binding option that determines the scope, access, and visibility rules to apply when searching for the <see cref="FieldInfo"/>.</param>
-        /// <param name="declaredOnly">If true, the metadata of properties in the declared class as well as base class(es) are returned (if a property is
-        /// overridden then only the base class <see cref="FieldInfo"/> is returned). If false, only property metadata of the declared type is returned.</param>
+        /// <param name="declaredOnly">If true, the metadata of properties in the declared class as well as base class(es) are returned (if a field is
+        /// overridden then only the base class <see cref="FieldInfo"/> is returned). If false, only field metadata of the declared type is returned.</param>
         /// <param name="valueResolver">The factory method to obtain the required <see cref="FieldInfo"/>.</param>
         /// <returns>The <see cref="FieldInfo"/> for a given <see cref="Type"/> and options from the default cache.</returns>
-        public static IEnumerable<FieldInfo> GetFieldInfo(Type type, BindingOptions bindingOptions = BindingOptions.Default, bool declaredOnly = false,
+        public static IEnumerable<FieldInfo>? GetFieldInfo(Type type, BindingOptions bindingOptions = BindingOptions.Default, bool declaredOnly = false,
             Func<GenericCacheKeyBase, IEnumerable<FieldInfo>>? valueResolver = default)
         {
+            _ = type.WhenNotNull(nameof(type));
+
             var key = new GenericCacheKey<Type, BindingOptions, bool>(type, bindingOptions, declaredOnly);
 
             return FieldInfoCache.GetOrAdd(key, valueResolver ?? GetFieldInfoFromTypeBindingDeclaredOnly());
@@ -86,13 +97,15 @@ namespace AllOverIt.Reflection
         /// <summary>Gets all <see cref="FieldInfo"/> for a given <see cref="Type"/> and options from the default cache. If the <see cref="FieldInfo"/>
         /// is not in the cache then it will be obtained using the <paramref name="valueResolver"/> and added to the cache before returning.</summary>
         /// <param name="typeInfo">The <see cref="TypeInfo"/> to get the <see cref="FieldInfo"/> for.</param>
-        /// <param name="declaredOnly">If true, the metadata of properties in the declared class as well as base class(es) are returned (if a property is
-        /// overridden then only the base class <see cref="FieldInfo"/> is returned). If false, only property metadata of the declared type is returned.</param>
+        /// <param name="declaredOnly">If true, the metadata of properties in the declared class as well as base class(es) are returned (if a field is
+        /// overridden then only the base class <see cref="FieldInfo"/> is returned). If false, only field metadata of the declared type is returned.</param>
         /// <param name="valueResolver">The factory method to obtain the required <see cref="FieldInfo"/>.</param>
         /// <returns>The <see cref="FieldInfo"/> for a given <see cref="TypeInfo"/> and options from the default cache.</returns>
-        public static IEnumerable<FieldInfo> GetFieldInfo(TypeInfo typeInfo, bool declaredOnly = false,
+        public static IEnumerable<FieldInfo>? GetFieldInfo(TypeInfo typeInfo, bool declaredOnly = false,
             Func<GenericCacheKeyBase, IEnumerable<FieldInfo>>? valueResolver = default)
         {
+            _ = typeInfo.WhenNotNull(nameof(typeInfo));
+
             var key = new GenericCacheKey<TypeInfo, bool>(typeInfo, declaredOnly);
 
             return FieldInfoCache.GetOrAdd(key, valueResolver ?? GetFieldInfoFromTypeInfoDeclaredOnly());
@@ -104,9 +117,9 @@ namespace AllOverIt.Reflection
             {
                 var (type, bindingOptions, declaredOnly) = (GenericCacheKey<Type, BindingOptions, bool>) key;
 
-                return type
+                return type!
                     .GetFieldInfo(bindingOptions, declaredOnly)
-                    .AsReadOnlyCollection();
+                    .ToArray();
             };
         }
 
@@ -116,9 +129,9 @@ namespace AllOverIt.Reflection
             {
                 var (typeInfo, declaredOnly) = (GenericCacheKey<TypeInfo, bool>) key;
 
-                return typeInfo
+                return typeInfo!
                     .GetFieldInfo(declaredOnly)
-                    .AsReadOnlyCollection();
+                    .ToArray();
             };
         }
 
@@ -128,7 +141,7 @@ namespace AllOverIt.Reflection
             {
                 var (typeInfo, propertyName) = (GenericCacheKey<TypeInfo, string>) key;
 
-                return typeInfo.GetFieldInfo(propertyName);
+                return typeInfo!.GetFieldInfo(propertyName!)!;
             };
         }
     }

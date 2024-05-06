@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Reflection;
 using FluentAssertions;
 using System.Reflection;
@@ -31,6 +32,42 @@ namespace AllOverIt.Tests.Reflection
 
         public class GetFieldInfo_Typed_FieldName : ReflectionCacheFixture
         {
+            [Fact]
+            public void Should_Throw_When_Field_Name_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = ReflectionCache.GetFieldInfo<DummyFieldSuperClass>(null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("fieldName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Field_Name_Empty()
+            {
+                Invoking(() =>
+                {
+                    _ = ReflectionCache.GetFieldInfo<DummyFieldSuperClass>(string.Empty);
+                })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("fieldName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Field_Name_Whitespace()
+            {
+                Invoking(() =>
+                {
+                    _ = ReflectionCache.GetFieldInfo<DummyFieldSuperClass>("   ");
+                })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("fieldName");
+            }
+
             [Fact]
             public void Should_Get_Field_In_Super()
             {
@@ -71,6 +108,54 @@ namespace AllOverIt.Tests.Reflection
         public class GetFieldInfo_Type_FieldName : ReflectionCacheFixture
         {
             [Fact]
+            public void Should_Throw_When_Type_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = ReflectionCache.GetFieldInfo((Type) null, Create<string>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("type");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Field_Name_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = ReflectionCache.GetFieldInfo(typeof(DummyFieldSuperClass), null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("fieldName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Field_Name_Empty()
+            {
+                Invoking(() =>
+                {
+                    _ = ReflectionCache.GetFieldInfo(typeof(DummyFieldSuperClass), string.Empty);
+                })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("fieldName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Field_Name_Whitespace()
+            {
+                Invoking(() =>
+                {
+                    _ = ReflectionCache.GetFieldInfo(typeof(DummyFieldSuperClass), "   ");
+                })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("fieldName");
+            }
+
+            [Fact]
             public void Should_Get_Field_In_Super()
             {
                 var actual = (object) ReflectionCache.GetFieldInfo(typeof(DummyFieldSuperClass), "Field4");
@@ -109,6 +194,60 @@ namespace AllOverIt.Tests.Reflection
 
         public class GetFieldInfo_TypeInfo_FieldName : ReflectionCacheFixture
         {
+            [Fact]
+            public void Should_Throw_When_TypeInfo_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = ReflectionCache.GetFieldInfo((TypeInfo) null, Create<string>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("typeInfo");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Field_Name_Null()
+            {
+                Invoking(() =>
+                {
+                    var typeInfo = typeof(DummyFieldSuperClass).GetTypeInfo();
+
+                    _ = ReflectionCache.GetFieldInfo(typeInfo, null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("fieldName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Field_Name_Empty()
+            {
+                Invoking(() =>
+                {
+                    var typeInfo = typeof(DummyFieldSuperClass).GetTypeInfo();
+
+                    _ = ReflectionCache.GetFieldInfo(typeInfo, string.Empty);
+                })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("fieldName");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Field_Name_Whitespace()
+            {
+                Invoking(() =>
+                {
+                    var typeInfo = typeof(DummyFieldSuperClass).GetTypeInfo();
+
+                    _ = ReflectionCache.GetFieldInfo(typeInfo, "   ");
+                })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithNamedMessageWhenEmpty("fieldName");
+            }
+
             [Fact]
             public void Should_Get_Field_In_Super()
             {
@@ -214,6 +353,18 @@ namespace AllOverIt.Tests.Reflection
         public class GetFieldInfo_Type_Bindings : ReflectionCacheFixture
         {
             [Fact]
+            public void Should_Throw_When_Type_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = ReflectionCache.GetFieldInfo((Type) null, BindingOptions.Default);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("type");
+            }
+
+            [Fact]
             public void Should_Use_Default_Binding_Not_Declared_Only()
             {
                 var actual = ReflectionCache.GetFieldInfo(typeof(DummyFieldSuperClass));
@@ -275,6 +426,18 @@ namespace AllOverIt.Tests.Reflection
 
         public class GetFieldInfo_TypeInfo : ReflectionCacheFixture
         {
+            [Fact]
+            public void Should_Throw_When_TypeInfo_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = ReflectionCache.GetFieldInfo((TypeInfo) null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("typeInfo");
+            }
+
             [Fact]
             public void Should_Get_Declared_Only()
             {

@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.DependencyInjection.Exceptions;
 using AllOverIt.Extensions;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace AllOverIt.DependencyInjection
 {
@@ -15,7 +14,7 @@ namespace AllOverIt.DependencyInjection
     public abstract class ServiceRegistrarBase : IServiceRegistrar, IServiceRegistrarOptions
     {
         private readonly Lazy<IReadOnlyCollection<Type>> _implementationCandidates;
-        private Func<Type, Type, bool> _registrationFilter;
+        private Func<Type, Type, bool>? _registrationFilter;
 
         private IReadOnlyCollection<Type> ImplementationCandidates => _implementationCandidates.Value;
 
@@ -32,7 +31,7 @@ namespace AllOverIt.DependencyInjection
         }
 
         /// <inheritdoc />
-        public void AutoRegisterServices(IEnumerable<Type> serviceTypes, Action<Type, Type> registrationAction, Action<IServiceRegistrarOptions> configure = default)
+        public void AutoRegisterServices(IEnumerable<Type> serviceTypes, Action<Type, Type> registrationAction, Action<IServiceRegistrarOptions>? configure = default)
         {
             configure?.Invoke(this);
 
