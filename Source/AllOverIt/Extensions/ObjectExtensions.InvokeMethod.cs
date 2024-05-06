@@ -1,4 +1,5 @@
-﻿using AllOverIt.Reflection;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Reflection;
 using System.Reflection;
 
 namespace AllOverIt.Extensions
@@ -11,46 +12,64 @@ namespace AllOverIt.Extensions
         /// <param name="methodName">The name of the method.</param>
         /// <param name="parameters">The parameters to pass to the method.</param>
         /// <param name="bindingOptions">The binding options to use to find the required method.</param>
-        public static void InvokeMethod(this object instance, string methodName, object?[]? parameters, BindingOptions bindingOptions = BindingOptions.Default)
+        public static object? InvokeMethod(this object instance, string methodName, object?[]? parameters, BindingOptions bindingOptions = BindingOptions.Default)
         {
-            InvokeMethod(instance, instance.GetType(), methodName, parameters, bindingOptions);
+            _ = instance.WhenNotNull(nameof(instance));
+            _ = methodName.WhenNotNullOrEmpty(nameof(methodName));
+
+            return InvokeMethod(instance, instance.GetType(), methodName, parameters, bindingOptions);
         }
 
         /// <summary>Uses reflection to invoke a method on an object.</summary>
-        /// <param name="instance">The instance to invoke the method on.</param>
+        /// <param name="instance">The instance to invoke the method on. This can be <see langword="null"/> for static methods.</param>
         /// <param name="instanceType">The instance type.</param>
         /// <param name="methodName">The name of the method.</param>
         /// <param name="parameters">The parameters to pass to the method.</param>
         /// <param name="bindingOptions">The binding options to use to find the required method.</param>
-        public static void InvokeMethod(this object instance, Type instanceType, string methodName, object?[]? parameters, BindingOptions bindingOptions = BindingOptions.Default)
+        public static object? InvokeMethod(this object instance, Type instanceType, string methodName, object?[]? parameters, BindingOptions bindingOptions = BindingOptions.Default)
         {
+            _ = instanceType.WhenNotNull(nameof(instanceType));
+            _ = methodName.WhenNotNullOrEmpty(nameof(methodName));
+
             var methodInfo = instanceType
                 .GetMethodInfo(bindingOptions)
                 .Single(method => method.Name == methodName);
 
-            InvokeMethod(instance, methodInfo, parameters);
+            return InvokeMethod(instance, methodInfo, parameters);
         }
 
         /// <summary>Uses reflection to invoke a method on an object.</summary>
-        /// <param name="instance">The instance to invoke the method on.</param>
+        /// <param name="instance">The instance to invoke the method on. This can be <see langword="null"/> for static methods.</param>
         /// <param name="instanceType">The instance type.</param>
         /// <param name="methodName">The name of the method.</param>
         /// <param name="types">The argument types on the method to match.</param>
         /// <param name="parameters">The parameters to pass to the method.</param>
-        public static void InvokeMethod(this object instance, Type instanceType, string methodName, Type[] types, object?[]? parameters)
+        public static object? InvokeMethod(this object instance, Type instanceType, string methodName, Type[] types, object?[]? parameters)
         {
+            _ = instanceType.WhenNotNull(nameof(instanceType));
+            _ = methodName.WhenNotNullOrEmpty(nameof(methodName));
+
             var methodInfo = instanceType.GetMethodInfo(methodName, types);
 
-            InvokeMethod(instance, methodInfo, parameters);
+#pragma warning disable IDE0270 // Use coalesce expression
+            if (methodInfo is null)
+            {
+                throw new ArgumentException($"The {methodName} method was not found on type {instanceType.GetFriendlyName()}.", nameof(methodName));
+            }
+#pragma warning restore IDE0270 // Use coalesce expression
+
+            return InvokeMethod(instance, methodInfo, parameters);
         }
 
         /// <summary>Uses reflection to invoke a method on an object.</summary>
-        /// <param name="instance">The instance to invoke the method on.</param>
+        /// <param name="instance">The instance to invoke the method on. This can be <see langword="null"/> for static methods.</param>
         /// <param name="methodInfo">The <see cref="MethodInfo"/> for the method to be invoked.</param>
         /// <param name="parameters">The parameters to pass to the method.</param>
-        public static void InvokeMethod(this object instance, MethodInfo methodInfo, object?[]? parameters)
+        public static object? InvokeMethod(this object instance, MethodInfo methodInfo, object?[]? parameters)
         {
-            methodInfo.Invoke(instance, parameters);
+            _ = methodInfo.WhenNotNull(nameof(methodInfo));
+
+            return methodInfo.Invoke(instance, parameters);
         }
     }
 }
