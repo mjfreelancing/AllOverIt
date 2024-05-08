@@ -1,8 +1,13 @@
-#  Version 7.10.0
-## 06 May 2024
+#  Version 7.11.0
+## 08 May 2024
 
 ### AllOverIt
 * Fixed progress text reported by ProgressUpdater when the caller returns null so it reports the previous progress text.
+* Breaking: Updated SelectManyAsync() to forward the CancellationToken to the selector.
+
+### AllOverIt.ReactiveUI
+* Added CommandFactory to create cancellable commands, and cancel commands that can automatically cancel one or more
+  cancellable commands.
 
 ---
 
