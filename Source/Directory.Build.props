@@ -2,7 +2,7 @@
     <PropertyGroup>
         <LangVersion>Latest</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
-        <Version>7.10.0</Version>
+        <Version>7.11.0</Version>
         <Authors>Malcolm Smith</Authors>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -42,6 +42,8 @@
     </ItemGroup>
 
     <PropertyGroup>
-        <NoWarn>$(NoWarn);0618</NoWarn>
+        <!--IDE0290 - use primary constructor-->
+        <!--CS0618 - 'member' is obsolete-->
+        <NoWarn>$(NoWarn);0290;0618</NoWarn>
     </PropertyGroup>
 </Project>

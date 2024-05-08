@@ -58,8 +58,8 @@ namespace AllOverIt.Extensions
         /// <param name="selector">The transform function to be applied to each element.</param>
         /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns>An enumerator that provides asynchronous iteration over a sequence of elements.</returns>
-        public static async IAsyncEnumerable<TResult> SelectManyAsync<TType, TResult>(this IAsyncEnumerable<TType> items, Func<TType, IEnumerable<TResult>> selector,
-           [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        public static async IAsyncEnumerable<TResult> SelectManyAsync<TType, TResult>(this IAsyncEnumerable<TType> items,
+            Func<TType, CancellationToken, IEnumerable<TResult>> selector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             _ = items.WhenNotNull(nameof(items));
 
@@ -67,7 +67,7 @@ namespace AllOverIt.Extensions
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                var results = selector.Invoke(item);
+                var results = selector.Invoke(item, cancellationToken);
 
                 foreach (var result in results)
                 {
