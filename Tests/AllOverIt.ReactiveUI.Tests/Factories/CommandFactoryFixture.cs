@@ -488,6 +488,20 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
                     actual.Should().BeEquivalentTo([true, false]);
                 }
             }
+
+            [Fact]
+            public void Should_Throw_When_Too_Many_Observables()
+            {
+                Invoking(() =>
+                {
+                    var subjects = Enumerable.Range(1, 17).SelectToArray(_ => new Subject<bool>());
+
+                    _ = CommandFactory.CreateCancelCommand(subjects);
+                })
+                    .Should()
+                    .Throw<ArgumentOutOfRangeException>()
+                    .WithMessage("A maximum of 16 observables is supported. (Parameter 'observables')");
+            }
         }
 
         public class CreateCancelCommand_ReactiveCommand : CommandFactoryFixture

@@ -166,7 +166,7 @@ namespace AllOverIt.ReactiveUI.Factories
                         obs[0], obs[1], obs[2], obs[3], obs[4], obs[5], obs[6], obs[7], obs[8], obs[9], obs[10], obs[11], obs[12], obs[13], obs[14], obs[15],
                         (o1, o2, o3, o4, o5, o6, o7, o8, o9, o10, o11, o12, o13, o14, o15, o16) => o1 || o2 || o3 || o4 || o5 || o6 || o7 || o8 || o9 || o10 || o11 || o12 || o13 || o14 || o15 || o16),
 
-                _ => throw new ArgumentException("A maximum of 16 observables per cancel command is supported.")
+                _ => throw new ArgumentOutOfRangeException(nameof(observables), "A maximum of 16 observables is supported.")
             };
 
             return ReactiveCommand.Create(() => { }, canExecute);
