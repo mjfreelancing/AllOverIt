@@ -47,7 +47,8 @@
     </ItemGroup>
 
     <PropertyGroup>
+        <!--IDE0290 - use primary constructor-->
         <!--CS0618 - 'member' is obsolete-->
-        <NoWarn>$(NoWarn);0618</NoWarn>
+        <NoWarn>$(NoWarn);0290;0618</NoWarn>
     </PropertyGroup>
 </Project>

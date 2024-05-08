@@ -20,7 +20,7 @@ namespace AllOverIt.Pipes.Named.Server
         private bool _disposed;
         private readonly INamedPipeSerializer<TMessage> _serializer;
         internal List<INamedPipeServerConnection<TMessage>> Connections { get; } = [];
-        private AwaitableLock _connectionsLock = new();
+        private readonly AwaitableLock _connectionsLock = new();
         private BackgroundTask? _backgroundTask;
 
         /// <inheritdoc />
